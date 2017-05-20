@@ -10,6 +10,7 @@ import net.minecraft.entity.monster.EntityGhast;
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.client.model.ModelTFGhast;
+import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
 /**
@@ -36,7 +37,7 @@ public class RenderTFTowerGhast extends RenderTFMiniGhast {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
+	public void doRender(EntityTFTowerGhast entity, double d, double d1, double d2, float f, float f1) {
 		super.doRender(entity, d, d1, d2, f, f1);
 		// show boss health bar, if applicable
 		if (entity instanceof EntityTFUrGhast && entity.ticksExisted > 0)
@@ -69,9 +70,9 @@ public class RenderTFTowerGhast extends RenderTFMiniGhast {
      * entityLiving, partialTickTime
      */
     @Override
-    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityTFTowerGhast par1EntityLiving, float par2)
     {
-        this.preRenderGhast((EntityGhast)par1EntityLiving, par2);
+        this.preRenderGhast(par1EntityLiving, par2);
     }
 
 

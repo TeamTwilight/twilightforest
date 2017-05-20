@@ -25,7 +25,6 @@ public class EntityAITFFlockToSameKind extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
-    @SuppressWarnings("unchecked")
 	@Override
 	public boolean shouldExecute()
     {

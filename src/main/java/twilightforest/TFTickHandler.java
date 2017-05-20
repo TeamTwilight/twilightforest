@@ -145,7 +145,6 @@ public class TFTickHandler
 				&& (world.provider.getDimension() == 0 || world.provider.getDimension() == TwilightForestMod.dimensionID
 				|| TwilightForestMod.allowPortalsInOtherDimensions)) 
 		{
-			@SuppressWarnings("unchecked")
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(rangeToCheck, rangeToCheck, rangeToCheck));
 			
 			// do we have the item set?  if not, can we set it?

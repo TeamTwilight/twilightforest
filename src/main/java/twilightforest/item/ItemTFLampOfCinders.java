@@ -26,7 +26,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
-		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) 
+		if (par1ItemStack.getItemDamage() < this.getMaxDamage(par1ItemStack))
 		{
 			player.setActiveHand(hand);
 		}
@@ -76,7 +76,7 @@ public class ItemTFLampOfCinders extends ItemTF {
     	int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
 
 
-    	if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage()) 
+    	if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage(par1ItemStack))
     	{
     		doBurnEffect(world, living);
     		

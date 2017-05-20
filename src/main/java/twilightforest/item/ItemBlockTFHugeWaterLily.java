@@ -32,7 +32,7 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 
         if (raytraceresult == null)
         {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
         }
         else
         {
@@ -42,13 +42,13 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 
                 if (!worldIn.isBlockModifiable(playerIn, blockpos) || !playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn))
                 {
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                    return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
                 }
 
                 BlockPos blockpos1 = blockpos.up();
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (iblockstate.getMaterial() == Material.WATER && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(blockpos1))
+                if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0 && worldIn.isAirBlock(blockpos1))
                 {
                     // special case for handling block placement with water lilies
                     net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
@@ -69,11 +69,11 @@ public class ItemBlockTFHugeWaterLily extends ItemBlock {
 
                     playerIn.addStat(StatList.getObjectUseStats(this));
                     worldIn.playSound(playerIn, blockpos, SoundEvents.BLOCK_WATERLILY_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
                 }
             }
 
-            return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+            return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
         }
     }
 

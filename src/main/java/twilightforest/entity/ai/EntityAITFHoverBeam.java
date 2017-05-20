@@ -176,7 +176,6 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 	/**
 	 * What, if anything, is the head currently looking at?
 	 */
-	@SuppressWarnings("unchecked")
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;

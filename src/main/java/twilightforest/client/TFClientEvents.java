@@ -11,13 +11,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.opengl.GL11;
 
 import twilightforest.item.ItemTFBowBase;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import twilightforest.world.WorldProviderTwilightForest;
 
 public class TFClientEvents {
 
@@ -97,6 +100,27 @@ public class TFClientEvents {
 		}
 
 		GlStateManager.disableBlend();
+	}
+
+	/**
+	 * On the tick, we kill the vignette
+	 */
+	@SubscribeEvent
+	public void clientTick(TickEvent.ClientTickEvent event) {
+		Minecraft mc = Minecraft.getMinecraft();
+		World world = mc.world;
+
+
+		// only fire if we're in the twilight forest
+		if (world != null && (world.provider instanceof WorldProviderTwilightForest))
+		{
+			// vignette
+			if (mc.ingameGUI != null)
+			{
+				mc.ingameGUI.prevVignetteBrightness = 0.0F;
+			}
+
+		}
 	}
 	
 }

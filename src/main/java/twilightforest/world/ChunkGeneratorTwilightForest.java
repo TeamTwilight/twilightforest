@@ -95,7 +95,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	
 		ravineGenerator = new TFGenRavine();
 		unusedIntArray32x32 = new int[32][32];
-		world = world;
+		this.world = world;
 		rand = new Random(l);
 		//noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
 		//noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
@@ -934,7 +934,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	 * Twilight Forest varient! First check features, then only if we're not in
 	 * a feature, check the biome.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		// are the specified coordinates precicely in a feature?

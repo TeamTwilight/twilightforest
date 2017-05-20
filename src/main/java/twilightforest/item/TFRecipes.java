@@ -187,30 +187,17 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.knightmetalStorage), "###", "###", "###", '#', TFItems.knightMetal);
 
 	}
-	 
-	/**
-	 * Add a recipe for an enchanted item.  Always shaped.
-	 */
-	public static void addEnchantedRecipe(Item item, Enchantment enchantment, int enchantmentLevel, Object ... ingredientArray) {
+
+	public static void addEnchantedRecipe(Item item, Object... inputs) {
 		ItemStack result = new ItemStack(item);
-		if (enchantment != null) {
-			result.addEnchantment(enchantment, enchantmentLevel);
+		int i = 0;
+		while (i < inputs.length && inputs[i] instanceof Enchantment) {
+			result.addEnchantment((Enchantment)inputs[i], (Integer)inputs[i + 1]);
+			i += 2;
 		}
-		
-		GameRegistry.addRecipe(result, ingredientArray);
+		Object[] ingredients = new Object[inputs.length - i];
+		System.arraycopy(inputs, i, ingredients, 0, ingredients.length);
+		GameRegistry.addRecipe(result, ingredients);
 	}
-	/**
-	 * Add a recipe for an enchanted item.  Always shaped.
-	 */
-	public static void addEnchantedRecipe(Item item, Enchantment enchantment, int enchantmentLevel, Enchantment enchantment2, int enchantmentLevel2, Object ... ingredientArray) {
-		ItemStack result = new ItemStack(item);
-		if (enchantment != null) {
-			result.addEnchantment(enchantment, enchantmentLevel);
-		}
-		if (enchantment2 != null) {
-			result.addEnchantment(enchantment2, enchantmentLevel2);
-		}
-		
-		GameRegistry.addRecipe(result, ingredientArray);
-	}
+
 }

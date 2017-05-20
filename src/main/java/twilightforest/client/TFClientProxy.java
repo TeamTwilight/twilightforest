@@ -86,7 +86,6 @@ public class TFClientProxy extends TFCommonProxy {
 	private ModelBiped[] arcticArmorModel;
 	private ModelBiped[] fieryArmorModel;
 	
-	private TFClientTicker clientTicker;
 	private TFClientEvents clientEvents;
 	
 	private boolean isDangerOverlayShown;
@@ -98,10 +97,6 @@ public class TFClientProxy extends TFCommonProxy {
 	public void doOnLoadRegistration() {
 		ColorHandler.init();
 		
-		// client tick listener
-		clientTicker = new TFClientTicker();
-		FMLCommonHandler.instance().bus().register(clientTicker);
-		
 		// client events
 		clientEvents = new TFClientEvents();
 		MinecraftForge.EVENT_BUS.register(clientEvents);
@@ -112,7 +107,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFDeer.class, m -> new RenderTFDeer(m, new ModelTFDeer(), 0.7F));
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFRedcap.class, m -> new RenderTFBiped<>(m, new ModelTFRedcap(), 0.625F, "redcap.png"));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFTinyFirefly.class, m -> new RenderTFTinyFirefly(m));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFTinyFirefly.class, RenderTFTinyFirefly::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSkeletonDruid.class, m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid(), 0.5F, "skeletondruid.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFWraith.class, m -> new RenderTFWraith(m, new ModelTFWraith(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydra.class, m -> new RenderTFHydra(m, new ModelTFHydra(), 1.0F));
@@ -135,7 +130,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlimeBeetle.class, m -> new RenderTFSlimeBeetle(m, new ModelTFSlimeBeetle(), 1.1F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFPinchBeetle.class, m -> new RenderTFGenericLiving<>(m, new ModelTFPinchBeetle(), 1.1F, "pinchbeetle.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMistWolf.class, m -> new RenderTFMistWolf(m, new ModelWolf(), 0.625F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFMobileFirefly.class, m -> new RenderTFTinyFirefly(m));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFMobileFirefly.class, RenderTFTinyFirefly::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMiniGhast.class, m -> new RenderTFMiniGhast(m, new ModelTFGhast(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFTowerGolem.class, m -> new RenderTFTowerGolem(m, new ModelTFTowerGolem(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFTowerTermite.class, m -> new RenderTFGenericLiving<>(m, new ModelSilverfish(), 0.3F, "towertermite.png"));
@@ -193,7 +188,7 @@ public class TFClientProxy extends TFCommonProxy {
 		
 		// I guess the hydra gets its own section
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraHead.class, m -> new RenderTFHydraHead(m, new ModelTFHydraHead(), 1.0F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraNeck.class, m -> new RenderTFGenericLiving(m, new ModelTFHydraNeck(), 1.0F, "hydra4.png"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraNeck.class, m -> new RenderTFGenericLiving<>(m, new ModelTFHydraNeck(), 1.0F, "hydra4.png"));
 		
 		// tile entities
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFFirefly.class, new TileEntityTFFireflyRenderer());
