@@ -176,7 +176,7 @@ public class TFBlocks {
 		registerMyBlock(towerWood, "tower_wood");
 		registerMyBlock(towerDevice, "tower_device");
 		registerMyBlock(towerTranslucent, "tower_translucent");
-		registerMyBlock(trophy, "trophy");
+		registerMyBlockWithoutItem(trophy, "trophy");
 		registerMyBlock(shield, "stronghold_shield");
 		registerMyBlock(trophyPedestal, "trophy_pedestal");
 		registerMyBlock(auroraBlock, "aurora_block", new ItemBlock(auroraBlock));
@@ -222,6 +222,11 @@ public class TFBlocks {
         Blocks.FIRE.setFireInfo(log, 5, 5);
         Blocks.FIRE.setFireInfo(leaves, 30, 60);
         Blocks.FIRE.setFireInfo(leaves3, 30, 60);
+	}
+
+	private static void registerMyBlockWithoutItem(Block block, String registryName)
+	{
+		registerMyBlock(block, registryName, null);
 	}
 
 	private static void registerMyBlock(Block block, String registryName)

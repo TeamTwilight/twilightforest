@@ -17,8 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTFPhantomArmor extends ItemArmor {
 
-	public ItemTFPhantomArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, renderIndex, armorType);
+	public ItemTFPhantomArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
+		super(par2EnumArmorMaterial, 0, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

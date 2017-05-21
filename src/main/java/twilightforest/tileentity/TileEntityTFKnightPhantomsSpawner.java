@@ -51,7 +51,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 	protected void initializeCreature(EntityLiving myCreature) {
 		if (myCreature instanceof EntityTFKnightPhantom)
 		{
-			((EntityTFKnightPhantom) myCreature).setHomeArea(pos, 46);
+			((EntityTFKnightPhantom) myCreature).setHomePosAndDistance(pos, 46);
 		}
 	}
 

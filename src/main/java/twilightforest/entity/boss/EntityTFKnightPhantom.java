@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -25,14 +26,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.*;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
-import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nullable;
 
@@ -41,6 +40,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 	private static final float CIRCLE_SMALL_RADIUS = 2.5F;
 	private static final float CIRCLE_LARGE_RADIUS = 8.5F;
 	private static final DataParameter<Boolean> FLAG_CHARGING = EntityDataManager.createKey(EntityTFKnightPhantom.class, DataSerializers.BOOLEAN);
+	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, 0).setSaved(false);
 	private int number;
 	private int ticksProgress;
 	private Formation currentFormation;
@@ -89,21 +89,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     }
 
 	@Override
-    public boolean attackEntityFrom(DamageSource source, float par2)
-    {
-        if (this.isEntityInvulnerable(source))
-        {
-            return false;
-        }
-        else if (source == DamageSource.inWall)
-        {
-            return false;
-        }
-        else
-        {
-            return super.attackEntityFrom(source, par2);
-        }
-    }
+    public boolean attackEntityFrom(DamageSource source, float par2) {
+		return source != DamageSource.inWall && super.attackEntityFrom(source, par2);
+	}
 
 	@Override
     public void onLivingUpdate()
@@ -184,7 +172,8 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		}
 	}
 
-	// TODO move to AI tasks?
+	// TODO move to AI tasks
+	private int attackTime;
 	@Override
     protected void updateAITasks()
     {
@@ -248,8 +237,12 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 
                 if (this.getEntitySenses().canSee(target))
                 {
-                    this.attackEntity(target, f1);
-                }
+					if (this.attackTime-- <= 0 && f1 < 2.0F && ((Entity) target).getEntityBoundingBox().maxY > this.getEntityBoundingBox().minY && ((Entity) target).getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY)
+                    {
+                        this.attackTime = 20;
+                        this.attackEntityAsMob(target);
+                    }
+				}
             }
             
             // launch axe at the appropriate time in our routine
@@ -265,21 +258,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
             }
 
         }
-        
-        
-        //this.setPosition(dest.xCoord, dest.yCoord, dest.zCoord);
     }
 
-	private void attackEntity(Entity par1Entity, float par2)
-    {
-        if (this.attackTime <= 0 && par2 < 2.0F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY)
-        {
-            this.attackTime = 20;
-            this.attackEntityAsMob(par1Entity);
-        }
-    }
-
-    // [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
+	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
 	public boolean attackEntityAsMob(Entity entityIn)
 	{
 		float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
@@ -331,21 +312,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		}
 
 		return flag;
-	}
-
-    /**
-     * How much damage do we deal, per attack?
-     * @return
-     */
-	private float getAttackDamage() {
-		float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-		
-		if (this.isChargingAtPlayer())
-		{
-			damage += 7; // todo 1.9 attribute
-		}
-		
-		return damage;
 	}
 
 	private void launchAxeAt(Entity targetedEntity) {
@@ -617,6 +583,13 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
     public void setChargingAtPlayer(boolean flag)
     {
 		dataManager.set(FLAG_CHARGING, flag);
+		if (!world.isRemote) {
+			if (flag) {
+				getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(CHARGING_MODIFIER);
+			} else {
+				getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
+			}
+		}
     }
     
     @Override

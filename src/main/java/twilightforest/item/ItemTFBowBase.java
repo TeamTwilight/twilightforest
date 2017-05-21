@@ -47,7 +47,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 					if (!worldIn.isRemote)
 					{
 						ItemArrow itemarrow = (ItemArrow)((ItemArrow)(itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
-						EntityArrow entityarrow = getArrow(worldIn, entityplayer); // TF: use own entity creator itemarrow.createArrow(worldIn, itemstack, entityplayer);
+						EntityArrow entityarrow = getArrow(worldIn, itemstack, entityplayer); // TF: use own entity creator
 						entityarrow.setAim(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						if (f == 1.0F)
@@ -103,7 +103,7 @@ public abstract class ItemTFBowBase extends ItemBow {
 	}
 
 	// [VanillaCopy] super.findAmmo, no changes
-	private ItemStack findAmmo(EntityPlayer player)
+	protected ItemStack findAmmo(EntityPlayer player)
 	{
 		if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND)))
 		{
@@ -129,8 +129,12 @@ public abstract class ItemTFBowBase extends ItemBow {
 		}
 	}
 
-	protected EntityArrow getArrow(World world, EntityPlayer entityPlayer) {
-		return new EntityTippedArrow(world, entityPlayer);
+	protected EntityArrow getArrow(World world, ItemStack stack, EntityPlayer entityPlayer) {
+		if (stack.getItem() instanceof ItemArrow) {
+			return ((ItemArrow) stack.getItem()).createArrow(world, stack, entityPlayer);
+		} else {
+			return new EntityTippedArrow(world, entityPlayer);
+		}
 	}
 
 }

@@ -11,9 +11,10 @@ import org.lwjgl.opengl.GL11;
 
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFCubeOfAnnihilation;
+import twilightforest.entity.EntityTFCubeOfAnnihilation;
 import twilightforest.entity.EntityTFSpikeBlock;
 
-public class RenderTFCubeOfAnnihilation extends Render<EntityTFSpikeBlock> {
+public class RenderTFCubeOfAnnihilation extends Render<EntityTFCubeOfAnnihilation> {
     private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cubeofannihilation.png");
     private final ModelBase model = new ModelTFCubeOfAnnihilation();
 
@@ -22,7 +23,7 @@ public class RenderTFCubeOfAnnihilation extends Render<EntityTFSpikeBlock> {
 	}
 
     @Override
-    public void doRender(EntityTFSpikeBlock par1Entity, double x, double y, double z, float yaw, float partialTicks)
+    public void doRender(EntityTFCubeOfAnnihilation par1Entity, double x, double y, double z, float yaw, float partialTicks)
     {
         super.doRender(par1Entity, x, y, z, yaw, partialTicks);
         GlStateManager.pushMatrix();
@@ -49,7 +50,7 @@ public class RenderTFCubeOfAnnihilation extends Render<EntityTFSpikeBlock> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityTFSpikeBlock par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTFCubeOfAnnihilation par1Entity)
     {
         return textureLoc;
     }

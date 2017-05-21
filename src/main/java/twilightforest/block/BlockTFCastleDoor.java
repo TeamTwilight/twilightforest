@@ -125,7 +125,7 @@ public class BlockTFCastleDoor extends Block
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!par1World.isRemote && TFWorld.getChunkGenerator(par1World) instanceof ChunkGeneratorTwilightForest) {
 			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(par1World);
-			return generator.isStructureLocked(pos, meta);
+			return generator.isStructureLocked(pos, par1World.getBlockState(pos).getValue(ACTIVE));
 		} else {
 			return false;
 		}

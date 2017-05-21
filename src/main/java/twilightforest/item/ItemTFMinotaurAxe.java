@@ -20,7 +20,7 @@ public class ItemTFMinotaurAxe extends ItemAxe {
 	private EntityPlayer bonusDamagePlayer;
 
 	protected ItemTFMinotaurAxe(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+		super(par2EnumToolMaterial, par2EnumToolMaterial.getDamageVsEntity(), -3.0f);
 		this.damageVsEntity = 4 + par2EnumToolMaterial.getDamageVsEntity();
 		this.setCreativeTab(TFItems.creativeTab);
 	}

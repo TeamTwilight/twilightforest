@@ -14,197 +14,210 @@ import net.minecraft.world.gen.MapGenBase;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
-
-
+//FIXME: AtomicBlom - Deobfuscate this crap
 public class TFGenRavine extends MapGenBase
 {
     protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
-    private float field_35627_a[];
+    private final float[] rs = new float[1024];
 
-    public TFGenRavine()
+    //[VanillaCopy] Based on MapGenRavine.addTunnel, modified for the lowered chunk height of TF.
+    protected void addTunnel(long p_180707_1_, int p_180707_3_, int p_180707_4_, ChunkPrimer p_180707_5_, double p_180707_6_,
+                             double p_180707_8_, double p_180707_10_, float p_180707_12_, float p_180707_13_, float p_180707_14_,
+                             int p_180707_15_, int p_180707_16_, double p_180707_17_)
     {
-        field_35627_a = new float[1024];
+        Random random = new Random(p_180707_1_);
+        double d0 = (double)(p_180707_3_ * 16 + 8);
+        double d1 = (double)(p_180707_4_ * 16 + 8);
+        float f = 0.0F;
+        float f1 = 0.0F;
+
+        if (p_180707_16_ <= 0)
+        {
+            int i = this.range * 16 - 16;
+            p_180707_16_ = i - random.nextInt(i / 4);
+        }
+
+        boolean flag1 = false;
+
+        if (p_180707_15_ == -1)
+        {
+            p_180707_15_ = p_180707_16_ / 2;
+            flag1 = true;
+        }
+
+        float f2 = 1.0F;
+
+        for (int j = 0; j < TFWorld.CHUNKHEIGHT; ++j)
+        {
+            if (j == 0 || random.nextInt(3) == 0)
+            {
+                f2 = 1.0F + random.nextFloat() * random.nextFloat();
+            }
+
+            this.rs[j] = f2 * f2;
+        }
+
+        for (; p_180707_15_ < p_180707_16_; ++p_180707_15_)
+        {
+            double d9 = 1.5D + (double)(MathHelper.sin((float)p_180707_15_ * (float)Math.PI / (float)p_180707_16_) * p_180707_12_);
+            double d2 = d9 * p_180707_17_;
+            d9 = d9 * ((double) random.nextFloat() * 0.25D + 0.75D);
+            d2 = d2 * ((double) random.nextFloat() * 0.25D + 0.75D);
+            float f3 = MathHelper.cos(p_180707_14_);
+            float f4 = MathHelper.sin(p_180707_14_);
+            p_180707_6_ += (double)(MathHelper.cos(p_180707_13_) * f3);
+            p_180707_8_ += (double)f4;
+            p_180707_10_ += (double)(MathHelper.sin(p_180707_13_) * f3);
+            p_180707_14_ = p_180707_14_ * 0.7F;
+            p_180707_14_ = p_180707_14_ + f1 * 0.05F;
+            p_180707_13_ += f * 0.05F;
+            f1 = f1 * 0.8F;
+            f = f * 0.5F;
+            f1 = f1 + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0F;
+            f = f + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
+
+            if (flag1 || random.nextInt(4) != 0)
+            {
+                double d3 = p_180707_6_ - d0;
+                double d4 = p_180707_10_ - d1;
+                double d5 = (double)(p_180707_16_ - p_180707_15_);
+                double d6 = (double)(p_180707_12_ + 2.0F + 16.0F);
+
+                if (d3 * d3 + d4 * d4 - d5 * d5 > d6 * d6)
+                {
+                    return;
+                }
+
+                if (p_180707_6_ >= d0 - 16.0D - d9 * 2.0D && p_180707_10_ >= d1 - 16.0D - d9 * 2.0D && p_180707_6_ <= d0 + 16.0D + d9 * 2.0D && p_180707_10_ <= d1 + 16.0D + d9 * 2.0D)
+                {
+                    int k2 = MathHelper.floor(p_180707_6_ - d9) - p_180707_3_ * 16 - 1;
+                    int k = MathHelper.floor(p_180707_6_ + d9) - p_180707_3_ * 16 + 1;
+                    int l2 = MathHelper.floor(p_180707_8_ - d2) - 1;
+                    int l = MathHelper.floor(p_180707_8_ + d2) + 1;
+                    int i3 = MathHelper.floor(p_180707_10_ - d9) - p_180707_4_ * 16 - 1;
+                    int i1 = MathHelper.floor(p_180707_10_ + d9) - p_180707_4_ * 16 + 1;
+
+                    if (k2 < 0)
+                    {
+                        k2 = 0;
+                    }
+
+                    if (k > 16)
+                    {
+                        k = 16;
+                    }
+
+                    if (l2 < 1)
+                    {
+                        l2 = 1;
+                    }
+
+                    if (l > TFWorld.CHUNKHEIGHT - 8)
+                    {
+                        l = TFWorld.CHUNKHEIGHT - 8;
+                    }
+
+                    if (i3 < 0)
+                    {
+                        i3 = 0;
+                    }
+
+                    if (i1 > 16)
+                    {
+                        i1 = 16;
+                    }
+
+                    boolean flag2 = false;
+
+                    for (int j1 = k2; !flag2 && j1 < k; ++j1)
+                    {
+                        for (int k1 = i3; !flag2 && k1 < i1; ++k1)
+                        {
+                            for (int l1 = l + 1; !flag2 && l1 >= l2 - 1; --l1)
+                            {
+                                if (l1 >= 0 && l1 < TFWorld.CHUNKHEIGHT)
+                                {
+                                    if (isOceanBlock(p_180707_5_, j1, l1, k1, p_180707_3_, p_180707_4_))
+                                    {
+                                        flag2 = true;
+                                    }
+
+                                    if (l1 != l2 - 1 && j1 != k2 && j1 != k - 1 && k1 != i3 && k1 != i1 - 1)
+                                    {
+                                        l1 = l2;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (!flag2)
+                    {
+                        for (int j3 = k2; j3 < k; ++j3)
+                        {
+                            double d10 = ((double) (j3 + p_180707_3_ * 16) + 0.5D - p_180707_6_) / d9;
+
+                            for (int i2 = i3; i2 < i1; ++i2)
+                            {
+                                double d7 = ((double) (i2 + p_180707_4_ * 16) + 0.5D - p_180707_10_) / d9;
+                                boolean flag = false;
+
+                                if (d10 * d10 + d7 * d7 < 1.0D)
+                                {
+                                    for (int j2 = l; j2 > l2; --j2)
+                                    {
+                                        double d8 = ((double) (j2 - 1) + 0.5D - p_180707_8_) / d2;
+
+                                        if ((d10 * d10 + d7 * d7) * (double)this.rs[j2 - 1] + d8 * d8 / 6.0D < 1.0D)
+                                        {
+                                            if (isTopBlock(p_180707_5_, j3, j2, i2, p_180707_3_, p_180707_4_))
+                                            {
+                                                flag = true;
+                                            }
+
+                                            digBlock(p_180707_5_, j3, j2, i2, p_180707_3_, p_180707_4_, flag);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (flag1)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    protected void addTunnel(long l, int i, int j, ChunkPrimer chunkPrimer, double d,
-                             double d1, double d2, float f, float f1, float f2,
-                             int k, int i1, double d3)
+    //[VanillaCopy] Based on MapGenRavine.recursiveGenerate, modified for TF chunk decorations.
+    protected void recursiveGenerate(World worldIn, int chunkX, int chunkZ, int p_180701_4_, int p_180701_5_, ChunkPrimer chunkPrimerIn)
     {
-        Random random = new Random(l);
-        double d4 = i * 16 + 8;
-        double d5 = j * 16 + 8;
-        float f3 = 0.0F;
-        float f4 = 0.0F;
-        if (i1 <= 0)
+        if (this.rand.nextInt(127) == 0)
         {
-            int j1 = range * 16 - 16;
-            i1 = j1 - random.nextInt(j1 / 4);
-        }
-        boolean flag = false;
-        if (k == -1)
-        {
-            k = i1 / 2;
-            flag = true;
-        }
-        float f5 = 1.0F;
-        for (int k1 = 0; k1 < TFWorld.CHUNKHEIGHT; k1++)
-        {
-            if (k1 == 0 || random.nextInt(3) == 0)
-            {
-                f5 = 1.0F + random.nextFloat() * random.nextFloat();
-            }
-            field_35627_a[k1] = f5 * f5;
-        }
-
-        for (; k < i1; k++)
-        {
-            double d6 = 1.5D + (double)(MathHelper.sin(((float)k * (float)Math.PI) / (float)i1) * f);
-            double d7 = d6 * d3;
-            d6 *= (double)random.nextFloat() * 0.25D + 0.75D;
-            d7 *= (double)random.nextFloat() * 0.25D + 0.75D;
-            float f6 = MathHelper.cos(f2);
-            float f7 = MathHelper.sin(f2);
-            d += MathHelper.cos(f1) * f6;
-            d1 += f7;
-            d2 += MathHelper.sin(f1) * f6;
-            f2 *= 0.7F;
-            f2 += f4 * 0.05F;
-            f1 += f3 * 0.05F;
-            f4 *= 0.8F;
-            f3 *= 0.5F;
-            f4 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0F;
-            f3 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4F;
-            if (!flag && random.nextInt(4) == 0)
-            {
-                continue;
-            }
-            double d8a = d - d4;
-            double d9a = d2 - d5;
-            double d10a = i1 - k;
-            double d11 = f + 2.0F + 16F;
-            if ((d8a * d8a + d9a * d9a) - d10a * d10a > d11 * d11)
+            if (!TFFeature.getNearestFeature(p_180701_4_, p_180701_5_, world).areChunkDecorationsEnabled)
             {
                 return;
             }
-            if (d < d4 - 16D - d6 * 2D || d2 < d5 - 16D - d6 * 2D || d > d4 + 16D + d6 * 2D || d2 > d5 + 16D + d6 * 2D)
-            {
-                continue;
-            }
-            int d8 = MathHelper.floor(d - d6) - i * 16 - 1;
-            int l1 = (MathHelper.floor(d + d6) - i * 16) + 1;
-            int d9 = MathHelper.floor(d1 - d7) - 1;
-            int i2 = MathHelper.floor(d1 + d7) + 1;
-            int d10 = MathHelper.floor(d2 - d6) - j * 16 - 1;
-            int j2 = (MathHelper.floor(d2 + d6) - j * 16) + 1;
-            if (d8 < 0)
-            {
-                d8 = 0;
-            }
-            if (l1 > 16)
-            {
-                l1 = 16;
-            }
-            if (d9 < 1)
-            {
-                d9 = 1;
-            }
-            if (i2 > TFWorld.CHUNKHEIGHT - 8)
-            {
-                i2 = TFWorld.CHUNKHEIGHT - 8;
-            }
-            if (d10 < 0)
-            {
-                d10 = 0;
-            }
-            if (j2 > 16)
-            {
-                j2 = 16;
-            }
-            boolean flag1 = false;
-            for (int k2 = d8; !flag1 && k2 < l1; k2++)
-            {
-                for (int i3 = d10; !flag1 && i3 < j2; i3++)
-                {
-                    //TODO: Verify this works correctly, in 1.7.10, references to i3 were originally d9
-                    for (int j3 = i2 + 1; !flag1 && j3 >= i3 - 1; j3--)
-                    {
-                        //TODO: Except for this line
-                        if (j3 < 0 || j3 >= TFWorld.CHUNKHEIGHT)
-                        {
-                            continue;
-                        }
-                        if (isOceanBlock(chunkPrimer, k2, j3, i3, i, j))
-                        {
-                            flag1 = true;
-                        }
-                        if (j3 != i3 - 1 && k2 != d8 && k2 != l1 - 1 && i3 != d10 && i3 != j2 - 1)
-                        {
-                            j3 = i3;
-                        }
-                    }
-                }
-            }
 
-            if (flag1)
-            {
-                continue;
-            }
-            for (int l2 = d8; l2 < l1; l2++)
-            {
-                double d12 = (((double)(l2 + i * 16) + 0.5D) - d) / d6;
-                for (int l3 = d10; l3 < j2; l3++)
-                {
-                    double d13 = (((double)(l3 + j * 16) + 0.5D) - d2) / d6;
-                    boolean flag2 = false;
-                    if (d12 * d12 + d13 * d13 >= 1.0D)
-                    {
-                        continue;
-                    }
-                    for (int j4_ = i2; j4_ > d9; j4_++)
-                    {
-                        int j4 = j4_ - 1;
-                        double d14 = (((double)j4 + 0.5D) - d1) / d7;
-                        if ((d12 * d12 + d13 * d13) * (double)field_35627_a[j4] + (d14 * d14) / 6D < 1.0D)
-                        {
-                            if (isTopBlock(chunkPrimer, l2, j4, l3, i, j))
-                            {
-                                flag2 = true;
-                            }
-                            digBlock(chunkPrimer, l2, j4, l3, i, j, flag2);
-                        }
-                    }
-                }
-            }
+            double d0 = (double)(chunkX * 16 + this.rand.nextInt(16));
+            double d1 = (double)(this.rand.nextInt(this.rand.nextInt(40) + 8) + 20);
+            double d2 = (double)(chunkZ * 16 + this.rand.nextInt(16));
+            int i = 1;
 
-            if (flag)
+            for (int j = 0; j < 1; ++j)
             {
-                break;
+                float f = this.rand.nextFloat() * ((float) Math.PI * 2F);
+                float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
+                float f2 = (this.rand.nextFloat() * 2.0F + this.rand.nextFloat()) * 2.0F;
+                this.addTunnel(this.rand.nextLong(), p_180701_4_, p_180701_5_, chunkPrimerIn, d0, d1, d2, f2, f, f1, 0, 0, 3.0D);
             }
         }
     }
 
-    protected void recursiveGenerate(World worldIn, int centerChunkX, int centerChunkZ, int currentChunkX, int currentChunkZ, ChunkPrimer chunkPrimerIn)
-    {
-        if (rand.nextInt(127) != 0)
-        {
-            return;
-        }
-        if (!TFFeature.getNearestFeature(currentChunkX, currentChunkZ, world).areChunkDecorationsEnabled) {
-            return;
-        }
-        double d = centerChunkX * 16 + rand.nextInt(16);
-        double d1 = rand.nextInt(rand.nextInt(40) + 8) + 20;
-        double d2 = centerChunkZ * 16 + rand.nextInt(16);
-        int i1 = 1;
-        for (int j1 = 0; j1 < i1; j1++)
-        {
-            float f = rand.nextFloat() * ((float)Math.PI * 2.0F);
-            float f1 = ((rand.nextFloat() - 0.5F) * 2.0F) / 8F;
-            float f2 = (rand.nextFloat() * 2.0F + rand.nextFloat()) * 2.0F;
-            addTunnel(rand.nextLong(), currentChunkX, currentChunkZ, chunkPrimerIn, d, d1, d2, f2, f, f1, 0, 0, 3.0D);
-        }
-    }
-
+    //[VanillaCopy] MapGenRavine.isOceanBlock
     protected boolean isOceanBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ)
     {
         Block block = data.getBlockState(x, y, z).getBlock();

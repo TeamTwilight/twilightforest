@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -20,22 +21,20 @@ public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {
 
 	public RenderTFQuestRam(RenderManager manager) {
 		super(manager, new ModelTFQuestRam(), 1.0F);
-        this.setRenderPassModel(new ModelTFQuestRam());
+        addLayer(new LayerGlowingLines());
 	}
 
-
-    /**
-     * Sets the ram's glowing lines
-     */
-    protected int setQuestRamLineBrightness(EntityTFQuestRam par1EntityQuestRam, int par2, float par3)
+    @Override
+    protected ResourceLocation getEntityTexture(EntityTFQuestRam par1Entity)
     {
-        if (par2 != 0)
-        {
-            return -1;
-        }
-        else
-        {
-            this.bindTexture(textureLocLines);
+        return textureLoc;
+    }
+
+	// todo verify / cleanup gl state?
+	class LayerGlowingLines implements LayerRenderer<EntityTFQuestRam> {
+        @Override
+        public void doRenderLayer(EntityTFQuestRam entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+            RenderTFQuestRam.this.bindTexture(textureLocLines);
             float var4 = 1.0F;
             GlStateManager.enableBlend();
             GlStateManager.disableAlpha();
@@ -47,22 +46,13 @@ public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var6 / 1.0F, (float)var7 / 1.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, var4);
-            return 1;
+            RenderTFQuestRam.this.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
-    }
 
-    /**
-     * Queries whether should render the specified pass or not.
-     */
-    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-    {
-        return this.setQuestRamLineBrightness((EntityTFQuestRam)par1EntityLiving, par2, par3);
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(EntityTFQuestRam par1Entity)
-    {
-        return textureLoc;
+        @Override
+        public boolean shouldCombineTextures() {
+            return false;
+        }
     }
 	
 }

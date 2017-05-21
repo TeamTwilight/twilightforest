@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -15,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.entity.boss.EntityTFThrownAxe;
 
 
-public class RenderTFThrownAxe extends Render<EntityTFThrownAxe> {
+public class RenderTFThrownAxe extends Render {
 	private final ItemStack myItem;
 
 	public RenderTFThrownAxe(RenderManager manager, Item knightlyAxe) {
@@ -24,7 +25,7 @@ public class RenderTFThrownAxe extends Render<EntityTFThrownAxe> {
 	}
 
 	@Override
-	public void doRender(EntityTFThrownAxe entity, double par2, double par4, double par6, float par8, float par9) {
+	public void doRender(Entity entity, double par2, double par4, double par6, float par8, float par9) {
 
         GlStateManager.pushMatrix();
 
@@ -66,7 +67,7 @@ public class RenderTFThrownAxe extends Render<EntityTFThrownAxe> {
     }
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFThrownAxe entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
         return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 }

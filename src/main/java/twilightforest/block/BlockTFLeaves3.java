@@ -6,6 +6,7 @@ import java.util.Random;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -29,8 +30,52 @@ public class BlockTFLeaves3 extends BlockLeaves {
     public static final PropertyEnum<Leaves3Variant> VARIANT = PropertyEnum.create("variant", Leaves3Variant.class);
 
 	protected BlockTFLeaves3() {
-		this.setCreativeTab(TFItems.creativeTab);
-        this.setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true).withProperty(VARIANT, Leaves3Variant.THORN));
+		setCreativeTab(TFItems.creativeTab);
+        setDefaultState(
+        		blockState.getBaseState()
+				        .withProperty(CHECK_DECAY, true)
+				        .withProperty(DECAYABLE, true)
+				        .withProperty(VARIANT, Leaves3Variant.THORN)
+        );
+	}
+
+	// [VanillaCopy] BlockLeavesNew.getMetaFromState - could subclass, but different VARIANT property
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		int i = 0;
+		i |= state.getValue(VARIANT).ordinal();
+
+		if (!state.getValue(DECAYABLE))
+		{
+			i |= 4;
+		}
+
+		if (state.getValue(CHECK_DECAY))
+		{
+			i |= 8;
+		}
+
+		return i;
+	}
+
+	// [VanillaCopy] BlockLeavesNew.getStateFromMeta - could subclass, but different VARIANT property
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta)
+	{
+		int variant = meta & 3;
+		final Leaves3Variant[] values = Leaves3Variant.values();
+
+		return getDefaultState()
+				.withProperty(VARIANT, values[variant % values.length])
+				.withProperty(DECAYABLE, (meta & 4) == 0)
+				.withProperty(CHECK_DECAY, (meta & 8) > 0);
+	}
+
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE, VARIANT);
 	}
 
     @Override

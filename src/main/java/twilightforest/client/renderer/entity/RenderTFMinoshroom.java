@@ -1,10 +1,14 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelQuadruped;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,39 +26,51 @@ public class RenderTFMinoshroom extends RenderBiped<EntityTFMinoshroom> {
 
 	public RenderTFMinoshroom(RenderManager manager, ModelBiped model, float shadowSize) {
 		super(manager, model, shadowSize);
-        this.addLayer(new LayerHeldItem(this));
+        this.addLayer(new LayerMinoshroomMushroom());
 	}
 
-    // FIXME: AtomicBlom: I think this needs it's own layer, this seems to do more than held items
-    protected void renderMooshroomEquippedItems(EntityLivingBase par1EntityLiving, float par2)
-    {
-        super.renderEquippedItems(par1EntityLiving, par2);
+	// TODO fix offsets (currently copypastedfrom LayerMooshroomMushroom)
+	class LayerMinoshroomMushroom implements LayerRenderer<EntityTFMinoshroom> {
+        @Override
+        public void doRenderLayer(EntityTFMinoshroom entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+            if (!entitylivingbaseIn.isChild() && !entitylivingbaseIn.isInvisible())
+            {
+                BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+                RenderTFMinoshroom.this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                GlStateManager.enableCull();
+                GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
+                GlStateManager.pushMatrix();
+                GlStateManager.scale(1.0F, -1.0F, 1.0F);
+                GlStateManager.translate(0.2F, 0.35F, 0.5F);
+                GlStateManager.rotate(42.0F, 0.0F, 1.0F, 0.0F);
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(-0.5F, -0.5F, 0.5F);
+                blockrendererdispatcher.renderBlockBrightness(Blocks.RED_MUSHROOM.getDefaultState(), 1.0F);
+                GlStateManager.popMatrix();
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0.1F, 0.0F, -0.6F);
+                GlStateManager.rotate(42.0F, 0.0F, 1.0F, 0.0F);
+                GlStateManager.translate(-0.5F, -0.5F, 0.5F);
+                blockrendererdispatcher.renderBlockBrightness(Blocks.RED_MUSHROOM.getDefaultState(), 1.0F);
+                GlStateManager.popMatrix();
+                GlStateManager.popMatrix();
+                GlStateManager.pushMatrix();
+                ((ModelBiped)RenderTFMinoshroom.this.getMainModel()).bipedHead.postRender(0.0625F);
+                GlStateManager.scale(1.0F, -1.0F, 1.0F);
+                GlStateManager.translate(0.0F, 0.7F, -0.2F);
+                GlStateManager.rotate(12.0F, 0.0F, 1.0F, 0.0F);
+                GlStateManager.translate(-0.5F, -0.5F, 0.5F);
+                blockrendererdispatcher.renderBlockBrightness(Blocks.RED_MUSHROOM.getDefaultState(), 1.0F);
+                GlStateManager.popMatrix();
+                GlStateManager.cullFace(GlStateManager.CullFace.BACK);
+                GlStateManager.disableCull();
+            }
+        }
 
-        this.bindTexture(TextureMap.locationBlocksTexture);
-        GlStateManager.enableCull();
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(1.0F, -1.0F, 1.0F);
-        GlStateManager.translate(0.2F, 0.375F, 0.5F);
-        GlStateManager.rotate(42.0F, 0.0F, 1.0F, 0.0F);
-        this.field_147909_c.renderBlockAsItem(Blocks.RED_MUSHROOM, 0, 1.0F);
-        GlStateManager.translate(0.1F, 0.0F, -0.6F);
-        GlStateManager.rotate(42.0F, 0.0F, 1.0F, 0.0F);
-        this.field_147909_c.renderBlockAsItem(Blocks.RED_MUSHROOM, 0, 1.0F);
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
-        ((ModelBiped)this.mainModel).bipedHead.postRender(0.0625F);
-        GlStateManager.scale(1.0F, -1.0F, 1.0F);
-        GlStateManager.translate(0.0F, 1.0F, 0F);
-        GlStateManager.rotate(12.0F, 0.0F, 1.0F, 0.0F);
-        this.field_147909_c.renderBlockAsItem(Blocks.RED_MUSHROOM, 0, 1.0F);
-        GlStateManager.popMatrix();
-        GlStateManager.disableCull();
-    }
-    
-    @Override
-    protected void renderEquippedItems(EntityLivingBase par1EntityLiving, float par2)
-    {
-        this.renderMooshroomEquippedItems(par1EntityLiving, par2);
+        @Override
+        public boolean shouldCombineTextures() {
+            return false;
+        }
     }
 
     @Override

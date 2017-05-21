@@ -6,9 +6,11 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.LeavesVariant;
 import twilightforest.block.enums.WoodVariant;
 
 /**
@@ -31,7 +33,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
     	super(par1);
 		treeState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE); // todo 1.9 recheck meta 13
-    	leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
+    	leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY);
 		rootState = TFBlocks.root.getDefaultState();
     }
     

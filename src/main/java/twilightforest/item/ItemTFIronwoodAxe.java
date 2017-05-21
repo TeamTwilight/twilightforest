@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 public class ItemTFIronwoodAxe extends ItemAxe {
 
 	protected ItemTFIronwoodAxe(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+		super(par2EnumToolMaterial, par2EnumToolMaterial.getDamageVsEntity(), -3.2F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

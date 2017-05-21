@@ -14,8 +14,8 @@ import twilightforest.TwilightForestMod;
 
 public class ItemTFIronwoodArmor extends ItemArmor {
 
-	public ItemTFIronwoodArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, renderIndex, armorType);
+	public ItemTFIronwoodArmor(ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
+		super(par2EnumArmorMaterial, 0, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

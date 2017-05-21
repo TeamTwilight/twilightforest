@@ -21,7 +21,7 @@ public class ItemTFKnightlyAxe extends ItemAxe {
 	private Entity bonusDamageEntity;
 
 	protected ItemTFKnightlyAxe(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+		super(par2EnumToolMaterial, par2EnumToolMaterial.getDamageVsEntity(), -3.0f);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.damageVsEntity = 4 + par2EnumToolMaterial.getDamageVsEntity();
 

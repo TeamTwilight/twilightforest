@@ -972,15 +972,22 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return null;
 	}
 
+	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
+		//FIXME: AtomicBlom: Bring this back in with structures
+		//this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
+	}
+
+	public boolean isStructureLocked(BlockPos pos, boolean lockIndex) {
+		//FIXME: AtomicBlom: Bring this back in with structures
+		return false; //Unlock all structures for development
+		//return this.majorFeatureGenerator.isStructureLocked(mapX, mapY, mapZ, lockIndex);
+	}
+
 /*
 	public boolean isBlockInStructureBB(int mapX, int mapY, int mapZ) {
 		return this.majorFeatureGenerator.hasStructureAt(mapX, mapY, mapZ);
 	}
 
-	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
-	}
-	
 	public StructureBoundingBox getSBBAt(int mapX, int mapY, int mapZ) {
 		return this.majorFeatureGenerator.getSBBAt(mapX, mapY, mapZ);
 	}
@@ -991,10 +998,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	public boolean isStructureConquered(int mapX, int mapY, int mapZ) {
 		return this.majorFeatureGenerator.isStructureConquered(mapX, mapY, mapZ);
-	}
-	
-	public boolean isStructureLocked(int mapX, int mapY, int mapZ, int lockIndex) {
-		return this.majorFeatureGenerator.isStructureLocked(mapX, mapY, mapZ, lockIndex);
 	}
 	
 

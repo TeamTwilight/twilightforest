@@ -8,8 +8,8 @@ import twilightforest.TwilightForestMod;
 
 public class ItemTFNagaArmor extends ItemArmor {
 
-	public ItemTFNagaArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int par3, EntityEquipmentSlot par4) {
-		super(par2EnumArmorMaterial, par3, par4);
+	public ItemTFNagaArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot slot) {
+		super(par2EnumArmorMaterial, 0, slot);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

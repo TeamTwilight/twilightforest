@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
@@ -44,7 +45,28 @@ public class BlockTFPlant extends BlockBush implements IShearable
         this.setHardness(0.0F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-    
+
+	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		int variantMeta = meta & 15;
+		final PlantVariant[] plantVariants = PlantVariant.values();
+		PlantVariant variant = plantVariants[variantMeta % plantVariants.length];
+
+		return getDefaultState().withProperty(VARIANT, variant);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return state.getValue(VARIANT).ordinal();
+	}
+
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		world.scheduleUpdate(pos, this, world.rand.nextInt(50) + 20);

@@ -128,7 +128,6 @@ public class EntityTFNagaSegment extends Entity {
 		// attack anything that's not us
 		if ((entity instanceof EntityLivingBase) && !(entity instanceof EntityTFNaga) && !(entity instanceof EntityTFNagaSegment))
 		{
-			naga.attackTime = 10;
     		int attackStrength = 2;
     		
     		// get rid of nearby deer & look impressive

@@ -70,10 +70,6 @@ public class TFCommonProxy implements IGuiHandler {
 		return 0;
 	}
 	
-	public int registerArmorRenderID(String prefix) {
-		return 0;
-	}
-
 	public World getClientWorld() {
 		return null;
 	}

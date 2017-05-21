@@ -810,7 +810,7 @@ public class TFEventListener {
 	}
 
 	@SubscribeEvent
-	private void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event)
+	public void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event)
 	{
 		if (event.getEntityPlayer().world.provider instanceof WorldProviderTwilightForest && !event.getEntityPlayer().capabilities.isCreativeMode) {
 

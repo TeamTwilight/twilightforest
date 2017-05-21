@@ -44,6 +44,7 @@ public class TFBiomeProvider extends BiomeProvider
 
     public TFBiomeProvider(long par1, WorldType par3WorldType)
     {
+        this();
         GenLayer[] agenlayer = GenLayerTF.makeTheWorld(par1);
         unzoomedBiomes = agenlayer[0];
         zoomedBiomes = agenlayer[1];

@@ -163,7 +163,7 @@ public class TFRecipes {
 		addEnchantedRecipe(TFItems.yetiHelm, Enchantments.PROTECTION, 2, "###", "# #", '#', TFItems.alphaFur);
 		addEnchantedRecipe(TFItems.yetiPlate, Enchantments.PROTECTION, 2, "# #", "###", "###", '#', TFItems.alphaFur);
 		addEnchantedRecipe(TFItems.yetiLegs, Enchantments.PROTECTION, 2, "###", "# #", "# #", '#', TFItems.alphaFur);
-		addEnchantedRecipe(TFItems.yetiBoots, Enchantments.PROTECTION, 2, Enchantments.FEATHER_FALLING, 4, "# #", "# #", '#', TFItems.alphaFur);
+		addEnchantedRecipe(TFItems.yetiBoots, Enchantments.PROTECTION, 2, Enchantments.FEATHER_FALLING, 4, new Object[] {"# #", "# #", '#', TFItems.alphaFur});
 
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticHelm), "###", "# #", '#', TFItems.arcticFur);
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticPlate), "# #", "###", "###", '#', TFItems.arcticFur);

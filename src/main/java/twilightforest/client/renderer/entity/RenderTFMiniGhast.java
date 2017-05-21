@@ -9,7 +9,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 
-public class RenderTFMiniGhast extends RenderLiving<EntityTFTowerGhast> {
+// todo not sure why mini is at the top of the hierarchy intsead of tower...
+public class RenderTFMiniGhast<T extends EntityTFTowerGhast> extends RenderLiving<T> {
 	
 	private static final ResourceLocation textureLocClosed = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast.png");
 	private static final ResourceLocation textureLocOpen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerghast_openeyes.png");

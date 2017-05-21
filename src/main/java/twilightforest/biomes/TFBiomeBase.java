@@ -46,7 +46,7 @@ public class TFBiomeBase extends Biome  {
 	public static final Biome mushrooms = new TFBiomeMushrooms(new BiomeProperties("Mushroom Forest").setTemperature(0.8F).setRainfall(0.8F));
 	public static final Biome tfSwamp = new TFBiomeSwamp(new BiomeProperties("Twilight Swamp").setTemperature(0.8F).setRainfall(0.9F).setBaseHeight(-0.125F).setHeightVariation(0.125F).setWaterColor(0xE0FFAE));
 	public static final Biome stream = new TFBiomeStream(new BiomeProperties("Twilight Stream").setTemperature(0.5F).setRainfall(0.1F).setBaseHeight(-0.5F).setHeightVariation(0));
-	public static final Biome tfSnow = new TFBiomeSnow(new BiomeProperties("Snowy Forest").setTemperature(0.125F).setRainfall(0.9F).setBaseHeight(0.2F).setHeightVariation(0.2F));
+	public static final Biome tfSnow = new TFBiomeSnow(new BiomeProperties("Snowy Forest").setTemperature(0.9F).setRainfall(0.9F).setBaseHeight(0.2F).setHeightVariation(0.2F));
 	public static final Biome glacier = new TFBiomeGlacier(new BiomeProperties("Twilight Glacier").setTemperature(0).setRainfall(0.1F));
 	public static final Biome clearing = new TFBiomeClearing(new BiomeProperties("Twilight Clearing").setTemperature(0.8F).setRainfall(0.4F).setBaseHeight(0.125F).setHeightVariation(0.05F));
 	public static final Biome oakSavanna = new TFBiomeOakSavanna(new BiomeProperties("Oak Savanna").setTemperature(0.9F).setRainfall(0).setBaseHeight(0.2F).setHeightVariation(0.2F));

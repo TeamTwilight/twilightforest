@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
@@ -21,30 +22,32 @@ public class RenderTFWraith extends RenderBiped<EntityTFWraith> {
 
 	public RenderTFWraith(RenderManager manager, ModelBiped modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
+		addLayer(new LayerWraith());
 	}
 
-    protected int shouldRenderPass(EntityLivingBase entityliving, int i, float f)
-    {
-		setRenderPassModel(this.mainModel);
-
-    	if (i == 1) {
-            this.bindTexture(textureWraith);
-			GlStateManager.enableBlend();
-	        GlStateManager.disableAlpha();
-	        GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
-	        //GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	        //GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
-	        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5f);
-	    	
-	        return 1;
-    	} else {
-    		return 0;
-    	}
-    }
-    
     @Override
 	protected ResourceLocation getEntityTexture(EntityTFWraith par1Entity)
     {
         return textureCrown;
     }
+
+    class LayerWraith implements LayerRenderer<EntityTFWraith> {
+		@Override
+		public void doRenderLayer(EntityTFWraith entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+			RenderTFWraith.this.bindTexture(textureWraith);
+			GlStateManager.enableBlend();
+			GlStateManager.disableAlpha();
+			GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+			//GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			//GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5f);
+			RenderTFWraith.this.mainModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+			// TODO fix gl state?
+		}
+
+		@Override
+		public boolean shouldCombineTextures() {
+			return false;
+		}
+	}
 }
