@@ -332,7 +332,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	{
 		int oldSegments = this.currentSegmentCount;
 		int newSegments = MathHelper.clamp((int) ((this.getHealth() / healthPerSegment) + (getHealth() > 0 ? 2 : 0)), 0, MAX_SEGMENTS);
-		this.currentSegmentCount = newSegments; // spawnBodySegments() was using the spawnBodySegments which happened to be set after the call, so the segments never actually spawned. 
+		this.currentSegmentCount = newSegments; // spawnBodySegments() was using the currentSegmentCount which happened to be set after the call, so the segments never actually spawned. 
 		if (newSegments != oldSegments) {
 			if (newSegments < oldSegments) {
 				for (int i = newSegments; i < oldSegments; i++) {
