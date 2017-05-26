@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -332,7 +333,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	{
 		int oldSegments = this.currentSegmentCount;
 		int newSegments = MathHelper.clamp((int) ((this.getHealth() / healthPerSegment) + (getHealth() > 0 ? 2 : 0)), 0, MAX_SEGMENTS);
-		this.currentSegmentCount = newSegments; // spawnBodySegments() was using the currentSegmentCount which happened to be set after the call, so the segments never actually spawned. 
+		this.currentSegmentCount = newSegments;
 		if (newSegments != oldSegments) {
 			if (newSegments < oldSegments) {
 				for (int i = newSegments; i < oldSegments; i++) {
@@ -665,7 +666,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			{
 				body[i] = new EntityTFNagaSegment(this, i);
 				body[i].setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
-				if (!world.isRemote) world.spawnEntity(body[i]); // Moved the !world.isRemote check here as the segments were not spawning on the client side otherwise for some reason.
+				if (!world.isRemote) world.spawnEntity(body[i]);
 			}
 		}
 	}
@@ -783,8 +784,6 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
     @Override
     public Entity[] getParts()
     {
-    	List<EntityTFNagaSegment> list = new ArrayList<EntityTFNagaSegment>(Arrays.asList(body));
-    	list.removeAll(Collections.singleton(null));
-    	return list.toArray(new EntityTFNagaSegment[list.size()]); // This cannot contain nulls
+    	return Arrays.stream(body).filter(Objects::nonNull).toArray(Entity[]::new);
     }
 }
