@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFFeature;
 import twilightforest.TFPacketHandler;
 import twilightforest.TFMagicMapData;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.network.PacketMagicMapFeatures;
 import twilightforest.network.PacketMapRewrap;
 import twilightforest.world.TFBiomeProvider;
@@ -157,7 +157,7 @@ public class ItemTFMagicMap extends ItemMap
                                             
                                             // TODO: Biome.color field no longer exists so we no longer have a reliable color for every biome, punting with topBlock.getMapColor
                                             // TODO: use the biomedictionary to make our own colors?
-                                            multiset.add(biome.topBlock.getMapColor(), biome instanceof BiomeRiver || biome == TFBiomeBase.stream ? 3 : 1);
+                                            multiset.add(biome.topBlock.getMapColor(), biome instanceof BiomeRiver || biome == TFBiomes.stream ? 3 : 1);
 
                                             // add in TF features
                                             if (world.getBiomeProvider() instanceof TFBiomeProvider)

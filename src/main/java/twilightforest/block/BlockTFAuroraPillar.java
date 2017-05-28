@@ -2,9 +2,10 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.material.Material;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFAuroraPillar extends BlockRotatedPillar {
+public class BlockTFAuroraPillar extends BlockRotatedPillar implements ModelRegisterCallback {
 
 	protected BlockTFAuroraPillar() {
 		super(Material.PACKED_ICE);

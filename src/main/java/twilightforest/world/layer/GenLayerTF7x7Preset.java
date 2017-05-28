@@ -4,7 +4,7 @@ import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.biomes.TFBiomes;
 
 public class GenLayerTF7x7Preset extends GenLayer {
 	
@@ -76,31 +76,31 @@ public class GenLayerTF7x7Preset extends GenLayer {
 //		case 'P' :
 //			return Biome.plains;
 		case 'F' :
-			return TFBiomeBase.twilightForest;
+			return TFBiomes.twilightForest;
 		case 'f' :
-			return TFBiomeBase.twilightForest2;
+			return TFBiomes.denseTwilightForest;
 		case 'E' :
-			return TFBiomeBase.enchantedForest;
+			return TFBiomes.enchantedForest;
 		case 'm' :
-			return TFBiomeBase.mushrooms;
+			return TFBiomes.mushrooms;
 		case 'M' :
-			return TFBiomeBase.deepMushrooms;
+			return TFBiomes.deepMushrooms;
 		case 'C' :
-			return TFBiomeBase.clearing;
+			return TFBiomes.clearing;
 		case 'S' :
-			return TFBiomeBase.tfSwamp;
+			return TFBiomes.tfSwamp;
 		case 'Y' :
-			return TFBiomeBase.fireSwamp;
+			return TFBiomes.fireSwamp;
 		case 'D' :
-			return TFBiomeBase.darkForest;
+			return TFBiomes.darkForest;
 		case 'L' :
-			return TFBiomeBase.tfLake;
+			return TFBiomes.tfLake;
 		case 'O' :
-			return TFBiomeBase.tfSnow;
+			return TFBiomes.snowy_forest;
 		case 'G' :
-			return TFBiomeBase.glacier;
+			return TFBiomes.glacier;
 		case 'H' :
-			return TFBiomeBase.highlands;
+			return TFBiomes.highlands;
 		}
 	}
 

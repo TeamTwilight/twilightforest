@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_bottom_top",
+    "textures": {
+      "top": "twilightforest:blocks/uncrafting_top",
+      "side": "twilightforest:blocks/uncrafting_side",
+      "bottom": "blocks/planks_jungle"
+    }
+  },
+  "variants": { "normal": [{}] }
+}

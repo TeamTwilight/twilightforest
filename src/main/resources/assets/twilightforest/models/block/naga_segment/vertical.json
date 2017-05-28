@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "twilightforest:blocks/nagastone_cross_section",
+    "side": "twilightforest:blocks/nagastone_long_vertical"
+  }
+}

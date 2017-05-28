@@ -8,11 +8,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 
-public class BlockTFWispyCloud extends BlockBreakable  {
+public class BlockTFWispyCloud extends BlockBreakable implements ModelRegisterCallback {
 
 	protected BlockTFWispyCloud() {
 		super(Material.CRAFTED_SNOW, false);

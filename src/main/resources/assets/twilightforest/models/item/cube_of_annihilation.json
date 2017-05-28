@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "twilightforest:items/cube_of_annihilation"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "twilightforest:thrown": 1
+      },
+      "model": "twilightforest:item/cube_talisman"
+    }
+  ]
+}

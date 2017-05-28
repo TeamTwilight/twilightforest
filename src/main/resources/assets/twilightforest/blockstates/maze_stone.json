@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "cube_column" },
+  "variants": {
+    "variant=plain": [
+      { "model": "cube_all", "textures": { "all": "twilightforest:blocks/mazestone_plain" } },
+      { "model": "cube_all", "textures": { "all": "twilightforest:blocks/mazestone_plain" }, "x": 90 , "y": 90 },
+      { "model": "cube_all", "textures": { "all": "twilightforest:blocks/mazestone_plain" }, "x": 270 , "y": 270 }
+    ],
+    "variant=brick":     [{ "model": "cube_all", "textures": { "all": "twilightforest:blocks/mazestone_brick" } }],
+    "variant=chiseled":  [{ "textures": { "side": "twilightforest:blocks/mazestone_pillar", "end": "twilightforest:blocks/mazestone_plain" } }],
+    "variant=decorative":[{ "textures": { "side": "twilightforest:blocks/mazestone_decorative", "end": "twilightforest:blocks/mazestone_plain" } }],
+    "variant=cracked":   [{ "model": "cube_all", "textures": { "all": "twilightforest:blocks/mazestone_cracked" } }],
+    "variant=mossy":     [{ "model": "cube_all", "textures": { "all": "twilightforest:blocks/mazestone_mossy" } }],
+    "variant=mosaic":    [{ "textures": { "side": "twilightforest:blocks/mazestone_brick", "end": "twilightforest:blocks/mazestone_mosaic" } }],
+    "variant=border":    [{ "textures": { "side": "twilightforest:blocks/mazestone_brick", "end": "twilightforest:blocks/mazestone_border" } }]
+  }
+}

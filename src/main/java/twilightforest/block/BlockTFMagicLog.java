@@ -9,10 +9,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.MagicWoodVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-public class BlockTFMagicLog extends BlockLog {
+public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 
     public static final PropertyEnum<MagicWoodVariant> VARIANT = PropertyEnum.create("variant", MagicWoodVariant.class);
     
@@ -81,5 +85,11 @@ public class BlockTFMagicLog extends BlockLog {
     	par3List.add(new ItemStack(par1, 1, 2));
     	par3List.add(new ItemStack(par1, 1, 3));
     }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
 
 }

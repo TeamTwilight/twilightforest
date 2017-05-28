@@ -28,6 +28,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.block.enums.TowerDeviceVariant;
 import twilightforest.block.enums.TowerTranslucentVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCReactorActive;
 import twilightforest.tileentity.TileEntityTFGhastTrapActive;
@@ -37,14 +39,7 @@ import twilightforest.tileentity.TileEntityTFTowerBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * 
- * Tower wood is a type of plank block that forms the walls of Dark Towers
- * 
- * @author Ben
- *
- */
-public class BlockTFTowerDevice extends Block
+public class BlockTFTowerDevice extends Block implements ModelRegisterCallback
 {
 	public static final PropertyEnum<TowerDeviceVariant> VARIANT = PropertyEnum.create("variant", TowerDeviceVariant.class);
 
@@ -582,6 +577,12 @@ public class BlockTFTowerDevice extends Block
         }
 		
 		return getMetaFromState(state);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 }

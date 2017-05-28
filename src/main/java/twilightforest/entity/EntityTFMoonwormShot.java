@@ -12,6 +12,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMoonworm;
+import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
@@ -84,7 +85,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
         if (!world.isRemote) {
             if (mop.typeOfHit == Type.BLOCK)
             {
-                IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(TFBlocks.FACING, mop.sideHit);
+                IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(TFBlockProperties.FACING, mop.sideHit);
                 world.setBlockState(mop.getBlockPos().offset(mop.sideHit), state);
                 // todo sound
             }

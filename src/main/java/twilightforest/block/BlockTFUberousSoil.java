@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
-public class BlockTFUberousSoil extends Block implements IGrowable {
+public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegisterCallback {
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F);
 
 	protected BlockTFUberousSoil() {
@@ -88,15 +89,13 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
         		world.setBlockState(pos, Blocks.DIRT.getDefaultState());
         	}
         	// apply bonemeal
-        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up(), null);
-        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up(), null);
-        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up(), null);
-        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up(), null);
+        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up());
+        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up());
+        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up());
+        	ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up());
         	// green sparkles
-        	if (!world.isRemote) {
-        		world.playEvent(2005, pos.up(), 0);
-        	}
-        }
+			world.playEvent(2005, pos.up(), 0);
+		}
     }
 
 	@Override

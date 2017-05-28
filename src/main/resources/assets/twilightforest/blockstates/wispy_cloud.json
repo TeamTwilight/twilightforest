@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all",
+    "textures": {
+      "all": "twilightforest:blocks/wispy_cloud"
+    }
+  },
+  "variants": {
+    "normal": [{}]
+  }
+}

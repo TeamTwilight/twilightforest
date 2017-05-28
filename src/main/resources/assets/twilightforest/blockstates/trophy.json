@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:util/dummy",
+    "textures": {
+      "particle": "blocks/soul_sand"
+    },
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory_naga": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:items/naga_trophy" } }],
+    "inventory_hydra": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:items/hydra_trophy" } }],
+    "inventory_lich": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:items/lich_trophy" } }],
+    "inventory_snow_queen": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:items/snow_queen_trophy" } }],
+    "inventory_ur_ghast": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:items/ur_ghast_trophy" } }]
+  }
+}

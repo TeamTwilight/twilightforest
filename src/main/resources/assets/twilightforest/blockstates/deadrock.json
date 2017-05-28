@@ -1,0 +1,14 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "cube_all", "transform": "forge:default-block" },
+  "variants": {
+    "variant=surface": [ { "textures": { "all": "twilightforest:blocks/deadrock_surface" } } ],
+    "variant=cracked": [ { "textures": { "all": "twilightforest:blocks/deadrock_cracked" } } ],
+    "variant=solid": [
+      { "textures": { "all": "twilightforest:blocks/deadrock_solid" } },
+      { "y":180, "textures": { "all": "twilightforest:blocks/deadrock_solid" } },
+      { "model": "cube_mirrored_all", "textures": { "all": "twilightforest:blocks/deadrock_solid" } },
+      { "model": "cube_mirrored_all", "y":180, "textures": { "all": "twilightforest:blocks/deadrock_solid" } }
+    ]
+  }
+}

@@ -76,7 +76,9 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 
     	if (!world.isRemote) {
             if (flag) {
-                getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_MODIFIER);
+                if (!getEntityAttribute(SharedMonsterAttributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
+                    getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_MODIFIER);
+                }
             } else {
                 getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_MODIFIER);
             }

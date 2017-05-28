@@ -11,8 +11,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import twilightforest.TFAchievementPage;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFEmptyMagicMap extends ItemMapBase
+public class ItemTFEmptyMagicMap extends ItemMapBase implements ModelRegisterCallback
 {
     protected ItemTFEmptyMagicMap()
     {

@@ -3,10 +3,13 @@ package twilightforest.entity.boss;
 import java.util.*;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.boss.IBossDisplayData;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -15,8 +18,9 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFAchievementPage;
@@ -33,30 +37,19 @@ import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
-public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayData {
+public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	private static final DataParameter<Boolean> DATA_TANTRUM = EntityDataManager.createKey(EntityTFUrGhast.class, DataSerializers.BOOLEAN);
 
 	//private static final int CRUISING_ALTITUDE = 235; // absolute cruising altitude
 	private static final int HOVER_ALTITUDE = 20; // how far, relatively, do we hover over ghast traps?
 
-
-    public double courseX;
-    public double courseY;
-    public double courseZ;
-    
-    private final Set<BlockPos> trapLocations = new HashSet<>();
-    private ArrayList<BlockPos> travelCoords = new ArrayList<>();
-    
-    int currentTravelCoordIndex;
-    
-    int travelPathRepetitions;
-    int desiredRepetitions;
-    
-    int nextTantrumCry;
+    private final List<BlockPos> trapLocations = new ArrayList<>();
+    private int nextTantrumCry;
     
     private float damageUntilNextPhase = 45; // how much damage can we take before we toggle tantrum mode
     private boolean noTrapMode; // are there no traps nearby?  just float around
+	private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 
 	public EntityTFUrGhast(World par1World) 
 	{
@@ -84,15 +77,118 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     }
 
     @Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		this.tasks.taskEntries.removeIf(e -> e.action instanceof EntityTFTowerGhast.AIHomedFly);
+		this.tasks.addTask(5, new AIWaypointFly(this));
+	}
+
+	static class AIWaypointFly extends EntityAIBase {
+		private final EntityTFUrGhast taskOwner;
+
+		private final List<BlockPos> pointsToVisit = createPath();
+		private int currentPoint = 0;
+
+		AIWaypointFly(EntityTFUrGhast ghast) {
+			this.taskOwner = ghast;
+			setMutexBits(1);
+		}
+
+		// [VanillaCopy] EntityGhast.AIRandomFly
+		@Override
+		public boolean shouldExecute() {
+			EntityMoveHelper entitymovehelper = this.taskOwner.getMoveHelper();
+
+			if (!entitymovehelper.isUpdating())
+			{
+				return true;
+			}
+			else
+			{
+				double d0 = entitymovehelper.getX() - this.taskOwner.posX;
+				double d1 = entitymovehelper.getY() - this.taskOwner.posY;
+				double d2 = entitymovehelper.getZ() - this.taskOwner.posZ;
+				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+				return d3 < 1.0D || d3 > 3600.0D;
+			}
+		}
+
+		@Override
+		public boolean continueExecuting() {
+			return false;
+		}
+
+		@Override
+		public void startExecuting() {
+			if (this.pointsToVisit.isEmpty())
+			{
+				pointsToVisit.addAll(createPath());
+			} else
+			{
+				if (this.currentPoint >= pointsToVisit.size())
+				{
+					this.currentPoint = 0;
+
+					// when we're in tantrum mode, this is a good time to check if we need to spawn more ghasts
+					if (!taskOwner.checkGhastsAtTraps())
+					{
+						taskOwner.spawnGhastsAtTraps();
+					}
+				}
+
+				// TODO reintrodue wanderFactor somehow? Would need to change move helper or add extra fields here
+
+				double x = pointsToVisit.get(currentPoint).getX();
+				double y = pointsToVisit.get(currentPoint).getY() + HOVER_ALTITUDE;
+				double z = pointsToVisit.get(currentPoint).getZ();
+				taskOwner.getMoveHelper().setMoveTo(x, y, z, 1.0F);
+				this.currentPoint++;
+			}
+		}
+
+		private List<BlockPos> createPath()
+		{
+			List<BlockPos> potentialPoints = new ArrayList<>();
+			BlockPos pos = new BlockPos(this.taskOwner);
+
+			if (!this.taskOwner.noTrapMode)
+			{
+				// make a copy of the trap locations list
+				potentialPoints.addAll(this.taskOwner.trapLocations);
+			}
+			else
+			{
+				potentialPoints.add(pos.add(20, -HOVER_ALTITUDE, 0));
+				potentialPoints.add(pos.add(0, -HOVER_ALTITUDE, -20));
+				potentialPoints.add(pos.add(-20, -HOVER_ALTITUDE, 0));
+				potentialPoints.add(pos.add(0, -HOVER_ALTITUDE, 20));
+			}
+
+			Collections.shuffle(potentialPoints);
+
+			if (this.taskOwner.noTrapMode)
+			{
+				// if in no trap mode, head back to the middle when we're done
+				potentialPoints.add(pos.down(HOVER_ALTITUDE));
+			}
+
+			return potentialPoints;
+		}
+	}
+
+    @Override
 	protected boolean canDespawn()
     {
         return false;
     }
 	
     @Override
-	public void onUpdate() {
-		
-		super.onUpdate();
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+
+		if (!world.isRemote) {
+			bossInfo.setPercent(getHealth() / getMaxHealth());
+		}
 
         // extra death explosions
 		if (deathTime > 0) {
@@ -170,9 +266,6 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		this.damageUntilNextPhase = 48;
 	}
 
-	/**
-     * Start throwing a tantrum
-     */
 	private void startTantrum() {
 		this.setInTantrum(true);
 		
@@ -252,9 +345,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
     	this.detachHome();
 
         // despawn mini ghasts that are in our AABB
-		List<EntityTFMiniGhast> nearbyGhasts = world.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.getEntityBoundingBox().expand(1, 1, 1));
-		for (EntityTFMiniGhast ghast : nearbyGhasts)
+		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.getEntityBoundingBox().expand(1, 1, 1)))
 		{
+			ghast.spawnExplosionParticle();
 			ghast.setDead();
 			this.heal(2);
 		}
@@ -263,21 +356,17 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         if (this.trapLocations.isEmpty() && !this.noTrapMode)
         {
         	this.scanForTrapsTwice();
-        }
-        
-        // did we find any traps?
-        if (this.trapLocations.isEmpty() && !this.noTrapMode)
-        {
-			TwilightForestMod.LOGGER.debug("Ur-ghast cannot find traps nearby, entering trap-less mode");
-        	this.noTrapMode = true;
+
+        	if (this.trapLocations.isEmpty())
+			{
+				this.noTrapMode = true;
+			}
         }
 
-        // tantrum?
         if (this.isInTantrum())
         {
-        	shedTear();
-        	
-        	this.targetedEntity = null;
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.BOSS_TEAR, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0, 0, 0);
+			setAttackTarget(null);
         	
         	// cry?
         	if (--this.nextTantrumCry <= 0)
@@ -290,47 +379,14 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
         	{
         		doTantrumDamageEffects();
         	}
-
         }
-
-        
-        // do this
-		checkAndChangeCourse();
-      
-        
-        // check if we are at our waypoint target
-		double offsetX = this.waypointX - this.posX;
-		double offsetY = this.waypointY - this.posY;
-		double offsetZ = this.waypointZ - this.posZ;
-        double distanceToWaypoint = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
-
-        if (distanceToWaypoint < 1.0D || distanceToWaypoint > 3600.0D)
-        {
-            makeNewWaypoint();
-        }
-        
-        
-        
-        // move?
-        if (this.courseChangeCooldown-- <= 0)
-        	{
-                this.courseChangeCooldown += this.rand.nextInt(5) + 0;
-        		distanceToWaypoint = (double)MathHelper.sqrt(distanceToWaypoint);
-
-        		double speed = 0.05D;
-        		this.motionX += offsetX / distanceToWaypoint * speed;
-        		this.motionY += offsetY / distanceToWaypoint * speed;
-        		this.motionZ += offsetZ / distanceToWaypoint * speed;
-        	}
     }
 
 	private void doTantrumDamageEffects() {
 		// harm player below
 		AxisAlignedBB below = this.getEntityBoundingBox().offset(0, -16, 0).expand(0, 16, 0);
 
-		List<EntityPlayer> playersBelow = world.getEntitiesWithinAABB(EntityPlayer.class, below);
-
-		for (EntityPlayer player : playersBelow)
+		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, below))
 		{
 			if (world.canSeeSky(new BlockPos(player)))
 			{
@@ -339,107 +395,10 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		}
 
 		// also suck up mini ghasts
-		List<EntityTFMiniGhast> ghastsBelow = world.getEntitiesWithinAABB(EntityTFMiniGhast.class, below);
-
-		for (EntityTFMiniGhast ghast : ghastsBelow)
+		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, below))
 		{
 			ghast.motionY += 1;
 		}
-	}
-
-    private void shedTear()
-    {
-		TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.BOSS_TEAR, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
-	}
-
-	/**
-     * Waypoints should be closer to our course than we are now.  Try 50 times and take the closest
-     */
-	protected void makeNewWaypoint() 
-	{
-
-        double closestDistance = this.getDistanceSq(this.courseX, this.courseY, this.courseZ);
-		
-		for (int i = 0; i < 50; i++)
-		{
-			double potentialX = this.posX + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * wanderFactor);
-			double potentialY = this.courseY + this.rand.nextFloat() * 8.0F - 4.0F;
-			double potentialZ = this.posZ + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * wanderFactor);
-
-			double offsetX = this.courseX - potentialX;
-			double offsetY = this.courseY - potentialY;
-			double offsetZ = this.courseZ - potentialZ;
-			
-			double potentialDistanceToCourse = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
-			
-			if (potentialDistanceToCourse < closestDistance)
-			{
-				this.waypointX = potentialX;
-				this.waypointY = potentialY;
-				this.waypointZ = potentialZ;
-				
-				closestDistance = potentialDistanceToCourse;
-			}
-		}
-		
-		
-	}
-
-	protected void checkAndChangeCourse() {
-		// check course.
-        if (courseX == 0 && courseY == 0 && courseZ == 0)
-        {
-        	changeCourse();
-        }
-        
-        double offsetX = this.courseX - this.posX;
-        double offsetY = this.courseY - this.posY;
-        double offsetZ = this.courseZ - this.posZ;
-        double distanceToCourse = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
-        
-        if (distanceToCourse < 100.0D)
-        {
-        	changeCourse();
-        }
-	}
-    
-
-	/**
-	 * Change to a new course target
-	 */
-    private void changeCourse() {
-		//System.out.println("Boss changing course");
-		
-		if (this.travelCoords.isEmpty())
-		{
-			//System.out.println("Boss travel coords is empty, making a new list");
-			makeTravelPath();
-		}
-		
-		if (!this.travelCoords.isEmpty())
-		{
-			if (this.currentTravelCoordIndex >= travelCoords.size())
-			{
-				this.currentTravelCoordIndex = 0;
-				this.travelPathRepetitions++;
-				
-				//System.out.println("Tower boss has repeated path " + travelPathRepetitions + " times.");
-				
-				// when we're in tantrum mode, this is a good time to check if we need to spawn more ghasts
-				if (!checkGhastsAtTraps())
-				{
-					this.spawnGhastsAtTraps();
-				}
-			}
-	
-			this.courseX = travelCoords.get(currentTravelCoordIndex).posX;
-			this.courseY = travelCoords.get(currentTravelCoordIndex).posY + HOVER_ALTITUDE;
-			this.courseZ = travelCoords.get(currentTravelCoordIndex).posZ;
-			
-			this.currentTravelCoordIndex++;
-		}
-
-		
 	}
 
     /**
@@ -461,49 +420,6 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		}
 		
 		return trapsWithEnoughGhasts >= 1;
-	}
-
-	private void makeTravelPath() 
-	{
-		ArrayList<BlockPos> potentialPoints;
-
-		int px = MathHelper.floor(this.posX);
-		int py = MathHelper.floor(this.posY);
-		int pz = MathHelper.floor(this.posZ);
-		
-		if (!this.noTrapMode)
-		{
-			// make a copy of the trap locations list
-			potentialPoints = new ArrayList<BlockPos>(this.trapLocations);
-		}
-		else
-		{
-			potentialPoints = new ArrayList<BlockPos>();
-			potentialPoints.add(new BlockPos(px + 20, py - HOVER_ALTITUDE, pz));
-			potentialPoints.add(new BlockPos(px, py - HOVER_ALTITUDE, pz - 20));
-			potentialPoints.add(new BlockPos(px - 20, py - HOVER_ALTITUDE, pz));
-			potentialPoints.add(new BlockPos(px, py - HOVER_ALTITUDE, pz + 20));
-			
-			//System.out.println("Adding fake points to the potentials list");
-		}
-		
-		// put the potential points on our travel coords list in random order
-		travelCoords.clear();
-
-		while (!potentialPoints.isEmpty())
-		{
-			int index = rand.nextInt(potentialPoints.size());
-
-			travelCoords.add(potentialPoints.get(index));
-
-			potentialPoints.remove(index);
-		}
-		
-		if (this.noTrapMode)
-		{
-			// if in no trap mode, head back to the middle when we're done
-			travelCoords.add(new BlockPos(px, py - HOVER_ALTITUDE, pz));
-		}
 	}
 
 	@Override
@@ -566,7 +482,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		}
 	}
 
-	protected void scanForTraps(int scanRangeXZ, int scanRangeY, BlockPos pos) {
+	private void scanForTraps(int scanRangeXZ, int scanRangeY, BlockPos pos) {
 		for (int sx = -scanRangeXZ; sx <= scanRangeXZ; sx++) {
 			for (int sz = -scanRangeXZ; sz <= scanRangeXZ; sz++) {
 				for (int sy = -scanRangeY; sy <= scanRangeY; sy++) {
@@ -585,6 +501,20 @@ public class EntityTFUrGhast extends EntityTFTowerGhast implements IBossDisplayD
 		IBlockState active = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE);
 		return world.isBlockLoaded(pos)
 				&& (world.getBlockState(pos) == inactive || world.getBlockState(pos) == active);
+	}
+
+	@Override
+	public void addTrackingPlayer(EntityPlayerMP player)
+	{
+		super.addTrackingPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
+
+	@Override
+	public void removeTrackingPlayer(EntityPlayerMP player)
+	{
+		super.removeTrackingPlayer(player);
+		this.bossInfo.removePlayer(player);
 	}
 
     @Override

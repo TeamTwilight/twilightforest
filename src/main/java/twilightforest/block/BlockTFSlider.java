@@ -6,10 +6,16 @@ import java.util.Random;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.entity.EntityTFSlideBlock;
 import twilightforest.item.TFItems;
 import net.minecraft.block.BlockRotatedPillar;
@@ -23,7 +29,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockTFSlider extends BlockRotatedPillar {
+public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCallback {
 
 	public static final PropertyInteger DELAY = PropertyInteger.create("delay", 0, 3);
 
@@ -40,7 +46,7 @@ public class BlockTFSlider extends BlockRotatedPillar {
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
-		this.setDefaultState(blockState.getBaseState().withProperty(DELAY, 0));
+		this.setDefaultState(blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Y).withProperty(DELAY, 0));
 	}
 
 	@Override
@@ -153,4 +159,13 @@ public class BlockTFSlider extends BlockRotatedPillar {
 			((EntityLivingBase) entity).knockBack(null, 5, kx, kz);
     	}
     }
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(DELAY).build());
+		for (int i = 0; i < 4; i++) {
+			ModelUtils.registerToState(this, i, getDefaultState());
+		}
+	}
 }

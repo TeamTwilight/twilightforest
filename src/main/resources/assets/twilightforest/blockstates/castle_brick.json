@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "cube_all" },
+  "variants": {
+    "variant": {
+      "normal": { "textures": { "all": "twilightforest:blocks/castleblock_brick" } },
+      "worn": { "textures": { "all": "twilightforest:blocks/castleblock_faded" } },
+      "cracked": { "textures": { "all": "twilightforest:blocks/castleblock_cracked" } },
+      "roof": { "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      "mossy": { "textures": { "all": "twilightforest:blocks/castleblock_mossy" } }
+    }
+  }
+}

@@ -1,18 +1,23 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+import twilightforest.block.BlockTFHedge;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.HedgeVariant;
+import twilightforest.block.enums.WoodVariant;
 
 public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IBlockSettable {
 
 	protected IBlockState treeState = TFBlocks.log.getDefaultState();
-	protected IBlockState branchState = TFBlocks.log.getStateFromMeta(15); // todo 1.9
-	protected IBlockState leafState = TFBlocks.hedge.getStateFromMeta(1); // todo 1.9
+	protected IBlockState branchState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE).withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+	protected IBlockState leafState = TFBlocks.hedge.getDefaultState().withProperty(BlockTFHedge.VARIANT, HedgeVariant.DARKWOOD_LEAVES);
 	protected IBlockState rootState = TFBlocks.root.getDefaultState();
 
 

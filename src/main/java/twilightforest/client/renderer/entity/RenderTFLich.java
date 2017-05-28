@@ -46,6 +46,7 @@ public class RenderTFLich extends RenderBiped<EntityTFLich> {
 			//	return 1;
 			}
 
+			bindTexture(textureLoc);
 			model.setModelAttributes(RenderTFLich.this.getMainModel());
 			model.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		}

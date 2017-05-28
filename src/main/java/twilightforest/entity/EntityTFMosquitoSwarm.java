@@ -15,12 +15,10 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.biomes.TFBiomes;
 
 public class EntityTFMosquitoSwarm extends EntityMob {
 
@@ -84,7 +82,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	@Override
 	public boolean getCanSpawnHere()
     {
-		if (world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSwamp) {
+		if (world.getBiome(new BlockPos(this)) == TFBiomes.tfSwamp) {
 			// don't check light level
 	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		} else {

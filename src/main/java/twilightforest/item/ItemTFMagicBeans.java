@@ -30,7 +30,6 @@ public class ItemTFMagicBeans extends ItemTF {
 		int minY = pos.getY() + 1;
 		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 25));
 		if (pos.getY() < maxY && blockAt == TFBlocks.uberousSoil) {
-
 			if (!world.isRemote) {
 				makeHugeStalk(world, pos, minY, maxY);
 			}
@@ -43,23 +42,14 @@ public class ItemTFMagicBeans extends ItemTF {
 
 	/**
 	 * Try to find the given world's cloud height
-	 * @param world
-	 * @return
 	 */
 	private float getCloudHeight(World world) {
-		
 		if (world.provider instanceof WorldProviderTwilightForest) {
 			// WorldProviderTwilightForest has this method on both server and client
-			return ((WorldProviderTwilightForest)world.provider).getCloudHeight();
+			return world.provider.getCloudHeight();
 		} else {
-			// are we on a dedicated server
-			//TODO: don't use exceptions for program flow?
-			try {
-				return world.provider.getCloudHeight();
-			} catch (NoSuchMethodError nsme) {
-				// this method exists even on a dedicated server
-				return 256; // todo 1.10 world.provider.terrainType.getCloudHeight();
-			}
+			// otherwise, world.provider.getCloudHeight() is client only. guess 128
+			return 128;
 		}
 	}
 

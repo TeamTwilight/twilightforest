@@ -3,7 +3,7 @@ package twilightforest.world.layer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.biomes.TFBiomes;
 
 
 public class GenLayerTFThornBorder extends GenLayer {
@@ -40,13 +40,13 @@ public class GenLayerTFThornBorder extends GenLayer {
                 int ul = input[dx + 2 + (dz + 0) * nwidth];
                 int dr = input[dx + 0 + (dz + 2) * nwidth];
                 int dl = input[dx + 2 + (dz + 2) * nwidth];
-                if (onBorder(Biome.getIdForBiome(TFBiomeBase.highlandsCenter), center, right, left, up, down))
+                if (onBorder(Biome.getIdForBiome(TFBiomes.highlandsCenter), center, right, left, up, down))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.thornlands);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.thornlands);
                 }
-                else if (onBorder(Biome.getIdForBiome(TFBiomeBase.highlandsCenter), center, ur, ul, dr, dl))
+                else if (onBorder(Biome.getIdForBiome(TFBiomes.highlandsCenter), center, ur, ul, dr, dl))
                 {
-                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomeBase.thornlands);
+                    output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.thornlands);
                 }
                 else
                 {

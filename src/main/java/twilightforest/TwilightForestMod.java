@@ -1,11 +1,10 @@
 package twilightforest;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
@@ -25,13 +24,10 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import twilightforest.biomes.TFBiomeBase;
-import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFCreatures;
-import twilightforest.item.ItemTFMagicMap;
-import twilightforest.item.ItemTFMazeMap;
 import twilightforest.item.TFItems;
 import twilightforest.item.TFRecipes;
+import twilightforest.structures.StructureTFMajorFeatureStart;
 import twilightforest.tileentity.*;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -54,7 +50,6 @@ public class TwilightForestMod {
 	public static int dimensionID;
 	public static DimensionType dimType;
 	public static int backupdimensionID = -777;
-	public static int dimensionProviderID;
     
 	// misc options
     public static boolean silentCicadas;
@@ -85,30 +80,28 @@ public class TwilightForestMod {
 		// load config
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		loadConfiguration(config);
+
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.doPreLoadRegistration();
 
-		// initialize & register blocks
-		TFBlocks.registerBlocks();
-
-		// items
-		TFItems.registerItems();
-		
 		// cheevos!
 		AchievementPage.registerAchievementPage(new TFAchievementPage());
 
 		TFTreasure.init();
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
+		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
 		
 		// just call this so that we register structure IDs correctly
 //FIXME: AtomicBlom: Disabled for Structures
-/*
+
 		new StructureTFMajorFeatureStart();
-*/
+
 	}
 
     @EventHandler
 	public void load(FMLInitializationEvent evt) {
+
+    	TFItems.initRepairMaterials();
 
 		// creatures
 		registerCreatures();
@@ -129,20 +122,14 @@ public class TwilightForestMod {
 		
 		// set up portal item
 		ResourceLocation loc = new ResourceLocation(portalCreationItemString);
-		Item portalItem;
+
 		if (Item.REGISTRY.containsKey(loc)) {
-			portalItem = Item.REGISTRY.getObject(loc);
-			if (portalItem != Items.DIAMOND) {
-				TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", portalItem.getUnlocalizedName());
-			}
-		} else if (Block.REGISTRY.containsKey(loc)) {
-			portalItem = Item.getItemFromBlock(Block.REGISTRY.getObject(loc));
-			TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", portalItem.getUnlocalizedName());
+			TwilightForestMod.LOGGER.info("Set Twilight Forest portal item to {}", loc);
 		} else {
-			TwilightForestMod.LOGGER.info("Config lists portal item as '%s'.  Not found, defaulting to diamond.", portalCreationItemString);
-			portalItem = Items.DIAMOND;
+			TwilightForestMod.LOGGER.info("Config lists portal item as '{}'.  Not found, defaulting to diamond.", loc);
+			loc = new ResourceLocation("minecraft", "diamond");
 		}
-		tickHandler.portalItem = portalItem;
+		tickHandler.portalItem = loc;
 		
 		// packets
 		TFPacketHandler.init();
@@ -152,10 +139,6 @@ public class TwilightForestMod {
 		
 		// dimension provider
 		dimType = DimensionType.register("Twilight Forest", "_twilightforest", dimensionID, WorldProviderTwilightForest.class, false);
-		DimensionManager.registerDimension(TwilightForestMod.dimensionProviderID, dimType);
-
-		// enter biomes into dictionary
-		TFBiomeBase.registerWithBiomeDictionary();
 	}
 	
     @EventHandler
@@ -273,6 +256,7 @@ public class TwilightForestMod {
 		EntityRegistry.registerModEntity(twilightforest.entity.boss.EntityTFFallingIce.class, "tffallingice", id++, this, 80, 3, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.boss.EntityTFIceBomb.class, "tfthrownice", id++, this, 80, 2, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.EntitySeekerArrow.class, "tfSeekerArrow", id++, this, 150, 1, true);
+		EntityRegistry.registerModEntity(twilightforest.entity.EntityIceArrow.class, "tfIceArrow", id++, this, 150, 1, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.EntityTFIceSnowball.class, "tficesnowball", id++, this, 150, 3, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.EntityTFChainBlock.class, "tfchainBlock", id++, this, 80, 1, true);
 		EntityRegistry.registerModEntity(twilightforest.entity.EntityTFCubeOfAnnihilation.class, "tfcubeannihilation", id++, this, 80, 1, true);
@@ -481,9 +465,6 @@ public class TwilightForestMod {
 		
 		dimensionID = configFile.get("dimension", "dimensionID", 7).getInt();
 		configFile.get("dimension", "dimensionID", 7).setComment("What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.");
-		
-		dimensionProviderID = configFile.get("dimension", "dimensionProviderID", -777).getInt();
-		configFile.get("dimension", "dimensionProviderID", 7).setComment("Dimension provider ID.  Does not normally need to be changed, but the option is provided to work around a bug in MCPC+");
 
 	    // other misc otions
 	    silentCicadas = configFile.get(Configuration.CATEGORY_GENERAL, "SilentCicadas", false).getBoolean(false);

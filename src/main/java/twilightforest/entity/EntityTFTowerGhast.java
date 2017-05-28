@@ -27,17 +27,14 @@ public class EntityTFTowerGhast extends EntityGhast {
     // 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
     private static final DataParameter<Byte> ATTACK_STATUS = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
 
-	protected float stareRange;
-	protected float wanderFactor;
-	protected int inTrapCounter;
-
+    public AIAttack attackAI;
+    protected float wanderFactor;
+    private int inTrapCounter;
 
 	public EntityTFTowerGhast(World par1World) {
 		super(par1World);
-
         this.setSize(4.0F, 6.0F);
 
-    	this.stareRange = 32.0F;
     	this.wanderFactor = 16.0F;
     	this.inTrapCounter = 0;
 	}
@@ -50,14 +47,15 @@ public class EntityTFTowerGhast extends EntityGhast {
 
 	@Override
     protected void initEntityAI() {
+	    attackAI = new AIAttack(this);
         this.tasks.addTask(5, new AIHomedFly(this));
         this.tasks.addTask(7, new EntityGhast.AILookAround(this));
-        this.tasks.addTask(7, new AIAttack(this));
+        this.tasks.addTask(7, attackAI);
         this.targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
     }
 
     // [VanillaCopy]-ish mixture of EntityGhast.AIFly and EntityAIStayNearHome
-    static class AIHomedFly extends EntityAIBase {
+    public static class AIHomedFly extends EntityAIBase {
         private final EntityTFTowerGhast parentEntity;
 
 	    AIHomedFly(EntityTFTowerGhast ghast) {
@@ -120,9 +118,10 @@ public class EntityTFTowerGhast extends EntityGhast {
     }
 
     // [VanillaCopy] EntityGhast.AIFireballAttack, edits noted
-    static class AIAttack extends EntityAIBase {
+    public static class AIAttack extends EntityAIBase {
         private final EntityTFTowerGhast parentEntity;
         public int attackTimer;
+        public int prevAttackTimer; // TF - add for renderer
 
         public AIAttack(EntityTFTowerGhast ghast)
         {
@@ -139,7 +138,7 @@ public class EntityTFTowerGhast extends EntityGhast {
         @Override
         public void startExecuting()
         {
-            this.attackTimer = 0;
+            this.attackTimer = this.prevAttackTimer = 0;
         }
 
         @Override
@@ -157,6 +156,7 @@ public class EntityTFTowerGhast extends EntityGhast {
             if (entitylivingbase.getDistanceSqToEntity(this.parentEntity) < 4096.0D && this.parentEntity.getEntitySenses().canSee(entitylivingbase))
             {
                 World world = this.parentEntity.world;
+                this.prevAttackTimer = attackTimer;
                 ++this.attackTimer;
 
                 if (this.attackTimer == 10)
@@ -169,11 +169,13 @@ public class EntityTFTowerGhast extends EntityGhast {
                     // TF - face target and call custom method
                     this.parentEntity.faceEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
                     this.parentEntity.spitFireball();
+                    this.prevAttackTimer = attackTimer;
                     this.attackTimer = -40;
                 }
             }
             else if (this.attackTimer > 0)
             {
+                this.prevAttackTimer = attackTimer;
                 --this.attackTimer;
             }
 

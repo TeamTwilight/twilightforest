@@ -12,11 +12,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTFDarkLeaves extends Block {
+public class BlockTFDarkLeaves extends Block implements ModelRegisterCallback {
 
 	protected BlockTFDarkLeaves() {
 		super(Material.LEAVES);

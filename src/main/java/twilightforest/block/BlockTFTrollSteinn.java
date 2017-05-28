@@ -13,13 +13,14 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockTFTrollSteinn extends Block {
+public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 
     public static final PropertyBool DOWN_LIT = PropertyBool.create("down");
     public static final PropertyBool UP_LIT = PropertyBool.create("up");

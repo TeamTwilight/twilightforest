@@ -16,7 +16,11 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.MazestoneVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
 
@@ -27,7 +31,7 @@ import twilightforest.item.TFItems;
  * @author Ben
  *
  */
-public class BlockTFMazestone extends Block {
+public class BlockTFMazestone extends Block implements ModelRegisterCallback {
 
 	public static final PropertyEnum<MazestoneVariant> VARIANT = PropertyEnum.create("variant", MazestoneVariant.class);
 
@@ -84,6 +88,12 @@ public class BlockTFMazestone extends Block {
     @Override
 	public int damageDropped(IBlockState state) {
     	return getMetaFromState(state);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 }

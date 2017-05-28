@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFLog;
+import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFCreatures;
 
@@ -510,7 +511,7 @@ public class TFGenHollowTree extends TFGenerator
 
 		if (TFBlocks.firefly.canPlaceBlockAt(world, src))
 		{
-			setBlockAndNotifyAdequately(world, src, TFBlocks.firefly.getDefaultState().withProperty(TFBlocks.FACING, facing));
+			setBlockAndNotifyAdequately(world, src, TFBlocks.firefly.getDefaultState().withProperty(TFBlockProperties.FACING, facing));
 		}
 	}
 
@@ -540,7 +541,7 @@ public class TFGenHollowTree extends TFGenerator
 
 		if (TFBlocks.cicada.canPlaceBlockAt(world, src))
 		{
-			setBlockAndNotifyAdequately(world, src, TFBlocks.cicada.getDefaultState().withProperty(TFBlocks.FACING, facing));
+			setBlockAndNotifyAdequately(world, src, TFBlocks.cicada.getDefaultState().withProperty(TFBlockProperties.FACING, facing));
 		}
 	}
 

@@ -1,23 +1,32 @@
 package twilightforest.block;
 
-import java.util.Locale;
-import java.util.Random;
-
-import net.minecraft.block.Block;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-public class BlockTFAuroraSlab extends BlockSlab {
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Locale;
+import java.util.Random;
 
-    private static final PropertyEnum<Dummy> DUMMY_PROP = PropertyEnum.create("dummy", Dummy.class);
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallback {
+
+    private static final PropertyEnum<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
 
     private final boolean isDouble;
 
@@ -27,10 +36,19 @@ public class BlockTFAuroraSlab extends BlockSlab {
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
-		
         this.setLightOpacity(isDouble ? 255 : 0);
 
+        IBlockState state = this.blockState.getBaseState().withProperty(VARIANT, AuroraSlabVariant.AURORA);
+
+        if (!this.isDouble()) state = state.withProperty(HALF, EnumBlockHalf.BOTTOM);
+
+        this.setDefaultState(state);
 	}
+
+	@Override
+    protected BlockStateContainer createBlockState() {
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, VARIANT, HALF);
+    }
 
     @Override
     public String getUnlocalizedName(int meta) {
@@ -44,12 +62,12 @@ public class BlockTFAuroraSlab extends BlockSlab {
 
     @Override
     public IProperty<?> getVariantProperty() {
-        return DUMMY_PROP;
+        return VARIANT;
     }
 
     @Override
     public Comparable<?> getTypeForItem(ItemStack stack) {
-        return Dummy.SINGLETON;
+        return AuroraSlabVariant.AURORA;
     }
 
     @Override
@@ -63,14 +81,34 @@ public class BlockTFAuroraSlab extends BlockSlab {
     {
         return new ItemStack(Item.getItemFromBlock(TFBlocks.auroraSlab), 2, 0);
     }
-    
-    private enum Dummy implements IStringSerializable {
-        SINGLETON {
-            @Override
-            public String getName() {
-                return name().toLowerCase(Locale.ROOT);
-            }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+	    return this.isDouble() ? this.getDefaultState() : this.getDefaultState().withProperty(HALF, EnumBlockHalf.values()[meta % EnumBlockHalf.values().length]);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+	    return state.getValue(HALF).ordinal();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerModel() {
+        if (this.isDouble())
+            ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).ignore(HALF).build());
+        else {
+            ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
+            ModelUtils.registerToState(this, 0, getDefaultState());
         }
     }
 
+    private enum AuroraSlabVariant implements IStringSerializable {
+        AURORA;
+
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+    }
 }

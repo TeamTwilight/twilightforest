@@ -7,26 +7,42 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMoonwormShot;
 
+import javax.annotation.Nullable;
+
 public class ItemTFMoonwormQueen extends ItemTF
 {
-
 	private static final int FIRING_TIME = 12;
 
 	protected ItemTFMoonwormQueen() {
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
         this.setMaxDamage(256);
+        addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "alt"), new IItemPropertyGetter() {
+        	@SideOnly(Side.CLIENT)
+			@Override
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+        		if (entityIn != null) {
+					int useTime = stack.getMaxItemUseDuration() - entityIn.getItemInUseCount();
+					if (useTime >= FIRING_TIME && (useTime >>> 1) % 2 == 0)
+					{
+						return 1;
+					}
+				}
+
+				return 0;
+			}
+		});
 	}
 
 	@Override

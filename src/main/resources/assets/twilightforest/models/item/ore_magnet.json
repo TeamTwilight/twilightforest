@@ -1,0 +1,22 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "twilightforest:items/ore_magnet"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "pulling": 1,
+        "pull": 0.5
+      },
+      "model": "twilightforest:item/ore_magnet_pulling_1"
+    },
+    {
+      "predicate": {
+        "pulling": 1,
+        "pull": 1
+      },
+      "model": "twilightforest:item/ore_magnet_pulling_2"
+    }
+  ]
+}

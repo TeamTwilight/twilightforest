@@ -55,7 +55,7 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
     			int rz = pos.getZ() + rand.nextInt(16) + 8;
     			int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
     			WorldGenerator var5 = biome.genBigTreeChance(rand);
-    			// todo 1.9 var5.setScale(1.0D, 1.0D, 1.0D);
+				var5.setDecorationDefaults();
     			var5.generate(world, rand, new BlockPos(rx, ry, rz));
     		}
 

@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -22,12 +23,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -203,35 +206,15 @@ public class BlockTFPortal extends BlockBreakable
     @Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed)
     {
-    	boolean good = true;
-    	
-    	if (world.getBlockState(pos.west()).getBlock() == this) {
-    		good &= isGrassOrDirt(world, pos.east());
-    	}
-    	else if (world.getBlockState(pos.east()).getBlock() == this) {
-    		good &= isGrassOrDirt(world, pos.west());
-    	}
-    	else
-    	{
-    		good = false;
-    	}
-    	
-    	if (world.getBlockState(pos.north()).getBlock() == this) {
-    		good &= isGrassOrDirt(world, pos.south());
-    	}
-    	else if (world.getBlockState(pos.south()).getBlock() == this) {
-    		good &= isGrassOrDirt(world, pos.north());
-    	}
-    	else
-    	{
-    		good = false;
-    	}
-    	
-    	// if we're not good, remove this block
+    	boolean good = Arrays.stream(EnumFacing.HORIZONTALS)
+				.filter(e -> world.getBlockState(pos.offset(e)).getBlock() == this
+								&& isGrassOrDirt(world, pos.offset(e.getOpposite())))
+				.count() >= 2;
+
     	if (!good)
     	{
 			world.playEvent(2001, pos, Block.getStateId(state));
-    		world.setBlockState(pos, Blocks.WATER.getDefaultState(), 3);
+    		world.setBlockState(pos, Blocks.WATER.getDefaultState());
     	}
     }
     
@@ -276,22 +259,12 @@ public class BlockTFPortal extends BlockBreakable
 						TwilightForestMod.LOGGER.debug("Player touched the portal block.  Sending the player to dimension {}", TwilightForestMod.dimensionID);
 
     					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, TwilightForestMod.dimensionID, new TFTeleporter(playerMP.mcServer.worldServerForDimension(TwilightForestMod.dimensionID)));
-    					playerMP.addExperienceLevel(0);
-    					playerMP.addStat(TFAchievementPage.twilightPortal);
-    					playerMP.addStat(TFAchievementPage.twilightArrival);
-    					
+
     					// set respawn point for TF dimension to near the arrival portal
-    					int spawnX = MathHelper.floor(playerMP.posX);
-    					int spawnY = MathHelper.floor(playerMP.posY);
-    					int spawnZ = MathHelper.floor(playerMP.posZ);
-    					
-    					playerMP.setSpawnChunk(new BlockPos(spawnX, spawnY, spawnZ), true, TwilightForestMod.dimensionID);
+    					playerMP.setSpawnChunk(new BlockPos(playerMP), true, TwilightForestMod.dimensionID);
     				}
     				else {
-    					//System.out.println("Player touched the portal block.  Sending the player to dimension 0");
-    					//playerMP.travelToDimension(0);
     					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, 0, new TFTeleporter(playerMP.mcServer.worldServerForDimension(0)));
-    					playerMP.addExperienceLevel(0);
     				}
     			}
     		}
@@ -299,7 +272,7 @@ public class BlockTFPortal extends BlockBreakable
     		{
     			if (entity.dimension != TwilightForestMod.dimensionID)
     			{
-        			//sendEntityToDimension(entity, TwilightForestMod.dimensionID);
+        			changeDimension(entity, TwilightForestMod.dimensionID);
     			}
     			else
     			{
@@ -307,7 +280,6 @@ public class BlockTFPortal extends BlockBreakable
     			}
     		}
     	}
-        
     }
 
     /**
@@ -335,10 +307,32 @@ public class BlockTFPortal extends BlockBreakable
 			toTeleport.world.removeEntity(toTeleport);
 			toTeleport.isDead = false;
 			toTeleport.world.theProfiler.startSection("reposition");
-			// TF - "reposition" section completely replaced with call to following method.
-			// TF - use custom Teleporter
-			minecraftserver.getPlayerList().transferEntityToWorld(toTeleport, dimensionIn, worldserver, worldserver1, new TFTeleporter(worldserver1));
-			BlockPos blockpos = new BlockPos(toTeleport); // TF - retain this line from old reposition section
+			BlockPos blockpos;
+
+			if (dimensionIn == 1)
+			{
+				blockpos = worldserver1.getSpawnCoordinate();
+			}
+			else
+			{
+				double d0 = toTeleport.posX;
+				double d1 = toTeleport.posZ;
+				double d2 = 8.0D;
+
+				// Tf - remove 8x scaling for nether
+				d0 = MathHelper.clamp(d0, worldserver1.getWorldBorder().minX() + 16.0D, worldserver1.getWorldBorder().maxX() - 16.0D);
+				d1 = MathHelper.clamp(d1, worldserver1.getWorldBorder().minZ() + 16.0D, worldserver1.getWorldBorder().maxZ() - 16.0D);
+
+				d0 = (double)MathHelper.clamp((int)d0, -29999872, 29999872);
+				d1 = (double)MathHelper.clamp((int)d1, -29999872, 29999872);
+				float f = toTeleport.rotationYaw;
+				toTeleport.setLocationAndAngles(d0, toTeleport.posY, d1, 90.0F, 0.0F);
+				Teleporter teleporter = new TFTeleporter(worldserver1); // TF - custom teleporter
+				teleporter.placeInExistingPortal(toTeleport, f);
+				blockpos = new BlockPos(toTeleport);
+			}
+
+			worldserver.updateEntityWithOptionalForce(toTeleport, false);
 			toTeleport.world.theProfiler.endStartSection("reloading");
 			Entity entity = EntityList.createEntityByName(EntityList.getEntityString(toTeleport), worldserver1);
 
@@ -364,8 +358,11 @@ public class BlockTFPortal extends BlockBreakable
 				}
 				else
 				{
-					entity.moveToBlockPosAndAngles(blockpos, entity.rotationYaw, entity.rotationPitch);
+					// TF - inline moveToBlockPosAndAngles without +0.5 offsets, since teleporter already took care of it
+					entity.setLocationAndAngles((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), entity.rotationYaw, entity.rotationPitch);
 				}
+
+				TwilightForestMod.LOGGER.info("{}, {}", entity.world.provider.getDimension(), blockpos);
 
 				boolean flag = entity.forceSpawn;
 				entity.forceSpawn = true;
@@ -416,10 +413,4 @@ public class BlockTFPortal extends BlockBreakable
 			worldIn.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5, new int[0]);
 		}
 	}
-    
-	@Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
 }

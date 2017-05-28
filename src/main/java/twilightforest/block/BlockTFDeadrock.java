@@ -11,10 +11,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.DeadrockVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-public class BlockTFDeadrock extends Block {
+public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
 
 	public static final PropertyEnum<DeadrockVariant> VARIANT = PropertyEnum.create("variant", DeadrockVariant.class);
 
@@ -56,4 +60,10 @@ public class BlockTFDeadrock extends Block {
     {
         return getMetaFromState(state);
     }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
 }

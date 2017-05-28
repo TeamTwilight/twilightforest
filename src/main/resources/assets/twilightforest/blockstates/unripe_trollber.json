@@ -1,0 +1,8 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cross",
+    "textures": { "cross": "twilightforest:blocks/unripe_torch_cluster" }
+  },
+  "variants": { "normal": [{}] }
+}

@@ -6,7 +6,6 @@ import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCaveSpider;
@@ -33,7 +32,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.EntityTFAdherent;
 import twilightforest.entity.EntityTFArmoredGiant;
 import twilightforest.entity.EntityTFBlockGoblin;
@@ -61,6 +59,7 @@ import twilightforest.entity.EntityTFTowerGolem;
 import twilightforest.entity.EntityTFTroll;
 import twilightforest.entity.EntityTFWraith;
 import twilightforest.entity.EntityTFYeti;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.world.TFWorld;
 import twilightforest.world.TFBiomeProvider;
 
@@ -331,53 +330,53 @@ public class TFFeature {
     	int randnum = hillRNG.nextInt(16);
     	
     	// glaciers have ice towers
-    	if (biomeAt == TFBiomeBase.glacier) {
+    	if (biomeAt == TFBiomes.glacier) {
     		return iceTower;
     	}
     	// snow has yeti lair
-    	if (biomeAt == TFBiomeBase.tfSnow) {
+    	if (biomeAt == TFBiomes.snowy_forest) {
     		return yetiCave;
     	}
     	
     	// lakes have quest islands
-    	if (biomeAt == TFBiomeBase.tfLake) {
+    	if (biomeAt == TFBiomes.tfLake) {
     		return questIsland;
     	}
     	
     	// enchanted forests have groves
-    	if (biomeAt == TFBiomeBase.enchantedForest) {
+    	if (biomeAt == TFBiomes.enchantedForest) {
     		return questGrove;
     	}
     	
     	// fire swamp has hydra lair
-    	if (biomeAt == TFBiomeBase.fireSwamp) {
+    	if (biomeAt == TFBiomes.fireSwamp) {
     		return hydraLair;
     	}
     	// swamp has labyrinth
-    	if (biomeAt == TFBiomeBase.tfSwamp) {
+    	if (biomeAt == TFBiomes.tfSwamp) {
     		return labyrinth;
     	}
     	
     	// dark forests have their own things
-    	if (biomeAt == TFBiomeBase.darkForest)
+    	if (biomeAt == TFBiomes.darkForest)
     	{
     		return tfStronghold;
     	}
-    	if (biomeAt == TFBiomeBase.darkForestCenter) {
+    	if (biomeAt == TFBiomes.darkForestCenter) {
     		return darkTower;
     	}
     	
     	// highlands center has castle
-    	if (biomeAt == TFBiomeBase.highlandsCenter) {
+    	if (biomeAt == TFBiomes.highlandsCenter) {
     		return finalCastle;
     	}
     	// highlands has trolls
-    	if (biomeAt == TFBiomeBase.highlands) {
+    	if (biomeAt == TFBiomes.highlands) {
     		return trollCave;
     	}    	
     	
     	// deep mushrooms has mushroom tower
-    	if (biomeAt == TFBiomeBase.deepMushrooms) {
+    	if (biomeAt == TFBiomes.deepMushrooms) {
     		return mushroomTower;
     	}
        	

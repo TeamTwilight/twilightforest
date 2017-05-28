@@ -1,0 +1,46 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "end": "twilightforest:blocks/burnt_thorns_top",
+      "side": "twilightforest:blocks/burnt_thorns_side",
+      "particle": "#end"
+    },
+    "model": "block"
+  },
+  "variants": {
+    "axis":{
+      "x":{ "submodel": { "key": { "model": "twilightforest:util/thorns_main", "x": 90, "y": 90 } } },
+      "y":{ "submodel": { "key": { "model": "twilightforest:util/thorns_main" } } },
+      "z":{ "submodel": { "key": { "model": "twilightforest:util/thorns_main", "x": 90 } } }
+    },
+    "up":{
+      "true":{ "submodel": { "key_u": { "model": "twilightforest:util/thorns_section_top" } } },
+      "false":{}
+    },
+    "down":{
+      "true":{ "submodel": { "key_d": { "model": "twilightforest:util/thorns_section_bottom" } } },
+      "false":{}
+    },
+    "north":{
+      "true":{ "submodel": { "key_n": { "model": "twilightforest:util/thorns_section_top", "x": 90 } } },
+      "false":{}
+    },
+    "south":{
+      "true":{ "submodel": { "key_s": { "model": "twilightforest:util/thorns_section_bottom", "x": 90 } } },
+      "false":{}
+    },
+    "east":{
+      "true":{ "submodel": { "key_e": { "model": "twilightforest:util/thorns_section_top", "x": 90, "y": 90 } } },
+      "false":{}
+    },
+    "west":{
+      "true":{ "submodel": { "key_w": { "model": "twilightforest:util/thorns_section_bottom", "x": 90, "y": 90 } } },
+      "false":{}
+    },
+    "variant": {
+      "brown": {},
+      "green":{}
+    }
+  }
+}

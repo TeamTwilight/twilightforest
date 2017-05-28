@@ -1,0 +1,9 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "variant": {
+      "hedge": { "model": "cube_all", "textures": { "all": "twilightforest:blocks/hedge" } },
+      "darkwood_leaves": { "model": "leaves", "textures": { "all": "twilightforest:blocks/darkwood_leaves2" } }
+    }
+  }
+}

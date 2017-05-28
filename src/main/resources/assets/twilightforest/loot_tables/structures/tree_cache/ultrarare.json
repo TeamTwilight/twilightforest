@@ -6,26 +6,31 @@
       {
         "type": "item",
         "name": "twilightforest:twilight_sapling",
+        "entryName": "hollow",
         "functions": [{ "function": "set_data", "data": 4 }]
       },
       {
         "type": "item",
         "name": "twilightforest:twilight_sapling",
+        "entryName": "time",
         "functions": [{ "function": "set_data", "data": 5 }]
       },
       {
         "type": "item",
         "name": "twilightforest:twilight_sapling",
+        "entryName": "trans",
         "functions": [{ "function": "set_data", "data": 6 }]
       },
       {
         "type": "item",
         "name": "twilightforest:twilight_sapling",
+        "entryName": "mining",
         "functions": [{ "function": "set_data", "data": 7 }]
       },
       {
         "type": "item",
         "name": "twilightforest:twilight_sapling",
+        "entryName": "sorting",
         "functions": [{ "function": "set_data", "data": 8 }]
       }
     ]

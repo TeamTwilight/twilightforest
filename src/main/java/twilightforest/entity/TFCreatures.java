@@ -21,7 +21,7 @@ public class TFCreatures {
 	}
 
 	public static String getSpawnerNameFor(String baseName) {
-		return "TwilightForest." + baseName; // todo 1.9 is this needed?
+		return "twilightforest." + baseName; // todo 1.9 is this needed?
 	}
 	
 	

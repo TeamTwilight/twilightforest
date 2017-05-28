@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -15,13 +16,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
-public class BlockTFTrophy extends BlockSkull
+public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback
 {
-    // TODO integrate BossVariant into the TE of this and make helper to be used by BlockTFTrophyPedestal
-
     private static final AxisAlignedBB HYDRA_Y_BB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
     private static final AxisAlignedBB HYDRA_X_BB = new AxisAlignedBB(0.0F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
     private static final AxisAlignedBB HYDRA_Z_BB = new AxisAlignedBB(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 1.0F);
@@ -112,5 +115,11 @@ public class BlockTFTrophy extends BlockSkull
         }
         return ret;
     }
+
+    @SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(NODROP).ignore(FACING).build());
+	}
 
 }

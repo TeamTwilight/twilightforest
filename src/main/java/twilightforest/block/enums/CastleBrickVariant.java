@@ -8,7 +8,8 @@ public enum CastleBrickVariant implements IStringSerializable {
     NORMAL,
     WORN,
     CRACKED,
-    ROOF;
+    ROOF,
+    MOSSY;
 
     @Override
     public String getName() {

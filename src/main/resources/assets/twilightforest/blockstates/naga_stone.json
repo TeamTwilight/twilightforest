@@ -1,0 +1,31 @@
+{
+  "forge_marker": 1,
+  "defaults": { "textures": { "particle": "twilightforest:blocks/nagastone_cross_section" } },
+  "variants": {
+    "variant": {
+      "north_head": { "model": "twilightforest:naga_segment/head", "y": 90 },
+      "south_head": { "model": "twilightforest:naga_segment/head", "y": 270 },
+      "west_head": { "model": "twilightforest:naga_segment/head" },
+      "east_head": { "model": "twilightforest:naga_segment/head", "y": 180 },
+      "north_down": { "model": "twilightforest:naga_segment/down", "y": 270 },
+      "south_down": { "model": "twilightforest:naga_segment/down", "y": 90 },
+      "west_down": { "model": "twilightforest:naga_segment/down", "y": 180 },
+      "east_down": { "model": "twilightforest:naga_segment/down" },
+      "north_up": { "model": "twilightforest:naga_segment/up", "y": 270 },
+      "south_up": { "model": "twilightforest:naga_segment/up", "y": 90 },
+      "west_up": { "model": "twilightforest:naga_segment/up" , "y": 180 },
+      "east_up": { "model": "twilightforest:naga_segment/up" },
+      "axis_x": { "model": "twilightforest:naga_segment/hortizontal" },
+      "axis_y": { "model": "twilightforest:naga_segment/vertical" },
+      "axis_z": { "model": "twilightforest:naga_segment/hortizontal", "y": 90 },
+      "solid": {
+        "model": "cube_bottom_top",
+        "textures": {
+          "side": "twilightforest:blocks/nagastone_long_side",
+          "top": "twilightforest:blocks/nagastone_turn_top",
+          "bottom": "twilightforest:blocks/nagastone_bottom_long"
+        }
+      }
+    }
+  }
+}

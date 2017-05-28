@@ -1,0 +1,44 @@
+{
+  "forge_marker": 1,
+  "__comment": "Transforms are item/generated and item/handheld, converted to forge format. Firstperson scales are multiplied by 2.5, all others by 5",
+  "defaults": {
+    "model": "builtin/generated",
+    "textures": {
+      "layer0": "items/stone_sword"
+    },
+    "transform": {
+      "ground": {
+        "translation": [ 0, 0.125, 0],
+        "scale": [ 2.5, 2.5, 2.5 ]
+      },
+      "head": {
+        "rotation": { "y": 180 },
+        "translation": [ 0, 0.8125, 0.4375],
+        "scale":[ 5, 5, 5 ]
+      },
+      "thirdperson_righthand": {
+        "rotation": [{ "y": -90 }, { "z": 55 }],
+        "translation": [ 0, 0.25, 0.03125 ],
+        "scale": [ 4.25, 4.25, 4.25 ]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [{ "y": 90 }, { "z": -55 }],
+        "translation": [ 0, 0.25, 0.03125 ],
+        "scale": [ 4.25, 4.25, 4.25 ]
+      },
+      "firstperson_righthand": {
+        "rotation": [{ "y": -90 }, { "z": 25 }],
+        "translation": [ 0.070625, 0.2, 0.070625 ],
+        "scale": [ 1.7, 1.7, 1.7 ]
+      },
+      "firstperson_lefthand": {
+        "rotation": [{ "y": 90 }, { "z": -25 }],
+        "translation": [ 0.070625, 0.2, 0.070625 ],
+        "scale": [ 1.7, 1.7, 1.7 ]
+      }
+    }
+  },
+  "variants": {
+    "inventory": [{}]
+  }
+}

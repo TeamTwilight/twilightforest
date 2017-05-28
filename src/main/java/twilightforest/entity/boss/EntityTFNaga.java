@@ -1,12 +1,25 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityMultiPart;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.DamageSource;
@@ -27,11 +40,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
-import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
-import twilightforest.world.WorldProviderTwilightForest;
 
 
 public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
@@ -45,7 +56,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private int currentSegmentCount = 0; // not including head
 	private final float healthPerSegment;
 	private final EntityTFNagaSegment[] body = new EntityTFNagaSegment[MAX_SEGMENTS];
-	private final AIMovementPattern movementAI = new AIMovementPattern(this);
+	private AIMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
 
 	public EntityTFNaga(World world) {
@@ -83,7 +94,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new AIAttack(this));
 		this.tasks.addTask(3, new AISmash(this));
-		this.tasks.addTask(4, movementAI);
+		this.tasks.addTask(4, movementAI = new AIMovementPattern(this));
 		this.tasks.addTask(8, new EntityAIWander(this, 1) {
 			@Override
 			public void startExecuting() {
@@ -322,7 +333,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	{
 		int oldSegments = this.currentSegmentCount;
 		int newSegments = MathHelper.clamp((int) ((this.getHealth() / healthPerSegment) + (getHealth() > 0 ? 2 : 0)), 0, MAX_SEGMENTS);
-
+		this.currentSegmentCount = newSegments;
 		if (newSegments != oldSegments) {
 			if (newSegments < oldSegments) {
 				for (int i = newSegments; i < oldSegments; i++) {
@@ -336,7 +347,6 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			}
 		}
 
-		this.currentSegmentCount = newSegments;
 	}
 	
     @Override
@@ -650,16 +660,13 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	private void spawnBodySegments()
 	{
-		if (!world.isRemote)
+		for (int i = 0; i < currentSegmentCount; i++)
 		{
-			for (int i = 0; i < currentSegmentCount; i++)
+			if (body[i] == null || body[i].isDead)
 			{
-				if (body[i] == null || body[i].isDead)
-				{
-					body[i] = new EntityTFNagaSegment(this, i);
-					body[i].setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
-					world.spawnEntity(body[i]);
-				}
+				body[i] = new EntityTFNagaSegment(this, i);
+				body[i].setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
+				if (!world.isRemote) world.spawnEntity(body[i]);
 			}
 		}
 	}
@@ -777,6 +784,6 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
     @Override
     public Entity[] getParts()
     {
-        return body;
+    	return Arrays.stream(body).filter(Objects::nonNull).toArray(Entity[]::new);
     }
 }

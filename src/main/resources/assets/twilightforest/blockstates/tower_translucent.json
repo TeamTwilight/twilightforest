@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "cube_all" },
+  "variants": {
+    "variant": {
+      "reappearing_inactive": { "textures": { "all": "twilightforest:blocks/towerdev_reappearing_trace_off" } },
+      "reappearing_active": { "textures": { "all": "twilightforest:blocks/towerdev_reappearing_trace_on" } },
+      "built_inactive": { "textures": { "all": "twilightforest:blocks/towerdev_built_off" } },
+      "built_active": { "textures": { "all": "twilightforest:blocks/towerdev_built_on" } },
+      "reverter_replacement": { "textures": { "all": "twilightforest:blocks/towerdev_antibuilt" } },
+      "reactor_debris": { "textures": { "all": "blocks/destroy_stage_9" } },
+      "fake_gold": { "model": "gold_block" },
+      "fake_diamond": { "model": "diamond_block" }
+    }
+  }
+}

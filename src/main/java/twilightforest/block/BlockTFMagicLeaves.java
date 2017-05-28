@@ -1,28 +1,35 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.MagicWoodVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
-public class BlockTFMagicLeaves extends BlockLeaves {
+import java.util.List;
+import java.util.Random;
+
+public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCallback {
 
 	protected BlockTFMagicLeaves() {
 		this.setHardness(0.2F);
@@ -130,5 +137,12 @@ public class BlockTFMagicLeaves extends BlockLeaves {
 	@Override
 	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
 		return ImmutableList.of(); // todo 1.9
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
+		ModelUtils.registerToStateSingleVariant(this, BlockTFMagicLog.VARIANT);
 	}
 }

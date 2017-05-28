@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -105,9 +106,9 @@ public class EntityTFIceBomb extends EntityThrowable {
 		for (int i = 0; i < 10; i++) {
 			double dx = posX + 0.75F * (rand.nextFloat() - 0.5F); 
 			double dy = posY + 0.75F * (rand.nextFloat() - 0.5F); 
-			double dz = posZ + 0.75F * (rand.nextFloat() - 0.5F); 
-			
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, dx, dy, dz, 0, 0, 0);
+			double dz = posZ + 0.75F * (rand.nextFloat() - 0.5F);
+
+			world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, -motionX, -motionY, -motionZ, Block.getStateId(Blocks.SNOW.getDefaultState()));
 		}
 	}
 
@@ -119,8 +120,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 				double dy = this.posY + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dz = this.posZ + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				
-				
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.SNOW.getDefaultState()));
 			}
 		} else {
 			if (this.zoneTimer % 10 == 0) {
@@ -145,7 +145,6 @@ public class EntityTFIceBomb extends EntityThrowable {
 					entity.attackEntityFrom(DamageSource.magic, 1);
 					entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 5, 2, false, true));
 				}
-				
 			}
 		}
 	}

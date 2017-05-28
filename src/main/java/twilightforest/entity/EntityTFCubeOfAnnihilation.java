@@ -131,12 +131,9 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
 
     		if (this.isReturning()) {
     			// if we are returning, and are near enough to the player, then we are done
-    			List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+    			List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 
     			if (list.contains(this.getThrower())) {
-            		if (this.getThrower() instanceof EntityPlayer) {
-            			ItemTFCubeOfAnnihilation.setCubeAsReturned((EntityPlayer)this.getThrower());
-            		}
     				this.setDead();
     			}
     		} else {
@@ -177,18 +174,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable  {
     		return true;
     	} else {
     		EntityPlayer player = (EntityPlayer) this.getThrower();
-    		
     		return !player.isHandActive();
     	}
     }
-
-    /**
-     * Velocity
-     */
-    protected float func_70182_d()
-    {
-        return 1.5F;
-    }
-
-    
 }

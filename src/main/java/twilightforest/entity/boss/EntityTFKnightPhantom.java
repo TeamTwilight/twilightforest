@@ -585,7 +585,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob
 		dataManager.set(FLAG_CHARGING, flag);
 		if (!world.isRemote) {
 			if (flag) {
-				getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(CHARGING_MODIFIER);
+				if (!getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
+					getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(CHARGING_MODIFIER);
+				}
 			} else {
 				getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
 			}

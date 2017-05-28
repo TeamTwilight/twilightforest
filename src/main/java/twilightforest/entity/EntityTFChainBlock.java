@@ -242,9 +242,6 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 				if (this.isReturning) {
 					// despawn if close enough
 					if (distToPlayer < 1F) {
-						if (this.getThrower() instanceof EntityPlayer) {
-							ItemTFChainBlock.setChainAsReturned((EntityPlayer)this.getThrower());
-						}
 						this.setDead();
 					}
 

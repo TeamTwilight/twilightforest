@@ -5,10 +5,13 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
@@ -17,22 +20,11 @@ import net.minecraft.world.biome.Biome;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFWorld;
-import net.minecraftforge.fml.common.FMLLog;
 
-// todo 1.10 modernize this whole thing
-public class TFTeleporter extends Teleporter 
+public class TFTeleporter extends Teleporter
 {
-	protected WorldServer myWorld;
-	protected Random rand;
-
 	public TFTeleporter(WorldServer par1WorldServer) {
 		super(par1WorldServer);
-		myWorld = par1WorldServer;
-		if (this.rand == null)
-		{
-			this.rand = new Random();
-		}
-
 	}
 
 	@Override
@@ -42,8 +34,6 @@ public class TFTeleporter extends Teleporter
 		{
 			// if we're in enforced progression mode, check the biomes for safety
 			if (par1Entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-				int px = MathHelper.floor(par1Entity.posX);
-				int pz = MathHelper.floor(par1Entity.posZ);
 				BlockPos pos = new BlockPos(par1Entity);
 				if (!isSafeBiomeAt(pos, par1Entity)) {
 					TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
@@ -78,9 +68,9 @@ public class TFTeleporter extends Teleporter
 	private BlockPos findSafeCoords(int range, BlockPos pos, Entity par1Entity) {
 		for (int i = 0; i < 25; i++) {
 			BlockPos dPos = new BlockPos(
-					pos.getX() + rand.nextInt(range) - rand.nextInt(range),
+					pos.getX() + random.nextInt(range) - random.nextInt(range),
 					100,
-					pos.getZ() + rand.nextInt(range) - rand.nextInt(range)
+					pos.getZ() + random.nextInt(range) - random.nextInt(range)
 			);
 
 			if (isSafeBiomeAt(dPos, par1Entity)) {
@@ -91,7 +81,7 @@ public class TFTeleporter extends Teleporter
 	}
 
 	private boolean isSafeBiomeAt(BlockPos pos, Entity par1Entity) {
-		Biome biomeAt = myWorld.getBiome(pos);
+		Biome biomeAt = worldServerInstance.getBiome(pos);
 
 		if (biomeAt instanceof TFBiomeBase && par1Entity instanceof EntityPlayerMP) {
 			TFBiomeBase tfBiome = (TFBiomeBase)biomeAt;
@@ -103,80 +93,114 @@ public class TFTeleporter extends Teleporter
 		}
 	}
 
+	// [VanillaCopy] copy of super, edits noted
 	@Override
-	public boolean placeInExistingPortal(Entity entity, float rotationYaw) {
-        int c = 200;
-        double d = -1D;
-        int i = 0;
-        int j = 0;
-        int k = 0;
-        int l = MathHelper.floor(entity.posX);
-        int i1 = MathHelper.floor(entity.posZ);
-        for(int j1 = l - c; j1 <= l + c; j1++)
-        {
-            double d1 = (j1 + 0.5D) - entity.posX;
-            for(int j2 = i1 - c; j2 <= i1 + c; j2++)
-            {
-                double d3 = (j2 + 0.5D) - entity.posZ;
-                for (int k2 = TFWorld.MAXHEIGHT - 1; k2 >= 0; k2--)
-                {
-                    if(!isBlockPortal(myWorld, new BlockPos(j1, k2, j2)))
-                    {
-                        continue;
-                    }
-                    for(; isBlockPortal(myWorld, new BlockPos(j1, k2 - 1, j2)); k2--) { }
-                    double d5 = (k2 + 0.5D) - entity.posY;
-                    double d7 = d1 * d1 + d5 * d5 + d3 * d3;
-                    if(d < 0.0D || d7 < d)
-                    {
-                        d = d7;
-                        i = j1;
-                        j = k2;
-                        k = j2;
-                    }
-                }
+	public boolean placeInExistingPortal(Entity entityIn, float rotationYaw)
+	{
+		int i = 200; // TF - scan radius up to 200, and also un-inline this variable back into below
+		double d0 = -1.0D;
+		int j = MathHelper.floor(entityIn.posX);
+		int k = MathHelper.floor(entityIn.posZ);
+		boolean flag = true;
+		BlockPos blockpos = BlockPos.ORIGIN;
+		long l = ChunkPos.asLong(j, k);
 
-            }
+		if (this.destinationCoordinateCache.containsKey(l))
+		{
+			Teleporter.PortalPosition teleporter$portalposition = (Teleporter.PortalPosition)this.destinationCoordinateCache.get(l);
+			d0 = 0.0D;
+			blockpos = teleporter$portalposition;
+			teleporter$portalposition.lastUpdateTime = this.worldServerInstance.getTotalWorldTime();
+			flag = false;
+		}
+		else
+		{
+			BlockPos blockpos3 = new BlockPos(entityIn);
 
-        }
+			for (int i1 = -i; i1 <= i; ++i1)
+			{
+				BlockPos blockpos2;
 
-        if(d >= 0.0D)
-        {
-        	BlockPos pos = new BlockPos(i, j, k);
-			double portalX = i + 0.5D;
-            double portalY = j + 0.5D;
-            double portalZ = k + 0.5D;
-            if(isBlockPortal(myWorld, pos.west()))
-            {
-                portalX -= 0.5D;
-            }
-            if(isBlockPortal(myWorld, pos.east()))
-            {
-                portalX += 0.5D;
-            }
-            if(isBlockPortal(myWorld, pos.north()))
-            {
-                portalZ -= 0.5D;
-            }
-            if(isBlockPortal(myWorld, pos.south()))
-            {
-                portalZ += 0.5D;
-            }
-            int xOffset = 0;
-            int zOffset = 0; 
-            while(xOffset == zOffset && xOffset == 0)
-            {
-            	xOffset = rand.nextInt(3) - rand.nextInt(3);
-            	zOffset = rand.nextInt(3) - rand.nextInt(3);
-            }            
-            entity.setLocationAndAngles(portalX + xOffset, portalY + 1, portalZ + zOffset, entity.rotationYaw, 0.0F);
-            entity.motionX = entity.motionY = entity.motionZ = 0.0D;
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
+				for (int j1 = -i; j1 <= i; ++j1)
+				{
+					for (BlockPos blockpos1 = blockpos3.add(i1, this.worldServerInstance.getActualHeight() - 1 - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2)
+					{
+						blockpos2 = blockpos1.down();
+
+						// TF - use our portal block
+						if (this.worldServerInstance.getBlockState(blockpos1).getBlock() == TFBlocks.portal)
+						{
+							for (blockpos2 = blockpos1.down(); this.worldServerInstance.getBlockState(blockpos2).getBlock() == TFBlocks.portal; blockpos2 = blockpos2.down())
+							{
+								blockpos1 = blockpos2;
+							}
+
+							double d1 = blockpos1.distanceSq(blockpos3);
+
+							if (d0 < 0.0D || d1 < d0)
+							{
+								d0 = d1;
+								blockpos = blockpos1;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (d0 >= 0.0D)
+		{
+			if (flag)
+			{
+				this.destinationCoordinateCache.put(l, new Teleporter.PortalPosition(blockpos, this.worldServerInstance.getTotalWorldTime()));
+			}
+
+			// TF - replace with our own placement logic
+			double portalX = blockpos.getX() + 0.5D;
+			double portalY = blockpos.getY() + 0.5D;
+			double portalZ = blockpos.getZ() + 0.5D;
+			if(isBlockPortal(worldServerInstance, blockpos.west()))
+			{
+				portalX -= 0.5D;
+			}
+			if(isBlockPortal(worldServerInstance, blockpos.east()))
+			{
+				portalX += 0.5D;
+			}
+			if(isBlockPortal(worldServerInstance, blockpos.north()))
+			{
+				portalZ -= 0.5D;
+			}
+			if(isBlockPortal(worldServerInstance, blockpos.south()))
+			{
+				portalZ += 0.5D;
+			}
+			int xOffset = 0;
+			int zOffset = 0;
+			while(xOffset == zOffset && xOffset == 0)
+			{
+				xOffset = random.nextInt(3) - random.nextInt(3);
+				zOffset = random.nextInt(3) - random.nextInt(3);
+			}
+
+			entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
+
+			if (entityIn instanceof EntityPlayerMP)
+			{
+				((EntityPlayerMP)entityIn).connection.setPlayerLocation(portalX + xOffset, portalY + 1, portalZ + zOffset, entityIn.rotationYaw, entityIn.rotationPitch);
+			}
+			else
+			{
+				entityIn.setLocationAndAngles(portalX + xOffset, portalY + 1, portalZ + zOffset, entityIn.rotationYaw, entityIn.rotationPitch);
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	private boolean isBlockPortal(World world, BlockPos pos)
 	{
@@ -190,7 +214,7 @@ public class TFTeleporter extends Teleporter
         if (spot != null)
         {
 			TwilightForestMod.LOGGER.debug("Found ideal portal spot");
-        	makePortalAt(myWorld, spot);
+        	makePortalAt(worldServerInstance, spot);
         	return true;
         }
         else
@@ -200,7 +224,7 @@ public class TFTeleporter extends Teleporter
             if (spot != null)
             {
 				TwilightForestMod.LOGGER.debug("Found okay portal spot");
-            	makePortalAt(myWorld, spot);
+            	makePortalAt(worldServerInstance, spot);
             	return true;
             }
         }
@@ -209,16 +233,16 @@ public class TFTeleporter extends Teleporter
 		TwilightForestMod.LOGGER.debug("Did not even find an okay portal spot, just making a random one");
     	
 		// adjust the portal height based on what world we're traveling to
-		double yFactor = myWorld.provider.getDimension() == 0 ? 2 : 0.5;
+		double yFactor = worldServerInstance.provider.getDimension() == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
-        makePortalAt(myWorld, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ));
+        makePortalAt(worldServerInstance, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ));
 
         return false;
 	}
 
 	private BlockPos findPortalCoords(Entity entity, boolean ideal) {
 		// adjust the portal height based on what world we're traveling to
-		double yFactor = myWorld.provider.getDimension() == 0 ? 2 : 0.5;
+		double yFactor = worldServerInstance.provider.getDimension() == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
         int entityX = MathHelper.floor(entity.posX);
         int entityZ = MathHelper.floor(entity.posZ);
@@ -239,12 +263,12 @@ public class TFTeleporter extends Teleporter
         		{
         			BlockPos pos = new BlockPos(rx, ry, rz);
 
-        			if(!myWorld.isAirBlock(pos))
+        			if(!worldServerInstance.isAirBlock(pos))
         			{
         				continue;
         			}
 
-        			while (pos.getY() > 0 && myWorld.isAirBlock(pos.down())) pos = pos.down();
+        			while (pos.getY() > 0 && worldServerInstance.isAirBlock(pos.down())) pos = pos.down();
 
         			if (ideal ? isIdealPortal(pos) : isOkayPortal(pos))
         			{
@@ -273,7 +297,7 @@ public class TFTeleporter extends Teleporter
 				for(int potentialY = -1; potentialY < 3; potentialY++)
 				{
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-					if (potentialY == -1 && myWorld.getBlockState(tPos).getMaterial() != Material.GRASS || potentialY >= 0 && !myWorld.getBlockState(tPos).getMaterial().isReplaceable())
+					if (potentialY == -1 && worldServerInstance.getBlockState(tPos).getMaterial() != Material.GRASS || potentialY >= 0 && !worldServerInstance.getBlockState(tPos).getMaterial().isReplaceable())
 					{
 						return false;
 					}
@@ -293,14 +317,12 @@ public class TFTeleporter extends Teleporter
 				for(int potentialY = -1; potentialY < 3; potentialY++)
 				{
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-					if (potentialY == -1 && !myWorld.getBlockState(tPos).getMaterial().isSolid() || potentialY >= 0 && !myWorld.getBlockState(tPos).getMaterial().isReplaceable())
+					if (potentialY == -1 && !worldServerInstance.getBlockState(tPos).getMaterial().isSolid() || potentialY >= 0 && !worldServerInstance.getBlockState(tPos).getMaterial().isReplaceable())
 					{
 						return false;
 					}
 				}
-
 			}
-
 		}
 		return true;
 	}

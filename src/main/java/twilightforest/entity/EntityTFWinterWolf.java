@@ -9,20 +9,17 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
-import twilightforest.item.TFItems;
+import twilightforest.biomes.TFBiomes;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathAttacker {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/winter_wolf");
@@ -129,7 +126,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 
 	@Override
 	protected boolean isValidLightLevel() {
-		return world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow
+		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest
 				|| super.isValidLightLevel();
 	}
 

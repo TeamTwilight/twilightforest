@@ -1,0 +1,41 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "up":    "twilightforest:blocks/trollsteinn",
+      "down":  "twilightforest:blocks/trollsteinn",
+      "west":  "twilightforest:blocks/trollsteinn",
+      "north": "twilightforest:blocks/trollsteinn",
+      "east":  "twilightforest:blocks/trollsteinn",
+      "south": "twilightforest:blocks/trollsteinn",
+      "particle": "twilightforest:blocks/trollsteinn"
+    },
+    "model": "cube"
+  },
+  "variants": {
+    "up":{
+      "true":{ "textures": { "up": "twilightforest:blocks/trollsteinn_light" } },
+      "false":{}
+    },
+    "down":{
+      "true":{ "textures": { "down": "twilightforest:blocks/trollsteinn_light" } },
+      "false":{}
+    },
+    "north":{
+      "true":{ "textures": { "north": "twilightforest:blocks/trollsteinn_light" } },
+      "false":{}
+    },
+    "south":{
+      "true":{ "textures": { "south": "twilightforest:blocks/trollsteinn_light" } },
+      "false":{}
+    },
+    "east":{
+      "true":{ "textures": { "east": "twilightforest:blocks/trollsteinn_light" } },
+      "false":{}
+    },
+    "west":{
+      "true":{ "textures": { "west": "twilightforest:blocks/trollsteinn_light" } },
+      "false":{}
+    }
+  }
+}

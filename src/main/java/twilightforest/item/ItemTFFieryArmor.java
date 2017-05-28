@@ -31,17 +31,13 @@ public class ItemTFFieryArmor extends ItemArmor {
 
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-
-
-		if(itemstack.getItem() == TFItems.fieryPlate || itemstack.getItem() == TFItems.fieryHelm || itemstack.getItem() == TFItems.fieryBoots)
-		{
-			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
+		switch (slot) {
+			case CHEST:
+			case HEAD:
+			case FEET:
+			default: return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
+			case LEGS: return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
 		}
-		if(itemstack.getItem() == TFItems.fieryLegs)
-		{
-			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
-		}
-		return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
 	}
 	
 	@Override
@@ -52,13 +48,6 @@ public class ItemTFFieryArmor extends ItemArmor {
         par3List.add(istack);
     }
     
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with fiery ingots
-        return par2ItemStack.getItem() == TFItems.fieryIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {

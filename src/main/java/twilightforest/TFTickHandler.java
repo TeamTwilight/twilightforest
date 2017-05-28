@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -33,17 +34,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
  */
 public class TFTickHandler 
 {
+	public ResourceLocation portalItem = null;
 
-	public Item portalItem = null;
-
-
-    /**
-     * On the tick, we check for eligible portals
-	 */
 	@SubscribeEvent
 	public void playerTick(PlayerTickEvent event) {
-
-
 		EntityPlayer player = event.player;
 		World world = player.world;
 
@@ -51,20 +45,13 @@ public class TFTickHandler
 		if (!TwilightForestMod.disablePortalCreation && event.phase == TickEvent.Phase.END && !world.isRemote && world.getWorldTime() % 20 == 0) {
 			// skip non admin players when the option is on
 			if (TwilightForestMod.adminOnlyPortals) {
-				try {
-					if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null) {
-						// reduce range to 4.0 when the option is on
-						checkForPortalCreation(player, world, 4.0F);
-					}
-				} catch (NoSuchMethodError ex) {
-					// stop checking admin
-					TwilightForestMod.LOGGER.warn("Could not determine op status for adminOnlyPortals option, ignoring option.");
-					TwilightForestMod.adminOnlyPortals = false;
+				if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()) != null) {
+					// reduce range to 4.0 when the option is on
+					checkForPortalCreation(player, world, 4.0F);
 				}
 			} else {
 				// normal check, no special options
 				checkForPortalCreation(player, world, 32.0F);
-				
 			}
 		}
 
@@ -140,27 +127,15 @@ public class TFTickHandler
 	}
 
 	private void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
-		// make sure we are allowed to make a portal in this dimension
-		if (world != null && player != null 
-				&& (world.provider.getDimension() == 0 || world.provider.getDimension() == TwilightForestMod.dimensionID
-				|| TwilightForestMod.allowPortalsInOtherDimensions)) 
+		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TwilightForestMod.dimensionID
+				|| TwilightForestMod.allowPortalsInOtherDimensions))
 		{
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(rangeToCheck, rangeToCheck, rangeToCheck));
 			
-			// do we have the item set?  if not, can we set it?
-			if (this.portalItem == null) {
-
-				
-				
-			}
-			
-			// check to see if someone's thrown the portal item into the water
-			for (EntityItem entityItem : itemList) 
+			for (EntityItem entityItem : itemList)
 			{
-				if (entityItem.getEntityItem().getItem() == portalItem && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER))
+				if (portalItem.equals(entityItem.getEntityItem().getItem().getRegistryName()) && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER))
 				{
-					//System.out.println("There is a diamond in the water");
-	
 					// make sparkles in the area
 					Random rand = new Random();
 					for (int k = 0; k < 2; k++)

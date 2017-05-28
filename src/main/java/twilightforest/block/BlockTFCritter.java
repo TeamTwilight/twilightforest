@@ -38,7 +38,7 @@ public abstract class BlockTFCritter extends Block {
 		this.setHardness(0.0F);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setSoundType(SoundType.SLIME);
-        this.setDefaultState(blockState.getBaseState().withProperty(TFBlocks.FACING, EnumFacing.UP));
+        this.setDefaultState(blockState.getBaseState().withProperty(TFBlockProperties.FACING, EnumFacing.UP));
     }
 
     public float getWidth() {
@@ -47,12 +47,12 @@ public abstract class BlockTFCritter extends Block {
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TFBlocks.FACING);
+        return new BlockStateContainer(this, TFBlockProperties.FACING);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        switch (state.getValue(TFBlocks.FACING)) {
+        switch (state.getValue(TFBlockProperties.FACING)) {
             case DOWN: return 6;
             default: case UP: return 5;
             case NORTH: return 4;
@@ -73,13 +73,13 @@ public abstract class BlockTFCritter extends Block {
             case 2: facing = EnumFacing.WEST; break;
             case 1: facing = EnumFacing.EAST; break;
         }
-        return getDefaultState().withProperty(TFBlocks.FACING, facing);
+        return getDefaultState().withProperty(TFBlockProperties.FACING, facing);
     }
     
     @Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        switch (state.getValue(TFBlocks.FACING)) {
+        switch (state.getValue(TFBlockProperties.FACING)) {
             case DOWN: return DOWN_BB;
             case UP: default: return UP_BB;
             case NORTH: return NORTH_BB;
@@ -119,7 +119,7 @@ public abstract class BlockTFCritter extends Block {
         IBlockState state = getDefaultState();
 
         if (canPlaceAt(world, pos.offset(sideHit.getOpposite()))) {
-            state = state.withProperty(TFBlocks.FACING, sideHit);
+            state = state.withProperty(TFBlockProperties.FACING, sideHit);
         }
         
         return state;
@@ -154,7 +154,7 @@ public abstract class BlockTFCritter extends Block {
     {
         if(dropCritterIfCantStay(world, pos))
         {
-            EnumFacing facing = state.getValue(TFBlocks.FACING);
+            EnumFacing facing = state.getValue(TFBlockProperties.FACING);
             if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
                 world.destroyBlock(pos, true);
             }

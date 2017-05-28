@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Enchantments;
@@ -10,9 +11,13 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFSteeleafArmor extends ItemArmor {
+public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallback {
 
 	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
 		super(par2EnumArmorMaterial, 0, armorType);
@@ -55,12 +60,5 @@ public class ItemTFSteeleafArmor extends ItemArmor {
             break;	
     	}
     	par3List.add(istack);
-    }
-
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with steeleaf ingots
-        return par2ItemStack.getItem() == TFItems.steeleafIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 }

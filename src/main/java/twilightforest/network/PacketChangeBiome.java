@@ -45,7 +45,7 @@ public class PacketChangeBiome implements IMessage {
 
                     chunkAt.getBiomeArray()[(message.pos.getZ() & 15) << 4 | (message.pos.getX() & 15)] = message.biomeId;
 
-                    world.markBlockRangeForRenderUpdate(message.pos, message.pos.up(255)); // todo 1.9 is marking the WHOLE column necessary?..
+                    world.markBlockRangeForRenderUpdate(message.pos, message.pos.up(255));
                 }
             });
 

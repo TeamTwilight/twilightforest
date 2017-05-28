@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_top",
+    "textures": {
+      "side": "twilightforest:blocks/shield_outside",
+      "top": "twilightforest:blocks/shield_inside"
+    },
+    "uvlock": true
+  },
+  "variants": {
+    "facing": {
+      "up":    {},
+      "down":  { "x": 180 },
+      "north": { "x": 90 },
+      "south": { "x": 270 },
+      "west":  { "x": 90, "y": 270 },
+      "east":  { "x": 90, "y": 90 }
+    }
+  }
+}

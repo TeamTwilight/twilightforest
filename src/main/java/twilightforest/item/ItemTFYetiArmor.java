@@ -16,8 +16,9 @@ import net.minecraft.item.ItemStack;
 import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFYetiArmor extends ItemArmor {
+public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback {
 
 	public ItemTFYetiArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
 		super(par2EnumArmorMaterial, 0, armorType);
@@ -60,13 +61,6 @@ public class ItemTFYetiArmor extends ItemArmor {
     	par3List.add(istack);
     }
     
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with ?????
-        return par2ItemStack.getItem() == TFItems.alphaFur ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-	
     @SideOnly(Side.CLIENT)
 	@Override
 	public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default)

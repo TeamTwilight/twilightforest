@@ -24,11 +24,11 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFPacketHandler;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.enums.MagicWoodVariant;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.network.PacketChangeBiome;
 
 public class BlockTFMagicLogSpecial extends BlockTFMagicLog 
@@ -158,13 +158,13 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 			{
 				Biome biomeAt = world.getBiome(dPos);
 
-				if (biomeAt != TFBiomeBase.enchantedForest)
+				if (biomeAt != TFBiomes.enchantedForest)
 				{
 					// I wonder how possible it is to change this
 
 					Chunk chunkAt = world.getChunkFromBlockCoords(dPos);
 
-					chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte)Biome.getIdForBiome(TFBiomeBase.enchantedForest);
+					chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte)Biome.getIdForBiome(TFBiomes.enchantedForest);
 
 					// todo 1.9 world.notifyBlockUpdate((x + dx), y, (z + dz));
 
@@ -187,7 +187,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	 * Send a tiny update packet to the client to inform it of the changed biome
 	 */
 	private void sendChangedBiome(World world, BlockPos pos) {
-		IMessage message = new PacketChangeBiome(pos, (byte) Biome.getIdForBiome(TFBiomeBase.enchantedForest));
+		IMessage message = new PacketChangeBiome(pos, (byte) Biome.getIdForBiome(TFBiomes.enchantedForest));
 
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), 128, pos.getZ(), 128);
 		

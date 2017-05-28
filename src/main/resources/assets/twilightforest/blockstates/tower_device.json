@@ -1,0 +1,38 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "cube_all" },
+  "variants": {
+    "variant": {
+      "reappearing_inactive": { "textures": { "all": "twilightforest:blocks/towerdev_reappearing_off" } },
+      "reappearing_active": { "textures": { "all": "twilightforest:blocks/towerdev_reappearing_on" } },
+      "vanish_inactive": { "textures": { "all": "twilightforest:blocks/towerdev_vanish_off" } },
+      "vanish_active": { "textures": { "all": "twilightforest:blocks/towerdev_vanish_on" } },
+      "vanish_locked": { "textures": { "all": "twilightforest:blocks/towerdev_lock_off" } },
+      "vanish_unlocked": { "textures": { "all": "twilightforest:blocks/towerdev_lock_on" } },
+      "builder_inactive": { "textures": { "all": "twilightforest:blocks/towerdev_builder_off" } },
+      "builder_active": { "textures": { "all": "twilightforest:blocks/towerdev_builder_on" } },
+      "builder_timeout": { "textures": { "all": "twilightforest:blocks/towerdev_builder_timeout" } },
+      "antibuilder": { "textures": { "all": "twilightforest:blocks/towerdev_antibuilder" } },
+      "ghasttrap_inactive": {
+        "model": "cube_bottom_top",
+        "textures": {
+          "particle": "#bottom",
+          "top": "twilightforest:blocks/towerdev_ghasttraplid_off",
+          "side": "twilightforest:blocks/towerdev_ghasttrap_off",
+          "bottom": "twilightforest:blocks/towerwood_encased"
+        }
+      },
+      "ghasttrap_active": {
+        "model": "cube_bottom_top",
+        "textures": {
+          "particle": "#bottom",
+          "top": "twilightforest:blocks/towerdev_ghasttraplid_on",
+          "side": "twilightforest:blocks/towerdev_ghasttrap_on",
+          "bottom": "twilightforest:blocks/towerwood_encased"
+        }
+      },
+      "reactor_inactive": { "textures": { "all": "twilightforest:blocks/towerdev_reactor_off" } },
+      "reactor_active": { "textures": { "all": "twilightforest:blocks/towerdev_reactor_on" } }
+    }
+  }
+}

@@ -1,14 +1,12 @@
 package twilightforest.block;
 
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -34,6 +32,7 @@ import javax.annotation.Nullable;
 public class BlockTFCastleDoor extends Block
 {
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
+	public static final PropertyInteger LOCK_INDEX = PropertyInteger.create("lock_index", 0, 3);
 	private final boolean isVanished;
 
 	public BlockTFCastleDoor(boolean isVanished)
@@ -49,17 +48,22 @@ public class BlockTFCastleDoor extends Block
 
 	@Override
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, ACTIVE);
+		return new BlockStateContainer(this, ACTIVE, LOCK_INDEX);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(ACTIVE) ? 8 : 0;
+		int meta = state.getValue(LOCK_INDEX);
+		meta |= state.getValue(ACTIVE) ? 8 : 0;
+		return meta;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(ACTIVE, meta == 8);
+
+		return getDefaultState()
+				.withProperty(ACTIVE, (meta & 8) != 0)
+				.withProperty(LOCK_INDEX, meta & 3);
 	}
     
     @Override
@@ -125,7 +129,7 @@ public class BlockTFCastleDoor extends Block
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!par1World.isRemote && TFWorld.getChunkGenerator(par1World) instanceof ChunkGeneratorTwilightForest) {
 			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(par1World);
-			return generator.isStructureLocked(pos, par1World.getBlockState(pos).getValue(ACTIVE));
+			return generator.isStructureLocked(pos, par1World.getBlockState(pos).getValue(LOCK_INDEX));
 		} else {
 			return false;
 		}
@@ -276,4 +280,9 @@ public class BlockTFCastleDoor extends Block
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer()
+	{
+		return BlockRenderLayer.TRANSLUCENT;
+	}
 }

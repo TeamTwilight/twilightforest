@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "leaves"
+  },
+  "variants": {
+    "variant": {
+      "thorn": { "textures": { "all": "blocks/leaves_oak" } },
+      "beanstalk": { "textures": { "all": "blocks/leaves_spruce" } }
+    }
+  }
+}

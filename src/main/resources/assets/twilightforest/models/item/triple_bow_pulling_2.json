@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:item/triple_bow",
+  "textures": {
+    "layer0": "twilightforest:items/triplebow_pulling_2"
+  }
+}

@@ -10,6 +10,7 @@ import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+// TODO this doesn't seem to render properly
 @SideOnly(Side.CLIENT)
 public class ParticleSnow extends Particle
 {

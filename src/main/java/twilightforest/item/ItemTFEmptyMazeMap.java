@@ -15,9 +15,10 @@ import net.minecraft.world.storage.MapData;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 import twilightforest.TFMazeMapData;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.world.WorldProviderTwilightForest;
 
-public class ItemTFEmptyMazeMap extends ItemMapBase
+public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCallback
 {
 	boolean mapOres; 
 	

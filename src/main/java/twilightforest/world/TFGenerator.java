@@ -368,7 +368,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 			if (e == EnumFacing.DOWN)
 				continue; // todo 1.9 was in old logic
 			if (world.isBlockLoaded(pos.offset(e))
-					&& world.getBlockState(pos.offset(e)).getBlock() == Blocks.AIR) { // todo 1.9 isAir
+					&& world.isAirBlock(pos.offset(e))) {
 				return true;
 			}
 		}

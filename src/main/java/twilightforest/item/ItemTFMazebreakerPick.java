@@ -9,8 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFMazebreakerPick extends ItemPickaxe {
+public class ItemTFMazebreakerPick extends ItemPickaxe implements ModelRegisterCallback {
 
 	protected ItemTFMazebreakerPick(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);

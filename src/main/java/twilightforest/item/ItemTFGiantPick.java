@@ -15,8 +15,9 @@ import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFGiantPick extends ItemPickaxe {
+public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallback {
 
 	protected ItemTFGiantPick(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);
@@ -30,13 +31,6 @@ public class ItemTFGiantPick extends ItemPickaxe {
     	return EnumRarity.RARE;
 	}
     
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with knightmetal ingots
-        return par2ItemStack.getItem() == TFItems.knightMetal ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-  	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {

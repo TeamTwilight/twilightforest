@@ -27,12 +27,12 @@ public class StructureTFStrongholdShield extends StructureTFStrongholdComponent 
 
 	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		IBlockState down = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.DOWN);
-		IBlockState up = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.UP);
-		IBlockState north = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.NORTH);
-		IBlockState south = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.SOUTH);
-		IBlockState west = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.WEST);
-		IBlockState east = TFBlocks.shield.getDefaultState().withProperty(TFBlocks.FACING, EnumFacing.EAST);
+		IBlockState down = TFBlocks.shield.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.DOWN);
+		IBlockState up = TFBlocks.shield.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.UP);
+		IBlockState north = TFBlocks.shield.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.NORTH);
+		IBlockState south = TFBlocks.shield.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.SOUTH);
+		IBlockState west = TFBlocks.shield.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.WEST);
+		IBlockState east = TFBlocks.shield.getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.EAST);
 		
         // +x
         this.fillWithBlocks(world, sbb, this.boundingBox.getXSize(), 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), west, west, false);

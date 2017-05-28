@@ -42,6 +42,7 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.enchantment.TFEnchantment;
@@ -209,17 +210,11 @@ public class TFEventListener {
     	
     	// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
     	if (itemStack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && itemStack.stackSize == 64 && this.doesCraftMatrixHaveGiantLog(event.craftMatrix)) {
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
-    		addToPlayerInventoryOrDrop(player, new ItemStack(Blocks.PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.PLANKS, 64));
 
     	}
-	}
-
-	private void addToPlayerInventoryOrDrop(EntityPlayer player, ItemStack planks) {
-		if (!player.inventory.addItemStackToInventory(planks)) {
-			player.dropItem(planks, false);
-		}
 	}
 
 	private boolean doesCraftMatrixHaveGiantLog(IInventory inv) {
@@ -230,8 +225,7 @@ public class TFEventListener {
 				return true;
 			}
 		}
-		
-		
+
 		return false;
 	}
 
@@ -266,38 +260,10 @@ public class TFEventListener {
 	}
 	
 	/**
-	 * Check to see if a smeltable block has dropped with a fiery tool, and if so, smelt it
 	 * Also check if we need to transform 64 cobbles into a giant cobble
 	 */
 	@SubscribeEvent
 	public void harvestDrops(HarvestDropsEvent event) {
-		if (event.getHarvester() != null && event.getHarvester().inventory.getCurrentItem() != null && event.getHarvester().inventory.getCurrentItem().getItem().canHarvestBlock(event.getState())) {
-			if (event.getHarvester().inventory.getCurrentItem().getItem() == TFItems.fieryPick) {
-				ArrayList<ItemStack> removeThese = new ArrayList<ItemStack>(1);
-				ArrayList<ItemStack> addThese = new ArrayList<ItemStack>(1);
-
-				for (ItemStack input : event.getDrops())
-				{
-					// does it smelt?
-					ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
-					if (result != null)
-					{
-						addThese.add(new ItemStack(result.getItem(), input.stackSize));
-						removeThese.add(input);
-
-						// spawn XP
-						spawnSpeltXP(result, event.getWorld(), event.getPos());
-					}
-				}
-
-				// remove things we've decided to remove
-				event.getDrops().removeAll(removeThese);
-				
-				// add things we add
-				event.getDrops().addAll(addThese);
-			} 
-		} 
-		
 		// this flag is set in reaction to the breakBlock event, but we need to remove the drops in this event
 		if (this.shouldMakeGiantCobble && event.getDrops().size() > 0) {
 			// turn the next 64 cobblestone drops into one giant cobble
@@ -313,26 +279,6 @@ public class TFEventListener {
 					this.shouldMakeGiantCobble = false;
 				}
 			}
-		}
-	}
-
-	/**
-	 * Spawn XP for smelting the specified item at the specified location
-	 */
-	private void spawnSpeltXP(ItemStack smelted, World world, BlockPos pos) {
-		float floatXP = FurnaceRecipes.instance().getSmeltingExperience(smelted);
-		int smeltXP = (int)floatXP;
-		// random chance of +1 XP to handle fractions
-		if (floatXP > smeltXP && world.rand.nextFloat() < (floatXP - smeltXP))
-		{
-			smeltXP++;
-		}
-
-		while (smeltXP > 0)
-		{
-			int splitXP = EntityXPOrb.getXPSplit(smeltXP);
-			smeltXP -= splitXP;
-			world.spawnEntity(new EntityXPOrb(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, splitXP));
 		}
 	}
 
@@ -380,18 +326,6 @@ public class TFEventListener {
 					|| player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
 				//System.out.println("Triplebow Arrows!");
 				event.getEntityLiving().hurtResistantTime = 0;
-			}
-		}
-		
-		// ice bow freezes
-		if (event.getSource().damageType.equals("arrow") && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)event.getSource().getEntity();
-
-			if (player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == TFItems.iceBow
-					|| player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == TFItems.iceBow) {
-
-				int chillLevel = 2;
-				event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 10, chillLevel, true, true));
 			}
 		}
 		
@@ -475,10 +409,8 @@ public class TFEventListener {
 		}
 	}
 
-	/**
-	 * Is this damage likely to kill the target?
-	 */
-	public boolean willEntityDie(LivingHurtEvent event) 
+	// todo modernize the calculations
+	private boolean willEntityDie(LivingHurtEvent event)
 	{
 		float amount = event.getAmount();
 		DamageSource source = event.getSource();

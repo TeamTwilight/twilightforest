@@ -15,11 +15,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 
-public class BlockTFUncraftingTable extends Block {
+public class BlockTFUncraftingTable extends Block implements ModelRegisterCallback {
 	
 	protected BlockTFUncraftingTable() {
 		super(Material.WOOD);

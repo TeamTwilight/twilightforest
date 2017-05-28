@@ -1,12 +1,16 @@
 package twilightforest.item;
 
-import java.util.HashMap;
-
+import net.minecraft.entity.Entity;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -14,97 +18,76 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.UUID;
+
 public class ItemTFCubeOfAnnihilation extends ItemTF {
-	private HashMap<ItemStack, Entity> launchedCubesMap = new HashMap<ItemStack, Entity>();
-	
+	private static final String THROWN_UUID_KEY = "cubeEntity";
+
 	protected ItemTFCubeOfAnnihilation() {
         this.maxStackSize = 1;
 		this.setCreativeTab(TFItems.creativeTab);
+		this.addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "thrown"), new IItemPropertyGetter() {
+			@SideOnly(Side.CLIENT)
+			@Override
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				return getThrownUuid(stack) != null ? 1 : 0;
+			}
+		});
+	}
 
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity holder, int slot, boolean isSelected) {
+		if (!world.isRemote && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
+			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Most");
+			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Least");
+		}
 	}
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		player.setActiveHand(hand);
+		if (getThrownUuid(stack) != null)
+			return ActionResult.newResult(EnumActionResult.PASS, stack);
 
-		if (!world.isRemote && !this.hasLaunchedCube(stack)) {
+		if (!world.isRemote) {
 			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(world, player);
-
 			world.spawnEntity(launchedCube);
-			
-			this.setLaunchedCube(stack, launchedCube);
-			setCubeAsThrown(stack);
+			setThrownEntity(stack, launchedCube);
 		}
 
-
+		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
-	
-	/**
-	 * Set this item as having been thrown
-	 * @param stack
-	 */
-	public static void setCubeAsThrown(ItemStack stack) {
-		// set NBT tag for stack
-		if (stack.getTagCompound() == null) {
+
+	@Nullable
+	private static UUID getThrownUuid(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasUniqueId(THROWN_UUID_KEY)) {
+			return stack.getTagCompound().getUniqueId(THROWN_UUID_KEY);
+		}
+
+		return null;
+	}
+
+	@Nullable
+	private static EntityTFCubeOfAnnihilation getThrownEntity(World world, ItemStack stack) {
+		if (world instanceof WorldServer) {
+			UUID id = getThrownUuid(stack);
+			if (id != null) {
+				Entity e = ((WorldServer) world).getEntityFromUuid(id);
+				if (e instanceof EntityTFCubeOfAnnihilation) {
+					return (EntityTFCubeOfAnnihilation) e;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private static void setThrownEntity(ItemStack stack, EntityTFCubeOfAnnihilation cube) {
+		if (!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
-		stack.getTagCompound().setBoolean("thrown", true);
-	}
-
-	/**
-	 * Set the cube for this item as returned to the player
-	 * @param stack
-	 */
-	public static void setCubeAsReturned(ItemStack stack) {
-		// set NBT tag for stack
-		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		stack.getTagCompound().setBoolean("thrown", false);
-	}
-	
-
-	/**
-	 * Method for the client to determine if the cube has been thrown or not.  Not as accurate as server method due to lag, etc.
-	 * @param stack
-	 */
-	public static boolean doesTalismanHaveCube(ItemStack stack) {
-		if (stack.getTagCompound() == null) {
-			return true;
-		} else {
-			return !stack.getTagCompound().getBoolean("thrown");
-		}
-	}
-
-	
-	/**
-	 * Set the cube belonging to the player as returned
-	 * @param player
-	 */
-	public static void setCubeAsReturned(EntityPlayer player) {
-		if (player != null && player.getActiveItemStack() != null && player.getActiveItemStack().getItem() == TFItems.cubeOfAnnihilation) {
-			setCubeAsReturned(player.getActiveItemStack());
-		}
-	}
-
-	public boolean hasLaunchedCube(ItemStack stack) {
-		Entity cube = this.launchedCubesMap.get(stack);
-		
-		return cube != null && !cube.isDead;
-	}
-	
-	public void setLaunchedCube(ItemStack stack, EntityTFCubeOfAnnihilation launchedCube) {
-		this.launchedCubesMap.put(stack, launchedCube);
-	}
-
-    @Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
-//		if (stack.getItemDamage() >= this.getMaxDamage()) {
-//			// do not use
-//			player.stopUsingItem();
-//			return;
-//		}
+		stack.getTagCompound().setUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
 	}
 
     @Override

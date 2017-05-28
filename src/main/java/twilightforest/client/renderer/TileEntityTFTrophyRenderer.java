@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.BossVariant;
 import twilightforest.client.model.ModelTFHydraHead;
 import twilightforest.client.model.ModelTFLich;
 import twilightforest.client.model.ModelTFNaga;
@@ -75,21 +76,21 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		
 		
-		switch (trophy.getSkullType())
+		switch (BossVariant.values()[trophy.getSkullType()])
 		{
-		case 0:
+		case HYDRA:
 			renderHydraHead(rotation, onGround);
 			break;
-		case 1:
+		case NAGA:
 			renderNagaHead(rotation, onGround);
 			break;
-		case 2:
+		case LICH:
 			renderLichHead(rotation, onGround);
 			break;
-		case 3:
+		case UR_GHAST:
 			renderUrGhastHead(trophy, rotation, onGround, partialTime);
 			break;
-		case 4:
+		case SNOW_QUEEN:
 			renderSnowQueenHead(rotation, onGround);
 			break;
 		}

@@ -46,8 +46,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
     private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
     private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, 0).setSaved(false);
 
-    private EntityAIAttackRanged aiArrowAttack = new EntityAIAttackRanged(this, 1.0D, 20, 60, 15.0F);
-    private EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false);
+    private EntityAIAttackRanged aiArrowAttack;
+    private EntityAIAttackMelee aiAttackOnCollide;
 
 	public EntityTFTroll(World par1World)
     {
@@ -57,6 +57,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 
     @Override
     public void initEntityAI() {
+		aiArrowAttack = new EntityAIAttackRanged(this, 1.0D, 20, 60, 15.0F);
+		aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false);
+
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIRestrictSun(this));
         this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
@@ -97,7 +100,9 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob
 
         if (!world.isRemote) {
             if (rock) {
-                this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ROCK_MODIFIER);
+                if (!getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
+                    this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ROCK_MODIFIER);
+                }
             } else {
                 this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
             }

@@ -11,28 +11,22 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.ai.EntityAITFThrowRider;
-import twilightforest.item.TFItems;
+import twilightforest.biomes.TFBiomes;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class EntityTFYeti extends EntityMob
 {
@@ -131,7 +125,9 @@ public class EntityTFYeti extends EntityMob
 
         if (!world.isRemote) {
             if (anger) {
-                this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ANGRY_MODIFIER);
+                if (!getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
+                    this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ANGRY_MODIFIER);
+                }
             } else {
                 this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
             }
@@ -209,7 +205,7 @@ public class EntityTFYeti extends EntityMob
 	public boolean getCanSpawnHere()
     {
 		// don't check light level in the snow
-		if (world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow) {
+		if (world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest) {
 	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		} else {
 			// normal EntityMob spawn check, checks light level
@@ -219,7 +215,7 @@ public class EntityTFYeti extends EntityMob
 
 	@Override
 	protected boolean isValidLightLevel() {
-        return world.getBiome(new BlockPos(this)) == TFBiomeBase.tfSnow || super.isValidLightLevel();
+        return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest || super.isValidLightLevel();
     }
 
     @Override

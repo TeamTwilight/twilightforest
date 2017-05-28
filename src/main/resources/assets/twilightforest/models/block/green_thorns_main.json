@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/util/thorns_main",
+  "textures": {
+    "end": "twilightforest:blocks/green_thorns_top",
+    "side": "twilightforest:blocks/green_thorns_side"
+  }
+}

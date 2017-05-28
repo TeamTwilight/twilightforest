@@ -32,7 +32,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
     {
     	super(par1);
 		treeState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
-		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE); // todo 1.9 recheck meta 13
+		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
     	leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY);
 		rootState = TFBlocks.root.getDefaultState();
     }

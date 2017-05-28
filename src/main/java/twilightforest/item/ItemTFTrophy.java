@@ -1,20 +1,15 @@
 package twilightforest.item;
 
 import java.util.List;
-import java.util.UUID;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSkull;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumActionResult;
@@ -23,15 +18,16 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.BossVariant;
 
-public class ItemTFTrophy extends ItemTF 
+public class ItemTFTrophy extends ItemTF
 {
-    private static final String[] trophyTypes = new String[] {"hydra", "naga", "lich", "ur-ghast", "snowQueen"};
-    public static final String[] trophyTextures = new String[] {"hydraTrophy", "nagaTrophy", "lichTrophy", "urGhastTrophy", "snowQueenTrophy"};
-
-	public ItemTFTrophy() 
+	public ItemTFTrophy()
 	{
         this.setCreativeTab(TFItems.creativeTab);
         this.setMaxDamage(0);
@@ -39,9 +35,11 @@ public class ItemTFTrophy extends ItemTF
 	}
 	
     @Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
-        for (int j = 0; j < trophyTypes.length; ++j) {
-            par3List.add(new ItemStack(par1, 1, j));
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+	    for (BossVariant v : BossVariant.values()) {
+	        if (v.hasTrophy()) {
+                list.add(new ItemStack(item, 1, v.ordinal()));
+            }
         }
     }
 
@@ -118,15 +116,19 @@ public class ItemTFTrophy extends ItemTF
     }
     
     @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack)
+    public String getUnlocalizedName(ItemStack stack)
     {
-        int i = par1ItemStack.getItemDamage();
+        int meta = MathHelper.clamp(stack.getItemDamage(), 0, BossVariant.values().length);
+        return super.getUnlocalizedName() + "." + BossVariant.values()[meta].getName();
+    }
 
-        if (i < 0 || i >= trophyTypes.length)
-        {
-            i = 0;
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerModel() {
+        for (int i = 0; i < BossVariant.values().length; i++) {
+            String variant = "inventory_" + BossVariant.values()[i].getName();
+            ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), variant);
+            ModelLoader.setCustomModelResourceLocation(this, i, mrl);
         }
-
-        return super.getUnlocalizedName() + "." + trophyTypes[i];
     }
 }

@@ -13,11 +13,11 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.biomes.TFBiomes;
 
 
 /**
@@ -146,7 +146,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		Biome biome = super.getBiomeForCoords(pos);
 		if (biome == null)
 		{
-			biome = TFBiomeBase.twilightForest;
+			biome = TFBiomes.twilightForest;
 		}
 		return biome;
 	}
@@ -191,7 +191,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return super.getWeatherRenderer();
     }
 	
-    //@SideOnly(Side.CLIENT) // need for magic beans, even on server
+    // no sideonly
     @Override
 	public float getCloudHeight()
     {

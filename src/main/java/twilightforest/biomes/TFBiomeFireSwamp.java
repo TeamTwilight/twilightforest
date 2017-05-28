@@ -25,7 +25,7 @@ import twilightforest.world.TFWorld;
 
 public class TFBiomeFireSwamp extends TFBiomeBase {
 
-	protected TFBiomeFireSwamp(BiomeProperties props) {
+	public TFBiomeFireSwamp(BiomeProperties props) {
 		super(props);
 
         getTFBiomeDecorator().setDeadBushPerChunk(2);

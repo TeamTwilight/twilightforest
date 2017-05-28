@@ -11,7 +11,7 @@ import twilightforest.entity.EntityTFTowerGhast;
  * This is a copy of the RenderGhast class that changes the model
  *
  */
-public class RenderTFTowerGhast extends RenderTFMiniGhast<EntityTFTowerGhast> {
+public class RenderTFTowerGhast extends RenderTFGhast<EntityTFTowerGhast> {
 	
     private float ghastScale = 8.0F;
 
@@ -25,9 +25,10 @@ public class RenderTFTowerGhast extends RenderTFMiniGhast<EntityTFTowerGhast> {
 	}
 	
     @Override
-    protected void preRenderCallback(EntityTFTowerGhast par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityTFTowerGhast par1EntityLiving, float partialTicks)
     {
-        float scaleVariable = ((float) ((EntityGhast)par1EntityLiving).prevAttackCounter + (float)(((EntityGhast)par1EntityLiving).attackCounter - ((EntityGhast)par1EntityLiving).prevAttackCounter) * par2) / 20.0F;
+        EntityTFTowerGhast.AIAttack attackAI = par1EntityLiving.attackAI;
+        float scaleVariable = (attackAI.prevAttackTimer + (attackAI.attackTimer - attackAI.prevAttackTimer) * partialTicks) / 20.0F;
 
         if (scaleVariable < 0.0F)
         {

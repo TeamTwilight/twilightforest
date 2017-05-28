@@ -3,9 +3,10 @@ package twilightforest.block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.BlockLog;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFCinderLog extends BlockLog {
+public class BlockTFCinderLog extends BlockLog implements ModelRegisterCallback {
 
 	protected BlockTFCinderLog() {
 		this.setHardness(1.0F);

@@ -1,0 +1,37 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "cube_column", "textures": { "side": "#side_off" } },
+  "variants": {
+    "axis": { "y": {}, "z": {}, "x": {}, "none": { "textures": { "side": "#side_on" } } },
+    "variant": {
+      "time": {
+        "textures": {
+          "side_off": "twilightforest:blocks/time_clock_off",
+          "side_on": "twilightforest:blocks/time_clock",
+          "end": "twilightforest:blocks/time_section"
+        }
+      },
+      "trans":{
+        "textures":{
+          "side_off": "twilightforest:blocks/trans_heart_off",
+          "side_on": "twilightforest:blocks/trans_heart",
+          "end": "twilightforest:blocks/trans_section"
+        }
+      },
+      "mine": {
+        "textures":{
+          "side_off": "twilightforest:blocks/mine_gem_off",
+          "side_on": "twilightforest:blocks/mine_gem",
+          "end": "twilightforest:blocks/mine_section"
+        }
+      },
+      "sort": {
+        "textures":{
+          "side_off": "twilightforest:blocks/sort_eye_off",
+          "side_on": "twilightforest:blocks/sort_eye",
+          "end": "twilightforest:blocks/sort_section"
+        }
+      }
+    }
+  }
+}

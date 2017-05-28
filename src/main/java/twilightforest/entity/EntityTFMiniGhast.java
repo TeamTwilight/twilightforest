@@ -24,7 +24,6 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
 	public EntityTFMiniGhast(World par1World) {
 		super(par1World);
         this.setSize(1.1F, 1.5F);
-    	this.stareRange = 8.0F;
     	this.wanderFactor = 4.0F;
 	}
 
@@ -108,6 +107,10 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
     @Override
     public ResourceLocation getLootTable() {
         return LOOT_TABLE;
+    }
+
+    public boolean isMinion() {
+	    return isMinion;
     }
 
     @Override

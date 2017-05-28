@@ -41,7 +41,7 @@ public class GenLayerTFBiomeStabilize extends GenLayer {
 //            	if (dx == centerX && dz == centerZ)
 //            	{
 //            		output[dx + dz * width] = input[centerX + 1 + (centerZ + 1) * nwidth];
-////            		output[dx + dz * width] = TFBiomeBase.glacier.biomeID;
+////            		output[dx + dz * width] = BiomeLibrary.glacier.biomeID;
 //            	}
 //            	else 
             	if (dx <= centerX + 1 && dx >= centerX - 1 && dz <= centerZ + 1 && dz >= centerZ - 1)

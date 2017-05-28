@@ -3,6 +3,7 @@ package twilightforest.item;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.google.common.collect.Sets;
 
@@ -10,9 +11,11 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.entity.EntityTFChainBlock;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
 import twilightforest.entity.EntityTFTwilightWandBolt;
@@ -27,90 +30,76 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class ItemTFChainBlock extends ItemTool {
-	
-	// which items have launched which blocks?
-	private Map<ItemStack, Entity> launchedBlocksMap = new IdentityHashMap<ItemStack, Entity>();
+import javax.annotation.Nullable;
+
+public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback {
+	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	protected ItemTFChainBlock() {
 		super(6, 1.6F, TFItems.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE)); // todo 1.9 attack speed
         this.maxStackSize = 1;
         this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
+	}
 
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity holder, int slot, boolean isSelected) {
+		if (!world.isRemote && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
+			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Most");
+			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Least");
+		}
 	}
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		player.setActiveHand(hand);
+		if (getThrownUuid(stack) != null)
+			return ActionResult.newResult(EnumActionResult.PASS, stack);
 
-		if (!world.isRemote && !this.hasLaunchedBlock(stack)) {
-			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, player.getSoundCategory(), 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
+		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
+
+		if (!world.isRemote) {
 			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player);
 			world.spawnEntity(launchedBlock);
-			this.setLaunchedBlock(stack, launchedBlock);
-
-			setChainAsThrown(stack);
+			setThrownEntity(stack, launchedBlock);
 
 			stack.damageItem(1, player);
-
 		}
+
+		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	/**
-	 * Set this item as having been thrown
-	 */
-	public static void setChainAsThrown(ItemStack stack) {
-		// set NBT tag for stack
-		if (stack.getTagCompound() == null) {
+	@Nullable
+	private static UUID getThrownUuid(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasUniqueId(THROWN_UUID_KEY)) {
+			return stack.getTagCompound().getUniqueId(THROWN_UUID_KEY);
+		}
+
+		return null;
+	}
+
+	@Nullable
+	private static EntityTFChainBlock getThrownEntity(World world, ItemStack stack) {
+		if (world instanceof WorldServer) {
+			UUID id = getThrownUuid(stack);
+			if (id != null) {
+				Entity e = ((WorldServer) world).getEntityFromUuid(id);
+				if (e instanceof EntityTFChainBlock) {
+					return (EntityTFChainBlock) e;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private static void setThrownEntity(ItemStack stack, EntityTFChainBlock cube) {
+		if (!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
-		stack.getTagCompound().setBoolean("thrown", true);
+		stack.getTagCompound().setUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
 	}
 
-	/**
-	 * Set the spike block for this item as returned to the player
-	 */
-	public static void setChainAsReturned(ItemStack stack) {
-		// set NBT tag for stack
-		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		stack.getTagCompound().setBoolean("thrown", false);
-	}
-	
-
-	/**
-	 * Method for the client to determine if the block has been thrown or not.  Not as accurate as server method due to lag, etc.
-	 */
-	public static boolean doesChainHaveBlock(ItemStack stack) {
-		return stack.getTagCompound() == null || !stack.getTagCompound().getBoolean("thrown");
-	}
-
-	
-	/**
-	 * Set the spike block belonging to the player as returned
-	 */
-	public static void setChainAsReturned(EntityPlayer player) {
-		if (player != null && player.getActiveItemStack() != null && player.getActiveItemStack().getItem() == TFItems.chainBlock) {
-			setChainAsReturned(player.getActiveItemStack());
-		}
-	}
-
-	/**
-	 * Method on the server that determines definitively if the item has been thrown or not
-	 */
-	public boolean hasLaunchedBlock(ItemStack stack) {
-		Entity cube = this.launchedBlocksMap.get(stack);
-		
-		return cube != null && !cube.isDead;
-	}
-	
-	public void setLaunchedBlock(ItemStack stack, EntityTFChainBlock launchedCube) {
-		this.launchedBlocksMap.put(stack, launchedCube);
-	}
-	
     @Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
@@ -131,12 +120,5 @@ public class ItemTFChainBlock extends ItemTool {
         } else {
             return -1;
         }
-    }
-	
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with knightmetal ingots
-        return par2ItemStack.getItem() == TFItems.knightMetal ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 }

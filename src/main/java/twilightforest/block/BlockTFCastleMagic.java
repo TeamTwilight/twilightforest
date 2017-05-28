@@ -13,6 +13,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 /**
@@ -22,9 +26,7 @@ import twilightforest.item.TFItems;
  * @author Ben
  *
  */
-public class BlockTFCastleMagic extends Block {
-	public static final int[] magicColors = new int[] { 0x00FFFF, 0xFFFF00, 0xFF00FF, 0x4B0082 };
-
+public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 	private static final List<EnumDyeColor> VALID_COLORS = ImmutableList.of(EnumDyeColor.PINK, EnumDyeColor.BLUE, EnumDyeColor.YELLOW, EnumDyeColor.PURPLE);
 	public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
 
@@ -53,16 +55,6 @@ public class BlockTFCastleMagic extends Block {
 		return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta));
 	}
 
-	public static int getMagicColorFor(int meta) {
-		int color =  magicColors[meta & 3];
-		
-		if ((meta & 8) != 0) {
-			color = 0xFFFFFF ^ color;
-		}
-		
-		return color;
-	}
-
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
@@ -75,6 +67,12 @@ public class BlockTFCastleMagic extends Block {
     @Override
 	public int damageDropped(IBlockState state) {
     	return getMetaFromState(state);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, COLOR);
 	}
 
 }

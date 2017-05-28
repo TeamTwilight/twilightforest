@@ -34,6 +34,7 @@ import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import twilightforest.biomes.TFBiomes;
 
 import javax.annotation.Nullable;
 
@@ -83,15 +84,15 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
     double[] field_147426_g;
     int[][] field_73219_j = new int[32][32];
 
-//	private MapGenTFMajorFeature majorFeatureGenerator;
-//	private MapGenTFHollowTree hollowTreeGenerator;
+	private MapGenTFMajorFeature majorFeatureGenerator;
+	private MapGenTFHollowTree hollowTreeGenerator;
 
 	public ChunkGeneratorTwilightForest(World world, long l, boolean flag) {
 		stoneNoise = new double[256];
 		caveGenerator = new TFGenCaves();
 	
-//		majorFeatureGenerator = new MapGenTFMajorFeature();
-//		hollowTreeGenerator = new MapGenTFHollowTree();
+		majorFeatureGenerator = new MapGenTFMajorFeature();
+		hollowTreeGenerator = new MapGenTFHollowTree();
 	
 		ravineGenerator = new TFGenRavine();
 		unusedIntArray32x32 = new int[32][32];
@@ -132,9 +133,12 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		generateTerrain2(cx, cz, primer);
 		
 		squishTerrain(primer);
-		
+
+		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in generateTerrain2
 		addDarkForestCanopy2(cx, cz, primer);
-		biomesForGeneration = world.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, cx * 16, cz * 16, 16, 16);
+
+		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
+		this.biomesForGeneration = world.getBiomeProvider().getBiomes(biomesForGeneration, cx * 16, cz * 16, 16, 16);
 		addGlaciers(cx, cz, primer, biomesForGeneration);
 		deformTerrainForFeature(cx, cz, primer);
 		replaceBlocksForBiome(cx, cz, primer, biomesForGeneration);
@@ -143,8 +147,8 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		ChunkPrimer fake = new ChunkPrimer();
 		// todo 1.9 why is it faking here?
-//		majorFeatureGenerator.generate(world, cx, cz, fake);
-//		hollowTreeGenerator.generate(world, cx, cz, fake);
+		majorFeatureGenerator.generate(world, cx, cz, fake);
+		hollowTreeGenerator.generate(world, cx, cz, fake);
 	
 		Chunk chunk = new Chunk(world, primer, cx, cz);
 	
@@ -423,12 +427,10 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				} else if (nearFeature == TFFeature.hedgeMaze || nearFeature == TFFeature.nagaCourtyard || nearFeature == TFFeature.questGrove) {
 					// hedge mazes, naga arena
 					flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
-				} else if (nearFeature == TFFeature.yetiCave) {
+				} else if (nearFeature == TFFeature.yetiCave)
+				{
 					// yeti lairs are square
 					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
-				} else if (nearFeature == TFFeature.trollCave) {
-					// troll cloud, more like
-					//deformTerrainForTrollCloud(blockStorage, metaStorage, nearFeature, x, z, dx, dz);
 				}
 			}
 		}
@@ -630,31 +632,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 			}
 		}
 	}
-	
-	private void deformTerrainForTrollCloud(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
-		int y = 164;
-		
-		int bx = dx >> 2;
-		int bz = dz >> 2;
-
-		double dist = Math.sqrt(bx * bx + bz * bz);
-		float pr = pseudoRand(x >> 2, z >> 2);
-		double cv = (dist - 9F) - (pr * 4F);
-		
-		if (dist < 9 || cv < 0.05F) {
-			primer.setBlockState(x, y, z, Blocks.STAINED_GLASS.getDefaultState());
-			primer.setBlockState(x, y - 1, z, Blocks.QUARTZ_BLOCK.getDefaultState());
-			primer.setBlockState(x, y - 2, z, Blocks.QUARTZ_BLOCK.getDefaultState());
-			primer.setBlockState(x, y - 3, z, Blocks.QUARTZ_BLOCK.getDefaultState());
-			primer.setBlockState(x, y - 4, z, Blocks.STAINED_GLASS.getDefaultState());
-		} else if (dist < 10 || cv < 1F) {
-			primer.setBlockState(x, y - 1, z, Blocks.STAINED_GLASS.getDefaultState());
-			primer.setBlockState(x, y - 2, z, Blocks.STAINED_GLASS.getDefaultState());
-			primer.setBlockState(x, y - 3, z, Blocks.STAINED_GLASS.getDefaultState());
-		}
-
-	}
-
 
 	private void deformTerrainForTrollCloud2(ChunkPrimer primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
@@ -664,7 +641,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				
 				// generate several centers for other clouds
 		    	int regionX = (cx + 8) >> 4;
-		    	int regionZ = (cx + 8) >> 4;
+		    	int regionZ = (cz + 8) >> 4;
 
 			    long seed = (long)(regionX * 3129871) ^ (long)regionZ * 116129781L;
 			    seed = seed * seed * 42317861L + seed * 7L;
@@ -710,15 +687,19 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				// generate cloud
 				for (int sx = 0; sx < 4; sx++) {
 					for (int sz = 0; sz < 4; sz++) {
+						int lx = bx * 4 + sx;
+						int lz = bz * 4 + sz;
+
 						if (dist < 7 || cv < 0.05F) {
-							primer.setBlockState(bx, y, bz, TFBlocks.wispyCloud.getDefaultState());
+
+							primer.setBlockState(lx, y, lz, TFBlocks.wispyCloud.getDefaultState());
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(bx, y - d, bz, TFBlocks.fluffyCloud.getDefaultState());
+								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffyCloud.getDefaultState());
 							}
-							primer.setBlockState(bx, y - depth, bz, TFBlocks.wispyCloud.getDefaultState());
+							primer.setBlockState(lx, y - depth, lz, TFBlocks.wispyCloud.getDefaultState());
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(bx, y - d, bz, TFBlocks.wispyCloud.getDefaultState());
+								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffyCloud.getDefaultState());
 							}
 						}					
 					}
@@ -737,7 +718,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Biome biome = biomes[x & 15 | (z & 15) << 4];
-				if (biome == TFBiomeBase.glacier) {
+				if (biome == TFBiomes.glacier) {
 					// find the (current) top block
 					int topLevel = -1;
 					for (int y = 127; y >= 0; y--) {
@@ -774,7 +755,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 					for (int bz = -1; bz <= 1; bz++) {
 						Biome biome = biomesForGeneration[x + bx + 2 + (z + bz + 2) * (10)];
 						
-						if (biome == TFBiomeBase.darkForest || biome == TFBiomeBase.darkForestCenter) {
+						if (biome == TFBiomes.darkForest || biome == TFBiomes.darkForestCenter) {
 							thicks[x + z * 5]++;
 						}
 					}
@@ -876,10 +857,10 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		boolean disableFeatures = false;
 
-//		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ));
+		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ));
 		disableFeatures |= !TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled;
-		
-//		hollowTreeGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
+
+		hollowTreeGenerator.generateStructuresInChunk(world, rand, chunkX, chunkZ);
 
 		if (!disableFeatures && rand.nextInt(4) == 0 && biomeGen.theBiomeDecorator.generateLakes) {
 			int i1 = worldPos.getX() + rand.nextInt(16) + 8;
@@ -937,12 +918,12 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		// are the specified coordinates precicely in a feature?
-/*		TFFeature nearestFeature = TFFeature.getFeatureForRegion(mapX >> 4, mapZ >> 4, world);
+		TFFeature nearestFeature = TFFeature.getFeatureForRegion(pos.getX() >> 4, pos.getZ() >> 4, world);
 
 
 		if (nearestFeature != TFFeature.nothing) {
 			// if the feature is already conquered, no spawns
-			if (this.isStructureConquered(mapX, mapY, mapZ)) {
+			if (this.isStructureConquered(pos)) {
 				return null;
 			}
 
@@ -952,7 +933,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
 			}
 		}
-*/
+
 		Biome biome = world.getBiome(pos);
 
 		if (biome == null) {
@@ -973,31 +954,28 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	}
 
 	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		//FIXME: AtomicBlom: Bring this back in with structures
-		//this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
+		this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
 	}
 
-	public boolean isStructureLocked(BlockPos pos, boolean lockIndex) {
-		//FIXME: AtomicBlom: Bring this back in with structures
-		return false; //Unlock all structures for development
-		//return this.majorFeatureGenerator.isStructureLocked(mapX, mapY, mapZ, lockIndex);
+	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
+		return this.majorFeatureGenerator.isStructureLocked(pos, lockIndex);
 	}
 
-/*
-	public boolean isBlockInStructureBB(int mapX, int mapY, int mapZ) {
-		return this.majorFeatureGenerator.hasStructureAt(mapX, mapY, mapZ);
+
+	public boolean isBlockInStructureBB(BlockPos pos) {
+		return this.majorFeatureGenerator.isInsideStructure(pos);
 	}
 
-	public StructureBoundingBox getSBBAt(int mapX, int mapY, int mapZ) {
-		return this.majorFeatureGenerator.getSBBAt(mapX, mapY, mapZ);
+	public StructureBoundingBox getSBBAt(BlockPos pos) {
+		return this.majorFeatureGenerator.getSBBAt(pos);
 	}
 
-	public boolean isBlockProtected(int x, int y, int z) {
-		return this.majorFeatureGenerator.isBlockProtectedAt(x, y, z);
+	public boolean isBlockProtected(BlockPos pos) {
+		return this.majorFeatureGenerator.isBlockProtectedAt(pos);
 	}
 
-	public boolean isStructureConquered(int mapX, int mapY, int mapZ) {
-		return this.majorFeatureGenerator.isStructureConquered(mapX, mapY, mapZ);
+	public boolean isStructureConquered(BlockPos pos) {
+		return this.majorFeatureGenerator.isStructureConquered(pos);
 	}
 	
 
@@ -1018,11 +996,11 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return this.majorFeatureGenerator.getFullSBBNear(mapX, mapZ, range);
 
 	}
-*/
+
 
 	@Override
 	public void recreateStructures(Chunk chunk, int var1, int var2) {
-//		majorFeatureGenerator.generate(world, var1, var2, null);
-//		hollowTreeGenerator.generate(world, var1, var2, null);
+		majorFeatureGenerator.generate(world, var1, var2, null);
+		hollowTreeGenerator.generate(world, var1, var2, null);
 	}
 }

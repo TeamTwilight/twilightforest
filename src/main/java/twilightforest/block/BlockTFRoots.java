@@ -14,11 +14,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import twilightforest.block.enums.RootVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTFRoots extends Block {
+public class BlockTFRoots extends Block implements ModelRegisterCallback {
 
 	public static final PropertyEnum<RootVariant> VARIANT = PropertyEnum.create("variant", RootVariant.class);
 
@@ -48,19 +50,12 @@ public class BlockTFRoots extends Block {
     public Item getItemDropped(IBlockState state, Random random, int j)
     {
     	switch (state.getValue(VARIANT)) {
+		default:
     	case ROOT:
     		return Items.STICK;
     	case LIVEROOT :
     		return TFItems.liveRoot;
-    	default:
-    		return Item.getItemFromBlock(this);
     	}
-    }
-    
-    @Override
-	public int damageDropped(IBlockState state)
-    {
-    	return getMetaFromState(state);
     }
     
     @Override
@@ -79,5 +74,11 @@ public class BlockTFRoots extends Block {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
     }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
 
 }

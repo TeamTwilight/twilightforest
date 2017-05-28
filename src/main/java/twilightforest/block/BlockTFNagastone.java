@@ -77,7 +77,7 @@ public class BlockTFNagastone extends Block {
 	@Override
 	public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer, ItemStack stack) {
 		return stack.getItemDamage() == 0
-				? this.getDefaultState().withProperty(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing()))
+				? this.getDefaultState().withProperty(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
 				: this.getDefaultState();
 	}
 
@@ -88,7 +88,7 @@ public class BlockTFNagastone extends Block {
 
 		// If state is not a head then you may go ahead and update
 		int connectionCount = 0;
-		IBlockState stateOut = stateIn;
+		IBlockState stateOut;
 		EnumFacing[] facings = new EnumFacing[2];
 
 		// get sides
@@ -105,7 +105,7 @@ public class BlockTFNagastone extends Block {
 		switch (connectionCount) {
 			case 1: facings[1] = facings[0]; // No null, for next statement
 			case 2:
-				stateIn = stateOut.withProperty(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0], facings[1]));
+				stateOut = stateIn.withProperty(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0], facings[1]));
 				break;
 			default:
 				stateOut = this.getDefaultState();

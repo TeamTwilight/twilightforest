@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -81,24 +82,24 @@ public class BlockTFPlant extends BlockBush implements IShearable
 
     @Override
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-    	
-    	//System.out.println("Can block stay? meta is " + meta);
         IBlockState soil = world.getBlockState(pos.down());
-    	
-       	switch (state.getValue(VARIANT)) {
-    	case TORCHBERRY :
-    	case ROOT_STRAND :
-    		return BlockTFPlant.canPlaceRootBelow(world, pos.up());
-    	case FORESTGRASS:
-    	case DEADBUSH:
-    		return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
-    	case MUSHGLOOM:
-    	case MOSSPATCH:
-    		return soil.isSideSolid(world, pos, EnumFacing.UP);
-     	default :
-            return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) &&
-                    soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
-    	}
+
+        if (state.getBlock() != this) {
+            return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+        } else {
+            switch (state.getValue(VARIANT)) {
+                case TORCHBERRY :
+                case ROOT_STRAND :
+                    return BlockTFPlant.canPlaceRootBelow(world, pos.up());
+                case FORESTGRASS:
+                case DEADBUSH:
+                    return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+                case MUSHGLOOM:
+                case MOSSPATCH:
+                    return soil.isSideSolid(world, pos, EnumFacing.UP);
+                default: return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+            }
+        }
     }
     
     @Override
@@ -227,9 +228,6 @@ public class BlockTFPlant extends BlockBush implements IShearable
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         
-        //TODO: this needs to not drop if the player is shearing!  Grrr!
-        
-        // blah
         switch (state.getValue(VARIANT)) {
         case TORCHBERRY:
         	ret.add(new ItemStack(TFItems.torchberries));
@@ -295,21 +293,18 @@ public class BlockTFPlant extends BlockBush implements IShearable
     @Override
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
     {
-    	switch (world.getBlockState(pos).getValue(VARIANT))
-    	{
-    	case MOSSPATCH :
-    	case MUSHGLOOM :
-    		return EnumPlantType.Cave;
-    	default :
-    		return EnumPlantType.Plains;
-    	}
+        IBlockState blockState = world.getBlockState(pos);
+        if (blockState.getBlock() == this) {
+            switch (blockState.getValue(VARIANT)) {
+                case MOSSPATCH:
+                case MUSHGLOOM:
+                    return EnumPlantType.Cave;
+                default:
+                    return EnumPlantType.Plains;
+            }
+        }
+        return EnumPlantType.Plains;
     }
-
-   /* @Override
-    public IBlockState getPlant(IBlockAccess world, BlockPos pos)
-    {
-        return this; todo 1.9
-    }*/
 
     @Override
 	@SideOnly(Side.CLIENT)
@@ -322,5 +317,11 @@ public class BlockTFPlant extends BlockBush implements IShearable
             par1World.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + par5Random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
         }
     
+    }
+
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
     }
 }

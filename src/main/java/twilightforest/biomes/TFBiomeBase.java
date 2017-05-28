@@ -39,26 +39,6 @@ import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 
 public class TFBiomeBase extends Biome  {
-	public static final Biome tfLake = new TFBiomeTwilightLake(new BiomeProperties("Twilight Lake").setTemperature(0.66F).setRainfall(1).setBaseHeight(-1.8F).setHeightVariation(0.1F));
-	public static final Biome twilightForest = new TFBiomeBase(new BiomeProperties("Twilight Forest"));
-	public static final Biome twilightForest2 = new TFBiomeTwilightForestVariant(new BiomeProperties("Dense Twilight Forest").setWaterColor(0x005522).setTemperature(0.7F).setRainfall(0.8F).setBaseHeight(0.2F).setHeightVariation(0.2F));
-	public static final Biome highlands = new TFBiomeHighlands(new BiomeProperties("Twilight Highlands").setTemperature(0.4F).setRainfall(0.7F).setBaseHeight(3.5F).setHeightVariation(0.05F));
-	public static final Biome mushrooms = new TFBiomeMushrooms(new BiomeProperties("Mushroom Forest").setTemperature(0.8F).setRainfall(0.8F));
-	public static final Biome tfSwamp = new TFBiomeSwamp(new BiomeProperties("Twilight Swamp").setTemperature(0.8F).setRainfall(0.9F).setBaseHeight(-0.125F).setHeightVariation(0.125F).setWaterColor(0xE0FFAE));
-	public static final Biome stream = new TFBiomeStream(new BiomeProperties("Twilight Stream").setTemperature(0.5F).setRainfall(0.1F).setBaseHeight(-0.5F).setHeightVariation(0));
-	public static final Biome tfSnow = new TFBiomeSnow(new BiomeProperties("Snowy Forest").setTemperature(0.9F).setRainfall(0.9F).setBaseHeight(0.2F).setHeightVariation(0.2F));
-	public static final Biome glacier = new TFBiomeGlacier(new BiomeProperties("Twilight Glacier").setTemperature(0).setRainfall(0.1F));
-	public static final Biome clearing = new TFBiomeClearing(new BiomeProperties("Twilight Clearing").setTemperature(0.8F).setRainfall(0.4F).setBaseHeight(0.125F).setHeightVariation(0.05F));
-	public static final Biome oakSavanna = new TFBiomeOakSavanna(new BiomeProperties("Oak Savanna").setTemperature(0.9F).setRainfall(0).setBaseHeight(0.2F).setHeightVariation(0.2F));
-	public static final Biome fireflyForest = new TFBiomeFireflyForest(new BiomeProperties("Firefly Forest").setTemperature(0.5F).setRainfall(1).setBaseHeight(0.125F).setHeightVariation(0.05F));
-	public static final Biome deepMushrooms = new TFBiomeDeepMushrooms(new BiomeProperties("Deep Mushroom Forest").setTemperature(0.8F).setRainfall(1).setBaseHeight(0.125F).setHeightVariation(0.05F));
-	public static final Biome darkForest = new TFBiomeDarkForest(new BiomeProperties("Dark Forest").setTemperature(0.7F).setRainfall(0.8F).setBaseHeight(0.125F).setHeightVariation(0.05F));
-	public static final Biome enchantedForest = new TFBiomeEnchantedForest(new BiomeProperties("Enchanted Forest"));
-	public static final Biome fireSwamp = new TFBiomeFireSwamp(new BiomeProperties("Fire Swamp").setTemperature(1).setRainfall(0.4F).setWaterColor(0x6C2C2C).setBaseHeight(0.1F).setHeightVariation(0.2F));
-	public static final Biome darkForestCenter = new TFBiomeDarkForestCenter(new BiomeProperties("Dark Forest Center").setBaseHeight(0.125F).setHeightVariation(0.05F));
-	public static final Biome highlandsCenter = new TFBiomeFinalPlateau(new BiomeProperties("Highlands Center").setTemperature(0.3F).setRainfall(0.2F).setBaseHeight(10.5F).setHeightVariation(0.025F));
-	public static final Biome thornlands = new TFBiomeThornlands(new BiomeProperties("Thornlands").setTemperature(0.3F).setRainfall(0.2F).setBaseHeight(6).setHeightVariation(0.1F));
-
 	protected WorldGenBigMushroom bigMushroomGen;
 	protected WorldGenBirchTree birchGen;
     protected List<SpawnListEntry> undergroundMonsterList;
@@ -150,29 +130,6 @@ public class TFBiomeBase extends Biome  {
             return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
         }
     }
-
-	public static void registerWithBiomeDictionary()
-	{
-		BiomeDictionary.registerBiomeType(tfLake, Type.OCEAN);
-		BiomeDictionary.registerBiomeType(twilightForest, Type.FOREST);
-		BiomeDictionary.registerBiomeType(twilightForest2, Type.FOREST, Type.DENSE);
-		BiomeDictionary.registerBiomeType(highlands, Type.FOREST, Type.MOUNTAIN, Type.CONIFEROUS);
-		BiomeDictionary.registerBiomeType(mushrooms, Type.FOREST, Type.MUSHROOM);
-		BiomeDictionary.registerBiomeType(tfSwamp, Type.SWAMP, Type.WET);
-		BiomeDictionary.registerBiomeType(stream, Type.RIVER);
-		BiomeDictionary.registerBiomeType(tfSnow, Type.FOREST, Type.SNOWY, Type.COLD, Type.CONIFEROUS);
-		BiomeDictionary.registerBiomeType(glacier, Type.COLD, Type.SNOWY, Type.WASTELAND);
-		BiomeDictionary.registerBiomeType(clearing, Type.PLAINS, Type.SPARSE);
-		BiomeDictionary.registerBiomeType(oakSavanna, Type.FOREST, Type.SPARSE);
-		BiomeDictionary.registerBiomeType(fireflyForest, Type.FOREST, Type.LUSH);
-		BiomeDictionary.registerBiomeType(deepMushrooms, Type.FOREST, Type.MUSHROOM);
-		BiomeDictionary.registerBiomeType(darkForest, Type.FOREST, Type.DENSE, Type.SPOOKY);
-		BiomeDictionary.registerBiomeType(enchantedForest, Type.FOREST, Type.MAGICAL);
-		BiomeDictionary.registerBiomeType(fireSwamp, Type.SWAMP, Type.WASTELAND, Type.HOT);
-		BiomeDictionary.registerBiomeType(darkForestCenter, Type.FOREST, Type.DENSE, Type.SPOOKY, Type.MAGICAL);
-		BiomeDictionary.registerBiomeType(highlandsCenter, Type.MESA, Type.DEAD, Type.DRY, Type.WASTELAND);
-		BiomeDictionary.registerBiomeType(thornlands, Type.HILLS, Type.DEAD, Type.DRY, Type.WASTELAND);
-	}
 
     @Override
     public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal)

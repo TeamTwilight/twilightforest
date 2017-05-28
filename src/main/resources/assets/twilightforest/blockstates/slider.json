@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:slider",
+    "textures": {
+      "side": "twilightforest:blocks/slider_v",
+      "end": "twilightforest:blocks/slider_top"
+    }
+  },
+  "variants": {
+    "axis": {
+      "y": {},
+      "z": { "textures": { "side": "twilightforest:blocks/slider_h_90" }, "x": 90 },
+      "x": { "textures": { "side": "twilightforest:blocks/slider_h_90" }, "x": 90, "y": 90 }
+    }
+  }
+}

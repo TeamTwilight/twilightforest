@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,15 +8,20 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.RootVariant;
+
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 public class ItemTFOreMeter extends ItemTF {
 
@@ -25,7 +31,6 @@ public class ItemTFOreMeter extends ItemTF {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player, EnumHand hand) {
-		
 		int useX = MathHelper.floor(player.posX);
 		int useZ = MathHelper.floor(player.posZ);
 		
@@ -39,7 +44,6 @@ public class ItemTFOreMeter extends ItemTF {
 	private void countOreInArea(EntityPlayer player, World world, int useX, int useZ, int radius) {
 		int chunkX = useX >> 4;
 		int chunkZ = useZ >> 4;
-		
 
 		int countStone = 0;
 		int countDirt = 0;
@@ -58,30 +62,29 @@ public class ItemTFOreMeter extends ItemTF {
 
 		int total = 0;
 
-
+		ScanResult dummy = new ScanResult();
 		for (int cx = chunkX - radius; cx <= chunkX + radius; cx++) {
 			for (int cz = chunkZ - radius; cz <= chunkZ + radius; cz++) {
+				Map<IBlockState, ScanResult> results = countBlocksInChunk(world, chunkX, chunkZ);
 
-				countStone += countBlockInChunk(world, Blocks.STONE, cx, cz);
-				countDirt += countBlockInChunk(world, Blocks.DIRT, cx, cz);
-				countGravel += countBlockInChunk(world, Blocks.GRAVEL, cx, cz);
+				countStone += results.entrySet().stream().filter(e -> e.getKey().getBlock() == Blocks.STONE).mapToInt(e -> e.getValue().count).sum();
+				countDirt += results.entrySet().stream().filter(e -> e.getKey().getBlock() == Blocks.DIRT).mapToInt(e -> e.getValue().count).sum();
+				countGravel += results.getOrDefault(Blocks.GRAVEL.getDefaultState(), dummy).count;
 
-				countCoal += countBlockInChunk(world, Blocks.COAL_ORE, cx, cz);
-				countIron += countBlockInChunk(world, Blocks.IRON_ORE, cx, cz);
-				countGold += countBlockInChunk(world, Blocks.GOLD_ORE, cx, cz);
-				countDiamond += countBlockInChunk(world, Blocks.DIAMOND_ORE, cx, cz);
-				countLapis += countBlockInChunk(world, Blocks.LAPIS_ORE, cx, cz);
-				countRedstone += countBlockInChunk(world, Blocks.REDSTONE_ORE, cx, cz);
-				countExposedDiamond += countExposedBlockInChunk(world, Blocks.DIAMOND_ORE, cx, cz);
-
+				countCoal += results.getOrDefault(Blocks.COAL_ORE.getDefaultState(), dummy).count;
+				countIron += results.getOrDefault(Blocks.IRON_ORE.getDefaultState(), dummy).count;
+				countGold += results.getOrDefault(Blocks.GOLD_ORE.getDefaultState(), dummy).count;
+				countDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.getDefaultState(), dummy).count;
+				countLapis += results.getOrDefault(Blocks.LAPIS_ORE.getDefaultState(), dummy).count;
+				countRedstone += results.getOrDefault(Blocks.REDSTONE_ORE.getDefaultState(), dummy).count + results.getOrDefault(Blocks.LIT_REDSTONE_ORE.getDefaultState(), dummy).count;
+				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.getDefaultState(), dummy).exposedCount;
 				
-				countRoots += countBlockInChunk(world, TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.ROOT), cx, cz);
-				countOreRoots += countBlockInChunk(world, TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT), cx, cz);
+				countRoots += results.getOrDefault(TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.ROOT), dummy).count;
+				countOreRoots += results.getOrDefault(TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT), dummy).count;
 			}
 		}
 
 		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countRoots + countOreRoots;
-
 
 		player.sendMessage(new TextComponentString("Ore Meter!"));
 		player.sendMessage(new TextComponentString("Metering chunks in radius " + radius + " around chunk [" + chunkX + ", " + chunkZ + "]"));
@@ -98,68 +101,32 @@ public class ItemTFOreMeter extends ItemTF {
 	private float percent(int count, int total) {
 		return (float)count / (float)total * 100F;
 	}
-	
-	private int countBlockInChunk(World world, Block stone, int cx, int cz) {
 
-		Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
-		
-		int count = 0;
-		
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
-				for (int y = 0; y < 256; y++) {
-					if (chunk.getBlockState(new BlockPos(x, y, z)).getBlock() == stone) {
-						count++;
-					}
-				}
-			}
-		}
-		
-		return count;
-	}	
-	
-	public int countBlockInChunk(World world, IBlockState state, int cx, int cz) {
-
-		Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
-		
-		int count = 0;
-		
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
-				for (int y = 0; y < 256; y++) {
-					if (chunk.getBlockState(new BlockPos(x, y, z)) == state) {
-						count++;
-					}
-				}
-			}
-		}
-		
-		return count;
-	}
-
-	private int countExposedBlockInChunk(World world, Block blockID, int cx, int cz) {
-		
-		int count = 0;
-
+	private Map<IBlockState, ScanResult> countBlocksInChunk(World world, int cx, int cz) {
+		Map<IBlockState, ScanResult> ret = new IdentityHashMap<>();
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		for (int x = cx << 4; x < (cx << 4) + 16; x++) {
 			for (int z = cz << 4; z < (cz << 4) + 16; z++) {
 				for (int y = 0; y < 256; y++) {
-					BlockPos pos = new BlockPos(x, y, z);
-					if (world.getBlockState(pos).getBlock() == blockID) {
-						// todo 1.9 memory opt?
-						// check if exposed
-						if (world.isAirBlock(pos.east()) || world.isAirBlock(pos.west())
-								||world.isAirBlock(pos.up()) || world.isAirBlock(pos.down())
-								||world.isAirBlock(pos.north()) || world.isAirBlock(pos.south()))
-						{
-							count++;
+					IBlockState state = world.getBlockState(pos.setPos(x, y, z));
+					ScanResult res = ret.computeIfAbsent(state, s -> new ScanResult());
+					res.count++;
+
+					for (EnumFacing e : EnumFacing.VALUES) {
+						if (world.isAirBlock(pos.move(e))) {
+							res.exposedCount++;
+							break;
 						}
 					}
 				}
 			}
 		}
-		
-		return count;
 
+		return ret;
+	}
+
+	private static class ScanResult {
+		int count;
+		int exposedCount;
 	}
 }

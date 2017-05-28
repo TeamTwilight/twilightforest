@@ -3,19 +3,27 @@ package twilightforest.block;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockSapling;
+import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.*;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.*;
+import net.minecraftforge.client.model.ModelLoader;
 import twilightforest.block.enums.SaplingVariant;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.world.TFGenCanopyTree;
 import twilightforest.world.TFGenDarkCanopyTree;
@@ -31,26 +39,28 @@ import twilightforest.world.TFGenTreeOfTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTFSapling extends BlockSapling
-{
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegisterCallback
+{
 	public static final PropertyEnum<SaplingVariant> TF_TYPE = PropertyEnum.create("tf_type", SaplingVariant.class);
+	protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 
 	protected BlockTFSapling() {
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState()
-				.withProperty(STAGE, 0)
-				.withProperty(TYPE, BlockPlanks.EnumType.OAK)
 				.withProperty(TF_TYPE, SaplingVariant.OAK));
 	}
 
 	@Override
 	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, STAGE, TYPE, TF_TYPE);
+		return new BlockStateContainer(this, TF_TYPE);
 	}
-	
-    @Override
-	public void grow(World world, BlockPos pos, IBlockState state, Random rand) {
+
+	@Override
+	public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
 		WorldGenerator treeGenerator;
 
 		switch (state.getValue(TF_TYPE)) {
@@ -97,4 +107,59 @@ public class BlockTFSapling extends BlockSapling
         par3List.add(new ItemStack(par1, 1, 9));
     }
 
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		return SAPLING_AABB;
+	}
+
+	/**
+	 * Gets the localized name of this block. Used for the statistics page.
+	 */
+	public String getLocalizedName()
+	{
+		return I18n.translateToLocal(this.getUnlocalizedName() + "." + BlockPlanks.EnumType.OAK.getUnlocalizedName() + ".name");
+	}
+
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+	{
+		if (!worldIn.isRemote)
+		{
+			super.updateTick(worldIn, pos, state, rand);
+
+			if (worldIn.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(7) == 0)
+			{
+				this.grow(worldIn, rand, pos, state);
+			}
+		}
+	}
+
+	@Override
+	public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+		return true;
+	}
+
+	@Override
+	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+		return (double)worldIn.rand.nextFloat() < 0.45D;
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(TF_TYPE).ordinal();
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(TF_TYPE, SaplingVariant.values()[meta % SaplingVariant.values().length]);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		for (int i = 0; i < SaplingVariant.values().length; i++) {
+			String variant = "inventory_" + SaplingVariant.values()[i].getName();
+			ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), variant);
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, mrl);
+		}
+	}
 }

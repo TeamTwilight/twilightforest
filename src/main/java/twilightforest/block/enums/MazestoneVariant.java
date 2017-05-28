@@ -7,7 +7,7 @@ import java.util.Locale;
 public enum MazestoneVariant implements IStringSerializable {
     PLAIN,
     BRICK,
-    PILLAR,
+    CHISELED,
     DECORATIVE,
     CRACKED,
     MOSSY,

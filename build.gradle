@@ -109,5 +109,5 @@ dependencies {
 
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     //TODO switch over to CTM when present (not CTMLib) http://maven.tterrag.com/index.php?dir=team%2Fchisel
-    deobfCompile "team.chisel:master:${ctm_version}"
+    deobfCompile "team.chisel.ctm:CTM:${ctm_version}"
 }

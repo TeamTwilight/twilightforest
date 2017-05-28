@@ -1,10 +1,12 @@
 package twilightforest.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
@@ -14,7 +16,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,6 +30,57 @@ public class ItemTFFieryPick extends ItemPickaxe {
 	protected ItemTFFieryPick(Item.ToolMaterial par2EnumToolMaterial) {
 		super(par2EnumToolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@SubscribeEvent
+	public void onDrops(BlockEvent.HarvestDropsEvent event) {
+		if (event.getHarvester() != null && event.getHarvester().inventory.getCurrentItem() != null && event.getHarvester().inventory.getCurrentItem().getItem().canHarvestBlock(event.getState())
+				&& event.getHarvester().inventory.getCurrentItem().getItem() == this) {
+			List<ItemStack> removeThese = new ArrayList<ItemStack>();
+			List<ItemStack> addThese = new ArrayList<ItemStack>();
+
+			for (ItemStack input : event.getDrops())
+			{
+				// does it smelt?
+				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
+				if (result != null)
+				{
+					addThese.add(new ItemStack(result.getItem(), input.stackSize, result.getItemDamage()));
+					removeThese.add(input);
+
+					// [VanillaCopy] SlotFurnaceOutput.onCrafting
+					int i = result.stackSize;
+					float f = FurnaceRecipes.instance().getSmeltingExperience(result);
+
+					if (f == 0.0F)
+					{
+						i = 0;
+					}
+					else if (f < 1.0F)
+					{
+						int j = MathHelper.floor((float)i * f);
+
+						if (j < MathHelper.ceil((float)i * f) && Math.random() < (double)((float)i * f - (float)j))
+						{
+							++j;
+						}
+
+						i = j;
+					}
+
+					while (i > 0)
+					{
+						int k = EntityXPOrb.getXPSplit(i);
+						i -= k;
+						event.getHarvester().world.spawnEntity(new EntityXPOrb(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
+					}
+				}
+			}
+
+			event.getDrops().removeAll(removeThese);
+			event.getDrops().addAll(addThese);
+		}
 	}
 
 	@Override
@@ -103,17 +161,4 @@ public class ItemTFFieryPick extends ItemPickaxe {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
-    
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with fiery ingots
-        return par2ItemStack.getItem() == TFItems.fieryIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-    
-	@Override
-    public boolean canHarvestBlock(IBlockState state)
-    {
-        return state.getBlock() == Blocks.OBSIDIAN ? true : super.canHarvestBlock(state);
-    }
 }

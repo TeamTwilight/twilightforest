@@ -29,10 +29,10 @@ public class RenderTFNagaSegment extends Render<EntityTFNagaSegment> {
     {
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)par2, (float)par4, (float)par6);
-        GlStateManager.rotate(180 - MathHelper.wrapDegrees(par8), 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(180 - MathHelper.wrapDegrees(par1Entity.rotationYaw), 0.0F, 1.0F, 0.0F);
         
         // pitch
-        float pitch = par1Entity.prevRotationPitch + (par1Entity.rotationPitch - par1Entity.prevRotationPitch) * time;
+        float pitch = par1Entity.rotationPitch;
         
         GlStateManager.rotate(pitch, 1.0F, 0.0F, 0.0F);
 

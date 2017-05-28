@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all",
+    "textures": {
+      "all": "twilightforest:blocks/uberous_soil"
+    }
+  },
+  "variants": { "normal": [{}] }
+}

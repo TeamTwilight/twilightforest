@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:util/tinted_cube_column",
+    "textures": {
+      "end": "twilightforest:blocks/aurora_pillar_top",
+      "side": "twilightforest:blocks/aurora_pillar_side"
+    }
+  },
+  "variants": {
+    "axis": {
+      "y": {},
+      "z": { "x": 90 },
+      "x": { "x": 90, "y": 90 }
+    }
+  }
+}
