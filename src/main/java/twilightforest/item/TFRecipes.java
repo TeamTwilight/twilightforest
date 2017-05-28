@@ -93,7 +93,7 @@ public class TFRecipes {
 		addEnchantedRecipe(TFItems.ironwoodShovel, Enchantments.UNBREAKING, 1, "#", "X", "X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 		addEnchantedRecipe(TFItems.ironwoodPick, Enchantments.EFFICIENCY, 1, "###", " X ", " X ", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 		addEnchantedRecipe(TFItems.ironwoodAxe, Enchantments.FORTUNE, 1, "##", "#X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
-		addEnchantedRecipe(TFItems.ironwoodHoe, null, 0, "##", " X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
+		GameRegistry.addRecipe(new ItemStack(TFItems.ironwoodHoe), "##", " X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.uncraftingTable), "###", "#X#", "###", '#', Blocks.CRAFTING_TABLE, 'X', TFItems.mazeMapFocus);
 
@@ -163,7 +163,7 @@ public class TFRecipes {
 		addEnchantedRecipe(TFItems.yetiHelm, Enchantments.PROTECTION, 2, "###", "# #", '#', TFItems.alphaFur);
 		addEnchantedRecipe(TFItems.yetiPlate, Enchantments.PROTECTION, 2, "# #", "###", "###", '#', TFItems.alphaFur);
 		addEnchantedRecipe(TFItems.yetiLegs, Enchantments.PROTECTION, 2, "###", "# #", "# #", '#', TFItems.alphaFur);
-		addEnchantedRecipe(TFItems.yetiBoots, Enchantments.PROTECTION, 2, Enchantments.FEATHER_FALLING, 4, new Object[] {"# #", "# #", '#', TFItems.alphaFur});
+		addEnchantedRecipe(TFItems.yetiBoots, Enchantments.PROTECTION, 2, Enchantments.FEATHER_FALLING, 4, "# #", "# #", '#', TFItems.alphaFur);
 
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticHelm), "###", "# #", '#', TFItems.arcticFur);
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticPlate), "# #", "###", "###", '#', TFItems.arcticFur);
@@ -195,6 +195,7 @@ public class TFRecipes {
 			result.addEnchantment((Enchantment)inputs[i], (Integer)inputs[i + 1]);
 			i += 2;
 		}
+		if(inputs[i] == null) i += 2;
 		Object[] ingredients = new Object[inputs.length - i];
 		System.arraycopy(inputs, i, ingredients, 0, ingredients.length);
 		GameRegistry.addRecipe(result, ingredients);
