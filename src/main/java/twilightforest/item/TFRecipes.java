@@ -93,7 +93,7 @@ public class TFRecipes {
 		addEnchantedRecipe(TFItems.ironwoodShovel, Enchantments.UNBREAKING, 1, "#", "X", "X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 		addEnchantedRecipe(TFItems.ironwoodPick, Enchantments.EFFICIENCY, 1, "###", " X ", " X ", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 		addEnchantedRecipe(TFItems.ironwoodAxe, Enchantments.FORTUNE, 1, "##", "#X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
-		addEnchantedRecipe(TFItems.ironwoodHoe, null, 0, "##", " X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
+		GameRegistry.addRecipe(new ItemStack(TFItems.ironwoodHoe), "##", " X", " X", '#', TFItems.ironwoodIngot, 'X', Items.STICK);
 
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.uncraftingTable), "###", "#X#", "###", '#', Blocks.CRAFTING_TABLE, 'X', TFItems.mazeMapFocus);
 
