@@ -594,6 +594,7 @@ public class EntityTFLich extends EntityMob {
      */
 	private Vec3d findVecInLOSOf(Entity targetEntity)
     {
+		if (targetEntity == null) return null;
     	double origX = posX;
 		double origY = posY;
 		double origZ = posZ;
@@ -692,6 +693,7 @@ public class EntityTFLich extends EntityMob {
 
     public void setShadowClone(boolean par1)
     {
+    	bossInfo.setVisible(!par1);
     	dataManager.set(DATA_ISCLONE, par1);
     }
     

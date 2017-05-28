@@ -1,6 +1,7 @@
 package twilightforest.client.model;
 
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -116,6 +117,14 @@ public class ModelTFLich extends ModelBiped {
         }
         
     }
+	
+	@Override
+	public void setModelAttributes(ModelBase model) {
+		super.setModelAttributes(model);
+		if(model instanceof ModelTFLich){
+			shieldBelt = ((ModelTFLich)model).shieldBelt;
+		}
+	}
     
     /**
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
@@ -138,7 +147,7 @@ public class ModelTFLich extends ModelBiped {
         		for (int i = 0; i < shields; i++) {
         			vec = new Vec3d(11, 0, 0);
         			float rotateY = ((i * (360F / shields)) * 3.141593F) / 180F;
-        			vec.rotateYaw(rotateY);
+        			vec = vec.rotateYaw(rotateY);
         			ModelRenderer shield = new ModelRenderer(this, 26, 40);
         			shield.addBox(0.5F, -6F, -6F, 1, 12, 12);
         			shield.setRotationPoint((float)vec.xCoord, (float)vec.yCoord, (float)vec.zCoord);
