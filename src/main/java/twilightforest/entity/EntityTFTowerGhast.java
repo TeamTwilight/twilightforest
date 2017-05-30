@@ -283,7 +283,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 
         dataManager.set(ATTACK_STATUS, (byte) status);
         dataManager.set(ATTACK_TIMER, (byte) attackAI.attackTimer);
-        dataManager.set(ATTACK_PREVTIMER, (byte) attackAI.attackTimer);
+        dataManager.set(ATTACK_PREVTIMER, (byte) attackAI.prevAttackTimer);
     }
 
     public int getAttackStatus() {
