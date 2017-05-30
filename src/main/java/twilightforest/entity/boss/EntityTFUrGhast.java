@@ -44,7 +44,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	//private static final int CRUISING_ALTITUDE = 235; // absolute cruising altitude
 	private static final int HOVER_ALTITUDE = 20; // how far, relatively, do we hover over ghast traps?
 
-    private final List<BlockPos> trapLocations = new ArrayList<>();
+    private List<BlockPos> trapLocations;
     private int nextTantrumCry;
     
     private float damageUntilNextPhase = 45; // how much damage can we take before we toggle tantrum mode
@@ -79,6 +79,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
     @Override
 	protected void initEntityAI() {
 		super.initEntityAI();
+		trapLocations = new ArrayList<BlockPos>();
 		this.tasks.taskEntries.removeIf(e -> e.action instanceof EntityTFTowerGhast.AIHomedFly);
 		this.tasks.addTask(5, new AIWaypointFly(this));
 	}
@@ -86,11 +87,12 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	static class AIWaypointFly extends EntityAIBase {
 		private final EntityTFUrGhast taskOwner;
 
-		private final List<BlockPos> pointsToVisit = createPath();
+		private final List<BlockPos> pointsToVisit;
 		private int currentPoint = 0;
 
 		AIWaypointFly(EntityTFUrGhast ghast) {
 			this.taskOwner = ghast;
+			pointsToVisit = createPath();
 			setMutexBits(1);
 		}
 
@@ -232,7 +234,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
         	attackSuccessful = super.attackEntityFrom(source, damage);
         }
 
-        float lastDamage = getHealth() - oldHealth;
+        float lastDamage = oldHealth - getHealth();
  
         if (!world.isRemote)
         {

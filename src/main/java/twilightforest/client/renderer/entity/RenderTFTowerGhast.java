@@ -27,9 +27,9 @@ public class RenderTFTowerGhast extends RenderTFGhast<EntityTFTowerGhast> {
     @Override
     protected void preRenderCallback(EntityTFTowerGhast par1EntityLiving, float partialTicks)
     {
-        EntityTFTowerGhast.AIAttack attackAI = par1EntityLiving.attackAI;
-        float scaleVariable = (attackAI.prevAttackTimer + (attackAI.attackTimer - attackAI.prevAttackTimer) * partialTicks) / 20.0F;
-
+        int attackTimer = par1EntityLiving.getAttackTimer();
+        int prevAttackTimer = par1EntityLiving.getPrevAttackTimer();
+        float scaleVariable = (prevAttackTimer + (attackTimer - prevAttackTimer) * partialTicks) / 20.0F;
         if (scaleVariable < 0.0F)
         {
             scaleVariable = 0.0F;

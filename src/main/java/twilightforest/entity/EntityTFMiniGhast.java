@@ -40,13 +40,17 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isMinion ? 6 : 10);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
     }
+	
+	@Override
+	public float getEyeHeight() {
+		return 1.2F;
+	}
     
     // Loosely based on EntityEnderman.shouldAttackPlayer
     @Override
     protected boolean shouldAttack(EntityLivingBase living)
     {
         ItemStack helmet = living.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-
         if (!helmet.isEmpty() && helmet.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN))
         {
             return false;

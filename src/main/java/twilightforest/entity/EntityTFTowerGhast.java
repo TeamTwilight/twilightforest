@@ -20,14 +20,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
+import twilightforest.entity.boss.EntityTFUrGhast;
 
 import java.util.Random;
 
 public class EntityTFTowerGhast extends EntityGhast {
     // 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
     private static final DataParameter<Byte> ATTACK_STATUS = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> ATTACK_TIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> ATTACK_PREVTIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
 
-    public AIAttack attackAI;
+    private AIAttack attackAI;
     protected float wanderFactor;
     private int inTrapCounter;
 
@@ -43,16 +46,56 @@ public class EntityTFTowerGhast extends EntityGhast {
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(ATTACK_STATUS, (byte) 0);
+        this.dataManager.register(ATTACK_TIMER, (byte) 0);
+        this.dataManager.register(ATTACK_PREVTIMER, (byte) 0);
     }
 
 	@Override
     protected void initEntityAI() {
-	    attackAI = new AIAttack(this);
         this.tasks.addTask(5, new AIHomedFly(this));
+        if(!(this instanceof EntityTFUrGhast)) this.tasks.addTask(5, new AIRandomFly(this));
         this.tasks.addTask(7, new EntityGhast.AILookAround(this));
-        this.tasks.addTask(7, attackAI);
+        this.tasks.addTask(7, attackAI = new AIAttack(this));
         this.targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
     }
+	
+	// [VanillaCopy] from EntityGhast but we use wanderFactor instead, we also stop moving when we have a target
+	public static class AIRandomFly extends EntityAIBase {
+		private final EntityTFTowerGhast parentEntity;
+
+		public AIRandomFly(EntityTFTowerGhast ghast) {
+			this.parentEntity = ghast;
+			this.setMutexBits(1);
+		}
+
+		@Override
+		public boolean shouldExecute() {
+			EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
+			if (!entitymovehelper.isUpdating()) {
+				return parentEntity.getAttackTarget() == null;
+			} else {
+				double d0 = entitymovehelper.getX() - this.parentEntity.posX;
+				double d1 = entitymovehelper.getY() - this.parentEntity.posY;
+				double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+				return parentEntity.getAttackTarget() == null && (d3 < 1.0D || d3 > 3600.0D);
+			}
+		}
+
+		@Override
+		public boolean shouldContinueExecuting() {
+			return false;
+		}
+
+		@Override
+		public void startExecuting() {
+			Random random = this.parentEntity.getRNG();
+			double d0 = this.parentEntity.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d1 = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d2 = this.parentEntity.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+		}
+	}
 
     // [VanillaCopy]-ish mixture of EntityGhast.AIFly and EntityAIStayNearHome
     public static class AIHomedFly extends EntityAIBase {
@@ -126,13 +169,12 @@ public class EntityTFTowerGhast extends EntityGhast {
         public AIAttack(EntityTFTowerGhast ghast)
         {
             this.parentEntity = ghast;
-            setMutexBits(2);
         }
 
         @Override
         public boolean shouldExecute()
         {
-            return this.parentEntity.getAttackTarget() != null;
+            return this.parentEntity.getAttackTarget() != null && parentEntity.shouldAttack(parentEntity.getAttackTarget());
         }
 
         @Override
@@ -164,13 +206,14 @@ public class EntityTFTowerGhast extends EntityGhast {
                     world.playEvent((EntityPlayer)null, 1015, new BlockPos(this.parentEntity), 0);
                 }
 
-                if (this.attackTimer == 20 && this.parentEntity.shouldAttack(entitylivingbase))
-                {
-                    // TF - face target and call custom method
-                    this.parentEntity.faceEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
-                    this.parentEntity.spitFireball();
-                    this.prevAttackTimer = attackTimer;
-                    this.attackTimer = -40;
+                if (this.attackTimer == 20) {
+                	if(this.parentEntity.shouldAttack(entitylivingbase)) {
+                		// TF - face target and call custom method
+                		this.parentEntity.faceEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
+                    	this.parentEntity.spitFireball();
+                    	this.prevAttackTimer = attackTimer;
+                	}
+            		this.attackTimer = -40;
                 }
             }
             else if (this.attackTimer > 0)
@@ -236,13 +279,23 @@ public class EntityTFTowerGhast extends EntityGhast {
         	setAttackTarget(null);
         }
 
-        int status = isAttacking() ? 2 : getAttackTarget() != null ? 1 : 0;
+        int status = isAttacking() ? 2 : (getAttackTarget() != null && shouldAttack(getAttackTarget())) ? 1 : 0;
 
         dataManager.set(ATTACK_STATUS, (byte) status);
+        dataManager.set(ATTACK_TIMER, (byte) attackAI.attackTimer);
+        dataManager.set(ATTACK_PREVTIMER, (byte) attackAI.attackTimer);
     }
 
     public int getAttackStatus() {
 	    return dataManager.get(ATTACK_STATUS);
+    }
+
+    public int getAttackTimer() {
+	    return dataManager.get(ATTACK_TIMER);
+    }
+
+    public int getPrevAttackTimer() {
+	    return dataManager.get(ATTACK_PREVTIMER);
     }
 
     protected boolean shouldAttack(EntityLivingBase living) {
