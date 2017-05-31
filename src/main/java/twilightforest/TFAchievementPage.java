@@ -20,18 +20,18 @@ public class TFAchievementPage extends net.minecraftforge.common.AchievementPage
 	public static Achievement twilightHedge = (new Achievement(TwilightForestMod.ID + 13, "twilightHedge", 2, -3, TFBlocks.hedge, twilightArrival)).registerStat();
 	public static Achievement twilightMagicMap = (new Achievement(TwilightForestMod.ID + 14, "twilightMagicMap", 4, -1, TFItems.magicMap, twilightMagicMapFocus)).registerStat();
 
-	public static Achievement twilightKillNaga = (new Achievement(TwilightForestMod.ID + 6, "twilightKillNaga", 4, 3, new ItemStack(TFItems.trophy, 1, 1), twilightHunter)).registerStat();
+	public static Achievement twilightKillNaga = (new Achievement(TwilightForestMod.ID + 6, "twilightKillNaga", 4, 3, new ItemStack(TFItems.trophy, 1, 0), twilightHunter)).registerStat();
 	public static Achievement twilightProgressNaga = (new Achievement(TwilightForestMod.ID + 17, "twilightProgressNaga", 4, 5, TFItems.nagaScale, twilightKillNaga)).registerStat();
-	public static Achievement twilightKillLich = (new Achievement(TwilightForestMod.ID + 8, "twilightKillLich", 2, 5, new ItemStack(TFItems.trophy, 1, 2), twilightProgressNaga)).registerStat();
+	public static Achievement twilightKillLich = (new Achievement(TwilightForestMod.ID + 8, "twilightKillLich", 2, 5, new ItemStack(TFItems.trophy, 1, 1), twilightProgressNaga)).registerStat();
 	public static Achievement twilightProgressLich = (new Achievement(TwilightForestMod.ID + 18, "twilightProgressLich", -1, 4, TFItems.scepterLifeDrain, twilightKillLich)).registerStat();
 	public static Achievement twilightProgressLabyrinth = (new Achievement(TwilightForestMod.ID + 28, "twilightProgressLabyrinth", -4, 6, TFItems.meefStroganoff, twilightProgressLich)).registerStat();
-	public static Achievement twilightKillHydra = (new Achievement(TwilightForestMod.ID + 30, "twilightKillHydra", -6, 4, new ItemStack(TFItems.trophy, 1, 0), twilightProgressLabyrinth)).registerStat();
+	public static Achievement twilightKillHydra = (new Achievement(TwilightForestMod.ID + 30, "twilightKillHydra", -6, 4, new ItemStack(TFItems.trophy, 1, 2), twilightProgressLabyrinth)).registerStat();
 	public static Achievement twilightProgressHydra = (new Achievement(TwilightForestMod.ID + 20, "twilightProgressHydra", -8, 4, TFItems.fieryBlood, twilightKillHydra)).registerStat();
 	public static Achievement twilightProgressTrophyPedestal = (new Achievement(TwilightForestMod.ID + 29, "twilightProgressTrophyPedestal", -5, 2, TFBlocks.trophyPedestal, twilightProgressHydra)).registerStat();
 	public static Achievement twilightProgressKnights = (new Achievement(TwilightForestMod.ID + 21, "twilightProgressKnights", -5, -1, TFItems.phantomHelm, twilightProgressTrophyPedestal)).registerStat();
 	public static Achievement twilightProgressUrghast = (new Achievement(TwilightForestMod.ID + 22, "twilightProgressUrghast", -7, -1, new ItemStack(TFItems.trophy, 1, 3), twilightProgressKnights)).registerStat();
 	public static Achievement twilightProgressYeti = (new Achievement(TwilightForestMod.ID + 23, "twilightProgressYeti", -7, -3, TFItems.alphaFur, twilightProgressUrghast)).registerStat();
-	public static Achievement twilightProgressGlacier = (new Achievement(TwilightForestMod.ID + 24, "twilightProgressGlacier", -5, -5, new ItemStack(TFItems.trophy, 1, 4), twilightProgressYeti)).registerStat();
+	public static Achievement twilightProgressGlacier = (new Achievement(TwilightForestMod.ID + 24, "twilightProgressGlacier", -5, -5, new ItemStack(TFItems.trophy, 1, 5), twilightProgressYeti)).registerStat();
 	public static Achievement twilightProgressTroll = (new Achievement(TwilightForestMod.ID + 25, "twilightProgressTroll", -5, -7, TFItems.lampOfCinders, twilightProgressGlacier)).registerStat();
 	public static Achievement twilightProgressThorns = (new Achievement(TwilightForestMod.ID + 26, "twilightProgressThorns", -3, -7, TFBlocks.thorns, twilightProgressTroll)).registerStat();
 	public static Achievement twilightProgressCastle = (new Achievement(TwilightForestMod.ID + 27, "twilightProgressCastle", -1, -7, Blocks.STONEBRICK, twilightProgressThorns)).registerStat();

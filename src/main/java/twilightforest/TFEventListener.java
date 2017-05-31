@@ -95,19 +95,19 @@ public class TFEventListener {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressNaga);
 		}
 		// trophy gives kill achievement
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 0) {
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 2) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillHydra);
 		}
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 1) {
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 0) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillNaga);
 		}
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 2) {
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 1) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightKillLich);
 		}
 		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 3) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressUrghast);
 		}		
-		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 4) {
+		if (item == TFItems.trophy && event.getItem().getEntityItem().getItemDamage() == 5) {
 			event.getEntityPlayer().addStat(TFAchievementPage.twilightProgressGlacier);
 		}
 		// mazebreaker
