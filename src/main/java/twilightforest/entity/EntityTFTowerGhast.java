@@ -1,12 +1,10 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
@@ -138,18 +136,18 @@ public class EntityTFTowerGhast extends EntityGhast {
         public void startExecuting()
         {
             Random random = this.parentEntity.getRNG();
-            double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+            double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+            double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
             this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 
             if (this.parentEntity.getDistanceSq(this.parentEntity.getHomePosition()) > 256.0D)
             {
                 Vec3d vecToHome = new Vec3d(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVector()).normalize();
 
-                double targetX = this.parentEntity.posX + vecToHome.xCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-                double targetY = this.parentEntity.posY + vecToHome.yCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-                double targetZ = this.parentEntity.posZ + vecToHome.zCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
+                double targetX = this.parentEntity.posX + vecToHome.xCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+                double targetY = this.parentEntity.posY + vecToHome.yCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+                double targetZ = this.parentEntity.posZ + vecToHome.zCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 
                 this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
             }
@@ -365,7 +363,7 @@ public class EntityTFTowerGhast extends EntityGhast {
     		}
     		else
     		{
-    			BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
+    			BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
     			this.setHomePosAndDistance(cc.up(128), 64);
     		}
     	}

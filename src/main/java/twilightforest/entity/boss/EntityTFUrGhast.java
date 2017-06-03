@@ -1,9 +1,6 @@
 package twilightforest.entity.boss;
 
-import java.util.*;
-
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -14,10 +11,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -36,6 +34,10 @@ import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class EntityTFUrGhast extends EntityTFTowerGhast {
 
@@ -59,6 +61,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
     	this.noClip = true;
     	this.setInTantrum(false);
         this.experienceValue = 317;
+        this.moveHelper = new UrGhastMoveHelper(this);
 	}
 	
 	@Override
@@ -204,6 +207,35 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
             }
 		}
     }
+
+	static class UrGhastMoveHelper extends EntityMoveHelper {
+		private final EntityTFUrGhast parentEntity;
+		private int courseChangeCooldown;
+
+		public UrGhastMoveHelper(EntityTFUrGhast ghast) {
+			super(ghast);
+			this.parentEntity = ghast;
+		}
+
+		public void onUpdateMoveHelper() {
+			if (this.action == EntityMoveHelper.Action.MOVE_TO) {
+				double d0 = this.posX - this.parentEntity.posX;
+				double d1 = this.posY - this.parentEntity.posY;
+				double d2 = this.posZ - this.parentEntity.posZ;
+				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+
+				if (this.courseChangeCooldown-- <= 0) {
+					this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
+					d3 = (double) MathHelper.sqrt(d3);
+
+					this.parentEntity.motionX += d0 / d3 * 0.1D;
+					this.parentEntity.motionY += d1 / d3 * 0.1D;
+					this.parentEntity.motionZ += d2 / d3 * 0.1D;
+				}
+			}
+		}
+
+	}
 
 	@Override
     public boolean attackEntityFrom(DamageSource source, float damage)
