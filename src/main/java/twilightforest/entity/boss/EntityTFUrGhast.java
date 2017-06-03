@@ -208,6 +208,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		}
     }
 
+    // [VanillaCopy] from EntityGhast but we remove the collision check
 	static class UrGhastMoveHelper extends EntityMoveHelper {
 		private final EntityTFUrGhast parentEntity;
 		private int courseChangeCooldown;
@@ -217,6 +218,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			this.parentEntity = ghast;
 		}
 
+		@Override
 		public void onUpdateMoveHelper() {
 			if (this.action == EntityMoveHelper.Action.MOVE_TO) {
 				double d0 = this.posX - this.parentEntity.posX;
