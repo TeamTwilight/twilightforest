@@ -145,9 +145,9 @@ public class EntityTFTowerGhast extends EntityGhast {
             {
                 Vec3d vecToHome = new Vec3d(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVector()).normalize();
 
-                double targetX = this.parentEntity.posX + vecToHome.xCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-                double targetY = this.parentEntity.posY + vecToHome.yCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-                double targetZ = this.parentEntity.posZ + vecToHome.zCoord * 16.0F + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+                double targetX = this.parentEntity.posX + vecToHome.xCoord * parentEntity.wanderFactor + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+                double targetY = this.parentEntity.posY + vecToHome.yCoord * parentEntity.wanderFactor + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+                double targetZ = this.parentEntity.posZ + vecToHome.zCoord * parentEntity.wanderFactor + (double)((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 
                 this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
             }
