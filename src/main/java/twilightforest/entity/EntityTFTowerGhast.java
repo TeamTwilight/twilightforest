@@ -277,7 +277,7 @@ public class EntityTFTowerGhast extends EntityGhast {
         	setAttackTarget(null);
         }
 
-        int status = isAttacking() ? 2 : (getAttackTarget() != null && shouldAttack(getAttackTarget())) ? 1 : 0;
+        int status = getAttackTarget() != null && shouldAttack(getAttackTarget()) ? 1 : 0;
 
         dataManager.set(ATTACK_STATUS, (byte) status);
         dataManager.set(ATTACK_TIMER, (byte) attackAI.attackTimer);
