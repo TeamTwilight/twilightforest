@@ -1,11 +1,12 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
+import net.minecraft.block.BlockTorch;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+
+import java.util.Random;
 
 public class ComponentTFMazeDeadEndTorches extends ComponentTFMazeDeadEnd {
 
@@ -19,16 +20,16 @@ public class ComponentTFMazeDeadEndTorches extends ComponentTFMazeDeadEnd {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
+	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// normal doorway
 		super.addComponentParts(world, rand, sbb);
-		
-		// torches!
-		this.fillWithBlocks(world, sbb, 2, 1, 4, 3, 4, 4, Blocks.TORCH.getDefaultState(), AIR, false);
-		this.fillWithBlocks(world, sbb, 1, 1, 1, 1, 4, 4, Blocks.TORCH.getDefaultState(), AIR, false);
-		this.fillWithBlocks(world, sbb, 4, 1, 1, 4, 4, 4, Blocks.TORCH.getDefaultState(), AIR, false);
 
-		
+		// torches!
+		this.fillWithBlocks(world, sbb, 2, 1, 4, 3, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.SOUTH), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 1, 1, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.WEST), AIR, false);
+		this.fillWithBlocks(world, sbb, 4, 1, 1, 4, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.EAST), AIR, false);
+
+
 		return true;
 	}
 }

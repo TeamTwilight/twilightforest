@@ -1,7 +1,5 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -14,12 +12,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback {
 
@@ -42,32 +41,31 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
 		}
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-    	ItemStack istack = new ItemStack(item);
-    	switch (this.armorType) {
-    	case HEAD:
-    	case CHEST:
-    	case LEGS:
-    		istack.addEnchantment(Enchantments.PROTECTION, 2);
-            break;	
-    	case FEET:
-    		istack.addEnchantment(Enchantments.PROTECTION, 2);
-    		istack.addEnchantment(Enchantments.FEATHER_FALLING, 4);
-            break;	
-    	}
-    	list.add(istack);
-    }
-    
-    @SideOnly(Side.CLIENT)
+		ItemStack istack = new ItemStack(item);
+		switch (this.armorType) {
+			case HEAD:
+			case CHEST:
+			case LEGS:
+				istack.addEnchantment(Enchantments.PROTECTION, 2);
+				break;
+			case FEET:
+				istack.addEnchantment(Enchantments.PROTECTION, 2);
+				istack.addEnchantment(Enchantments.FEATHER_FALLING, 4);
+				break;
+		}
+		list.add(istack);
+	}
+
+	@SideOnly(Side.CLIENT)
 	@Override
-	public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default)
-    {
-        return TwilightForestMod.proxy.getYetiArmorModel(armorSlot);
-    }
-    
+	public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
+		return TwilightForestMod.proxy.getYetiArmorModel(armorSlot);
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltips, boolean advanced) {

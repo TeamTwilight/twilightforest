@@ -1,8 +1,22 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIFollowOwner;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILeapAtTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityMob;
@@ -21,123 +35,105 @@ import net.minecraft.world.World;
 public class EntityTFLoyalZombie extends EntityTameable {
 
 	public EntityTFLoyalZombie(World par1World) {
-        super(par1World);
-        this.setSize(0.6F, 1.8F);
+		super(par1World);
+		this.setSize(0.6F, 1.8F);
 	}
 
 	@Override
-    protected void initEntityAI() {
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-        this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(9, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-        this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityMob.class, true));
-    }
+	protected void initEntityAI() {
+		this.tasks.addTask(1, new EntityAISwimming(this));
+		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
+		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+		this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
+		this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(9, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityMob.class, true));
+	}
 
 	@Override
-	public EntityAnimal createChild(EntityAgeable entityanimal)
-	{
+	public EntityAnimal createChild(EntityAgeable entityanimal) {
 		return null;
 	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
-    }
-	
-    @Override
-    public boolean attackEntityAsMob(Entity par1Entity)
-    {
-        boolean success = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), 7);
-        
-        if (success)
-        {
-            par1Entity.motionY += 0.2;
-        }
-        
-        return success;
-    }
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
+	}
 
-    @Override
-	public void onLivingUpdate()
-    {
-    	// once our damage boost effect wears out, start to burn
-    	// the effect here is that we die shortly after our 60 second lifespan
-        if (!this.world.isRemote && this.getActivePotionEffect(MobEffects.STRENGTH) == null)
-        {
-            this.setFire(100);
-        }
+	@Override
+	public boolean attackEntityAsMob(Entity par1Entity) {
+		boolean success = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), 7);
 
-        super.onLivingUpdate();
-    }
+		if (success) {
+			par1Entity.motionY += 0.2;
+		}
 
-    // [VanillaCopy] EntityWolf.shouldAttackEntity, substituting with our class
-    @Override
-    public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner)
-    {
-        if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast))
-        {
-            if (target instanceof EntityTFLoyalZombie)
-            {
-                EntityTFLoyalZombie zombie = (EntityTFLoyalZombie)target;
+		return success;
+	}
 
-                if (zombie.isTamed() && zombie.getOwner() == owner)
-                {
-                    return false;
-                }
-            }
+	@Override
+	public void onLivingUpdate() {
+		// once our damage boost effect wears out, start to burn
+		// the effect here is that we die shortly after our 60 second lifespan
+		if (!this.world.isRemote && this.getActivePotionEffect(MobEffects.STRENGTH) == null) {
+			this.setFire(100);
+		}
 
-            return target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer)owner).canAttackPlayer((EntityPlayer)target) ? false : !(target instanceof AbstractHorse) || !((AbstractHorse)target).isTame();
-        }
-        else
-        {
-            return false;
-        }
-    }
+		super.onLivingUpdate();
+	}
 
-    @Override
-	protected boolean canDespawn()
-    {
-        return !this.isTamed();
-    }
+	// [VanillaCopy] EntityWolf.shouldAttackEntity, substituting with our class
+	@Override
+	public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner) {
+		if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast)) {
+			if (target instanceof EntityTFLoyalZombie) {
+				EntityTFLoyalZombie zombie = (EntityTFLoyalZombie) target;
 
-    @Override
-	protected SoundEvent getAmbientSound()
-    {
-        return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
-    }
+				if (zombie.isTamed() && zombie.getOwner() == owner) {
+					return false;
+				}
+			}
 
-    @Override
-	protected SoundEvent getHurtSound()
-    {
-        return SoundEvents.ENTITY_ZOMBIE_HURT;
-    }
+			return target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target) ? false : !(target instanceof AbstractHorse) || !((AbstractHorse) target).isTame();
+		} else {
+			return false;
+		}
+	}
 
-    @Override
-	protected SoundEvent getDeathSound()
-    {
-        return SoundEvents.ENTITY_ZOMBIE_DEATH;
-    }
+	@Override
+	protected boolean canDespawn() {
+		return !this.isTamed();
+	}
 
-    @Override
-	protected void playStepSound(BlockPos pos, Block par4)
-    {
-        playSound(SoundEvents.ENTITY_ZOMBIE_STEP, 0.15F, 1.0F);
-    }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
+	}
 
-    @Override
-	public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.UNDEAD;
-    }
+	@Override
+	protected SoundEvent getHurtSound() {
+		return SoundEvents.ENTITY_ZOMBIE_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_ZOMBIE_DEATH;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, Block par4) {
+		playSound(SoundEvents.ENTITY_ZOMBIE_STEP, 0.15F, 1.0F);
+	}
+
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		return EnumCreatureAttribute.UNDEAD;
+	}
 }

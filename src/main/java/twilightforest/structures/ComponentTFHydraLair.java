@@ -1,8 +1,5 @@
 package twilightforest.structures;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -10,6 +7,9 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
+
+import java.util.List;
+import java.util.Random;
 
 public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
@@ -25,7 +25,7 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
 		;
 	}
-	
+
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		int stalacts = 64;
@@ -33,20 +33,17 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
 		// fill in features
 		// ore or glowing stalactites! (smaller, less plentiful)
-		for (int i = 0; i < stalacts; i++)
-		{
+		for (int i = 0; i < stalacts; i++) {
 			int[] dest = getCoordsInHill2D(rand);
 			generateOreStalactite(world, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalactites!
-		for (int i = 0; i < stalacts; i++)
-		{
+		for (int i = 0; i < stalacts; i++) {
 			int[] dest = getCoordsInHill2D(rand);
 			generateBlockStalactite(world, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
-		for (int i = 0; i < stalags; i++)
-		{
+		for (int i = 0; i < stalags; i++) {
 			int[] dest = getCoordsInHill2D(rand);
 			generateBlockStalactite(world, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}

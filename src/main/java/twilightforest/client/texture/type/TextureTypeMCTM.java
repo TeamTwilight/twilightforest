@@ -15,28 +15,28 @@ import twilightforest.client.texture.render.TextureContextMCTM;
 @TextureType("MCTM")
 public class TextureTypeMCTM extends TextureTypeCTM {
 
-    @Override
-    public ICTMTexture<? extends TextureTypeCTM> makeTexture(TextureInfo info) {
-      return new TextureCTM(this, info);
-    }
+	@Override
+	public ICTMTexture<? extends TextureTypeCTM> makeTexture(TextureInfo info) {
+		return new TextureCTM(this, info);
+	}
 
-    @Override
-    public TextureContextCTM getBlockRenderContext(IBlockState state, IBlockAccess world, BlockPos pos, ICTMTexture<?> tex) {
-        return new TextureContextMCTM(state, world, pos);
-    }
+	@Override
+	public TextureContextCTM getBlockRenderContext(IBlockState state, IBlockAccess world, BlockPos pos, ICTMTexture<?> tex) {
+		return new TextureContextMCTM(state, world, pos);
+	}
 
-    @Override
-    public int getQuadsPerSide() {
-        return 4;
-    }
+	@Override
+	public int getQuadsPerSide() {
+		return 4;
+	}
 
-    @Override
-    public int requiredTextures() {
-        return 2;
-    }
+	@Override
+	public int requiredTextures() {
+		return 2;
+	}
 
-    @Override
-    public ITextureContext getContextFromData(long data){
-        return new TextureContextMCTM(data);
-    }
+	@Override
+	public ITextureContext getContextFromData(long data) {
+		return new TextureContextMCTM(data);
+	}
 }

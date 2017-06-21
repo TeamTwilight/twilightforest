@@ -14,7 +14,7 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
 public class BlockTFUncraftingTable extends Block implements ModelRegisterCallback {
-	
+
 	protected BlockTFUncraftingTable() {
 		super(Material.WOOD);
 		this.setHardness(2.5F);
@@ -22,9 +22,9 @@ public class BlockTFUncraftingTable extends Block implements ModelRegisterCallba
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    @Override
+	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-    	player.openGui(TwilightForestMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
-    	return true;
+		player.openGui(TwilightForestMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
+		return true;
 	}
 }

@@ -1,11 +1,7 @@
 package twilightforest.biomes;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -13,8 +9,6 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -37,120 +31,111 @@ import twilightforest.entity.EntityTFTroll;
 import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFGenTrollRoots;
 
+import java.util.Random;
+
 
 public class TFBiomeHighlands extends TFBiomeBase {
-    private static final WorldGenTaiga1 taigaGen1 = new WorldGenTaiga1();
-    private static final WorldGenTaiga2 taigaGen2 = new WorldGenTaiga2(false);
-    private static final WorldGenMegaPineTree megaPineGen1 = new WorldGenMegaPineTree(false, false);
-    private static final WorldGenMegaPineTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
-    private static final WorldGenBlockBlob genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
-    private static final TFGenTrollRoots genTrollRoots = new TFGenTrollRoots();
-    private static final TFGenTallGrass worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
-    
+	private static final WorldGenTaiga1 taigaGen1 = new WorldGenTaiga1();
+	private static final WorldGenTaiga2 taigaGen2 = new WorldGenTaiga2(false);
+	private static final WorldGenMegaPineTree megaPineGen1 = new WorldGenMegaPineTree(false, false);
+	private static final WorldGenMegaPineTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
+	private static final WorldGenBlockBlob genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
+	private static final TFGenTrollRoots genTrollRoots = new TFGenTrollRoots();
+	private static final TFGenTallGrass worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+
 
 	public TFBiomeHighlands(BiomeProperties props) {
 		super(props);
-		
-		((TFBiomeDecorator)decorator).hasCanopy = false;
-		
-        this.decorator.grassPerChunk = 7;
-        this.decorator.deadBushPerChunk = 1;
-        this.decorator.generateLakes = false; // actually underground water sources
 
-        undergroundMonsterList.clear();
-        undergroundMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 10, 4, 4));
-        undergroundMonsterList.add(new SpawnListEntry(EntityCreeper.class, 1, 4, 4));
-        undergroundMonsterList.add(new SpawnListEntry(EntitySlime.class, 10, 4, 4));
-        undergroundMonsterList.add(new SpawnListEntry(EntityTFTroll.class, 10, 4, 4));
+		((TFBiomeDecorator) decorator).hasCanopy = false;
+
+		this.decorator.grassPerChunk = 7;
+		this.decorator.deadBushPerChunk = 1;
+		this.decorator.generateLakes = false; // actually underground water sources
+
+		undergroundMonsterList.clear();
+		undergroundMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityCreeper.class, 1, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntitySlime.class, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityTFTroll.class, 10, 4, 4));
 	}
-	
-    @Override
-    public WorldGenAbstractTree getRandomTreeFeature(Random random)
-    {
-        if(random.nextInt(4) == 0){
-        	return taigaGen1;
-        } else if(random.nextInt(10) == 0){
-            return taigaGen2;
-        } else if(random.nextInt(3) == 0){
-            return megaPineGen1;
-        } else if(random.nextInt(13) == 0){
-            return megaPineGen2;
-        } else {
-            return birchGen;
-        }
-    }
-	
-    @Override
-    public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
-    {
-        return par1Random.nextInt(5) > 0 ? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN) : new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-    }
 
-    @Override
-    public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal)
-    {
-        this.topBlock = Blocks.GRASS.getDefaultState();
-        this.fillerBlock = Blocks.DIRT.getDefaultState();
+	@Override
+	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
+		if (random.nextInt(4) == 0) {
+			return taigaGen1;
+		} else if (random.nextInt(10) == 0) {
+			return taigaGen2;
+		} else if (random.nextInt(3) == 0) {
+			return megaPineGen1;
+		} else if (random.nextInt(13) == 0) {
+			return megaPineGen2;
+		} else {
+			return birchGen;
+		}
+	}
 
-        if (noiseVal > 1.75D)
-        {
-            this.topBlock = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT);
-        }
-        else if (noiseVal > -0.95D)
-        {
-            this.topBlock = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL);
-        }
+	@Override
+	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
+		return par1Random.nextInt(5) > 0 ? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN) : new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
+	}
 
-        this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);
-    }
+	@Override
+	public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
+		this.topBlock = Blocks.GRASS.getDefaultState();
+		this.fillerBlock = Blocks.DIRT.getDefaultState();
 
-    @Override
-    public void decorate(World world, Random rand, BlockPos pos)
-    {
-    	int dx, dy, dz;
-
-    	// boulders
-    	int maxBoulders = rand.nextInt(2);
-    	for (int i = 0; i < maxBoulders; ++i)
-    	{
-    		dx = pos.getX() + rand.nextInt(16) + 8;
-    		dz = pos.getZ() + rand.nextInt(16) + 8;
-    		genBoulder.generate(world, rand, world.getHeight(new BlockPos(dx, 0, dz)));
-    	}
-
-    	// giant ferns
-    	DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
-    	for (int i = 0; i < 7; ++i)
-    	{
-    		dx = pos.getX() + rand.nextInt(16) + 8;
-    		dz = pos.getZ() + rand.nextInt(16) + 8;
-    		dy = rand.nextInt(world.getHeight(new BlockPos(dx, 0, dz)).getY() + 32);
-    		DOUBLE_PLANT_GENERATOR.generate(world, rand, new BlockPos(dx, dy, dz));
-    	}
-    	
-    	// mushglooms
-    	for (int i = 0; i < 1; ++i)
-    	{
-    		int rx = pos.getX() + rand.nextInt(16) + 8;
-    		int rz = pos.getZ() + rand.nextInt(16) + 8;
-    		int ry = rand.nextInt(64);
-    		// mushglooms
-    		worldGenMushgloom.generate(world, rand, new BlockPos(rx, ry, rz));
-    	}
-
-		// generate roots
-		for (int i = 0; i < 24; ++i)
-		{
-		    int rx = pos.getX() + rand.nextInt(16) + 8;
-		    int ry = 64;
-		    int rz = pos.getZ() + rand.nextInt(16) + 8;
-		    genTrollRoots.generate(world, rand, new BlockPos(rx, ry, rz));
+		if (noiseVal > 1.75D) {
+			this.topBlock = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT);
+		} else if (noiseVal > -0.95D) {
+			this.topBlock = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL);
 		}
 
-    	super.decorate(world, rand, pos);
-    }
+		this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);
+	}
 
-    @Override
+	@Override
+	public void decorate(World world, Random rand, BlockPos pos) {
+		int dx, dy, dz;
+
+		// boulders
+		int maxBoulders = rand.nextInt(2);
+		for (int i = 0; i < maxBoulders; ++i) {
+			dx = pos.getX() + rand.nextInt(16) + 8;
+			dz = pos.getZ() + rand.nextInt(16) + 8;
+			genBoulder.generate(world, rand, world.getHeight(new BlockPos(dx, 0, dz)));
+		}
+
+		// giant ferns
+		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
+		for (int i = 0; i < 7; ++i) {
+			dx = pos.getX() + rand.nextInt(16) + 8;
+			dz = pos.getZ() + rand.nextInt(16) + 8;
+			dy = rand.nextInt(world.getHeight(new BlockPos(dx, 0, dz)).getY() + 32);
+			DOUBLE_PLANT_GENERATOR.generate(world, rand, new BlockPos(dx, dy, dz));
+		}
+
+		// mushglooms
+		for (int i = 0; i < 1; ++i) {
+			int rx = pos.getX() + rand.nextInt(16) + 8;
+			int rz = pos.getZ() + rand.nextInt(16) + 8;
+			int ry = rand.nextInt(64);
+			// mushglooms
+			worldGenMushgloom.generate(world, rand, new BlockPos(rx, ry, rz));
+		}
+
+		// generate roots
+		for (int i = 0; i < 24; ++i) {
+			int rx = pos.getX() + rand.nextInt(16) + 8;
+			int ry = 64;
+			int rz = pos.getZ() + rand.nextInt(16) + 8;
+			genTrollRoots.generate(world, rand, new BlockPos(rx, ry, rz));
+		}
+
+		super.decorate(world, rand, pos);
+	}
+
+	@Override
 	protected Achievement getRequiredAchievement() {
 		return TFAchievementPage.twilightProgressGlacier;
 	}

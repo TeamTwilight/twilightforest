@@ -2,14 +2,14 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * An area that we're going to destroy.  Default is just a StructureBoundingBox
  */
-public class DestroyArea
-{
+public class DestroyArea {
 
 	StructureBoundingBox destroyBox;
 

@@ -17,8 +17,6 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 
-import javax.annotation.Nullable;
-
 
 public class EntityTFHostileWolf extends EntityWolf implements IMob {
 
@@ -31,87 +29,76 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 
 	// Split out from applyEntityAttributes because of above comment
 	protected void setAttributes() {
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-    }
-
-    @Override
-    protected final void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        setAttributes();
-    }
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+	}
 
 	@Override
-    protected void initEntityAI() {
-	    super.initEntityAI();
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-    }
+	protected final void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		setAttributes();
+	}
 
-    @Override
-	public void onUpdate()
-    {
-        super.onUpdate();
-        if(!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL)
-        {
-        	setDead();
-        }
-    }
+	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	}
+
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			setDead();
+		}
+	}
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 
-    @Override
-	public boolean getCanSpawnHere()
-    {
+	@Override
+	public boolean getCanSpawnHere() {
 		// are we near a hedge maze?
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
-        return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze || isValidLightLevel())
-                && world.checkNoEntityCollision(getEntityBoundingBox())
-                && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0
-                && !world.containsAnyLiquid(getEntityBoundingBox());
-    }
-    
-    // [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
-    protected boolean isValidLightLevel()
-    {
-        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+		return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze || isValidLightLevel())
+				&& world.checkNoEntityCollision(getEntityBoundingBox())
+				&& world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0
+				&& !world.containsAnyLiquid(getEntityBoundingBox());
+	}
 
-        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
-        {
-            return false;
-        }
-        else
-        {
-            int i = this.world.getLightFromNeighbors(blockpos);
+	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
+	protected boolean isValidLightLevel() {
+		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-            if (this.world.isThundering())
-            {
-                int j = this.world.getSkylightSubtracted();
-                this.world.setSkylightSubtracted(10);
-                i = this.world.getLightFromNeighbors(blockpos);
-                this.world.setSkylightSubtracted(j);
-            }
+		if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+			return false;
+		} else {
+			int i = this.world.getLightFromNeighbors(blockpos);
 
-            return i <= this.rand.nextInt(8);
-        }
-    }
+			if (this.world.isThundering()) {
+				int j = this.world.getSkylightSubtracted();
+				this.world.setSkylightSubtracted(10);
+				i = this.world.getLightFromNeighbors(blockpos);
+				this.world.setSkylightSubtracted(j);
+			}
 
-    @Override
-	public boolean isBreedingItem(ItemStack par1ItemStack)
-    {
-    	return false;
-    }
+			return i <= this.rand.nextInt(8);
+		}
+	}
 
-    @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
-    {
-    	return false;
-    }
+	@Override
+	public boolean isBreedingItem(ItemStack par1ItemStack) {
+		return false;
+	}
+
+	@Override
+	public boolean processInteract(EntityPlayer player, EnumHand hand) {
+		return false;
+	}
 
 }

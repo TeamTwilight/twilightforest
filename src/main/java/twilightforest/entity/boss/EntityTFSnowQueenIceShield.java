@@ -15,19 +15,23 @@ public class EntityTFSnowQueenIceShield extends EntityDragonPart {
 		return false;
 	}
 
-    @Override
-    public void onUpdate() {
-    	super.onUpdate();
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
 
-    	this.ticksExisted++;
-    	
-    	lastTickPosX = posX;
-    	lastTickPosY = posY;
-    	lastTickPosZ = posZ;
+		this.ticksExisted++;
 
-    	for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
-    	for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) { }
-    	for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
-    	for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
-    }
+		lastTickPosX = posX;
+		lastTickPosY = posY;
+		lastTickPosZ = posZ;
+
+		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
+		}
+		for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) {
+		}
+		for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) {
+		}
+		for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) {
+		}
+	}
 }

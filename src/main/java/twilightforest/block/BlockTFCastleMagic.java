@@ -1,7 +1,5 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -20,26 +18,25 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
+import java.util.List;
+
 /**
- * 
  * Castle block makes a castle
- * 
- * @author Ben
  *
+ * @author Ben
  */
 public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 	public static final List<EnumDyeColor> VALID_COLORS = ImmutableList.of(EnumDyeColor.PINK, EnumDyeColor.BLUE, EnumDyeColor.YELLOW, EnumDyeColor.PURPLE);
 	public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
 
-    public BlockTFCastleMagic()
-    {
-        super(Material.ROCK);
-        this.setHardness(100F);
-        this.setResistance(15F);
-        this.setSoundType(SoundType.STONE);
+	public BlockTFCastleMagic() {
+		super(Material.ROCK);
+		this.setHardness(100F);
+		this.setResistance(15F);
+		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState().withProperty(COLOR, EnumDyeColor.PINK));
-    }
+	}
 
 	@Override
 	public BlockStateContainer createBlockState() {
@@ -58,17 +55,16 @@ public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-    }
-    
-    @Override
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
+	}
+
+	@Override
 	public int damageDropped(IBlockState state) {
-    	return getMetaFromState(state);
+		return getMetaFromState(state);
 	}
 
 	@SideOnly(Side.CLIENT)

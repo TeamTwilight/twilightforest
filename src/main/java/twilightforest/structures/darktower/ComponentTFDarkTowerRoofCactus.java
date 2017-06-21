@@ -1,27 +1,26 @@
 package twilightforest.structures.darktower;
 
-import java.util.Random;
-
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
+import java.util.Random;
+
 public class ComponentTFDarkTowerRoofCactus extends ComponentTFDarkTowerRoof {
 
-	public ComponentTFDarkTowerRoofCactus() {}
+	public ComponentTFDarkTowerRoofCactus() {
+	}
 
-	public ComponentTFDarkTowerRoofCactus(int i, ComponentTFTowerWing wing) 
-	{
+	public ComponentTFDarkTowerRoofCactus(int i, ComponentTFTowerWing wing) {
 		super(i, wing);
 	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		super.addComponentParts(world, rand, sbb);
-		
+
 		// antenna
-		for (int y = 1; y < 10; y++)
-		{
+		for (int y = 1; y < 10; y++) {
 			setBlockState(world, deco.blockState, size / 2, y, size / 2, sbb);
 		}
 		setBlockState(world, deco.accentState, size / 2, 10, size / 2, sbb);
@@ -43,7 +42,7 @@ public class ComponentTFDarkTowerRoofCactus extends ComponentTFDarkTowerRoof {
 		setBlockState(world, deco.accentState, size / 2, 7, size / 2 + 2, sbb);
 		setBlockState(world, deco.accentState, size / 2, 8, size / 2 + 2, sbb);
 		setBlockState(world, deco.accentState, size / 2, 8, size / 2 + 3, sbb);
-		
+
 		setBlockState(world, deco.accentState, size / 2 - 1, 5, size / 2, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 2, 5, size / 2, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 2, 6, size / 2, sbb);
@@ -55,7 +54,7 @@ public class ComponentTFDarkTowerRoofCactus extends ComponentTFDarkTowerRoof {
 		setBlockState(world, deco.accentState, size / 2, 5, size / 2 - 2, sbb);
 		setBlockState(world, deco.accentState, size / 2, 6, size / 2 - 2, sbb);
 		setBlockState(world, deco.accentState, size / 2, 6, size / 2 - 3, sbb);
-		
+
 
 		return true;
 	}

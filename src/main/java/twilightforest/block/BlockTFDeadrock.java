@@ -1,7 +1,5 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -25,7 +23,7 @@ public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
 
 	protected BlockTFDeadrock() {
 		super(Material.ROCK);
-        this.setHardness(100F);
+		this.setHardness(100F);
 		this.setResistance(6000000.0F);
 		this.setSoundType(SoundType.STONE);
 		this.disableStats();
@@ -50,21 +48,19 @@ public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-    	for (int i = 0; i < VARIANT.getAllowedValues().size(); i++) {
-            par3List.add(new ItemStack(par1, 1, i));
-    	}
-    }
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		for (int i = 0; i < VARIANT.getAllowedValues().size(); i++) {
+			par3List.add(new ItemStack(par1, 1, i));
+		}
+	}
 
 	@Override
-    public int damageDropped(IBlockState state)
-    {
-        return getMetaFromState(state);
-    }
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
+	@SideOnly(Side.CLIENT)
+	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}

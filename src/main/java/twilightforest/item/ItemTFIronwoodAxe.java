@@ -1,7 +1,5 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
@@ -17,11 +15,10 @@ public class ItemTFIronwoodAxe extends ItemAxe implements ModelRegisterCallback 
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    @Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-    	ItemStack istack = new ItemStack(item);
-    	istack.addEnchantment(Enchantments.FORTUNE, 1);
-        list.add(istack);
-    }
+	@Override
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+		ItemStack istack = new ItemStack(item);
+		istack.addEnchantment(Enchantments.FORTUNE, 1);
+		list.add(istack);
+	}
 }

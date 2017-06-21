@@ -1,20 +1,19 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
-import twilightforest.block.BlockTFGiantBlock;
-import twilightforest.block.TFBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.block.BlockTFGiantBlock;
+import twilightforest.block.TFBlocks;
 import twilightforest.client.ModelRegisterCallback;
+
+import java.util.List;
 
 public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallback {
 
@@ -25,11 +24,11 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 
 	}
 
-    @Override
+	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.RARE;
+		return EnumRarity.RARE;
 	}
-    
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
@@ -41,7 +40,7 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 	public float getStrVsBlock(ItemStack stack, IBlockState state) {
 		float strVsBlock = super.getStrVsBlock(stack, state);
 		// extra 64X strength vs giant obsidian
-		strVsBlock *= (state.getBlock()  == TFBlocks.giantObsidian) ? 64 : 1;
+		strVsBlock *= (state.getBlock() == TFBlocks.giantObsidian) ? 64 : 1;
 		// 64x strength vs giant blocks
 		return state.getBlock() instanceof BlockTFGiantBlock ? strVsBlock * 64 : strVsBlock;
 	}

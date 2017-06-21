@@ -14,11 +14,11 @@ import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.StructureBoundingBoxUtils;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDungeonRoom31
-{
+public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDungeonRoom31 {
 	public ComponentTFFinalCastleDungeonExit() {
 	}
 
@@ -27,29 +27,29 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	}
 
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void buildComponent(StructureComponent parent, List list, Random rand) {
-	    if (parent != null && parent instanceof StructureTFComponent) {
-		    this.deco = ((StructureTFComponent)parent).deco;
-	    }
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
+	public void buildComponent(StructureComponent parent, List list, Random rand) {
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
+		}
 
-	    // no need for additional rooms, we're along the outside anyways
+		// no need for additional rooms, we're along the outside anyways
 
-	    // add stairway down
-	    Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX, parent.getBoundingBox().minZ);
+		// add stairway down
+		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX, parent.getBoundingBox().minZ);
 
-	    ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 15, boundingBox.minY + 0, boundingBox.minZ + 15, bestDir.rotate(EnumFacing.SOUTH));
-	    list.add(steps0);
-	    steps0.buildComponent(this, list, rand);
+		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 15, boundingBox.minY + 0, boundingBox.minZ + 15, bestDir.rotate(EnumFacing.SOUTH));
+		list.add(steps0);
+		steps0.buildComponent(this, list, rand);
 
-	    // another level!?
-	    if (this.level == 1) {
-		    steps0.buildLevelUnder(parent, list, rand, this.level + 1);
-	    } else {
-		    steps0.buildBossRoomUnder(parent, list, rand);
-	    }
-    }
+		// another level!?
+		if (this.level == 1) {
+			steps0.buildLevelUnder(parent, list, rand, this.level + 1);
+		} else {
+			steps0.buildBossRoomUnder(parent, list, rand);
+		}
+	}
 
 
 	@Override
@@ -60,7 +60,7 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 2);
 		this.fillWithBlocks(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
-	    this.fillWithBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
+		this.fillWithBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
 
 
 		return true;

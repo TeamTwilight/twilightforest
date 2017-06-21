@@ -1,8 +1,5 @@
 package twilightforest.structures.lichtower;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -10,6 +7,9 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+
+import java.util.List;
+import java.util.Random;
 
 
 public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
@@ -39,8 +39,7 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation direction) {
 		if (y > 7) {
 			return super.makeTowerWing(list, rand, index, x, y, z, wingSize, wingHeight, direction);
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -48,16 +47,13 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		final IBlockState cobblestone = Blocks.COBBLESTONE.getDefaultState();
-		for (int x = 0; x < this.size; x++)
-		{
-			for (int z = 0; z < this.size; z++)
-			{
+		for (int x = 0; x < this.size; x++) {
+			for (int z = 0; z < this.size; z++) {
 				this.replaceAirAndLiquidDownwards(world, cobblestone, x, -1, z, sbb);
 			}
 		}
 		return super.addComponentParts(world, rand, sbb);
 	}
 
-	
-	
+
 }

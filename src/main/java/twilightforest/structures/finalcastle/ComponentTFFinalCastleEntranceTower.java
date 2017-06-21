@@ -7,64 +7,63 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.structures.StructureTFComponent;
-import twilightforest.util.RotationUtil;
 
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleMazeTower13
-{
+public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleMazeTower13 {
 
-	public ComponentTFFinalCastleEntranceTower() { }
+	public ComponentTFFinalCastleEntranceTower() {
+	}
 
 	public ComponentTFFinalCastleEntranceTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
 		super(rand, i, x, y, z, 3, 2, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
 	}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void buildComponent(StructureComponent parent, List list, Random rand) {
-	    if (parent != null && parent instanceof StructureTFComponent) {
-		    this.deco = ((StructureTFComponent)parent).deco;
-	    }
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
+	public void buildComponent(StructureComponent parent, List list, Random rand) {
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
+		}
 
-	    // add foundation
-	    ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(rand, 4, this);
-	    list.add(foundation);
-	    foundation.buildComponent(this, list, rand);
+		// add foundation
+		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(rand, 4, this);
+		list.add(foundation);
+		foundation.buildComponent(this, list, rand);
 
-	    // add roof
-	    StructureTFComponent roof = new ComponentTFFinalCastleRoof13Peaked(rand, 4, this);
-	    list.add(roof);
-	    roof.buildComponent(this, list, rand);
+		// add roof
+		StructureTFComponent roof = new ComponentTFFinalCastleRoof13Peaked(rand, 4, this);
+		list.add(roof);
+		roof.buildComponent(this, list, rand);
 
-	    // how many floors until the bottom?
-	    int missingFloors = (this.boundingBox.minY - 127) / 8;
+		// how many floors until the bottom?
+		int missingFloors = (this.boundingBox.minY - 127) / 8;
 
-	    // place half on the bottom
-	    int bottomFloors = missingFloors / 2;
-	    // how many are left for the middle?
-	    int middleFloors = missingFloors - bottomFloors;
+		// place half on the bottom
+		int bottomFloors = missingFloors / 2;
+		// how many are left for the middle?
+		int middleFloors = missingFloors - bottomFloors;
 
-	    // what direction can we put the side tower in, if any?
-	    EnumFacing facing = Rotation.CLOCKWISE_90.rotate(this.getCoordBaseMode());
-	    int howFar = 20;
-	    if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
+		// what direction can we put the side tower in, if any?
+		EnumFacing facing = Rotation.CLOCKWISE_90.rotate(this.getCoordBaseMode());
+		int howFar = 20;
+		if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
 			facing = Rotation.COUNTERCLOCKWISE_90.rotate(this.getCoordBaseMode());
-	        if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
+			if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
 				facing = Rotation.NONE.rotate(this.getCoordBaseMode());
-	            if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
-		            // side tower no worky
-	            }
-	        }
-        }
+				if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
+					// side tower no worky
+				}
+			}
+		}
 
-	    // add bottom tower
+		// add bottom tower
 		ComponentTFFinalCastleEntranceBottomTower eTower = new ComponentTFFinalCastleEntranceBottomTower(rand, this.getComponentType() + 1, this.boundingBox.minX + 6, this.boundingBox.minY - (middleFloors) * 8, this.boundingBox.minZ + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
 		list.add(eTower);
 		eTower.buildComponent(this, list, rand);
 
-	    // add bridge to bottom
+		// add bridge to bottom
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = opening.down(middleFloors * 8);
 
@@ -103,7 +102,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 			bridge.buildComponent(this, list, rand);
 
 			// opening
-		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
+			addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
 			return true;
 		} else {

@@ -14,15 +14,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.MathHelper;
-
 import org.lwjgl.opengl.GL11;
-
 import twilightforest.entity.passive.EntityTFQuestRam;
 
 
-
-public class ModelTFQuestRam extends ModelBase
-{
+public class ModelTFQuestRam extends ModelBase {
 	//fields
 	ModelRenderer frontbody;
 	ModelRenderer rearbody;
@@ -40,11 +36,10 @@ public class ModelTFQuestRam extends ModelBase
 
 	ModelRenderer[] segments;
 	boolean[] segmentEnabled;
-	
-	int[] colorOrder = new int[] {0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
 
-	public ModelTFQuestRam()
-	{
+	int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
+
+	public ModelTFQuestRam() {
 		textureWidth = 128;
 		textureHeight = 128;
 		setTextureOffset("head.head", 0, 70);
@@ -71,7 +66,7 @@ public class ModelTFQuestRam extends ModelBase
 		rearbody.addBox(-9F, -7.5F, 0F, 18, 15, 15);
 		rearbody.setRotationPoint(0F, -1F, 4F);
 
-		
+
 		leg1 = new ModelRenderer(this, 66, 0);
 		leg1.addBox(-3F, 10F, -3F, 6, 12, 6);
 		leg1.setRotationPoint(-6F, 2F, 13F);
@@ -135,21 +130,20 @@ public class ModelTFQuestRam extends ModelBase
 		nose.setTextureSize(128, 128);
 		setRotation(nose, 0.5235988F, 0F, 0F);
 		head.addChild(nose);
-		
+
 		segments = new ModelRenderer[16];
 		segmentEnabled = new boolean[16];
 		for (int i = 0; i < 16; i++) {
 			segments[i] = new ModelRenderer(this, 0, 104);
 			segments[i].addBox(-9F, -7.5F, 0F, 18, 15, 2);
 			segments[i].setRotationPoint(0F, -1F, 2F);
-			
+
 			segmentEnabled[i] = false;
 		}
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5);
 		frontbody.render(f5);
@@ -165,22 +159,21 @@ public class ModelTFQuestRam extends ModelBase
 		neck.render(f5);
 		//nose.render(f5);
 		head.render(f5);
-		
+
 		for (int i = 0; i < 16; i++) {
 			if (segmentEnabled[i]) {
-	            float var4 = 1.0F;
+				float var4 = 1.0F;
 				final float[] dyeRgb = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(i));
 
 				GL11.glColor3f(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
 				segments[i].render(f5);
-				
+
 			}
 		}
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z)
-	{
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -189,16 +182,15 @@ public class ModelTFQuestRam extends ModelBase
 	/**
 	 * Sets the models various rotation angles.
 	 */
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
-	{
-		this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
-		this.head.rotateAngleY = par4 / (180F / (float)Math.PI);
+	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6) {
+		this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
+		this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
 
 		this.neck.rotateAngleY = this.head.rotateAngleY;
 
 		this.leg1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2 * 0.5F;
-		this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2 * 0.5F;
-		this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2 * 0.5F;
+		this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2 * 0.5F;
+		this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2 * 0.5F;
 		this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2 * 0.5F;
 		this.haunch1.rotateAngleX = this.leg1.rotateAngleX;
 		this.haunch2.rotateAngleX = this.leg2.rotateAngleX;
@@ -206,38 +198,36 @@ public class ModelTFQuestRam extends ModelBase
 		this.haunch4.rotateAngleX = this.leg4.rotateAngleX;
 	}
 
-    /**
-     * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-     * and third as in the setRotationAngles method.
-     */
+	/**
+	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
+	 * and third as in the setRotationAngles method.
+	 */
 	@Override
 	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float partialTick) {
-		EntityTFQuestRam ram = (EntityTFQuestRam)par1EntityLiving;
-		
+		EntityTFQuestRam ram = (EntityTFQuestRam) par1EntityLiving;
+
 		// how many colors should we display?
 		int count = ram.countColorsSet();
-		
+
 		this.rearbody.rotationPointZ = 2 + 2 * count;
 		this.leg1.rotationPointZ = 11 + 2 * count;
 		this.leg2.rotationPointZ = 11 + 2 * count;
 		this.haunch1.rotationPointZ = 11 + 2 * count;
 		this.haunch2.rotationPointZ = 11 + 2 * count;
-		
+
 		// set up the colors displayed in color order
 		int segmentOffset = 2;
 		for (int color : colorOrder) {
 			if (ram.isColorPresent(EnumDyeColor.byMetadata(color))) {
 				segmentEnabled[color] = true;
 				segments[color].rotationPointZ = segmentOffset;
-				
+
 				segmentOffset += 2;
-			}
-			else {
+			} else {
 				segmentEnabled[color] = false;
 			}
 		}
 	}
 
-	
-	
+
 }

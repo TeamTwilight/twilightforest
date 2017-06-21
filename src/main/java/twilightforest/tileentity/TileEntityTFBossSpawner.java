@@ -13,50 +13,43 @@ import net.minecraft.world.EnumDifficulty;
 
 
 public abstract class TileEntityTFBossSpawner extends TileEntity implements ITickable {
-	
-    protected ResourceLocation mobID = new ResourceLocation("minecraft:pig");
-    private int counter;
-    protected Entity displayCreature = null;
 
-	public boolean anyPlayerInRange()
-    {
-        return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false) != null;
-    }
+	protected ResourceLocation mobID = new ResourceLocation("minecraft:pig");
+	private int counter;
+	protected Entity displayCreature = null;
+
+	public boolean anyPlayerInRange() {
+		return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false) != null;
+	}
 
 	@Override
-	public void update()
-    {
+	public void update() {
 		this.counter++;
 
-		if(anyPlayerInRange())
-		{
-			if (world.isRemote)
-			{
+		if (anyPlayerInRange()) {
+			if (world.isRemote) {
 				// particles
 				double rx = pos.getX() + world.rand.nextFloat();
 				double ry = pos.getY() + world.rand.nextFloat();
 				double rz = pos.getZ() + world.rand.nextFloat();
 				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 				world.spawnParticle(EnumParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
-			}
-			else
-			{
+			} else {
 				//System.out.println("Thinking about boss!");
 
-				
-				if (world.getDifficulty() != EnumDifficulty.PEACEFUL)
-				{
+
+				if (world.getDifficulty() != EnumDifficulty.PEACEFUL) {
 					spawnMyBoss();
 
 					// destroy block
 					world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
-					
+
 					//System.out.println("Spawning boss!");
 				}
 			}
 		}
 
-    }
+	}
 
 	/**
 	 * Spawn the boss
@@ -76,17 +69,15 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		// spawn it
 		world.spawnEntity(myCreature);
 	}
-	
+
 	/**
 	 * Get a temporary copy of the creature we're going to summon for display purposes
 	 */
-	public Entity getDisplayEntity()
-	{
-		if (this.displayCreature == null)
-		{
+	public Entity getDisplayEntity() {
+		if (this.displayCreature == null) {
 			this.displayCreature = makeMyCreature();
 		}
-		
+
 		return this.displayCreature;
 	}
 
@@ -94,8 +85,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	 * Any post-creation initialization goes here
 	 */
 	protected void initializeCreature(EntityLiving myCreature) {
-		if (myCreature instanceof EntityCreature)
-		{
+		if (myCreature instanceof EntityCreature) {
 			((EntityCreature) myCreature).setHomePosAndDistance(pos, 46);
 		}
 	}
@@ -105,6 +95,6 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	}
 
 	protected EntityLiving makeMyCreature() {
-		return (EntityLiving)EntityList.createEntityByIDFromName(mobID, world);
+		return (EntityLiving) EntityList.createEntityByIDFromName(mobID, world);
 	}
 }

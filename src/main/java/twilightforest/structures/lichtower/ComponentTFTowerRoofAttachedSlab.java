@@ -1,10 +1,10 @@
 package twilightforest.structures.lichtower;
 
-import java.util.Random;
-
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+
+import java.util.Random;
 
 
 public class ComponentTFTowerRoofAttachedSlab extends ComponentTFTowerRoofSlab {

@@ -19,13 +19,13 @@ import twilightforest.item.TFItems;
 
 public class BlockTFUnderBrick extends Block implements ModelRegisterCallback {
 
-    public static final PropertyEnum<UnderBrickVariant> VARIANT = PropertyEnum.create("variant", UnderBrickVariant.class);
+	public static final PropertyEnum<UnderBrickVariant> VARIANT = PropertyEnum.create("variant", UnderBrickVariant.class);
 
 	public BlockTFUnderBrick() {
 		super(Material.ROCK);
 		this.setHardness(1.5F);
 		this.setResistance(10.0F);
-        this.setSoundType(SoundType.STONE);
+		this.setSoundType(SoundType.STONE);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, UnderBrickVariant.NORMAL));
 		this.setCreativeTab(TFItems.creativeTab);
 	}
@@ -46,17 +46,16 @@ public class BlockTFUnderBrick extends Block implements ModelRegisterCallback {
 		return getDefaultState().withProperty(VARIANT, UnderBrickVariant.values()[meta]);
 	}
 
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-    }
-    
-    @Override
+	@Override
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+	}
+
+	@Override
 	public int damageDropped(IBlockState state) {
-    	return getMetaFromState(state);
+		return getMetaFromState(state);
 	}
 
 	@SideOnly(Side.CLIENT)

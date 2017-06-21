@@ -11,65 +11,43 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TFCommonProxy;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.ColorHandler;
-import twilightforest.client.model.ModelTFAdherent;
-import twilightforest.client.model.ModelTFArcticArmor;
-import twilightforest.client.model.ModelTFBighorn;
-import twilightforest.client.model.ModelTFBighornFur;
-import twilightforest.client.model.ModelTFBlockGoblin;
-import twilightforest.client.model.ModelTFBoar;
-import twilightforest.client.model.ModelTFBunny;
-import twilightforest.client.model.ModelTFDeathTome;
-import twilightforest.client.model.ModelTFDeer;
-import twilightforest.client.model.ModelTFFieryArmor;
-import twilightforest.client.model.ModelTFFireBeetle;
-import twilightforest.client.model.ModelTFGhast;
-import twilightforest.client.model.ModelTFGoblinChain;
-import twilightforest.client.model.ModelTFGoblinKnightLower;
-import twilightforest.client.model.ModelTFGoblinKnightUpper;
-import twilightforest.client.model.ModelTFHelmetCrab;
-import twilightforest.client.model.ModelTFHydra;
-import twilightforest.client.model.ModelTFHydraHead;
-import twilightforest.client.model.ModelTFHydraNeck;
-import twilightforest.client.model.ModelTFKnightPhantom2;
-import twilightforest.client.model.ModelTFKnightlyArmor;
-import twilightforest.client.model.ModelTFKobold;
-import twilightforest.client.model.ModelTFLich;
-import twilightforest.client.model.ModelTFLichMinion;
-import twilightforest.client.model.ModelTFLoyalZombie;
-import twilightforest.client.model.ModelTFMinoshroom;
-import twilightforest.client.model.ModelTFMinotaur;
-import twilightforest.client.model.ModelTFMosquitoSwarm;
-import twilightforest.client.model.ModelTFNaga;
-import twilightforest.client.model.ModelTFPenguin;
-import twilightforest.client.model.ModelTFPhantomArmor;
-import twilightforest.client.model.ModelTFPinchBeetle;
-import twilightforest.client.model.ModelTFRaven;
-import twilightforest.client.model.ModelTFRedcap;
-import twilightforest.client.model.ModelTFSkeletonDruid;
-import twilightforest.client.model.ModelTFSlimeBeetle;
-import twilightforest.client.model.ModelTFSpikeBlock;
-import twilightforest.client.model.ModelTFSquirrel;
-import twilightforest.client.model.ModelTFTinyBird;
-import twilightforest.client.model.ModelTFTowerBoss;
-import twilightforest.client.model.ModelTFTowerGolem;
-import twilightforest.client.model.ModelTFTroll;
-import twilightforest.client.model.ModelTFWraith;
-import twilightforest.client.model.ModelTFYeti;
-import twilightforest.client.model.ModelTFYetiAlpha;
-import twilightforest.client.model.ModelTFYetiArmor;
-import twilightforest.client.particle.*;
-import twilightforest.client.renderer.*;
-import twilightforest.client.renderer.entity.*;
-import twilightforest.entity.*;
-import twilightforest.entity.boss.*;
-import twilightforest.entity.passive.*;
-import twilightforest.item.TFItems;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import twilightforest.TFCommonProxy;
+import twilightforest.TwilightForestMod;
+import twilightforest.block.ColorHandler;
+import twilightforest.client.model.*;
+import twilightforest.client.particle.ParticleAnnihilate;
+import twilightforest.client.particle.ParticleGhastTear;
+import twilightforest.client.particle.ParticleGhastTrap;
+import twilightforest.client.particle.ParticleIceBeam;
+import twilightforest.client.particle.ParticleLargeFlame;
+import twilightforest.client.particle.ParticleLeafRune;
+import twilightforest.client.particle.ParticleProtection;
+import twilightforest.client.particle.ParticleSnow;
+import twilightforest.client.particle.ParticleSnowGuardian;
+import twilightforest.client.particle.ParticleSnowWarning;
+import twilightforest.client.particle.TFParticleType;
+import twilightforest.client.renderer.TileEntityTFCicadaRenderer;
+import twilightforest.client.renderer.TileEntityTFFireflyRenderer;
+import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
+import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
+import twilightforest.client.renderer.entity.*;
+import twilightforest.entity.*;
+import twilightforest.entity.boss.*;
+import twilightforest.entity.passive.EntityTFBighorn;
+import twilightforest.entity.passive.EntityTFBoar;
+import twilightforest.entity.passive.EntityTFBunny;
+import twilightforest.entity.passive.EntityTFDeer;
+import twilightforest.entity.passive.EntityTFMobileFirefly;
+import twilightforest.entity.passive.EntityTFPenguin;
+import twilightforest.entity.passive.EntityTFQuestRam;
+import twilightforest.entity.passive.EntityTFRaven;
+import twilightforest.entity.passive.EntityTFSquirrel;
+import twilightforest.entity.passive.EntityTFTinyBird;
+import twilightforest.entity.passive.EntityTFTinyFirefly;
+import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCicada;
 import twilightforest.tileentity.TileEntityTFFirefly;
 import twilightforest.tileentity.TileEntityTFMoonworm;
@@ -217,7 +195,7 @@ public class TFClientProxy extends TFCommonProxy {
 		MinecraftForgeClient.registerItemRenderer(TFItems.fieryLegs, fieryRenderer);
 		MinecraftForgeClient.registerItemRenderer(TFItems.fieryBoots, fieryRenderer);
 */
-		
+
 		// block render ids
 //FIXME: AtomicBlom: These all need BlockState models.
 /*		RenderingRegistry.registerBlockHandler(new RenderBlockTFFireflyJar(blockComplexRenderID));
@@ -259,21 +237,18 @@ public class TFClientProxy extends TFCommonProxy {
 	public World getClientWorld() {
 		return FMLClientHandler.instance().getClient().world;
 	}
-	
+
 
 	// [VanillaCopy] adapted from RenderGlobal.spawnEntityFX
 	@Override
-	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ)
-	{
+	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {
 		Minecraft mc = Minecraft.getMinecraft();
 		Entity entity = mc.getRenderViewEntity();
 
-		if (entity != null && mc.effectRenderer != null)
-		{
+		if (entity != null && mc.effectRenderer != null) {
 			int i = mc.gameSettings.particleSetting;
 
-			if (i == 1 && world.rand.nextInt(3) == 0)
-			{
+			if (i == 1 && world.rand.nextInt(3) == 0) {
 				i = 2;
 			}
 
@@ -285,16 +260,36 @@ public class TFClientProxy extends TFCommonProxy {
 				Particle particle = null;
 
 				switch (particleType) {
-					case LARGE_FLAME: particle = new ParticleLargeFlame(world, x, y, z, velX, velY, velZ); break;
-					case LEAF_RUNE: particle = new ParticleLeafRune(world, x, y, z, velX, velY, velZ); break;
-					case BOSS_TEAR: particle = new ParticleGhastTear(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR); break;
-					case GHAST_TRAP: particle = new ParticleGhastTrap(world, x, y, z, velX, velY, velZ); break;
-					case PROTECTION: particle = new ParticleProtection(world, x, y, z, velX, velY, velZ); break;
-					case SNOW: particle = new ParticleSnow(world, x, y, z, velX, velY, velZ); break;
-					case SNOW_GUARDIAN: particle = new ParticleSnowGuardian(world, x, y, z, velX, velY, velZ, 0.75F); break;
-					case SNOW_WARNING: particle = new ParticleSnowWarning(world, x, y, z, velX, velY, velZ, 1F); break;
-					case ICE_BEAM: particle = new ParticleIceBeam(world, x, y, z, velX, velY, velZ, 0.75F); break;
-					case ANNIHILATE: particle = new ParticleAnnihilate(world, x, y, z, velX, velY, velZ, 0.75F); break;
+					case LARGE_FLAME:
+						particle = new ParticleLargeFlame(world, x, y, z, velX, velY, velZ);
+						break;
+					case LEAF_RUNE:
+						particle = new ParticleLeafRune(world, x, y, z, velX, velY, velZ);
+						break;
+					case BOSS_TEAR:
+						particle = new ParticleGhastTear(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR);
+						break;
+					case GHAST_TRAP:
+						particle = new ParticleGhastTrap(world, x, y, z, velX, velY, velZ);
+						break;
+					case PROTECTION:
+						particle = new ParticleProtection(world, x, y, z, velX, velY, velZ);
+						break;
+					case SNOW:
+						particle = new ParticleSnow(world, x, y, z, velX, velY, velZ);
+						break;
+					case SNOW_GUARDIAN:
+						particle = new ParticleSnowGuardian(world, x, y, z, velX, velY, velZ, 0.75F);
+						break;
+					case SNOW_WARNING:
+						particle = new ParticleSnowWarning(world, x, y, z, velX, velY, velZ, 1F);
+						break;
+					case ICE_BEAM:
+						particle = new ParticleIceBeam(world, x, y, z, velX, velY, velZ, 0.75F);
+						break;
+					case ANNIHILATE:
+						particle = new ParticleAnnihilate(world, x, y, z, velX, velY, velZ, 0.75F);
+						break;
 					case HUGE_SMOKE:
 						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x, y, z, velX, velY, velZ, 8);
 				}
@@ -310,12 +305,12 @@ public class TFClientProxy extends TFCommonProxy {
 	public ModelBiped getKnightlyArmorModel(EntityEquipmentSlot armorSlot) {
 		return knightlyArmorModel.get(armorSlot);
 	}
-	
+
 	@Override
 	public ModelBiped getPhantomArmorModel(EntityEquipmentSlot armorSlot) {
 		return phantomArmorModel.get(armorSlot);
 	}
-	
+
 	@Override
 	public ModelBiped getYetiArmorModel(EntityEquipmentSlot armorSlot) {
 		return yetiArmorModel.get(armorSlot);
@@ -325,8 +320,8 @@ public class TFClientProxy extends TFCommonProxy {
 	public ModelBiped getArcticArmorModel(EntityEquipmentSlot armorSlot) {
 		return arcticArmorModel.get(armorSlot);
 	}
-	
-	
+
+
 	@Override
 	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
 		return this.fieryArmorModel.get(armorSlot);
@@ -338,29 +333,26 @@ public class TFClientProxy extends TFCommonProxy {
 
 	public void setDangerOverlayShown(boolean isDangerOverlayShown) {
 		this.isDangerOverlayShown = isDangerOverlayShown;
-		
+
 	}
-	
+
 	@Override
 	public void doBlockAnnihilateEffect(World world, BlockPos pos) {
-        for (int dx = 0; dx < 4; ++dx)
-        {
-            for (int dy = 0; dy < 4; ++dy)
-            {
-                for (int dz = 0; dz < 4; ++dz)
-                {
-                    double d0 = (double)pos.getX() + ((double)dx + 0.5D) / (double)4;
-                    double d1 = (double)pos.getY() + ((double)dy + 0.5D) / (double)4;
-                    double d2 = (double)pos.getZ() + ((double)dz + 0.5D) / (double)4;
-                    
-        	        double gx = world.rand.nextGaussian() * 0.2D;
-        	        double gy = world.rand.nextGaussian() * 0.2D;
-        	        double gz = world.rand.nextGaussian() * 0.2D;
+		for (int dx = 0; dx < 4; ++dx) {
+			for (int dy = 0; dy < 4; ++dy) {
+				for (int dz = 0; dz < 4; ++dz) {
+					double d0 = (double) pos.getX() + ((double) dx + 0.5D) / (double) 4;
+					double d1 = (double) pos.getY() + ((double) dy + 0.5D) / (double) 4;
+					double d2 = (double) pos.getZ() + ((double) dz + 0.5D) / (double) 4;
 
-        			TwilightForestMod.proxy.spawnParticle(world, TFParticleType.ANNIHILATE, d0, d1, d2, gx, gy, gz);
-                }
-            }
-        }
+					double gx = world.rand.nextGaussian() * 0.2D;
+					double gy = world.rand.nextGaussian() * 0.2D;
+					double gz = world.rand.nextGaussian() * 0.2D;
+
+					TwilightForestMod.proxy.spawnParticle(world, TFParticleType.ANNIHILATE, d0, d1, d2, gx, gy, gz);
+				}
+			}
+		}
 	}
 
 }

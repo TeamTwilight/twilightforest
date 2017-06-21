@@ -5,10 +5,6 @@
 // - ZeuX
 
 
-
-
-
-
 package twilightforest.client.model;
 
 import net.minecraft.client.model.ModelBase;
@@ -19,16 +15,14 @@ import twilightforest.tileentity.TileEntityTFMoonworm;
 
 import javax.annotation.Nullable;
 
-public class ModelTFMoonworm extends ModelBase
-{
+public class ModelTFMoonworm extends ModelBase {
 	//fields
 	ModelRenderer Shape1;
 	ModelRenderer Shape2;
 	ModelRenderer Shape3;
 	ModelRenderer head;
 
-	public ModelTFMoonworm()
-	{
+	public ModelTFMoonworm() {
 		textureWidth = 32;
 		textureHeight = 32;
 
@@ -50,8 +44,7 @@ public class ModelTFMoonworm extends ModelBase
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		Shape1.render(f5);
@@ -60,8 +53,7 @@ public class ModelTFMoonworm extends ModelBase
 		head.render(f5);
 	}
 
-	public void render(float f5)
-	{
+	public void render(float f5) {
 		Shape1.render(f5);
 		Shape2.render(f5);
 		Shape3.render(f5);
@@ -69,8 +61,7 @@ public class ModelTFMoonworm extends ModelBase
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-	{
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
 
@@ -80,19 +71,18 @@ public class ModelTFMoonworm extends ModelBase
 		Shape1.rotationPointY = 7F;
 		Shape2.rotationPointY = 7F;
 		Shape3.rotationPointY = 7F;
-		
-		if (moonworm != null && moonworm.yawDelay == 0)
-		{
+
+		if (moonworm != null && moonworm.yawDelay == 0) {
 			float time = (moonworm.desiredYaw - moonworm.currentYaw) - partialTime;
-			
+
 			// moving
 			head.rotationPointY += Math.min(0, MathHelper.sin(time / 2));
 			Shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
 			Shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
 			Shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
-			
+
 		}
-		
+
 	}
 
 }

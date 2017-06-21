@@ -1,6 +1,5 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
@@ -16,11 +15,11 @@ import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 import twilightforest.util.RotationUtil;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
-{
+public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
 	public ComponentTFFinalCastleDungeonRoom31() {
@@ -36,40 +35,40 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, EnumFacing.SOUTH);
 	}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void buildComponent(StructureComponent parent, List list, Random rand) {
-	    if (parent != null && parent instanceof StructureTFComponent) {
-		    this.deco = ((StructureTFComponent)parent).deco;
-	    }
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
+	public void buildComponent(StructureComponent parent, List list, Random rand) {
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
+		}
 
-	    int mySpread = this.getComponentType() - parent.getComponentType();
-	    int maxSpread = (this.level == 1) ? 2 : 3;
+		int mySpread = this.getComponentType() - parent.getComponentType();
+		int maxSpread = (this.level == 1) ? 2 : 3;
 
-	    // add exit if we're far enough away and don't have one
-	    if (mySpread == maxSpread && !isExitBuildForLevel(parent)) {
-		    Rotation direction = RotationUtil.getRandomRotation(rand);
-		    for (int i = 0; i < 8 && !isExitBuildForLevel(parent); i++) {
-			    direction = direction.add(RotationUtil.ROTATIONS[i&3]);
-			    if (this.addDungeonExit(parent, list, rand, direction)) {
-				    this.setExitBuiltForLevel(parent, true);
-			    }
-		    }
-	    }
+		// add exit if we're far enough away and don't have one
+		if (mySpread == maxSpread && !isExitBuildForLevel(parent)) {
+			Rotation direction = RotationUtil.getRandomRotation(rand);
+			for (int i = 0; i < 8 && !isExitBuildForLevel(parent); i++) {
+				direction = direction.add(RotationUtil.ROTATIONS[i & 3]);
+				if (this.addDungeonExit(parent, list, rand, direction)) {
+					this.setExitBuiltForLevel(parent, true);
+				}
+			}
+		}
 
-	    // add other rooms
-	    if (mySpread < maxSpread) {
-		    Rotation direction = RotationUtil.getRandomRotation(rand);
-		    for (int i = 0; i < 12; i++) {
-			    direction = direction.add(RotationUtil.ROTATIONS[i&3]);
-			    this.addDungeonRoom(parent, list, rand, direction, this.level);
-		    }
-	    }
-    }
+		// add other rooms
+		if (mySpread < maxSpread) {
+			Rotation direction = RotationUtil.getRandomRotation(rand);
+			for (int i = 0; i < 12; i++) {
+				direction = direction.add(RotationUtil.ROTATIONS[i & 3]);
+				this.addDungeonRoom(parent, list, rand, direction, this.level);
+			}
+		}
+	}
 
 	private boolean isExitBuildForLevel(StructureComponent parent) {
 		if (parent instanceof ComponentTFFinalCastleDungeonEntrance) {
-			return ((ComponentTFFinalCastleDungeonEntrance)parent).hasExit;
+			return ((ComponentTFFinalCastleDungeonEntrance) parent).hasExit;
 		} else {
 			return false;
 		}
@@ -77,8 +76,9 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 
 	private void setExitBuiltForLevel(StructureComponent parent, boolean exit) {
 		if (parent instanceof ComponentTFFinalCastleDungeonEntrance) {
-			((ComponentTFFinalCastleDungeonEntrance)parent).hasExit = exit;
-		} else {}
+			((ComponentTFFinalCastleDungeonEntrance) parent).hasExit = exit;
+		} else {
+		}
 	}
 
 	protected boolean addDungeonRoom(StructureComponent parent, List list, Random rand, Rotation rotation, int level) {
@@ -131,7 +131,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		}
 
 		switch (rotation) {
-		default:
+			default:
 			case NONE:
 				return new BlockPos(this.boundingBox.maxX + 9, this.boundingBox.minY, this.boundingBox.minZ + offset);
 			case CLOCKWISE_90:
@@ -145,9 +145,9 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-        if (this.isBoundingBoxOutOfPlateau(world, sbb)) {
-            return false;
-        }
+		if (this.isBoundingBoxOutOfPlateau(world, sbb)) {
+			return false;
+		}
 
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
@@ -160,7 +160,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 		final IBlockState castleMagic = TFBlocks.castleMagic.getDefaultState()
 				.withProperty(BlockTFCastleMagic.COLOR, runeMeta);
 
-		for (Rotation rotation: RotationUtil.ROTATIONS) {
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			int cs = 7;
 
 			this.fillBlocksRotated(world, sbb, cs, 0, cs + 1, cs, this.height - 1, this.size - 2 - cs, forceField, rotation);
@@ -178,23 +178,23 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing
 	}
 
 	private boolean isBoundingBoxOutOfPlateau(World world, StructureBoundingBox sbb) {
-        int minX = this.boundingBox.minX - 1;
-        int minZ = this.boundingBox.minZ - 1;
-        int maxX = this.boundingBox.maxX + 1;
-        int maxZ = this.boundingBox.maxZ + 1;
+		int minX = this.boundingBox.minX - 1;
+		int minZ = this.boundingBox.minZ - 1;
+		int maxX = this.boundingBox.maxX + 1;
+		int maxZ = this.boundingBox.maxZ + 1;
 
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
-        for (int x = minX; x <= maxX; x++) {
-	        for (int z = minZ; z <= maxZ; z++) {
-	        	pos.setPos(x, 0, z);
-		        if (world.getBiome(pos) != TFBiomes.highlandsCenter && world.getBiome(pos) != TFBiomes.thornlands) {
-			        return true;
-		        }
-	        }
-        }
+		for (int x = minX; x <= maxX; x++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				pos.setPos(x, 0, z);
+				if (world.getBiome(pos) != TFBiomes.highlandsCenter && world.getBiome(pos) != TFBiomes.thornlands) {
+					return true;
+				}
+			}
+		}
 
-        return false;
+		return false;
 	}
 
 	protected EnumDyeColor getRuneMeta(EnumDyeColor forceFieldMeta) {

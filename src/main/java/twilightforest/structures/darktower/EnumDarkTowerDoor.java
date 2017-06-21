@@ -1,7 +1,6 @@
 package twilightforest.structures.darktower;
 
-public enum EnumDarkTowerDoor 
-{
+public enum EnumDarkTowerDoor {
 	VANISHING,
 	REAPPEARING,
 	LOCKED

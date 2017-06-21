@@ -5,10 +5,6 @@
 // - ZeuX
 
 
-
-
-
-
 package twilightforest.client.model;
 
 
@@ -16,11 +12,9 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-
 import org.lwjgl.opengl.GL11;
 
-public class ModelTFPenguin extends ModelBase
-{
+public class ModelTFPenguin extends ModelBase {
 	//fields
 	ModelRenderer body;
 	ModelRenderer rightarm;
@@ -30,8 +24,7 @@ public class ModelTFPenguin extends ModelBase
 	ModelRenderer head;
 	ModelRenderer beak;
 
-	public ModelTFPenguin()
-	{
+	public ModelTFPenguin() {
 		textureWidth = 64;
 		textureHeight = 32;
 
@@ -46,7 +39,7 @@ public class ModelTFPenguin extends ModelBase
 		leftarm = new ModelRenderer(this, 24, 18);
 		leftarm.addBox(0F, -1F, -2F, 1, 8, 4);
 		leftarm.setRotationPoint(4F, 15F, 0F);
-		
+
 		leftarm.mirror = true;
 
 
@@ -67,61 +60,56 @@ public class ModelTFPenguin extends ModelBase
 		beak = new ModelRenderer(this, 0, 13);
 		beak.addBox(-1F, 0F, -1F, 2, 1, 2);
 		beak.setRotationPoint(0F, -1F, -4F);
-		
+
 		head.addChild(beak);
 
 	}
-	
-	  /**
-     * Sets the models various rotation angles then renders the model.
-     */
-    @Override
-    public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
-    {
-        setRotationAngles(par2, par3, par4, par5, par6, par7);
 
-        if (isChild)
-        {
-            float f = 2.0F;
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 5F * par7, 0.75F * par7);
-            head.render(par7);
-            GL11.glPopMatrix();
-            GL11.glPushMatrix();
-            GL11.glScalef(1.0F / f, 1.0F / f, 1.0F / f);
-            GL11.glTranslatef(0.0F, 24F * par7, 0.0F);
-            body.render(par7);
-            rightleg.render(par7);
-            leftleg.render(par7);
-            rightarm.render(par7);
-            leftarm.render(par7);
-            GL11.glPopMatrix();
-        }
-        else
-        {
-            head.render(par7);
-            body.render(par7);
-            rightleg.render(par7);
-            leftleg.render(par7);
-            rightarm.render(par7);
-            leftarm.render(par7);
-        }
-    }
-	
-    /**
-     * Sets the models various rotation angles.
-     */
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
-    {
-        head.rotateAngleX = par5 / (180F / (float)Math.PI);
-        head.rotateAngleY = par4 / (180F / (float)Math.PI);
+	/**
+	 * Sets the models various rotation angles then renders the model.
+	 */
+	@Override
+	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
+		setRotationAngles(par2, par3, par4, par5, par6, par7);
 
-        rightleg.rotateAngleX = MathHelper.cos(par1) * 0.7F * par2;
-        leftleg.rotateAngleX = MathHelper.cos(par1 + (float)Math.PI) * 0.7F * par2;
-        
-        rightarm.rotateAngleZ = par3;
-        leftarm.rotateAngleZ = -par3;
-    }
+		if (isChild) {
+			float f = 2.0F;
+			GL11.glPushMatrix();
+			GL11.glTranslatef(0.0F, 5F * par7, 0.75F * par7);
+			head.render(par7);
+			GL11.glPopMatrix();
+			GL11.glPushMatrix();
+			GL11.glScalef(1.0F / f, 1.0F / f, 1.0F / f);
+			GL11.glTranslatef(0.0F, 24F * par7, 0.0F);
+			body.render(par7);
+			rightleg.render(par7);
+			leftleg.render(par7);
+			rightarm.render(par7);
+			leftarm.render(par7);
+			GL11.glPopMatrix();
+		} else {
+			head.render(par7);
+			body.render(par7);
+			rightleg.render(par7);
+			leftleg.render(par7);
+			rightarm.render(par7);
+			leftarm.render(par7);
+		}
+	}
+
+	/**
+	 * Sets the models various rotation angles.
+	 */
+	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6) {
+		head.rotateAngleX = par5 / (180F / (float) Math.PI);
+		head.rotateAngleY = par4 / (180F / (float) Math.PI);
+
+		rightleg.rotateAngleX = MathHelper.cos(par1) * 0.7F * par2;
+		leftleg.rotateAngleX = MathHelper.cos(par1 + (float) Math.PI) * 0.7F * par2;
+
+		rightarm.rotateAngleZ = par3;
+		leftarm.rotateAngleZ = -par3;
+	}
 
 
 }

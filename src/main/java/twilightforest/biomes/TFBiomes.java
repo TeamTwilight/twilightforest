@@ -3,12 +3,11 @@ package twilightforest.biomes;
 import net.minecraft.world.biome.Biome;
 import twilightforest.TwilightForestMod;
 
-import static net.minecraftforge.fml.common.registry.GameRegistry.*;
+import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 @SuppressWarnings("ALL")
 @ObjectHolder(TwilightForestMod.ID)
-public class TFBiomes
-{
+public class TFBiomes {
 	@ObjectHolder("twilight_lake")
 	public static final Biome tfLake;
 	@ObjectHolder("twilight_forest")

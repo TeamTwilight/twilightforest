@@ -25,15 +25,15 @@ public class EntityTFLichBolt extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-        makeTrail();
+		makeTrail();
 	}
-	
+
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			
+			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
+
 			double s1 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.17F;
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;
@@ -42,54 +42,46 @@ public class EntityTFLichBolt extends EntityThrowable {
 		}
 	}
 
-    @Override
-	public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-    
-    @Override
-	public float getCollisionBorderSize()
-    {
-        return 1.0F;
-    }
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
 
 	@Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i)
-    {
-        super.attackEntityFrom(damagesource, i);
+	public float getCollisionBorderSize() {
+		return 1.0F;
+	}
 
-		if (!this.world.isRemote && damagesource.getSourceOfDamage() != null)
-		{
+	@Override
+	public boolean attackEntityFrom(DamageSource damagesource, float i) {
+		super.attackEntityFrom(damagesource, i);
+
+		if (!this.world.isRemote && damagesource.getSourceOfDamage() != null) {
 			Vec3d vec3d = damagesource.getSourceOfDamage().getLookVec();
-			if (vec3d != null)
-			{
+			if (vec3d != null) {
 				// reflect faster and more accurately
 				this.setThrowableHeading(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.5F, 0.1F);  // reflect faster and more accurately
 			}
 
-			if (damagesource.getEntity() instanceof EntityLivingBase)
-			{
-				this.thrower = (EntityLivingBase)damagesource.getEntity();
+			if (damagesource.getEntity() instanceof EntityLivingBase) {
+				this.thrower = (EntityLivingBase) damagesource.getEntity();
 			}
 			return true;
 		} else {
 			return false;
 		}
-    }
-	
-	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.001F;
-    }
+	}
 
-    @SideOnly(Side.CLIENT)
+	@Override
+	protected float getGravityVelocity() {
+		return 0.001F;
+	}
+
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			for (int i = 0; i < 8; ++i)
-			{
+			for (int i = 0; i < 8; ++i) {
 				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
 			}
 		} else {

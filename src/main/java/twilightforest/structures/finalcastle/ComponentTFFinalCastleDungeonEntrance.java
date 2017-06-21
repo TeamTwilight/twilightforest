@@ -1,6 +1,5 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
@@ -13,11 +12,11 @@ import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFDecoratorCastle;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastleDungeonRoom31
-{
+public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastleDungeonRoom31 {
 	public boolean hasExit = false;
 
 	public ComponentTFFinalCastleDungeonEntrance() {
@@ -27,21 +26,21 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 		super(rand, i, x, y, z, direction, level);
 	}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void buildComponent(StructureComponent parent, List list, Random rand) {
-	    this.deco = new StructureTFDecoratorCastle();
-	    this.deco.blockState = TFBlocks.castleMagic
-			    .getDefaultState()
-			    .withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(2));
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
+	public void buildComponent(StructureComponent parent, List list, Random rand) {
+		this.deco = new StructureTFDecoratorCastle();
+		this.deco.blockState = TFBlocks.castleMagic
+				.getDefaultState()
+				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(2));
 
-	    this.deco.fenceState = TFBlocks.forceField
-	            .getDefaultState()
-	            .withProperty(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(1));
+		this.deco.fenceState = TFBlocks.forceField
+				.getDefaultState()
+				.withProperty(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(1));
 
-	    // this is going to be the parent for all rooms on this level
-	    super.buildComponent(this, list, rand);
-    }
+		// this is going to be the parent for all rooms on this level
+		super.buildComponent(this, list, rand);
+	}
 
 
 	@Override
@@ -63,7 +62,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 		final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 2);
 		this.fillWithBlocks(world, sbb, 23, 0, 12, 23, 3, 14, castleDoor, AIR, false);
-	    this.fillWithBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
+		this.fillWithBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
 
 
 		return true;

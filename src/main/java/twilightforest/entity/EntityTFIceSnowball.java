@@ -19,42 +19,39 @@ public class EntityTFIceSnowball extends EntityThrowable {
 	public EntityTFIceSnowball(World par1World, EntityLivingBase par2EntityLiving) {
 		super(par1World, par2EntityLiving);
 	}
-	
+
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-        makeTrail();
+		makeTrail();
 	}
 
 	@Override
-    protected float getGravityVelocity()
-    {
+	protected float getGravityVelocity() {
 		return 0.006F;
-    }
+	}
 
 	public void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
+			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			world.spawnParticle(EnumParticleTypes.SNOWBALL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i)
-    {
-    	super.attackEntityFrom(damagesource, i);
+	public boolean attackEntityFrom(DamageSource damagesource, float i) {
+		super.attackEntityFrom(damagesource, i);
 		die();
-        return true;
-    }
+		return true;
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			for (int j = 0; j < 8; ++j)
-			{
+			for (int j = 0; j < 8; ++j) {
 				this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 			}
 		} else {
@@ -64,8 +61,7 @@ public class EntityTFIceSnowball extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		if (!world.isRemote && result.entityHit instanceof EntityLivingBase)
-		{
+		if (!world.isRemote && result.entityHit instanceof EntityLivingBase) {
 			result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), DAMAGE);
 			// TODO: damage armor?
 		}
@@ -74,8 +70,7 @@ public class EntityTFIceSnowball extends EntityThrowable {
 	}
 
 	private void die() {
-		if (!this.world.isRemote)
-		{
+		if (!this.world.isRemote) {
 			this.world.setEntityState(this, (byte) 3);
 			this.setDead();
 		}

@@ -1,7 +1,5 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
@@ -16,12 +14,11 @@ public class ItemTFSteeleafSword extends ItemSword implements ModelRegisterCallb
 		super(material);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-	
-    @Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-    	ItemStack istack = new ItemStack(item);
-    	istack.addEnchantment(Enchantments.LOOTING, 2);
-        list.add(istack);
-    }
+
+	@Override
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+		ItemStack istack = new ItemStack(item);
+		istack.addEnchantment(Enchantments.LOOTING, 2);
+		list.add(istack);
+	}
 }

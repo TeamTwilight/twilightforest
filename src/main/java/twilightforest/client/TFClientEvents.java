@@ -1,8 +1,5 @@
 package twilightforest.client;
 
-import java.util.Random;
-import java.util.UUID;
-
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,23 +9,23 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
-
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
-
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFBowBase;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import twilightforest.world.WorldProviderTwilightForest;
+
+import java.util.Random;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class TFClientEvents {
@@ -49,8 +46,8 @@ public class TFClientEvents {
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "items/snow_3"));
 	}
 
-    /**
-     * Do ice effect on slowed monsters
+	/**
+	 * Do ice effect on slowed monsters
 	 */
 	@SubscribeEvent
 	public static void renderLivingPost(RenderLivingEvent.Post event) {
@@ -62,27 +59,23 @@ public class TFClientEvents {
 		}
 	}
 
-    /**
-     * Alter FOV for our bows
+	/**
+	 * Alter FOV for our bows
 	 */
 	@SubscribeEvent
 	public static void fovUpdate(FOVUpdateEvent event) {
-        if (event.getEntity().isHandActive() && (event.getEntity().getHeldItem(event.getEntity().getActiveHand()).getItem() instanceof ItemTFBowBase))
-        {
-            int i = event.getEntity().getItemInUseCount();
-            float f1 = (float)i / 20.0F;
+		if (event.getEntity().isHandActive() && (event.getEntity().getHeldItem(event.getEntity().getActiveHand()).getItem() instanceof ItemTFBowBase)) {
+			int i = event.getEntity().getItemInUseCount();
+			float f1 = (float) i / 20.0F;
 
-            if (f1 > 1.0F)
-            {
-                f1 = 1.0F;
-            }
-            else
-            {
-                f1 *= f1;
-            }
+			if (f1 > 1.0F) {
+				f1 = 1.0F;
+			} else {
+				f1 *= f1;
+			}
 
-            event.setNewfov(event.getNewfov() * (1.0F - f1 * 0.15F));
-        }
+			event.setNewfov(event.getNewfov() * (1.0F - f1 * 0.15F));
+		}
 	}
 
 	/**
@@ -99,13 +92,13 @@ public class TFClientEvents {
 
 		// number of cubes
 		int numCubes = (int) (entity.height / 0.4F);
-		
+
 		// make cubes
 		for (int i = 0; i < numCubes; i++) {
 			GlStateManager.pushMatrix();
-			float dx = (float)(x + random.nextGaussian() * 0.2F * entity.width);
-			float dy = (float)(y + random.nextGaussian() * 0.2F * entity.height) + entity.height / 2F;
-			float dz = (float)(z + random.nextGaussian() * 0.2F * entity.width);
+			float dx = (float) (x + random.nextGaussian() * 0.2F * entity.width);
+			float dy = (float) (y + random.nextGaussian() * 0.2F * entity.height) + entity.height / 2F;
+			float dz = (float) (z + random.nextGaussian() * 0.2F * entity.width);
 			GlStateManager.translate(dx, dy, dz);
 			GlStateManager.scale(0.5F, 0.5F, 0.5F);
 			GlStateManager.rotate(random.nextFloat() * 360F, 1.0F, 0.0F, 0.0F);
@@ -132,15 +125,13 @@ public class TFClientEvents {
 		((BlockLeaves) TFBlocks.magicLeaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
 
 		// only fire if we're in the twilight forest
-		if (world != null && (world.provider instanceof WorldProviderTwilightForest))
-		{
+		if (world != null && (world.provider instanceof WorldProviderTwilightForest)) {
 			// vignette
-			if (mc.ingameGUI != null)
-			{
+			if (mc.ingameGUI != null) {
 				mc.ingameGUI.prevVignetteBrightness = 0.0F;
 			}
 
 		}
 	}
-	
+
 }

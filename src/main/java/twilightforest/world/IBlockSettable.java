@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 // tree generators
 // todo 1.9 improve this?
 public interface IBlockSettable {
-    // [VanillaCopy] pin to signature of WorldGenerator.setBlockAndNotifyAdequately
-    // But cannot have exact same name as the subclass methods will get reobf-ed but the interface one won't
-    void setBlockAndNotify(World world, BlockPos pos, IBlockState state);
+	// [VanillaCopy] pin to signature of WorldGenerator.setBlockAndNotifyAdequately
+	// But cannot have exact same name as the subclass methods will get reobf-ed but the interface one won't
+	void setBlockAndNotify(World world, BlockPos pos, IBlockState state);
 }

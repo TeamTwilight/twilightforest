@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -14,17 +13,13 @@ import twilightforest.block.enums.TowerDeviceVariant;
 
 import javax.annotation.Nonnull;
 
-public class ItemTFTowerKey extends ItemTF 
-{
+public class ItemTFTowerKey extends ItemTF {
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fx, float fy, float fz)
-	{
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fx, float fy, float fz) {
 		IBlockState state = world.getBlockState(pos);
-		if (state.getBlock() == TFBlocks.towerDevice && state.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED)
-		{
-			if (!world.isRemote)
-			{
+		if (state.getBlock() == TFBlocks.towerDevice && state.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
+			if (!world.isRemote) {
 				BlockTFTowerDevice.unlockBlock(world, pos);
 				player.getHeldItem(hand).shrink(1);
 			}

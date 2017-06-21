@@ -7,13 +7,13 @@ public class TFBiomeDeepMushrooms extends TFBiomeBase {
 		super(props);
 
 		getTFBiomeDecorator().setTreesPerChunk(1);
-        
-        getTFBiomeDecorator().setMushroomsPerChunk(12);
-        getTFBiomeDecorator().setBigMushroomsPerChunk(8);
-        
-        getTFBiomeDecorator().myceliumPerChunk = 3;
-        getTFBiomeDecorator().alternateCanopyChance = 0.9F;
-        
+
+		getTFBiomeDecorator().setMushroomsPerChunk(12);
+		getTFBiomeDecorator().setBigMushroomsPerChunk(8);
+
+		getTFBiomeDecorator().myceliumPerChunk = 3;
+		getTFBiomeDecorator().alternateCanopyChance = 0.9F;
+
 	}
-	
+
 }

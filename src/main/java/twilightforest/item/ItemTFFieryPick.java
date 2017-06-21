@@ -1,8 +1,5 @@
 package twilightforest.item;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -23,6 +20,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber
 public class ItemTFFieryPick extends ItemPickaxe {
@@ -40,11 +39,9 @@ public class ItemTFFieryPick extends ItemPickaxe {
 			List<ItemStack> removeThese = new ArrayList<ItemStack>();
 			List<ItemStack> addThese = new ArrayList<ItemStack>();
 
-			for (ItemStack input : event.getDrops())
-			{
+			for (ItemStack input : event.getDrops()) {
 				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
-				if (!result.isEmpty())
-				{
+				if (!result.isEmpty()) {
 					addThese.add(new ItemStack(result.getItem(), input.getCount(), result.getItemDamage()));
 					removeThese.add(input);
 
@@ -52,31 +49,25 @@ public class ItemTFFieryPick extends ItemPickaxe {
 					int i = result.getCount();
 					float f = FurnaceRecipes.instance().getSmeltingExperience(result);
 
-					if (f == 0.0F)
-					{
+					if (f == 0.0F) {
 						i = 0;
-					}
-					else if (f < 1.0F)
-					{
-						int j = MathHelper.floor((float)i * f);
+					} else if (f < 1.0F) {
+						int j = MathHelper.floor((float) i * f);
 
-						if (j < MathHelper.ceil((float)i * f) && Math.random() < (double)((float)i * f - (float)j))
-						{
+						if (j < MathHelper.ceil((float) i * f) && Math.random() < (double) ((float) i * f - (float) j)) {
 							++j;
 						}
 
 						i = j;
 					}
 
-					while (i > 0)
-					{
+					while (i > 0) {
 						int k = EntityXPOrb.getXPSplit(i);
 						i -= k;
 						event.getHarvester().world.spawnEntity(new EntityXPOrb(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
 					}
 
-					for (int var1 = 0; var1 < 5; ++var1)
-					{
+					for (int var1 = 0; var1 < 5; ++var1) {
 						double rx = itemRand.nextGaussian() * 0.02D;
 						double ry = itemRand.nextGaussian() * 0.02D;
 						double rz = itemRand.nextGaussian() * 0.02D;
@@ -94,14 +85,12 @@ public class ItemTFFieryPick extends ItemPickaxe {
 		}
 	}
 
-    @Override
+	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, @Nullable EntityLivingBase attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
-		
-		if (result && !target.isImmuneToFire())
-		{
-			for (int var1 = 0; var1 < 5; ++var1)
-			{
+
+		if (result && !target.isImmuneToFire()) {
+			for (int var1 = 0; var1 < 5; ++var1) {
 				double rx = itemRand.nextGaussian() * 0.02D;
 				double ry = itemRand.nextGaussian() * 0.02D;
 				double rz = itemRand.nextGaussian() * 0.02D;
@@ -113,15 +102,15 @@ public class ItemTFFieryPick extends ItemPickaxe {
 			}
 			target.setFire(15);
 		}
-		
+
 		return result;
 	}
 
-    @Override
+	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.RARE;
+		return EnumRarity.RARE;
 	}
-    
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {

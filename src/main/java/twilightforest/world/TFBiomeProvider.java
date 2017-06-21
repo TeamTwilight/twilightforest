@@ -15,21 +15,19 @@ import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
-public class TFBiomeProvider extends BiomeProvider
-{
-    public TFBiomeProvider(World world)
-    {
-        getBiomesToSpawnIn().clear();
+public class TFBiomeProvider extends BiomeProvider {
+	public TFBiomeProvider(World world) {
+		getBiomesToSpawnIn().clear();
 		getBiomesToSpawnIn().add(TFBiomes.twilightForest);
 		getBiomesToSpawnIn().add(TFBiomes.denseTwilightForest);
 		getBiomesToSpawnIn().add(TFBiomes.clearing);
 		getBiomesToSpawnIn().add(TFBiomes.tfSwamp);
 		getBiomesToSpawnIn().add(TFBiomes.mushrooms);
 
-        makeLayers(world.getSeed());
-    }
+		makeLayers(world.getSeed());
+	}
 
-    private void makeLayers(long seed) {
+	private void makeLayers(long seed) {
 		GenLayer biomes = new GenLayerTFBiomes(1L);
 		biomes = new GenLayerTFKeyBiomes(1000L, biomes);
 		biomes = new GenLayerTFCompanionBiomes(1000L, biomes);

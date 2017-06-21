@@ -6,13 +6,10 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -69,76 +66,65 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 				.withProperty(DECAYABLE, decayable)
 				.withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.values()[variant]);
 	}
-    
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-    	par3List.add(new ItemStack(par1, 1, 0));
-    	par3List.add(new ItemStack(par1, 1, 1));
-    	par3List.add(new ItemStack(par1, 1, 2));
-    	par3List.add(new ItemStack(par1, 1, 3));
-    }
 
-    @Override
-	public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random)
-    {
-    	if (state.getValue(BlockTFMagicLog.VARIANT) == MagicWoodVariant.TRANS)
-    	{
-    		for (int i = 0; i < 1; ++i) {
-    			this.sparkleRunes(par1World, pos, par5Random);
-    		}
-    	}
-    }
+	@Override
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
+	}
+
+	@Override
+	public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random) {
+		if (state.getValue(BlockTFMagicLog.VARIANT) == MagicWoodVariant.TRANS) {
+			for (int i = 0; i < 1; ++i) {
+				this.sparkleRunes(par1World, pos, par5Random);
+			}
+		}
+	}
 
 	@Override
 	public BlockPlanks.EnumType getWoodType(int meta) {
 		return BlockPlanks.EnumType.OAK;
 	}
 
-	private void sparkleRunes(World world, BlockPos pos, Random rand)
-    {
-    	double offset = 0.0625D;
+	private void sparkleRunes(World world, BlockPos pos, Random rand) {
+		double offset = 0.0625D;
 
-    	EnumFacing side = EnumFacing.random(rand);
-    	double rx = pos.getX() + rand.nextFloat();
-    	double ry = pos.getY() + rand.nextFloat();
-    	double rz = pos.getZ() + rand.nextFloat();
+		EnumFacing side = EnumFacing.random(rand);
+		double rx = pos.getX() + rand.nextFloat();
+		double ry = pos.getY() + rand.nextFloat();
+		double rz = pos.getZ() + rand.nextFloat();
 
-    	if (side == EnumFacing.DOWN && world.isAirBlock(pos.up()))
-    	{
-    		ry = pos.getY() + 1 + offset;
-    	}
+		if (side == EnumFacing.DOWN && world.isAirBlock(pos.up())) {
+			ry = pos.getY() + 1 + offset;
+		}
 
-    	if (side == EnumFacing.UP && world.isAirBlock(pos.down()))
-    	{
-    		ry = pos.getY() + 0 - offset;
-    	}
+		if (side == EnumFacing.UP && world.isAirBlock(pos.down())) {
+			ry = pos.getY() + 0 - offset;
+		}
 
-    	if (side == EnumFacing.NORTH && world.isAirBlock(pos.south()))
-    	{
-    		rz = pos.getZ() + 1 + offset;
-    	}
+		if (side == EnumFacing.NORTH && world.isAirBlock(pos.south())) {
+			rz = pos.getZ() + 1 + offset;
+		}
 
-    	if (side == EnumFacing.SOUTH && world.isAirBlock(pos.north()))
-    	{
-    		rz = pos.getZ() + 0 - offset;
-    	}
+		if (side == EnumFacing.SOUTH && world.isAirBlock(pos.north())) {
+			rz = pos.getZ() + 0 - offset;
+		}
 
-    	if (side == EnumFacing.WEST && world.isAirBlock(pos.east()))
-    	{
-    		rx = pos.getX() + 1 + offset;
-    	}
+		if (side == EnumFacing.WEST && world.isAirBlock(pos.east())) {
+			rx = pos.getX() + 1 + offset;
+		}
 
-    	if (side == EnumFacing.EAST && world.isAirBlock(pos.west()))
-    	{
-    		rx = pos.getX() + 0 - offset;
-    	}
+		if (side == EnumFacing.EAST && world.isAirBlock(pos.west())) {
+			rx = pos.getX() + 0 - offset;
+		}
 
-    	if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1)
-    	{
-    		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.LEAF_RUNE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
-    	}
-    }
+		if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
+			TwilightForestMod.proxy.spawnParticle(world, TFParticleType.LEAF_RUNE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+		}
+	}
 
 	@Override
 	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {

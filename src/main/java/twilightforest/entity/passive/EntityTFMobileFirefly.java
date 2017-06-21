@@ -12,149 +12,132 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFMobileFirefly extends EntityAmbientCreature
-{
-    private BlockPos spawnPosition;
+public class EntityTFMobileFirefly extends EntityAmbientCreature {
+	private BlockPos spawnPosition;
 
-    public EntityTFMobileFirefly(World par1World)
-    {
-        super(par1World);
-        this.setSize(0.5F, 0.5F);
-    }
-
-    @Override
-	protected float getSoundVolume()
-    {
-        return 0.1F;
-    }
-
-    @Override
-	protected float getSoundPitch()
-    {
-        return super.getSoundPitch() * 0.95F;
-    }
-
-    @Override
-	protected SoundEvent getHurtSound()
-    {
-        return SoundEvents.ENTITY_BAT_HURT;
-    }
-
-    @Override
-	protected SoundEvent getDeathSound()
-    {
-        return SoundEvents.ENTITY_BAT_DEATH;
-    }
-
-    @Override
-	public boolean canBePushed()
-    {
-        return false;
-    }
-
-    @Override
-    protected void collideWithEntity(Entity par1Entity) {}
+	public EntityTFMobileFirefly(World par1World) {
+		super(par1World);
+		this.setSize(0.5F, 0.5F);
+	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
-    }
+	protected float getSoundVolume() {
+		return 0.1F;
+	}
 
-    @Override
-	public void onUpdate()
-    {
-        super.onUpdate();
+	@Override
+	protected float getSoundPitch() {
+		return super.getSoundPitch() * 0.95F;
+	}
 
-        this.motionY *= 0.6000000238418579D;
-    }
+	@Override
+	protected SoundEvent getHurtSound() {
+		return SoundEvents.ENTITY_BAT_HURT;
+	}
 
-    @Override
-	protected void updateAITasks()
-    {
-    	super.updateAITasks();
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_BAT_DEATH;
+	}
 
-        // [VanillaCopy] direct from last half of EntityBat.updateAITasks
-        if (this.spawnPosition != null && (!this.world.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1))
-        {
-            this.spawnPosition = null;
-        }
+	@Override
+	public boolean canBePushed() {
+		return false;
+	}
 
-        if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double)((int)this.posX), (double)((int)this.posY), (double)((int)this.posZ)) < 4.0D)
-        {
-            this.spawnPosition = new BlockPos((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
-        }
+	@Override
+	protected void collideWithEntity(Entity par1Entity) {
+	}
 
-        double d0 = (double)this.spawnPosition.getX() + 0.5D - this.posX;
-        double d1 = (double)this.spawnPosition.getY() + 0.1D - this.posY;
-        double d2 = (double)this.spawnPosition.getZ() + 0.5D - this.posZ;
-        this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
-        this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
-        this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
-        float f = (float)(MathHelper.atan2(this.motionZ, this.motionX) * (180D / Math.PI)) - 90.0F;
-        float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);
-        this.moveForward = 0.5F;
-        this.rotationYaw += f1;
-        // End copy
-   }
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+	}
 
-    @Override
-	protected boolean canTriggerWalking()
-    {
-        return false;
-    }
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
 
-    @Override
-	public void fall(float dist, float mult) {}
+		this.motionY *= 0.6000000238418579D;
+	}
 
-    @Override
-	protected void updateFallState(double par1, boolean par3, IBlockState state, BlockPos pos) {}
+	@Override
+	protected void updateAITasks() {
+		super.updateAITasks();
 
-    @Override
-	public boolean doesEntityNotTriggerPressurePlate()
-    {
-        return true;
-    }
+		// [VanillaCopy] direct from last half of EntityBat.updateAITasks
+		if (this.spawnPosition != null && (!this.world.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1)) {
+			this.spawnPosition = null;
+		}
 
-    // [VanillaCopy] EntityBat.getCanSpawnHere. Edits noted.
-    @Override
-	public boolean getCanSpawnHere()
-    {
-        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.posX), (double) ((int) this.posY), (double) ((int) this.posZ)) < 4.0D) {
+			this.spawnPosition = new BlockPos((int) this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.posY + this.rand.nextInt(6) - 2, (int) this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
+		}
 
-        if (blockpos.getY() >= this.world.getSeaLevel())
-        {
-            return false;
-        }
-        else
-        {
-            int i = this.world.getLightFromNeighbors(blockpos);
-            int j = 4;
+		double d0 = (double) this.spawnPosition.getX() + 0.5D - this.posX;
+		double d1 = (double) this.spawnPosition.getY() + 0.1D - this.posY;
+		double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.posZ;
+		this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
+		this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
+		this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
+		float f = (float) (MathHelper.atan2(this.motionZ, this.motionX) * (180D / Math.PI)) - 90.0F;
+		float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);
+		this.moveForward = 0.5F;
+		this.rotationYaw += f1;
+		// End copy
+	}
 
-            // TF - no halloween spawn buff
-            /*if (this.isDateAroundHalloween(this.world.getCurrentDate()))
+	@Override
+	protected boolean canTriggerWalking() {
+		return false;
+	}
+
+	@Override
+	public void fall(float dist, float mult) {
+	}
+
+	@Override
+	protected void updateFallState(double par1, boolean par3, IBlockState state, BlockPos pos) {
+	}
+
+	@Override
+	public boolean doesEntityNotTriggerPressurePlate() {
+		return true;
+	}
+
+	// [VanillaCopy] EntityBat.getCanSpawnHere. Edits noted.
+	@Override
+	public boolean getCanSpawnHere() {
+		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+
+		if (blockpos.getY() >= this.world.getSeaLevel()) {
+			return false;
+		} else {
+			int i = this.world.getLightFromNeighbors(blockpos);
+			int j = 4;
+
+			// TF - no halloween spawn buff
+			/*if (this.isDateAroundHalloween(this.world.getCurrentDate()))
             {
                 j = 7;
             }
-            else*/ if (this.rand.nextBoolean())
-            {
-                return false;
-            }
+            else*/
+			if (this.rand.nextBoolean()) {
+				return false;
+			}
 
-            return i > this.rand.nextInt(j) ? false : super.getCanSpawnHere();
-        }
-    }
-    
-    @Override
+			return i > this.rand.nextInt(j) ? false : super.getCanSpawnHere();
+		}
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1)
-    {
-        return 15728880;
-    }
-    
-    public float getGlowBrightness() 
-    {
-    	return (float)Math.sin(this.ticksExisted / 7.0) + 1F;
-    }
+	public int getBrightnessForRender(float par1) {
+		return 15728880;
+	}
+
+	public float getGlowBrightness() {
+		return (float) Math.sin(this.ticksExisted / 7.0) + 1F;
+	}
 }

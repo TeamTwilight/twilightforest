@@ -1,66 +1,57 @@
 package twilightforest.item;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.RootVariant;
 import twilightforest.world.TFGenerator;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class ItemTFOreMagnet extends ItemTF
-{
+public class ItemTFOreMagnet extends ItemTF {
 	private static final float WIGGLE = 10F;
 
 	protected ItemTFOreMagnet() {
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
-        this.setMaxDamage(12);
+		this.setMaxDamage(12);
 		// [VanillaCopy] ItemBow with our item
-		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter()
-		{
+		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
-			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-			{
-				if (entityIn == null)
-				{
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				if (entityIn == null) {
 					return 0.0F;
-				}
-				else
-				{
+				} else {
 					ItemStack itemstack = entityIn.getActiveItemStack();
-					return !itemstack.isEmpty() && itemstack.getItem() == TFItems.oreMagnet ? (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+					return !itemstack.isEmpty() && itemstack.getItem() == TFItems.oreMagnet ? (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
 				}
 			}
 		});
-		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter()
-		{
+		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
-			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
-			{
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
 			}
 		});
@@ -73,81 +64,68 @@ public class ItemTFOreMagnet extends ItemTF
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
-    @Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityLivingBase living, int useRemaining)
-    {
-    	int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
+	@Override
+	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityLivingBase living, int useRemaining) {
+		int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
 
-    	if (!world.isRemote && useTime > 10) 
-    	{
-    		int moved = doMagnet(world, living, 0, 0);
+		if (!world.isRemote && useTime > 10) {
+			int moved = doMagnet(world, living, 0, 0);
 
-    		if (moved == 0)
-    		{
-    			moved = doMagnet(world, living, WIGGLE, 0);
-    		}
-    		if (moved == 0)
-    		{
-    			moved = doMagnet(world, living, WIGGLE, WIGGLE);
-    		}
-    		if (moved == 0)
-    		{
-    			moved = doMagnet(world, living, 0, WIGGLE);
-    		}
-    		if (moved == 0)
-    		{
-    			moved = doMagnet(world, living, -WIGGLE, WIGGLE);
-    		}
-    		if (moved == 0)
-    		{
-    			moved = doMagnet(world, living, -WIGGLE, 0);
-    		}
-    		if (moved == 0)
-    		{
-    			moved = doMagnet(world, living, -WIGGLE, -WIGGLE);
-    		}
-    		if (moved == 0)
-    		{
-    			moved = doMagnet(world, living, 0, -WIGGLE);
-    		}
-    		if (moved == 0)
-    		{
-    			moved = doMagnet(world, living, WIGGLE, -WIGGLE);
-    		}
+			if (moved == 0) {
+				moved = doMagnet(world, living, WIGGLE, 0);
+			}
+			if (moved == 0) {
+				moved = doMagnet(world, living, WIGGLE, WIGGLE);
+			}
+			if (moved == 0) {
+				moved = doMagnet(world, living, 0, WIGGLE);
+			}
+			if (moved == 0) {
+				moved = doMagnet(world, living, -WIGGLE, WIGGLE);
+			}
+			if (moved == 0) {
+				moved = doMagnet(world, living, -WIGGLE, 0);
+			}
+			if (moved == 0) {
+				moved = doMagnet(world, living, -WIGGLE, -WIGGLE);
+			}
+			if (moved == 0) {
+				moved = doMagnet(world, living, 0, -WIGGLE);
+			}
+			if (moved == 0) {
+				moved = doMagnet(world, living, WIGGLE, -WIGGLE);
+			}
 
-    		if (moved > 0)
-    		{
-    			par1ItemStack.damageItem(moved, living);
-    			world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
-    		}
-    	}
+			if (moved > 0) {
+				par1ItemStack.damageItem(moved, living);
+				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
+			}
+		}
 
-    }
+	}
 
-    @Nonnull
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.BOW;
-    }
-    
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 72000;
-    }
+	@Nonnull
+	@Override
+	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+		return EnumAction.BOW;
+	}
+
+	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 72000;
+	}
 
 	/**
 	 * Magnet from the player's position and facing to the specified offset
 	 */
 	private int doMagnet(World world, EntityLivingBase living, float yawOffset, float pitchOffset) {
-		
+
 		// find vector 32 blocks from look
 		double range = 32.0D;
 		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
 		Vec3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
 		Vec3d destVec = srcVec.addVector(lookVec.xCoord * range, lookVec.yCoord * range, lookVec.zCoord * range);
-		
+
 		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
 	}
 
@@ -155,49 +133,42 @@ public class ItemTFOreMagnet extends ItemTF
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
 		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(usePos, destPos);
-		
+
 		//System.out.println("Searching from " + useX + ", " + useY + ", " + useZ + " to " + destX + ", " + destY + ", " + destZ);
-		
+
 		// find some ore?
 		IBlockState foundState = Blocks.AIR.getDefaultState();
 		BlockPos foundPos = null;
 		BlockPos basePos = null;
 
 		boolean isNetherrack = false;
-		
-		for (BlockPos coord : lineArray)
-		{
+
+		for (BlockPos coord : lineArray) {
 			IBlockState searchState = world.getBlockState(coord);
 
 			// keep track of where the dirt/stone we first find is.s
-			if (basePos == null)
-			{
-				if (isReplaceable(world, searchState, coord))
-				{
+			if (basePos == null) {
+				if (isReplaceable(world, searchState, coord)) {
 					basePos = coord;
 
-				}
-				else if (isNetherReplaceable(world, searchState, coord))
-				{
+				} else if (isNetherReplaceable(world, searchState, coord)) {
 					isNetherrack = true;
 					basePos = coord;
 				}
 			}
-			
-			if (searchState.getBlock() != Blocks.AIR && isOre(searchState))
-			{
+
+			if (searchState.getBlock() != Blocks.AIR && isOre(searchState)) {
 				//System.out.println("I found ore: " + searchID + " at " + coord.PosX + ", " + coord.PosY + ", " + coord.PosZ);
 				foundState = searchState;
 				foundPos = coord;
 				break;
 			}
 		}
-		
+
 		//System.out.println("I found ground at " + baseX + ", " + baseY + ", " + baseZ);
 
-		
-		if (basePos != null && foundState.getBlock() != Blocks.AIR)
-		{
+
+		if (basePos != null && foundState.getBlock() != Blocks.AIR) {
 			// find the whole vein
 			Set<BlockPos> veinBlocks = new HashSet<BlockPos>();
 			findVein(world, foundPos, foundState, veinBlocks);
@@ -206,17 +177,15 @@ public class ItemTFOreMagnet extends ItemTF
 			int offX = basePos.getX() - foundPos.getX();
 			int offY = basePos.getY() - foundPos.getY();
 			int offZ = basePos.getZ() - foundPos.getZ();
-			
-			for (BlockPos coord : veinBlocks)
-			{
+
+			for (BlockPos coord : veinBlocks) {
 				BlockPos replacePos = coord.add(offX, offY, offZ);
 				IBlockState replaceState = world.getBlockState(replacePos);
 
-				if ((isNetherrack ? isNetherReplaceable(world, replaceState, replacePos) : isReplaceable(world, replaceState, replacePos)) || replaceState.getBlock() == Blocks.AIR)
-				{
+				if ((isNetherrack ? isNetherReplaceable(world, replaceState, replacePos) : isReplaceable(world, replaceState, replacePos)) || replaceState.getBlock() == Blocks.AIR) {
 					// set vein to stone / netherrack
 					world.setBlockState(coord, isNetherrack ? Blocks.NETHERRACK.getDefaultState() : Blocks.STONE.getDefaultState(), 2);
-					
+
 					// set close to ore material
 					world.setBlockState(replacePos, foundState, 2);
 					blocksMoved++;
@@ -231,66 +200,54 @@ public class ItemTFOreMagnet extends ItemTF
 	 * in the likely case there's no ore in the exact look direction.
 	 */
 	private Vec3d getOffsetLook(EntityLivingBase living, float yawOffset, float pitchOffset) {
-        float var2 = MathHelper.cos(-(living.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
-        float var3 = MathHelper.sin(-(living.rotationYaw + yawOffset) * 0.017453292F - (float)Math.PI);
-        float var4 = -MathHelper.cos(-(living.rotationPitch + pitchOffset) * 0.017453292F);
-        float var5 = MathHelper.sin(-(living.rotationPitch + pitchOffset) * 0.017453292F);
-        return new Vec3d(var3 * var4, var5, var2 * var4);
+		float var2 = MathHelper.cos(-(living.rotationYaw + yawOffset) * 0.017453292F - (float) Math.PI);
+		float var3 = MathHelper.sin(-(living.rotationYaw + yawOffset) * 0.017453292F - (float) Math.PI);
+		float var4 = -MathHelper.cos(-(living.rotationPitch + pitchOffset) * 0.017453292F);
+		float var5 = MathHelper.sin(-(living.rotationPitch + pitchOffset) * 0.017453292F);
+		return new Vec3d(var3 * var4, var5, var2 * var4);
 	}
 
-	private static boolean isReplaceable(World world, IBlockState state, BlockPos pos)
-	{
-		if (state.getBlock() == Blocks.DIRT)
-		{
+	private static boolean isReplaceable(World world, IBlockState state, BlockPos pos) {
+		if (state.getBlock() == Blocks.DIRT) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.GRASS)
-		{
+		if (state.getBlock() == Blocks.GRASS) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.GRAVEL)
-		{
+		if (state.getBlock() == Blocks.GRAVEL) {
 			return true;
 		}
-		if (state.getBlock() != Blocks.AIR && state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.STONE)))
-		{
+		if (state.getBlock() != Blocks.AIR && state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.STONE))) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
-	private static boolean isNetherReplaceable(World world, IBlockState state, BlockPos pos)
-	{
-		if (state.getBlock() == Blocks.NETHERRACK)
-		{
+	private static boolean isNetherReplaceable(World world, IBlockState state, BlockPos pos) {
+		if (state.getBlock() == Blocks.NETHERRACK) {
 			return true;
 		}
-		if (state.getBlock() != Blocks.AIR && state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.NETHERRACK)))
-		{
+		if (state.getBlock() != Blocks.AIR && state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.NETHERRACK))) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
-	private static boolean findVein(World world, BlockPos here, IBlockState oreState, Set<BlockPos> veinBlocks)
-	{
+	private static boolean findVein(World world, BlockPos here, IBlockState oreState, Set<BlockPos> veinBlocks) {
 		// is this already on the list?
-		if (veinBlocks.contains(here))
-		{
+		if (veinBlocks.contains(here)) {
 			return false;
 		}
 
 		// let's limit it to 24 blocks at a time 
-		if (veinBlocks.size() >= 24)
-		{
+		if (veinBlocks.size() >= 24) {
 			return false;
 		}
 
 		// otherwise, check if we're still in the vein
-		if (world.getBlockState(here) == oreState)
-		{
+		if (world.getBlockState(here) == oreState) {
 			veinBlocks.add(here);
 
 			// recurse in 6 directions
@@ -299,61 +256,49 @@ public class ItemTFOreMagnet extends ItemTF
 			}
 
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
 
 
 	private static boolean isOre(IBlockState state) {
-		
-		if (state.getBlock() == Blocks.COAL_ORE)
-		{
+
+		if (state.getBlock() == Blocks.COAL_ORE) {
 			return false;
 		}
-		if (state.getBlock() == Blocks.IRON_ORE)
-		{
+		if (state.getBlock() == Blocks.IRON_ORE) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.DIAMOND_ORE)
-		{
+		if (state.getBlock() == Blocks.DIAMOND_ORE) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.EMERALD_ORE)
-		{
+		if (state.getBlock() == Blocks.EMERALD_ORE) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.GOLD_ORE)
-		{
+		if (state.getBlock() == Blocks.GOLD_ORE) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.LAPIS_ORE)
-		{
+		if (state.getBlock() == Blocks.LAPIS_ORE) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.REDSTONE_ORE)
-		{
+		if (state.getBlock() == Blocks.REDSTONE_ORE) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.LIT_REDSTONE_ORE)
-		{
+		if (state.getBlock() == Blocks.LIT_REDSTONE_ORE) {
 			return true;
 		}
-		if (state.getBlock() == Blocks.QUARTZ_ORE)
-		{
+		if (state.getBlock() == Blocks.QUARTZ_ORE) {
 			return true;
 		}
-		if (state == TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT))
-		{
+		if (state == TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT)) {
 			return true;
 		}
 		if (state.getBlock().getUnlocalizedName().toLowerCase().contains("ore")) // todo 1.9 oh god
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
 

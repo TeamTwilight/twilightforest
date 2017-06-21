@@ -12,9 +12,8 @@ public class ItemTFGiantSword extends ItemSword implements ModelRegisterCallback
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    @Override
-	public boolean getIsRepairable(ItemStack stack, ItemStack material)
-    {
-        return material.getItem() == TFItems.ironwoodIngot || super.getIsRepairable(stack, material);
-    }
+	@Override
+	public boolean getIsRepairable(ItemStack stack, ItemStack material) {
+		return material.getItem() == TFItems.ironwoodIngot || super.getIsRepairable(stack, material);
+	}
 }

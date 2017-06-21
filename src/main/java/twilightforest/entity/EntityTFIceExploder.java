@@ -33,7 +33,7 @@ public class EntityTFIceExploder extends EntityMob {
 
 	public EntityTFIceExploder(World par1World) {
 		super(par1World);
-        this.setSize(0.8F, 1.8F);
+		this.setSize(0.8F, 1.8F);
 	}
 
 	@Override
@@ -48,96 +48,90 @@ public class EntityTFIceExploder extends EntityMob {
 	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-    }
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+	}
 
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
 	}
 
-    @Override
-    public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
-    	// make snow particles
-    	for (int i = 0; i < 3; i++) {
-	    	float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
-	    	float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
-	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
-	    	
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+		// make snow particles
+		for (int i = 0; i < 3; i++) {
+			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+			float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
+			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+
 			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
-    	}
-    }
-
-    @Override
-    protected SoundEvent getAmbientSound()
-    {
-    	return TFSounds.ICE_AMBIENT;
-    }
+		}
+	}
 
 	@Override
-	protected SoundEvent getHurtSound()
-    {
-    	return TFSounds.ICE_HURT;
-    }
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.ICE_AMBIENT;
+	}
 
 	@Override
-    protected SoundEvent getDeathSound()
-    {
-    	return TFSounds.ICE_DEATH;
-    }
+	protected SoundEvent getHurtSound() {
+		return TFSounds.ICE_HURT;
+	}
 
 	@Override
-    public float getEyeHeight()
-    {
-        return this.height * 0.6F;
-    }
+	protected SoundEvent getDeathSound() {
+		return TFSounds.ICE_DEATH;
+	}
+
+	@Override
+	public float getEyeHeight() {
+		return this.height * 0.6F;
+	}
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
-	
-    @Override
+
+	@Override
 	protected void onDeathUpdate() {
-        ++this.deathTime;
+		++this.deathTime;
 
-        if (this.deathTime == 60) // delay until 3 seconds
-        {
-            boolean mobGriefing = this.world.getGameRules().getBoolean("mobGriefing");
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
+		if (this.deathTime == 60) // delay until 3 seconds
+		{
+			boolean mobGriefing = this.world.getGameRules().getBoolean("mobGriefing");
+			this.world.createExplosion(this, this.posX, this.posY, this.posZ, EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
 
-            if (mobGriefing) {
-            	this.transformBlocks();
-            }
+			if (mobGriefing) {
+				this.transformBlocks();
+			}
 
-            // Fake to trigger super's behaviour
-            deathTime = 19;
-            super.onDeathUpdate();
-            deathTime = 60;
-        }
+			// Fake to trigger super's behaviour
+			deathTime = 19;
+			super.onDeathUpdate();
+			deathTime = 60;
+		}
 	}
 
 	private void transformBlocks() {
 		int range = 4;
-		
+
 		BlockPos pos = new BlockPos(this);
-		
+
 		for (int dx = -range; dx <= range; dx++) {
 			for (int dy = -range; dy <= range; dy++) {
 				for (int dz = -range; dz <= range; dz++) {
 					double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-					
+
 					float randRange = range + (rand.nextFloat() - rand.nextFloat()) * 2F;
-					
+
 					if (distance < randRange) {
 						this.transformBlock(pos.add(dx, dy, dz));
 					}
@@ -182,35 +176,34 @@ public class EntityTFIceExploder extends EntityMob {
 
 
 	private EnumDyeColor getClosestDyeColor(int blockColor) {
-		int red = (blockColor >> 16) & 255; 
-		int green = (blockColor >> 8) & 255; 
-		int blue = blockColor & 255; 
-		
-		
+		int red = (blockColor >> 16) & 255;
+		int green = (blockColor >> 8) & 255;
+		int blue = blockColor & 255;
+
+
 		EnumDyeColor bestColor = EnumDyeColor.WHITE;
 		int bestDifference = 1024;
-		
+
 		for (EnumDyeColor color : EnumDyeColor.values()) {
 			int iColor = color.getMapColor().colorValue;
-			
-			int iRed = (iColor >> 16) & 255; 
-			int iGreen = (iColor >> 8) & 255; 
-			int iBlue = iColor & 255; 
-			
+
+			int iRed = (iColor >> 16) & 255;
+			int iGreen = (iColor >> 8) & 255;
+			int iBlue = iColor & 255;
+
 			int difference = Math.abs(red - iRed) + Math.abs(green - iGreen) + Math.abs(blue - iBlue);
-			
+
 			if (difference < bestDifference) {
 				bestColor = color;
 				bestDifference = difference;
 			}
 		}
-		
+
 		return bestColor;
 	}
-	
-    @Override
-    public int getMaxSpawnedInChunk()
-    {
-        return 8;
-    }
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 8;
+	}
 }

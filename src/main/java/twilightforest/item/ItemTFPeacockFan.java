@@ -17,114 +17,95 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
 
-public class ItemTFPeacockFan extends ItemTF
-{
+public class ItemTFPeacockFan extends ItemTF {
 	protected ItemTFPeacockFan() {
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
-        this.setMaxDamage(1024);
+		this.setMaxDamage(1024);
 	}
 
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
 
-		if (!world.isRemote) 
-		{
-			if (!player.onGround)
-			{
+		if (!world.isRemote) {
+			if (!player.onGround) {
 				player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 45, 0));
-			}
-			else
-			{
+			} else {
 				int fanned = doFan(world, player);
 
-				if (fanned > 0)
-				{
+				if (fanned > 0) {
 					player.getHeldItem(hand).damageItem(fanned, player);
 				}
 			}
-		}
-		else
-		{
+		} else {
 			// jump if the player is in the air
 			//TODO: only one extra jump per jump
-			if (!player.onGround && !player.isPotionActive(MobEffects.JUMP_BOOST))
-			{
+			if (!player.onGround && !player.isPotionActive(MobEffects.JUMP_BOOST)) {
 				player.motionX *= 3F;
 				player.motionY = 1.5F;
 				player.motionZ *= 3F;
 				player.fallDistance = 0.0F;
-			}
-			else
-			{
+			} else {
 				AxisAlignedBB fanBox = getEffectAABB(player);
 				Vec3d lookVec = player.getLookVec();
 
 				// particle effect
-				for (int i = 0; i < 30; i++)
-				{
+				for (int i = 0; i < 30; i++) {
 					world.spawnParticle(EnumParticleTypes.CLOUD, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
-							fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY), 
-							fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ), 
+							fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY),
+							fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ),
 							lookVec.xCoord, lookVec.yCoord, lookVec.zCoord);
 				}
-				
+
 			}
 
 			player.playSound(SoundEvents.ENTITY_PLAYER_BREATH, 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F);
 		}
-		
+
 		player.setActiveHand(hand);
-		
+
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Nonnull
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.BLOCK;
-    }
-    
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 20;
-    }
-    
-	private int doFan(World world, EntityPlayer player)
-	{
+	@Override
+	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+		return EnumAction.BLOCK;
+	}
+
+	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 20;
+	}
+
+	private int doFan(World world, EntityPlayer player) {
 		AxisAlignedBB fanBox = getEffectAABB(player);
-		
+
 		fanBlocksInAABB(world, player, fanBox);
-		
+
 		fanEntitiesInAABB(world, player, fanBox);
-		
+
 		return 1;
 	}
 
-	private void fanEntitiesInAABB(World world, EntityPlayer player, AxisAlignedBB fanBox)
-	{
+	private void fanEntitiesInAABB(World world, EntityPlayer player, AxisAlignedBB fanBox) {
 		Vec3d moveVec = player.getLookVec().scale(2);
-		
-		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox))
-		{
-			if (entity.canBePushed() || entity instanceof EntityItem)
-			{
+
+		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox)) {
+			if (entity.canBePushed() || entity instanceof EntityItem) {
 				entity.motionX = moveVec.xCoord;
 				entity.motionY = moveVec.yCoord;
 				entity.motionZ = moveVec.zCoord;
 			}
 		}
-		
+
 	}
 
 	private AxisAlignedBB getEffectAABB(EntityPlayer player) {
@@ -137,32 +118,28 @@ public class ItemTFPeacockFan extends ItemTF
 		return new AxisAlignedBB(destVec.xCoord - radius, destVec.yCoord - radius, destVec.zCoord - radius, destVec.xCoord + radius, destVec.yCoord + radius, destVec.zCoord + radius);
 	}
 
-    private int fanBlocksInAABB(World world, EntityPlayer player, AxisAlignedBB box)
-    {
-        int fan = 0;
-        for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+	private int fanBlocksInAABB(World world, EntityPlayer player, AxisAlignedBB box) {
+		int fan = 0;
+		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			fan += fanBlock(world, player, pos);
 		}
-        return fan;
-    }
+		return fan;
+	}
 
 	private int fanBlock(World world, EntityPlayer player, BlockPos pos) {
 		int cost = 0;
-		
+
 		IBlockState state = world.getBlockState(pos);
-		
-		if (state.getBlock() != Blocks.AIR)
-		{
-			if (state.getBlock() instanceof BlockFlower)
-			{
-				if(state.getBlock().canHarvestBlock(world, pos, player) && itemRand.nextInt(3) == 0)
-				{
+
+		if (state.getBlock() != Blocks.AIR) {
+			if (state.getBlock() instanceof BlockFlower) {
+				if (state.getBlock().canHarvestBlock(world, pos, player) && itemRand.nextInt(3) == 0) {
 					state.getBlock().harvestBlock(world, player, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
 					world.destroyBlock(pos, false);
 				}
 			}
 		}
-		
+
 		return cost;
 	}
 }

@@ -1,13 +1,13 @@
 package twilightforest.block;
 
-import twilightforest.item.TFItems;
 import net.minecraft.init.Blocks;
+import twilightforest.item.TFItems;
 
-public class BlockTFGiantLog extends BlockTFGiantBlock  {
+public class BlockTFGiantLog extends BlockTFGiantBlock {
 
 	protected BlockTFGiantLog() {
 		super(Blocks.LOG.getDefaultState());
-        this.setHardness(2.0F * 64F);
+		this.setHardness(2.0F * 64F);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

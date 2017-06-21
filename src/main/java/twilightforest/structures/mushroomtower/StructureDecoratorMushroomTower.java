@@ -6,10 +6,8 @@ import twilightforest.structures.StructureTFDecorator;
 
 public class StructureDecoratorMushroomTower extends StructureTFDecorator {
 
-	
-	
-	public StructureDecoratorMushroomTower() 
-	{
+
+	public StructureDecoratorMushroomTower() {
 		this.blockState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
 		this.accentState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
 		this.fenceState = Blocks.OAK_FENCE.getDefaultState();
@@ -17,5 +15,5 @@ public class StructureDecoratorMushroomTower extends StructureTFDecorator {
 		this.pillarState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
 		this.floorState = Blocks.PLANKS.getDefaultState();
 	}
-	
+
 }

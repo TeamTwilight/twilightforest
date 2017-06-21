@@ -3,7 +3,15 @@ package twilightforest;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import twilightforest.network.*;
+import twilightforest.network.PacketAnnihilateBlock;
+import twilightforest.network.PacketAreaProtection;
+import twilightforest.network.PacketChangeBiome;
+import twilightforest.network.PacketEnforceProgressionStatus;
+import twilightforest.network.PacketMagicMapFeatures;
+import twilightforest.network.PacketMapRewrap;
+import twilightforest.network.PacketStructureProtection;
+import twilightforest.network.PacketStructureProtectionClear;
+import twilightforest.network.PacketThrowPlayer;
 
 public class TFPacketHandler {
 	public static final SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(TwilightForestMod.ID);

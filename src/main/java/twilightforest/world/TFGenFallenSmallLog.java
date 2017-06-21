@@ -1,8 +1,5 @@
 package twilightforest.world;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -16,6 +13,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.PlantVariant;
 import twilightforest.block.enums.WoodVariant;
 
+import java.util.Random;
+
 public class TFGenFallenSmallLog extends TFGenerator {
 
 	@Override
@@ -23,110 +22,98 @@ public class TFGenFallenSmallLog extends TFGenerator {
 
 		// determine direction
 		boolean goingX = rand.nextBoolean();
-		
+
 		// length
 		int length = rand.nextInt(4) + 3;
-		
+
 		// check area clear
-		if (goingX)
-		{
-			if (!isAreaSuitable(world, rand, pos, length, 3, 2))
-			{
+		if (goingX) {
+			if (!isAreaSuitable(world, rand, pos, length, 3, 2)) {
+				return false;
+			}
+		} else {
+			if (!isAreaSuitable(world, rand, pos, 3, length, 2)) {
 				return false;
 			}
 		}
-		else
-		{
-			if (!isAreaSuitable(world, rand, pos, 3, length, 2))
-			{
-				return false;
-			}
-		}
-		
+
 		// determine wood type
 		IBlockState logState;
 		IBlockState branchState;
 
-		switch (rand.nextInt(7))
-		{
-		case 0:
-		default:
-			logState = TFBlocks.log.getDefaultState(); break;
-		case 1:
-			logState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY); break;
-		case 2:
-			logState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.MANGROVE); break;
-		case 3:
-			logState = Blocks.LOG.getDefaultState(); break;
-		case 4:
-			logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE); break;
-		case 5:
-			logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH); break;
-		case 6:
-			logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE); break;
+		switch (rand.nextInt(7)) {
+			case 0:
+			default:
+				logState = TFBlocks.log.getDefaultState();
+				break;
+			case 1:
+				logState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
+				break;
+			case 2:
+				logState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
+				break;
+			case 3:
+				logState = Blocks.LOG.getDefaultState();
+				break;
+			case 4:
+				logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
+				break;
+			case 5:
+				logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
+				break;
+			case 6:
+				logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+				break;
 		}
 		branchState = logState;
-		
+
 		// check biome
-		
+
 
 		// make log
-		if (goingX)
-		{
+		if (goingX) {
 			logState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
 			branchState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 
-			for (int lx = 0; lx < length; lx++)
-			{
+			for (int lx = 0; lx < length; lx++) {
 				this.setBlockAndNotifyAdequately(world, pos.add(lx, 0, 1), logState);
-				if (rand.nextInt(3) > 0)
-				{
+				if (rand.nextInt(3) > 0) {
 					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
-		}
-		else
-		{
+		} else {
 			logState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 			branchState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
 
-			for (int lz = 0; lz < length; lz++)
-			{
+			for (int lz = 0; lz < length; lz++) {
 				this.setBlockAndNotifyAdequately(world, pos.add(1, 0, lz), logState);
-				if (rand.nextInt(3) > 0)
-				{
+				if (rand.nextInt(3) > 0) {
 					this.setBlockAndNotifyAdequately(world, pos.add(1, 1, lz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}
-		
+
 		// possibly make branch
-		if (rand.nextInt(3) > 0)
-		{
-			if (goingX)
-			{
+		if (rand.nextInt(3) > 0) {
+			if (goingX) {
 				int bx = rand.nextInt(length);
 				int bz = rand.nextBoolean() ? 2 : 0;
-				
+
 				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
-			}
-			else
-			{
+			} else {
 				int bx = rand.nextBoolean() ? 2 : 0;
 				int bz = rand.nextInt(length);
-				
+
 				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}
-		
+
 		return true;
 	}
 

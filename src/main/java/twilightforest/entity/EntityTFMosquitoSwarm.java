@@ -25,82 +25,79 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	public EntityTFMosquitoSwarm(World par1World) {
 		super(par1World);
 
-        setSize(.7F, 1.9F);
-        this.stepHeight = 2.1f;
+		setSize(.7F, 1.9F);
+		this.stepHeight = 2.1f;
 	}
 
-    @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-    }
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
+		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-    }
-
-    @Override
-	protected SoundEvent getAmbientSound()
-    {
-        return TFSounds.MOSQUITO;
-    }
-
-    @Override
-    public boolean attackEntityAsMob(Entity par1Entity)
-    {
-        if (super.attackEntityAsMob(par1Entity))
-        {
-            if (par1Entity instanceof EntityLivingBase)
-            {
-                int duration;
-                switch (world.getDifficulty()) {
-                    case EASY: duration = 7; break;
-                    default:
-                    case NORMAL: duration = 15; break;
-                    case HARD: duration = 30; break;
-                }
-
-                ((EntityLivingBase) par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, duration * 20, 0));
-            }
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+	}
 
 	@Override
-	public boolean getCanSpawnHere()
-    {
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.MOSQUITO;
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity par1Entity) {
+		if (super.attackEntityAsMob(par1Entity)) {
+			if (par1Entity instanceof EntityLivingBase) {
+				int duration;
+				switch (world.getDifficulty()) {
+					case EASY:
+						duration = 7;
+						break;
+					default:
+					case NORMAL:
+						duration = 15;
+						break;
+					case HARD:
+						duration = 30;
+						break;
+				}
+
+				((EntityLivingBase) par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, duration * 20, 0));
+			}
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean getCanSpawnHere() {
 		if (world.getBiome(new BlockPos(this)) == TFBiomes.tfSwamp) {
 			// don't check light level
-	        return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
+			return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
 		} else {
 			return super.getCanSpawnHere();
 		}
-    }
+	}
 
-    @Override
-	public int getMaxSpawnedInChunk()
-    {
-        return 1;
-    }
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 1;
+	}
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 }

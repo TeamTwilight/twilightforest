@@ -6,22 +6,20 @@ import net.minecraft.entity.EntityLiving;
 import twilightforest.entity.boss.EntityTFNaga;
 
 public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner {
-	
+
 	public TileEntityTFNagaSpawner() {
 		this.mobID = EntityList.getKey(EntityTFNaga.class);
 	}
 
 	@Override
-	public boolean anyPlayerInRange()
-    {
-        return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 50D, false) != null;
-    }
-    
+	public boolean anyPlayerInRange() {
+		return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 50D, false) != null;
+	}
+
 	@Override
 	protected void initializeCreature(EntityLiving myCreature) {
-		
-		if (myCreature instanceof EntityCreature)
-		{
+
+		if (myCreature instanceof EntityCreature) {
 			((EntityCreature) myCreature).setHomePosAndDistance(pos, 46);
 		}
 	}

@@ -1,6 +1,5 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
@@ -10,12 +9,13 @@ import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponent
-{
-	public ComponentTFFinalCastleRoof48Crenellated() {}
+public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponent {
+	public ComponentTFFinalCastleRoof48Crenellated() {
+	}
 
 	public ComponentTFFinalCastleRoof48Crenellated(Random rand, int i, StructureTFComponent keep) {
 		super(i);
@@ -27,13 +27,13 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 
 	}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void buildComponent(StructureComponent parent, List list, Random rand) {
-	    if (parent != null && parent instanceof StructureTFComponent) {
-		    this.deco = ((StructureTFComponent)parent).deco;
-	    }
-    }
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
+	public void buildComponent(StructureComponent parent, List list, Random rand) {
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
+		}
+	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
@@ -42,14 +42,14 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(3));
 		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
 
-	    // crenellations
+		// crenellations
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
-		    this.fillBlocksRotated(world, sbb, 3, 1, 1, 45, 3, 1, deco.blockState, rotation);
+			this.fillBlocksRotated(world, sbb, 3, 1, 1, 45, 3, 1, deco.blockState, rotation);
 
-		    for (int i = 10; i < 41; i += 5) {
-			    this.fillBlocksRotated(world, sbb, i, 1, 0, i + 2, 5, 2, deco.blockState, rotation);
-			    this.setBlockStateRotated(world, deco.blockState, i + 1, 0, 1, rotation, sbb);
-		    }
+			for (int i = 10; i < 41; i += 5) {
+				this.fillBlocksRotated(world, sbb, i, 1, 0, i + 2, 5, 2, deco.blockState, rotation);
+				this.setBlockStateRotated(world, deco.blockState, i + 1, 0, 1, rotation, sbb);
+			}
 		}
 
 		return true;

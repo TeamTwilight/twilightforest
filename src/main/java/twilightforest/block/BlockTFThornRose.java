@@ -16,70 +16,65 @@ import twilightforest.item.TFItems;
 
 public class BlockTFThornRose extends Block {
 
-    private static final float RADIUS = 0.4F;
-    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.5F - RADIUS, 0.5F - RADIUS, 0.5F - RADIUS, 0.5F + RADIUS, .5F + RADIUS, 0.5F + RADIUS);    
-    
+	private static final float RADIUS = 0.4F;
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.5F - RADIUS, 0.5F - RADIUS, 0.5F - RADIUS, 0.5F + RADIUS, .5F + RADIUS, 0.5F + RADIUS);
+
 	protected BlockTFThornRose() {
 		super(Material.PLANTS);
-		
+
 		this.setHardness(10.0F);
 		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-    
-    @Override
-    @Deprecated
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return AABB;
-    }
-    
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-    
-    @Override
-    public boolean canPlaceBlockAt(World world, BlockPos pos)
-    {
-        return canBlockStay(world, pos);
-    }
-    
-    @Override
-    @Deprecated
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return NULL_AABB;
-    }
-    
-    @Override
-    @Deprecated
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-    {
-        if (!canBlockStay(world, pos)) {
-        	world.destroyBlock(pos, true);
-        }
-    }
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return AABB;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+		return canBlockStay(world, pos);
+	}
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return NULL_AABB;
+	}
+
+	@Override
+	@Deprecated
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if (!canBlockStay(world, pos)) {
+			world.destroyBlock(pos, true);
+		}
+	}
 
 	private boolean canBlockStay(World world, BlockPos pos) {
-		boolean supported = false; 
-    	
-        for (EnumFacing dir : EnumFacing.VALUES) {
-        	BlockPos pos_ = pos.offset(dir);
-            IBlockState state = world.getBlockState(pos_);
-        	
-        	if (state.getBlock().canSustainLeaves(state, world, pos_)) {
-        		supported = true;
-        	}
-        }
+		boolean supported = false;
+
+		for (EnumFacing dir : EnumFacing.VALUES) {
+			BlockPos pos_ = pos.offset(dir);
+			IBlockState state = world.getBlockState(pos_);
+
+			if (state.getBlock().canSustainLeaves(state, world, pos_)) {
+				supported = true;
+			}
+		}
 		return supported;
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
-    public BlockRenderLayer getBlockLayer()
-    {
-        return BlockRenderLayer.CUTOUT;
-    }
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 }

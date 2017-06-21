@@ -13,8 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFBird;
 
 
-public class ModelTFRaven extends ModelBase
-{
+public class ModelTFRaven extends ModelBase {
 	//fields
 	ModelRenderer head;
 	ModelRenderer beak1;
@@ -28,8 +27,7 @@ public class ModelTFRaven extends ModelBase
 	ModelRenderer leftfoot;
 	ModelRenderer tail;
 
-	public ModelTFRaven()
-	{
+	public ModelTFRaven() {
 		textureWidth = 32;
 		textureHeight = 32;
 
@@ -57,7 +55,7 @@ public class ModelTFRaven extends ModelBase
 		body.setRotationPoint(0F, 17F, 1F);
 		body.setTextureSize(32, 32);
 		setRotation(body, -0.5235988F, 0F, 0F);
-		
+
 		rightarm = new ModelRenderer(this, 0, 16);
 		rightarm.addBox(-1F, 0F, -1.5F, 1, 3, 6);
 		rightarm.setRotationPoint(-1.5F, 18F, 1F);
@@ -79,7 +77,7 @@ public class ModelTFRaven extends ModelBase
 		rightfoot.setTextureSize(32, 32);
 		setRotation(rightfoot, 0.5235988F, 0F, 0F);
 		rightleg.addChild(rightfoot);
-		
+
 		leftleg = new ModelRenderer(this, 14, 16);
 		leftleg.addBox(0F, 0F, 0F, 1, 2, 1);
 		leftleg.setRotationPoint(0.5F, 21F, 1F);
@@ -100,8 +98,7 @@ public class ModelTFRaven extends ModelBase
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		head.render(f5);
@@ -114,8 +111,7 @@ public class ModelTFRaven extends ModelBase
 		tail.render(f5);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z)
-	{
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -126,30 +122,25 @@ public class ModelTFRaven extends ModelBase
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
-	{
-		head.rotateAngleX = par5 / (180F / (float)Math.PI);
-		head.rotateAngleY = par4 / (180F / (float)Math.PI);
+	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
+		head.rotateAngleX = par5 / (180F / (float) Math.PI);
+		head.rotateAngleY = par4 / (180F / (float) Math.PI);
 		head.rotateAngleZ = par4 > 5 ? -0.2617994F : 0;
 
 		rightleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-		leftleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+		leftleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
 
 		rightarm.rotateAngleZ = par3;
 		leftarm.rotateAngleZ = -par3;
-		
-		if (((EntityTFBird)par7Entity).isBirdLanded())
-		{
+
+		if (((EntityTFBird) par7Entity).isBirdLanded()) {
 			rightleg.rotationPointY = 21;
 			leftleg.rotationPointY = 21;
-		}
-		else
-		{
+		} else {
 			rightleg.rotationPointY = 20F;
 			leftleg.rotationPointY = 20F;
 		}
 	}
-	
-	
+
 
 }

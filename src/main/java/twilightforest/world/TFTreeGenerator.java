@@ -42,31 +42,27 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 
 		// go through block by block and stop drawing when we head too far into open air
 		BlockPos[] lineArray = TFGenerator.getBresehnamArrayCoords(pos.down(), dest);
-		for (BlockPos coord : lineArray)
-		{
+		for (BlockPos coord : lineArray) {
 			this.placeRootBlock(world, coord, rootState);
 		}
 	}
-	
+
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
 	protected void placeRootBlock(World world, BlockPos pos, IBlockState state) {
-		if (canRootGrowIn(world, pos))
-		{
+		if (canRootGrowIn(world, pos)) {
 			this.setBlockAndNotifyAdequately(world, pos, state);
 		}
 	}
 
 	public static boolean canRootGrowIn(World world, BlockPos pos) {
 		Block blockID = world.getBlockState(pos).getBlock();
-		
+
 		if (blockID == Blocks.AIR) {
 			// roots can grow through air if they are near a solid block
 			return TFGenerator.isNearSolid(world, pos);
-		}
-		else
-		{
+		} else {
 			return blockID != Blocks.BEDROCK && blockID != Blocks.OBSIDIAN && blockID != TFBlocks.shield;
 		}
 	}

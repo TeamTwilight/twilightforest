@@ -22,13 +22,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
@@ -77,29 +74,29 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 		return ret;
 	}
 
-    @Override
-    @Deprecated
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        IBlockState stateAbove = world.getBlockState(pos.up());
-        TileEntity tile = world.getTileEntity(pos);
+	@Override
+	@Deprecated
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		IBlockState stateAbove = world.getBlockState(pos.up());
+		TileEntity tile = world.getTileEntity(pos);
 
-        if (stateAbove.getBlock() != TFBlocks.trophy || (!state.getValue(LATENT)) || tile == null || (!(tile instanceof TileEntityTFTrophy)))
-            return state;
+		if (stateAbove.getBlock() != TFBlocks.trophy || (!state.getValue(LATENT)) || tile == null || (!(tile instanceof TileEntityTFTrophy)))
+			return state;
 
-        TileEntityTFTrophy trophy = (TileEntityTFTrophy)tile;
+		TileEntityTFTrophy trophy = (TileEntityTFTrophy) tile;
 
-        BossVariant variant;
+		BossVariant variant;
 
-        switch (trophy.getSkullType()) {
-            case 0:
-                variant = BossVariant.HYDRA;
-                break;
-            default: variant = BossVariant.UR_GHAST;
-        }
+		switch (trophy.getSkullType()) {
+			case 0:
+				variant = BossVariant.HYDRA;
+				break;
+			default:
+				variant = BossVariant.UR_GHAST;
+		}
 
-        return state.withProperty(BOSS, variant);
-    }
+		return state.withProperty(BOSS, variant);
+	}
 
 	@Override
 	@Deprecated
@@ -109,8 +106,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
@@ -145,13 +141,13 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).expand(16.0D, 16.0D, 16.0D)))
 			if (isPlayerEligible(player))
 				return true;
-		
+
 		return false;
 	}
 
 	private boolean isPlayerEligible(EntityPlayer player) {
-		return ((player instanceof EntityPlayerMP) && ((EntityPlayerMP)player).getStatFile().hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement)) ||
-				((player instanceof EntityPlayerSP) && ((EntityPlayerSP)player).getStatFileWriter().hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement));
+		return ((player instanceof EntityPlayerMP) && ((EntityPlayerMP) player).getStatFile().hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement)) ||
+				((player instanceof EntityPlayerSP) && ((EntityPlayerSP) player).getStatFileWriter().hasAchievementUnlocked(TFAchievementPage.twilightProgressTrophyPedestal.parentAchievement));
 	}
 
 	private void doPedestalEffect(World world, BlockPos pos, IBlockState state) {

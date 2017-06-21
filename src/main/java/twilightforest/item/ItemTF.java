@@ -8,7 +8,7 @@ import twilightforest.client.ModelRegisterCallback;
 import javax.annotation.Nonnull;
 
 public class ItemTF extends Item implements ModelRegisterCallback {
-	
+
 	private boolean isRare = false;
 
 	protected ItemTF() {
@@ -16,13 +16,12 @@ public class ItemTF extends Item implements ModelRegisterCallback {
 	}
 
 	@Nonnull
-    @Override
+	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return isRare ? EnumRarity.RARE : EnumRarity.UNCOMMON;
+		return isRare ? EnumRarity.RARE : EnumRarity.UNCOMMON;
 	}
 
-	public ItemTF makeRare()
-	{
+	public ItemTF makeRare() {
 		this.isRare = true;
 		return this;
 	}

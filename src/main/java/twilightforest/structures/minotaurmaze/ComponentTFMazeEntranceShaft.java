@@ -1,10 +1,5 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.List;
-import java.util.Random;
-
-import jdk.nashorn.internal.ir.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,6 +10,9 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponent;
 
+import java.util.List;
+import java.util.Random;
+
 public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
 
 	public ComponentTFMazeEntranceShaft() {
@@ -23,14 +21,13 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
 	}
 
 
-
 	private int averageGroundLevel = -1;
 
 	public ComponentTFMazeEntranceShaft(int i, Random rand, int x, int y, int z) {
 		super(i);
-        this.setCoordBaseMode(EnumFacing.HORIZONTALS[rand.nextInt(4)]);
+		this.setCoordBaseMode(EnumFacing.HORIZONTALS[rand.nextInt(4)]);
 
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 6 - 1, y + 14, z + 6 - 1);
+		this.boundingBox = new StructureBoundingBox(x, y, z, x + 6 - 1, y + 14, z + 6 - 1);
 	}
 
 	/**
@@ -43,67 +40,57 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponent {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-        if (this.averageGroundLevel < 0)
-        {
-            this.averageGroundLevel = this.getAverageGroundLevel(world, sbb);
+		if (this.averageGroundLevel < 0) {
+			this.averageGroundLevel = this.getAverageGroundLevel(world, sbb);
 
-            if (this.averageGroundLevel < 0)
-            {
-                return true;
-            }
+			if (this.averageGroundLevel < 0) {
+				return true;
+			}
 
-            this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 15 - 1, 0);
-        }
-		
-		
-        this.fillWithBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, true);
-        this.fillWithAir(world, sbb, 1, 0 - 10, 1, 4, 0 + 30, 4);
-        
-        //System.out.println("Drawing entrance");
-        
-        int var8 = this.getXWithOffset(0, 0);
-        int var9 = this.getYWithOffset(0);
-        int var10 = this.getZWithOffset(0, 0);
+			this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 15 - 1, 0);
+		}
 
-        //System.out.println("Drawing entrance at " + var8 + ", " + var9 + ", " + var10);
 
-        
+		this.fillWithBlocks(world, sbb, 0, 0 - 10, 0, 5, 0 + 30, 5, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, true);
+		this.fillWithAir(world, sbb, 1, 0 - 10, 1, 4, 0 + 30, 4);
+
+		//System.out.println("Drawing entrance");
+
+		int var8 = this.getXWithOffset(0, 0);
+		int var9 = this.getYWithOffset(0);
+		int var10 = this.getZWithOffset(0, 0);
+
+		//System.out.println("Drawing entrance at " + var8 + ", " + var9 + ", " + var10);
+
+
 		return true;
 	}
 
-	
 
-    /**
-     * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
-     * levels in the BB's horizontal rectangle).
-     */
-    @Override
-    protected int getAverageGroundLevel(World par1World, StructureBoundingBox par2StructureBoundingBox)
-    {
-        int var3 = 0;
-        int var4 = 0;
+	/**
+	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
+	 * levels in the BB's horizontal rectangle).
+	 */
+	@Override
+	protected int getAverageGroundLevel(World par1World, StructureBoundingBox par2StructureBoundingBox) {
+		int var3 = 0;
+		int var4 = 0;
 
-        for (int var5 = this.boundingBox.minZ; var5 <= this.boundingBox.maxZ; ++var5)
-        {
-            for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6)
-            {
-            	BlockPos pos = new BlockPos(var6, 64, var5);
-                if (par2StructureBoundingBox.isVecInside(pos))
-                {
-	                final BlockPos topBlock = par1World.getTopSolidOrLiquidBlock(pos);
-	                var3 += Math.max(topBlock.getY(), par1World.provider.getAverageGroundLevel());
-                    ++var4;
-                }
-            }
-        }
+		for (int var5 = this.boundingBox.minZ; var5 <= this.boundingBox.maxZ; ++var5) {
+			for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6) {
+				BlockPos pos = new BlockPos(var6, 64, var5);
+				if (par2StructureBoundingBox.isVecInside(pos)) {
+					final BlockPos topBlock = par1World.getTopSolidOrLiquidBlock(pos);
+					var3 += Math.max(topBlock.getY(), par1World.provider.getAverageGroundLevel());
+					++var4;
+				}
+			}
+		}
 
-        if (var4 == 0)
-        {
-            return -1;
-        }
-        else
-        {
-            return var3 / var4;
-        }
-    }
+		if (var4 == 0) {
+			return -1;
+		} else {
+			return var3 / var4;
+		}
+	}
 }

@@ -2,8 +2,6 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -12,8 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import twilightforest.entity.boss.EntityTFThrownAxe;
 
 
 public class RenderTFThrownAxe extends Render {
@@ -27,9 +23,9 @@ public class RenderTFThrownAxe extends Render {
 	@Override
 	public void doRender(Entity entity, double par2, double par4, double par6, float par8, float par9) {
 
-        GlStateManager.pushMatrix();
+		GlStateManager.pushMatrix();
 
-        float spin = (entity.ticksExisted + par9) * -10F + 90F;
+		float spin = (entity.ticksExisted + par9) * -10F + 90F;
 
 
 		GlStateManager.translate((float) par2, (float) par4, (float) par6);
@@ -45,29 +41,28 @@ public class RenderTFThrownAxe extends Render {
 	}
 
 	// todo recheck transformations
-	private void renderDroppedItem(float rotation, float spin)
-    {
+	private void renderDroppedItem(float rotation, float spin) {
 		GlStateManager.pushMatrix();
 
 		float f9 = 0.5F;
-    	float f10 = 0.25F;
+		float f10 = 0.25F;
 
-    	GlStateManager.rotate(rotation + 270f, 0.0F, 1.0F, 0.0F);
-    	GlStateManager.rotate(spin, 0.0F, 0.0F, 1.0F);
+		GlStateManager.rotate(rotation + 270f, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(spin, 0.0F, 0.0F, 1.0F);
 
-    	float f12 = 0.0625F;
-    	float f11 = 0.021875F;
+		float f12 = 0.0625F;
+		float f11 = 0.021875F;
 
-    	GlStateManager.translate(-f9, -f10, -(f12 + f11));
-    	GlStateManager.translate(0f, 0f, f12 + f11);
+		GlStateManager.translate(-f9, -f10, -(f12 + f11));
+		GlStateManager.translate(0f, 0f, f12 + f11);
 
 		Minecraft.getMinecraft().getRenderItem().renderItem(myItem, ItemCameraTransforms.TransformType.GROUND);
 
-    	GlStateManager.popMatrix();
-    }
+		GlStateManager.popMatrix();
+	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 }

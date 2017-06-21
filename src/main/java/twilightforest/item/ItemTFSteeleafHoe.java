@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemStack;
 import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFSteeleafHoe extends ItemHoe implements ModelRegisterCallback {

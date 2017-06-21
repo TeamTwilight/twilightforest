@@ -15,18 +15,19 @@ import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 import twilightforest.util.RotationUtil;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
-{
+public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
-    public static final int LOWEST_DOOR = 144;
-    public static final int HIGHEST_DOOR = 222;
+	public static final int LOWEST_DOOR = 144;
+	public static final int HIGHEST_DOOR = 222;
 
-    public EnumDyeColor color;
+	public EnumDyeColor color;
 
-    public ComponentTFFinalCastleMazeTower13() {}
+	public ComponentTFFinalCastleMazeTower13() {
+	}
 
 	public ComponentTFFinalCastleMazeTower13(Random rand, int i, int x, int y, int z, EnumDyeColor color, EnumFacing direction) {
 		super(i);
@@ -54,8 +55,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
 
-	    // we should have a door where we started
-	    addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
+		// we should have a door where we started
+		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 
 	}
 
@@ -66,73 +67,73 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		this.size = 13;
 		this.height = floors * 8 + 1;
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
-	    addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
-    }
+		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
+	}
 
-    @Override
-    public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-	    if (parent != null && parent instanceof StructureTFComponent) {
-		    this.deco = ((StructureTFComponent)parent).deco;
-	    }
+	@Override
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
+		}
 
-	    // add foundation
-	    ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(rand, 4, this);
-	    list.add(foundation);
-	    foundation.buildComponent(this, list, rand);
+		// add foundation
+		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(rand, 4, this);
+		list.add(foundation);
+		foundation.buildComponent(this, list, rand);
 
-	    // add roof
-	    StructureTFComponent roof = rand.nextBoolean() ? new ComponentTFFinalCastleRoof13Conical(rand, 4, this) :  new ComponentTFFinalCastleRoof13Crenellated(rand, 4, this);
-	    list.add(roof);
-	    roof.buildComponent(this, list, rand);
-    }
+		// add roof
+		StructureTFComponent roof = rand.nextBoolean() ? new ComponentTFFinalCastleRoof13Conical(rand, 4, this) : new ComponentTFFinalCastleRoof13Crenellated(rand, 4, this);
+		list.add(roof);
+		roof.buildComponent(this, list, rand);
+	}
 
-    /**
-     * Build more components towards the destination
-     */
-    public void buildTowards(StructureComponent parent, List list, Random rand, BlockPos dest) {
-	    // regular building first, adds roof/foundation
-	    this.buildComponent(parent, list, rand);
+	/**
+	 * Build more components towards the destination
+	 */
+	public void buildTowards(StructureComponent parent, List list, Random rand, BlockPos dest) {
+		// regular building first, adds roof/foundation
+		this.buildComponent(parent, list, rand);
 
-	    if (this.getComponentType() < 20) {
+		if (this.getComponentType() < 20) {
 
-		    // are we there?
-		    if (this.isWithinRange(dest.getX(), dest.getZ(), this.boundingBox.minX + 6, this.boundingBox.minZ + 6, 30)) {
-			    TwilightForestMod.LOGGER.info("We are within range of our destination, building final tower");
-			    int howFar = 20;
-			    if (!buildEndTowerTowards(list, rand, dest, this.findBestDirectionTowards(dest), howFar)) {
-			        if (!buildEndTowerTowards(list, rand, dest, this.findSecondDirectionTowards(dest), howFar)) {
-			            if (!buildEndTowerTowards(list, rand, dest, this.findThirdDirectionTowards(dest), howFar)) {
-			                TwilightForestMod.LOGGER.info("Cound not build final tower");
-			            }
-			        }
-			    }
-		    } else {
+			// are we there?
+			if (this.isWithinRange(dest.getX(), dest.getZ(), this.boundingBox.minX + 6, this.boundingBox.minZ + 6, 30)) {
+				TwilightForestMod.LOGGER.info("We are within range of our destination, building final tower");
+				int howFar = 20;
+				if (!buildEndTowerTowards(list, rand, dest, this.findBestDirectionTowards(dest), howFar)) {
+					if (!buildEndTowerTowards(list, rand, dest, this.findSecondDirectionTowards(dest), howFar)) {
+						if (!buildEndTowerTowards(list, rand, dest, this.findThirdDirectionTowards(dest), howFar)) {
+							TwilightForestMod.LOGGER.info("Cound not build final tower");
+						}
+					}
+				}
+			} else {
 
-			    int howFar = 14 + rand.nextInt(24);
-			    EnumFacing facing = this.findBestDirectionTowards(dest);
+				int howFar = 14 + rand.nextInt(24);
+				EnumFacing facing = this.findBestDirectionTowards(dest);
 
-			    // build left or right, not straight if we can help it
-			    if (facing == this.getCoordBaseMode() || !buildContinueTowerTowards(list, rand, dest, facing, howFar)) {
-				    facing = this.findSecondDirectionTowards(dest);
-				    if (facing == this.getCoordBaseMode() || !buildContinueTowerTowards(list, rand, dest, facing, howFar)) {
-					    facing = this.findThirdDirectionTowards(dest);
-					    if (facing == this.getCoordBaseMode() || !buildContinueTowerTowards(list, rand, dest, facing, howFar)) {
-						    // fine, just go straight
-						    if (!buildContinueTowerTowards(list, rand, dest, this.getCoordBaseMode(), howFar)) {
-							    TwilightForestMod.LOGGER.info("Could not build tower randomly");
-						    }
-					    }
-				    }
-			    }
-		    }
-	    } else {
+				// build left or right, not straight if we can help it
+				if (facing == this.getCoordBaseMode() || !buildContinueTowerTowards(list, rand, dest, facing, howFar)) {
+					facing = this.findSecondDirectionTowards(dest);
+					if (facing == this.getCoordBaseMode() || !buildContinueTowerTowards(list, rand, dest, facing, howFar)) {
+						facing = this.findThirdDirectionTowards(dest);
+						if (facing == this.getCoordBaseMode() || !buildContinueTowerTowards(list, rand, dest, facing, howFar)) {
+							// fine, just go straight
+							if (!buildContinueTowerTowards(list, rand, dest, this.getCoordBaseMode(), howFar)) {
+								TwilightForestMod.LOGGER.info("Could not build tower randomly");
+							}
+						}
+					}
+				}
+			}
+		} else {
 			TwilightForestMod.LOGGER.info("Built 15 towers without reaching destination");
 		}
 
-	    // finally, now that the critical path is built, let's add some other towers for atmosphere and complication
-	    this.buildNonCriticalTowers(parent, list, rand);
+		// finally, now that the critical path is built, let's add some other towers for atmosphere and complication
+		this.buildNonCriticalTowers(parent, list, rand);
 
-    }
+	}
 
 	protected void buildNonCriticalTowers(StructureComponent parent, List list, Random rand) {
 		// pick a random direction
@@ -144,8 +145,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 			if (!buildDamagedTower(list, rand, dir)) {
 				dir = RotationUtil.getRandomFacing(rand);
 				if (!buildDamagedTower(list, rand, dir)) {
-				// maybe just a balcony?
-				//buildBalconyTowards(list, rand, dir);
+					// maybe just a balcony?
+					//buildBalconyTowards(list, rand, dir);
 				}
 			}
 		}
@@ -226,7 +227,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 					opening.getX(),
 					this.adjustOpening(opening.getY(), dest),
 					opening.getZ()
-					);
+			);
 		}
 
 		TwilightForestMod.LOGGER.info("original direction is " + facing);
@@ -236,7 +237,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		TwilightForestMod.LOGGER.info("Our coord mode is " + this.getCoordBaseMode() + ", and direction is " + facing + ", so our door is going to be at " + opening + " and the new tower will appear at " + tc);
 
 		// find start
-		StructureComponent start = (StructureComponent)list.get(0);
+		StructureComponent start = (StructureComponent) list.get(0);
 
 		int centerX = ((start.getBoundingBox().minX + 128) >> 8) << 8;
 		int centerZ = ((start.getBoundingBox().minZ + 128) >> 8) << 8;
@@ -270,7 +271,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 				bridge.buildComponent(this, list, rand);
 
 				// opening
-			    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
+				addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
 				return true;
 			} else {
@@ -314,7 +315,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 			bridge.buildComponent(this, list, rand);
 
 			// opening
-		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
+			addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
 			return true;
 		} else {
@@ -384,7 +385,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 			bridge.buildComponent(this, list, rand);
 
 			// opening
-		    addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
+			addOpening(opening.getX(), opening.getY() + 1, opening.getZ(), facing);
 
 			return true;
 		} else {
@@ -445,17 +446,17 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 
 		switch (direction) {
 			case SOUTH:
-			dx += howFar;
-			break;
+				dx += howFar;
+				break;
 			case WEST:
-			dz += howFar;
-			break;
+				dz += howFar;
+				break;
 			case NORTH:
-			dx -= howFar;
-			break;
+				dx -= howFar;
+				break;
 			case EAST:
-			dz -= howFar;
-			break;
+				dz -= howFar;
+				break;
 		}
 
 		// ugh?
@@ -470,17 +471,15 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, false, rand, deco.randomBlocks);
 
 		// stone to ground
-		for (int x = 0; x < this.size; x++)
-		{
-			for (int z = 0; z < this.size; z++)
-			{
+		for (int x = 0; x < this.size; x++) {
+			for (int z = 0; z < this.size; z++) {
 				this.replaceAirAndLiquidDownwards(world, deco.blockState, x, -1, z, sbb);
 			}
 
 		}
 
-        // add branching runes
-		int numBranches = 2 + decoRNG.nextInt(4) +  + decoRNG.nextInt(3);
+		// add branching runes
+		int numBranches = 2 + decoRNG.nextInt(4) + +decoRNG.nextInt(3);
 		for (int i = 0; i < numBranches; i++) {
 			makeGlyphBranches(world, decoRNG, this.getGlyphColour(), sbb);
 		}
@@ -488,8 +487,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 		// floors
 		addFloors(world, decoRNG, sbb);
 
-        // openings
-        makeOpenings(world, sbb);
+		// openings
+		makeOpenings(world, sbb);
 
 
 		return true;
@@ -565,20 +564,18 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing
 	 */
 	@Override
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
-	     // nullify sky light
-	     //nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
+		// nullify sky light
+		//nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
 		final IBlockState doorState = TFBlocks.castleDoor.getDefaultState().withProperty(BlockTFCastleDoor.LOCK_INDEX, this.getGlyphColour().getMetadata() % 4);
 
-        // clear the door
-		if (dx == 0 || dx == size - 1)
-		{
+		// clear the door
+		if (dx == 0 || dx == size - 1) {
 			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 4, dz + 2, deco.accentState, AIR, false);
 			//this.fillWithAir(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1);
 			this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 3, dz + 1, doorState, AIR, false);
 		}
-		if (dz == 0 || dz == size - 1)
-		{
+		if (dz == 0 || dz == size - 1) {
 			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 4, dz, deco.accentState, AIR, false);
 			//this.fillWithAir(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz);
 			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz, doorState, AIR, false);

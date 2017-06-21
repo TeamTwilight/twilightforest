@@ -1,11 +1,10 @@
 package twilightforest.inventory;
 
-import net.minecraft.util.text.ITextComponent;
-import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import twilightforest.TFConfig;
 
 import java.util.Arrays;
 
@@ -45,26 +44,20 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public ItemStack decrStackSize(int slotNum, int amount) {
-		if (!this.contents[slotNum].isEmpty())
-		{
+		if (!this.contents[slotNum].isEmpty()) {
 			ItemStack takenStack;
 
-			if (this.contents[slotNum].getCount() <= amount)
-			{
+			if (this.contents[slotNum].getCount() <= amount) {
 				takenStack = this.contents[slotNum];
 				this.contents[slotNum] = ItemStack.EMPTY;
 
 				//this.eventHandler.onCraftMatrixChanged(this);
 				return takenStack;
-			}
-			else
-			{
+			} else {
 				takenStack = this.contents[slotNum].splitStack(amount);
 				return takenStack;
 			}
-		}
-		else
-		{
+		} else {
 			return ItemStack.EMPTY;
 		}
 
@@ -72,14 +65,11 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public ItemStack removeStackFromSlot(int par1) {
-		if (!this.contents[par1].isEmpty())
-		{
+		if (!this.contents[par1].isEmpty()) {
 			ItemStack var2 = this.contents[par1];
 			this.contents[par1] = ItemStack.EMPTY;
 			return var2;
-		}
-		else
-		{
+		} else {
 			return ItemStack.EMPTY;
 		}
 	}
@@ -88,8 +78,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
 		this.contents[par1] = par2ItemStack;
 
-		if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit())
-		{
+		if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit()) {
 			par2ItemStack.setCount(this.getInventoryStackLimit());
 		}
 
@@ -107,7 +96,8 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public void markDirty() { }
+	public void markDirty() {
+	}
 
 	@Override
 	public boolean isUsableByPlayer(EntityPlayer var1) {
@@ -115,16 +105,17 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) { }
+	public void openInventory(EntityPlayer player) {
+	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) { }
+	public void closeInventory(EntityPlayer player) {
+	}
 
 	@Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
-    {
-        return false;
-    }
+	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+		return false;
+	}
 
 	@Override
 	public int getField(int id) {

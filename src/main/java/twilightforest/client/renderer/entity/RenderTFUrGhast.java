@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.ModelTFGhast;
@@ -18,19 +17,17 @@ public class RenderTFUrGhast extends RenderTFTowerGhast {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFTowerGhast par1Entity)
-	{
-		switch (par1Entity.isAttacking() ? 2 : par1Entity.getAttackStatus())
-        {
-        default:
-        case 0:
-            return textureLocClosed;
+	protected ResourceLocation getEntityTexture(EntityTFTowerGhast par1Entity) {
+		switch (par1Entity.isAttacking() ? 2 : par1Entity.getAttackStatus()) {
+			default:
+			case 0:
+				return textureLocClosed;
 
-        case 1:
-            return textureLocOpen;
+			case 1:
+				return textureLocOpen;
 
-        case 2:
-            return textureLocAttack;
-        }
+			case 2:
+				return textureLocAttack;
+		}
 	}
 }

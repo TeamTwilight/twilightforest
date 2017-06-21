@@ -1,9 +1,7 @@
 package twilightforest.entity.boss;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
@@ -28,6 +26,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
@@ -42,6 +41,9 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 
 public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
@@ -58,37 +60,45 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private AIMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
 
-    private final BossInfoServer bossInfo = new BossInfoServer(this.getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.GREEN, BossInfo.Overlay.PROGRESS);
 
-    public EntityTFNaga(World world) {
+	public EntityTFNaga(World world) {
 		super(world);
-		
+
 		this.setSize(1.75f, 3.0f);
 		this.stepHeight = 2;
 
 		this.healthPerSegment = getMaxHealth() / 10;
 		setSegmentsPerHealth();
-        
-        this.experienceValue = 217;
+
+		this.experienceValue = 217;
 		this.ignoreFrustumCheck = true;
 
 		this.goNormal();
 	}
-	
+
 	private float getMaxHealthPerDifficulty() {
 		switch (world.getDifficulty()) {
-			case EASY: return 120;
+			case EASY:
+				return 120;
 			default:
-			case NORMAL: return 200;
-			case HARD: return 250;
+			case NORMAL:
+				return 200;
+			case HARD:
+				return 250;
 		}
 	}
 
 	@Override
-    protected boolean canDespawn()
-    {
-        return false;
-    }
+	public void setCustomNameTag(String name) {
+		super.setCustomNameTag(name);
+		this.bossInfo.setName(this.getDisplayName());
+	}
+
+	@Override
+	protected boolean canDespawn() {
+		return false;
+	}
 
 	@Override
 	protected void initEntityAI() {
@@ -169,14 +179,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			int maxx = MathHelper.floor(bb.maxX + 0.5D);
 			int maxy = MathHelper.floor(bb.maxY + 0.001D);
 			int maxz = MathHelper.floor(bb.maxZ + 0.5D);
-			if(taskOwner.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz)))
-			{
-				for(int dx = minx; dx <= maxx; dx++)
-				{
-					for(int dy = miny; dy <= maxy; dy++)
-					{
-						for(int dz = minz; dz <= maxz; dz++)
-						{
+			if (taskOwner.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
+				for (int dx = minx; dx <= maxx; dx++) {
+					for (int dy = miny; dy <= maxy; dy++) {
+						for (int dz = minz; dz <= maxz; dz++) {
 							// todo limit what can be broken
 							taskOwner.getWorld().destroyBlock(new BlockPos(dx, dy, dz), true);
 						}
@@ -240,7 +246,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 					break;
 				}
 				case CHARGE: {
-                    BlockPos tpoint = taskOwner.findCirclePoint(clockwise, 14, Math.PI);
+					BlockPos tpoint = taskOwner.findCirclePoint(clockwise, 14, Math.PI);
 					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
 					break;
 				}
@@ -259,7 +265,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 						rotation = 0.1;
 					}
 
-                    BlockPos tpoint = taskOwner.findCirclePoint(clockwise, radius, rotation);
+					BlockPos tpoint = taskOwner.findCirclePoint(clockwise, radius, rotation);
 					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
 					break;
 				}
@@ -284,9 +290,15 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 					break;
 				}
-				case CRUMBLE: doCharge(); break;
-				case CHARGE: doCircle(); break;
-				case CIRCLE: doIntimidate(); break;
+				case CRUMBLE:
+					doCharge();
+					break;
+				case CHARGE:
+					doCircle();
+					break;
+				case CIRCLE:
+					doIntimidate();
+					break;
 			}
 		}
 
@@ -319,20 +331,18 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealthPerDifficulty());
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.75D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
-    }
-	
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealthPerDifficulty());
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.75D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
+	}
+
 	/**
 	 * Determine how many segments, from 2-12, the naga should have, dependent on its current health
 	 */
-	private void setSegmentsPerHealth()
-	{
+	private void setSegmentsPerHealth() {
 		int oldSegments = this.currentSegmentCount;
 		int newSegments = MathHelper.clamp((int) ((this.getHealth() / healthPerSegment) + (getHealth() > 0 ? 2 : 0)), 0, MAX_SEGMENTS);
 		this.currentSegmentCount = newSegments;
@@ -350,70 +360,63 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 	}
-	
-    @Override
-    public boolean canTriggerWalking()
-    {
-        return false;
-    }
-    
-    @Override
-	public boolean isInLava()
-    {
-        return false;
-    }
 
-    @Override
+	@Override
+	public boolean canTriggerWalking() {
+		return false;
+	}
+
+	@Override
+	public boolean isInLava() {
+		return false;
+	}
+
+	@Override
 	public void onUpdate() {
 		despawnIfPeaceful();
-		
+
 		if (deathTime > 0) {
-            for(int k = 0; k < 5; k++)
-            {
-                double d = rand.nextGaussian() * 0.02D;
-                double d1 = rand.nextGaussian() * 0.02D;
-                double d2 = rand.nextGaussian() * 0.02D;
-                EnumParticleTypes explosionType = rand.nextBoolean() ?  EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL;
-                
-                world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
-            }
+			for (int k = 0; k < 5; k++) {
+				double d = rand.nextGaussian() * 0.02D;
+				double d1 = rand.nextGaussian() * 0.02D;
+				double d2 = rand.nextGaussian() * 0.02D;
+				EnumParticleTypes explosionType = rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL;
+
+				world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+			}
 		}
-		
+
 		// update health
-        this.ticksSinceDamaged++;
-        
-        if (!this.world.isRemote && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0)
-        {
-        	this.heal(1);
-        }
-        
-    	setSegmentsPerHealth();
+		this.ticksSinceDamaged++;
+
+		if (!this.world.isRemote && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 20 == 0) {
+			this.heal(1);
+		}
+
+		setSegmentsPerHealth();
 
 		super.onUpdate();
 
 		// update bodySegments parts
-        for (EntityTFNagaSegment segment : bodySegments) {
-            if (segment != null)
-            {
-                segment.onUpdate();
-            }
-        }
-		
+		for (EntityTFNagaSegment segment : bodySegments) {
+			if (segment != null) {
+				segment.onUpdate();
+			}
+		}
+
 		moveSegments();
 	}
 
-    @Override
-    protected void updateAITasks()
-    {
-        super.updateAITasks();
+	@Override
+	protected void updateAITasks() {
+		super.updateAITasks();
 
-        if (getAttackTarget() != null &&
-				(getDistanceSqToEntity(getAttackTarget()) > 80 * 80 || !this.isEntityWithinHomeArea(getAttackTarget())))
-        {
-        	setAttackTarget(null);
-        }
+		if (getAttackTarget() != null &&
+				(getDistanceSqToEntity(getAttackTarget()) > 80 * 80 || !this.isEntityWithinHomeArea(getAttackTarget()))) {
+			setAttackTarget(null);
+		}
 
-        // if we are very close to the path point, go to the next point, unless the path is finished
+		// if we are very close to the path point, go to the next point, unless the path is finished
 		// TODO 1.10 this runs after the path navigator runs, is that okay?
 		double d = width * 4.0F;
 		Vec3d vec3d = hasPath() ? getNavigator().getPath().getPosition(this) : null;
@@ -429,10 +432,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 		// BOSS BAR!
-        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
-    }
+		this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+	}
 
-    static class NagaMoveHelper extends EntityMoveHelper {
+	static class NagaMoveHelper extends EntityMoveHelper {
 		public NagaMoveHelper(EntityLiving naga) {
 			super(naga);
 		}
@@ -447,15 +450,14 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				double d2 = this.posY - this.entity.posY;
 				double d3 = d0 * d0 + d2 * d2 + d1 * d1;
 
-				if (d3 < 2.500000277905201E-7D)
-				{
+				if (d3 < 2.500000277905201E-7D) {
 					this.entity.setMoveForward(0.0F);
 					return;
 				}
 
-				float f9 = (float)(MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
+				float f9 = (float) (MathHelper.atan2(d1, d0) * (180D / Math.PI)) - 90.0F;
 				this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, f9, 30.0F); // TF - 90 -> 30
-				this.entity.setAIMoveSpeed((float)(this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
+				this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
 
 				// TF - old lines. todo are either still needed?
 				entity.setMoveForward(((EntityTFNaga) entity).getMoveSpeed());
@@ -466,8 +468,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 					this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * ((EntityTFNaga) this.entity).getMoveSpeed() * 0.6F;
 				}
 
-				if (d2 > (double)this.entity.stepHeight && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.entity.width))
-				{
+				if (d2 > (double) this.entity.stepHeight && d0 * d0 + d1 * d1 < (double) Math.max(1.0F, this.entity.width)) {
 					this.entity.getJumpHelper().setJumping();
 				}
 			} else {
@@ -475,44 +476,40 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			}
 		}
 	}
-    
-    private float getMoveSpeed() {
+
+	private float getMoveSpeed() {
 		return 0.5F;
 	}
 
 	@Override
-    protected SoundEvent getAmbientSound()
-    {
-        return rand.nextInt(3) != 0 ? TFSounds.NAGA_HISS : TFSounds.NAGA_RATTLE;
-    }
- 
-	@Override
-    protected SoundEvent getHurtSound()
-    {
-		return TFSounds.NAGA_HURT;
-    }
+	protected SoundEvent getAmbientSound() {
+		return rand.nextInt(3) != 0 ? TFSounds.NAGA_HISS : TFSounds.NAGA_RATTLE;
+	}
 
 	@Override
-    protected SoundEvent getDeathSound()
-    {
+	protected SoundEvent getHurtSound() {
 		return TFSounds.NAGA_HURT;
-    }
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.NAGA_HURT;
+	}
 
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
 	}
 
-    private void crumbleBelowTarget(int range) {
+	private void crumbleBelowTarget(int range) {
 		int floor = (int) getEntityBoundingBox().minY;
 		int targetY = (int) getAttackTarget().getEntityBoundingBox().minY;
-		
-		if (targetY > floor)
-		{
+
+		if (targetY > floor) {
 			int dx = (int) getAttackTarget().posX + rand.nextInt(range) - rand.nextInt(range);
 			int dz = (int) getAttackTarget().posZ + rand.nextInt(range) - rand.nextInt(range);
 			int dy = targetY - rand.nextInt(range) + rand.nextInt(range > 1 ? range - 1 : range);
-			
+
 			if (dy <= floor) {
 				dy = targetY;
 			}
@@ -520,100 +517,94 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 //			System.out.println("Crumbling block at " + dx + ", " + dy + ", " + dz);
 			BlockPos pos = new BlockPos(dx, dy, dz);
 
-			if (!world.isAirBlock(pos))
-			{
+			if (!world.isAirBlock(pos)) {
 				// todo limit what can be broken
 				world.destroyBlock(pos, true);
-				
+
 				// sparkle!!
-	            for(int k = 0; k < 20; k++)
-	            {
-	                double d = rand.nextGaussian() * 0.02D;
-	                double d1 = rand.nextGaussian() * 0.02D;
-	                double d2 = rand.nextGaussian() * 0.02D;
-	                
-	                world.spawnParticle(EnumParticleTypes.CRIT, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
-	            }
+				for (int k = 0; k < 20; k++) {
+					double d = rand.nextGaussian() * 0.02D;
+					double d1 = rand.nextGaussian() * 0.02D;
+					double d2 = rand.nextGaussian() * 0.02D;
+
+					world.spawnParticle(EnumParticleTypes.CRIT, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+				}
 			}
 		}
 	}
 
-    // todo 1.10: these setAIMoveSpeeds likely should be attribute changes, only move helper should care about AIMoveSpeed
+	// todo 1.10: these setAIMoveSpeeds likely should be attribute changes, only move helper should care about AIMoveSpeed
 
-    /**
-     * Sets the naga to move slowly, such as when he is intimidating the player
-     */
+	/**
+	 * Sets the naga to move slowly, such as when he is intimidating the player
+	 */
 	private void goSlow() {
 //		moveForward = 0f;
 		moveStrafing = 0;
 		this.setAIMoveSpeed(0.1f);
-    }
+	}
 
-    /**
-     * Normal speed, like when he is circling
-     */
+	/**
+	 * Normal speed, like when he is circling
+	 */
 	private void goNormal() {
 		this.setAIMoveSpeed(0.6F);
 	}
 
 	/**
-     * Fast, like when he is charging
-     */
+	 * Fast, like when he is charging
+	 */
 	private void goFast() {
 		this.setAIMoveSpeed(1.0F);
 	}
 
-    @Override
+	@Override
 	public boolean canBePushed() {
 		return false;
 	}
 
 	/**
-     * Finds a point that allows us to circle the target clockwise.
-     */
-	private BlockPos findCirclePoint(boolean clockwise, double radius, double rotation)
-    {
-    	EntityLivingBase toCircle = getAttackTarget();
+	 * Finds a point that allows us to circle the target clockwise.
+	 */
+	private BlockPos findCirclePoint(boolean clockwise, double radius, double rotation) {
+		EntityLivingBase toCircle = getAttackTarget();
 
-    	// compute angle
-        double vecx = posX - toCircle.posX;
-        double vecz = posZ - toCircle.posZ;
-        float rangle = (float)(Math.atan2(vecz, vecx));
+		// compute angle
+		double vecx = posX - toCircle.posX;
+		double vecz = posZ - toCircle.posZ;
+		float rangle = (float) (Math.atan2(vecz, vecx));
 
-        // add a little, so he circles (clockwise)
-        rangle += clockwise ? rotation : -rotation;
+		// add a little, so he circles (clockwise)
+		rangle += clockwise ? rotation : -rotation;
 
-        // figure out where we're headed from the target angle
-        double dx = MathHelper.cos(rangle) * radius;
-        double dz = MathHelper.sin(rangle) * radius;
-        
-        double dy = Math.min(getEntityBoundingBox().minY, toCircle.posY);
+		// figure out where we're headed from the target angle
+		double dx = MathHelper.cos(rangle) * radius;
+		double dz = MathHelper.sin(rangle) * radius;
 
-        // add that to the target entity's position, and we have our destination
-    	return new BlockPos(toCircle.posX + dx, dy, toCircle.posZ + dz);
-    }
+		double dy = Math.min(getEntityBoundingBox().minY, toCircle.posY);
+
+		// add that to the target entity's position, and we have our destination
+		return new BlockPos(toCircle.posX + dx, dy, toCircle.posZ + dz);
+	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i)
-    {
-    	// reject damage from outside of our home radius
-        if (damagesource.getSourceOfDamage() != null && !this.isEntityWithinHomeArea(damagesource.getSourceOfDamage())
-				|| damagesource.getEntity() != null && !this.isEntityWithinHomeArea(damagesource.getEntity()))
-        {
+	public boolean attackEntityFrom(DamageSource damagesource, float i) {
+		// reject damage from outside of our home radius
+		if (damagesource.getSourceOfDamage() != null && !this.isEntityWithinHomeArea(damagesource.getSourceOfDamage())
+				|| damagesource.getEntity() != null && !this.isEntityWithinHomeArea(damagesource.getEntity())) {
 			return false;
 		}
 
-    	if (super.attackEntityFrom(damagesource, i))
-    	{
-    		setSegmentsPerHealth();
-    		this.ticksSinceDamaged = 0;
-    		return true;
-    	} else {
-    		return false;
-    	}
-    }
+		if (super.attackEntityFrom(damagesource, i)) {
+			setSegmentsPerHealth();
+			this.ticksSinceDamaged = 0;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    @Override
+	@Override
 	public boolean attackEntityAsMob(Entity toAttack) {
 		boolean result = super.attackEntityAsMob(toAttack);
 
@@ -625,86 +616,73 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		return result;
 	}
 
-    @Override
-	public float getBlockPathWeight(BlockPos pos)
-    {
-		if (!this.isWithinHomeDistanceFromPosition(pos))
-		{
+	@Override
+	public float getBlockPathWeight(BlockPos pos) {
+		if (!this.isWithinHomeDistanceFromPosition(pos)) {
 			return Float.MIN_VALUE;
-		}
-		else
-		{
+		} else {
 			return 0.0F;
 		}
-    }
+	}
 
 	private void despawnIfPeaceful() {
-        if(!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			if (hasHome()) {
-                BlockPos home = this.getHomePosition();
-                world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
-            }
+				BlockPos home = this.getHomePosition();
+				world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
+			}
 
 			setDead();
 		}
 	}
 
 	@Override
-	public boolean isWithinHomeDistanceFromPosition(BlockPos pos)
-    {
-		if (this.getMaximumHomeDistance() == -1)
-		{
+	public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
+		if (this.getMaximumHomeDistance() == -1) {
 			return true;
-		}
-		else
-		{
+		} else {
 			int distX = Math.abs(this.getHomePosition().getX() - pos.getX());
 			int distY = Math.abs(this.getHomePosition().getY() - pos.getY());
 			int distZ = Math.abs(this.getHomePosition().getZ() - pos.getZ());
 
 			return distX <= LEASH_X && distY <= LEASH_Y && distZ <= LEASH_Z;
 		}
-    }
+	}
 
-	private boolean isEntityWithinHomeArea(Entity entity)
-	{
+	private boolean isEntityWithinHomeArea(Entity entity) {
 		return isWithinHomeDistanceFromPosition(new BlockPos(entity));
 	}
 
-	private void spawnBodySegments()
-	{
-		for (int i = 0; i < currentSegmentCount; i++)
-		{
-			if (bodySegments[i] == null || bodySegments[i].isDead)
-			{
+	private void spawnBodySegments() {
+		for (int i = 0; i < currentSegmentCount; i++) {
+			if (bodySegments[i] == null || bodySegments[i].isDead) {
 				bodySegments[i] = new EntityTFNagaSegment(this, i);
 				bodySegments[i].setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
 				if (!world.isRemote) world.spawnEntity(bodySegments[i]);
 			}
 		}
 	}
-	
+
 	/**
 	 * Sets the heading (ha ha) of the bodySegments segments
 	 */
 	private void moveSegments() {
-		for (int i = 0; i < this.currentSegmentCount; i++)
-		{
+		for (int i = 0; i < this.currentSegmentCount; i++) {
 			Entity leader = i == 0 ? this : this.bodySegments[i - 1];
 			double followX = leader.posX;
 			double followY = leader.posY;
 			double followZ = leader.posZ;
 
 			// also weight the position so that the segments straighten out a little bit, and the front ones straighten more
-	    	float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
+			float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
 
-			
-			double straightenForce = 0.05D + (1.0 / (float)(i + 1)) * 0.5D;
-			
-	    	double idealX = -MathHelper.sin(angle) * straightenForce;
-	    	double idealZ = MathHelper.cos(angle) * straightenForce;
-			
-			
+
+			double straightenForce = 0.05D + (1.0 / (float) (i + 1)) * 0.5D;
+
+			double idealX = -MathHelper.sin(angle) * straightenForce;
+			double idealZ = MathHelper.cos(angle) * straightenForce;
+
+
 			Vec3d diff = new Vec3d(bodySegments[i].posX - followX, bodySegments[i].posY - followY, bodySegments[i].posZ - followZ);
 			diff = diff.normalize();
 
@@ -713,66 +691,67 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 			double f = 2.0D;
 
-            double destX = followX + f * diff.xCoord;
-            double destY = followY + f * diff.yCoord;
-            double destZ = followZ + f * diff.zCoord;
+			double destX = followX + f * diff.xCoord;
+			double destY = followY + f * diff.yCoord;
+			double destZ = followZ + f * diff.zCoord;
 
-            bodySegments[i].setPosition(destX, destY, destZ);
+			bodySegments[i].setPosition(destX, destY, destZ);
 
-            double distance = (double)MathHelper.sqrt(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
-            
-            if (i == 0)
-            {
+			double distance = (double) MathHelper.sqrt(diff.xCoord * diff.xCoord + diff.zCoord * diff.zCoord);
+
+			if (i == 0) {
 				diff = diff.addVector(0, -0.15, 0);
-            }
-            
-            bodySegments[i].setRotation((float) (Math.atan2(diff.zCoord, diff.xCoord) * 180.0D / Math.PI) + 90.0F, -(float)(Math.atan2(diff.yCoord, distance) * 180.0D / Math.PI));
+			}
+
+			bodySegments[i].setRotation((float) (Math.atan2(diff.zCoord, diff.xCoord) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.yCoord, distance) * 180.0D / Math.PI));
 		}
 	}
-	
-    @Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-    {
-    	if (hasHome()) {
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+		if (hasHome()) {
 			BlockPos home = this.getHomePosition();
-			nbttagcompound.setTag("Home", new NBTTagIntArray(new int[] { home.getX(), home.getY(), home.getZ() }));
+			nbttagcompound.setTag("Home", new NBTTagIntArray(new int[]{home.getX(), home.getY(), home.getZ()}));
 		}
 
-        super.writeEntityToNBT(nbttagcompound);
-    }
+		super.writeEntityToNBT(nbttagcompound);
+	}
 
-    @Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readEntityFromNBT(nbttagcompound);
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+		super.readEntityFromNBT(nbttagcompound);
 
-        if (nbttagcompound.hasKey("Home", Constants.NBT.TAG_INT_ARRAY)) {
-            int[] home = nbttagcompound.getIntArray("Home");
-            this.setHomePosAndDistance(new BlockPos(home[0], home[1], home[2]), 20);
-        } else {
-        	this.detachHome();
+		if (nbttagcompound.hasKey("Home", Constants.NBT.TAG_INT_ARRAY)) {
+			int[] home = nbttagcompound.getIntArray("Home");
+			this.setHomePosAndDistance(new BlockPos(home[0], home[1], home[2]), 20);
+		} else {
+			this.detachHome();
 		}
 
-        setSegmentsPerHealth();
-    }
+		setSegmentsPerHealth();
+
+		if (this.hasCustomName()) {
+			this.bossInfo.setName(this.getDisplayName());
+		}
+	}
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getEntity() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getEntity()).addStat(TFAchievementPage.twilightHunter);
-			((EntityPlayer)par1DamageSource.getEntity()).addStat(TFAchievementPage.twilightKillNaga);
+			((EntityPlayer) par1DamageSource.getEntity()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getEntity()).addStat(TFAchievementPage.twilightKillNaga);
 		}
-		
+
 		// mark the courtyard as defeated
 		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
-			
+
 			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-			
+
 			if (nearbyFeature == TFFeature.nagaCourtyard) {
 				generator.setStructureConquered(dx, dy, dz, true);
 			}
@@ -790,22 +769,21 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		return false;
 	}
 
-    @Override
-    public Entity[] getParts()
-    {
-    	return Arrays.stream(bodySegments).filter(Objects::nonNull).toArray(Entity[]::new);
-    }
+	@Override
+	public Entity[] getParts() {
+		return Arrays.stream(bodySegments).filter(Objects::nonNull).toArray(Entity[]::new);
+	}
 
 
-    @Override
-    public void addTrackingPlayer(EntityPlayerMP player) {
-        super.addTrackingPlayer(player);
-        this.bossInfo.addPlayer(player);
-    }
+	@Override
+	public void addTrackingPlayer(EntityPlayerMP player) {
+		super.addTrackingPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
 
-    @Override
-    public void removeTrackingPlayer(EntityPlayerMP player) {
-        super.removeTrackingPlayer(player);
-        this.bossInfo.removePlayer(player);
-    }
+	@Override
+	public void removeTrackingPlayer(EntityPlayerMP player) {
+		super.removeTrackingPlayer(player);
+		this.bossInfo.removePlayer(player);
+	}
 }

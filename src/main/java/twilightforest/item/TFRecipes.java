@@ -1,28 +1,24 @@
 package twilightforest.item;
 
 
-import static net.minecraftforge.oredict.RecipeSorter.Category.SHAPELESS;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFFireJet;
-import twilightforest.block.BlockTFPlant;
-import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.FireJetVariant;
 import twilightforest.block.enums.PlantVariant;
 import twilightforest.block.enums.TowerDeviceVariant;
-import twilightforest.enchantment.TFEnchantment;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import static net.minecraftforge.oredict.RecipeSorter.Category.SHAPELESS;
 
 
 public class TFRecipes {
@@ -30,31 +26,31 @@ public class TFRecipes {
 	//AtomicBlom: I'm not sure why getMaxDamage is deprecated, since it seems to be actively used?
 	@SuppressWarnings("deprecation")
 	public static void registerRecipes() {
-		
+
 		// ore dictionary
-        OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.log, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.magicLog, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("treeSapling", new ItemStack(TFBlocks.sapling, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.leaves, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.magicLeaves, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("plankWood", new ItemStack(TFBlocks.towerWood, 1, OreDictionary.WILDCARD_VALUE));
-        
-        // register my ores, just for fun
-        OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fieryIngot));
-        OreDictionary.registerOre("oreIronwood", new ItemStack(TFItems.ironwoodRaw));
-        OreDictionary.registerOre("ingotIronwood", new ItemStack(TFItems.ironwoodIngot));
-        OreDictionary.registerOre("ingotSteeleaf", new ItemStack(TFItems.steeleafIngot));
-        OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.shardCluster));
-        OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightMetal));
-        
-        // recipe sorter
-        RecipeSorter.register(TwilightForestMod.ID + ":mapcloning",  TFMapCloningRecipe.class,   SHAPELESS, "after:minecraft:shapeless");
+		OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.log, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.magicLog, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeSapling", new ItemStack(TFBlocks.sapling, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.leaves, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.magicLeaves, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("plankWood", new ItemStack(TFBlocks.towerWood, 1, OreDictionary.WILDCARD_VALUE));
+
+		// register my ores, just for fun
+		OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fieryIngot));
+		OreDictionary.registerOre("oreIronwood", new ItemStack(TFItems.ironwoodRaw));
+		OreDictionary.registerOre("ingotIronwood", new ItemStack(TFItems.ironwoodIngot));
+		OreDictionary.registerOre("ingotSteeleaf", new ItemStack(TFItems.steeleafIngot));
+		OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.shardCluster));
+		OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightMetal));
+
+		// recipe sorter
+		RecipeSorter.register(TwilightForestMod.ID + ":mapcloning", TFMapCloningRecipe.class, SHAPELESS, "after:minecraft:shapeless");
 
 		// smelting for logs
 		GameRegistry.addSmelting(TFBlocks.log, new ItemStack(Items.COAL, 1, 1), 0.1F);
 		GameRegistry.addSmelting(TFBlocks.magicLog, new ItemStack(Items.COAL, 1, 1), 0.1F);
-        
-        // recipes
+
+		// recipes
 		GameRegistry.addRecipe(new ItemStack(Blocks.PLANKS, 4, 0), "w", 'w', new ItemStack(TFBlocks.log, 1, 0));
 		GameRegistry.addRecipe(new ItemStack(Blocks.PLANKS, 4, 1), "w", 'w', new ItemStack(TFBlocks.log, 1, 1));
 		GameRegistry.addRecipe(new ItemStack(Blocks.PLANKS, 4, 2), "w", 'w', new ItemStack(TFBlocks.log, 1, 2));
@@ -137,7 +133,7 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new TFMapCloningRecipe(TFItems.magicMap, TFItems.emptyMagicMap));
 		GameRegistry.addRecipe(new TFMapCloningRecipe(TFItems.mazeMap, TFItems.emptyMazeMap));
 		GameRegistry.addRecipe(new TFMapCloningRecipe(TFItems.oreMap, TFItems.emptyOreMap));
-		
+
 		// dark tower recipes
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerWood, 4, 0), "##", "##", '#', new ItemStack(TFBlocks.log, 1, 3));
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.towerWood, 3, 1), "#", "#", "#", '#', new ItemStack(TFBlocks.towerWood, 1, 0));
@@ -150,11 +146,11 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.fireJet, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()), "ere", "rsr", "ere", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'r', new ItemStack(Items.REDSTONE), 's', new ItemStack(TFBlocks.fireJet, 1, FireJetVariant.SMOKER.ordinal()));
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.fireJet, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()), "ere", "rjr", "lll", 'e', new ItemStack(TFBlocks.towerWood, 1, 1), 'r', new ItemStack(Items.REDSTONE), 'l', new ItemStack(Items.LAVA_BUCKET), 'j', new ItemStack(TFBlocks.fireJet, 1, FireJetVariant.JET_IDLE.ordinal()));
 
-		
+
 		GameRegistry.addRecipe(new ItemStack(TFItems.shardCluster), "###", "###", "###", '#', TFItems.armorShard);
 
 		GameRegistry.addSmelting(TFItems.shardCluster, new ItemStack(TFItems.knightMetal), 1.0F);
-		
+
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightlyHelm), "###", "# #", '#', TFItems.knightMetal);
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightlyPlate), "# #", "###", "###", '#', TFItems.knightMetal);
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightlyLegs), "###", "# #", "# #", '#', TFItems.knightMetal);
@@ -164,7 +160,7 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightlyPick), "###", " X ", " X ", '#', TFItems.knightMetal, 'X', Items.STICK);
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightlyAxe), "##", "#X", " X", '#', TFItems.knightMetal, 'X', Items.STICK);
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightlyAxe), "##", "X#", "X ", '#', TFItems.knightMetal, 'X', Items.STICK);
-		
+
 		addEnchantedRecipe(TFItems.yetiHelm, Enchantments.PROTECTION, 2, "###", "# #", '#', TFItems.alphaFur);
 		addEnchantedRecipe(TFItems.yetiPlate, Enchantments.PROTECTION, 2, "# #", "###", "###", '#', TFItems.alphaFur);
 		addEnchantedRecipe(TFItems.yetiLegs, Enchantments.PROTECTION, 2, "###", "# #", "# #", '#', TFItems.alphaFur);
@@ -174,17 +170,17 @@ public class TFRecipes {
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticPlate), "# #", "###", "###", '#', TFItems.arcticFur);
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticLegs), "###", "# #", "# #", '#', TFItems.arcticFur);
 		GameRegistry.addRecipe(new ItemStack(TFItems.arcticBoots), "# #", "# #", '#', TFItems.arcticFur);
-		
+
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.auroraSlab, 6, 0), "###", '#', TFBlocks.auroraBlock);
 		GameRegistry.addRecipe(new ItemStack(TFBlocks.auroraPillar, 2, 0), "#", "#", '#', TFBlocks.auroraBlock);
-		
+
 		GameRegistry.addRecipe(new ItemStack(TFItems.giantPick), "###", " X ", " X ", '#', TFBlocks.giantCobble, 'X', TFBlocks.giantLog);
 		GameRegistry.addRecipe(new ItemStack(TFItems.giantSword), "#", "#", "X", '#', TFBlocks.giantCobble, 'X', TFBlocks.giantLog);
 
 		GameRegistry.addShapelessRecipe(new ItemStack(Blocks.COBBLESTONE, 64), new ItemStack(TFBlocks.giantCobble));
 		GameRegistry.addShapelessRecipe(new ItemStack(Blocks.PLANKS, 64), new ItemStack(TFBlocks.giantLog));
 		GameRegistry.addShapelessRecipe(new ItemStack(Blocks.LEAVES, 64), new ItemStack(TFBlocks.giantLeaves));
-		
+
 		GameRegistry.addRecipe(new ItemStack(TFItems.knightmetalRing), " # ", "# #", " # ", '#', TFItems.knightMetal);
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.chainBlock), TFItems.knightmetalRing, TFItems.knightMetal, TFItems.knightMetal, TFItems.knightMetal, TFBlocks.knightmetalStorage);
 
@@ -198,7 +194,7 @@ public class TFRecipes {
 		ItemStack result = new ItemStack(item);
 		int i = 0;
 		while (i < inputs.length && inputs[i] instanceof Enchantment) {
-			result.addEnchantment((Enchantment)inputs[i], (Integer)inputs[i + 1]);
+			result.addEnchantment((Enchantment) inputs[i], (Integer) inputs[i + 1]);
 			i += 2;
 		}
 

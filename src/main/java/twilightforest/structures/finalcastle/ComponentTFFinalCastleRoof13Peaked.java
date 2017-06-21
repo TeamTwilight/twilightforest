@@ -6,12 +6,13 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent
-{
-	public ComponentTFFinalCastleRoof13Peaked() {}
+public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent {
+	public ComponentTFFinalCastleRoof13Peaked() {
+	}
 
 	public ComponentTFFinalCastleRoof13Peaked(Random rand, int i, StructureTFComponent sideTower) {
 		super(i);
@@ -24,13 +25,13 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent
 	}
 
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void buildComponent(StructureComponent parent, List list, Random rand) {
-	    if (parent != null && parent instanceof StructureTFComponent) {
-		    this.deco = ((StructureTFComponent)parent).deco;
-	    }
-    }
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
+	public void buildComponent(StructureComponent parent, List list, Random rand) {
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
+		}
+	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
@@ -80,8 +81,7 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent
 		this.fillWithBlocks(world, sbb, 15, 17, 8, 16, 19, 8, deco.roofState, deco.roofState, false);
 
 
-
-		for (Rotation rotation : new Rotation[] { Rotation.CLOCKWISE_90, Rotation.COUNTERCLOCKWISE_90 }) {
+		for (Rotation rotation : new Rotation[]{Rotation.CLOCKWISE_90, Rotation.COUNTERCLOCKWISE_90}) {
 			// this might be one of my more confusing instances of code recycling
 			this.fillBlocksRotated(world, sbb, 4, 0, 1, 12, 1, 1, deco.blockState, rotation);
 			// more teeny crenellations
@@ -92,10 +92,10 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent
 
 		// corners
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
-            this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockState, rotation);
-            this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
-            this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
-            this.setBlockStateRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
+			this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 2, 3, deco.blockState, rotation);
+			this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
+			this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
+			this.setBlockStateRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
 		}
 
 		return true;

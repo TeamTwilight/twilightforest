@@ -1,7 +1,5 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -27,25 +25,22 @@ import twilightforest.item.TFItems;
 
 
 /**
- * 
  * Castle block makes a castle
- * 
- * @author Ben
  *
+ * @author Ben
  */
 public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 
-    public static final PropertyEnum<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
+	public static final PropertyEnum<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
 
-	public BlockTFCastleBlock()
-    {
-        super(Material.ROCK);
-        this.setHardness(100F);
-        this.setResistance(15F);
-        this.setSoundType(SoundType.STONE);
+	public BlockTFCastleBlock() {
+		super(Material.ROCK);
+		this.setHardness(100F);
+		this.setResistance(15F);
+		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, CastleBrickVariant.NORMAL));
-    }
+	}
 
 	@Override
 	public BlockStateContainer createBlockState() {
@@ -64,29 +59,26 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
-	{
-    	ItemStack cei = entityplayer.getHeldItemMainhand();
-        if(!cei.isEmpty() && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick))
-        {
-            cei.damageItem(16, entityplayer);
-        }
-    	
+	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+		ItemStack cei = entityplayer.getHeldItemMainhand();
+		if (!cei.isEmpty() && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
+			cei.damageItem(16, entityplayer);
+		}
+
 		super.harvestBlock(world, entityplayer, pos, state, te, stack);
-    }
-    
+	}
+
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-    }
-    
-    @Override
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
+	}
+
+	@Override
 	public int damageDropped(IBlockState state) {
-    	return getMetaFromState(state);
+		return getMetaFromState(state);
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -9,8 +9,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFHydra;
 
 public class RenderTFHydra extends RenderLiving<EntityTFHydra> {
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
-	
+	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
+
 	public RenderTFHydra(RenderManager manager, ModelBase modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);
 	}
@@ -20,9 +20,8 @@ public class RenderTFHydra extends RenderLiving<EntityTFHydra> {
 		return 0F;
 	}
 
-    @Override
-	protected ResourceLocation getEntityTexture(EntityTFHydra par1Entity)
-    {
-        return textureLoc;
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTFHydra par1Entity) {
+		return textureLoc;
+	}
 }

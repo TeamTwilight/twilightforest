@@ -25,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class BlockTFHugeWaterLily extends BlockBush {
 
-    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.1, 0.1, 0.9, 0.9, 0.9);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.1, 0.1, 0.9, 0.9, 0.9);
 
 	protected BlockTFHugeWaterLily() {
 		super(Material.PLANTS);
@@ -33,32 +33,31 @@ public class BlockTFHugeWaterLily extends BlockBush {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return AABB;
-    }
-
-    @Override
-	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        IBlockState down = world.getBlockState(pos.down());
-        Block b = down.getBlock();
-        IProperty<Integer> levelProp = b instanceof BlockLiquid || b instanceof BlockFluidBase
-				? BlockLiquid.LEVEL
-                : null;
-
-        return down.getMaterial() == Material.WATER
-                && (levelProp == null || down.getValue(levelProp) == 0);
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return AABB;
 	}
 
-    @Override
-    protected boolean canSustainBush(IBlockState state)
-    {
-        return state.getBlock() == Blocks.WATER;
-    }
-
-    @SideOnly(Side.CLIENT)
 	@Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
+	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+		IBlockState down = world.getBlockState(pos.down());
+		Block b = down.getBlock();
+		IProperty<Integer> levelProp = b instanceof BlockLiquid || b instanceof BlockFluidBase
+				? BlockLiquid.LEVEL
+				: null;
+
+		return down.getMaterial() == Material.WATER
+				&& (levelProp == null || down.getValue(levelProp) == 0);
+	}
+
+	@Override
+	protected boolean canSustainBush(IBlockState state) {
+		return state.getBlock() == Blocks.WATER;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 }

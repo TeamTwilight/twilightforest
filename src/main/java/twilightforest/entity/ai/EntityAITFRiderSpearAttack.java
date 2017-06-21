@@ -6,23 +6,19 @@ import twilightforest.entity.EntityTFGoblinKnightUpper;
 
 public class EntityAITFRiderSpearAttack extends EntityAIBase {
 
-    private EntityTFGoblinKnightLower entity;
+	private EntityTFGoblinKnightLower entity;
 
-    public EntityAITFRiderSpearAttack(EntityTFGoblinKnightLower par1EntityCreature)
-    {
-        this.entity = par1EntityCreature;
-        this.setMutexBits(3); // Prevent moving
-    }
-	
+	public EntityAITFRiderSpearAttack(EntityTFGoblinKnightLower par1EntityCreature) {
+		this.entity = par1EntityCreature;
+		this.setMutexBits(3); // Prevent moving
+	}
+
 	@Override
 	public boolean shouldExecute() {
-		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof EntityTFGoblinKnightUpper)
-		{
+		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof EntityTFGoblinKnightUpper) {
 			int timer = ((EntityTFGoblinKnightUpper) this.entity.getPassengers().get(0)).heavySpearTimer;
 			return timer > 0 && timer < EntityTFGoblinKnightUpper.HEAVY_SPEAR_TIMER_START;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}

@@ -33,17 +33,16 @@ public class EntitySeekerArrow extends EntityArrow {
 		dataManager.register(TARGET, -1);
 	}
 
-    @Override
-	public void onUpdate()
-    {
-    	if (isThisArrowFlying()) {
-    		if (!world.isRemote) {
-    			updateTarget();
+	@Override
+	public void onUpdate() {
+		if (isThisArrowFlying()) {
+			if (!world.isRemote) {
+				updateTarget();
 			}
 
 			if (world.isRemote && !inGround) {
 				for (int k = 0; k < 4; ++k) {
-					this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.motionX * (double)k / 4.0D, this.posY + this.motionY * (double)k / 4.0D, this.posZ + this.motionZ * (double)k / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+					this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.motionX * (double) k / 4.0D, this.posY + this.motionY * (double) k / 4.0D, this.posZ + this.motionZ * (double) k / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
 				}
 			}
 
@@ -84,10 +83,10 @@ public class EntitySeekerArrow extends EntityArrow {
 			}
 		}
 
-        super.onUpdate();
-    }
+		super.onUpdate();
+	}
 
-    private void updateTarget() {
+	private void updateTarget() {
 		if (getTarget() != null && getTarget().isDead) {
 			setTarget(null);
 		}
@@ -107,7 +106,7 @@ public class EntitySeekerArrow extends EntityArrow {
 			for (EntityLivingBase living : this.world.getEntitiesWithinAABB(EntityLivingBase.class, targetBB)) {
 				if (!(living instanceof EntityPlayer)) {
 					courseVec = new Vec3d(this.motionX, this.motionY, this.motionZ).normalize();
-					Vec3d targetVec = new Vec3d(this.posX - living.posX, this.posY - (living.posY + (double)living.getEyeHeight()), this.posZ - living.posZ);
+					Vec3d targetVec = new Vec3d(this.posX - living.posX, this.posY - (living.posY + (double) living.getEyeHeight()), this.posZ - living.posZ);
 
 					//double d0 = targetVec.lengthVector(); // do we need this?
 					targetVec = targetVec.normalize();
@@ -122,7 +121,7 @@ public class EntitySeekerArrow extends EntityArrow {
 		}
 	}
 
-    private Entity getTarget() {
+	private Entity getTarget() {
 		return world.getEntityByID(dataManager.get(TARGET));
 	}
 

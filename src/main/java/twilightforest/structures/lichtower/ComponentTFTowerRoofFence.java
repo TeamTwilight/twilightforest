@@ -1,10 +1,10 @@
 package twilightforest.structures.lichtower;
 
-import java.util.Random;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+
+import java.util.Random;
 
 
 public class ComponentTFTowerRoofFence extends ComponentTFTowerRoof {
@@ -22,7 +22,7 @@ public class ComponentTFTowerRoofFence extends ComponentTFTowerRoof {
 		// same size
 		this.size = wing.size; // assuming only square towers and roofs right now.
 		this.height = 0;
-		
+
 		// just hang out at the very top of the tower
 		makeCapBB(wing);
 	}

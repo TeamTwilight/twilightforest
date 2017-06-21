@@ -18,131 +18,134 @@ import javax.annotation.Nonnull;
 
 public abstract class BlockTFCritter extends Block {
 
-    private final float WIDTH = getWidth();
-    private final AxisAlignedBB DOWN_BB = new AxisAlignedBB(0.5F - WIDTH, 1.0F - WIDTH * 2.0F, 0.2F, 0.5F + WIDTH, 1.0F, 0.8F);;
-    private final AxisAlignedBB UP_BB = new AxisAlignedBB(0.5F - WIDTH, 0.0F, 0.2F, 0.5F + WIDTH, WIDTH * 2.0F, 0.8F);;
-    private final AxisAlignedBB NORTH_BB = new AxisAlignedBB(0.5F - WIDTH, 0.2F, 1.0F - WIDTH * 2.0F, 0.5F + WIDTH, 0.8F, 1.0F);;
-    private final AxisAlignedBB SOUTH_BB = new AxisAlignedBB(0.5F - WIDTH, 0.2F, 0.0F, 0.5F + WIDTH, 0.8F, WIDTH * 2.0F);;
-    private final AxisAlignedBB WEST_BB = new AxisAlignedBB(1.0F - WIDTH * 2.0F, 0.2F, 0.5F - WIDTH, 1.0F, 0.8F, 0.5F + WIDTH);;
-    private final AxisAlignedBB EAST_BB = new AxisAlignedBB(0.0F, 0.2F, 0.5F - WIDTH, WIDTH * 2.0F, 0.8F, 0.5F + WIDTH);
+	private final float WIDTH = getWidth();
+	private final AxisAlignedBB DOWN_BB = new AxisAlignedBB(0.5F - WIDTH, 1.0F - WIDTH * 2.0F, 0.2F, 0.5F + WIDTH, 1.0F, 0.8F);
+	;
+	private final AxisAlignedBB UP_BB = new AxisAlignedBB(0.5F - WIDTH, 0.0F, 0.2F, 0.5F + WIDTH, WIDTH * 2.0F, 0.8F);
+	;
+	private final AxisAlignedBB NORTH_BB = new AxisAlignedBB(0.5F - WIDTH, 0.2F, 1.0F - WIDTH * 2.0F, 0.5F + WIDTH, 0.8F, 1.0F);
+	;
+	private final AxisAlignedBB SOUTH_BB = new AxisAlignedBB(0.5F - WIDTH, 0.2F, 0.0F, 0.5F + WIDTH, 0.8F, WIDTH * 2.0F);
+	;
+	private final AxisAlignedBB WEST_BB = new AxisAlignedBB(1.0F - WIDTH * 2.0F, 0.2F, 0.5F - WIDTH, 1.0F, 0.8F, 0.5F + WIDTH);
+	;
+	private final AxisAlignedBB EAST_BB = new AxisAlignedBB(0.0F, 0.2F, 0.5F - WIDTH, WIDTH * 2.0F, 0.8F, 0.5F + WIDTH);
 
-    protected BlockTFCritter()
-    {
-        super(Material.CIRCUITS);
+	protected BlockTFCritter() {
+		super(Material.CIRCUITS);
 		this.setHardness(0.0F);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setSoundType(SoundType.SLIME);
-        this.setDefaultState(blockState.getBaseState().withProperty(TFBlockProperties.FACING, EnumFacing.UP));
-    }
+		this.setDefaultState(blockState.getBaseState().withProperty(TFBlockProperties.FACING, EnumFacing.UP));
+	}
 
-    public float getWidth() {
-        return 0.15F;
-    }
-
-    @Override
-    public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TFBlockProperties.FACING);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(TFBlockProperties.FACING).getIndex();
-    }
-
-    @Nonnull
-    @Override
-    @Deprecated
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
-    }
-    
-    @Override
-    @Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        switch (state.getValue(TFBlockProperties.FACING)) {
-            case DOWN: return DOWN_BB;
-            case UP: default: return UP_BB;
-            case NORTH: return NORTH_BB;
-            case SOUTH: return SOUTH_BB;
-            case WEST: return WEST_BB;
-            case EAST: return EAST_BB;
-        }
-    }
-    
-    @Override
-    @Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return NULL_AABB;
-    }
+	public float getWidth() {
+		return 0.15F;
+	}
 
 	@Override
-    @Deprecated
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, TFBlockProperties.FACING);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(TFBlockProperties.FACING).getIndex();
+	}
+
+	@Nonnull
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(TFBlockProperties.FACING, EnumFacing.getFront(meta));
+	}
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		switch (state.getValue(TFBlockProperties.FACING)) {
+			case DOWN:
+				return DOWN_BB;
+			case UP:
+			default:
+				return UP_BB;
+			case NORTH:
+				return NORTH_BB;
+			case SOUTH:
+				return SOUTH_BB;
+			case WEST:
+				return WEST_BB;
+			case EAST:
+				return EAST_BB;
+		}
+	}
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return NULL_AABB;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        for (EnumFacing e : EnumFacing.VALUES) {
-            if (canPlaceAt(world, pos.offset(e))) {
-                return true;
-            }
-        }
+		for (EnumFacing e : EnumFacing.VALUES) {
+			if (canPlaceAt(world, pos.offset(e))) {
+				return true;
+			}
+		}
 
 		return false;
 	}
 
-	
+
 	@Override
-    @Deprecated
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        IBlockState state = getDefaultState();
+	@Deprecated
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		IBlockState state = getDefaultState();
 
-        if (canPlaceAt(world, pos.offset(sideHit.getOpposite()))) {
-            state = state.withProperty(TFBlockProperties.FACING, sideHit);
-        }
-        
-        return state;
-    }
+		if (canPlaceAt(world, pos.offset(sideHit.getOpposite()))) {
+			state = state.withProperty(TFBlockProperties.FACING, sideHit);
+		}
 
-    @Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
-        checkAndDrop(world, pos, state);
-    }
+		return state;
+	}
 
-    protected boolean checkAndDrop(World world, BlockPos pos, IBlockState state)
-    {
-        EnumFacing facing = state.getValue(TFBlockProperties.FACING);
-        if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
-            world.destroyBlock(pos, true);
-            return false;
-        }
+	@Override
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		checkAndDrop(world, pos, state);
+	}
 
-        return true;
-    }
+	protected boolean checkAndDrop(World world, BlockPos pos, IBlockState state) {
+		EnumFacing facing = state.getValue(TFBlockProperties.FACING);
+		if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
+			world.destroyBlock(pos, true);
+			return false;
+		}
 
-    @Override
-    @Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID, BlockPos fromPos)
-    {
-        checkAndDrop(world, pos, state);
-    }
+		return true;
+	}
 
-    protected boolean canPlaceAt(World world, BlockPos pos)
-    {
-    	return world.isBlockNormalCube(pos, true) || world.getBlockState(pos).getMaterial() == Material.LEAVES || world.getBlockState(pos).getMaterial() == Material.CACTUS;
-    }
+	@Override
+	@Deprecated
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID, BlockPos fromPos) {
+		checkAndDrop(world, pos, state);
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-    	return true;
-    }
-    
-    @Override
-    public abstract TileEntity createTileEntity(World world, IBlockState state);
+	protected boolean canPlaceAt(World world, BlockPos pos) {
+		return world.isBlockNormalCube(pos, true) || world.getBlockState(pos).getMaterial() == Material.LEAVES || world.getBlockState(pos).getMaterial() == Material.CACTUS;
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public abstract TileEntity createTileEntity(World world, IBlockState state);
 }

@@ -1,7 +1,5 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +10,6 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,6 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 @Mod.EventBusSubscriber
 public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallback {
@@ -51,9 +49,9 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 	}
 
 	@Nonnull
-    @Override
+	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.RARE;
+		return EnumRarity.RARE;
 	}
 
 	@Override

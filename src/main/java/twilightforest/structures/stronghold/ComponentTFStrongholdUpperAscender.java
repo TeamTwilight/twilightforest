@@ -1,8 +1,5 @@
 package twilightforest.structures.stronghold;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,44 +10,44 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
+import java.util.List;
+import java.util.Random;
+
 public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdComponent {
-	
+
 	boolean exitTop;
 
-	public ComponentTFStrongholdUpperAscender() {}
+	public ComponentTFStrongholdUpperAscender() {
+	}
 
 	public ComponentTFStrongholdUpperAscender(int i, EnumFacing facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
 	}
-	
+
 	@Override
 	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeStructureToNBT(par1NBTTagCompound);
-		
-        par1NBTTagCompound.setBoolean("exitTop", this.exitTop);
+
+		par1NBTTagCompound.setBoolean("exitTop", this.exitTop);
 	}
 
 	@Override
 	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-        this.exitTop = par1NBTTagCompound.getBoolean("exitTop");
+		this.exitTop = par1NBTTagCompound.getBoolean("exitTop");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z)
-	{
-		if (y < 36)
-		{
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+		if (y < 36) {
 			this.exitTop = true;
 			return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
-		}
-		else
-		{
+		} else {
 			this.exitTop = false;
 			return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -6, 0, 5, 10, 10, facing);
 		}
 	}
-	
+
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random random) {
 		super.buildComponent(parent, list, random);
@@ -61,41 +58,35 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-        if (this.isLiquidInStructureBoundingBox(world, sbb))
-        {
-            return false;
-        }
-        else
-        {
-        	placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 9, 9, rand, deco.randomBlocks);
-        	
-        	// entrance doorway
-        	placeSmallDoorwayAt(world, rand, 2, 2, exitTop ? 1 : 6, 0, sbb);
+		if (this.isLiquidInStructureBoundingBox(world, sbb)) {
+			return false;
+		} else {
+			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 9, 9, rand, deco.randomBlocks);
 
-        	// exit doorway
-        	placeSmallDoorwayAt(world, rand, 0, 2, exitTop ? 6 : 1, 9, sbb);
+			// entrance doorway
+			placeSmallDoorwayAt(world, rand, 2, 2, exitTop ? 1 : 6, 0, sbb);
 
-        	// steps!
-        	if (exitTop)
-        	{
-        		makeStairsAt(world, 1, 3, Rotation.CLOCKWISE_90, sbb);
-        		makeStairsAt(world, 2, 4, Rotation.CLOCKWISE_90, sbb);
-        		makeStairsAt(world, 3, 5, Rotation.CLOCKWISE_90, sbb);
-        		makeStairsAt(world, 4, 6, Rotation.CLOCKWISE_90, sbb);
-        		makeStairsAt(world, 5, 7, Rotation.CLOCKWISE_90, sbb);
-        		makePlatformAt(world, 5, 8, sbb);
-        	}
-        	else
-        	{
-        		makeStairsAt(world, 1, 6, Rotation.COUNTERCLOCKWISE_90, sbb);
-        		makeStairsAt(world, 2, 5, Rotation.COUNTERCLOCKWISE_90, sbb);
-        		makeStairsAt(world, 3, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
-        		makeStairsAt(world, 4, 3, Rotation.COUNTERCLOCKWISE_90, sbb);
-        		makeStairsAt(world, 5, 2, Rotation.COUNTERCLOCKWISE_90, sbb);
-        		makePlatformAt(world, 5, 1, sbb);
-        	}
-        	return true;
-        }
+			// exit doorway
+			placeSmallDoorwayAt(world, rand, 0, 2, exitTop ? 6 : 1, 9, sbb);
+
+			// steps!
+			if (exitTop) {
+				makeStairsAt(world, 1, 3, Rotation.CLOCKWISE_90, sbb);
+				makeStairsAt(world, 2, 4, Rotation.CLOCKWISE_90, sbb);
+				makeStairsAt(world, 3, 5, Rotation.CLOCKWISE_90, sbb);
+				makeStairsAt(world, 4, 6, Rotation.CLOCKWISE_90, sbb);
+				makeStairsAt(world, 5, 7, Rotation.CLOCKWISE_90, sbb);
+				makePlatformAt(world, 5, 8, sbb);
+			} else {
+				makeStairsAt(world, 1, 6, Rotation.COUNTERCLOCKWISE_90, sbb);
+				makeStairsAt(world, 2, 5, Rotation.COUNTERCLOCKWISE_90, sbb);
+				makeStairsAt(world, 3, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
+				makeStairsAt(world, 4, 3, Rotation.COUNTERCLOCKWISE_90, sbb);
+				makeStairsAt(world, 5, 2, Rotation.COUNTERCLOCKWISE_90, sbb);
+				makePlatformAt(world, 5, 1, sbb);
+			}
+			return true;
+		}
 	}
 
 	/**
@@ -103,24 +94,20 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	 */
 	private void makeStairsAt(World world, int y, int z, Rotation facing, StructureBoundingBox sbb) {
 		// check walls
-		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR)
-		{
-			for (int x = 1; x < 4; x++)
-			{
+		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
+			for (int x = 1; x < 4; x++) {
 				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(facing)), x, y, z, sbb);
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if we can find at least one wall, and if so, generate blocks
 	 */
 	private void makePlatformAt(World world, int y, int z, StructureBoundingBox sbb) {
 		// check walls
-		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR)
-		{
-			for (int x = 1; x < 4; x++)
-			{
+		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
+			for (int x = 1; x < 4; x++) {
 				this.setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, y, z, sbb);
 			}
 		}

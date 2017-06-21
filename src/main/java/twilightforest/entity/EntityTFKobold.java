@@ -11,8 +11,6 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -29,104 +27,92 @@ import twilightforest.entity.ai.EntityAITFPanicOnFlockDeath;
 
 
 public class EntityTFKobold extends EntityMob {
-    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/kobold");
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/kobold");
 	private static final DataParameter<Boolean> PANICKED = EntityDataManager.createKey(EntityTFKobold.class, DataSerializers.BOOLEAN);
 
-    public EntityTFKobold(World world)
-    {
-        super(world);
-        setSize(0.8F, 1.1F);
-    }
-    
-    @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAITFPanicOnFlockDeath(this, 2.0F));
-        this.tasks.addTask(2, new EntityAILeapAtTarget(this, 0.3F));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(4, new EntityAITFFlockToSameKind(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-    }
-	
-	@Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        dataManager.register(PANICKED, false);
-    }
+	public EntityTFKobold(World world) {
+		super(world);
+		setSize(0.8F, 1.1F);
+	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(13.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-    }
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAITFPanicOnFlockDeath(this, 2.0F));
+		this.tasks.addTask(2, new EntityAILeapAtTarget(this, 0.3F));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
+		this.tasks.addTask(4, new EntityAITFFlockToSameKind(this, 1.0D));
+		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(7, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	}
 
-    @Override
-	protected SoundEvent getAmbientSound()
-    {
-        return TFSounds.KOBOLD_AMBIENT;
-    }
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(PANICKED, false);
+	}
 
-    @Override
-	protected SoundEvent getHurtSound()
-    {
-        return TFSounds.KOBOLD_HURT;
-    }
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(13.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+	}
 
-    @Override
-	protected SoundEvent getDeathSound()
-    {
-        return TFSounds.KOBOLD_DEATH;
-    }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.KOBOLD_AMBIENT;
+	}
 
-    @Override
-    public ResourceLocation getLootTable() {
-        return LOOT_TABLE;
-    }
+	@Override
+	protected SoundEvent getHurtSound() {
+		return TFSounds.KOBOLD_HURT;
+	}
 
-    public boolean isPanicked()
-    {
-        return dataManager.get(PANICKED);
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.KOBOLD_DEATH;
+	}
 
-    public void setPanicked(boolean flag)
-    {
-        dataManager.set(PANICKED, flag);
-    }
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 
-    @Override
-	public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
+	public boolean isPanicked() {
+		return dataManager.get(PANICKED);
+	}
 
-    	if (world.isRemote && isPanicked())
-    	{
-    		for (int i = 0; i < 2; i++)
-    		{
-    			this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, 0, 0, 0);
-    		}
-    	}
+	public void setPanicked(boolean flag) {
+		dataManager.set(PANICKED, flag);
+	}
 
-    }
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
 
-    @Override
-    public void onDeath(DamageSource par1DamageSource) {
-    	super.onDeath(par1DamageSource);
-    	if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-    		((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
-    	}
-    }
+		if (world.isRemote && isPanicked()) {
+			for (int i = 0; i < 2; i++) {
+				this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, 0, 0, 0);
+			}
+		}
 
-    @Override
-	public int getMaxSpawnedInChunk()
-    {
-        return 8;
-    }
+	}
+
+	@Override
+	public void onDeath(DamageSource par1DamageSource) {
+		super.onDeath(par1DamageSource);
+		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		}
+	}
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 8;
+	}
 }

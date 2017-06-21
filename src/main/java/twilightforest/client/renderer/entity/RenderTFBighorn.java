@@ -1,15 +1,12 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSheep;
 import net.minecraft.client.renderer.entity.layers.LayerSheepWool;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.passive.EntityTFBighorn;
 
 public class RenderTFBighorn extends RenderSheep {
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "bighorn.png");
@@ -22,8 +19,7 @@ public class RenderTFBighorn extends RenderSheep {
 	}
 
 	@Override
-    protected ResourceLocation getEntityTexture(EntitySheep ent)
-    {
-        return textureLoc;
-    }
+	protected ResourceLocation getEntityTexture(EntitySheep ent) {
+		return textureLoc;
+	}
 }

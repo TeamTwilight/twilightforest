@@ -20,14 +20,13 @@ public class ItemTFMazebreakerPick extends ItemPickaxe implements ModelRegisterC
 	}
 
 	@Override
-	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-    	ItemStack istack = new ItemStack(item, 1);
-    	istack.addEnchantment(Enchantments.EFFICIENCY, 4);
-    	istack.addEnchantment(Enchantments.UNBREAKING, 3);
-    	istack.addEnchantment(Enchantments.FORTUNE, 2);
-        list.add(istack);
-    }
+	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+		ItemStack istack = new ItemStack(item, 1);
+		istack.addEnchantment(Enchantments.EFFICIENCY, 4);
+		istack.addEnchantment(Enchantments.UNBREAKING, 3);
+		istack.addEnchantment(Enchantments.FORTUNE, 2);
+		list.add(istack);
+	}
 
 	@Override
 	public float getStrVsBlock(@Nonnull ItemStack stack, IBlockState state) {

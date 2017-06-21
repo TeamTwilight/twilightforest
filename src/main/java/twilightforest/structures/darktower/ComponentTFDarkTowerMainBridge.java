@@ -1,21 +1,22 @@
 package twilightforest.structures.darktower;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.StructureComponent;
 
+import java.util.List;
+import java.util.Random;
+
 public class ComponentTFDarkTowerMainBridge extends ComponentTFDarkTowerBridge {
 
-	public ComponentTFDarkTowerMainBridge() {}
+	public ComponentTFDarkTowerMainBridge() {
+	}
 
 	protected ComponentTFDarkTowerMainBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, 15, pHeight, direction);
 	}
 
-	
+
 	@Override
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// make another size 15 main tower

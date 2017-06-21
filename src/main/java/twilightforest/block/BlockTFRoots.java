@@ -1,8 +1,5 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -14,12 +11,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.RootVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public class BlockTFRoots extends Block implements ModelRegisterCallback {
 
@@ -28,8 +27,8 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 	public BlockTFRoots() {
 		super(Material.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
-        this.setHardness(2.0F);
-        this.setSoundType(SoundType.WOOD);
+		this.setHardness(2.0F);
+		this.setSoundType(SoundType.WOOD);
 	}
 
 	@Override
@@ -48,19 +47,18 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 		return getDefaultState().withProperty(VARIANT, RootVariant.values()[meta]);
 	}
 
-    @Override
-    public Item getItemDropped(IBlockState state, Random random, int j)
-    {
-    	switch (state.getValue(VARIANT)) {
-		default:
-    	case ROOT:
-    		return Items.STICK;
-    	case LIVEROOT :
-    		return TFItems.liveRoot;
-    	}
-    }
-    
-    @Override
+	@Override
+	public Item getItemDropped(IBlockState state, Random random, int j) {
+		switch (state.getValue(VARIANT)) {
+			default:
+			case ROOT:
+				return Items.STICK;
+			case LIVEROOT:
+				return TFItems.liveRoot;
+		}
+	}
+
+	@Override
 	public int quantityDropped(IBlockState state, int fortune, Random random) {
 		if (state.getValue(VARIANT) == RootVariant.ROOT) {
 			return 3 + random.nextInt(2);
@@ -68,17 +66,16 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 			return super.quantityDropped(state, fortune, random);
 		}
 	}
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-    }
 
-    @SideOnly(Side.CLIENT)
-    @Override
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}

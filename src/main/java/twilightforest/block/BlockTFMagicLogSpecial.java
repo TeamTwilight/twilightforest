@@ -1,9 +1,5 @@
 package twilightforest.block;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,71 +19,60 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFPacketHandler;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.block.enums.MagicWoodVariant;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.item.TFItems;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.network.PacketChangeBiome;
 
-public class BlockTFMagicLogSpecial extends BlockTFMagicLog 
-{
+import java.util.ArrayList;
+import java.util.Random;
+
+public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	protected BlockTFMagicLogSpecial() {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-	
+
 	@Override
-	public int tickRate(World par1World)
-	{
+	public int tickRate(World par1World) {
 		return 20;
 	}
 
-    @Override
-	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
-    {
-        par1World.scheduleUpdate(pos, this, this.tickRate(par1World));
-    }
-    
-    @Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
-    {
-        return Item.getItemFromBlock(TFBlocks.magicLog);
-    }
+	@Override
+	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state) {
+		par1World.scheduleUpdate(pos, this, this.tickRate(par1World));
+	}
 
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
-    {
-    	if (state.getValue(LOG_AXIS) == EnumAxis.NONE)
-    	{
-    		return;
-    	}
+	@Override
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+		return Item.getItemFromBlock(TFBlocks.magicLog);
+	}
 
-    	if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TIME)
-    	{
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if (state.getValue(LOG_AXIS) == EnumAxis.NONE) {
+			return;
+		}
+
+		if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TIME) {
 			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
-    		doTreeOfTimeEffect(world, pos, rand);
-    	}
-    	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TRANS)
-    	{
-    		doTreeOfTransformationEffect(world, pos, rand);
-    	}
-    	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.MINE)
-    	{
-    		doMinersTreeEffect(world, pos, rand);
-    	}
-    	else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.SORT)
-    	{
-    		doSortingTreeEffect(world, pos, rand);
-    	}
+			doTreeOfTimeEffect(world, pos, rand);
+		} else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TRANS) {
+			doTreeOfTransformationEffect(world, pos, rand);
+		} else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.MINE) {
+			doMinersTreeEffect(world, pos, rand);
+		} else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.SORT) {
+			doSortingTreeEffect(world, pos, rand);
+		}
 
 		world.scheduleUpdate(pos, this, this.tickRate(world));
-    }
-    
-    @Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9)
-    {
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9) {
 		if (state.getValue(LOG_AXIS) == EnumAxis.Y) {
 			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.NONE));
 			return true;
@@ -97,17 +82,16 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 			return true;
 		}
 
-        return false;
-    }
+		return false;
+	}
 
-    /**
-     * The tree of time adds extra ticks to blocks, so that they have twice the normal chance to get a random tick
-     */
+	/**
+	 * The tree of time adds extra ticks to blocks, so that they have twice the normal chance to get a random tick
+	 */
 	private void doTreeOfTimeEffect(World world, BlockPos pos, Random rand) {
 		int numticks = 8 * 3 * this.tickRate(world);
 
-		for (int i = 0; i < numticks; i++)
-		{
+		for (int i = 0; i < numticks; i++) {
 			BlockPos dPos = pos.add(
 					rand.nextInt(32) - 16,
 					rand.nextInt(32) - 16,
@@ -116,9 +100,8 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 
 			IBlockState thereState = world.getBlockState(dPos);
 			Block thereID = thereState.getBlock();
-	
-			if (thereID != Blocks.AIR && thereID.getTickRandomly())
-			{
+
+			if (thereID != Blocks.AIR && thereID.getTickRandomly()) {
 				thereID.updateTick(world, dPos, thereState, rand);
 			}
 		}
@@ -126,27 +109,23 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 
 	/**
 	 * The tree of transformation transforms the biome in the area near it into the enchanted forest biome.
-	 * 
+	 * <p>
 	 * TODO: also change entities
 	 */
 	private void doTreeOfTransformationEffect(World world, BlockPos pos, Random rand) {
-		for (int i = 0; i < 1; i++)
-		{
+		for (int i = 0; i < 1; i++) {
 			BlockPos dPos = pos.add(rand.nextInt(32) - 16, 0, rand.nextInt(32) - 16);
 
 			world.playSound(null, pos, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 0.1F, rand.nextFloat() * 2F);
 
-			if (dPos.distanceSq(pos) < 256)
-			{
+			if (dPos.distanceSq(pos) < 256) {
 				Biome biomeAt = world.getBiome(dPos);
 
-				if (biomeAt != TFBiomes.enchantedForest)
-				{
+				if (biomeAt != TFBiomes.enchantedForest) {
 					Chunk chunkAt = world.getChunkFromBlockCoords(dPos);
-					chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte)Biome.getIdForBiome(TFBiomes.enchantedForest);
+					chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte) Biome.getIdForBiome(TFBiomes.enchantedForest);
 
-					if (world instanceof WorldServer)
-					{
+					if (world instanceof WorldServer) {
 						sendChangedBiome(world, dPos);
 					}
 				}
@@ -161,7 +140,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		IMessage message = new PacketChangeBiome(pos, (byte) Biome.getIdForBiome(TFBiomes.enchantedForest));
 
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), 128, pos.getZ(), 128);
-		
+
 		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
 	}
 
@@ -178,9 +157,8 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.5F);
 
 		int moved = ItemTFOreMagnet.doMagnet(world, pos, dPos);
-	
-		if (moved > 0)
-		{
+
+		if (moved > 0) {
 			world.playSound(null, pos, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 0.1F, 1.0F);
 		}
 	}
@@ -193,39 +171,31 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 		int XSEARCH = 16;
 		int YSEARCH = 16;
 		int ZSEARCH = 16;
-		
+
 		ArrayList<IInventory> chests = new ArrayList<IInventory>();
 		int itemCount = 0;
-		
-		for (int sx = pos.getX() - XSEARCH; sx < pos.getX() + XSEARCH; sx++)
-		{
-			for (int sy = pos.getY() - YSEARCH; sy < pos.getY() + YSEARCH; sy++)
-			{
-				for (int sz = pos.getZ() - ZSEARCH; sz < pos.getZ() + ZSEARCH; sz++)
-				{
+
+		for (int sx = pos.getX() - XSEARCH; sx < pos.getX() + XSEARCH; sx++) {
+			for (int sy = pos.getY() - YSEARCH; sy < pos.getY() + YSEARCH; sy++) {
+				for (int sz = pos.getZ() - ZSEARCH; sz < pos.getZ() + ZSEARCH; sz++) {
 					BlockPos iterPos = new BlockPos(sx, sy, sz);
-					if (world.getBlockState(iterPos).getBlock() == Blocks.CHEST)
-					{
+					if (world.getBlockState(iterPos).getBlock() == Blocks.CHEST) {
 						IInventory thisChest = Blocks.CHEST.getLockableContainer(world, iterPos);
-						
+
 						// make sure we haven't counted this chest
-						if (thisChest != null && !checkIfChestsContains(chests, (IInventory)world.getTileEntity(iterPos)))
-						{
+						if (thisChest != null && !checkIfChestsContains(chests, (IInventory) world.getTileEntity(iterPos))) {
 							int itemsInChest = 0;
-							
+
 							// count items
-							for (int i = 0; i < thisChest.getSizeInventory(); i++)
-							{
-								if (!thisChest.getStackInSlot(i).isEmpty())
-								{
+							for (int i = 0; i < thisChest.getSizeInventory(); i++) {
+								if (!thisChest.getStackInSlot(i).isEmpty()) {
 									itemsInChest++;
 									itemCount++;
 								}
 							}
-							
+
 							// only add non-empty chests
-							if (itemsInChest > 0)
-							{
+							if (itemsInChest > 0) {
 								chests.add(thisChest);
 							}
 						}
@@ -233,30 +203,25 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				}
 			}
 		}
-		
+
 		//FMLLog.info("Found " + chests.size() + " non-empty chests, containing " + itemCount + " items");
-		
+
 		// find a random item in one of the chests
 		ItemStack beingSorted = ItemStack.EMPTY;
 		int sortedChestNum = -1;
 		int sortedSlotNum = -1;
-		
-		if (itemCount > 0)
-		{
+
+		if (itemCount > 0) {
 			int itemNumber = rand.nextInt(itemCount);
 			int currentNumber = 0;
 
-			for (int i = 0; i < chests.size(); i++)
-			{
+			for (int i = 0; i < chests.size(); i++) {
 				IInventory chest = chests.get(i);
-				for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++)
-				{
+				for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++) {
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
-					
-					if (!currentItem.isEmpty())
-					{
-						if (currentNumber++ == itemNumber)
-						{
+
+					if (!currentItem.isEmpty()) {
+						if (currentNumber++ == itemNumber) {
 							beingSorted = currentItem;
 							sortedChestNum = i;
 							sortedSlotNum = slotNum;
@@ -265,71 +230,59 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 				}
 			}
 		}
-		
+
 		//FMLLog.info("Decided to sort item " + beingSorted);
 
-		if (!beingSorted.isEmpty())
-		{
+		if (!beingSorted.isEmpty()) {
 			int matchChestNum = -1;
 			int matchCount = 0;
-			
+
 			// decide where to put it, if anywhere
-			for (int chestNum = 0; chestNum < chests.size(); chestNum++)
-			{
+			for (int chestNum = 0; chestNum < chests.size(); chestNum++) {
 				IInventory chest = chests.get(chestNum);
 				int currentChestMatches = 0;
 
-				for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++)
-				{
-					
+				for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++) {
+
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
-					if (!currentItem.isEmpty() && isSortingMatch(beingSorted, currentItem))
-					{
+					if (!currentItem.isEmpty() && isSortingMatch(beingSorted, currentItem)) {
 						currentChestMatches += currentItem.getCount();
 					}
 				}
-				
-				if (currentChestMatches > matchCount)
-				{
+
+				if (currentChestMatches > matchCount) {
 					matchCount = currentChestMatches;
 					matchChestNum = chestNum;
 				}
 			}
-			
+
 			// soooo, did we find a better match?
-			if (matchChestNum >= 0 && matchChestNum != sortedChestNum)
-			{
+			if (matchChestNum >= 0 && matchChestNum != sortedChestNum) {
 				IInventory moveChest = chests.get(matchChestNum);
 				IInventory oldChest = chests.get(sortedChestNum);
-						
+
 				// is there an empty inventory slot in the new chest?
 				int moveSlot = getEmptySlotIn(moveChest);
-				
-				if (moveSlot >= 0)
-				{
+
+				if (moveSlot >= 0) {
 					// remove old item
 					oldChest.setInventorySlotContents(sortedSlotNum, ItemStack.EMPTY);
-					
+
 					// add new item
 					moveChest.setInventorySlotContents(moveSlot, beingSorted);
-					
+
 					//FMLLog.info("Moved sorted item " + beingSorted + " to chest " + matchChestNum + ", slot " + moveSlot);
 				}
 			}
-			
+
 			// if the stack is not full, combine items from other stacks
-			if (beingSorted.getCount() < beingSorted.getMaxStackSize())
-			{
-				for (IInventory chest : chests)
-				{
-					for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++)
-					{
+			if (beingSorted.getCount() < beingSorted.getMaxStackSize()) {
+				for (IInventory chest : chests) {
+					for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++) {
 						ItemStack currentItem = chest.getStackInSlot(slotNum);
-						
-						if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.isItemEqual(currentItem))
-						{
-							if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount()))
-							{
+
+						if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.isItemEqual(currentItem)) {
+							if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
 								chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
 								beingSorted.grow(currentItem.getCount());
 								currentItem.setCount(0);
@@ -338,28 +291,24 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 					}
 				}
 			}
-			
+
 		}
 	}
 
-	private boolean isSortingMatch(ItemStack beingSorted, ItemStack currentItem)
-	{
+	private boolean isSortingMatch(ItemStack beingSorted, ItemStack currentItem) {
 		return beingSorted.getItem().getCreativeTab() == currentItem.getItem().getCreativeTab();
 	}
-	
+
 	/**
 	 * Is the chest we're testing part of our chest list already?
 	 */
 	private boolean checkIfChestsContains(ArrayList<IInventory> chests, IInventory testChest) {
-		for (IInventory chest : chests)
-		{
-			if (chest == testChest)
-			{
+		for (IInventory chest : chests) {
+			if (chest == testChest) {
 				return true;
 			}
-			
-			if (chest instanceof InventoryLargeChest && ((InventoryLargeChest)chest).isPartOfLargeChest(testChest))
-			{
+
+			if (chest instanceof InventoryLargeChest && ((InventoryLargeChest) chest).isPartOfLargeChest(testChest)) {
 				return true;
 			}
 		}
@@ -370,31 +319,27 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog
 	 * @return an empty slot number in the chest, or -1 if the chest is full
 	 */
 	private int getEmptySlotIn(IInventory chest) {
-		for (int i = 0; i < chest.getSizeInventory(); i++)
-		{
-			if (chest.getStackInSlot(i).isEmpty())
-			{
+		for (int i = 0; i < chest.getSizeInventory(); i++) {
+			if (chest.getStackInSlot(i).isEmpty()) {
 				return i;
 			}
 		}
-		
+
 		return -1;
 	}
 
-    @Override
-    @Deprecated
-	public int getLightValue(IBlockState state)
-    {
-        return 15;
-    }
+	@Override
+	@Deprecated
+	public int getLightValue(IBlockState state) {
+		return 15;
+	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-    	par3List.add(new ItemStack(par1, 1, 0));
-    	par3List.add(new ItemStack(par1, 1, 1));
-    	par3List.add(new ItemStack(par1, 1, 2));
-    	par3List.add(new ItemStack(par1, 1, 3));
-    }
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
+	}
 
-  }
+}

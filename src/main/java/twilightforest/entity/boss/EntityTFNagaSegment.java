@@ -1,20 +1,18 @@
 package twilightforest.entity.boss;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class EntityTFNagaSegment extends Entity {
 	private EntityTFNaga naga;
@@ -24,7 +22,7 @@ public class EntityTFNagaSegment extends Entity {
 
 	public EntityTFNagaSegment(World par1World) {
 		super(par1World);
-        setSize(1.8F, 1.8F);
+		setSize(1.8F, 1.8F);
 		this.stepHeight = 2;
 	}
 
@@ -43,7 +41,7 @@ public class EntityTFNagaSegment extends Entity {
 		}
 	}
 
-    @Override
+	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, float damage) {
 		if (damagesource.isExplosion() || damagesource.isFireDamage()) {
 			return false;
@@ -52,98 +50,97 @@ public class EntityTFNagaSegment extends Entity {
 		return naga != null && naga.attackEntityFrom(damagesource, damage * 2.0F / 3.0F);
 	}
 
-    @Override
-    public void onUpdate() {
-    	super.onUpdate();
-    	
-    	if (this.naga == null || this.naga.isDead) {
-    		this.setDead();
-    	}
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+
+		if (this.naga == null || this.naga.isDead) {
+			this.setDead();
+		}
 
 		++this.ticksExisted;
-    	
-    	lastTickPosX = posX;
-    	lastTickPosY = posY;
-    	lastTickPosZ = posZ;
 
-    	for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
-    	for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) { }
-    	for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
-    	for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
+		lastTickPosX = posX;
+		lastTickPosY = posY;
+		lastTickPosZ = posZ;
 
-        collideWithOthers();
-    }
-    
-	private void collideWithOthers()
-    {
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
+		}
+		for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) {
+		}
+		for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) {
+		}
+		for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) {
+		}
 
-        for (Entity entity : list)
-        {
-        	if (entity.canBePushed())
-        	{
-        		this.collideWithEntity(entity);
-        	}
-        }
-    }
-    
-    private void collideWithEntity(Entity entity) {
-    	entity.applyEntityCollision(this);
-    	
+		collideWithOthers();
+	}
+
+	private void collideWithOthers() {
+		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+
+		for (Entity entity : list) {
+			if (entity.canBePushed()) {
+				this.collideWithEntity(entity);
+			}
+		}
+	}
+
+	private void collideWithEntity(Entity entity) {
+		entity.applyEntityCollision(this);
+
 		// attack anything that's not us
-		if ((entity instanceof EntityLivingBase) && !(entity instanceof EntityTFNaga) && !(entity instanceof EntityTFNagaSegment))
-		{
-    		int attackStrength = 2;
-    		
-    		// get rid of nearby deer & look impressive
-    		if (entity instanceof EntityAnimal)
-    		{
-    			attackStrength *= 3;
-    		}
-    		
+		if ((entity instanceof EntityLivingBase) && !(entity instanceof EntityTFNaga) && !(entity instanceof EntityTFNagaSegment)) {
+			int attackStrength = 2;
+
+			// get rid of nearby deer & look impressive
+			if (entity instanceof EntityAnimal) {
+				attackStrength *= 3;
+			}
+
 			entity.attackEntityFrom(DamageSource.causeMobDamage(naga), attackStrength);
 		}
 
-		
+
 	}
 
 	@Override
-    public void setRotation(float par1, float par2)
-    {
-        this.rotationYaw = MathHelper.wrapDegrees(par1 % 360.0F);
-        this.rotationPitch = par2 % 360.0F;
-    }
+	public void setRotation(float par1, float par2) {
+		this.rotationYaw = MathHelper.wrapDegrees(par1 % 360.0F);
+		this.rotationPitch = par2 % 360.0F;
+	}
 
 	@Override
-    public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canBePushed()
-    {
-        return false;
-    }
-    
-	@Override
-    public boolean isEntityEqual(Entity entity)
-    {
-        return this == entity || this.naga == entity;
-    }
+	public boolean canBeCollidedWith() {
+		return true;
+	}
 
 	@Override
-	protected void entityInit() { }
+	public boolean canBePushed() {
+		return false;
+	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) { }
+	public boolean isEntityEqual(Entity entity) {
+		return this == entity || this.naga == entity;
+	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) { }
+	protected void entityInit() {
+	}
 
 	@Override
-    protected void playStepSound(BlockPos pos, Block par4) {}
-    
+	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+	}
+
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, Block par4) {
+	}
+
 	public void selfDestruct() {
 		this.deathCounter = 30;
 	}

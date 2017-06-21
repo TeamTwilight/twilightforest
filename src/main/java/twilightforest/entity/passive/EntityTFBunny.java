@@ -26,84 +26,76 @@ import twilightforest.TFAchievementPage;
 
 public class EntityTFBunny extends EntityCreature implements IAnimals {
 
-    private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
 
 	public EntityTFBunny(World par1World) {
 		super(par1World);
-        this.setSize(0.3F, 0.7F);
-		
+		this.setSize(0.3F, 0.7F);
+
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
-        setBunnyType(rand.nextInt(4));
+		setBunnyType(rand.nextInt(4));
 	}
 
-    @Override
-    protected void initEntityAI() {
-        this.setPathPriority(PathNodeType.WATER, -1.0F);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 2.0F));
-        this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
-        this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.33F));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.8F));
-        this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-    }
+	@Override
+	protected void initEntityAI() {
+		this.setPathPriority(PathNodeType.WATER, -1.0F);
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIPanic(this, 2.0F));
+		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
+		this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.33F));
+		this.tasks.addTask(5, new EntityAIWander(this, 0.8F));
+		this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
+		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
+		this.tasks.addTask(8, new EntityAILookIdle(this));
+	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-    }
-	
-	@Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        dataManager.register(DATA_TYPE, (byte) 0);
-    }
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+	}
 
 	@Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("BunnyType", this.getBunnyType());
-    }
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(DATA_TYPE, (byte) 0);
+	}
 
 	@Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readEntityFromNBT(par1NBTTagCompound);
-        this.setBunnyType(par1NBTTagCompound.getInteger("BunnyType"));
-    }
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeEntityToNBT(par1NBTTagCompound);
+		par1NBTTagCompound.setInteger("BunnyType", this.getBunnyType());
+	}
 
-    public int getBunnyType()
-    {
-        return dataManager.get(DATA_TYPE);
-    }
+	@Override
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readEntityFromNBT(par1NBTTagCompound);
+		this.setBunnyType(par1NBTTagCompound.getInteger("BunnyType"));
+	}
 
-    public void setBunnyType(int par1)
-    {
-        dataManager.set(DATA_TYPE, (byte) par1);
-    }
-	
+	public int getBunnyType() {
+		return dataManager.get(DATA_TYPE);
+	}
+
+	public void setBunnyType(int par1) {
+		dataManager.set(DATA_TYPE, (byte) par1);
+	}
+
 	@Override
 	public float getRenderSizeModifier() {
-		 return 0.3F;
+		return 0.3F;
 	}
-	
+
 	@Override
-    protected boolean canDespawn()
-    {
-        return false;
-    }
-	
+	protected boolean canDespawn() {
+		return false;
+	}
+
 	@Override
-    public float getBlockPathWeight(BlockPos pos)
-    {
-    	// avoid leaves & wood
+	public float getBlockPathWeight(BlockPos pos) {
+		// avoid leaves & wood
 		Material underMaterial = this.world.getBlockState(pos.down()).getMaterial();
 		if (underMaterial == Material.LEAVES) {
 			return -1.0F;
@@ -116,13 +108,13 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		}
 		// default to just prefering lighter areas
 		return this.world.getLightBrightness(pos) - 0.5F;
-    }
-	
+	}
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 }

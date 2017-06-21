@@ -1,8 +1,6 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -10,33 +8,34 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMazeTower13
-{
-	public ComponentTFFinalCastleDamagedTower() {}
+public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMazeTower13 {
+	public ComponentTFFinalCastleDamagedTower() {
+	}
 
 	public ComponentTFFinalCastleDamagedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
 		super(rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune color
 	}
 
-    @Override
-    public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-	    if (parent != null && parent instanceof StructureTFComponent) {
-		    this.deco = ((StructureTFComponent)parent).deco;
-	    }
+	@Override
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
+		}
 
-	    // add foundation
-	    ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(rand, 0, this);
-	    list.add(foundation);
-	    foundation.buildComponent(this, list, rand);
+		// add foundation
+		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(rand, 0, this);
+		list.add(foundation);
+		foundation.buildComponent(this, list, rand);
 
-	    // add thorns
-	    ComponentTFFinalCastleFoundation13 thorns = new ComponentTFFinalCastleFoundation13Thorns(rand, 0, this);
-	    list.add(thorns);
-	    thorns.buildComponent(this, list, rand);
+		// add thorns
+		ComponentTFFinalCastleFoundation13 thorns = new ComponentTFFinalCastleFoundation13Thorns(rand, 0, this);
+		list.add(thorns);
+		thorns.buildComponent(this, list, rand);
 
 //    		// add roof
 //    		StructureTFComponent roof = rand.nextBoolean() ? new Roof13Conical(rand, 4, this) :  new Roof13Crenellated(rand, 4, this);
@@ -44,16 +43,15 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 //    		roof.buildComponent(this, list, rand);
 
 
-	    // keep on building?
-	    this.buildNonCriticalTowers(parent, list, rand);
-    }
+		// keep on building?
+		this.buildNonCriticalTowers(parent, list, rand);
+	}
 
 
 	@Override
 	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, EnumFacing facing, BlockPos tc) {
 		return new ComponentTFFinalCastleWreckedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
-
 
 
 	@Override

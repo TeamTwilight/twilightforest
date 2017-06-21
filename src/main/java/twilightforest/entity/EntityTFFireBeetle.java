@@ -22,27 +22,25 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker 
-{
+public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/fire_beetle");
-    private static final DataParameter<Boolean> BREATHING = EntityDataManager.createKey(EntityTFFireBeetle.class, DataSerializers.BOOLEAN);
-    private static final int BREATH_DURATION = 10;
-    private static final int BREATH_DAMAGE = 2;
+	private static final DataParameter<Boolean> BREATHING = EntityDataManager.createKey(EntityTFFireBeetle.class, DataSerializers.BOOLEAN);
+	private static final int BREATH_DURATION = 10;
+	private static final int BREATH_DAMAGE = 2;
 
-    public EntityTFFireBeetle(World world)
-    {
-        super(world);
-        setSize(1.1F, .75F);
-    }
+	public EntityTFFireBeetle(World world) {
+		super(world);
+		setSize(1.1F, .75F);
+	}
 
-    @Override
+	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAITFBreathAttack(this, 1.0F, 5F, 30, 0.1F));
@@ -55,140 +53,123 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker
 	}
 
 	@Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        dataManager.register(BREATHING, false);
-    }
-	
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(BREATHING, false);
+	}
+
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-    }
-    
-    @Override
-	protected SoundEvent getHurtSound()
-    {
-        return SoundEvents.ENTITY_SPIDER_HURT;
-    }
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+	}
 
-    @Override
-	protected SoundEvent getDeathSound()
-    {
-        return SoundEvents.ENTITY_SPIDER_DEATH;
-    }
+	@Override
+	protected SoundEvent getHurtSound() {
+		return SoundEvents.ENTITY_SPIDER_HURT;
+	}
 
-    @Override
-	protected void playStepSound(BlockPos pos, Block var4)
-    {
-        playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_SPIDER_DEATH;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, Block var4) {
+		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
+	}
 
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
 	}
 
-    @Override
-	public boolean isBreathing()
-    {
-        return dataManager.get(BREATHING);
-    }
+	@Override
+	public boolean isBreathing() {
+		return dataManager.get(BREATHING);
+	}
 
-    @Override
-	public void setBreathing(boolean flag)
-    {
-        dataManager.set(BREATHING, flag);
-    }
+	@Override
+	public void setBreathing(boolean flag) {
+		dataManager.set(BREATHING, flag);
+	}
 
-    @Override
-	public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
-    	
-    	// when breathing fire, spew particles
-    	if (isBreathing())
-    	{
-    		Vec3d look = this.getLookVec();
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
 
-    		double dist = 0.9;
-    		double px = this.posX + look.xCoord * dist;
-    		double py = this.posY + 0.25 + look.yCoord * dist;
-    		double pz = this.posZ + look.zCoord * dist;
+		// when breathing fire, spew particles
+		if (isBreathing()) {
+			Vec3d look = this.getLookVec();
 
-    		for (int i = 0; i < 2; i++)
-    		{
-    			double dx = look.xCoord;
-    			double dy = look.yCoord;
-    			double dz = look.zCoord;
+			double dist = 0.9;
+			double px = this.posX + look.xCoord * dist;
+			double py = this.posY + 0.25 + look.yCoord * dist;
+			double pz = this.posZ + look.zCoord * dist;
 
-    			double spread = 5 + this.getRNG().nextDouble() * 2.5;
-    			double velocity = 0.15 + this.getRNG().nextDouble() * 0.15;
+			for (int i = 0; i < 2; i++) {
+				double dx = look.xCoord;
+				double dy = look.yCoord;
+				double dz = look.zCoord;
 
-    			// spread flame
-    			dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-    			dy += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-    			dz += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-    			dx *= velocity;
-    			dy *= velocity;
-    			dz *= velocity;
+				double spread = 5 + this.getRNG().nextDouble() * 2.5;
+				double velocity = 0.15 + this.getRNG().nextDouble() * 0.15;
+
+				// spread flame
+				dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+				dy += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+				dz += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+				dx *= velocity;
+				dy *= velocity;
+				dz *= velocity;
 
 				world.spawnParticle(EnumParticleTypes.FLAME, px, py, pz, dx, dy, dz);
-    		}
+			}
 
 			playSound(SoundEvents.ENTITY_GHAST_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
 		}
-    }
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBrightnessForRender(float par1) {
-		if (isBreathing())
-		{
+		if (isBreathing()) {
 			return 15728880;
-		}
-		else
-		{
+		} else {
 			return super.getBrightnessForRender(par1);
 		}
 	}
 
-    @Override
-    public void onDeath(DamageSource par1DamageSource) {
-    	super.onDeath(par1DamageSource);
-    	if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-    		((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
-    	}
-    }
+	@Override
+	public void onDeath(DamageSource par1DamageSource) {
+		super.onDeath(par1DamageSource);
+		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+		}
+	}
 
 	@Override
-    public int getVerticalFaceSpeed()
-    {
-        return 500;
-    }
+	public int getVerticalFaceSpeed() {
+		return 500;
+	}
 
 	@Override
 	public float getEyeHeight() {
 		return 0.25F;
 	}
 
-    @Override
-	public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.ARTHROPOD;
-    }
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		return EnumCreatureAttribute.ARTHROPOD;
+	}
 
 	@Override
-	public void doBreathAttack(Entity target) 
-	{
-		if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE))
-    	{
-    		target.setFire(BREATH_DURATION);
-    	}
+	public void doBreathAttack(Entity target) {
+		if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE)) {
+			target.setFire(BREATH_DURATION);
+		}
 	}
 
 }

@@ -6,12 +6,13 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleRoof13Crenellated extends StructureTFComponent
-{
-	public ComponentTFFinalCastleRoof13Crenellated() {}
+public class ComponentTFFinalCastleRoof13Crenellated extends StructureTFComponent {
+	public ComponentTFFinalCastleRoof13Crenellated() {
+	}
 
 	public ComponentTFFinalCastleRoof13Crenellated(Random rand, int i, StructureTFComponent sideTower) {
 		super(i);
@@ -23,36 +24,36 @@ public class ComponentTFFinalCastleRoof13Crenellated extends StructureTFComponen
 
 	}
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void buildComponent(StructureComponent parent, List list, Random rand) {
-	    if (parent != null && parent instanceof StructureTFComponent) {
-		    this.deco = ((StructureTFComponent)parent).deco;
-	    }
-    }
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@Override
+	public void buildComponent(StructureComponent parent, List list, Random rand) {
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
+		}
+	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-        // assume square
-        int size = this.boundingBox.maxX - this.boundingBox.minX;
+		// assume square
+		int size = this.boundingBox.maxX - this.boundingBox.minX;
 
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
-            // corner
-            this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 3, 3, deco.blockState, rotation);
-            this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
-            this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
-            this.setBlockStateRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
+			// corner
+			this.fillBlocksRotated(world, sbb, 0, -1, 0, 3, 3, 3, deco.blockState, rotation);
+			this.setBlockStateRotated(world, deco.blockState, 1, -2, 2, rotation, sbb);
+			this.setBlockStateRotated(world, deco.blockState, 1, -2, 1, rotation, sbb);
+			this.setBlockStateRotated(world, deco.blockState, 2, -2, 1, rotation, sbb);
 
-            // walls
-            this.fillBlocksRotated(world, sbb, 4, 0, 1, size - 4, 1, 1, deco.blockState, rotation);
+			// walls
+			this.fillBlocksRotated(world, sbb, 4, 0, 1, size - 4, 1, 1, deco.blockState, rotation);
 
-            // smaller crenellations
-            for (int x = 5; x < size - 5; x += 4) {
-	            this.fillBlocksRotated(world, sbb, x, 0, 0, x + 2, 3, 2, deco.blockState, rotation);
-	            this.setBlockStateRotated(world, deco.blockState, x + 1, -1, 1, rotation, sbb);
-	            this.setBlockStateRotated(world, deco.blockState, x + 1, -2, 1, rotation, sbb);
-            }
-}
+			// smaller crenellations
+			for (int x = 5; x < size - 5; x += 4) {
+				this.fillBlocksRotated(world, sbb, x, 0, 0, x + 2, 3, 2, deco.blockState, rotation);
+				this.setBlockStateRotated(world, deco.blockState, x + 1, -1, 1, rotation, sbb);
+				this.setBlockStateRotated(world, deco.blockState, x + 1, -2, 1, rotation, sbb);
+			}
+		}
 
 		return true;
 	}

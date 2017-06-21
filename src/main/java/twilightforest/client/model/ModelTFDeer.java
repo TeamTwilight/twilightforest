@@ -4,15 +4,13 @@ import net.minecraft.client.model.ModelQuadruped;
 import net.minecraft.client.model.ModelRenderer;
 
 
-public class ModelTFDeer extends ModelQuadruped
-{
-	public 	ModelTFDeer()
-	{
+public class ModelTFDeer extends ModelQuadruped {
+	public ModelTFDeer() {
 		super(12, 0.0F);
 
 		// head height for baby
 		childYOffset = 10F;
-		
+
 		head = new ModelRenderer(this, 0, 5);
 		head.addBox(-2F, -8F, -6F, 4, 6, 6, 0F);
 		head.setRotationPoint(0F, 4F, -7F);
@@ -44,12 +42,12 @@ public class ModelTFDeer extends ModelQuadruped
 //		neck.setRotationPoint(1F, 5F, 2F);
 
 		neck.rotateAngleX = 4.974188f;
-		
+
 		body.addChild(neck);
 
 		// nose
 		head.setTextureOffset(52, 0).addBox(-1.5F, -5F, -9F, 3, 3, 3, 0F);
-		
+
 		// antler 1
 		head.setTextureOffset(20, 0);
 		head.addBox(-3F, -10F, -2F, 2, 2, 2, 0F);
@@ -64,7 +62,7 @@ public class ModelTFDeer extends ModelQuadruped
 		head.addBox(-6F, -16F, -9F, 1, 1, 4, 0F);
 		head.addBox(-7F, -18F, -1F, 1, 5, 1, 0F);
 		head.addBox(-6F, -19F, -6F, 1, 5, 1, 0F);
-		
+
 		// antler 2
 		head.addBox(1F, -10F, -2F, 2, 2, 2, 0F);
 		head.addBox(3F, -10F, -1F, 1, 1, 3, 0F);

@@ -1,8 +1,5 @@
 package twilightforest.structures.lichtower;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -10,9 +7,12 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
 
+import java.util.List;
+import java.util.Random;
+
 
 public abstract class ComponentTFTowerRoof extends StructureTFComponent {
-	
+
 	protected int size;
 	protected int height;
 
@@ -23,21 +23,21 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponent {
 
 	public ComponentTFTowerRoof(int i, ComponentTFTowerWing wing) {
 		super(i);
-		
+
 		this.spawnListIndex = -1;
-		
+
 		// inheritors need to add a bounding box or die~!
 	}
-	
+
 	/**
 	 * Save to NBT
 	 */
 	@Override
 	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeStructureToNBT(par1NBTTagCompound);
-		
-        par1NBTTagCompound.setInteger("roofSize", this.size);
-        par1NBTTagCompound.setInteger("roofHeight", this.height);
+
+		par1NBTTagCompound.setInteger("roofSize", this.size);
+		par1NBTTagCompound.setInteger("roofHeight", this.height);
 	}
 
 	/**
@@ -46,13 +46,13 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponent {
 	@Override
 	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-        this.size = par1NBTTagCompound.getInteger("roofSize");
-        this.height = par1NBTTagCompound.getInteger("roofHeight");
+		this.size = par1NBTTagCompound.getInteger("roofSize");
+		this.height = par1NBTTagCompound.getInteger("roofHeight");
 	}
-	
+
 	/**
-	 * Makes a bounding box that hangs forwards off of the tower wing we are on.  This is for attached roofs. 
-	 * 
+	 * Makes a bounding box that hangs forwards off of the tower wing we are on.  This is for attached roofs.
+	 *
 	 * @param wing
 	 */
 	protected void makeAttachedOverhangBB(ComponentTFTowerWing wing) {
@@ -72,21 +72,21 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponent {
 				break;
 		}
 	}
-	
+
 
 	/**
 	 * Makes a bounding box that sits at the top of the tower.  Works for attached or freestanding roofs.
-	 * 
+	 *
 	 * @param wing
 	 */
 	protected void makeCapBB(ComponentTFTowerWing wing) {
 		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().maxY + this.height, wing.getBoundingBox().maxZ);
 	}
 
-	
+
 	/**
-	 * Make a bounding box that hangs over the sides of the tower 1 block.  Freestanding towers only. 
-	 * 
+	 * Make a bounding box that hangs over the sides of the tower 1 block.  Freestanding towers only.
+	 *
 	 * @param wing
 	 */
 	protected void makeOverhangBB(ComponentTFTowerWing wing) {
@@ -94,10 +94,8 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponent {
 	}
 
 
-
-
 	@Override
-	public boolean addComponentParts(World world, Random random,StructureBoundingBox structureboundingbox) {
+	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureboundingbox) {
 		return false;
 	}
 

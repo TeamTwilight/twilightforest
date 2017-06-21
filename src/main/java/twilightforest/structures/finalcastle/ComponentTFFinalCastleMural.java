@@ -1,6 +1,5 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -8,10 +7,10 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
+
 import java.util.Random;
 
-public class ComponentTFFinalCastleMural extends StructureTFComponent
-{
+public class ComponentTFFinalCastleMural extends StructureTFComponent {
 
 	private int height;
 	private int width;
@@ -19,7 +18,8 @@ public class ComponentTFFinalCastleMural extends StructureTFComponent
 	// we will model the mural in this byte array
 	private byte[][] mural;
 
-	public ComponentTFFinalCastleMural() {}
+	public ComponentTFFinalCastleMural() {
+	}
 
 	public ComponentTFFinalCastleMural(Random rand, int i, int x, int y, int z, int width, int height, EnumFacing direction) {
 		super(i);
@@ -30,7 +30,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponent
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		this.height = this.boundingBox.getYSize();
-		this.width = (this.coordBaseMode == EnumFacing.SOUTH || this.coordBaseMode == EnumFacing.NORTH) ? this.boundingBox.getZSize() :  this.boundingBox.getXSize();
+		this.width = (this.coordBaseMode == EnumFacing.SOUTH || this.coordBaseMode == EnumFacing.NORTH) ? this.boundingBox.getZSize() : this.boundingBox.getXSize();
 
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
@@ -155,7 +155,8 @@ public class ComponentTFFinalCastleMural extends StructureTFComponent
 		}
 		if (clear) {
 			int bx = sx;
-			int by = sy + (plusY ? downLine : -downLine);;
+			int by = sy + (plusY ? downLine : -downLine);
+			;
 
 			// jag
 			this.fillHorizontalLine(mural, bx, by, 1, plusX);

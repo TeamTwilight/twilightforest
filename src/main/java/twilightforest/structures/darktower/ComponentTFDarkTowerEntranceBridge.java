@@ -1,16 +1,16 @@
 package twilightforest.structures.darktower;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.StructureComponent;
 
-public class ComponentTFDarkTowerEntranceBridge extends ComponentTFDarkTowerBridge 
-{
+import java.util.List;
+import java.util.Random;
 
-	public ComponentTFDarkTowerEntranceBridge() {}
+public class ComponentTFDarkTowerEntranceBridge extends ComponentTFDarkTowerBridge {
+
+	public ComponentTFDarkTowerEntranceBridge() {
+	}
 
 	protected ComponentTFDarkTowerEntranceBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);

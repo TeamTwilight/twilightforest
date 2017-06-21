@@ -1,7 +1,5 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -12,7 +10,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -26,25 +23,22 @@ import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
 
 /**
- * 
  * Mazestone mimics other types of stone in appearance, but is much harder to mine
- * 
- * @author Ben
  *
+ * @author Ben
  */
 public class BlockTFMazestone extends Block implements ModelRegisterCallback {
 
 	public static final PropertyEnum<MazestoneVariant> VARIANT = PropertyEnum.create("variant", MazestoneVariant.class);
 
-    public BlockTFMazestone()
-    {
-        super(Material.ROCK);
-        this.setHardness(100F);
-        this.setResistance(5F);
-        this.setSoundType(SoundType.STONE);
+	public BlockTFMazestone() {
+		super(Material.ROCK);
+		this.setHardness(100F);
+		this.setResistance(5F);
+		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, MazestoneVariant.PLAIN));
-    }
+	}
 
 	@Override
 	public BlockStateContainer createBlockState() {
@@ -63,33 +57,30 @@ public class BlockTFMazestone extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack)
-	{
+	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
 		// damage the player's pickaxe
-        if(!stack.isEmpty() && stack.getItem().isDamageable() && !(stack.getItem() instanceof ItemTFMazebreakerPick))
-        {
-            stack.damageItem(16, entityplayer);
-        }
-    	
+		if (!stack.isEmpty() && stack.getItem().isDamageable() && !(stack.getItem() instanceof ItemTFMazebreakerPick)) {
+			stack.damageItem(16, entityplayer);
+		}
+
 		super.harvestBlock(world, entityplayer, pos, state, te, stack);
-    }
-    
+	}
+
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-        par3List.add(new ItemStack(par1, 1, 4));
-        par3List.add(new ItemStack(par1, 1, 5));
-        par3List.add(new ItemStack(par1, 1, 6));
-        par3List.add(new ItemStack(par1, 1, 7));
-    }
-    
-    @Override
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
+		par3List.add(new ItemStack(par1, 1, 4));
+		par3List.add(new ItemStack(par1, 1, 5));
+		par3List.add(new ItemStack(par1, 1, 6));
+		par3List.add(new ItemStack(par1, 1, 7));
+	}
+
+	@Override
 	public int damageDropped(IBlockState state) {
-    	return getMetaFromState(state);
+		return getMetaFromState(state);
 	}
 
 	@SideOnly(Side.CLIENT)

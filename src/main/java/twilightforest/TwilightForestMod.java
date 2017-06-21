@@ -1,15 +1,10 @@
 package twilightforest;
 
-import net.minecraft.item.Item;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -33,23 +28,23 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 @Mod(modid = TwilightForestMod.ID, name = "The Twilight Forest", version = TwilightForestMod.VERSION)
 public class TwilightForestMod {
-	
+
 	public static final String ID = "twilightforest";
 	public static final String VERSION = "2.3.8dev";
-	
+
 	public static final String MODEL_DIR = "twilightforest:textures/model/";
 	public static final String GUI_DIR = "twilightforest:textures/gui/";
 	public static final String ENVRIO_DIR = "twilightforest:textures/environment/";
 	public static final String ARMOR_DIR = "twilightforest:textures/armor/";
 	public static final String ENFORCED_PROGRESSION_RULE = "tfEnforcedProgression";
-	
+
 	public static final int GUI_ID_UNCRAFTING = 1;
 	public static final int GUI_ID_FURNACE = 2;
 
 
 	public static DimensionType dimType;
 	public static int backupdimensionID = -777;
-    
+
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 
@@ -59,7 +54,7 @@ public class TwilightForestMod {
 	@SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
 	public static TFCommonProxy proxy;
 
-    @EventHandler
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.doPreLoadRegistration();
@@ -70,7 +65,7 @@ public class TwilightForestMod {
 		TFTreasure.init();
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
 		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
-		
+
 		// just call this so that we register structure IDs correctly
 //FIXME: AtomicBlom: Disabled for Structures
 
@@ -78,10 +73,10 @@ public class TwilightForestMod {
 
 	}
 
-    @EventHandler
+	@EventHandler
 	public void load(FMLInitializationEvent evt) {
 
-    	TFItems.initRepairMaterials();
+		TFItems.initRepairMaterials();
 
 		// creatures
 		registerCreatures();
@@ -94,47 +89,39 @@ public class TwilightForestMod {
 
 		// GUI
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
-		
+
 		// packets
 		TFPacketHandler.init();
-		
+
 		// render and other client stuff
 		proxy.doOnLoadRegistration();
-		
+
 		// dimension provider
 		dimType = DimensionType.register("Twilight Forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 	}
-	
-    @EventHandler
-	public void postInit(FMLPostInitializationEvent evt) 
-	{
+
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent evt) {
 		// register dimension with Forge
-		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID))
-		{
+		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
 			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, TwilightForestMod.dimType);
-		}
-		else
-		{
+		} else {
 			TwilightForestMod.LOGGER.warn("Detected that the configured dimension id '{}' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
 			DimensionManager.registerDimension(TwilightForestMod.backupdimensionID, TwilightForestMod.dimType);
 			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
 		}
-		
+
 		// thaumcraft integration
-		if (Loader.isModLoaded("Thaumcraft"))
-		{
+		if (Loader.isModLoaded("Thaumcraft")) {
 			//FIXME: Reenable this once Thaumcraft is available.
 			//registerThaumcraftIntegration();
-		}
-		else
-		{
+		} else {
 			TwilightForestMod.LOGGER.info("Did not find Thaumcraft, did not load ThaumcraftApi integration.");
 		}
 	}
-	
-    @EventHandler
-	public void startServer(FMLServerStartingEvent event)
-	{
+
+	@EventHandler
+	public void startServer(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandTFFeature());
 		event.registerServerCommand(new CommandTFProgress());
 	}
@@ -200,11 +187,11 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.HARBINGER_CUBE, twilightforest.entity.EntityTFHarbingerCube.class, id++, 0x00000a, 0x8b0000);
 		TFEntities.registerEntity(TFEntityNames.ADHERENT, twilightforest.entity.EntityTFAdherent.class, id++, 0x0a0000, 0x00008b);
 		TFEntities.registerEntity(TFEntityNames.ROVING_CUBE, twilightforest.entity.EntityTFRovingCube.class, id++, 0x0a0000, 0x00009b);
-		
+
 		TFEntities.registerEntity(TFEntityNames.HYDRA_HEAD, twilightforest.entity.boss.EntityTFHydraHead.class, id++, 11, 3, false);
-		
+
 		TFEntities.registerEntity(TFEntityNames.NATURE_BOLT, twilightforest.entity.EntityTFNatureBolt.class, id++, 150, 5, true);
-		TFEntities.registerEntity(TFEntityNames.LICH_BOLT, twilightforest.entity.boss.EntityTFLichBolt.class,  id++, 150, 2, true);
+		TFEntities.registerEntity(TFEntityNames.LICH_BOLT, twilightforest.entity.boss.EntityTFLichBolt.class, id++, 150, 2, true);
 		TFEntities.registerEntity(TFEntityNames.WAND_BOLT, twilightforest.entity.EntityTFTwilightWandBolt.class, id++, 150, 5, true);
 		TFEntities.registerEntity(TFEntityNames.TOME_BOLT, twilightforest.entity.EntityTFTomeBolt.class, id++, 150, 5, true);
 		TFEntities.registerEntity(TFEntityNames.HYDRA_MORTAR, twilightforest.entity.boss.EntityTFHydraMortar.class, id++, 150, 3, true);
@@ -223,8 +210,8 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.CUBE_OF_ANNIHILATION, twilightforest.entity.EntityTFCubeOfAnnihilation.class, id++, 80, 1, true);
 		TFEntities.registerEntity(TFEntityNames.SLIDER, twilightforest.entity.EntityTFSlideBlock.class, id++, 80, 1, true);
 	}
-	
-	
+
+
 	private void registerTileEntities() {
 		GameRegistry.registerTileEntity(TileEntityTFFirefly.class, "firefly");
 		GameRegistry.registerTileEntity(TileEntityTFCicada.class, "cicada");
@@ -386,7 +373,7 @@ public class TwilightForestMod {
 
 	}
 	*/
-	
+
 	/**
 	 * Register a block with Thaumcraft aspects
 	 */
@@ -398,7 +385,7 @@ public class TwilightForestMod {
 		ThaumcraftApi.registerObjectTag(new ItemStack(block, 1, meta), list);
 	}
 	*/
-	
+
 	/**
 	 * Register an item with Thaumcraft aspects
 	 */

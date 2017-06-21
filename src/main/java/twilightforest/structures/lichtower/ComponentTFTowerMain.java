@@ -1,11 +1,7 @@
 package twilightforest.structures.lichtower;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +10,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
-
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -26,6 +21,9 @@ import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
 import twilightforest.util.VanillaEntityNames;
+
+import java.util.List;
+import java.util.Random;
 
 
 public class ComponentTFTowerMain extends ComponentTFTowerWing {
@@ -48,31 +46,30 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// sub towers
 		for (final Rotation rotation : RotationUtil.ROTATIONS) {
 			int[] dest = getValidOpening(rand, rotation);
-			
+
 			// adjust height if we're too low at this point
 			if (dest[1] < height / 2) {
 				dest[1] += 20;
 			}
-			
+
 			int childHeight = Math.min(21 + rand.nextInt(10), this.height - dest[1] - 3);
-			
+
 			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 9, childHeight, rotation)) {
 				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 7, childHeight, rotation);
 			}
 		}
 
 		// try one more time for large towers
-		for (final Rotation rotation : RotationUtil.ROTATIONS)
-		{
+		for (final Rotation rotation : RotationUtil.ROTATIONS) {
 			int[] dest = getValidOpening(rand, rotation);
-			
+
 			// adjust height if we're too low at this point
 			if (dest[1] < height / 2) {
 				dest[1] += 10;
 			}
-			
+
 			int childHeight = Math.min(21 + rand.nextInt(10), this.height - dest[1] - 3);
-			
+
 			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 9, childHeight, rotation)) {
 				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 7, childHeight, rotation);
 			}
@@ -81,28 +78,27 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// another set, if possible
 		for (final Rotation rotation : RotationUtil.ROTATIONS) {
 			int[] dest = getValidOpening(rand, rotation);
-			
+
 			int childHeight = Math.min(7 + rand.nextInt(6), this.height - dest[1] - 3);
-			
+
 			if (!makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 5, childHeight, rotation)) {
 				makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 3, childHeight, rotation);
 			}
 		}
-		
+
 		// outbuildings
 		for (final Rotation rotation : RotationUtil.ROTATIONS) {
 			int[] dest = getOutbuildingOpening(rand, rotation);
-			
+
 			int childHeight = 11 + rand.nextInt(10);
 			int childSize = 7 + (rand.nextInt(2) * 2);
-			
+
 			makeTowerOutbuilding(list, rand, 1, dest[0], dest[1], dest[2], childSize, childHeight, rotation);
 		}
-		
+
 		// TINY TOWERS!
 		for (int i = 0; i < 4; i++) {
-			for (final Rotation towerRotation : RotationUtil.ROTATIONS)
-			{
+			for (final Rotation towerRotation : RotationUtil.ROTATIONS) {
 				int[] dest = getValidOpening(rand, towerRotation);
 				int childHeight = 6 + rand.nextInt(5);
 				if (rand.nextInt(3) == 0 || !makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], 5, childHeight, towerRotation)) {
@@ -111,22 +107,22 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			}
 
 		}
-		
+
 	}
-	
+
 	/**
 	 * Gets a random position in the specified direction that we can make an outbuilding at
 	 */
 	public int[] getOutbuildingOpening(Random rand, Rotation rotation) {
-		
+
 		int rx = 0;
 		int ry = 1;
 		int rz = 0;
-		
+
 		switch (rotation) {
 			case NONE:
 				// for directions 0 or 2, the wall lies along the z axis
-				rx = size -1;
+				rx = size - 1;
 				rz = 6 + rand.nextInt(8);
 				break;
 			case CLOCKWISE_90:
@@ -144,10 +140,10 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 				break;
 		}
 
-		return new int[] {rx, ry, rz};
+		return new int[]{rx, ry, rz};
 	}
 
-	
+
 	public boolean makeTowerOutbuilding(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
@@ -170,28 +166,26 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// make walls
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, StructureTFComponent.getStrongholdStones());
-		
+
 		// clear inside
 		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 		final IBlockState defaultState = Blocks.COBBLESTONE.getDefaultState();
 		// stone to ground
-		for (int x = 0; x < this.size; x++)
-		{
-			for (int z = 0; z < this.size; z++)
-			{
+		for (int x = 0; x < this.size; x++) {
+			for (int z = 0; z < this.size; z++) {
 				this.replaceAirAndLiquidDownwards(world, defaultState, x, -1, z, sbb);
 			}
 
 		}
-		
-     	// nullify sky light
+
+		// nullify sky light
 		nullifySkyLightForBoundingBox(world);
-     	
-     	// fix highestOpening parameter so we don't get a ginormous lich room
-     	if ((height - highestOpening) > 15) {
-     		highestOpening = height - 15;
-     	}
-     	
+
+		// fix highestOpening parameter so we don't get a ginormous lich room
+		if ((height - highestOpening) > 15) {
+			highestOpening = height - 15;
+		}
+
 
 		// stairs!
 		makeStairs(world, rand, sbb);
@@ -202,18 +196,17 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// openings
 		makeOpenings(world, sbb);
 
-        // decorate?
+		// decorate?
 		decorateStairFloor(world, rand, sbb);
-		
+
 		// stairway crossings
 		makeStairwayCrossings(world, rand, sbb);
-		
+
 		// LICH TIME
 		makeLichRoom(world, rand, sbb);
-		
+
 		// extra paintings in main tower
 		makeTowerPaintings(world, rand, sbb);
-
 
 
 		return true;
@@ -224,7 +217,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	 */
 	protected void makeStairwayCrossings(World world, Random rand, StructureBoundingBox sbb) {
 		int flights = (this.highestOpening / 5) - 2;
-		
+
 		for (int i = 2 + rand.nextInt(2); i < flights; i += 1 + rand.nextInt(5)) {
 			makeStairCrossing(world, rand, i, sbb);
 		}
@@ -244,7 +237,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 				setBlockState(world, crossingfloor, dx, floorLevel, dz, sbb);
 			}
 		}
-		
+
 		// put fences
 		floorLevel++;
 		int dx = 6;
@@ -263,34 +256,33 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// we need 2 extra blocks and 2 extra fences to look good
 		setBlockState(world, crossingfloor, 6, floorLevel - 1, 11, sbb);
 		setBlockState(world, crossingfloor, 8, floorLevel - 1, 3, sbb);
-		
+
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 5, floorLevel, 11, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 9, floorLevel, 3, sbb);
-		
+
 		// place spawner in the middle
 		ResourceLocation mobID = VanillaEntityNames.SKELETON;
-		switch (rand.nextInt(4))
-		{
-		case 0:
-		case 1:
-			mobID = VanillaEntityNames.SKELETON;
-			break;
-		case 2:
-			mobID = VanillaEntityNames.ZOMBIE;
-			break;
-		case 3:
-			mobID = TFEntityNames.SWARM_SPIDER;
-			break;
+		switch (rand.nextInt(4)) {
+			case 0:
+			case 1:
+				mobID = VanillaEntityNames.SKELETON;
+				break;
+			case 2:
+				mobID = VanillaEntityNames.ZOMBIE;
+				break;
+			case 3:
+				mobID = TFEntityNames.SWARM_SPIDER;
+				break;
 		}
 		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
-		
+
 		// make a fence arch support for the spawner
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, floorLevel + 1, 7, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 8, floorLevel + 1, 7, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, floorLevel + 2, 7, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 8, floorLevel + 2, 7, sbb);
-		
-		
+
+
 		this.setCoordBaseMode(temp);
 	}
 
@@ -303,10 +295,10 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// we need a floor
 		final Rotation i = (this.highestOpening / 5) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_90;
 		makeLichFloor(world, floorLevel, i, sbb);
-		
+
 		// now a chandelier
 		decorateLichChandelier(world, floorLevel, sbb);
-		
+
 		// and wall torches
 		decorateTorches(world, rand, floorLevel, sbb);
 
@@ -325,7 +317,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.WEST, 48, sbb);
 		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.WEST, 32, sbb);
 		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.WEST, 0, sbb);
-	
+
 		// do wall 1.
 		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.EAST, 48, sbb);
 		generatePaintingsOnWall(world, rand, howMany, 0, EnumFacing.EAST, 32, sbb);
@@ -362,50 +354,44 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 						// upside down plank slabs
 						setBlockState(world, birchSlab, fx, floorLevel, fz, sbb);
 					}
-				}
-				else if ((fx == 12 || fx == 13) && (fz >= 3 && fz <= 8)) {
+				} else if ((fx == 12 || fx == 13) && (fz >= 3 && fz <= 8)) {
 					// blank, leave room for stairs
 					if (fz == 8) {
 						// upside down plank slabs
 						setBlockState(world, birchSlab, fx, floorLevel, fz, sbb);
 					}
-				}
-				else if ((fx >= 4 && fx <= 10) && (fz >= 4 && fz <= 10)) {
+				} else if ((fx >= 4 && fx <= 10) && (fz >= 4 && fz <= 10)) {
 					// glass floor in center, aside from 2 corners
 					if ((fx == 4 && fz == 4) || (fx == 10 && fz == 10)) {
 						setBlockState(world, birchPlank, fx, floorLevel, fz, sbb);
-					}
-					else {
+					} else {
 						setBlockState(world, Blocks.GLASS.getDefaultState(), fx, floorLevel, fz, sbb);
 					}
-				}
-				else if ((fx == 2 || fx == 3) && (fz == 2 || fz == 3)) {
+				} else if ((fx == 2 || fx == 3) && (fz == 2 || fz == 3)) {
 					// glass blocks in the corners
 					setBlockState(world, Blocks.GLASS.getDefaultState(), fx, floorLevel, fz, sbb);
-				}
-				else if ((fx == 11 || fx == 12) && (fz == 11 || fz == 12)) {
+				} else if ((fx == 11 || fx == 12) && (fz == 11 || fz == 12)) {
 					// glass blocks in the corners
 					setBlockState(world, Blocks.GLASS.getDefaultState(), fx, floorLevel, fz, sbb);
-				}
-				else {
+				} else {
 					setBlockState(world, birchPlank, fx, floorLevel, fz, sbb);
 				}
 			}
 		}
-		
+
 		// eliminate the railings
 		setBlockState(world, AIR, 3, floorLevel + 1, 11, sbb);
 		setBlockState(world, AIR, 3, floorLevel + 1, 10, sbb);
 		setBlockState(world, AIR, 3, floorLevel + 2, 11, sbb);
-		
+
 		setBlockState(world, AIR, 11, floorLevel + 1, 3, sbb);
 		setBlockState(world, AIR, 11, floorLevel + 1, 4, sbb);
 		setBlockState(world, AIR, 11, floorLevel + 2, 3, sbb);
-		
+
 		this.setCoordBaseMode(temp);
 
 	}
-	
+
 	/**
 	 * Make a fancy chandelier for the lich's room
 	 */
@@ -426,7 +412,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 1, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 2, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz - 1, sbb);
-		
+
 		cy++;
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz + 0, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 2, cy, cz + 0, sbb);
@@ -440,13 +426,13 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 1, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz - 2, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz - 1, sbb);
-		
+
 		cy++;
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz + 0, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz + 1, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy, cz + 0, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz - 1, sbb);
-		
+
 		for (int y = floorLevel + 5; y < height - 1; y++) {
 			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, y, cz + 0, sbb);
 		}
@@ -458,15 +444,14 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	protected void decoratePaintings(World world, Random rand, int floorLevel, StructureBoundingBox sbb) {
 		int howMany = 100;
 
-		for (final EnumFacing horizontal : EnumFacing.HORIZONTALS)
-		{
+		for (final EnumFacing horizontal : EnumFacing.HORIZONTALS) {
 			// do wall 0.
 			generatePaintingsOnWall(world, rand, howMany, floorLevel, horizontal, 48, sbb);
 			generatePaintingsOnWall(world, rand, howMany, floorLevel, horizontal, 32, sbb);
 			generatePaintingsOnWall(world, rand, howMany, floorLevel, horizontal, 0, sbb);
 		}
 	}
-	
+
 	/**
 	 * Put torches on each wall
 	 */
@@ -481,7 +466,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	 * Place up to 5 torches (with fence holders) on the wall, checking that they don't overlap any paintings or other torches
 	 */
 	protected void generateTorchesOnWall(World world, Random rand,
-			int floorLevel, EnumFacing direction, StructureBoundingBox sbb) {
+										 int floorLevel, EnumFacing direction, StructureBoundingBox sbb) {
 		for (int i = 0; i < 5; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
@@ -495,15 +480,13 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			IBlockState aboveBlockState = world.getBlockState(tCoords.up());
 			if (blockState.getMaterial() == Material.AIR &&
 					aboveBlockState.getMaterial() == Material.AIR &&
-					world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0)
-	        {
-	        	// if not, place a torch
+					world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0) {
+				// if not, place a torch
 				world.setBlockState(tCoords, Blocks.OAK_FENCE.getDefaultState(), 2);
 				world.setBlockState(tCoords.up(), Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.UP), 2);
 			}
 		}
 	}
-
 
 
 }

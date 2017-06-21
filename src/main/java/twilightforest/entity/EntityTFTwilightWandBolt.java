@@ -26,19 +26,19 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 		super(world, thrower);
 		setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
-	
+
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-        makeTrail();
+		makeTrail();
 	}
-	
+
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
-			
+			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
+
 			double s1 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
@@ -48,17 +48,15 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 	}
 
 	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.003F;
-    }
+	protected float getGravityVelocity() {
+		return 0.003F;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
+	@SideOnly(Side.CLIENT)
+	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			for (int i = 0; i < 8; ++i)
-			{
+			for (int i = 0; i < 8; ++i) {
 				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
 			}
 		} else {
@@ -68,16 +66,14 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-        if (!this.world.isRemote)
-        {
-			if (result.entityHit instanceof EntityLivingBase)
-			{
+		if (!this.world.isRemote) {
+			if (result.entityHit instanceof EntityLivingBase) {
 				result.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
 			}
 
 			this.world.setEntityState(this, (byte) 3);
-            this.setDead();
-        }
+			this.setDead();
+		}
 	}
 
 }

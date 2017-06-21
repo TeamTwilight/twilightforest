@@ -1,7 +1,5 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,8 +17,8 @@ import twilightforest.item.TFItems;
 
 public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 
-    public static final PropertyEnum<MagicWoodVariant> VARIANT = PropertyEnum.create("variant", MagicWoodVariant.class);
-    
+	public static final PropertyEnum<MagicWoodVariant> VARIANT = PropertyEnum.create("variant", MagicWoodVariant.class);
+
 	protected BlockTFMagicLog() {
 		this.setHardness(2.0F);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -33,12 +31,10 @@ public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, MagicWoodVariant.values()[meta & 3]);
 
-		switch (meta & 0b1100)
-		{
+		switch (meta & 0b1100) {
 			case 0:
 				iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
 				break;
@@ -56,12 +52,10 @@ public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		int i = state.getValue(VARIANT).ordinal();
 
-		switch (state.getValue(LOG_AXIS))
-		{
+		switch (state.getValue(LOG_AXIS)) {
 			case X:
 				i |= 4;
 				break;
@@ -77,18 +71,17 @@ public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 
 		return i;
 	}
-	
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-    	par3List.add(new ItemStack(par1, 1, 0));
-    	par3List.add(new ItemStack(par1, 1, 1));
-    	par3List.add(new ItemStack(par1, 1, 2));
-    	par3List.add(new ItemStack(par1, 1, 3));
-    }
 
-    @SideOnly(Side.CLIENT)
-    @Override
+	@Override
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}

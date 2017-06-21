@@ -1,45 +1,33 @@
 package twilightforest.item;
 
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import com.google.common.collect.Sets;
-
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.entity.EntityTFChainBlock;
-import twilightforest.entity.EntityTFCubeOfAnnihilation;
-import twilightforest.entity.EntityTFTwilightWandBolt;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.entity.EntityTFChainBlock;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback {
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	protected ItemTFChainBlock() {
 		super(6, 1.6F, TFItems.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE)); // todo 1.9 attack speed
-        this.maxStackSize = 1;
-        this.setMaxDamage(99);
+		this.maxStackSize = 1;
+		this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
@@ -50,7 +38,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Least");
 		}
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
@@ -103,25 +91,22 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 		stack.getTagCompound().setUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
 	}
 
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 72000;
-    }
-    
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.BLOCK;
-    }
-    
-    @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState state)
-    {
-        if ("pickaxe".equals(toolClass)) {
-            return 2;
-        } else {
-            return -1;
-        }
-    }
+	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 72000;
+	}
+
+	@Override
+	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+		return EnumAction.BLOCK;
+	}
+
+	@Override
+	public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState state) {
+		if ("pickaxe".equals(toolClass)) {
+			return 2;
+		} else {
+			return -1;
+		}
+	}
 }

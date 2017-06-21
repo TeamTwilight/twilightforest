@@ -16,7 +16,7 @@ public class EntityTFHarbingerCube extends EntityMob {
 
 	public EntityTFHarbingerCube(World world) {
 		super(world);
-        this.setSize(1.9F, 2.4F);
+		this.setSize(1.9F, 2.4F);
 	}
 
 	@Override

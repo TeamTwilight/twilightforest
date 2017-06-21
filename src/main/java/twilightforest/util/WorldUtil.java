@@ -4,7 +4,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 public final class WorldUtil {
-	private WorldUtil() {}
+	private WorldUtil() {
+	}
 
 	/**
 	 * Inclusive of edges

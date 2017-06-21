@@ -1,22 +1,22 @@
 package twilightforest.item;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 
 	protected ItemTFCubeOfAnnihilation() {
-        this.maxStackSize = 1;
+		this.maxStackSize = 1;
 		this.setCreativeTab(TFItems.creativeTab);
 		this.addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "thrown"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
@@ -43,7 +43,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 			stack.getTagCompound().removeTag(THROWN_UUID_KEY + "Least");
 		}
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
@@ -92,15 +92,13 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		stack.getTagCompound().setUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
 	}
 
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 72000;
-    }
-    
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.BLOCK;
-    }
+	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 72000;
+	}
+
+	@Override
+	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+		return EnumAction.BLOCK;
+	}
 }

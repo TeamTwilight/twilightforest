@@ -5,17 +5,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
+
 import java.util.Random;
 
 /**
  * A larger foundation that comes all the way from the top of a tower
  *
  * @author benma_000
- *
  */
-public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCastleFoundation13
-{
-	public ComponentTFFinalCastleBellFoundation21() {}
+public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCastleFoundation13 {
+	public ComponentTFFinalCastleBellFoundation21() {
+	}
 
 	public ComponentTFFinalCastleBellFoundation21(Random rand, int i, StructureTFComponent sideTower) {
 		super(rand, i, sideTower);
@@ -27,21 +27,21 @@ public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCast
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// find ground level
-        if (this.groundLevel  < 0) {
-            this.groundLevel = this.getDeadrockLevel(world, sbb);
-        }
+		if (this.groundLevel < 0) {
+			this.groundLevel = this.getDeadrockLevel(world, sbb);
+		}
 
-        // how tall are we?
-        int height = this.boundingBox.maxY - this.groundLevel;
+		// how tall are we?
+		int height = this.boundingBox.maxY - this.groundLevel;
 
-        int mid = 16;
-        int low = 32;
+		int mid = 16;
+		int low = 32;
 
-        // assume square
-        int size = this.boundingBox.maxX - this.boundingBox.minX;
+		// assume square
+		int size = this.boundingBox.maxX - this.boundingBox.minX;
 
-        for (Rotation rotation : RotationUtil.ROTATIONS) {
-            // do corner
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
+			// do corner
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -mid, 0, rotation, sbb);
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -1, 2, rotation, sbb);
@@ -57,7 +57,7 @@ public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCast
 				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 			}
 
-        }
+		}
 
 		return true;
 	}

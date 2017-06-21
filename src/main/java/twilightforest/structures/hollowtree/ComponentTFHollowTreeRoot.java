@@ -1,8 +1,5 @@
 package twilightforest.structures.hollowtree;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,9 +10,11 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerator;
 
+import java.util.Random;
+
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 
-public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
+public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
 	private int groundLevel = -1;
 
@@ -29,26 +28,24 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
 		this.boundingBox = new StructureBoundingBox(Math.min(src.getX(), dest.getX()), Math.min(src.getY(), dest.getY()), Math.min(src.getZ(), dest.getZ()), Math.max(src.getX(), dest.getX()), Math.max(src.getY(), dest.getY()), Math.max(src.getZ(), dest.getZ()));
 	}
 
-	
+
 	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		
+
 		// offset bounding box to average ground level
-        if (this.groundLevel < 0)
-        {
-        	int rootHeight = this.boundingBox.maxY - this.boundingBox.minY;
-        	
-            this.groundLevel = this.getSampledDirtLevel(world, sbb);
+		if (this.groundLevel < 0) {
+			int rootHeight = this.boundingBox.maxY - this.boundingBox.minY;
 
-            if (this.groundLevel < 0)
-            {
-                return true;
-            }
+			this.groundLevel = this.getSampledDirtLevel(world, sbb);
 
-            src = new BlockPos(src.getX(), groundLevel + 5, src.getZ());
-            
-            //System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
-        }
+			if (this.groundLevel < 0) {
+				return true;
+			}
+
+			src = new BlockPos(src.getX(), groundLevel + 5, src.getZ());
+
+			//System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
+		}
 
 		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
@@ -59,32 +56,25 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
 		return true;
 	}
 
-	
-	
+
 	/**
 	 * Draws a line
 	 */
 	protected void drawRootLine(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, IBlockState blockValue) {
 		BlockPos lineCoords[] = TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
-		
-		for (BlockPos coords : lineCoords)
-		{
+
+		for (BlockPos coords : lineCoords) {
 			IBlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);
-			
+
 			// three choices here
-			if (!block.isNormalCube() || block != Blocks.AIR && block.getMaterial() == Material.GRASS)
-			{
+			if (!block.isNormalCube() || block != Blocks.AIR && block.getMaterial() == Material.GRASS) {
 
 				// air, other non-solid, or grass, make wood block
 				IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 				this.setBlockState(world, log, coords.getX(), coords.getY(), coords.getZ(), sbb);
-			}
-			else if (block != Blocks.AIR && block.getMaterial() == Material.WOOD)
-			{
+			} else if (block != Blocks.AIR && block.getMaterial() == Material.WOOD) {
 				// wood, do nothing
-			}
-			else
-			{
+			} else {
 				// solid, make root block
 				this.setBlockState(world, blockValue, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			}

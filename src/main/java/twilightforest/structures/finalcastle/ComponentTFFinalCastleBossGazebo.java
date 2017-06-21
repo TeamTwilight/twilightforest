@@ -11,11 +11,11 @@ import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.StructureTFDecoratorCastle;
 import twilightforest.util.RotationUtil;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleBossGazebo extends StructureTFComponent
-{
+public class ComponentTFFinalCastleBossGazebo extends StructureTFComponent {
 
 	public ComponentTFFinalCastleBossGazebo() {
 	}
@@ -29,13 +29,13 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponent
 
 	}
 
-    @Override
-    public void buildComponent(StructureComponent parent, List list, Random rand) {
-	    this.deco = new StructureTFDecoratorCastle();
-	    this.deco.blockState = TFBlocks.castleMagic.getDefaultState().withProperty(BlockTFCastleMagic.COLOR, EnumDyeColor.BLUE);
+	@Override
+	public void buildComponent(StructureComponent parent, List list, Random rand) {
+		this.deco = new StructureTFDecoratorCastle();
+		this.deco.blockState = TFBlocks.castleMagic.getDefaultState().withProperty(BlockTFCastleMagic.COLOR, EnumDyeColor.BLUE);
 
-	    this.deco.fenceState = TFBlocks.forceField.getDefaultState().withProperty(BlockTFForceField.COLOR, EnumDyeColor.PURPLE);
-    }
+		this.deco.fenceState = TFBlocks.forceField.getDefaultState().withProperty(BlockTFForceField.COLOR, EnumDyeColor.PURPLE);
+	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
@@ -47,7 +47,7 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponent
 		// roof
 		this.fillWithBlocks(world, sbb, 0, 11, 0, 20, 11, 20, deco.fenceState, deco.fenceState, false);
 
-        this.placeSignAtCurrentPosition(world, 10, 0, 10, "Final Boss Here", "You win!", sbb);
+		this.placeSignAtCurrentPosition(world, 10, 0, 10, "Final Boss Here", "You win!", sbb);
 
 
 		return true;

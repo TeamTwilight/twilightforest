@@ -1,7 +1,5 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,9 +12,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import twilightforest.TwilightForestMod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
+
+import java.util.List;
 
 public class ItemTFFieryArmor extends ItemArmor {
 
@@ -38,26 +38,24 @@ public class ItemTFFieryArmor extends ItemArmor {
 			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
 		}
 	}
-	
+
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
-    	//istack.addEnchantment(TFEnchantment.fieryAura, 2);
-        par3List.add(istack);
-    }
-    
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		ItemStack istack = new ItemStack(par1, 1, 0);
+		//istack.addEnchantment(TFEnchantment.fieryAura, 2);
+		par3List.add(istack);
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		par3List.add(I18n.format(getUnlocalizedName() + ".tooltip"));
 	}
-    
-    @Override
+
+	@Override
 	@SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped oldModel)
-    {
-        return TwilightForestMod.proxy.getFieryArmorModel(armorSlot);
-    }
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped oldModel) {
+		return TwilightForestMod.proxy.getFieryArmorModel(armorSlot);
+	}
 }

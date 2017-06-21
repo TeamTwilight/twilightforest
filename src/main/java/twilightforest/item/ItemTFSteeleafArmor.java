@@ -1,8 +1,5 @@
 package twilightforest.item;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Enchantments;
@@ -12,9 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
@@ -41,24 +35,24 @@ public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallb
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
 		}
 	}
-	
+
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-    	ItemStack istack = new ItemStack(item);
-    	switch (this.armorType) {
-    	case HEAD:
-    		istack.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 2);
-            break;	
-    	case CHEST:
-    		istack.addEnchantment(Enchantments.BLAST_PROTECTION, 2);
-            break;	
-    	case LEGS:
-    		istack.addEnchantment(Enchantments.FIRE_PROTECTION, 2);
-            break;	
-    	case FEET:
-    		istack.addEnchantment(Enchantments.FEATHER_FALLING, 2);
-            break;	
-    	}
-    	list.add(istack);
-    }
+		ItemStack istack = new ItemStack(item);
+		switch (this.armorType) {
+			case HEAD:
+				istack.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 2);
+				break;
+			case CHEST:
+				istack.addEnchantment(Enchantments.BLAST_PROTECTION, 2);
+				break;
+			case LEGS:
+				istack.addEnchantment(Enchantments.FIRE_PROTECTION, 2);
+				break;
+			case FEET:
+				istack.addEnchantment(Enchantments.FEATHER_FALLING, 2);
+				break;
+		}
+		list.add(istack);
+	}
 }

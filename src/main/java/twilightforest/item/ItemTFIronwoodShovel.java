@@ -17,11 +17,10 @@ public class ItemTFIronwoodShovel extends ItemSpade implements ModelRegisterCall
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    @Override
-	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-    	ItemStack istack = new ItemStack(item);
-    	istack.addEnchantment(Enchantments.UNBREAKING, 1);
-        list.add(istack);
-    }
+	@Override
+	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+		ItemStack istack = new ItemStack(item);
+		istack.addEnchantment(Enchantments.UNBREAKING, 1);
+		list.add(istack);
+	}
 }

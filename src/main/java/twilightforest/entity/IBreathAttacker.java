@@ -10,6 +10,7 @@ public interface IBreathAttacker {
 
 	/**
 	 * Deal damage for our breath attack
+	 *
 	 * @param target
 	 */
 	public abstract void doBreathAttack(Entity target);

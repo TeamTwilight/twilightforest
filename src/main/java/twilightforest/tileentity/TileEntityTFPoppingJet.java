@@ -15,24 +15,19 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 	private int counter = 0;
 	private FireJetVariant nextVariant;
 
-    public TileEntityTFPoppingJet(FireJetVariant variant) {
+	public TileEntityTFPoppingJet(FireJetVariant variant) {
 		this.nextVariant = variant;
 	}
 
-    @Override
-	public void update()
-    {
-		if (++counter >= 80)
-		{
+	@Override
+	public void update() {
+		if (++counter >= 80) {
 			counter = 0;
-	    	// turn to flame
-			if (!world.isRemote && world.getBlockState(pos).getBlock() == TFBlocks.fireJet)
-			{
+			// turn to flame
+			if (!world.isRemote && world.getBlockState(pos).getBlock() == TFBlocks.fireJet) {
 				world.setBlockState(pos, TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, nextVariant), 3);
 			}
-		}
-		else
-		{
+		} else {
 			if (counter % 20 == 0) {
 				world.spawnParticle(EnumParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
 				world.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + world.rand.nextFloat() * 0.2F, 0.9F + world.rand.nextFloat() * 0.15F);
@@ -40,20 +35,18 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 
 		}
 
-    }
-    
-    @Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-    	super.readFromNBT(par1NBTTagCompound);
-        this.nextVariant = FireJetVariant.values()[par1NBTTagCompound.getInteger("NextMeta")];
-    }
+	}
 
-    @Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-    	NBTTagCompound ret = super.writeToNBT(par1NBTTagCompound);
-        ret.setInteger("NextMeta", nextVariant.ordinal());
+	@Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readFromNBT(par1NBTTagCompound);
+		this.nextVariant = FireJetVariant.values()[par1NBTTagCompound.getInteger("NextMeta")];
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
+		NBTTagCompound ret = super.writeToNBT(par1NBTTagCompound);
+		ret.setInteger("NextMeta", nextVariant.ordinal());
 		return ret;
-    }
+	}
 }

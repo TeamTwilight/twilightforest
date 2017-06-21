@@ -3,25 +3,21 @@ package twilightforest.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
-import twilightforest.block.BlockTFMoonworm;
-import twilightforest.block.TFBlockProperties;
-import twilightforest.block.TFBlocks;
-import twilightforest.item.TFItems;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.block.TFBlockProperties;
+import twilightforest.block.TFBlocks;
 
 public class EntityTFMoonwormShot extends EntityThrowable {
-    public EntityTFMoonwormShot(World par1World) {
-        super(par1World);
-    }
+	public EntityTFMoonwormShot(World par1World) {
+		super(par1World);
+	}
 
 	public EntityTFMoonwormShot(World world, EntityLivingBase thrower) {
 		super(world, thrower);
@@ -31,23 +27,21 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-        makeTrail();
+		makeTrail();
 	}
 
 	@Override
-    public float getBrightness(float par1)
-    {
-        return 1.0F;
-    }
+	public float getBrightness(float par1) {
+		return 1.0F;
+	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1)
-    {
-        return 15728880;
-    }
+	@SideOnly(Side.CLIENT)
+	public int getBrightnessForRender(float par1) {
+		return 15728880;
+	}
 
-	
+
 	private void makeTrail() {
 //		for (int i = 0; i < 5; i++) {
 //			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble()); 
@@ -62,54 +56,48 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 //		}
 	}
 
-    @Override
-	public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-
-    @Override
-	public float getCollisionBorderSize()
-    {
-        return 1.0F;
-    }
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
 
 	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.03F;
-    }
+	public float getCollisionBorderSize() {
+		return 1.0F;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void handleStatusUpdate(byte id) {
-        if (id == 3) {
-            for (int var3 = 0; var3 < 8; ++var3)
-            {
-                this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
-            }
-        } else {
-            super.handleStatusUpdate(id);
-        }
-    }
+	@Override
+	protected float getGravityVelocity() {
+		return 0.03F;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void handleStatusUpdate(byte id) {
+		if (id == 3) {
+			for (int var3 = 0; var3 < 8; ++var3) {
+				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
+			}
+		} else {
+			super.handleStatusUpdate(id);
+		}
+	}
 
 	@Override
 	protected void onImpact(RayTraceResult mop) {
-        if (!world.isRemote) {
-            if (mop.typeOfHit == Type.BLOCK)
-            {
-                IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(TFBlockProperties.FACING, mop.sideHit);
-                world.setBlockState(mop.getBlockPos().offset(mop.sideHit), state);
-                // todo sound
-            }
+		if (!world.isRemote) {
+			if (mop.typeOfHit == Type.BLOCK) {
+				IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(TFBlockProperties.FACING, mop.sideHit);
+				world.setBlockState(mop.getBlockPos().offset(mop.sideHit), state);
+				// todo sound
+			}
 
-            if (mop.entityHit != null)
-            {
-                mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
-            }
+			if (mop.entityHit != null) {
+				mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
+			}
 
-            this.world.setEntityState(this, (byte) 3);
-            this.setDead();
-        }
+			this.world.setEntityState(this, (byte) 3);
+			this.setDead();
+		}
 	}
 }

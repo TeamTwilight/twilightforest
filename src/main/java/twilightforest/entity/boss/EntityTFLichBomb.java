@@ -20,54 +20,50 @@ public class EntityTFLichBomb extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-        makeTrail();
+		makeTrail();
 	}
 
 	private void makeTrail() {
 		for (int i = 0; i < 1; i++) {
-			double sx =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionX;
-			double sy =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionY;
-			double sz =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionZ;
-			
-			
-			double dx = posX + sx; 
-			double dy = posY + sy; 
-			double dz = posZ + sz; 
+			double sx = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionX;
+			double sy = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionY;
+			double sz = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionZ;
+
+
+			double dx = posX + sx;
+			double dy = posY + sy;
+			double dz = posZ + sz;
 
 			world.spawnParticle(EnumParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}
 	}
-	
+
 	@Override
-	public boolean isBurning()
-	{
+	public boolean isBurning() {
 		return true;
 	}
 
-    @Override
-	public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-    
-    @Override
-	public float getCollisionBorderSize()
-    {
-        return 1.0F;
-    }
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
 
 	@Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i)
-    {
-    	super.attackEntityFrom(damagesource, i);
+	public float getCollisionBorderSize() {
+		return 1.0F;
+	}
 
-    	if (damagesource.getEntity() != null) {
-        	explode();
-            return true;
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public boolean attackEntityFrom(DamageSource damagesource, float i) {
+		super.attackEntityFrom(damagesource, i);
+
+		if (damagesource.getEntity() != null) {
+			explode();
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	private void explode() {
 		if (!this.world.isRemote) {
@@ -77,10 +73,9 @@ public class EntityTFLichBomb extends EntityThrowable {
 	}
 
 	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.001F;
-    }
+	protected float getGravityVelocity() {
+		return 0.001F;
+	}
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
@@ -89,7 +84,7 @@ public class EntityTFLichBomb extends EntityThrowable {
 				|| result.entityHit instanceof EntityTFLich) {
 			return;
 		}
-		
+
 		explode();
 	}
 }

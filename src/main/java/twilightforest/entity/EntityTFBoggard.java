@@ -10,8 +10,6 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -22,74 +20,68 @@ import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
-import twilightforest.item.TFItems;
 
 
 public class EntityTFBoggard extends EntityMob {
-    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/boggard");
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/boggard");
 
-    public EntityTFBoggard(World world)
-    {
-        super(world);
-        setSize(0.8F, 1.1F);
-    }
-    
-    @Override
-    protected void initEntityAI() {
-        this.tasks.addTask(0, new EntityAISwimming(this));
-//        this.tasks.addTask(1, new EntityAITFRedcapShy(this, this.moveSpeed));
-        this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
-        this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
-    }
+	public EntityTFBoggard(World world) {
+		super(world);
+		setSize(0.8F, 1.1F);
+	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(14.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-    }
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
+//        this.tasks.addTask(1, new EntityAITFRedcapShy(this, this.moveSpeed));
+		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
+		this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
+		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(7, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
+	}
 
-    @Override
-	protected SoundEvent getAmbientSound()
-    {
-        return TFSounds.REDCAP_AMBIENT;
-    }
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(14.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+	}
 
-    @Override
-	protected SoundEvent getHurtSound()
-    {
-        return TFSounds.REDCAP_HURT;
-    }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.REDCAP_AMBIENT;
+	}
 
-    @Override
-	protected SoundEvent getDeathSound()
-    {
-        return TFSounds.REDCAP_AMBIENT;
-    }
+	@Override
+	protected SoundEvent getHurtSound() {
+		return TFSounds.REDCAP_HURT;
+	}
 
-    @Override
-    public ResourceLocation getLootTable() {
-        return LOOT_TABLE;
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.REDCAP_AMBIENT;
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 			// are we in a level 1 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill1) {
 				// award level 1 hill cheevo
-				((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHill1);
+				((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHill1);
 			}
 		}
 	}

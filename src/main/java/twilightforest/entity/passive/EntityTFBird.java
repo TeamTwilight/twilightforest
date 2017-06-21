@@ -3,8 +3,6 @@ package twilightforest.entity.passive;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,36 +26,32 @@ public abstract class EntityTFBird extends EntityAnimal {
 
 	@Override
 	public void onLivingUpdate() {
-	    super.onLivingUpdate();
-	    this.lastFlapLength = this.flapLength;
-	    this.lastFlapIntensity = this.flapIntensity;
-	    this.flapIntensity = (float)(this.flapIntensity + (this.onGround ? -1 : 4) * 0.3D);
-	
-	    if (this.flapIntensity < 0.0F)
-	    {
-	        this.flapIntensity = 0.0F;
-	    }
-	
-	    if (this.flapIntensity > 1.0F)
-	    {
-	        this.flapIntensity = 1.0F;
-	    }
-	
-	    if (!this.onGround && this.flapSpeed < 1.0F)
-	    {
-	        this.flapSpeed = 1.0F;
-	    }
-	
-	    this.flapSpeed = (float)(this.flapSpeed * 0.9D);
-	
-	    // don't fall as fast
-	    if (!this.onGround && this.motionY < 0.0D)
-	    {
-	        this.motionY *= 0.6D;
-	    }
-	
-	    this.flapLength += this.flapSpeed * 2.0F;
-	    
+		super.onLivingUpdate();
+		this.lastFlapLength = this.flapLength;
+		this.lastFlapIntensity = this.flapIntensity;
+		this.flapIntensity = (float) (this.flapIntensity + (this.onGround ? -1 : 4) * 0.3D);
+
+		if (this.flapIntensity < 0.0F) {
+			this.flapIntensity = 0.0F;
+		}
+
+		if (this.flapIntensity > 1.0F) {
+			this.flapIntensity = 1.0F;
+		}
+
+		if (!this.onGround && this.flapSpeed < 1.0F) {
+			this.flapSpeed = 1.0F;
+		}
+
+		this.flapSpeed = (float) (this.flapSpeed * 0.9D);
+
+		// don't fall as fast
+		if (!this.onGround && this.motionY < 0.0D) {
+			this.motionY *= 0.6D;
+		}
+
+		this.flapLength += this.flapSpeed * 2.0F;
+
 //	    // rise up when we go fast?
 //        if (this.getMoveHelper().getSpeed() > 0.39F && this.moveForward > 0.1F)
 //        {
@@ -67,16 +61,17 @@ public abstract class EntityTFBird extends EntityAnimal {
 	}
 
 	@Override
-	protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {}
+	protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
+	}
 
 	@Override
-	public void fall(float dist, float damageMultiplier) {}
+	public void fall(float dist, float damageMultiplier) {
+	}
 
-    @Override
-	protected boolean canTriggerWalking()
-    {
-        return false;
-    }
+	@Override
+	protected boolean canTriggerWalking() {
+		return false;
+	}
 
 	@Override
 	public ResourceLocation getLootTable() {
@@ -84,17 +79,15 @@ public abstract class EntityTFBird extends EntityAnimal {
 	}
 
 	@Override
-	public EntityAnimal createChild(EntityAgeable entityanimal)
-	{
+	public EntityAnimal createChild(EntityAgeable entityanimal) {
 		return null;
 	}
 
 	/**
 	 * Overridden by flying birds
 	 */
-    public boolean isBirdLanded()
-    {
-    	return true;
-    }
+	public boolean isBirdLanded() {
+		return true;
+	}
 
 }

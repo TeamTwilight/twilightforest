@@ -1,7 +1,5 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -9,6 +7,8 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
+
+import java.util.Random;
 
 public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 
@@ -22,10 +22,10 @@ public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
+	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// normal doorway
 		super.addComponentParts(world, rand, sbb);
-		
+
 		// back wall brick
 		this.fillWithBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, false);
 
@@ -36,7 +36,7 @@ public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 		// receptacle
 		this.setBlockState(world, AIR, 2, 0, 3, sbb);
 		this.setBlockState(world, AIR, 3, 0, 3, sbb);
-		
+
 		return true;
 	}
 }

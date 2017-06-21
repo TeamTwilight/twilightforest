@@ -1,7 +1,5 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -12,6 +10,8 @@ import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
 import twilightforest.util.TFEntityNames;
+
+import java.util.Random;
 
 public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 
@@ -36,13 +36,13 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 
 		// spawner
 		setSpawner(world, 4, 2, 4, sbb, TFEntityNames.MINOTAUR);
-		
+
 		// treasure
 		this.placeTreasureAtCurrentPosition(world, rand, 4, 2, 11, TFTreasure.labyrinth_room, sbb);
-		
+
 		// treasure
 		this.placeTreasureAtCurrentPosition(world, rand, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
-		
+
 		// trap
 		setBlockState(world, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), 11, 1, 11, sbb);
 		setBlockState(world, Blocks.TNT.getDefaultState(), 10, 0, 11, sbb);
@@ -54,9 +54,8 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 	}
 
 	private void placePillarEnclosure(World world, StructureBoundingBox sbb,
-			int dx, int dz) {
-		for (int y = 1; y < 5; y++)
-		{
+									  int dx, int dz) {
+		for (int y = 1; y < 5; y++) {
 			final IBlockState chiselledMazeBlock = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
 			setBlockState(world, chiselledMazeBlock, dx + 0, y, dz + 0, sbb);
 			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz + 0, sbb);
@@ -88,7 +87,7 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 2, 3, dz + 1, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 3, dz + 2, sbb);
 
-		
+
 	}
 
 }

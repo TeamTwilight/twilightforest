@@ -6,26 +6,20 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.item.TFItems;
 
-public class RenderTFCharm extends RenderSnowball<EntityTFCharmEffect>
-{
-    public RenderTFCharm(RenderManager manager, RenderItem itemRenderer)
-    {
-        super(manager, Item.getItemFromBlock(Blocks.BARRIER), itemRenderer);
-    }
+public class RenderTFCharm extends RenderSnowball<EntityTFCharmEffect> {
+	public RenderTFCharm(RenderManager manager, RenderItem itemRenderer) {
+		super(manager, Item.getItemFromBlock(Blocks.BARRIER), itemRenderer);
+	}
 
-    @Override
-    public ItemStack getStackToRender(EntityTFCharmEffect charm)
-    {
-        if (charm.getItemID() > 0)
-        {
-            return new ItemStack(TFItems.charmOfKeeping1);
-        } else
-        {
-            return ItemStack.EMPTY;
-        }
-    }
+	@Override
+	public ItemStack getStackToRender(EntityTFCharmEffect charm) {
+		if (charm.getItemID() > 0) {
+			return new ItemStack(TFItems.charmOfKeeping1);
+		} else {
+			return ItemStack.EMPTY;
+		}
+	}
 }

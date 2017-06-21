@@ -1,19 +1,7 @@
-
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
-import net.minecraft.entity.ai.EntityAIFleeSun;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIRestrictSun;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -30,52 +18,51 @@ import net.minecraft.world.World;
 import twilightforest.TFAchievementPage;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFSkeletonDruid extends EntitySkeleton
-{
-    public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/skeleton_druid");
+public class EntityTFSkeletonDruid extends EntitySkeleton {
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/skeleton_druid");
 
 	public EntityTFSkeletonDruid(World world) {
 		super(world);
 	}
 
-    @Override
-    protected void initEntityAI() {
-        super.initEntityAI();
-        this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.25D, 20, 10.0F) {
-            @Override
-            public void startExecuting() {
-                super.startExecuting();
-                setSwingingArms(true);
-            }
+	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.25D, 20, 10.0F) {
+			@Override
+			public void startExecuting() {
+				super.startExecuting();
+				setSwingingArms(true);
+			}
 
-            @Override
-            public void resetTask() {
-                super.resetTask();
-                setSwingingArms(false);
-            }
-        });
-    }
-
-    @Override
-    public void setCombatTask() {
-        // Don't mess with tasks when switching items
-    }
+			@Override
+			public void resetTask() {
+				super.resetTask();
+				setSwingingArms(false);
+			}
+		});
+	}
 
 	@Override
-    protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
-    }
+	public void setCombatTask() {
+		// Don't mess with tasks when switching items
+	}
 
-    @Override
-    public ResourceLocation getLootTable() {
-        return LOOT_TABLE;
-    }
-    
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 
@@ -83,7 +70,7 @@ public class EntityTFSkeletonDruid extends EntitySkeleton
 	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
 		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-		
+
 		double tx = attackTarget.posX - this.posX;
 		double ty = attackTarget.posY + attackTarget.getEyeHeight() - 2.699999988079071D - this.posY;
 		double tz = attackTarget.posZ - this.posZ;
@@ -92,22 +79,18 @@ public class EntityTFSkeletonDruid extends EntitySkeleton
 		this.world.spawnEntity(natureBolt);
 	}
 
-    // [VanillaCopy] of super. Edits noted.
-    @Override
-    protected boolean isValidLightLevel()
-    {
-        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+	// [VanillaCopy] of super. Edits noted.
+	@Override
+	protected boolean isValidLightLevel() {
+		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
-        {
-            return false;
-        }
-        else
-        {
-            int i = this.world.getLightFromNeighbors(blockpos);
+		if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+			return false;
+		} else {
+			int i = this.world.getLightFromNeighbors(blockpos);
 
-            // TF - no thunder check
-            /*if (this.world.isThundering())
+			// TF - no thunder check
+			/*if (this.world.isThundering())
             {
                 int j = this.world.getSkylightSubtracted();
                 this.world.setSkylightSubtracted(10);
@@ -115,7 +98,7 @@ public class EntityTFSkeletonDruid extends EntitySkeleton
                 this.world.setSkylightSubtracted(j);
             }*/
 
-            return i <= this.rand.nextInt(12); // TF - rand(8) -> rand(12)
-        }
-    }
+			return i <= this.rand.nextInt(12); // TF - rand(8) -> rand(12)
+		}
+	}
 }

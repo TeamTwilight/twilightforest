@@ -11,14 +11,15 @@ import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.StructureBoundingBoxUtils;
+
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
-{
+public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent {
 	protected int groundLevel = -1;
 
-	public ComponentTFFinalCastleFoundation13() {}
+	public ComponentTFFinalCastleFoundation13() {
+	}
 
 	public ComponentTFFinalCastleFoundation13(Random rand, int i, StructureTFComponent sideTower) {
 		super(i);
@@ -28,38 +29,36 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
 
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent)parent).deco;
+			this.deco = ((StructureTFComponent) parent).deco;
 		}
 	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// offset bounding box to average ground level
-        if (this.groundLevel  < 0)
-        {
-            this.groundLevel = this.getDeadrockLevel(world, sbb);
+		if (this.groundLevel < 0) {
+			this.groundLevel = this.getDeadrockLevel(world, sbb);
 
-            if (this.groundLevel < 0)
-            {
-                return true;
-            }
+			if (this.groundLevel < 0) {
+				return true;
+			}
 
-            //System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
-        }
+			//System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
+		}
 
-        // how tall are we
-        int height = this.boundingBox.maxY - this.groundLevel;
-        int mid = height / 2;
+		// how tall are we
+		int height = this.boundingBox.maxY - this.groundLevel;
+		int mid = height / 2;
 
-        // assume square
-        int size = this.boundingBox.maxX - this.boundingBox.minX;
+		// assume square
+		int size = this.boundingBox.maxX - this.boundingBox.minX;
 
-        for (Rotation rotation : RotationUtil.ROTATIONS) {
-            // do corner
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
+			// do corner
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 1, -1, 1, rotation, sbb);
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -1, 1, rotation, sbb);
 			this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 2, -mid, 0, rotation, sbb);
@@ -71,7 +70,7 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
 				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 			}
 
-        }
+		}
 
 		return true;
 	}
@@ -80,23 +79,22 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent
 	 * Find what y level the local deadrock is.  Just check the center of the chunk we're given
 	 */
 	protected int getDeadrockLevel(World world, StructureBoundingBox sbb) {
-	    int groundLevel = 256;
+		int groundLevel = 256;
 
-	    for (int y = 150; y > 0; y--) // is 150 a good place to start? :)
-	    {
-		    final Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
+		for (int y = 150; y > 0; y--) // is 150 a good place to start? :)
+		{
+			final Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
 
-		    int cx = center.getX();
-		    int cz = center.getZ();
+			int cx = center.getX();
+			int cz = center.getZ();
 
-		    Block block = world.getBlockState(new BlockPos(cx, y, cz)).getBlock();
-		    if (block == TFBlocks.deadrock)
-		    {
-			    groundLevel = y;
-			    break;
-		    }
-	    }
+			Block block = world.getBlockState(new BlockPos(cx, y, cz)).getBlock();
+			if (block == TFBlocks.deadrock) {
+				groundLevel = y;
+				break;
+			}
+		}
 
-	    return groundLevel;
+		return groundLevel;
 	}
 }

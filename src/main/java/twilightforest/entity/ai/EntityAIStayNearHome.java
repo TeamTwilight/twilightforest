@@ -12,7 +12,7 @@ public class EntityAIStayNearHome extends EntityAIBase {
 	public EntityAIStayNearHome(EntityCreature entityTFYetiAlpha, float sp) {
 		this.entity = entityTFYetiAlpha;
 		this.speed = sp;
-        this.setMutexBits(1);
+		this.setMutexBits(1);
 	}
 
 	@Override
@@ -21,27 +21,21 @@ public class EntityAIStayNearHome extends EntityAIBase {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting()
-	{
+	public boolean shouldContinueExecuting() {
 		return !this.entity.getNavigator().noPath();
 	}
 
-    @Override
-	public void startExecuting()
-    {
-        if (this.entity.getDistanceSq(this.entity.getHomePosition()) > 256.0D)
-        {
-            Vec3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vec3d(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D));
+	@Override
+	public void startExecuting() {
+		if (this.entity.getDistanceSq(this.entity.getHomePosition()) > 256.0D) {
+			Vec3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vec3d(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D));
 
-            if (vec3 != null)
-            {
-                this.entity.getNavigator().tryMoveToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord, speed);
-            }
-        }
-        else
-        {
-            this.entity.getNavigator().tryMoveToXYZ(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D, speed);
-        }
-    }
+			if (vec3 != null) {
+				this.entity.getNavigator().tryMoveToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord, speed);
+			}
+		} else {
+			this.entity.getNavigator().tryMoveToXYZ(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D, speed);
+		}
+	}
 
 }

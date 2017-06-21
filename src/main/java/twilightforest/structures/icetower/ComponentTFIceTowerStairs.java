@@ -1,8 +1,5 @@
 package twilightforest.structures.icetower;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -11,32 +8,36 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
+import java.util.List;
+import java.util.Random;
+
 public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
-	
-	public ComponentTFIceTowerStairs() { }
+
+	public ComponentTFIceTowerStairs() {
+	}
 
 
 	public ComponentTFIceTowerStairs(int index, int x, int y, int z, int size, int height, EnumFacing direction) {
 		super(index, x, y, z, size, height, direction);
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({"rawtypes"})
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent)parent).deco;
+			this.deco = ((StructureTFComponent) parent).deco;
 		}
 	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		
+
 		for (int x = 1; x < this.size; x++) {
-		
+
 			this.placeStairs(world, sbb, x, 1 - x, 5, 2);
 
 			for (int z = 0; z <= x; z++) {
-				
+
 				if (z > 0 && z <= this.size / 2) {
 					this.placeStairs(world, sbb, x, 1 - x, 5 - z, 2);
 					this.placeStairs(world, sbb, x, 1 - x, 5 + z, 2);
@@ -48,12 +49,12 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 				}
 
 			}
-			
+
 		}
 
 		this.setBlockState(world, deco.blockState, 0, 0, 5, sbb);
 
-		
+
 		return true;
 	}
 

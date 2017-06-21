@@ -10,17 +10,17 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.ThornVariant;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
+
 import java.util.Random;
 
 /**
  * Foundation that makes thorns go all through the tower
  *
  * @author benma_000
- *
  */
-public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCastleFoundation13
-{
-	public ComponentTFFinalCastleFoundation13Thorns() {}
+public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCastleFoundation13 {
+	public ComponentTFFinalCastleFoundation13Thorns() {
+	}
 
 	public ComponentTFFinalCastleFoundation13Thorns(Random rand, int i, StructureTFComponent sideTower) {
 		super(rand, i, sideTower);
@@ -57,26 +57,26 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
 			// twist vines around the center block
 			switch (twist) {
-			case 0:
-				this.setBlockStateRotated(world, thorns, x + 1, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, thorns, x, y, z + 1, rotation, sbb);
-				this.setBlockStateRotated(world, thorns, x + 1, y, z + 1, rotation, sbb);
-				break;
-			case 1:
-				this.setBlockStateRotated(world, thorns, x + 1, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, thorns, x, y, z - 1, rotation, sbb);
-				this.setBlockStateRotated(world, thorns, x + 1, y, z - 1, rotation, sbb);
-				break;
-			case 2:
-				this.setBlockStateRotated(world, thorns, x - 1, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, thorns, x, y, z - 1, rotation, sbb);
-				this.setBlockStateRotated(world, thorns, x - 1, y, z - 1, rotation, sbb);
-				break;
-			case 3:
-				this.setBlockStateRotated(world, thorns, x - 1, y, z, rotation, sbb);
-				this.setBlockStateRotated(world, thorns, x, y, z + 1, rotation, sbb);
-				this.setBlockStateRotated(world, thorns, x - 1, y, z + 1, rotation, sbb);
-				break;
+				case 0:
+					this.setBlockStateRotated(world, thorns, x + 1, y, z, rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x, y, z + 1, rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x + 1, y, z + 1, rotation, sbb);
+					break;
+				case 1:
+					this.setBlockStateRotated(world, thorns, x + 1, y, z, rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x, y, z - 1, rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x + 1, y, z - 1, rotation, sbb);
+					break;
+				case 2:
+					this.setBlockStateRotated(world, thorns, x - 1, y, z, rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x, y, z - 1, rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x - 1, y, z - 1, rotation, sbb);
+					break;
+				case 3:
+					this.setBlockStateRotated(world, thorns, x - 1, y, z, rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x, y, z + 1, rotation, sbb);
+					this.setBlockStateRotated(world, thorns, x - 1, y, z + 1, rotation, sbb);
+					break;
 			}
 
 			if (Math.abs(y % twistMod) == 1) {
@@ -142,7 +142,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 				// go up that far
 				this.setBlockStateRotated(world, thorns.withProperty(BlockTFThorns.AXIS, EnumFacing.Axis.Y), destX, y + i, destZ, rotation, sbb);
 				// go back half that far
-				if (i > (dist/ 2)) {
+				if (i > (dist / 2)) {
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y + dist - 1, z + (dz * i), rotation, sbb);
 				}
 

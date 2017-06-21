@@ -13,5 +13,5 @@ public class BlockTFAuroraPillar extends BlockRotatedPillar implements ModelRegi
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
 	}
-	
+
 }

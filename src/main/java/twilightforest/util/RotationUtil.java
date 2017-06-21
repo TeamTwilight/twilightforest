@@ -2,19 +2,20 @@ package twilightforest.util;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
+
 import java.util.Random;
 
-import static net.minecraft.util.Rotation.NONE;
-import static net.minecraft.util.Rotation.CLOCKWISE_90;
 import static net.minecraft.util.Rotation.CLOCKWISE_180;
+import static net.minecraft.util.Rotation.CLOCKWISE_90;
 import static net.minecraft.util.Rotation.COUNTERCLOCKWISE_90;
+import static net.minecraft.util.Rotation.NONE;
 
-public final class RotationUtil
-{
+public final class RotationUtil {
 	public static final Rotation[] ROTATIONS = Rotation.values();
 	public static final EnumFacing[] CARDINALS = {EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
 
-	private RotationUtil() {}
+	private RotationUtil() {
+	}
 
 	public static Rotation getRandomRotation(Random random) {
 		return ROTATIONS[random.nextInt(ROTATIONS.length)];
@@ -25,14 +26,11 @@ public final class RotationUtil
 	}
 
 	@SuppressWarnings("Duplicates")
-	public static Rotation subtract(Rotation original, Rotation rotation)
-	{
-		switch (rotation)
-		{
+	public static Rotation subtract(Rotation original, Rotation rotation) {
+		switch (rotation) {
 			case CLOCKWISE_180:
 
-				switch (original)
-				{
+				switch (original) {
 					case NONE:
 						return CLOCKWISE_180;
 					case CLOCKWISE_90:
@@ -45,8 +43,7 @@ public final class RotationUtil
 
 			case COUNTERCLOCKWISE_90:
 
-				switch (original)
-				{
+				switch (original) {
 					case NONE:
 						return CLOCKWISE_90;
 					case CLOCKWISE_90:
@@ -59,8 +56,7 @@ public final class RotationUtil
 
 			case CLOCKWISE_90:
 
-				switch (original)
-				{
+				switch (original) {
 					case NONE:
 						return COUNTERCLOCKWISE_90;
 					case CLOCKWISE_90:
@@ -76,8 +72,7 @@ public final class RotationUtil
 		}
 	}
 
-	public static Rotation getRelativeRotation(EnumFacing original, EnumFacing destination)
-	{
+	public static Rotation getRelativeRotation(EnumFacing original, EnumFacing destination) {
 		switch (original) {
 			case NORTH:
 			default:

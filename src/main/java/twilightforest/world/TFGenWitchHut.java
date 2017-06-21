@@ -1,13 +1,13 @@
 package twilightforest.world;
 
-import java.util.Random;
-
 import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.entity.EntityTFSkeletonDruid;
+
+import java.util.Random;
 
 
 public class TFGenWitchHut extends TFGenerator {
@@ -16,23 +16,20 @@ public class TFGenWitchHut extends TFGenerator {
 	 * Make a cute witch's hut
 	 */
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos)
-	{
+	public boolean generate(World world, Random rand, BlockPos pos) {
 		return generateTinyHut(world, rand, pos);
 	}
-	
+
 	/**
 	 * Make the smallest size hut
 	 */
-	public boolean generateTinyHut(World world, Random rand, BlockPos pos)
-	{
-		if (!isAreaSuitable(world, rand, pos, 5, 7, 6))
-		{
+	public boolean generateTinyHut(World world, Random rand, BlockPos pos) {
+		if (!isAreaSuitable(world, rand, pos, 5, 7, 6)) {
 			return false;
 		}
-		
+
 		// walls!
-		
+
 		setBlockAndNotifyAdequately(world, pos.add(1, 0, 1), randStone(rand, 1));
 		setBlockAndNotifyAdequately(world, pos.add(2, 0, 1), randStone(rand, 1));
 		setBlockAndNotifyAdequately(world, pos.add(3, 0, 1), randStone(rand, 1));
@@ -113,7 +110,7 @@ public class TFGenWitchHut extends TFGenerator {
 		setBlockAndNotifyAdequately(world, pos.add(6, 2, 4), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(6, 2, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(6, 2, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
-		
+
 		setBlockAndNotifyAdequately(world, pos.add(1, 3, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(1, 3, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(1, 3, 2), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
@@ -127,7 +124,7 @@ public class TFGenWitchHut extends TFGenerator {
 		setBlockAndNotifyAdequately(world, pos.add(5, 3, 4), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(5, 3, 5), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(5, 3, 6), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
-		
+
 		setBlockAndNotifyAdequately(world, pos.add(1, 4, 0), Blocks.WOODEN_SLAB.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(2, 4, 0), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(2, 4, 1), Blocks.DOUBLE_WOODEN_SLAB.getDefaultState());
@@ -176,13 +173,13 @@ public class TFGenWitchHut extends TFGenerator {
 		// fire in chimney!
 		setBlockAndNotifyAdequately(world, pos.add(1, -1, 3), Blocks.NETHERRACK.getDefaultState());
 		setBlockAndNotifyAdequately(world, pos.add(1, 0, 3), Blocks.FIRE.getDefaultState()); // oh god the roof!
-		
+
 		// skeleton spawner!
-        world.setBlockState(pos.add(3, 1, 3), Blocks.MOB_SPAWNER.getDefaultState(), 2);
-        TileEntityMobSpawner ms = (TileEntityMobSpawner)world.getTileEntity(pos.add(3, 1, 3));
+		world.setBlockState(pos.add(3, 1, 3), Blocks.MOB_SPAWNER.getDefaultState(), 2);
+		TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(pos.add(3, 1, 3));
 		ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSkeletonDruid.class));
 
 		return true;
 	}
-	
+
 }

@@ -11,8 +11,7 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 
 @EventBusSubscriber
-public final class RegistryBiomeEvent
-{
+public final class RegistryBiomeEvent {
 	@SuppressWarnings("OverlyCoupledMethod")
 	@SubscribeEvent
 	public static void onRegisterBiomes(Register<Biome> event) {
@@ -222,7 +221,7 @@ public final class RegistryBiomeEvent
 				),
 				Type.MESA, Type.DEAD, Type.DRY, Type.WASTELAND
 		);
-		
+
 		biomes.register(
 				"thornlands",
 				new TFBiomeThornlands(
@@ -237,19 +236,16 @@ public final class RegistryBiomeEvent
 	}
 
 	@SuppressWarnings("ClassHasNoToStringMethod")
-	private static class BiomeRegistry
-	{
+	private static class BiomeRegistry {
 
 		private final IForgeRegistry<Biome> registry;
 
-		BiomeRegistry(IForgeRegistry<Biome> registry)
-		{
+		BiomeRegistry(IForgeRegistry<Biome> registry) {
 
 			this.registry = registry;
 		}
 
-		public void register(String registryName, Biome biome, Type... biomeTypes)
-		{
+		public void register(String registryName, Biome biome, Type... biomeTypes) {
 			biome.setRegistryName(TwilightForestMod.ID, registryName);
 			registry.register(biome);
 			BiomeDictionary.addTypes(biome, biomeTypes);

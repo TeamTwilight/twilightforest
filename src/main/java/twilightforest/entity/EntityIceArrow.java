@@ -28,7 +28,7 @@ public class EntityIceArrow extends EntityArrow {
 		super.onUpdate();
 		if (world.isRemote && !inGround) {
 			for (int k = 0; k < 4; ++k) {
-				this.world.spawnParticle(EnumParticleTypes.FALLING_DUST, this.posX + this.motionX * (double)k / 4.0D, this.posY + this.motionY * (double)k / 4.0D, this.posZ + this.motionZ * (double)k / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ, Block.getStateId(Blocks.SNOW.getDefaultState()));
+				this.world.spawnParticle(EnumParticleTypes.FALLING_DUST, this.posX + this.motionX * (double) k / 4.0D, this.posY + this.motionY * (double) k / 4.0D, this.posZ + this.motionZ * (double) k / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ, Block.getStateId(Blocks.SNOW.getDefaultState()));
 			}
 		}
 	}

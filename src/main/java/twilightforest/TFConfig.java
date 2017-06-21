@@ -6,6 +6,7 @@ import net.minecraftforge.common.config.Config;
 public class TFConfig {
 
 	public static final Dimension dimension = new Dimension();
+
 	public static class Dimension {
 		@Config.Comment("What ID number to assign to the Twilight Forest dimension.  Change if you are having conflicts with another mod.")
 		public int dimensionID = 7;
@@ -15,6 +16,7 @@ public class TFConfig {
 	}
 
 	public static final Performance performance = new Performance();
+
 	public static class Performance {
 		@Config.Comment("Amount of canopy coverage.  Lower numbers improve chunk generation speed at the cost of a thinner forest.")
 		@Config.RangeDouble(min = 0)

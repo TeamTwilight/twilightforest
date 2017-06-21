@@ -9,11 +9,10 @@ public class ParticleSnowWarning extends ParticleSnow {
 		this.particleMaxAge = 50;
 	}
 
-    @Override
-    public void onUpdate()
-    {
-    	super.onUpdate();
-        this.motionY -= 0.019999999552965164D;
-    }
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+		this.motionY -= 0.019999999552965164D;
+	}
 
 }

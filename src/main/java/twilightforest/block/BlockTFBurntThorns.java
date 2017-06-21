@@ -36,13 +36,12 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 	}
 
 	@Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
-    {
-    	// dissolve
-    	if (!world.isRemote && entity instanceof EntityLivingBase) {
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+		// dissolve
+		if (!world.isRemote && entity instanceof EntityLivingBase) {
 			world.destroyBlock(pos, false);
-    	}
-    }
+		}
+	}
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean harvest) {
@@ -50,14 +49,14 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 		return true;
 	}
 
-    @Override
-    public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return false;
-    }
+	@Override
+	public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
 
 	@Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {}
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

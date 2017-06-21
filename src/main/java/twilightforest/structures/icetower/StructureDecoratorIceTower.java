@@ -10,8 +10,7 @@ import twilightforest.structures.StructureTFDecorator;
 
 public class StructureDecoratorIceTower extends StructureTFDecorator {
 
-	public StructureDecoratorIceTower() 
-	{
+	public StructureDecoratorIceTower() {
 		this.blockState = TFBlocks.auroraBlock.getDefaultState();
 		this.accentState = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 		this.fenceState = Blocks.OAK_FENCE.getDefaultState();

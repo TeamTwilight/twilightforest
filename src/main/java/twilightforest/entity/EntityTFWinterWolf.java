@@ -18,17 +18,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
-import twilightforest.biomes.TFBiomes;
 
-public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathAttacker {
+public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/winter_wolf");
 	private static final DataParameter<Boolean> BREATH_FLAG = EntityDataManager.createKey(EntityTFWinterWolf.class, DataSerializers.BOOLEAN);
 
 	public EntityTFWinterWolf(World world) {
 		super(world);
-        this.setSize(1.4F, 1.9F);
+		this.setSize(1.4F, 1.9F);
 		setCollarColor(EnumDyeColor.LIGHT_BLUE);
 	}
 
@@ -44,78 +44,72 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf  implements IBreathA
 	}
 
 	@Override
-    protected void setAttributes()
-    {
-        super.setAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+	protected void setAttributes() {
+		super.setAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
-    }
+	}
 
 	@Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        dataManager.register(BREATH_FLAG, false);
-    }
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(BREATH_FLAG, false);
+	}
 
-    @Override
-	public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
-    	
-    	if (isBreathing())
-    	{
-    		Vec3d look = this.getLookVec();
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
 
-    		double dist = 0.5;
-    		double px = this.posX + look.xCoord * dist;
-    		double py = this.posY + 1.25 + look.yCoord * dist;
-    		double pz = this.posZ + look.zCoord * dist;
+		if (isBreathing()) {
+			Vec3d look = this.getLookVec();
 
-    		for (int i = 0; i < 10; i++)
-    		{
-    			double dx = look.xCoord;
-    			double dy = look.yCoord;
-    			double dz = look.zCoord;
+			double dist = 0.5;
+			double px = this.posX + look.xCoord * dist;
+			double py = this.posY + 1.25 + look.yCoord * dist;
+			double pz = this.posZ + look.zCoord * dist;
 
-    			double spread = 5 + this.getRNG().nextDouble() * 2.5;
-    			double velocity = 3.0 + this.getRNG().nextDouble() * 0.15;
+			for (int i = 0; i < 10; i++) {
+				double dx = look.xCoord;
+				double dy = look.yCoord;
+				double dz = look.zCoord;
 
-    			// spread flame
-    			dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-    			dy += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-    			dz += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-    			dx *= velocity;
-    			dy *= velocity;
-    			dz *= velocity;
+				double spread = 5 + this.getRNG().nextDouble() * 2.5;
+				double velocity = 3.0 + this.getRNG().nextDouble() * 0.15;
 
-    			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, px, py, pz, dx, dy, dz);
-    		}
-    		
+				// spread flame
+				dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+				dy += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+				dz += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+				dx *= velocity;
+				dy *= velocity;
+				dz *= velocity;
+
+				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, px, py, pz, dx, dy, dz);
+			}
+
 			playBreathSound();
-    	}
+		}
 
-    }
-    
+	}
+
 	private void playBreathSound() {
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
 	}
 
-    @Override
-	protected float getSoundPitch()
-    {
-        return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.6F;
-    }
+	@Override
+	protected float getSoundPitch() {
+		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.6F;
+	}
 
 	@Override
 	public boolean isBreathing() {
-        return dataManager.get(BREATH_FLAG);
+		return dataManager.get(BREATH_FLAG);
 
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-        dataManager.set(BREATH_FLAG, flag);
+		dataManager.set(BREATH_FLAG, flag);
 	}
 
 	@Override

@@ -11,13 +11,10 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-
 import org.lwjgl.opengl.GL11;
-
 import twilightforest.entity.passive.EntityTFBird;
 
-public class ModelTFTinyBird extends ModelBase
-{
+public class ModelTFTinyBird extends ModelBase {
 	//fields
 	ModelRenderer beak;
 	ModelRenderer head;
@@ -28,8 +25,7 @@ public class ModelTFTinyBird extends ModelBase
 	ModelRenderer leftleg;
 	ModelRenderer tail;
 
-	public ModelTFTinyBird()
-	{
+	public ModelTFTinyBird() {
 		textureWidth = 32;
 		textureHeight = 32;
 
@@ -39,13 +35,13 @@ public class ModelTFTinyBird extends ModelBase
 		head.setTextureSize(32, 32);
 		head.mirror = true;
 		setRotation(head, 0F, 0F, 0F);
-		
+
 		beak = new ModelRenderer(this, 12, 0);
 		beak.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1);
 		beak.setRotationPoint(0F, 0.5F, -2F);
-		
+
 		head.addChild(beak);
-		
+
 
 		body = new ModelRenderer(this, 0, 6);
 		body.addBox(-1.5F, 0F, -1F, 3, 3, 3);
@@ -89,12 +85,10 @@ public class ModelTFTinyBird extends ModelBase
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
-	{
+	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
 		setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 
-		if (isChild)
-		{
+		if (isChild) {
 			float f = 2.0F;
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 5F * par7, 0.75F * par7);
@@ -109,9 +103,7 @@ public class ModelTFTinyBird extends ModelBase
 			rightarm.render(par7);
 			leftarm.render(par7);
 			GL11.glPopMatrix();
-		}
-		else
-		{
+		} else {
 			head.render(par7);
 			body.render(par7);
 			rightleg.render(par7);
@@ -123,8 +115,7 @@ public class ModelTFTinyBird extends ModelBase
 		}
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z)
-	{
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -135,27 +126,23 @@ public class ModelTFTinyBird extends ModelBase
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
-	{
-		head.rotateAngleX = par5 / (180F / (float)Math.PI);
-		head.rotateAngleY = par4 / (180F / (float)Math.PI);
+	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
+		head.rotateAngleX = par5 / (180F / (float) Math.PI);
+		head.rotateAngleY = par4 / (180F / (float) Math.PI);
 
-        rightleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        leftleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+		rightleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+		leftleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
 
 		rightarm.rotateAngleZ = par3;
 		leftarm.rotateAngleZ = -par3;
-		
-		if (((EntityTFBird)par7Entity).isBirdLanded())
-		{
+
+		if (((EntityTFBird) par7Entity).isBirdLanded()) {
 			rightleg.rotationPointY = 23;
 			leftleg.rotationPointY = 23;
-		}
-		else
-		{
+		} else {
 			rightleg.rotationPointY = 22.5F;
 			leftleg.rotationPointY = 22.5F;
 		}
-		
+
 	}
 }

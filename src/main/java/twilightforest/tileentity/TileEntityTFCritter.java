@@ -5,7 +5,8 @@ import net.minecraft.util.ITickable;
 
 public abstract class TileEntityTFCritter extends TileEntity implements ITickable {
 
-    @Override
-	public void update() {}
+	@Override
+	public void update() {
+	}
 
 }

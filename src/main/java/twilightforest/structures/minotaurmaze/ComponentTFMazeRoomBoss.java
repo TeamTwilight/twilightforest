@@ -1,7 +1,5 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
 import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -10,6 +8,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFTreasure;
 import twilightforest.entity.boss.EntityTFMinoshroom;
+
+import java.util.Random;
 
 public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 
@@ -31,31 +31,25 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// doorways
-		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb) == Blocks.AIR)
-		{
+		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb) == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
-		if (this.getBlockStateFromPos(world, 7, 1, 15, sbb) == Blocks.AIR)
-		{
+		if (this.getBlockStateFromPos(world, 7, 1, 15, sbb) == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 6, 1, 15, 9, 4, 15, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
-		if (this.getBlockStateFromPos(world, 0, 1, 7, sbb) == Blocks.AIR)
-		{
+		if (this.getBlockStateFromPos(world, 0, 1, 7, sbb) == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 0, 1, 6, 0, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
-		if (this.getBlockStateFromPos(world, 15, 1, 7, sbb) == Blocks.AIR)
-		{
+		if (this.getBlockStateFromPos(world, 15, 1, 7, sbb) == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
 		}
 
 		// mycelium / small mushrooms on floor
-		for (int x = 1; x < 14; x++)
-		{
-			for (int z = 1; z < 14; z++)
-			{
+		for (int x = 1; x < 14; x++) {
+			for (int z = 1; z < 14; z++) {
 				// calculate distance from middle
 				int dist = (int) Math.round(7 / Math.sqrt((7.5 - x) * (7.5 - x) + (7.5 - z) * (7.5 - z)));
 				boolean mycelium = rand.nextInt(dist + 1) > 0;
@@ -63,18 +57,16 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 				boolean mushRed = rand.nextBoolean();
 
 				// make part of the floor mycelium
-				if (mycelium)
-				{
+				if (mycelium) {
 					this.setBlockState(world, Blocks.MYCELIUM.getDefaultState(), x, 0, z, sbb);
 				}
 				// add small mushrooms all over
-				if (mushroom)
-				{
+				if (mushroom) {
 					this.setBlockState(world, (mushRed ? Blocks.RED_MUSHROOM : Blocks.BROWN_MUSHROOM).getDefaultState(), x, 1, z, sbb);
 				}
 			}
 		}
-		
+
 		// mushroom chest shelves in corner
 		final IBlockState redMushroom = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
 		final IBlockState brownMushroom = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
@@ -107,7 +99,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		fillWithBlocks(world, sbb, 5, 4, 5, 7, 5, 7, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
-		
+
 		// the moo-cen-mino-shrom-taur!
 		if (!taurPlaced) {
 			int bx = this.getXWithOffset(7, 7);
@@ -117,18 +109,18 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 			BlockPos pos = new BlockPos(bx, by, bz);
 
 			if (sbb.isVecInside(pos)) {
-				taurPlaced  = true;
-				
+				taurPlaced = true;
+
 				EntityTFMinoshroom taur = new EntityTFMinoshroom(world);
 				taur.setPosition(bx, by, bz);
 				taur.setHomePosAndDistance(pos, 7);
 				taur.onInitialSpawn(world.getDifficultyForLocation(pos), null);
-				
+
 				world.spawnEntity(taur);
 			}
 		}
-		
-		
+
+
 		return true;
 	}
 }

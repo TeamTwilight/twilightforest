@@ -1,15 +1,11 @@
 package twilightforest;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +17,9 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
@@ -31,13 +30,12 @@ import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+
+import java.util.List;
+import java.util.Random;
 
 @Mod.EventBusSubscriber
-public class TFTickHandler
-{
+public class TFTickHandler {
 	@SubscribeEvent
 	public static void playerTick(PlayerTickEvent event) {
 		EntityPlayer player = event.player;
@@ -64,7 +62,7 @@ public class TFTickHandler
 				&& !player.isCreative() && !player.isSpectator()) {
 			checkBiomeForProgression(player, world);
 		}
-		
+
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 100 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			if (world.provider instanceof WorldProviderTwilightForest) {
@@ -76,14 +74,14 @@ public class TFTickHandler
 			}
 		}
 	}
-	
+
 	private static void sendStructureProtectionPacket(World world, EntityPlayer player, StructureBoundingBox sbb) {
 		IMessage message = new PacketStructureProtection(sbb);
 		if (player instanceof EntityPlayerMP) {
 			TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) player);
 		}
 	}
-	
+
 	private static void sendAllClearPacket(World world, EntityPlayer player) {
 		IMessage message = new PacketStructureProtectionClear();
 		if (player instanceof EntityPlayerMP) {
@@ -95,20 +93,20 @@ public class TFTickHandler
 		IChunkGenerator uncheckedChunkProvider = TFWorld.getChunkGenerator(world);
 		if (!(uncheckedChunkProvider instanceof ChunkGeneratorTwilightForest)) return false;
 
-		ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest)uncheckedChunkProvider;
-		
+		ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) uncheckedChunkProvider;
+
 		int px = MathHelper.floor(player.posX);
 		int py = MathHelper.floor(player.posY);
 		int pz = MathHelper.floor(player.posZ);
-		
+
 		if (chunkProvider != null && chunkProvider.isBlockNearFullStructure(px, pz, 100)) {
-			
+
 			StructureBoundingBox fullSBB = chunkProvider.getFullSBBNear(px, pz, 100);
 
 			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
 
 			TFFeature nearFeature = TFFeature.getFeatureForRegion(center.getX() >> 4, center.getZ() >> 4, world);
-			
+
 			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAchievement(player)) {
 				sendAllClearPacket(world, player);
 				return false;
@@ -117,7 +115,7 @@ public class TFTickHandler
 				return true;
 			}
 
-			
+
 		} else {
 			return false;
 		}
@@ -125,30 +123,26 @@ public class TFTickHandler
 
 	private static void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
 		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TFConfig.dimension.dimensionID
-				|| TFConfig.allowPortalsInOtherDimensions))
-		{
+				|| TFConfig.allowPortalsInOtherDimensions)) {
 			Item item = Item.REGISTRY.getObject(new ResourceLocation(TFConfig.portalCreationItem));
 			if (item == null) {
 				item = Items.DIAMOND;
 			}
 
 			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().expand(rangeToCheck, rangeToCheck, rangeToCheck));
-			
-			for (EntityItem entityItem : itemList)
-			{
-				if (item == entityItem.getEntityItem().getItem() && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER))
-				{
+
+			for (EntityItem entityItem : itemList) {
+				if (item == entityItem.getEntityItem().getItem() && world.isMaterialInBB(entityItem.getEntityBoundingBox(), Material.WATER)) {
 					Random rand = new Random();
-					for (int k = 0; k < 2; k++)
-					{
+					for (int k = 0; k < 2; k++) {
 						double d = rand.nextGaussian() * 0.02D;
 						double d1 = rand.nextGaussian() * 0.02D;
 						double d2 = rand.nextGaussian() * 0.02D;
-	
+
 						world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
 					}
-	
-					if (((BlockTFPortal)TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem))) {
+
+					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem))) {
 						player.addStat(TFAchievementPage.twilightPortal);
 					}
 				}
@@ -161,10 +155,10 @@ public class TFTickHandler
 	 */
 	private static void checkBiomeForProgression(EntityPlayer player, World world) {
 		Biome currentBiome = world.getBiome(new BlockPos(player));
-		
+
 		if (currentBiome instanceof TFBiomeBase) {
-			TFBiomeBase tfBiome = (TFBiomeBase)currentBiome;
-			
+			TFBiomeBase tfBiome = (TFBiomeBase) currentBiome;
+
 			boolean dangerousBiome = !tfBiome.doesPlayerHaveRequiredAchievement(player);
 			if (dangerousBiome) {
 				tfBiome.enforceProgession(player, world);

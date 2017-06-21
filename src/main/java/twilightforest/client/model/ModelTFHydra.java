@@ -13,8 +13,7 @@ import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
 
-public class ModelTFHydra extends ModelBase
-{
+public class ModelTFHydra extends ModelBase {
 	//fields
 	ModelRenderer body;
 	ModelRenderer leg1;
@@ -45,8 +44,7 @@ public class ModelTFHydra extends ModelBase
 	ModelRenderer jaw3;
 	ModelRenderer frill3;
 
-	public ModelTFHydra()
-	{
+	public ModelTFHydra() {
 		textureWidth = 512;
 		textureHeight = 256;
 
@@ -124,7 +122,7 @@ public class ModelTFHydra extends ModelBase
 		neck1d.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck1d.setRotationPoint(0F, -116F, -37F);
 
-		
+
 		head1 = new ModelRenderer(this, "head");
 		head1.addBox("box", -16F, -14F, -32F, 32, 24, 32);
 		head1.addBox("upperlip", -15F, -2F, -56F, 30, 12, 24);
@@ -132,17 +130,17 @@ public class ModelTFHydra extends ModelBase
 		head1.setRotationPoint(0F, -128F, -53F);
 
 		jaw1 = new ModelRenderer(this, "jaw");
-        jaw1.setRotationPoint(0F, 10F, -4F);
-        jaw1.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
-        setRotation(jaw1, 0F, 0F, 0F);
-        head1.addChild(jaw1);
+		jaw1.setRotationPoint(0F, 10F, -4F);
+		jaw1.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
+		setRotation(jaw1, 0F, 0F, 0F);
+		head1.addChild(jaw1);
 
 		frill1 = new ModelRenderer(this, "frill");
 		frill1.setRotationPoint(0F, 0F, -10F);
 		frill1.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
-        setRotation(frill1, -0.5235988F, 0F, 0F);
-        head1.addChild(frill1);
-		
+		setRotation(frill1, -0.5235988F, 0F, 0F);
+		head1.addChild(frill1);
+
 		neck2a = new ModelRenderer(this, "neck");
 		neck2a.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck2a.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
@@ -170,18 +168,18 @@ public class ModelTFHydra extends ModelBase
 		head2.setRotationPoint(108F, -128F, -53F);
 
 		jaw2 = new ModelRenderer(this, "jaw");
-        jaw2.setRotationPoint(0F, 10F, -4F);
-        jaw2.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
-        setRotation(jaw2, 0F, 0F, 0F);
-        head2.addChild(jaw2);
+		jaw2.setRotationPoint(0F, 10F, -4F);
+		jaw2.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
+		setRotation(jaw2, 0F, 0F, 0F);
+		head2.addChild(jaw2);
 
 		frill2 = new ModelRenderer(this, "frill");
 		frill2.setRotationPoint(0F, 0F, -10F);
 		frill2.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
-        setRotation(frill2, -0.5235988F, 0F, 0F);
-        head2.addChild(frill2);
+		setRotation(frill2, -0.5235988F, 0F, 0F);
+		head2.addChild(frill2);
 
-		
+
 		neck3a = new ModelRenderer(this, "neck");
 		neck3a.addBox("box", -16F, -16F, -16F, 32, 32, 31);
 		neck3a.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
@@ -202,7 +200,7 @@ public class ModelTFHydra extends ModelBase
 		neck3d.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck3d.setRotationPoint(-108F, -24F, -37F);
 
-		
+
 		head3 = new ModelRenderer(this, "head");
 		head3.addBox("box", -16F, -14F, -32F, 32, 24, 32);
 		head3.addBox("upperlip", -15F, -2F, -56F, 30, 12, 24);
@@ -210,22 +208,21 @@ public class ModelTFHydra extends ModelBase
 		head3.setRotationPoint(-108F, -24F, -53F);
 
 		jaw3 = new ModelRenderer(this, "jaw");
-        jaw3.setRotationPoint(0F, 10F, -4F);
-        jaw3.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
-        setRotation(jaw3, 0.125F, 0F, 0F);
-        head3.addChild(jaw3);
+		jaw3.setRotationPoint(0F, 10F, -4F);
+		jaw3.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
+		setRotation(jaw3, 0.125F, 0F, 0F);
+		head3.addChild(jaw3);
 
 		frill3 = new ModelRenderer(this, "frill");
 		frill3.setRotationPoint(0F, 0F, -10F);
 		frill3.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
-        setRotation(frill3, -0.5235988F, 0F, 0F);
-        head3.addChild(frill3);
-		
+		setRotation(frill3, -0.5235988F, 0F, 0F);
+		head3.addChild(frill3);
+
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		body.render(f5);
@@ -252,28 +249,25 @@ public class ModelTFHydra extends ModelBase
 //		head3.render(f5);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z)
-	{
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-	{
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 
 		leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
 		leg2.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
-        
-        leg1.rotateAngleY = 0.0F;
-        leg2.rotateAngleY = 0.0F;
+
+		leg1.rotateAngleY = 0.0F;
+		leg2.rotateAngleY = 0.0F;
 
 	}
-	
 
-	
+
 //	@Override
 //	public void setLivingAnimations(EntityLiving entityliving, float f, float f1, float time) {
 //		EntityTFHydra hydra = (EntityTFHydra)entityliving;
@@ -311,16 +305,16 @@ public class ModelTFHydra extends ModelBase
 //	}
 
 	public float getRotationY(EntityTFHydra hydra, EntityTFHydraPart whichHead, float time) {
-		
-        float yawOffset = hydra.prevRenderYawOffset + (hydra.renderYawOffset - hydra.prevRenderYawOffset) * time;
-        float yaw  = whichHead.prevRotationYaw + (whichHead.rotationYaw - whichHead.prevRotationYaw) * time;
+
+		float yawOffset = hydra.prevRenderYawOffset + (hydra.renderYawOffset - hydra.prevRenderYawOffset) * time;
+		float yaw = whichHead.prevRotationYaw + (whichHead.rotationYaw - whichHead.prevRotationYaw) * time;
 
 		return (yaw - yawOffset) / 57.29578F;
 	}
 
 	public float getRotationX(EntityTFHydra hydra, EntityTFHydraPart whichHead, float time) {
-		
-        return (whichHead.prevRotationPitch + (whichHead.rotationPitch - whichHead.prevRotationPitch) * time) / 57.29578F;
+
+		return (whichHead.prevRotationPitch + (whichHead.rotationPitch - whichHead.prevRotationPitch) * time) / 57.29578F;
 	}
 
 

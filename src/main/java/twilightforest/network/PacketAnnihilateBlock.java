@@ -10,37 +10,38 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import twilightforest.TwilightForestMod;
 
 public class PacketAnnihilateBlock implements IMessage {
-    private BlockPos pos;
+	private BlockPos pos;
 
-    public PacketAnnihilateBlock() {}
+	public PacketAnnihilateBlock() {
+	}
 
-    public PacketAnnihilateBlock(BlockPos pos) {
-        this.pos = pos;
-    }
+	public PacketAnnihilateBlock(BlockPos pos) {
+		this.pos = pos;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        pos = BlockPos.fromLong(buf.readLong());
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		pos = BlockPos.fromLong(buf.readLong());
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeLong(pos.toLong());
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeLong(pos.toLong());
+	}
 
-    public static class Handler implements IMessageHandler<PacketAnnihilateBlock, IMessage> {
-        @Override
-        public IMessage onMessage(PacketAnnihilateBlock message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-                @Override
-                public void run() {
-                    World world = Minecraft.getMinecraft().world;
-                    TwilightForestMod.proxy.doBlockAnnihilateEffect(world, message.pos);
-                }
-            });
+	public static class Handler implements IMessageHandler<PacketAnnihilateBlock, IMessage> {
+		@Override
+		public IMessage onMessage(PacketAnnihilateBlock message, MessageContext ctx) {
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@Override
+				public void run() {
+					World world = Minecraft.getMinecraft().world;
+					TwilightForestMod.proxy.doBlockAnnihilateEffect(world, message.pos);
+				}
+			});
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
 }

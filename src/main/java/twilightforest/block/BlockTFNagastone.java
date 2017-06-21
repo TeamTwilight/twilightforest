@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -19,7 +18,6 @@ import twilightforest.block.enums.NagastoneVariant;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.Random;
 
 public class BlockTFNagastone extends Block {
@@ -60,7 +58,7 @@ public class BlockTFNagastone extends Block {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state){
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
@@ -72,7 +70,7 @@ public class BlockTFNagastone extends Block {
 	// todo fix getStateForPlacement to respect this
 	@Override
 	public int damageDropped(IBlockState state) {
-		return NagastoneVariant.isHead(state.getValue(VARIANT)) ? 0 : 1 ;
+		return NagastoneVariant.isHead(state.getValue(VARIANT)) ? 0 : 1;
 	}
 
 	// Heads are manually placed, bodys are automatically connected
@@ -97,7 +95,7 @@ public class BlockTFNagastone extends Block {
 		EnumFacing[] facings = new EnumFacing[2];
 
 		// get sides
-		for(EnumFacing side : EnumFacing.VALUES)
+		for (EnumFacing side : EnumFacing.VALUES)
 			if (world.getBlockState(pos.offset(side)).getBlock() == TFBlocks.nagastone)
 				if (++connectionCount > 2) break;
 				else facings[connectionCount - 1] = side;
@@ -108,7 +106,8 @@ public class BlockTFNagastone extends Block {
 		// if there are 0 or greater than 2 sides, use solid
 		// use default if there are more than 3 connections or 0
 		switch (connectionCount) {
-			case 1: facings[1] = facings[0]; // No null, for next statement
+			case 1:
+				facings[1] = facings[0]; // No null, for next statement
 			case 2:
 				stateOut = stateIn.withProperty(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0], facings[1]));
 				break;

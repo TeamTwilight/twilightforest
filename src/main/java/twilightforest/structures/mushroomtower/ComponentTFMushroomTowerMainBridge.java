@@ -1,11 +1,11 @@
 package twilightforest.structures.mushroomtower;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.StructureComponent;
+
+import java.util.List;
+import java.util.Random;
 
 public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTowerBridge {
 
@@ -25,7 +25,7 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 		// make a new size 15 main tower
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 15, direction);
-		
+
 		// adjust coordinates to fit an existing tower
 		dx = adjustCoordinates(dx[0], dx[1], dx[2], 15, direction, list);
 
@@ -38,8 +38,5 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 		return true;
 	}
 
-
-	
-	
 
 }

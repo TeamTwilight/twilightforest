@@ -1,16 +1,12 @@
 package twilightforest.item;
 
-import java.util.List;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-
 import net.minecraft.network.play.server.SPacketAnimation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
@@ -23,6 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 @Mod.EventBusSubscriber
 public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback {
@@ -34,15 +31,14 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-    @Override
-    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-    	ItemStack istack = new ItemStack(item, 1, 0);
-    	//istack.addEnchantment(Enchantments.EFFICIENCY, 2);
-        list.add(istack);
-    }
+	@Override
+	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+		ItemStack istack = new ItemStack(item, 1, 0);
+		//istack.addEnchantment(Enchantments.EFFICIENCY, 2);
+		list.add(istack);
+	}
 
-    @SubscribeEvent
+	@SubscribeEvent
 	public static void onAttack(LivingAttackEvent evt) {
 		EntityLivingBase target = evt.getEntityLiving();
 
@@ -59,13 +55,12 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 			}
 		}
 	}
-    
-    @Override
-    public int getItemEnchantability()
-    {
-        return Item.ToolMaterial.GOLD.getEnchantability();
-    }
-    
+
+	@Override
+	public int getItemEnchantability() {
+		return Item.ToolMaterial.GOLD.getEnchantability();
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {

@@ -1,16 +1,15 @@
 package twilightforest;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
 public class TFAchievementPage extends net.minecraftforge.common.AchievementPage {
-	
-	
-	public static Achievement twilightPortal = (new Achievement(TwilightForestMod.ID + 1, "twilightPortal", -2, 1, TFBlocks.portal, (Achievement)null)).setSpecial().registerStat();
+
+
+	public static Achievement twilightPortal = (new Achievement(TwilightForestMod.ID + 1, "twilightPortal", -2, 1, TFBlocks.portal, (Achievement) null)).setSpecial().registerStat();
 	public static Achievement twilightArrival = (new Achievement(TwilightForestMod.ID + 2, "twilightArrival", 0, 0, new ItemStack(TFBlocks.log, 1, 9), twilightPortal)).registerStat();
 	public static Achievement twilightHunter = (new Achievement(TwilightForestMod.ID + 3, "twilightHunter", 2, 2, TFItems.feather, twilightArrival)).registerStat();
 	public static Achievement twilightMagicMapFocus = (new Achievement(TwilightForestMod.ID + 5, "twilightMagicMapFocus", 2, 0, TFItems.magicMapFocus, twilightHunter)).registerStat();
@@ -48,13 +47,12 @@ public class TFAchievementPage extends net.minecraftforge.common.AchievementPage
 	public static Achievement twilightQuestRam = (new Achievement(TwilightForestMod.ID + 34, "twilightQuestRam", 1, -5, TFItems.crumbleHorn, twilightArrival)).setSpecial().registerStat();
 
 
-
 	public TFAchievementPage() {
-		super("Twilight Forest", twilightPortal, twilightArrival, twilightHunter, twilightMagicMapFocus, twilightKillNaga, twilightNagaArmors, twilightKillLich, 
+		super("Twilight Forest", twilightPortal, twilightArrival, twilightHunter, twilightMagicMapFocus, twilightKillNaga, twilightNagaArmors, twilightKillLich,
 				twilightLichScepters, twilightHill1, twilightHill2, twilightHill3, twilightHedge, twilightMagicMap, twilightMazeMap, twilightOreMap,
-				twilightProgressNaga, twilightProgressLich, twilightProgressLabyrinth, twilightHydraChop, twilightProgressKnights, twilightProgressUrghast, 
+				twilightProgressNaga, twilightProgressLich, twilightProgressLabyrinth, twilightHydraChop, twilightProgressKnights, twilightProgressUrghast,
 				twilightProgressYeti, twilightProgressGlacier, twilightProgressTroll, twilightProgressThorns, twilightProgressCastle,
-				twilightKillHydra, twilightHydraChop, twilightProgressTrophyPedestal, twilightProgressHydra, twilightMazebreaker, 
+				twilightKillHydra, twilightHydraChop, twilightProgressTrophyPedestal, twilightProgressHydra, twilightMazebreaker,
 				twilightFierySet, twilightQuestRam);
 	}
 

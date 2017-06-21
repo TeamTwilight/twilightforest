@@ -6,107 +6,84 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipesMapCloning;
 import net.minecraft.world.World;
 
-public class TFMapCloningRecipe extends RecipesMapCloning
-{
+public class TFMapCloningRecipe extends RecipesMapCloning {
 	private final Item fullMapID;
 	private final Item blankMapID;
-	
-	public TFMapCloningRecipe(Item magicMap, Item emptyMagicMap)
-	{
+
+	public TFMapCloningRecipe(Item magicMap, Item emptyMagicMap) {
 		this.fullMapID = magicMap;
 		this.blankMapID = emptyMagicMap;
 	}
 
 	// [VanillaCopy] super with own items
-    @Override
-    public boolean matches(InventoryCrafting inv, World worldIn)
-    {
-        int i = 0;
-        ItemStack itemstack = ItemStack.EMPTY;
+	@Override
+	public boolean matches(InventoryCrafting inv, World worldIn) {
+		int i = 0;
+		ItemStack itemstack = ItemStack.EMPTY;
 
-        for (int j = 0; j < inv.getSizeInventory(); ++j)
-        {
-            ItemStack itemstack1 = inv.getStackInSlot(j);
+		for (int j = 0; j < inv.getSizeInventory(); ++j) {
+			ItemStack itemstack1 = inv.getStackInSlot(j);
 
-            if (!itemstack1.isEmpty())
-            {
-                if (itemstack1.getItem() == fullMapID)
-                {
-                    if (!itemstack.isEmpty())
-                    {
-                        return false;
-                    }
+			if (!itemstack1.isEmpty()) {
+				if (itemstack1.getItem() == fullMapID) {
+					if (!itemstack.isEmpty()) {
+						return false;
+					}
 
-                    itemstack = itemstack1;
-                }
-                else
-                {
-                    if (itemstack1.getItem() != blankMapID)
-                    {
-                        return false;
-                    }
+					itemstack = itemstack1;
+				} else {
+					if (itemstack1.getItem() != blankMapID) {
+						return false;
+					}
 
-                    ++i;
-                }
-            }
-        }
+					++i;
+				}
+			}
+		}
 
-        return !itemstack.isEmpty() && i > 0;
-    }
+		return !itemstack.isEmpty() && i > 0;
+	}
 
-    // [VanillaCopy] super with own items
-    @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv)
-    {
-        int i = 0;
-        ItemStack itemstack = ItemStack.EMPTY;
+	// [VanillaCopy] super with own items
+	@Override
+	public ItemStack getCraftingResult(InventoryCrafting inv) {
+		int i = 0;
+		ItemStack itemstack = ItemStack.EMPTY;
 
-        for (int j = 0; j < inv.getSizeInventory(); ++j)
-        {
-            ItemStack itemstack1 = inv.getStackInSlot(j);
+		for (int j = 0; j < inv.getSizeInventory(); ++j) {
+			ItemStack itemstack1 = inv.getStackInSlot(j);
 
-            if (!itemstack1.isEmpty())
-            {
-                if (itemstack1.getItem() == fullMapID)
-                {
-                    if (!itemstack.isEmpty())
-                    {
-                        return ItemStack.EMPTY;
-                    }
+			if (!itemstack1.isEmpty()) {
+				if (itemstack1.getItem() == fullMapID) {
+					if (!itemstack.isEmpty()) {
+						return ItemStack.EMPTY;
+					}
 
-                    itemstack = itemstack1;
-                }
-                else
-                {
-                    if (itemstack1.getItem() != blankMapID)
-                    {
-                        return ItemStack.EMPTY;
-                    }
+					itemstack = itemstack1;
+				} else {
+					if (itemstack1.getItem() != blankMapID) {
+						return ItemStack.EMPTY;
+					}
 
-                    ++i;
-                }
-            }
-        }
+					++i;
+				}
+			}
+		}
 
-        if (!itemstack.isEmpty() && i >= 1)
-        {
-            ItemStack itemstack2 = new ItemStack(fullMapID, i + 1, itemstack.getMetadata());
+		if (!itemstack.isEmpty() && i >= 1) {
+			ItemStack itemstack2 = new ItemStack(fullMapID, i + 1, itemstack.getMetadata());
 
-            if (itemstack.hasDisplayName())
-            {
-                itemstack2.setStackDisplayName(itemstack.getDisplayName());
-            }
+			if (itemstack.hasDisplayName()) {
+				itemstack2.setStackDisplayName(itemstack.getDisplayName());
+			}
 
-            if (itemstack.hasTagCompound())
-            {
-                itemstack2.setTagCompound(itemstack.getTagCompound());
-            }
+			if (itemstack.hasTagCompound()) {
+				itemstack2.setTagCompound(itemstack.getTagCompound());
+			}
 
-            return itemstack2;
-        }
-        else
-        {
-            return ItemStack.EMPTY;
-        }
-    }
+			return itemstack2;
+		} else {
+			return ItemStack.EMPTY;
+		}
+	}
 }

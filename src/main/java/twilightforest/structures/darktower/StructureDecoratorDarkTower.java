@@ -6,11 +6,9 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.TowerWoodVariant;
 import twilightforest.structures.StructureTFDecorator;
 
-public class StructureDecoratorDarkTower extends StructureTFDecorator 
-{
+public class StructureDecoratorDarkTower extends StructureTFDecorator {
 
-	public StructureDecoratorDarkTower() 
-	{
+	public StructureDecoratorDarkTower() {
 		this.blockState = TFBlocks.towerWood.getDefaultState();
 		this.accentState = TFBlocks.towerWood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.ENCASED);
 		this.fenceState = Blocks.OAK_FENCE.getDefaultState();

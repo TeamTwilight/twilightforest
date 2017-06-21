@@ -1,17 +1,23 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
+import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
-
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -19,16 +25,8 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.entity.EntityTFSlideBlock;
 import twilightforest.item.TFItems;
-import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCallback {
 
@@ -65,59 +63,59 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 		return super.getStateFromMeta(meta).withProperty(DELAY, meta & 0b11);
 	}
 
-    @Override
-    @Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-		switch (state.getValue(AXIS)) {
-    	case Y:
-    	default:
-        	return Y_BB;
-    	case X:
-        	return X_BB;
-    	case Z:
-        	return Z_BB;
-    	}
-    }
-    
 	@Override
 	@Deprecated
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-    
-    @Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random par5Random)
-    {
-    	if (!world.isRemote && this.isConnectedInRange(world, pos))
-    	{
-    		//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
-    		
-    		EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
-            world.spawnEntity(slideBlock);
-    	}
-    	
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		switch (state.getValue(AXIS)) {
+			case Y:
+			default:
+				return Y_BB;
+			case X:
+				return X_BB;
+			case Z:
+				return Z_BB;
+		}
+	}
+
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random par5Random) {
+		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
+			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
+
+			EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
+			world.spawnEntity(slideBlock);
+		}
+
 		scheduleBlockUpdate(world, pos);
-    }
-    
-    /**
-     * Check if there is any players in range, and also recursively check connected blocks
-     */
-    public boolean isConnectedInRange(World world, BlockPos pos) {
+	}
+
+	/**
+	 * Check if there is any players in range, and also recursively check connected blocks
+	 */
+	public boolean isConnectedInRange(World world, BlockPos pos) {
 		EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
 
 		switch (axis) {
-			case Y: return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.UP) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.DOWN);
-			case X: return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.WEST) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.EAST);
-			case Z: return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.NORTH) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.SOUTH);
-			default: return this.anyPlayerInRange(world, pos);
+			case Y:
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.UP) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.DOWN);
+			case X:
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.WEST) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.EAST);
+			case Z:
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.NORTH) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.SOUTH);
+			default:
+				return this.anyPlayerInRange(world, pos);
 		}
-    }
+	}
 
 	private boolean isConnectedInRangeRecursive(World world, BlockPos pos, EnumFacing dir) {
 		BlockPos dPos = pos.offset(dir);
-		
+
 		if (world.getBlockState(pos) == world.getBlockState(dPos)) {
 			return this.anyPlayerInRange(world, dPos) || this.isConnectedInRangeRecursive(world, dPos, dir);
 		} else {
@@ -125,15 +123,15 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 		}
 	}
 
-    private boolean anyPlayerInRange(World world, BlockPos pos) {
-        return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, PLAYER_RANGE, false) != null;
-    }
+	private boolean anyPlayerInRange(World world, BlockPos pos) {
+		return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, PLAYER_RANGE, false) != null;
+	}
 
 	public void scheduleBlockUpdate(World world, BlockPos pos) {
 		int offset = world.getBlockState(pos).getValue(DELAY);
-		int update = TICK_TIME - ((int)(world.getWorldTime() - (offset * OFFSET_TIME)) % TICK_TIME);
+		int update = TICK_TIME - ((int) (world.getWorldTime() - (offset * OFFSET_TIME)) % TICK_TIME);
 		world.scheduleUpdate(pos, this, update);
-		
+
 		//System.out.println("The current world time is " + world.getWorldTime() + " so update scheduled for " + update + " ticks.");
 	}
 
@@ -141,27 +139,25 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		scheduleBlockUpdate(world, pos);
 	}
-	
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-    }
 
 	@Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
-    {
-    	entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
-    	if (entity instanceof EntityLivingBase) {
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
+		if (entity instanceof EntityLivingBase) {
 			double kx = (pos.getX() + 0.5 - entity.posX) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.posZ) * 2.0;
-			
+
 			((EntityLivingBase) entity).knockBack(null, 2, kx, kz);
-    	}
-    }
+		}
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

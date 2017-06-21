@@ -11,16 +11,15 @@ import twilightforest.structures.StructureTFDecorator;
 
 public class StructureTFDecoratorStronghold extends StructureTFDecorator {
 
-	
-	public StructureTFDecoratorStronghold() 
-	{
+
+	public StructureTFDecoratorStronghold() {
 		this.blockState = TFBlocks.underBrick.getDefaultState();
 		this.accentState = TFBlocks.underBrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED);
 		this.fenceState = Blocks.COBBLESTONE_WALL.getDefaultState();
 		this.stairState = Blocks.STONE_BRICK_STAIRS.getDefaultState();
 		this.pillarState = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
 		this.platformState = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK)
-			.withProperty(BlockStoneSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
+				.withProperty(BlockStoneSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
 		this.randomBlocks = new StructureTFKnightStones();
 	}
 }

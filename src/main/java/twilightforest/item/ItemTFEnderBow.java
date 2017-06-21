@@ -2,8 +2,8 @@ package twilightforest.item;
 
 public class ItemTFEnderBow extends ItemTFBowBase {
 
-    public ItemTFEnderBow() {
+	public ItemTFEnderBow() {
 		this.setCreativeTab(TFItems.creativeTab);
-    }
+	}
 
 }

@@ -1,8 +1,5 @@
 package twilightforest.structures.stronghold;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockPumpkin;
 import net.minecraft.init.Blocks;
@@ -12,24 +9,27 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
+import java.util.List;
+import java.util.Random;
+
 public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdTrainingRoom() {}
+	public ComponentTFStrongholdTrainingRoom() {
+	}
 
 	public ComponentTFStrongholdTrainingRoom(int i, EnumFacing facing, int x, int y, int z) {
 		super(i, facing, x, y, z);
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z)
-	{
+	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 18, 7, 18, facing);
 	}
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
 		super.buildComponent(parent, list, random);
-		
+
 		this.addDoor(13, 1, 0);
 		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 18);
 	}
@@ -37,7 +37,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
-		
+
 		// statues
 		placeCornerStatue(world, 2, 1, 2, 0, sbb);
 		placeCornerStatue(world, 15, 1, 15, 3, sbb);
@@ -46,15 +46,15 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 4, 0, 4, 8, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 9, 0, 4, 13, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 9, 0, 9, 13, 0, 13, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
-		
+
 		// training dummies
 		placeTrainingDummy(world, sbb, Rotation.NONE);
 		placeTrainingDummy(world, sbb, Rotation.CLOCKWISE_90);
 		placeTrainingDummy(world, sbb, Rotation.CLOCKWISE_180);
-		
+
 		// anvil pad
 		this.fillWithBlocks(world, sbb, 5, 0, 10, 7, 0, 12, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
-		
+
 		this.setBlockState(world, deco.pillarState, 5, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 2, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 6, 1, 12, sbb);
@@ -68,7 +68,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 
 		// doors
 		placeDoors(world, rand, sbb);
-		
+
 		return true;
 	}
 

@@ -2,32 +2,32 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockStairs;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.StructureTFComponent;
+
 import java.util.List;
 import java.util.Random;
 
 /**
  * Stair blocks heading to the entrance tower doors
  */
-public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent
-{
+public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent {
 
-	public ComponentTFFinalCastleEntranceStairs() {}
+	public ComponentTFFinalCastleEntranceStairs() {
+	}
 
 	public ComponentTFFinalCastleEntranceStairs(int index, int x, int y, int z, EnumFacing direction) {
 		this.setCoordBaseMode(direction);
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({"rawtypes"})
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent)parent).deco;
+			this.deco = ((StructureTFComponent) parent).deco;
 		}
 	}
 

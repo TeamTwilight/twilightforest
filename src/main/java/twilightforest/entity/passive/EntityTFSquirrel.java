@@ -24,8 +24,8 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 
 	public EntityTFSquirrel(World par1World) {
 		super(par1World);
-        this.setSize(0.3F, 0.7F);
-		
+		this.setSize(0.3F, 0.7F);
+
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
 	}
@@ -44,28 +44,27 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 	}
 
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-    }
-	
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+	}
+
 	/**
 	 * TODO: maybe they should just take less damage?
 	 */
 	@Override
-	public void fall(float dmg, float mult) {}
+	public void fall(float dmg, float mult) {
+	}
 
 	@Override
 	public float getRenderSizeModifier() {
-		 return 0.3F;
+		return 0.3F;
 	}
-	
+
 	@Override
-    public float getBlockPathWeight(BlockPos pos)
-    {
-    	// prefer standing on leaves
+	public float getBlockPathWeight(BlockPos pos) {
+		// prefer standing on leaves
 		Material underMaterial = this.world.getBlockState(pos.down()).getMaterial();
 		if (underMaterial == Material.LEAVES) {
 			return 12.0F;
@@ -78,19 +77,18 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 		}
 		// default to just prefering lighter areas
 		return this.world.getLightBrightness(pos) - 0.5F;
-    }
-	
-    @Override
-	protected boolean canDespawn()
-    {
-        return false;
-    }
-	
+	}
+
+	@Override
+	protected boolean canDespawn() {
+		return false;
+	}
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
 		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
+			((EntityPlayer) par1DamageSource.getSourceOfDamage()).addStat(TFAchievementPage.twilightHunter);
 		}
 	}
 }

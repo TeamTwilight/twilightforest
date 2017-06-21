@@ -14,33 +14,29 @@ public class ItemBlockTFPlant extends ItemBlock {
 
 	public ItemBlockTFPlant(Block block) {
 		super(block);
-        setHasSubtypes(true);
-        setMaxDamage(0);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemstack) {
-    	return String.format("%s.%d", super.getUnlocalizedName(itemstack), itemstack.getItemDamage());
-    }
+	@Override
+	public String getUnlocalizedName(ItemStack itemstack) {
+		return String.format("%s.%d", super.getUnlocalizedName(itemstack), itemstack.getItemDamage());
+	}
 
-    @Override
-    public int getMetadata(int i) {
-        return i;
-    }
-    
-    @Override
-    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack)
-    {
-    	int meta = stack.getItemDamage();
+	@Override
+	public int getMetadata(int i) {
+		return i;
+	}
 
-    	if ((meta == PlantVariant.ROOT_STRAND.ordinal() || meta == PlantVariant.TORCHBERRY.ordinal())
-    			&& side == EnumFacing.DOWN && BlockTFPlant.canPlaceRootBelow(world, pos))
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		return super.canPlaceBlockOnSide(world, pos, side, player, stack);
-    	}
-    }
+	@Override
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack) {
+		int meta = stack.getItemDamage();
+
+		if ((meta == PlantVariant.ROOT_STRAND.ordinal() || meta == PlantVariant.TORCHBERRY.ordinal())
+				&& side == EnumFacing.DOWN && BlockTFPlant.canPlaceRootBelow(world, pos)) {
+			return true;
+		} else {
+			return super.canPlaceBlockOnSide(world, pos, side, player, stack);
+		}
+	}
 }

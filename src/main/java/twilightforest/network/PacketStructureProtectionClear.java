@@ -10,35 +10,35 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class PacketStructureProtectionClear implements IMessage {
-    @Override
-    public void fromBytes(ByteBuf buf) {
+	@Override
+	public void fromBytes(ByteBuf buf) {
 
-    }
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
+	@Override
+	public void toBytes(ByteBuf buf) {
 
-    }
+	}
 
-    public static class Handler implements IMessageHandler<PacketStructureProtectionClear, IMessage> {
+	public static class Handler implements IMessageHandler<PacketStructureProtectionClear, IMessage> {
 
-        @Override
-        public IMessage onMessage(PacketStructureProtectionClear message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-                @Override
-                public void run() {
-                    World world = Minecraft.getMinecraft().world;
+		@Override
+		public IMessage onMessage(PacketStructureProtectionClear message, MessageContext ctx) {
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@Override
+				public void run() {
+					World world = Minecraft.getMinecraft().world;
 
-                    // add weather box if needed
-                    if (world.provider instanceof WorldProviderTwilightForest) {
-                        TFWeatherRenderer weatherRenderer = (TFWeatherRenderer) world.provider.getWeatherRenderer();
+					// add weather box if needed
+					if (world.provider instanceof WorldProviderTwilightForest) {
+						TFWeatherRenderer weatherRenderer = (TFWeatherRenderer) world.provider.getWeatherRenderer();
 
-                        weatherRenderer.setProtectedBox(null);
-                    }
-                }
-            });
+						weatherRenderer.setProtectedBox(null);
+					}
+				}
+			});
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 }

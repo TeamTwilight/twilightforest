@@ -1,18 +1,27 @@
 package twilightforest.util;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
-public class TFItemStackUtils
-{
-	public static boolean consumeInventoryItem(InventoryPlayer inventory, Item item, int count)
-	{
-		final int slotFor = inventory.getSlotFor(new ItemStack(item));
-		if (slotFor == -1) {
-			return false;
+import java.util.function.Predicate;
+
+public class TFItemStackUtils {
+	public static boolean consumeInventoryItem(EntityPlayer player, Predicate<ItemStack> matcher, int count) {
+		boolean consumedSome = false;
+		IItemHandler inv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+		for (int i = 0; i < inv.getSlots() && count > 0; i++) {
+			ItemStack stack = inv.getStackInSlot(i);
+			if (matcher.test(stack)) {
+				int consume = Math.min(count, stack.getCount());
+				stack.shrink(consume);
+				count -= consume;
+				consumedSome = true;
+			}
 		}
-		inventory.decrStackSize(slotFor, count);
-		return true;
+
+		return consumedSome;
 	}
 }

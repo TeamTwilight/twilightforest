@@ -13,13 +13,11 @@ public class TileEntityTFHydraSpawner extends TileEntityTFBossSpawner {
 	}
 
 	@Override
-	public Entity getDisplayEntity()
-	{
-		if (this.displayCreature == null)
-		{
+	public Entity getDisplayEntity() {
+		if (this.displayCreature == null) {
 			this.displayCreature = EntityList.createEntityByIDFromName(EntityList.getKey(EntityTFHydraHead.class), world);
 		}
-		
+
 		return this.displayCreature;
 	}
 }

@@ -26,90 +26,88 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallback {
 
-    private static final PropertyEnum<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
+	private static final PropertyEnum<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
 
-    private final boolean isDouble;
+	private final boolean isDouble;
 
 	public BlockTFAuroraSlab(boolean isDouble) {
 		super(Material.PACKED_ICE);
-        this.isDouble = isDouble;
+		this.isDouble = isDouble;
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
-        this.setLightOpacity(isDouble ? 255 : 0);
+		this.setLightOpacity(isDouble ? 255 : 0);
 
-        IBlockState state = this.blockState.getBaseState().withProperty(VARIANT, AuroraSlabVariant.AURORA);
+		IBlockState state = this.blockState.getBaseState().withProperty(VARIANT, AuroraSlabVariant.AURORA);
 
-        if (!this.isDouble()) state = state.withProperty(HALF, EnumBlockHalf.BOTTOM);
+		if (!this.isDouble()) state = state.withProperty(HALF, EnumBlockHalf.BOTTOM);
 
-        this.setDefaultState(state);
+		this.setDefaultState(state);
 	}
 
 	@Override
-    protected BlockStateContainer createBlockState() {
-        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, VARIANT, HALF);
-    }
+	protected BlockStateContainer createBlockState() {
+		return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, VARIANT, HALF);
+	}
 
-    @Override
-    public String getUnlocalizedName(int meta) {
-        return super.getUnlocalizedName();
-    }
+	@Override
+	public String getUnlocalizedName(int meta) {
+		return super.getUnlocalizedName();
+	}
 
-    @Override
-    public boolean isDouble() {
-        return isDouble;
-    }
+	@Override
+	public boolean isDouble() {
+		return isDouble;
+	}
 
-    @Override
-    public IProperty<?> getVariantProperty() {
-        return VARIANT;
-    }
+	@Override
+	public IProperty<?> getVariantProperty() {
+		return VARIANT;
+	}
 
-    @Override
-    public Comparable<?> getTypeForItem(ItemStack stack) {
-        return AuroraSlabVariant.AURORA;
-    }
+	@Override
+	public Comparable<?> getTypeForItem(ItemStack stack) {
+		return AuroraSlabVariant.AURORA;
+	}
 
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(TFBlocks.auroraSlab);
-    }
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Item.getItemFromBlock(TFBlocks.auroraSlab);
+	}
 
-    @Override
-    protected ItemStack getSilkTouchDrop(IBlockState state)
-    {
-        return new ItemStack(Item.getItemFromBlock(TFBlocks.auroraSlab), 2, 0);
-    }
+	@Override
+	protected ItemStack getSilkTouchDrop(IBlockState state) {
+		return new ItemStack(Item.getItemFromBlock(TFBlocks.auroraSlab), 2, 0);
+	}
 
-    @Override
-    @Deprecated
-    public IBlockState getStateFromMeta(int meta) {
-	    return this.isDouble() ? this.getDefaultState() : this.getDefaultState().withProperty(HALF, EnumBlockHalf.values()[meta % EnumBlockHalf.values().length]);
-    }
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		return this.isDouble() ? this.getDefaultState() : this.getDefaultState().withProperty(HALF, EnumBlockHalf.values()[meta % EnumBlockHalf.values().length]);
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-	    return state.getValue(HALF).ordinal();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(HALF).ordinal();
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerModel() {
-        if (this.isDouble())
-            ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).ignore(HALF).build());
-        else {
-            ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
-            ModelUtils.registerToState(this, 0, getDefaultState());
-        }
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		if (this.isDouble())
+			ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).ignore(HALF).build());
+		else {
+			ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
+			ModelUtils.registerToState(this, 0, getDefaultState());
+		}
+	}
 
-    private enum AuroraSlabVariant implements IStringSerializable {
-        AURORA;
+	private enum AuroraSlabVariant implements IStringSerializable {
+		AURORA;
 
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.ROOT);
-        }
-    }
+		@Override
+		public String getName() {
+			return name().toLowerCase(Locale.ROOT);
+		}
+	}
 }

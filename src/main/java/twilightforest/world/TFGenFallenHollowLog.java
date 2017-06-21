@@ -1,7 +1,5 @@
 package twilightforest.world;
 
-import java.util.Random;
-
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
@@ -11,8 +9,9 @@ import net.minecraft.world.World;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-
 import twilightforest.block.enums.PlantVariant;
+
+import java.util.Random;
 
 public class TFGenFallenHollowLog extends TFGenerator {
 
@@ -25,14 +24,13 @@ public class TFGenFallenHollowLog extends TFGenerator {
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {
-		
+
 		return rand.nextBoolean() ? makeLog4Z(world, rand, pos) : makeLog4X(world, rand, pos);
 	}
 
 	private boolean makeLog4Z(World world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
-		if (!isAreaSuitable(world, rand, pos, 9, 3, 4))
-		{
+		if (!isAreaSuitable(world, rand, pos, 9, 3, 4)) {
 			return false;
 		}
 
@@ -52,32 +50,23 @@ public class TFGenFallenHollowLog extends TFGenerator {
 		makePositiveZJaggy(world, pos, rand.nextInt(3), 2, 2);
 
 		// center
-		for (int dz = 0; dz < 4; dz++)
-		{
+		for (int dz = 0; dz < 4; dz++) {
 			// floor
-			if (rand.nextBoolean())
-			{
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(1, -1, dz + 3), oakLogWithZAxis);
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(1, 0, dz + 3), mossPatch);
 				}
-			}
-			else
-			{
+			} else {
 				this.setBlockAndNotifyAdequately(world, pos.add(1, -1, dz + 3), dirt);
 				this.setBlockAndNotifyAdequately(world, pos.add(1, 0, dz + 3), mossPatch);
 			}
-			if (rand.nextBoolean())
-			{
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(2, -1, dz + 3), oakLogWithZAxis);
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(2, 0, dz + 3), mossPatch);
 				}
-			}
-			else
-			{
+			} else {
 				this.setBlockAndNotifyAdequately(world, pos.add(2, -1, dz + 3), dirt);
 				this.setBlockAndNotifyAdequately(world, pos.add(2, 0, dz + 3), mossPatch);
 			}
@@ -89,12 +78,10 @@ public class TFGenFallenHollowLog extends TFGenerator {
 			this.setBlockAndNotifyAdequately(world, pos.add(3, 1, dz + 3), oakLogWithZAxis);
 			this.setBlockAndNotifyAdequately(world, pos.add(1, 2, dz + 3), oakLogWithZAxis);
 			this.setBlockAndNotifyAdequately(world, pos.add(2, 2, dz + 3), oakLogWithZAxis);
-			if (rand.nextBoolean())
-			{
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(1, 3, dz + 3), mossPatch);
 			}
-			if (rand.nextBoolean())
-			{
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(2, 3, dz + 3), mossPatch);
 			}
 		}
@@ -102,17 +89,13 @@ public class TFGenFallenHollowLog extends TFGenerator {
 		// a few leaves?
 		int offZ = rand.nextInt(3) + 2;
 		boolean plusX = rand.nextBoolean();
-		for (int dz = 0; dz < 3; dz++)
-		{
-			if (rand.nextBoolean())
-			{
+		for (int dz = 0; dz < 3; dz++) {
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(plusX ? 3 : 0, 2, dz + offZ), oakLeaves);
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(plusX ? 3 : 0, 3, dz + offZ), oakLeaves);
 				}
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(plusX ? 4 : -1, 2, dz + offZ), oakLeaves);
 				}
 			}
@@ -125,17 +108,15 @@ public class TFGenFallenHollowLog extends TFGenerator {
 
 		return true;
 	}
-	
+
 	private void makeNegativeZJaggy(World world, BlockPos pos, int length, int dx, int dy) {
-		for (int dz = -length; dz < 0; dz++)
-		{
+		for (int dz = -length; dz < 0; dz++) {
 			this.setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz + 3), oakLogWithZAxis);
 		}
 	}
-	
+
 	private void makePositiveZJaggy(World world, BlockPos pos, int length, int dx, int dy) {
-		for (int dz = 0; dz < length; dz++)
-		{
+		for (int dz = 0; dz < length; dz++) {
 			this.setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz + 7), oakLogWithZAxis);
 		}
 	}
@@ -145,8 +126,7 @@ public class TFGenFallenHollowLog extends TFGenerator {
 	 */
 	private boolean makeLog4X(World world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
-		if (!isAreaSuitable(world, rand, pos, 4, 3, 9))
-		{
+		if (!isAreaSuitable(world, rand, pos, 4, 3, 9)) {
 			return false;
 		}
 
@@ -166,32 +146,23 @@ public class TFGenFallenHollowLog extends TFGenerator {
 		makePositiveXJaggy(world, pos, rand.nextInt(3), 2, 2);
 
 		// center
-		for (int dx = 0; dx < 4; dx++)
-		{
+		for (int dx = 0; dx < 4; dx++) {
 			// floor
-			if (rand.nextBoolean())
-			{
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, -1, 1), oakLogWithXAxis);
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 1), mossPatch);
 				}
-			}
-			else
-			{
+			} else {
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, -1, 1), dirt);
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 1), mossPatch);
 			}
-			if (rand.nextBoolean())
-			{
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, -1, 2), oakLogWithXAxis);
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 2), mossPatch);
 				}
-			}
-			else
-			{
+			} else {
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, -1, 2), dirt);
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 2), mossPatch);
 			}
@@ -203,12 +174,10 @@ public class TFGenFallenHollowLog extends TFGenerator {
 			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 1, 3), oakLogWithXAxis);
 			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 2, 1), oakLogWithXAxis);
 			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 2, 2), oakLogWithXAxis);
-			if (rand.nextBoolean())
-			{
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 3, 1), mossPatch);
 			}
-			if (rand.nextBoolean())
-			{
+			if (rand.nextBoolean()) {
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 3, 2), mossPatch);
 			}
 
@@ -217,18 +186,14 @@ public class TFGenFallenHollowLog extends TFGenerator {
 		// a few leaves?
 		int offX = rand.nextInt(3) + 2;
 		boolean plusZ = rand.nextBoolean();
-		for (int dx = 0; dx < 3; dx++)
-		{
-			if (rand.nextBoolean())
-			{
+		for (int dx = 0; dx < 3; dx++) {
+			if (rand.nextBoolean()) {
 
 				this.setBlockAndNotifyAdequately(world, pos.add(dx + offX, 2, plusZ ? 3 : 0), oakLeaves);
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(dx + offX, 3, plusZ ? 3 : 0), oakLeaves);
 				}
-				if (rand.nextBoolean())
-				{
+				if (rand.nextBoolean()) {
 					this.setBlockAndNotifyAdequately(world, pos.add(dx + offX, 2, plusZ ? 4 : -1), oakLeaves);
 				}
 			}
@@ -240,17 +205,15 @@ public class TFGenFallenHollowLog extends TFGenerator {
 
 		return true;
 	}
-	
+
 	private void makeNegativeXJaggy(World world, BlockPos pos, int length, int dz, int dy) {
-		for (int dx = -length; dx < 0; dx++)
-		{
+		for (int dx = -length; dx < 0; dx++) {
 			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, dy, dz), oakLogWithXAxis);
 		}
 	}
-	
+
 	private void makePositiveXJaggy(World world, BlockPos pos, int length, int dz, int dy) {
-		for (int dx = 0; dx < length; dx++)
-		{
+		for (int dx = 0; dx < length; dx++) {
 			this.setBlockAndNotifyAdequately(world, pos.add(dx + 7, dy, dz), oakLogWithXAxis);
 		}
 	}

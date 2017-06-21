@@ -1,12 +1,12 @@
 package twilightforest.structures.lichtower;
 
-import java.util.Random;
-
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+
+import java.util.Random;
 
 
 public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
@@ -24,10 +24,10 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 		// same size
 		this.size = wing.size; // assuming only square towers and roofs right now.
 		this.height = size / 2;
-		
+
 		// just hang out at the very top of the tower
 		makeCapBB(wing);
-		
+
 	}
 
 	/**
@@ -51,15 +51,13 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 					if (x == min || x == max || z == min || z == max) {
 
 						setBlockState(world, woodenSlab, x, y, z, sbb);
-					}
-					else
-					{
+					} else {
 						setBlockState(world, woodenPlanks, x, y, z, sbb);
 					}
 				}
 			}
-		}        
-        return true;
+		}
+		return true;
 	}
 
 	protected boolean makeConnectedCap(World world, BlockPlanks.EnumType woodType, StructureBoundingBox sbb) {
@@ -73,15 +71,13 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 				for (int z = min; z <= max; z++) {
 					if (x == max || z == min || z == max) {
 						setBlockState(world, woodenSlab, x, y, z, sbb);
-					}
-					else
-					{
+					} else {
 						setBlockState(world, woodenPlanks, x, y, z, sbb);
 					}
 				}
 			}
-		}        
-        return true;
+		}
+		return true;
 	}
 
 }

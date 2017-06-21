@@ -4,55 +4,50 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.math.BlockPos;
-
-import twilightforest.entity.EntityTFSlideBlock;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.entity.EntityTFSlideBlock;
 
 public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 
-    public RenderTFSlideBlock(RenderManager manager) {
-        super(manager);
-        shadowSize = 0.0f;
-    }
+	public RenderTFSlideBlock(RenderManager manager) {
+		super(manager);
+		shadowSize = 0.0f;
+	}
 
 	// [VanillaCopy] RenderFallingBlock, with spin
 	@Override
 	public void doRender(EntityTFSlideBlock entity, double x, double y, double z, float yaw, float partialTicks) {
 
-		if (entity.getBlockState() != null)
-		{
+		if (entity.getBlockState() != null) {
 			IBlockState iblockstate = entity.getBlockState();
 
-			if (iblockstate.getRenderType() == EnumBlockRenderType.MODEL)
-			{
+			if (iblockstate.getRenderType() == EnumBlockRenderType.MODEL) {
 				World world = entity.world;
 
-				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE)
-				{
+				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE) {
 					this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 					GlStateManager.pushMatrix();
 					GlStateManager.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
 					VertexBuffer vertexbuffer = tessellator.getBuffer();
 
-					if (this.renderOutlines)
-					{
+					if (this.renderOutlines) {
 						GlStateManager.enableColorMaterial();
 						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 					}
 
 					vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-					GlStateManager.translate((float)(x - (double)blockpos.getX() - 0.5D), (float)(y - (double)blockpos.getY()), (float)(z - (double)blockpos.getZ() - 0.5D));
+					GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					/*// spin FIXME
 					if (iblockstate.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Y) {
 						GlStateManager.rotate((entity.ticksExisted + partialTicks) * 60F, 0, 1, 0);
@@ -65,8 +60,7 @@ public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, vertexbuffer, false, 0);
 					tessellator.draw();
 
-					if (this.renderOutlines)
-					{
+					if (this.renderOutlines) {
 						GlStateManager.disableOutlineMode();
 						GlStateManager.disableColorMaterial();
 					}
@@ -80,7 +74,7 @@ public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 
 
         /*World world = sliderEntity.world;
-        IBlockState block = sliderEntity.getBlockState();
+		IBlockState block = sliderEntity.getBlockState();
 
         BlockPos pos = new BlockPos(sliderEntity);
 

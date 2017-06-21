@@ -15,12 +15,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class CTMLogicReversed extends CTMLogic {
-    public static CTMLogicReversed getInstance() {
-        return new CTMLogicReversed();
-    }
+	public static CTMLogicReversed getInstance() {
+		return new CTMLogicReversed();
+	}
 
-    @Override
-    public boolean isConnected(IBlockAccess world, BlockPos current, BlockPos connection, EnumFacing dir, IBlockState state) {
-        return super.isConnected(world, current, current.add(current.subtract(connection)), dir, state);
-    }
+	@Override
+	public boolean isConnected(IBlockAccess world, BlockPos current, BlockPos connection, EnumFacing dir, IBlockState state) {
+		return super.isConnected(world, current, current.add(current.subtract(connection)), dir, state);
+	}
 }

@@ -9,13 +9,11 @@ import twilightforest.structures.mushroomtower.StructureDecoratorMushroomTower;
 import twilightforest.structures.stronghold.StructureTFDecoratorStronghold;
 
 /**
- *	Stores information about what blocks to use in constructing this structure
- * 
- * @author Ben
+ * Stores information about what blocks to use in constructing this structure
  *
+ * @author Ben
  */
-public class StructureTFDecorator 
-{
+public class StructureTFDecorator {
 	public IBlockState blockState = Blocks.STONE.getDefaultState();
 	public IBlockState accentState = Blocks.COBBLESTONE.getDefaultState();
 	public IBlockState stairState = null;
@@ -26,58 +24,46 @@ public class StructureTFDecorator
 	public IBlockState roofState = null;
 
 	public StructureComponent.BlockSelector randomBlocks = new StructureTFStrongholdStones();
-	
-	public static String getDecoString(StructureTFDecorator deco)
-	{
+
+	public static String getDecoString(StructureTFDecorator deco) {
 //TODO: Structure Disabled
-		if (deco instanceof StructureDecoratorDarkTower)
-		{
+		if (deco instanceof StructureDecoratorDarkTower) {
 			return "DecoDarkTower";
 		}
-		if (deco instanceof StructureDecoratorIceTower)
-		{
+		if (deco instanceof StructureDecoratorIceTower) {
 			return "DecoIceTower";
 		}
-		if (deco instanceof StructureDecoratorMushroomTower)
-		{
+		if (deco instanceof StructureDecoratorMushroomTower) {
 			return "DecoMushroomTower";
 		}
-		if (deco instanceof StructureTFDecoratorStronghold)
-		{
+		if (deco instanceof StructureTFDecoratorStronghold) {
 			return "DecoStronghold";
 		}
-		if (deco instanceof StructureTFDecoratorCastle)
-		{
+		if (deco instanceof StructureTFDecoratorCastle) {
 			return "DecoCastle";
 		}
-		
+
 		return "";
 	}
-	
-	public static StructureTFDecorator getDecoFor(String decoString)
-	{
+
+	public static StructureTFDecorator getDecoFor(String decoString) {
 //TODO: Structure Disabled
-		if (decoString.equals("DecoDarkTower"))
-		{
+		if (decoString.equals("DecoDarkTower")) {
 			return new StructureDecoratorDarkTower();
 		}
-		if (decoString.equals("DecoIceTower"))
-		{
+		if (decoString.equals("DecoIceTower")) {
 			return new StructureDecoratorIceTower();
 		}
-		if (decoString.equals("DecoMushroomTower"))
-		{
+		if (decoString.equals("DecoMushroomTower")) {
 			return new StructureDecoratorMushroomTower();
 		}
-		if (decoString.equals("DecoStronghold"))
-		{
+		if (decoString.equals("DecoStronghold")) {
 			return new StructureTFDecoratorStronghold();
 		}
-		if (decoString.equals("DecoCastle"))
-		{
+		if (decoString.equals("DecoCastle")) {
 			return new StructureTFDecoratorCastle();
 		}
-		
+
 		return new StructureTFDecorator();
 	}
 }

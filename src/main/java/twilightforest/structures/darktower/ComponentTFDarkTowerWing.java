@@ -1,16 +1,16 @@
 package twilightforest.structures.darktower;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import net.minecraft.block.*;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.BlockLadder;
+import net.minecraft.block.BlockLever;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -25,7 +25,6 @@ import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.TowerDeviceVariant;
 import twilightforest.block.enums.WoodVariant;
-import twilightforest.item.TFItems;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.StructureTFDecorator;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
@@ -37,25 +36,28 @@ import twilightforest.structures.lichtower.ComponentTFTowerWing;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
 
-public class ComponentTFDarkTowerWing extends ComponentTFTowerWing 
-{
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	protected boolean keyTower = false;
 	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<EnumDarkTowerDoor>();
 
-	public ComponentTFDarkTowerWing() {}
+	public ComponentTFDarkTowerWing() {
+	}
 
-	protected ComponentTFDarkTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction)
-	{
+	protected ComponentTFDarkTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(i, x, y, z, pSize, pHeight, direction);
 	}
-	
+
 	@Override
 	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeStructureToNBT(par1NBTTagCompound);
-		
-        par1NBTTagCompound.setBoolean("keyTower", this.keyTower);
-        
-        par1NBTTagCompound.setIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
+
+		par1NBTTagCompound.setBoolean("keyTower", this.keyTower);
+
+		par1NBTTagCompound.setIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
 	}
 
 	/**
@@ -66,28 +68,26 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 
 		int idx = 0;
 
-		for (EnumDarkTowerDoor doorType : openingTypes)
-		{
+		for (EnumDarkTowerDoor doorType : openingTypes) {
 			ret[idx++] = doorType.ordinal();
 		}
-		
+
 		return ret;
 	}
 
 	@Override
 	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-        this.keyTower = par1NBTTagCompound.getBoolean("keyTower");
-        
-        this.readDoorsTypesFromArray(par1NBTTagCompound.getIntArray("doorTypeInts"));
- 	}
+		this.keyTower = par1NBTTagCompound.getBoolean("keyTower");
+
+		this.readDoorsTypesFromArray(par1NBTTagCompound.getIntArray("doorTypeInts"));
+	}
 
 	/**
 	 * Read in opening types from int array
 	 */
 	private void readDoorsTypesFromArray(int[] intArray) {
-		for (int typeInt : intArray)
-		{
+		for (int typeInt : intArray) {
 			this.openingTypes.add(EnumDarkTowerDoor.values()[typeInt]);
 		}
 	}
@@ -96,60 +96,54 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 * Read in openings from int array
 	 */
 	private void readOpeningsFromArray(int[] intArray) {
-		for (int i = 0; i < intArray.length; i += 3)
-		{
+		for (int i = 0; i < intArray.length; i += 3) {
 			BlockPos door = new BlockPos(intArray[i], intArray[i + 1], intArray[i + 2]);
-			
+
 			this.openings.add(door);
 		}
 	}
 
 	@Override
 	public void buildComponent(StructureComponent parent, List list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent)
-		{
-			this.deco = ((StructureTFComponent)parent).deco;
+		if (parent != null && parent instanceof StructureTFComponent) {
+			this.deco = ((StructureTFComponent) parent).deco;
 		}
-		
+
 		// we should have a door where we started
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
-		
+
 		// add a roof?
 		makeARoof(parent, list, rand);
 
 		// add a beard
 		makeABeard(parent, list, rand);
-		
-		
+
+
 		if (size > 10) {
 			// sub towers
 			for (Rotation direction : RotationUtil.ROTATIONS) {
 				int[] dest = getValidOpening(rand, direction);
 				int childSize = size - 2;
 				int childHeight = validateChildHeight(height - 4 + rand.nextInt(10) - rand.nextInt(10), childSize);
-				
+
 				boolean madeWing = makeTowerWing(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], size - 2, childHeight, direction);
-				
+
 				// occasional balcony
-				if (!madeWing && (direction == Rotation.CLOCKWISE_180 || rand.nextBoolean()))
-				{
+				if (!madeWing && (direction == Rotation.CLOCKWISE_180 || rand.nextBoolean())) {
 					makeTowerBalcony(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], direction);
 				}
 			}
-		}
-		else if (rand.nextInt(4) == 0)
-		{
+		} else if (rand.nextInt(4) == 0) {
 			// occasional balcony on small towers too
 			Rotation direction = RotationUtil.ROTATIONS[rand.nextInt(4)];
 			int[] dest = getValidOpening(rand, direction);
 			makeTowerBalcony(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], direction);
 		}
-		
-		
+
+
 	}
-	
-	protected int validateChildHeight(int childHeight, int childSize)
-	{
+
+	protected int validateChildHeight(int childHeight, int childSize) {
 		return (childHeight / 4) * 4 + 1;
 
 //		if (childSize > 9)
@@ -161,62 +155,60 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 //			return (childHeight / 3) * 3; 
 //		}
 	}
-	
+
 	/**
 	 * Attach a roof to this tower.
 	 */
 	@Override
-	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) 
-	{
+	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		int index = this.getComponentType();
-		
+
 		ComponentTFTowerRoof roof;
-		
-		switch (rand.nextInt(5))
-		{
-		case 0:
-		case 1:
-		default:
-			roof = new ComponentTFDarkTowerRoofAntenna(index, this);
-			break;
-		case 2:
-			roof = new ComponentTFDarkTowerRoofCactus(index, this);
-			break;
-		case 3:
-			roof = new ComponentTFDarkTowerRoofRings(index, this);
-			break;
-		case 4:
-			roof = new ComponentTFDarkTowerRoofFourPost(index, this);
-			break;
+
+		switch (rand.nextInt(5)) {
+			case 0:
+			case 1:
+			default:
+				roof = new ComponentTFDarkTowerRoofAntenna(index, this);
+				break;
+			case 2:
+				roof = new ComponentTFDarkTowerRoofCactus(index, this);
+				break;
+			case 3:
+				roof = new ComponentTFDarkTowerRoofRings(index, this);
+				break;
+			case 4:
+				roof = new ComponentTFDarkTowerRoofFourPost(index, this);
+				break;
 		}
 
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 		roofType = roof.getClass();
 	}
-	
+
 	@Override
 	protected void makeAttachedRoof(List<StructureComponent> list, Random rand) {
 		int index = this.getComponentType();
 		ComponentTFTowerRoof roof;
-		
+
 		// this is our preferred roof type:
 		if (roofType == null && rand.nextInt(32) != 0) {
 			tryToFitRoof(list, rand, new ComponentTFTowerRoofGableForwards(index + 1, this));
 		}
-		
+
 		// this is for roofs that don't fit.
 		if (roofType == null && rand.nextInt(8) != 0) {
 			tryToFitRoof(list, rand, new ComponentTFTowerRoofSlabForwards(index + 1, this));
 		}
-		
+
 		// finally, if we're cramped for space, try this
 		if (roofType == null && rand.nextInt(32) != 0) {
 			// fall through to this next roof
 			roof = new ComponentTFTowerRoofAttachedSlab(index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
-		
+
 		// last resort
 		if (roofType == null) {
 			// fall through to this next roof
@@ -225,7 +217,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		}
 	}
 
-	
+
 	/**
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
@@ -235,38 +227,33 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		list.add(beard);
 		beard.buildComponent(this, list, rand);
 	}
-	
+
 	/**
 	 * Make another wing just like this one
 	 */
 	@Override
-	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation)
-	{
+	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 8) {
 			return false;
 		}
-		
+
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
-		
-		if (dx[1] + wingHeight > 250)
-		{
+
+		if (dx[1] + wingHeight > 250) {
 			// end of the world!
 			return false;
 		}
-		
+
 		ComponentTFDarkTowerBridge bridge = new ComponentTFDarkTowerBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, bridge.getBoundingBox());
-		if (intersect == null || intersect == this) 
-		{
+		if (intersect == null || intersect == this) {
 			intersect = StructureComponent.findIntersecting(list, bridge.getWingBB());
-		}
-		else 
-		{
+		} else {
 			return false;
-		}		
+		}
 		if (intersect == null || intersect == this) {
 			list.add(bridge);
 			bridge.buildComponent(this, list, rand);
@@ -277,13 +264,12 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			return false;
 		}
 	}
-	
-	protected boolean makeTowerBalcony(List<StructureComponent> list, Random rand, int index, int x, int y, int z, Rotation rotation)
-	{
+
+	protected boolean makeTowerBalcony(List<StructureComponent> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
-		
-		
+
+
 		ComponentTFDarkTowerBalcony balcony = new ComponentTFDarkTowerBalcony(index, dx[0], dx[1], dx[2], direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, balcony.getBoundingBox());
@@ -306,56 +292,47 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
-		
+
 		// clear inside
 		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		// sky light
 		nullifySkyLightForBoundingBox(world);
-		
-		if (this.size > 9)
-		{
+
+		if (this.size > 9) {
 			// half floors, always starting at y = 4
 			addHalfFloors(world, decoRNG, sbb, 4, height - 1);
-		}
-		else
-		{
-			if (decoRNG.nextInt(3) == 0)
-			{
+		} else {
+			if (decoRNG.nextInt(3) == 0) {
 				addSmallTimberBeams(world, decoRNG, sbb, 4, height - 1);
-			}
-			else
-			{
+			} else {
 				addHalfFloors(world, decoRNG, sbb, 4, height - 1);
 			}
 		}
 
-        // openings
-        makeOpenings(world, sbb);
-        
-        // destroy some towers
-        if (decoRNG.nextBoolean() && !this.isKeyTower() && this.height > 8)
-        {
-        	int blobs = 1;
-        	
-        	if (this.size > 9 && decoRNG.nextBoolean())
-        	{
-        		blobs++;
-        	}
-        	
-        	for (int i = 0; i < blobs; i++)
-        	{
+		// openings
+		makeOpenings(world, sbb);
 
-        		// find a random spot in the tower
-        		int x = decoRNG.nextInt(size);
-        		int y = decoRNG.nextInt(height - 7) + 2;
-        		int z = decoRNG.nextInt(size);
+		// destroy some towers
+		if (decoRNG.nextBoolean() && !this.isKeyTower() && this.height > 8) {
+			int blobs = 1;
 
-        		destroyTower(world, decoRNG, x, y, z, 3, sbb);
-        	}
+			if (this.size > 9 && decoRNG.nextBoolean()) {
+				blobs++;
+			}
 
-        }
-        
+			for (int i = 0; i < blobs; i++) {
+
+				// find a random spot in the tower
+				int x = decoRNG.nextInt(size);
+				int y = decoRNG.nextInt(height - 7) + 2;
+				int z = decoRNG.nextInt(size);
+
+				destroyTower(world, decoRNG, x, y, z, 3, sbb);
+			}
+
+		}
+
 		return true;
 	}
 
@@ -364,13 +341,12 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 */
 	protected void destroyTower(World world, Random decoRNG, int x, int y, int z, int amount, StructureBoundingBox sbb) {
 		//makeNetherburst(world, decoRNG, 16, 100, 40, x, y, z, 0, sbb);
-		
+
 		int initialRadius = decoRNG.nextInt(amount) + amount;
-		
+
 		drawBlob(world, x, y, z, initialRadius, AIR, sbb);
-		
-		for (int i = 0; i < 3; i++)
-		{
+
+		for (int i = 0; i < 3; i++) {
 			int dx = x + (initialRadius - 1) * (decoRNG.nextBoolean() ? 1 : -1);
 			int dy = y + (initialRadius - 1) * (decoRNG.nextBoolean() ? 1 : -1);
 			int dz = z + (initialRadius - 1) * (decoRNG.nextBoolean() ? 1 : -1);
@@ -380,31 +356,23 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		}
 
 	}
-	
+
 	private void netherTransformBlob(World world, Random inRand, int sx, int sy, int sz, int rad, StructureBoundingBox sbb) {
-		
+
 		Random rand = new Random(inRand.nextLong());
-		
+
 		// then trace out a quadrant
-		for (byte dx = 0; dx <= rad; dx++)
-		{
-			for (byte dy = 0; dy <= rad; dy++)
-			{
-				for (byte dz = 0; dz <= rad; dz++)
-				{
+		for (byte dx = 0; dx <= rad; dx++) {
+			for (byte dy = 0; dy <= rad; dy++) {
+				for (byte dz = 0; dz <= rad; dz++) {
 					// determine how far we are from the center.
 					byte dist = 0;
-					if (dx >= dy && dx >= dz) 
-					{
-						dist = (byte) (dx + (byte)((Math.max(dy, dz) * 0.5) + (Math.min(dy, dz) * 0.25)));
-					} 
-					else if (dy >= dx && dy >= dz)
-					{
-						dist = (byte) (dy + (byte)((Math.max(dx, dz) * 0.5) + (Math.min(dx, dz) * 0.25)));
-					} 
-					else 
-					{
-						dist = (byte) (dz + (byte)((Math.max(dx, dy) * 0.5) + (Math.min(dx, dy) * 0.25)));
+					if (dx >= dy && dx >= dz) {
+						dist = (byte) (dx + (byte) ((Math.max(dy, dz) * 0.5) + (Math.min(dy, dz) * 0.25)));
+					} else if (dy >= dx && dy >= dz) {
+						dist = (byte) (dy + (byte) ((Math.max(dx, dz) * 0.5) + (Math.min(dx, dz) * 0.25)));
+					} else {
+						dist = (byte) (dz + (byte) ((Math.max(dx, dy) * 0.5) + (Math.min(dx, dy) * 0.25)));
 					}
 
 
@@ -428,12 +396,10 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 
 
 	private void testAndChangeToNetherrack(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
-		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock() != Blocks.AIR)
-		{
+		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock() != Blocks.AIR) {
 			this.setBlockState(world, Blocks.NETHERRACK.getDefaultState(), x, y, z, sbb);
-			
-			if (this.getBlockStateFromPos(world, x, y + 1, z, sbb).getBlock() == Blocks.AIR && rand.nextBoolean())
-			{
+
+			if (this.getBlockStateFromPos(world, x, y + 1, z, sbb).getBlock() == Blocks.AIR && rand.nextBoolean()) {
 				this.setBlockState(world, Blocks.FIRE.getDefaultState(), x, y + 1, z, sbb);
 			}
 		}
@@ -445,25 +411,17 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 */
 	private void drawBlob(World world, int sx, int sy, int sz, int rad, IBlockState state, StructureBoundingBox sbb) {
 		// then trace out a quadrant
-		for (byte dx = 0; dx <= rad; dx++)
-		{
-			for (byte dy = 0; dy <= rad; dy++)
-			{
-				for (byte dz = 0; dz <= rad; dz++)
-				{
+		for (byte dx = 0; dx <= rad; dx++) {
+			for (byte dy = 0; dy <= rad; dy++) {
+				for (byte dz = 0; dz <= rad; dz++) {
 					// determine how far we are from the center.
 					byte dist = 0;
-					if (dx >= dy && dx >= dz) 
-					{
-						dist = (byte) (dx + (byte)((Math.max(dy, dz) * 0.5) + (Math.min(dy, dz) * 0.25)));
-					} 
-					else if (dy >= dx && dy >= dz)
-					{
-						dist = (byte) (dy + (byte)((Math.max(dx, dz) * 0.5) + (Math.min(dx, dz) * 0.25)));
-					} 
-					else 
-					{
-						dist = (byte) (dz + (byte)((Math.max(dx, dy) * 0.5) + (Math.min(dx, dy) * 0.25)));
+					if (dx >= dy && dx >= dz) {
+						dist = (byte) (dx + (byte) ((Math.max(dy, dz) * 0.5) + (Math.min(dy, dz) * 0.25)));
+					} else if (dy >= dx && dy >= dz) {
+						dist = (byte) (dy + (byte) ((Math.max(dx, dz) * 0.5) + (Math.min(dx, dz) * 0.25)));
+					} else {
+						dist = (byte) (dz + (byte) ((Math.max(dx, dy) * 0.5) + (Math.min(dx, dy) * 0.25)));
 					}
 
 
@@ -488,66 +446,57 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 * Add a bunch of random half floors
 	 */
 	private void addHalfFloors(World world, Random rand, StructureBoundingBox sbb, int bottom, int top) {
-		
+
 		int spacing = 4;//this.size > 9 ? 4 : 3;
 		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY + bottom) % 3];
 
-		if (bottom == 0)
-		{
+		if (bottom == 0) {
 			bottom += spacing;
 		}
 
 		// fill with half floors
-		for (int y = bottom; y < top; y += spacing)
-		{
+		for (int y = bottom; y < top; y += spacing) {
 			rotation = rotation.add(Rotation.CLOCKWISE_180);
 
-			if (y >= top - spacing)
-			{
+			if (y >= top - spacing) {
 				makeFullFloor(world, sbb, rotation, y, spacing);
-				if (isDeadEnd())
-				{
+				if (isDeadEnd()) {
 					decorateTreasureRoom(world, sbb, rotation, y, 4, this.deco);
 				}
-			}
-			else
-			{
+			} else {
 				makeHalfFloor(world, sbb, rotation, y, spacing);
-				
+
 				// decorate
-				switch (rand.nextInt(8))
-				{
-				case 0:
-					if (this.size < 11)
-					{
-						decorateReappearingFloor(world, rand, sbb, rotation, y);
+				switch (rand.nextInt(8)) {
+					case 0:
+						if (this.size < 11) {
+							decorateReappearingFloor(world, rand, sbb, rotation, y);
+							break;
+						}
+					case 1:
+						decorateSpawner(world, rand, sbb, rotation, y);
 						break;
-					}
-				case 1:
-					decorateSpawner(world, rand, sbb, rotation, y);
-					break;
-				case 2:
-					decorateLounge(world, rand, sbb, rotation, y);
-					break;
-				case 3:
-					decorateLibrary(world, rand, sbb, rotation, y);
-					break;
-				case 4:
-					decorateExperimentPulser(world, rand, sbb, rotation, y);
-					break;
-				case 5:
-					decorateExperimentLamp(world, rand, sbb, rotation, y);
-					break;
-				case 6:
-					decoratePuzzleChest(world, rand, sbb, rotation, y);
-					break;
+					case 2:
+						decorateLounge(world, rand, sbb, rotation, y);
+						break;
+					case 3:
+						decorateLibrary(world, rand, sbb, rotation, y);
+						break;
+					case 4:
+						decorateExperimentPulser(world, rand, sbb, rotation, y);
+						break;
+					case 5:
+						decorateExperimentLamp(world, rand, sbb, rotation, y);
+						break;
+					case 6:
+						decoratePuzzleChest(world, rand, sbb, rotation, y);
+						break;
 				}
-				
+
 			}
-			
+
 			addStairsDown(world, sbb, rotation, y, size - 2, spacing);
-			if (this.size > 9)
-			{
+			if (this.size > 9) {
 				// double wide staircase
 				addStairsDown(world, sbb, rotation, y, size - 3, spacing);
 			}
@@ -562,28 +511,26 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * Dark tower half floors
 	 */
-	protected void makeHalfFloor(World world, StructureBoundingBox sbb, Rotation rotation, int y, int spacing)
-	{
+	protected void makeHalfFloor(World world, StructureBoundingBox sbb, Rotation rotation, int y, int spacing) {
 		this.fillBlocksRotated(world, sbb, size / 2, y, 1, size - 2, y, size - 2, deco.blockState, rotation);
 		this.fillBlocksRotated(world, sbb, size / 2 - 1, y, 1, size / 2 - 1, y, size - 2, deco.accentState, rotation);
 	}
-	
+
 	/**
 	 * Dark tower full floors
 	 */
-	protected void makeFullFloor(World world, StructureBoundingBox sbb, Rotation rotation, int y, int spacing)
-	{
+	protected void makeFullFloor(World world, StructureBoundingBox sbb, Rotation rotation, int y, int spacing) {
 		// half floor
 		this.fillWithBlocks(world, sbb, 1, y, 1, size - 2, y, size - 2, deco.blockState, Blocks.AIR.getDefaultState(), false);
 		this.fillWithBlocks(world, sbb, size / 2, y, 1, size / 2, y, size - 2, deco.accentState, Blocks.AIR.getDefaultState(), true);
 	}
-	
+
 	/**
 	 * Dark tower treasure rooms!
-	 * @param myDeco 
+	 *
+	 * @param myDeco
 	 */
-	protected void decorateTreasureRoom(World world, StructureBoundingBox sbb, Rotation rotation, int y, int spacing, StructureTFDecorator myDeco)
-	{
+	protected void decorateTreasureRoom(World world, StructureBoundingBox sbb, Rotation rotation, int y, int spacing, StructureTFDecorator myDeco) {
 		//treasure chest!
 		int x = this.size / 2;
 		int z = this.size / 2;
@@ -595,22 +542,18 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		placeTreasureAtCurrentPosition(world, null, x, y + 2, z, this.isKeyTower() ? TFTreasure.darktower_key : TFTreasure.darktower_cache, sbb);
 	}
 
-	private void decorateSpawner(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y)
-	{
+	private void decorateSpawner(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y) {
 		int x = this.size > 9 ? 4 : 3;
 		int z = this.size > 9 ? 5 : 4;
-		
+
 		ResourceLocation mobID;
-		
-		if (this.size > 9)
-		{
+
+		if (this.size > 9) {
 			mobID = rand.nextBoolean() ? TFEntityNames.TOWER_GOLEM : TFEntityNames.TOWER_BROODLING;
-		}
-		else
-		{
+		} else {
 			mobID = TFEntityNames.TOWER_BROODLING;
 		}
-		
+
 		// pillar frame
 		this.makePillarFrame(world, sbb, this.deco, rotation, x, y, z, true);
 		this.setSpawnerRotated(world, x + 1, y + 2, z + 1, rotation, mobID, sbb);
@@ -619,17 +562,16 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * A lounge with a couch and table
 	 */
-	private void decorateLounge(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y)
-	{
+	private void decorateLounge(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y) {
 		int cx = this.size > 9 ? 9 : 7;
 		int cz = this.size > 9 ? 4 : 3;
-		
+
 		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.EAST, rotation, false), cx, y + 1, cz + 0, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, false), cx, y + 1, cz + 1, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), cx, y + 1, cz + 2, rotation, sbb);
-		
+
 		cx = this.size > 9 ? 5 : 3;
-		
+
 		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.EAST, rotation, true), cx, y + 1, cz + 0, rotation, sbb);
 		setBlockStateRotated(world, getSlabState(Blocks.WOODEN_SLAB.getDefaultState(), BlockPlanks.EnumType.SPRUCE, BlockSlab.EnumBlockHalf.TOP), cx, y + 1, cz + 1, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, true), cx, y + 1, cz + 2, rotation, sbb);
@@ -653,18 +595,18 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 * Decorate with a redstone device that turns a lamp on or off
 	 */
 	private void decorateExperimentLamp(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y) {
-		
+
 		int cx = this.size > 9 ? 5 : 3;
 		int cz = this.size > 9 ? 5 : 4;
-		
+
 		final IBlockState redstoneLamp = Blocks.REDSTONE_LAMP.getDefaultState();
 
 		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP), cx, y + 1, cz, rotation, sbb);
 		setBlockStateRotated(world, redstoneLamp, cx, y + 2, cz, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, cx, y + 1, cz + 1, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.SOUTH, rotation,false), cx, y + 1, cz + 2, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.SOUTH, rotation, false), cx, y + 1, cz + 2, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, cx, y + 3, cz - 1, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.SOUTH, rotation,true), cx, y + 3, cz - 2, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.SOUTH, rotation, true), cx, y + 3, cz - 2, rotation, sbb);
 	}
 
 	protected static IBlockState getLeverState(IBlockState initialState, BlockLever.EnumOrientation direction, Rotation rotation, boolean isPowered) {
@@ -715,15 +657,15 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		return initialState.withProperty(BlockLever.FACING, direction)
 				.withProperty(BlockLever.POWERED, isPowered);
 	}
-	
+
 	/**
 	 * Decorate with a redstone device that pulses a block back and forth
 	 */
 	private void decorateExperimentPulser(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y) {
-		
+
 		int cx = this.size > 9 ? 6 : 5;
 		int cz = this.size > 9 ? 4 : 3;
-		
+
 		final IBlockState redstoneWire = Blocks.REDSTONE_WIRE.getDefaultState();
 		final IBlockState woodenPressurePlate = Blocks.WOODEN_PRESSURE_PLATE.getDefaultState();
 
@@ -744,9 +686,9 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	private void decorateLibrary(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y) {
 		int bx = this.size > 9 ? 4 : 3;
 		int bz = this.size > 9 ? 3 : 2;
-		
+
 		makeSmallBookshelf(world, sbb, rotation, y, bx, bz);
-		
+
 		bx = this.size > 9 ? 9 : 7;
 		bz = this.size > 9 ? 3 : 2;
 		makeSmallBookshelf(world, sbb, rotation, y, bx, bz);
@@ -773,7 +715,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		int z = this.size > 9 ? 5 : 4;
 		// pillar frame
 		this.makePillarFrame(world, sbb, this.deco, rotation, x, y, z, true);
-		
+
 		// reinforce with towerwood
 		setBlockStateRotated(world, deco.platformState, x + 1, y + 1, z + 1, rotation, sbb);
 		setBlockStateRotated(world, deco.blockState, x + 2, y + 1, z + 1, rotation, sbb);
@@ -797,58 +739,42 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * Make a 3x3x3 pillar frame
 	 */
-	protected void makePillarFrame(World world, StructureBoundingBox sbb, StructureTFDecorator myDeco, Rotation rotation, int x, int y, int z, boolean fenced)
-	{
+	protected void makePillarFrame(World world, StructureBoundingBox sbb, StructureTFDecorator myDeco, Rotation rotation, int x, int y, int z, boolean fenced) {
 		makePillarFrame(world, sbb, myDeco, rotation, x, y, z, 3, 3, 3, fenced);
 	}
-	
+
 	/**
 	 * Place one of the architectural features that I frequently overuse in my structures
 	 */
 	protected void makePillarFrame(World world, StructureBoundingBox sbb, StructureTFDecorator myDeco, Rotation rotation, int x, int y, int z, int width, int height, int length, boolean fenced) {
 		// fill in posts
-		for (int dx = 0; dx < width; dx++)
-		{
-			for (int dz = 0; dz < length; dz++)
-			{
-				if ((dx % 3 == 0 || dx == width - 1) && (dz % 3 == 0 || dz == length - 1))
-				{
-					for (int py = 1; py <= height; py++)
-					{
+		for (int dx = 0; dx < width; dx++) {
+			for (int dz = 0; dz < length; dz++) {
+				if ((dx % 3 == 0 || dx == width - 1) && (dz % 3 == 0 || dz == length - 1)) {
+					for (int py = 1; py <= height; py++) {
 						setBlockStateRotated(world, myDeco.pillarState, x + dx, y + py, z + dz, rotation, sbb);
 					}
-				}
-				else
-				{
-					if (dx == 0)
-					{
+				} else {
+					if (dx == 0) {
 						final IBlockState southStairs = getStairState(deco.stairState, EnumFacing.WEST, rotation, false);
 						setBlockStateRotated(world, southStairs, x + dx, y + 1, z + dz, rotation, sbb);
 						setBlockStateRotated(world, southStairs.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), x + dx, y + height, z + dz, rotation, sbb);
-					}
-					else if (dx == width - 1)
-					{
+					} else if (dx == width - 1) {
 						final IBlockState northStairs = getStairState(deco.stairState, EnumFacing.EAST, rotation, false);
 						setBlockStateRotated(world, northStairs, x + dx, y + 1, z + dz, rotation, sbb);
 						setBlockStateRotated(world, northStairs.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), x + dx, y + height, z + dz, rotation, sbb);
-					}
-					else if (dz == 0)
-					{
+					} else if (dz == 0) {
 						final IBlockState westStairs = getStairState(deco.stairState, EnumFacing.NORTH, rotation, false);
 						setBlockStateRotated(world, westStairs, x + dx, y + 1, z + dz, rotation, sbb);
 						setBlockStateRotated(world, westStairs.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), x + dx, y + height, z + dz, rotation, sbb);
-					}
-					else if (dz == length - 1)
-					{
+					} else if (dz == length - 1) {
 						final IBlockState eastStairs = getStairState(deco.stairState, EnumFacing.SOUTH, rotation, false);
 						setBlockStateRotated(world, eastStairs, x + dx, y + 1, z + dz, rotation, sbb);
 						setBlockStateRotated(world, eastStairs.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), x + dx, y + height, z + dz, rotation, sbb);
 					}
-					
-					if (fenced && (dx == 0 || dx == width - 1 || dz == 0 || dz == length - 1)) 
-					{
-						for (int fy = 2; fy <= height - 1; fy++)
-						{
+
+					if (fenced && (dx == 0 || dx == width - 1 || dz == 0 || dz == length - 1)) {
+						for (int fy = 2; fy <= height - 1; fy++) {
 							setBlockStateRotated(world, myDeco.fenceState, x + dx, y + fy, z + dz, rotation, sbb);
 						}
 					}
@@ -862,8 +788,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 */
 	protected void addStairsDown(World world, StructureBoundingBox sbb, Rotation rotation, int y, int sz, int spacing) {
 		// stairs
-		for (int i = 0; i < spacing; i++)
-		{
+		for (int i = 0; i < spacing; i++) {
 			int sx = size - 3 - i;
 
 			this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, y - i, sz, rotation, sbb);
@@ -875,80 +800,68 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			this.setBlockStateRotated(world, AIR, sx - 1, y + 3 - i, sz, rotation, sbb);
 		}
 	}
-	
+
 	/**
 	 * Add a bunch of timber beams
 	 */
 	protected void addSmallTimberBeams(World world, Random rand, StructureBoundingBox sbb, int bottom, int top) {
-		
+
 		int spacing = 4;
 		Rotation rotation = Rotation.NONE;
-		if (bottom == 0)
-		{
+		if (bottom == 0) {
 			bottom += spacing;
 		}
 
 
 		// fill with 3/4 floors
-		for (int y = bottom; y < top; y += spacing)
-		{
+		for (int y = bottom; y < top; y += spacing) {
 			rotation = rotation.add(Rotation.CLOCKWISE_90);
-			
-			if (y >= top - spacing && isDeadEnd())
-			{
+
+			if (y >= top - spacing && isDeadEnd()) {
 				makeTimberFloor(world, rand, sbb, rotation, y, spacing);
-				
+
 				StructureTFDecorator logDeco = new StructureDecoratorDarkTower();
-				
+
 				logDeco.pillarState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 				logDeco.platformState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
-				
+
 				decorateTreasureRoom(world, sbb, rotation, y, 4, logDeco);
-			}
-			else
-			{
+			} else {
 				makeSmallTimberBeams(world, rand, sbb, rotation, y, y == bottom && bottom != spacing, y >= (top - spacing));
 			}
 		}
-		
-		
+
+
 	}
 
 	/**
 	 * Make a mostly soid timber floor
 	 */
-	protected void makeTimberFloor(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, int spacing)
-	{
+	protected void makeTimberFloor(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, int spacing) {
 		IBlockState beamID = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 		IBlockState beamStateNS = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 		IBlockState beamStateUD = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
 		IBlockState beamStateEW = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
 
-		for (int z = 1; z < size - 1; z++)
-		{
-			for (int x = 1; x < size - 1; x++)
-			{
-				if (x < z)
-				{
+		for (int z = 1; z < size - 1; z++) {
+			for (int x = 1; x < size - 1; x++) {
+				if (x < z) {
 					setBlockStateRotated(world, beamStateNS, x, y, z, rotation, sbb);
-				}
-				else
-				{
+				} else {
 					setBlockStateRotated(world, beamStateEW, x, y, z, rotation, sbb);
 				}
 			}
 		}
-		
+
 		// beams going down
-		for (int by = 1; by < 4; by++)
-		{
+		for (int by = 1; by < 4; by++) {
 			IBlockState ladder = Blocks.LADDER.getDefaultState();
 			setBlockStateRotated(world, beamStateUD, 2, y - by, 2, rotation, sbb);
 			setBlockStateRotated(world, ladder.withProperty(BlockLadder.FACING, EnumFacing.WEST), 2 + 1, y - by, 2, rotation, sbb);
 			setBlockStateRotated(world, beamStateUD, 6, y - by, 6, rotation, sbb);
 			setBlockStateRotated(world, ladder.withProperty(BlockLadder.FACING, EnumFacing.EAST), 6 - 1, y - by, 6, rotation, sbb);
 		}
-		
+
 		// holes for entrance
 		setBlockStateRotated(world, AIR, 3, y, 2, rotation, sbb);
 		setBlockStateRotated(world, AIR, 5, y, 6, rotation, sbb);
@@ -958,8 +871,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * Make a lattice of log blocks
 	 */
-	protected void makeSmallTimberBeams(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top)
-	{
+	protected void makeSmallTimberBeams(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top) {
 		IBlockState beamID = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 		IBlockState beamStateNS = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
 		IBlockState beamStateUD = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
@@ -970,18 +882,15 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		int beamMetaUD = 0;*/
 
 
-
 		// two beams going e/w
-		for (int z = 1; z < size - 1; z++)
-		{
+		for (int z = 1; z < size - 1; z++) {
 			setBlockStateRotated(world, beamStateEW, 2, y, z, rotation, sbb);
 			setBlockStateRotated(world, beamStateEW, 6, y, z, rotation, sbb);
 		}
 
 		// a few random cross beams
 		int z = pickBetweenExcluding(3, size - 3, rand, 2, 2, 6);
-		for (int x = 3; x < 6; x++)
-		{
+		for (int x = 3; x < 6; x++) {
 			setBlockStateRotated(world, beamStateNS, x, y, z, rotation, sbb);
 		}
 
@@ -991,16 +900,13 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 		int x3 = 6;
 		int z3 = rand.nextBoolean() ? 2 : 6;
 
-		for (int by = 1; by < 4; by++)
-		{
+		for (int by = 1; by < 4; by++) {
 			final IBlockState ladder = Blocks.LADDER.getDefaultState();
-			if (!bottom || checkPost(world, x1, y - 4, z1, rotation, sbb))
-			{
+			if (!bottom || checkPost(world, x1, y - 4, z1, rotation, sbb)) {
 				setBlockStateRotated(world, beamStateUD, x1, y - by, z1, rotation, sbb);
 				setBlockStateRotated(world, ladder.withProperty(BlockLadder.FACING, EnumFacing.WEST), x1 + 1, y - by, z1, rotation, sbb);
 			}
-			if (!bottom || checkPost(world, x3, y - 4, z3, rotation, sbb))
-			{
+			if (!bottom || checkPost(world, x3, y - 4, z3, rotation, sbb)) {
 				setBlockStateRotated(world, beamStateUD, x3, y - by, z3, rotation, sbb);
 				setBlockStateRotated(world, ladder.withProperty(BlockLadder.FACING, EnumFacing.EAST), x3 - 1, y - by, z3, rotation, sbb);
 			}
@@ -1052,20 +958,17 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	}
 
 
-	
 	/**
 	 * Utility function to pick a random number between two values, excluding three specified values
 	 */
-	protected int pickBetweenExcluding(int low, int high, Random rand, int k, int l, int m) 
-	{
+	protected int pickBetweenExcluding(int low, int high, Random rand, int k, int l, int m) {
 		int result;
-		
-		do
-		{
+
+		do {
 			result = rand.nextInt(high - low) + low;
 		}
 		while (result == k || result == l || result == m);
-		
+
 		return result;
 	}
 
@@ -1074,80 +977,70 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 * Pick one of the three specified values at random
 	 */
 	protected int pickFrom(Random rand, int i, int j, int k) {
-		switch (rand.nextInt(3))
-		{
-		case 0:
-		default:
-			return i;
-		case 1 :
-			return j;
-		case 2:
-			return k;
+		switch (rand.nextInt(3)) {
+			case 0:
+			default:
+				return i;
+			case 1:
+				return j;
+			case 2:
+				return k;
 		}
 	}
-	
+
 
 	/**
 	 * Utility function for beam maze that checks if we should build a beam all the way down -- is there a valid spot to end it?
 	 */
-	protected boolean checkPost(World world, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb)
-	{
+	protected boolean checkPost(World world, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb) {
 		int worldX = this.getXWithOffsetRotated(x, z, rotation);
 		int worldY = this.getYWithOffset(y);
 		int worldZ = this.getZWithOffsetRotated(x, z, rotation);
 		final BlockPos vec = new BlockPos(worldX, worldY, worldZ);
 		IBlockState blockState = sbb.isVecInside(vec) ? world.getBlockState(vec) : Blocks.AIR.getDefaultState();
-		
-		
+
+
 		return !(blockState == Blocks.AIR || blockState == deco.accentState);
 	}
 
 
 	/**
 	 * Generate walls for the tower with the distinct pattern of blocks and accent blocks
-	 * @param rand 
+	 *
+	 * @param rand
 	 */
-	protected void makeEncasedWalls(World world, Random rand, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) 
-	{
-		
-		for (int x = minX; x <= maxX; x++)
-		{
-			for (int y = minY; y <= maxY; y++)
-			{
-				for (int z = minZ; z <= maxZ; z++)
-				{
-					if (x != minX && x != maxX && y != minY && y != maxY && z != minZ && z != maxZ)
-					{
+	protected void makeEncasedWalls(World world, Random rand, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+
+		for (int x = minX; x <= maxX; x++) {
+			for (int y = minY; y <= maxY; y++) {
+				for (int z = minZ; z <= maxZ; z++) {
+					if (x != minX && x != maxX && y != minY && y != maxY && z != minZ && z != maxZ) {
 						;
-					}
-					else
-					{
+					} else {
 						// wall
 						if (((x == minY || x == maxX) && ((y == minY || y == maxY) || (z == minZ || z == maxZ)))
 								|| ((y == minY || y == maxY) && ((x == minY || x == maxX) || (z == minZ || z == maxZ)))
-								|| ((z == minZ || z == maxZ) && ((x == minY || x == maxX) || (y == minY || y == maxY))))
-						{
+								|| ((z == minZ || z == maxZ) && ((x == minY || x == maxX) || (y == minY || y == maxY)))) {
 							this.setBlockState(world, deco.accentState, x, y, z, sbb);
 						}
 //						else if (this.isKeyTower())
 //						{
 //	                        this.setBlockState(world, Blocks.DIAMOND_BLOCK, 0,  x, y, z, sbb);
 //						}
-						else
-						{
+						else {
 							StructureComponent.BlockSelector blocker = deco.randomBlocks;
-							
-							blocker.selectBlocks(rand, x, y, z, true);
-	                        this.setBlockState(world, blocker.getBlockState(),  x, y, z, sbb);
 
-							
+							blocker.selectBlocks(rand, x, y, z, true);
+							this.setBlockState(world, blocker.getBlockState(), x, y, z, sbb);
+
+
 							//this.setBlockState(world, deco.blockID, deco.blockMeta, x, y, z, sbb);
 						}
 					}
 				}
 			}
 		}
-		
+
 		// corners
 		this.setBlockState(world, deco.accentState, minX + 1, minY + 1, minZ, sbb);
 		this.setBlockState(world, deco.accentState, minX + 1, minY + 1, maxZ, sbb);
@@ -1185,27 +1078,27 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	@Override
 	public int[] getValidOpening(Random rand, Rotation direction) {
 		int verticalOffset = this.size == 19 ? 5 : 4;
-		
+
 		// for directions 0 or 2, the wall lies along the z axis
 		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
 			int rx = direction == Rotation.NONE ? size - 1 : 0;
 			int rz = this.size / 2;
 			int ry = this.height - verticalOffset;
-			
-			return new int[] {rx, ry, rz};
+
+			return new int[]{rx, ry, rz};
 		}
-		
+
 		// for directions 1 or 3, the wall lies along the x axis
 		if (direction == Rotation.CLOCKWISE_90 || direction == Rotation.COUNTERCLOCKWISE_90) {
 			int rx = this.size / 2;
 			int rz = direction == Rotation.CLOCKWISE_90 ? size - 1 : 0;
 			int ry = this.height - verticalOffset;
-			
-			return new int[] {rx, ry, rz};
+
+			return new int[]{rx, ry, rz};
 		}
-		
-		
-		return new int[] {0, 0, 0};
+
+
+		return new int[]{0, 0, 0};
 	}
 
 	/**
@@ -1215,15 +1108,14 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	public void addOpening(int dx, int dy, int dz, Rotation direction) {
 		this.addOpening(dx, dy, dz, direction, EnumDarkTowerDoor.VANISHING);
 	}
-	
-	
+
+
 	/**
 	 * Add an opening where we keep track of the kind of opening
 	 * TODO: we could make a type of object that stores all these values
 	 * TODO: also use an Enum for the kinds of openings?
 	 */
-	protected void addOpening(int dx, int dy, int dz, Rotation direction, EnumDarkTowerDoor type)
-	{
+	protected void addOpening(int dx, int dy, int dz, Rotation direction, EnumDarkTowerDoor type) {
 		super.addOpening(dx, dy, dz, direction);
 		this.openingTypes.add(openings.indexOf(new BlockPos(dx, dy, dz)), type);
 	}
@@ -1232,34 +1124,28 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 * Iterate through the openings on our list and add them to the tower
 	 */
 	@Override
-	protected void makeOpenings(World world, StructureBoundingBox sbb) 
-	{
-		for (int i = 0; i < openings.size(); i++)
-		{
+	protected void makeOpenings(World world, StructureBoundingBox sbb) {
+		for (int i = 0; i < openings.size(); i++) {
 			BlockPos doorCoords = openings.get(i);
-			
+
 			EnumDarkTowerDoor doorType;
-			if (openingTypes.size() > i)
-			{
+			if (openingTypes.size() > i) {
 				doorType = openingTypes.get(i);
-			}
-			else
-			{
+			} else {
 				doorType = EnumDarkTowerDoor.VANISHING;
 			}
-			
-			switch (doorType)
-			{
-			case VANISHING :
-			default:
-				makeDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
-				break;
-			case REAPPEARING :
-				makeReappearingDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
-				break;
-			case LOCKED :
-				makeLockedDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
-				break;
+
+			switch (doorType) {
+				case VANISHING:
+				default:
+					makeDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
+					break;
+				case REAPPEARING:
+					makeReappearingDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
+					break;
+				case LOCKED:
+					makeLockedDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
+					break;
 			}
 
 		}
@@ -1270,19 +1156,17 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	 */
 	@Override
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
-     	// nullify sky light
-     	nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
-		
+		// nullify sky light
+		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
+
 		final IBlockState inactiveVanish = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
 
-        // clear the door
-		if (dx == 0 || dx == size - 1) 
-		{
+		// clear the door
+		if (dx == 0 || dx == size - 1) {
 			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
 			this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveVanish, AIR, false);
 		}
-		if (dz == 0 || dz == size - 1) 
-		{
+		if (dz == 0 || dz == size - 1) {
 			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
 			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveVanish, AIR, false);
 		}
@@ -1291,21 +1175,18 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * Make a 3x3 tower door that reappears
 	 */
-	protected void makeReappearingDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) 
-	{
-     	// nullify sky light
-     	nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
-		
+	protected void makeReappearingDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
+		// nullify sky light
+		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
+
 		final IBlockState inactiveReappearing = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
 
 		// clear the door
-		if (dx == 0 || dx == size - 1) 
-		{
+		if (dx == 0 || dx == size - 1) {
 			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
 			this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveReappearing, AIR, false);
 		}
-		if (dz == 0 || dz == size - 1) 
-		{
+		if (dz == 0 || dz == size - 1) {
 			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
 			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveReappearing, AIR, false);
 		}
@@ -1315,17 +1196,15 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 	/**
 	 * Make a 3x3 tower door that is locked
 	 */
-	protected void makeLockedDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) 
-	{
-     	// nullify sky light
-     	nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
-		
-        // clear the door
+	protected void makeLockedDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
+		// nullify sky light
+		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
+
+		// clear the door
 		final IBlockState lockedVanish = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_LOCKED);
 		final IBlockState inactiveVanish = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
 
-		if (dx == 0 || dx == size - 1) 
-		{
+		if (dx == 0 || dx == size - 1) {
 			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);
 			this.fillWithBlocks(world, sbb, dx, dy, dz - 1, dx, dy + 2, dz + 1, inactiveVanish, AIR, false);
 			this.setBlockState(world, lockedVanish, dx, dy + 0, dz + 1, sbb);
@@ -1333,8 +1212,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			this.setBlockState(world, lockedVanish, dx, dy + 2, dz + 1, sbb);
 			this.setBlockState(world, lockedVanish, dx, dy + 2, dz - 1, sbb);
 		}
-		if (dz == 0 || dz == size - 1) 
-		{
+		if (dz == 0 || dz == size - 1) {
 			this.fillWithBlocks(world, sbb, dx - 2, dy - 1, dz, dx + 2, dy + 3, dz, deco.accentState, AIR, false);
 			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 2, dz, inactiveVanish, AIR, false);
 			this.setBlockState(world, lockedVanish, dx + 1, dy + 0, dz, sbb);
@@ -1343,39 +1221,34 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing
 			this.setBlockState(world, lockedVanish, dx - 1, dy + 2, dz, sbb);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Returns true if this tower has only one exit.
-	 * 
+	 * <p>
 	 * TODO: is this really the best way?
 	 */
 	@Override
-	public boolean isDeadEnd()
-	{
+	public boolean isDeadEnd() {
 		// we have to modify this to ignore door type 2 since that leads to balconies
 		int nonBalconies = 0;
-		
-		for (EnumDarkTowerDoor type : openingTypes)
-		{
-			if (type != EnumDarkTowerDoor.REAPPEARING)
-			{
+
+		for (EnumDarkTowerDoor type : openingTypes) {
+			if (type != EnumDarkTowerDoor.REAPPEARING) {
 				nonBalconies++;
 			}
 		}
-		
+
 		return nonBalconies <= 1;
 	}
 
 
-	public boolean isKeyTower() 
-	{
+	public boolean isKeyTower() {
 		return keyTower;
 	}
 
 
-	public void setKeyTower(boolean keyTower) 
-	{
+	public void setKeyTower(boolean keyTower) {
 		this.keyTower = keyTower;
 	}
 }

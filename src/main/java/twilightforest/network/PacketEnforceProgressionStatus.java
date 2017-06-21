@@ -9,39 +9,40 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import twilightforest.TwilightForestMod;
 
 public class PacketEnforceProgressionStatus implements IMessage {
-    private boolean enforce;
+	private boolean enforce;
 
-    public PacketEnforceProgressionStatus() {}
+	public PacketEnforceProgressionStatus() {
+	}
 
-    public PacketEnforceProgressionStatus(boolean enforce) {
-        this.enforce = enforce;
-    }
+	public PacketEnforceProgressionStatus(boolean enforce) {
+		this.enforce = enforce;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        enforce = buf.readBoolean();
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		enforce = buf.readBoolean();
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeBoolean(enforce);
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeBoolean(enforce);
+	}
 
-    public static class Handler implements IMessageHandler<PacketEnforceProgressionStatus, IMessage> {
+	public static class Handler implements IMessageHandler<PacketEnforceProgressionStatus, IMessage> {
 
-        @Override
-        public IMessage onMessage(PacketEnforceProgressionStatus message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-                @Override
-                public void run() {
-                    World world = Minecraft.getMinecraft().world;
+		@Override
+		public IMessage onMessage(PacketEnforceProgressionStatus message, MessageContext ctx) {
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@Override
+				public void run() {
+					World world = Minecraft.getMinecraft().world;
 
-                    world.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
-                }
-            });
+					world.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
+				}
+			});
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
 }

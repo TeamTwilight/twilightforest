@@ -1,7 +1,5 @@
 package twilightforest.item;
 
-import gnu.trove.map.hash.TObjectIntHashMap;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -14,8 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.RootVariant;
@@ -35,14 +31,14 @@ public class ItemTFOreMeter extends ItemTF {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
 		int useX = MathHelper.floor(player.posX);
 		int useZ = MathHelper.floor(player.posZ);
-		
+
 		if (!world.isRemote) {
 			countOreInArea(player, world, useX, useZ, 3);
 		}
-		
+
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
-	
+
 	private void countOreInArea(EntityPlayer player, World world, int useX, int useZ, int radius) {
 		int chunkX = useX >> 4;
 		int chunkZ = useZ >> 4;
@@ -50,7 +46,7 @@ public class ItemTFOreMeter extends ItemTF {
 		int countStone = 0;
 		int countDirt = 0;
 		int countGravel = 0;
-		
+
 		int countCoal = 0;
 		int countIron = 0;
 		int countGold = 0;
@@ -80,7 +76,7 @@ public class ItemTFOreMeter extends ItemTF {
 				countLapis += results.getOrDefault(Blocks.LAPIS_ORE.getDefaultState(), dummy).count;
 				countRedstone += results.getOrDefault(Blocks.REDSTONE_ORE.getDefaultState(), dummy).count + results.getOrDefault(Blocks.LIT_REDSTONE_ORE.getDefaultState(), dummy).count;
 				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.getDefaultState(), dummy).exposedCount;
-				
+
 				countRoots += results.getOrDefault(TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.ROOT), dummy).count;
 				countOreRoots += results.getOrDefault(TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT), dummy).count;
 			}
@@ -99,9 +95,9 @@ public class ItemTFOreMeter extends ItemTF {
 		player.sendMessage(new TextComponentString("Roots - " + countRoots + " " + percent(countRoots, total)));
 		player.sendMessage(new TextComponentString("Ore Roots - " + countOreRoots + " " + percent(countOreRoots, total)));
 	}
-	
+
 	private float percent(int count, int total) {
-		return (float)count / (float)total * 100F;
+		return (float) count / (float) total * 100F;
 	}
 
 	private Map<IBlockState, ScanResult> countBlocksInChunk(World world, int cx, int cz) {

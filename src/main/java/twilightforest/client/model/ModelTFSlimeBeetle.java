@@ -10,8 +10,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelTFSlimeBeetle extends ModelBase
-{
+public class ModelTFSlimeBeetle extends ModelBase {
 	//fields
 	ModelRenderer head;
 	ModelRenderer RearEnd;
@@ -32,19 +31,17 @@ public class ModelTFSlimeBeetle extends ModelBase
 	ModelRenderer tail2;
 	ModelRenderer mouth;
 	ModelRenderer slimeCenter;
-	
+
 	boolean renderPassModel = false;
 
 
-	public ModelTFSlimeBeetle()
-	{
+	public ModelTFSlimeBeetle() {
 		this(false);
 	}
-	
-	public ModelTFSlimeBeetle(boolean renderpass)
-	{
+
+	public ModelTFSlimeBeetle(boolean renderpass) {
 		this.renderPassModel = renderpass;
-		
+
 		textureWidth = 64;
 		textureHeight = 64;
 
@@ -143,29 +140,22 @@ public class ModelTFSlimeBeetle extends ModelBase
 		slimeCenter.setRotationPoint(0F, -6, 0);
 
 		tail1.addChild(tail2);
-		
-		if (renderPassModel)
-		{
+
+		if (renderPassModel) {
 			tail2.addChild(slimeCube);
-		}
-		else
-		{
+		} else {
 			tail2.addChild(slimeCenter);
 		}
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 
 		tail1.render(f5);
-		
-		if (renderPassModel)
-		{
-		}
-		else
-		{
+
+		if (renderPassModel) {
+		} else {
 			head.render(f5);
 			RearEnd.render(f5);
 			Leg6.render(f5);
@@ -181,8 +171,7 @@ public class ModelTFSlimeBeetle extends ModelBase
 		}
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z)
-	{
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -194,13 +183,12 @@ public class ModelTFSlimeBeetle extends ModelBase
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
-	{
-		this.head.rotateAngleY = par4 / (180F / (float)Math.PI);
-		this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
+	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
+		this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
+		this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
 
 		// legs!
-		float legZ = ((float)Math.PI / 11F);
+		float legZ = ((float) Math.PI / 11F);
 		this.Leg1.rotateAngleZ = -legZ;
 		this.Leg2.rotateAngleZ = legZ;
 		this.Leg3.rotateAngleZ = -legZ * 0.74F;
@@ -218,12 +206,12 @@ public class ModelTFSlimeBeetle extends ModelBase
 		this.Leg6.rotateAngleY = var10 * 2.0F - var9;
 
 		float var11 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 0.0F) * 0.4F) * par2;
-		float var12 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + (float)Math.PI) * 0.4F) * par2;
-		float var14 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float)Math.PI * 3F / 2F)) * 0.4F) * par2;
+		float var12 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * par2;
+		float var14 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * par2;
 
 		float var15 = Math.abs(MathHelper.sin(par1 * 0.6662F + 0.0F) * 0.4F) * par2;
-		float var16 = Math.abs(MathHelper.sin(par1 * 0.6662F + (float)Math.PI) * 0.4F) * par2;
-		float var18 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float)Math.PI * 3F / 2F)) * 0.4F) * par2;
+		float var16 = Math.abs(MathHelper.sin(par1 * 0.6662F + (float) Math.PI) * 0.4F) * par2;
+		float var18 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * par2;
 
 		this.Leg1.rotateAngleY += var11;
 		this.Leg2.rotateAngleY += -var11;
@@ -242,9 +230,8 @@ public class ModelTFSlimeBeetle extends ModelBase
 		this.Leg6.rotateAngleZ += -var18;
 
 
-		
 		// tail wiggle
-		this.tail1.rotateAngleX   = MathHelper.cos(par3 * 0.3335F) * 0.15F;
+		this.tail1.rotateAngleX = MathHelper.cos(par3 * 0.3335F) * 0.15F;
 		this.tail2.rotateAngleX = MathHelper.cos(par3 * 0.4445F) * 0.20F;
 		this.slimeCube.rotateAngleX = MathHelper.cos(par3 * 0.5555F) * 0.25F;
 		this.slimeCenter.rotateAngleX = MathHelper.cos(par3 * 0.5555F + 0.25F) * 0.25F;
