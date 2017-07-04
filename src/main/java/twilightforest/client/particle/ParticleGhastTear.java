@@ -57,8 +57,8 @@ public class ParticleGhastTear extends Particle {
 
 				//TwilightForestMod.LOGGER.info("tear impact {}, isremote {}", this, world.isRemote);
 
-				world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
-				world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
+				Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.ITEM_CRACK.getParticleID(), this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ, Item.getIdFromItem(popItem));
+				Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.EXPLOSION_NORMAL.getParticleID(), this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
 
 			}
 			this.setExpired();
