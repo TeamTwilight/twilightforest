@@ -39,6 +39,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
 
+	public StructureTFHelper helper = new StructureTFHelper();
+
 	public StructureTFComponent() {
 	}
 
@@ -157,6 +159,27 @@ public abstract class StructureTFComponent extends StructureComponent {
 		}
 
 		return tileEntitySpawner;
+	}
+
+	protected void surroundBlockCardinal(World world, IBlockState block, int x, int y, int z, StructureBoundingBox sbb) {
+		setBlockState(world, block, x + 0, y, z - 1, sbb);
+		setBlockState(world, block, x + 0, y, z + 1, sbb);
+		setBlockState(world, block, x - 1, y, z + 0, sbb);
+		setBlockState(world, block, x + 1, y, z + 0, sbb);
+	}
+
+	protected void surroundBlockCardinalRotated(World world, IBlockState block, int x, int y, int z, StructureBoundingBox sbb) {
+		setBlockState(world, block.withProperty(BlockStairs.FACING, EnumFacing.NORTH), x + 0, y, z - 1, sbb);
+		setBlockState(world, block.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), x + 0, y, z + 1, sbb);
+		setBlockState(world, block.withProperty(BlockStairs.FACING, EnumFacing.WEST), x - 1, y, z + 0, sbb);
+		setBlockState(world, block.withProperty(BlockStairs.FACING, EnumFacing.EAST), x + 1, y, z + 0, sbb);
+	}
+
+	protected void surroundBlockCorners(World world, IBlockState block, int x, int y, int z, StructureBoundingBox sbb) {
+		setBlockState(world, block, x - 1, y, z - 1, sbb);
+		setBlockState(world, block, x - 1, y, z + 1, sbb);
+		setBlockState(world, block, x + 1, y, z - 1, sbb);
+		setBlockState(world, block, x + 1, y, z + 1, sbb);
 	}
 
 	protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, Rotation rotation, ResourceLocation monsterID, StructureBoundingBox sbb) {
