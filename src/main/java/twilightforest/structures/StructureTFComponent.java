@@ -39,8 +39,6 @@ public abstract class StructureTFComponent extends StructureComponent {
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
 
-	public StructureTFHelper helper = new StructureTFHelper();
-
 	public StructureTFComponent() {
 	}
 
