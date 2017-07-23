@@ -260,6 +260,6 @@ public class BlockTFCastleDoor extends Block {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
+		return isVanished ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.SOLID;
 	}
 }
