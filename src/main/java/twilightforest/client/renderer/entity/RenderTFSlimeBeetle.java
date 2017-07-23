@@ -44,7 +44,7 @@ public class RenderTFSlimeBeetle extends RenderLiving<EntityTFSlimeBeetle> {
 
 		@Override
 		public boolean shouldCombineTextures() {
-			return false;
+			return true;
 		}
 	}
 }
