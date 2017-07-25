@@ -79,7 +79,7 @@ public class EntityTFNatureBolt extends EntityThrowable {
 				}
 			}
 
-			if (ray.entityHit instanceof EntityLivingBase) {
+			if (ray.entityHit instanceof EntityLivingBase && (thrower == null || (ray.entityHit != thrower && ray.entityHit != thrower.getRidingEntity()))) {
 				if (ray.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
 						&& world.getDifficulty() != EnumDifficulty.PEACEFUL) {
 					int poisonTime = world.getDifficulty() == EnumDifficulty.HARD ? 7 : 3;
