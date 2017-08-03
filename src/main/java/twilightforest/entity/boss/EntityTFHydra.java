@@ -672,6 +672,11 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
+	protected void collideWithEntity(Entity entityIn) {
+
+	}
+
+	@Override
 	public void knockBack(Entity entity, float i, double d, double d1) {
 	}
 
