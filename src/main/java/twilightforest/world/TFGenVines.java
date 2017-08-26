@@ -5,7 +5,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
@@ -15,22 +17,35 @@ import java.util.Random;
  */
 public class TFGenVines extends WorldGenerator {
 	public boolean generate(World worldIn, Random rand, BlockPos position) {
+		Chunk c = worldIn.getChunkFromBlockCoords(position);
+		BlockPos original = new BlockPos(c.x * 16 + 8, position.getY(), c.z * 16 + 8);
+		
 		for (; position.getY() > TFWorld.SEALEVEL; position = position.down()) {
+			if(isOutsideBounds(7, original, position)) return false;
 			if (worldIn.isAirBlock(position)) {
 				for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL.facings()) {
 					if (Blocks.VINE.canPlaceBlockOnSide(worldIn, position, enumfacing)) {
-						IBlockState iblockstate = Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, enumfacing == EnumFacing.NORTH).withProperty(BlockVine.WEST, Boolean.valueOf(enumfacing == EnumFacing.EAST)).withProperty(BlockVine.NORTH, Boolean.valueOf(enumfacing == EnumFacing.SOUTH)).withProperty(BlockVine.EAST, Boolean.valueOf(enumfacing == EnumFacing.WEST));
+						IBlockState iblockstate = Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, enumfacing == EnumFacing.NORTH).withProperty(BlockVine.WEST, enumfacing == EnumFacing.EAST).withProperty(BlockVine.NORTH, enumfacing == EnumFacing.SOUTH).withProperty(BlockVine.EAST, enumfacing == EnumFacing.WEST);
 						worldIn.setBlockState(position, iblockstate, 2);
+						BlockPos down = position.down();
+						while(worldIn.isAirBlock(down)) {
+							worldIn.setBlockState(down, iblockstate, 2);
+							down = down.down();
+						}
 						break;
 					}
 				}
-
-				//TODO: drape vines down in air blocks
 			} else {
-				position = position.add(rand.nextInt(4) - rand.nextInt(4), 0, rand.nextInt(4) - rand.nextInt(4));
+				position = position.add(MathHelper.getInt(rand, -3, 3), 0, MathHelper.getInt(rand, -3, 3));
 			}
 		}
 
 		return true;
+	}
+	
+	private boolean isOutsideBounds(int radius, BlockPos original, BlockPos pos) {
+		boolean flag1 = Math.abs(original.getX() - pos.getX()) > radius;
+		boolean flag2 = Math.abs(original.getZ() - pos.getZ()) > radius;
+		return flag1 || flag2;
 	}
 }
