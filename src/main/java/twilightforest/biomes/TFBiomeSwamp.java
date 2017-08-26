@@ -98,9 +98,9 @@ public class TFBiomeSwamp extends TFBiomeBase {
 			worldgenvines.generate(par1World, par2Random, new BlockPos(j, l, k));
 		}
 		for (int i = 0; i < 25; i++) {
-			int x = pos.getX() + par2Random.nextInt(16) + 8;
+			int x = pos.getX() + par2Random.nextInt(15) + 8;
 			int y = TFWorld.SEALEVEL;
-			int z = pos.getZ() + par2Random.nextInt(16) + 8;
+			int z = pos.getZ() + par2Random.nextInt(15) + 8;
 			hugeLilyPadGen.generate(par1World, par2Random, new BlockPos(x, y, z));
 		}
 		for (int i = 0; i < 2; i++) {

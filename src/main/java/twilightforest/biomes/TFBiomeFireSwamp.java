@@ -68,18 +68,18 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 			TFGenFireJet genSmoker = new TFGenFireJet(FireJetVariant.SMOKER);
 
 			if (rand.nextInt(4) == 0) {
-				int j = pos.getX() + rand.nextInt(16) + 8;
+				int j = pos.getX() + rand.nextInt(11) + 8;
 				byte byte0 = (byte) TFWorld.SEALEVEL;
-				int k = pos.getZ() + rand.nextInt(16) + 8;
+				int k = pos.getZ() + rand.nextInt(11) + 8;
 				genSmoker.generate(world, rand, new BlockPos(j, byte0, k));
 			}
 
 			TFGenFireJet genFireJet = new TFGenFireJet(FireJetVariant.JET_IDLE);
 
 			for (int i = 0; i < 1; i++) {
-				int j = pos.getX() + rand.nextInt(16) + 8;
+				int j = pos.getX() + rand.nextInt(11) + 8;
 				byte byte0 = (byte) TFWorld.SEALEVEL;
-				int k = pos.getZ() + rand.nextInt(16) + 8;
+				int k = pos.getZ() + rand.nextInt(11) + 8;
 				genFireJet.generate(world, rand, new BlockPos(j, byte0, k));
 			}
 		}
