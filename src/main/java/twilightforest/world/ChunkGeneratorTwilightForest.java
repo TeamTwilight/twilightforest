@@ -194,9 +194,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 						double d13 = (d4 - d2) * d9;
 
 						for (int i3 = 0; i3 < 4; ++i3) {
-							int j3 = i3 + k * 4 << 12 | 0 + j1 * 4 << 8 | k2 * 8 + l2;
-							short short1 = 256;
-							j3 -= short1;
 							double d14 = 0.25D;
 							double d16 = (d11 - d10) * d14;
 							double d15 = d10 - d16;
@@ -501,7 +498,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		// sets the groundlevel to the mazeheight
 		for (int y = 0; y <= 127; y++) {
-			int index = (x * 16 + z) * TFWorld.CHUNKHEIGHT + y;
 			Block b = primer.getBlockState(x, y, z).getBlock();
 			if (y < mazeheight && (b == Blocks.AIR || b == Blocks.WATER)) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
@@ -673,12 +669,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				}
 			}
 		}
-	}
-
-	private float pseudoRand(int bx, int bz) {
-		Random rand = new Random(this.world.getSeed() + (bx * 321534781) ^ (bz * 756839));
-		rand.setSeed(rand.nextLong());
-		return rand.nextFloat();
 	}
 
 	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome biomes[]) {

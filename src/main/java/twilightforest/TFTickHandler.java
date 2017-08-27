@@ -97,7 +97,6 @@ public class TFTickHandler {
 		ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) uncheckedChunkProvider;
 
 		int px = MathHelper.floor(player.posX);
-		int py = MathHelper.floor(player.posY);
 		int pz = MathHelper.floor(player.posZ);
 
 		if (chunkProvider != null && chunkProvider.isBlockNearFullStructure(px, pz, 100)) {

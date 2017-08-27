@@ -83,8 +83,6 @@ public class CommandTFFeature extends CommandBase {
 
 				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.world);
 
-				TFBiomeProvider wcm = (TFBiomeProvider) player.world.provider.getBiomeProvider();
-
 				boolean fc = TFFeature.isInFeatureChunk(player.world, dx, dz);
 				sender.sendMessage(new TextComponentTranslation("Center of feature = %s.", cc));
 				sender.sendMessage(new TextComponentTranslation("Are in feature chunk = %s.", fc));
