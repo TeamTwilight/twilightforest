@@ -20,7 +20,7 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 	}
 
 	@Override
-	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		// make a new size 15 main tower
 		EnumFacing direction = getStructureRelativeRotation(rotation);

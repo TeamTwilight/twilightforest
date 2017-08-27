@@ -98,7 +98,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		this.leafy = par1NBTTagCompound.getBoolean("branchLeafy");
 	}
 
-	public void makeSmallBranch(List list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(index, x, y, z, branchLength, branchRotation, branchAngle, leafy);
 		list.add(branch);
 		branch.buildComponent(this, list, rand);

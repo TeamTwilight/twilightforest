@@ -57,7 +57,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
 			this.deco = ((StructureTFComponent) parent).deco;
 		}
@@ -126,7 +126,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
@@ -219,7 +219,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	 * Make a mushroom roof!
 	 */
 	@Override
-	public void makeARoof(StructureComponent parent, List list, Random rand) {
+	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
 
 		ComponentTFTowerRoof roof = new ComponentTFTowerRoofMushroom(this.getComponentType() + 1, this, 1.6F);
 		if (StructureComponent.findIntersecting(list, roof.getBoundingBox()) instanceof ComponentTFTowerRoofMushroom) {
@@ -241,11 +241,11 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 
 	@Override
-	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	protected boolean makeBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		return this.makeBridge(list, rand, index, x, y, z, wingSize, wingHeight, rotation, false);
 	}
 
-	protected boolean makeBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation, boolean ascender) {
+	protected boolean makeBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation, boolean ascender) {
 		// bridges are size  always
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
@@ -275,7 +275,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private boolean makeMainBridge(List list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	private boolean makeMainBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);

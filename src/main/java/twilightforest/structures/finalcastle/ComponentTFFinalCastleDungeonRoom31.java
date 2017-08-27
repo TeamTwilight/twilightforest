@@ -80,7 +80,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		}
 	}
 
-	protected boolean addDungeonRoom(StructureComponent parent, List list, Random rand, Rotation rotation, int level) {
+	protected boolean addDungeonRoom(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation, int level) {
 		rotation = rotation.add(this.rotation);
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
@@ -105,7 +105,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		}
 	}
 
-	protected boolean addDungeonExit(StructureComponent parent, List list, Random rand, Rotation rotation) {
+	protected boolean addDungeonExit(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
 

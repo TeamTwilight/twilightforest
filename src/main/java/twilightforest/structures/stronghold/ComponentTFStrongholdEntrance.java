@@ -26,7 +26,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random random) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		// make a random component in each direction
@@ -50,7 +50,6 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		if (!listContainsBossRoom(list)) {
 			TwilightForestMod.LOGGER.info("Did not find boss room from exit 3 - EPIC FAIL");
 		}
-		List<StructureTFStrongholdComponent> pieceList = (List<StructureTFStrongholdComponent>) list;
 		StructureBoundingBox shieldBox = new StructureBoundingBox(this.boundingBox);
 
 		int tStairs = 0;
@@ -60,7 +59,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		int bossRooms = 0;
 
 		// compute and generate MEGASHIELD
-		for (StructureTFStrongholdComponent component : pieceList) {
+		for (StructureComponent component : list) {
 			shieldBox.expandTo(component.getBoundingBox());
 
 
@@ -95,8 +94,8 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 
 	}
 
-	private boolean listContainsBossRoom(List list) {
-		for (StructureTFStrongholdComponent component : (List<StructureTFStrongholdComponent>) list) {
+	private boolean listContainsBossRoom(List<StructureComponent> list) {
+		for (StructureComponent component : list) {
 			if (component instanceof ComponentTFStrongholdBossRoom) {
 				return true;
 			}

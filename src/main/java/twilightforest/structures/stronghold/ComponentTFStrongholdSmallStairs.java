@@ -64,7 +64,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random random) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		if (this.enterBottom) {

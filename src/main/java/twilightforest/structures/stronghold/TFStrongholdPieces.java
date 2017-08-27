@@ -88,7 +88,7 @@ public class TFStrongholdPieces {
 		return flag;
 	}
 
-	public StructureTFStrongholdComponent getNextComponent(StructureComponent parent, List list, Random random, int index, EnumFacing facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent getNextComponent(StructureComponent parent, List<StructureComponent> list, Random random, int index, EnumFacing facing, int x, int y, int z) {
 		if (!hasMoreLimitedPieces()) {
 			return null;
 		} else {
