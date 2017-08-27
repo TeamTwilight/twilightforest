@@ -103,7 +103,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Add a new component in the specified direction
 	 */
-	protected void addNewComponent(StructureComponent entrance, List list, Random random, Rotation facing, int x, int y, int z) {
+	protected void addNewComponent(StructureComponent entrance, List<StructureComponent> list, Random random, Rotation facing, int x, int y, int z) {
 		int index = this.componentType + 1;
 		EnumFacing nFacing = getStructureRelativeRotation(facing);
 		int nx = this.getXWithOffset(x, z);
@@ -116,7 +116,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 
 		// are we looking at a point we can possibly break in to?
-		StructureTFStrongholdComponent breakIn = this.findBreakInComponent(list, nx, ny, nz);
+		StructureTFStrongholdComponent breakIn = (StructureTFStrongholdComponent) this.findBreakInComponent(list, nx, ny, nz);
 		if (breakIn != null && breakIn.attemptToBreakIn(nx, ny, nz)) {
 			// success!
 			this.addDoorwayTo(x, y, z, facing);
@@ -125,7 +125,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 		TFStrongholdPieces pieceList = ((ComponentTFStrongholdEntrance) entrance).lowerPieces;
 
-		StructureTFStrongholdComponent nextComponent = pieceList.getNextComponent(entrance, list, random, index, nFacing, nx, ny, nz);
+		StructureComponent nextComponent = pieceList.getNextComponent(entrance, list, random, index, nFacing, nx, ny, nz);
 
 		// is it clear?
 		if (nextComponent != null) {
@@ -139,10 +139,10 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Check the list for components we can break in to at the specified point
 	 */
-	protected StructureTFStrongholdComponent findBreakInComponent(List<StructureTFStrongholdComponent> list, int x, int y, int z) {
+	protected StructureComponent findBreakInComponent(List<StructureComponent> list, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
-		for (StructureTFStrongholdComponent component : list) {
-			if (component.boundingBox != null && component.boundingBox.isVecInside(pos)) {
+		for (StructureComponent component : list) {
+			if (component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos)) {
 				return component;
 			}
 		}
@@ -151,7 +151,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 
-	protected void addNewUpperComponent(StructureComponent parent, List list, Random random, Rotation facing, int x, int y, int z) {
+	protected void addNewUpperComponent(StructureComponent parent, List<StructureComponent> list, Random random, Rotation facing, int x, int y, int z) {
 		StructureTFStrongholdComponent attempted = null;
 
 		int index = this.componentType + 1;
@@ -453,8 +453,9 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 				return z - boundingBox.minZ;
 			case EAST:
 				return boundingBox.maxZ - z;
+			default:
+				return x;
 		}
-		return x;
 	}
 
 	protected int getRelativeY(int par1) {
@@ -471,8 +472,9 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 				return boundingBox.maxX - x;
 			case EAST:
 				return x - boundingBox.minX;
+			default:
+				return z;
 		}
-		return z;
 	}
 
 	/**
