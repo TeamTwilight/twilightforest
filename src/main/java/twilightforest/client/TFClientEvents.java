@@ -50,7 +50,7 @@ public class TFClientEvents {
 	 * Do ice effect on slowed monsters
 	 */
 	@SubscribeEvent
-	public static void renderLivingPost(RenderLivingEvent.Post event) {
+	public static void renderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
 		boolean hasSlowness = event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(SLOWNESS_POTION_MODIFIER);
 		boolean showParticles = event.getEntity().getDataManager().get(EntityLivingBase.HIDE_PARTICLES);
 		if (hasSlowness && showParticles) {
@@ -81,7 +81,7 @@ public class TFClientEvents {
 	 * Render an entity with the ice effect.
 	 * This just displays a bunch of ice cubes around on their model
 	 */
-	private static void renderIcedEntity(EntityLivingBase entity, RenderLivingBase renderer, double x, double y, double z) {
+	private static void renderIcedEntity(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double x, double y, double z) {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 

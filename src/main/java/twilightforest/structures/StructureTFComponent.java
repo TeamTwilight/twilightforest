@@ -541,7 +541,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	/**
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
-	public static StructureComponent findIntersectingExcluding(List list, StructureBoundingBox toCheck, StructureComponent exclude) {
+	public static StructureComponent findIntersectingExcluding(List<StructureComponent> list, StructureBoundingBox toCheck, StructureComponent exclude) {
 		Iterator iterator = list.iterator();
 		StructureComponent structurecomponent;
 

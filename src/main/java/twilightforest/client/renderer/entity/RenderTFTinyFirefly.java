@@ -14,7 +14,7 @@ import twilightforest.entity.passive.EntityTFTinyFirefly;
 
 import java.nio.FloatBuffer;
 
-public class RenderTFTinyFirefly extends Render {
+public class RenderTFTinyFirefly extends Render<Entity> {
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "firefly-tiny.png");
 	private final ModelTFTinyFirefly fireflyModel = new ModelTFTinyFirefly();
 

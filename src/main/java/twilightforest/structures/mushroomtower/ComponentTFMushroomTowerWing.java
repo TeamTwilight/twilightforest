@@ -165,7 +165,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Adjust the coordinates for this tower to link up with any others within 3
 	 */
-	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, EnumFacing direction, List list) {
+	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, EnumFacing direction, List<StructureComponent> list) {
 
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
 
@@ -183,6 +183,8 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 							return new int[]{otherWing.getBoundingBox().maxX, y, otherWing.getBoundingBox().maxZ};
 						case EAST:
 							return new int[]{otherWing.getBoundingBox().minX, y, otherWing.getBoundingBox().maxZ};
+						default:
+							return new int[]{x, y, z};
 					}
 				}
 			}
@@ -195,7 +197,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Are there (not) any other towers below this bounding box?
 	 */
-	private boolean isHighest(StructureBoundingBox boundingBox, int size, List list) {
+	private boolean isHighest(StructureBoundingBox boundingBox, int size, List<StructureComponent> list) {
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
 
 		StructureBoundingBox boxAbove = new StructureBoundingBox(boundingBox);
