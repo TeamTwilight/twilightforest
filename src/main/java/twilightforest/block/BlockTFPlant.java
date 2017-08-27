@@ -28,7 +28,6 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.enums.PlantVariant;
-import twilightforest.block.enums.SaplingVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 

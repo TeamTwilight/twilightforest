@@ -8,8 +8,6 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.NonNullList;
 import twilightforest.client.ModelRegisterCallback;
 
-import javax.annotation.Nonnull;
-
 public class ItemTFIronwoodSword extends ItemSword implements ModelRegisterCallback {
 
 	public ItemTFIronwoodSword(Item.ToolMaterial material) {

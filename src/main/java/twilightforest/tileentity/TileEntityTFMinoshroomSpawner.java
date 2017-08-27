@@ -2,7 +2,6 @@ package twilightforest.tileentity;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
-import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 
 public class TileEntityTFMinoshroomSpawner extends TileEntityTFBossSpawner {

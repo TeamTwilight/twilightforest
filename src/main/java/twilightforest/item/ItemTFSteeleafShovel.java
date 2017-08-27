@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import twilightforest.client.ModelRegisterCallback;
 
-import javax.annotation.Nonnull;
-
 public class ItemTFSteeleafShovel extends ItemSpade implements ModelRegisterCallback {
 
 	public ItemTFSteeleafShovel(Item.ToolMaterial par2EnumToolMaterial) {

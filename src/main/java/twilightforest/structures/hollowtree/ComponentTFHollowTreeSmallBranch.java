@@ -5,10 +5,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.TFBlocks;
 
-import java.util.List;
 import java.util.Random;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
