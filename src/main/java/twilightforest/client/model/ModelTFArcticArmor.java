@@ -1,9 +1,8 @@
 package twilightforest.client.model;
 
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelTFArcticArmor extends ModelBiped {
+public class ModelTFArcticArmor extends ModelTFArmor {
 
 	public ModelTFArcticArmor(float expand) {
 		super(expand);

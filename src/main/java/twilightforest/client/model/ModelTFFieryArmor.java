@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 
-public class ModelTFFieryArmor extends ModelBiped {
+public class ModelTFFieryArmor extends ModelTFArmor {
 
 	public ModelTFFieryArmor(float expand) {
 		super(expand);

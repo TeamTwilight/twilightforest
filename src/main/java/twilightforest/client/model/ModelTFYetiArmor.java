@@ -1,11 +1,10 @@
 package twilightforest.client.model;
 
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 
-public class ModelTFYetiArmor extends ModelBiped {
+public class ModelTFYetiArmor extends ModelTFArmor {
 
 	private final EntityEquipmentSlot slot;
 

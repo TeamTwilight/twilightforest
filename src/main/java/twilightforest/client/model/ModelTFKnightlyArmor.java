@@ -1,9 +1,8 @@
 package twilightforest.client.model;
 
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelTFKnightlyArmor extends ModelBiped {
+public class ModelTFKnightlyArmor extends ModelTFArmor {
 
 	public ModelRenderer righthorn1;
 	public ModelRenderer righthorn2;
