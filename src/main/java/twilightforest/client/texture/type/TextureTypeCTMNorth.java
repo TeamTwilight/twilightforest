@@ -16,7 +16,7 @@ public class TextureTypeCTMNorth extends TextureTypeCTM {
 
 	@Override
 	public ICTMTexture<? extends TextureTypeCTM> makeTexture(TextureInfo info) {
-		return new TextureCTM(this, info);
+		return new TextureCTM<TextureTypeCTM>(this, info);
 	}
 
 	@Override

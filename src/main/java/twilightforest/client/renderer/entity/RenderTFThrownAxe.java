@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 
-public class RenderTFThrownAxe extends Render {
+public class RenderTFThrownAxe extends Render<Entity> {
 	private final ItemStack myItem;
 
 	public RenderTFThrownAxe(RenderManager manager, Item knightlyAxe) {
