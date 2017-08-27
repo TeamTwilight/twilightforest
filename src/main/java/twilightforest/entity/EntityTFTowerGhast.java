@@ -3,7 +3,6 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +17,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFGhastFindEntityNearestPlayer;
 import twilightforest.entity.boss.EntityTFUrGhast;
 

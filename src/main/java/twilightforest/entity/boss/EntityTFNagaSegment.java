@@ -10,10 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-
 import java.util.List;
 
 public class EntityTFNagaSegment extends Entity {

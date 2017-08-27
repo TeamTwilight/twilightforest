@@ -4,12 +4,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 
-import java.util.List;
 import java.util.Random;
 
 public class ComponentTFTrollVault extends StructureTFComponent {

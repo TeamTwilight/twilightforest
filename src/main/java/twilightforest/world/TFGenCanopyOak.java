@@ -11,7 +11,6 @@ import twilightforest.block.TFBlocks;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 public class TFGenCanopyOak extends TFGenCanopyTree {
 

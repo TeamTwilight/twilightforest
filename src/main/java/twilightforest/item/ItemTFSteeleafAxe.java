@@ -6,11 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
-
-import javax.annotation.Nonnull;
 
 public class ItemTFSteeleafAxe extends ItemAxe implements ModelRegisterCallback {
 

@@ -1,6 +1,5 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.ParticleEnchantmentTable;
 import net.minecraft.client.particle.ParticleSmokeNormal;
 import net.minecraft.world.World;
 

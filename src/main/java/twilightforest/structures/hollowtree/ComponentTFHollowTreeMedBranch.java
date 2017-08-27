@@ -11,7 +11,6 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFGenerator;
 
 import java.util.List;
