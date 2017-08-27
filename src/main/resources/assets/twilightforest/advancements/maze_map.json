@@ -10,7 +10,7 @@
       "translate": "advancement.twilightMazeMap.desc"
     }
   },
-  "parent": "twilightforest:progress_lich",
+  "parent": "twilightforest:magic_map",
   "criteria": {
     "map": {
       "trigger": "minecraft:inventory_changed",

@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:experiment_115"
+    },
+    "title": {
+      "translate": "advancement.twilight_experiment_115"
+    },
+    "description": {
+      "translate": "advancement.twilight_experiment_115.desc"
+    }
+  },
+  "parent": "twilightforest:progress_knights",
+  "criteria": {
+    "eat_experiment_115": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "item": "twilightforest:experiment_115"
+        }
+      }
+    }
+  }
+}

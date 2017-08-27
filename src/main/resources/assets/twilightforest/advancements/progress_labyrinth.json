@@ -8,32 +8,18 @@
     },
     "description": {
       "translate": "advancement.twilightProgressLabyrinth.desc"
-    }
+    },
+    "frame": "goal"
   },
   "parent": "twilightforest:progress_lich",
   "criteria": {
     "meef": {
-      "trigger": "minecraft:inventory_changed",
+      "trigger": "minecraft:consume_item",
       "conditions": {
-        "items": [
-          {
-            "item": "twilightforest:meef_stroganoff"
-          }
-        ]
-      }
-    },
-    "axe": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "twilightforest:minotaur_axe"
-          }
-        ]
+        "item": {
+          "item": "twilightforest:meef_stroganoff"
+        }
       }
     }
-  },
-  "requirements": [
-    [ "meef", "axe" ]
-  ]
+  }
 }

@@ -8,9 +8,10 @@
     },
     "description": {
       "translate": "advancement.twilightNagaArmors.desc"
-    }
+    },
+    "frame": "challenge"
   },
-  "parent": "twilightforest:kill_naga",
+  "parent": "twilightforest:progress_naga",
   "criteria": {
     "armor": {
       "trigger": "minecraft:inventory_changed",

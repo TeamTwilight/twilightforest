@@ -8,7 +8,8 @@
     },
     "description": {
       "translate": "advancement.twilightProgressYeti.desc"
-    }
+    },
+    "frame": "goal"
   },
   "parent": "twilightforest:progress_ur_ghast",
   "criteria": {

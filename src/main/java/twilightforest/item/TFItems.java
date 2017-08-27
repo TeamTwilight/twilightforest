@@ -249,6 +249,8 @@ public class TFItems {
 	public static final Item cubeTalisman;
 	@GameRegistry.ObjectHolder("cube_of_annihilation")
 	public static final Item cubeOfAnnihilation;
+	@GameRegistry.ObjectHolder("twilight_portal")
+	public static final Item portal;
 
 	public static CreativeTabTwilightForest creativeTab = new CreativeTabTwilightForest("twilightForest");
 
@@ -381,5 +383,6 @@ public class TFItems {
 		chainBlock = null;
 		cubeTalisman = null;
 		cubeOfAnnihilation = null;
+		portal = null;
 	}
 }

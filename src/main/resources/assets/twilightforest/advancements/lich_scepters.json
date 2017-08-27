@@ -8,9 +8,11 @@
     },
     "description": {
       "translate": "advancement.twilightLichScepters.desc"
-    }
+    },
+    "frame": "challenge",
+    "hidden": true
   },
-  "parent": "twilightforest:kill_lich",
+  "parent": "twilightforest:progress_lich",
   "criteria": {
     "scepters": {
       "trigger": "minecraft:inventory_changed",

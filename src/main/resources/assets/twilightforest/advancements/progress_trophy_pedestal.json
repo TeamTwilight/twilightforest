@@ -8,7 +8,8 @@
     },
     "description": {
       "translate": "advancement.twilightProgressTrophyPedestal.desc"
-    }
+    },
+    "frame": "goal"
   },
   "parent": "twilightforest:progress_hydra",
   "__comment": "This is triggered by code. In the future, it may become data-driven",

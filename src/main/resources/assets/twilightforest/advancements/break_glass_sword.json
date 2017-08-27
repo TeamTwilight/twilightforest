@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "twilightforest:glass_sword"
+        },
+        "title": {
+            "translate": "advancement.twilight_glass_sword"
+        },
+        "description": {
+            "translate": "advancement.twilight_glass_sword.desc"
+        },
+        "frame": "challenge",
+        "hidden": true
+    },
+    "parent": "twilightforest:progress_yeti",
+    "criteria": {
+        "broken_sword": {
+            "trigger": "minecraft:item_durability_changed",
+            "conditions": {
+                "item": {
+                    "item": "twilightforest:glass_sword"
+                },
+                "durability": -1
+            }
+        }
+    }
+}

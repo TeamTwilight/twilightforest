@@ -1,49 +1,26 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:lifedrain_scepter"
+      "item": "twilightforest:trophy",
+      "data": 1
     },
     "title": {
-      "translate": "advancement.twilightProgressLich"
+      "translate": "advancement.twilightKillLich"
     },
     "description": {
-      "translate": "advancement.twilightProgressLich.desc"
-    }
+      "translate": "advancement.twilightKillLich.desc"
+    },
+    "frame": "goal"
   },
-  "parent": "twilightforest:kill_lich",
+  "parent": "twilightforest:progress_naga",
   "criteria": {
-    "lifedrain_scepter": {
-      "trigger": "minecraft:inventory_changed",
+    "lich": {
+      "trigger": "minecraft:player_killed_entity",
       "conditions": {
-        "items": [
-          {
-            "item": "twilightforest:lifedrain_scepter"
-          }
-        ]
-      }
-    },
-    "twilight_scepter": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "twilightforest:twilight_scepter"
-          }
-        ]
-      }
-    },
-    "zombie_scepter": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "twilightforest:zombie_scepter"
-          }
-        ]
+        "entity": {
+          "type": "twilightforest:lich"
+        }
       }
     }
-  },
-  "requirements": [
-    [ "lifedrain_scepter", "twilight_scepter", "zombie_scepter" ]
-  ]
+  }
 }

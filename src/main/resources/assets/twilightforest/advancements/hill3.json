@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:diamond_ore"
+      "item": "minecraft:glowstone_dust"
     },
     "title": {
       "translate": "advancement.twilightHill3"

@@ -108,5 +108,5 @@ dependencies {
     //deobfCompile files('libs/Thaumcraft-1.7.10-4.2.3.5.jar')
 
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
-    compile "team.chisel.ctm:CTM:MC${minecraft_version}-${ctm_version}"
+    compile "team.chisel.ctm:CTM:MC1.12-${ctm_version}"
 }

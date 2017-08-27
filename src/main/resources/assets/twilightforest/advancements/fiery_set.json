@@ -8,7 +8,8 @@
     },
     "description": {
       "translate": "advancement.twilightFierySet.desc"
-    }
+    },
+    "frame": "challenge"
   },
   "parent": "twilightforest:progress_hydra",
   "criteria": {

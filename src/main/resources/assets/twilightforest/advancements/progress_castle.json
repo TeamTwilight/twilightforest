@@ -1,14 +1,16 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:stonebrick"
+      "item": "twilightforest:castle_rune_brick",
+      "data": 3
     },
     "title": {
       "translate": "advancement.twilightProgressCastle"
     },
     "description": {
       "translate": "advancement.twilightProgressCastle.desc"
-    }
+    },
+    "frame": "goal"
   },
   "parent": "twilightforest:progress_thorns",
   "criteria": {

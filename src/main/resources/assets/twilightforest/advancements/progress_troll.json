@@ -8,7 +8,8 @@
     },
     "description": {
       "translate": "advancement.twilightProgressTroll.desc"
-    }
+    },
+    "frame": "goal"
   },
   "parent": "twilightforest:progress_glacier",
   "criteria": {

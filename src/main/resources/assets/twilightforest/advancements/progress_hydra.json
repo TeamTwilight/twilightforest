@@ -1,25 +1,25 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:fiery_blood"
+      "item": "twilightforest:trophy",
+      "data": 2
     },
     "title": {
-      "translate": "advancement.twilightProgressHydra"
+      "translate": "advancement.twilightKillHydra"
     },
     "description": {
-      "translate": "advancement.twilightProgressHydra.desc"
-    }
+      "translate": "advancement.twilightKillHydra.desc"
+    },
+    "frame": "goal"
   },
-  "parent": "twilightforest:kill_hydra",
+  "parent": "twilightforest:progress_labyrinth",
   "criteria": {
-    "blood": {
-      "trigger": "minecraft:inventory_changed",
+    "hydra": {
+      "trigger": "minecraft:player_killed_entity",
       "conditions": {
-        "items": [
-          {
-            "item": "twilightforest:fiery_blood"
-          }
-        ]
+        "entity": {
+          "type": "twilightforest:hydra"
+        }
       }
     }
   }

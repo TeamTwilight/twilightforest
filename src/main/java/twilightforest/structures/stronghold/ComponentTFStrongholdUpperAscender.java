@@ -71,18 +71,18 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 
 			// steps!
 			if (exitTop) {
-				makeStairsAt(world, 1, 3, Rotation.CLOCKWISE_90, sbb);
-				makeStairsAt(world, 2, 4, Rotation.CLOCKWISE_90, sbb);
-				makeStairsAt(world, 3, 5, Rotation.CLOCKWISE_90, sbb);
-				makeStairsAt(world, 4, 6, Rotation.CLOCKWISE_90, sbb);
-				makeStairsAt(world, 5, 7, Rotation.CLOCKWISE_90, sbb);
+				makeStairsAt(world, 1, 3, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 2, 4, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 3, 5, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 4, 6, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 5, 7, EnumFacing.NORTH, sbb);
 				makePlatformAt(world, 5, 8, sbb);
 			} else {
-				makeStairsAt(world, 1, 6, Rotation.COUNTERCLOCKWISE_90, sbb);
-				makeStairsAt(world, 2, 5, Rotation.COUNTERCLOCKWISE_90, sbb);
-				makeStairsAt(world, 3, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
-				makeStairsAt(world, 4, 3, Rotation.COUNTERCLOCKWISE_90, sbb);
-				makeStairsAt(world, 5, 2, Rotation.COUNTERCLOCKWISE_90, sbb);
+				makeStairsAt(world, 1, 6, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 2, 5, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 3, 4, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 4, 3, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 5, 2, EnumFacing.NORTH, sbb);
 				makePlatformAt(world, 5, 1, sbb);
 			}
 			return true;
@@ -92,11 +92,11 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	/**
 	 * Check if we can find at least one wall, and if so, generate stairs
 	 */
-	private void makeStairsAt(World world, int y, int z, Rotation facing, StructureBoundingBox sbb) {
+	private void makeStairsAt(World world, int y, int z, EnumFacing facing, StructureBoundingBox sbb) {
 		// check walls
 		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {
-				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStructureRelativeRotation(facing)), x, y, z, sbb);
+				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, facing), x, y, z, sbb);
 			}
 		}
 	}

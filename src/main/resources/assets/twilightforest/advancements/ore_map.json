@@ -8,7 +8,9 @@
     },
     "description": {
       "translate": "advancement.twilightOreMap.desc"
-    }
+    },
+    "frame": "challenge",
+    "hidden": true
   },
   "parent": "twilightforest:maze_map",
   "criteria": {

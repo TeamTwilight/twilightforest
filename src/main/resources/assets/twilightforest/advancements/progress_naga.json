@@ -1,17 +1,26 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:naga_scale"
+      "item": "twilightforest:trophy"
     },
     "title": {
-      "translate": "advancement.twilightProgressNaga"
+      "translate": "advancement.twilightKillNaga"
     },
     "description": {
-      "translate": "advancement.twilightProgressNaga.desc"
-    }
+      "translate": "advancement.twilightKillNaga.desc"
+    },
+    "frame": "goal"
   },
-  "parent": "twilightforest:kill_naga",
+  "parent": "twilightforest:twilight_hunter",
   "criteria": {
+    "naga": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:naga"
+        }
+      }
+    },
     "scale": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
