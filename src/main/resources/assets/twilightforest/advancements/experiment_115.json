@@ -12,10 +12,12 @@
   },
   "parent": "twilightforest:progress_knights",
   "criteria": {
-    "map": {
-      "trigger": "minecraft:placed_block",
+    "eat_experiment_115": {
+      "trigger": "minecraft:consume_item",
       "conditions": {
-        "block": "twilightforest:experiment_115"
+        "item": {
+          "item": "twilightforest:experiment_115"
+        }
       }
     }
   }

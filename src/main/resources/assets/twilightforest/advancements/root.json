@@ -9,12 +9,15 @@
     "description": {
       "translate": "advancement.twilightforest.desc"
     },
-    "background": "twilightforest:textures/blocks/mazestone_brick.png",
+    "background": "twilightforest:textures/blocks/mazestone_large_brick.png",
     "announce_to_chat": false
   },
   "criteria": {
-    "code_triggered": {
-      "trigger": "minecraft:impossible"
+    "in_tf": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "dimension": "twilight_forest"
+      }
     }
   }
 }

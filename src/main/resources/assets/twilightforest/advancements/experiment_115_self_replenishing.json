@@ -1,7 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:experiment_115"
+      "item": "twilightforest:experiment_115",
+      "data": 1
     },
     "title": {
       "translate": "advancement.twilight_experiment_115_2"
@@ -14,7 +15,7 @@
   },
   "parent": "twilightforest:experiment_115",
   "criteria": {
-    "map": {
+    "place_complete_experiment_115": {
       "trigger": "minecraft:placed_block",
       "conditions": {
         "block": "twilightforest:experiment_115",

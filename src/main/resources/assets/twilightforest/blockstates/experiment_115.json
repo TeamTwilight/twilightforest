@@ -11,7 +11,9 @@
 		"uvlock": true
 	},
   "variants": {
-		"inventory":   [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:items/experiment_115"}}],
+		"inventory":      [{ "model": "twilightforest:util/item",         "textures": { "layer0": "twilightforest:items/experiment_115"                        }}],
+		"inventory_full": [{ "model": "twilightforest:experiment115_8_8", "textures": { "top_2":  "twilightforest:blocks/experiment115/experiment115_sprinkle" }}],
+		"inventory_think":[{ "model": "twilightforest:util/item",         "textures": { "layer0": "twilightforest:items/think115"                              }}],
   	"omnomnom": {
   		0: { "model": "twilightforest:experiment115_8_8" },
   		1: { "model": "twilightforest:experiment115_7_8" },

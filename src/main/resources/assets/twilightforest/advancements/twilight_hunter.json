@@ -10,7 +10,7 @@
       "translate": "advancement.twilightHunter.desc"
     }
   },
-  "parent": "twilightforest:twilight_arrival",
+  "parent": "twilightforest:root",
   "criteria": {
     "adherent": {
       "trigger": "minecraft:player_killed_entity",

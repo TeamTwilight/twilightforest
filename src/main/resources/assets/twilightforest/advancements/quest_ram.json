@@ -10,7 +10,7 @@
       "translate": "advancement.twilightQuestRam.desc"
     }
   },
-  "parent": "twilightforest:twilight_arrival",
+  "parent": "twilightforest:root",
   "__comment": "This is triggered by code. In the future, it may become data-driven",
   "criteria": {
     "code_triggered": {

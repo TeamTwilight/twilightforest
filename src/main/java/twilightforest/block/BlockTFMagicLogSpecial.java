@@ -9,12 +9,14 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
@@ -53,9 +55,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		if (state.getValue(LOG_AXIS) == EnumAxis.NONE) {
-			return;
-		}
+		if (state.getValue(LOG_AXIS) != EnumAxis.NONE) return;
 
 		if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TIME) {
 			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
@@ -75,10 +75,10 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9) {
 		if (state.getValue(LOG_AXIS) == EnumAxis.Y) {
 			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.NONE));
+			world.scheduleUpdate(pos, this, this.tickRate(world));
 			return true;
 		} else if (state.getValue(LOG_AXIS) == EnumAxis.NONE) {
 			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.Y));
-			world.scheduleUpdate(pos, this, this.tickRate(world));
 			return true;
 		}
 
@@ -341,5 +341,4 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		par3List.add(new ItemStack(this, 1, 2));
 		par3List.add(new ItemStack(this, 1, 3));
 	}
-
 }

@@ -2,8 +2,6 @@ itemGroup.twilightForest=Twilight Forest
 
 advancement.twilightforest.desc=Enter the mysterious magical woodlands, the Twilight Forest!
 
-advancement.twilightArrival=Twilight Arrival
-advancement.twilightArrival.desc=Arrive in the Twilight Forest.
 advancement.twilightMagicMapFocus=With Fire It Writes
 advancement.twilightMagicMapFocus.desc=Craft the magic map focus with a raven's feather, glowstone dust, and torchberries.
 
@@ -27,6 +25,8 @@ advancement.twilight_experiment_115=Another Lie
 advancement.twilight_experiment_115.desc=It looks like Cake, though...
 advancement.twilight_experiment_115_2=Making a note: Huge Success!
 advancement.twilight_experiment_115_2.desc=It's so delicious and moist!
+advancement.twilight_experiment_115_3=Eating 115 Everyday, 115 Years, Forever
+advancement.twilight_experiment_115_3.desc=eating experiment one-hundred-fifteen all day, forever, one-hundred-fifteen times experiment one-hundred-fifteen, experiment one-hundred-fifteen dot com, double-u double-u double-u dot experiment one-hundred-fifteen dot com, one-hundred-fifteen years, every minute experiment one-hundred-fifteen dot com, double-u double-u double-u dot one-hundred-fifteen times experiment one-hundred-fifteen dot com
 
 advancement.twilight_glass_sword=Hope you made good use of that
 advancement.twilight_glass_sword.desc=Your shot at being a one hit wonder lies within your grasp!
@@ -46,7 +46,7 @@ advancement.twilightOreMap.desc=Craft the maze/ore map.
 advancement.twilightHydraChop=Massive Chops
 advancement.twilightHydraChop.desc=Chow down on some overpowered hydra meat when your food bar is empty.
 advancement.twilightMazebreaker=Breaking the Maze
-advancement.twilightMazebreaker.desc=Find the Mazebreaker pick in the secret labyrinth vault.
+advancement.twilightMazebreaker.desc=Find the Mazebreaker pickaxe in the secret labyrinth vault.
 advancement.twilightFierySet=Gallons of Blood and Tears
 advancement.twilightFierySet.desc=Wield a fiery tool or weapon while wearing at least one piece of fiery armor.
 advancement.twilightQuestRam=Consumate Baaahs
@@ -81,6 +81,7 @@ tile.TFLeaves.2.name=Mangrove Leaves
 tile.TFLeaves.3.name=Rainbow Oak Leaves
 tile.TFFirefly.name=Firefly
 tile.TFCicada.name=Cicada
+item.TFPortal.name=Twilight Forest Portal
 tile.TFPortal.name=Twilight Forest Portal
 tile.TFMazestone.0.name=Mazestone
 tile.TFMazestone.1.name=Mazestone Brick

@@ -10,7 +10,7 @@
       "translate": "advancement.twilightHill1.desc"
     }
   },
-  "parent": "twilightforest:twilight_arrival",
+  "parent": "twilightforest:root",
   "__comment": "These are triggered by code in order to test for a Hill nearby. In the future, these may become data-driven",
   "criteria": {
     "boggard": {

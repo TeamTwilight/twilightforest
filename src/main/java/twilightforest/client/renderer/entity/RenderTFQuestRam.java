@@ -42,6 +42,7 @@ public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, var4);
 			RenderTFQuestRam.this.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
 
 		@Override

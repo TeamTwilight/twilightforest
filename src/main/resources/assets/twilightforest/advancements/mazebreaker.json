@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightMazebreaker.desc"
     },
-    "frame": "goal"
+    "frame": "challenge"
   },
   "parent": "twilightforest:progress_lich",
   "criteria": {

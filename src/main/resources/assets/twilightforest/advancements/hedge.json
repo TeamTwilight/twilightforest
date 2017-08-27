@@ -10,7 +10,7 @@
       "translate": "advancement.twilightHedge.desc"
     }
   },
-  "parent": "twilightforest:twilight_arrival",
+  "parent": "twilightforest:root",
   "__comment": "These are triggered by code in order to test for a Hedge nearby. In the future, these may become data-driven",
   "criteria": {
     "hedge_spider": {
