@@ -281,7 +281,7 @@ public class TFFeature {
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
 
 		if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider) {
-			TFBiomeProvider tfManager = (TFBiomeProvider) world.getBiomeProvider();
+			//TFBiomeProvider tfManager = (TFBiomeProvider) world.getBiomeProvider();
 
 			if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
 				return getFeatureAt(chunkX << 4, chunkZ << 4, world);
@@ -545,7 +545,7 @@ public class TFFeature {
 		int regionX = (chunkX + 8) >> 4;
 		int regionZ = (chunkZ + 8) >> 4;
 
-		long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
+		long seed = (regionX * 3129871) ^ (regionZ * 116129781L);
 		seed = seed * seed * 42317861L + seed * 7L;
 
 		int num0 = (int) (seed >> 12 & 3L);
