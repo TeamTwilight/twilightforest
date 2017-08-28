@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 
 public class TextureContextCTMWest extends TextureContextCTM implements ITextureContext {
 
-	public TextureContextCTMWest(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos, TextureCTM tex) {
+	public TextureContextCTMWest(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos, TextureCTM<?> tex) {
 		super(state, world, pos, tex);
 	}
 

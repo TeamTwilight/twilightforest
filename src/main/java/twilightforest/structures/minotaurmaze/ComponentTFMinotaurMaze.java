@@ -19,7 +19,6 @@ import java.util.Random;
 
 public class ComponentTFMinotaurMaze extends StructureTFComponent {
 
-	private static final int FLOOR_LEVEL = 1;
 	TFMaze maze;
 	int rcoords[];
 	private int level;
@@ -164,7 +163,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 	 * @param random
 	 * @param list
 	 */
-	protected void decorateDeadEndsCorridors(Random random, List list) {
+	protected void decorateDeadEndsCorridors(Random random, List<StructureComponent> list) {
 		for (int x = 0; x < maze.width; x++) {
 			for (int z = 0; z < maze.depth; z++) {
 				StructureTFComponent component = null;
@@ -262,7 +261,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random random) {
+	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
 		super.buildComponent(structurecomponent, list, random);
 
 		// add a second story

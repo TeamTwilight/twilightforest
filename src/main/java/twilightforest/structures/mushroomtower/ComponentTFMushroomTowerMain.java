@@ -51,7 +51,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {
 			this.deco = ((StructureTFComponent) parent).deco;
 		}
@@ -100,7 +100,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	/**
 	 * Make a new ascender tower.  Return direction (0-4) if successful, -1 if not.
 	 */
-	private Rotation makeAscenderTower(List list, Random rand) {
+	private Rotation makeAscenderTower(List<StructureComponent> list, Random rand) {
 		Rotation mainDir;
 		int[] dest;
 		int childHeight;
@@ -126,7 +126,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	 * Make a mushroom roof!
 	 */
 	@Override
-	public void makeARoof(StructureComponent parent, List list, Random rand) {
+	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		ComponentTFTowerRoof roof = new ComponentTFTowerRoofMushroom(this.getComponentType() + 1, this, 1.6F);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);

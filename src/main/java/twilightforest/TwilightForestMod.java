@@ -19,7 +19,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
-import twilightforest.item.TFRecipes;
 import twilightforest.structures.StructureTFMajorFeatureStart;
 import twilightforest.tileentity.*;
 import twilightforest.util.TFEntityNames;

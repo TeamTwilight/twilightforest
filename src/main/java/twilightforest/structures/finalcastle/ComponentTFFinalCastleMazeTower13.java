@@ -90,7 +90,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	/**
 	 * Build more components towards the destination
 	 */
-	public void buildTowards(StructureComponent parent, List list, Random rand, BlockPos dest) {
+	public void buildTowards(StructureComponent parent, List<StructureComponent> list, Random rand, BlockPos dest) {
 		// regular building first, adds roof/foundation
 		this.buildComponent(parent, list, rand);
 
@@ -135,7 +135,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 	}
 
-	protected void buildNonCriticalTowers(StructureComponent parent, List list, Random rand) {
+	protected void buildNonCriticalTowers(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		// pick a random direction
 		EnumFacing dir = RotationUtil.getRandomFacing(rand);
 		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), dir);
@@ -217,7 +217,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return this.getCoordBaseMode();
 	}
 
-	private boolean buildContinueTowerTowards(List list, Random rand, BlockPos dest, EnumFacing facing, int howFar) {
+	private boolean buildContinueTowerTowards(List<StructureComponent> list, Random rand, BlockPos dest, EnumFacing facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// adjust opening towards dest.getY() if we are getting close to dest
@@ -285,7 +285,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	}
 
 
-	protected boolean buildDamagedTower(List list, Random rand, EnumFacing facing) {
+	protected boolean buildDamagedTower(List<StructureComponent> list, Random rand, EnumFacing facing) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		int howFar = 14 + rand.nextInt(24);
@@ -343,7 +343,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return openY;
 	}
 
-	private boolean buildEndTowerTowards(List list, Random rand, BlockPos dest, EnumFacing facing, int howFar) {
+	private boolean buildEndTowerTowards(List<StructureComponent> list, Random rand, BlockPos dest, EnumFacing facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = new BlockPos(
 				opening.getX(),
@@ -456,6 +456,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 				break;
 			case EAST:
 				dz -= howFar;
+				break;
+			default:
 				break;
 		}
 

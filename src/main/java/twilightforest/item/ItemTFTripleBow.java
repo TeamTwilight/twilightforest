@@ -21,6 +21,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 
 	// Half [VanillaCopy]: copy of modified super to fire three arrows
 	// TODO: make it less dirty
+	@SuppressWarnings("unused")
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving instanceof EntityPlayer) {

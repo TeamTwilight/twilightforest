@@ -18,8 +18,8 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraftforge.fml.common.FMLLog;
 import twilightforest.TFTreasure;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFTowerDevice;
@@ -68,7 +68,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		{
 			int amtToLower = (((this.boundingBox.maxY - 245) / 5) * 5) + 5;
 
-			FMLLog.info("[TwilightForest] Lowering Dark Tower max height by %d to be within world bounds", amtToLower);
+			TwilightForestMod.LOGGER.info("[TwilightForest] Lowering Dark Tower max height by %d to be within world bounds", amtToLower);
 
 			this.height -= amtToLower;
 			this.boundingBox.maxY -= amtToLower;
@@ -183,7 +183,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			// count how many size 9 towers we have hanging off us
 			ArrayList<ComponentTFDarkTowerWing> possibleKeyTowers = new ArrayList<ComponentTFDarkTowerWing>();
 
-			int smallTowers = 0;
 
 			for (Object piece : list)
 			{
@@ -192,11 +191,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 					ComponentTFDarkTowerWing wing = (ComponentTFDarkTowerWing)piece;
 
 					if (wing.size == 9 && wing.getComponentType() == this.getComponentType())
-					{
-						smallTowers++;
-
 						possibleKeyTowers.add(wing);
-					}
 				}
 			}
 
@@ -204,7 +199,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			{
 				if (possibleKeyTowers.size() < 1)
 				{
-					FMLLog.warning("[TwilightForest] Dark forest tower could not find four small towers to place keys in.");
+					TwilightForestMod.LOGGER.warn("[TwilightForest] Dark forest tower could not find four small towers to place keys in.");
 					break;
 				}
 

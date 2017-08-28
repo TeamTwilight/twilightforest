@@ -33,7 +33,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent {
 	/**
 	 * build more steps towards the specified direction
 	 */
-	public ComponentTFFinalCastleDungeonSteps buildMoreStepsTowards(StructureComponent parent, List list, Random rand, Rotation rotation) {
+	public ComponentTFFinalCastleDungeonSteps buildMoreStepsTowards(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation) {
 
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 
@@ -73,7 +73,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent {
 	/**
 	 * build a new level under the exit
 	 */
-	public ComponentTFFinalCastleDungeonEntrance buildLevelUnder(StructureComponent parent, List list, Random rand, int level) {
+	public ComponentTFFinalCastleDungeonEntrance buildLevelUnder(StructureComponent parent, List<StructureComponent> list, Random rand, int level) {
 		// find center of landing
 		int dx = this.getXWithOffset(2, 19);
 		int dy = this.getYWithOffset(-7);

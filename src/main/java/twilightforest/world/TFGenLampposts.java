@@ -8,7 +8,6 @@ import twilightforest.block.TFBlocks;
 import java.util.Random;
 
 public class TFGenLampposts extends TFGenerator {
-	private static final int MAX_HANG = 8;
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {

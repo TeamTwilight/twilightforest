@@ -16,9 +16,6 @@ import java.util.Random;
 
 public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
 
-	private int averageGroundLevel = -1;
-
-
 	public ComponentTFMazeUpperEntrance() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -36,7 +33,7 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random random) {
+	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
 		;
 	}
 

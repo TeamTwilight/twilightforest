@@ -1,7 +1,6 @@
 package twilightforest.client.model;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 
 public class ModelTFFieryArmor extends ModelTFArmor {

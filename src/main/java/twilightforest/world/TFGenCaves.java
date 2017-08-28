@@ -133,7 +133,6 @@ public class TFGenCaves extends MapGenCaves {
 					for (genX = minX; !hasHitWater && genX < maxX; ++genX) {
 						for (genZ = minZ; !hasHitWater && genZ < maxZ; ++genZ) {
 							for (int genY = minY + 1; !hasHitWater && genY >= maxY - 1; --genY) {
-								int waterIndex = (genX * 16 + genZ) * 128 + genY;
 
 								if (genY >= 0 && genY < 128) {
 									if (isOceanBlock(blockStorage, genX, genY, genZ)) {

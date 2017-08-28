@@ -30,7 +30,7 @@ public class ComponentTFMazeRoom extends StructureTFComponent {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random random) {
+	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
 		;
 	}
 

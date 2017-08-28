@@ -135,6 +135,7 @@ public class HydraHeadContainer {
 	private Map<State, Float>[] stateMouthOpen;
 
 
+	@SuppressWarnings("unchecked")
 	public HydraHeadContainer(EntityTFHydra hydra, int number, boolean startActive) {
 		this.headNum = number;
 		this.hydraObj = hydra;

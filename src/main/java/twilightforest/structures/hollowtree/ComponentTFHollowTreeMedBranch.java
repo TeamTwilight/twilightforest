@@ -11,7 +11,6 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFGenerator;
 
 import java.util.List;
@@ -98,7 +97,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		this.leafy = par1NBTTagCompound.getBoolean("branchLeafy");
 	}
 
-	public void makeSmallBranch(List list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(index, x, y, z, branchLength, branchRotation, branchAngle, leafy);
 		list.add(branch);
 		branch.buildComponent(this, list, rand);
@@ -126,7 +125,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 		// and several small branches
 		int numShoots = Math.min(decoRNG.nextInt(3) + 1, (int) (length / 5));
-		double angleInc, angleVar, outVar, tiltVar;
+		double angleInc, angleVar, outVar;
 
 		angleInc = 0.8 / numShoots;
 
@@ -134,7 +133,6 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 			angleVar = (angleInc * i) - 0.4;
 			outVar = (decoRNG.nextDouble() * 0.8) + 0.2;
-			tiltVar = (decoRNG.nextDouble() * 0.75) + 0.15;
 
 			BlockPos bSrc = TFGenerator.translate(rSrc, length * outVar, angle, tilt);
 

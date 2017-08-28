@@ -6,7 +6,6 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockStandingSign;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -310,6 +309,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 				return new BlockPos(dx - 1, dy - 1, dz + towerSize / 2);
 			case EAST:
 				return new BlockPos(dx - towerSize / 2, dy - 1, dz - 1);
+			default:
+				break;
 		}
 
 		// ugh?
@@ -541,8 +542,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 	/**
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
-	public static StructureComponent findIntersectingExcluding(List list, StructureBoundingBox toCheck, StructureComponent exclude) {
-		Iterator iterator = list.iterator();
+	public static StructureComponent findIntersectingExcluding(List<StructureComponent> list, StructureBoundingBox toCheck, StructureComponent exclude) {
+		Iterator<StructureComponent> iterator = list.iterator();
 		StructureComponent structurecomponent;
 
 		do {

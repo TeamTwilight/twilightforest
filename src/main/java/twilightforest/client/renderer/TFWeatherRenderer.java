@@ -210,6 +210,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 	}
 
 	// [VanillaCopy] inside of EntityRenderer.renderRainSnow, edits noted
+	@SuppressWarnings("unused")
 	private void renderLockedBiome(float partialTicks, WorldClient wc, Minecraft mc) {
 		// check nearby for locked biome
 		if (isNearLockedBiome(wc, mc.getRenderViewEntity())) {
@@ -425,6 +426,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 	}
 
 	// [VanillaCopy] inside of EntityRenderer.renderRainSnow, edits noted
+	@SuppressWarnings("unused")
 	private void renderLockedStructure(float partialTicks, WorldClient wc, Minecraft mc) {
 		// draw locked structure thing
 		if (isNearLockedStructure(wc, mc.getRenderViewEntity())) {

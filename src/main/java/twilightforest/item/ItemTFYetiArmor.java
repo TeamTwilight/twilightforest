@@ -5,11 +5,9 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -57,6 +55,8 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 				case FEET:
 					istack.addEnchantment(Enchantments.PROTECTION, 2);
 					istack.addEnchantment(Enchantments.FEATHER_FALLING, 4);
+					break;
+				default:
 					break;
 			}
 			list.add(istack);

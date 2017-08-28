@@ -480,6 +480,8 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 			case REACTOR_ACTIVE:
 				state = state.withProperty(VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
 				break;
+			default:
+				break;
 		}
 
 		return getMetaFromState(state);

@@ -87,6 +87,8 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 			case SNOW_QUEEN:
 				renderSnowQueenHead(rotation, onGround);
 				break;
+			default:
+				break;
 		}
 
 		GlStateManager.popMatrix();

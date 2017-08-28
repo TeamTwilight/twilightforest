@@ -13,7 +13,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,7 +20,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -31,7 +29,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
@@ -61,10 +58,7 @@ import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
-import twilightforest.world.WorldProviderTwilightForest;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -79,7 +73,6 @@ public class TFEventListener {
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
-	private static long lastSpawnedHintMonsterTime;
 
 	@SubscribeEvent
 	public static void onCrafting(ItemCraftedEvent event) {
@@ -495,21 +488,6 @@ public class TFEventListener {
 	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
 		// todo improve
 		return !world.getBlockState(pos).getBlock().getRegistryName().getResourcePath().contains("grave");
-	}
-
-	/**
-	 * Return true if the player is wearing at least one piece of fiery armor
-	 */
-	private static boolean checkPlayerForFieryArmor(EntityPlayer player) {
-		ItemStack feet = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-		ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-		ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-		ItemStack head = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-
-		return !feet.isEmpty() && feet.getItem() == TFItems.fieryBoots
-				|| !legs.isEmpty() && legs.getItem() == TFItems.fieryLegs
-				|| !chest.isEmpty() && chest.getItem() == TFItems.fieryPlate
-				|| !head.isEmpty() && head.getItem() == TFItems.fieryHelm;
 	}
 
 	/**

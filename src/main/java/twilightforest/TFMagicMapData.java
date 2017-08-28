@@ -77,7 +77,6 @@ public class TFMagicMapData extends MapData {
 			int worldZ = (coord.getY() << this.scale - 1) + this.zCenter;
 
 			if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider) {
-				TFBiomeProvider provider = (TFBiomeProvider) world.getBiomeProvider();
 
 				// FIXME 1.11 decoration type
 				byte trueId = (byte) TFFeature.getFeatureID(worldX, worldZ, world);

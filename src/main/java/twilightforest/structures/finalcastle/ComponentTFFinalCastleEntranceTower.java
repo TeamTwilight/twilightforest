@@ -73,7 +73,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		bridge.buildComponent(this, list, rand);
 	}
 
-	private boolean buildSideTower(List list, Random rand, int middleFloors, EnumFacing facing, int howFar) {
+	private boolean buildSideTower(List<StructureComponent> list, Random rand, int middleFloors, EnumFacing facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// build towards

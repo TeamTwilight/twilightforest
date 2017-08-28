@@ -42,6 +42,7 @@ public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCall
 	}
 
 	// [VanillaCopy] of super, edits noted
+	@SuppressWarnings("unused")
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving instanceof EntityPlayer) {

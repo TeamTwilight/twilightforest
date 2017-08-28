@@ -10,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -82,8 +81,6 @@ public class CommandTFFeature extends CommandBase {
 				int dz = MathHelper.floor(player.posZ);
 
 				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.world);
-
-				TFBiomeProvider wcm = (TFBiomeProvider) player.world.provider.getBiomeProvider();
 
 				boolean fc = TFFeature.isInFeatureChunk(player.world, dx, dz);
 				sender.sendMessage(new TextComponentTranslation("Center of feature = %s.", cc));
