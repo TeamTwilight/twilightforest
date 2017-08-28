@@ -25,7 +25,6 @@ public final class RotationUtil {
 		return original.add(ROTATIONS[(rotations + 4) & 3]);
 	}
 
-	@SuppressWarnings("Duplicates")
 	public static Rotation subtract(Rotation original, Rotation rotation) {
 		switch (rotation) {
 			case CLOCKWISE_180:

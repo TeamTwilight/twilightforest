@@ -164,7 +164,6 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 				this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
 			} else {
 				EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
-				double d0 = 64.0D;
 
 				if (entitylivingbase.getDistanceSqToEntity(this.parentEntity) < 4096.0D) {
 					double d1 = entitylivingbase.posX - this.parentEntity.posX;

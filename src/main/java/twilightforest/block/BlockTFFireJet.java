@@ -80,6 +80,8 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 			case JET_FLAME:
 				state = state.withProperty(VARIANT, FireJetVariant.JET_IDLE);
 				break;
+			default:
+				break;
 		}
 
 		return getMetaFromState(state);

@@ -5,7 +5,7 @@ import twilightforest.TwilightForestMod;
 
 import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("all")
 @ObjectHolder(TwilightForestMod.ID)
 public class TFBiomes {
 	@ObjectHolder("twilight_lake")

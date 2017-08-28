@@ -92,17 +92,6 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	/**
-	 * Read in openings from int array
-	 */
-	private void readOpeningsFromArray(int[] intArray) {
-		for (int i = 0; i < intArray.length; i += 3) {
-			BlockPos door = new BlockPos(intArray[i], intArray[i + 1], intArray[i + 2]);
-
-			this.openings.add(door);
-		}
-	}
-
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponent) {

@@ -457,6 +457,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			case EAST:
 				dz -= howFar;
 				break;
+			default:
+				break;
 		}
 
 		// ugh?

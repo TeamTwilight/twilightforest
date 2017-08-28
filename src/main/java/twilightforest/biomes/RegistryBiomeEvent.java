@@ -12,7 +12,6 @@ import twilightforest.TwilightForestMod;
 
 @EventBusSubscriber
 public final class RegistryBiomeEvent {
-	@SuppressWarnings("OverlyCoupledMethod")
 	@SubscribeEvent
 	public static void onRegisterBiomes(Register<Biome> event) {
 		final BiomeRegistry biomes = new BiomeRegistry(event.getRegistry());
@@ -235,7 +234,6 @@ public final class RegistryBiomeEvent {
 		);
 	}
 
-	@SuppressWarnings("ClassHasNoToStringMethod")
 	private static class BiomeRegistry {
 
 		private final IForgeRegistry<Biome> registry;

@@ -8,6 +8,7 @@ import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -217,6 +218,11 @@ public class TFClientProxy extends TFCommonProxy {
 	@Override
 	public World getClientWorld() {
 		return FMLClientHandler.instance().getClient().world;
+	}
+	
+	@Override
+	public String translate(String lang) {
+		return I18n.format(lang);
 	}
 
 

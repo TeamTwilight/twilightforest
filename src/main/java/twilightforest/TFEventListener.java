@@ -13,7 +13,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -74,7 +73,6 @@ public class TFEventListener {
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
-	private static long lastSpawnedHintMonsterTime;
 
 	@SubscribeEvent
 	public static void onCrafting(ItemCraftedEvent event) {
@@ -490,21 +488,6 @@ public class TFEventListener {
 	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
 		// todo improve
 		return !world.getBlockState(pos).getBlock().getRegistryName().getResourcePath().contains("grave");
-	}
-
-	/**
-	 * Return true if the player is wearing at least one piece of fiery armor
-	 */
-	private static boolean checkPlayerForFieryArmor(EntityPlayer player) {
-		ItemStack feet = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-		ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-		ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-		ItemStack head = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-
-		return !feet.isEmpty() && feet.getItem() == TFItems.fieryBoots
-				|| !legs.isEmpty() && legs.getItem() == TFItems.fieryLegs
-				|| !chest.isEmpty() && chest.getItem() == TFItems.fieryPlate
-				|| !head.isEmpty() && head.getItem() == TFItems.fieryHelm;
 	}
 
 	/**

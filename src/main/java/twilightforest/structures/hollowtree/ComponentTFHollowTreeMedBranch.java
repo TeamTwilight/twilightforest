@@ -125,7 +125,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 		// and several small branches
 		int numShoots = Math.min(decoRNG.nextInt(3) + 1, (int) (length / 5));
-		double angleInc, angleVar, outVar, tiltVar;
+		double angleInc, angleVar, outVar;
 
 		angleInc = 0.8 / numShoots;
 
@@ -133,7 +133,6 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 			angleVar = (angleInc * i) - 0.4;
 			outVar = (decoRNG.nextDouble() * 0.8) + 0.2;
-			tiltVar = (decoRNG.nextDouble() * 0.75) + 0.15;
 
 			BlockPos bSrc = TFGenerator.translate(rSrc, length * outVar, angle, tilt);
 

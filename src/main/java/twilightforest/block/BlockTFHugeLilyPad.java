@@ -138,6 +138,8 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 				case SW:
 					nwPos = nwPos.north();
 					break;
+				default:
+					break;
 			}
 
 			pieces.add(nwPos);

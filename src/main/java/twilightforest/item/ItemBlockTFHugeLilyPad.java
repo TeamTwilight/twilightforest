@@ -18,8 +18,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 
-import java.util.Random;
-
 import static twilightforest.block.BlockTFHugeLilyPad.FACING;
 import static twilightforest.block.BlockTFHugeLilyPad.PIECE;
 import static twilightforest.block.enums.HugeLilypadPiece.NE;
@@ -29,8 +27,6 @@ import static twilightforest.block.enums.HugeLilypadPiece.SW;
 
 
 public class ItemBlockTFHugeLilyPad extends ItemColored {
-
-	private final Random rand = new Random();
 
 	public ItemBlockTFHugeLilyPad(Block block) {
 		super(block, false);

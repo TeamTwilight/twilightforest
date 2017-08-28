@@ -19,7 +19,6 @@ import java.util.Random;
 
 public class ComponentTFMinotaurMaze extends StructureTFComponent {
 
-	private static final int FLOOR_LEVEL = 1;
 	TFMaze maze;
 	int rcoords[];
 	private int level;
