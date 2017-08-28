@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFMazeMapData;
 import twilightforest.TFPacketHandler;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.network.PacketMapRewrap;
 
@@ -92,6 +93,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	// [VanillaCopy] of superclass, with sane variable names and noted changes
+	@SuppressWarnings("unused")
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
 		if (world.provider.getDimension() == data.dimension && viewer instanceof EntityPlayer) {
@@ -294,7 +296,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return ("" + net.minecraft.util.text.translation.I18n.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name").trim() + " #" + stack.getItemDamage());
+		return ("" + TwilightForestMod.proxy.translate(this.getUnlocalizedNameInefficiently(stack) + ".name").trim() + " #" + stack.getItemDamage());
 	}
 
 	@SideOnly(Side.CLIENT)

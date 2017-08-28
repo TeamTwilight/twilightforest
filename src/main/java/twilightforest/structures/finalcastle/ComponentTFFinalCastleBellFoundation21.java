@@ -31,9 +31,6 @@ public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCast
 			this.groundLevel = this.getDeadrockLevel(world, sbb);
 		}
 
-		// how tall are we?
-		int height = this.boundingBox.maxY - this.groundLevel;
-
 		int mid = 16;
 		int low = 32;
 

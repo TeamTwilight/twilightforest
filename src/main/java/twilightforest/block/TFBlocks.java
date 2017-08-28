@@ -6,7 +6,6 @@ import twilightforest.TwilightForestMod;
 
 import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
-@SuppressWarnings("WeakerAccess")
 @ObjectHolder(TwilightForestMod.ID)
 public class TFBlocks {
 	@ObjectHolder("twilight_log")

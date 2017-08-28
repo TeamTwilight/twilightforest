@@ -163,6 +163,7 @@ public class TFGenRavine extends MapGenBase {
 	}
 
 	//[VanillaCopy] Based on MapGenRavine.recursiveGenerate, modified for TF chunk decorations.
+	@SuppressWarnings("unused")
 	protected void recursiveGenerate(World worldIn, int chunkX, int chunkZ, int p_180701_4_, int p_180701_5_, ChunkPrimer chunkPrimerIn) {
 		if (this.rand.nextInt(127) == 0) {
 			if (!TFFeature.getNearestFeature(p_180701_4_, p_180701_5_, world).areChunkDecorationsEnabled) {

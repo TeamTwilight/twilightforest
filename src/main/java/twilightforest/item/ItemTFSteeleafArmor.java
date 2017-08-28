@@ -52,6 +52,8 @@ public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallb
 				case FEET:
 					istack.addEnchantment(Enchantments.FEATHER_FALLING, 2);
 					break;
+				default:
+					break;
 			}
 			list.add(istack);
 		}

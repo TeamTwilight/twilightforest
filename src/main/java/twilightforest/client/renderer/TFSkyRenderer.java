@@ -30,6 +30,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	}
 
 	// [VanillaCopy] RenderGlobal.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
+	@SuppressWarnings("unused")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
@@ -211,6 +212,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	}
 
 	// [VanillaCopy] of RenderGlobal.renderStars but with double the number of them
+	@SuppressWarnings("unused")
 	private void renderStars(BufferBuilder worldRendererIn) {
 		Random random = new Random(10842L);
 		worldRendererIn.begin(7, DefaultVertexFormats.POSITION);

@@ -70,6 +70,8 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponent {
 			case NORTH:
 				this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ);
 				break;
+			default:
+				break;
 		}
 	}
 

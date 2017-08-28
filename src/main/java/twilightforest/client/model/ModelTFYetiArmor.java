@@ -172,6 +172,8 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 				this.rightRuff.showModel = true;
 				this.rightToe.showModel = true;
 				break;
+			default:
+				break;
 		}
 		super.render(par1Entity, par2, par3, par4, par5, par6, par7);
 		this.bipedLegBody.render(par7);

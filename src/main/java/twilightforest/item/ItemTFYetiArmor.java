@@ -56,6 +56,8 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 					istack.addEnchantment(Enchantments.PROTECTION, 2);
 					istack.addEnchantment(Enchantments.FEATHER_FALLING, 4);
 					break;
+				default:
+					break;
 			}
 			list.add(istack);
 		}

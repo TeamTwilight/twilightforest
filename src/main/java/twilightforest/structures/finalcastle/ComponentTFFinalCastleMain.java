@@ -106,7 +106,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 		ComponentTFFinalCastleDungeonSteps steps3 = steps2.buildMoreStepsTowards(parent, list, rand, Rotation.COUNTERCLOCKWISE_90);
 
 		// start dungeon
-		ComponentTFFinalCastleDungeonEntrance dRoom = steps3.buildLevelUnder(parent, list, rand, 1);
+		steps3.buildLevelUnder(parent, list, rand, 1);
 
 		// mural on front
 		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, EnumFacing.SOUTH);
@@ -207,6 +207,8 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 				break;
 			case EAST:
 				dz -= howFar;
+				break;
+			default:
 				break;
 		}
 

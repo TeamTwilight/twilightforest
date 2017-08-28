@@ -49,6 +49,8 @@ public class ItemTFIronwoodArmor extends ItemArmor implements ModelRegisterCallb
 				case FEET:
 					istack.addEnchantment(Enchantments.FEATHER_FALLING, 1);
 					break;
+				default:
+					break;
 			}
 			list.add(istack);
 		}

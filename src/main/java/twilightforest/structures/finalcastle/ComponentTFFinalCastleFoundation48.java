@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 
 public class ComponentTFFinalCastleFoundation48 extends StructureTFComponent {
-	private int groundLevel = -1;
 
 	public ComponentTFFinalCastleFoundation48() {
 	}

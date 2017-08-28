@@ -309,6 +309,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 				return new BlockPos(dx - 1, dy - 1, dz + towerSize / 2);
 			case EAST:
 				return new BlockPos(dx - towerSize / 2, dy - 1, dz - 1);
+			default:
+				break;
 		}
 
 		// ugh?
@@ -541,7 +543,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
 	public static StructureComponent findIntersectingExcluding(List<StructureComponent> list, StructureBoundingBox toCheck, StructureComponent exclude) {
-		Iterator iterator = list.iterator();
+		Iterator<StructureComponent> iterator = list.iterator();
 		StructureComponent structurecomponent;
 
 		do {
