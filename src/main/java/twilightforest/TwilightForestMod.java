@@ -91,13 +91,6 @@ public class TwilightForestMod {
 			DimensionManager.registerDimension(TwilightForestMod.BACKUP_DIM_ID, TwilightForestMod.dimType);
 			TFConfig.dimension.dimensionID = TwilightForestMod.BACKUP_DIM_ID;
 		}
-
-		//FIXME: Reenable this once Thaumcraft is available.
-		//if (Loader.isModLoaded("Thaumcraft")) {
-			//registerThaumcraftIntegration();
-		//} else {
-		//	TwilightForestMod.LOGGER.info("Did not find Thaumcraft, did not load ThaumcraftApi integration.");
-		//}
 	}
 
 	@EventHandler
