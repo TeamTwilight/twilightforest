@@ -19,7 +19,6 @@ public enum BossVariant implements IStringSerializable {
 	MINOSHROOM(false, TileEntityTFMinoshroomSpawner.class),
 	ALPHA_YETI(false, TileEntityTFAlphaYetiSpawner.class);
 
-	// Caching, cos vm each time creates new array when calling values()
 	public static final BossVariant[] VALUES = values();
 	
 	private final boolean hasTrophy;

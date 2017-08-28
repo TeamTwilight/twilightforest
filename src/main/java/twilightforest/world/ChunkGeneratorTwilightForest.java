@@ -172,9 +172,9 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 			for (int mainZ = 0; mainZ < 4; ++mainZ) {
 				int leftDown = (left + mainZ) * 33;
-				int leftUp = leftDown + 33;//(left + mainZ + 1) * 33;
+				int leftUp = leftDown + 33;
 				int rightDown = (right + mainZ) * 33;
-				int rightUp = rightDown + 33;//(right + mainZ + 1) * 33;
+				int rightUp = rightDown + 33;
 
 				for (int mainY = 0; mainY < 32; 
 						++mainY,
@@ -245,14 +245,14 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				float totalHeight = 0.0F;
 				float totalFactor = 0.0F;
 				byte two = 2;
-				Biome biomegenbase = this.biomesForGeneration[biomeForGenIndex/*ax + 2 + (az + 2) * 10*/];
+				Biome biomegenbase = this.biomesForGeneration[biomeForGenIndex];
 
 				for (int ox = -two; ox <= two; ++ox) {
 					int biomeForGenIndexLocal = biomeForGenIndex + ox - two * 10;
 					int pfIndex = ox + 2;
 					
 					for (int oz = -two; oz <= two; ++oz, biomeForGenIndexLocal += 10, pfIndex += 5) {
-						Biome biomegenbase1 = this.biomesForGeneration[biomeForGenIndexLocal/*ax + ox + 2 + (az + oz + 2) * 10*/];
+						Biome biomegenbase1 = this.biomesForGeneration[biomeForGenIndexLocal];
 						float rootHeight = biomegenbase1.getBaseHeight();
 						float heightVariation = biomegenbase1.getHeightVariation();
 
@@ -261,7 +261,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 							heightVariation = 1.0F + heightVariation * 4.0F;
 						}
 
-						float heightFactor = this.parabolicField[pfIndex/*ox + 2 + (oz + 2) * 5*/] / (rootHeight + 2.0F);
+						float heightFactor = this.parabolicField[pfIndex] / (rootHeight + 2.0F);
 
 						if (biomegenbase1.getBaseHeight() > biomegenbase.getBaseHeight()) {
 							heightFactor /= 2.0F;
@@ -310,7 +310,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				double d5 = 8.5D + heightCalc * 4.0D;
 				
 				for (int ay = 0; ay < 33; ++ay) {
-					double d6 = ((double) ay - d5) * 12.0D * 128.0D / 256.0D / variationCalc;
+					double d6 = (ay - d5) * 12.0D * 128.0D / 256.0D / variationCalc;
 
 					if (d6 < 0.0D) {
 						d6 *= 4.0D;
@@ -322,7 +322,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 					double terrainCalc = MathHelper.clampedLerp(d7, d8, d9) - d6;
 
 					if (ay > 29) {
-						double d11 = (double) ((float) (ay - 29) / 3.0F);
+						double d11 = (ay - 29) / 3.0F;
 						terrainCalc = terrainCalc * (1.0D - d11) + -10.0D * d11;
 					}
 
@@ -399,7 +399,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 					// hollow hills
 					int hdiam = ((nearFeature.size * 2 + 1) * 16);
 					int dist = (int) Math.sqrt(dx * dx + dz * dz);
-					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * ((float) hdiam / 3F));
+					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * (hdiam / 3F));
 
 					raiseHills(primer, nearFeature, hdiam, x, z, dx, dz, hheight);
 				} else if (nearFeature == TFFeature.hedgeMaze || nearFeature == TFFeature.nagaCourtyard || nearFeature == TFFeature.questGrove) {
@@ -511,7 +511,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		// sets the groundlevel to the mazeheight
 		for (int y = 0; y <= 127; y++) {
-			int index = (x * 16 + z) * TFWorld.CHUNKHEIGHT + y;
 			Block b = primer.getBlockState(x, y, z).getBlock();
 			if (y < mazeheight && (b == Blocks.AIR || b == Blocks.WATER)) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
@@ -620,7 +619,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				int regionX = (cx + 8) >> 4;
 				int regionZ = (cz + 8) >> 4;
 
-				long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
+				long seed = (regionX * 3129871) ^ (regionZ * 116129781L);
 				seed = seed * seed * 42317861L + seed * 7L;
 
 				int num0 = (int) (seed >> 12 & 3L);
@@ -684,12 +683,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 			}
 		}
 	}
-
-	/*private float pseudoRand(int bx, int bz) {
-		Random rand = new Random(this.world.getSeed() + (bx * 321534781) ^ (bz * 756839));
-		rand.setSeed(rand.nextLong());
-		return rand.nextFloat();
-	}*/
 
 	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome biomes[]) {
 		for (int z = 0; z < 16; z++) {

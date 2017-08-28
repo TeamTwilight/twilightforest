@@ -3,6 +3,7 @@ package twilightforest.client.renderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -35,7 +36,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	@SideOnly(Side.CLIENT)
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
 		RenderGlobal rg = mc.renderGlobal;
-		//int pass = EntityRenderer.anaglyphField;
+		int pass = EntityRenderer.anaglyphField;
 
 		GlStateManager.disableTexture2D();
 		Vec3d vecSkyColor = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
@@ -44,14 +45,14 @@ public class TFSkyRenderer extends IRenderHandler {
 		float b = (float) vecSkyColor.z;
 
 		// It can't be 2 BTW
-		// if (pass != 2) {
-		float f3 = (r * 30.0F + g * 59.0F + b * 11.0F) / 100.0F;
-		float f4 = (r * 30.0F + g * 70.0F) / 100.0F;
-		float f5 = (r * 30.0F + b * 70.0F) / 100.0F;
-		r = f3;
-		g = f4;
-		b = f5;
-		//}
+		if (pass != 2) {
+			float f3 = (r * 30.0F + g * 59.0F + b * 11.0F) / 100.0F;
+			float f4 = (r * 30.0F + g * 70.0F) / 100.0F;
+			float f5 = (r * 30.0F + b * 70.0F) / 100.0F;
+			r = f3;
+			g = f4;
+			b = f5;
+		}
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder vertexbuffer = tessellator.getBuffer();
@@ -73,14 +74,14 @@ public class TFSkyRenderer extends IRenderHandler {
 		GlStateManager.disableFog();
 		GlStateManager.disableAlpha();
 		GlStateManager.enableBlend();
-		//GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		RenderHelper.disableStandardItemLighting();
 		/* TF - snip out sunrise/sunset since that doesn't happen here
          * float[] afloat = ...
          * if (afloat != null) ...
          */
 
-		//GlStateManager.enableTexture2D();
+		GlStateManager.enableTexture2D();
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager.pushMatrix();
 		float f16 = 1.0F - world.getRainStrength(partialTicks);
@@ -93,10 +94,10 @@ public class TFSkyRenderer extends IRenderHandler {
          * tessellator.draw();
          */
 		GlStateManager.disableTexture2D();
-		//float f15 = 1.0F; // TF - stars are always bright
+		float f15 = 1.0F; // TF - stars are always bright
 
-		//if (f15 > 0.0F) {
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		if (f15 > 0.0F) {
+			GlStateManager.color(f15, f15, f15, 1.0F);
 
 			if (OpenGlHelper.useVbo()) {
 				this.starVBO.bindBuffer();
@@ -108,14 +109,14 @@ public class TFSkyRenderer extends IRenderHandler {
 			} else {
 				GlStateManager.callList(this.starGLCallList);
 			}
-		//}
+		}
 
-		//GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.disableBlend();
 		GlStateManager.enableAlpha();
 		GlStateManager.enableFog();
 		GlStateManager.popMatrix();
-		//GlStateManager.disableTexture2D();
+		GlStateManager.disableTexture2D();
 		GlStateManager.color(0.0F, 0.0F, 0.0F);
 		double d0 = mc.player.getPositionEyes(partialTicks).y - world.getHorizon();
 
@@ -135,9 +136,9 @@ public class TFSkyRenderer extends IRenderHandler {
 			}
 
 			GlStateManager.popMatrix();
-			//double f18 = 1.0D;
+			double f18 = 1.0D;
 			double f19 = -((float) (d0 + 65.0D));
-			//double f20 = -1.0D;
+			double f20 = -1.0D;
 			vertexbuffer.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 			vertexbuffer.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
@@ -162,12 +163,11 @@ public class TFSkyRenderer extends IRenderHandler {
 			tessellator.draw();
 		}
 
-		// No
-		//if (world.provider.isSkyColored()) {
-		//	GlStateManager.color(r * 0.2F + 0.04F, g * 0.2F + 0.04F, b * 0.6F + 0.1F);
-		//} else {
+		if (world.provider.isSkyColored()) {
+			GlStateManager.color(r * 0.2F + 0.04F, g * 0.2F + 0.04F, b * 0.6F + 0.1F);
+		} else {
 		GlStateManager.color(r, g, b);
-		//}
+		}
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(0.0F, -((float) (d0 - 16.0D)), 0.0F);
