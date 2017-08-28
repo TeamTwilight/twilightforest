@@ -1,8 +1,6 @@
 package twilightforest;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -17,7 +15,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -281,8 +278,6 @@ public class TFFeature {
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
 
 		if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider) {
-			//TFBiomeProvider tfManager = (TFBiomeProvider) world.getBiomeProvider();
-
 			if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
 				return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 			} else {
