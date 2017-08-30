@@ -90,8 +90,9 @@ public class BlockTFCastleDoor extends Block {
 	}
 
 	@Override
+	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return isVanished ? REAPPEARING_BB : FULL_BLOCK_AABB;
+		return isVanished ? REAPPEARING_BB : super.getBoundingBox(state, world, pos);
 	}
 
 	@Override

@@ -36,11 +36,6 @@ public class TFCommonProxy implements IGuiHandler {
 	public World getClientWorld() {
 		return null;
 	}
-	
-	@SuppressWarnings("deprecation")
-	public String translate(String lang) {
-		return net.minecraft.util.text.translation.I18n.translateToLocal(lang);
-	}
 
 	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {
 	}

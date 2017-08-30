@@ -28,8 +28,12 @@ public class BlockTFHugeStalk extends Block implements ModelRegisterCallback {
 	}
 
 	// [VanillaCopy] BlockLog
+	@SuppressWarnings("unused")
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		int i = 4;
+		int j = 5;
+
 		if (worldIn.isAreaLoaded(pos.add(-5, -5, -5), pos.add(5, 5, 5))) {
 			for (BlockPos blockpos : BlockPos.getAllInBox(pos.add(-4, -4, -4), pos.add(4, 4, 4))) {
 				IBlockState iblockstate = worldIn.getBlockState(blockpos);

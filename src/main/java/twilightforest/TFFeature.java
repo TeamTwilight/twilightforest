@@ -278,8 +278,6 @@ public class TFFeature {
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
 
 		if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider) {
-			TFBiomeProvider tfManager = (TFBiomeProvider) world.getBiomeProvider();
-
 			if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
 				return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 			} else {

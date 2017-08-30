@@ -28,7 +28,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFMazeMapData;
 import twilightforest.TFPacketHandler;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.network.PacketMapRewrap;
 
@@ -292,11 +291,6 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 		} else {
 			return p;
 		}
-	}
-
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		return ("" + TwilightForestMod.proxy.translate(this.getUnlocalizedNameInefficiently(stack) + ".name").trim() + " #" + stack.getItemDamage());
 	}
 
 	@SideOnly(Side.CLIENT)
