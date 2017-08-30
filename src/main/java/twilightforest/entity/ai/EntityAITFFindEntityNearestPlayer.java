@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Customized AI that checks more that 4 blocks up/down and also ignores sight
  */
-public class EntityAITFGhastFindEntityNearestPlayer extends EntityAIFindEntityNearestPlayer
+public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearestPlayer
 {
 	private final EntityLiving entityLiving;
 	private final Predicate<Entity> predicate;
@@ -25,7 +25,7 @@ public class EntityAITFGhastFindEntityNearestPlayer extends EntityAIFindEntityNe
 	/**
 	 * VanillaCopy super, but change predicate to not check sight, or bother reducing range for sneaking/invisibility
 	 */
-	public EntityAITFGhastFindEntityNearestPlayer(EntityLiving entityLivingIn)
+	public EntityAITFFindEntityNearestPlayer(EntityLiving entityLivingIn)
 	{
 		super(entityLivingIn);
 		this.entityLiving = entityLivingIn;
@@ -43,9 +43,9 @@ public class EntityAITFGhastFindEntityNearestPlayer extends EntityAIFindEntityNe
 				}
 				else
 				{
-					double maxRange = EntityAITFGhastFindEntityNearestPlayer.this.maxTargetRange();
+					double maxRange = EntityAITFFindEntityNearestPlayer.this.maxTargetRange();
 
-					return (double)entity.getDistanceToEntity(EntityAITFGhastFindEntityNearestPlayer.this.entityLiving) > maxRange ? false : EntityAITarget.isSuitableTarget(EntityAITFGhastFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase)entity, false, false);
+					return (double)entity.getDistanceToEntity(EntityAITFFindEntityNearestPlayer.this.entityLiving) > maxRange ? false : EntityAITarget.isSuitableTarget(EntityAITFFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase)entity, false, false);
 				}
 			}
 		};

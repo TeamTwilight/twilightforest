@@ -1,16 +1,13 @@
 package twilightforest.entity.boss;
 
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Ints;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
@@ -26,22 +23,22 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TFTreasure;
+import twilightforest.entity.NoClipMoveHelper;
+import twilightforest.entity.ai.*;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 
 public class EntityTFKnightPhantom extends EntityFlying implements IMob {
-	private static final float CIRCLE_SMALL_RADIUS = 2.5F;
-	private static final float CIRCLE_LARGE_RADIUS = 8.5F;
 	private static final DataParameter<Boolean> FLAG_CHARGING = EntityDataManager.createKey(EntityTFKnightPhantom.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, 0).setSaved(false);
 	private int number;
@@ -49,25 +46,22 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	private Formation currentFormation;
 	private BlockPos chargePos = BlockPos.ORIGIN;
 
-	private enum Formation {HOVER, LARGE_CLOCKWISE, SMALL_CLOCKWISE, LARGE_ANTICLOCKWISE, SMALL_ANTICLOCKWISE, CHARGE_PLUSX, CHARGE_MINUSX, CHARGE_PLUSZ, CHARGE_MINUSZ, WAITING_FOR_LEADER, ATTACK_PLAYER_START, ATTACK_PLAYER_ATTACK}
-
-	;
-
 	public EntityTFKnightPhantom(World par1World) {
 		super(par1World);
-		this.setSize(1.5F, 3.0F);
-		this.noClip = true;
-		this.isImmuneToFire = true;
-		this.currentFormation = Formation.HOVER;
-		this.experienceValue = 93;
+		setSize(1.5F, 3.0F);
+		noClip = true;
+		isImmuneToFire = true;
+		currentFormation = Formation.HOVER;
+		experienceValue = 93;
+		moveHelper = new NoClipMoveHelper(this);
 	}
 
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
-		this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantomPlate));
-		this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantomHelm));
+		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
+		setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantomPlate));
+		setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantomHelm));
 		return data;
 	}
 
@@ -78,11 +72,33 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	@Override
+	protected void initEntityAI() {
+		tasks.addTask(0, new EntityAITFPhantomWatchAndAttack(this));
+		tasks.addTask(1, new EntityAITFPhantomUpdateFormationAndMove(this));
+		tasks.addTask(2, new EntityAIPhantomAttackStart(this));
+		tasks.addTask(3, new EntityAIPhantomThrowWeapon(this));
+
+		targetTasks.addTask(0, new EntityAITFFindEntityNearestPlayer(this));
+	}
+
+	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35.0D);
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35.0D);
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+	}
+
+	public Formation getCurrentFormation() {
+		return currentFormation;
+	}
+
+	public BlockPos getChargePos() {
+		return chargePos;
+	}
+
+	public void setChargePos(BlockPos pos) {
+		chargePos = pos;
 	}
 
 	@Override
@@ -99,13 +115,13 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 
-		if (this.isChargingAtPlayer()) {
+		if (isChargingAtPlayer()) {
 			// make particles
 			for (int i = 0; i < 4; ++i) {
-				Item particleID = this.rand.nextBoolean() ? TFItems.phantomHelm : TFItems.knightlySword;
+				Item particleID = rand.nextBoolean() ? TFItems.phantomHelm : TFItems.knightlySword;
 
-				world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, this.posY + this.rand.nextFloat() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, 0, -0.1, 0, Item.getIdFromItem(particleID));
-				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, this.posY + this.rand.nextFloat() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextFloat() * this.rand.nextFloat() - 0.5D) * this.width, 0, 0.1, 0);
+				world.spawnParticle(EnumParticleTypes.ITEM_CRACK, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, -0.1, 0, Item.getIdFromItem(particleID));
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, 0.1, 0);
 			}
 		}
 	}
@@ -115,13 +131,11 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		super.onDeathUpdate();
 
 		for (int i = 0; i < 20; ++i) {
-			double d0 = this.rand.nextGaussian() * 0.02D;
-			double d1 = this.rand.nextGaussian() * 0.02D;
-			double d2 = this.rand.nextGaussian() * 0.02D;
-			this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2);
+			double d0 = rand.nextGaussian() * 0.02D;
+			double d1 = rand.nextGaussian() * 0.02D;
+			double d2 = rand.nextGaussian() * 0.02D;
+			world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, posX + (double) (rand.nextFloat() * width * 2.0F) - (double) width, posY + (double) (rand.nextFloat() * height), posZ + (double) (rand.nextFloat() * width * 2.0F) - (double) width, d0, d1, d2);
 		}
-
-
 	}
 
 	@Override
@@ -142,101 +156,23 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 			}
 		}
 
-
 		// make treasure for killing the last knight
-		if (!this.world.isRemote) {
+		if (!world.isRemote) {
 			// am I the last one?!?!
 			List<EntityTFKnightPhantom> nearbyKnights = getNearbyKnights();
 			if (nearbyKnights.size() <= 1) {
 				// 	make a treasure!'
-				this.makeATreasure();
+				makeATreasure();
 			}
 		}
 
 	}
 
 	private void makeATreasure() {
-		if (this.hasHome()) {
+		if (hasHome()) {
 			TFTreasure.stronghold_boss.generateChest(world, getHomePosition().down(), false);
 		} else {
 			TFTreasure.stronghold_boss.generateChest(world, new BlockPos(this), false);
-		}
-	}
-
-	// TODO move to AI tasks
-	private int attackTime;
-
-	@Override
-	protected void updateAITasks() {
-		this.noClip = this.ticksProgress % 20 != 0;
-
-		ticksProgress++;
-
-		if (ticksProgress >= getMaxTicksForFormation()) {
-			switchToNextFormation();
-		}
-
-		float seekRange = this.isChargingAtPlayer() ? 24 : 9;
-
-		EntityPlayer target = this.world.getNearestAttackablePlayer(this, seekRange, seekRange);
-		//EntityPlayer target = this.world.getClosestPlayerToEntity(this, seekRange);
-
-		if (target != null && this.currentFormation == Formation.ATTACK_PLAYER_START) {
-			BlockPos targetPos = new BlockPos(target.lastTickPosX, target.lastTickPosY, target.lastTickPosZ);
-
-			if (this.isWithinHomeDistanceFromPosition(targetPos)) {
-				this.chargePos = targetPos;
-			} else {
-				this.chargePos = getHomePosition();
-			}
-		}
-
-		Vec3d dest = this.getDestination();
-
-//        if (this.getNumber() == 0)
-//        {
-//        	System.out.printf("Knight Phantom %d moving towards %f, %f, %f.  Is in formation %s, progress %d.\n", this.getNumber(), dest.x, dest.y, dest.z, this.currentFormation, ticksProgress);
-//        	System.out.printf("Knight Phantom %d at position %f, %f, %f.\n", this.getNumber(), this.posX, this.posY, this.posZ);
-//        }
-
-		double moveX = dest.x - this.posX;
-		double moveY = dest.y - this.posY;
-		double moveZ = dest.z - this.posZ;
-
-		double factor = moveX * moveX + moveY * moveY + moveZ * moveZ;
-
-		factor = (double) MathHelper.sqrt(factor);
-
-		double speed = 0.1D;//this.isChargingAtPlayer() ? 0.1D : 0.05D;
-
-		this.motionX += moveX / factor * speed;
-		this.motionY += moveY / factor * speed;
-		this.motionZ += moveZ / factor * speed;
-
-		if (target != null) {
-			this.faceEntity(target, 10.0F, 500.0F);
-
-			if (target.isEntityAlive()) {
-				float f1 = target.getDistanceToEntity(this);
-
-				if (this.getEntitySenses().canSee(target)) {
-					if (this.attackTime-- <= 0 && f1 < 2.0F && ((Entity) target).getEntityBoundingBox().maxY > this.getEntityBoundingBox().minY && ((Entity) target).getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
-						this.attackTime = 20;
-						this.attackEntityAsMob(target);
-					}
-				}
-			}
-
-			// launch axe at the appropriate time in our routine
-			if (isAxeKnight() && this.currentFormation == Formation.ATTACK_PLAYER_ATTACK && (this.ticksProgress % 4) == 0) {
-				this.launchAxeAt(target);
-			}
-
-			// same for picks
-			if (isPickKnight() && this.currentFormation == Formation.ATTACK_PLAYER_ATTACK && (this.ticksProgress % 4) == 0) {
-				this.launchPicks();
-			}
-
 		}
 	}
 
@@ -286,57 +222,6 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		return flag;
 	}
 
-	private void launchAxeAt(Entity targetedEntity) {
-		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
-		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 1);
-		double sy = posY + (height * 0.82);
-		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 1);
-
-		double tx = targetedEntity.posX - sx;
-		double ty = (targetedEntity.getEntityBoundingBox().minY + (double) (targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
-		double tz = targetedEntity.posZ - sz;
-
-		playSound(SoundEvents.ENTITY_SNOWBALL_THROW, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
-		EntityTFThrownAxe projectile = new EntityTFThrownAxe(world, this);
-
-		float speed = 0.75F;
-
-		projectile.setThrowableHeading(tx, ty, tz, speed, 1.0F);
-
-		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
-
-		world.spawnEntity(projectile);
-	}
-
-	private void launchPicks() {
-		playSound(SoundEvents.ENTITY_ARROW_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.4F);
-
-		for (int i = 0; i < 8; i++) {
-			float throwAngle = i * 3.14159165F / 4F;
-
-
-			double sx = posX + (MathHelper.cos(throwAngle) * 1);
-			double sy = posY + (height * 0.82);
-			double sz = posZ + (MathHelper.sin(throwAngle) * 1);
-
-			double vx = MathHelper.cos(throwAngle);
-			double vy = 0;
-			double vz = MathHelper.sin(throwAngle);
-
-
-			EntityTFThrownPick projectile = new EntityTFThrownPick(world, this);
-
-
-			projectile.setLocationAndAngles(sx, sy, sz, i * 45F, rotationPitch);
-
-			float speed = 0.5F;
-
-			projectile.setThrowableHeading(vx, vy, vz, speed, 1.0F);
-
-			world.spawnEntity(projectile);
-		}
-	}
-
 	@Override
 	public boolean canBePushed() {
 		return true;
@@ -344,173 +229,61 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 	@Override
 	public void knockBack(Entity par1Entity, float damage, double par3, double par5) {
-		this.isAirBorne = true;
+		isAirBorne = true;
 		float f = MathHelper.sqrt(par3 * par3 + par5 * par5);
 		float distance = 0.2F;
-		this.motionX /= 2.0D;
-		this.motionY /= 2.0D;
-		this.motionZ /= 2.0D;
-		this.motionX -= par3 / (double) f * (double) distance;
-		this.motionY += (double) distance;
-		this.motionZ -= par5 / (double) f * (double) distance;
+		motionX /= 2.0D;
+		motionY /= 2.0D;
+		motionZ /= 2.0D;
+		motionX -= par3 / (double) f * (double) distance;
+		motionY += (double) distance;
+		motionZ -= par5 / (double) f * (double) distance;
 
-		if (this.motionY > 0.4000000059604645D) {
-			this.motionY = 0.4000000059604645D;
+		if (motionY > 0.4000000059604645D) {
+			motionY = 0.4000000059604645D;
 		}
 	}
 
-	/**
-	 * Called each time the current formation ends.
-	 * <p>
-	 * If the current knight is the leader knight, it will pick and broadcast a new formation.
-	 */
-	private void switchToNextFormation() {
-		List<EntityTFKnightPhantom> nearbyKnights = getNearbyKnights();
+	public List<EntityTFKnightPhantom> getNearbyKnights() {
+		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 8.0D, 32.0D));
+	}
 
-		if (this.currentFormation == Formation.ATTACK_PLAYER_START) {
-			this.switchToFormation(Formation.ATTACK_PLAYER_ATTACK);
-		} else if (this.currentFormation == Formation.ATTACK_PLAYER_ATTACK) {
-			if (nearbyKnights.size() > 1) {
-				this.switchToFormation(Formation.WAITING_FOR_LEADER);
-			} else {
-				// random weapon switch!
-				switch (rand.nextInt(3)) {
-					case 0:
-						this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
-						break;
-					case 1:
-						this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlyAxe));
-						break;
-					case 2:
-						this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlyPick));
-						break;
-				}
-
-				this.switchToFormation(Formation.ATTACK_PLAYER_START);
-			}
-		} else if (this.currentFormation == Formation.WAITING_FOR_LEADER) {
-			// try to find a nearby knight and do what they're doing
-			if (nearbyKnights.size() > 1) {
-				this.switchToFormation(nearbyKnights.get(1).currentFormation);
-				this.ticksProgress = nearbyKnights.get(1).ticksProgress;
-			} else {
-				this.switchToFormation(Formation.ATTACK_PLAYER_START);
-			}
+	private void updateMyNumber() {
+		List<Integer> nums = Lists.newArrayList();
+		List<EntityTFKnightPhantom> knights = getNearbyKnights();
+		for (EntityTFKnightPhantom knight : knights) {
+			if (knight == this)
+				continue;
+			nums.add(knight.getNumber());
+			if (knight.getNumber() == 0)
+				setHomePosAndDistance(knight.getHomePosition(), 20);
+		}
+		if (nums.isEmpty())
+			return;
+		int[] n = Ints.toArray(nums);
+		Arrays.sort(n);
+		int smallest = n[0];
+		int largest = knights.size() + 1;
+		int smallestUnused = largest + 1;
+		if (smallest > 0) {
+			smallestUnused = 0;
 		} else {
-
-			if (isThisTheLeader(nearbyKnights)) {
-				// pick a random formation
-				pickRandomFormation();
-
-				// broadcast it
-				broadcastMyFormation(nearbyKnights);
-
-				// if no one is charging
-				if (isNobodyCharging(nearbyKnights)) {
-					makeARandomKnightCharge(nearbyKnights);
+			for (int i = 1; i < largest; i++) {
+				if (Arrays.binarySearch(n, i) < 0) {
+					smallestUnused = i;
+					break;
 				}
 			}
 		}
-	}
-
-
-	private List<EntityTFKnightPhantom> getNearbyKnights() {
-		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).grow(32.0D, 8.0D, 32.0D));
-	}
-
-	/**
-	 * Pick a random formation.  Called by the leader when his current formation duration ends
-	 */
-	private void pickRandomFormation() {
-		switch (rand.nextInt(8)) {
-			case 0:
-				currentFormation = Formation.SMALL_CLOCKWISE;
-				break;
-			case 1:
-				currentFormation = Formation.SMALL_ANTICLOCKWISE;
-				//currentFormation = Formation.LARGE_ANTICLOCKWISE;
-				break;
-			case 2:
-				currentFormation = Formation.SMALL_ANTICLOCKWISE;
-				break;
-			case 3:
-				currentFormation = Formation.CHARGE_PLUSX;
-				break;
-			case 4:
-				currentFormation = Formation.CHARGE_MINUSX;
-				break;
-			case 5:
-				currentFormation = Formation.CHARGE_PLUSZ;
-				break;
-			case 6:
-				currentFormation = Formation.CHARGE_MINUSZ;
-				break;
-			case 7:
-				currentFormation = Formation.SMALL_CLOCKWISE;
-				//currentFormation = Formation.LARGE_CLOCKWISE;
-				break;
-		}
-
-		this.switchToFormation(currentFormation);
-	}
-
-	/**
-	 * Check within 20ish squares.  If this phantom is the lowest numbered one, return true
-	 *
-	 * @param nearbyKnights
-	 */
-	private boolean isThisTheLeader(List<EntityTFKnightPhantom> nearbyKnights) {
-
-		boolean iAmTheLowest = true;
-
-		// find more knights
-
-		for (EntityTFKnightPhantom knight : nearbyKnights) {
-			if (knight.getNumber() < this.getNumber()) {
-				iAmTheLowest = false;
-				break; // don't bother checking more
-			}
-		}
-
-		return iAmTheLowest;
-	}
-
-	private boolean isNobodyCharging(List<EntityTFKnightPhantom> nearbyKnights) {
-		boolean noCharge = true;
-		for (EntityTFKnightPhantom knight : nearbyKnights) {
-			if (knight.isChargingAtPlayer()) {
-				noCharge = false;
-				break; // don't bother checking more
-			}
-		}
-
-		return noCharge;
-	}
-
-	/**
-	 * Tell a random knight from the list to charge
-	 */
-	private void makeARandomKnightCharge(List<EntityTFKnightPhantom> nearbyKnights) {
-		int randomNum = rand.nextInt(nearbyKnights.size());
-		nearbyKnights.get(randomNum).switchToFormation(Formation.ATTACK_PLAYER_START);
-	}
-
-
-	private void broadcastMyFormation(List<EntityTFKnightPhantom> nearbyKnights) {
-		// find more knights
-
-		for (EntityTFKnightPhantom knight : nearbyKnights) {
-			if (!knight.isChargingAtPlayer()) {
-				knight.switchToFormation(this.currentFormation);
-			}
-		}
+		if (number > smallestUnused || nums.contains(number))
+			setNumber(smallestUnused);
 	}
 
 	public boolean isChargingAtPlayer() {
 		return dataManager.get(FLAG_CHARGING);
 	}
 
-	public void setChargingAtPlayer(boolean flag) {
+	private void setChargingAtPlayer(boolean flag) {
 		dataManager.set(FLAG_CHARGING, flag);
 		if (!world.isRemote) {
 			if (flag) {
@@ -538,26 +311,22 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		return TFSounds.WRAITH;
 	}
 
-
 	private void switchToFormationByNumber(int formationNumber) {
-
 		currentFormation = Formation.values()[formationNumber];
-
-		this.ticksProgress = 0;
+		ticksProgress = 0;
 	}
 
 	public void switchToFormation(Formation formation) {
-		this.currentFormation = formation;
-		this.ticksProgress = 0;
-
-		this.setChargingAtPlayer(this.currentFormation == Formation.ATTACK_PLAYER_START || this.currentFormation == Formation.ATTACK_PLAYER_ATTACK);
+		currentFormation = formation;
+		ticksProgress = 0;
+		updateMyNumber();
+		setChargingAtPlayer(currentFormation == Formation.ATTACK_PLAYER_START || currentFormation == Formation.ATTACK_PLAYER_ATTACK);
 
 	}
 
-	public int getFormationAsNumber() {
-		return this.currentFormation.ordinal();
+	private int getFormationAsNumber() {
+		return currentFormation.ordinal();
 	}
-
 
 	public int getTicksProgress() {
 		return ticksProgress;
@@ -597,127 +366,16 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		}
 	}
 
-	private Vec3d getDestination() {
-
-		if (!this.hasHome()) {
-			// hmmm
-		}
-
-		switch (currentFormation) {
-			case LARGE_CLOCKWISE:
-				return getCirclePosition(CIRCLE_LARGE_RADIUS, true);
-			case SMALL_CLOCKWISE:
-				return getCirclePosition(CIRCLE_SMALL_RADIUS, true);
-			case LARGE_ANTICLOCKWISE:
-				return getCirclePosition(CIRCLE_LARGE_RADIUS, false);
-			case SMALL_ANTICLOCKWISE:
-				return getCirclePosition(CIRCLE_SMALL_RADIUS, false);
-			case CHARGE_PLUSX:
-				return getMoveAcrossPosition(true, true);
-			case CHARGE_MINUSX:
-				return getMoveAcrossPosition(false, true);
-			case CHARGE_PLUSZ:
-				return getMoveAcrossPosition(true, false);
-			case ATTACK_PLAYER_START:
-			case HOVER:
-				return getHoverPosition(CIRCLE_LARGE_RADIUS);
-			case CHARGE_MINUSZ:
-				return getMoveAcrossPosition(false, false);
-			case WAITING_FOR_LEADER:
-				return getLoiterPosition();
-			case ATTACK_PLAYER_ATTACK:
-				return getAttackPlayerPosition();
-			default:
-				return getLoiterPosition();
-		}
-	}
-
-	private Vec3d getMoveAcrossPosition(boolean plus, boolean alongX) {
-
-		float offset0 = (this.getNumber() * 3F) - 7.5F;
-
-		float offset1;
-
-		if (this.ticksProgress < 60) {
-			offset1 = -7F;
-		} else {
-			offset1 = -7F + (((this.ticksProgress - 60) / 120F) * 14F);
-		}
-
-		if (!plus) {
-			offset1 *= -1;
-		}
-
-
-		double dx = this.getHomePosition().getX() + (alongX ? offset0 : offset1);
-		double dy = this.getHomePosition().getY() + Math.cos(this.ticksProgress / 7F + this.getNumber());
-		double dz = this.getHomePosition().getZ() + (alongX ? offset1 : offset0);
-		return new Vec3d(dx, dy, dz);
-	}
-
-	protected Vec3d getCirclePosition(float distance, boolean clockwise) {
-		float angle = (this.ticksProgress * 2.0F);
-
-		if (!clockwise) {
-			angle *= -1;
-		}
-
-		angle += (60F * this.getNumber());
-
-		double dx = this.getHomePosition().getX() + Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double dy = this.getHomePosition().getY() + Math.cos(this.ticksProgress / 7F + this.getNumber());
-		double dz = this.getHomePosition().getZ() + Math.sin((angle) * Math.PI / 180.0D) * distance;
-		return new Vec3d(dx, dy, dz);
-	}
-
-	private Vec3d getHoverPosition(float distance) {
-		// bound this by distance so we don't hover in walls if we get knocked into them
-
-		double dx = this.lastTickPosX;
-		double dy = this.getHomePosition().getY() + Math.cos(this.ticksProgress / 7F + this.getNumber());
-		double dz = this.lastTickPosZ;
-
-		// let's just bound this by 2D distance
-		double ox = (this.getHomePosition().getX() - dx);
-		double oz = (this.getHomePosition().getZ() - dz);
-		double dDist = Math.sqrt(ox * ox + oz * oz);
-
-		if (dDist > distance) {
-			// normalize back to boundaries
-
-			dx = this.getHomePosition().getX() + (ox / dDist * distance);
-			dz = this.getHomePosition().getZ() + (oz / dDist * distance);
-		}
-
-		return new Vec3d(dx, dy, dz);
-	}
-
-	private Vec3d getLoiterPosition() {
-		double dx = this.getHomePosition().getX();
-		double dy = this.getHomePosition().getY() + Math.cos(this.ticksProgress / 7F + this.getNumber());
-		double dz = this.getHomePosition().getZ();
-		return new Vec3d(dx, dy, dz);
-	}
-
-	private Vec3d getAttackPlayerPosition() {
-		if (isSwordKnight()) {
-			return new Vec3d(this.chargePos);
-		} else {
-			return getHoverPosition(CIRCLE_LARGE_RADIUS);
-		}
-
-	}
-
 	public boolean isSwordKnight() {
-		return this.getHeldItemMainhand() != null && this.getHeldItemMainhand().getItem() == TFItems.knightlySword;
+		return getHeldItemMainhand().getItem() == TFItems.knightlySword;
 	}
 
 	public boolean isAxeKnight() {
-		return this.getHeldItemMainhand() != null && this.getHeldItemMainhand().getItem() == TFItems.knightlyAxe;
+		return getHeldItemMainhand().getItem() == TFItems.knightlyAxe;
 	}
 
 	public boolean isPickKnight() {
-		return this.getHeldItemMainhand() != null && this.getHeldItemMainhand().getItem() == TFItems.knightlyPick;
+		return getHeldItemMainhand().getItem() == TFItems.knightlyPick;
 	}
 
 	public int getNumber() {
@@ -730,13 +388,13 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		// set weapon per number
 		switch (number % 3) {
 			case 0:
-				this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
+				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
 				break;
 			case 1:
-				this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlyAxe));
+				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlyAxe));
 				break;
 			case 2:
-				this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlyPick));
+				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlyPick));
 				break;
 		}
 	}
@@ -745,12 +403,12 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
 		super.writeEntityToNBT(nbttagcompound);
 		if (hasHome()) {
-			BlockPos home = this.getHomePosition();
+			BlockPos home = getHomePosition();
 			nbttagcompound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
 		}
-		nbttagcompound.setInteger("MyNumber", this.getNumber());
-		nbttagcompound.setInteger("Formation", this.getFormationAsNumber());
-		nbttagcompound.setInteger("TicksProgress", this.getTicksProgress());
+		nbttagcompound.setInteger("MyNumber", getNumber());
+		nbttagcompound.setInteger("Formation", getFormationAsNumber());
+		nbttagcompound.setInteger("TicksProgress", getTicksProgress());
 	}
 
 	@Override
@@ -762,13 +420,41 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 			int hx = (int) nbttaglist.getDoubleAt(0);
 			int hy = (int) nbttaglist.getDoubleAt(1);
 			int hz = (int) nbttaglist.getDoubleAt(2);
-			this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 20);
+			setHomePosAndDistance(new BlockPos(hx, hy, hz), 20);
 		} else {
 			detachHome();
 		}
-		this.setNumber(nbttagcompound.getInteger("MyNumber"));
-		this.switchToFormationByNumber(nbttagcompound.getInteger("Formation"));
-		this.setTicksProgress(nbttagcompound.getInteger("TicksProgress"));
+		setNumber(nbttagcompound.getInteger("MyNumber"));
+		switchToFormationByNumber(nbttagcompound.getInteger("Formation"));
+		setTicksProgress(nbttagcompound.getInteger("TicksProgress"));
+	}
+
+	public enum Formation {
+
+		HOVER,
+
+		LARGE_CLOCKWISE,
+
+		SMALL_CLOCKWISE,
+
+		LARGE_ANTICLOCKWISE,
+
+		SMALL_ANTICLOCKWISE,
+
+		CHARGE_PLUSX,
+
+		CHARGE_MINUSX,
+
+		CHARGE_PLUSZ,
+
+		CHARGE_MINUSZ,
+
+		WAITING_FOR_LEADER,
+
+		ATTACK_PLAYER_START,
+
+		ATTACK_PLAYER_ATTACK
+
 	}
 
 	// [VanillaCopy] Home fields and methods from EntityCreature, changes noted
@@ -784,7 +470,8 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	public void setHomePosAndDistance(BlockPos pos, int distance) {
-		this.homePosition = pos;
+		// set the chargePos here as well so we dont go off flying in some direction when we first spawn
+		homePosition = chargePos = pos;
 		this.maximumHomeDistance = (float) distance;
 	}
 
@@ -804,6 +491,4 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		return this.maximumHomeDistance != -1.0F;
 	}
 	// End copy
-
-
 }

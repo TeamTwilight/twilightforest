@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -33,6 +34,7 @@ import twilightforest.block.enums.TowerDeviceVariant;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
+import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
@@ -61,7 +63,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		this.noClip = true;
 		this.setInTantrum(false);
 		this.experienceValue = 317;
-		this.moveHelper = new UrGhastMoveHelper(this);
+		this.moveHelper = new NoClipMoveHelper(this);
 	}
 
 	@Override
@@ -199,37 +201,6 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 				world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
 			}
 		}
-	}
-
-	// [VanillaCopy] from EntityGhast but we remove the collision check
-	static class UrGhastMoveHelper extends EntityMoveHelper {
-		private final EntityTFUrGhast parentEntity;
-		private int courseChangeCooldown;
-
-		public UrGhastMoveHelper(EntityTFUrGhast ghast) {
-			super(ghast);
-			this.parentEntity = ghast;
-		}
-
-		@Override
-		public void onUpdateMoveHelper() {
-			if (this.action == EntityMoveHelper.Action.MOVE_TO) {
-				double d0 = this.posX - this.parentEntity.posX;
-				double d1 = this.posY - this.parentEntity.posY;
-				double d2 = this.posZ - this.parentEntity.posZ;
-				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-
-				if (this.courseChangeCooldown-- <= 0) {
-					this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
-					d3 = (double) MathHelper.sqrt(d3);
-
-					this.parentEntity.motionX += d0 / d3 * 0.1D;
-					this.parentEntity.motionY += d1 / d3 * 0.1D;
-					this.parentEntity.motionZ += d2 / d3 * 0.1D;
-				}
-			}
-		}
-
 	}
 
 	@Override
