@@ -41,6 +41,8 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 2.0F));
 		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
+		this.tasks.addTask(3, new EntityAITempt(this, 1.0D, Items.CARROT, true));
+		this.tasks.addTask(3, new EntityAITempt(this, 1.0D, Items.GOLDEN_CARROT, true));
 		this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.33F));
 		this.tasks.addTask(5, new EntityAIWander(this, 0.8F));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0F));

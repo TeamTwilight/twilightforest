@@ -67,26 +67,26 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	int unusedIntArray32x32[][];
 
 
-	private WorldType field_147435_p;
+	private WorldType worldType;
 
-	private NoiseGeneratorOctaves field_147431_j;
-	private NoiseGeneratorOctaves field_147432_k;
-	private NoiseGeneratorOctaves field_147429_l;
-	private NoiseGeneratorPerlin field_147430_m;
+	private NoiseGeneratorOctaves octaves1;
+	private NoiseGeneratorOctaves octaves2;
+	private NoiseGeneratorOctaves octaves3;
+	private NoiseGeneratorPerlin perlin;
 
 	private final double[] terrainCalcs;
 	private final float[] parabolicField;
 
-	double[] field_147427_d;
-	double[] field_147428_e;
-	double[] field_147425_f;
-	double[] field_147426_g;
+	double[] octaves3Values;
+	double[] octaves1Values;
+	double[] octaves2Values;
+	double[] noiseGen6Values;
 	int[][] field_73219_j = new int[32][32];
 
 	private MapGenTFMajorFeature majorFeatureGenerator;
 	private MapGenTFHollowTree hollowTreeGenerator;
 
-	public ChunkGeneratorTwilightForest(World world, long l, boolean flag) {
+	public ChunkGeneratorTwilightForest(World world, long worldSeed, boolean flag) {
 		stoneNoise = new double[256];
 		caveGenerator = new TFGenCaves();
 
@@ -96,7 +96,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		ravineGenerator = new TFGenRavine();
 		unusedIntArray32x32 = new int[32][32];
 		this.world = world;
-		rand = new Random(l);
+		rand = new Random(worldSeed);
 		//noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
 		//noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
 		//noiseGen3 = new NoiseGeneratorOctaves(rand, 8);
@@ -106,19 +106,20 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		mobSpawnerNoise = new NoiseGeneratorOctaves(rand, 8);
 
 
-		this.field_147435_p = world.getWorldInfo().getTerrainType();
-		this.field_147431_j = new NoiseGeneratorOctaves(this.rand, 16);
-		this.field_147432_k = new NoiseGeneratorOctaves(this.rand, 16);
-		this.field_147429_l = new NoiseGeneratorOctaves(this.rand, 8);
-		this.field_147430_m = new NoiseGeneratorPerlin(this.rand, 4);
+		this.worldType = world.getWorldInfo().getTerrainType();
+		this.octaves1 = new NoiseGeneratorOctaves(this.rand, 16);
+		this.octaves2 = new NoiseGeneratorOctaves(this.rand, 16);
+		this.octaves3 = new NoiseGeneratorOctaves(this.rand, 8);
+		this.perlin = new NoiseGeneratorPerlin(this.rand, 4);
 
 		this.terrainCalcs = new double[825];
 		this.parabolicField = new float[25];
 
-		for (int j = -2; j <= 2; ++j) {
-			for (int k = -2; k <= 2; ++k) {
-				float f = 10.0F / MathHelper.sqrt((float) (j * j + k * k) + 0.2F);
-				this.parabolicField[j + 2 + (k + 2) * 5] = f;
+		for (int x = -2; x <= 2; ++x) {
+			for (int z = -2; z <= 2; ++z) {
+				float dist2 = (x * x + z * z);
+				float y = 10.0F / MathHelper.sqrt(dist2 + 0.2F);
+				this.parabolicField[x + 2 + (z + 2) * 5] = y;
 			}
 		}
 	}
@@ -165,47 +166,52 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, 10, 10);
 		this.makeLandPerBiome2(chunkX * 4, 0, chunkZ * 4);
 
-		for (int k = 0; k < 4; ++k) {
-			int l = k * 5;
-			int i1 = (k + 1) * 5;
+		for (int mainX = 0; mainX < 4; ++mainX) {
+			int left = mainX * 5;
+			int right = (mainX + 1) * 5;
 
-			for (int j1 = 0; j1 < 4; ++j1) {
-				int k1 = (l + j1) * 33;
-				int l1 = (l + j1 + 1) * 33;
-				int i2 = (i1 + j1) * 33;
-				int j2 = (i1 + j1 + 1) * 33;
+			for (int mainZ = 0; mainZ < 4; ++mainZ) {
+				int leftDown = (left + mainZ) * 33;
+				int leftUp = leftDown + 33;
+				int rightDown = (right + mainZ) * 33;
+				int rightUp = rightDown + 33;
 
-				for (int k2 = 0; k2 < 32; ++k2) {
-					double d0 = 0.125D;
-					double d1 = this.terrainCalcs[k1 + k2];
-					double d2 = this.terrainCalcs[l1 + k2];
-					double d3 = this.terrainCalcs[i2 + k2];
-					double d4 = this.terrainCalcs[j2 + k2];
-					double d5 = (this.terrainCalcs[k1 + k2 + 1] - d1) * d0;
-					double d6 = (this.terrainCalcs[l1 + k2 + 1] - d2) * d0;
-					double d7 = (this.terrainCalcs[i2 + k2 + 1] - d3) * d0;
-					double d8 = (this.terrainCalcs[j2 + k2 + 1] - d4) * d0;
+				for (int mainY = 0; mainY < 32; 
+						++mainY,
+						leftDown++,
+						leftUp++,
+						rightDown++,
+						rightUp++) {
+					double scale = 0.125D;
+					double d1 = this.terrainCalcs[leftDown];
+					double d2 = this.terrainCalcs[leftUp];
+					double d3 = this.terrainCalcs[rightDown];
+					double d4 = this.terrainCalcs[rightUp];
+					double d5 = (this.terrainCalcs[leftDown + 1] - d1) * scale;
+					double d6 = (this.terrainCalcs[leftUp + 1] - d2) * scale;
+					double d7 = (this.terrainCalcs[rightDown + 1] - d3) * scale;
+					double d8 = (this.terrainCalcs[rightUp + 1] - d4) * scale;
 
-					for (int l2 = 0; l2 < 8; ++l2) {
+					int y = mainY * 8;
+					for (int subY = 0; subY < 8; ++subY, y++) {
 						double d9 = 0.25D;
 						double d10 = d1;
 						double d11 = d2;
 						double d12 = (d3 - d1) * d9;
 						double d13 = (d4 - d2) * d9;
 
-						for (int i3 = 0; i3 < 4; ++i3) {
-							int j3 = i3 + k * 4 << 12 | 0 + j1 * 4 << 8 | k2 * 8 + l2;
-							short short1 = 256;
-							j3 -= short1;
+						int x = mainX * 4;
+						for (int subX = 0; subX < 4; ++subX, x++) {
 							double d14 = 0.25D;
 							double d16 = (d11 - d10) * d14;
 							double d15 = d10 - d16;
 
-							for (int k3 = 0; k3 < 4; ++k3) {
+							int z = mainZ * 4;
+							for (int subZ = 0; subZ < 4; ++subZ, z++) {
 								if ((d15 += d16) > 0.0D) {
-									primer.setBlockState(k * 4 + i3, k2 * 8 + l2, j1 * 4 + k3, Blocks.STONE.getDefaultState());
-								} else if (k2 * 8 + l2 < seaLevel) {
-									primer.setBlockState(k * 4 + i3, k2 * 8 + l2, j1 * 4 + k3, Blocks.WATER.getDefaultState());
+									primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
+								} else if (mainY * 8 + subY < seaLevel) {
+									primer.setBlockState(x, y, z, Blocks.WATER.getDefaultState());
 								}
 							}
 
@@ -224,34 +230,38 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	}
 
 	private void makeLandPerBiome2(int x, int zero, int z) {
-
-		this.field_147426_g = this.noiseGen6.generateNoiseOctaves(this.field_147426_g, x, z, 5, 5, 200.0D, 200.0D, 0.5D);
-		this.field_147427_d = this.field_147429_l.generateNoiseOctaves(this.field_147427_d, x, zero, z, 5, 33, 5, 8.555150000000001D, 4.277575000000001D, 8.555150000000001D);
-		this.field_147428_e = this.field_147431_j.generateNoiseOctaves(this.field_147428_e, x, zero, z, 5, 33, 5, 684.412D, 684.412D, 684.412D);
-		this.field_147425_f = this.field_147432_k.generateNoiseOctaves(this.field_147425_f, x, zero, z, 5, 33, 5, 684.412D, 684.412D, 684.412D);
+		this.noiseGen6Values = this.noiseGen6.generateNoiseOctaves(this.noiseGen6Values, x, z, 5, 5, 200.0D, 200.0D, 0.5D);
+		this.octaves3Values = this.octaves3.generateNoiseOctaves(this.octaves3Values, x, zero, z, 5, 33, 5, 8.555150000000001D, 4.277575000000001D, 8.555150000000001D);
+		this.octaves1Values = this.octaves1.generateNoiseOctaves(this.octaves1Values, x, zero, z, 5, 33, 5, 684.412D, 684.412D, 684.412D);
+		this.octaves2Values = this.octaves2.generateNoiseOctaves(this.octaves2Values, x, zero, z, 5, 33, 5, 684.412D, 684.412D, 684.412D);
 		int terrainIndex = 0;
 		int noiseIndex = 0;
-
+		
 		for (int ax = 0; ax < 5; ++ax) {
-			for (int az = 0; az < 5; ++az) {
+			int biomeForGenIndex = ax + 2 + 2 * 10;
+			
+			for (int az = 0; az < 5; ++az, biomeForGenIndex += 10) {
 				float totalVariation = 0.0F;
 				float totalHeight = 0.0F;
 				float totalFactor = 0.0F;
 				byte two = 2;
-				Biome biomegenbase = this.biomesForGeneration[ax + 2 + (az + 2) * 10];
+				Biome biomegenbase = this.biomesForGeneration[biomeForGenIndex];
 
 				for (int ox = -two; ox <= two; ++ox) {
-					for (int oz = -two; oz <= two; ++oz) {
-						Biome biomegenbase1 = this.biomesForGeneration[ax + ox + 2 + (az + oz + 2) * 10];
+					int biomeForGenIndexLocal = biomeForGenIndex + ox - two * 10;
+					int pfIndex = ox + 2;
+					
+					for (int oz = -two; oz <= two; ++oz, biomeForGenIndexLocal += 10, pfIndex += 5) {
+						Biome biomegenbase1 = this.biomesForGeneration[biomeForGenIndexLocal];
 						float rootHeight = biomegenbase1.getBaseHeight();
 						float heightVariation = biomegenbase1.getHeightVariation();
 
-						if (this.field_147435_p == WorldType.AMPLIFIED && rootHeight > 0.0F) {
+						if (this.worldType == WorldType.AMPLIFIED && rootHeight > 0.0F) {
 							rootHeight = 1.0F + rootHeight * 2.0F;
 							heightVariation = 1.0F + heightVariation * 4.0F;
 						}
 
-						float heightFactor = this.parabolicField[ox + 2 + (oz + 2) * 5] / (rootHeight + 2.0F);
+						float heightFactor = this.parabolicField[pfIndex] / (rootHeight + 2.0F);
 
 						if (biomegenbase1.getBaseHeight() > biomegenbase.getBaseHeight()) {
 							heightFactor /= 2.0F;
@@ -267,7 +277,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				totalHeight /= totalFactor;
 				totalVariation = totalVariation * 0.9F + 0.1F;
 				totalHeight = (totalHeight * 4.0F - 1.0F) / 8.0F;
-				double terrainNoise = this.field_147426_g[noiseIndex] / 8000.0D;
+				double terrainNoise = this.noiseGen6Values[noiseIndex] / 8000.0D;
 
 				if (terrainNoise < 0.0D) {
 					terrainNoise = -terrainNoise * 0.3D;
@@ -293,26 +303,26 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				}
 
 				++noiseIndex;
-				double heightCalc = (double) totalHeight;
-				double variationCalc = (double) totalVariation;
+				double heightCalc = totalHeight;
+				double variationCalc = totalVariation;
 				heightCalc += terrainNoise * 0.2D;
 				heightCalc = heightCalc * 8.5D / 8.0D;
 				double d5 = 8.5D + heightCalc * 4.0D;
-
+				
 				for (int ay = 0; ay < 33; ++ay) {
-					double d6 = ((double) ay - d5) * 12.0D * 128.0D / 256.0D / variationCalc;
+					double d6 = (ay - d5) * 12.0D * 128.0D / 256.0D / variationCalc;
 
 					if (d6 < 0.0D) {
 						d6 *= 4.0D;
 					}
 
-					double d7 = this.field_147428_e[terrainIndex] / 512.0D;
-					double d8 = this.field_147425_f[terrainIndex] / 512.0D;
-					double d9 = (this.field_147427_d[terrainIndex] / 10.0D + 1.0D) / 2.0D;
+					double d7 = this.octaves1Values[terrainIndex] / 512.0D;
+					double d8 = this.octaves2Values[terrainIndex] / 512.0D;
+					double d9 = (this.octaves3Values[terrainIndex] / 10.0D + 1.0D) / 2.0D;
 					double terrainCalc = MathHelper.clampedLerp(d7, d8, d9) - d6;
 
 					if (ay > 29) {
-						double d11 = (double) ((float) (ay - 29) / 3.0F);
+						double d11 = (ay - 29) / 3.0F;
 						terrainCalc = terrainCalc * (1.0D - d11) + -10.0D * d11;
 					}
 
@@ -351,7 +361,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		if (event.getResult() == Result.DENY) return;
 
 		double d0 = 0.03125D;
-		this.stoneNoise = this.field_147430_m.getRegion(this.stoneNoise, (double) (chunkX * 16), (double) (chunkZ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
+		this.stoneNoise = this.perlin.getRegion(this.stoneNoise, chunkX * 16, chunkZ * 16, 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
 
 		for (int z = 0; z < 16; ++z) {
 			for (int x = 0; x < 16; ++x) {
@@ -389,7 +399,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 					// hollow hills
 					int hdiam = ((nearFeature.size * 2 + 1) * 16);
 					int dist = (int) Math.sqrt(dx * dx + dz * dz);
-					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * ((float) hdiam / 3F));
+					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * (hdiam / 3F));
 
 					raiseHills(primer, nearFeature, hdiam, x, z, dx, dz, hheight);
 				} else if (nearFeature == TFFeature.hedgeMaze || nearFeature == TFFeature.nagaCourtyard || nearFeature == TFFeature.questGrove) {
@@ -501,7 +511,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 		// sets the groundlevel to the mazeheight
 		for (int y = 0; y <= 127; y++) {
-			int index = (x * 16 + z) * TFWorld.CHUNKHEIGHT + y;
 			Block b = primer.getBlockState(x, y, z).getBlock();
 			if (y < mazeheight && (b == Blocks.AIR || b == Blocks.WATER)) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
@@ -610,7 +619,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 				int regionX = (cx + 8) >> 4;
 				int regionZ = (cz + 8) >> 4;
 
-				long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
+				long seed = (regionX * 3129871) ^ (regionZ * 116129781L);
 				seed = seed * seed * 42317861L + seed * 7L;
 
 				int num0 = (int) (seed >> 12 & 3L);
@@ -675,16 +684,10 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		}
 	}
 
-	private float pseudoRand(int bx, int bz) {
-		Random rand = new Random(this.world.getSeed() + (bx * 321534781) ^ (bz * 756839));
-		rand.setSeed(rand.nextLong());
-		return rand.nextFloat();
-	}
-
 	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome biomes[]) {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
-				Biome biome = biomes[x & 15 | (z & 15) << 4];
+				Biome biome = biomes[x | (z << 4)];
 				if (biome == TFBiomes.glacier) {
 					// find the (current) top block
 					int topLevel = -1;
@@ -793,7 +796,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 					if (topLevel != -1) {
 						// just use the same noise generator as the terrain uses
 						// for stones
-						int noise = Math.min(3, (int) (stoneNoise[z & 15 | (x & 15) << 4] / 1.25f));
+						int noise = Math.min(3, (int) (stoneNoise[z | (x << 4)] / 1.25f));
 
 						// manipulate top and bottom
 						int treeBottom = topLevel + 12 - (int) (thickness * 0.5F);

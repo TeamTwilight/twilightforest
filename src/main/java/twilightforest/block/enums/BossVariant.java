@@ -19,6 +19,8 @@ public enum BossVariant implements IStringSerializable {
 	MINOSHROOM(false, TileEntityTFMinoshroomSpawner.class),
 	ALPHA_YETI(false, TileEntityTFAlphaYetiSpawner.class);
 
+	public static final BossVariant[] VALUES = values();
+	
 	private final boolean hasTrophy;
 	private final Class<? extends TileEntityTFBossSpawner> spawnerClass;
 

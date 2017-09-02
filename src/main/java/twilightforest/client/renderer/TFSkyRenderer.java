@@ -20,6 +20,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+import static org.lwjgl.opengl.GL11.*;
+
 @SideOnly(Side.CLIENT)
 public class TFSkyRenderer extends IRenderHandler {
 	private int starGLCallList;
@@ -37,34 +39,34 @@ public class TFSkyRenderer extends IRenderHandler {
 		int pass = EntityRenderer.anaglyphField;
 
 		GlStateManager.disableTexture2D();
-		Vec3d vec3d = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
-		float f = (float) vec3d.x;
-		float f1 = (float) vec3d.y;
-		float f2 = (float) vec3d.z;
+		Vec3d vecSkyColor = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
+		float r = (float) vecSkyColor.x;
+		float g = (float) vecSkyColor.y;
+		float b = (float) vecSkyColor.z;
 
+		// It can't be 2 BTW
 		if (pass != 2) {
-			float f3 = (f * 30.0F + f1 * 59.0F + f2 * 11.0F) / 100.0F;
-			float f4 = (f * 30.0F + f1 * 70.0F) / 100.0F;
-			float f5 = (f * 30.0F + f2 * 70.0F) / 100.0F;
-			f = f3;
-			f1 = f4;
-			f2 = f5;
+			float f3 = (r * 30.0F + g * 59.0F + b * 11.0F) / 100.0F;
+			float f4 = (r * 30.0F + g * 70.0F) / 100.0F;
+			float f5 = (r * 30.0F + b * 70.0F) / 100.0F;
+			r = f3;
+			g = f4;
+			b = f5;
 		}
 
-		GlStateManager.color(f, f1, f2);
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder vertexbuffer = tessellator.getBuffer();
 		GlStateManager.depthMask(false);
 		GlStateManager.enableFog();
-		GlStateManager.color(f, f1, f2);
+		GlStateManager.color(r, g, b);
 
 		if (OpenGlHelper.useVbo()) {
 			rg.skyVBO.bindBuffer();
-			GlStateManager.glEnableClientState(32884);
-			GlStateManager.glVertexPointer(3, 5126, 12, 0);
-			rg.skyVBO.drawArrays(7);
+			GlStateManager.glEnableClientState(GL_VERTEX_ARRAY);
+			GlStateManager.glVertexPointer(3, GL_FLOAT, 12, 0);
+			rg.skyVBO.drawArrays(GL_QUADS);
 			rg.skyVBO.unbindBuffer();
-			GlStateManager.glDisableClientState(32884);
+			GlStateManager.glDisableClientState(GL_VERTEX_ARRAY);
 		} else {
 			GlStateManager.callList(rg.glSkyList);
 		}
@@ -95,15 +97,15 @@ public class TFSkyRenderer extends IRenderHandler {
 		float f15 = 1.0F; // TF - stars are always bright
 
 		if (f15 > 0.0F) {
-			GlStateManager.color(f15, f15, f15, f15);
+			GlStateManager.color(f15, f15, f15, 1.0F);
 
 			if (OpenGlHelper.useVbo()) {
 				this.starVBO.bindBuffer();
-				GlStateManager.glEnableClientState(32884);
+				GlStateManager.glEnableClientState(GL_VERTEX_ARRAY);
 				GlStateManager.glVertexPointer(3, 5126, 12, 0);
-				this.starVBO.drawArrays(7);
+				this.starVBO.drawArrays(GL_QUADS);
 				this.starVBO.unbindBuffer();
-				GlStateManager.glDisableClientState(32884);
+				GlStateManager.glDisableClientState(GL_VERTEX_ARRAY);
 			} else {
 				GlStateManager.callList(this.starGLCallList);
 			}
@@ -124,34 +126,34 @@ public class TFSkyRenderer extends IRenderHandler {
 
 			if (OpenGlHelper.useVbo()) {
 				rg.sky2VBO.bindBuffer();
-				GlStateManager.glEnableClientState(32884);
+				GlStateManager.glEnableClientState(GL_VERTEX_ARRAY);
 				GlStateManager.glVertexPointer(3, 5126, 12, 0);
-				rg.sky2VBO.drawArrays(7);
+				rg.sky2VBO.drawArrays(GL_QUADS);
 				rg.sky2VBO.unbindBuffer();
-				GlStateManager.glDisableClientState(32884);
+				GlStateManager.glDisableClientState(GL_VERTEX_ARRAY);
 			} else {
 				GlStateManager.callList(rg.glSkyList2);
 			}
 
 			GlStateManager.popMatrix();
-			float f18 = 1.0F;
-			float f19 = -((float) (d0 + 65.0D));
-			float f20 = -1.0F;
-			vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-			vertexbuffer.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			vertexbuffer.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			double f18 = 1.0D;
+			double f19 = -((float) (d0 + 65.0D));
+			double f20 = -1.0D;
+			vertexbuffer.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+			vertexbuffer.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			vertexbuffer.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			vertexbuffer.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			vertexbuffer.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			vertexbuffer.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			vertexbuffer.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			vertexbuffer.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			vertexbuffer.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			vertexbuffer.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			vertexbuffer.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			vertexbuffer.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			vertexbuffer.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			vertexbuffer.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			vertexbuffer.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			vertexbuffer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
@@ -162,9 +164,9 @@ public class TFSkyRenderer extends IRenderHandler {
 		}
 
 		if (world.provider.isSkyColored()) {
-			GlStateManager.color(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
+			GlStateManager.color(r * 0.2F + 0.04F, g * 0.2F + 0.04F, b * 0.6F + 0.1F);
 		} else {
-			GlStateManager.color(f, f1, f2);
+		GlStateManager.color(r, g, b);
 		}
 
 		GlStateManager.pushMatrix();
@@ -213,7 +215,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	// [VanillaCopy] of RenderGlobal.renderStars but with double the number of them
 	private void renderStars(BufferBuilder worldRendererIn) {
 		Random random = new Random(10842L);
-		worldRendererIn.begin(7, DefaultVertexFormats.POSITION);
+		worldRendererIn.begin(GL_QUADS, DefaultVertexFormats.POSITION);
 
 		for (int i = 0; i < 3000; ++i) // TF - 1500 -> 3000
 		{
