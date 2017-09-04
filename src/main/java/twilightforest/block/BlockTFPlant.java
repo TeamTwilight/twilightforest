@@ -92,7 +92,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 					return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
 				case MUSHGLOOM:
 				case MOSSPATCH:
-					return soil.isSideSolid(world, pos, EnumFacing.UP);
+					return soil.isSideSolid(world, pos.down(), EnumFacing.UP);
 				default:
 					return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
 			}
