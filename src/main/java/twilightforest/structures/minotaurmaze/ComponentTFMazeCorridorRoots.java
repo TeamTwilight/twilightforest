@@ -34,7 +34,7 @@ public class ComponentTFMazeCorridorRoots extends ComponentTFMazeCorridor {
 
 					// roots
 					for (int y = 6 - length; y < 6; y++) {
-						this.setBlockState(world, TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.ROOT_STRAND), x, y, z, sbb);
+						this.setBlockState(world, TFBlocks.plantHanging.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.ROOT_STRAND), x, y, z, sbb);
 					}
 
 					// occasional gravel

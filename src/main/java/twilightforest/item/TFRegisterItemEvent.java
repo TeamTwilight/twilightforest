@@ -178,7 +178,10 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.hedge);
 		items.registerSubItemBlock(TFBlocks.bossSpawner);
 		items.registerBlock(TFBlocks.fireflyJar);
-		items.register(new ItemBlockTFPlant(TFBlocks.plant));
+		items.register(new ItemBlockTFPlant(TFBlocks.plantStandard));
+		items.register(new ItemBlockTFPlant(TFBlocks.plantHanging));
+		items.register(new ItemBlockTFPlant(TFBlocks.plantDark));
+		items.register(new ItemBlockTFPlant(TFBlocks.plantCave));
 		items.registerBlock(TFBlocks.uncraftingTable);
 		items.registerSubItemBlock(TFBlocks.fireJet);
 		items.registerSubItemBlock(TFBlocks.nagastone);

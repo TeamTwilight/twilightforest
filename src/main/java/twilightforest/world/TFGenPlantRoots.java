@@ -17,7 +17,7 @@ public class TFGenPlantRoots extends TFGenerator {
 
 		for (; pos.getY() > 5; pos = pos.down()) {
 			if (par1World.isAirBlock(pos) && BlockTFPlant.canPlaceRootBelow(par1World, pos.up()) && par2Random.nextInt(6) > 0) {
-				par1World.setBlockState(pos, TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.ROOT_STRAND), 2);
+				par1World.setBlockState(pos, TFBlocks.plantHanging.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.ROOT_STRAND), 2);
 			} else {
 				pos = new BlockPos(
 						copyX + par2Random.nextInt(4) - par2Random.nextInt(4),

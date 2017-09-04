@@ -29,9 +29,9 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 
 	public TFDarkForestBiomeDecorator() {
 		darkCanopyTreeGen = new TFGenDarkCanopyTree();
-		worldGenDeadBush = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
-		worldGenForestGrass = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FORESTGRASS));
-		worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+		worldGenDeadBush = new TFGenTallGrass(TFBlocks.plantDark.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
+		worldGenForestGrass = new TFGenTallGrass(TFBlocks.plantDark.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FORESTGRASS));
+		worldGenMushgloom = new TFGenTallGrass(TFBlocks.plantCave.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 	}
 
 	@Override

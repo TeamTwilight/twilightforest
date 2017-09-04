@@ -40,8 +40,11 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 {
 	public static final PropertyEnum<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
 
-	protected BlockTFPlant() {
+	private final EnumTFPlantType type;
+	
+	protected BlockTFPlant(EnumTFPlantType type) {
 		super(Material.PLANTS);
+		this.type = type;
 		this.setTickRandomly(true);
 		this.setHardness(0.0F);
 		this.setSoundType(SoundType.PLANT);
@@ -79,7 +82,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
 		IBlockState soil = world.getBlockState(pos.down());
-
+/*
 		if (state.getBlock() != this) {
 			return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
 		} else {
@@ -96,6 +99,16 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 				default:
 					return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
 			}
+		} */
+		switch (type) {
+		case HANGING:
+			return BlockTFPlant.canPlaceRootBelow(world, pos.up());
+		case DARKNESS_RESISTENT:
+			return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+		case CAVE:
+			return soil.isSideSolid(world, pos.down(), EnumFacing.UP);
+		default:
+			return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
 		}
 	}
 
@@ -182,7 +195,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			// can always hang below dirt blocks
 			return true;
 		} else {
-			return (state.getBlock() == TFBlocks.plant && state.getValue(BlockTFPlant.VARIANT) == PlantVariant.ROOT_STRAND)
+			return (state.getBlock() == TFBlocks.plantHanging && state.getValue(BlockTFPlant.VARIANT) == PlantVariant.ROOT_STRAND)
 					|| state == TFBlocks.root.getDefaultState();
 		}
 
@@ -263,7 +276,10 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 
 	@Override
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> stackList) {
-		for (int i = 0; i < PlantVariant.values().length; i++) {
+		PlantVariant[] values = PlantVariant.values();
+		for (int i = 0; i < values.length; i++) {
+			if( !values[i].plantType.equals(type) )
+				continue;
 			stackList.add(new ItemStack(this, 1, i));
 		}
 	}
@@ -272,12 +288,18 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
 		IBlockState blockState = world.getBlockState(pos);
 		if (blockState.getBlock() == this) {
-			switch (blockState.getValue(VARIANT)) {
+/*			switch (blockState.getValue(VARIANT)) {
 				case MOSSPATCH:
 				case MUSHGLOOM:
 					return EnumPlantType.Cave;
 				default:
 					return EnumPlantType.Plains;
+			}*/
+			switch (type) {
+			case CAVE:
+				return EnumPlantType.Cave;
+			default:
+				return EnumPlantType.Plains;
 			}
 		}
 		return EnumPlantType.Plains;
@@ -303,8 +325,11 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		for (int i = 0; i < PlantVariant.values().length; i++) {
-			String variant = "inventory_" + PlantVariant.values()[i].getName();
+		PlantVariant[] values = PlantVariant.values();
+		for (int i = 0; i < values.length; i++) {
+			if( !values[i].plantType.equals(type) )
+				continue;
+			String variant = "inventory_" + values[i].getName();
 			ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), variant);
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, mrl);
 		}
