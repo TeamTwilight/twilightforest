@@ -18,11 +18,6 @@ public class TFGenVines extends WorldGenerator {
 		for (; position.getY() > TFWorld.SEALEVEL; position = position.down()) {
 			if (worldIn.isAirBlock(position)) {
 				for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL.facings()) {
-/*					if (Blocks.VINE.canPlaceBlockOnSide(worldIn, position, enumfacing)) {
-						IBlockState iblockstate = Blocks.VINE.getDefaultState().withProperty(BlockVine.SOUTH, enumfacing == EnumFacing.NORTH).withProperty(BlockVine.WEST, Boolean.valueOf(enumfacing == EnumFacing.EAST)).withProperty(BlockVine.NORTH, Boolean.valueOf(enumfacing == EnumFacing.SOUTH)).withProperty(BlockVine.EAST, Boolean.valueOf(enumfacing == EnumFacing.WEST));
-						worldIn.setBlockState(position, iblockstate, 2);
-						break;
-					}*/
 					if( tryPlaceVine( worldIn, position, enumfacing ) ) {
 						int length = rand.nextInt(7) + 1;
 						for( int i = 1; i < length; i ++ ) {

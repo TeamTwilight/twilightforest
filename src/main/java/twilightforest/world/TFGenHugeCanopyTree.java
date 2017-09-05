@@ -26,13 +26,6 @@ public class TFGenHugeCanopyTree extends TFTreeGenerator {
 	public TFGenHugeCanopyTree(boolean par1) {
 		super(par1);
 		this.minHeight = 35;
-/*		super.treeBlock = TFBlocks.log;
-		super.treeMeta = 1;
-		super.branchMeta = 13;
-		super.leafBlock = TFBlocks.leaves;
-		super.leafMeta = 1;
-		super.rootBlock = TFBlocks.root;
-		super.rootMeta = 0;*/
 		treeState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
 		leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY).withProperty(BlockLeaves.CHECK_DECAY, false);
@@ -107,48 +100,21 @@ public class TFGenHugeCanopyTree extends TFTreeGenerator {
 		base = pos.north(5);
 		setBlockAndNotifyAdequately(world, base.east(1), this.branchState);
 		setBlockAndNotifyAdequately(world, base.west(1), this.branchState);
-
-		
-/*		this.setBlockAndMetadata(world, var1[0] + 5, var1[1], var1[2] + 1, this.treeBlock, this.branchMeta);
-		this.setBlockAndMetadata(world, var1[0] + 5, var1[1], var1[2] - 1, this.treeBlock, this.branchMeta);
-		this.setBlockAndMetadata(world, var1[0] - 5, var1[1], var1[2] + 1, this.treeBlock, this.branchMeta);
-		this.setBlockAndMetadata(world, var1[0] - 5, var1[1], var1[2] - 1, this.treeBlock, this.branchMeta);
-		this.setBlockAndMetadata(world, var1[0] + 1, var1[1], var1[2] + 5, this.treeBlock, this.branchMeta);
-		this.setBlockAndMetadata(world, var1[0] - 1, var1[1], var1[2] + 5, this.treeBlock, this.branchMeta);
-		this.setBlockAndMetadata(world, var1[0] + 1, var1[1], var1[2] - 5, this.treeBlock, this.branchMeta);
-		this.setBlockAndMetadata(world, var1[0] - 1, var1[1], var1[2] - 5, this.treeBlock, this.branchMeta);*/
 		
 		TFGenerator.drawBresehnam(this, world, pos.east(1), pos.east(4).south(3), this.branchState);
 		TFGenerator.drawBresehnam(this, world, pos.west(1), pos.west(4).north(3), this.branchState);
 		TFGenerator.drawBresehnam(this, world, pos.south(1), pos.west(3).south(4), this.branchState);
 		TFGenerator.drawBresehnam(this, world, pos.north(1), pos.east(3).north(4), this.branchState);
 		
-/*		this.drawBresehnam(world, var1[0] + 1, var1[1], var1[2] + 0, var1[0] + 4, var1[1], var1[2] + 3, this.treeBlock,
-				this.branchMeta);
-		this.drawBresehnam(world, var1[0] - 1, var1[1], var1[2] + 0, var1[0] - 4, var1[1], var1[2] - 3, this.treeBlock,
-				this.branchMeta);
-		this.drawBresehnam(world, var1[0] + 0, var1[1], var1[2] + 1, var1[0] - 3, var1[1], var1[2] + 4, this.treeBlock,
-				this.branchMeta);
-		this.drawBresehnam(world, var1[0] + 0, var1[1], var1[2] - 1, var1[0] + 3, var1[1], var1[2] - 4, this.treeBlock,
-				this.branchMeta); */
-		
 		TFGenerator.makeLeafCircle(this, world, pos.down(2), 4, this.leafState, true );
 		TFGenerator.makeLeafCircle(this, world, pos.down(1), 7, this.leafState, true );
 		TFGenerator.makeLeafCircle(this, world, pos, 8, this.leafState, true);
 		TFGenerator.makeLeafCircle(this, world, pos.up(1), 6, this.leafState, true);
 		TFGenerator.makeLeafCircle(this, world, pos.up(2), 3, this.leafState, true);
-		
-/*		this.makeLeafCircle(world, var1[0], var1[1] - 2, var1[2], 4, this.leafBlock, this.leafMeta, true);
-		this.makeLeafCircle(world, var1[0], var1[1] - 1, var1[2], 7, this.leafBlock, this.leafMeta, true);
-		this.makeLeafCircle(world, var1[0], var1[1], var1[2], 8, this.leafBlock, this.leafMeta, true);
-		this.makeLeafCircle(world, var1[0], var1[1] + 1, var1[2], 6, this.leafBlock, this.leafMeta, true);
-		this.makeLeafCircle(world, var1[0], var1[1] + 2, var1[2], 3, this.leafBlock, this.leafMeta, true); */
 	}
 
 	private void buildTrunk(World world, BlockPos pos, int var1, double var2, double var4, double var6,
 			boolean var8) {
-//		int[] var9 = new int[] { x, y + var1, z };
-//		int[] var10 = translate(var9[0], var9[1], var9[2], var2, var4, var6);
 		BlockPos src = pos.up(var1);
 		BlockPos dest = TFGenerator.translate(src, var2, var4, var6);
 
@@ -159,10 +125,6 @@ public class TFGenHugeCanopyTree extends TFTreeGenerator {
 			this.placeRootBlock(world, base.east(1), this.rootState );
 			this.placeRootBlock(world, base.south(1), this.rootState );
 			this.placeRootBlock(world, base.east(1).south(1), this.rootState );
-/*			this.placeRootBlock(world, x, y + var11, z, this.rootBlock, this.rootMeta);
-			this.placeRootBlock(world, x + 1, y + var11, z, this.rootBlock, this.rootMeta);
-			this.placeRootBlock(world, x, y + var11, z + 1, this.rootBlock, this.rootMeta);
-			this.placeRootBlock(world, x + 1, y + var11, z + 1, this.rootBlock, this.rootMeta);*/
 		}
 		
 		TFGenerator.drawBresehnam(this, world, src, dest, this.treeState );
@@ -170,15 +132,6 @@ public class TFGenHugeCanopyTree extends TFTreeGenerator {
 		TFGenerator.drawBresehnam(this, world, src.south(1), dest.south(1), this.treeState );
 		TFGenerator.drawBresehnam(this, world, src.east(1).south(1), dest.east(1).south(1), this.treeState );
 
-/*		this.drawBresehnam(world, var9[0], var9[1], var9[2], var10[0], var10[1], var10[2], this.treeBlock,
-				this.treeMeta);
-		this.drawBresehnam(world, var9[0] + 1, var9[1], var9[2], var10[0] + 1, var10[1], var10[2], this.treeBlock,
-				this.treeMeta);
-		this.drawBresehnam(world, var9[0] + 1, var9[1], var9[2] + 1, var10[0] + 1, var10[1], var10[2] + 1,
-				this.treeBlock, this.treeMeta);
-		this.drawBresehnam(world, var9[0], var9[1], var9[2] + 1, var10[0], var10[1], var10[2] + 1, this.treeBlock,
-				this.treeMeta);*/
-		
 		this.makeLeafNode(world, dest);
 	}
 

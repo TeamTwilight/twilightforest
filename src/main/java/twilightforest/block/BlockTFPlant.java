@@ -82,24 +82,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
 		IBlockState soil = world.getBlockState(pos.down());
-/*
-		if (state.getBlock() != this) {
-			return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
-		} else {
-			switch (state.getValue(VARIANT)) {
-				case TORCHBERRY:
-				case ROOT_STRAND:
-					return BlockTFPlant.canPlaceRootBelow(world, pos.up());
-				case FORESTGRASS:
-				case DEADBUSH:
-					return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
-				case MUSHGLOOM:
-				case MOSSPATCH:
-					return soil.isSideSolid(world, pos.down(), EnumFacing.UP);
-				default:
-					return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
-			}
-		} */
+
 		switch (type) {
 		case HANGING:
 			return BlockTFPlant.canPlaceRootBelow(world, pos.up());
@@ -288,13 +271,6 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
 		IBlockState blockState = world.getBlockState(pos);
 		if (blockState.getBlock() == this) {
-/*			switch (blockState.getValue(VARIANT)) {
-				case MOSSPATCH:
-				case MUSHGLOOM:
-					return EnumPlantType.Cave;
-				default:
-					return EnumPlantType.Plains;
-			}*/
 			switch (type) {
 			case CAVE:
 				return EnumPlantType.Cave;
