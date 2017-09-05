@@ -28,6 +28,7 @@ import twilightforest.item.TFItems;
 import twilightforest.world.TFGenCanopyTree;
 import twilightforest.world.TFGenDarkCanopyTree;
 import twilightforest.world.TFGenHollowTree;
+import twilightforest.world.TFGenHugeCanopyTree;
 import twilightforest.world.TFGenLargeRainboak;
 import twilightforest.world.TFGenMangroveTree;
 import twilightforest.world.TFGenMinersTree;
@@ -59,11 +60,21 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
 
 	@Override
 	public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
+		growTree( world, rand, pos, state, false );
+	}
+	
+	public void growTree(World world, Random rand, BlockPos pos, IBlockState state, boolean isDetected2x2) {
 		WorldGenerator treeGenerator;
 
 		switch (state.getValue(TF_TYPE)) {
 			case CANOPY:
-				treeGenerator = new TFGenCanopyTree(true);
+				if( !isDetected2x2 ) {
+					if (maybeMakeLargeTree(world, pos, rand, state))
+						return;
+					treeGenerator = new TFGenCanopyTree(true);
+				}
+				else
+					treeGenerator = new TFGenHugeCanopyTree(true);				
 				break;
 			case MANGROVE:
 				treeGenerator = new TFGenMangroveTree(true);
@@ -100,6 +111,36 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
 		if (!treeGenerator.generate(world, rand, pos)) {
 			world.setBlockState(pos, state, 4);
 		}
+	}
+	
+	private boolean maybeMakeLargeTree(World world, BlockPos pos, Random rand, IBlockState state) {
+		SaplingVariant[] variants = new SaplingVariant[9];
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				IBlockState otherState = world.getBlockState(pos.add(i-1, 0, j-1));
+				SaplingVariant variant = null;
+				if( otherState.getBlock() == this )
+					variant = otherState.getValue(TF_TYPE);
+				variants[i*3+j] = variant;
+			}
+		}
+
+		// Check for square pattern and make a tree there in case.
+		SaplingVariant myVariant = state.getValue(TF_TYPE);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2; j++) {
+				SaplingVariant m1 = variants[i * 3 + j];
+				SaplingVariant m2 = variants[(i + 1) * 3 + j];
+				SaplingVariant m3 = variants[i * 3 + (j + 1)];
+				SaplingVariant m4 = variants[(i + 1) * 3 + (j + 1)];
+				if (myVariant.equals( m1 )&& myVariant.equals( m2 ) && myVariant.equals( m3 ) && myVariant.equals( m4) ) {
+					growTree( world, rand, pos.add(i-1, 0, j-1), state, true);
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	@Override
