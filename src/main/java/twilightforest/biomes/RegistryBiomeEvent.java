@@ -44,8 +44,8 @@ public final class RegistryBiomeEvent {
 								.setWaterColor(0x005522)
 								.setTemperature(0.7F)
 								.setRainfall(0.8F)
-								.setBaseHeight(0.2F)
-								.setHeightVariation(0.2F)
+								.setBaseHeight(0.15F)
+								.setHeightVariation(0.4F)
 				),
 				Type.FOREST, Type.DENSE
 		);
