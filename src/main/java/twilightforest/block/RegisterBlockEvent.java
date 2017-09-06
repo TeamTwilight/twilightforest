@@ -26,7 +26,6 @@ public final class RegisterBlockEvent {
 		blocks.register("hedge", (new BlockTFHedge()).setUnlocalizedName("TFHedge"));
 		blocks.register("boss_spawner", (new BlockTFBossSpawner()).setUnlocalizedName("TFBossSpawner"));
 		blocks.register("firefly_jar", (new BlockTFFireflyJar()).setUnlocalizedName("TFFireflyJar"));
-//		blocks.register("twilight_plant", (new BlockTFPlant()).setUnlocalizedName("TFPlant"));
 		blocks.register("twilight_plant_standard", (new BlockTFPlant(EnumTFPlantType.STANDARD)).setUnlocalizedName("TFPlantStandard"));
 		blocks.register("twilight_plant_hanging", (new BlockTFPlant(EnumTFPlantType.HANGING)).setUnlocalizedName("TFPlantHanging"));
 		blocks.register("twilight_plant_dark", (new BlockTFPlant(EnumTFPlantType.DARKNESS_RESISTENT)).setUnlocalizedName("TFPlantDark"));

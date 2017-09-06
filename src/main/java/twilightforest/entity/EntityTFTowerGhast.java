@@ -264,15 +264,15 @@ public class EntityTFTowerGhast extends EntityGhast {
 	}
 
 	public int getAttackStatus() {
-		return (int)dataManager.get(ATTACK_STATUS);
+		return dataManager.get(ATTACK_STATUS);
 	}
 
 	public int getAttackTimer() {
-		return (int)dataManager.get(ATTACK_TIMER);
+		return dataManager.get(ATTACK_TIMER);
 	}
 
 	public int getPrevAttackTimer() {
-		return (int)dataManager.get(ATTACK_PREVTIMER);
+		return dataManager.get(ATTACK_PREVTIMER);
 	}
 
 	protected boolean shouldAttack(EntityLivingBase living) {

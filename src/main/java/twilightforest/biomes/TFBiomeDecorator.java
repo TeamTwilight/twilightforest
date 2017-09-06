@@ -71,6 +71,8 @@ public class TFBiomeDecorator extends BiomeDecorator {
 
 	@Override
 	public void decorate(World world, Random rand, Biome biome, BlockPos pos) {
+		// IMPORTANT when changing Minecraft versions! The saved states should be kept in synch with BiomeDecorator.decorate
+		
 		ChunkProviderSettings saveChunkProviderSettings = this.chunkProviderSettings;
 		BlockPos saveChunkPos = this.chunkPos;
 		WorldGenerator saveDirtGen = this.dirtGen;
