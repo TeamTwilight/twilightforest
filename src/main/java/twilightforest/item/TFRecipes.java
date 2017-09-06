@@ -84,7 +84,7 @@ public class TFRecipes {
 
 		GameRegistry.addRecipe(new ItemStack(Items.ARROW, 4), "X", "#", "Y", 'Y', TFItems.feather, 'X', Items.FLINT, '#', Items.STICK);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.STICK), new ItemStack(TFBlocks.plant, 1, PlantVariant.ROOT_STRAND.ordinal()));
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.STICK), new ItemStack(TFBlocks.plantHanging, 1, PlantVariant.ROOT_STRAND.ordinal()));
 		GameRegistry.addRecipe(new ItemStack(Blocks.TORCH, 5), "B", "S", 'B', TFItems.torchberries, 'S', Items.STICK);
 
 		GameRegistry.addShapelessRecipe(new ItemStack(TFItems.ironwoodRaw), TFItems.liveRoot, Items.IRON_INGOT, Items.GOLD_NUGGET);

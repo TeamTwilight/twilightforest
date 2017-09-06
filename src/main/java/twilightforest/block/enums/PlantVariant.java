@@ -1,24 +1,27 @@
 package twilightforest.block.enums;
 
 import net.minecraft.util.IStringSerializable;
+import twilightforest.block.EnumTFPlantType;
 
 import java.util.Locale;
 
 public enum PlantVariant implements IStringSerializable {
-	MOSSPATCH(false),
-	MAYAPPLE(false),
-	CLOVERPATCH(false),
-	FIDDLEHEAD(true),
-	MUSHGLOOM(false),
-	FORESTGRASS(true),
-	DEADBUSH(false),
-	TORCHBERRY(false),
-	ROOT_STRAND(false);
+	MOSSPATCH(false, EnumTFPlantType.CAVE),
+	MAYAPPLE(false, EnumTFPlantType.STANDARD),
+	CLOVERPATCH(false, EnumTFPlantType.STANDARD),
+	FIDDLEHEAD(true, EnumTFPlantType.STANDARD),
+	MUSHGLOOM(false, EnumTFPlantType.CAVE),
+	FORESTGRASS(true, EnumTFPlantType.DARKNESS_RESISTENT),
+	DEADBUSH(false, EnumTFPlantType.DARKNESS_RESISTENT),
+	TORCHBERRY(false, EnumTFPlantType.HANGING),
+	ROOT_STRAND(false, EnumTFPlantType.HANGING);
 
 	public final boolean isGrassColored;
+	public final EnumTFPlantType plantType;
 
-	PlantVariant(boolean isGrassColored) {
+	PlantVariant(boolean isGrassColored, EnumTFPlantType plantType) {
 		this.isGrassColored = isGrassColored;
+		this.plantType = plantType;
 	}
 
 	@Override

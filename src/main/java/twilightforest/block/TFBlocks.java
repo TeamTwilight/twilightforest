@@ -25,8 +25,14 @@ public class TFBlocks {
 	public static Block bossSpawner;
 	@ObjectHolder("firefly_jar")
 	public static Block fireflyJar;
-	@ObjectHolder("twilight_plant")
-	public static Block plant;
+	@ObjectHolder("twilight_plant_standard")
+	public static Block plantStandard;
+	@ObjectHolder("twilight_plant_hanging")
+	public static Block plantHanging;
+	@ObjectHolder("twilight_plant_dark")
+	public static Block plantDark;
+	@ObjectHolder("twilight_plant_cave")
+	public static Block plantCave;
 	@ObjectHolder("cicada")
 	public static Block cicada;
 	@ObjectHolder("root")

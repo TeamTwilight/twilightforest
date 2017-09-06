@@ -11,6 +11,7 @@ import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenLiquids;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.world.*;
@@ -22,6 +23,7 @@ import java.util.Random;
 public class TFBiomeDecorator extends BiomeDecorator {
 
 	TFGenCanopyTree canopyTreeGen = new TFGenCanopyTree();
+	TFGenHugeCanopyTree hugeCanopyTreeGen = new TFGenHugeCanopyTree();
 	TFTreeGenerator alternateCanopyGen = new TFGenCanopyMushroom();
 	private TFGenHollowTree hollowTreeGen = new TFGenHollowTree();
 	private TFGenMyceliumBlob myceliumBlobGen = new TFGenMyceliumBlob(5);
@@ -69,6 +71,20 @@ public class TFBiomeDecorator extends BiomeDecorator {
 
 	@Override
 	public void decorate(World world, Random rand, Biome biome, BlockPos pos) {
+		ChunkProviderSettings saveChunkProviderSettings = this.chunkProviderSettings;
+		BlockPos saveChunkPos = this.chunkPos;
+		WorldGenerator saveDirtGen = this.dirtGen;
+		WorldGenerator saveGravelOreGen = this.gravelOreGen;
+		WorldGenerator saveGraniteGen = this.graniteGen;
+		WorldGenerator saveDioriteGen = this.dioriteGen;
+		WorldGenerator saveAndesiteGen = this.andesiteGen;
+		WorldGenerator saveCoalGen = this.coalGen;
+		WorldGenerator saveIronGen = this.ironGen;
+		WorldGenerator saveGoldGen = this.goldGen;
+		WorldGenerator saveRedstoneGen = this.redstoneGen;
+		WorldGenerator saveDiamondGen = this.diamondGen;
+		WorldGenerator saveLapisGen = this.lapisGen;
+		boolean saveIsDecorating = this.decorating;
 
 		// check for features
 		TFFeature nearFeature = TFFeature.getNearestFeature(pos.getX() >> 4, pos.getZ() >> 4, world);
@@ -87,8 +103,24 @@ public class TFBiomeDecorator extends BiomeDecorator {
 //	    	}
 
 			// regular decorations
+			this.decorating = false;
 			super.decorate(world, rand, biome, pos);
 		}
+		
+		this.chunkProviderSettings = saveChunkProviderSettings;
+		this.chunkPos = saveChunkPos;
+		this.dirtGen = saveDirtGen;
+		this.gravelOreGen = saveGravelOreGen;
+		this.graniteGen = saveGraniteGen;
+		this.dioriteGen = saveDioriteGen;
+		this.andesiteGen = saveAndesiteGen;
+		this.coalGen = saveCoalGen;
+		this.ironGen = saveIronGen;
+		this.goldGen = saveGoldGen;
+		this.redstoneGen = saveRedstoneGen;
+		this.diamondGen = saveDiamondGen;
+		this.lapisGen = saveLapisGen;
+		this.decorating = saveIsDecorating;
 	}
 
 	@Override
@@ -115,9 +147,12 @@ public class TFBiomeDecorator extends BiomeDecorator {
 				BlockPos genPos = world.getHeight(new BlockPos(rx, 0, rz));
 				if (this.alternateCanopyChance > 0 && randomGenerator.nextFloat() <= alternateCanopyChance) {
 					alternateCanopyGen.generate(world, randomGenerator, genPos);
-				} else {
+				} else if( randomGenerator.nextInt(24) > 0 ) {
 					canopyTreeGen.generate(world, randomGenerator, genPos);
 				}
+				else {
+					hugeCanopyTreeGen.generate(world, randomGenerator, genPos);
+				}					
 			}
 		}
 

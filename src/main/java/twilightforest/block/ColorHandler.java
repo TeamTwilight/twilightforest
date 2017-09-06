@@ -4,7 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
@@ -226,7 +228,7 @@ public final class ColorHandler {
 					: variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()
 					: -1;
 		}, TFBlocks.leaves3);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex != 0 ? 0xFFFFFF : state.getValue(BlockTFPlant.VARIANT).isGrassColored ? worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.plant);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex != 0 ? 0xFFFFFF : state.getValue(BlockTFPlant.VARIANT).isGrassColored ? worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.plantStandard, TFBlocks.plantHanging, TFBlocks.plantDark, TFBlocks.plantCave);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -263,8 +265,17 @@ public final class ColorHandler {
 
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 		// Atomic: This is one place where getStateFromMeta is still commonly used
-		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.auroraBlock, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.auroraDoubleSlab, TFBlocks.darkleaves, TFBlocks.giantLeaves, TFBlocks.fireJet, TFBlocks.magicLeaves, TFBlocks.leaves, TFBlocks.leaves3, TFBlocks.plant, TFBlocks.castleMagic, TFBlocks.castleDoor, TFBlocks.castleDoorVanished);
+		itemColors.registerItemColorHandler((stack, tintIndex) -> colorMultiplierFromItem(blockColors, stack, tintIndex), TFBlocks.auroraBlock, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.auroraDoubleSlab, TFBlocks.darkleaves, TFBlocks.giantLeaves, TFBlocks.fireJet, TFBlocks.magicLeaves, TFBlocks.leaves, TFBlocks.leaves3, TFBlocks.plantStandard, TFBlocks.plantHanging, TFBlocks.plantDark, TFBlocks.plantCave, TFBlocks.castleMagic, TFBlocks.castleDoor, TFBlocks.castleDoorVanished);
 		// Honestly I'd say it makes sense in this context. -Drullkus
+	}
+	
+	private static int colorMultiplierFromItem( BlockColors blockColors, ItemStack stack, int tintIndex ) {
+		// NOTE: Handling possible forge bug. 
+		Item item = stack.getItem();
+		if( !(item instanceof ItemBlock) )
+			return -1;
+		
+		return blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex);
 	}
 
 	private ColorHandler() {

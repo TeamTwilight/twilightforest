@@ -41,7 +41,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	private static final WorldGenMegaPineTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
 	private static final WorldGenBlockBlob genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
 	private static final TFGenTrollRoots genTrollRoots = new TFGenTrollRoots();
-	private static final TFGenTallGrass worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+	private static final TFGenTallGrass worldGenMushgloom = new TFGenTallGrass(TFBlocks.plantCave.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
 
 	public TFBiomeHighlands(BiomeProperties props) {

@@ -78,7 +78,7 @@ public class TFGenFallenSmallLog extends TFGenerator {
 			for (int lx = 0; lx < length; lx++) {
 				this.setBlockAndNotifyAdequately(world, pos.add(lx, 0, 1), logState);
 				if (rand.nextInt(3) > 0) {
-					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.plantCave.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		} else {
@@ -88,7 +88,7 @@ public class TFGenFallenSmallLog extends TFGenerator {
 			for (int lz = 0; lz < length; lz++) {
 				this.setBlockAndNotifyAdequately(world, pos.add(1, 0, lz), logState);
 				if (rand.nextInt(3) > 0) {
-					this.setBlockAndNotifyAdequately(world, pos.add(1, 1, lz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					this.setBlockAndNotifyAdequately(world, pos.add(1, 1, lz), TFBlocks.plantCave.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}
@@ -101,7 +101,7 @@ public class TFGenFallenSmallLog extends TFGenerator {
 
 				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.plantCave.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			} else {
 				int bx = rand.nextBoolean() ? 2 : 0;
@@ -109,7 +109,7 @@ public class TFGenFallenSmallLog extends TFGenerator {
 
 				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.plantCave.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}

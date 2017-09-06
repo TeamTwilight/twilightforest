@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cross"
+  },
+  "variants": {
+    "inventory_forestgrass": [{ "model": "twilightforest:util/item", "textures": { "layer0": "minecraft:blocks/tallgrass"}}],
+    "inventory_deadbush":    [{ "model": "twilightforest:util/item", "textures": { "layer0": "minecraft:blocks/deadbush"}}],
+	"variant=mayapple": [{ "model": "twilightforest:util/dummy" }],
+	"variant=cloverpatch": [{ "model": "twilightforest:util/dummy" }],
+	"variant=fiddlehead": [{ "model": "twilightforest:util/dummy" }],
+    "variant=torchberry": [{ "model": "twilightforest:util/dummy" }],
+    "variant=root_strand": [{ "model": "twilightforest:util/dummy" }],
+    "variant=mosspatch": [{ "model": "twilightforest:util/dummy" }],
+    "variant=mushgloom": [{ "model": "twilightforest:util/dummy" }],
+    "variant=forestgrass": [{ "model": "tall_grass" }],
+    "variant=deadbush": [{ "model": "dead_bush" }]
+  }
+}

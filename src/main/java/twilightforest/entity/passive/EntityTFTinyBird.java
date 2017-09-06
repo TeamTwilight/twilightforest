@@ -80,7 +80,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	public int getBirdType() {
-		return dataManager.get(DATA_BIRDTYPE);
+		return (int)dataManager.get(DATA_BIRDTYPE);
 	}
 
 	public void setBirdType(int par1) {

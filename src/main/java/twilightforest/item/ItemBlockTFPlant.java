@@ -32,9 +32,11 @@ public class ItemBlockTFPlant extends ItemBlock {
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack) {
 		int meta = stack.getItemDamage();
 
-		if ((meta == PlantVariant.ROOT_STRAND.ordinal() || meta == PlantVariant.TORCHBERRY.ordinal())
-				&& side == EnumFacing.DOWN && BlockTFPlant.canPlaceRootBelow(world, pos)) {
-			return true;
+		if ((meta == PlantVariant.ROOT_STRAND.ordinal() || meta == PlantVariant.TORCHBERRY.ordinal()) ) {
+			BlockPos posAbove = pos.offset(side).up();
+			if( BlockTFPlant.canPlaceRootBelow(world, posAbove) )
+				return true;
+			return false;
 		} else {
 			return super.canPlaceBlockOnSide(world, pos, side, player, stack);
 		}

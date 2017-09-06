@@ -1,0 +1,26 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cross"
+  },
+  "variants": {
+    "inventory_torchberry":  [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/torchberry"}}],
+    "inventory_root_strand": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/rootstrand"}}],
+	"variant=mayapple": [{ "model": "twilightforest:util/dummy" }],
+	"variant=cloverpatch": [{ "model": "twilightforest:util/dummy" }],
+	"variant=fiddlehead": [{ "model": "twilightforest:util/dummy" }],
+    "variant=forestgrass": [{ "model": "twilightforest:util/dummy" }],
+    "variant=deadbush": [{ "model": "twilightforest:util/dummy" }],
+    "variant=mosspatch": [{ "model": "twilightforest:util/dummy" }],
+    "variant=mushgloom": [{ "model": "twilightforest:util/dummy" }],
+    "variant=torchberry": [{
+      "model": "twilightforest:util/cross_2_layer",
+      "textures": { "cross":"twilightforest:blocks/torchberry", "cross2":"twilightforest:blocks/torchberry_glow" },
+      "uvlock": true
+    }],
+    "variant=root_strand": [{
+      "model": "crop",
+      "textures": { "crop":"twilightforest:blocks/rootstrand" }
+    }]
+  }
+}
