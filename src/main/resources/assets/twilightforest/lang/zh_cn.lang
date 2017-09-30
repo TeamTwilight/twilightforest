@@ -14,6 +14,13 @@ advancement.twilight_kill_lich.desc=击败塔顶的巫妖，借助他留下的�
 advancement.twilight_kill_hydra=九头蛇猎人
 advancement.twilight_kill_hydra.desc=猎杀强大的九头蛇；你在经过它的试炼后，便能抵抗黑暗森林的失明诅咒。
 
+advancement.twilight_hill1=靴子都是我的！
+advancement.twilight_hill1.desc=在小矿山里击败红帽哥布林。
+advancement.twilight_hill2=什么动静？
+advancement.twilight_hill2.desc=在中矿山里击败红帽地精。
+advancement.twilight_hill3=我看到你了
+advancement.twilight_hill3.desc=在大矿山里杀死一只暮色幽魂。
+
 advancement.twilight_experiment_115=另一个谎言
 advancement.twilight_experiment_115.desc=尽管它看起来像蛋糕…
 advancement.twilight_experiment_115_2=做个记录：大胜利！
@@ -27,12 +34,8 @@ advancement.twilight_glass_sword.desc=打出会心一击的机会就在你手里
 advancement.twilight_hydra_chop=超大号肉排
 advancement.twilight_hydra_chop.desc=在你的胃空空如也的时候从暴走的九头蛇上砍下来几块肉。
 
-advancement.twilight_hill1=靴子都是我的！
-advancement.twilight_hill1.desc=在小矿山里击败红帽哥布林。
-advancement.twilight_hill2=什么动静？
-advancement.twilight_hill2.desc=在中矿山里击败红帽地精。
-advancement.twilight_hill3=我看到你了
-advancement.twilight_hill3.desc=在大矿山里杀死一只暮色幽魂。
+advancement.twilight_dining=永恒黄昏之宴
+advancement.twilight_dining.desc=品尝所有只能在暮色森林找到的食物。
 
 advancement.twilight_naga_armors=娜迦装备锻造师
 advancement.twilight_naga_armors.desc=合成娜迦鳞胸甲和护腿。
@@ -71,6 +74,10 @@ advancement.twilight_progress_thorns=穿越荆棘
 advancement.twilight_progress_thorns.desc=穿越荆棘之地，打开通往城堡的大门。
 advancement.twilight_progress_castle=这就是… 城堡吗…
 advancement.twilight_progress_castle.desc=这城堡里究竟有什么？！
+
+twilightforest:trophyPedestal.ineligible=你还不够格。
+twilightforest:ore_meter.range=半径：%s，原点：[%d, %d]
+twilightforest:ore_meter.exposed=暴露数量：%d
 
 tile.TFLog.0.name=暮色橡木
 tile.TFLog.1.name=苍穹木
