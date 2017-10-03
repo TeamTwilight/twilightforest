@@ -82,23 +82,13 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
-		return 4; //todo 1.9 verify
-	}
-
-	@Override
 	public BlockPlanks.EnumType getWoodType(int meta) {
 		return BlockPlanks.EnumType.OAK;
 	}
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(this, 1, getMetaFromState(state) & 0b11);
-	}
-
-	@Override
-	public int quantityDropped(Random rand) {
-		return 0;
+		return new ItemStack(this, 1, world.getBlockState(pos).getValue(VARIANT).ordinal());
 	}
 
 	@Override
@@ -118,10 +108,9 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 		return true;
 	}
 
-
 	@Override
 	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
-		return ImmutableList.of(); // todo 1.9
+		return NonNullList.withSize(1, new ItemStack(this, 1, world.getBlockState(pos).getValue(VARIANT).ordinal()));
 	}
 
 	@SideOnly(Side.CLIENT)

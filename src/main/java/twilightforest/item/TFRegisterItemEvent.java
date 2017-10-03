@@ -142,7 +142,7 @@ public class TFRegisterItemEvent {
 		// register blocks with their pickup values
 		items.registerSubItemBlock(TFBlocks.log);
 		items.registerSubItemBlock(TFBlocks.root);
-		items.registerSubItemBlock(TFBlocks.leaves);
+		items.register(new ItemBlockTFLeaves(TFBlocks.leaves));
 		//items.register("twilight_portal", new ItemTF().setUnlocalizedName("TFPortal").setCreativeTab(null));
 		items.registerBlock(TFBlocks.firefly);
 		items.registerBlock(TFBlocks.cicada);
@@ -157,7 +157,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.sapling);
 		items.registerBlock(TFBlocks.moonworm);
 		items.registerSubItemBlock(TFBlocks.magicLog);
-		items.registerSubItemBlock(TFBlocks.magicLeaves);
+		items.register(new ItemBlockTFLeaves(TFBlocks.magicLeaves));
 		items.registerSubItemBlock(TFBlocks.magicLogSpecial);
 		items.registerSubItemBlock(TFBlocks.towerWood);
 		items.registerSubItemBlock(TFBlocks.towerDevice);
@@ -169,7 +169,7 @@ public class TFRegisterItemEvent {
 		items.register(new ItemMultiTexture(TFBlocks.thorns, TFBlocks.thorns, thornNames));
 		items.registerBlock(TFBlocks.burntThorns);
 		items.registerBlock(TFBlocks.thornRose);
-		items.registerSubItemBlock(TFBlocks.leaves3);
+		items.register(new ItemBlockTFLeaves(TFBlocks.leaves3));
 		items.register(new ItemMultiTexture(TFBlocks.deadrock, TFBlocks.deadrock, deadrockNames));
 		items.registerBlock(TFBlocks.darkleaves);
 		items.registerBlock(TFBlocks.auroraPillar);
@@ -201,7 +201,6 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.castleDoor);
 		items.registerSubItemBlock(TFBlocks.castleDoorVanished);
 		items.registerSubItemBlock(TFBlocks.miniature_structure);
-
 	}
 
 	private static class ItemRegistryHelper {

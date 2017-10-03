@@ -143,9 +143,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	/**
 	 * Are any of the 26 adjacent blocks a locked vanishing block?
 	 */
-	public static boolean areNearbyLockBlocks(World world, BlockPos pos) {
-		boolean locked = false;
-
+	private static boolean areNearbyLockBlocks(World world, BlockPos pos) {
 		//TODO: this is hacky.  We really need to determine the exact blocks of the door and check those for locks.
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dy = -2; dy <= 2; dy++) {
@@ -153,13 +151,13 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 					IBlockState state = world.getBlockState(pos.add(dx, dy, dz));
 					if (state.getBlock() == TFBlocks.towerDevice
 							&& state.getValue(VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
-						locked = true;
+						return true;
 					}
 				}
 			}
 		}
 
-		return locked;
+		return false;
 	}
 
 	/**

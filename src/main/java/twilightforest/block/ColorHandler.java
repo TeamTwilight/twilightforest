@@ -219,9 +219,6 @@ public final class ColorHandler {
 			}
 		}, TFBlocks.leaves);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-			if (tintIndex > 15) return 0xFFFFFF;
-			// todo 1.9 wrong meta values?
-			// return (meta & 3) == 1 ? ColorizerFoliage.getFoliageColorPine() : ((meta & 3) == 2 ? ColorizerFoliage.getFoliageColorBirch() : super.getRenderColor(meta));;
 			Leaves3Variant variant = state.getValue(BlockTFLeaves3.VARIANT);
 			return variant == Leaves3Variant.THORN ? ColorizerFoliage.getFoliageColorPine()
 					: variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()

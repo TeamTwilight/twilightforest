@@ -38,7 +38,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
-				if (entityIn != null && !stack.isEmpty() && stack.getItem() == TFItems.moonwormQueen) {
+				if (entityIn != null && entityIn.getActiveItemStack().getItem() == TFItems.moonwormQueen) {
 					int useTime = stack.getMaxItemUseDuration() - entityIn.getItemInUseCount();
 					if (useTime >= FIRING_TIME && (useTime >>> 1) % 2 == 0) {
 						return 1;
@@ -52,12 +52,13 @@ public class ItemTFMoonwormQueen extends ItemTF {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (player.getHeldItem(hand).getItemDamage() < getMaxDamage(player.getHeldItem(hand))) {
-			player.setActiveHand(hand);
+		ItemStack stack = player.getHeldItem(hand);
+		if (stack.getItemDamage() == stack.getMaxDamage()) {
+			return ActionResult.newResult(EnumActionResult.FAIL, stack);
 		} else {
-			player.resetActiveHand();
+			player.setActiveHand(hand);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 		}
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	//	[VanillaCopy] ItemBlock.onItemUse, harcoding the block

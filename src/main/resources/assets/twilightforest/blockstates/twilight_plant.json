@@ -1,7 +1,8 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cross"
+    "model": "cross",
+    "transform": "forge:default-item"
   },
   "variants": {
     "inventory_mosspatch":   [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/moss"}}],

@@ -49,23 +49,30 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int meta = state.getValue(BlockTFMagicLog.VARIANT).ordinal();
-		if (state.getValue(CHECK_DECAY))
-			meta |= 0b1000;
-		if (state.getValue(DECAYABLE))
-			meta |= 0b100;
-		return meta;
+		int i = 0;
+		i |= state.getValue(BlockTFMagicLog.VARIANT).ordinal();
+
+		if (!state.getValue(DECAYABLE)) {
+			i |= 4;
+		}
+
+		if (state.getValue(CHECK_DECAY)) {
+			i |= 8;
+		}
+
+		return i;
 	}
 
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		int variant = meta & 0b11;
-		boolean checkDecay = (meta & 0b1000) > 0;
-		boolean decayable = (meta & 0b100) > 0;
-		return getDefaultState().withProperty(CHECK_DECAY, checkDecay)
-				.withProperty(DECAYABLE, decayable)
-				.withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.values()[variant]);
+		int variant = meta & 3;
+		final MagicWoodVariant[] values = MagicWoodVariant.values();
+
+		return getDefaultState()
+				.withProperty(BlockTFMagicLog.VARIANT, values[variant % values.length])
+				.withProperty(DECAYABLE, (meta & 4) == 0)
+				.withProperty(CHECK_DECAY, (meta & 8) > 0);
 	}
 
 	@Override
@@ -129,7 +136,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 
 	@Override
 	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
-		return ImmutableList.of(); // todo 1.9
+		return NonNullList.withSize(1, new ItemStack(this, 1, world.getBlockState(pos).getValue(BlockTFMagicLog.VARIANT).ordinal()));
 	}
 
 	@SideOnly(Side.CLIENT)

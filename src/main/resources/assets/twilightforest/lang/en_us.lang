@@ -434,3 +434,7 @@ entity.twilightforest:armored_giant.name=Armored Giant
 entity.twilightforest:ice_crystal.name=Ice Crystal
 entity.twilightforest:apocalypse_cube.name=Apocolypse Cube [NYI]
 entity.twilightforest:adherent.name=Adherent [NYI]
+
+twilightforest.misc.wip0=This block is a work in progress and may have bugs or unintended effects that may damage your world.
+twilightforest.misc.wip1=Use with caution.
+twilightforest.misc.nyi=This block has effects that are not yet implemented.

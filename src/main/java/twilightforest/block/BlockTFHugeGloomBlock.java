@@ -9,7 +9,7 @@ import twilightforest.client.ModelRegisterCallback;
 public class BlockTFHugeGloomBlock extends BlockHugeMushroom implements ModelRegisterCallback {
 
 	public BlockTFHugeGloomBlock() {
-		super(Material.WOOD, MapColor.ADOBE, TFBlocks.plant); // todo 1.9 mapcolor and ensure plant is initialized
+		super(Material.WOOD, MapColor.ADOBE, TFBlocks.plant);
 		this.setHardness(0.2F);
 		this.setSoundType(SoundType.WOOD);
 		this.setLightLevel(5F / 16F);

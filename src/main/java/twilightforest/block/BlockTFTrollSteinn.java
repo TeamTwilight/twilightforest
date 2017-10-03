@@ -72,13 +72,13 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		if (rand.nextInt(2) == 0) {
-			this.sparkle(world, pos, rand);
+			this.sparkle(world, pos);
 		}
 	}
 
-	private void sparkle(World world, BlockPos pos, Random rand) {
-		Random random = rand;
-		double pixel = 0.0625D;
+	// [VanillaCopy] Based on BlockRedstoneOre.spawnParticles
+	private void sparkle(World world, BlockPos pos) {
+		Random random = world.rand;
 		int threshhold = LIGHT_THRESHHOLD;
 
 		for (EnumFacing side : EnumFacing.VALUES) {
@@ -87,27 +87,27 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 			double rz = (double) ((float) pos.getZ() + random.nextFloat());
 
 			if (side == EnumFacing.DOWN && !world.getBlockState(pos.down()).isOpaqueCube() && world.getLight(pos.down()) <= threshhold) {
-				ry = (double) (pos.getY() + 0) - pixel;
+				ry = (double)pos.getY() - 0.0625D;
 			}
 
 			if (side == EnumFacing.UP && !world.getBlockState(pos.up()).isOpaqueCube() && world.getLight(pos.up()) <= threshhold) {
-				ry = (double) (pos.getY() + 1) + pixel;
+				ry = (double)pos.getY() + 0.0625D + 1.0D;
 			}
 
 			if (side == EnumFacing.NORTH && !world.getBlockState(pos.north()).isOpaqueCube() && world.getLight(pos.north()) <= threshhold) {
-				rz = (double) (pos.getZ() + 1) + pixel;
+				rz = (double)pos.getZ() - 0.0625D;
 			}
-			// todo 1.9 discrepancy in original code in these two cases, recheck
+
 			if (side == EnumFacing.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube() && world.getLight(pos.south()) <= threshhold) {
-				rz = (double) (pos.getZ() + 0) - pixel;
+				rz = (double)pos.getZ() + 0.0625D + 1.0D;
 			}
 
 			if (side == EnumFacing.WEST && !world.getBlockState(pos.west()).isOpaqueCube() && world.getLight(pos.west()) <= threshhold) {
-				rx = (double) (pos.getX() + 1) + pixel;
+				rx = (double)pos.getX() - 0.0625D;
 			}
-			// todo 1.9 discrepancy in original code in these two cases, recheck
+
 			if (side == EnumFacing.EAST && !world.getBlockState(pos.east()).isOpaqueCube() && world.getLight(pos.east()) <= threshhold) {
-				rx = (double) (pos.getX() + 0) - pixel;
+				rx = (double)pos.getX() + 0.0625D + 1.0D;
 			}
 
 			if (rx < (double) pos.getX() || rx > (double) (pos.getX() + 1) || ry < 0.0D || ry > (double) (pos.getY() + 1) || rz < (double) pos.getZ() || rz > (double) (pos.getZ() + 1)) {

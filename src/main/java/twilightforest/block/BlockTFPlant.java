@@ -70,22 +70,30 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World par1World, BlockPos pos, EnumFacing side) {
-		IBlockState state = par1World.getBlockState(pos);
-		return (state.getBlock().isAir(state, par1World, pos) || state.getMaterial().isReplaceable()) && canBlockStay(par1World, pos, state);
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		return (state.getBlock().isAir(state, world, pos) || state.getMaterial().isReplaceable()) && canBlockStay(world, pos, state);
 	}
 
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
 		IBlockState soil = world.getBlockState(pos.down());
 
+		/*
+			Comment from superclass:
+			Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+			Therefore, we just take the OR of all the conditions below as the most general "can block stay" check
+		*/
 		if (state.getBlock() != this) {
-			return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+			return BlockTFPlant.canPlaceRootAt(world, pos)
+					|| soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this)
+					|| soil.isSideSolid(world, pos, EnumFacing.UP)
+					|| ((world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this));
 		} else {
 			switch (state.getValue(VARIANT)) {
 				case TORCHBERRY:
 				case ROOT_STRAND:
-					return BlockTFPlant.canPlaceRootBelow(world, pos.up());
+					return BlockTFPlant.canPlaceRootAt(world, pos);
 				case FORESTGRASS:
 				case DEADBUSH:
 					return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
@@ -135,8 +143,6 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 
 			return new AxisAlignedBB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
 					xConnect0 ? 1F : (15F - xOff0) / 16F, (1F + yOff0 + yOff1) / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F);
-
-			//this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2F / 16F, 1.0F);
 		} else if (variant == PlantVariant.MAYAPPLE) {
 			return new AxisAlignedBB(4F / 16F, 0, 4F / 16F, 13F / 16F, 6F / 16F, 13F / 16F);
 		} else {
@@ -170,13 +176,8 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 		}
 	}
 
-	/**
-	 * Root-specific method.
-	 *
-	 * @return true if the root can be placed in the block immediately below this one
-	 */
-	public static boolean canPlaceRootBelow(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+	public static boolean canPlaceRootAt(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos.up());
 		if (state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS) {
 			// can always hang below dirt blocks
 			return true;
@@ -184,7 +185,6 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			return (state.getBlock() == TFBlocks.plant && state.getValue(BlockTFPlant.VARIANT) == PlantVariant.ROOT_STRAND)
 					|| state == TFBlocks.root.getDefaultState();
 		}
-
 	}
 
 
