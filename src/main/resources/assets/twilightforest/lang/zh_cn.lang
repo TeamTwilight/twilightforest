@@ -434,3 +434,7 @@ entity.twilightforest:armored_giant.name=武装巨人
 entity.twilightforest:ice_crystal.name=冰晶
 entity.twilightforest:apocalypse_cube.name=天启立方 [NYI]
 entity.twilightforest:adherent.name=信徒 [NYI]
+
+twilightforest.misc.wip0=这个方块仍在制作当中，可能会有能导致存档损坏的 Bug 或不可预料的特性。
+twilightforest.misc.wip1=测试时时刻保持注意。
+twilightforest.misc.nyi=这个方块的部分特性尚未完成。
