@@ -3,10 +3,14 @@ package twilightforest.entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-public class EntityTFKingSpider extends EntitySpider {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFKingSpider extends EntitySpider implements ISavedCombatEntriesOnDeath {
 
 	public EntityTFKingSpider(World world) {
 		super(world);
@@ -57,4 +61,16 @@ public class EntityTFKingSpider extends EntitySpider {
 		return (double) this.height * 0.75D;
 	}
 
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

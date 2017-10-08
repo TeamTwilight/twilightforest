@@ -20,18 +20,16 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
+public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart, ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/block_goblin");
 	private static final float CHAIN_SPEED = 16F;
 	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
@@ -258,5 +256,18 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	@Override
 	public Entity[] getParts() {
 		return partsArray;
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

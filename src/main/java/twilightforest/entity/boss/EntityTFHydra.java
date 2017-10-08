@@ -17,10 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -35,6 +32,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
+import twilightforest.entity.ISavedCombatEntriesOnDeath;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
@@ -45,7 +43,7 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMob {
+public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMob, ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/hydra");
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;
@@ -802,4 +800,16 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		return this.world;
 	}
 
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

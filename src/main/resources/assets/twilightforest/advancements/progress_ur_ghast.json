@@ -15,11 +15,13 @@
   "parent": "twilightforest:progress_knights",
   "criteria": {
     "ghast": {
-      "trigger": "minecraft:player_killed_entity",
+      "trigger": "twilightforest:player_group_killed_entity",
       "conditions": {
-        "entity": {
+        "entity_killed": {
           "type": "twilightforest:ur_ghast"
-        }
+        },
+        "damage_threshold_denominator": 2,
+        "comparator": "OR"
       }
     },
     "previous_progression": {

@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +18,10 @@ import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
 
-public class EntityTFMazeSlime extends EntitySlime {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFMazeSlime extends EntitySlime implements ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/maze_slime");
 	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, 1).setSaved(false);
 
@@ -109,4 +113,16 @@ public class EntityTFMazeSlime extends EntitySlime {
 		return LOOT_TABLE;
 	}
 
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

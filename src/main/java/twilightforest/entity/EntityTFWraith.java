@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -27,9 +28,11 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.PlayerHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class EntityTFWraith extends EntityFlying implements IMob {
+public class EntityTFWraith extends EntityFlying implements IMob, ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/wraith");
 
 	public EntityTFWraith(World world) {
@@ -321,5 +324,18 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	@Override
 	public boolean getCanSpawnHere() {
 		return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

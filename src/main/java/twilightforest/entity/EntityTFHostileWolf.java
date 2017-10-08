@@ -7,6 +7,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -15,8 +16,11 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class EntityTFHostileWolf extends EntityWolf implements IMob {
+
+public class EntityTFHostileWolf extends EntityWolf implements IMob, ISavedCombatEntriesOnDeath {
 
 	public EntityTFHostileWolf(World world) {
 		super(world);
@@ -91,4 +95,16 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		return false;
 	}
 
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -24,7 +25,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
-public class EntityTFSnowGuardian extends EntityMob {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFSnowGuardian extends EntityMob implements ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/snow_guardian");
 
 	public EntityTFSnowGuardian(World par1World) {
@@ -173,5 +177,18 @@ public class EntityTFSnowGuardian extends EntityMob {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 8;
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

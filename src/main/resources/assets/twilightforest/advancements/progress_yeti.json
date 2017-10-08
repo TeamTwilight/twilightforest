@@ -14,11 +14,13 @@
   "parent": "twilightforest:progress_ur_ghast",
   "criteria": {
     "yeti": {
-      "trigger": "minecraft:player_killed_entity",
+      "trigger": "twilightforest:player_group_killed_entity",
       "conditions": {
-        "entity": {
+        "entity_killed": {
           "type": "twilightforest:yeti_alpha"
-        }
+        },
+        "damage_threshold_denominator": 2,
+        "comparator": "OR"
       }
     },
     "previous_progression": {

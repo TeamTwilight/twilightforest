@@ -7,6 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -15,7 +16,10 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFSkeletonDruid extends EntitySkeleton {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFSkeletonDruid extends EntitySkeleton implements ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/skeleton_druid");
 
 	public EntityTFSkeletonDruid(World world) {
@@ -89,5 +93,18 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 
 			return i <= this.rand.nextInt(12); // TF - rand(8) -> rand(12)
 		}
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

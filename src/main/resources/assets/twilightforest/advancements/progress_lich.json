@@ -15,11 +15,13 @@
   "parent": "twilightforest:progress_naga",
   "criteria": {
     "kill_lich": {
-      "trigger": "minecraft:player_killed_entity",
+      "trigger": "twilightforest:player_group_killed_entity",
       "conditions": {
-        "entity": {
+        "entity_killed": {
           "type": "twilightforest:lich"
-        }
+        },
+        "damage_threshold_denominator": 2,
+        "comparator": "OR"
       }
     },
     "kill_naga": {

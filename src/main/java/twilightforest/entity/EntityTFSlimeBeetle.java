@@ -17,6 +17,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -25,7 +26,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob, ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/slime_beetle");
 
 	public EntityTFSlimeBeetle(World world) {
@@ -97,4 +101,17 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 
 	@Override
 	public void setSwingingArms(boolean swingingArms) {}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

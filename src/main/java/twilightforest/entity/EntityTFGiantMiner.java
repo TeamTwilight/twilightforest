@@ -15,12 +15,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFGiantMiner extends EntityMob {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFGiantMiner extends EntityMob implements ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/giant_miner");
 
 	public EntityTFGiantMiner(World par1World) {
@@ -67,5 +71,18 @@ public class EntityTFGiantMiner extends EntityMob {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

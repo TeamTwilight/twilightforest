@@ -9,6 +9,7 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -17,8 +18,11 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.PlayerHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class EntityTFSwarmSpider extends EntitySpider {
+
+public class EntityTFSwarmSpider extends EntitySpider implements ISavedCombatEntriesOnDeath {
 
 	protected boolean shouldSpawn = false;
 
@@ -163,4 +167,16 @@ public class EntityTFSwarmSpider extends EntitySpider {
 		return 16;
 	}
 
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

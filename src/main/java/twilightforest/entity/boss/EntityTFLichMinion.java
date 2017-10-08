@@ -4,14 +4,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import twilightforest.entity.ISavedCombatEntriesOnDeath;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class EntityTFLichMinion extends EntityZombie {
+public class EntityTFLichMinion extends EntityZombie implements ISavedCombatEntriesOnDeath {
 	EntityTFLich master;
 
 	public EntityTFLichMinion(World par1World) {
@@ -70,5 +73,18 @@ public class EntityTFLichMinion extends EntityZombie {
 				break;
 			}
 		}
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

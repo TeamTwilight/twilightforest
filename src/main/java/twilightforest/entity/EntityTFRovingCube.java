@@ -2,13 +2,17 @@ package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAICubeCenterOnSymbol;
 import twilightforest.entity.ai.EntityAICubeMoveToRedstoneSymbols;
 
-public class EntityTFRovingCube extends EntityMob {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFRovingCube extends EntityMob implements ISavedCombatEntriesOnDeath {
 
 	// data needed for cube AI
 
@@ -55,5 +59,16 @@ public class EntityTFRovingCube extends EntityMob {
 
 	}
 
+	private ArrayList<CombatEntry> combatList;
 
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

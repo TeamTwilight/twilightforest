@@ -5,6 +5,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -16,7 +17,10 @@ import twilightforest.entity.ai.EntityAITFRedcapPlantTNT;
 import twilightforest.item.TFItems;
 import twilightforest.util.PlayerHelper;
 
-public class EntityTFRedcapSapper extends EntityTFRedcap {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFRedcapSapper extends EntityTFRedcap implements ISavedCombatEntriesOnDeath {
 
 	public EntityTFRedcapSapper(World world) {
 		super(world);
@@ -55,5 +59,18 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill2"), "redcap_sapper");
 			}
 		}
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

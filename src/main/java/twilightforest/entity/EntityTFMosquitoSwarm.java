@@ -12,13 +12,17 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.biomes.TFBiomes;
 
-public class EntityTFMosquitoSwarm extends EntityMob {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFMosquitoSwarm extends EntityMob implements ISavedCombatEntriesOnDeath {
 
 	public EntityTFMosquitoSwarm(World par1World) {
 		super(par1World);
@@ -89,5 +93,18 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 1;
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

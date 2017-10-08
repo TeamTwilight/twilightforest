@@ -10,6 +10,7 @@ import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -20,9 +21,11 @@ import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class EntityTFTowerGhast extends EntityGhast {
+public class EntityTFTowerGhast extends EntityGhast implements ISavedCombatEntriesOnDeath {
 	// 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
 	private static final DataParameter<Byte> ATTACK_STATUS = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> ATTACK_TIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
@@ -377,5 +380,18 @@ public class EntityTFTowerGhast extends EntityGhast {
 		return this.maximumHomeDistance != -1.0F;
 	}
 	// End copy
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }
 

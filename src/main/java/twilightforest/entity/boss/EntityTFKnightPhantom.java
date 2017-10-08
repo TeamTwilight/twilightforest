@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
@@ -36,6 +37,7 @@ import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
+import twilightforest.entity.ISavedCombatEntriesOnDeath;
 import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.ai.EntityAIPhantomAttackStart;
 import twilightforest.entity.ai.EntityAIPhantomThrowWeapon;
@@ -47,10 +49,11 @@ import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EntityTFKnightPhantom extends EntityFlying implements IMob {
+public class EntityTFKnightPhantom extends EntityFlying implements IMob, ISavedCombatEntriesOnDeath {
 	private static final DataParameter<Boolean> FLAG_CHARGING = EntityDataManager.createKey(EntityTFKnightPhantom.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, 0).setSaved(false);
 	private int number;
@@ -515,4 +518,17 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		return this.maximumHomeDistance != -1.0F;
 	}
 	// End copy
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

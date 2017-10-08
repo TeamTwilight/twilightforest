@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +21,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
-public class EntityTFPinchBeetle extends EntityMob {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFPinchBeetle extends EntityMob implements ISavedCombatEntriesOnDeath {
 	public EntityTFPinchBeetle(World world) {
 		super(world);
 		setSize(1.2F, 1.1F);
@@ -130,5 +134,18 @@ public class EntityTFPinchBeetle extends EntityMob {
 	@Override
 	public boolean canRiderInteract() {
 		return true;
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

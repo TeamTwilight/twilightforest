@@ -14,6 +14,7 @@ public class TFAdvancements {
     public static final HydraChopTrigger CONSUME_HYDRA_CHOP = CriteriaTriggers.register(new HydraChopTrigger());
     public static final QuestRamCompletionTrigger QUEST_RAM_COMPLETED = CriteriaTriggers.register(new QuestRamCompletionTrigger());
     public static final TrophyPedestalTrigger PLACED_TROPHY_ON_PEDESTAL = CriteriaTriggers.register(new TrophyPedestalTrigger());
+    public static final GroupKillTrigger GANG_BANG = CriteriaTriggers.register(new GroupKillTrigger());
 
     public static void init() {
     }

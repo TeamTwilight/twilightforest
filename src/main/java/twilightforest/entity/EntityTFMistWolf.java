@@ -6,9 +6,13 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.world.World;
 
-public class EntityTFMistWolf extends EntityTFHostileWolf {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFMistWolf extends EntityTFHostileWolf implements ISavedCombatEntriesOnDeath {
 
 	public EntityTFMistWolf(World world) {
 		super(world);
@@ -57,5 +61,18 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 	@Override
 	protected float getSoundPitch() {
 		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.6F;
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -14,12 +15,15 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.PlayerHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.
  *
  * @author Ben
  */
-public class EntityTFHedgeSpider extends EntitySpider {
+public class EntityTFHedgeSpider extends EntitySpider implements ISavedCombatEntriesOnDeath {
 
 	public EntityTFHedgeSpider(World world) {
 		super(world);
@@ -67,5 +71,18 @@ public class EntityTFHedgeSpider extends EntitySpider {
 				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hedge"), "hedge_spider");
 			}
 		}
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

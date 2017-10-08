@@ -18,11 +18,15 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITFCharger {
+
+public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITFCharger, ISavedCombatEntriesOnDeath {
 
 	private static final DataParameter<Boolean> CHARGE_FLAG = EntityDataManager.createKey(EntityTFAdherent.class, DataSerializers.BOOLEAN);
 
@@ -87,5 +91,16 @@ public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITF
 		dataManager.set(CHARGE_FLAG, flag);
 	}
 
+	private ArrayList<CombatEntry> combatList;
 
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

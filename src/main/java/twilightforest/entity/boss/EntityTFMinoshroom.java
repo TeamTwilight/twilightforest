@@ -4,14 +4,19 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFMinotaur;
+import twilightforest.entity.ISavedCombatEntriesOnDeath;
 import twilightforest.item.TFItems;
 
-public class EntityTFMinoshroom extends EntityTFMinotaur {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFMinoshroom extends EntityTFMinotaur implements ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minoshroom");
 
 	public EntityTFMinoshroom(World par1World) {
@@ -44,4 +49,16 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 		return false;
 	}
 
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

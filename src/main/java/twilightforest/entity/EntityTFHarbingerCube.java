@@ -9,10 +9,14 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class EntityTFHarbingerCube extends EntityMob {
+
+public class EntityTFHarbingerCube extends EntityMob implements ISavedCombatEntriesOnDeath {
 
 	public EntityTFHarbingerCube(World world) {
 		super(world);
@@ -34,5 +38,18 @@ public class EntityTFHarbingerCube extends EntityMob {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

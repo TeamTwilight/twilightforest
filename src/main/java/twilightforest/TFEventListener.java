@@ -1,9 +1,11 @@
 package twilightforest;
 
+import javafx.util.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandGameRule;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
@@ -20,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -27,6 +30,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -53,6 +57,7 @@ import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
+import twilightforest.entity.ISavedCombatEntriesOnDeath;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
@@ -60,9 +65,7 @@ import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * So much of the mod logic in this one class
@@ -234,7 +237,7 @@ public class TFEventListener {
 
 		// Smashing!
 		Item item = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
-		if (((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
+		if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
 			BlockTFCritter poorBug = (BlockTFCritter)((ItemBlock) item).getBlock();
 
 			if (poorBug == TFBlocks.firefly)
@@ -314,6 +317,30 @@ public class TFEventListener {
 
 
 			playerKeepsMap.put(player.getUniqueID(), keepInventory);
+		}
+
+		if (event.getEntityLiving() instanceof ISavedCombatEntriesOnDeath) {
+			List<CombatEntry> tracker = ((ISavedCombatEntriesOnDeath) event.getEntityLiving()).getCombatList();
+			ArrayList<Pair<EntityPlayerMP,ArrayList<CombatEntry>>> victors = new ArrayList<>();
+
+			for (CombatEntry entry : tracker != null ? tracker : event.getEntityLiving().getCombatTracker().combatEntries) {
+				Entity attacker = entry.getDamageSrc().getTrueSource();
+				System.out.println("" + attacker);
+				if (attacker instanceof EntityPlayerMP && !(attacker instanceof FakePlayer)) {
+					boolean playerFound = false;
+					for (Pair<EntityPlayerMP, ArrayList<CombatEntry>> victor : victors) {
+						if (victor.getKey() == attacker) {
+							victor.getValue().add(entry);
+							playerFound = true;
+							break;
+						}
+					}
+					if (!playerFound) victors.add(new Pair<>((EntityPlayerMP) attacker, new ArrayList<>(Collections.singleton(entry))));
+				}
+			}
+
+			for (Pair<EntityPlayerMP,ArrayList<CombatEntry>> victor : victors)
+				TFAdvancements.GANG_BANG.trigger(victor.getKey(), event.getEntityLiving(), victor.getValue(), victors.size());
 		}
 	}
 

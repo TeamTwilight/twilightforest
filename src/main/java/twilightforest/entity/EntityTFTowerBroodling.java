@@ -1,9 +1,13 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.world.World;
 
-public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFTowerBroodling extends EntityTFSwarmSpider implements ISavedCombatEntriesOnDeath {
 	public EntityTFTowerBroodling(World world) {
 		this(world, true);
 	}
@@ -36,5 +40,18 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 		another.spawnExplosionParticle();
 
 		return true;
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 }

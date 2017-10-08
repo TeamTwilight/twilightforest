@@ -14,6 +14,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -21,7 +22,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob, ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome");
 
 	public EntityTFDeathTome(World par1World) {
@@ -91,4 +95,17 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 
 	@Override
 	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
+	}
 }

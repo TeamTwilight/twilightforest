@@ -13,6 +13,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.CombatEntry;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +24,10 @@ import twilightforest.biomes.TFBiomes;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
-public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker, ISavedCombatEntriesOnDeath {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/winter_wolf");
 	private static final DataParameter<Boolean> BREATH_FLAG = EntityDataManager.createKey(EntityTFWinterWolf.class, DataSerializers.BOOLEAN);
 	private static final float BREATH_DAMAGE = 2.0F;
@@ -128,6 +132,19 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
+	}
+
+	private ArrayList<CombatEntry> combatList;
+
+	@Override
+	public void sendEndCombat() {
+		super.sendEndCombat();
+		combatList = new ArrayList<>(this.getCombatTracker().combatEntries);
+	}
+
+	@Override
+	public List<CombatEntry> getCombatList() {
+		return combatList;
 	}
 
 }
