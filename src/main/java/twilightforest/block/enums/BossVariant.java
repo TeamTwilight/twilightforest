@@ -29,6 +29,7 @@ public enum BossVariant implements IStringSerializable {
 
 	private final boolean hasTrophy;
 	private final Class<? extends TileEntityTFBossSpawner> spawnerClass;
+	public static final BossVariant[] VALUES = values();
 
 	public static final BossVariant[] VARIANTS = values();
 

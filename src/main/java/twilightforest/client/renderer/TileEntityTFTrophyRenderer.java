@@ -71,7 +71,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
 
-		switch (BossVariant.values()[trophy.getSkullType()]) {
+		switch (BossVariant.VALUES[trophy.getSkullType()]) {
 			case HYDRA:
 				renderHydraHead(rotation, onGround);
 				break;

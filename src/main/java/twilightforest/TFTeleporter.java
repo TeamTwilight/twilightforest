@@ -44,7 +44,7 @@ public class TFTeleporter extends Teleporter {
 			// if we're in enforced progression mode, check the biomes for safety
 			if (par1Entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 				BlockPos pos = new BlockPos(par1Entity);
-				if (!isSafeBiomeAt(pos, par1Entity)) {
+				if (!isSafeCoordsAt(pos, par1Entity)) {
 					TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
 
 					BlockPos safeCoords = findSafeCoords(200, pos, par1Entity);
@@ -82,14 +82,18 @@ public class TFTeleporter extends Teleporter {
 					pos.getZ() + random.nextInt(range) - random.nextInt(range)
 			);
 
-			if (isSafeBiomeAt(dPos, par1Entity)) {
+			if (isSafeCoordsAt(dPos, par1Entity)) {
 				return dPos;
 			}
 		}
 		return null;
 	}
 
-	private boolean isSafeBiomeAt(BlockPos pos, Entity par1Entity) {
+	private boolean isSafeCoordsAt(BlockPos pos, Entity par1Entity) {
+		if(TFFeature.isInFeatureChunk(world, pos.getX(), pos.getZ())) {
+			return false;
+		}
+		
 		Biome biomeAt = world.getBiome(pos);
 
 		if (biomeAt instanceof TFBiomeBase && par1Entity instanceof EntityPlayerMP) {
