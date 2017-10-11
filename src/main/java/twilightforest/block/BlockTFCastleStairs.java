@@ -22,7 +22,7 @@ public class BlockTFCastleStairs extends BlockStairs implements ModelRegisterCal
 	BlockTFCastleStairs(IBlockState state) {
 		super(state);
 		this.setHardness(100F);
-		this.setResistance(15F);
+		this.setResistance(35F);
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(getDefaultState().withProperty(VARIANT, CastlePillarVariant.ENCASED));

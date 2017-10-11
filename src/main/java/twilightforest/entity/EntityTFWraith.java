@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +24,7 @@ import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.util.PlayerHelper;
 
 import java.util.Random;
@@ -34,15 +34,17 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 
 	public EntityTFWraith(World world) {
 		super(world);
+		moveHelper = new NoClipMoveHelper(this);
+		noClip = true;
 	}
 
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(4, new AIAttack(this));
-		this.tasks.addTask(4, new AIFlyTowardsTarget(this));
+		this.tasks.addTask(5, new AIFlyTowardsTarget(this));
 		this.tasks.addTask(6, new AIRandomFly(this));
 		this.tasks.addTask(7, new AILookAround(this));
-		this.targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
+		this.targetTasks.addTask(1, new EntityAITFFindEntityNearestPlayer(this));
 	}
 
 	static class AIFlyTowardsTarget extends EntityAIBase {
@@ -55,14 +57,19 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 
 		@Override
 		public boolean shouldExecute() {
-			return taskOwner.getAttackTarget() != null && !taskOwner.getMoveHelper().isUpdating();
+			return taskOwner.getAttackTarget() != null;
+		}
+
+		@Override
+		public boolean shouldContinueExecuting() {
+			return false;
 		}
 
 		@Override
 		public void startExecuting() {
-			// todo do we need a custom move helper like ghast as well?
 			EntityLivingBase target = taskOwner.getAttackTarget();
-			taskOwner.getMoveHelper().setMoveTo(target.posX, target.posY, target.posZ, 1.0F);
+			if (target != null)
+				taskOwner.getMoveHelper().setMoveTo(target.posX, target.posY, target.posZ, 0.5F);
 		}
 	}
 
@@ -99,7 +106,8 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 
 		@Override
 		public void startExecuting() {
-			taskOwner.attackEntityAsMob(taskOwner.getAttackTarget());
+			if (taskOwner.getAttackTarget() != null)
+				taskOwner.attackEntityAsMob(taskOwner.getAttackTarget());
 			attackTick = 20;
 		}
 	}
@@ -115,17 +123,14 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 
 		@Override
 		public boolean shouldExecute() {
+			if (parentEntity.getAttackTarget() != null)
+				return false;
 			EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
-
-			if (!entitymovehelper.isUpdating()) {
-				return true;
-			} else {
-				double d0 = entitymovehelper.getX() - this.parentEntity.posX;
-				double d1 = entitymovehelper.getY() - this.parentEntity.posY;
-				double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
-				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-				return d3 < 1.0D || d3 > 3600.0D;
-			}
+			double d0 = entitymovehelper.getX() - this.parentEntity.posX;
+			double d1 = entitymovehelper.getY() - this.parentEntity.posY;
+			double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+			return d3 < 1.0D || d3 > 3600.0D;
 		}
 
 		@Override
@@ -139,7 +144,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			double d0 = this.parentEntity.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
 			double d1 = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
 			double d2 = this.parentEntity.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.5D);
 		}
 	}
 
@@ -236,6 +241,17 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 		}
 
 		return flag;
+	}
+
+	private void despawnIfPeaceful() {
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL)
+			setDead();
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+		despawnIfPeaceful();
 	}
 
 	@Override

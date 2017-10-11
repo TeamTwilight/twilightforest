@@ -129,8 +129,15 @@ public class TFClientEvents {
 			if (mc.ingameGUI != null) {
 				mc.ingameGUI.prevVignetteBrightness = 0.0F;
 			}
-
 		}
+
+		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 0.5F;
+		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 0.5F;
+
+		BugModelAnimationHelper.animate();
 	}
 
+	public static float rotationTicker = 0;
+	public static float sineTicker = 0;
+	public static final float SINE_TICKER_BOUND = (float) (Math.PI * 200.0F) - 1.0F;
 }

@@ -11,10 +11,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -36,16 +39,13 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
+import twilightforest.block.BlockTFCritter;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
@@ -59,6 +59,7 @@ import twilightforest.network.PacketEnforceProgressionStatus;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -230,9 +231,24 @@ public class TFEventListener {
 				player.world.setEntityState(player, (byte) 35);
 			}
 		}
+
+		// Smashing!
+		Item item = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
+		if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
+			BlockTFCritter poorBug = (BlockTFCritter)((ItemBlock) item).getBlock();
+
+			if (poorBug == TFBlocks.firefly)
+				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GLOWSTONE_DUST));
+
+			if (poorBug == TFBlocks.cicada)
+				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 8));
+
+			if (poorBug == TFBlocks.moonworm)
+				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 10));
+		}
 	}
 
-	// todo modernize the calculations
+	// TODO modernize the calculations
 	private static boolean willEntityDie(LivingHurtEvent event) {
 		float amount = event.getAmount();
 		DamageSource source = event.getSource();

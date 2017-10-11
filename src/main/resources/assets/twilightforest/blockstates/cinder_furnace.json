@@ -3,18 +3,19 @@
   "defaults": {
     "model": "orientable",
     "textures": {
-      "side": "twilightforest:blocks/cinder_corner",
-      "top": "twilightforest:blocks/cinder_top",
-      "front": "twilightforest:blocks/cinder_corner"
+      "side":  "blocks/furnace_side",
+      "top":   "blocks/furnace_top",
+      "front": "blocks/furnace_front_off"
     },
     "uvlock": true
   },
+  "inventory": [{}],
   "variants": {
     "facing": {
-      "north": { "x": 90 },
-      "south": { "x": 270 },
-      "west":  { "x": 90, "y": 270 },
-      "east":  { "x": 90, "y": 90 }
+      "north": {},
+      "south": { "y": 180 },
+      "west":  { "y": 270 },
+      "east":  { "y": 90 }
     }
   }
 }

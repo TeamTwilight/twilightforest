@@ -1,16 +1,24 @@
 package twilightforest;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.world.TFBiomeProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TFMagicMapData extends MapData {
-	public final List<MapDecoration> featuresVisibleOnMap = new ArrayList<>();
+	public final List<TFMapDecoration> tfDecorations = new ArrayList<>();
 
 	public TFMagicMapData(String name) {
 		super(name);
@@ -30,7 +38,7 @@ public class TFMagicMapData extends MapData {
 	public NBTTagCompound writeToNBT(NBTTagCompound cmp) {
 		cmp = super.writeToNBT(cmp);
 
-		if (this.featuresVisibleOnMap.size() > 0) {
+		if (this.tfDecorations.size() > 0) {
 			cmp.setByteArray("features", serializeFeatures());
 		}
 
@@ -38,79 +46,47 @@ public class TFMagicMapData extends MapData {
 	}
 
 	/**
-	 * Adds a twilight forest feature to the map.
-	 */
-	public void addFeatureToMap(TFFeature feature, int x, int z) {
-		byte relativeX = (byte) ((x - this.xCenter) >> this.scale);
-		byte relativeZ = (byte) ((z - this.zCenter) >> this.scale);
-		byte rangeX = 64;
-		byte rangeY = 64;
-
-		if (relativeX >= (-rangeX) && relativeZ >= (-rangeY) && relativeX <= rangeX && relativeZ <= rangeY) {
-			byte markerIcon = (byte) feature.featureID;
-			byte mapX = (byte) (relativeX << 1);
-			byte mapZ = (byte) (relativeZ << 1);
-			byte mapRotation = 8;
-
-			// look for a feature already at those coordinates
-			for (MapDecoration existingCoord : featuresVisibleOnMap) {
-				if (existingCoord.getX() == mapX && existingCoord.getY() == mapZ) {
-					return;
-				}
-			}
-
-			// if we didn't find it, add it
-			// FIXME 1.11 decoration type
-			this.featuresVisibleOnMap.add(new MapDecoration(MapDecoration.Type.RED_MARKER, mapX, mapZ, mapRotation));
-		}
-	}
-
-	/**
 	 * Checks existing features against the feature cache changes wrong ones
 	 */
 	public void checkExistingFeatures(World world) {
-		List<MapDecoration> toRemove = new ArrayList<>();
-		List<MapDecoration> toAdd = new ArrayList<>();
+		List<TFMapDecoration> toRemove = new ArrayList<>();
+		List<TFMapDecoration> toAdd = new ArrayList<>();
 
-		for (MapDecoration coord : featuresVisibleOnMap) {
+		for (TFMapDecoration coord : tfDecorations) {
 			int worldX = (coord.getX() << this.scale - 1) + this.xCenter;
 			int worldZ = (coord.getY() << this.scale - 1) + this.zCenter;
 
 			if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider) {
-
-				// FIXME 1.11 decoration type
-				byte trueId = (byte) TFFeature.getFeatureID(worldX, worldZ, world);
-				if (coord.getType() != MapDecoration.Type.RED_MARKER) {
+				int trueId = TFFeature.getFeatureID(worldX, worldZ, world);
+				if (coord.featureId != trueId) {
 					toRemove.add(coord);
-					toAdd.add(new MapDecoration(MapDecoration.Type.RED_MARKER, coord.getX(), coord.getY(), coord.getRotation()));
+					toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRotation()));
 				}
 			}
 		}
 
-		featuresVisibleOnMap.removeAll(toRemove);
-		featuresVisibleOnMap.addAll(toAdd);
+		tfDecorations.removeAll(toRemove);
+		tfDecorations.addAll(toAdd);
 	}
 
 	public void deserializeFeatures(byte[] arr) {
-		this.featuresVisibleOnMap.clear();
+		this.tfDecorations.clear();
 
 		for (int i = 0; i < arr.length / 3; ++i) {
-			byte markerIcon = arr[i * 3];
+			byte featureId = arr[i * 3];
 			byte mapX = arr[i * 3 + 1];
 			byte mapZ = arr[i * 3 + 2];
 			byte mapRotation = 8;
-			// FIXME 1.11 decoration type
-			this.featuresVisibleOnMap.add(new MapDecoration(MapDecoration.Type.RED_MARKER, mapX, mapZ, mapRotation));
+			this.tfDecorations.add(new TFMapDecoration(featureId, mapX, mapZ, mapRotation));
 		}
 	}
 
 	public byte[] serializeFeatures() {
-		byte[] storage = new byte[this.featuresVisibleOnMap.size() * 3];
+		byte[] storage = new byte[this.tfDecorations.size() * 3];
 
-		for (int i = 0; i < featuresVisibleOnMap.size(); ++i) {
-			MapDecoration featureCoord = this.featuresVisibleOnMap.get(i);
-			// FIXME 1.11 decoration type
-			storage[i * 3] = (byte) featureCoord.getType().ordinal();
+		for (int i = 0; i < tfDecorations.size(); ++i) {
+			TFMapDecoration featureCoord = this.tfDecorations.get(i);
+			storage[i * 3] = (byte) featureCoord.featureId;
 			storage[i * 3 + 1] = featureCoord.getX();
 			storage[i * 3 + 2] = featureCoord.getY();
 		}
@@ -127,5 +103,42 @@ public class TFMagicMapData extends MapData {
 		int roundZ = (int) Math.round(z / mapSize);
 		this.xCenter = roundX * mapSize;
 		this.zCenter = roundZ * mapSize;
+	}
+
+	public static class TFMapDecoration extends MapDecoration {
+		private static final ResourceLocation MAP_ICONS = new ResourceLocation(TwilightForestMod.ID, "textures/gui/mapicons.png");
+		final int featureId;
+
+		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
+			super(Type.TARGET_X, xIn, yIn, rotationIn);
+			this.featureId = featureId;
+		}
+
+		@Override
+		@SideOnly(Side.CLIENT)
+		public boolean render(int idx) {
+			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
+				Minecraft.getMinecraft().renderEngine.bindTexture(MAP_ICONS);
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
+				GlStateManager.rotate((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
+				GlStateManager.scale(4.0F, 4.0F, 3.0F);
+				GlStateManager.translate(-0.125F, 0.125F, 0.0F);
+				float f1 = (float) (featureId % 8) / 8.0F;
+				float f2 = (float) (featureId / 8) / 8.0F;
+				float f3 = (float) (featureId % 8 + 1) / 8.0F;
+				float f4 = (float) (featureId / 8 + 1) / 8.0F;
+				Tessellator tessellator = Tessellator.getInstance();
+				BufferBuilder bufferbuilder = tessellator.getBuffer();
+				bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+				bufferbuilder.pos(-1.0D, 1.0D, (float) idx * -0.001F).tex((double) f1, (double) f2).endVertex();
+				bufferbuilder.pos(1.0D, 1.0D, (float) idx * -0.001F).tex((double) f3, (double) f2).endVertex();
+				bufferbuilder.pos(1.0D, -1.0D, (float) idx * -0.001F).tex((double) f3, (double) f4).endVertex();
+				bufferbuilder.pos(-1.0D, -1.0D, (float) idx * -0.001F).tex((double) f1, (double) f4).endVertex();
+				tessellator.draw();
+				GlStateManager.popMatrix();
+			}
+			return true;
+		}
 	}
 }

@@ -32,7 +32,7 @@ public class EntityAITFPhantomUpdateFormationAndMove extends EntityAIBase {
 		if (boss.getTicksProgress() >= boss.getMaxTicksForFormation())
 			switchToNextFormation();
 		Vec3d dest = getDestination();
-		boss.getMoveHelper().setMoveTo(dest.x, dest.y, dest.z, boss.isChargingAtPlayer() ? 3 : 1);
+		boss.getMoveHelper().setMoveTo(dest.x, dest.y, dest.z, boss.isChargingAtPlayer() ? 2 : 1);
 	}
 
 	public Vec3d getDestination() {

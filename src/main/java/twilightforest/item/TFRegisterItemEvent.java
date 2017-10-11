@@ -143,9 +143,8 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.log);
 		items.registerSubItemBlock(TFBlocks.root);
 		items.register(new ItemBlockTFLeaves(TFBlocks.leaves));
-		//items.register("twilight_portal", new ItemTF().setUnlocalizedName("TFPortal").setCreativeTab(null));
-		items.registerBlock(TFBlocks.firefly);
-		items.registerBlock(TFBlocks.cicada);
+		items.register(new ItemBlockWearable(TFBlocks.firefly));
+		items.register(new ItemBlockWearable(TFBlocks.cicada));
 		items.registerSubItemBlock(TFBlocks.mazestone);
 		items.registerSubItemBlock(TFBlocks.hedge);
 		items.registerSubItemBlock(TFBlocks.bossSpawner);
@@ -155,7 +154,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.fireJet);
 		items.registerSubItemBlock(TFBlocks.nagastone);
 		items.registerSubItemBlock(TFBlocks.sapling);
-		items.registerBlock(TFBlocks.moonworm);
+		items.register(new ItemBlockWearable(TFBlocks.moonworm));
 		items.registerSubItemBlock(TFBlocks.magicLog);
 		items.register(new ItemBlockTFLeaves(TFBlocks.magicLeaves));
 		items.registerSubItemBlock(TFBlocks.magicLogSpecial);

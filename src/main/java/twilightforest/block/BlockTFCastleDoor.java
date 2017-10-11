@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFPacketHandler;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.world.ChunkGeneratorTwilightForest;
@@ -33,7 +34,7 @@ import java.util.Random;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class BlockTFCastleDoor extends Block {
+public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 	public static final PropertyInteger LOCK_INDEX = PropertyInteger.create("lock_index", 0, 3);
 	private final boolean isVanished;
@@ -42,6 +43,9 @@ public class BlockTFCastleDoor extends Block {
 
 	public BlockTFCastleDoor(boolean isVanished) {
 		super(isVanished ? Material.GLASS : Material.ROCK);
+
+		this.setBlockUnbreakable();
+		this.setResistance(Float.MAX_VALUE);
 
 		this.isVanished = isVanished;
 		this.lightOpacity = isVanished ? 0 : 255;

@@ -1,0 +1,12 @@
+{
+  "pools": [
+    {
+      "name": "sword",
+      "rolls": 1,
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:glass_sword"
+      }]
+    }
+  ]
+}

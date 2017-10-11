@@ -22,11 +22,26 @@
         }
       }
     },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:trophy",
+            "data": 5
+          }
+        ]
+      }
+    },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_yeti"
       }
     }
-  }
+  },
+  "requirements": [
+    [ "queen", "trophy" ],
+    [ "previous_progression" ]
+  ]
 }

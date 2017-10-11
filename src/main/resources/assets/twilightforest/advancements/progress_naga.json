@@ -38,5 +38,9 @@
         "advancement": "twilightforest:twilight_hunter"
       }
     }
-  }
+  },
+  "requirements": [
+    [ "naga", "scale" ],
+    [ "kill_mob" ]
+  ]
 }

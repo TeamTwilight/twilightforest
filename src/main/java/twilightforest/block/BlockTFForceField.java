@@ -38,6 +38,8 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 
 	BlockTFForceField() {
 		super(Material.BARRIER, 7, 9);
+		this.setBlockUnbreakable();
+		this.setResistance(Float.MAX_VALUE);
 		this.setLightLevel(2F / 15F);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(this.getDefaultState().withProperty(COLOR, EnumDyeColor.PURPLE));

@@ -6,8 +6,8 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,6 +32,9 @@ import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.BossVariant;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
@@ -129,6 +132,17 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		this.bossInfo.removePlayer(player);
 	}
 
+	private void despawnIfPeaceful() {
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
+			setDead();
+			for (HydraHeadContainer container : hc) {
+				if (container.headEntity != null)
+					container.headEntity.setDead();
+			}
+		}
+	}
+
 	@Override
 	public void onLivingUpdate() {
 		if (hc[0].headEntity == null || hc[1].headEntity == null || hc[2].headEntity == null) {
@@ -216,6 +230,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 		}
+		despawnIfPeaceful();
 	}
 
 	@Override

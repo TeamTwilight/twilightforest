@@ -25,9 +25,9 @@ public class NoClipMoveHelper extends EntityMoveHelper {
 				this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
 				d3 = (double) MathHelper.sqrt(d3);
 
-				this.parentEntity.motionX += d0 / d3 * 0.1D;
-				this.parentEntity.motionY += d1 / d3 * 0.1D;
-				this.parentEntity.motionZ += d2 / d3 * 0.1D;
+				this.parentEntity.motionX += (d0 / d3 * 0.1D) * speed;
+				this.parentEntity.motionY += (d1 / d3 * 0.1D) * speed;
+				this.parentEntity.motionZ += (d2 / d3 * 0.1D) * speed;
 			}
 		}
 	}

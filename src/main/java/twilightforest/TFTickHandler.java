@@ -48,7 +48,7 @@ public class TFTickHandler {
 		World world = player.world;
 
 		// check for portal creation, at least if it's not disabled
-		if (!TFConfig.disablePortalCreation && event.phase == TickEvent.Phase.END && !world.isRemote && world.getWorldTime() % 20 == 0) {
+		if (!world.isRemote && !TFConfig.disablePortalCreation && event.phase == TickEvent.Phase.END && player.ticksExisted % 20 == 0) {
 			// skip non admin players when the option is on
 			if (TFConfig.adminOnlyPortals) {
 				if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getPermissionLevel(player.getGameProfile()) != 0) {
@@ -62,7 +62,7 @@ public class TFTickHandler {
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 20 == 0
+		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 20 == 0
 				&& world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)
 				&& world.provider instanceof WorldProviderTwilightForest
 				&& !player.isCreative() && !player.isSpectator()) {
@@ -70,13 +70,13 @@ public class TFTickHandler {
 		}
 
 		// check for advancement get.
-		if (event.phase == TickEvent.Phase.END && world.getWorldTime() % 50 == 0
+		if (event.phase == TickEvent.Phase.END && player.ticksExisted % 50 == 0
 				&& player instanceof EntityPlayerMP) {
 			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 100 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			if (world.provider instanceof WorldProviderTwilightForest) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);

@@ -3,12 +3,13 @@
   "defaults": {
     "model": "orientable",
     "textures": {
-      "side": "twilightforest:blocks/cinder_corner",
-      "top": "twilightforest:blocks/cinder_top",
-      "front": "twilightforest:blocks/cinder_corner"
+      "side":  "blocks/furnace_side",
+      "top":   "blocks/furnace_top",
+      "front": "blocks/furnace_front_on"
     },
     "uvlock": true
   },
+  "inventory": [{}],
   "variants": {
     "facing": {
       "north": {},

@@ -22,11 +22,36 @@
         }
       }
     },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:trophy",
+            "data": 2
+          }
+        ]
+      }
+    },
+    "blood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_blood"
+          }
+        ]
+      }
+    },
     "stroganoff": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_labyrinth"
       }
     }
-  }
+  },
+  "requirements": [
+    [ "hydra", "trophy", "blood" ],
+    [ "stroganoff" ]
+  ]
 }

@@ -4,7 +4,6 @@ import net.minecraftforge.common.config.Config;
 
 @Config(modid = TwilightForestMod.ID)
 public class TFConfig {
-
 	public static final Dimension dimension = new Dimension();
 
 	public static class Dimension {
@@ -46,4 +45,7 @@ public class TFConfig {
 
 	@Config.Comment("Meta of item used to create the Twilight Forest Portal, -1 for any metadata")
 	public static int portalCreationMeta = -1;
+
+	@Config.Comment("Rotate trophy heads in gui model. Has close to no performance impact at all. For those who don't like fun.")
+	public static boolean rotateTrophyHeadsGui = true;
 }

@@ -23,16 +23,8 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, @Nullable EntityLivingBase attacker) {
-		boolean result = super.hitEntity(stack, target, attacker);
-		if (result) {
-			if (attacker instanceof EntityPlayerMP) {
-				stack.attemptDamageItem(stack.getMaxDamage(), itemRand, (EntityPlayerMP) attacker);
-			} else {
-				stack.attemptDamageItem(stack.getMaxDamage(), itemRand, null);
-			}
-		}
-
-		return result;
+		stack.damageItem(stack.getMaxDamage() + 1, attacker);
+		return true;
 	}
 
 	@Override

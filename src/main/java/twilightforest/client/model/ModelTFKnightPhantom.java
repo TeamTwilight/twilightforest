@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
+@Deprecated
 public class ModelTFKnightPhantom extends ModelBiped {
 
 	public ModelRenderer helmet;
@@ -13,7 +14,7 @@ public class ModelTFKnightPhantom extends ModelBiped {
 	public ModelRenderer lefthorn1;
 	public ModelRenderer lefthorn2;
 
-
+	@Deprecated
 	public ModelTFKnightPhantom() {
 		this.isSneak = false;
 		this.textureWidth = 128;

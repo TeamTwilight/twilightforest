@@ -21,17 +21,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
 
 import java.util.Random;
 
-public class BlockTFCinderFurnace extends Block {
+public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback {
 
 	private static boolean keepInventory;
 	private final boolean isBurning;
 
-	protected BlockTFCinderFurnace(Boolean isLit) {
+	BlockTFCinderFurnace(Boolean isLit) {
 		super(Material.WOOD);
 
 		this.isBurning = isLit;

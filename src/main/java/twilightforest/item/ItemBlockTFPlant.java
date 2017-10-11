@@ -18,17 +18,17 @@ public class ItemBlockTFPlant extends ItemBlockTFMeta {
 
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack) {
-		// [VanillaCopy] super's side offsetting logic
-		Block block = world.getBlockState(pos).getBlock();
-
-		if (block == Blocks.SNOW_LAYER && block.isReplaceable(world, pos)) {
-			side = EnumFacing.UP;
-		} else if (!block.isReplaceable(world, pos)) {
-			pos = pos.offset(side);
-		}
-
 		int meta = stack.getItemDamage();
 		if (meta == PlantVariant.ROOT_STRAND.ordinal() || meta == PlantVariant.TORCHBERRY.ordinal()) {
+			// [VanillaCopy] super's side offsetting logic
+			Block block = world.getBlockState(pos).getBlock();
+
+			if (block == Blocks.SNOW_LAYER && block.isReplaceable(world, pos)) {
+				side = EnumFacing.UP;
+			} else if (!block.isReplaceable(world, pos)) {
+				pos = pos.offset(side);
+			}
+
 			return BlockTFPlant.canPlaceRootAt(world, pos);
 		} else {
 			return super.canPlaceBlockOnSide(world, pos, side, player, stack);

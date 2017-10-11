@@ -14,9 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.MapData;
-import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFFeature;
@@ -24,8 +22,7 @@ import twilightforest.TFMagicMapData;
 import twilightforest.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.client.ModelRegisterCallback;
-import twilightforest.network.PacketMagicMapFeatures;
-import twilightforest.network.PacketMapRewrap;
+import twilightforest.network.PacketMagicMap;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -151,26 +148,15 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 							if (TFFeature.isInFeatureChunk(world, worldX, worldZ)) {
 								byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
 								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
-								MapDecoration.Type marker = this.getMapDecoFor(TFFeature.getFeatureAt(worldX, worldZ, world));
-								data.mapDecorations.put("feature" + worldX + "," + worldZ, new MapDecoration(marker, mapX, mapZ, (byte) 8));
+								TFFeature feature = TFFeature.getFeatureAt(worldX, worldZ, world);
+								TFMagicMapData tfData = (TFMagicMapData) data;
+								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature.featureID, mapX, mapZ, (byte) 8));
 								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
 							}
 						}
 					}
 				}
 			}
-		}
-	}
-
-	private MapDecoration.Type getMapDecoFor(TFFeature featureAt) {
-		if (featureAt == TFFeature.hill1 || featureAt == TFFeature.hill2 || featureAt == TFFeature.hill3) {
-			return MapDecoration.Type.TARGET_POINT;
-		} else if (featureAt == TFFeature.labyrinth || featureAt == TFFeature.trollCave || featureAt == TFFeature.yetiCave || featureAt == TFFeature.tfStronghold) {
-			return MapDecoration.Type.MONUMENT;
-		} else if (featureAt == TFFeature.nagaCourtyard) {
-			return MapDecoration.Type.TARGET_X;
-		} else {
-			return MapDecoration.Type.MANSION;
 		}
 	}
 
@@ -220,20 +206,12 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 
 	@Nullable
 	public Packet<?> createMapDataPacket(ItemStack stack, World world, EntityPlayer player) {
-		// Every so often, send a feature update packet instead of vanilla packet
-		if (world.rand.nextInt(4) == 0) {
-			TFMagicMapData data = this.getMapData(stack, world);
-			data.checkExistingFeatures(world);
-
-			IMessage packet = new PacketMagicMapFeatures(stack.getItemDamage(), data.serializeFeatures());
-			return TFPacketHandler.CHANNEL.getPacketFrom(packet);
+		Packet<?> p = super.createMapDataPacket(stack, world, player);
+		if (p instanceof SPacketMaps) {
+			TFMagicMapData mapdata = getMapData(stack, world);
+			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMagicMap(stack.getItemDamage(), mapdata, (SPacketMaps) p));
 		} else {
-			Packet<?> p = super.createMapDataPacket(stack, world, player);
-			if (p instanceof SPacketMaps) {
-				return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMapRewrap(false, (SPacketMaps) p));
-			} else {
-				return p;
-			}
+			return p;
 		}
 	}
 

@@ -3,49 +3,31 @@
   "defaults": {
     "model": "twilightforest:util/pedestal",
     "textures": {
-      "particle": "blocks/soul_sand"
+      "particle": "blocks/stone_slab_top"
     }
   },
   "variants": {
-    "boss=naga,facing=north,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_naga_active" } }],
-    "boss=naga,facing=north,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_naga" } }],
-    "boss=naga,facing=south,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_naga_active" } }],
-    "boss=naga,facing=south,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_naga" } }],
-    "boss=naga,facing=west,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_naga_active" } }],
-    "boss=naga,facing=west,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_naga" } }],
-    "boss=naga,facing=east,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_naga_active" } }],
-    "boss=naga,facing=east,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_naga" } }],
-    "boss=lich,facing=north,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_lich_active" } }],
-    "boss=lich,facing=north,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_lich" } }],
-    "boss=lich,facing=south,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_lich_active" } }],
-    "boss=lich,facing=south,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_lich" } }],
-    "boss=lich,facing=west,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_lich_active" } }],
-    "boss=lich,facing=west,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_lich" } }],
-    "boss=lich,facing=east,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_lich_active" } }],
-    "boss=lich,facing=east,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_lich" } }],
-    "boss=hydra,facing=north,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_hydra_active" } }],
-    "boss=hydra,facing=north,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_hydra" } }],
-    "boss=hydra,facing=south,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_hydra_active" } }],
-    "boss=hydra,facing=south,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_hydra" } }],
-    "boss=hydra,facing=west,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_hydra_active" } }],
-    "boss=hydra,facing=west,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_hydra" } }],
-    "boss=hydra,facing=east,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_hydra_active" } }],
-    "boss=hydra,facing=east,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_hydra" } }],
-    "boss=ur_ghast,facing=north,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_urghast_active" } }],
-    "boss=ur_ghast,facing=north,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_urghast" } }],
-    "boss=ur_ghast,facing=south,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_urghast_active" } }],
-    "boss=ur_ghast,facing=south,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_urghast" } }],
-    "boss=ur_ghast,facing=west,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_urghast_active" } }],
-    "boss=ur_ghast,facing=west,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_urghast" } }],
-    "boss=ur_ghast,facing=east,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_urghast_active" } }],
-    "boss=ur_ghast,facing=east,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_urghast" } }],
-    "boss=snow_queen,facing=north,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_snow_queen_active" } }],
-    "boss=snow_queen,facing=north,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_snow_queen" } }],
-    "boss=snow_queen,facing=south,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_snow_queen_active" } }],
-    "boss=snow_queen,facing=south,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_snow_queen" } }],
-    "boss=snow_queen,facing=west,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_snow_queen_active" } }],
-    "boss=snow_queen,facing=west,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_snow_queen" } }],
-    "boss=snow_queen,facing=east,latent=false": [{ "textures": { "end": "twilightforest:blocks/pedestal_top_active", "side": "twilightforest:blocks/pedestal_snow_queen_active" } }],
-    "boss=snow_queen,facing=east,latent=true": [{ "textures": { "end": "twilightforest:blocks/pedestal_top", "side": "twilightforest:blocks/pedestal_snow_queen" } }]
+    "facing": {
+      "north": {},
+      "south": { "y": 180 },
+      "west":  { "y": 270 },
+      "east":  { "y": 90 }
+    },
+    "latent": {
+      "true": { "textures": {
+        "end"  : "twilightforest:blocks/pedestal_top_active",
+        "north": "twilightforest:blocks/pedestal_naga_active",
+        "south": "twilightforest:blocks/pedestal_urghast_active",
+        "west" : "twilightforest:blocks/pedestal_lich_active",
+        "east" : "twilightforest:blocks/pedestal_hydra_active"
+      } },
+      "false": { "textures": {
+        "end": "twilightforest:blocks/pedestal_top",
+        "north": "twilightforest:blocks/pedestal_naga",
+        "south": "twilightforest:blocks/pedestal_urghast",
+        "west" : "twilightforest:blocks/pedestal_lich",
+        "east" : "twilightforest:blocks/pedestal_hydra"
+      } }
+    }
   }
 }

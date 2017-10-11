@@ -7,8 +7,8 @@ import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketChangeBiome;
 import twilightforest.network.PacketEnforceProgressionStatus;
-import twilightforest.network.PacketMagicMapFeatures;
-import twilightforest.network.PacketMapRewrap;
+import twilightforest.network.PacketMagicMap;
+import twilightforest.network.PacketMazeMap;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.PacketThrowPlayer;
@@ -25,8 +25,8 @@ public class TFPacketHandler {
 		CHANNEL.registerMessage(PacketStructureProtection.Handler.class, PacketStructureProtection.class, id++, Side.CLIENT);
 		CHANNEL.registerMessage(PacketStructureProtectionClear.Handler.class, PacketStructureProtectionClear.class, id++, Side.CLIENT);
 		CHANNEL.registerMessage(PacketThrowPlayer.Handler.class, PacketThrowPlayer.class, id++, Side.CLIENT);
-		CHANNEL.registerMessage(PacketMagicMapFeatures.Handler.class, PacketMagicMapFeatures.class, id++, Side.CLIENT);
-		CHANNEL.registerMessage(PacketMapRewrap.Handler.class, PacketMapRewrap.class, id++, Side.CLIENT);
+		CHANNEL.registerMessage(PacketMagicMap.Handler.class, PacketMagicMap.class, id++, Side.CLIENT);
+		CHANNEL.registerMessage(PacketMazeMap.Handler.class, PacketMazeMap.class, id++, Side.CLIENT);
 	}
 
 }

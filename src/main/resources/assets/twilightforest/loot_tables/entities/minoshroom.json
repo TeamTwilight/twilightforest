@@ -11,6 +11,15 @@
           { "function": "looting_enchant", "count": { "min": 0, "max": 1 } }
         ]
       }]
+    },
+    {
+      "name": "trophy",
+      "rolls": 1,
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:trophy",
+        "functions": [{ "function": "set_data", "data": 6 }]
+      }]
     }
   ]
 }

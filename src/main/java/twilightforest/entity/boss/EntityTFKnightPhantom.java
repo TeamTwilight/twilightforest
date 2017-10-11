@@ -3,7 +3,11 @@ package twilightforest.entity.boss;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,12 +28,20 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TFTreasure;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
+import twilightforest.block.enums.BossVariant;
 import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.entity.ai.*;
+import twilightforest.entity.ai.EntityAIPhantomAttackStart;
+import twilightforest.entity.ai.EntityAIPhantomThrowWeapon;
+import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
+import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
+import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
@@ -111,9 +123,21 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		return src == DamageSource.IN_WALL || super.isEntityInvulnerable(src);
 	}
 
+	private void despawnIfPeaceful() {
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome() && getNumber() == 0) {
+				BlockPos home = this.getHomePosition();
+				world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM));
+			}
+
+			setDead();
+		}
+	}
+
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
+		despawnIfPeaceful();
 
 		if (isChargingAtPlayer()) {
 			// make particles

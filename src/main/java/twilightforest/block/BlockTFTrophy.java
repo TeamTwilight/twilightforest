@@ -4,11 +4,15 @@ import net.minecraft.block.BlockSkull;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -17,6 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TFSounds;
+import twilightforest.block.enums.BossVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
@@ -65,6 +71,44 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 		} else {
 			return super.getBoundingBox(state, par1IBlockAccess, pos);
 		}
+	}
+
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		TileEntity te = worldIn.getTileEntity(pos);
+		if (te instanceof TileEntityTFTrophy) {
+			SoundEvent sound = null;
+			float volume = 1.0F;
+			switch (BossVariant.getVariant(((TileEntityTFTrophy) te).getSkullType())) {
+				case NAGA:
+					sound = TFSounds.NAGA_RATTLE;
+					volume = 1.25F;
+					break;
+				case LICH:
+					sound = SoundEvents.ENTITY_BLAZE_AMBIENT;
+					volume = 0.35F;
+					break;
+				case HYDRA:
+					sound = TFSounds.HYDRA_GROWL;
+					break;
+				case UR_GHAST:
+					sound = SoundEvents.ENTITY_GHAST_AMBIENT;
+					break;
+				case SNOW_QUEEN:
+					sound = TFSounds.ICE_AMBIENT;
+					break;
+				case KNIGHT_PHANTOM:
+					sound = TFSounds.WRAITH;
+					break;
+				case MINOSHROOM:
+					sound = SoundEvents.ENTITY_COW_AMBIENT;
+					volume = 0.5F;
+					break;
+			}
+			if (sound != null)
+				worldIn.playSound(playerIn, pos, sound, SoundCategory.BLOCKS, volume, 16.0F);
+		}
+		return true;
 	}
 
 	@Override

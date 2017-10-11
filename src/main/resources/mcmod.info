@@ -5,12 +5,17 @@
   "description": "An enchanted forest dimension.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "http://www.minecraftforum.net/topic/561673-",
+  "url": "https://minecraft.curseforge.com/projects/the-twilight-forest",
   "updateUrl": "",
   "authors": [
-    "Benimatic (Ben Mazur)"
+    "Benimatic",
+    "AtomicBlom",
+    "Drullkus",
+    "Killer_Demon",
+    "Tamaized",
+    "williewillus"
   ],
-  "credits": "By Benimatic",
+  "credits": "By Benimatic (Ben Mazur)",
   "logoFile": "assets/twilightforest/textures/twilightforest_logo.png",
   "screenshots": [],
   "dependencies": []

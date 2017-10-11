@@ -88,7 +88,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 			err_2 = doubleAbsDz - absDx;
 			lineArray = new BlockPos[absDx + 1];
 			for (i = 0; i < absDx; i++) {
-				lineArray[i] = new BlockPos(pixel);
+				lineArray[i] = pixel;
 				if (err_1 > 0) {
 					pixel = pixel.up(y_inc);
 					err_1 -= doubleAbsDx;
@@ -106,7 +106,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 			err_2 = doubleAbsDz - absDy;
 			lineArray = new BlockPos[absDy + 1];
 			for (i = 0; i < absDy; i++) {
-				lineArray[i] = new BlockPos(pixel);
+				lineArray[i] = pixel;
 				if (err_1 > 0) {
 					pixel = pixel.east(x_inc);
 					err_1 -= doubleAbsDy;

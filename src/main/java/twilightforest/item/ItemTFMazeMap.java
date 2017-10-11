@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFMazeMapData;
 import twilightforest.TFPacketHandler;
 import twilightforest.client.ModelRegisterCallback;
-import twilightforest.network.PacketMapRewrap;
+import twilightforest.network.PacketMazeMap;
 
 import javax.annotation.Nullable;
 
@@ -287,7 +287,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	public Packet<?> createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
 		Packet<?> p = super.createMapDataPacket(stack, worldIn, player);
 		if (p instanceof SPacketMaps) {
-			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMapRewrap(true, (SPacketMaps) p));
+			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMazeMap((SPacketMaps) p));
 		} else {
 			return p;
 		}

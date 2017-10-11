@@ -1,5 +1,10 @@
 {
   "forge_marker": 1,
-  "defaults": { "model": "twilightforest:castle_door", "textures": { "all": "twilightforest:blocks/castle_door" } },
-  "variants": { "lock_index": { "0": {}, "1": {}, "2": {}, "3": {} }, "active": { "true": {}, "false": {} } }
+  "defaults": { "model": "twilightforest:castle_door",
+    "textures": { "all": "twilightforest:blocks/castle_door" } },
+  "inventory": [{}],
+  "variants": {
+    "lock_index": { "0": {}, "1": {}, "2": {}, "3": {} },
+    "active": { "true": {}, "false": {} }
+  }
 }

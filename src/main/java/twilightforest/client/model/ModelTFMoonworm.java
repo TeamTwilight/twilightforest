@@ -11,6 +11,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.tileentity.TileEntityTFMoonworm;
 
 import javax.annotation.Nullable;
@@ -80,9 +81,14 @@ public class ModelTFMoonworm extends ModelBase {
 			Shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
 			Shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
 			Shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
+		} else if (moonworm == null && BugModelAnimationHelper.yawWriggleDelay == 0) {
+			float time = (BugModelAnimationHelper.desiredRotation - BugModelAnimationHelper.currentRotation) - partialTime;
 
+			// moving
+			head.rotationPointY += Math.min(0, MathHelper.sin(time / 2));
+			Shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
+			Shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
+			Shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
 		}
-
 	}
-
 }

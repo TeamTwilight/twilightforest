@@ -25,6 +25,15 @@
         "type": "loot_table",
         "name": "twilightforest:structures/stronghold_boss/rare"
       }]
+    },
+    
+    {
+      "name": "trophy",
+      "rolls": 1,
+      "entries": [{
+        "type": "loot_table",
+        "name": "twilightforest:structures/stronghold_boss/trophy"
+      }]
     }
   ]
 }

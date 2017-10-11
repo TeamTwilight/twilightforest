@@ -2,13 +2,28 @@
   "forge_marker": 1,
   "defaults": { "model": "cube_all"},
   "variants": {
-    "variant": {
-      "normal":  { "textures": { "all": "twilightforest:blocks/castleblock_brick"   } },
-      "worn":    { "textures": { "all": "twilightforest:blocks/castleblock_faded"   } },
-      "cracked": { "textures": { "all": "twilightforest:blocks/castleblock_cracked" } },
-      "roof":    { "textures": { "all": "twilightforest:blocks/castleblock_roof"    } },
-      "mossy":   { "textures": { "all": "twilightforest:blocks/castleblock_mossy"   } },
-      "frame":   { "model": "twilightforest:castleblock_frame" }
-    }
+    "variant=normal":  [{ "textures": { "all": "twilightforest:blocks/castleblock_brick"   } }],
+    "variant=worn":    [{ "textures": { "all": "twilightforest:blocks/castleblock_faded"   } }],
+    "variant=cracked": [{ "textures": { "all": "twilightforest:blocks/castleblock_cracked" } }],
+    "variant=roof":    [
+      {                    "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      {           "y": 90, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      {           "y":180, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      {           "y":270, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x":  90,          "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x":  90, "y": 90, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x":  90, "y":180, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x":  90, "y":270, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x": 180,          "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x": 180, "y": 90, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x": 180, "y":180, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x": 180, "y":270, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x": 270,          "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x": 270, "y": 90, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x": 270, "y":180, "textures": { "all": "twilightforest:blocks/castleblock_roof" } },
+      { "x": 270, "y":270, "textures": { "all": "twilightforest:blocks/castleblock_roof" } }
+    ],
+    "variant=mossy":   [{ "textures": { "all": "twilightforest:blocks/castleblock_mossy"   } }],
+    "variant=frame":   [{ "model": "twilightforest:castleblock_frame" }]
   }
 }

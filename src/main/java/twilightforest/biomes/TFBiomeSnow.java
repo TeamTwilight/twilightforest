@@ -85,7 +85,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	@Override
 	public void enforceProgession(EntityPlayer player, World world) {
-		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
+		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
 
 			// hint monster?

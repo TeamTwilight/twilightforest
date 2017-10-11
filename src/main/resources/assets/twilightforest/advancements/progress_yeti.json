@@ -21,11 +21,25 @@
         }
       }
     },
+    "fur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:alpha_fur"
+          }
+        ]
+      }
+    },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_ur_ghast"
       }
     }
-  }
+  },
+  "requirements": [
+    [ "yeti", "fur" ],
+    [ "previous_progression" ]
+  ]
 }

@@ -26,6 +26,6 @@
     },
     "rewards": {
         "experience": 42,
-        "loot": [ "twilightforest:structures/basement/basement" ]
+        "loot": [ "twilightforest:glass_sword" ]
     }
 }

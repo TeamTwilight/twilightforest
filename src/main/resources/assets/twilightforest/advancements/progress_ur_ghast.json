@@ -22,11 +22,36 @@
         }
       }
     },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:trophy",
+            "data": 3
+          }
+        ]
+      }
+    },
+    "tear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_tears"
+          }
+        ]
+      }
+    },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_knights"
       }
     }
-  }
+  },
+  "requirements": [
+    [ "ghast", "trophy", "tear" ],
+    [ "previous_progression" ]
+  ]
 }

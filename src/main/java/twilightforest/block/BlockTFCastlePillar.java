@@ -34,7 +34,7 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     BlockTFCastlePillar() {
         super(Material.ROCK);
         this.setHardness(100F);
-        this.setResistance(15F);
+        this.setResistance(35F);
         this.setSoundType(SoundType.STONE);
         this.setCreativeTab(TFItems.creativeTab);
         this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, CastlePillarVariant.ENCASED).withProperty(AXIS, BlockLog.EnumAxis.Y));
