@@ -1,4 +1,4 @@
-#PARSE_ESCAPES 以 # 开头的行将被视作注释
+#PARSE_ESCAPES
 
 itemGroup.twilightForest=暮色森林
 
@@ -471,7 +471,6 @@ twilightforest.book.trollcave.2=这符咒一定和剧毒风暴有什么关系。
 twilightforest.book.trollcave.3=这名法师应该藏身于某个遥远的环境恶劣的地方。\n\n按照我的分析，我应该能在冰川的某个地方找到这样的一个人，也许是在某种要塞里……
 twilightforest.book.unknown.1=§8[[一本看上去被传抄了无数遍的书]]§0\n\n我的学识实在不足以解释这建筑周围的力场是怎么回事，我只能说这是一种强力魔法。如果这魔咒和之前的魔咒的原理一样，那么我应该在别的地方寻找答案。
 twilightforest.book.unknown.2=也许我还有什么事情没有做，抑或我还没击败什么怪物。我想是时候掉头回去了。当然，我会回来看看看有没有新进展的。
-
 
 twilightforest.misc.wip0=这个方块仍在制作当中，可能会有能导致存档损坏的 Bug 或不可预料的特性。
 twilightforest.misc.wip1=测试时时刻保持注意。
