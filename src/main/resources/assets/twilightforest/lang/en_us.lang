@@ -360,7 +360,7 @@ item.knightmetalRing.name=Knightmetal Loop
 item.chainBlock.name=Block and Chain
 item.cubeTalisman.name=Talisman of the Cube
 item.cubeOfAnnihilation.name=Cube of Annihilation
-    
+
 item.minotaurAxe.tooltip=Extra damage while charging
 item.knightlySword.tooltip=Extra damage to armored targets
 item.knightlyPick.tooltip=Extra damage to armored targets
@@ -445,7 +445,7 @@ twilightforest.book.lichtower.4=curse-breaking properties I need, but the magic 
 twilightforest.book.labyrinth.1=\u00A78[[An explorer's notebook, written on waterproof paper]]\u00A70\n\nThe mosquitoes in this swamp are vexing, but strange. The vast majority of them seem to have no natural source, nor do they seem to have a role in the local ecology. I have begun to
 twilightforest.book.labyrinth.2=suspect that they are some kind of magical curse.\n\n\u00A78[[Next entry]]\u00A70\n\nNow that I have encountered a protection spell on the ruined labyrinth here, I consider my suspicions confirmed. Both the protection
 twilightforest.book.labyrinth.3=spell and the mosquitoes are a curse. This curse seems to have a different source from the others I have encountered. I will have to research further...\n\n\u00A78[[Next entry]]\u00A70\n\nThe curse seems to
-twilightforest.book.labyrinth.4=be of a type too powerful for one being alone to produce. several wizards working in combination would be necessary.\n\nif one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. strangely, 
+twilightforest.book.labyrinth.4=be of a type too powerful for one being alone to produce. several wizards working in combination would be necessary.\n\nif one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. strangely,
 twilightforest.book.labyrinth.5=my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...
 twilightforest.book.hydralair.1=\u00A78[[An explorer's notebook, written on fireproof paper]]\u00A70\n\nFire is a trivial obstacle for a master explorer such as myself. I have traversed seas of fire, and swam through oceans of lava. The burning air here is an interesting variation,
 twilightforest.book.hydralair.2=but ultimately no hinderance.\n\nWhat does stop me though is that I have encountered another protection spell, this time surrounding a mighty creature that must be king of this fire swamp. This is not the first protection spell I have
@@ -464,12 +464,12 @@ twilightforest.book.yeticave.2=what is capable of causing such an effect.\n\n\u0
 twilightforest.book.yeticave.3=structures acting as antennae. The antennae are not the source of the snowfall, but serve merely to boost the power of the curse causing it.\n\nA blizzard this intense must be caused by a powerful creature, most likely found
 twilightforest.book.yeticave.4=near the top of the dark forest tower. Stop the creature, and the blizzard will fade.
 twilightforest.book.icetower.1=\u00A78[[An explorer's notebook, caked in ice]]\u00A70\n\nI overcame one blizzard, only to run into this terrible ice storm atop the glacier. My explorations have shown me the splendor of an ice palace, shining with the colors of the polar aurora. It
-twilightforest.book.icetower.2=all seems protected by some sort of curse.\n\n\u00A78[[Next entry]]\u00A70\n\nI am no novice.  This curse is fed by the power of a creature nearby.  The cause of the curse surrounding the fire swamp was built off the power of the leader of the 
+twilightforest.book.icetower.2=all seems protected by some sort of curse.\n\n\u00A78[[Next entry]]\u00A70\n\nI am no novice.  This curse is fed by the power of a creature nearby.  The cause of the curse surrounding the fire swamp was built off the power of the leader of the
 twilightforest.book.icetower.3=minotaurs nearby.\n\nSurrounding this glacier, there are masses of yetis.  Perhaps the yetis have some sort of leader...
 twilightforest.book.trollcave.1=\u00A78[[An explorer's notebook, damaged by acid]]\u00A70\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the
 twilightforest.book.trollcave.2=others I have witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n\u00A78[[Next entry]]\u00A70\n\nSuch supreme weather magic must be the result of an unequaled weather
 twilightforest.book.trollcave.3=magician. Such a person would likely hide themselves in an extreme environment, far away.\n\nBased on my logic, I would expect to find such a person somewhere on the glacier, perhaps in some sort of fortress there...
-twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, than the answer to unlocking it lies elsewhere.  Perhaps there is 
+twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is 
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
 
 twilightforest.misc.wip0=This block is a work in progress and may have bugs or unintended effects that may damage your world.
