@@ -39,7 +39,7 @@ public class EntityAITFLichShadows extends EntityAIBase {
 		EntityLivingBase targetedEntity = lich.getAttackTarget();
 		if (targetedEntity == null)
 			return;
-		float dist = lich.getDistanceToEntity(targetedEntity);
+		float dist = lich.getDistance(targetedEntity);
 
 		if (lich.getAttackCooldown() == 60) {
 			lich.teleportToSightOfEntity(targetedEntity);

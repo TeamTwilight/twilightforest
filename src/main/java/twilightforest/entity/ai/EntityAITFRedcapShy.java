@@ -30,8 +30,8 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 
 		if (attackTarget == null
 				|| !this.entityObj.isShy()
-				|| attackTarget.getDistanceToEntity(entityObj) > maxDistance
-				|| attackTarget.getDistanceToEntity(entityObj) < minDistance
+				|| attackTarget.getDistance(entityObj) > maxDistance
+				|| attackTarget.getDistance(entityObj) < minDistance
 				|| !isTargetLookingAtMe(attackTarget)) {
 			return false;
 		} else {
@@ -66,7 +66,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 			return false;
 		}
 
-		return entityObj.isShy() && attackTarget.getDistanceToEntity(entityObj) < maxDistance && attackTarget.getDistanceToEntity(entityObj) > minDistance && isTargetLookingAtMe(attackTarget);
+		return entityObj.isShy() && attackTarget.getDistance(entityObj) < maxDistance && attackTarget.getDistance(entityObj) > minDistance && isTargetLookingAtMe(attackTarget);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 	@Override
 	public void resetTask() {
 		this.entityTarget = null;
-		this.entityObj.getNavigator().clearPathEntity();
+		this.entityObj.getNavigator().clearPath();
 	}
 
 	private Vec3d findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {

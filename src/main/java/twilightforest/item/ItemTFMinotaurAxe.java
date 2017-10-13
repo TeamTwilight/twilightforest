@@ -26,8 +26,8 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 	private static final int BONUS_CHARGING_DAMAGE = 7;
 
 	protected ItemTFMinotaurAxe(Item.ToolMaterial material) {
-		super(material, material.getDamageVsEntity(), -3.0f);
-		this.damageVsEntity = 4 + material.getDamageVsEntity();
+		super(material, material.getAttackDamage(), -3.0f);
+		this.attackDamage = 4 + material.getAttackDamage();
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

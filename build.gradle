@@ -104,6 +104,6 @@ repositories {
 }
 
 dependencies {   
-    deobfCompile "mezz.jei:jei_1.12.1:${jei_version}"
+    deobfCompile "mezz.jei:jei_1.12.2:${jei_version}"
     compile "team.chisel.ctm:CTM:MC1.12-${ctm_version}"
 }

@@ -46,7 +46,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 				{
 					double maxRange = EntityAITFFindEntityNearestPlayer.this.maxTargetRange();
 
-					return (double)entity.getDistanceToEntity(EntityAITFFindEntityNearestPlayer.this.entityLiving) > maxRange ? false : EntityAITarget.isSuitableTarget(EntityAITFFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase)entity, false, false);
+					return (double)entity.getDistance(EntityAITFFindEntityNearestPlayer.this.entityLiving) > maxRange ? false : EntityAITarget.isSuitableTarget(EntityAITFFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase)entity, false, false);
 				}
 			}
 		};

@@ -31,8 +31,8 @@ public class ItemTFMazebreakerPick extends ItemPickaxe implements ModelRegisterC
 	}
 
 	@Override
-	public float getStrVsBlock(@Nonnull ItemStack stack, IBlockState state) {
-		float strVsBlock = super.getStrVsBlock(stack, state);
+	public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
+		float strVsBlock = super.getDestroySpeed(stack, state);
 		return state.getBlock() == TFBlocks.mazestone ? strVsBlock * 16F : strVsBlock;
 	}
 }

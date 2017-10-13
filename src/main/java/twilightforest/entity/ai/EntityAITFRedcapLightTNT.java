@@ -46,7 +46,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public void resetTask() {
-		this.entityObj.getNavigator().clearPathEntity();
+		this.entityObj.getNavigator().clearPath();
 		this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.heldPick);
 		this.delay = 20;
 		this.tntPos = null;
@@ -62,7 +62,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 			Blocks.TNT.onBlockDestroyedByPlayer(entityObj.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
 			entityObj.swingArm(EnumHand.MAIN_HAND);
 			entityObj.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
-			this.entityObj.getNavigator().clearPathEntity();
+			this.entityObj.getNavigator().clearPath();
 		} else {
 			this.entityObj.getNavigator().tryMoveToXYZ(tntPos.getX(), tntPos.getY(), tntPos.getZ(), this.pursueSpeed);
 		}
