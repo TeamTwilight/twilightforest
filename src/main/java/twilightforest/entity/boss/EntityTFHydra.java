@@ -69,7 +69,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	private MultiPartEntityPart leftLeg;
 	private MultiPartEntityPart rightLeg;
 	private MultiPartEntityPart tail;
-	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
 
 	public int ticksSinceDamaged = 0;
 

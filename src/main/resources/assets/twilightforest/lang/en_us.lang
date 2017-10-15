@@ -77,9 +77,9 @@ advancement.twilight_progress_thorns.desc=Make it past the thornlands, and unloc
 advancement.twilight_progress_castle=So Castle Very Wow
 advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 
-twilightforest:trophyPedestal.ineligible=You are unworthy.
-twilightforest:ore_meter.range=Radius: %s, Origin: [%d, %d]
-twilightforest:ore_meter.exposed=Exposed: %d
+twilightforest.trophyPedestal.ineligible=You are unworthy.
+twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
+twilightforest.ore_meter.exposed=Exposed: %s
 
 tile.TFLog.0.name=Twilight Oak Wood
 tile.TFLog.1.name=Canopy Tree Wood
@@ -245,6 +245,11 @@ tile.ForceField.1.name=Pink Force Field
 tile.ForceField.2.name=Orange Force Field
 tile.ForceField.3.name=Green Force Field
 tile.ForceField.4.name=Blue Force Field
+tile.BlockOfStorage.0.name=Block of Ironwood
+tile.BlockOfStorage.1.name=Block of Fiery Metal
+tile.BlockOfStorage.2.name=Block of Steeleaf
+tile.BlockOfStorage.3.name=Block of Arctic Fur
+tile.BlockOfStorage.4.name=Block of Carminite
 
 item.nagaScale.name=Naga Scale
 item.plateNaga.name=Naga Scale Tunic

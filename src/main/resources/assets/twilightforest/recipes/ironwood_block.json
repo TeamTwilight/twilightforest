@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:block_storage",
+    "data": 0
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTIRONWOOD"
+    }
+  }
+}

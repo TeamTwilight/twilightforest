@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "twilightforest:items/arctic_helm"
+    "layer0": "twilightforest:items/arctic_helm",
+    "layer1": "twilightforest:items/arctic_helm_0"
   }
 }

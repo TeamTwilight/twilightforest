@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "twilightforest:items/arctic_plate"
+    "layer0": "twilightforest:items/arctic_plate",
+    "layer1": "twilightforest:items/arctic_plate_0"
   }
 }

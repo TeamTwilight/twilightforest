@@ -54,7 +54,7 @@ public class EntityTFLich extends EntityMob {
 
 	private EntityTFLich masterLich;
 	private int attackCooldown;
-	private final BossInfoServer bossInfo = new BossInfoServer(new TextComponentTranslation("entity." + EntityList.getKey(this) + ".name"), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
+	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
 
 	public EntityTFLich(World world) {
 		super(world);

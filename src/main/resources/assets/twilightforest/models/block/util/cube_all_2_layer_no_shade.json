@@ -1,5 +1,6 @@
 {
   "parent": "twilightforest:block/util/cube_2_layer_no_shade",
+  "ambientocclusion": false,
   "textures": {
     "particle": "#all",
     "down": "#all",

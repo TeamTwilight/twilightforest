@@ -202,10 +202,10 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	public void animateAddColor(EnumDyeColor color, int iterations) {
-		int colorVal = color.getColorValue();
-		int red = colorVal >>> 16 & 0xFF;
-		int green = colorVal >>> 8 & 0xFF;
-		int blue = colorVal & 0xFF;
+		float[] colorVal = color.getColorComponentValues();
+		int red = (int) (colorVal[0] * 255F);
+		int green = (int) (colorVal[1] * 255F);
+		int blue = (int) (colorVal[2] * 255F);
 
 		for (int i = 0; i < iterations; i++) {
 			this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);

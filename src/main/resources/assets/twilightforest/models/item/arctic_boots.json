@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "twilightforest:items/arctic_boots"
+    "layer0": "twilightforest:items/arctic_boots",
+    "layer1": "twilightforest:items/arctic_boots_0"
   }
 }

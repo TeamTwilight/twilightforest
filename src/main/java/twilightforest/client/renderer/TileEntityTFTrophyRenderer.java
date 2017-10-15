@@ -192,8 +192,8 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 					onGround = false;
 					rotation = 90.0F;
 			}
-		} else if (TFConfig.rotateTrophyHeadsGui && trophy == null && transform == ItemCameraTransforms.TransformType.GUI) {
-			rotation = TFClientEvents.rotationTicker;
+		} else if (trophy == null && transform == ItemCameraTransforms.TransformType.GUI) {
+			rotation = TFConfig.rotateTrophyHeadsGui ? TFClientEvents.rotationTicker : 135;
 		}
 
 		GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);

@@ -176,11 +176,11 @@ public class EntityTFIceExploder extends EntityMob {
 		int bestDifference = 1024;
 
 		for (EnumDyeColor color : EnumDyeColor.values()) {
-			int iColor = color.getColorValue();
+			float[] iColor = color.getColorComponentValues();
 
-			int iRed = (iColor >> 16) & 255;
-			int iGreen = (iColor >> 8) & 255;
-			int iBlue = iColor & 255;
+			int iRed = (int) (iColor[0] * 255F);
+			int iGreen = (int) (iColor[1] * 255F);
+			int iBlue = (int) (iColor[2] * 255F);
 
 			int difference = Math.abs(red - iRed) + Math.abs(green - iGreen) + Math.abs(blue - iBlue);
 
