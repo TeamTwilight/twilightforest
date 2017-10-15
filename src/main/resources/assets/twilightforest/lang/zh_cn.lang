@@ -245,6 +245,11 @@ tile.ForceField.1.name=粉红色力场
 tile.ForceField.2.name=橙色力场
 tile.ForceField.3.name=绿色力场
 tile.ForceField.4.name=蓝色力场
+tile.BlockOfStorage.0.name=铁树块
+tile.BlockOfStorage.1.name=炽热金属块
+tile.BlockOfStorage.2.name=钢叶块
+tile.BlockOfStorage.3.name=极地毛皮块
+tile.BlockOfStorage.4.name=砷铅铁块
 
 item.nagaScale.name=娜迦鳞片
 item.plateNaga.name=娜迦胸甲
