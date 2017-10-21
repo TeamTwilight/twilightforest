@@ -5,8 +5,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityLargeFireball;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -188,12 +188,13 @@ public class EntityTFTowerGhast extends EntityGhast {
 				this.parentEntity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 10F, this.parentEntity.getVerticalFaceSpeed());
 
 				if (this.attackTimer == 10) {
-					world.playEvent((EntityPlayer) null, 1015, new BlockPos(this.parentEntity), 0);
+					parentEntity.playSound(SoundEvents.ENTITY_GHAST_WARN, 10.0F, parentEntity.getSoundPitch());
 				}
 
 				if (this.attackTimer == 20) {
 					if (this.parentEntity.shouldAttack(entitylivingbase)) {
 						// TF - call custom method
+						parentEntity.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 10.0F, parentEntity.getSoundPitch());
 						this.parentEntity.spitFireball();
 						this.prevAttackTimer = attackTimer;
 					}
@@ -289,7 +290,6 @@ public class EntityTFTowerGhast extends EntityGhast {
 		double d2 = getAttackTarget().posX - (this.posX + vec3d.x * 4.0D);
 		double d3 = getAttackTarget().getEntityBoundingBox().minY + (double) (getAttackTarget().height / 2.0F) - (0.5D + this.posY + (double) (this.height / 2.0F));
 		double d4 = getAttackTarget().posZ - (this.posZ + vec3d.z * 4.0D);
-		world.playEvent((EntityPlayer) null, 1016, new BlockPos(this), 0);
 		EntityLargeFireball entitylargefireball = new EntityLargeFireball(world, this, d2, d3, d4);
 		entitylargefireball.explosionPower = this.getFireballStrength();
 		entitylargefireball.posX = this.posX + vec3d.x * 4.0D;

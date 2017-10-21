@@ -5,6 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
@@ -17,8 +18,8 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 	public ComponentTFFinalCastleDamagedTower() {
 	}
 
-	public ComponentTFFinalCastleDamagedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune color
+	public ComponentTFFinalCastleDamagedTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction) {
+		super(feature, rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune color
 	}
 
 	@Override
@@ -28,12 +29,12 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 		}
 
 		// add foundation
-		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(rand, 0, this);
+		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(getFeatureType(), rand, 0, this);
 		list.add(foundation);
 		foundation.buildComponent(this, list, rand);
 
 		// add thorns
-		ComponentTFFinalCastleFoundation13 thorns = new ComponentTFFinalCastleFoundation13Thorns(rand, 0, this);
+		ComponentTFFinalCastleFoundation13 thorns = new ComponentTFFinalCastleFoundation13Thorns(getFeatureType(), rand, 0, this);
 		list.add(thorns);
 		thorns.buildComponent(this, list, rand);
 
@@ -50,7 +51,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 
 	@Override
 	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, EnumFacing facing, BlockPos tc) {
-		return new ComponentTFFinalCastleWreckedTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+		return new ComponentTFFinalCastleWreckedTower(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 

@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
@@ -15,8 +16,8 @@ public class ComponentTFTrollVault extends StructureTFComponent {
 	public ComponentTFTrollVault() {
 	}
 
-	public ComponentTFTrollVault(int index, int x, int y, int z) {
-		super(index);
+	public ComponentTFTrollVault(TFFeature feature, int index, int x, int y, int z) {
+		super(feature, index);
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 

@@ -341,10 +341,12 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
-		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			IBlockState state = world.getBlockState(pos);
-			if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
-				world.destroyBlock(pos, false);
+		if (world.getGameRules().getBoolean("mobGriefing")) {
+			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+				IBlockState state = world.getBlockState(pos);
+				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
+					world.destroyBlock(pos, false);
+				}
 			}
 		}
 	}

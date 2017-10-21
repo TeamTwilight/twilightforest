@@ -200,6 +200,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.castleDoor);
 		items.registerSubItemBlock(TFBlocks.castleDoorVanished);
 		items.registerSubItemBlock(TFBlocks.miniature_structure);
+		items.registerSubItemBlock(TFBlocks.block_storage);
 	}
 
 	private static class ItemRegistryHelper {

@@ -128,9 +128,11 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void entityHurts(LivingHurtEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
+		
 		// fire aura
-		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getTrueSource() != null) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+		if (living instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getTrueSource() != null) {
+			EntityPlayer player = (EntityPlayer) living;
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, event.getSource());
 
 
@@ -140,9 +142,9 @@ public class TFEventListener {
 		}
 
 		// chill aura
-		if (event.getEntityLiving() instanceof EntityPlayer && event.getSource().damageType.equals("mob")
+		if (living instanceof EntityPlayer && event.getSource().damageType.equals("mob")
 				&& event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+			EntityPlayer player = (EntityPlayer) living;
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.getSource());
 
 			if (chillLevel > 0) {
@@ -157,7 +159,7 @@ public class TFEventListener {
 
 			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.tripleBow
 					|| !player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
-				event.getEntityLiving().hurtResistantTime = 0;
+				living.hurtResistantTime = 0;
 			}
 		}
 
@@ -175,107 +177,76 @@ public class TFEventListener {
 				float sourcePitch = player.rotationPitch;
 
 				// this is the only method that will move the player properly
-				player.rotationYaw = event.getEntityLiving().rotationYaw;
-				player.rotationPitch = event.getEntityLiving().rotationPitch;
-				player.setPositionAndUpdate(event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ);
+				player.rotationYaw = living.rotationYaw;
+				player.rotationPitch = living.rotationPitch;
+				player.setPositionAndUpdate(living.posX, living.posY, living.posZ);
 				player.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
 
 
 				// monsters are easy to move
-				event.getEntityLiving().setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
-				event.getEntityLiving().playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
-			}
-		}
-
-		// charm of life?
-		if (event.getEntityLiving() instanceof EntityPlayer && willEntityDie(event)) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-
-			boolean charm1 = false;
-			boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife2, 1);
-			if (!charm2) {
-				charm1 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife1, 1);
-			}
-
-			// do they have a charm of life?  OM NOM NOM!
-			if (charm2 || charm1) {
-				//player.sendMessage("Charm of Life saves you!!!");
-
-				// cancel damage
-				event.setResult(Result.DENY);
-				event.setCanceled(true);
-				event.setAmount(0);
-
-				if (charm1) {
-					player.setHealth(8);
-					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 0));
-				}
-
-				if (charm2) {
-					player.setHealth((float) player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
-
-					player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 600, 3));
-					player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 600, 0));
-					player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 600, 0));
-				}
-
-				// spawn effect thingers
-				EntityTFCharmEffect effect = new EntityTFCharmEffect(player.world, player, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
-				player.world.spawnEntity(effect);
-
-				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(player.world, player, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
-				effect2.offset = (float) Math.PI;
-				player.world.spawnEntity(effect2);
-
-				// sound
-				player.world.setEntityState(player, (byte) 35);
+				living.setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
+				living.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
 			}
 		}
 
 		// Smashing!
-		Item item = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
+		Item item = living.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
 		if (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof BlockTFCritter) {
 			BlockTFCritter poorBug = (BlockTFCritter)((ItemBlock) item).getBlock();
 
 			if (poorBug == TFBlocks.firefly)
-				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GLOWSTONE_DUST));
+				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.GLOWSTONE_DUST));
 
 			if (poorBug == TFBlocks.cicada)
-				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 8));
+				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 8));
 
 			if (poorBug == TFBlocks.moonworm)
-				event.getEntityLiving().setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 10));
+				living.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.DYE, 1, 10));
+
+			living.world.playSound(null, living.posX, living.posY, living.posZ, poorBug.getSoundType().getBreakSound(), living.getSoundCategory(), 1, 1);
 		}
 	}
 
-	// TODO modernize the calculations
-	private static boolean willEntityDie(LivingHurtEvent event) {
-		float amount = event.getAmount();
-		DamageSource source = event.getSource();
-		EntityLivingBase living = event.getEntityLiving();
-		// reduce damage by armor
-		if (!source.isUnblockable()) {
-			int armor = 25 - living.getTotalArmorValue();
-			amount = (amount * armor) / 25F;
-		}
-
-		// maybe also potions?
-		if (living.isPotionActive(MobEffects.RESISTANCE)) {
-			int resistance = 25 - (living.getActivePotionEffect(MobEffects.RESISTANCE).getAmplifier() + 1) * 5;
-			amount = amount * resistance / 25F;
-		}
-		//System.out.printf("I think the player is going to take %f damage and they have %f health.\n", Math.ceil(amount), living.getHealth());
-
-		return Math.ceil(amount) >= Math.floor(living.getHealth());
-	}
-
-	/**
-	 * If a player dies with a charm of keeping, consume the charm and then keep track of what items we need to keep
-	 * <p>
-	 * Also keep tower keys
-	 */
 	@SubscribeEvent
-	public static void livingDies(LivingDeathEvent event) {
+	public static void charmOfLife(LivingDeathEvent evt) {
+		EntityLivingBase living = evt.getEntityLiving();
+
+		boolean charm1 = false;
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife2, 1);
+		if (!charm2) {
+			charm1 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife1, 1);
+		}
+
+		if (charm2 || charm1) {
+			evt.setCanceled(true);
+
+			if (charm1) {
+				living.setHealth(8);
+				living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 0));
+			}
+
+			if (charm2) {
+				living.setHealth((float) living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
+
+				living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 600, 3));
+				living.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 600, 0));
+				living.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 600, 0));
+			}
+
+			// spawn effect thingers
+			EntityTFCharmEffect effect = new EntityTFCharmEffect(living.world, living, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
+			living.world.spawnEntity(effect);
+
+			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(living.world, living, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
+			effect2.offset = (float) Math.PI;
+			living.world.spawnEntity(effect2);
+
+			living.world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
+		}
+	}
+
+	@SubscribeEvent
+	public static void charmOfKeeping(LivingDeathEvent event) {
 		if (event.getEntityLiving() instanceof EntityPlayer && !event.getEntityLiving().world.getGameRules().getBoolean("keepInventory")) {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping3, 1);

@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
@@ -12,7 +13,11 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.enums.*;
+import twilightforest.block.enums.Leaves3Variant;
+import twilightforest.block.enums.LeavesVariant;
+import twilightforest.block.enums.MagicWoodVariant;
+import twilightforest.block.enums.TowerWoodVariant;
+import twilightforest.item.ItemTFArcticArmor;
 import twilightforest.item.TFItems;
 
 import java.awt.*;
@@ -284,6 +289,12 @@ public final class ColorHandler {
 		// Atomic: This is one place where getStateFromMeta is still commonly used
 		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.auroraBlock, TFBlocks.auroraPillar, TFBlocks.auroraSlab, TFBlocks.darkleaves, TFBlocks.giantLeaves, TFBlocks.fireJet, TFBlocks.magicLeaves, TFBlocks.leaves, TFBlocks.leaves3, TFBlocks.plant, TFBlocks.castleMagic, TFBlocks.castleDoor, TFBlocks.castleDoorVanished, TFBlocks.miniature_structure, TFBlocks.forceField);
 		// Honestly I'd say it makes sense in this context. -Drullkus
+
+		itemColors.registerItemColorHandler((ItemStack stack, int tintIndex) ->
+				stack.getItem() instanceof ItemTFArcticArmor
+						? ((ItemTFArcticArmor) stack.getItem()).getColor(stack, tintIndex)
+						: 0xFFFFFF,
+				TFItems.arcticHelm, TFItems.arcticPlate, TFItems.arcticLegs, TFItems.arcticBoots);
 	}
 
 	private ColorHandler() {

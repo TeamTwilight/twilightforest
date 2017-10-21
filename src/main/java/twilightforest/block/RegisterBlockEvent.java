@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -68,9 +67,9 @@ public final class RegisterBlockEvent {
 		blocks.register("huge_waterlily", (new BlockTFHugeWaterLily()).setUnlocalizedName("HugeWaterLily"));
 		blocks.register("slider", (new BlockTFSlider()).setUnlocalizedName("Slider"));
 		blocks.register("castle_brick", (new BlockTFCastleBlock()).setUnlocalizedName("CastleBrick"));
-		Block block = new BlockTFCastlePillar();
-		blocks.register("castle_pillar", block.setUnlocalizedName("CastlePillar"));
-		blocks.register("castle_stairs", (new BlockTFCastleStairs(block.getDefaultState())).setUnlocalizedName("CastleStairs"));
+		Block castlePillar = new BlockTFCastlePillar();
+		blocks.register("castle_pillar", castlePillar.setUnlocalizedName("CastlePillar"));
+		blocks.register("castle_stairs", (new BlockTFCastleStairs(castlePillar.getDefaultState())).setUnlocalizedName("CastleStairs"));
 		blocks.register("castle_rune_brick", (new BlockTFCastleMagic()).setUnlocalizedName("CastleMagic"));
 		blocks.register("force_field", (new BlockTFForceField()).setUnlocalizedName("ForceField"));
 		blocks.register("cinder_furnace", (new BlockTFCinderFurnace(false)).setUnlocalizedName("CinderFurnaceIdle"));
@@ -81,14 +80,13 @@ public final class RegisterBlockEvent {
 		blocks.register("castle_unlock", (new BlockTFCastleUnlock()).setUnlocalizedName("CastleUnlock"));
 		blocks.register("experiment_115", (new BlockTFExperiment115()).setUnlocalizedName("experiment115").setHardness(0.5F));
 		blocks.register("miniature_structure", (new BlockTFMiniatureStructure()).setUnlocalizedName("MinitureStructure").setHardness(0.75F));
+		blocks.register("block_storage", new BlockTFCompressed().setUnlocalizedName("BlockOfStorage"));
 	}
 
 	private static class BlockRegistryHelper {
-
 		private final IForgeRegistry<Block> registry;
 
 		BlockRegistryHelper(IForgeRegistry<Block> registry) {
-
 			this.registry = registry;
 		}
 

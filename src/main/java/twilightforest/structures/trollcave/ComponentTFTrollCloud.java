@@ -6,6 +6,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.Random;
@@ -18,8 +19,8 @@ public class ComponentTFTrollCloud extends StructureTFComponent {
 	public ComponentTFTrollCloud() {
 	}
 
-	public ComponentTFTrollCloud(int index, int x, int y, int z) {
-		super(index);
+	public ComponentTFTrollCloud(TFFeature feature, int index, int x, int y, int z) {
+		super(feature, index);
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		this.size = 40;

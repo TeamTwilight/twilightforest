@@ -3,6 +3,7 @@ package twilightforest.structures.stronghold;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 
 import java.lang.reflect.InvocationTargetException;
@@ -88,7 +89,7 @@ public class TFStrongholdPieces {
 		return flag;
 	}
 
-	public StructureTFStrongholdComponent getNextComponent(StructureComponent parent, List<StructureComponent> list, Random random, int index, EnumFacing facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent getNextComponent(StructureComponent parent, List<StructureComponent> list, Random random, TFFeature feature, int index, EnumFacing facing, int x, int y, int z) {
 		if (!hasMoreLimitedPieces()) {
 			return null;
 		} else {
@@ -106,7 +107,7 @@ public class TFStrongholdPieces {
 						}
 
 						// we're here!
-						StructureTFStrongholdComponent component = instantiateComponent(piece.pieceClass, index, facing, x, y, z);
+						StructureTFStrongholdComponent component = instantiateComponent(piece.pieceClass, feature, index, facing, x, y, z);
 
 						if (StructureComponent.findIntersecting(list, component.getBoundingBox()) == null) {
 							++piece.instancesSpawned;
@@ -125,7 +126,7 @@ public class TFStrongholdPieces {
 		}
 
 		// dead end?
-		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(index, facing, x, y, z);
+		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponent ? ((StructureTFComponent)parent).getFeatureType() : TFFeature.nothing, index, facing, x, y, z);
 
 		if (StructureComponent.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
 			return deadEnd;
@@ -134,10 +135,10 @@ public class TFStrongholdPieces {
 		}
 	}
 
-	private static StructureTFStrongholdComponent instantiateComponent(Class<? extends StructureTFComponent> pieceClass, int index, EnumFacing facing, int x, int y, int z) {
+	private static StructureTFStrongholdComponent instantiateComponent(Class<? extends StructureTFComponent> pieceClass, TFFeature feature, int index, EnumFacing facing, int x, int y, int z) {
 		// todo 1.9
 		try {
-			return (StructureTFStrongholdComponent) pieceClass.getConstructor(int.class, EnumFacing.class, int.class, int.class, int.class).newInstance(index, facing, x, y, z);
+			return (StructureTFStrongholdComponent) pieceClass.getConstructor(TFFeature.class, int.class, EnumFacing.class, int.class, int.class, int.class).newInstance(feature, index, facing, x, y, z);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}

@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
@@ -27,8 +28,8 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 		super();
 	}
 
-	public ComponentTFMinotaurMaze(int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
-		super(index);
+	public ComponentTFMinotaurMaze(TFFeature feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
+		super(feature, index);
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 		this.level = level;
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, EnumFacing.SOUTH);
@@ -74,8 +75,8 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 		maze.setSeed(this.boundingBox.minX * 90342903 + this.boundingBox.minY * 90342903 ^ this.boundingBox.minZ);
 	}
 
-	public ComponentTFMinotaurMaze(int index, int x, int y, int z, int level) {
-		this(index, x, y, z, 11, 11, level);
+	public ComponentTFMinotaurMaze(TFFeature feature, int index, int x, int y, int z, int level) {
+		this(feature, index, x, y, z, 11, 11, level);
 	}
 
 	/**
@@ -124,34 +125,34 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 
 		if (i == 0) {
 			// default room
-			room = new ComponentTFMazeRoom(3 + i, random, worldX, worldY, worldZ);
+			room = new ComponentTFMazeRoom(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 		} else if (i == 1) {
 			if (this.level == 1) {
 				// exit room
-				room = new ComponentTFMazeRoomExit(3 + i, random, worldX, worldY, worldZ);
+				room = new ComponentTFMazeRoomExit(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 			} else {
 				// boss room
-				room = new ComponentTFMazeRoomBoss(3 + i, random, worldX, worldY, worldZ);
+				room = new ComponentTFMazeRoomBoss(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 			}
 		} else if (i == 2 || i == 3) {
 			if (this.level == 1) {
 				// collapsed room
-				room = new ComponentTFMazeRoomCollapse(3 + i, random, worldX, worldY, worldZ);
+				room = new ComponentTFMazeRoomCollapse(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 			} else {
 				// mush-room
-				room = new ComponentTFMazeMushRoom(3 + i, random, worldX, worldY, worldZ);
+				room = new ComponentTFMazeMushRoom(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 			}
 		} else if (i == 4) {
 			if (this.level == 1) {
 				// fountain room
-				room = new ComponentTFMazeRoomFountain(3 + i, random, worldX, worldY, worldZ);
+				room = new ComponentTFMazeRoomFountain(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 			} else {
 				// vault
-				room = new ComponentTFMazeRoomVault(3 + i, random, worldX, worldY, worldZ);
+				room = new ComponentTFMazeRoomVault(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 
 			}
 		} else {
-			room = new ComponentTFMazeRoomSpawnerChests(3 + i, random, worldX, worldY, worldZ);
+			room = new ComponentTFMazeRoomSpawnerChests(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 		}
 
 		return room;
@@ -214,21 +215,21 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 			default:
 			case 0:
 				// blank with fence doorway
-				return new ComponentTFMazeDeadEnd(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEnd(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 1:
-				return new ComponentTFMazeDeadEndChest(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEndChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 2:
-				return new ComponentTFMazeDeadEndTrappedChest(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEndTrappedChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 3:
-				return new ComponentTFMazeDeadEndTorches(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEndTorches(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 4:
-				return new ComponentTFMazeDeadEndFountain(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEndFountain(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 5:
-				return new ComponentTFMazeDeadEndFountainLava(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEndFountainLava(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 6:
-				return new ComponentTFMazeDeadEndPainting(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEndPainting(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 7:
-				return this.level == 1 ? new ComponentTFMazeDeadEndRoots(4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeDeadEndShrooms(4, worldX, worldY, worldZ, rotation);
+				return this.level == 1 ? new ComponentTFMazeDeadEndRoots(getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeDeadEndShrooms(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 
 		}
 
@@ -246,13 +247,13 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 			case 0:
 				return null;
 			case 1:
-				return new ComponentTFMazeCorridor(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeCorridor(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 2:
-				return new ComponentTFMazeCorridorIronFence(4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeCorridorIronFence(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 3:
 				return null; // painting
 			case 4:
-				return this.level == 1 ? new ComponentTFMazeCorridorRoots(4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeCorridorShrooms(4, worldX, worldY, worldZ, rotation);
+				return this.level == 1 ? new ComponentTFMazeCorridorRoots(getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeCorridorShrooms(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 		}
 
 	}
@@ -269,7 +270,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 			int centerX = boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2);
 			int centerZ = boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2);
 
-			ComponentTFMinotaurMaze maze = new ComponentTFMinotaurMaze(1, centerX, boundingBox.minY - 10, centerZ, rcoords[2], rcoords[3], 2);
+			ComponentTFMinotaurMaze maze = new ComponentTFMinotaurMaze(getFeatureType(), 1, centerX, boundingBox.minY - 10, centerZ, rcoords[2], rcoords[3], 2);
 			list.add(maze);
 			maze.buildComponent(this, list, random);
 		}

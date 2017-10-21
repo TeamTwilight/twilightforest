@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 
 import java.util.List;
 import java.util.Random;
@@ -14,8 +15,8 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing {
 	public ComponentTFDarkTowerEntrance() {
 	}
 
-	protected ComponentTFDarkTowerEntrance(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFDarkTowerEntrance(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

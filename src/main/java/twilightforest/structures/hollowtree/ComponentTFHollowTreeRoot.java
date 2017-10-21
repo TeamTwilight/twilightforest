@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerator;
 
@@ -23,8 +24,8 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 		super();
 	}
 
-	public ComponentTFHollowTreeRoot(int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
-		super(i, sx, sy, sz, length, angle, tilt, leafy);
+	public ComponentTFHollowTreeRoot(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
+		super(feature, i, sx, sy, sz, length, angle, tilt, leafy);
 		this.boundingBox = new StructureBoundingBox(Math.min(src.getX(), dest.getX()), Math.min(src.getY(), dest.getY()), Math.min(src.getZ(), dest.getZ()), Math.max(src.getX(), dest.getX()), Math.max(src.getY(), dest.getY()), Math.max(src.getZ(), dest.getZ()));
 	}
 

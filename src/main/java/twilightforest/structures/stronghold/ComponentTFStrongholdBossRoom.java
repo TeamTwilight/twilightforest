@@ -6,6 +6,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
@@ -18,8 +19,8 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 	public ComponentTFStrongholdBossRoom() {
 	}
 
-	public ComponentTFStrongholdBossRoom(int i, EnumFacing facing, int x, int y, int z) {
-		super(i, facing, x, y, z);
+	public ComponentTFStrongholdBossRoom(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+		super(feature, i, facing, x, y, z);
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 

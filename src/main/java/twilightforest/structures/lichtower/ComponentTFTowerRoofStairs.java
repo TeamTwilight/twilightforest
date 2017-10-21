@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 
 import java.util.Random;
 
@@ -15,11 +16,10 @@ public class ComponentTFTowerRoofStairs extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofStairs() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFTowerRoofStairs(int i, ComponentTFTowerWing wing) {
-		super(i, wing);
+	public ComponentTFTowerRoofStairs(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i, wing);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setCoordBaseMode(EnumFacing.SOUTH);

@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
@@ -20,8 +21,8 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponent {
 	public ComponentTFFinalCastleBossGazebo() {
 	}
 
-	public ComponentTFFinalCastleBossGazebo(Random rand, int i, StructureTFComponent keep) {
-		super(i);
+	public ComponentTFFinalCastleBossGazebo(TFFeature feature, Random rand, int i, StructureTFComponent keep) {
+		super(feature, i);
 		this.spawnListIndex = -1; // no monsters
 
 		this.setCoordBaseMode(keep.getCoordBaseMode());

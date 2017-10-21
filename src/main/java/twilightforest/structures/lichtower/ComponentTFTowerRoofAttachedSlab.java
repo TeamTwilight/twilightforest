@@ -3,6 +3,7 @@ package twilightforest.structures.lichtower;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 
 import java.util.Random;
 
@@ -11,11 +12,10 @@ public class ComponentTFTowerRoofAttachedSlab extends ComponentTFTowerRoofSlab {
 
 	public ComponentTFTowerRoofAttachedSlab() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFTowerRoofAttachedSlab(int i, ComponentTFTowerWing wing) {
-		super(i, wing);
+	public ComponentTFTowerRoofAttachedSlab(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i, wing);
 	}
 
 	/**

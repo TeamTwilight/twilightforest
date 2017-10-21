@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 	public ComponentTFStrongholdEntrance() {
 	}
 
-	public ComponentTFStrongholdEntrance(World world, Random rand, int i, int x, int y, int z) {
-		super(i, EnumFacing.SOUTH, x, y - 10, z);
+	public ComponentTFStrongholdEntrance(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(feature, i, EnumFacing.SOUTH, x, y - 10, z);
 
 		this.deco = new StructureTFDecoratorStronghold();
 
@@ -87,7 +88,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 //		list.add(shield);
 
 		// add the upper stronghold
-		StructureTFStrongholdComponent accessChamber = new ComponentTFStrongholdAccessChamber(2, this.getCoordBaseMode(), boundingBox.minX + 8, boundingBox.minY + 7, boundingBox.minZ + 4);
+		StructureTFStrongholdComponent accessChamber = new ComponentTFStrongholdAccessChamber(getFeatureType(), 2, this.getCoordBaseMode(), boundingBox.minX + 8, boundingBox.minY + 7, boundingBox.minZ + 4);
 		list.add(accessChamber);
 		accessChamber.buildComponent(this, list, random);
 

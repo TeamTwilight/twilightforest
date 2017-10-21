@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
@@ -17,8 +18,8 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 	public ComponentTFFinalCastleRoof48Crenellated() {
 	}
 
-	public ComponentTFFinalCastleRoof48Crenellated(Random rand, int i, StructureTFComponent keep) {
-		super(i);
+	public ComponentTFFinalCastleRoof48Crenellated(TFFeature feature, Random rand, int i, StructureTFComponent keep) {
+		super(feature, i);
 
 		int height = 5;
 

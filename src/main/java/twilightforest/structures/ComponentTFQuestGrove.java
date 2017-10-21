@@ -11,6 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
 import java.util.Random;
@@ -29,8 +30,8 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 		super();
 	}
 
-	public ComponentTFQuestGrove(World world, Random rand, int i, int x, int y, int z) {
-		super(i);
+	public ComponentTFQuestGrove(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(feature, i);
 
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 

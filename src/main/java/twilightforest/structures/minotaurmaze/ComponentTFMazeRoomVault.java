@@ -3,6 +3,7 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
@@ -13,12 +14,11 @@ import java.util.Random;
 public class ComponentTFMazeRoomVault extends ComponentTFMazeRoom {
 	public ComponentTFMazeRoomVault() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 
-	public ComponentTFMazeRoomVault(int i, Random rand, int x, int y, int z) {
-		super(i, rand, x, y, z);
+	public ComponentTFMazeRoomVault(TFFeature feature, int i, Random rand, int x, int y, int z) {
+		super(feature, i, rand, x, y, z);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;

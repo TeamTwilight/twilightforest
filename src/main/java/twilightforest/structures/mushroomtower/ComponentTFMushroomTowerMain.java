@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
@@ -18,15 +19,14 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 
 	public ComponentTFMushroomTowerMain() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMushroomTowerMain(World world, Random rand, int index, int x, int y, int z) {
-		this(world, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, EnumFacing.NORTH);
+	public ComponentTFMushroomTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
+		this(feature, world, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, EnumFacing.NORTH);
 	}
 
-	public ComponentTFMushroomTowerMain(World world, Random rand, int index, int x, int y, int z, EnumFacing rotation) {
-		super(index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
+	public ComponentTFMushroomTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, EnumFacing rotation) {
+		super(feature, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
 
 //		// check to make sure we can build the whole tower
 //		if (this.boundingBox.maxY > 245)
@@ -46,8 +46,8 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	}
 
 
-	protected ComponentTFMushroomTowerMain(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFMushroomTowerMain(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	 */
 	@Override
 	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		ComponentTFTowerRoof roof = new ComponentTFTowerRoofMushroom(this.getComponentType() + 1, this, 1.6F);
+		ComponentTFTowerRoof roof = new ComponentTFTowerRoofMushroom(getFeatureType(), this.getComponentType() + 1, this, 1.6F);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 	}

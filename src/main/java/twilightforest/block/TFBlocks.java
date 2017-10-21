@@ -142,4 +142,6 @@ public class TFBlocks {
 	public static Block experiment_115;
 	@ObjectHolder("miniature_structure")
 	public static Block miniature_structure;
+	@ObjectHolder("block_storage")
+	public static Block block_storage;
 }

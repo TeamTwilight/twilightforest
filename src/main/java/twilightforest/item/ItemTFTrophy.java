@@ -163,7 +163,8 @@ public class ItemTFTrophy extends ItemTF {
 
 		ModelBakery.registerItemVariants(this,
 				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy"), "inventory"),
-				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_minor"), "inventory"));
+				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_minor"), "inventory"),
+				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_quest"), "inventory"));
 	}
 
 	@SideOnly(Side.CLIENT)

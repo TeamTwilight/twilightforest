@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
@@ -18,12 +19,11 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponent {
 
 	public ComponentTFMazeUpperEntrance() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 
-	public ComponentTFMazeUpperEntrance(int i, Random rand, int x, int y, int z) {
-		super(i);
+	public ComponentTFMazeUpperEntrance(TFFeature feature, int i, Random rand, int x, int y, int z) {
+		super(feature, i);
 		this.setCoordBaseMode(EnumFacing.HORIZONTALS[rand.nextInt(4)]);
 
 		this.boundingBox = new StructureBoundingBox(x, y, z, x + 15, y + 4, z + 15);

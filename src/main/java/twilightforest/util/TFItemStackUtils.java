@@ -1,6 +1,6 @@
 package twilightforest.util;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -8,9 +8,9 @@ import net.minecraftforge.items.IItemHandler;
 import java.util.function.Predicate;
 
 public class TFItemStackUtils {
-	public static boolean consumeInventoryItem(EntityPlayer player, Predicate<ItemStack> matcher, int count) {
+	public static boolean consumeInventoryItem(EntityLivingBase living, Predicate<ItemStack> matcher, int count) {
 		boolean consumedSome = false;
-		IItemHandler inv = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		IItemHandler inv = living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
 		for (int i = 0; i < inv.getSlots() && count > 0; i++) {
 			ItemStack stack = inv.getStackInSlot(i);

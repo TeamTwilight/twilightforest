@@ -9,6 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
@@ -38,8 +39,8 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 	 * @param z
 	 * @param radius
 	 */
-	protected ComponentTFHollowTreeLeafDungeon(int index, int x, int y, int z, int radius) {
-		super(index);
+	protected ComponentTFHollowTreeLeafDungeon(TFFeature feature, int index, int x, int y, int z, int radius) {
+		super(feature, index);
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 		boundingBox = new StructureBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
 		this.radius = radius;

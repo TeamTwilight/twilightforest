@@ -127,7 +127,7 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.SQUIRREL, twilightforest.entity.passive.EntityTFSquirrel.class, id++, 0x904f12, 0xeeeeee);
 		TFEntities.registerEntity(TFEntityNames.BUNNY, twilightforest.entity.passive.EntityTFBunny.class, id++, 0xfefeee, 0xccaa99);
 		TFEntities.registerEntity(TFEntityNames.RAVEN, twilightforest.entity.passive.EntityTFRaven.class, id++, 0x000011, 0x222233);
-		TFEntities.registerEntity(TFEntityNames.QUEST_RAM, twilightforest.entity.passive.EntityTFQuestRam.class, id++);
+		TFEntities.registerEntity(TFEntityNames.QUEST_RAM, twilightforest.entity.passive.EntityTFQuestRam.class, id++, 0xfefeee, 0x33aadd);
 		TFEntities.registerEntity(TFEntityNames.KOBOLD, twilightforest.entity.EntityTFKobold.class, id++, 0x372096, 0x895d1b);
 		TFEntities.registerEntity(TFEntityNames.MOSQUITO_SWARM, twilightforest.entity.EntityTFMosquitoSwarm.class, id++, 0x080904, 0x2d2f21);
 		TFEntities.registerEntity(TFEntityNames.DEATH_TOME, twilightforest.entity.EntityTFDeathTome.class, id++, 0x774e22, 0xdbcdbe);

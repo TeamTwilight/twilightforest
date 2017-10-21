@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -19,8 +20,8 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 	private int dSize;
 	private int dHeight;
 
-	protected ComponentTFDarkTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, 5, 5, direction);
+	protected ComponentTFDarkTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, 5, 5, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
@@ -50,7 +51,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 			return false;
 		}
 
-		ComponentTFTowerWing wing = new ComponentTFDarkTowerWing(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFTowerWing wing = new ComponentTFDarkTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {

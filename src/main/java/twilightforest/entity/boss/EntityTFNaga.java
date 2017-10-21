@@ -173,7 +173,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		@Override
 		public boolean shouldExecute() {
-			return taskOwner.getAttackTarget() != null && taskOwner.collidedHorizontally;
+			return taskOwner.world.getGameRules().getBoolean("mobGriefing") && taskOwner.getAttackTarget() != null && taskOwner.collidedHorizontally;
 		}
 
 		@Override
@@ -485,6 +485,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	private void crumbleBelowTarget(int range) {
+		if (!world.getGameRules().getBoolean("mobGriefing"))
+			return;
+
 		int floor = (int) getEntityBoundingBox().minY;
 		int targetY = (int) getAttackTarget().getEntityBoundingBox().minY;
 

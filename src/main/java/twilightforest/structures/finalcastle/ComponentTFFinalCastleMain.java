@@ -27,7 +27,8 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 	public ComponentTFFinalCastleMain() {
 	}
 
-	public ComponentTFFinalCastleMain(World world, Random rand, int i, int x, int y, int z) {
+	public ComponentTFFinalCastleMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(feature, i);
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
@@ -53,35 +54,35 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		// add foundation
-		ComponentTFFinalCastleFoundation48 foundation = new ComponentTFFinalCastleFoundation48(rand, 4, this);
+		ComponentTFFinalCastleFoundation48 foundation = new ComponentTFFinalCastleFoundation48(getFeatureType(), rand, 4, this);
 		list.add(foundation);
 		foundation.buildComponent(this, list, rand);
 
 		// add roof
-		StructureTFComponent roof = new ComponentTFFinalCastleRoof48Crenellated(rand, 4, this);
+		StructureTFComponent roof = new ComponentTFFinalCastleRoof48Crenellated(getFeatureType(), rand, 4, this);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 
 		// boss gazebo on roof
-		StructureTFComponent gazebo = new ComponentTFFinalCastleBossGazebo(rand, 5, this);
+		StructureTFComponent gazebo = new ComponentTFFinalCastleBossGazebo(getFeatureType(), rand, 5, this);
 		list.add(gazebo);
 		gazebo.buildComponent(this, list, rand);
 
 
 		// build 4 towers on sides
-		ComponentTFFinalCastleStairTower tower0 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.minZ, EnumFacing.NORTH);
+		ComponentTFFinalCastleStairTower tower0 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.minZ, EnumFacing.NORTH);
 		list.add(tower0);
 		tower0.buildComponent(this, list, rand);
 
-		ComponentTFFinalCastleLargeTower tower1 = new ComponentTFFinalCastleLargeTower(rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.minZ, EnumFacing.EAST);
+		ComponentTFFinalCastleLargeTower tower1 = new ComponentTFFinalCastleLargeTower(getFeatureType(), rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.minZ, EnumFacing.EAST);
 		list.add(tower1);
 		tower1.buildComponent(this, list, rand);
 
-		ComponentTFFinalCastleStairTower tower2 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.maxZ, EnumFacing.WEST);
+		ComponentTFFinalCastleStairTower tower2 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.maxZ, EnumFacing.WEST);
 		list.add(tower2);
 		tower2.buildComponent(this, list, rand);
 
-		ComponentTFFinalCastleStairTower tower3 = new ComponentTFFinalCastleStairTower(rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.maxZ, EnumFacing.SOUTH);
+		ComponentTFFinalCastleStairTower tower3 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.maxZ, EnumFacing.SOUTH);
 		list.add(tower3);
 		tower3.buildComponent(this, list, rand);
 
@@ -110,13 +111,13 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 
 		// mural on front
 		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, EnumFacing.SOUTH);
-		ComponentTFFinalCastleMural mural0 = new ComponentTFFinalCastleMural(rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, EnumFacing.SOUTH);
+		ComponentTFFinalCastleMural mural0 = new ComponentTFFinalCastleMural(getFeatureType(), rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, EnumFacing.SOUTH);
 		list.add(mural0);
 		mural0.buildComponent(this, list, rand);
 
 		// mural inside
 		BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, EnumFacing.SOUTH);
-		ComponentTFFinalCastleMural mural1 = new ComponentTFFinalCastleMural(rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, EnumFacing.NORTH);
+		ComponentTFFinalCastleMural mural1 = new ComponentTFFinalCastleMural(getFeatureType(), rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, EnumFacing.NORTH);
 		list.add(mural1);
 		mural1.buildComponent(this, list, rand);
 
@@ -135,11 +136,11 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 
 			// build
 			BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
 			// add bridge
 			BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
-			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(getFeatureType(), this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 
 			list.add(bridge);
 			bridge.buildComponent(this, list, rand);

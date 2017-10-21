@@ -2,6 +2,7 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
 import java.util.Random;
@@ -11,8 +12,8 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 	public ComponentTFDarkTowerRoofRings() {
 	}
 
-	public ComponentTFDarkTowerRoofRings(int i, ComponentTFTowerWing wing) {
-		super(i, wing);
+	public ComponentTFDarkTowerRoofRings(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i, wing);
 	}
 
 	@Override

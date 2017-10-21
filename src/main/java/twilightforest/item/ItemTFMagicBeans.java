@@ -31,6 +31,7 @@ public class ItemTFMagicBeans extends ItemTF {
 		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 25));
 		if (pos.getY() < maxY && blockAt == TFBlocks.uberousSoil) {
 			if (!world.isRemote) {
+				player.getHeldItem(hand).shrink(1);
 				makeHugeStalk(world, pos, minY, maxY);
 			}
 

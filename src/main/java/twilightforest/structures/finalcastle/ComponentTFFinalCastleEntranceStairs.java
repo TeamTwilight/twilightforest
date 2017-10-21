@@ -5,6 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent {
 	public ComponentTFFinalCastleEntranceStairs() {
 	}
 
-	public ComponentTFFinalCastleEntranceStairs(int index, int x, int y, int z, EnumFacing direction) {
+	public ComponentTFFinalCastleEntranceStairs(TFFeature feature, int index, int x, int y, int z, EnumFacing direction) {
+		super(feature, index);
 		this.setCoordBaseMode(direction);
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}

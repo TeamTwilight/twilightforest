@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 
 import java.util.Random;
 
@@ -13,12 +14,11 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 
 	public ComponentTFMazeMushRoom() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 
-	public ComponentTFMazeMushRoom(int i, Random rand, int x, int y, int z) {
-		super(i, rand, x, y, z);
+	public ComponentTFMazeMushRoom(TFFeature feature, int i, Random rand, int x, int y, int z) {
+		super(feature, i, rand, x, y, z);
 
 		this.setCoordBaseMode(EnumFacing.SOUTH); // let's just make this easy on us?
 	}

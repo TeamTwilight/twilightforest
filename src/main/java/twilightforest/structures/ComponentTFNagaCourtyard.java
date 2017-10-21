@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
 
@@ -27,8 +28,8 @@ public class ComponentTFNagaCourtyard extends StructureTFComponent {
 		super();
 	}
 
-	public ComponentTFNagaCourtyard(World world, Random rand, int i, int x, int y, int z) {
-		super(i);
+	public ComponentTFNagaCourtyard(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(feature, i);
 
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 

@@ -1,8 +1,6 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -18,9 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
@@ -400,9 +396,6 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		double offsetX = this.getAttackTarget().posX - this.posX;
 		double offsetY = this.getAttackTarget().getEntityBoundingBox().minY + (double) (this.getAttackTarget().height / 2.0F) - (this.posY + (double) (this.height / 2.0F));
 		double offsetZ = this.getAttackTarget().posZ - this.posZ;
-
-		// fireball sound effect
-		this.world.playEvent(1008, new BlockPos(this), 0);
 
 		EntityTFUrGhastFireball entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX, offsetY, offsetZ);
 		entityFireball.explosionPower = 1;

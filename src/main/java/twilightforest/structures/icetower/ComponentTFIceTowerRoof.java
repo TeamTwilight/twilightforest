@@ -3,6 +3,7 @@ package twilightforest.structures.icetower;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -13,8 +14,8 @@ public class ComponentTFIceTowerRoof extends ComponentTFTowerRoof {
 	public ComponentTFIceTowerRoof() {
 	}
 
-	public ComponentTFIceTowerRoof(int i, ComponentTFTowerWing wing) {
-		super(i, wing);
+	public ComponentTFIceTowerRoof(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i, wing);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

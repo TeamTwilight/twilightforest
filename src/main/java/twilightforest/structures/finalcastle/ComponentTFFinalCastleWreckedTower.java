@@ -5,6 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.structures.StructureTFComponent;
 
@@ -16,8 +17,8 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 	public ComponentTFFinalCastleWreckedTower() {
 	}
 
-	public ComponentTFFinalCastleWreckedTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, direction);
+	public ComponentTFFinalCastleWreckedTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction) {
+		super(feature, rand, i, x, y, z, direction);
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 
 
 		// add thorns
-		ComponentTFFinalCastleFoundation13 thorns = new ComponentTFFinalCastleFoundation13Thorns(rand, 0, this);
+		ComponentTFFinalCastleFoundation13 thorns = new ComponentTFFinalCastleFoundation13Thorns(getFeatureType(), rand, 0, this);
 		list.add(thorns);
 		thorns.buildComponent(this, list, rand);
 

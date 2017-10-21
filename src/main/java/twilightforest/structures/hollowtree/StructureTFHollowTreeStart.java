@@ -4,6 +4,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFWorld;
 

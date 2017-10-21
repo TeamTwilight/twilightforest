@@ -97,13 +97,14 @@ public class EntityTFIceExploder extends EntityMob {
 
 		if (this.deathTime == 60) // delay until 3 seconds
 		{
-			boolean mobGriefing = this.world.getGameRules().getBoolean("mobGriefing");
-			this.world.createExplosion(this, this.posX, this.posY, this.posZ, EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
+			if (!world.isRemote) {
+				boolean mobGriefing = this.world.getGameRules().getBoolean("mobGriefing");
+				this.world.createExplosion(this, this.posX, this.posY, this.posZ, EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
 
-			if (mobGriefing) {
-				this.transformBlocks();
+				if (mobGriefing) {
+					this.transformBlocks();
+				}
 			}
-
 			// Fake to trigger super's behaviour
 			deathTime = 19;
 			super.onDeathUpdate();

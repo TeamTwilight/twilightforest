@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.Random;
@@ -16,11 +17,10 @@ public class ComponentTFTowerBeard extends StructureTFComponent {
 
 	public ComponentTFTowerBeard() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFTowerBeard(int i, ComponentTFTowerWing wing) {
-		super(i);
+	public ComponentTFTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i);
 
 		this.setCoordBaseMode(wing.getCoordBaseMode());
 		this.size = wing.size - 2;

@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.structures.StructureTFComponent;
@@ -17,8 +18,8 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	public ComponentTFFinalCastleEntranceTower() {
 	}
 
-	public ComponentTFFinalCastleEntranceTower(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, 3, 2, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
+	public ComponentTFFinalCastleEntranceTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction) {
+		super(feature, rand, i, x, y, z, 3, 2, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
 	}
 
 	@Override
@@ -28,12 +29,12 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		}
 
 		// add foundation
-		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(rand, 4, this);
+		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(getFeatureType(), rand, 4, this);
 		list.add(foundation);
 		foundation.buildComponent(this, list, rand);
 
 		// add roof
-		StructureTFComponent roof = new ComponentTFFinalCastleRoof13Peaked(rand, 4, this);
+		StructureTFComponent roof = new ComponentTFFinalCastleRoof13Peaked(getFeatureType(), rand, 4, this);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 
@@ -59,7 +60,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		}
 
 		// add bottom tower
-		ComponentTFFinalCastleEntranceBottomTower eTower = new ComponentTFFinalCastleEntranceBottomTower(rand, this.getComponentType() + 1, this.boundingBox.minX + 6, this.boundingBox.minY - (middleFloors) * 8, this.boundingBox.minZ + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
+		ComponentTFFinalCastleEntranceBottomTower eTower = new ComponentTFFinalCastleEntranceBottomTower(getFeatureType(), rand, this.getComponentType() + 1, this.boundingBox.minX + 6, this.boundingBox.minY - (middleFloors) * 8, this.boundingBox.minZ + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
 		list.add(eTower);
 		eTower.buildComponent(this, list, rand);
 
@@ -68,7 +69,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		opening = opening.down(middleFloors * 8);
 
 		BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
-		ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
+		ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(getFeatureType(), this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 		list.add(bridge);
 		bridge.buildComponent(this, list, rand);
 	}
@@ -79,7 +80,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		// build towards
 		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, facing);
 
-		ComponentTFFinalCastleEntranceSideTower eTower = new ComponentTFFinalCastleEntranceSideTower(rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
+		ComponentTFFinalCastleEntranceSideTower eTower = new ComponentTFFinalCastleEntranceSideTower(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
 
 		StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
 
@@ -95,7 +96,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 			eTower.buildComponent(this, list, rand);
 			// add bridge
 			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
-			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
+			ComponentTFFinalCastleBridge bridge = new ComponentTFFinalCastleBridge(getFeatureType(), this.getComponentType() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 			list.add(bridge);
 			bridge.buildComponent(this, list, rand);
 

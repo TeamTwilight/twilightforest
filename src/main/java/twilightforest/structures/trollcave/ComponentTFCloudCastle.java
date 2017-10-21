@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFArmoredGiant;
 import twilightforest.entity.EntityTFGiantMiner;
@@ -23,8 +24,8 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 	public ComponentTFCloudCastle() {
 	}
 
-	public ComponentTFCloudCastle(int index, int x, int y, int z) {
-		super(index);
+	public ComponentTFCloudCastle(TFFeature feature, int index, int x, int y, int z) {
+		super(feature, index);
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		// round to nearest mult of 4

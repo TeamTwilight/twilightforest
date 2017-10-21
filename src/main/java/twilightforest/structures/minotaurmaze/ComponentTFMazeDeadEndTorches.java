@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 
 import java.util.Random;
 
@@ -12,11 +13,10 @@ public class ComponentTFMazeDeadEndTorches extends ComponentTFMazeDeadEnd {
 
 	public ComponentTFMazeDeadEndTorches() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeDeadEndTorches(int i, int x, int y, int z, EnumFacing rotation) {
-		super(i, x, y, z, rotation);
+	public ComponentTFMazeDeadEndTorches(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+		super(feature, i, x, y, z, rotation);
 	}
 
 	@Override

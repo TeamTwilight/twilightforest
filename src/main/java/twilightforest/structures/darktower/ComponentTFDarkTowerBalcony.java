@@ -5,6 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -16,8 +17,8 @@ public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing {
 	public ComponentTFDarkTowerBalcony() {
 	}
 
-	protected ComponentTFDarkTowerBalcony(int i, int x, int y, int z, EnumFacing direction) {
-		super(i, x, y, z, 5, 5, direction);
+	protected ComponentTFDarkTowerBalcony(TFFeature feature, int i, int x, int y, int z, EnumFacing direction) {
+		super(feature, i, x, y, z, 5, 5, direction);
 	}
 
 	@Override

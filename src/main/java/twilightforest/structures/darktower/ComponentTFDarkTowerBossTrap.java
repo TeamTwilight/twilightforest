@@ -6,6 +6,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
@@ -21,8 +22,8 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 	public ComponentTFDarkTowerBossTrap() {
 	}
 
-	protected ComponentTFDarkTowerBossTrap(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFDarkTowerBossTrap(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 
 		// no spawns
 		this.spawnListIndex = -1;

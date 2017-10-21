@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.RootVariant;
@@ -87,11 +88,11 @@ public class ItemTFOreMeter extends ItemTF {
 		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countRoots + countOreRoots;
 
 		player.sendMessage(new TextComponentTranslation(getUnlocalizedName() + ".name").appendText("!"));
-		player.sendMessage(new TextComponentTranslation("twilightforest:ore_meter.range", radius, chunkX, chunkZ));
+		player.sendMessage(new TextComponentTranslation(TwilightForestMod.ID + ".ore_meter.range", radius, chunkX, chunkZ));
 		player.sendMessage(new TextComponentTranslation(Blocks.COAL_ORE.getUnlocalizedName() + ".name").appendText(" - " + countCoal + " " + percent(countCoal, total)));
 		player.sendMessage(new TextComponentTranslation(Blocks.IRON_ORE.getUnlocalizedName() + ".name").appendText(" - " + countIron + " " + percent(countIron, total)));
 		player.sendMessage(new TextComponentTranslation(Blocks.GOLD_ORE.getUnlocalizedName() + ".name").appendText(" - " + countGold + " " + percent(countGold, total)));
-		player.sendMessage(new TextComponentTranslation(Blocks.DIAMOND_ORE.getUnlocalizedName() + ".name").appendText(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").appendSibling(new TextComponentTranslation("twilightforest:ore_meter.exposed", countExposedDiamond)));
+		player.sendMessage(new TextComponentTranslation(Blocks.DIAMOND_ORE.getUnlocalizedName() + ".name").appendText(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").appendSibling(new TextComponentTranslation(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)));
 		player.sendMessage(new TextComponentTranslation(Blocks.LAPIS_ORE.getUnlocalizedName() + ".name").appendText(" - " + countLapis + " " + percent(countLapis, total)));
 		player.sendMessage(new TextComponentTranslation(Blocks.REDSTONE_ORE.getUnlocalizedName() + ".name").appendText(" - " + countRedstone + " " + percent(countRedstone, total)));
 		player.sendMessage(new TextComponentTranslation(new ItemStack(TFBlocks.root).getUnlocalizedName() + ".name").appendText(" - " + countRoots + " " + percent(countRoots, total)));

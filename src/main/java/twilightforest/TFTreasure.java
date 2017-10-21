@@ -16,6 +16,7 @@ import twilightforest.entity.boss.EntityTFNaga;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.entity.passive.EntityTFBird;
+import twilightforest.entity.passive.EntityTFBunny;
 import twilightforest.entity.passive.EntityTFDeer;
 import twilightforest.entity.passive.EntityTFRaven;
 
@@ -48,6 +49,7 @@ public class TFTreasure {
 		LootTableList.register(EntityTFArmoredGiant.LOOT_TABLE);
 		LootTableList.register(EntityTFBird.LOOT_TABLE);
 		LootTableList.register(EntityTFBlockGoblin.LOOT_TABLE);
+		LootTableList.register(EntityTFBunny.LOOT_TABLE);
 		LootTableList.register(EntityTFDeathTome.LOOT_TABLE);
 		LootTableList.register(EntityTFDeer.LOOT_TABLE);
 		LootTableList.register(EntityTFFireBeetle.LOOT_TABLE);

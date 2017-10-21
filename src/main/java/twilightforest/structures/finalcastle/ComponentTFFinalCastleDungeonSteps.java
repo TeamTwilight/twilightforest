@@ -80,7 +80,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent {
 		int dz = this.getZWithOffset(2, 19);
 
 		// build a new dungeon level under there
-		ComponentTFFinalCastleDungeonEntrance room = new ComponentTFFinalCastleDungeonEntrance(rand, 8, dx, dy, dz, getCoordBaseMode(), level);
+		ComponentTFFinalCastleDungeonEntrance room = new ComponentTFFinalCastleDungeonEntrance(getFeatureType(), rand, 8, dx, dy, dz, getCoordBaseMode(), level);
 		list.add(room);
 		room.buildComponent(this, list, rand);
 
@@ -97,7 +97,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent {
 		int dz = this.getZWithOffset(2, 19);
 
 		// build a new dungeon level under there
-		ComponentTFFinalCastleDungeonForgeRoom room = new ComponentTFFinalCastleDungeonForgeRoom(rand, 8, dx, dy, dz, this.coordBaseMode);
+		ComponentTFFinalCastleDungeonForgeRoom room = new ComponentTFFinalCastleDungeonForgeRoom(getFeatureType(), rand, 8, dx, dy, dz, this.coordBaseMode);
 		list.add(room);
 		room.buildComponent(this, list, rand);
 

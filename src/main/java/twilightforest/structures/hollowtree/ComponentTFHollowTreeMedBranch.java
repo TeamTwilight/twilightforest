@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerator;
 
@@ -32,8 +33,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		super();
 	}
 
-	protected ComponentTFHollowTreeMedBranch(int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
-		super(i);
+	protected ComponentTFHollowTreeMedBranch(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
+		super(feature, i);
 
 		this.src = new BlockPos(sx, sy, sz);
 		this.dest = TFGenerator.translate(src, length, angle, tilt);
@@ -98,7 +99,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	}
 
 	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(index, x, y, z, branchLength, branchRotation, branchAngle, leafy);
+		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(getFeatureType(), index, x, y, z, branchLength, branchRotation, branchAngle, leafy);
 		list.add(branch);
 		branch.buildComponent(this, list, rand);
 	}

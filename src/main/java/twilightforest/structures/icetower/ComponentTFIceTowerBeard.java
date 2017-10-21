@@ -5,6 +5,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -18,8 +19,8 @@ public class ComponentTFIceTowerBeard extends StructureTFComponent {
 	public ComponentTFIceTowerBeard() {
 	}
 
-	public ComponentTFIceTowerBeard(int i, ComponentTFTowerWing wing) {
-		super(i);
+	public ComponentTFIceTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 
 import java.util.Random;
 
@@ -13,11 +14,10 @@ public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofPointy() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFTowerRoofPointy(int i, ComponentTFTowerWing wing) {
-		super(i, wing);
+	public ComponentTFTowerRoofPointy(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i, wing);
 
 		// same facing, but it doesn't matter
 		this.setCoordBaseMode(wing.getCoordBaseMode());

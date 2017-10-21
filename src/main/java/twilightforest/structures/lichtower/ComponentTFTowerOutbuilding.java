@@ -7,6 +7,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 
 import java.util.List;
 import java.util.Random;
@@ -16,12 +17,10 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 
 	public ComponentTFTowerOutbuilding() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	protected ComponentTFTowerOutbuilding(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
-		// TODO Auto-generated constructor stub
+	protected ComponentTFTowerOutbuilding(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**

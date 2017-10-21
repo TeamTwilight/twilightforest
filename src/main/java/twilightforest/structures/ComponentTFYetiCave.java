@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
@@ -18,8 +19,8 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 		super();
 	}
 
-	public ComponentTFYetiCave(World world, Random rand, int i, int x, int y, int z) {
-		super(world, rand, i, 2, x, y + 2, z);
+	public ComponentTFYetiCave(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(feature, world, rand, i, 2, x, y + 2, z);
 	}
 
 	/**

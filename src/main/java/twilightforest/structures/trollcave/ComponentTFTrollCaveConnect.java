@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
@@ -27,8 +28,8 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	public ComponentTFTrollCaveConnect() {
 	}
 
-	public ComponentTFTrollCaveConnect(int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
-		super(index);
+	public ComponentTFTrollCaveConnect(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
+		super(feature, index);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);
@@ -262,7 +263,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
-		ComponentTFTrollCaveMain cave = new ComponentTFTrollCaveGarden(index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
+		ComponentTFTrollCaveMain cave = new ComponentTFTrollCaveGarden(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, cave.getBoundingBox());
 		StructureComponent otherGarden = findNearbyGarden(list, cave.getBoundingBox());

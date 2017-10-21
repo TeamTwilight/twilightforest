@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "twilightforest:items/arctic_legs"
+    "layer0": "twilightforest:items/arctic_legs",
+    "layer1": "twilightforest:items/arctic_legs_0"
   }
 }

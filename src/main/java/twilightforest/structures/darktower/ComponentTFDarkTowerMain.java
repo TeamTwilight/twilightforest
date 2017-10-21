@@ -18,6 +18,7 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -53,15 +54,15 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	}
 
 
-	public ComponentTFDarkTowerMain(World world, Random rand, int index, int x, int y, int z)
+	public ComponentTFDarkTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z)
 	{
-		this(world, rand, index, x + 10, y, z + 10, EnumFacing.NORTH);
+		this(feature, world, rand, index, x + 10, y, z + 10, EnumFacing.NORTH);
 	}
 
 
-	public ComponentTFDarkTowerMain(World world, Random rand, int index, int x, int y, int z, EnumFacing rotation)
+	public ComponentTFDarkTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, EnumFacing rotation)
 	{
-		super(index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
+		super(feature, index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
 
 		// check to make sure we can build the whole tower
 		if (this.boundingBox.maxY > 245)
@@ -222,7 +223,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
-		ComponentTFDarkTowerBridge bridge = new ComponentTFDarkTowerEntranceBridge(index, dx[0], dx[1], dx[2], childSize, childHeight, direction);
+		ComponentTFDarkTowerBridge bridge = new ComponentTFDarkTowerEntranceBridge(getFeatureType(), index, dx[0], dx[1], dx[2], childSize, childHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
 		list.add(bridge);
 		bridge.buildComponent(this, list, rand);
@@ -242,7 +243,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
-		ComponentTFDarkTowerMainBridge bridge = new ComponentTFDarkTowerMainBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFDarkTowerMainBridge bridge = new ComponentTFDarkTowerMainBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
 		list.add(bridge);
 		bridge.buildComponent(this, list, rand);
@@ -263,7 +264,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
-		ComponentTFDarkTowerBossBridge bridge = new ComponentTFDarkTowerBossBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFDarkTowerBossBridge bridge = new ComponentTFDarkTowerBossBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
 		list.add(bridge);
 		bridge.buildComponent(this, list, rand);

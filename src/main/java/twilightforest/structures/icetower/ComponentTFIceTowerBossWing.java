@@ -6,6 +6,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
@@ -20,8 +21,8 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 		this.spawnListIndex = -1;
 	}
 
-	public ComponentTFIceTowerBossWing(int index, int x, int y, int z, int wingSize, int wingHeight, EnumFacing direction) {
-		super(index, x, y, z, wingSize, wingHeight, direction);
+	public ComponentTFIceTowerBossWing(TFFeature feature, int index, int x, int y, int z, int wingSize, int wingHeight, EnumFacing direction) {
+		super(feature, index, x, y, z, wingSize, wingHeight, direction);
 		// no spawns
 		this.spawnListIndex = -1;
 	}

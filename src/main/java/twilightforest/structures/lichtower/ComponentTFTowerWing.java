@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
@@ -51,13 +52,13 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	protected int highestOpening;
 	protected boolean[] openingTowards = new boolean[]{false, false, true, false};
 
-	protected ComponentTFTowerWing(int i) {
-		super(i);
+	protected ComponentTFTowerWing(TFFeature feature, int i) {
+		super(feature, i);
 		this.highestOpening = 0;
 	}
 
-	protected ComponentTFTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i);
+	protected ComponentTFTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i);
 
 		this.size = pSize;
 		this.height = pHeight;
@@ -168,7 +169,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 			// I think there are very few circumstances where we can make a wing and not a bridge
 		}
 
-		ComponentTFTowerWing wing = new ComponentTFTowerWing(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFTowerWing wing = new ComponentTFTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, wing.boundingBox);
 		if (intersect == null || intersect == this) {
@@ -195,7 +196,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		if (wingSize == 3 && wingHeight > 10) {
 			wingHeight = 6 + rand.nextInt(5);
 		}
-		ComponentTFTowerBridge bridge = new ComponentTFTowerBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFTowerBridge bridge = new ComponentTFTowerBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, bridge.boundingBox);
 		if (intersect == null || intersect == this) {
@@ -242,9 +243,9 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 		int index = this.getComponentType();
 		ComponentTFTowerBeard beard;
 		if (attached) {
-			beard = new ComponentTFTowerBeardAttached(index + 1, this);
+			beard = new ComponentTFTowerBeardAttached(getFeatureType(), index + 1, this);
 		} else {
-			beard = new ComponentTFTowerBeard(index + 1, this);
+			beard = new ComponentTFTowerBeard(getFeatureType(), index + 1, this);
 		}
 		list.add(beard);
 		beard.buildComponent(this, list, rand);
@@ -276,25 +277,25 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 		// this is our preferred roof type:
 		if (roofType == null && rand.nextInt(32) != 0) {
-			tryToFitRoof(list, rand, new ComponentTFTowerRoofGableForwards(index + 1, this));
+			tryToFitRoof(list, rand, new ComponentTFTowerRoofGableForwards(getFeatureType(), index + 1, this));
 		}
 
 		// this is for roofs that don't fit.
 		if (roofType == null && rand.nextInt(8) != 0) {
-			tryToFitRoof(list, rand, new ComponentTFTowerRoofSlabForwards(index + 1, this));
+			tryToFitRoof(list, rand, new ComponentTFTowerRoofSlabForwards(getFeatureType(), index + 1, this));
 		}
 
 		// finally, if we're cramped for space, try this
 		if (roofType == null && rand.nextInt(32) != 0) {
 			// fall through to this next roof
-			roof = new ComponentTFTowerRoofAttachedSlab(index + 1, this);
+			roof = new ComponentTFTowerRoofAttachedSlab(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// last resort
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new ComponentTFTowerRoofFence(index + 1, this);
+			roof = new ComponentTFTowerRoofFence(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 	}
@@ -318,31 +319,31 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 		// most roofs that fit fancy roofs will be this
 		if (roofType == null && rand.nextInt(8) != 0) {
-			roof = new ComponentTFTowerRoofPointyOverhang(index + 1, this);
+			roof = new ComponentTFTowerRoofPointyOverhang(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// don't pass by this one if it fits
 		if (roofType == null) {
-			roof = new ComponentTFTowerRoofStairsOverhang(index + 1, this);
+			roof = new ComponentTFTowerRoofStairsOverhang(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// don't pass by this one if it fits
 		if (roofType == null) {
-			roof = new ComponentTFTowerRoofStairs(index + 1, this);
+			roof = new ComponentTFTowerRoofStairs(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 
 		if (roofType == null && rand.nextInt(53) != 0) {
 			// fall through to this next roof
-			roof = new ComponentTFTowerRoofSlab(index + 1, this);
+			roof = new ComponentTFTowerRoofSlab(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new ComponentTFTowerRoofFence(index + 1, this);
+			roof = new ComponentTFTowerRoofFence(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 	}

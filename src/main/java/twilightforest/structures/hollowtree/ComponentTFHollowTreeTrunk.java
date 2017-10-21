@@ -10,8 +10,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerator;
+import twilightforest.world.TFWorld;
 
 import java.util.List;
 import java.util.Random;
@@ -32,7 +34,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	}
 
 	public ComponentTFHollowTreeTrunk(World world, Random rand, int index, int x, int y, int z) {
-		super(index);
+		super(TFFeature.nothing, index);
 
 		height = rand.nextInt(64) + 32;
 		radius = rand.nextInt(4) + 1;
@@ -150,20 +152,20 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	public StructureTFTreeComponent branchFor(int index, BlockPos pos, int branchLength, double branchRotation, double branchAngle, boolean leafy, BranchSize size) {
 		switch(size) {
 			case LARGE:
-				return new ComponentTFHollowTreeLargeBranch(index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
+				return new ComponentTFHollowTreeLargeBranch(getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
 			case SMALL:
 			default:
-				return new ComponentTFHollowTreeSmallBranch(index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
+				return new ComponentTFHollowTreeSmallBranch(getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
 			case MEDIUM:
-				return new ComponentTFHollowTreeMedBranch(index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
+				return new ComponentTFHollowTreeMedBranch(getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
 			case ROOT:
-				return new ComponentTFHollowTreeRoot(index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, false);
+				return new ComponentTFHollowTreeRoot(getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, false);
 		}
 	}
 
 	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
-		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
+		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(getFeatureType(), index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
 		if (!branchIntersectsDungeon(branch, list))
 		{
 			list.add(branch);

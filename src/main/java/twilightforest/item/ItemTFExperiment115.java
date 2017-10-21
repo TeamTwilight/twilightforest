@@ -26,8 +26,9 @@ public class ItemTFExperiment115 extends ItemTFFood {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if ((!player.isCreative() && player.canEat(false)) || block == TFBlocks.experiment_115)
-			return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+		// Let eating take priority over block placement
+		if (player.canEat(false))
+			return EnumActionResult.PASS;
 
 		IBlockState e115 = TFBlocks.experiment_115.getDefaultState();
 
@@ -35,7 +36,8 @@ public class ItemTFExperiment115 extends ItemTFFood {
 		ItemStack itemstack = player.getHeldItem(hand);
 
 		if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && world.mayPlace(e115.getBlock(), pos, false, facing, null)) {
-			if (!world.setBlockState(pos, e115, 11)) {
+			if (world.setBlockState(pos, e115, 11)) {
+				TFBlocks.experiment_115.onBlockPlacedBy(world, pos, e115, player, itemstack);
 				SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
 				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				itemstack.shrink(1);

@@ -104,6 +104,9 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 					sound = SoundEvents.ENTITY_COW_AMBIENT;
 					volume = 0.5F;
 					break;
+				case QUEST_RAM:
+					sound = SoundEvents.ENTITY_SHEEP_AMBIENT;
+					break;
 			}
 			if (sound != null)
 				worldIn.playSound(playerIn, pos, sound, SoundCategory.BLOCKS, volume, 16.0F);

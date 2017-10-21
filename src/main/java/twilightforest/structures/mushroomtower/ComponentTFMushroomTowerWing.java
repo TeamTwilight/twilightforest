@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
@@ -31,8 +32,8 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		super();
 	}
 
-	protected ComponentTFMushroomTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFMushroomTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**
@@ -141,7 +142,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			dx = adjustCoordinates(dx[0], dx[1], dx[2], wingSize, direction, list);
 		}
 
-		ComponentTFMushroomTowerWing wing = new ComponentTFMushroomTowerWing(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFMushroomTowerWing wing = new ComponentTFMushroomTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this || intersect instanceof ComponentTFTowerRoofMushroom) {
@@ -223,17 +224,17 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	@Override
 	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
 
-		ComponentTFTowerRoof roof = new ComponentTFTowerRoofMushroom(this.getComponentType() + 1, this, 1.6F);
+		ComponentTFTowerRoof roof = new ComponentTFTowerRoofMushroom(getFeatureType(), this.getComponentType() + 1, this, 1.6F);
 		if (StructureComponent.findIntersecting(list, roof.getBoundingBox()) instanceof ComponentTFTowerRoofMushroom) {
 			list.add(roof);
 			roof.buildComponent(this, list, rand);
 		} else {
-			roof = new ComponentTFTowerRoofMushroom(this.getComponentType() + 1, this, 1.0F);
+			roof = new ComponentTFTowerRoofMushroom(getFeatureType(), this.getComponentType() + 1, this, 1.0F);
 			if (StructureComponent.findIntersecting(list, roof.getBoundingBox()) instanceof ComponentTFTowerRoofMushroom) {
 				list.add(roof);
 				roof.buildComponent(this, list, rand);
 			} else {
-				roof = new ComponentTFTowerRoofMushroom(this.getComponentType() + 1, this, 0.6F);
+				roof = new ComponentTFTowerRoofMushroom(getFeatureType(), this.getComponentType() + 1, this, 0.6F);
 				list.add(roof);
 				roof.buildComponent(this, list, rand);
 			}
@@ -257,7 +258,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			wingHeight = 4;
 		}
 
-		ComponentTFMushroomTowerBridge bridge = new ComponentTFMushroomTowerBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFMushroomTowerBridge bridge = new ComponentTFMushroomTowerBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		bridge.isAscender = ascender;
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, bridge.getBoundingBox());
@@ -282,7 +283,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 
-		ComponentTFMushroomTowerMainBridge bridge = new ComponentTFMushroomTowerMainBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFMushroomTowerMainBridge bridge = new ComponentTFMushroomTowerMainBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
 		list.add(bridge);
 		bridge.buildComponent(this, list, rand);

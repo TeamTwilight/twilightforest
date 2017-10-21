@@ -11,6 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
@@ -32,12 +33,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	public ComponentTFTrollCaveMain() {
 	}
 
-	public ComponentTFTrollCaveMain(int index) {
-		super(index);
+	public ComponentTFTrollCaveMain(TFFeature feature, int index) {
+		super(feature, index);
 	}
 
 
-	public ComponentTFTrollCaveMain(World world, Random rand, int i, int x, int y, int z) {
+	public ComponentTFTrollCaveMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(feature, i);
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		// adjust y
@@ -82,12 +84,12 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		}
 
 		// add cloud castle
-		ComponentTFCloudCastle castle = new ComponentTFCloudCastle(this.getComponentType() + 1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), 168, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
+		ComponentTFCloudCastle castle = new ComponentTFCloudCastle(getFeatureType(), this.getComponentType() + 1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), 168, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
 		list.add(castle);
 		castle.buildComponent(this, list, rand);
 
 		// add vault
-		ComponentTFTrollVault vault = new ComponentTFTrollVault(this.getComponentType() + 1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), boundingBox.minY, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
+		ComponentTFTrollVault vault = new ComponentTFTrollVault(getFeatureType(), this.getComponentType() + 1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), boundingBox.minY, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
 		list.add(vault);
 		vault.buildComponent(this, list, rand);
 	}
@@ -97,7 +99,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
-		ComponentTFTrollCaveConnect cave = new ComponentTFTrollCaveConnect(index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
+		ComponentTFTrollCaveConnect cave = new ComponentTFTrollCaveConnect(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, cave.getBoundingBox());
 		if (intersect == null || intersect == this) {

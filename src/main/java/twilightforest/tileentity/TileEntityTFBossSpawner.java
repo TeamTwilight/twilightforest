@@ -52,6 +52,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		double ry = pos.getY() + 0.5D;
 		double rz = pos.getZ() + 0.5D;
 		myCreature.setLocationAndAngles(rx, ry, rz, world.rand.nextFloat() * 360F, 0.0F);
+		myCreature.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 
 		// set creature's home to this
 		initializeCreature(myCreature);

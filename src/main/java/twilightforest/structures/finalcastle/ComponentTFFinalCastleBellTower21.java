@@ -6,6 +6,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
@@ -22,8 +23,8 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	public ComponentTFFinalCastleBellTower21() {
 	}
 
-	public ComponentTFFinalCastleBellTower21(Random rand, int i, int x, int y, int z, EnumFacing direction) {
-		super(rand, i, x, y, z, FLOORS, 1, BlockTFCastleMagic.VALID_COLORS.get(1), direction);
+	public ComponentTFFinalCastleBellTower21(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction) {
+		super(feature, rand, i, x, y, z, FLOORS, 1, BlockTFCastleMagic.VALID_COLORS.get(1), direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;
@@ -39,12 +40,12 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		}
 
 		// add foundation
-		ComponentTFFinalCastleBellFoundation21 foundation = new ComponentTFFinalCastleBellFoundation21(rand, 4, this);
+		ComponentTFFinalCastleBellFoundation21 foundation = new ComponentTFFinalCastleBellFoundation21(getFeatureType(), rand, 4, this);
 		list.add(foundation);
 		foundation.buildComponent(this, list, rand);
 
 		// add roof
-		StructureTFComponent roof = new ComponentTFFinalCastleRoof13Crenellated(rand, 4, this);
+		StructureTFComponent roof = new ComponentTFFinalCastleRoof13Crenellated(getFeatureType(), rand, 4, this);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 	}

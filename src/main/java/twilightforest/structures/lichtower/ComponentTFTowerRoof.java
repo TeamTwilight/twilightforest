@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.List;
@@ -18,11 +19,10 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponent {
 
 	public ComponentTFTowerRoof() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFTowerRoof(int i, ComponentTFTowerWing wing) {
-		super(i);
+	public ComponentTFTowerRoof(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i);
 
 		this.spawnListIndex = -1;
 

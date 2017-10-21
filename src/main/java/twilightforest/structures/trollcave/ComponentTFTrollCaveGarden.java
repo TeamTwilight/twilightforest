@@ -8,6 +8,7 @@ import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFGenBigMushgloom;
 import twilightforest.world.TFGenMyceliumBlob;
@@ -25,8 +26,8 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 	public ComponentTFTrollCaveGarden() {
 	}
 
-	public ComponentTFTrollCaveGarden(int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
-		super(index);
+	public ComponentTFTrollCaveGarden(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
+		super(feature, index);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);

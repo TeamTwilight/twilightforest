@@ -32,7 +32,7 @@ public class ModelTFQuestRam extends ModelBase {
 	ModelRenderer haunch4;
 	ModelRenderer neck;
 	ModelRenderer nose;
-	ModelRenderer head;
+	public ModelRenderer head;
 
 	ModelRenderer[] segments;
 	boolean[] segmentEnabled;

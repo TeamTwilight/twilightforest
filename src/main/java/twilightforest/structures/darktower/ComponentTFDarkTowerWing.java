@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFTowerDevice;
@@ -47,8 +48,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	public ComponentTFDarkTowerWing() {
 	}
 
-	protected ComponentTFDarkTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFDarkTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override
@@ -158,16 +159,16 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 			case 0:
 			case 1:
 			default:
-				roof = new ComponentTFDarkTowerRoofAntenna(index, this);
+				roof = new ComponentTFDarkTowerRoofAntenna(getFeatureType(), index, this);
 				break;
 			case 2:
-				roof = new ComponentTFDarkTowerRoofCactus(index, this);
+				roof = new ComponentTFDarkTowerRoofCactus(getFeatureType(), index, this);
 				break;
 			case 3:
-				roof = new ComponentTFDarkTowerRoofRings(index, this);
+				roof = new ComponentTFDarkTowerRoofRings(getFeatureType(), index, this);
 				break;
 			case 4:
-				roof = new ComponentTFDarkTowerRoofFourPost(index, this);
+				roof = new ComponentTFDarkTowerRoofFourPost(getFeatureType(), index, this);
 				break;
 		}
 
@@ -183,25 +184,25 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 
 		// this is our preferred roof type:
 		if (roofType == null && rand.nextInt(32) != 0) {
-			tryToFitRoof(list, rand, new ComponentTFTowerRoofGableForwards(index + 1, this));
+			tryToFitRoof(list, rand, new ComponentTFTowerRoofGableForwards(getFeatureType(), index + 1, this));
 		}
 
 		// this is for roofs that don't fit.
 		if (roofType == null && rand.nextInt(8) != 0) {
-			tryToFitRoof(list, rand, new ComponentTFTowerRoofSlabForwards(index + 1, this));
+			tryToFitRoof(list, rand, new ComponentTFTowerRoofSlabForwards(getFeatureType(), index + 1, this));
 		}
 
 		// finally, if we're cramped for space, try this
 		if (roofType == null && rand.nextInt(32) != 0) {
 			// fall through to this next roof
-			roof = new ComponentTFTowerRoofAttachedSlab(index + 1, this);
+			roof = new ComponentTFTowerRoofAttachedSlab(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// last resort
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new ComponentTFTowerRoofFence(index + 1, this);
+			roof = new ComponentTFTowerRoofFence(getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 	}
@@ -212,7 +213,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 */
 	@Override
 	public void makeABeard(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		ComponentTFDarkTowerBeard beard = new ComponentTFDarkTowerBeard(this.getComponentType() + 1, this);
+		ComponentTFDarkTowerBeard beard = new ComponentTFDarkTowerBeard(getFeatureType(), this.getComponentType() + 1, this);
 		list.add(beard);
 		beard.buildComponent(this, list, rand);
 	}
@@ -235,7 +236,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 			return false;
 		}
 
-		ComponentTFDarkTowerBridge bridge = new ComponentTFDarkTowerBridge(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFDarkTowerBridge bridge = new ComponentTFDarkTowerBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, bridge.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -258,7 +259,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
 
-		ComponentTFDarkTowerBalcony balcony = new ComponentTFDarkTowerBalcony(index, dx[0], dx[1], dx[2], direction);
+		ComponentTFDarkTowerBalcony balcony = new ComponentTFDarkTowerBalcony(getFeatureType(), index, dx[0], dx[1], dx[2], direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, balcony.getBoundingBox());
 		if (intersect == null || intersect == this) {

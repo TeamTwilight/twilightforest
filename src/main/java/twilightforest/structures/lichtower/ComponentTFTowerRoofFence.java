@@ -3,6 +3,7 @@ package twilightforest.structures.lichtower;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 
 import java.util.Random;
 
@@ -11,11 +12,10 @@ public class ComponentTFTowerRoofFence extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofFence() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFTowerRoofFence(int i, ComponentTFTowerWing wing) {
-		super(i, wing);
+	public ComponentTFTowerRoofFence(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i, wing);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

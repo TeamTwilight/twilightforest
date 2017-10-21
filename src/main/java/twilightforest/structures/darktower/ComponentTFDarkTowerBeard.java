@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.TowerWoodVariant;
@@ -23,8 +24,8 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponent {
 		super();
 	}
 
-	public ComponentTFDarkTowerBeard(int i, ComponentTFTowerWing wing) {
-		super(i);
+	public ComponentTFDarkTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i);
 
 		this.setCoordBaseMode(wing.getCoordBaseMode());
 		this.size = wing.size;

@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.util.TFEntityNames;
 
@@ -21,8 +22,8 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 	public ComponentTFStrongholdTreasureRoom() {
 	}
 
-	public ComponentTFStrongholdTreasureRoom(int i, EnumFacing facing, int x, int y, int z) {
-		super(i, facing, x, y, z);
+	public ComponentTFStrongholdTreasureRoom(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+		super(feature, i, facing, x, y, z);
 	}
 
 	@Override

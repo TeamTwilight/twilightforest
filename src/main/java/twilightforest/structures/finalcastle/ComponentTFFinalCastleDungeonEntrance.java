@@ -7,6 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
@@ -22,8 +23,8 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 	public ComponentTFFinalCastleDungeonEntrance() {
 	}
 
-	public ComponentTFFinalCastleDungeonEntrance(Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
-		super(rand, i, x, y, z, direction, level);
+	public ComponentTFFinalCastleDungeonEntrance(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
+		super(feature, rand, i, x, y, z, direction, level);
 	}
 
 	@Override

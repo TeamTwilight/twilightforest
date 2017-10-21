@@ -8,45 +8,37 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.item.TFItems;
 
 public class EntityTFCharmEffect extends Entity {
-	private static final DataParameter<String> DATA_OWNER = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.STRING);
+	private static final DataParameter<Integer> DATA_OWNER = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> DATA_ITEMID = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
 	private static final double DISTANCE = 1.75;
-	private EntityLivingBase orbiting;
-	private double newPosX;
-	private double newPosY;
-	private double newPosZ;
-	private double newRotationYaw;
-	private double newRotationPitch;
+	private double interpTargetX;
+	private double interpTargetY;
+	private double interpTargetZ;
+	private double interpTargetYaw;
+	private double interpTargetPitch;
 	private int newPosRotationIncrements;
 
 	public float offset;
 
-	// client constructor
 	public EntityTFCharmEffect(World par1World) {
 		super(par1World);
 		this.setSize(0.25F, 0.25F);
-
-		this.setItemID(TFItems.charmOfLife1);
 	}
 
-	// server constructor
-	public EntityTFCharmEffect(World par1World, EntityLivingBase par2EntityLiving, Item item) {
-		super(par1World);
-		this.setSize(0.25F, 0.25F);
+	public EntityTFCharmEffect(World par1World, EntityLivingBase owner, Item item) {
+		this(par1World);
 
-		this.orbiting = par2EntityLiving;
+		this.setOwner(owner);
 		this.setItemID(item);
 
 		Vec3d look = new Vec3d(DISTANCE, 0, 0);
 
-		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
+		this.setLocationAndAngles(owner.posX, owner.posY + owner.getEyeHeight(), owner.posZ, owner.rotationYaw, owner.rotationPitch);
 		this.posX += look.x * DISTANCE;
 		//this.posY += look.y * DISTANCE;
 		this.posZ += look.z * DISTANCE;
@@ -60,38 +52,34 @@ public class EntityTFCharmEffect extends Entity {
 		this.lastTickPosZ = this.posZ;
 		super.onUpdate();
 
-
+		//[VanillaCopy] Beginning of EntityLivingBase.onLivingUpdate
 		if (this.newPosRotationIncrements > 0) {
-			double var1 = this.posX + (this.newPosX - this.posX) / (double) this.newPosRotationIncrements;
-			double var3 = this.posY + (this.newPosY - this.posY) / (double) this.newPosRotationIncrements;
-			double var5 = this.posZ + (this.newPosZ - this.posZ) / (double) this.newPosRotationIncrements;
-			double var7 = MathHelper.wrapDegrees(this.newRotationYaw - (double) this.rotationYaw);
-			this.rotationYaw = (float) ((double) this.rotationYaw + var7 / this.newPosRotationIncrements);
-			this.rotationPitch = (float) ((double) this.rotationPitch + (this.newRotationPitch - (double) this.rotationPitch) / this.newPosRotationIncrements);
+			double d0 = this.posX + (this.interpTargetX - this.posX) / (double) this.newPosRotationIncrements;
+			double d1 = this.posY + (this.interpTargetY - this.posY) / (double) this.newPosRotationIncrements;
+			double d2 = this.posZ + (this.interpTargetZ - this.posZ) / (double) this.newPosRotationIncrements;
+			double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - (double) this.rotationYaw);
+			this.rotationYaw = (float) ((double) this.rotationYaw + d3 / (double) this.newPosRotationIncrements);
+			this.rotationPitch = (float) ((double) this.rotationPitch + (this.interpTargetPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
 			--this.newPosRotationIncrements;
-			this.setPosition(var1, var3, var5);
+			this.setPosition(d0, d1, d2);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 		}
 
-		float rotation = this.ticksExisted / 5.0F + offset;
+		EntityLivingBase orbiting = getOwner();
 
-		if (this.orbiting == null) {
-			this.orbiting = getOwner();
-		}
-
-		if (this.orbiting != null && !world.isRemote) {
+		if (orbiting != null) {
 			this.setLocationAndAngles(orbiting.posX, orbiting.posY + orbiting.getEyeHeight(), orbiting.posZ, orbiting.rotationYaw, orbiting.rotationPitch);
 
+			float rotation = this.ticksExisted / 5.0F + offset;
 			Vec3d look = new Vec3d(DISTANCE, 0, 0).rotateYaw(rotation);
 			this.posX += look.x;
 //        	this.posY += Math.sin(this.ticksExisted / 3.0F + offset);
 			this.posZ += look.z;
 
 			this.setPosition(this.posX, this.posY, this.posZ);
-
 		}
 
-		if (this.getItemID() > 0) {
+		if (this.getItemID() > -1) {
 			for (int i = 0; i < 3; i++) {
 				double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
 				double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
@@ -101,37 +89,37 @@ public class EntityTFCharmEffect extends Entity {
 			}
 		}
 
-		if (this.ticksExisted > 200 || this.orbiting == null || this.orbiting.isDead) {
+		if (!this.world.isRemote
+				&& (this.ticksExisted > 200 || (orbiting != null && orbiting.isDead))) {
 			this.setDead();
 		}
 	}
 
 	@Override
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-		this.newPosX = x;
-		this.newPosY = y;
-		this.newPosZ = z;
-		this.newRotationYaw = yaw;
-		this.newRotationPitch = pitch;
+		this.interpTargetX = x;
+		this.interpTargetY = y;
+		this.interpTargetZ = z;
+		this.interpTargetYaw = yaw;
+		this.interpTargetPitch = pitch;
 		this.newPosRotationIncrements = posRotationIncrements;
 	}
 
 	@Override
 	protected void entityInit() {
-		dataManager.register(DATA_ITEMID, 0);
-		dataManager.register(DATA_OWNER, "");
+		dataManager.register(DATA_ITEMID, -1);
+		dataManager.register(DATA_OWNER, -1);
 	}
 
-	public String getOwnerName() {
-		return dataManager.get(DATA_OWNER);
-	}
-
-	public void setOwner(String par1Str) {
-		dataManager.set(DATA_OWNER, par1Str);
+	public void setOwner(EntityLivingBase owner) {
+		dataManager.set(DATA_OWNER, owner.getEntityId());
 	}
 
 	public EntityLivingBase getOwner() {
-		return this.world.getPlayerEntityByName(this.getOwnerName());
+		Entity e = this.world.getEntityByID(dataManager.get(DATA_OWNER));
+		if (e instanceof EntityLivingBase)
+			return (EntityLivingBase) e;
+		else return null;
 	}
 
 	public int getItemID() {
@@ -143,16 +131,9 @@ public class EntityTFCharmEffect extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		par1NBTTagCompound.setString("Owner", this.getOwnerName());
-		par1NBTTagCompound.setString("ItemID", Item.getItemById(getItemID()).getRegistryName().toString());
-	}
+	protected void readEntityFromNBT(NBTTagCompound cmp) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		this.setOwner(par1NBTTagCompound.getString("Owner"));
-		Item item = Item.REGISTRY.getObject(new ResourceLocation(par1NBTTagCompound.getString("ItemID")));
-		this.setItemID(item);
-	}
+	protected void writeEntityToNBT(NBTTagCompound cmp) {}
 
 }

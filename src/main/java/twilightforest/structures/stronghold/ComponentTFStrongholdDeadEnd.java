@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 	public ComponentTFStrongholdDeadEnd() {
 	}
 
-	public ComponentTFStrongholdDeadEnd(int i, EnumFacing facing, int x, int y, int z) {
-		super(i, facing, x, y, z);
+	public ComponentTFStrongholdDeadEnd(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+		super(feature, i, facing, x, y, z);
 	}
 
 	@Override

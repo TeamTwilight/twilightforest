@@ -3,6 +3,7 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
 
@@ -17,8 +18,8 @@ public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCast
 	public ComponentTFFinalCastleBellFoundation21() {
 	}
 
-	public ComponentTFFinalCastleBellFoundation21(Random rand, int i, StructureTFComponent sideTower) {
-		super(rand, i, sideTower);
+	public ComponentTFFinalCastleBellFoundation21(TFFeature feature, Random rand, int i, StructureTFComponent sideTower) {
+		super(feature, rand, i, sideTower);
 
 		this.boundingBox = new StructureBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().maxY, sideTower.getBoundingBox().maxZ + 2);
 

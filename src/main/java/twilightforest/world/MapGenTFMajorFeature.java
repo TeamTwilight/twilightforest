@@ -97,6 +97,16 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 		return boxFound;
 	}
 
+	public TFFeature getFeatureAt(BlockPos pos) {
+		for (StructureStart start : this.structureMap.values())
+			if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
+				for (StructureComponent component : start.getComponents())
+					if (component.getBoundingBox().isVecInside(pos))
+						if (component instanceof StructureTFComponent)
+							return ((StructureTFComponent) component).getFeatureType();
+		return TFFeature.nothing;
+	}
+
 	/**
 	 * Is the block at the coordinates given a protected one?
 	 */

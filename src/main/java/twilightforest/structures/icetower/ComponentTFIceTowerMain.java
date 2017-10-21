@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 
 import java.util.List;
 import java.util.Random;
@@ -19,12 +20,12 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		super();
 	}
 
-	public ComponentTFIceTowerMain(World world, Random rand, int index, int x, int y, int z) {
-		this(world, rand, index, x + SIZE, y + 40, z + SIZE, EnumFacing.NORTH);
+	public ComponentTFIceTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
+		this(feature, world, rand, index, x + SIZE, y + 40, z + SIZE, EnumFacing.NORTH);
 	}
 
-	public ComponentTFIceTowerMain(World world, Random rand, int index, int x, int y, int z, EnumFacing rotation) {
-		super(index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
+	public ComponentTFIceTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, EnumFacing rotation) {
+		super(feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator
 		if (this.deco == null) {
@@ -33,8 +34,8 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	}
 
 
-	protected ComponentTFIceTowerMain(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFIceTowerMain(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**
@@ -97,7 +98,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
-		ComponentTFIceTowerBridge bridge = new ComponentTFIceTowerBridge(index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
+		ComponentTFIceTowerBridge bridge = new ComponentTFIceTowerBridge(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
 
 		list.add(bridge);
 		bridge.buildComponent(list.get(0), list, rand);
@@ -107,7 +108,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
-		ComponentTFIceTowerWing entrance = new ComponentTFIceTowerEntrance(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFIceTowerWing entrance = new ComponentTFIceTowerEntrance(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
 		list.add(entrance);
 		entrance.buildComponent(list.get(0), list, rand);

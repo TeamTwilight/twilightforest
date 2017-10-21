@@ -3,6 +3,7 @@ package twilightforest.structures.darktower;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -14,8 +15,8 @@ public class ComponentTFDarkTowerRoof extends ComponentTFTowerRoof {
 	public ComponentTFDarkTowerRoof() {
 	}
 
-	public ComponentTFDarkTowerRoof(int i, ComponentTFTowerWing wing) {
-		super(i, wing);
+	public ComponentTFDarkTowerRoof(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i, wing);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

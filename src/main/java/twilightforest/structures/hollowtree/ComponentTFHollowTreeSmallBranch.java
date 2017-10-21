@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -19,9 +20,8 @@ public class ComponentTFHollowTreeSmallBranch extends
 		super();
 	}
 
-	protected ComponentTFHollowTreeSmallBranch(int i, int sx, int sy, int sz,
-											   double length, double angle, double tilt, boolean leafy) {
-		super(i, sx, sy, sz, length, angle, tilt, leafy);
+	protected ComponentTFHollowTreeSmallBranch(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
+		super(feature, i, sx, sy, sz, length, angle, tilt, leafy);
 	}
 
 	@Override

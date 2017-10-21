@@ -6,6 +6,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
@@ -20,7 +21,8 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 	public ComponentTFFinalCastleLargeTower() {
 	}
 
-	public ComponentTFFinalCastleLargeTower(Random rand, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFFinalCastleLargeTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing rotation) {
+		super(feature, i);
 		this.setCoordBaseMode(rotation);
 		this.size = 13;
 		this.height = 61;
@@ -34,7 +36,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 			this.deco = ((StructureTFComponent) parent).deco;
 		}
 		// add crown
-		ComponentTFFinalCastleRoof9Crenellated roof = new ComponentTFFinalCastleRoof9Crenellated(rand, 4, this);
+		ComponentTFFinalCastleRoof9Crenellated roof = new ComponentTFFinalCastleRoof9Crenellated(getFeatureType(), rand, 4, this);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 	}

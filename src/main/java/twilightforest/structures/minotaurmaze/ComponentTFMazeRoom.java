@@ -5,6 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
@@ -19,8 +20,8 @@ public class ComponentTFMazeRoom extends StructureTFComponent {
 		super();
 	}
 
-	public ComponentTFMazeRoom(int i, Random rand, int x, int y, int z) {
-		super(i);
+	public ComponentTFMazeRoom(TFFeature feature, int i, Random rand, int x, int y, int z) {
+		super(feature, i);
 		this.setCoordBaseMode(EnumFacing.HORIZONTALS[rand.nextInt(4)]);
 
 		this.boundingBox = new StructureBoundingBox(x, y, z, x + 15, y + 4, z + 15);

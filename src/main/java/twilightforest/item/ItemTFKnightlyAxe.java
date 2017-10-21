@@ -16,8 +16,8 @@ import java.util.List;
 
 public class ItemTFKnightlyAxe extends ItemAxe implements ModelRegisterCallback {
 
-	protected ItemTFKnightlyAxe(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial, par2EnumToolMaterial.getAttackDamage(), -3.0f);
+	protected ItemTFKnightlyAxe(Item.ToolMaterial material) {
+		super(material, 4F + material.getAttackDamage(), -3.0f);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

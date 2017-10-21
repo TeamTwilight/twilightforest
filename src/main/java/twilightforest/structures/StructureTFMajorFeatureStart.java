@@ -132,63 +132,63 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 
 		if (feature == TFFeature.nagaCourtyard) {
 			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
-			return new ComponentTFNagaCourtyard(world, rand, 0, x, y, z);
+			return new ComponentTFNagaCourtyard(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.hedgeMaze) {
 			TwilightForestMod.LOGGER.info("Hedge Maze @ {} {} {}", x, y, z);
-			return new ComponentTFHedgeMaze(world, rand, 0, x, y, z);
+			return new ComponentTFHedgeMaze(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.hill1) {
 			TwilightForestMod.LOGGER.info("Hill 1 @ {} {} {}", x, y, z);
-			return new ComponentTFHollowHill(world, rand, 0, 1, x, y, z);
+			return new ComponentTFHollowHill(feature, world, rand, 0, 1, x, y, z);
 		}
 		if (feature == TFFeature.hill2) {
 			TwilightForestMod.LOGGER.info("Hill 2 @ {} {} {}", x, y, z);
-			return new ComponentTFHollowHill(world, rand, 0, 2, x, y, z);
+			return new ComponentTFHollowHill(feature, world, rand, 0, 2, x, y, z);
 		}
 		if (feature == TFFeature.hill3) {
 			TwilightForestMod.LOGGER.info("Hill 3 @ {} {} {}", x, y, z);
-			return new ComponentTFHollowHill(world, rand, 0, 3, x, y, z);
+			return new ComponentTFHollowHill(feature, world, rand, 0, 3, x, y, z);
 		}
 		if (feature == TFFeature.questGrove) {
 			TwilightForestMod.LOGGER.info("Quest Grove @ {} {} {}", x, y, z);
-			return new ComponentTFQuestGrove(world, rand, 0, x, y, z);
+			return new ComponentTFQuestGrove(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.hydraLair) {
 			TwilightForestMod.LOGGER.info("Hydra Lair @ {} {} {}", x, y, z);
-			return new ComponentTFHydraLair(world, rand, 0, x, y, z);
+			return new ComponentTFHydraLair(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.yetiCave) {
 			TwilightForestMod.LOGGER.info("Yeti Cave @ {} {} {}", x, y, z);
-			return new ComponentTFYetiCave(world, rand, 0, x, y, z);
+			return new ComponentTFYetiCave(feature, world, rand, 0, x, y, z);
 		}
 
 		if (feature == TFFeature.lichTower) {
 			TwilightForestMod.LOGGER.info("Lich Tower @ {} {} {}", x, y, z);
-			return new ComponentTFTowerMain(world, rand, 0, x, y, z);
+			return new ComponentTFTowerMain(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.trollCave) {
 			TwilightForestMod.LOGGER.info("Troll Cave @ {} {} {}", x, y, z);
-			return new ComponentTFTrollCaveMain(world, rand, 0, x, y, z);
+			return new ComponentTFTrollCaveMain(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.iceTower) {
 			TwilightForestMod.LOGGER.info("Ice Tower @ {} {} {}", x, y, z);
-			return new ComponentTFIceTowerMain(world, rand, 0, x, y, z);
+			return new ComponentTFIceTowerMain(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.darkTower) {
-			return new ComponentTFDarkTowerMain(world, rand, 0, x, y - 1, z);
+			return new ComponentTFDarkTowerMain(feature, world, rand, 0, x, y - 1, z);
 		}
 		if (feature == TFFeature.labyrinth) {
-			return new ComponentTFMazeRuins(world, rand, 0, x, y, z);
+			return new ComponentTFMazeRuins(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.mushroomTower) {
-			return new ComponentTFMushroomTowerMain(world, rand, 0, x, y, z);
+			return new ComponentTFMushroomTowerMain(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.tfStronghold) {
-			return new ComponentTFStrongholdEntrance(world, rand, 0, x, y, z);
+			return new ComponentTFStrongholdEntrance(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.finalCastle) {
-			return new ComponentTFFinalCastleMain(world, rand, 0, x, y, z);
+			return new ComponentTFFinalCastleMain(feature, world, rand, 0, x, y, z);
 		}
 
 		return null;

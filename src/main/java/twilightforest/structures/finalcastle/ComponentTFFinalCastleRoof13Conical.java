@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.util.RotationUtil;
 
@@ -22,8 +23,8 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponent {
 	public ComponentTFFinalCastleRoof13Conical() {
 	}
 
-	public ComponentTFFinalCastleRoof13Conical(Random rand, int i, StructureTFComponent sideTower) {
-		super(i);
+	public ComponentTFFinalCastleRoof13Conical(TFFeature feature, Random rand, int i, StructureTFComponent sideTower) {
+		super(feature, i);
 
 		this.slope = 2 + rand.nextInt(3) + rand.nextInt(3);
 

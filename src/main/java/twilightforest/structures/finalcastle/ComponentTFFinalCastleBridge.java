@@ -8,6 +8,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponent;
 
@@ -18,7 +19,8 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponent {
 	public ComponentTFFinalCastleBridge() {
 	}
 
-	public ComponentTFFinalCastleBridge(int i, int x, int y, int z, int length, EnumFacing direction) {
+	public ComponentTFFinalCastleBridge(TFFeature feature, int i, int x, int y, int z, int length, EnumFacing direction) {
+		super(feature, i);
 		this.setCoordBaseMode(direction);
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, 0, -1, -3, length - 1, 5, 6, direction);
 

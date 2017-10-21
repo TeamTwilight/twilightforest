@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
@@ -15,11 +16,10 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 
 	public ComponentTFMazeDeadEndChest() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeDeadEndChest(int i, int x, int y, int z, EnumFacing rotation) {
-		super(i, x, y, z, rotation);
+	public ComponentTFMazeDeadEndChest(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+		super(feature, i, x, y, z, rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;

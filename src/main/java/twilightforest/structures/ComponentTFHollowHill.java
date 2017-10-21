@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.entity.EntityTFFireBeetle;
 import twilightforest.entity.EntityTFPinchBeetle;
@@ -37,8 +38,8 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 		super();
 	}
 
-	public ComponentTFHollowHill(World world, Random rand, int i, int size, int x, int y, int z) {
-		super(i);
+	public ComponentTFHollowHill(TFFeature feature, World world, Random rand, int i, int size, int x, int y, int z) {
+		super(feature, i);
 
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 

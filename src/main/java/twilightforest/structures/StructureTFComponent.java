@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 
 import javax.annotation.Nullable;
@@ -37,12 +38,18 @@ public abstract class StructureTFComponent extends StructureComponent {
 
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
+	private TFFeature feature = TFFeature.nothing;
 
 	public StructureTFComponent() {
 	}
 
-	public StructureTFComponent(int i) {
+	public StructureTFComponent(TFFeature feature, int i) {
 		super(i);
+		this.feature = feature;
+	}
+
+	public TFFeature getFeatureType() {
+		return feature;
 	}
 
 	protected void setDebugEntity(World world, int x, int y, int z, String s) {

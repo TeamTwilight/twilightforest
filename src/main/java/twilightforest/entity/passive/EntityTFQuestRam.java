@@ -3,11 +3,7 @@ package twilightforest.entity.passive;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAITempt;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,18 +17,20 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFAdvancements;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
+import twilightforest.block.enums.BossVariant;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
 import twilightforest.item.TFItems;
-import twilightforest.util.PlayerHelper;
 
 
 public class EntityTFQuestRam extends EntityAnimal {
@@ -124,6 +122,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 		dropItemWithOffset(Item.getItemFromBlock(Blocks.LAPIS_BLOCK), 1, 1.0F);
 		dropItemWithOffset(TFItems.crumbleHorn, 1, 1.0F);
 
+		entityDropItem(new ItemStack(TFItems.trophy, 1, BossVariant.QUEST_RAM.ordinal()), 1.0F);
+
 		rewardNearbyPlayers(this.world, this.posX, this.posY, this.posZ);
 	}
 
@@ -202,10 +202,10 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	public void animateAddColor(EnumDyeColor color, int iterations) {
-		int colorVal = color.getColorValue();
-		int red = colorVal >>> 16 & 0xFF;
-		int green = colorVal >>> 8 & 0xFF;
-		int blue = colorVal & 0xFF;
+		float[] colorVal = color.getColorComponentValues();
+		int red = (int) (colorVal[0] * 255F);
+		int green = (int) (colorVal[1] * 255F);
+		int blue = (int) (colorVal[2] * 255F);
 
 		for (int i = 0; i < iterations; i++) {
 			this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);

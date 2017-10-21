@@ -910,7 +910,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		if(structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()))
 			return hollowTreeGenerator.getNearestStructurePos(worldIn, position, findUnexplored);
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		if (feature != null)
+		if (feature != null && feature != TFFeature.nothing)
 			return TFFeature.findNearestFeaturePosBySpacing(worldIn, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
 		return null;
 	}
@@ -922,7 +922,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
 		return this.majorFeatureGenerator.isStructureLocked(pos, lockIndex);
 	}
-
 
 	public boolean isBlockInStructureBB(BlockPos pos) {
 		return this.majorFeatureGenerator.isInsideStructure(pos);
@@ -940,7 +939,6 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return this.majorFeatureGenerator.isStructureConquered(pos);
 	}
 
-
 	public boolean isBlockInFullStructure(int x, int z) {
 		return this.majorFeatureGenerator.isBlockInFullStructure(x, z);
 	}
@@ -953,12 +951,13 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		return this.majorFeatureGenerator.getFullSBBAt(mapX, mapZ);
 	}
 
-
 	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
 		return this.majorFeatureGenerator.getFullSBBNear(mapX, mapZ, range);
-
 	}
 
+	public TFFeature getFeatureAt(BlockPos pos) {
+		return majorFeatureGenerator.getFeatureAt(pos);
+	}
 
 	@Override
 	public void recreateStructures(Chunk chunk, int var1, int var2) {
@@ -968,6 +967,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 	@Override
 	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
-		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : TFFeature.getFeatureByName(new ResourceLocation(structureName)) != null;
+		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
+		return structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName()) ? hollowTreeGenerator.isInsideStructure(pos) : feature != null && feature != TFFeature.nothing && getFeatureAt(pos) == feature;
 	}
 }

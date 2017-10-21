@@ -8,6 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	public ComponentTFIceTowerEntrance() {
 	}
 
-	public ComponentTFIceTowerEntrance(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	public ComponentTFIceTowerEntrance(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 
@@ -60,7 +61,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dx = offsetTowerCCoords(x, y, z, this.size, direction);
 
-		ComponentTFIceTowerStairs entrance = new ComponentTFIceTowerStairs(index, dx.getX(), dx.getY(), dx.getZ(), this.size, this.height, direction);
+		ComponentTFIceTowerStairs entrance = new ComponentTFIceTowerStairs(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), this.size, this.height, direction);
 
 		list.add(entrance);
 		entrance.buildComponent(list.get(0), list, rand);

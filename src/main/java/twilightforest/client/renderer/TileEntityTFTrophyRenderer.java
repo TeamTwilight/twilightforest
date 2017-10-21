@@ -4,6 +4,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -15,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.BossVariant;
@@ -51,6 +53,9 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	private static final ResourceLocation textureLocKnightPhantom = new ResourceLocation(TwilightForestMod.MODEL_DIR + "phantomskeleton.png");
 	private ModelTFPhantomArmor knightPhantomArmorModel;
 	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
+	private ModelTFQuestRam questRamModel;
+	private static final ResourceLocation textureLocQuestRam = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram.png");
+	private static final ResourceLocation textureLocQuestRamLines = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram_lines.png");
 
 	public TileEntityTFTrophyRenderer() {
 		hydraHeadModel = new ModelTFHydraHead();
@@ -61,6 +66,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		minoshroomModel = new ModelTFMinoshroom();
 		knightPhantomModel = new ModelTFKnightPhantom2();
 		knightPhantomArmorModel = new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F);
+		questRamModel = new ModelTFQuestRam();
 	}
 
 	@MethodsReturnNonnullByDefault
@@ -121,24 +127,20 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	private ItemCameraTransforms.TransformType transform;
 	private IBakedModel model;
 
-	private IBakedModel trophyGold;
-	private IBakedModel trophyIron;
+	private final IBakedModel[] trophyModels = new IBakedModel[BossVariant.TrophyType.values().length];
 
 	@Override
 	public void render(@Nullable TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
-		//if (model == null && trophy == null) {
-		//	model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy", "inventory"));
-		//}
-
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 
 		if (trophy == null) {
 			if (transform == ItemCameraTransforms.TransformType.GUI) {
-				if (!BossVariant.values()[stack.getMetadata() % BossVariant.values().length].usesGoldBackground())
-					model = trophyIron != null ? trophyIron : (trophyIron = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory")));
-				else
-					model = trophyGold != null ? trophyGold : (trophyGold = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":trophy", "inventory")));
+				BossVariant variant = BossVariant.values()[stack.getMetadata() % BossVariant.values().length];
+				BossVariant.TrophyType trophyType = variant.getTrophyType();
+				int trophyVariant = trophyType.ordinal();
+
+				model = trophyModels[trophyVariant] != null ? trophyModels[trophyVariant] : (trophyModels[trophyVariant] = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getModel(new ModelResourceLocation(TwilightForestMod.ID + ":" + trophyType.getModelName(), "inventory")));
 
 				GlStateManager.disableLighting();
 				GlStateManager.translate(0.5F, 0.5F, -1.5F);
@@ -146,6 +148,10 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 				Minecraft.getMinecraft().getRenderItem().renderItem(stack, bakedModel);
 				GlStateManager.enableLighting();
 				GlStateManager.translate(-0.5F, 0.0F, 1.5F);
+
+				//if (variant == BossVariant.QUEST_RAM)
+				//	GlStateManager.translate(0.0F,0.0625F,0.0F);
+
 				GlStateManager.rotate(30, 1F, 0F, 0F);
 			}
 
@@ -163,8 +169,13 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 			}
 
 			if (transform == ItemCameraTransforms.TransformType.HEAD) {
-				GlStateManager.scale(2.0F, 2.0F, 2.0F);
-				GlStateManager.translate(-0.25F, 0.0F, -0.25F);
+				if (BossVariant.values()[stack.getMetadata() % BossVariant.values().length] == BossVariant.QUEST_RAM) {
+					GlStateManager.scale(3F, 3F, 3F);
+					GlStateManager.translate(-0.33F, -0.13F, -0.33F);
+				} else {
+					GlStateManager.scale(2.0F, 2.0F, 2.0F);
+					GlStateManager.translate(-0.25F, 0.0F, -0.25F);
+				}
 			}
 		}
 
@@ -223,12 +234,15 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 			case KNIGHT_PHANTOM:
 				renderKnightPhantomHead(rotation, onGround);
 				break;
+			case QUEST_RAM:
+				renderQuestRamHead(rotation, onGround);
+				break;
 			default:
 				break;
 		}
 
+		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
-
 	}
 
 	/**
@@ -289,7 +303,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		GlStateManager.translate(0, onGround ? 1.75F : 1.5F, onGround ? 0F : 0.24F);
 
-		// render the naga head
+		// render the lich head
 		lichModel.bipedHead.render(0.0625F);
 		lichModel.bipedHeadwear.render(0.0625F);
 	}
@@ -310,7 +324,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		GlStateManager.translate(0, onGround ? 1F : 1F, onGround ? 0F : 0F);
 
-		// render the naga head
+		// render the head
 		urGhastModel.render(null, 0.0F, 0, trophy != null ? trophy.ticksExisted + partialTime : TFClientEvents.sineTicker + partialTime, 0, 0.0F, 0.0625F);
 	}
 
@@ -329,7 +343,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		GlStateManager.translate(0, onGround ? 1.5F : 1.25F, onGround ? 0F : 0.24F);
 
-		// render the naga head
+		// render the head
 		snowQueenModel.bipedHead.render(0.0625F);
 		snowQueenModel.bipedHeadwear.render(0.0625F);
 	}
@@ -349,7 +363,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		GlStateManager.translate(0, onGround ? 1.875F : 1.625F, onGround ? 0.5625F : 0.8125F);
 
-		// render the naga head
+		// render the head
 		minoshroomModel.bipedHead.render(0.0625F);
 	}
 
@@ -366,7 +380,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		GlStateManager.scale(0.9375F, 0.9375F, 0.9375F);
 
-		// render the naga head
+		// render the head
 		this.bindTexture(textureLocKnightPhantomArmor);
 		knightPhantomArmorModel.bipedHead.render(0.0625F);
 
@@ -374,5 +388,47 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 		this.bindTexture(textureLocKnightPhantom);
 		knightPhantomModel.bipedHead.render(0.0625F);
+	}
+
+	private void renderQuestRamHead(float rotation, boolean onGround) {
+		if (transform == ItemCameraTransforms.TransformType.GUI)
+			GlStateManager.scale(0.55f, 0.55f, 0.55f);
+		else if (stack == null)
+			GlStateManager.scale(0.65f, 0.65f, 0.65f);
+		else
+			GlStateManager.scale(0.5f, 0.5f, 0.5f);
+
+		if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND || transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
+			GlStateManager.translate(0.0F, 0.5F, 0.0F);
+		}
+
+		this.bindTexture(textureLocQuestRam);
+
+		GlStateManager.scale(1f, -1f, -1f);
+
+		GlStateManager.rotate(rotation, 0F, 1F, 0F);
+		GlStateManager.rotate(180F, 0F, 1F, 0F);
+
+		GlStateManager.translate(0F, onGround ? 1.30F : 1.03F, onGround ? 0.765625F : 1.085F);
+
+		// render the head
+		questRamModel.head.render(0.0625F);
+
+		GlStateManager.disableLighting();
+		this.bindTexture(textureLocQuestRamLines);
+		float var4 = 1.0F;
+		GlStateManager.enableBlend();
+		GlStateManager.disableAlpha();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+		GlStateManager.scale(1.025f, 1.025f, 1.025f);
+		char var5 = 61680;
+		int var6 = var5 % 65536;
+		int var7 = var5 / 65536;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var6 / 1.0F, (float) var7 / 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, var4);
+		questRamModel.head.render(0.0625F);
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.enableLighting();
 	}
 }

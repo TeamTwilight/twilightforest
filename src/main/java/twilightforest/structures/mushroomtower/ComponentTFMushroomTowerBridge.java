@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponent;
 
@@ -21,11 +22,10 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 
 	public ComponentTFMushroomTowerBridge() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	protected ComponentTFMushroomTowerBridge(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFMushroomTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 
 		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
 

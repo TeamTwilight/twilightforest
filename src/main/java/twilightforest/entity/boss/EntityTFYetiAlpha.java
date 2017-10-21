@@ -196,12 +196,14 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
-		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			IBlockState state = world.getBlockState(pos);
-			Block block = state.getBlock();
+		if (world.getGameRules().getBoolean("mobGriefing")) {
+			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+				IBlockState state = world.getBlockState(pos);
+				Block block = state.getBlock();
 
-			if (!block.isAir(state, world, pos) && block != Blocks.OBSIDIAN && block != Blocks.END_STONE && block != Blocks.BEDROCK) {
-				world.destroyBlock(pos, false);
+				if (!block.isAir(state, world, pos) && block != Blocks.OBSIDIAN && block != Blocks.END_STONE && block != Blocks.BEDROCK) {
+					world.destroyBlock(pos, false);
+				}
 			}
 		}
 	}

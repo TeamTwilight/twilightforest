@@ -15,6 +15,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.world.TFGenSmallRainboak;
 import twilightforest.world.TFGenSmallTwilightOak;
 
@@ -28,8 +29,8 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	public ComponentTFStrongholdAtrium() {
 	}
 
-	public ComponentTFStrongholdAtrium(int i, EnumFacing facing, int x, int y, int z) {
-		super(i, facing, x, y, z);
+	public ComponentTFStrongholdAtrium(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+		super(feature, i, facing, x, y, z);
 	}
 
 	/**

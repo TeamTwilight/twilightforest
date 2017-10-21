@@ -1,0 +1,13 @@
+{
+  "result": {
+    "item": "twilightforest:arctic_fur",
+    "count": 9
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:block_storage",
+      "data": 3
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

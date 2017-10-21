@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -32,8 +33,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		super();
 	}
 
-	protected ComponentTFIceTowerWing(int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
-		super(i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFIceTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**
@@ -143,7 +144,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 			return false;
 		}
 
-		ComponentTFIceTowerWing wing = new ComponentTFIceTowerWing(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFIceTowerWing wing = new ComponentTFIceTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -165,7 +166,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
-		ComponentTFIceTowerWing wing = new ComponentTFIceTowerBossWing(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFIceTowerWing wing = new ComponentTFIceTowerBossWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructureComponent intersect = StructureComponent.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -718,7 +719,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	@Override
 	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		int index = this.getComponentType();
-		tryToFitRoof(list, rand, new ComponentTFIceTowerRoof(index + 1, this));
+		tryToFitRoof(list, rand, new ComponentTFIceTowerRoof(getFeatureType(), index + 1, this));
 	}
 
 	/**
@@ -728,7 +729,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	public void makeABeard(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		int index = this.getComponentType();
 		ComponentTFIceTowerBeard beard;
-		beard = new ComponentTFIceTowerBeard(index + 1, this);
+		beard = new ComponentTFIceTowerBeard(getFeatureType(), index + 1, this);
 		list.add(beard);
 		beard.buildComponent(this, list, rand);
 	}

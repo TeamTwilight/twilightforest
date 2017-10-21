@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.BossVariant;
@@ -17,8 +18,8 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 		super();
 	}
 
-	public ComponentTFHydraLair(World world, Random rand, int i, int x, int y, int z) {
-		super(world, rand, i, 2, x, y + 2, z);
+	public ComponentTFHydraLair(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(feature, world, rand, i, 2, x, y + 2, z);
 	}
 
 	@Override

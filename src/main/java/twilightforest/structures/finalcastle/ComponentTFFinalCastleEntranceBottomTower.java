@@ -4,6 +4,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.structures.StructureTFComponent;
 
@@ -14,8 +15,8 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	public ComponentTFFinalCastleEntranceBottomTower() {
 	}
 
-	public ComponentTFFinalCastleEntranceBottomTower(Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumFacing direction) {
-		super(rand, i, x, y, z, floors, entranceFloor, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
+	public ComponentTFFinalCastleEntranceBottomTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumFacing direction) {
+		super(feature, rand, i, x, y, z, floors, entranceFloor, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
 
 //    		addOpening(12, 1, size / 2, 0);
 //    		addOpening(size / 2, 1, 0, 1);
@@ -48,7 +49,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 		EnumFacing direction = getStructureRelativeRotation(rotation);
 		BlockPos dx = offsetTowerCCoords(x, y, z, 0, direction);
 
-		ComponentTFFinalCastleEntranceStairs stairs = new ComponentTFFinalCastleEntranceStairs(index, dx.getX(), dx.getY(), dx.getZ(), direction);
+		ComponentTFFinalCastleEntranceStairs stairs = new ComponentTFFinalCastleEntranceStairs(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), direction);
 
 		list.add(stairs);
 		stairs.buildComponent(list.get(0), list, rand);

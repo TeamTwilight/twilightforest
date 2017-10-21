@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
@@ -14,11 +15,10 @@ public class ComponentTFMazeCorridorIronFence extends ComponentTFMazeCorridor {
 
 	public ComponentTFMazeCorridorIronFence() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFMazeCorridorIronFence(int i, int x, int y, int z, EnumFacing rotation) {
-		super(i, x, y, z, rotation);
+	public ComponentTFMazeCorridorIronFence(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+		super(feature, i, x, y, z, rotation);
 	}
 
 	@Override

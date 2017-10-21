@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 
 import java.util.Random;
 
@@ -13,11 +14,10 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofSlab() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ComponentTFTowerRoofSlab(int i, ComponentTFTowerWing wing) {
-		super(i, wing);
+	public ComponentTFTowerRoofSlab(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i, wing);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

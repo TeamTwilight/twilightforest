@@ -8,6 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFHedgeSpider;
@@ -28,8 +29,8 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 		super();
 	}
 
-	public ComponentTFHedgeMaze(World world, Random rand, int i, int x, int y, int z) {
-		super(i);
+	public ComponentTFHedgeMaze(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(feature, i);
 
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 

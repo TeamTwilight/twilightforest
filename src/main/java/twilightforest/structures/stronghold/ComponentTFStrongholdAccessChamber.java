@@ -8,6 +8,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFTrophyPedestal;
 import twilightforest.block.TFBlocks;
 
@@ -19,8 +20,8 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 	public ComponentTFStrongholdAccessChamber() {
 	}
 
-	public ComponentTFStrongholdAccessChamber(int i, EnumFacing facing, int x, int y, int z) {
-		super(i, facing, x, y, z);
+	public ComponentTFStrongholdAccessChamber(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+		super(feature, i, facing, x, y, z);
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
@@ -24,7 +23,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.EnumDifficulty;
@@ -345,6 +343,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 				}
 			}
 		}
+		renderYawOffset = rotationYaw;
 
 		// heads that are free at this point may consider attacking secondary targets
 		this.secondaryAttacks();
@@ -588,11 +587,13 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	private void destroyBlocksInAABB(AxisAlignedBB box) {
-		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			IBlockState state = world.getBlockState(pos);
-			if (!state.getBlock().isAir(state, world, pos) && state.getBlock() != Blocks.OBSIDIAN
-					&& state.getBlock() != Blocks.END_STONE && state.getBlock() != Blocks.BEDROCK) {
-				world.destroyBlock(pos, false);
+		if (world.getGameRules().getBoolean("mobGriefing")) {
+			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+				IBlockState state = world.getBlockState(pos);
+				if (!state.getBlock().isAir(state, world, pos) && state.getBlock() != Blocks.OBSIDIAN
+						&& state.getBlock() != Blocks.END_STONE && state.getBlock() != Blocks.BEDROCK) {
+					world.destroyBlock(pos, false);
+				}
 			}
 		}
 	}

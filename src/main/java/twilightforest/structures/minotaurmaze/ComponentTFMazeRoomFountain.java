@@ -3,6 +3,7 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.MazestoneVariant;
@@ -13,12 +14,11 @@ public class ComponentTFMazeRoomFountain extends ComponentTFMazeRoom {
 
 	public ComponentTFMazeRoomFountain() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 
-	public ComponentTFMazeRoomFountain(int i, Random rand, int x, int y, int z) {
-		super(i, rand, x, y, z);
+	public ComponentTFMazeRoomFountain(TFFeature feature, int i, Random rand, int x, int y, int z) {
+		super(feature, i, rand, x, y, z);
 	}
 
 

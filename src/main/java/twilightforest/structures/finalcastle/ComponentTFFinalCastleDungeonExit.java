@@ -8,6 +8,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
@@ -22,8 +23,8 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	public ComponentTFFinalCastleDungeonExit() {
 	}
 
-	public ComponentTFFinalCastleDungeonExit(Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
-		super(rand, i, x, y, z, direction, level);
+	public ComponentTFFinalCastleDungeonExit(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
+		super(feature, rand, i, x, y, z, direction, level);
 	}
 
 
