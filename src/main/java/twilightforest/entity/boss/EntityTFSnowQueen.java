@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
+import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -12,11 +13,12 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -28,6 +30,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -48,13 +52,12 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	private static final int MAX_SUMMONS = 6;
 	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> PHASE_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BYTE);
+	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
 
 
 	public enum Phase {SUMMON, DROP, BEAM}
-
-	;
 
 	public final Entity[] iceArray = new Entity[7];
 
@@ -135,6 +138,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
+		if (!world.isRemote)
+			bossInfo.setPercent(getHealth() / getMaxHealth());
 		// make snow particles
 		for (int i = 0; i < 3; i++) {
 			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
@@ -393,6 +398,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		EntityTFIceCrystal minion = new EntityTFIceCrystal(world);
 		minion.setPositionAndRotation(posX, posY, posZ, 0, 0);
 
+		world.spawnEntity(minion);
+
 		for (int i = 0; i < 100; i++) {
 			double attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
 			double attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
@@ -403,7 +410,6 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 			}
 		}
 
-		world.spawnEntity(minion);
 		minion.setAttackTarget(targetedEntity);
 		minion.setToDieIn30Seconds(); // don't stick around
 
@@ -422,5 +428,30 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	public void doBreathAttack(Entity target) {
 		target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE);
 		// TODO: slow target?
+	}
+
+	@Override
+	public void setCustomNameTag(String name) {
+		super.setCustomNameTag(name);
+		this.bossInfo.setName(this.getDisplayName());
+	}
+
+	@Override
+	public void addTrackingPlayer(EntityPlayerMP player) {
+		super.addTrackingPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
+
+	@Override
+	public void removeTrackingPlayer(EntityPlayerMP player) {
+		super.removeTrackingPlayer(player);
+		this.bossInfo.removePlayer(player);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+		super.readEntityFromNBT(nbttagcompound);
+		if (this.hasCustomName())
+			this.bossInfo.setName(this.getDisplayName());
 	}
 }

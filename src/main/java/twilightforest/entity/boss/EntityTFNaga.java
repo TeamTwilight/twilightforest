@@ -441,6 +441,11 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			}
 		}
 
+		if (!isWithinHomeDistanceCurrentPosition()) {
+			setAttackTarget(null);
+			getNavigator().setPath(getNavigator().getPathToPos(getHomePosition()), 1.0F);
+		}
+
 		// BOSS BAR!
 		this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
 	}

@@ -16,7 +16,7 @@ public class RenderTFGiant extends RenderBiped<EntityTFGiantMiner> {
 	private boolean typeCache = false;
 
 	public RenderTFGiant(RenderManager manager) {
-		super(manager, new ModelPlayer(0, false), 0.625F);
+		super(manager, new ModelPlayer(0, false), 1.8F);
 		this.addLayer(new LayerBipedArmor(this));
 	}
 

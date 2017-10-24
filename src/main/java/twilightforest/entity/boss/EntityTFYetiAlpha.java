@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -11,6 +12,7 @@ import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
@@ -57,12 +59,12 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	public EntityTFYetiAlpha(World par1World) {
 		super(par1World);
 		this.setSize(3.8F, 5.0F);
-		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.experienceValue = 317;
 	}
 
 	@Override
 	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAITFYetiTired(this, 100));
 		this.tasks.addTask(2, new EntityAIStayNearHome(this, 2.0F));
 		this.tasks.addTask(3, new EntityAITFYetiRampage(this, 10, 180));
@@ -201,7 +203,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 				IBlockState state = world.getBlockState(pos);
 				Block block = state.getBlock();
 
-				if (!block.isAir(state, world, pos) && block != Blocks.OBSIDIAN && block != Blocks.END_STONE && block != Blocks.BEDROCK) {
+				if (!block.isAir(state, world, pos) && block != Blocks.OBSIDIAN && block != Blocks.END_STONE && block != Blocks.BEDROCK && state.getBlockHardness(world, pos) >= 0 && state.getMaterial() != Material.WATER && state.getMaterial() != Material.LAVA) {
 					world.destroyBlock(pos, false);
 				}
 			}

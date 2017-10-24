@@ -15,10 +15,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.world.TFBiomeProvider;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TFMagicMapData extends MapData {
-	public final List<TFMapDecoration> tfDecorations = new ArrayList<>();
+	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
 
 	public TFMagicMapData(String name) {
 		super(name);
@@ -84,11 +86,12 @@ public class TFMagicMapData extends MapData {
 	public byte[] serializeFeatures() {
 		byte[] storage = new byte[this.tfDecorations.size() * 3];
 
-		for (int i = 0; i < tfDecorations.size(); ++i) {
-			TFMapDecoration featureCoord = this.tfDecorations.get(i);
+		int i = 0;
+		for (TFMapDecoration featureCoord : tfDecorations) {
 			storage[i * 3] = (byte) featureCoord.featureId;
 			storage[i * 3 + 1] = featureCoord.getX();
 			storage[i * 3 + 2] = featureCoord.getY();
+			i++;
 		}
 
 		return storage;
@@ -139,6 +142,21 @@ public class TFMagicMapData extends MapData {
 				GlStateManager.popMatrix();
 			}
 			return true;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (super.equals(o) && o instanceof TFMapDecoration) {
+				TFMapDecoration other = (TFMapDecoration) o;
+				return this.featureId == other.featureId;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return super.hashCode() * 31 + featureId;
 		}
 	}
 }

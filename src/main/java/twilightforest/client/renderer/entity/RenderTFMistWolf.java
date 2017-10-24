@@ -14,7 +14,7 @@ public class RenderTFMistWolf extends RenderWolf {
 
 	public RenderTFMistWolf(RenderManager manager) {
 		super(manager);
-		this.shadowSize = 0.0625F;
+		this.shadowSize = 1.0F;
 	}
 
 	@Override

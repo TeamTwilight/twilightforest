@@ -1,8 +1,20 @@
 package twilightforest;
 
+import com.google.common.collect.Lists;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.List;
 
 @Config(modid = TwilightForestMod.ID)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
 	public static final Dimension dimension = new Dimension();
 
@@ -46,6 +58,38 @@ public class TFConfig {
 	@Config.Comment("Meta of item used to create the Twilight Forest Portal, -1 for any metadata")
 	public static int portalCreationMeta = -1;
 
+	@Config.Comment("Anti-Builder blacklist. (domain:block:meta) meta is optional")
+	public static String[] antibuilderBlacklist = {"minecraft:bedrock", "tombmanygraves:grave_block"};
+
 	@Config.Comment("Rotate trophy heads in gui model. Has close to no performance impact at all. For those who don't like fun.")
 	public static boolean rotateTrophyHeadsGui = true;
+
+	@SubscribeEvent
+	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.getModID().equals(TwilightForestMod.ID)) {
+			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
+		}
+	}
+
+	public static List<IBlockState> getAntiBuilderBlacklist() {
+		List<IBlockState> blacklist = Lists.newArrayList();
+		for (String s : antibuilderBlacklist) {
+			String[] data = s.split(":");
+			if (data.length < 2)
+				continue;
+			Block block = Block.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
+			if (block != Blocks.AIR) {
+				int meta = 0;
+				if (data.length >= 3) {
+					try {
+						meta = Integer.parseInt(data[2]);
+					} catch (NumberFormatException e) {
+						meta = 0;
+					}
+				}
+				blacklist.add(block.getStateFromMeta(meta));
+			}
+		}
+		return blacklist;
+	}
 }

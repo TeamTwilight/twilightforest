@@ -49,7 +49,7 @@ public class RenderTFMinoshroom extends RenderBiped<EntityTFMinoshroom> {
 				GlStateManager.pushMatrix();
 				((ModelBiped) RenderTFMinoshroom.this.getMainModel()).bipedHead.postRender(0.0625F);
 				GlStateManager.scale(1.0F, -1.0F, 1.0F);
-				GlStateManager.translate(0.0F, 0.7F, -0.2F);
+				GlStateManager.translate(0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(12.0F, 0.0F, 1.0F, 0.0F);
 				GlStateManager.translate(-0.5F, -0.5F, 0.5F);
 				blockrendererdispatcher.renderBlockBrightness(Blocks.RED_MUSHROOM.getDefaultState(), 1.0F);

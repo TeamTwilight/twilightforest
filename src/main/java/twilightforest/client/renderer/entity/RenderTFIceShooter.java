@@ -9,7 +9,7 @@ import twilightforest.entity.EntityTFIceShooter;
 public class RenderTFIceShooter extends RenderTFBiped<EntityTFIceShooter> {
 
 	public RenderTFIceShooter(RenderManager manager) {
-		super(manager, new ModelTFIceShooter(), 1.0F, "iceshooter.png");
+		super(manager, new ModelTFIceShooter(), 0.4F, "iceshooter.png");
 	}
 
 	@Override

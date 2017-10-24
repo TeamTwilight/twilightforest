@@ -306,6 +306,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 		if (getAttackTarget() != null) {
 			faceEntity(getAttackTarget(), 10F, getVerticalFaceSpeed());
+			renderYawOffset = rotationYaw;
 
 			// have any heads not currently attacking switch to the primary target
 			for (int i = 0; i < numHeads; i++) {
@@ -343,7 +344,6 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 				}
 			}
 		}
-		renderYawOffset = rotationYaw;
 
 		// heads that are free at this point may consider attacking secondary targets
 		this.secondaryAttacks();

@@ -9,7 +9,7 @@ import twilightforest.entity.EntityTFIceExploder;
 public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
 
 	public RenderTFIceExploder(RenderManager manager) {
-		super(manager, new ModelTFIceExploder(), 1.0F, "iceexploder.png");
+		super(manager, new ModelTFIceExploder(), 0.4F, "iceexploder.png");
 	}
 
 	@Override

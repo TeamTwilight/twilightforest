@@ -74,6 +74,11 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
+	public float getEyeHeight() {
+		return 0.3F;
+	}
+
+	@Override
 	public void onUpdate() {
 		if (!world.isRemote && shouldSpawnMore()) {
 			int more = 1 + rand.nextInt(2);

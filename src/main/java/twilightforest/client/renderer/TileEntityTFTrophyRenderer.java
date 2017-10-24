@@ -5,7 +5,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +25,15 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.enums.BossVariant;
 import twilightforest.client.TFClientEvents;
-import twilightforest.client.model.*;
+import twilightforest.client.model.ModelTFHydraHead;
+import twilightforest.client.model.ModelTFKnightPhantom2;
+import twilightforest.client.model.ModelTFLich;
+import twilightforest.client.model.ModelTFMinoshroom;
+import twilightforest.client.model.ModelTFNaga;
+import twilightforest.client.model.ModelTFPhantomArmor;
+import twilightforest.client.model.ModelTFQuestRam;
+import twilightforest.client.model.ModelTFSnowQueen;
+import twilightforest.client.model.ModelTFTowerBoss;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
 import javax.annotation.Nullable;
@@ -425,10 +437,12 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		int var6 = var5 % 65536;
 		int var7 = var5 / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var6 / 1.0F, (float) var7 / 1.0F);
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, var4);
 		questRamModel.head.render(0.0625F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.enableAlpha();
 		GlStateManager.enableLighting();
 	}
 }

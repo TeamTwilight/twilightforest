@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketMaps;
+import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -12,6 +13,8 @@ import twilightforest.TFMagicMapData;
 import twilightforest.item.ItemTFMagicMap;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 // Rewraps vanilla SPacketMaps to properly expose our custom decorations
 public class PacketMagicMap implements IMessage {
@@ -68,9 +71,15 @@ public class PacketMagicMap implements IMessage {
 					mapData.deserializeFeatures(message.featureData);
 
 					// Cheat and put tfDecorations into main collection so they are called by renderer
+					// However, clear the decorations vanilla put there so player markers go above feature markers.
+					Map<String, MapDecoration> saveVanilla = mapData.mapDecorations;
+					mapData.mapDecorations = new LinkedHashMap<>();
+
 					for (TFMagicMapData.TFMapDecoration tfDecor : mapData.tfDecorations) {
 						mapData.mapDecorations.put(tfDecor.toString(), tfDecor);
 					}
+
+					mapData.mapDecorations.putAll(saveVanilla);
 
 					Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().updateMapTexture(mapData);
 				}

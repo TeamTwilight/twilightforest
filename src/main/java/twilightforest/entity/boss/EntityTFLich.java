@@ -5,6 +5,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -93,6 +94,7 @@ public class EntityTFLich extends EntityMob {
 
 	@Override
 	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAITFLichShadows(this));
 		this.tasks.addTask(2, new EntityAITFLichMinions(this));
 		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, true) {
@@ -147,16 +149,6 @@ public class EntityTFLich extends EntityMob {
 
 	@Override
 	protected boolean canDespawn() {
-		return false;
-	}
-
-	@Override
-	public boolean isInLava() {
-		return false;
-	}
-
-	@Override
-	public boolean isInWater() {
 		return false;
 	}
 

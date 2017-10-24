@@ -10,7 +10,7 @@ import twilightforest.entity.EntityTFSnowGuardian;
 public class RenderTFSnowGuardian extends RenderTFBiped<EntityTFSnowGuardian> {
 
 	public RenderTFSnowGuardian(RenderManager manager) {
-		super(manager, new ModelTFSnowGuardian(), 1.0F, "textures/entity/zombie/zombie.png");
+		super(manager, new ModelTFSnowGuardian(), 0.25F, "textures/entity/zombie/zombie.png");
 		this.addLayer(new LayerBipedArmor(this));
 	}
 

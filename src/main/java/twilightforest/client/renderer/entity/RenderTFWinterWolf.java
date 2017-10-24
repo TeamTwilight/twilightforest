@@ -13,7 +13,7 @@ public class RenderTFWinterWolf extends RenderWolf {
 
 	public RenderTFWinterWolf(RenderManager manager) {
 		super(manager);
-		this.shadowSize = 0.0625F;
+		this.shadowSize = 1.0F;
 	}
 
 	@Override

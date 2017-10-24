@@ -7,10 +7,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import twilightforest.TFConfig;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.enums.TowerTranslucentVariant;
 
+import java.util.List;
 import java.util.Random;
 
 public class TileEntityTFReverter extends TileEntity implements ITickable {
@@ -224,7 +226,7 @@ public class TileEntityTFReverter extends TileEntity implements ITickable {
 		if (stateThere.getBlock() == Blocks.AIR && !replaceWith.getMaterial().blocksMovement()) {
 			return false;
 		}
-		if (isUnrevertable(stateThere, replaceWith)) {
+		if (stateThere.getBlockHardness(world, pos) < 0 || isUnrevertable(stateThere, replaceWith)) {
 			return false;
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
@@ -270,7 +272,8 @@ public class TileEntityTFReverter extends TileEntity implements ITickable {
 			return true;
 		}
 
-		return false;
+		List<IBlockState> blacklist = TFConfig.getAntiBuilderBlacklist();
+		return blacklist.contains(stateThere) || blacklist.contains(replaceWith);
 	}
 
 	private void captureBlockData() {
