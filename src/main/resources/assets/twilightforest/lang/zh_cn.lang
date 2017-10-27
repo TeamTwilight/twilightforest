@@ -80,10 +80,10 @@ advancement.twilight_progress_thorns.desc=穿越荆棘之地，打开通往城�
 advancement.twilight_progress_castle=这就是… 城堡吗…
 advancement.twilight_progress_castle.desc=这城堡里究竟有什么？！
 
-twilightforest:trophyPedestal.ineligible=你还不够格。
-twilightforest:ore_meter.range=半径：%s，原点：[%d, %d]
-twilightforest:ore_meter.exposed=暴露数量：%d
-twilightforest:scepter_charges=剩余使用次数：%d
+twilightforest.trophyPedestal.ineligible=你还不够格。
+twilightforest.ore_meter.range=半径：%s，原点：[%d, %d]
+twilightforest.ore_meter.exposed=暴露数量：%d
+twilightforest.scepter_charges=剩余使用次数：%d
 
 tile.TFLog.0.name=暮色橡木
 tile.TFLog.1.name=苍穹木

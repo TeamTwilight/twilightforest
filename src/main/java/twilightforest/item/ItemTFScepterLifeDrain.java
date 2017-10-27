@@ -232,6 +232,6 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format("twilightforest:scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
+		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
 	}
 }

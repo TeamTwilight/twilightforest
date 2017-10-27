@@ -83,7 +83,7 @@ advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 twilightforest.trophyPedestal.ineligible=You are unworthy.
 twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
 twilightforest.ore_meter.exposed=Exposed: %s
-twilightforest:scepter_charges=%d charges left
+twilightforest.scepter_charges=%d charges left
 
 tile.TFLog.0.name=Twilight Oak Wood
 tile.TFLog.1.name=Canopy Tree Wood
