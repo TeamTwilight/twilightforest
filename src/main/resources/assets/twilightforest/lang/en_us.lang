@@ -83,6 +83,7 @@ advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 twilightforest.trophyPedestal.ineligible=You are unworthy.
 twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
 twilightforest.ore_meter.exposed=Exposed: %s
+twilightforest:scepter_charges=%d charges left
 
 tile.TFLog.0.name=Twilight Oak Wood
 tile.TFLog.1.name=Canopy Tree Wood
@@ -508,7 +509,7 @@ twilightforest.book.icetower.3=minotaurs nearby.\n\nSurrounding this glacier, th
 twilightforest.book.trollcave.1=\u00A78[[An explorer's notebook, damaged by acid]]\u00A70\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the
 twilightforest.book.trollcave.2=others I have witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n\u00A78[[Next entry]]\u00A70\n\nSuch supreme weather magic must be the result of an unequaled weather
 twilightforest.book.trollcave.3=magician. Such a person would likely hide themselves in an extreme environment, far away.\n\nBased on my logic, I would expect to find such a person somewhere on the glacier, perhaps in some sort of fortress there...
-twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is 
+twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
 
 twilightforest.misc.wip0=This block is a work in progress and may have bugs or unintended effects that may damage your world.
