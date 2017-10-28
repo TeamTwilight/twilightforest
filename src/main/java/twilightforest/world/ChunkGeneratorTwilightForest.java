@@ -812,7 +812,9 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
 		long l2 = (rand.nextLong() / 2L) * 2L + 1L;
 		rand.setSeed(chunkX * l1 + chunkZ * l2 ^ world.getSeed());
-
+		
+		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, chunkX, chunkZ, false);
+		
 		boolean disableFeatures = false;
 
 		disableFeatures |= this.majorFeatureGenerator.generateStructure(world, rand, new ChunkPos(chunkX, chunkZ));
