@@ -12,10 +12,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public class ItemBlockTFMeta extends ItemBlock {
+	private boolean appendNumber = true;
 
 	public ItemBlockTFMeta(Block block) {
 		super(block);
 		setHasSubtypes(true);
+	}
+
+	public ItemBlockTFMeta setAppend(boolean doAppend) {
+		this.appendNumber = doAppend;
+		return this;
 	}
 
 	@Override
@@ -25,8 +31,10 @@ public class ItemBlockTFMeta extends ItemBlock {
 
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack) {
-		int meta = itemstack.getItemDamage();
-		return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
+		if (appendNumber) {
+			int meta = itemstack.getItemDamage();
+			return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
+		} else return super.getUnlocalizedName();
 	}
 
 	@Override

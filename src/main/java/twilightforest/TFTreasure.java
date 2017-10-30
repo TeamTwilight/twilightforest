@@ -15,10 +15,7 @@ import twilightforest.entity.boss.EntityTFMinoshroom;
 import twilightforest.entity.boss.EntityTFNaga;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
-import twilightforest.entity.passive.EntityTFBird;
-import twilightforest.entity.passive.EntityTFBunny;
-import twilightforest.entity.passive.EntityTFDeer;
-import twilightforest.entity.passive.EntityTFRaven;
+import twilightforest.entity.passive.*;
 
 public class TFTreasure {
 	public static final TFTreasure hill1 = new TFTreasure("hill_1");
@@ -67,6 +64,7 @@ public class TFTreasure {
 		LootTableList.register(EntityTFMinoshroom.LOOT_TABLE);
 		LootTableList.register(EntityTFMinotaur.LOOT_TABLE);
 		LootTableList.register(EntityTFNaga.LOOT_TABLE);
+		LootTableList.register(EntityTFQuestRam.REWARD_LOOT_TABLE);
 		LootTableList.register(EntityTFRaven.LOOT_TABLE);
 		LootTableList.register(EntityTFRedcap.LOOT_TABLE);
 		LootTableList.register(EntityTFSkeletonDruid.LOOT_TABLE);

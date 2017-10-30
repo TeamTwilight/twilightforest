@@ -4,14 +4,8 @@
     "model": "cube_all"
   },
   "variants": {
-    "variant=ironwood":  [{ "model": "twilightforest:ironwood_block" }],
-    "variant=fiery":     [{
-      "model": "twilightforest:util/cube_all_2_layer_no_shade",
-      "textures": {
-        "all": "twilightforest:blocks/fiery_pattern",
-        "all2": "twilightforest:blocks/fiery_block_inner"
-      }
-    }],
+    "variant=ironwood":  [{ "model": "twilightforest:ironwood_block"   }],
+    "variant=fiery":     [{ "model": "twilightforest:fiery_block"      }],
     "variant=steelleaf":  [
       {                    "textures": { "all": "twilightforest:blocks/steelleaf_block" } },
       {           "y": 90, "textures": { "all": "twilightforest:blocks/steelleaf_block" } },

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -185,6 +186,11 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			return (state.getBlock() == TFBlocks.plant && state.getValue(BlockTFPlant.VARIANT) == PlantVariant.ROOT_STRAND)
 					|| state == TFBlocks.root.getDefaultState();
 		}
+	}
+
+	@Override
+	public Block.EnumOffsetType getOffsetType() {
+		return Block.EnumOffsetType.NONE;
 	}
 
 

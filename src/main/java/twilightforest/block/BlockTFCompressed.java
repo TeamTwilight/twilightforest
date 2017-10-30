@@ -8,8 +8,13 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -121,4 +126,54 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
     public void registerModel() {
         ModelUtils.registerToStateSingleVariant(this, VARIANT);
     }
+
+    @Override
+	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
+		if ((!entityIn.isImmuneToFire())
+				&& entityIn instanceof EntityLivingBase
+				&& (!EnchantmentHelper.hasFrostWalkerEnchantment((EntityLivingBase)entityIn))
+				&& worldIn.getBlockState(pos).getValue(VARIANT) == CompressedVariant.FIERY) {
+			entityIn.attackEntityFrom(DamageSource.HOT_FLOOR, 1.0F);
+		}
+
+		super.onEntityWalk(worldIn, pos, entityIn);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return state.getValue(VARIANT) == CompressedVariant.FIERY ? 15728880 : super.getPackedLightmapCoords(state, source, pos);
+	}
+
+	@Override
+	public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
+		switch(worldIn.getBlockState(pos).getValue(VARIANT)) {
+			case STEELLEAF:
+				entityIn.fall(fallDistance, 0.75F);
+				break;
+			case ARCTIC_FUR:
+				entityIn.fall(fallDistance, 0.1F);
+				break;
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean isFireSource(World world, BlockPos pos, EnumFacing face) {
+		return CompressedVariant.FIERY == world.getBlockState(pos).getValue(VARIANT);
+	}
+
+	@Deprecated
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		if (blockState.getValue(VARIANT) == CompressedVariant.FIERY) {
+			IBlockState state = blockAccess.getBlockState(pos.offset(side));
+			return state.getBlock() != this || state.getValue(VARIANT) != CompressedVariant.FIERY;
+		} else return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
 }

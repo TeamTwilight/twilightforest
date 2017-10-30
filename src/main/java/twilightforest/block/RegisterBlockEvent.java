@@ -79,7 +79,7 @@ public final class RegisterBlockEvent {
 		blocks.register("castle_door_vanished", (new BlockTFCastleDoor(true)).setUnlocalizedName("CastleDoorVanished"));
 		blocks.register("castle_unlock", (new BlockTFCastleUnlock()).setUnlocalizedName("CastleUnlock"));
 		blocks.register("experiment_115", (new BlockTFExperiment115()).setUnlocalizedName("experiment115").setHardness(0.5F));
-		blocks.register("miniature_structure", (new BlockTFMiniatureStructure()).setUnlocalizedName("MinitureStructure").setHardness(0.75F));
+		blocks.register("miniature_structure", (new BlockTFMiniatureStructure()).setUnlocalizedName("MiniatureStructure").setHardness(0.75F));
 		blocks.register("block_storage", new BlockTFCompressed().setUnlocalizedName("BlockOfStorage"));
 	}
 

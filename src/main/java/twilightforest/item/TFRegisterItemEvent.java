@@ -199,7 +199,7 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.cinderLog);
 		items.registerSubItemBlock(TFBlocks.castleDoor);
 		items.registerSubItemBlock(TFBlocks.castleDoorVanished);
-		items.registerSubItemBlock(TFBlocks.miniature_structure);
+		items.register(new ItemTFMiniatureStructure(TFBlocks.miniature_structure));
 		items.registerSubItemBlock(TFBlocks.block_storage);
 	}
 
@@ -221,7 +221,11 @@ public class TFRegisterItemEvent {
 		}
 
 		private void registerSubItemBlock(Block block) {
-			ItemBlockTFMeta metaItemBlock = new ItemBlockTFMeta(block);
+			registerSubItemBlock(block, true);
+		}
+
+		private void registerSubItemBlock(Block block, boolean shouldAppendNumber) {
+			ItemBlockTFMeta metaItemBlock = new ItemBlockTFMeta(block).setAppend(shouldAppendNumber);
 			register(metaItemBlock);
 		}
 

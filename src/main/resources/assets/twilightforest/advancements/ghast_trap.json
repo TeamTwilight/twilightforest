@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:tower_device",
+      "data": 10
+    },
+    "title": {
+      "translate": "advancement.twilight_ghast_trap"
+    },
+    "description": {
+      "translate": "advancement.twilight_ghast_trap.desc"
+    }
+  },
+  "parent": "twilightforest:progress_knights",
+  "criteria": {
+    "activate_ghast_trap": {
+      "trigger": "twilightforest:activate_ghast_trap"
+    }
+  }
+}

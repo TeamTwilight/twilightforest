@@ -2,16 +2,16 @@
 
 itemGroup.twilightForest=Twilight Forest
 
-advancement.twilightforest.desc=Enter the mysterious magical woodlands, the Twilight Forest!
+advancement.twilightforest.desc=Enter the mysterious magical woodlands; the Twilight Forest.
 
 advancement.twilight_magic_map_focus=With Fire It Writes
 advancement.twilight_magic_map_focus.desc=Craft the magic map focus with a raven's feather, glowstone dust, and torchberries.
 
-advancement.twilight_hunter=Silence of the Twilight Forest
+advancement.twilight_hunter=The Silence of the Forest
 advancement.twilight_hunter.desc=Hunt some of the local wildlife.
 advancement.twilight_kill_naga=Naga Hunter
 advancement.twilight_kill_naga.desc=Slay the naga in its forest courtyard and obtain a Naga Scale to overcome the barrier magic surrounding the Lich's Tower.
-advancement.twilight_kill_lich=Lich Hunter
+advancement.twilight_kill_lich=Bring Out Your Dead
 advancement.twilight_kill_lich.desc=Slay the Lich at the top of his tower and retrieve a Scepter to clear the poisonous mosquitoes from the swamp.
 advancement.twilight_kill_hydra=Hydra Slayer
 advancement.twilight_kill_hydra.desc=Defeat the mighty hydra and empower yourself to see through the blinding darkness of the Dark Forest's curse.
@@ -23,25 +23,28 @@ advancement.twilight_hill2.desc=Defeat a redcap sapper in a medium hollow hill.
 advancement.twilight_hill3=I See Right Through You
 advancement.twilight_hill3.desc=Defeat a twilight wraith in a large hollow hill.
 
-advancement.twilight_experiment_115=Another Lie
-advancement.twilight_experiment_115.desc=It looks like Cake, though...
+advancement.twilight_experiment_115=Mystery Meat?
+advancement.twilight_experiment_115.desc=It looks like cake, though...
 advancement.twilight_experiment_115_2=Making a note: Huge Success!
 advancement.twilight_experiment_115_2.desc=It's so delicious and moist!
 advancement.twilight_experiment_115_3=Eating 115 Everyday, 115 Years, Forever
 advancement.twilight_experiment_115_3.desc=eating experiment one-hundred-fifteen all day, forever, one-hundred-fifteen times experiment one-hundred-fifteen, experiment one-hundred-fifteen dot com, double-u double-u double-u dot experiment one-hundred-fifteen dot com, one-hundred-fifteen years, every minute experiment one-hundred-fifteen dot com, double-u double-u double-u dot one-hundred-fifteen times experiment one-hundred-fifteen dot com
 
-advancement.twilight_glass_sword=Hope you made good use of that
-advancement.twilight_glass_sword.desc=Your shot at being a one hit wonder lies within your grasp!
+advancement.twilight_glass_sword=One Hit Wonder
+advancement.twilight_glass_sword.desc=Hope you made good use of that.
 
-advancement.twilight_hydra_chop=Massive Chops
+advancement.twilight_hydra_chop=Hydra Chop, Baby!
 advancement.twilight_hydra_chop.desc=Chow down on some overpowered hydra meat when your food bar is empty.
 
 advancement.twilight_dining=We Dine At Eternal Sundown
 advancement.twilight_dining.desc=Eat ALL of the Food exclusive to the Twilight Forest.
 
+advancement.twilight_ghast_trap=Something Strange in Towerwood
+advancement.twilight_ghast_trap.desc=A giant flying Ur-Ghast is on the loose! Who you gonna call? Ghastbusters!
+
 advancement.twilight_naga_armors=Naga Armorer
 advancement.twilight_naga_armors.desc=Craft both naga scale chest and leg armor.
-advancement.twilight_lich_scepters=Scepter Mastery
+advancement.twilight_lich_scepters=By Our Powers Combined!
 advancement.twilight_lich_scepters.desc=Acquire all three scepters of power.
 advancement.twilight_hedge=Bug Stomper
 advancement.twilight_hedge.desc=Defeat a spider in a hedge maze.
@@ -55,11 +58,11 @@ advancement.twilight_mazebreaker=Breaking the Maze
 advancement.twilight_mazebreaker.desc=Find the Mazebreaker pickaxe in the secret labyrinth vault.
 advancement.twilight_fiery_set=Gallons of Blood and Tears
 advancement.twilight_fiery_set.desc=Wield a fiery tool or weapon while wearing at least one piece of fiery armor.
-advancement.twilight_quest_ram=Consumate Baaahs
+advancement.twilight_quest_ram=Consummate Baaahs
 advancement.twilight_quest_ram.desc=Give the Quest Ram what it is missing.
 
 advancement.twilight_progress_labyrinth=Mighty Stroganoff
-advancement.twilight_progress_labyrinth.desc=The meat-and-mushroom stew in the labyrinth makes you feel ready to enter the Fire Swamp.
+advancement.twilight_progress_labyrinth.desc=The meat & musroom stew pleasantly warms you, enough so that that you feel you're acclimatised enough to venture into the Fire Swamp.
 advancement.twilight_progress_trophy_pedestal=Trophied Champion
 advancement.twilight_progress_trophy_pedestal.desc=Claim your title by placing a trophy on the pedestal in the dark forest ruins.
 advancement.twilight_progress_knights=Carminite Acclimation
@@ -80,6 +83,7 @@ advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 twilightforest.trophyPedestal.ineligible=You are unworthy.
 twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
 twilightforest.ore_meter.exposed=Exposed: %s
+twilightforest.scepter_charges=%d charges left
 
 tile.TFLog.0.name=Twilight Oak Wood
 tile.TFLog.1.name=Canopy Tree Wood
@@ -236,10 +240,22 @@ tile.CastleBrick.0.name=Castle Brick
 tile.CastleBrick.1.name=Worn Castle Brick
 tile.CastleBrick.2.name=Cracked Castle Brick
 tile.CastleBrick.3.name=Castle Roof Tile
+tile.CastleBrick.4.name=Mossy Castle Brick
+tile.CastleBrick.5.name=Thick Castle Brick
+tile.CastleDoor.0.name=Yellow Castle Door
+tile.CastleDoor.1.name=Violet Castle Door
+tile.CastleDoor.2.name=Pink Castle Door
+tile.CastleDoor.3.name=Blue Castle Door
 tile.CastleMagic.0.name=Pink Castle Rune Brick
 tile.CastleMagic.1.name=Blue Castle Rune Brick
 tile.CastleMagic.2.name=Yellow Castle Rune Brick
 tile.CastleMagic.3.name=Violet Castle Rune Brick
+tile.CastlePillar.0.name=Encased Castle Brick Pillar
+tile.CastlePillar.1.name=Encased Castle Brick Tile
+tile.CastlePillar.2.name=Bold Castle Brick Pillar
+tile.CastlePillar.3.name=Bold Castle Brick Tiles
+tile.CastleStairs.0.name=Encased Castle Brick Stairs
+tile.CastleStairs.8.name=Bold Castle Brick Stairs
 tile.ForceField.0.name=Violet Force Field
 tile.ForceField.1.name=Pink Force Field
 tile.ForceField.2.name=Orange Force Field
@@ -250,6 +266,25 @@ tile.BlockOfStorage.1.name=Block of Fiery Metal
 tile.BlockOfStorage.2.name=Block of Steeleaf
 tile.BlockOfStorage.3.name=Block of Arctic Fur
 tile.BlockOfStorage.4.name=Block of Carminite
+tile.CinderFurnaceIdle.name=Cinder Furnace [NYI]
+tile.CinderLog.0.name=Cinder Log [NYI]
+tile.MiniatureStructure=Miniature %s [NYI]
+
+structure.twilight_portal.name=Twilight Portal
+structure.hedge_maze.name=Hedge Maze
+structure.hollow_hill.name=Hollow Hill
+structure.quest_grove.name=Quest Grove
+structure.mushroom_tower.name=Mushroom Castle
+structure.naga_courtyard.name=Naga Courtyard
+structure.lich_tower.name=Lich Tower
+structure.minotaur_labyrinth.name=Minotaur Labyrinth
+structure.hydra_lair.name=Hydra's Lair
+structure.goblin_stronghold.name=Goblin Stronghold
+structure.dark_tower.name=Dark Tower
+structure.yeti_cave.name=Yeti Cave
+structure.aurora_palace.name=Aurora Palace
+structure.troll_cave_and_cloud_castle.name=Troll Cave and House in the Clouds
+structure.final_castle.name=Final Castle
 
 item.nagaScale.name=Naga Scale
 item.plateNaga.name=Naga Scale Tunic
@@ -474,7 +509,7 @@ twilightforest.book.icetower.3=minotaurs nearby.\n\nSurrounding this glacier, th
 twilightforest.book.trollcave.1=\u00A78[[An explorer's notebook, damaged by acid]]\u00A70\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the
 twilightforest.book.trollcave.2=others I have witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n\u00A78[[Next entry]]\u00A70\n\nSuch supreme weather magic must be the result of an unequaled weather
 twilightforest.book.trollcave.3=magician. Such a person would likely hide themselves in an extreme environment, far away.\n\nBased on my logic, I would expect to find such a person somewhere on the glacier, perhaps in some sort of fortress there...
-twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is 
+twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
 
 twilightforest.misc.wip0=This block is a work in progress and may have bugs or unintended effects that may damage your world.

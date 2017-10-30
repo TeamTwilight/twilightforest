@@ -250,6 +250,8 @@ public class TFItems {
 	public static final Item cubeOfAnnihilation;
 	@GameRegistry.ObjectHolder("miniature_structure")
 	public static final Item miniture_structure;
+	@GameRegistry.ObjectHolder("castle_door")
+	public static final Item castleDoor;
 
 	public static CreativeTabTwilightForest creativeTab = new CreativeTabTwilightForest("twilightForest");
 
@@ -383,5 +385,6 @@ public class TFItems {
 		cubeTalisman = null;
 		cubeOfAnnihilation = null;
 		miniture_structure = null;
+		castleDoor = null;
 	}
 }

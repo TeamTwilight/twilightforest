@@ -707,9 +707,14 @@ public class HydraHeadContainer {
 		double range = 30.0D;
 		Vec3d srcVec = new Vec3d(headEntity.posX, headEntity.posY + 1.0, headEntity.posZ);
 		Vec3d lookVec = headEntity.getLook(1.0F);
+		RayTraceResult raytrace = headEntity.world.rayTraceBlocks(srcVec, srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range));
+		BlockPos hitpos = raytrace != null ? raytrace.getBlockPos() : null;
+		double rx = hitpos == null ? range : Math.min(range, Math.abs(headEntity.posX - hitpos.getX()));
+		double ry = hitpos == null ? range : Math.min(range, Math.abs(headEntity.posY - hitpos.getY()));
+		double rz = hitpos == null ? range : Math.min(range, Math.abs(headEntity.posZ - hitpos.getZ()));
 		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 3.0F;
-		List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getEntityBoundingBox().offset(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
+		List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getEntityBoundingBox().offset(lookVec.x * rx, lookVec.y * ry, lookVec.z * rz).grow(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {

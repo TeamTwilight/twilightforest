@@ -1,7 +1,7 @@
 {
   "ctm":{
     "ctm_version": 1,
-    "type":"V",
+    "type":"pattern",
     "extra":{
       "size":3
     }

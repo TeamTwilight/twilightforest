@@ -3,11 +3,8 @@ package twilightforest.item;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import twilightforest.TFAdvancements;
-import twilightforest.TwilightForestMod;
-import twilightforest.util.PlayerHelper;
+import twilightforest.advancements.TFAdvancements;
 
 public class ItemTFHydraChops extends ItemTFFood {
 

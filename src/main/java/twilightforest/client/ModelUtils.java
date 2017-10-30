@@ -26,7 +26,7 @@ public class ModelUtils {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(b), itemMeta, mrl);
 	}
 
-	public static <T extends Enum<T>> void registerToStateSingleVariant(Block b, IProperty<T> variant) {
+	public static <T extends Comparable<T>> void registerToStateSingleVariant(Block b, IProperty<T> variant) {
 		List<T> variants = new ArrayList<>(variant.getAllowedValues());
 		for (int i = 0; i < variants.size(); i++) {
 			registerToState(b, i, b.getDefaultState().withProperty(variant, variants.get(i)));

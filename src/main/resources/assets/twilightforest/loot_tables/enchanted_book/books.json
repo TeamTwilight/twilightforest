@@ -1,0 +1,30 @@
+{
+  "pools": [
+    {
+      "name": "books",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "loot_table",
+          "name": "twilightforest:enchanted_book/common",
+          "weight": 32
+        },
+        {
+          "type": "loot_table",
+          "name": "twilightforest:enchanted_book/uncommon",
+          "weight": 8
+        },
+        {
+          "type": "loot_table",
+          "name": "twilightforest:enchanted_book/rare",
+          "weight": 4
+        },
+        {
+          "type": "loot_table",
+          "name": "twilightforest:enchanted_book/ultrarare",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

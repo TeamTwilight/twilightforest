@@ -1,0 +1,50 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "twilightforest:blocks/ironwood_pattern",
+    "all": "twilightforest:blocks/fiery_block_inner",
+    "over": "twilightforest:blocks/fiery_pattern"
+  },
+  "elements": [
+    {
+      "from": [  0,  1,  0 ],
+      "to":   [ 16, 15, 16 ],
+      "shade": false,
+      "faces": {
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" }
+      }
+    },
+    {
+      "from": [  1,  0,  0 ],
+      "to":   [ 15, 16, 16 ],
+      "shade": false,
+      "faces": {
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
+      }
+    },
+    {
+      "from": [  0,  0,  1 ],
+      "to":   [ 16, 16, 15 ],
+      "shade": false,
+      "faces": {
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    },
+    {
+      "from": [ 16, 16, 16 ],
+      "to":   [  0,  0,  0 ],
+      "shade": false,
+      "faces": {
+        "down":  { "texture": "#over", "cullface": "up"    },
+        "up":    { "texture": "#over", "cullface": "down"  },
+        "north": { "texture": "#over", "cullface": "south" },
+        "south": { "texture": "#over", "cullface": "north" },
+        "west":  { "texture": "#over", "cullface": "east"  },
+        "east":  { "texture": "#over", "cullface": "west"  }
+      }
+    }
+  ]
+}

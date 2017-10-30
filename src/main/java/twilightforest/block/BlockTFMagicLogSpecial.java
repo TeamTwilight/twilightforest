@@ -52,6 +52,11 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	@Override
+	public int damageDropped(IBlockState state) {
+		return state.getValue(VARIANT).ordinal();
+	}
+
+	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if (state.getValue(LOG_AXIS) != EnumAxis.NONE) return;
 
@@ -338,5 +343,15 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		par3List.add(new ItemStack(this, 1, 1));
 		par3List.add(new ItemStack(this, 1, 2));
 		par3List.add(new ItemStack(this, 1, 3));
+	}
+
+	@Override
+	protected boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return false;
 	}
 }

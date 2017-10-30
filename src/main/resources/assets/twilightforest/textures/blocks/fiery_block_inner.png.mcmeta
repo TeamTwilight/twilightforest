@@ -5,7 +5,8 @@
     "layer": "CUTOUT",
     "textures": [ "twilightforest:blocks/fiery_block_inner_ctm" ],
     "extra": {
-      "light": 15
+      "light": 15,
+      "connect_inside": true
     }
   }
 }

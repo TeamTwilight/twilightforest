@@ -12,7 +12,7 @@
     },
     "frame": "goal"
   },
-  "parent": "twilightforest:progress_knights",
+  "parent": "twilightforest:ghast_trap",
   "criteria": {
     "ghast": {
       "trigger": "minecraft:player_killed_entity",

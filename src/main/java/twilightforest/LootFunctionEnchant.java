@@ -52,11 +52,13 @@ public class LootFunctionEnchant extends LootFunction {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 
-		if (!stack.getTagCompound().hasKey("ench", Constants.NBT.TAG_LIST)) {
-			stack.getTagCompound().setTag("ench", new NBTTagList());
+		final String enchantedCompoundKey = stack.getItem() == Items.ENCHANTED_BOOK ? "StoredEnchantments" : "ench";
+
+		if (!stack.getTagCompound().hasKey(enchantedCompoundKey, Constants.NBT.TAG_LIST)) {
+			stack.getTagCompound().setTag(enchantedCompoundKey, new NBTTagList());
 		}
 
-		NBTTagList list = stack.getTagCompound().getTagList("ench", Constants.NBT.TAG_COMPOUND);
+		NBTTagList list = stack.getTagCompound().getTagList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound existing = list.getCompoundTagAt(i);

@@ -120,10 +120,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 			this.attacker.setBreathing(true);
 
 			// anyhoo, deal damage
-			Entity target = getHeadLookTarget();
-			if (target != null) {
-				attacker.doBreathAttack(target);
-			}
+			doRayAttack();
 
 			// descend
 			this.hoverPosY -= 0.05F;
@@ -167,17 +164,13 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 		}
 	}
 
-	/**
-	 * What, if anything, is the head currently looking at?
-	 */
-	private Entity getHeadLookTarget() {
-		Entity pointedEntity = null;
-		double range = 30.0D;
+	private void doRayAttack() {
+		double range = 20.0D;
+		double offset = 10.0D;
 		Vec3d srcVec = new Vec3d(this.attacker.posX, this.attacker.posY + 0.25, this.attacker.posZ);
 		Vec3d lookVec = this.attacker.getLook(1.0F);
 		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
-		float var9 = 3.0F;
-		List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getEntityBoundingBox().offset(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
+		List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getEntityBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(range, range, range));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
@@ -188,20 +181,19 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
-						pointedEntity = possibleEntity;
+						attacker.doBreathAttack(possibleEntity);
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos != null) {
 					double possibleDist = srcVec.distanceTo(interceptPos.hitVec);
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
-						pointedEntity = possibleEntity;
+						attacker.doBreathAttack(possibleEntity);
 						hitDist = possibleDist;
 					}
 				}
 			}
 		}
-		return pointedEntity;
 	}
 
 

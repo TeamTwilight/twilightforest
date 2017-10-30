@@ -1,0 +1,59 @@
+{
+  "pools": [
+    {
+      "name": "diamond",
+      "rolls": 1,
+      "entries": [
+        { "type": "item", "name": "minecraft:diamond_block" }
+      ]
+    },
+    {
+      "name": "iron",
+      "rolls": 1,
+      "entries": [
+        { "type": "item", "name": "minecraft:iron_block" }
+      ]
+    },
+    {
+      "name": "emerald",
+      "rolls": 1,
+      "entries": [
+        { "type": "item", "name": "minecraft:emerald_block" }
+      ]
+    },
+    {
+      "name": "gold",
+      "rolls": 1,
+      "entries": [
+        { "type": "item", "name": "minecraft:gold_block" }
+      ]
+    },
+    {
+      "name": "lapis",
+      "rolls": 1,
+      "entries": [
+        { "type": "item", "name": "minecraft:lapis_block" }
+      ]
+    },
+    {
+      "name": "horn",
+      "rolls": 1,
+      "entries": [
+        { "type": "item", "name": "twilightforest:crumble_horn" }
+      ]
+    },
+    {
+      "name": "trophy",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "twilightforest:trophy",
+          "functions": [
+            { "function": "set_data", "data": 8 }
+          ]
+        }
+      ]
+    }
+  ]
+}

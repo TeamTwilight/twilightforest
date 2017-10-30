@@ -1,6 +1,9 @@
 {
   "forge_marker": 1,
-  "defaults": { "model": "twilightforest:util/cube_all_2_layer_no_shade" },
+  "defaults": {
+    "model": "twilightforest:util/cube_all_2_layer_no_shade",
+    "textures": { "particle": "twilightforest:blocks/tower_device_level_1/towerdev_antibuilder_1" }
+  },
   "variants": {
     "variant": {
       "reappearing_inactive": {

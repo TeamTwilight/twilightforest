@@ -1,22 +1,30 @@
 package twilightforest.item;
 
+import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallback {
-
 	public ItemTFArcticArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
 		super(par2EnumArmorMaterial, 0, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -126,5 +134,24 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 		}
 
 		displayCompound.setInteger("color" + string, color);
+	}
+
+	@Override
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (this.hasColor(stack)) {
+			IBlockState blockAt = world.getBlockState(pos);
+
+			if (blockAt.getBlock() instanceof BlockCauldron && blockAt.getValue(BlockCauldron.LEVEL) > 0) {
+				removeColor(stack);
+				player.addStat(StatList.ARMOR_CLEANED);
+
+				((BlockCauldron) blockAt.getBlock()).setWaterLevel(world, pos, blockAt, blockAt.getValue(BlockCauldron.LEVEL) - 1);
+				return EnumActionResult.SUCCESS;
+			}
+		}
+
+		return EnumActionResult.PASS;
 	}
 }

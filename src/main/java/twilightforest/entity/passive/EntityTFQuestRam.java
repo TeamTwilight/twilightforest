@@ -17,24 +17,22 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAdvancements;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import twilightforest.TwilightForestMod;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
-import twilightforest.block.enums.BossVariant;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
-import twilightforest.item.TFItems;
 
 
 public class EntityTFQuestRam extends EntityAnimal {
-
+	public static final ResourceLocation REWARD_LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/questing_ram_rewards");
 	private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.BOOLEAN);
 
@@ -115,20 +113,12 @@ public class EntityTFQuestRam extends EntityAnimal {
 	 * Pay out!
 	 */
 	private void rewardQuest() {
-		dropItemWithOffset(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK), 1, 1.0F);
-		dropItemWithOffset(Item.getItemFromBlock(Blocks.IRON_BLOCK), 1, 1.0F);
-		dropItemWithOffset(Item.getItemFromBlock(Blocks.EMERALD_BLOCK), 1, 1.0F);
-		dropItemWithOffset(Item.getItemFromBlock(Blocks.GOLD_BLOCK), 1, 1.0F);
-		dropItemWithOffset(Item.getItemFromBlock(Blocks.LAPIS_BLOCK), 1, 1.0F);
-		dropItemWithOffset(TFItems.crumbleHorn, 1, 1.0F);
+		LootContext ctx = new LootContext.Builder((WorldServer) world).withLootedEntity(this).build();
+		for (ItemStack s : world.getLootTableManager().getLootTableFromLocation(REWARD_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
+			entityDropItem(s, 1.0F);
+		}
 
-		entityDropItem(new ItemStack(TFItems.trophy, 1, BossVariant.QUEST_RAM.ordinal()), 1.0F);
-
-		rewardNearbyPlayers(this.world, this.posX, this.posY, this.posZ);
-	}
-
-	private void rewardNearbyPlayers(World world, double posX, double posY, double posZ) {
-		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(16.0D, 16.0D, 16.0D))) {
+		for (EntityPlayerMP player : this.world.getEntitiesWithinAABB(EntityPlayerMP.class, getEntityBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
 		}
 	}

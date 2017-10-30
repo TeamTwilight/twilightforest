@@ -1,0 +1,19 @@
+{
+  "pools": [
+    {
+      "name": "ultrarare",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:book",
+          "functions": [{
+            "function": "enchant_with_levels",
+            "treasure": true,
+            "levels": { "min": 31, "max": 40 }
+          }]
+        }
+      ]
+    }
+  ]
+}

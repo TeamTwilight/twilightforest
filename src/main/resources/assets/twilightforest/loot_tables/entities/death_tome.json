@@ -19,13 +19,18 @@
         {
           "type": "item",
           "name": "minecraft:writable_book",
-          "weight": 1,
+          "weight": 2,
           "quality": 3
         },
         {
           "type": "item",
           "name": "minecraft:book",
-          "weight": 5
+          "weight": 19
+        },
+        {
+          "type": "loot_table",
+          "name": "twilightforest:enchanted_book/books",
+          "weight": 1
         }
       ]
     },
