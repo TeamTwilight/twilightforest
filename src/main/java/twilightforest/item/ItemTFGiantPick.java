@@ -21,7 +21,7 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 	protected ItemTFGiantPick(Item.ToolMaterial material) {
 		super(material);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.damageVsEntity = 8 + material.getDamageVsEntity();
+		this.attackDamage = 8 + material.getAttackDamage();
 		this.attackSpeed = -3.5F;
 	}
 
@@ -38,8 +38,8 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 	}
 
 	@Override
-	public float getStrVsBlock(ItemStack stack, IBlockState state) {
-		float strVsBlock = super.getStrVsBlock(stack, state);
+	public float getDestroySpeed(ItemStack stack, IBlockState state) {
+		float strVsBlock = super.getDestroySpeed(stack, state);
 		// extra 64X strength vs giant obsidian
 		strVsBlock *= (state.getBlock() == TFBlocks.giantObsidian) ? 64 : 1;
 		// 64x strength vs giant blocks

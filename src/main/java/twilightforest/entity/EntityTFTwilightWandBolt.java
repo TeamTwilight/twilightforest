@@ -24,7 +24,7 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 
 	public EntityTFTwilightWandBolt(World world, EntityLivingBase thrower) {
 		super(world, thrower);
-		setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
+		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 
 	@Override

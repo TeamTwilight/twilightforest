@@ -61,7 +61,7 @@ public class EntityAITFEatLoose extends EntityAIBase {
 	@Override
 	public void resetTask() {
 		this.temptingItem = null;
-		this.temptedQuestRam.getNavigator().clearPathEntity();
+		this.temptedQuestRam.getNavigator().clearPath();
 		this.delayTemptCounter = 100;
 	}
 
@@ -69,7 +69,7 @@ public class EntityAITFEatLoose extends EntityAIBase {
 	public void updateTask() {
 		this.temptedQuestRam.getLookHelper().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedQuestRam.getVerticalFaceSpeed());
 
-		if (this.temptedQuestRam.getDistanceSqToEntity(this.temptingItem) < 6.25D) {
+		if (this.temptedQuestRam.getDistanceSq(this.temptingItem) < 6.25D) {
 			EnumDyeColor color = EnumDyeColor.byMetadata(temptingItem.getItem().getItemDamage());
 			if (!temptedQuestRam.isColorPresent(color)) { // we did technically already check this, but why not check again
 				this.temptingItem.setDead();

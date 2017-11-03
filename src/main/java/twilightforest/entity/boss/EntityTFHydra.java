@@ -317,14 +317,14 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 			// let's pick an attack
 			if (this.getAttackTarget().isEntityAlive()) {
-				float distance = this.getAttackTarget().getDistanceToEntity(this);
+				float distance = this.getAttackTarget().getDistance(this);
 
 				if (this.getEntitySenses().canSee(this.getAttackTarget())) {
 					this.attackEntity(this.getAttackTarget(), distance);
 				}
 			}
 
-			if (numTicksToChaseTarget-- <= 0 || getAttackTarget().isDead || getAttackTarget().getDistanceSqToEntity(this) > (double) (f * f)) {
+			if (numTicksToChaseTarget-- <= 0 || getAttackTarget().isDead || getAttackTarget().getDistanceSq(this) > (double) (f * f)) {
 				setAttackTarget(null);
 			}
 		} else {
@@ -489,7 +489,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		EntityLivingBase secondaryTarget = findSecondaryTarget(20);
 
 		if (secondaryTarget != null) {
-			float distance = secondaryTarget.getDistanceToEntity(this);
+			float distance = secondaryTarget.getDistance(this);
 
 			for (int i = 1; i < numHeads; i++) {
 				if (hc[i].isActive() && hc[i].currentState == HydraHeadContainer.State.IDLE && isTargetOnThisSide(i, secondaryTarget)) {
@@ -530,7 +530,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 				.stream()
 				.filter(e -> !(e instanceof EntityTFHydra || e instanceof EntityTFHydraPart))
 				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
-				.sorted(Comparator.comparingDouble(this::getDistanceSqToEntity))
+				.sorted(Comparator.comparingDouble(this::getDistanceSq))
 				.findFirst().orElse(null);
 	}
 
@@ -654,7 +654,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	private double calculateRange(DamageSource damagesource) {
-		return damagesource.getTrueSource() != null ? getDistanceSqToEntity(damagesource.getTrueSource()) : -1;
+		return damagesource.getTrueSource() != null ? getDistanceSq(damagesource.getTrueSource()) : -1;
 	}
 
 	@Override

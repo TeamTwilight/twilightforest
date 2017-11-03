@@ -64,7 +64,7 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 		double ty = attackTarget.posY + attackTarget.getEyeHeight() - 2.699999988079071D - this.posY;
 		double tz = attackTarget.posZ - this.posZ;
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
-		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
+		natureBolt.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.spawnEntity(natureBolt);
 	}
 

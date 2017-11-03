@@ -67,7 +67,7 @@ public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCall
 					if (!worldIn.isRemote) {
 						ItemArrow itemarrow = (ItemArrow) ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
 						EntityArrow entityarrow = getArrow(worldIn, itemstack, entityplayer); // TF: use own entity creator
-						entityarrow.setAim(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
+						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						if (f == 1.0F) {
 							entityarrow.setIsCritical(true);

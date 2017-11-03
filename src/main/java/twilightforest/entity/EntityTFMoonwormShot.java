@@ -21,7 +21,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 
 	public EntityTFMoonwormShot(World world, EntityLivingBase thrower) {
 		super(world, thrower);
-		setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
+		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class ItemTFGiantSword extends ItemSword implements ModelRegisterCallback
 			multimap.removeAll(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
 			multimap.removeAll(SharedMonsterAttributes.ATTACK_SPEED.getName());
 
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 10 + getDamageVsEntity(), 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 10 + getAttackDamage(), 0));
 			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.5, 0));
 		}
 

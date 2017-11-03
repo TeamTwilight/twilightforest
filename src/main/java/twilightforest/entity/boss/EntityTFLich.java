@@ -298,7 +298,7 @@ public class EntityTFLich extends EntityMob {
 
 		EntityTFLichBolt projectile = new EntityTFLichBolt(world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
-		projectile.setThrowableHeading(tx, ty, tz, 0.5F, 1.0F);
+		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
 		world.spawnEntity(projectile);
 	}
@@ -317,7 +317,7 @@ public class EntityTFLich extends EntityMob {
 
 		EntityTFLichBomb projectile = new EntityTFLichBomb(world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
-		projectile.setThrowableHeading(tx, ty, tz, 0.35F, 1.0F);
+		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 
 		world.spawnEntity(projectile);
 	}

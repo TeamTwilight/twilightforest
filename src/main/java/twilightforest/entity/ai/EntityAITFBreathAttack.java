@@ -39,7 +39,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	public boolean shouldExecute() {
 		this.attackTarget = this.entityHost.getAttackTarget();
 
-		if (this.attackTarget == null || this.entityHost.getDistanceToEntity(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
+		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
 			return false;
 		} else {
 			breathX = attackTarget.posX;
@@ -69,7 +69,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	@Override
 	public boolean shouldContinueExecuting() {
 		return this.durationLeft > 0 && !this.entityHost.isDead && !this.attackTarget.isDead
-				&& this.entityHost.getDistanceToEntity(attackTarget) <= this.breathRange
+				&& this.entityHost.getDistance(attackTarget) <= this.breathRange
 				&& this.entityHost.getEntitySenses().canSee(attackTarget);
 	}
 
