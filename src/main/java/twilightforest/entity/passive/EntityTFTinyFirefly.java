@@ -14,6 +14,7 @@ public class EntityTFTinyFirefly extends EntityWeatherEffect {
 
 	public EntityTFTinyFirefly(World world, double d, double d1, double d2) {
 		super(world);
+		setSize(0, 0);
 		setLocationAndAngles(d, d1, d2, 0.0F, 0.0F);
 
 		lifeTime = 10 + rand.nextInt(21);
