@@ -488,8 +488,8 @@ twilightforest.loading.title.leave=Телепортирую вас из суме
 #Config
 twilightforest.config.dimension=Настройки измерения
 twilightforest.config.dimension.tooltip=Вы не сможете изменить эти параметры без перезапуска.
-twilightforest.config.dimension_id=Код измерения
-twilightforest.config.dimension_id.tooltip=Какой код присвоить измерению Сумеречный лес. Изменения, если у вас возникли конфликты с другим модом.
+twilightforest.config.dimension_id=ID измерения
+twilightforest.config.dimension_id.tooltip=Какой ID присвоить измерению Сумеречный лес. Изменения, если у вас возникли конфликты с другим модом.
 twilightforest.config.dimension_seed=Сид измерения
 twilightforest.config.dimension_seed.tooltip=Если задан, то это переопределит нормальный сид мира при генерации частей измерения Сумеречного леса.
 
@@ -504,7 +504,7 @@ twilightforest.config.silent_cicadas=Тихие цикады
 twilightforest.config.silent_cicadas.tooltip=Сделайте цикады тихими для тех, у кого есть проблемы со звуковой библиотекой, или кого эти звуки раздражает.
 
 twilightforest.config.portals_in_other_dimensions=Порталы в других измерениях
-twilightforest.config.portals_in_other_dimensions.tooltip=Разрешить создание порталов в Сумеречный лес вне измерения 0 Может считаться эксплойтом.
+twilightforest.config.portals_in_other_dimensions.tooltip=Разрешить создание порталов в Сумеречный лес вне измерения 0. Может считаться эксплойтом.
 twilightforest.config.admin_portals=Сумеречный портал только для админов
 twilightforest.config.admin_portals.tooltip=Разрешать порталы только для администраторов (операторов). Это значительно уменьшает диапазон, в котором мод обычно сканирует допустимые условия портала, и он сканирует только вблизи операторов.
 twilightforest.config.portals=Отключить сумеречные порталы
