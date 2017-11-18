@@ -5,7 +5,7 @@ itemGroup.twilightForest=Twilight Forest
 advancement.twilightforest.desc=Войдите в таинственные волшебные леса
 
 advancement.twilight_magic_map_focus=Пишет с огоньком
-advancement.twilight_magic_map_focus.desc=Сделайте волшебное перо из пера вороны, светящийся пыли и факельных ягод.
+advancement.twilight_magic_map_focus.desc=Сделайте волшебное перо из пера вороны, светящейся пыли и факельных ягод.
 
 advancement.twilight_hunter=Молчание леса
 advancement.twilight_hunter.desc=Поохотьтесь на дикую природу.
@@ -131,7 +131,7 @@ tile.TFFireJet.0.name=Дымовой блок
 tile.TFFireJet.1.name=Дымовой блок
 tile.TFFireJet.2.name=Дымовой блок
 tile.TFFireJet.3.name=Огненный блок
-tile.TFFireJet.4.name=Дымящейся огненный блок
+tile.TFFireJet.4.name=Дымящийся огненный блок
 tile.TFFireJet.5.name=Горящий огненный блок
 tile.TFFireJet.6.name=Огненный блок
 tile.TFFireJet.7.name=Дымящейся огненный блок
@@ -441,7 +441,7 @@ entity.twilightforest.kobold.name=Кобольд
 entity.twilightforest.boggard.name=Богард [не реализовано]
 entity.twilightforest.lich_minion.name=Помощник Лича
 entity.twilightforest.loyal_zombie.name=Верный зомби
-entity.twilightforest.mosquito_swarm.name=рой комаров
+entity.twilightforest.mosquito_swarm.name=Рой комаров
 entity.twilightforest.death_tome.name=Книга смерти
 entity.twilightforest.minotaur.name=Минотавр
 entity.twilightforest.minoshroom.name=Грибной минотавр
