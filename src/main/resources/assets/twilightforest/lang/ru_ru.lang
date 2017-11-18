@@ -504,7 +504,7 @@ twilightforest.config.silent_cicadas=Тихие цикады
 twilightforest.config.silent_cicadas.tooltip=Сделайте цикады тихими для тех, у кого есть проблемы со звуковой библиотекой, или кого эти звуки раздражает.
 
 twilightforest.config.portals_in_other_dimensions=Порталы в других измерениях
-twilightforest.config.portals_in_other_dimensions.tooltip=Разрешить порталы в Сумеречный лес быть сделаны вне измерения 0. Может считаться эксплойтом.
+twilightforest.config.portals_in_other_dimensions.tooltip=Разрешить создание порталов в Сумеречный лес вне измерения 0 Может считаться эксплойтом.
 twilightforest.config.admin_portals=Сумеречный портал только для админов
 twilightforest.config.admin_portals.tooltip=Разрешать порталы только для администраторов (операторов). Это значительно уменьшает диапазон, в котором мод обычно сканирует допустимые условия портала, и он сканирует только вблизи операторов.
 twilightforest.config.portals=Отключить сумеречные порталы
@@ -514,7 +514,7 @@ twilightforest.config.portal_creator.tooltip=Название предмета, 
 twilightforest.config.portal_creator_meta=Мета предмета для создания портала
 twilightforest.config.portal_creator_meta.tooltip=Мета предмета, используемого для создания портала в Сумеречный лес. -1 для любых мета.
 
-twilightforest.config.uncrafting=Отключить демонтирование в демонтажной верстаке
+twilightforest.config.uncrafting=Отключить демонтирование в демонтажном верстаке
 twilightforest.config.uncrafting.tooltip=Отключение функции демонтирования в демонтажном верстаке. Предоставляется в качестве опции, когда взаимодействие с другими модами создает доступные рецепты.
 
 twilightforest.config.antibuilder_blacklist=Чёрный список демонтажного верстака
