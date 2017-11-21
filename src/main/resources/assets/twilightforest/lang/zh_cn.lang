@@ -40,7 +40,10 @@ advancement.twilight_dining=永恒黄昏之宴
 advancement.twilight_dining.desc=品尝所有只能在暮色森林找到的食物。
 
 advancement.twilight_ghast_trap=高塔里的奇怪装置
-advancement.twilight_ghast_trap.desc=又让暮色恶魂跑了！怎么办？找暮色恶魂终结者！
+advancement.twilight_ghast_trap.desc=以高塔幽灵为祭品，激活恶魂陷阱，把暮色恶魂拉下来！
+
+advancement.twilight_arctic_dyed=追赶潮流
+advancement.twilight_arctic_dyed.desc=给全套极地套装染色。
 
 advancement.twilight_naga_armors=娜迦装备锻造师
 advancement.twilight_naga_armors.desc=合成娜迦鳞胸甲和护腿。
@@ -77,7 +80,7 @@ advancement.twilight_progress_troll=让烈焰燃烧得更猛烈些吧！
 advancement.twilight_progress_troll.desc=在巨魔洞穴中找到余烬之灯，用它来焚烧掉荆棘之墙。
 advancement.twilight_progress_thorns=穿越荆棘
 advancement.twilight_progress_thorns.desc=穿越荆棘之地，打开通往城堡的大门。
-advancement.twilight_progress_castle=这就是… 城堡吗…
+advancement.twilight_progress_castle=这就是，城堡吗……
 advancement.twilight_progress_castle.desc=这城堡里究竟有什么？！
 
 twilightforest.trophyPedestal.ineligible=你还不够格。
@@ -417,6 +420,8 @@ item.yetiPlate.tooltip=冰冻攻击者
 item.yetiLegs.tooltip=冰冻攻击者
 item.yetiBoots.tooltip=冰冻攻击者
 
+item.arctic_armor.tooltip=能像皮革盔甲一样染色
+
 entity.twilightforest.wild_boar.name=野猪
 entity.twilightforest.bighorn_sheep.name=大角山羊
 entity.twilightforest.deer.name=野鹿
@@ -478,6 +483,68 @@ entity.twilightforest.ice_crystal.name=冰晶
 entity.twilightforest.apocalypse_cube.name=天启立方【未实装】
 entity.twilightforest.adherent.name=信徒【未实装】
 
+twilightforest.misc.wip0=这个方块仍在制作当中，可能会有能导致存档损坏的 Bug 或不可预料的特性。
+twilightforest.misc.wip1=测试时时刻保持注意。
+twilightforest.misc.nyi=这个方块的部分特性尚未完成。
+
+twilightforest.loading.title.enter=正在前往暮色森林……
+twilightforest.loading.title.leave=正在离开暮色森林……
+
+#Config
+twilightforest.config.dimension=维度设定
+twilightforest.config.dimension.tooltip=这些设定只有在重启后才会生效。
+twilightforest.config.dimension_id=维度 ID
+twilightforest.config.dimension_id.tooltip=暮色森林的维度 ID。如果遇到暮色森林和其他 Mod 因此冲突，可在此修改。
+twilightforest.config.dimension_seed=生成种子
+twilightforest.config.dimension_seed.tooltip=设定后会使用给定种子来生成暮色森林维度；默认情况下使用和主世界的地图种子。
+
+twilightforest.config.tree_tweaks=性能
+twilightforest.config.tree_tweaks.tooltip=控制树的生成。树的数量越少，光照检查就越少，因此世界生成时会更快。
+twilightforest.config.canopy_coverage=树冠覆盖范围
+twilightforest.config.canopy_coverage.tooltip=树冠覆盖的区域的大小。该项数值越小，森林会越稀薄，但区块生成速度会因此加快。
+twilightforest.config.twilight_oaks=暮色橡树生成概率
+twilightforest.config.twilight_oaks.tooltip=暮色森林维度的每一个区块中生成暮色橡树的概率。该项数值越大，生成概率就越小，性能也会因此提升。
+
+twilightforest.config.silent_cicadas=禁止蝉鸣
+twilightforest.config.silent_cicadas.tooltip=若声音库出现问题，或者只是觉得蝉很吵，可考虑启用此项。
+
+twilightforest.config.portals_in_other_dimensions=非主世界建造暮色传送门
+twilightforest.config.portals_in_other_dimensions.tooltip=允许在主世界之外的维度建造暮色森林传送门，某些情况下可视作作弊。
+twilightforest.config.admin_portals=仅管理员可使用暮色传送门
+twilightforest.config.admin_portals.tooltip=传送门将只向管理员开放。开启后可大幅降低本 Mod 搜索有效传送门位置的范围。
+twilightforest.config.portals=禁用暮色传送门
+twilightforest.config.portals.tooltip=完全禁用暮色森林传送门；本选项适用于需要严格限制的服务器管理员。
+twilightforest.config.portal_creator=传送门建造工具
+twilightforest.config.portal_creator.tooltip=建造暮色传送门时使用的物品的注册名。
+twilightforest.config.portal_creator_meta=传送门建造工具附加值
+twilightforest.config.portal_creator_meta.tooltip=建造暮色传送门时使用的物品的附加值，设定成 -1 代表允许任何附加值。
+
+twilightforest.config.uncrafting=禁用拆解台的拆解功能
+twilightforest.config.uncrafting.tooltip=禁用拆解台的拆解功能，可用于防止利用某些合成刷物品。
+
+twilightforest.config.antibuilder_blacklist=反建器黑名单
+twilightforest.config.antibuilder_blacklist.tooltip=反建器黑名单。格式：domain:block:meta；其中 meta 为可选项。
+
+twilightforest.config.animate_trophyitem=战利品头颅旋转
+twilightforest.config.animate_trophyitem.tooltip=启用后，战利品中的头颅会旋转。性能影响可忽略不计。为不苟言笑的人准备的选项。
+
+twilightforest.config.loading_screen=加载界面
+twilightforest.config.loading_screen.tooltip=客户端专有选项，用于控制进入暮色森林时的加载界面。
+twilightforest.config.loading_icon_enable=启用加载图标动画
+twilightforest.config.loading_icon_enable.tooltip=让加载图标动起来。性能影响可忽略不计。为不苟言笑的人准备的选项。
+twilightforest.config.loading_screen_swap_frequency=加载界面切换
+twilightforest.config.loading_screen_swap_frequency.tooltip=界面切换之间的时间间隔，设定为 0 将使其不会切换。
+twilightforest.config.loading_icon_wobble_bounce_frequency=图标动画速度
+twilightforest.config.loading_icon_wobble_bounce_frequency.tooltip=弹跳和晃动的频率。
+twilightforest.config.loading_icon_scale=图标缩放
+twilightforest.config.loading_icon_scale.tooltip=整个弹跳的图标的尺寸。
+twilightforest.config.loading_icon_bounciness=图标弹跳幅度
+twilightforest.config.loading_icon_bounciness.tooltip=地图加载过程中，图标弹跳的幅度。
+twilightforest.config.loading_icon_tilting=图标晃动幅度
+twilightforest.config.loading_icon_tilting.tooltip=地图加载过程中，图标晃动的幅度。
+twilightforest.config.loading_icon_tilt_pushback=图标倾斜度偏移
+twilightforest.config.loading_icon_tilt_pushback.tooltip=重新令图标居中所使用的后移量。
+
 twilightforest.book.lichtower.1=§8[[被野兽啃坏的探险家笔记]]§0\n\n我开始了对这塔周围奇怪气场的测试。塔身的每一块砖都受一种强力魔咒的保护，这么强大的力量我还是头一次见到。这魔咒甚至还能覆盖塔周围的区域。
 twilightforest.book.lichtower.2=换做是在我的故乡，我有很多对付此类魔法的方法，但是我在这里没多少补给。让我来深入研究一下……
 twilightforest.book.lichtower.3=§8[[若干篇后]]§0\n\n重大进展！我在旅途中看见了一种蛇形的巨兽，它被困在了装饰考究的“庭院”里。当时我捡起了一根破旧的羽毛，忽略了那些绿色的鳞片。
@@ -511,7 +578,3 @@ twilightforest.book.trollcave.2=这符咒一定和剧毒风暴有什么关系。
 twilightforest.book.trollcave.3=这名法师应该藏身于某个遥远的环境恶劣的地方。\n\n按照我的分析，我应该能在冰川的某个地方找到这样的一个人，也许是在某种要塞里……
 twilightforest.book.unknown.1=§8[[一本看上去被传抄了无数遍的书]]§0\n\n我的学识实在不足以解释这建筑周围的力场是怎么回事，我只能说这是一种强力魔法。如果这魔咒和之前的魔咒的原理一样，那么我应该在别的地方寻找答案。
 twilightforest.book.unknown.2=也许我还有什么事情没有做，抑或我还没击败什么怪物。我想是时候掉头回去了。当然，我会回来看看看有没有新进展的。
-
-twilightforest.misc.wip0=这个方块仍在制作当中，可能会有能导致存档损坏的 Bug 或不可预料的特性。
-twilightforest.misc.wip1=测试时时刻保持注意。
-twilightforest.misc.nyi=这个方块的部分特性尚未完成。
