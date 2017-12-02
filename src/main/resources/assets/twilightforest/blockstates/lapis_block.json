@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "cube_all" },
+  "variants": {
+    "inventory": [{}],
+    "normal": [
+      { "textures": { "all": "twilightforest:blocks/lapis_shale_0" }},
+      { "textures": { "all": "twilightforest:blocks/lapis_shale_1" }},
+      { "textures": { "all": "twilightforest:blocks/lapis_shale_2" }},
+      { "textures": { "all": "twilightforest:blocks/lapis_shale_3" }}
+    ]
+  }
+}

@@ -24,8 +24,6 @@ import java.util.Random;
 public class GuiTwilightForestLoading extends GuiScreen {
 
 	private Minecraft client = FMLClientHandler.instance().getClient();
-	private final NetHandlerPlayClient connection;
-	private int progress;
 	private boolean isEntering;
 	private boolean contentNeedsAssignment = false;
 	private long lastWorldUpdateTick = 0L;
@@ -35,8 +33,8 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	private ItemStack item;
 	private static final float backgroundScale = 32.0F;
 
-	GuiTwilightForestLoading(NetHandlerPlayClient clientPlayHandler) {
-		this.connection = clientPlayHandler;
+	GuiTwilightForestLoading() {
+
 	}
 
 	void setEntering(boolean isEntering) {
@@ -47,11 +45,6 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	public void initGui() {
 		this.buttonList.clear();
 		this.assignContent();
-	}
-
-	@Override
-	public void updateScreen() {
-		if (++this.progress % 10 == 0) this.connection.sendPacket(new CPacketKeepAlive());
 	}
 
 	@Override
@@ -116,6 +109,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 	private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
 		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * TFConfig.loadingScreen.frequency;
+		float sineTicker2 = (TFClientEvents.sineTicker + 314 + partialTicks) * TFConfig.loadingScreen.frequency;
 		GlStateManager.pushMatrix();
 
 		// Shove it!
@@ -126,7 +120,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 			GlStateManager.rotate((float) Math.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0, 0, 1);
 
 			// Bounce it!
-			GlStateManager.scale(TFConfig.loadingScreen.scale, ((Math.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), 1F);
+			GlStateManager.scale(((Math.sin(((sineTicker2 + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), ((Math.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), 1F);
 		}
 
 		// Shift it!

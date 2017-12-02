@@ -577,4 +577,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	protected boolean shouldAttack(EntityLivingBase living) {
 		return !this.isInTantrum();
 	}
+
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
 }

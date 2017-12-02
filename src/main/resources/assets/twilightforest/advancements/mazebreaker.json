@@ -11,7 +11,7 @@
     },
     "frame": "challenge"
   },
-  "parent": "twilightforest:progress_lich",
+  "parent": "twilightforest:progress_labyrinth",
   "criteria": {
     "pick": {
       "trigger": "minecraft:inventory_changed",

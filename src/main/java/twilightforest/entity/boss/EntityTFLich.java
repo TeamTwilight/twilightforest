@@ -599,4 +599,8 @@ public class EntityTFLich extends EntityMob {
 		return EnumCreatureAttribute.UNDEAD;
 	}
 
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
 }

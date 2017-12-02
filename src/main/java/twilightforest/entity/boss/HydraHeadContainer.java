@@ -101,11 +101,11 @@ public class HydraHeadContainer {
 	}
 
 	public EntityTFHydraHead headEntity;
-	public EntityTFHydraNeck necka;
-	public EntityTFHydraNeck neckb;
-	public EntityTFHydraNeck neckc;
-	public EntityTFHydraNeck neckd;
-	public EntityTFHydraNeck necke;
+	public final EntityTFHydraNeck necka;
+	public final EntityTFHydraNeck neckb;
+	public final EntityTFHydraNeck neckc;
+	public final EntityTFHydraNeck neckd;
+	public final EntityTFHydraNeck necke;
 
 	public Entity targetEntity;
 
@@ -129,10 +129,10 @@ public class HydraHeadContainer {
 
 	private final EntityTFHydra hydraObj;
 
-	private Map<State, Float>[] stateNeckLength;
-	private Map<State, Float>[] stateXRotations;
-	private Map<State, Float>[] stateYRotations;
-	private Map<State, Float>[] stateMouthOpen;
+	private final Map<State, Float>[] stateNeckLength;
+	private final Map<State, Float>[] stateXRotations;
+	private final Map<State, Float>[] stateYRotations;
+	private final Map<State, Float>[] stateMouthOpen;
 
 
 	@SuppressWarnings("unchecked")
@@ -143,7 +143,6 @@ public class HydraHeadContainer {
 		this.damageTaken = 0;
 		this.respawnCounter = -1;
 
-		// is this a good place to initialize the necks?
 		necka = new EntityTFHydraNeck(hydraObj, "neck" + headNum + "a", 2F, 2F);
 		neckb = new EntityTFHydraNeck(hydraObj, "neck" + headNum + "b", 2F, 2F);
 		neckc = new EntityTFHydraNeck(hydraObj, "neck" + headNum + "c", 2F, 2F);

@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "twilightforest:castle_brick",
+    "data": 5,
+    "count": 4
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": [
+      {
+        "item": "twilightforest:castle_brick",
+        "data": 0
+      },
+      {
+        "item": "twilightforest:castle_brick",
+        "data": 1
+      },
+      {
+        "item": "twilightforest:castle_brick",
+        "data": 2
+      },
+      {
+        "item": "twilightforest:castle_brick",
+        "data": 4
+      }
+    ]
+  }
+}

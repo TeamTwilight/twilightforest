@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 public class EntityTFHydraHead extends EntityTFHydraPart {
 
-	private static final DataParameter<Byte> DATA_MOUTH_POSITION = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.BYTE);
+	private static final DataParameter<Float> DATA_MOUTH_POSITION = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.FLOAT);
 	private static final DataParameter<Byte> DATA_STATE = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.BYTE);
 
 	public EntityTFHydraHead(World world) {
@@ -35,12 +35,12 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataManager.register(DATA_MOUTH_POSITION, (byte) 0);
+		dataManager.register(DATA_MOUTH_POSITION, 0F);
 		dataManager.register(DATA_STATE, (byte) 0);
 	}
 
 	public float getMouthOpen() {
-		return (dataManager.get(DATA_MOUTH_POSITION) & 0xFF) / 255.0F;
+		return dataManager.get(DATA_MOUTH_POSITION);
 	}
 
 	public HydraHeadContainer.State getState() {
@@ -48,10 +48,7 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
 	}
 
 	public void setMouthOpen(float openness) {
-		int openByte = Math.round(MathHelper.clamp(openness, 0F, 1F) * 255);
-
-		openByte &= 0xFF;
-		dataManager.set(DATA_MOUTH_POSITION, (byte) openByte);
+		dataManager.set(DATA_MOUTH_POSITION, openness);
 	}
 
 	public void setState(HydraHeadContainer.State state) {

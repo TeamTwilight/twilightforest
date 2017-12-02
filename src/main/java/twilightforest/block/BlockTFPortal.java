@@ -8,11 +8,15 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -25,13 +29,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.PlayerHelper;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class BlockTFPortal extends BlockBreakable {
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F);
 
 	public BlockTFPortal() {
 		super(Material.PORTAL, false);
@@ -57,117 +61,76 @@ public class BlockTFPortal extends BlockBreakable {
 		return false;
 	}
 
-	/**
-	 * The function name says it all.  Tries to create a portal at the specified location.
-	 * In this case, the location is the location of a pool with very specific parameters.
-	 */
-	public boolean tryToCreatePortal(World world, BlockPos pos) {
-		if (isGoodPortalPool(world, pos)) {
-			world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), false));
+	public boolean tryToCreatePortal(World world, BlockPos pos, EntityItem activationItem) {
+		IBlockState state = world.getBlockState(pos);
 
-			transmuteWaterToPortal(world, pos);
+		if (state.getBlock() == Blocks.WATER) {
+			HashMap<BlockPos, Boolean> blocksChecked = new HashMap<>();
+			blocksChecked.put(pos, true);
 
-			return true;
-		} else {
-			return false;
+			PassableNumber number = new PassableNumber(64);
+
+			if (recursivelyValidatePortal(world, pos, blocksChecked, number) && number.getNumber() > 3) {
+				activationItem.getItem().shrink(1);
+				world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), false));
+
+				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet())
+					if (checkedPos.getValue()) world.setBlockState(checkedPos.getKey(), TFBlocks.portal.getDefaultState(), 2);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean recursivelyValidatePortal(World world, BlockPos pos, HashMap<BlockPos, Boolean> blocksChecked, PassableNumber waterLimit) {
+		boolean isPoolProbablyEnclosed = true;
+
+		waterLimit.decrement();
+		if (waterLimit.getNumber() < 0) return false;
+
+		for (int i = 0; i < EnumFacing.HORIZONTALS.length && waterLimit.getNumber() >= 0; i++) {
+			BlockPos positionCheck = pos.offset(EnumFacing.HORIZONTALS[i]);
+
+			if (!blocksChecked.containsKey(positionCheck)) {
+				IBlockState state = world.getBlockState(positionCheck);
+
+				if (state == Blocks.WATER.getDefaultState() && world.getBlockState(positionCheck.down()).getMaterial().isSolid()) {
+					blocksChecked.put(positionCheck, true);
+
+					isPoolProbablyEnclosed = isPoolProbablyEnclosed && recursivelyValidatePortal(world, positionCheck, blocksChecked, waterLimit);
+				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up()))) {
+					blocksChecked.put(positionCheck, false);
+				} else return false;
+			}
+		}
+
+		return isPoolProbablyEnclosed;
+	}
+
+	private static class PassableNumber {
+		private int number;
+
+		PassableNumber(int number) {
+			this.number = number;
+		}
+
+		int getNumber() {
+			return number;
+		}
+
+		void decrement() {
+			this.number = this.number - 1;
+		}
+
+		void setNumber(int number) {
+			this.number = number;
 		}
 	}
 
-	/**
-	 * Changes the pool it's been given to all portal.  No checks done, only does 4 squares.
-	 */
-	private void transmuteWaterToPortal(World world, BlockPos pos) {
-		// adjust so that the other 3 water squares are in the +x, +z directions.
-		if (world.getBlockState(pos.west()).getMaterial() == Material.WATER) {
-			pos = pos.west();
-		}
-		if (world.getBlockState(pos.north()).getMaterial() == Material.WATER) {
-			pos = pos.north();
-		}
-
-		world.setBlockState(pos, TFBlocks.portal.getDefaultState(), 2);
-		world.setBlockState(pos.east(), TFBlocks.portal.getDefaultState(), 2);
-		world.setBlockState(pos.east().south(), TFBlocks.portal.getDefaultState(), 2);
-		world.setBlockState(pos.south(), TFBlocks.portal.getDefaultState(), 2);
-	}
-
-	/**
-	 * If this spot, or a spot in any one of the 8 directions around me is good, we're good.
-	 */
-	private boolean isGoodPortalPool(World world, BlockPos pos) {
-		return isGoodPortalPoolStrict(world, pos)
-				|| isGoodPortalPoolStrict(world, pos.north())
-				|| isGoodPortalPoolStrict(world, pos.south())
-				|| isGoodPortalPoolStrict(world, pos.west())
-				|| isGoodPortalPoolStrict(world, pos.east())
-				|| isGoodPortalPoolStrict(world, pos.west().north())
-				|| isGoodPortalPoolStrict(world, pos.west().south())
-				|| isGoodPortalPoolStrict(world, pos.east().north())
-				|| isGoodPortalPoolStrict(world, pos.east().south());
-	}
-
-	/**
-	 * Returns true only if there is water here, and at dx + 1, dy + 1, grass surrounding it, and solid beneath.
-	 * <p>
-	 * <p>
-	 * GGGG
-	 * G+wG
-	 * GwwG
-	 * GGGG
-	 */
-	public boolean isGoodPortalPoolStrict(World world, BlockPos pos) {
-		// 4 squares of water
-		return world.getBlockState(pos).getMaterial() == Material.WATER
-				&& world.getBlockState(pos.east()).getMaterial() == Material.WATER
-				&& world.getBlockState(pos.east().south()).getMaterial() == Material.WATER
-				&& world.getBlockState(pos.south()).getMaterial() == Material.WATER
-
-				// grass in the 12 squares surrounding
-				&& isGrassOrDirt(world, pos.west().north())
-				&& isGrassOrDirt(world, pos.west())
-				&& isGrassOrDirt(world, pos.west().south())
-				&& isGrassOrDirt(world, pos.west().south(2))
-
-				&& isGrassOrDirt(world, pos.north())
-				&& isGrassOrDirt(world, pos.east().north())
-
-				&& isGrassOrDirt(world, pos.south(2))
-				&& isGrassOrDirt(world, pos.east().south(2))
-
-				&& isGrassOrDirt(world, pos.east(2).north())
-				&& isGrassOrDirt(world, pos.east(2))
-				&& isGrassOrDirt(world, pos.east(2).south())
-				&& isGrassOrDirt(world, pos.east(2).south(2))
-
-				// solid underneath
-				&& world.getBlockState(pos.down()).getMaterial().isSolid()
-				&& world.getBlockState(pos.down().east()).getMaterial().isSolid()
-				&& world.getBlockState(pos.down().east().south()).getMaterial().isSolid()
-				&& world.getBlockState(pos.down().south()).getMaterial().isSolid()
-
-				// 12 nature blocks above the grass?
-				&& isNatureBlock(world, pos.up().west().north())
-				&& isNatureBlock(world, pos.up().west())
-				&& isNatureBlock(world, pos.up().west().south())
-				&& isNatureBlock(world, pos.up().west().south(2))
-
-				&& isNatureBlock(world, pos.up().north())
-				&& isNatureBlock(world, pos.up().east().north())
-
-				&& isNatureBlock(world, pos.up().south(2))
-				&& isNatureBlock(world, pos.up().south(2).east())
-
-				&& isNatureBlock(world, pos.up().east(2).north())
-				&& isNatureBlock(world, pos.up().east(2))
-				&& isNatureBlock(world, pos.up().east(2).south())
-				&& isNatureBlock(world, pos.up().east(2).south(2));
-	}
-
-	/**
-	 * Does the block at this location count as a "nature" block for portal purposes?
-	 */
-	private boolean isNatureBlock(World world, BlockPos pos) {
-		Material mat = world.getBlockState(pos).getMaterial();
+	private static boolean isNatureBlock(IBlockState state) {
+		Material mat = state.getMaterial();
 		return mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES;
 	}
 
@@ -177,20 +140,25 @@ public class BlockTFPortal extends BlockBreakable {
 	@Override
 	@Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed, BlockPos fromPos) {
-		boolean good = Arrays.stream(EnumFacing.HORIZONTALS)
-				.filter(e -> world.getBlockState(pos.offset(e)).getBlock() == this
-						&& isGrassOrDirt(world, pos.offset(e.getOpposite())))
-				.count() >= 2;
+		boolean good = world.getBlockState(pos.down()).getMaterial().isSolid();
+
+		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+			if (!good) break;
+
+			IBlockState neighboringState = world.getBlockState(pos.offset(facing));
+
+			good = isGrassOrDirt(neighboringState) || neighboringState.getBlock() == TFBlocks.portal;
+		}
 
 		if (!good) {
 			world.playEvent(2001, pos, Block.getStateId(state));
-			world.setBlockState(pos, Blocks.WATER.getDefaultState());
+			world.setBlockState(pos, Blocks.WATER.getDefaultState(), 0b11);
 		}
 	}
 
-	private boolean isGrassOrDirt(World world, BlockPos pos) {
-		return world.getBlockState(pos).getMaterial() == Material.GRASS
-				|| world.getBlockState(pos).getMaterial() == Material.GROUND;
+	private static boolean isGrassOrDirt(IBlockState state) {
+		return state.getMaterial() == Material.GRASS
+				|| state.getMaterial() == Material.GROUND;
 	}
 
 	@Override
@@ -319,6 +287,7 @@ public class BlockTFPortal extends BlockBreakable {
 	}
 
 	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
+	// TODO Eeeh... Let's look at changing this too alongside a new model.
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {

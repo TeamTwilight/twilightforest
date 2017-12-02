@@ -788,4 +788,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		super.removeTrackingPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
+
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
 }

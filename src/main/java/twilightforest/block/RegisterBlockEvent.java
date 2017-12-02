@@ -81,6 +81,8 @@ public final class RegisterBlockEvent {
 		blocks.register("experiment_115", (new BlockTFExperiment115()).setUnlocalizedName("experiment115").setHardness(0.5F));
 		blocks.register("miniature_structure", (new BlockTFMiniatureStructure()).setUnlocalizedName("MiniatureStructure").setHardness(0.75F));
 		blocks.register("block_storage", new BlockTFCompressed().setUnlocalizedName("BlockOfStorage"));
+		blocks.register("lapis_block", new BlockTFLapisBlock().setUnlocalizedName("BlockOfLapisTF"));
+		blocks.register("spiral_bricks", new BlockTFSpiralBrick().setUnlocalizedName("SpiralBricks"));
 	}
 
 	private static class BlockRegistryHelper {

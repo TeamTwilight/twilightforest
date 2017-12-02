@@ -144,4 +144,8 @@ public class TFBlocks {
 	public static Block miniature_structure;
 	@ObjectHolder("block_storage")
 	public static Block block_storage;
+	@ObjectHolder("lapis_block")
+	public static Block lapis_block;
+	@ObjectHolder("spiral_bricks")
+	public static Block spiral_bricks;
 }

@@ -95,7 +95,7 @@ public class TFConfig {
 
 		@Config.LangKey(config + "loading_icon_bounciness")
 		@Config.RangeDouble(min = 0F)
-		public float scaleDeviation = 5F;
+		public float scaleDeviation = 5.25F;
 
 		@Config.LangKey(config + "loading_icon_tilting")
 		@Config.RangeDouble(min = 0F, max = 360F)
@@ -124,7 +124,13 @@ public class TFConfig {
 				"twilightforest:miniature_structure",
 				"twilightforest:miniature_structure:6",
 				"twilightforest:knightmetal_block",
-				"twilightforest:tower_device:10"
+				"twilightforest:tower_device:10",
+				"twilightforest:twilight_sapling:5",
+				"twilightforest:twilight_sapling:6",
+				"twilightforest:twilight_sapling:7",
+				"twilightforest:twilight_sapling:8",
+				"twilightforest:twilight_sapling:9",
+				"twilightforest:borer_essence"
 		};
 
 		private List<ItemStack> loadingScreenIcons;
@@ -178,6 +184,7 @@ public class TFConfig {
 					try {
 						meta = Integer.parseInt(data[2]);
 					} catch (NumberFormatException e) {
+						TwilightForestMod.LOGGER.warn("Had a slight hiccup processing \"" + s + "\" as part of the antibuilder blacklist.");
 						meta = 0;
 					}
 				}
@@ -191,6 +198,7 @@ public class TFConfig {
 	private static List<IBlockState> antibuilderStateBlacklist;
 
 	public static List<IBlockState> getAntiBuilderBlacklist() {
+		if (antibuilderStateBlacklist == null || antibuilderStateBlacklist.isEmpty()) loadAntiBuilderBlacklist();
 		return antibuilderStateBlacklist;
 	}
 }

@@ -15,7 +15,7 @@ import twilightforest.block.enums.TowerTranslucentVariant;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityTFReverter extends TileEntity implements ITickable {
+public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 	private static final int REVERT_CHANCE = 10;
 
 	public int radius = 4;

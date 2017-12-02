@@ -1,7 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:phantom_helmet"
+      "item": "twilightforest:trophy",
+      "data": 4
     },
     "title": {
       "translate": "advancement.twilight_progress_knights"

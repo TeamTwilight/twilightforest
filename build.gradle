@@ -106,4 +106,6 @@ repositories {
 dependencies {   
     compile "mezz.jei:jei_1.12.2:${jei_version}"
     compile "team.chisel.ctm:CTM:MC1.12-${ctm_version}"
+    compile "team.chisel:Chisel:MC${chisel_version}:api"
+    runtime "team.chisel:Chisel:MC${chisel_version}"
 }

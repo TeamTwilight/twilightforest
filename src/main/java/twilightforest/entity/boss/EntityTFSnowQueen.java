@@ -454,4 +454,9 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		if (this.hasCustomName())
 			this.bossInfo.setName(this.getDisplayName());
 	}
+
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
 }

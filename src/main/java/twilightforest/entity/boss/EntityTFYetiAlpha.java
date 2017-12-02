@@ -389,4 +389,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 		}
 	}
 
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
+
 }

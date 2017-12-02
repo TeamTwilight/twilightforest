@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "twilightforest:castle_pillar",
+    "data": 1,
+    "count": 4
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": [
+      {
+        "item": "twilightforest:castle_pillar",
+        "data": 0
+      },
+      {
+        "item": "twilightforest:castle_pillar",
+        "data": 1
+      }
+    ]
+  }
+}

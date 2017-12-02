@@ -34,11 +34,8 @@ import twilightforest.block.enums.TowerTranslucentVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
-import twilightforest.tileentity.TileEntityTFCReactorActive;
-import twilightforest.tileentity.TileEntityTFGhastTrapActive;
-import twilightforest.tileentity.TileEntityTFGhastTrapInactive;
-import twilightforest.tileentity.TileEntityTFReverter;
-import twilightforest.tileentity.TileEntityTFTowerBuilder;
+import twilightforest.tileentity.*;
+import twilightforest.tileentity.TileEntityTFAntibuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -446,7 +443,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		if (variant == TowerDeviceVariant.BUILDER_ACTIVE) {
 			return new TileEntityTFTowerBuilder();
 		} else if (variant == TowerDeviceVariant.ANTIBUILDER) {
-			return new TileEntityTFReverter();
+			return new TileEntityTFAntibuilder();
 		} else if (variant == TowerDeviceVariant.GHASTTRAP_INACTIVE) {
 			return new TileEntityTFGhastTrapInactive();
 		} else if (variant == TowerDeviceVariant.GHASTTRAP_ACTIVE) {

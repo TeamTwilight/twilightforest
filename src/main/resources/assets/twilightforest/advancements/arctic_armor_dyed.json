@@ -1,0 +1,69 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:arctic_chestplate"
+    },
+    "title": {
+      "translate": "advancement.twilight_arctic_dyed"
+    },
+    "description": {
+      "translate": "advancement.twilight_arctic_dyed.desc"
+    }
+  },
+  "parent": "twilightforest:progress_yeti",
+  "criteria": {
+    "helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:arctic_helmet",
+            "nbt": "{display:{hasColor:true}}"
+          }
+        ]
+      }
+    },
+    "chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:arctic_chestplate",
+            "nbt": "{display:{hasColor:true}}"
+          }
+        ]
+      }
+    },
+    "legs": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:arctic_leggings",
+            "nbt": "{display:{hasColor:true}}"
+          }
+        ]
+      }
+    },
+    "boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:arctic_boots",
+            "nbt": "{display:{hasColor:true}}"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  },
+  "requirements": [
+    [ "helmet" ],
+    [ "chest" ],
+    [ "legs" ],
+    [ "boots" ]
+  ]
+}

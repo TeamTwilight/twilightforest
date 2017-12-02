@@ -1,5 +1,7 @@
 package twilightforest.tileentity;
 
+import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.passive.EntityTFTinyFirefly;
 
 public class TileEntityTFFirefly extends TileEntityTFCritter {
@@ -68,8 +70,7 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
 		double rz = pos.getZ() + world.rand.nextFloat();
 //    	ModLoader.getMinecraftInstance().effectRenderer.addEffect(fireflyfx);
 		// ^ keeping here only for pure lolz
-		EntityTFTinyFirefly tinyfly = new EntityTFTinyFirefly(world, rx, ry, rz);
-		world.addWeatherEffect(tinyfly);
+		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, rx, ry, rz, 0, 0, 0);
 	}
 
 

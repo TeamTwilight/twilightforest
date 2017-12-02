@@ -106,4 +106,9 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	public void selfDestruct() {
 		this.deathCounter = 10;
 	}
+
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
 }

@@ -49,11 +49,11 @@ public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 					BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
 					GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					/*// spin FIXME
-					if (iblockstate.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Y) {
+					if (iblockstate.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.Y) {
 						GlStateManager.rotate((entity.ticksExisted + partialTicks) * 60F, 0, 1, 0);
-					} else if (iblockstate.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.X) {
+					} else if (iblockstate.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.X) {
 						GlStateManager.rotate((entity.ticksExisted + partialTicks) * 60F, 1, 0, 0);
-					} else if (iblockstate.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Z) {
+					} else if (iblockstate.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.Z) {
 						GlStateManager.rotate((entity.ticksExisted + partialTicks) * 60F, 0, 0, 1);
 					}*/
 					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
@@ -84,11 +84,11 @@ public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
             GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
 
             // spin
-            if (block.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Y) {
+            if (block.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.Y) {
             	GlStateManager.rotate((sliderEntity.ticksExisted + time) * 60F, 0, 1, 0);
-            } else if (block.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.X) {
+            } else if (block.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.X) {
             	GlStateManager.rotate((sliderEntity.ticksExisted + time) * 60F, 1, 0, 0);
-            } else if (block.getValue(BlockRotatedPillar.AXIS) == EnumFacing.Axis.Z) {
+            } else if (block.getValue(BlockRotatedPillar.AXIS_FACING) == EnumFacing.Axis.Z) {
             	GlStateManager.rotate((sliderEntity.ticksExisted + time) * 60F, 0, 0, 1);
             }
 

@@ -128,8 +128,9 @@ public class TFTickHandler {
 	}
 
 	private static void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
-		if ((world.provider.getDimension() == 0 || world.provider.getDimension() == TFConfig.dimension.dimensionID
-				|| TFConfig.allowPortalsInOtherDimensions)) {
+		if (world.provider.getDimension() == 0
+				|| world.provider.getDimension() == TFConfig.dimension.dimensionID
+				|| TFConfig.allowPortalsInOtherDimensions) {
 			Item item = Item.REGISTRY.getObject(new ResourceLocation(TFConfig.portalCreationItem));
 			int metadata = TFConfig.portalCreationMeta;
 			if (item == null) {
@@ -152,8 +153,10 @@ public class TFTickHandler {
 						world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
 					}
 
-					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem)))
+					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, new BlockPos(entityItem), entityItem)) {
 						TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
+						return;
+					}
 				}
 			}
 		}

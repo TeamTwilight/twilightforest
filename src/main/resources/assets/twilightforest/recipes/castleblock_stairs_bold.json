@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "twilightforest:castle_stairs",
+    "data": 8,
+    "count": 8
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": [
+      {
+        "item": "twilightforest:castle_pillar",
+        "data": 2
+      },
+      {
+        "item": "twilightforest:castle_pillar",
+        "data": 3
+      }
+    ]
+  }
+}

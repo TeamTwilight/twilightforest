@@ -3,6 +3,8 @@ package twilightforest.item;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,6 +25,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallback {
 	public ItemTFArcticArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
@@ -89,20 +94,22 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 		String string = "";//type == 0 ? "" : ("" + type);
 		NBTTagCompound stackTagCompound = stack.getTagCompound();
 
+		int color = 0xBDCFD9;
+
 		if (stackTagCompound != null) {
 			NBTTagCompound displayCompound = stackTagCompound.getCompoundTag("display");
 
 			if (displayCompound.hasKey("color" + string, 3))
-				return displayCompound.getInteger("color" + string);
+				color = displayCompound.getInteger("color" + string);
 		}
 
 		switch (type) {
 			//case 0:
 				//return stack.getItem() != TFItems.arcticHelm ? 0x793828 : 0xFFFFFF;
-			case 1:
-				return 0xBDCFD9;
-			default:
+			case 0:
 				return 0xFFFFFF;
+			default:
+				return color;
 		}
 	}
 
@@ -115,6 +122,9 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 
 			if (displayCompound.hasKey("color" + string))
 				displayCompound.removeTag("color" + string);
+
+			if (displayCompound.hasKey("hasColor"))
+				displayCompound.setBoolean("hasColor", false);
 		}
 	}
 
@@ -129,11 +139,11 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 
 		NBTTagCompound displayCompound = stackTagCompound.getCompoundTag("display");
 
-		if (!stackTagCompound.hasKey("display", 10)) {
+		if (!stackTagCompound.hasKey("display", 10))
 			stackTagCompound.setTag("display", displayCompound);
-		}
 
 		displayCompound.setInteger("color" + string, color);
+		displayCompound.setBoolean("hasColor", true);
 	}
 
 	@Override
@@ -153,5 +163,11 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 		}
 
 		return EnumActionResult.PASS;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		tooltip.add(I18n.format("item.arctic_armor.tooltip"));
 	}
 }

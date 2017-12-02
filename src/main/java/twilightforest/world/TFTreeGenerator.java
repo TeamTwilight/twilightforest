@@ -2,8 +2,8 @@ package twilightforest.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -64,13 +64,18 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 	}
 
 	public static boolean canRootGrowIn(World world, BlockPos pos) {
-		Block blockID = world.getBlockState(pos).getBlock();
+		IBlockState blockState = world.getBlockState(pos);
+		Block blockID = blockState.getBlock();
 
-		if (blockID == Blocks.AIR) {
+		if (blockID.isAir(blockState, world, pos)) {
 			// roots can grow through air if they are near a solid block
 			return TFGenerator.isNearSolid(world, pos);
 		} else {
-			return blockID != Blocks.BEDROCK && blockID != Blocks.OBSIDIAN && blockID != TFBlocks.shield;
+			return (blockState.getBlockHardness(world, pos) >= 0)
+					&& blockID != TFBlocks.shield
+					&& blockID != TFBlocks.trophyPedestal
+					&& blockID != TFBlocks.bossSpawner
+					&& (blockState.getMaterial() == Material.GRASS || blockState.getMaterial() == Material.GROUND || blockState.getMaterial() == Material.ROCK);
 		}
 	}
 

@@ -1,7 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:crumble_horn"
+      "item": "twilightforest:trophy",
+      "data": 8
     },
     "title": {
       "translate": "advancement.twilight_quest_ram"

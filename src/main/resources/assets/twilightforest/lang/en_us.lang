@@ -42,6 +42,9 @@ advancement.twilight_dining.desc=Eat ALL of the Food exclusive to the Twilight F
 advancement.twilight_ghast_trap=Something Strange in Towerwood
 advancement.twilight_ghast_trap.desc=Slay the Ghastlings around a Ghast Trap and activate to wrench the Ur-Ghast from the sky!
 
+advancement.twilight_arctic_dyed=Getting in Fashion
+advancement.twilight_arctic_dyed.desc=Dye all four pieces of Arctic Armor.
+
 advancement.twilight_naga_armors=Naga Armorer
 advancement.twilight_naga_armors.desc=Craft both naga scale chest and leg armor.
 advancement.twilight_lich_scepters=By Our Powers Combined!
@@ -269,6 +272,8 @@ tile.BlockOfStorage.4.name=Block of Carminite
 tile.CinderFurnaceIdle.name=Cinder Furnace [NYI]
 tile.CinderLog.0.name=Cinder Log [NYI]
 tile.MiniatureStructure=Miniature %s [NYI]
+tile.SpiralBricks.name=Spiral Stone Bricks [WIP]
+tile.BlockOfLapisTF.name=Block Of Lapis [NYI]
 
 structure.twilight_portal.name=Twilight Portal
 structure.hedge_maze.name=Hedge Maze
@@ -416,6 +421,8 @@ item.yetiHelm.tooltip=Chills attackers
 item.yetiPlate.tooltip=Chills attackers
 item.yetiLegs.tooltip=Chills attackers
 item.yetiBoots.tooltip=Chills attackers
+
+item.arctic_armor.tooltip=Dyeable like Leather Armor
 
 entity.twilightforest.wild_boar.name=Wild Boar
 entity.twilightforest.bighorn_sheep.name=Bighorn Sheep

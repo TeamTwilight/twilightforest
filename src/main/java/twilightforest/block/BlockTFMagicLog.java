@@ -76,6 +76,11 @@ public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
+	public int damageDropped(IBlockState state) {
+		return state.getValue(VARIANT).ordinal();
+	}
+
+	@Override
 	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
 		par3List.add(new ItemStack(this, 1, 0));
 		par3List.add(new ItemStack(this, 1, 1));

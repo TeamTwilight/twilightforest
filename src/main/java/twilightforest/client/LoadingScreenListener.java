@@ -25,10 +25,9 @@ public class LoadingScreenListener {
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof GuiDownloadTerrain
-				&& FMLClientHandler.instance().getClientPlayHandler() instanceof NetHandlerPlayClient
 				&& client.player != null) {
 
-			GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
+			GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading();
 
 			if (lastDimension == TFConfig.dimension.dimensionID && client.player.dimension != TFConfig.dimension.dimensionID)
 				guiLoading.setEntering(false);

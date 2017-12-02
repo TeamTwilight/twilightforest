@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
@@ -28,6 +29,7 @@ import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
 import java.util.List;
+import java.util.Random;
 
 public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 	private static final AxisAlignedBB HYDRA_Y_BB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
@@ -125,7 +127,21 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 		if (te instanceof TileEntityTFTrophy) {
 			return new ItemStack(TFItems.trophy, 1, ((TileEntityTFTrophy) te).getSkullType());
 		}
-		return null;
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof TileEntityTFTrophy) {
+			return new ItemStack(TFItems.trophy, 1, ((TileEntityTFTrophy) te).getSkullType());
+		}
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return TFItems.trophy;
 	}
 
 	// [VanillaCopy] of superclass, relevant edits indicated

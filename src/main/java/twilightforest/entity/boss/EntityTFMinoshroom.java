@@ -44,4 +44,9 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 		return false;
 	}
 
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
+
 }

@@ -137,4 +137,9 @@ public class EntityTFHydraPart extends EntityLiving {
 		this.rotationYaw = par1 % 360.0F;
 		this.rotationPitch = par2 % 360.0F;
 	}
+
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
 }

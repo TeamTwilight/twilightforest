@@ -48,6 +48,7 @@ public class TFClientEvents {
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_2"));
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_3"));
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
+		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/firefly"));
 	}
 
 	/**

@@ -481,6 +481,11 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 	}
 
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
+
 	// [VanillaCopy] Home fields and methods from EntityCreature, changes noted
 	private BlockPos homePosition = BlockPos.ORIGIN;
 	private float maximumHomeDistance = -1.0F;
