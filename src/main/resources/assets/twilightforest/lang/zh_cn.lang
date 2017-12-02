@@ -230,7 +230,7 @@ tile.HugeStalk.name=巨大的茎
 tile.HugeGloomBlock.name=巨型荧光蘑菇
 tile.TrollVidr.name=巨魔藤蔓
 tile.UnripeTrollBer.name=没熟的巨魔莓
-tile.TrollBer.name=巨魔莓
+#tile.TrollBer.name=巨魔莓
 tile.TrollBer.name=巨魔莓
 tile.KnightmetalBlock.name=骑士金属块
 tile.HugeLilyPad.name=巨型睡莲
@@ -272,6 +272,8 @@ tile.BlockOfStorage.4.name=砷铅铁块
 tile.CinderFurnaceIdle.name=余烬熔炉【未实装】
 tile.CinderLog.0.name=余烬原木【未实装】
 tile.MiniatureStructure=微缩模型：%s【未实装】
+tile.SpiralBricks.name=螺旋石砖【开发中】
+tile.BlockOfLapisTF.name=青金石块【未实装】
 
 structure.twilight_portal.name=暮色森林传送门
 structure.hedge_maze.name=树篱迷宫
