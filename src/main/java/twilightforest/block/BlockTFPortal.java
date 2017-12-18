@@ -131,7 +131,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 	private static boolean isNatureBlock(IBlockState state) {
 		Material mat = state.getMaterial();
-		return state.isFullCube() && (mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES);
+		return mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES;
 	}
 
 	private static boolean isGrassOrDirt(IBlockState state) {
