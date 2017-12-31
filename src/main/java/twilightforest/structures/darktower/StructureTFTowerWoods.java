@@ -4,7 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.TowerWoodVariant;
+import twilightforest.enums.TowerWoodVariant;
 
 import java.util.Random;
 

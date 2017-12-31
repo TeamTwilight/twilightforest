@@ -7,11 +7,11 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
-public class ComponentTFTrollVault extends StructureTFComponent {
+public class ComponentTFTrollVault extends StructureTFComponentOld {
 
 	public ComponentTFTrollVault() {
 	}
@@ -29,7 +29,7 @@ public class ComponentTFTrollVault extends StructureTFComponent {
 		// spawn list!
 		this.spawnListIndex = -1;
 
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, EnumFacing.SOUTH);
 	}
 
 	@Override

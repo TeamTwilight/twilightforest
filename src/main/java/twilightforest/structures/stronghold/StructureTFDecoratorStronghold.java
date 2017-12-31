@@ -6,7 +6,7 @@ import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.init.Blocks;
 import twilightforest.block.BlockTFUnderBrick;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.UnderBrickVariant;
+import twilightforest.enums.UnderBrickVariant;
 import twilightforest.structures.StructureTFDecorator;
 
 public class StructureTFDecoratorStronghold extends StructureTFDecorator {

@@ -10,7 +10,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.TowerTranslucentVariant;
+import twilightforest.enums.TowerTranslucentVariant;
 import twilightforest.entity.EntityTFMiniGhast;
 
 import java.util.Random;

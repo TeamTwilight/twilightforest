@@ -65,19 +65,19 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("srcPosX", this.src.getX());
-		par1NBTTagCompound.setInteger("srcPosY", this.src.getY());
-		par1NBTTagCompound.setInteger("srcPosZ", this.src.getZ());
-		par1NBTTagCompound.setInteger("destPosX", this.dest.getX());
-		par1NBTTagCompound.setInteger("destPosY", this.dest.getY());
-		par1NBTTagCompound.setInteger("destPosZ", this.dest.getZ());
-		par1NBTTagCompound.setDouble("branchLength", this.length);
-		par1NBTTagCompound.setDouble("branchAngle", this.angle);
-		par1NBTTagCompound.setDouble("branchTilt", this.tilt);
-		par1NBTTagCompound.setBoolean("branchLeafy", this.leafy);
+		tagCompound.setInteger("srcPosX", this.src.getX());
+		tagCompound.setInteger("srcPosY", this.src.getY());
+		tagCompound.setInteger("srcPosZ", this.src.getZ());
+		tagCompound.setInteger("destPosX", this.dest.getX());
+		tagCompound.setInteger("destPosY", this.dest.getY());
+		tagCompound.setInteger("destPosZ", this.dest.getZ());
+		tagCompound.setDouble("branchLength", this.length);
+		tagCompound.setDouble("branchAngle", this.angle);
+		tagCompound.setDouble("branchTilt", this.tilt);
+		tagCompound.setBoolean("branchLeafy", this.leafy);
 
 	}
 
@@ -85,17 +85,17 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
 
 
-		this.src = new BlockPos(par1NBTTagCompound.getInteger("srcPosX"), par1NBTTagCompound.getInteger("srcPosY"), par1NBTTagCompound.getInteger("srcPosZ"));
-		this.dest = new BlockPos(par1NBTTagCompound.getInteger("destPosX"), par1NBTTagCompound.getInteger("destPosY"), par1NBTTagCompound.getInteger("destPosZ"));
+		this.src = new BlockPos(tagCompound.getInteger("srcPosX"), tagCompound.getInteger("srcPosY"), tagCompound.getInteger("srcPosZ"));
+		this.dest = new BlockPos(tagCompound.getInteger("destPosX"), tagCompound.getInteger("destPosY"), tagCompound.getInteger("destPosZ"));
 
-		this.length = par1NBTTagCompound.getDouble("branchLength");
-		this.angle = par1NBTTagCompound.getDouble("branchAngle");
-		this.tilt = par1NBTTagCompound.getDouble("branchTilt");
-		this.leafy = par1NBTTagCompound.getBoolean("branchLeafy");
+		this.length = tagCompound.getDouble("branchLength");
+		this.angle = tagCompound.getDouble("branchAngle");
+		this.tilt = tagCompound.getDouble("branchTilt");
+		this.leafy = tagCompound.getBoolean("branchLeafy");
 	}
 
 	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {

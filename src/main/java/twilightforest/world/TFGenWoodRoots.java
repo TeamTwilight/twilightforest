@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.RootVariant;
+import twilightforest.enums.RootVariant;
 
 import java.util.Random;
 

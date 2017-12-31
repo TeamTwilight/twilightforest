@@ -1,0 +1,58 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube"
+  },
+  "variants": {
+    "facing": {
+      "up":    { "textures": {
+        "up": "twilightforest:blocks/stone_tiles",
+        "down": "twilightforest:blocks/stone_tiles",
+        "north" : "twilightforest:blocks/etched_nagastone_up",
+        "south" : "twilightforest:blocks/etched_nagastone_up",
+        "east" : "twilightforest:blocks/etched_nagastone_up",
+        "west" : "twilightforest:blocks/etched_nagastone_up"
+      } },
+      "down":  { "textures": {
+        "up": "twilightforest:blocks/stone_tiles",
+        "down": "twilightforest:blocks/stone_tiles",
+        "north" : "twilightforest:blocks/etched_nagastone_down",
+        "south" : "twilightforest:blocks/etched_nagastone_down",
+        "east" : "twilightforest:blocks/etched_nagastone_down",
+        "west" : "twilightforest:blocks/etched_nagastone_down"
+      } },
+      "north": { "textures": {
+        "up": "twilightforest:blocks/etched_nagastone_up",
+        "down": "twilightforest:blocks/etched_nagastone_up",
+        "north" : "twilightforest:blocks/stone_tiles",
+        "south" : "twilightforest:blocks/stone_tiles",
+        "east" : "twilightforest:blocks/etched_nagastone_right",
+        "west" : "twilightforest:blocks/etched_nagastone_left"
+      } },
+      "south": { "textures": {
+        "up": "twilightforest:blocks/etched_nagastone_down",
+        "down": "twilightforest:blocks/etched_nagastone_down",
+        "north" : "twilightforest:blocks/stone_tiles",
+        "south" : "twilightforest:blocks/stone_tiles",
+        "east" : "twilightforest:blocks/etched_nagastone_left",
+        "west" : "twilightforest:blocks/etched_nagastone_right"
+      } },
+      "east":  { "textures": {
+        "up": "twilightforest:blocks/etched_nagastone_right",
+        "down": "twilightforest:blocks/etched_nagastone_left",
+        "north" : "twilightforest:blocks/etched_nagastone_left",
+        "south" : "twilightforest:blocks/etched_nagastone_right",
+        "east" : "twilightforest:blocks/stone_tiles",
+        "west" : "twilightforest:blocks/stone_tiles"
+      } },
+      "west":  { "textures": {
+        "up": "twilightforest:blocks/etched_nagastone_left",
+        "down": "twilightforest:blocks/etched_nagastone_right",
+        "north" : "twilightforest:blocks/etched_nagastone_right",
+        "south" : "twilightforest:blocks/etched_nagastone_left",
+        "east" : "twilightforest:blocks/stone_tiles",
+        "west" : "twilightforest:blocks/stone_tiles"
+      } }
+    }
+  }
+}

@@ -26,7 +26,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.PlantVariant;
+import twilightforest.enums.PlantVariant;
 import twilightforest.entity.EntityTFTroll;
 import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFGenTrollRoots;

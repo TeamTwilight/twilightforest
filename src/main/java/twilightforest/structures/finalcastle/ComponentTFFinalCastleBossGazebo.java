@@ -9,19 +9,19 @@ import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecoratorCastle;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleBossGazebo extends StructureTFComponent {
+public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 
 	public ComponentTFFinalCastleBossGazebo() {
 	}
 
-	public ComponentTFFinalCastleBossGazebo(TFFeature feature, Random rand, int i, StructureTFComponent keep) {
+	public ComponentTFFinalCastleBossGazebo(TFFeature feature, Random rand, int i, StructureTFComponentOld keep) {
 		super(feature, i);
 		this.spawnListIndex = -1; // no monsters
 

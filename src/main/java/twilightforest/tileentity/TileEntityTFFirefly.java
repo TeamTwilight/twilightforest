@@ -2,7 +2,6 @@ package twilightforest.tileentity;
 
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.passive.EntityTFTinyFirefly;
 
 public class TileEntityTFFirefly extends TileEntityTFCritter {
 	private int yawDelay;
@@ -15,47 +14,47 @@ public class TileEntityTFFirefly extends TileEntityTFCritter {
 
 	@Override
 	public void update() {
-		super.update();
-
-		if (anyPlayerInRange() && world.rand.nextInt(20) == 0) {
-			doFireflyFX();
-		}
-
-		if (yawDelay > 0) {
-			yawDelay--;
-		} else {
-			if (currentYaw == 0 && desiredYaw == 0) {
-				// make it rotate!
-				yawDelay = 200 + world.rand.nextInt(200);
-				desiredYaw = world.rand.nextInt(15) - world.rand.nextInt(15);
+		if (isClient) {
+			if (anyPlayerInRange() && world.rand.nextInt(20) == 0) {
+				doFireflyFX();
 			}
 
-			if (currentYaw < desiredYaw) {
-				currentYaw++;
-			}
-			if (currentYaw > desiredYaw) {
-				currentYaw--;
-			}
-			if (currentYaw == desiredYaw) {
-				desiredYaw = 0;
-			}
-		}
+			if (yawDelay > 0) {
+				yawDelay--;
+			} else {
+				if (currentYaw == 0 && desiredYaw == 0) {
+					// make it rotate!
+					yawDelay = 200 + world.rand.nextInt(200);
+					desiredYaw = world.rand.nextInt(15) - world.rand.nextInt(15);
+				}
 
-		if (glowDelay > 0) {
-			glowDelay--;
-		} else {
-			if (glowing && glowIntensity >= 1.0) {
-				glowing = false;
+				if (currentYaw < desiredYaw) {
+					currentYaw++;
+				}
+				if (currentYaw > desiredYaw) {
+					currentYaw--;
+				}
+				if (currentYaw == desiredYaw) {
+					desiredYaw = 0;
+				}
 			}
-			if (glowing && glowIntensity < 1.0) {
-				glowIntensity += 0.05;
-			}
-			if (!glowing && glowIntensity > 0) {
-				glowIntensity -= 0.05;
-			}
-			if (!glowing && glowIntensity <= 0) {
-				glowing = true;
-				glowDelay = world.rand.nextInt(50);
+
+			if (glowDelay > 0) {
+				glowDelay--;
+			} else {
+				if (glowing && glowIntensity >= 1.0) {
+					glowing = false;
+				}
+				if (glowing && glowIntensity < 1.0) {
+					glowIntensity += 0.05;
+				}
+				if (!glowing && glowIntensity > 0) {
+					glowIntensity -= 0.05;
+				}
+				if (!glowing && glowIntensity <= 0) {
+					glowing = true;
+					glowDelay = world.rand.nextInt(50);
+				}
 			}
 		}
 	}

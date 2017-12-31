@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.MagicWoodVariant;
+import twilightforest.enums.MagicWoodVariant;
 
 import java.util.Random;
 

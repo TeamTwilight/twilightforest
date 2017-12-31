@@ -7,7 +7,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
@@ -16,14 +16,14 @@ import java.util.Random;
 /**
  * Pointy cone roof with variable height
  */
-public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponent {
+public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponentOld {
 
 	public int slope;
 
 	public ComponentTFFinalCastleRoof13Conical() {
 	}
 
-	public ComponentTFFinalCastleRoof13Conical(TFFeature feature, Random rand, int i, StructureTFComponent sideTower) {
+	public ComponentTFFinalCastleRoof13Conical(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
 		super(feature, i);
 
 		this.slope = 2 + rand.nextInt(3) + rand.nextInt(3);
@@ -36,21 +36,21 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponent {
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("slope", this.slope);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
+		tagCompound.setInteger("slope", this.slope);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.slope = par1NBTTagCompound.getInteger("slope");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.slope = tagCompound.getInteger("slope");
 	}
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 

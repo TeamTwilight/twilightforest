@@ -7,11 +7,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
-public class ComponentTFTrollCloud extends StructureTFComponent {
+public class ComponentTFTrollCloud extends StructureTFComponentOld {
 
 	private int size;
 	private int height;
@@ -27,22 +27,22 @@ public class ComponentTFTrollCloud extends StructureTFComponent {
 		this.height = 20;
 
 		int radius = this.size / 2;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, EnumFacing.SOUTH);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("size", this.size);
-		par1NBTTagCompound.setInteger("height", this.height);
+		tagCompound.setInteger("size", this.size);
+		tagCompound.setInteger("height", this.height);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.size = par1NBTTagCompound.getInteger("size");
-		this.height = par1NBTTagCompound.getInteger("height");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.size = tagCompound.getInteger("size");
+		this.height = tagCompound.getInteger("height");
 	}
 
 	@Override

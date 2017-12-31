@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "twilightforest:item/util/overlap_gui",
   "textures": {
     "layer0": "twilightforest:items/cube_of_annihilation"
   },
@@ -8,7 +8,7 @@
       "predicate": {
         "twilightforest:thrown": 1
       },
-      "model": "twilightforest:item/cube_talisman"
+      "model": "twilightforest:item/cube_of_annihilation_thrown"
     }
   ]
 }

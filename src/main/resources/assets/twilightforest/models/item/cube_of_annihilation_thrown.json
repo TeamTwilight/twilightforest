@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:item/util/overlap_gui",
+  "textures": {
+    "layer0": "twilightforest:items/cube_of_annihilation_thrown"
+  }
+}

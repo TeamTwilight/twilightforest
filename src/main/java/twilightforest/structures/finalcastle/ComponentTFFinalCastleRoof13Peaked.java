@@ -5,17 +5,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent {
+public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponentOld {
 	public ComponentTFFinalCastleRoof13Peaked() {
 	}
 
-	public ComponentTFFinalCastleRoof13Peaked(TFFeature feature, Random rand, int i, StructureTFComponent sideTower) {
+	public ComponentTFFinalCastleRoof13Peaked(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
 		super(feature, i);
 
 		int height = 18;
@@ -27,8 +27,8 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponent {
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 

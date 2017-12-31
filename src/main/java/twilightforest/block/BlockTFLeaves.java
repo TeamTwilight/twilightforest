@@ -20,9 +20,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.block.enums.LeavesVariant;
+import twilightforest.TFConfig;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
+import twilightforest.enums.LeavesVariant;
 import twilightforest.item.TFItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -37,9 +38,19 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 
 	protected BlockTFLeaves() {
 		this.setHardness(0.2F);
-		this.setLightOpacity(2);
+		this.setLightOpacity(1);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true).withProperty(VARIANT, LeavesVariant.OAK));
+	}
+
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TFConfig.performance.leavesLightOpacity;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return TFConfig.performance.leavesFullCube;
 	}
 
 	@Override

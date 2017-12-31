@@ -12,8 +12,8 @@ import twilightforest.block.BlockTFHedge;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.HedgeVariant;
-import twilightforest.block.enums.WoodVariant;
+import twilightforest.enums.HedgeVariant;
+import twilightforest.enums.WoodVariant;
 
 public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IBlockSettable {
 

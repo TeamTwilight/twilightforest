@@ -24,9 +24,9 @@ import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.TowerDeviceVariant;
-import twilightforest.block.enums.WoodVariant;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.enums.WoodVariant;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecorator;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
 import twilightforest.structures.lichtower.ComponentTFTowerRoofAttachedSlab;
@@ -53,12 +53,12 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setBoolean("keyTower", this.keyTower);
+		tagCompound.setBoolean("keyTower", this.keyTower);
 
-		par1NBTTagCompound.setIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
+		tagCompound.setIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
 	}
 
 	/**
@@ -77,11 +77,11 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.keyTower = par1NBTTagCompound.getBoolean("keyTower");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.keyTower = tagCompound.getBoolean("keyTower");
 
-		this.readDoorsTypesFromArray(par1NBTTagCompound.getIntArray("doorTypeInts"));
+		this.readDoorsTypesFromArray(tagCompound.getIntArray("doorTypeInts"));
 	}
 
 	/**
@@ -95,8 +95,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 
 		// we should have a door where we started

@@ -25,11 +25,11 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.BossVariant;
-import twilightforest.block.enums.TowerDeviceVariant;
-import twilightforest.block.enums.WoodVariant;
+import twilightforest.enums.BossVariant;
+import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.enums.WoodVariant;
 import twilightforest.item.TFItems;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecorator;
 import twilightforest.structures.TFMaze;
 import twilightforest.util.RotationUtil;
@@ -85,9 +85,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand)
 	{
-		if (parent != null && parent instanceof StructureTFComponent)
+		if (parent != null && parent instanceof StructureTFComponentOld)
 		{
-			this.deco = ((StructureTFComponent)parent).deco;
+			this.deco = ((StructureTFComponentOld)parent).deco;
 		}
 
 		// if this is not the first main part, add one

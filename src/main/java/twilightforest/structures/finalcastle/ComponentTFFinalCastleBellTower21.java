@@ -10,7 +10,7 @@ import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
@@ -28,15 +28,15 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, -6, -8, -this.size / 2, this.size - 1, this.height, this.size - 1, direction);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, -6, -8, -this.size / 2, this.size - 1, this.height, this.size - 1, direction);
 		this.openings.clear();
 		addOpening(0, 9, size / 2, Rotation.CLOCKWISE_180);
 	}
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 
 		// add foundation
@@ -45,7 +45,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		foundation.buildComponent(this, list, rand);
 
 		// add roof
-		StructureTFComponent roof = new ComponentTFFinalCastleRoof13Crenellated(getFeatureType(), rand, 4, this);
+		StructureTFComponentOld roof = new ComponentTFFinalCastleRoof13Crenellated(getFeatureType(), rand, 4, this);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 	}

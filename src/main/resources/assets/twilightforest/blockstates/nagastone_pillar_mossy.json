@@ -1,0 +1,34 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube"
+  },
+  "variants": {
+    "axis": {
+      "y":    { "textures": {
+        "up":    "twilightforest:blocks/nagastone_pillar_end_mossy",
+        "down":  "twilightforest:blocks/nagastone_pillar_end_mossy",
+        "north": "twilightforest:blocks/nagastone_pillar_vertical_mossy",
+        "south": "twilightforest:blocks/nagastone_pillar_vertical_mossy",
+        "west":  "twilightforest:blocks/nagastone_pillar_vertical_mossy",
+        "east":  "twilightforest:blocks/nagastone_pillar_vertical_mossy"
+      } },
+      "z":    { "textures": {
+        "up":    "twilightforest:blocks/nagastone_pillar_vertical_mossy",
+        "down":  "twilightforest:blocks/nagastone_pillar_vertical_mossy",
+        "north": "twilightforest:blocks/nagastone_pillar_end_mossy",
+        "south": "twilightforest:blocks/nagastone_pillar_end_mossy",
+        "west":  "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
+        "east":  "twilightforest:blocks/nagastone_pillar_horizontal_mossy"
+      } },
+      "x":    { "textures": {
+        "up":    "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
+        "down":  "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
+        "north": "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
+        "south": "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
+        "west":  "twilightforest:blocks/nagastone_pillar_end_mossy",
+        "east":  "twilightforest:blocks/nagastone_pillar_end_mossy"
+      } }
+    }
+  }
+}

@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.MazestoneVariant;
+import twilightforest.enums.MazestoneVariant;
 import twilightforest.util.WorldUtil;
 
 public class ItemTFCrumbleHorn extends ItemTF {

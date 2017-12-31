@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.DeadrockVariant;
+import twilightforest.enums.DeadrockVariant;
 
 
 public class TFBiomeFinalPlateau extends TFBiomeBase {

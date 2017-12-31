@@ -3,18 +3,24 @@ package twilightforest.item;
 import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.entity.EntityTFChainBlock;
 
@@ -29,6 +35,14 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 		this.maxStackSize = 1;
 		this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
+
+		this.addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "thrown"), new IItemPropertyGetter() {
+			@SideOnly(Side.CLIENT)
+			@Override
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				return getThrownUuid(stack) != null ? 1 : 0;
+			}
+		});
 	}
 
 	@Override
@@ -49,7 +63,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isRemote) {
-			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player);
+			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player, hand);
 			world.spawnEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 

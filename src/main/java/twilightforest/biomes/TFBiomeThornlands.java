@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.Chunk;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.DeadrockVariant;
+import twilightforest.enums.DeadrockVariant;
 import twilightforest.world.TFGenThorns;
 import twilightforest.world.TFWorld;
 

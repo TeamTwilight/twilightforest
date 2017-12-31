@@ -4,7 +4,7 @@ package twilightforest.world;
 import net.minecraft.block.BlockLeaves;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.LeavesVariant;
+import twilightforest.enums.LeavesVariant;
 
 public class TFGenSmallRainboak extends TFGenSmallTwilightOak {
 

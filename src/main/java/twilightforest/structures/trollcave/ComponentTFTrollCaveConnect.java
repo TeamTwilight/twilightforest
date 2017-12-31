@@ -14,7 +14,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
@@ -33,20 +33,20 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
 	/**
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setBoolean("openingTowards0", this.openingTowards[0]);
-		par1NBTTagCompound.setBoolean("openingTowards1", this.openingTowards[1]);
-		par1NBTTagCompound.setBoolean("openingTowards2", this.openingTowards[2]);
-		par1NBTTagCompound.setBoolean("openingTowards3", this.openingTowards[3]);
+		tagCompound.setBoolean("openingTowards0", this.openingTowards[0]);
+		tagCompound.setBoolean("openingTowards1", this.openingTowards[1]);
+		tagCompound.setBoolean("openingTowards2", this.openingTowards[2]);
+		tagCompound.setBoolean("openingTowards3", this.openingTowards[3]);
 
 	}
 
@@ -54,14 +54,14 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
 
 		// too lazy to do this as a loop
-		this.openingTowards[0] = par1NBTTagCompound.getBoolean("openingTowards0");
-		this.openingTowards[1] = par1NBTTagCompound.getBoolean("openingTowards1");
-		this.openingTowards[2] = par1NBTTagCompound.getBoolean("openingTowards2");
-		this.openingTowards[3] = par1NBTTagCompound.getBoolean("openingTowards3");
+		this.openingTowards[0] = tagCompound.getBoolean("openingTowards0");
+		this.openingTowards[1] = tagCompound.getBoolean("openingTowards1");
+		this.openingTowards[2] = tagCompound.getBoolean("openingTowards2");
+		this.openingTowards[3] = tagCompound.getBoolean("openingTowards3");
 	}
 
 	@Override

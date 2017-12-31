@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.google.common.collect.ImmutableList;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
@@ -19,8 +18,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.enums.MagicWoodVariant;
+import twilightforest.enums.MagicWoodVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.client.particle.TFParticleType;
@@ -36,10 +36,20 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 
 	protected BlockTFMagicLeaves() {
 		this.setHardness(0.2F);
-		this.setLightOpacity(2);
+		this.setLightOpacity(1);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState().withProperty(CHECK_DECAY, true).withProperty(DECAYABLE, true)
 				.withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TIME));
+	}
+
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TFConfig.performance.leavesLightOpacity;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return TFConfig.performance.leavesFullCube;
 	}
 
 	@Override

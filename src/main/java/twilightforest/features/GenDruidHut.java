@@ -1,6 +1,8 @@
 package twilightforest.features;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
@@ -26,11 +28,16 @@ public class GenDruidHut extends TFGenerator {
         Template template = templatemanager.getTemplate(minecraftserver, STRUCTURE);
 
         Random random = world.getChunkFromBlockCoords(pos).getRandomWithSeed(987234911L);
-        Rotation[] arotation = Rotation.values();
-        Rotation rotation = arotation[0];//random.nextInt(arotation.length)];
+
+        Rotation[] rotations = Rotation.values();
+        Rotation rotation = rotations[random.nextInt(rotations.length)];
+
+        Mirror[] mirrors = Mirror.values();
+        Mirror mirror = mirrors[random.nextInt(mirrors.length+1) % mirrors.length];
+
         ChunkPos chunkpos = new ChunkPos(pos);
         StructureBoundingBox structureboundingbox = new StructureBoundingBox(chunkpos.getXStart(), 0, chunkpos.getZStart(), chunkpos.getXEnd(), 256, chunkpos.getZEnd());
-        PlacementSettings placementsettings = (new PlacementSettings()).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
+        PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
         BlockPos posSnap = new BlockPos.MutableBlockPos(
                 pos.getX() - (pos.getX()%16) - (pos.getX() < 0 ? 16 : 0),
@@ -38,66 +45,54 @@ public class GenDruidHut extends TFGenerator {
                 pos.getZ() - (pos.getZ()%16) - (pos.getZ() < 0 ? 16 : 0)
         );
 
-        BlockPos.MutableBlockPos placementPos = new BlockPos.MutableBlockPos(template.getZeroPositionWithTransform(posSnap, Mirror.NONE, rotation));
+        BlockPos.MutableBlockPos placementPos = new BlockPos.MutableBlockPos(template.getZeroPositionWithTransform(posSnap, mirror, rotation));
 
         if (offsetToAverageGroundLevel(world, placementPos, template.getSize())) {
             template.addBlocksToWorld(world, placementPos, placementsettings, 20);
+            //for (int i = 0; i < 16; i++) {
+            //    world.setBlockState(placementPos, Blocks.WOOL.getStateFromMeta(i));
+            //    placementPos.setY(placementPos.getY() + 1);
+            //}
         }
 
         return true;
     }
 
     private static boolean offsetToAverageGroundLevel(World world, BlockPos.MutableBlockPos actualPos, BlockPos size) {
-        final int originLevel = 30;
+        final int originLevel = actualPos.getY();
 
         for (int x = 0; x < size.getX(); x++) {
             for (int z = 0; z < size.getZ(); z++) {
-                Material material = world.getBlockState(new BlockPos(actualPos.getX() + x, actualPos.getY(), actualPos.getZ() + z)).getMaterial();
-                boolean isOk = material == Material.ROCK || material == Material.GROUND || material == Material.GRASS;
+                IBlockState state = world.getBlockState(new BlockPos(actualPos.getX() + x, originLevel, actualPos.getZ() + z));
 
-                if (material == Material.WATER) return false;
-                if (actualPos.getY() != originLevel && world.getBlockState(new BlockPos(actualPos.getX()+x, originLevel, actualPos.getZ()+z)).getMaterial() == Material.WATER) return false;
+                if (isBlockNotOk(state)) return false;
 
-                if (!isOk) {
-                    for (int y = 1; y < 30; y++) {
-                        Material materialAt = world.getBlockState(new BlockPos(actualPos.getX()+x, actualPos.getY() - y, actualPos.getZ()+z)).getMaterial();
+                if (!isBlockOk(state)) {
+                    for (int y = originLevel - 1; y >= 0; y--) {
+                        IBlockState stateAt = world.getBlockState(new BlockPos(actualPos.getX()+x, y, actualPos.getZ()+z));
 
-                        if (materialAt == Material.WATER) return false;
+                        if (isBlockNotOk(stateAt)) return false;
 
-                        if (materialAt == Material.ROCK || materialAt == Material.GROUND || materialAt == Material.GRASS) {
-                            actualPos.setY(actualPos.getY() - y);
+                        if (isBlockOk(stateAt)) {
+                            if (y < actualPos.getY()) actualPos.setY(y);
                             break;
                         }
                     }
                 }
-
-                /*if (shouldLookUp) {
-                    for (int y = 1; y < actualPos.getY() + 64; y++) {
-                        int heightCheck = actualPos.getY() + y;
-
-                        Material materialAt = world.getBlockState(new BlockPos(actualPos.getX(), heightCheck, actualPos.getZ())).getMaterial();
-
-                        if (materialAt != Material.ROCK && materialAt != Material.GROUND && materialAt != Material.GRASS) {
-                            heightCorrection = (heightCorrection + (heightCheck/2F)) / ++iterations;
-                            break;
-                        }
-                    }
-                } else {
-                    for (int y = 1; y < actualPos.getY() - 64; y++) {
-                        int heightCheck = actualPos.getY() - y;
-
-                        Material materialAt = world.getBlockState(new BlockPos(actualPos.getX(), heightCheck, actualPos.getZ())).getMaterial();
-
-                        if (materialAt == Material.ROCK || materialAt == Material.GROUND || materialAt == Material.GRASS) {
-                            heightCorrection = (heightCorrection + heightCheck) / ++iterations;
-                            break;
-                        }
-                    }
-                }//*/
             }
         }
 
         return true;
+    }
+
+    private static boolean isBlockOk(IBlockState state) {
+        Material material = state.getMaterial();
+        return material == Material.ROCK || material == Material.GROUND || material == Material.GRASS || material == Material.SAND;
+    }
+
+    private static boolean isBlockNotOk(IBlockState state) {
+        Material material = state.getMaterial();
+        return material == Material.WATER || material == Material.LAVA || state.getBlock() == Blocks.BEDROCK;
     }
 
     /*@Override

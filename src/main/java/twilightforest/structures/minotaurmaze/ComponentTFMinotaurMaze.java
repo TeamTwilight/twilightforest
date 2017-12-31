@@ -10,15 +10,15 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.MazestoneVariant;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.enums.MazestoneVariant;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.TFMaze;
 
 import java.util.List;
 import java.util.Random;
 
 
-public class ComponentTFMinotaurMaze extends StructureTFComponent {
+public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
 	TFMaze maze;
 	int rcoords[];
@@ -32,7 +32,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 		super(feature, index);
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 		this.level = level;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, EnumFacing.SOUTH);
 
 		// make maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize());
@@ -83,21 +83,21 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("mazeLevel", this.level);
-		par1NBTTagCompound.setIntArray("roomCoords", this.rcoords);
+		tagCompound.setInteger("mazeLevel", this.level);
+		tagCompound.setIntArray("roomCoords", this.rcoords);
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.level = par1NBTTagCompound.getInteger("mazeLevel");
-		this.rcoords = par1NBTTagCompound.getIntArray("roomCoords");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.level = tagCompound.getInteger("mazeLevel");
+		this.rcoords = tagCompound.getIntArray("roomCoords");
 
 		// recreate maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize());
@@ -167,7 +167,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponent {
 	protected void decorateDeadEndsCorridors(Random random, List<StructureComponent> list) {
 		for (int x = 0; x < maze.width; x++) {
 			for (int z = 0; z < maze.depth; z++) {
-				StructureTFComponent component = null;
+				StructureTFComponentOld component = null;
 
 				// dead ends
 				if (!maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)) {

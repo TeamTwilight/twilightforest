@@ -13,14 +13,14 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class StructureTFStrongholdComponent extends StructureTFComponent {
+public abstract class StructureTFStrongholdComponent extends StructureTFComponentOld {
 
 	public List<BlockPos> doors = new ArrayList<BlockPos>();
 
@@ -34,10 +34,10 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setIntArray("doorInts", this.getDoorsAsIntArray());
+		tagCompound.setIntArray("doorInts", this.getDoorsAsIntArray());
 	}
 
 	/**
@@ -56,11 +56,11 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
 
 		// init doors
-		this.readOpeningsFromArray(par1NBTTagCompound.getIntArray("doorInts"));
+		this.readOpeningsFromArray(tagCompound.getIntArray("doorInts"));
 	}
 
 	/**
@@ -96,8 +96,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 
@@ -508,7 +508,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 						}
 					} else if (y == sy || y == dy) {
 						// do stronghold bricks for floor/ceiling
-						StructureComponent.BlockSelector strongBlocks = StructureTFComponent.getStrongholdStones();
+						StructureComponent.BlockSelector strongBlocks = StructureTFComponentOld.getStrongholdStones();
 						strongBlocks.selectBlocks(rand, x, y, z, wall);
 						this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
 
@@ -539,7 +539,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 							|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockStateFromPos(world, x, y - 1, z, sbb).getBlock() == Blocks.STONEBRICK) {
 						if (y == sy || y == dy) {
 							// do stronghold bricks for floor/ceiling
-							StructureComponent.BlockSelector strongBlocks = StructureTFComponent.getStrongholdStones();
+							StructureComponent.BlockSelector strongBlocks = StructureTFComponentOld.getStrongholdStones();
 							strongBlocks.selectBlocks(rand, x, y, z, wall);
 							this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
 

@@ -4,12 +4,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
 
-public class ComponentTFCloudTree extends StructureTFComponent {
+public class ComponentTFCloudTree extends StructureTFComponentOld {
 
 	public ComponentTFCloudTree() {
 	}
@@ -22,7 +22,7 @@ public class ComponentTFCloudTree extends StructureTFComponent {
 		y = (y >> 2) << 2;
 		z = (z >> 2) << 2;
 
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, EnumFacing.SOUTH);
 
 		// spawn list!
 		this.spawnListIndex = 1;

@@ -15,97 +15,135 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
 	private final static String config = TwilightForestMod.ID + ".config.";
 
 	@Config.LangKey(config + "dimension")
-	public static final Dimension dimension = new Dimension();
+	@Config.Comment("You won't be able to change these settings without a relaunch.")
+	public static Dimension dimension = new Dimension();
 
 	public static class Dimension {
 		@Config.LangKey(config + "dimension_id")
 		@Config.RequiresMcRestart
+		@Config.Comment("What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.")
 		public int dimensionID = 7;
 
 		@Config.LangKey(config + "dimension_seed")
 		@Config.RequiresWorldRestart
+		@Config.Comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
 		public String twilightForestSeed = "";
 	}
 
 	@Config.LangKey(config + "tree_tweaks")
-	public static final Performance performance = new Performance();
+	@Config.Comment("Lets you sacrifice various things to improve world performance.")
+	public static Performance performance = new Performance();
 
 	public static class Performance {
 		@Config.LangKey(config + "canopy_coverage")
 		@Config.RangeDouble(min = 0)
+		@Config.Comment("Amount of canopy coverage. Lower numbers improve chunk generation speed at the cost of a thinner forest.")
 		public float canopyCoverage = 1.7F;
 
 		@Config.LangKey(config + "twilight_oaks")
 		@Config.RangeInt(min = 0)
+		@Config.Comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.")
 		public int twilightOakChance = 48;
+
+		@Config.LangKey(config + "leaves_light_opacity")
+		@Config.RangeInt(min = 0, max = 255)
+		@Config.Comment("If leaves are not full cubes, this controls the opacity of leaves to control amount of light blocking.")
+		public int leavesLightOpacity = 1;
+
+		@Config.LangKey(config + "leaves_full_cube")
+		@Config.Comment("Setting this false makes leaves not full cubes. This results in not blocking light at all, making them the equivalent of glass in terms of blocking light. Decreases complexity in some lighting checks.")
+		public boolean leavesFullCube = true;
+
+		@Config.LangKey(config + "glacer_packed_ice")
+		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")
+		public boolean glacierPackedIce = false;
 	}
 
 	@Config.LangKey(config + "silent_cicadas")
+	@Config.Comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.")
 	public static boolean silentCicadas = false;
 
 	@Config.LangKey(config + "portals_in_other_dimensions")
+	@Config.Comment("Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.")
 	public static boolean allowPortalsInOtherDimensions = false;
 
 	@Config.LangKey(config + "admin_portals")
+	@Config.Comment("Allow portals only for admins (Operators). This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
 	public static boolean adminOnlyPortals = false;
 
 	@Config.LangKey(config + "portals")
+	@Config.Comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.")
 	public static boolean disablePortalCreation = false;
 
 	@Config.LangKey(config + "portal_creator")
+	@Config.Comment("Registry String ID of item used to create the Twilight Forest Portal.")
 	public static String portalCreationItem = "minecraft:diamond";
 
 	@Config.LangKey(config + "portal_creator_meta")
 	@Config.RangeInt(min = -1)
+	@Config.Comment("Meta of item used to create the Twilight Forest Portal. -1 for any metadata.")
 	public static int portalCreationMeta = -1;
 
 	@Config.LangKey(config + "uncrafting")
+	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
 	public static boolean disableUncrafting = false;
 
 	@Config.LangKey(config + "antibuilder_blacklist")
+	@Config.Comment("Anti-Builder blacklist. (domain:block:meta) meta is optional.")
 	public static String[] antibuilderBlacklist = {"minecraft:bedrock", "tombmanygraves:grave_block"};
 
 	@Config.LangKey(config + "animate_trophyitem")
+	@Config.Comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
 	public static boolean rotateTrophyHeadsGui = true;
 
 	@Config.LangKey(config + "loading_screen")
+	@Config.Comment("Client only: Controls for the Loading screen")
 	public static final TFConfig.loadingScreen loadingScreen = new loadingScreen();
 
 	public static class loadingScreen {
 		@Config.LangKey(config + "loading_icon_enable")
+		@Config.Comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")
 		public boolean enable = true;
 
 		@Config.LangKey(config + "loading_screen_swap_frequency")
 		@Config.RangeInt(min = 0)
+		@Config.Comment("How many ticks between each loading screen change. Set to 0 to not cycle at all.")
 		public int cycleLoadingScreenFrequency = 0;
 
 		@Config.LangKey(config + "loading_icon_wobble_bounce_frequency")
 		@Config.RangeDouble(min = 0F)
+		@Config.Comment("Frequency of wobble and bounce.")
 		public float frequency = 5F;
 
 		@Config.LangKey(config + "loading_icon_scale")
 		@Config.RangeDouble(min = 0F)
+		@Config.Comment("Scale of whole bouncy loading icon.")
 		public float scale = 3F;
 
 		@Config.LangKey(config + "loading_icon_bounciness")
 		@Config.RangeDouble(min = 0F)
+		@Config.Comment("How much the loading icon bounces.")
 		public float scaleDeviation = 5.25F;
 
 		@Config.LangKey(config + "loading_icon_tilting")
 		@Config.RangeDouble(min = 0F, max = 360F)
+		@Config.Comment("How far the loading icon wobbles.")
 		public float tiltRange = 11.25F;
 
 		@Config.LangKey(config + "loading_icon_tilt_pushback")
 		@Config.RangeDouble(min = 0F, max = 360F)
+		@Config.Comment("Pushback value to re-center the wobble of loading icon.")
 		public float tiltConstant = 22.5F;
 
 		@Config.LangKey(config + "loading_icon_stacks")
+		@Config.Comment("List of items to be used for the wobbling Loading Icon. (domain:item:meta) meta is optional.")
 		public String[] loadingIconStacks = {
 				"twilightforest:experiment_115",
 				"twilightforest:magic_map",

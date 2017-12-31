@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import twilightforest.TFConfig;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.TowerTranslucentVariant;
+import twilightforest.enums.TowerTranslucentVariant;
 
 import java.util.List;
 import java.util.Random;

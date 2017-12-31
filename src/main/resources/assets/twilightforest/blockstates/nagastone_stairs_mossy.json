@@ -1,0 +1,91 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:util/stairs",
+    "textures": {
+      "end":  "twilightforest:blocks/stone_tiles_mossy",
+      "half": "twilightforest:blocks/nagastone_bare_mossy",
+		  "particle": "#side"
+    },
+    "uvlock": true
+  },
+  "variants": {
+    "facing": {
+      "east":  {          },
+      "west":  { "y": 180 },
+      "south": { "y": 90  },
+      "north": { "y": 270 }
+    }, "half":{
+      "bottom": {          },
+      "top":    { "x": 180 }
+    }, "shape": {
+      "straight":{},
+      "outer_right":{ "model": "twilightforest:util/outer_stairs" },
+      "outer_left": { "model": "twilightforest:util/outer_stairs" },
+      "inner_right":{ "model": "twilightforest:util/inner_stairs" },
+      "inner_left": { "model": "twilightforest:util/inner_stairs" }
+    },
+		"direction": {
+			"left": { "textures": {
+				"side": "twilightforest:blocks/etched_nagastone_left_mossy"
+      } },
+			"right": { "textures": {
+        "side": "twilightforest:blocks/etched_nagastone_right_mossy"
+			} }
+		},
+    "direction=left,facing=east,half=bottom,shape=outer_left":  { "y": 270           },
+    "direction=left,facing=west,half=bottom,shape=outer_left":  { "y": 90            },
+    "direction=left,facing=south,half=bottom,shape=outer_left": { "y": 0             },
+    "direction=left,facing=north,half=bottom,shape=outer_left": { "y": 180           },
+    "direction=left,facing=east,half=bottom,shape=inner_left":  { "y": 270           },
+    "direction=left,facing=west,half=bottom,shape=inner_left":  { "y": 90            },
+    "direction=left,facing=south,half=bottom,shape=inner_left": { "y": 0             },
+    "direction=left,facing=north,half=bottom,shape=inner_left": { "y": 180           },
+    "direction=left,facing=west,half=top,shape=straight":       { "x": 180, "y": 180 },
+    "direction=left,facing=south,half=top,shape=straight":      { "x": 180, "y": 90  },
+    "direction=left,facing=north,half=top,shape=straight":      { "x": 180, "y": 270 },
+    "direction=left,facing=east,half=top,shape=outer_right":    { "x": 180, "y": 90  },
+    "direction=left,facing=west,half=top,shape=outer_right":    { "x": 180, "y": 270 },
+    "direction=left,facing=south,half=top,shape=outer_right":   { "x": 180, "y": 180 },
+    "direction=left,facing=north,half=top,shape=outer_right":   { "x": 180, "y": 0   },
+    "direction=left,facing=east,half=top,shape=outer_left":     { "x": 180, "y": 0   },
+    "direction=left,facing=west,half=top,shape=outer_left":     { "x": 180, "y": 180 },
+    "direction=left,facing=south,half=top,shape=outer_left":    { "x": 180, "y": 90  },
+    "direction=left,facing=north,half=top,shape=outer_left":    { "x": 180, "y": 270 },
+    "direction=left,facing=east,half=top,shape=inner_right":    { "x": 180, "y": 90  },
+    "direction=left,facing=west,half=top,shape=inner_right":    { "x": 180, "y": 270 },
+    "direction=left,facing=south,half=top,shape=inner_right":   { "x": 180, "y": 180 },
+    "direction=left,facing=north,half=top,shape=inner_right":   { "x": 180, "y": 0   },
+    "direction=left,facing=east,half=top,shape=inner_left":     { "x": 180, "y": 0   },
+    "direction=left,facing=west,half=top,shape=inner_left":     { "x": 180, "y": 180 },
+    "direction=left,facing=south,half=top,shape=inner_left":    { "x": 180, "y": 90  },
+    "direction=left,facing=north,half=top,shape=inner_left":    { "x": 180, "y": 270 },
+		
+    "direction=right,facing=east,half=bottom,shape=outer_left":  { "y": 270           },
+    "direction=right,facing=west,half=bottom,shape=outer_left":  { "y": 90            },
+    "direction=right,facing=south,half=bottom,shape=outer_left": { "y": 0             },
+    "direction=right,facing=north,half=bottom,shape=outer_left": { "y": 180           },
+    "direction=right,facing=east,half=bottom,shape=inner_left":  { "y": 270           },
+    "direction=right,facing=west,half=bottom,shape=inner_left":  { "y": 90            },
+    "direction=right,facing=south,half=bottom,shape=inner_left": { "y": 0             },
+    "direction=right,facing=north,half=bottom,shape=inner_left": { "y": 180           },
+    "direction=right,facing=west,half=top,shape=straight":       { "x": 180, "y": 180 },
+    "direction=right,facing=south,half=top,shape=straight":      { "x": 180, "y": 90  },
+    "direction=right,facing=north,half=top,shape=straight":      { "x": 180, "y": 270 },
+    "direction=right,facing=west,half=top,shape=outer_right":    { "x": 180, "y": 90  },
+    "direction=right,facing=south,half=top,shape=outer_right":   { "x": 180, "y": 270 },
+    "direction=right,facing=north,half=top,shape=outer_right":   { "x": 180, "y": 180 },
+    "direction=right,facing=east,half=top,shape=outer_left":     { "x": 180, "y": 0   },
+    "direction=right,facing=west,half=top,shape=outer_left":     { "x": 180, "y": 0   },
+    "direction=right,facing=south,half=top,shape=outer_left":    { "x": 180, "y": 180 },
+    "direction=right,facing=north,half=top,shape=outer_left":    { "x": 180, "y": 90  },
+    "direction=right,facing=east,half=top,shape=inner_right":    { "x": 180, "y": 270 },
+    "direction=right,facing=west,half=top,shape=inner_right":    { "x": 180, "y": 90  },
+    "direction=right,facing=south,half=top,shape=inner_right":   { "x": 180, "y": 270 },
+    "direction=right,facing=north,half=top,shape=inner_right":   { "x": 180, "y": 180 },
+    "direction=right,facing=east,half=top,shape=inner_left":     { "x": 180, "y": 0   },
+    "direction=right,facing=west,half=top,shape=inner_left":     { "x": 180, "y": 0   },
+    "direction=right,facing=south,half=top,shape=inner_left":    { "x": 180, "y": 180 },
+    "direction=right,facing=north,half=top,shape=inner_left":    { "x": 180, "y": 90  }
+  }
+}

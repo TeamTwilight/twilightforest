@@ -42,19 +42,19 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setBoolean("hasBossWing", this.hasBossWing);
+		tagCompound.setBoolean("hasBossWing", this.hasBossWing);
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.hasBossWing = par1NBTTagCompound.getBoolean("hasBossWing");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.hasBossWing = tagCompound.getBoolean("hasBossWing");
 	}
 
 	@Override

@@ -148,4 +148,22 @@ public class TFBlocks {
 	public static Block lapis_block;
 	@ObjectHolder("spiral_bricks")
 	public static Block spiral_bricks;
+	@ObjectHolder("etched_nagastone")
+	public static Block etched_nagastone;
+	@ObjectHolder("nagastone_pillar")
+	public static Block nagastone_pillar;
+	@ObjectHolder("nagastone_stairs")
+	public static Block nagastone_stairs;
+	@ObjectHolder("etched_nagastone_mossy")
+	public static Block etched_nagastone_mossy;
+	@ObjectHolder("nagastone_pillar_mossy")
+	public static Block nagastone_pillar_mossy;
+	@ObjectHolder("nagastone_stairs_mossy")
+	public static Block nagastone_stairs_mossy;
+	@ObjectHolder("etched_nagastone_weathered")
+	public static Block etched_nagastone_weathered;
+	@ObjectHolder("nagastone_pillar_weathered")
+	public static Block nagastone_pillar_weathered;
+	@ObjectHolder("nagastone_stairs_weathered")
+	public static Block nagastone_stairs_weathered;
 }

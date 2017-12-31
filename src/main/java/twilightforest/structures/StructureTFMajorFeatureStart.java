@@ -15,6 +15,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlockProperties;
 import twilightforest.block.TFBlocks;
+import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
+import twilightforest.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
 import twilightforest.structures.darktower.TFDarkTowerPieces;
 import twilightforest.structures.finalcastle.ComponentTFFinalCastleMain;
@@ -62,12 +64,13 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		TFTrollCavePieces.registerPieces();
 		TFHollowTreePieces.registerPieces();
 		TFLichTowerPieces.registerPieces();
+		NagaCourtyardPieces.registerPieces();
 
 		// register one-off pieces here
 		MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
 		MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
 		MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
-		MapGenStructureIO.registerStructureComponent(ComponentTFNagaCourtyard.class, "TFNaga");
+		//MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardMain.class, "TFNaga");
 		MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
 		MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
 	}
@@ -127,12 +130,12 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 		/*if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Selected Debug Feature @ {} {} {}", x, y, z);
-			return new ComponentTFFinalCastleMain(world, rand, 0, x, y, z);
-		}*/
+			return new ComponentNagaCourtyardMain(feature, world, rand, 0, x, y, z);
+		}//*/
 
 		if (feature == TFFeature.nagaCourtyard) {
 			TwilightForestMod.LOGGER.info("Naga Courtyard @ {} {} {}", x, y, z);
-			return new ComponentTFNagaCourtyard(feature, world, rand, 0, x, y, z);
+			return new ComponentNagaCourtyardMain(feature, world, rand, 0, x, y, z);
 		}
 		if (feature == TFFeature.hedgeMaze) {
 			TwilightForestMod.LOGGER.info("Hedge Maze @ {} {} {}", x, y, z);

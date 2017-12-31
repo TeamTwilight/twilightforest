@@ -7,12 +7,12 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent {
+public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld {
 	public ComponentTFFinalCastleDungeonSteps() {
 	}
 
@@ -20,13 +20,13 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponent {
 		this.spawnListIndex = 2; // dungeon monsters
 
 		this.setCoordBaseMode(rotation);
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, -2, -15, -3, 5, 15, 20, rotation);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, -2, -15, -3, 5, 15, 20, rotation);
 	}
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 

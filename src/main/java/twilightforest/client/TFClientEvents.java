@@ -120,28 +120,34 @@ public class TFClientEvents {
 	 * On the tick, we kill the vignette
 	 */
 	@SubscribeEvent
+	public static void renderTick(TickEvent.RenderTickEvent event) {
+		if (event.phase == TickEvent.Phase.START) {
+			Minecraft mc = Minecraft.getMinecraft();
+			World world = mc.world;
+
+			((BlockLeaves) TFBlocks.leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+			((BlockLeaves) TFBlocks.leaves3).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+			((BlockLeaves) TFBlocks.magicLeaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+
+			// only fire if we're in the twilight forest
+			if (world != null && (world.provider instanceof WorldProviderTwilightForest)) {
+				// vignette
+				if (mc.ingameGUI != null) {
+					mc.ingameGUI.prevVignetteBrightness = 0.0F;
+				}
+			}//*/
+
+			if (mc.player != null) {
+				Entity riding = mc.player.getRidingEntity();
+				if (riding instanceof EntityTFPinchBeetle || riding instanceof EntityTFYeti || riding instanceof EntityTFYetiAlpha) {
+					mc.ingameGUI.setOverlayMessage("", false);
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent event) {
-		Minecraft mc = Minecraft.getMinecraft();
-		World world = mc.world;
-
-		if (mc.player != null) {
-			Entity riding = mc.player.getRidingEntity();
-			if (riding instanceof EntityTFPinchBeetle || riding instanceof EntityTFYeti || riding instanceof EntityTFYetiAlpha) {
-				mc.ingameGUI.setOverlayMessage("", false);
-			}
-		}
-
-		((BlockLeaves) TFBlocks.leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-		((BlockLeaves) TFBlocks.leaves3).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-		((BlockLeaves) TFBlocks.magicLeaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-
-		// only fire if we're in the twilight forest
-		if (world != null && (world.provider instanceof WorldProviderTwilightForest)) {
-			// vignette
-			if (mc.ingameGUI != null) {
-				mc.ingameGUI.prevVignetteBrightness = 0.0F;
-			}
-		}
 
 		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 0.5F;
 		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 0.5F;

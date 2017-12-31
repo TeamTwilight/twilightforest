@@ -1,13 +1,13 @@
 package twilightforest.structures.stronghold;
 
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 /**
  * Based off StructureStrongholdPieceWeight
  */
 public class TFStrongholdPieceWeight {
 
-	public Class<? extends StructureTFComponent> pieceClass;
+	public Class<? extends StructureTFComponentOld> pieceClass;
 	public final int pieceWeight;
 	public int instancesSpawned;
 
@@ -17,11 +17,11 @@ public class TFStrongholdPieceWeight {
 	public int instancesLimit;
 	public int minimumDepth;
 
-	public TFStrongholdPieceWeight(Class<? extends StructureTFComponent> par1Class, int weight, int limit) {
+	public TFStrongholdPieceWeight(Class<? extends StructureTFComponentOld> par1Class, int weight, int limit) {
 		this(par1Class, weight, limit, 0);
 	}
 
-	public TFStrongholdPieceWeight(Class<? extends StructureTFComponent> par1Class, int weight, int limit, int minDepth) {
+	public TFStrongholdPieceWeight(Class<? extends StructureTFComponentOld> par1Class, int weight, int limit, int minDepth) {
 		this.pieceClass = par1Class;
 		this.pieceWeight = weight;
 		this.instancesLimit = limit;

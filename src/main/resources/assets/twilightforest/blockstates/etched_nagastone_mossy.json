@@ -1,0 +1,58 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube"
+  },
+  "variants": {
+    "facing": {
+      "up":    { "textures": {
+        "up": "twilightforest:blocks/stone_tiles_mossy",
+        "down": "twilightforest:blocks/stone_tiles_mossy",
+        "north" : "twilightforest:blocks/etched_nagastone_up_mossy",
+        "south" : "twilightforest:blocks/etched_nagastone_up_mossy",
+        "east" : "twilightforest:blocks/etched_nagastone_up_mossy",
+        "west" : "twilightforest:blocks/etched_nagastone_up_mossy"
+      } },
+      "down":  { "textures": {
+        "up": "twilightforest:blocks/stone_tiles_mossy",
+        "down": "twilightforest:blocks/stone_tiles_mossy",
+        "north" : "twilightforest:blocks/etched_nagastone_down_mossy",
+        "south" : "twilightforest:blocks/etched_nagastone_down_mossy",
+        "east" : "twilightforest:blocks/etched_nagastone_down_mossy",
+        "west" : "twilightforest:blocks/etched_nagastone_down_mossy"
+      } },
+      "north": { "textures": {
+        "up": "twilightforest:blocks/etched_nagastone_up_mossy",
+        "down": "twilightforest:blocks/etched_nagastone_up_mossy",
+        "north" : "twilightforest:blocks/stone_tiles_mossy",
+        "south" : "twilightforest:blocks/stone_tiles_mossy",
+        "east" : "twilightforest:blocks/etched_nagastone_right_mossy",
+        "west" : "twilightforest:blocks/etched_nagastone_left_mossy"
+      } },
+      "south": { "textures": {
+        "up": "twilightforest:blocks/etched_nagastone_down_mossy",
+        "down": "twilightforest:blocks/etched_nagastone_down_mossy",
+        "north" : "twilightforest:blocks/stone_tiles_mossy",
+        "south" : "twilightforest:blocks/stone_tiles_mossy",
+        "east" : "twilightforest:blocks/etched_nagastone_left_mossy",
+        "west" : "twilightforest:blocks/etched_nagastone_right_mossy"
+      } },
+      "east":  { "textures": {
+        "up": "twilightforest:blocks/etched_nagastone_right_mossy",
+        "down": "twilightforest:blocks/etched_nagastone_left_mossy",
+        "north" : "twilightforest:blocks/etched_nagastone_left_mossy",
+        "south" : "twilightforest:blocks/etched_nagastone_right_mossy",
+        "east" : "twilightforest:blocks/stone_tiles_mossy",
+        "west" : "twilightforest:blocks/stone_tiles_mossy"
+      } },
+      "west":  { "textures": {
+        "up": "twilightforest:blocks/etched_nagastone_left_mossy",
+        "down": "twilightforest:blocks/etched_nagastone_right_mossy",
+        "north" : "twilightforest:blocks/etched_nagastone_right_mossy",
+        "south" : "twilightforest:blocks/etched_nagastone_left_mossy",
+        "east" : "twilightforest:blocks/stone_tiles_mossy",
+        "west" : "twilightforest:blocks/stone_tiles_mossy"
+      } }
+    }
+  }
+}

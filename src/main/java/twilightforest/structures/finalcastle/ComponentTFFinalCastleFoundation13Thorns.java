@@ -8,8 +8,8 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFThorns;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.ThornVariant;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.enums.ThornVariant;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
 import java.util.Random;
@@ -23,7 +23,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 	public ComponentTFFinalCastleFoundation13Thorns() {
 	}
 
-	public ComponentTFFinalCastleFoundation13Thorns(TFFeature feature, Random rand, int i, StructureTFComponent sideTower) {
+	public ComponentTFFinalCastleFoundation13Thorns(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
 		super(feature, rand, i, sideTower);
 
 		this.boundingBox = new StructureBoundingBox(sideTower.getBoundingBox().minX - 5, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 5, sideTower.getBoundingBox().maxX + 5, sideTower.getBoundingBox().maxY, sideTower.getBoundingBox().maxZ + 5);

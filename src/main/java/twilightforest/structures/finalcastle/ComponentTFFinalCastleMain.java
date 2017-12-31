@@ -13,7 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecoratorCastle;
 import twilightforest.util.RotationUtil;
 
@@ -23,7 +23,7 @@ import java.util.Random;
 
 import static twilightforest.block.BlockTFCastleDoor.LOCK_INDEX;
 
-public class ComponentTFFinalCastleMain extends StructureTFComponent {
+public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 	public ComponentTFFinalCastleMain() {
 	}
 
@@ -35,7 +35,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 		x = ((x + 127) >> 8) << 8;
 		z = ((z + 127) >> 8) << 8;
 
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, EnumFacing.SOUTH);
 
 		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4, world);
 
@@ -59,12 +59,12 @@ public class ComponentTFFinalCastleMain extends StructureTFComponent {
 		foundation.buildComponent(this, list, rand);
 
 		// add roof
-		StructureTFComponent roof = new ComponentTFFinalCastleRoof48Crenellated(getFeatureType(), rand, 4, this);
+		StructureTFComponentOld roof = new ComponentTFFinalCastleRoof48Crenellated(getFeatureType(), rand, 4, this);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 
 		// boss gazebo on roof
-		StructureTFComponent gazebo = new ComponentTFFinalCastleBossGazebo(getFeatureType(), rand, 5, this);
+		StructureTFComponentOld gazebo = new ComponentTFFinalCastleBossGazebo(getFeatureType(), rand, 5, this);
 		list.add(gazebo);
 		gazebo.buildComponent(this, list, rand);
 

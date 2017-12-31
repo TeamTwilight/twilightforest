@@ -11,7 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.PlantVariant;
+import twilightforest.enums.PlantVariant;
 import twilightforest.world.TFGenDarkCanopyTree;
 import twilightforest.world.TFGenTallGrass;
 import twilightforest.world.TFTreeGenerator;

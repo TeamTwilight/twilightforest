@@ -1,0 +1,49 @@
+{
+  "result": {
+    "item": "twilightforest:etched_nagastone",
+    "count": 3
+  },
+  "ingredients": [
+    [
+      {
+        "item": "twilightforest:nagastone_stairs",
+        "data": 0
+      },
+      {
+        "item": "twilightforest:nagastone_stairs",
+        "data": 8
+      }
+    ],
+    [
+      {
+        "item": "twilightforest:nagastone_stairs",
+        "data": 0
+      },
+      {
+        "item": "twilightforest:nagastone_stairs",
+        "data": 8
+      }
+    ],
+    [
+      {
+        "item": "twilightforest:nagastone_stairs",
+        "data": 0
+      },
+      {
+        "item": "twilightforest:nagastone_stairs",
+        "data": 8
+      }
+    ],
+    [
+      {
+        "item": "twilightforest:nagastone_stairs",
+        "data": 0
+      },
+      {
+        "item": "twilightforest:nagastone_stairs",
+        "data": 8
+      }
+    ]
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

@@ -1,0 +1,34 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube"
+  },
+  "variants": {
+    "axis": {
+      "y":    { "textures": {
+        "up":    "twilightforest:blocks/nagastone_pillar_end",
+        "down":  "twilightforest:blocks/nagastone_pillar_end",
+        "north": "twilightforest:blocks/nagastone_pillar_vertical",
+        "south": "twilightforest:blocks/nagastone_pillar_vertical",
+        "west":  "twilightforest:blocks/nagastone_pillar_vertical",
+        "east":  "twilightforest:blocks/nagastone_pillar_vertical"
+      } },
+      "z":    { "textures": {
+        "up":    "twilightforest:blocks/nagastone_pillar_vertical",
+        "down":  "twilightforest:blocks/nagastone_pillar_vertical",
+        "north": "twilightforest:blocks/nagastone_pillar_end",
+        "south": "twilightforest:blocks/nagastone_pillar_end",
+        "west":  "twilightforest:blocks/nagastone_pillar_horizontal",
+        "east":  "twilightforest:blocks/nagastone_pillar_horizontal"
+      } },
+      "x":    { "textures": {
+        "up":    "twilightforest:blocks/nagastone_pillar_horizontal",
+        "down":  "twilightforest:blocks/nagastone_pillar_horizontal",
+        "north": "twilightforest:blocks/nagastone_pillar_horizontal",
+        "south": "twilightforest:blocks/nagastone_pillar_horizontal",
+        "west":  "twilightforest:blocks/nagastone_pillar_end",
+        "east":  "twilightforest:blocks/nagastone_pillar_end"
+      } }
+    }
+  }
+}

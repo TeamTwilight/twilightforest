@@ -10,8 +10,8 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.TowerDeviceVariant;
-import twilightforest.block.enums.TowerTranslucentVariant;
+import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.enums.TowerTranslucentVariant;
 
 public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 	private static final int RANGE = 16;

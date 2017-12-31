@@ -7,9 +7,9 @@ import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-import static twilightforest.block.enums.MazestoneVariant.BRICK;
-import static twilightforest.block.enums.MazestoneVariant.CRACKED;
-import static twilightforest.block.enums.MazestoneVariant.MOSSY;
+import static twilightforest.enums.MazestoneVariant.BRICK;
+import static twilightforest.enums.MazestoneVariant.CRACKED;
+import static twilightforest.enums.MazestoneVariant.MOSSY;
 
 public class StructureTFMazeStones extends StructureComponent.BlockSelector {
 

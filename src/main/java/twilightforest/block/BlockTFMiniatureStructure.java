@@ -18,16 +18,16 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.enums.StructureVariants;
+import twilightforest.enums.StructureVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
 public class BlockTFMiniatureStructure extends Block implements ModelRegisterCallback {
-    public static final PropertyEnum<StructureVariants> VARIANT = PropertyEnum.create("variant", StructureVariants.class);
+    public static final PropertyEnum<StructureVariant> VARIANT = PropertyEnum.create("variant", StructureVariant.class);
 
     public BlockTFMiniatureStructure() {
         super(Material.BARRIER);
-        this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, StructureVariants.TWILIGHT_PORTAL));
+        this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, StructureVariant.TWILIGHT_PORTAL));
     }
 
     public boolean isOpaqueCube(IBlockState state)
@@ -57,12 +57,12 @@ public class BlockTFMiniatureStructure extends Block implements ModelRegisterCal
     @Override
     @Deprecated
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(VARIANT, StructureVariants.values()[meta]);
+        return getDefaultState().withProperty(VARIANT, StructureVariant.values()[meta]);
     }
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (StructureVariants variation : StructureVariants.values() ) {
+        for (StructureVariant variation : StructureVariant.values() ) {
             list.add(new ItemStack(this, 1, variation.ordinal()));
         }
     }
@@ -76,7 +76,7 @@ public class BlockTFMiniatureStructure extends Block implements ModelRegisterCal
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        for (StructureVariants variation : StructureVariants.values()) {
+        for (StructureVariant variation : StructureVariant.values()) {
             ModelLoader.setCustomModelResourceLocation( TFItems.miniture_structure, variation.ordinal(), new ModelResourceLocation(TwilightForestMod.ID + ":miniature_structure", "inventory_"+variation.getName()));
         }
     }

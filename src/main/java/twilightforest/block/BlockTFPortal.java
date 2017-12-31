@@ -96,7 +96,7 @@ public class BlockTFPortal extends BlockBreakable {
 			if (!blocksChecked.containsKey(positionCheck)) {
 				IBlockState state = world.getBlockState(positionCheck);
 
-				if (state == Blocks.WATER.getDefaultState() && world.getBlockState(positionCheck.down()).getMaterial().isSolid()) {
+				if (state == Blocks.WATER.getDefaultState() && world.getBlockState(positionCheck.down()).isFullCube()) {
 					blocksChecked.put(positionCheck, true);
 
 					isPoolProbablyEnclosed = isPoolProbablyEnclosed && recursivelyValidatePortal(world, positionCheck, blocksChecked, waterLimit);
@@ -131,16 +131,17 @@ public class BlockTFPortal extends BlockBreakable {
 
 	private static boolean isNatureBlock(IBlockState state) {
 		Material mat = state.getMaterial();
-		return mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES;
+		return state.isFullCube() && (mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES);
 	}
 
-	/**
-	 * Each twilight portal pool block should have grass or dirt on one side and a portal on the other.  If this is not true, delete this block, presumably causing a chain reaction.
-	 */
+	private static boolean isGrassOrDirt(IBlockState state) {
+		Material mat = state.getMaterial();
+		return state.isFullCube() && (mat == Material.GRASS || mat == Material.GROUND);
+	}
+
 	@Override
-	@Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed, BlockPos fromPos) {
-		boolean good = world.getBlockState(pos.down()).getMaterial().isSolid();
+		boolean good = world.getBlockState(pos.down()).isFullCube();
 
 		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
 			if (!good) break;
@@ -154,11 +155,6 @@ public class BlockTFPortal extends BlockBreakable {
 			world.playEvent(2001, pos, Block.getStateId(state));
 			world.setBlockState(pos, Blocks.WATER.getDefaultState(), 0b11);
 		}
-	}
-
-	private static boolean isGrassOrDirt(IBlockState state) {
-		return state.getMaterial() == Material.GRASS
-				|| state.getMaterial() == Material.GROUND;
 	}
 
 	@Override
@@ -296,23 +292,23 @@ public class BlockTFPortal extends BlockBreakable {
 		}
 
 		for (int i = 0; i < 4; ++i) {
-			double d0 = (double) ((float) pos.getX() + rand.nextFloat());
-			double d1 = (double) ((float) pos.getY() + rand.nextFloat());
-			double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
-			double d3 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
-			double d4 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
-			double d5 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
-			int j = rand.nextInt(2) * 2 - 1;
+			double xPos = (double) ((float) pos.getX() + rand.nextFloat());
+			double yPos = pos.getY()+1D;
+			double zPos = (double) ((float) pos.getZ() + rand.nextFloat());
+			double xSpeed = ((double) rand.nextFloat() - 0.5D) * 0.5D;
+			double ySpeed = rand.nextFloat();
+			double zSpeed = ((double) rand.nextFloat() - 0.5D) * 0.5D;
+			//int j = rand.nextInt(2) * 2 - 1;
 
-			if (worldIn.getBlockState(pos.west()).getBlock() != this && worldIn.getBlockState(pos.east()).getBlock() != this) {
-				d0 = (double) pos.getX() + 0.5D + 0.25D * (double) j;
-				d3 = (double) (rand.nextFloat() * 2.0F * (float) j);
-			} else {
-				d2 = (double) pos.getZ() + 0.5D + 0.25D * (double) j;
-				d5 = (double) (rand.nextFloat() * 2.0F * (float) j);
-			}
+			//if (worldIn.getBlockState(pos.west()).getBlock() != this && worldIn.getBlockState(pos.east()).getBlock() != this) {
+			//	xPos = (double) pos.getX() + 0.5D + 0.25D * (double) j;
+			//	xSpeed = (double) (rand.nextFloat() * 2.0F * (float) j);
+			//} else {
+			//	zPos = (double) pos.getZ() + 0.5D + 0.25D * (double) j;
+			//	zSpeed = (double) (rand.nextFloat() * 2.0F * (float) j);
+			//}
 
-			worldIn.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5, new int[0]);
+			worldIn.spawnParticle(EnumParticleTypes.PORTAL, xPos, yPos, zPos, xSpeed, ySpeed, zSpeed);
 		}
 	}
 }

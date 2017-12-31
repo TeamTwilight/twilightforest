@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.FireJetVariant;
+import twilightforest.enums.FireJetVariant;
 
 import java.util.Random;
 

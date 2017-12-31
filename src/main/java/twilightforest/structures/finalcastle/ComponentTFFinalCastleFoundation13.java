@@ -9,20 +9,20 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.StructureBoundingBoxUtils;
 
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent {
+public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld {
 	protected int groundLevel = -1;
 
 	public ComponentTFFinalCastleFoundation13() {
 	}
 
-	public ComponentTFFinalCastleFoundation13(TFFeature feature, Random rand, int i, StructureTFComponent sideTower) {
+	public ComponentTFFinalCastleFoundation13(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
 		super(feature, i);
 
 		this.setCoordBaseMode(sideTower.getCoordBaseMode());
@@ -32,8 +32,8 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponent {
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 

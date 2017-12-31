@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
@@ -15,7 +15,7 @@ import java.util.Random;
  *
  * @author Ben
  */
-public class ComponentTFMazeRuins extends StructureTFComponent {
+public class ComponentTFMazeRuins extends StructureTFComponentOld {
 
 	public ComponentTFMazeRuins() {
 		super();
@@ -26,7 +26,7 @@ public class ComponentTFMazeRuins extends StructureTFComponent {
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		// I have no bounding box
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, EnumFacing.SOUTH);
 
 	}
 

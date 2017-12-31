@@ -18,7 +18,7 @@ import twilightforest.entity.EntityTFSwarmSpider;
 import java.util.Random;
 
 
-public class ComponentTFHedgeMaze extends StructureTFComponent {
+public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 
 	private static final int MSIZE = 16;
 	private static final int RADIUS = (MSIZE / 2 * 3) + 1;
@@ -35,7 +35,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponent {
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		// the maze is 50 x 50 for now
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.SOUTH);
 
 	}
 

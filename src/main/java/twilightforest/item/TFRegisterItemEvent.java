@@ -10,8 +10,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.DeadrockVariant;
-import twilightforest.block.enums.ThornVariant;
+import twilightforest.enums.DeadrockVariant;
+import twilightforest.enums.ThornVariant;
 
 import static java.util.Arrays.stream;
 import static net.minecraft.init.MobEffects.REGENERATION;
@@ -203,6 +203,15 @@ public class TFRegisterItemEvent {
 		items.register(new ItemTFCompressed(TFBlocks.block_storage));
 		//items.registerBlock(TFBlocks.lapis_block);
 		items.registerBlock(TFBlocks.spiral_bricks);
+		items.registerBlock(TFBlocks.etched_nagastone);
+		items.registerBlock(TFBlocks.nagastone_pillar);
+		items.registerSubItemBlock(TFBlocks.nagastone_stairs);
+		items.registerBlock(TFBlocks.etched_nagastone_mossy);
+		items.registerBlock(TFBlocks.nagastone_pillar_mossy);
+		items.registerSubItemBlock(TFBlocks.nagastone_stairs_mossy);
+		items.registerBlock(TFBlocks.etched_nagastone_weathered);
+		items.registerBlock(TFBlocks.nagastone_pillar_weathered);
+		items.registerSubItemBlock(TFBlocks.nagastone_stairs_weathered);
 	}
 
 	private static class ItemRegistryHelper {

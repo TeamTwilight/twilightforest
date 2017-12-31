@@ -8,7 +8,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.BossVariant;
+import twilightforest.enums.BossVariant;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;

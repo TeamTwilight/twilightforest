@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.RootVariant;
+import twilightforest.enums.RootVariant;
 import twilightforest.world.TFGenerator;
 
 import javax.annotation.Nonnull;

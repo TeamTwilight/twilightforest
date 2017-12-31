@@ -15,7 +15,7 @@ import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.TFGenCaveStalactite;
 import twilightforest.world.TFGenMyceliumBlob;
@@ -23,7 +23,7 @@ import twilightforest.world.TFGenMyceliumBlob;
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFTrollCaveMain extends StructureTFComponent {
+public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 	protected int size;
 	protected int height;
@@ -49,7 +49,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 		this.height = 20;
 
 		int radius = this.size / 2;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, EnumFacing.SOUTH);
 
 	}
 
@@ -57,21 +57,21 @@ public class ComponentTFTrollCaveMain extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("size", this.size);
-		par1NBTTagCompound.setInteger("height", this.height);
+		tagCompound.setInteger("size", this.size);
+		tagCompound.setInteger("height", this.height);
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.size = par1NBTTagCompound.getInteger("size");
-		this.height = par1NBTTagCompound.getInteger("height");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.size = tagCompound.getInteger("size");
+		this.height = tagCompound.getInteger("height");
 	}
 
 	@Override

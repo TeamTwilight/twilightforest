@@ -10,7 +10,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.LeavesVariant;
+import twilightforest.enums.LeavesVariant;
 
 import java.util.Random;
 

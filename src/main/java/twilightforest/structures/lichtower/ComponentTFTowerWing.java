@@ -21,7 +21,7 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TFTreasure;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFHelper;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
@@ -37,7 +37,7 @@ import static net.minecraft.block.BlockStoneSlab.EnumType.SMOOTHBRICK;
 import static twilightforest.block.BlockTFCastleMagic.COLOR;
 
 
-public class ComponentTFTowerWing extends StructureTFComponent {
+public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 	public ComponentTFTowerWing() {
 		super();
@@ -66,23 +66,23 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 
 		this.highestOpening = 0;
 
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("towerSize", this.size);
-		par1NBTTagCompound.setInteger("towerHeight", this.height);
+		tagCompound.setInteger("towerSize", this.size);
+		tagCompound.setInteger("towerHeight", this.height);
 
-		par1NBTTagCompound.setIntArray("doorInts", this.getDoorsAsIntArray());
+		tagCompound.setIntArray("doorInts", this.getDoorsAsIntArray());
 
-		par1NBTTagCompound.setInteger("highestOpening", this.highestOpening);
-		par1NBTTagCompound.setBoolean("openingTowards0", this.openingTowards[0]);
-		par1NBTTagCompound.setBoolean("openingTowards1", this.openingTowards[1]);
-		par1NBTTagCompound.setBoolean("openingTowards2", this.openingTowards[2]);
-		par1NBTTagCompound.setBoolean("openingTowards3", this.openingTowards[3]);
+		tagCompound.setInteger("highestOpening", this.highestOpening);
+		tagCompound.setBoolean("openingTowards0", this.openingTowards[0]);
+		tagCompound.setBoolean("openingTowards1", this.openingTowards[1]);
+		tagCompound.setBoolean("openingTowards2", this.openingTowards[2]);
+		tagCompound.setBoolean("openingTowards3", this.openingTowards[3]);
 
 	}
 
@@ -102,19 +102,19 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.size = par1NBTTagCompound.getInteger("towerSize");
-		this.height = par1NBTTagCompound.getInteger("towerHeight");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.size = tagCompound.getInteger("towerSize");
+		this.height = tagCompound.getInteger("towerHeight");
 
-		this.readOpeningsFromArray(par1NBTTagCompound.getIntArray("doorInts"));
+		this.readOpeningsFromArray(tagCompound.getIntArray("doorInts"));
 
-		this.highestOpening = par1NBTTagCompound.getInteger("highestOpening");
+		this.highestOpening = tagCompound.getInteger("highestOpening");
 		// too lazy to do this as a loop
-		this.openingTowards[0] = par1NBTTagCompound.getBoolean("openingTowards0");
-		this.openingTowards[1] = par1NBTTagCompound.getBoolean("openingTowards1");
-		this.openingTowards[2] = par1NBTTagCompound.getBoolean("openingTowards2");
-		this.openingTowards[3] = par1NBTTagCompound.getBoolean("openingTowards3");
+		this.openingTowards[0] = tagCompound.getBoolean("openingTowards0");
+		this.openingTowards[1] = tagCompound.getBoolean("openingTowards1");
+		this.openingTowards[2] = tagCompound.getBoolean("openingTowards2");
+		this.openingTowards[3] = tagCompound.getBoolean("openingTowards3");
 	}
 
 	/**
@@ -353,7 +353,7 @@ public class ComponentTFTowerWing extends StructureTFComponent {
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 
 		// make walls
-		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, StructureTFComponent.getStrongholdStones());
+		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, StructureTFComponentOld.getStrongholdStones());
 
 		// clear inside
 		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);

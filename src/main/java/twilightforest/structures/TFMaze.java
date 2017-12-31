@@ -8,7 +8,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.MazestoneVariant;
+import twilightforest.enums.MazestoneVariant;
 import twilightforest.world.TFGenCanopyTree;
 
 import java.util.Random;
@@ -307,9 +307,9 @@ public class TFMaze {
 
 
 	/**
-	 * Copy the maze into a StructureTFComponent
+	 * Copy the maze into a StructureTFComponentOld
 	 */
-	public void copyToStructure(World world, int dx, int dy, int dz, StructureTFComponent component, StructureBoundingBox sbb) {
+	public void copyToStructure(World world, int dx, int dy, int dz, StructureTFComponentOld component, StructureBoundingBox sbb) {
 		for (int x = 0; x < rawWidth; x++) {
 			for (int z = 0; z < rawDepth; z++) {
 				// only draw walls.  if the data is 0 the there's a wall
@@ -428,7 +428,7 @@ public class TFMaze {
 
 	}
 
-	private void makeWallThing(World world, int dy, StructureTFComponent component, StructureBoundingBox sbb, int mdx, int mdz, int even, int odd) {
+	private void makeWallThing(World world, int dy, StructureTFComponentOld component, StructureBoundingBox sbb, int mdx, int mdz, int even, int odd) {
 		for (int y = 0; y < head; y++) {
 			putHeadBlock(world, mdx + even, dy + tall + y, mdz + odd, component, sbb);
 		}
@@ -443,7 +443,7 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, if pillar blocks are properly specified
 	 */
-	private void putPillarBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb) {
+	private void putPillarBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
 		component.setBlockState(world, pillarBlockState, x, y, z, sbb);
 	}
 
@@ -457,7 +457,7 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
-	private void putWallBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb) {
+	private void putWallBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
 		if (wallVarRarity > 0 && rand.nextFloat() < this.wallVarRarity) {
 			component.setBlockState(world, wallVar0State, x, y, z, sbb);
 		} else {
@@ -468,7 +468,7 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
-	private void putDoorBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb) {
+	private void putDoorBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
 		component.setBlockState(world, doorBlockState, x, y, z, sbb);
 	}
 
@@ -484,7 +484,7 @@ public class TFMaze {
 		world.setBlockState(new BlockPos(x, y, z), headBlockState, 2);
 	}
 
-	private void putHeadBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb) {
+	private void putHeadBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
 		component.setBlockState(world, headBlockState, x, y, z, sbb);
 	}
 
@@ -499,14 +499,14 @@ public class TFMaze {
 	/**
 	 * Puts a root block in the structure, at the specified structure coordinates.
 	 */
-	private void putRootBlock(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb) {
+	private void putRootBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
 		component.setBlockState(world, rootBlockState, x, y, z, sbb);
 	}
 
 	/**
 	 * Puts a canopy tree in the world at the specified structure coordinates.
 	 */
-	private void putCanopyTree(World world, int x, int y, int z, StructureTFComponent component, StructureBoundingBox sbb) {
+	private void putCanopyTree(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
 		BlockPos pos = component.getBlockPosWithOffset(x, y, z);
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)

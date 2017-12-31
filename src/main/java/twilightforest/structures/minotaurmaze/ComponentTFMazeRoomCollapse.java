@@ -9,7 +9,7 @@ import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-import static twilightforest.block.enums.PlantVariant.ROOT_STRAND;
+import static twilightforest.enums.PlantVariant.ROOT_STRAND;
 
 public class ComponentTFMazeRoomCollapse extends ComponentTFMazeRoom {
 

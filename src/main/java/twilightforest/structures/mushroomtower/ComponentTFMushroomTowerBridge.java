@@ -10,7 +10,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
@@ -27,7 +27,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	protected ComponentTFMushroomTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
 		super(feature, i, x, y, z, pSize, pHeight, direction);
 
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
@@ -37,27 +37,27 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("destSize", this.dSize);
-		par1NBTTagCompound.setInteger("destHeight", this.dHeight);
+		tagCompound.setInteger("destSize", this.dSize);
+		tagCompound.setInteger("destHeight", this.dHeight);
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.dSize = par1NBTTagCompound.getInteger("destSize");
-		this.dHeight = par1NBTTagCompound.getInteger("destHeight");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.dSize = tagCompound.getInteger("destSize");
+		this.dHeight = tagCompound.getInteger("destHeight");
 	}
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 
 		int[] dest = new int[]{dSize - 1, 1, 1};
@@ -73,7 +73,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 
 	public StructureBoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(dSize - 1, 1, 1, dSize, this.getCoordBaseMode());
-		return StructureTFComponent.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
+		return StructureTFComponentOld.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
 
 	}
 

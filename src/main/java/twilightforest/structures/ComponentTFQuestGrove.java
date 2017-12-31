@@ -17,7 +17,7 @@ import twilightforest.entity.passive.EntityTFQuestRam;
 import java.util.Random;
 
 
-public class ComponentTFQuestGrove extends StructureTFComponent {
+public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 	private static final int RADIUS = 13;
 	private static final IBlockState MOSSY_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
@@ -36,7 +36,7 @@ public class ComponentTFQuestGrove extends StructureTFComponent {
 		this.setCoordBaseMode(EnumFacing.SOUTH);
 
 		// the maze is 25 x 25 for now
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -RADIUS, 0, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, 0, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.SOUTH);
 	}
 
 	@Override

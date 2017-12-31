@@ -8,14 +8,14 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.TowerWoodVariant;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.enums.TowerWoodVariant;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
 import java.util.Random;
 
 
-public class ComponentTFDarkTowerBeard extends StructureTFComponent {
+public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 
 	protected int size;
 	protected int height;
@@ -37,18 +37,18 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponent {
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("beardSize", this.size);
-		par1NBTTagCompound.setInteger("beardHeight", this.height);
+		tagCompound.setInteger("beardSize", this.size);
+		tagCompound.setInteger("beardHeight", this.height);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.size = par1NBTTagCompound.getInteger("beardSize");
-		this.height = par1NBTTagCompound.getInteger("beardHeight");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.size = tagCompound.getInteger("beardSize");
+		this.height = tagCompound.getInteger("beardHeight");
 	}
 
 

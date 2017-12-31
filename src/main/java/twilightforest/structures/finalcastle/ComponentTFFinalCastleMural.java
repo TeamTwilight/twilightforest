@@ -7,11 +7,11 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
-public class ComponentTFFinalCastleMural extends StructureTFComponent {
+public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 
 	private int height;
 	private int width;
@@ -25,7 +25,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponent {
 	public ComponentTFFinalCastleMural(TFFeature feature, Random rand, int i, int x, int y, int z, int width, int height, EnumFacing direction) {
 		super(feature, i);
 		this.setCoordBaseMode(direction);
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 	}
 
 	@Override

@@ -5,11 +5,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
-public class ComponentTFMazeCorridor extends StructureTFComponent {
+public class ComponentTFMazeCorridor extends StructureTFComponentOld {
 
 	public ComponentTFMazeCorridor() {
 		super();

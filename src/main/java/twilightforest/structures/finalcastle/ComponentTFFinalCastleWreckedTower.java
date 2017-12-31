@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,8 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 
 //    		// add foundation
@@ -40,7 +40,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 
 
 //    		// add roof
-//    		StructureTFComponent roof = rand.nextBoolean() ? new Roof13Conical(rand, 4, this) :  new Roof13Crenellated(rand, 4, this);
+//    		StructureTFComponentOld roof = rand.nextBoolean() ? new Roof13Conical(rand, 4, this) :  new Roof13Crenellated(rand, 4, this);
 //    		list.add(roof);
 //    		roof.buildComponent(this, list, rand);
 

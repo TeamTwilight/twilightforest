@@ -10,8 +10,8 @@ import net.minecraft.world.World;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.LeavesVariant;
-import twilightforest.block.enums.WoodVariant;
+import twilightforest.enums.LeavesVariant;
+import twilightforest.enums.WoodVariant;
 
 import java.util.List;
 import java.util.Random;

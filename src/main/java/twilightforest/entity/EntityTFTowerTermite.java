@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.TowerWoodVariant;
+import twilightforest.enums.TowerWoodVariant;
 
 import java.util.Random;
 

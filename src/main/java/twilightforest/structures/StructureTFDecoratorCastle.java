@@ -5,8 +5,8 @@ import net.minecraft.init.Blocks;
 import twilightforest.block.BlockTFCastleBlock;
 import twilightforest.block.BlockTFCastlePillar;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.CastleBrickVariant;
-import twilightforest.block.enums.CastlePillarVariant;
+import twilightforest.enums.CastleBrickVariant;
+import twilightforest.enums.CastlePillarVariant;
 
 public class StructureTFDecoratorCastle extends StructureTFDecorator {
 

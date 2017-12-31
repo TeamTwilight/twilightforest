@@ -37,19 +37,19 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setBoolean("enterBottom", this.enterBottom);
+		tagCompound.setBoolean("enterBottom", this.enterBottom);
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.enterBottom = par1NBTTagCompound.getBoolean("enterBottom");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.enterBottom = tagCompound.getBoolean("enterBottom");
 	}
 
 	@Override

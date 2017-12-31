@@ -23,7 +23,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.enums.BossVariant;
+import twilightforest.enums.BossVariant;
 import twilightforest.client.TFClientEvents;
 import twilightforest.client.model.ModelTFHydraHead;
 import twilightforest.client.model.ModelTFKnightPhantom2;

@@ -12,10 +12,10 @@ import java.util.Random;
 
 import static twilightforest.block.BlockTFHugeLilyPad.FACING;
 import static twilightforest.block.BlockTFHugeLilyPad.PIECE;
-import static twilightforest.block.enums.HugeLilypadPiece.NE;
-import static twilightforest.block.enums.HugeLilypadPiece.NW;
-import static twilightforest.block.enums.HugeLilypadPiece.SE;
-import static twilightforest.block.enums.HugeLilypadPiece.SW;
+import static twilightforest.enums.HugeLilypadPiece.NE;
+import static twilightforest.enums.HugeLilypadPiece.NW;
+import static twilightforest.enums.HugeLilypadPiece.SE;
+import static twilightforest.enums.HugeLilypadPiece.SW;
 
 
 /**

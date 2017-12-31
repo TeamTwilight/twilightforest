@@ -8,7 +8,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.FireJetVariant;
+import twilightforest.enums.FireJetVariant;
 
 public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 

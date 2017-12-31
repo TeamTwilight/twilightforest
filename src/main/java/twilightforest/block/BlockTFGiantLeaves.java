@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TFConfig;
 import twilightforest.item.TFItems;
 
 public class BlockTFGiantLeaves extends BlockTFGiantBlock {
@@ -16,6 +17,16 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 		this.setHardness(0.2F * 64F);
 		this.setLightOpacity(1);
 		this.setCreativeTab(TFItems.creativeTab);
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return TFConfig.performance.leavesFullCube;
+	}
+
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TFConfig.performance.leavesLightOpacity;
 	}
 
 	@Override

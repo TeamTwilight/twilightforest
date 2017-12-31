@@ -48,12 +48,12 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("trunkRadius", this.radius);
-		par1NBTTagCompound.setInteger("trunkHeight", this.height);
-		par1NBTTagCompound.setInteger("trunkGroundLevel", this.groundLevel);
+		tagCompound.setInteger("trunkRadius", this.radius);
+		tagCompound.setInteger("trunkHeight", this.height);
+		tagCompound.setInteger("trunkGroundLevel", this.groundLevel);
 
 	}
 
@@ -61,12 +61,12 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
 
-		this.radius = par1NBTTagCompound.getInteger("trunkRadius");
-		this.height = par1NBTTagCompound.getInteger("trunkHeight");
-		this.groundLevel = par1NBTTagCompound.getInteger("trunkGroundLevel");
+		this.radius = tagCompound.getInteger("trunkRadius");
+		this.height = tagCompound.getInteger("trunkHeight");
+		this.groundLevel = tagCompound.getInteger("trunkGroundLevel");
 	}
 
 	/**

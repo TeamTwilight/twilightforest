@@ -48,7 +48,7 @@ public class TFFeature {
 	public static final TFFeature hill2 = new TFFeature(2, 2, "medium_hollow_hill").enableDecorations().enableTerrainAlterations();
 	public static final TFFeature hill3 = new TFFeature(3, 3, "large_hollow_hill").enableDecorations().enableTerrainAlterations();
 	public static final TFFeature hedgeMaze = new TFFeature(4, 2, "hedge_maze").enableTerrainAlterations();
-	public static final TFFeature nagaCourtyard = new TFFeature(5, 3, "naga_courtyard").enableTerrainAlterations();
+	public static final TFFeature nagaCourtyard = new TFFeature(5, 4, "naga_courtyard").enableTerrainAlterations();
 	public static final TFFeature lichTower = new TFFeature(6, 1, "lich_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_naga"));
 	public static final TFFeature iceTower = new TFFeature(7, 2, "ice_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_yeti"));
 	public static final TFFeature questIsland = new TFFeature(8, 1, "quest_island").disableStructure();
@@ -182,6 +182,8 @@ public class TFFeature {
 
 	private long lastSpawnedHintMonsterTime;
 
+	private static int maxSize;
+
 	public TFFeature(int parID, int parSize, String parName) {
 		this.featureID = parID;
 		TFFeature.featureList[parID] = this;
@@ -190,12 +192,18 @@ public class TFFeature {
 		this.areChunkDecorationsEnabled = false;
 		this.isStructureEnabled = true;
 		this.isTerrainAltered = false;
-		this.spawnableMonsterLists = new ArrayList<List<SpawnListEntry>>();
-		this.ambientCreatureList = new ArrayList<SpawnListEntry>();
-		this.waterCreatureList = new ArrayList<SpawnListEntry>();
+		this.spawnableMonsterLists = new ArrayList<>();
+		this.ambientCreatureList = new ArrayList<>();
+		this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
 
 		ambientCreatureList.add(new SpawnListEntry(EntityBat.class, 10, 8, 8));
+
+		maxSize = Math.max(maxSize, parSize);
+	}
+
+	public static int getMaxSize() {
+		return maxSize;
 	}
 
 	/**
@@ -331,9 +339,12 @@ public class TFFeature {
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
 
-		// get random value
-		Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
-		int randnum = hillRNG.nextInt(16);
+		/*
+		// Remove above block comment start marker to enable debug
+		// noinspection ConstantConditions
+		if (true) {
+			return nagaCourtyard;
+		}//*/
 
 		// glaciers have ice towers
 		if (biomeAt == TFBiomes.glacier) {
@@ -397,6 +408,10 @@ public class TFFeature {
 		if ((regionOffsetX == 5 && regionOffsetZ == 4) || (regionOffsetX == 3 && regionOffsetZ == 4)) {
 			return nagaCourtyard;
 		}
+
+		// get random value
+		Random hillRNG = new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121);
+		int randnum = hillRNG.nextInt(16);
 
 		// okay, well that takes care of most special cases
 		switch (randnum) {
@@ -494,7 +509,7 @@ public class TFFeature {
 	 * @return The feature nearest to the specified chunk coordinates
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, World world) {
-		for (int rad = 1; rad <= 3; rad++) {
+		for (int rad = 1; rad <= 4; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					TFFeature directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
@@ -604,7 +619,7 @@ public class TFFeature {
 	 * If we're near a hollow hill, this returns relative block coordinates indicating the center of that hill relative to the current chunk block coordinate system.
 	 */
 	public static int[] getNearestCenter(int cx, int cz, World world) {
-		for (int rad = 1; rad <= 3; rad++) {
+		for (int rad = 1; rad <= 4; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					if (getFeatureDirectlyAt(x + cx, z + cz, world).size == rad) {

@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
@@ -14,7 +14,7 @@ import java.util.Random;
 /**
  * Stair blocks heading to the entrance tower doors
  */
-public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent {
+public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOld {
 
 	public ComponentTFFinalCastleEntranceStairs() {
 	}
@@ -22,13 +22,13 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponent {
 	public ComponentTFFinalCastleEntranceStairs(TFFeature feature, int index, int x, int y, int z, EnumFacing direction) {
 		super(feature, index);
 		this.setCoordBaseMode(direction);
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 

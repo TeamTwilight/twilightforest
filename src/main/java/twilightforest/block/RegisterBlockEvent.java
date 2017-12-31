@@ -83,6 +83,18 @@ public final class RegisterBlockEvent {
 		blocks.register("block_storage", new BlockTFCompressed().setUnlocalizedName("BlockOfStorage"));
 		blocks.register("lapis_block", new BlockTFLapisBlock().setUnlocalizedName("BlockOfLapisTF"));
 		blocks.register("spiral_bricks", new BlockTFSpiralBrick().setUnlocalizedName("SpiralBricks"));
+		Block etchedNagastone = new BlockTFNagastoneEtched().setUnlocalizedName("EtchedNagastone").setHardness(1.5F).setResistance(10.0F);
+		blocks.register("etched_nagastone", etchedNagastone);
+		blocks.register("nagastone_stairs", new BlockTFNagastoneStairs(etchedNagastone.getDefaultState()).setUnlocalizedName("NagastoneStairs").setHardness(1.5F).setResistance(10.0F));
+		blocks.register("nagastone_pillar", new BlockTFNagastonePillar().setUnlocalizedName("NagastonePillar").setHardness(1.5F).setResistance(10.0F));
+		Block etchedNagastoneMossy = new BlockTFNagastoneEtched().setUnlocalizedName("EtchedNagastoneMossy").setHardness(1.5F).setResistance(10.0F);
+		blocks.register("etched_nagastone_mossy", etchedNagastoneMossy);
+		blocks.register("nagastone_stairs_mossy", new BlockTFNagastoneStairs(etchedNagastoneMossy.getDefaultState()).setUnlocalizedName("NagastoneStairsMossy").setHardness(1.5F).setResistance(10.0F));
+		blocks.register("nagastone_pillar_mossy", new BlockTFNagastonePillar().setUnlocalizedName("NagastonePillarMossy").setHardness(1.5F).setResistance(10.0F));
+		Block etchedNagastoneWeathered = new BlockTFNagastoneEtched().setUnlocalizedName("EtchedNagastoneWeathered").setHardness(1.5F).setResistance(10.0F);
+		blocks.register("etched_nagastone_weathered", etchedNagastoneWeathered);
+		blocks.register("nagastone_stairs_weathered", new BlockTFNagastoneStairs(etchedNagastoneWeathered.getDefaultState()).setUnlocalizedName("NagastoneStairsWeathered").setHardness(1.5F).setResistance(10.0F));
+		blocks.register("nagastone_pillar_weathered", new BlockTFNagastonePillar().setUnlocalizedName("NagastonePillarWeathered").setHardness(1.5F).setResistance(10.0F));
 	}
 
 	private static class BlockRegistryHelper {

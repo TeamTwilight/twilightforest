@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenPumpkin;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.PlantVariant;
+import twilightforest.enums.PlantVariant;
 import twilightforest.world.TFGenHangingLamps;
 import twilightforest.world.TFGenLampposts;
 import twilightforest.world.TFGenTallGrass;
@@ -42,8 +42,10 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
 		int flowerCycles = rand.nextInt(3) - 1;
-		// Flower forest
-		((BiomeForest) Biomes.MUTATED_FOREST).addDoublePlants(world, rand, pos, flowerCycles);
+		// Handle mods not staying in the class hierarchy when replacing vanilla
+		if (Biomes.MUTATED_FOREST instanceof BiomeForest) {
+			((BiomeForest) Biomes.MUTATED_FOREST).addDoublePlants(world, rand, pos, flowerCycles);
+		}
 
 		super.decorate(world, rand, pos);
 

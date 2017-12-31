@@ -29,7 +29,7 @@ import twilightforest.world.TFGenCaveStalactite;
 import java.util.Random;
 
 
-public class ComponentTFHollowHill extends StructureTFComponent {
+public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 	int hillSize;
 	int radius;
@@ -48,19 +48,19 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 		radius = ((hillSize * 2 + 1) * 8) - 6;
 
 		// can we determine the size here?
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -3, -radius, radius * 2, 10, radius * 2, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -3, -radius, radius * 2, 10, radius * 2, EnumFacing.SOUTH);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("hillSize", this.hillSize);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
+		tagCompound.setInteger("hillSize", this.hillSize);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.hillSize = par1NBTTagCompound.getInteger("hillSize");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.hillSize = tagCompound.getInteger("hillSize");
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 
 	}

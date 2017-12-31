@@ -3,7 +3,7 @@ package twilightforest.structures.lichtower;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
@@ -37,7 +37,7 @@ public class ComponentTFTowerBeardAttached extends ComponentTFTowerBeard {
 			int min = y + 1;
 			int max = size - y;
 
-			fillWithRandomizedBlocks(world, sbb, 0, height - y, min, max, height - y, max, false, rand, StructureTFComponent.getStrongholdStones());
+			fillWithRandomizedBlocks(world, sbb, 0, height - y, min, max, height - y, max, false, rand, StructureTFComponentOld.getStrongholdStones());
 		}
 		return true;
 	}

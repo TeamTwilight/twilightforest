@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "twilightforest:nagastone_stairs_mossy",
+    "data": 8,
+    "count": 8
+  },
+  "pattern": [
+    "###",
+    " ##",
+    "  #"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": [
+      {
+        "item": "twilightforest:etched_nagastone_mossy"
+      }
+    ]
+  }
+}

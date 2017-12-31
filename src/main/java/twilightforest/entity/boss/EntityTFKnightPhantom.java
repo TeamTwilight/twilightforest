@@ -35,7 +35,7 @@ import twilightforest.TFSounds;
 import twilightforest.TFTreasure;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.block.enums.BossVariant;
+import twilightforest.enums.BossVariant;
 import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.ai.EntityAIPhantomAttackStart;
 import twilightforest.entity.ai.EntityAIPhantomThrowWeapon;

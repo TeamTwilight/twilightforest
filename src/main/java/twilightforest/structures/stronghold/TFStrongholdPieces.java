@@ -4,7 +4,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class TFStrongholdPieces {
 	private List<TFStrongholdPieceWeight> pieceList;
 	static int totalWeight = 0;
 
-	private static Class<? extends StructureTFComponent> lastPieceMade;
+	private static Class<? extends StructureTFComponentOld> lastPieceMade;
 
 	public static void registerPieces() {
 		MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdSmallHallway.class, "TFSSH");
@@ -126,7 +126,7 @@ public class TFStrongholdPieces {
 		}
 
 		// dead end?
-		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponent ? ((StructureTFComponent)parent).getFeatureType() : TFFeature.nothing, index, facing, x, y, z);
+		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponentOld ? ((StructureTFComponentOld)parent).getFeatureType() : TFFeature.nothing, index, facing, x, y, z);
 
 		if (StructureComponent.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
 			return deadEnd;
@@ -135,7 +135,7 @@ public class TFStrongholdPieces {
 		}
 	}
 
-	private static StructureTFStrongholdComponent instantiateComponent(Class<? extends StructureTFComponent> pieceClass, TFFeature feature, int index, EnumFacing facing, int x, int y, int z) {
+	private static StructureTFStrongholdComponent instantiateComponent(Class<? extends StructureTFComponentOld> pieceClass, TFFeature feature, int index, EnumFacing facing, int x, int y, int z) {
 		// todo 1.9
 		try {
 			return (StructureTFStrongholdComponent) pieceClass.getConstructor(TFFeature.class, int.class, EnumFacing.class, int.class, int.class, int.class).newInstance(feature, index, facing, x, y, z);

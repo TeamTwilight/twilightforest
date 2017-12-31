@@ -13,7 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 import twilightforest.util.RotationUtil;
 
@@ -54,7 +54,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			entranceFloor = floors - 1;
 		}
 
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
 
 		// we should have a door where we started
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
@@ -67,14 +67,14 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		this.color = color;
 		this.size = 13;
 		this.height = floors * 8 + 1;
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponent) {
-			this.deco = ((StructureTFComponent) parent).deco;
+		if (parent != null && parent instanceof StructureTFComponentOld) {
+			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 
 		// add foundation
@@ -83,7 +83,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		foundation.buildComponent(this, list, rand);
 
 		// add roof
-		StructureTFComponent roof = rand.nextBoolean() ? new ComponentTFFinalCastleRoof13Conical(getFeatureType(), rand, 4, this) : new ComponentTFFinalCastleRoof13Crenellated(getFeatureType(), rand, 4, this);
+		StructureTFComponentOld roof = rand.nextBoolean() ? new ComponentTFFinalCastleRoof13Conical(getFeatureType(), rand, 4, this) : new ComponentTFFinalCastleRoof13Crenellated(getFeatureType(), rand, 4, this);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 	}

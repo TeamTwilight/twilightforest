@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "twilightforest:castle_pillar",
+    "data": 0,
+    "count": 3
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:castle_stairs",
+      "data": 0
+    },
+    {
+      "item": "twilightforest:castle_stairs",
+      "data": 0
+    },
+    {
+      "item": "twilightforest:castle_stairs",
+      "data": 0
+    },
+    {
+      "item": "twilightforest:castle_stairs",
+      "data": 0
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

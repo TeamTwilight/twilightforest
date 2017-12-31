@@ -11,12 +11,12 @@ import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFArmoredGiant;
 import twilightforest.entity.EntityTFGiantMiner;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
 
-public class ComponentTFCloudCastle extends StructureTFComponent {
+public class ComponentTFCloudCastle extends StructureTFComponentOld {
 
 	private boolean minerPlaced = false;
 	private boolean warriorPlaced = false;
@@ -36,22 +36,22 @@ public class ComponentTFCloudCastle extends StructureTFComponent {
 		// spawn list!
 		this.spawnListIndex = 1;
 
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, EnumFacing.SOUTH);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setBoolean("minerPlaced", this.minerPlaced);
-		par1NBTTagCompound.setBoolean("warriorPlaced", this.warriorPlaced);
+		tagCompound.setBoolean("minerPlaced", this.minerPlaced);
+		tagCompound.setBoolean("warriorPlaced", this.warriorPlaced);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.minerPlaced = par1NBTTagCompound.getBoolean("minerPlaced");
-		this.warriorPlaced = par1NBTTagCompound.getBoolean("warriorPlaced");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.minerPlaced = tagCompound.getBoolean("minerPlaced");
+		this.warriorPlaced = tagCompound.getBoolean("warriorPlaced");
 	}
 
 	@Override

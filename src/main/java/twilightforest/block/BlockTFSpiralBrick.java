@@ -9,8 +9,11 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -18,8 +21,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
+import twilightforest.enums.Diagonals;
 
-import java.util.Locale;
+import javax.annotation.Nullable;
 
 public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     public static final PropertyEnum<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
@@ -75,22 +79,77 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         else return isBottom ? Diagonals.BOTTOM_LEFT : Diagonals.TOP_LEFT;
     }
 
-    private enum Diagonals implements IStringSerializable {
-        TOP_RIGHT,
-        BOTTOM_RIGHT,
-        BOTTOM_LEFT,
-        TOP_LEFT;
-
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.ROOT);
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
         ModelLoader.setCustomStateMapper(this, new StateMap.Builder().withName(AXIS_FACING).withSuffix("_spiral_bricks").build());
         ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(DIAGONAL, Diagonals.BOTTOM_LEFT));
+    }
+
+    @Override
+    public IBlockState withRotation(IBlockState state, Rotation rot) {
+        if (rot == Rotation.NONE) return state;
+
+        EnumFacing.Axis axis = state.getValue(AXIS_FACING);
+
+        if (axis == EnumFacing.Axis.Y) {
+            return state.withProperty(DIAGONAL, Diagonals.rotate(state.getValue(DIAGONAL), rot));
+        } else {
+            if (rot == Rotation.CLOCKWISE_180 || (axis == EnumFacing.Axis.X && rot == Rotation.COUNTERCLOCKWISE_90) || (axis == EnumFacing.Axis.Z && rot == Rotation.CLOCKWISE_90))
+                state = state.withProperty(DIAGONAL, Diagonals.mirrorDefault(state.getValue(DIAGONAL), Mirror.LEFT_RIGHT));
+
+            return rot.ordinal() % 2 == 0 ? state : state.withProperty(AXIS_FACING, axis == EnumFacing.Axis.X ? EnumFacing.Axis.Z : EnumFacing.Axis.X);
+        }
+    }
+
+    @Override
+    public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+        return state.withProperty(DIAGONAL, Diagonals.mirrorOn(state.getValue(AXIS_FACING), state.getValue(DIAGONAL), mirrorIn));
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing facing) {
+        IBlockState state = world.getBlockState(pos);
+
+        if (facing.getAxis() == state.getValue(AXIS_FACING)) {
+            state = state.cycleProperty(DIAGONAL);
+        } else {
+            switch (facing.getAxis()) {
+                case X:
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.Y ? EnumFacing.Axis.Z : EnumFacing.Axis.Y);
+                    break;
+                case Y:
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.X ? EnumFacing.Axis.Z : EnumFacing.Axis.X);
+                    break;
+                case Z:
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.Y ? EnumFacing.Axis.X : EnumFacing.Axis.Y);
+                    break;
+            }
+        }
+
+        world.setBlockState(pos, state);
+        return true;
+    }
+
+    @Override
+    @Nullable
+    public EnumFacing[] getValidRotations(World world, BlockPos pos) {
+        return EnumFacing.values();
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    protected ItemStack getSilkTouchDrop(IBlockState state) {
+        return new ItemStack(Item.getItemFromBlock(this));
     }
 }

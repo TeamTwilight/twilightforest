@@ -5,12 +5,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
 
-public class ComponentTFTowerBeard extends StructureTFComponent {
+public class ComponentTFTowerBeard extends StructureTFComponentOld {
 
 	int size;
 	int height;
@@ -35,21 +35,21 @@ public class ComponentTFTowerBeard extends StructureTFComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeStructureToNBT(par1NBTTagCompound);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
 
-		par1NBTTagCompound.setInteger("beardSize", this.size);
-		par1NBTTagCompound.setInteger("beardHeight", this.height);
+		tagCompound.setInteger("beardSize", this.size);
+		tagCompound.setInteger("beardHeight", this.height);
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound par1NBTTagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(par1NBTTagCompound, templateManager);
-		this.size = par1NBTTagCompound.getInteger("beardSize");
-		this.height = par1NBTTagCompound.getInteger("beardHeight");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.size = tagCompound.getInteger("beardSize");
+		this.height = tagCompound.getInteger("beardHeight");
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class ComponentTFTowerBeard extends StructureTFComponent {
 			int min = y;
 			int max = size - y - 1;
 
-			fillWithRandomizedBlocks(world, sbb, min, height - y, min, max, height - y, max, false, rand, StructureTFComponent.getStrongholdStones());
+			fillWithRandomizedBlocks(world, sbb, min, height - y, min, max, height - y, max, false, rand, StructureTFComponentOld.getStrongholdStones());
 		}
 		return true;
 	}

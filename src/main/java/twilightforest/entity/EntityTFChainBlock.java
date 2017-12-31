@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -11,56 +12,45 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import twilightforest.util.WorldUtil;
 
 
-public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiPart {
+public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiPart, IEntityAdditionalSpawnData {
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
-	// server fields
+	private EnumHand hand = EnumHand.MAIN_HAND;
 	private boolean isReturning = false;
 	private int blocksSmashed = 0;
 	private double velX;
 	private double velY;
 	private double velZ;
 
-	// client fields
-	private boolean isAttached;
-	private EntityLivingBase attachedTo;
-	public EntityTFGoblinChain chain1;
-	public EntityTFGoblinChain chain2;
-	public EntityTFGoblinChain chain3;
-	public EntityTFGoblinChain chain4;
-	public EntityTFGoblinChain chain5;
-	private Entity[] partsArray;
+	public final EntityTFGoblinChain chain1 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain2 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain3 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain4 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain5 = new EntityTFGoblinChain(this);
+	private final Entity[] partsArray = { chain1, chain2, chain3, chain4, chain5 };
 
-	// Client side constructor
 	public EntityTFChainBlock(World par1World) {
 		super(par1World);
 		this.setSize(0.6F, 0.6F);
-
-
-		this.partsArray = new Entity[]{
-				chain1 = new EntityTFGoblinChain(this),
-				chain2 = new EntityTFGoblinChain(this),
-				chain3 = new EntityTFGoblinChain(this),
-				chain4 = new EntityTFGoblinChain(this),
-				chain5 = new EntityTFGoblinChain(this)
-		};
 	}
 
-	// Serverside constructor
-	public EntityTFChainBlock(World world, EntityLivingBase thrower) {
+	public EntityTFChainBlock(World world, EntityLivingBase thrower, EnumHand hand) {
 		super(world, thrower);
 		this.setSize(0.6F, 0.6F);
 		this.isReturning = false;
+		this.hand = hand;
 		this.setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
@@ -165,7 +155,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 					EntityPlayer player = (EntityPlayer) getThrower();
 
 					if (ForgeHooks.canHarvestBlock(block, player, world, pos)) {
-						block.harvestBlock(this.world, player, pos, state, world.getTileEntity(pos), player.getHeldItemMainhand());
+						block.harvestBlock(this.world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
 					}
 				}
 
@@ -186,24 +176,14 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 			chain4.onUpdate();
 			chain5.onUpdate();
 
-			// on the client, if we are not attached, assume we have just spawned, and attach to the player
-			if (!isAttached) {
-				for (EntityPlayer nearby : this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().offset(-this.motionX, -this.motionY, -this.motionZ).grow(2.0D, 2.0D, 2.0D))) {
-					// attach?  should we check for closest player?
-					this.attachedTo = nearby;
-				}
-
-				this.isAttached = true;
-			}
-
 			// set chain positions
-			if (this.attachedTo != null) {
+			if (this.getThrower() != null) {
 				// interpolate chain position
-				Vec3d handVec = this.attachedTo.getLookVec().rotateYaw(-0.4F);
+				Vec3d handVec = this.getThrower().getLookVec().rotateYaw(hand == EnumHand.MAIN_HAND ? -0.4F : 0.4F);
 
-				double sx = this.attachedTo.posX + handVec.x;
-				double sy = this.attachedTo.posY + handVec.y - 0.4F + this.attachedTo.getEyeHeight();
-				double sz = this.attachedTo.posZ + handVec.z;
+				double sx = this.getThrower().posX + handVec.x;
+				double sy = this.getThrower().posY + handVec.y - 0.4F + this.getThrower().getEyeHeight();
+				double sz = this.getThrower().posZ + handVec.z;
 
 				double ox = sx - this.posX;
 				double oy = sy - this.posY - 0.25F;
@@ -250,18 +230,28 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 		return this.world;
 	}
 
-
 	@Override
 	public boolean attackEntityFromPart(MultiPartEntityPart p_70965_1_, DamageSource p_70965_2_, float p_70965_3_) {
 		return false;
 	}
 
-	/**
-	 * We need to do this for the bounding boxes on the parts to become active
-	 */
 	@Override
 	public Entity[] getParts() {
 		return partsArray;
 	}
 
+	@Override
+	public void writeSpawnData(ByteBuf buffer) {
+		buffer.writeInt(getThrower() != null ? getThrower().getEntityId() : -1);
+		buffer.writeBoolean(hand == EnumHand.MAIN_HAND);
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf additionalData) {
+		Entity e = world.getEntityByID(additionalData.readInt());
+		if (e instanceof EntityLivingBase) {
+			thrower = (EntityLivingBase) e;
+		}
+		hand = additionalData.readBoolean() ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+	}
 }
