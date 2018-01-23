@@ -38,6 +38,7 @@ import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -102,7 +103,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 
 			while (!var6.isEmpty()) {
 				int var7 = rand.nextInt(var6.size());
-				StructureComponent var8 = (StructureComponent) var6.remove(var7);
+				StructureComponent var8 = var6.remove(var7);
 				var8.buildComponent(firstComponent, this.components, rand);
 			}
 
@@ -126,7 +127,8 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	/**
 	 * @return The first component we should add to our structure
 	 */
-	public StructureComponent makeFirstComponent(World world, Random rand, TFFeature feature, int x, int y, int z) {
+	@Nullable
+	public StructureComponent makeFirstComponent(World world, Random rand, @Nullable TFFeature feature, int x, int y, int z) {
 		/*if (feature != null) {
 			//FIXME: Debug, force only one kind of feature to spawn.
 			TwilightForestMod.LOGGER.info("Selected Debug Feature @ {} {} {}", x, y, z);

@@ -14,10 +14,11 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.MossyCobbleTemplateProcessor;
 import twilightforest.structures.StructureTFComponent;
+import twilightforest.structures.StructureTFComponentTemplate;
 
 import java.util.Random;
 
-public class ComponentNagaCourtyardWallCorner extends StructureTFComponent {
+public class ComponentNagaCourtyardWallCorner extends StructureTFComponentTemplate {
     private static final ResourceLocation WALL = new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_corner");
     private static final ResourceLocation WALL_DECAYED = new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_corner_decayed");
 
@@ -28,30 +29,31 @@ public class ComponentNagaCourtyardWallCorner extends StructureTFComponent {
 
     @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardWallCorner(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(feature, i);
-        this.rotation = rotation;
-        this.boundingBox = new StructureBoundingBox(x, y, z, x + 4, y + 7, z + 4);
+        super(feature, i, x, y, z, rotation);
     }
 
     @Override
     public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox structureBoundingBoxIn) {
-        BlockPos pos = new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ);
-
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
+
+        TEMPLATE = templateManager.getTemplate(server, WALL);
+
+        this.setBoundingBoxFromTemplate();
 
         PlacementSettings placementSettings = new PlacementSettings()
                 .setRotation(this.rotation)
                 .setReplacedBlock(Blocks.STRUCTURE_VOID)
-                .setBoundingBox(structureBoundingBoxIn);
+                .setBoundingBox(this.boundingBox);
 
-        Template template = templateManager.getTemplate(server, WALL);
-        template.addBlocksToWorld(worldIn, pos, new CourtyardWallTemplateProcessor(pos, placementSettings), placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_INTEGRITY), 2);
+        TEMPLATE.addBlocksToWorld(worldIn, templatePosition, new CourtyardWallTemplateProcessor(templatePosition, placementSettings), placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_INTEGRITY), 2);
 
         Template temDecay = templateManager.getTemplate(server, WALL_DECAYED);
-        temDecay.addBlocksToWorld(worldIn, pos, new MossyCobbleTemplateProcessor(pos, placementSettings), placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_DECAY), 2);
+        temDecay.addBlocksToWorld(worldIn, templatePosition, new MossyCobbleTemplateProcessor(templatePosition, placementSettings), placementSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_DECAY), 2);
 
-        this.setDebugCorners(worldIn);
+        //this.setDebugCorners(worldIn);
+
+        //this.setDebugEntity(worldIn, templatePosition, this.getClass().getName() + " : " + this.rotation);
 
         return true;
     }

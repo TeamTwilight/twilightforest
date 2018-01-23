@@ -1,12 +1,13 @@
-package twilightforest.tileentity;
+package twilightforest.tileentity.critters;
 
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 
 
-public class TileEntityTFCicada extends TileEntityTFCritter {
+public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITickable {
 	private int yawDelay;
 	public int currentYaw;
 	private int desiredYaw;

@@ -38,7 +38,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
-				if (entityIn != null && entityIn.getActiveItemStack().getItem() == TFItems.moonwormQueen) {
+				if (entityIn != null && entityIn.getActiveItemStack() == stack) {
 					int useTime = stack.getMaxItemUseDuration() - entityIn.getItemInUseCount();
 					if (useTime >= FIRING_TIME && (useTime >>> 1) % 2 == 0) {
 						return 1;
@@ -53,7 +53,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
-		if (stack.getItemDamage() == stack.getMaxDamage()) {
+		if (stack.getItemDamage() >= stack.getMaxDamage() - 1) {
 			return ActionResult.newResult(EnumActionResult.FAIL, stack);
 		} else {
 			player.setActiveHand(hand);
@@ -73,7 +73,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 
 		ItemStack itemstack = player.getHeldItem(hand);
 
-		if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, facing, (Entity) null)) {
+		if (itemstack.getItemDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, facing, (Entity) null)) {
 			int i = this.getMetadata(itemstack.getMetadata());
 			IBlockState iblockstate1 = TFBlocks.moonworm.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 

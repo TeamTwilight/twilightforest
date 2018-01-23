@@ -1,9 +1,10 @@
-package twilightforest.tileentity;
+package twilightforest.tileentity.critters;
 
+import net.minecraft.util.ITickable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
-public class TileEntityTFFirefly extends TileEntityTFCritter {
+public class TileEntityTFFireflyTicking extends TileEntityTFFirefly implements ITickable {
 	private int yawDelay;
 	public int currentYaw;
 	private int desiredYaw;

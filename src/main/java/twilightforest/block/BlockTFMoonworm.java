@@ -12,8 +12,10 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
-import twilightforest.tileentity.TileEntityTFMoonworm;
+import twilightforest.tileentity.critters.TileEntityTFMoonworm;
+import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
 import java.util.Random;
 
@@ -37,7 +39,7 @@ public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCall
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileEntityTFMoonworm();
+		return TwilightForestMod.proxy.getNewMoonwormTE();
 	}
 
 	@Override
@@ -77,6 +79,6 @@ public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCall
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(TFBlockProperties.FACING).build());
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFMoonworm.class);
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFMoonwormTicking.class);
 	}
 }

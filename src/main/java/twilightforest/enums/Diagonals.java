@@ -58,30 +58,42 @@ public enum Diagonals implements IStringSerializable {
         }
     }
 
+    public static Diagonals mirrorLeftRight(Diagonals diagonal) {
+        switch (diagonal) {
+            case TOP_RIGHT:
+                return TOP_LEFT;
+            case BOTTOM_RIGHT:
+                return BOTTOM_LEFT;
+            case BOTTOM_LEFT:
+                return BOTTOM_RIGHT;
+            case TOP_LEFT:
+                return TOP_RIGHT;
+        }
+
+        return diagonal;
+    }
+
+    public static Diagonals mirrorUpDown(Diagonals diagonal) {
+        switch (diagonal) {
+            case TOP_RIGHT:
+                return BOTTOM_RIGHT;
+            case BOTTOM_RIGHT:
+                return TOP_RIGHT;
+            case BOTTOM_LEFT:
+                return TOP_LEFT;
+            case TOP_LEFT:
+                return BOTTOM_LEFT;
+        }
+
+        return diagonal;
+    }
+
     public static Diagonals mirrorDefault(Diagonals diagonal, Mirror mirror) {
         switch (mirror) {
             case LEFT_RIGHT:
-                switch (diagonal) {
-                    case TOP_RIGHT:
-                        return TOP_LEFT;
-                    case BOTTOM_RIGHT:
-                        return BOTTOM_LEFT;
-                    case BOTTOM_LEFT:
-                        return BOTTOM_RIGHT;
-                    case TOP_LEFT:
-                        return TOP_RIGHT;
-                }
+                return mirrorLeftRight(diagonal);
             case FRONT_BACK:
-                switch (diagonal) {
-                    case TOP_RIGHT:
-                        return BOTTOM_RIGHT;
-                    case BOTTOM_RIGHT:
-                        return TOP_RIGHT;
-                    case BOTTOM_LEFT:
-                        return TOP_LEFT;
-                    case TOP_LEFT:
-                        return BOTTOM_LEFT;
-                }
+                return mirrorUpDown(diagonal);
             default:
                 return diagonal;
         }

@@ -9,14 +9,14 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.ModelTFFirefly;
-import twilightforest.tileentity.TileEntityTFFirefly;
+import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileEntityTFFirefly> {
+public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileEntityTFFireflyTicking> {
 	private ModelTFFirefly fireflyModel;
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "firefly-tiny.png");
 
@@ -26,7 +26,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 
 
 	@Override
-	public void render(@Nullable TileEntityTFFirefly tileentity, double d, double d1, double d2, float partialTicks, int destroyStage, float alpha) {
+	public void render(@Nullable TileEntityTFFireflyTicking tileentity, double d, double d1, double d2, float partialTicks, int destroyStage, float alpha) {
 		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentYaw;
 		float glow = tileentity != null ? tileentity.glowIntensity : BugModelAnimationHelper.glowIntensity;
 

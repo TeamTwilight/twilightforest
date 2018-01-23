@@ -12,7 +12,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.tileentity.TileEntityTFMoonworm;
+import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
 import javax.annotation.Nullable;
 
@@ -66,7 +66,7 @@ public class ModelTFMoonworm extends ModelBase {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 	}
 
-	public void setLivingAnimations(@Nullable TileEntityTFMoonworm moonworm, float partialTime) {
+	public void setLivingAnimations(@Nullable TileEntityTFMoonwormTicking moonworm, float partialTime) {
 
 		head.rotationPointY = 7F;
 		Shape1.rotationPointY = 7F;

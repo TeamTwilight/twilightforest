@@ -8,19 +8,19 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.ModelTFCicada;
-import twilightforest.tileentity.TileEntityTFCicada;
+import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEntityTFCicada> {
+public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEntityTFCicadaTicking> {
 	private final ModelTFCicada cicadaModel = new ModelTFCicada();
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cicada-model.png");
 
 	@Override
-	public void render(@Nullable TileEntityTFCicada tileentity, double d, double d1, double d2, float partialTicks, int destroyStage, float alpha) {
+	public void render(@Nullable TileEntityTFCicadaTicking tileentity, double d, double d1, double d2, float partialTicks, int destroyStage, float alpha) {
 		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentYaw;
 
 		GlStateManager.pushMatrix();

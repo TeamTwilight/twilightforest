@@ -15,7 +15,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
-	private TFFeature feature = TFFeature.nothing;
+	protected TFFeature feature = TFFeature.nothing;
 
 	public StructureTFComponent() {
 		this.rotation = Rotation.NONE;
@@ -43,7 +43,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 	protected void setDebugCorners(World world) {
 		if (rotation == null) rotation = Rotation.NONE;
 
-		if (shouldDebug() && rotation != Rotation.NONE) {
+		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
 			int i = rotation.ordinal() * 4;
 			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i    , this.getBoundingBox().minZ), Blocks.WOOL.getStateFromMeta(i));
 			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 1, this.getBoundingBox().minZ), Blocks.WOOL.getStateFromMeta(1 + i));
@@ -61,6 +61,24 @@ public abstract class StructureTFComponent extends StructureComponent {
 			sheep.setCustomNameTag(s);
 			sheep.setNoAI(true);
 			sheep.setLocationAndAngles(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 0, 0);
+			sheep.setEntityInvulnerable(true);
+			sheep.setInvisible(true);
+			sheep.setAlwaysRenderNameTag(true);
+			sheep.setSilent(true);
+			sheep.setNoGravity(true);
+			world.spawnEntity(sheep);
+		}
+	}
+
+	@SuppressWarnings("SameParameterValue")
+	protected void setDebugEntity(World world, BlockPos blockpos, String s) {
+		if (shouldDebug()) {
+			//final BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
+
+			final EntitySheep sheep = new EntitySheep(world);
+			sheep.setCustomNameTag(s);
+			sheep.setNoAI(true);
+			sheep.setLocationAndAngles(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
 			sheep.setEntityInvulnerable(true);
 			sheep.setInvisible(true);
 			sheep.setAlwaysRenderNameTag(true);

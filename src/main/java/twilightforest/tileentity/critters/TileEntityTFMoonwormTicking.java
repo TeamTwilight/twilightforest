@@ -1,12 +1,14 @@
-package twilightforest.tileentity;
+package twilightforest.tileentity.critters;
 
 
-public class TileEntityTFMoonworm extends TileEntityTFCritter {
+import net.minecraft.util.ITickable;
+
+public class TileEntityTFMoonwormTicking extends TileEntityTFMoonworm implements ITickable {
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
 
-	public TileEntityTFMoonworm() {
+	public TileEntityTFMoonwormTicking() {
 		currentYaw = -1;
 		yawDelay = 0;
 		desiredYaw = 0;

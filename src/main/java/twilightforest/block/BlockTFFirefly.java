@@ -14,8 +14,10 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
-import twilightforest.tileentity.TileEntityTFFirefly;
+import twilightforest.tileentity.critters.TileEntityTFFirefly;
+import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
 import java.util.Random;
 
@@ -40,7 +42,7 @@ public class BlockTFFirefly extends BlockTFCritter implements ModelRegisterCallb
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileEntityTFFirefly();
+		return TwilightForestMod.proxy.getNewFireflyTE();
 	}
 
 	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
@@ -50,7 +52,7 @@ public class BlockTFFirefly extends BlockTFCritter implements ModelRegisterCallb
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(TFBlockProperties.FACING).build());
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFFirefly.class);
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFFireflyTicking.class);
 	}
 
 	@Override

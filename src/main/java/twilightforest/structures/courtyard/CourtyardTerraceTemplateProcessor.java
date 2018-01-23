@@ -1,6 +1,7 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -13,9 +14,9 @@ import twilightforest.structures.RandomizedTemplateProcessor;
 
 import javax.annotation.Nullable;
 
-public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor {
+public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcessor {
 
-    public CourtyardWallTemplateProcessor(BlockPos pos, PlacementSettings settings) {
+    public CourtyardTerraceTemplateProcessor(BlockPos pos, PlacementSettings settings) {
         super(pos, settings);
     }
 
@@ -24,6 +25,33 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
         if (shouldPlaceBlock()) {
             IBlockState state = blockInfo.blockState;
+
+            final IBlockState SMOOTHBRICK_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK);
+            final IBlockState SMOOTHBRICK_STATE = Blocks.STONEBRICK.getDefaultState();
+
+            final IBlockState GRASS = Blocks.GRASS.getDefaultState();
+            //final IBlockState SEAMLESS_STONE_DOUBLESLAB = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.STONE).withProperty(BlockDoubleStoneSlab.SEAMLESS, true);
+
+            if (state == SMOOTHBRICK_STATE) {
+                IBlockState stateCheck = worldIn.getBlockState(pos);
+                if (stateCheck == SMOOTHBRICK_SLAB_STATE)
+                    state = stateCheck;
+                else if (stateCheck.getMaterial() == Material.AIR)
+                    return null;
+            }
+
+            if (state == SMOOTHBRICK_SLAB_STATE) {
+                IBlockState stateCheck = worldIn.getBlockState(pos);
+                if (stateCheck.getMaterial() == Material.AIR)
+                    return null;
+            }
+
+            if (state == GRASS) {
+                IBlockState stateCheck = worldIn.getBlockState(pos);
+                if (stateCheck.getBlock() == TFBlocks.etched_nagastone)
+                    state = stateCheck;
+            }
+
             Block block = state.getBlock();
 
             if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))

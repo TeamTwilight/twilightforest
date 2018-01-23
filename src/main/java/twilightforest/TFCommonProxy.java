@@ -11,9 +11,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.inventory.ContainerTFUncrafting;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
+import twilightforest.tileentity.critters.*;
 
 public class TFCommonProxy implements IGuiHandler {
 
@@ -93,4 +95,21 @@ public class TFCommonProxy implements IGuiHandler {
 		return false;
 	}
 
+	public TileEntityTFCicada getNewCicadaTE() {
+		return new TileEntityTFCicada();
+	}
+
+	public TileEntityTFFirefly getNewFireflyTE() {
+		return new TileEntityTFFirefly();
+	}
+
+	public TileEntityTFMoonworm getNewMoonwormTE() {
+		return new TileEntityTFMoonworm();
+	}
+
+	public void registerCritterTileEntities() {
+		GameRegistry.registerTileEntity(TileEntityTFFirefly.class, "firefly");
+		GameRegistry.registerTileEntity(TileEntityTFCicada.class, "cicada");
+		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, "moonworm");
+	}
 }

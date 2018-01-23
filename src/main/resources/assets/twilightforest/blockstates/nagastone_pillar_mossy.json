@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube"
+    "model": "cube",
+    "textures": {
+      "particle": "twilightforest:blocks/nagastone_pillar_vertical_mossy"
+    }
   },
   "variants": {
     "axis": {

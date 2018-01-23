@@ -66,7 +66,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 			}
 		}//*/
 
-		this.setDebugCorners(world);
+		//this.setDebugCorners(world);
 
 		// naga spawner seems important
 		setBlockState(world, TFBlocks.bossSpawner.getDefaultState(), RADIUS + 1, 2, RADIUS + 1, sbb);

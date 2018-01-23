@@ -8,17 +8,17 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.ModelTFMoonworm;
-import twilightforest.tileentity.TileEntityTFMoonworm;
+import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
 import javax.annotation.Nullable;
 
 
-public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<TileEntityTFMoonworm> {
+public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<TileEntityTFMoonwormTicking> {
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "moonworm.png");
 	private final ModelTFMoonworm moonwormModel = new ModelTFMoonworm();
 
 	@Override
-	public void render(@Nullable TileEntityTFMoonworm tileentity, double d, double d1, double d2, float partialTime, int destroyStage, float alpha) {
+	public void render(@Nullable TileEntityTFMoonwormTicking tileentity, double d, double d1, double d2, float partialTime, int destroyStage, float alpha) {
 		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentRotation;
 		if (tileentity == null) partialTime = Minecraft.getMinecraft().getRenderPartialTicks();
 

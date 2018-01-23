@@ -33,7 +33,7 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 			for (int dy = 0; dy < 4; dy++) {
 				for (int dz = 0; dz < 4; dz++) {
 					IBlockState state = world.getBlockState(pos.add(dx, dy, dz));
-					if (!state.getBlock().isReplaceable(world, pos))
+					if (!state.getBlock().isReplaceable(world, pos.add(dx, dy, dz)))
 						return false;
 				}
 			}

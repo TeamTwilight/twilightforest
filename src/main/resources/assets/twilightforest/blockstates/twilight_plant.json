@@ -58,7 +58,10 @@
     }],
     "variant=root_strand": [{
       "model": "crop",
-      "textures": { "crop":"twilightforest:blocks/rootstrand" }
+      "textures": { "crop":"twilightforest:blocks/rootstrand" },
+      "transform": {
+        "translation": [ 0, 0.0625, 0 ]
+      }
     }]
   }
 }
