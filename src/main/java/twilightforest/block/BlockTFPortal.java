@@ -72,7 +72,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 			if (recursivelyValidatePortal(world, pos, blocksChecked, number) && number.getNumber() > 3) {
 				activationItem.getItem().shrink(1);
-				world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), false));
+				world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true));
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet())
 					if (checkedPos.getValue()) world.setBlockState(checkedPos.getKey(), TFBlocks.portal.getDefaultState(), 2);
