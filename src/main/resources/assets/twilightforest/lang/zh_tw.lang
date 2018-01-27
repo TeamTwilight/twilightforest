@@ -1,38 +1,49 @@
-itemGroup.twilightForest=暮色森林
+#PARSE_ESCAPES
 
-advancement.twilightforest.desc=前往那神秘的魔法林地——暮色森林！
+itemGroup.twilightForest=暮光森林
+
+advancement.twilightforest.desc=前往那神秘的魔法林地——暮光森林！
 
 advancement.twilight_magic_map_focus=用火書寫
-advancement.twilight_magic_map_focus.desc=用烏鴉毛、螢石粉、火炬漿果合成魔法地圖核心。
+advancement.twilight_magic_map_focus.desc=用烏鴉羽毛、螢石粉、火炬漿果合成魔法地圖核心。
 
-advancement.twilight_hunter=暮色森林之靜
+advancement.twilight_hunter=森林的沉默
 advancement.twilight_hunter.desc=獵殺一些暮色的野生動物。
-advancement.twilight_kill_naga=娜迦獵人
+advancement.twilight_kill_naga=是時候擺平天枰了
 advancement.twilight_kill_naga.desc=獵殺森林角落裡的娜迦，取得可以幫你突破巫妖塔魔法壁壘的娜迦鱗片。
-advancement.twilight_kill_lich=巫妖獵人
+advancement.twilight_kill_lich=帶出你的死亡
 advancement.twilight_kill_lich.desc=擊敗塔頂的巫妖，借助他留下的巫妖權杖的魔法來驅散沼澤中的毒蚊。
-advancement.twilight_kill_hydra=九頭蛇獵人
+advancement.twilight_kill_hydra=九頭蛇殺手
 advancement.twilight_kill_hydra.desc=獵殺強大的九頭蛇﹔你在經過它的試煉后，便能抵抗黑暗森林的失明詛咒。
 
-advancement.twilight_experiment_115=另一個謊言
-advancement.twilight_experiment_115.desc=盡管它看起來像蛋糕…
+advancement.twilight_hill1=靴子是我的！
+advancement.twilight_hill1.desc=在小型礦山裏擊敗一個紅帽哥布林。
+advancement.twilight_hill2=這是什麼噪音？
+advancement.twilight_hill2.desc=在中型礦山裏擊敗一個紅帽地精。
+advancement.twilight_hill3=我看到你了
+advancement.twilight_hill3.desc=在大型礦山裏擊敗一個暮光幽靈。
+
+advancement.twilight_experiment_115=神秘的肉？
+advancement.twilight_experiment_115.desc=盡管它看起來像蛋糕……
 advancement.twilight_experiment_115_2=做個記錄：大勝利！
 advancement.twilight_experiment_115_2.desc=鬆軟，美味！
-advancement.twilight_experiment_115_3=每天都吃 115，堅持 115 年，一刻不要停
-advancement.twilight_experiment_115_3.desc=每天都吃實驗物品 1-1-5，不要停，115 次實驗物品 1-1-5，experiment115 點 com，三 w 點 experiment115 點 com，115 年，每時每刻都來 experiment115 點 com，三 w 點 115xexperiment115 點 com
+advancement.twilight_experiment_115_3=每天都吃115，堅持115年，一刻不要停
+advancement.twilight_experiment_115_3.desc=每天都吃實驗物品1-1-5，不要停，115次實驗物品1-1-5，experiment1-1-5.com，www.experiment1-1-5.com，115年，每時每刻都來experiment1-1-5.com，www.1-1-5experiment1-1-5.com
 
-advancement.twilight_glass_sword=望善加利用
-advancement.twilight_glass_sword.desc=打出會心一擊的機會就在你手裡！
+advancement.twilight_glass_sword=一命中奇蹟
+advancement.twilight_glass_sword.desc=希望你好好利用。
 
-advancement.twilight_hydra_chop=超大號肉排
-advancement.twilight_hydra_chop.desc=在你的胃空空如也的時候從暴走的九頭蛇上砍下來幾塊肉。
+advancement.twilight_hydra_chop=九頭蛇肉排，寶貝！
+advancement.twilight_hydra_chop.desc=當你的飽食度是空的時候，吃一些會吃得過飽的九頭蛇肉。
 
-advancement.twilight_hill1=靴子都是我的！
-advancement.twilight_hill1.desc=在小礦山裡擊敗紅帽哥布林。
-advancement.twilight_hill2=什麼動靜？
-advancement.twilight_hill2.desc=在中礦山裡擊敗紅帽地精。
-advancement.twilight_hill3=我看到你了
-advancement.twilight_hill3.desc=在大礦山裡殺死一隻暮色幽魂。
+advancement.twilight_dining=我們在永恆的日落用餐
+advancement.twilight_dining.desc=吃掉所有專屬暮光森林的食物。
+
+advancement.twilight_ghast_trap=高塔裏奇怪的東西
+advancement.twilight_ghast_trap.desc=在一個幽靈陷阱周圍殺死幽靈，激活以從天空拉下暮光幽靈！
+
+advancement.twilight_arctic_dyed=進入時尚
+advancement.twilight_arctic_dyed.desc=把四件北極盔甲染色。
 
 advancement.twilight_naga_armors=娜迦裝備鍛造師
 advancement.twilight_naga_armors.desc=合成娜迦鱗胸甲和護腿。
