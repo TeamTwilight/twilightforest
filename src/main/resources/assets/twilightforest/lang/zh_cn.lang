@@ -36,10 +36,10 @@ advancement.twilight_glass_sword.desc=望善加利用
 advancement.twilight_hydra_chop=快看！九头蛇的肉！
 advancement.twilight_hydra_chop.desc=在你的胃空空如也的时候从暴走的九头蛇上砍下来几块肉。
 
-advancement.twilight_dining=永恒黄昏之宴
+advancement.twilight_dining=永暮之宴
 advancement.twilight_dining.desc=品尝所有只能在暮色森林找到的食物。
 
-advancement.twilight_ghast_trap=高塔里的奇怪装置
+advancement.twilight_ghast_trap=高塔千机
 advancement.twilight_ghast_trap.desc=以高塔幽灵为祭品，激活恶魂陷阱，把暮色恶魂拉下来！
 
 advancement.twilight_arctic_dyed=追赶潮流
@@ -169,15 +169,15 @@ tile.TFTowerStone.1.name=塔树板箱
 tile.TFTowerStone.2.name=破裂塔木
 tile.TFTowerStone.3.name=青苔塔木
 tile.TFTowerStone.4.name=虫蛀塔木
-tile.TFTowerDevice.0.name=可重现方块
-tile.TFTowerDevice.1.name=激活可重现方块
-tile.TFTowerDevice.2.name=可消失方块
-tile.TFTowerDevice.3.name=激活可消失方块
-tile.TFTowerDevice.4.name=带锁可消失方块
-tile.TFTowerDevice.5.name=解锁可消失方块
+tile.TFTowerDevice.0.name=重现方块
+tile.TFTowerDevice.1.name=激活重现方块
+tile.TFTowerDevice.2.name=消失方块
+tile.TFTowerDevice.3.name=激活消失方块
+tile.TFTowerDevice.4.name=带锁消失方块
+tile.TFTowerDevice.5.name=解锁消失方块
 tile.TFTowerDevice.6.name=建塔器
 tile.TFTowerDevice.7.name=激活建塔器
-tile.TFTowerDevice.8.name=关闭建塔器
+tile.TFTowerDevice.8.name=抑制建塔器
 tile.TFTowerDevice.9.name=反建器
 tile.TFTowerDevice.10.name=恶魂陷阱
 tile.TFTowerDevice.11.name=激活恶魂陷阱
