@@ -24,6 +24,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
@@ -72,7 +73,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 			if (recursivelyValidatePortal(world, pos, blocksChecked, number) && number.getNumber() > 3) {
 				activationItem.getItem().shrink(1);
-				world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), TFConfig.portalLightning));
+				causeLightning(world, pos, TFConfig.portalLightning);
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet())
 					if (checkedPos.getValue()) world.setBlockState(checkedPos.getKey(), TFBlocks.portal.getDefaultState(), 2);
@@ -82,6 +83,22 @@ public class BlockTFPortal extends BlockBreakable {
 		}
 
 		return false;
+	}
+
+	private static void causeLightning(World world, BlockPos pos, boolean fake) {
+		EntityLightningBolt bolt = new EntityLightningBolt(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, fake);
+		world.addWeatherEffect(bolt);
+
+		if (fake) {
+			double range = 3.0D;
+			List<Entity> list = world.getEntitiesWithinAABB(Entity::class.java, new AxisAlignedBB(pos).grow(range));
+
+			for (Entity victim : list) {
+				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
+					victim.onStruckByLightning(bolt);
+				}
+			}
+		}
 	}
 
 	private static boolean recursivelyValidatePortal(World world, BlockPos pos, HashMap<BlockPos, Boolean> blocksChecked, PassableNumber waterLimit) {
