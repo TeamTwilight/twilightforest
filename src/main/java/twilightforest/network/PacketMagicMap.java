@@ -2,8 +2,10 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketMaps;
+import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -64,7 +66,29 @@ public class PacketMagicMap implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
+
+					MapItemRenderer mapItemRenderer = Minecraft.getMinecraft().entityRenderer.getMapItemRenderer();
 					TFMagicMapData mapData = ItemTFMagicMap.loadMapData(message.mapID, Minecraft.getMinecraft().world);
+
+					// Adapted from NetHandlerPlayClient#handleMaps
+					if (mapData == null)
+					{
+						String s = ItemTFMagicMap.STR_ID + "_" + message.mapID;
+						mapData = new TFMagicMapData(s);
+
+						if (mapItemRenderer.getMapInstanceIfExists(s) != null)
+						{
+							MapData mapdata1 = mapItemRenderer.getData(mapItemRenderer.getMapInstanceIfExists(s));
+
+							if (mapdata1 instanceof TFMagicMapData)
+							{
+								mapData = (TFMagicMapData) mapdata1;
+							}
+						}
+
+						Minecraft.getMinecraft().world.setData(s, mapData);
+					}
+
 					message.inner.setMapdataTo(mapData);
 
 					// Deserialize to tfDecorations
@@ -81,7 +105,7 @@ public class PacketMagicMap implements IMessage {
 
 					mapData.mapDecorations.putAll(saveVanilla);
 
-					Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().updateMapTexture(mapData);
+					mapItemRenderer.updateMapTexture(mapData);
 				}
 			});
 

@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
-	private static final String STR_ID = "magicmap";
+	public static final String STR_ID = "magicmap";
 	private static final HashMap<Biome, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	private static class MapColorBrightness {
@@ -63,17 +63,11 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	// [VanillaCopy] super, with own string ID and class, narrowed types
+	@Nullable
 	@SideOnly(Side.CLIENT)
 	public static TFMagicMapData loadMapData(int mapId, World worldIn) {
 		String s = STR_ID + "_" + mapId;
-		TFMagicMapData mapdata = (TFMagicMapData) worldIn.loadData(TFMagicMapData.class, s);
-
-		if (mapdata == null) {
-			mapdata = new TFMagicMapData(s);
-			worldIn.setData(s, mapdata);
-		}
-
-		return mapdata;
+		return (TFMagicMapData) worldIn.loadData(TFMagicMapData.class, s);
 	}
 
 	// [VanillaCopy] super, with own string ID and class
