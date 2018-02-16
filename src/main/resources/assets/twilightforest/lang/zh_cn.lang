@@ -47,7 +47,7 @@ advancement.twilight_arctic_dyed.desc=给全套极地套装染色。
 
 advancement.twilight_naga_armors=蛇皮鳞甲
 advancement.twilight_naga_armors.desc=合成娜迦鳞胸甲和护腿。
-advancement.twilight_lich_scepters=三位一体！
+advancement.twilight_lich_scepters=三位一体
 advancement.twilight_lich_scepters.desc=学会使用三种权杖。
 advancement.twilight_hedge=碾碎爬虫
 advancement.twilight_hedge.desc=在树篱迷宫杀死一只蜘蛛。
@@ -66,7 +66,7 @@ advancement.twilight_quest_ram.desc=将缺失的东西转交给谜题羊。
 
 advancement.twilight_progress_labyrinth=强心酱肉
 advancement.twilight_progress_labyrinth.desc=在吃下温暖人心的蘑菇炖肉后，你认为你已经做好了前往火焰沼泽的准备。
-advancement.twilight_progress_trophy_pedestal=冠军奖杯
+advancement.twilight_progress_trophy_pedestal=大奖冠军
 advancement.twilight_progress_trophy_pedestal.desc=将奖杯放置于黑暗森林遗迹中的奖杯基座上，并获得你的头衔。
 advancement.twilight_progress_knights=机关控制
 advancement.twilight_progress_knights.desc=令骑士之墓的幻影安息，之后你将能控制高塔中的砷铅铁机关。
@@ -188,7 +188,7 @@ tile.TFTowerTranslucent.1.name=激活再现方块
 tile.TFTowerTranslucent.2.name=建造砷铅铁方块
 tile.TFTowerTranslucent.3.name=激活建造砷铅铁方块
 tile.TFTowerTranslucent.4.name=反建方块
-tile.TFTowerTranslucent.5.name=砷铅铁反应堆碎片
+tile.TFTowerTranslucent.5.name=砷铅铁反应器碎片
 tile.TFTowerTranslucent.6.name=伪金块
 tile.TFTowerTranslucent.7.name=伪钻石块
 tile.TFTrophy.name=暮色森林战利品
