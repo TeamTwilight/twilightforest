@@ -613,16 +613,3 @@ material.steeleaf.name=葉鋼
 material.fierymetal.name=焦熱
 material.knightmetal.name=ナイトメタル
 material.raven_feather.name=カラスの羽根
-
-modifier.twilit.name=黄昏の光
-modifier.twilit.desc=§o黄昏の森の照明の祝福。§r黄昏の森の中でよりスピーディに作業できるようにします。また、黄昏の森の外でより多くのダメージを受けるようにします。
-modifier.twilit.extra.speed=黄昏の森の中での採掘速度: +%s
-modifier.twilit.extra.damage=黄昏の森の外でのダメージ: +%s
-modifier.precipitate.name=加速
-modifier.precipitate.desc=§o最後に残った脱出策。§r体力が少なくなるほど採掘速度が早くなります。
-modifier.synergy.name=シナジー
-modifier.synergy.desc=§o見て、苔がない！§rホットバーに葉鋼を持っていると、それ自身を修復します。
-modifier.stalwart.name=猛者
-modifier.stalwart.desc=§o勇気と大胆さ§rエンティティを攻撃すると、より大胆になります。
-modifier.veiled.name=ヴェール
-modifier.veiled.desc=§o幽霊のように！§r発射物は目に見えません。
