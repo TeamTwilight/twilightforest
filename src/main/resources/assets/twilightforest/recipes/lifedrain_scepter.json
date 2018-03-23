@@ -4,9 +4,6 @@
   },
   "ingredients": [
     {
-      "__comment": "use item_nbt to force usage of forge nonsimple matching algorithm as vanilla's does not properly distinguish meta variants/tool damage",
-      "__comment2": "TODO 1.13 remove this",
-      "type": "minecraft:item_nbt",
       "item": "twilightforest:lifedrain_scepter",
       "data": 99
     },

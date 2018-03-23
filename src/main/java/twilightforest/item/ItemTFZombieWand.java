@@ -31,6 +31,13 @@ public class ItemTFZombieWand extends ItemTF {
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (stack.getItemDamage() == stack.getMaxDamage()) {
+			return ActionResult.newResult(EnumActionResult.FAIL, stack);
+		}
+
 		if (!world.isRemote) {
 			// what block is the player pointing at?
 			RayTraceResult mop = getPlayerPointVec(world, player, 20.0F);
@@ -43,11 +50,11 @@ public class ItemTFZombieWand extends ItemTF {
 				zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
 				world.spawnEntity(zombie);
 
-				player.getHeldItem(hand).damageItem(1, player);
+				stack.damageItem(1, player);
 			}
 		}
 
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	/**

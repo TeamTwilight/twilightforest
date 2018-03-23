@@ -222,6 +222,11 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		return EnumAction.BOW;
 	}
 
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged || newStack.getItem() != oldStack.getItem();
+	}
+
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
