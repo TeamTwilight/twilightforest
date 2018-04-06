@@ -160,4 +160,19 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return new ItemStack(state.getBlock(), 1, state.getValue(BlockTFMagicLog.VARIANT).ordinal());
 	}
+
+	@Override
+	protected boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return false;
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return state.getValue(BlockTFMagicLog.VARIANT).ordinal();
+	}
 }

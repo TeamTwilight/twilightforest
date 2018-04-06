@@ -3,6 +3,7 @@ package twilightforest.compat.tcon.texture;
 import com.google.gson.annotations.SerializedName;
 import slimeknights.tconstruct.library.client.MaterialRenderInfo;
 import slimeknights.tconstruct.library.client.material.deserializers.AbstractRenderInfoDeserializer;
+import twilightforest.client.texture.GradientNode;
 
 @SuppressWarnings("WeakerAccess")
 public class GradientMapInfoDeserializer extends AbstractRenderInfoDeserializer {
@@ -35,18 +36,6 @@ public class GradientMapInfoDeserializer extends AbstractRenderInfoDeserializer 
         }
 
         return new GradientMapInfo(shouldStretchMinimumMaximum, gradientMap);
-    }
-
-    @SuppressWarnings({"unused", "WeakerAccess"})
-    static class GradientNode {
-        public GradientNode() {}
-        public GradientNode(float node, int color) {
-            this.node = node;
-            this.color = color;
-        }
-
-        float node;
-        int color;
     }
 
     @SuppressWarnings("unused")

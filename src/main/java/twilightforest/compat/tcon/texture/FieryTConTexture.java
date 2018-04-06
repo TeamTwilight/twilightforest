@@ -7,6 +7,8 @@ import net.minecraft.client.resources.data.AnimationFrame;
 import net.minecraft.client.resources.data.AnimationMetadataSection;
 import net.minecraft.util.ResourceLocation;
 import slimeknights.tconstruct.library.TinkerAPIException;
+import twilightforest.client.texture.GradientMappedTexture;
+import twilightforest.client.texture.GradientNode;
 
 import java.awt.image.DirectColorModel;
 import java.util.ArrayList;
@@ -16,35 +18,35 @@ import java.util.function.Function;
 
 // This code contains some copied stuff from AbstractColoredTexture and ExtraUtilityTexture from TCon. Thanks, boni and RWTema! ~ Drullkus
 
-public class FieryTexture extends GradientMappedTexture {
+public class FieryTConTexture extends GradientMappedTConTexture {
     private final ResourceLocation textureIn;
 
     private boolean[] translucent;
     private boolean[] edge;
 
-    private static final GradientMapInfoDeserializer.GradientNode[] outlineColors = {
-            new GradientMapInfoDeserializer.GradientNode(0f,    0xFF_FF_FF_FF),
-            new GradientMapInfoDeserializer.GradientNode(1f/8f, 0xFF_FF_FA_96),
-            new GradientMapInfoDeserializer.GradientNode(3f/8f, 0xFF_FB_AD_24),
-            new GradientMapInfoDeserializer.GradientNode(0.5f,  0xFF_FB_96_24),
-            new GradientMapInfoDeserializer.GradientNode(5f/8f, 0xFF_FB_AD_24),
-            new GradientMapInfoDeserializer.GradientNode(7f/8f, 0xFF_FF_FA_96),
-            new GradientMapInfoDeserializer.GradientNode(1f,    0xFF_FF_FF_FF)
+    private static final GradientNode[] outlineColors = {
+            new GradientNode(0f,    0xFF_FF_FF_FF),
+            new GradientNode(1f/8f, 0xFF_FF_FA_96),
+            new GradientNode(3f/8f, 0xFF_FB_AD_24),
+            new GradientNode(0.5f,  0xFF_FB_96_24),
+            new GradientNode(5f/8f, 0xFF_FB_AD_24),
+            new GradientNode(7f/8f, 0xFF_FF_FA_96),
+            new GradientNode(1f,    0xFF_FF_FF_FF)
     };
 
-    private static final GradientMapInfoDeserializer.GradientNode[] innerColors = {
-            new GradientMapInfoDeserializer.GradientNode(0.1f, 0xFF_3C_23_23),
-            new GradientMapInfoDeserializer.GradientNode(0.7f, 0xFF_19_13_13),
-            new GradientMapInfoDeserializer.GradientNode(0.9f, 0xFF_08_06_06)
+    public static final GradientNode[] innerColors = {
+            new GradientNode(0.1f, 0xFF_3C_23_23),
+            new GradientNode(0.7f, 0xFF_19_13_13),
+            new GradientNode(0.9f, 0xFF_08_06_06)
     };
 
-    private static final GradientMapInfoDeserializer.GradientNode[] innerColorsGlow = {
-            new GradientMapInfoDeserializer.GradientNode(0.1f, 0xFF_77_35_11),
-            new GradientMapInfoDeserializer.GradientNode(0.7f, 0xFF_66_2D_09),
-            new GradientMapInfoDeserializer.GradientNode(0.9f, 0xFF_5d_26_03)
+    private static final GradientNode[] innerColorsGlow = {
+            new GradientNode(0.1f, 0xFF_77_35_11),
+            new GradientNode(0.7f, 0xFF_66_2D_09),
+            new GradientNode(0.9f, 0xFF_5d_26_03)
     };
 
-    FieryTexture(ResourceLocation textureIn, String spriteName) {
+    FieryTConTexture(ResourceLocation textureIn, String spriteName) {
         super(textureIn, spriteName, true, innerColors);
 
         this.textureIn = textureIn;
@@ -169,7 +171,7 @@ public class FieryTexture extends GradientMappedTexture {
                 int gray = (this.hashCode() + x - y) & ff;
 
                 //noinspection NumericOverflow
-                return getGradient((ff << 24) | (gray << 16) | (gray << 8) | gray, outlineColors);
+                return GradientMappedTexture.getGradient((ff << 24) | (gray << 16) | (gray << 8) | gray, outlineColors, 0f, 1f);
             }
         }//*/
 

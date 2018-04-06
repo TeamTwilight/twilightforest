@@ -11,7 +11,7 @@ public class FieryInfoDeserializer extends AbstractRenderInfoDeserializer {
         return new MaterialRenderInfo.AbstractMaterialRenderInfo() {
             @Override
             public TextureAtlasSprite getTexture(ResourceLocation baseTexture, String location) {
-                return new FieryTexture(baseTexture, location);
+                return new FieryTConTexture(baseTexture, location);
             }
         };
     }

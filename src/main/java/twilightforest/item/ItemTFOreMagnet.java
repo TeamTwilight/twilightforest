@@ -288,7 +288,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		if (state == TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT)) {
 			return true;
 		}
-		if (state.getBlock().getUnlocalizedName().toLowerCase().contains("ore")) // todo 1.9 oh god
+		if (state.getBlock().getRegistryName().getResourcePath().contains("ore")) // todo 1.9 oh god
 		{
 			return true;
 		}

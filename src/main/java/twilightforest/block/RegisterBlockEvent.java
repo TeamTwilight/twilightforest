@@ -1,11 +1,18 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.TFClientEvents;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class RegisterBlockEvent {
@@ -95,6 +102,10 @@ public final class RegisterBlockEvent {
 		blocks.register("etched_nagastone_weathered", etchedNagastoneWeathered);
 		blocks.register("nagastone_stairs_weathered", new BlockTFNagastoneStairs(etchedNagastoneWeathered.getDefaultState()).setUnlocalizedName("NagastoneStairsWeathered").setHardness(1.5F).setResistance(10.0F));
 		blocks.register("nagastone_pillar_weathered", new BlockTFNagastonePillar().setUnlocalizedName("NagastonePillarWeathered").setHardness(1.5F).setResistance(10.0F));
+
+		registerFluidBlock(blocks, moltenFiery);
+		registerFluidBlock(blocks, moltenKnightmetal);
+		registerFluidBlock("fiery_essence", blocks, essenceFiery);
 	}
 
 	private static class BlockRegistryHelper {
@@ -108,5 +119,38 @@ public final class RegisterBlockEvent {
 			block.setRegistryName(TwilightForestMod.ID, registryName);
 			registry.register(block);
 		}
+	}
+
+	public static final Fluid moltenFiery;
+	public static final Fluid moltenKnightmetal;
+	public static final Fluid essenceFiery;
+
+	static {
+		moltenFiery       = registerFluid(new Fluid("fierymetal" , TFClientEvents.moltenFieryStill, TFClientEvents.moltenFieryFlow).setTemperature(9001).setLuminosity(15));
+		moltenKnightmetal = registerFluid(new Fluid("knightmetal", TFClientEvents.moltenKnightmetalStill, TFClientEvents.moltenKnightmetalFlow).setTemperature(700));
+		essenceFiery      = registerFluid(new Fluid("fiery_essence", TFClientEvents.essenceFieryStill, TFClientEvents.essenceFieryFlow).setTemperature(9001));
+	}
+
+	private static Fluid registerFluid(Fluid fluidIn) {
+		fluidIn.setUnlocalizedName(fluidIn.getName());
+
+		if (!FluidRegistry.isFluidRegistered(fluidIn.getName())) {
+			FluidRegistry.registerFluid(fluidIn);
+
+			FluidRegistry.addBucketForFluid(fluidIn);
+		} else {
+			fluidIn = FluidRegistry.getFluid(fluidIn.getName());
+		}
+
+		return fluidIn;
+	}
+
+	private static void registerFluidBlock(BlockRegistryHelper blocks, Fluid fluidIn) {
+		registerFluidBlock("molten_" + fluidIn.getName(), blocks, fluidIn);
+	}
+
+	private static void registerFluidBlock(String registryName, BlockRegistryHelper blocks, Fluid fluidIn) {
+		Block block = new BlockTFFluid(fluidIn, Material.LAVA).setUnlocalizedName(TwilightForestMod.ID + "." + fluidIn.getName()).setLightLevel(1.0F);
+		blocks.register(registryName, block);
 	}
 }

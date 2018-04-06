@@ -8,6 +8,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
@@ -146,5 +147,15 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withProperty(VARIANT, NagastoneVariant.mirror(state.getValue(VARIANT), mirror));
+	}
+
+	@Override
+	protected boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		return false;
 	}
 }

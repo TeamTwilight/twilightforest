@@ -2,6 +2,7 @@ package twilightforest.compat;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
@@ -16,6 +17,7 @@ import slimeknights.tconstruct.tools.TinkerTraits;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
 import twilightforest.compat.tcon.texture.FieryInfoDeserializer;
 import twilightforest.compat.tcon.texture.GradientMapInfoDeserializer;
@@ -108,13 +110,13 @@ public enum TFCompat {
                     new ExtraMaterialStats(200),
                     new BowMaterialStats(1f, 0.9f, 2),
                     new ArrowShaftMaterialStats(0.8f, 0));
-            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.fierymetal, null, "Fiery")).toolforge().preInit();
+            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.fierymetal, RegisterBlockEvent.moltenFiery, "Fiery")).toolforge().preInit();
 
             TinkerRegistry.addMaterialStats(TConObjects.knightmetal,
                     new HeadMaterialStats(1200, 8f, 7f, HarvestLevels.COBALT),
                     new HandleMaterialStats(1.5f, 100),
                     new ExtraMaterialStats(550));
-            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.knightmetal, null, "Knightmetal")).preInit();
+            TinkerRegistry.integrate(new MaterialIntegration(TConObjects.knightmetal, RegisterBlockEvent.moltenKnightmetal, "Knightmetal")).preInit();
 
             TinkerRegistry.addMaterialStats(TConObjects.ravenFeather,
                     new FletchingMaterialStats(0.95f, 1.15f));

@@ -140,4 +140,9 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
 		return 30;
 	}
+
+	@Override
+	public ItemStack getSilkTouchDrop(IBlockState state) {
+		return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());
+	}
 }

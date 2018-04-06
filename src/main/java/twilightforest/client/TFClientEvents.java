@@ -22,6 +22,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.texture.GradientMappedTexture;
+import twilightforest.client.texture.GradientNode;
+import twilightforest.client.texture.MoltenFieryTexture;
 import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
@@ -36,11 +39,6 @@ public class TFClientEvents {
 
 	private static final Random random = new Random();
 
-	// Slowness potion uses an attribute modifier with specific UUID
-	// We can detect whether an entity has slowness from the client by looking for this UUID
-	private static final AttributeModifier SLOWNESS_POTION_MODIFIER =
-			new AttributeModifier(UUID.fromString("7107DE5E-7CE8-4030-940E-514C1F160890"), "doesntmatter", 0, 0);
-
 	@SubscribeEvent
 	public static void texStitch(TextureStitchEvent.Pre evt) {
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_0"));
@@ -49,10 +47,46 @@ public class TFClientEvents {
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_3"));
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
 		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/firefly"));
+
+		evt.getMap().setTextureEntry(new MoltenFieryTexture(new ResourceLocation("minecraft","blocks/lava_still"), moltenFieryStill));
+		evt.getMap().setTextureEntry(new MoltenFieryTexture(new ResourceLocation("minecraft","blocks/lava_flow"), moltenFieryFlow));
+		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/lava_still"), moltenKnightmetalStill, true, KNIGHTMETAL_GRADIENT_MAP));
+		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/lava_flow"), moltenKnightmetalFlow, true, KNIGHTMETAL_GRADIENT_MAP));
+		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/water_still"), essenceFieryStill, true, FIERY_ESSENCE_GRADIENT_MAP));
+		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/water_flow"), essenceFieryFlow, true, FIERY_ESSENCE_GRADIENT_MAP));
 	}
+
+	public static final ResourceLocation moltenFieryStill = new ResourceLocation(TwilightForestMod.ID, "blocks/molten_fiery_still");
+	public static final ResourceLocation moltenFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/molten_fiery_flow");
+
+	public static final ResourceLocation moltenKnightmetalStill = new ResourceLocation(TwilightForestMod.ID, "blocks/molten_knightmetal_still");
+	public static final ResourceLocation moltenKnightmetalFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/molten_knightmetal_flow");
+
+	public static final GradientNode[] KNIGHTMETAL_GRADIENT_MAP = {
+			new GradientNode(0.0f , 0xFF_33_32_32),
+			new GradientNode(0.1f , 0xFF_6A_73_5E),
+			new GradientNode(0.15f, 0xFF_80_8C_72),
+			new GradientNode(0.3f , 0xFF_A3_B3_91),
+			new GradientNode(0.6f , 0xFF_C4_D6_AE),
+			new GradientNode(1.0f , 0xFF_E7_FC_CD)
+	};
+
+	public static final ResourceLocation essenceFieryStill = new ResourceLocation(TwilightForestMod.ID, "blocks/fluid_fiery_still");
+	public static final ResourceLocation essenceFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/fluid_fiery_flow");
+
+	public static final GradientNode[] FIERY_ESSENCE_GRADIENT_MAP = {
+			new GradientNode(0.2f, 0xFF_3D_17_17),
+			new GradientNode(0.8f, 0xFF_5C_0B_0B)
+	};
+
+	// Slowness potion uses an attribute modifier with specific UUID
+	// We can detect whether an entity has slowness from the client by looking for this UUID
+	private static final AttributeModifier SLOWNESS_POTION_MODIFIER =
+			new AttributeModifier(UUID.fromString("7107DE5E-7CE8-4030-940E-514C1F160890"), "doesntmatter", 0, 0);
 
 	/**
 	 * Do ice effect on slowed monsters
+	 * TODO make this more sane, maybe add new potion effect "Frosted" or something like that
 	 */
 	@SubscribeEvent
 	public static void renderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {

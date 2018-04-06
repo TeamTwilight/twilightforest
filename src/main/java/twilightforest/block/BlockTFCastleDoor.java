@@ -185,6 +185,11 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 		}
 	}
 
+	@Override
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
+
 	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
 		IMessage message = new PacketAnnihilateBlock(pos);
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);

@@ -78,9 +78,9 @@ advancement.twilight_progress_glacier=Clear Skies
 advancement.twilight_progress_glacier.desc=Defeat the Snow Queen atop the Aurora Palace, clearing away the acid rain from the highlands.
 advancement.twilight_progress_troll=I Wish For More Burning
 advancement.twilight_progress_troll.desc=Find the Lamp of Cinders in the troll caves, and you can burn away the thorn barriers.
-advancement.twilight_progress_thorns=Past the Thorns
+advancement.twilight_progress_thorns=Past the Thorns [NYI]
 advancement.twilight_progress_thorns.desc=Make it past the thornlands, and unlock the door of the castle.
-advancement.twilight_progress_castle=So Castle Very Wow
+advancement.twilight_progress_castle=So Castle Very Wow [NYI]
 advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 
 twilightforest.trophyPedestal.ineligible=You are unworthy.
@@ -607,6 +607,10 @@ twilightforest.book.trollcave.2=others I have witnessed. The spell must be conne
 twilightforest.book.trollcave.3=magician. Such a person would likely hide themselves in an extreme environment, far away.\n\nBased on my logic, I would expect to find such a person somewhere on the glacier, perhaps in some sort of fortress there...
 twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
+
+fluid.fierymetal=Molten Fiery
+fluid.knightmetal=Molten Knightmetal
+fluid.fiery_essence=Fiery Essence
 
 material.nagascale.name=Naga Scale
 material.steeleaf.name=Steeleaf

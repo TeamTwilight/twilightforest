@@ -1,0 +1,63 @@
+{
+  "result": {
+	"item": "twilightforest:zombie_scepter"
+  },
+  "group": "twilightforest:zombie_scepter",
+  "ingredients": [
+	{
+	  "item": "twilightforest:zombie_scepter",
+	  "data": 32767
+	},
+	{
+	  "item": "minecraft:rotten_flesh"
+	},
+	[
+	  {
+		"nbt": "{Potion:\"minecraft:long_strength\"}",
+		"item": "minecraft:potion",
+		"type": "minecraft:item_nbt"
+	  },
+	  {
+		"nbt": "{Potion:\"minecraft:long_strength\"}",
+		"item": "minecraft:lingering_potion",
+		"type": "minecraft:item_nbt"
+	  },
+	  {
+		"nbt": "{Potion:\"minecraft:long_strength\"}",
+		"item": "minecraft:splash_potion",
+		"type": "minecraft:item_nbt"
+	  },
+	  {
+		"nbt": "{Potion:\"minecraft:strength\"}",
+		"item": "minecraft:potion",
+		"type": "minecraft:item_nbt"
+	  },
+	  {
+		"nbt": "{Potion:\"minecraft:strength\"}",
+		"item": "minecraft:lingering_potion",
+		"type": "minecraft:item_nbt"
+	  },
+	  {
+		"nbt": "{Potion:\"minecraft:strength\"}",
+		"item": "minecraft:splash_potion",
+		"type": "minecraft:item_nbt"
+	  },
+	  {
+		"nbt": "{Potion:\"minecraft:strong_strength\"}",
+		"item": "minecraft:potion",
+		"type": "minecraft:item_nbt"
+	  },
+	  {
+		"nbt": "{Potion:\"minecraft:strong_strength\"}",
+		"item": "minecraft:lingering_potion",
+		"type": "minecraft:item_nbt"
+	  },
+	  {
+		"nbt": "{Potion:\"minecraft:strong_strength\"}",
+		"item": "minecraft:splash_potion",
+		"type": "minecraft:item_nbt"
+	  }
+	]
+  ],
+  "type": "minecraft:crafting_shapeless"
+}
