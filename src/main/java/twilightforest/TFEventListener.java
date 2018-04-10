@@ -266,6 +266,7 @@ public class TFEventListener {
 
 			if (tier1) {
 				keepAllArmor(player, keepInventory);
+				keepOffHand(player, keepInventory);
 				if (!tier2 && !player.inventory.getCurrentItem().isEmpty()) {
 					keepInventory.mainInventory.set(player.inventory.currentItem, player.inventory.mainInventory.get(player.inventory.currentItem).copy());
 					player.inventory.mainInventory.set(player.inventory.currentItem, ItemStack.EMPTY);
@@ -307,6 +308,13 @@ public class TFEventListener {
 		}
 	}
 
+	private static void keepOffHand(EntityPlayer player, InventoryPlayer keepInventory) {
+		for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
+			keepInventory.offHandInventory.set(i, player.inventory.offHandInventory.get(i).copy());
+			player.inventory.offHandInventory.set(i, ItemStack.EMPTY);
+		}
+	}
+
 	/**
 	 * Maybe we kept some stuff for the player!
 	 */
@@ -320,6 +328,11 @@ public class TFEventListener {
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
 				if (!keepInventory.armorInventory.get(i).isEmpty()) {
 					player.inventory.armorInventory.set(i, keepInventory.armorInventory.get(i));
+				}
+			}
+			for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
+				if (!keepInventory.offHandInventory.get(i).isEmpty()) {
+					player.inventory.offHandInventory.set(i, keepInventory.offHandInventory.get(i));
 				}
 			}
 			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
