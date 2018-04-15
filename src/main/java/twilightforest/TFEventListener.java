@@ -326,8 +326,21 @@ public class TFEventListener {
 			TwilightForestMod.LOGGER.debug("Player {} respawned and received items held in storage", player.getName());
 
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
-				if (!keepInventory.armorInventory.get(i).isEmpty()) {
-					player.inventory.armorInventory.set(i, keepInventory.armorInventory.get(i));
+				ItemStack kept = keepInventory.armorInventory.get(i);
+				if (!kept.isEmpty()) {
+					ItemStack existing = player.inventory.armorInventory.set(i, kept);
+					if (!existing.isEmpty()) {
+						player.dropItem(existing, false);
+					}
+				}
+			}
+			for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
+				ItemStack kept = keepInventory.offHandInventory.get(i);
+				if (!kept.isEmpty()) {
+					ItemStack existing = player.inventory.offHandInventory.set(i, kept);
+					if (!existing.isEmpty()) {
+						player.dropItem(existing, false);
+					}
 				}
 			}
 			for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
@@ -336,8 +349,12 @@ public class TFEventListener {
 				}
 			}
 			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-				if (!keepInventory.mainInventory.get(i).isEmpty()) {
-					player.inventory.mainInventory.set(i, keepInventory.mainInventory.get(i));
+				ItemStack kept = keepInventory.mainInventory.get(i);
+				if (!kept.isEmpty()) {
+					ItemStack existing = player.inventory.mainInventory.set(i, kept);
+					if (!existing.isEmpty()) {
+						player.dropItem(existing, false);
+					}
 				}
 			}
 
