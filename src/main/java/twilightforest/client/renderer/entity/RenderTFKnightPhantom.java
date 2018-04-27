@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFKnightPhantom2;
+import twilightforest.client.model.entity.ModelTFKnightPhantom2;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
 public class RenderTFKnightPhantom extends RenderBiped<EntityTFKnightPhantom> {

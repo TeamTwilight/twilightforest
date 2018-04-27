@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.client.model.ModelTFFirefly;
+import twilightforest.client.model.entity.ModelTFFirefly;
 import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
 import javax.annotation.Nullable;

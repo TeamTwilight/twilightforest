@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.client.model.ModelTFSnowGuardian;
+import twilightforest.client.model.entity.ModelTFSnowGuardian;
 import twilightforest.entity.EntityTFSnowGuardian;
 
 public class RenderTFSnowGuardian extends RenderTFBiped<EntityTFSnowGuardian> {

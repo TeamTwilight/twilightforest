@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFTinyFirefly;
+import twilightforest.client.model.entity.ModelTFTinyFirefly;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 
 import java.nio.FloatBuffer;

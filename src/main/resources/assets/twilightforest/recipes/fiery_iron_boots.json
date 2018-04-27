@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "twilightforest:fiery_boots"
+  },
+  "group": "fiery_convert_armor",
+  "ingredients": [
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    {
+      "item": "minecraft:iron_boots"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

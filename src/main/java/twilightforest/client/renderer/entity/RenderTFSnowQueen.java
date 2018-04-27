@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFSnowQueen;
+import twilightforest.client.model.entity.ModelTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 
 public class RenderTFSnowQueen extends RenderBiped<EntityTFSnowQueen> {

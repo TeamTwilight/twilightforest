@@ -77,7 +77,7 @@ public class BlockTFMiniatureStructure extends Block implements ModelRegisterCal
     @Override
     public void registerModel() {
         for (StructureVariant variation : StructureVariant.values()) {
-            ModelLoader.setCustomModelResourceLocation( TFItems.miniture_structure, variation.ordinal(), new ModelResourceLocation(TwilightForestMod.ID + ":miniature_structure", "inventory_"+variation.getName()));
+            ModelLoader.setCustomModelResourceLocation( TFItems.miniature_structure, variation.ordinal(), new ModelResourceLocation(TwilightForestMod.ID + ":miniature_structure", "inventory_"+variation.getName()));
         }
     }
 }

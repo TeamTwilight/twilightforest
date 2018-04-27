@@ -4,6 +4,7 @@
     "item": "twilightforest:steeleaf_shovel",
     "type": "minecraft:item_nbt"
   },
+  "group": "steeleaf_tool",
   "pattern": [
     "#",
     "X",

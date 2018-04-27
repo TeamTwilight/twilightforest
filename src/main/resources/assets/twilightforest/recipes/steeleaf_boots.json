@@ -4,6 +4,7 @@
     "item": "twilightforest:steeleaf_boots",
     "type": "minecraft:item_nbt"
   },
+  "group": "steeleaf_armor",
   "pattern": [
     "# #",
     "# #"

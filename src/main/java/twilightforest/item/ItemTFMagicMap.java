@@ -49,7 +49,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 	// [VanillaCopy] super with own id
 	public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
 		// TF - own item and string id
-		ItemStack itemstack = new ItemStack(TFItems.magicMap, 1, world.getUniqueDataId(ItemTFMagicMap.STR_ID));
+		ItemStack itemstack = new ItemStack(TFItems.magic_map, 1, world.getUniqueDataId(ItemTFMagicMap.STR_ID));
 		String s = ItemTFMagicMap.STR_ID + "_" + itemstack.getMetadata();
 		MapData mapdata = new TFMagicMapData(s);
 		world.setData(s, mapdata);

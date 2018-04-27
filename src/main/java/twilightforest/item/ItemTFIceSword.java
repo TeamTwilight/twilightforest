@@ -11,6 +11,7 @@ import net.minecraft.potion.PotionEffect;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.potions.TFPotions;
 
 public class ItemTFIceSword extends ItemSword implements ModelRegisterCallback {
 
@@ -25,7 +26,7 @@ public class ItemTFIceSword extends ItemSword implements ModelRegisterCallback {
 
 		if (result) {
 			int chillLevel = 2;
-			par2EntityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 10, chillLevel, true, true));
+			par2EntityLiving.addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 10, chillLevel));
 		}
 
 		return result;

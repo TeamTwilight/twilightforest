@@ -12,6 +12,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import twilightforest.potions.TFPotions;
 
 public class EntityIceArrow extends EntityArrow {
 
@@ -38,7 +39,7 @@ public class EntityIceArrow extends EntityArrow {
 		super.onHit(rtr);
 		if (!world.isRemote && rtr.entityHit instanceof EntityLivingBase) {
 			int chillLevel = 2;
-			((EntityLivingBase) rtr.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 10, chillLevel, true, true));
+			((EntityLivingBase) rtr.entityHit).addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 10, chillLevel));
 		}
 	}
 

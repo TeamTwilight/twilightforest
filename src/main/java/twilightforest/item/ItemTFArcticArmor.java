@@ -105,7 +105,7 @@ public class ItemTFArcticArmor extends ItemArmor implements ModelRegisterCallbac
 
 		switch (type) {
 			//case 0:
-				//return stack.getItem() != TFItems.arcticHelm ? 0x793828 : 0xFFFFFF;
+				//return stack.getItem() != TFItems.arctic_helmet ? 0x793828 : 0xFFFFFF;
 			case 0:
 				return 0xFFFFFF;
 			default:

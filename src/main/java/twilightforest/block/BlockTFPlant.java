@@ -314,4 +314,9 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, mrl);
 		}
 	}
+
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return super.getExtendedState(state, world, pos);
+	}
 }

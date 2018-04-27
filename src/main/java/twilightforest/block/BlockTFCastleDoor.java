@@ -307,6 +307,6 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(TFItems.castleDoor, 1, state.getValue(LOCK_INDEX));
+		return new ItemStack(TFItems.castle_door, 1, state.getValue(LOCK_INDEX));
 	}
 }

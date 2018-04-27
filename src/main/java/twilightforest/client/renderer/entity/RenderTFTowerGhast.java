@@ -2,7 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
-import twilightforest.client.model.ModelTFGhast;
+import twilightforest.client.model.entity.ModelTFGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 
 /**

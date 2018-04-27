@@ -4,6 +4,7 @@
     "item": "twilightforest:ironwood_shovel",
     "type": "minecraft:item_nbt"
   },
+  "group": "ironwood_tool",
   "pattern": [
     "#",
     "X",

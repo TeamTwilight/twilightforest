@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFHydraMortar;
+import twilightforest.client.model.entity.ModelTFHydraMortar;
 import twilightforest.entity.boss.EntityTFHydraMortar;
 
 public class RenderTFHydraMortar extends Render<EntityTFHydraMortar> {

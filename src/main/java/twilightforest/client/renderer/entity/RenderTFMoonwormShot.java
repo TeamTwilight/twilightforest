@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFMoonworm;
+import twilightforest.client.model.entity.ModelTFMoonworm;
 import twilightforest.entity.EntityTFMoonwormShot;
 
 public class RenderTFMoonwormShot extends Render<EntityTFMoonwormShot> {

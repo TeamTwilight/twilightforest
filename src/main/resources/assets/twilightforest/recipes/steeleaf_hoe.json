@@ -2,6 +2,7 @@
   "result": {
     "item": "twilightforest:steeleaf_hoe"
   },
+  "group": "steeleaf_tool",
   "pattern": [
     "##",
     " X",

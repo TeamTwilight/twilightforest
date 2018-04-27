@@ -20,14 +20,14 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 
 	public EntityTFRedcapSapper(World world) {
 		super(world);
-		this.heldPick = new ItemStack(TFItems.ironwoodPick);
+		this.heldPick = new ItemStack(TFItems.ironwood_pickaxe);
 		this.heldTNT.setCount(3);
 	}
 
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
-		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(TFItems.ironwoodBoots));
+		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(TFItems.ironwood_boots));
 		return data;
 	}
 

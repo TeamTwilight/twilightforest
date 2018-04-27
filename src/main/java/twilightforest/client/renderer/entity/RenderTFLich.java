@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFLich;
+import twilightforest.client.model.entity.ModelTFLich;
 import twilightforest.entity.boss.EntityTFLich;
 
 public class RenderTFLich extends RenderBiped<EntityTFLich> {

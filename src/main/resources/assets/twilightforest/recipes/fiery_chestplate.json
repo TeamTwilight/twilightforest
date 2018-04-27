@@ -2,6 +2,7 @@
   "result": {
     "item": "twilightforest:fiery_chestplate"
   },
+  "group": "fiery_armor",
   "pattern": [
     "# #",
     "###",

@@ -15,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.entity.EntityTFYeti;
+import twilightforest.potions.TFPotions;
 
 import java.util.List;
 
@@ -138,7 +139,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 					entity.setDead();
 				} else {
 					entity.attackEntityFrom(DamageSource.MAGIC, 1);
-					entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 20 * 5, 2, false, true));
+					entity.addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 5, 2));
 				}
 			}
 		}

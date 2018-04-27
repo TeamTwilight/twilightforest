@@ -203,7 +203,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
                     break;
             }
 
-            TwilightForestMod.LOGGER.info("ConnectableRotatedPillar helper had a problem? Might want to report to Mod authors. " + facing.getName() + " with " + axis.getName());
+            TwilightForestMod.LOGGER.info("ConnectableRotatedPillar helper had a problem? " + facing.getName() + " with " + axis.getName());
             return BlockFence.NORTH;
         }
     }

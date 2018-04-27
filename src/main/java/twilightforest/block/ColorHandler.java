@@ -286,7 +286,7 @@ public final class ColorHandler {
 				stack.getItem() instanceof ItemTFArcticArmor
 						? ((ItemTFArcticArmor) stack.getItem()).getColor(stack, tintIndex)
 						: 0xFFFFFF,
-				TFItems.arcticHelm, TFItems.arcticPlate, TFItems.arcticLegs, TFItems.arcticBoots);
+				TFItems.arctic_helmet, TFItems.arctic_chestplate, TFItems.arctic_leggings, TFItems.arctic_boots);
 	}
 
 	private ColorHandler() {

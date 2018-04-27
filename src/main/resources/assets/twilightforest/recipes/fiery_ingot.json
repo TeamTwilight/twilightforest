@@ -2,7 +2,6 @@
   "result": {
     "item": "twilightforest:fiery_ingot"
   },
-  "group": "twilightforest:fiery_ingot",
   "ingredients": [
     [
       { "item": "twilightforest:fiery_blood" },

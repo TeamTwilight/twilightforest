@@ -4,6 +4,7 @@
     "item": "twilightforest:yeti_boots",
     "type": "minecraft:item_nbt"
   },
+  "group": "yeti_armor",
   "pattern": [
     "# #",
     "# #"

@@ -86,61 +86,61 @@ public class EntityTFSnowGuardian extends EntityMob {
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwoodSword;
+						return TFItems.ironwood_sword;
 					case 1:
-						return TFItems.steeleafSword;
+						return TFItems.steeleaf_sword;
 					case 2:
-						return TFItems.knightlySword;
+						return TFItems.knightmetal_sword;
 					case 3:
-						return TFItems.knightlySword;
+						return TFItems.knightmetal_sword;
 				}
 			case FEET:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwoodBoots;
+						return TFItems.ironwood_boots;
 					case 1:
-						return TFItems.steeleafBoots;
+						return TFItems.steeleaf_boots;
 					case 2:
-						return TFItems.knightlyBoots;
+						return TFItems.knightmetal_boots;
 					case 3:
-						return TFItems.arcticBoots;
+						return TFItems.arctic_boots;
 				}
 			case LEGS:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwoodLegs;
+						return TFItems.ironwood_leggings;
 					case 1:
-						return TFItems.steeleafLegs;
+						return TFItems.steeleaf_leggings;
 					case 2:
-						return TFItems.knightlyLegs;
+						return TFItems.knightmetal_leggings;
 					case 3:
-						return TFItems.arcticLegs;
+						return TFItems.arctic_leggings;
 				}
 			case CHEST:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwoodPlate;
+						return TFItems.ironwood_chestplate;
 					case 1:
-						return TFItems.steeleafPlate;
+						return TFItems.steeleaf_chestplate;
 					case 2:
-						return TFItems.knightlyPlate;
+						return TFItems.knightmetal_chestplate;
 					case 3:
-						return TFItems.arcticPlate;
+						return TFItems.arctic_chestplate;
 				}
 			case HEAD:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwoodHelm;
+						return TFItems.ironwood_helmet;
 					case 1:
-						return TFItems.steeleafHelm;
+						return TFItems.steeleaf_helmet;
 					case 2:
-						return TFItems.knightlyHelm;
+						return TFItems.knightmetal_helmet;
 					case 3:
-						return TFItems.arcticHelm;
+						return TFItems.arctic_helmet;
 				}
 		}
 	}

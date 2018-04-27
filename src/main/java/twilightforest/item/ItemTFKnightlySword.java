@@ -39,7 +39,7 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof EntityLivingBase) {
 			ItemStack weapon = ((EntityLivingBase) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
-			if (!weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightlyPick || weapon.getItem() == TFItems.knightlySword)) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightlyAxe))) {
+			if (!weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe || weapon.getItem() == TFItems.knightmetal_sword)) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe))) {
 				// TODO scale bonus dmg with the amount of armor?
 				target.attackEntityFrom(DamageSource.MAGIC, BONUS_DAMAGE);
 				// don't prevent main damage from applying

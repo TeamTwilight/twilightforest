@@ -2,6 +2,7 @@
   "result": {
     "item": "twilightforest:knightmetal_axe"
   },
+  "group": "knightmetal_tool",
   "pattern": [
     "##",
     "#X",

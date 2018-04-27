@@ -1,0 +1,40 @@
+{
+  "result": {
+    "item": "twilightforest:fiery_leggings"
+  },
+  "group": "fiery_convert_armor",
+  "ingredients": [
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    {
+      "item": "minecraft:iron_leggings"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

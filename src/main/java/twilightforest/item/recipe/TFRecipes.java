@@ -27,36 +27,36 @@ public class TFRecipes {
 		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.darkleaves, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre("plankWood", new ItemStack(TFBlocks.towerWood, 1, OreDictionary.WILDCARD_VALUE));
 
-		OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fieryIngot));
+		OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fiery_ingot));
 		OreDictionary.registerOre("blockFiery", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.FIERY.ordinal()));
 
-		OreDictionary.registerOre("oreIronwood", new ItemStack(TFItems.ironwoodRaw));
-		OreDictionary.registerOre("ingotIronwood", new ItemStack(TFItems.ironwoodIngot));
+		OreDictionary.registerOre("oreIronwood", new ItemStack(TFItems.ironwood_raw));
+		OreDictionary.registerOre("ingotIronwood", new ItemStack(TFItems.ironwood_ingot));
 
-		OreDictionary.registerOre("ingotSteeleaf", new ItemStack(TFItems.steeleafIngot));
+		OreDictionary.registerOre("ingotSteeleaf", new ItemStack(TFItems.steeleaf_ingot));
 		OreDictionary.registerOre("blockSteeleaf", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.STEELLEAF.ordinal()));
 
-		OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.shardCluster));
-		OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightMetal));
+		OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.armor_shard_cluster));
+		OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightmetal_ingot));
 		OreDictionary.registerOre("blockKnightmetal", new ItemStack(TFBlocks.knightmetalStorage));
 
 		OreDictionary.registerOre("carminite", new ItemStack(TFItems.carminite));
-		OreDictionary.registerOre("furArctic", new ItemStack(TFItems.arcticFur));
+		OreDictionary.registerOre("furArctic", new ItemStack(TFItems.arctic_fur));
 
 		// recipe sorter
 		// RecipeSorter.register(TwilightForestMod.ID + ":mapcloning", TFMapCloningRecipe.class, SHAPELESS, "after:minecraft:shapeless");
 
 		GameRegistry.addSmelting(TFBlocks.log, new ItemStack(Items.COAL, 1, 1), 0.1F);
 		GameRegistry.addSmelting(TFBlocks.magicLog, new ItemStack(Items.COAL, 1, 1), 0.1F);
-		GameRegistry.addSmelting(TFItems.ironwoodRaw, new ItemStack(TFItems.ironwoodIngot, 2), 1.0F);
-		GameRegistry.addSmelting(TFItems.venisonRaw, new ItemStack(TFItems.venisonCooked), 0.3F);
-		GameRegistry.addSmelting(TFItems.meefRaw, new ItemStack(TFItems.meefSteak), 0.3F);
-		GameRegistry.addSmelting(TFItems.shardCluster, new ItemStack(TFItems.knightMetal), 1.0F);
+		GameRegistry.addSmelting(TFItems.ironwood_raw, new ItemStack(TFItems.ironwood_ingot, 2), 1.0F);
+		GameRegistry.addSmelting(TFItems.raw_venison, new ItemStack(TFItems.cooked_venison), 0.3F);
+		GameRegistry.addSmelting(TFItems.raw_meef, new ItemStack(TFItems.cooked_meef), 0.3F);
+		GameRegistry.addSmelting(TFItems.armor_shard_cluster, new ItemStack(TFItems.knightmetal_ingot), 1.0F);
 
 		event.getRegistry().register(new TFArmorDyeingRecipe().setRegistryName(TwilightForestMod.ID, "arctic_armor_dyeing"));
 
-		event.getRegistry().register(new TFMapCloningRecipe(TFItems.magicMap, TFItems.emptyMagicMap).setRegistryName(TwilightForestMod.ID, "magic_map_cloning"));
-		event.getRegistry().register(new TFMapCloningRecipe(TFItems.mazeMap, TFItems.emptyMazeMap).setRegistryName(TwilightForestMod.ID, "maze_map_cloning"));
-		event.getRegistry().register(new TFMapCloningRecipe(TFItems.oreMap, TFItems.emptyOreMap).setRegistryName(TwilightForestMod.ID, "ore_map_cloning"));
+		event.getRegistry().register(new TFMapCloningRecipe(TFItems.magic_map, TFItems.magic_map_empty).setRegistryName(TwilightForestMod.ID, "magic_map_cloning"));
+		event.getRegistry().register(new TFMapCloningRecipe(TFItems.maze_map, TFItems.maze_map_empty).setRegistryName(TwilightForestMod.ID, "maze_map_cloning"));
+		event.getRegistry().register(new TFMapCloningRecipe(TFItems.ore_map, TFItems.ore_map_empty).setRegistryName(TwilightForestMod.ID, "ore_map_cloning"));
 	}
 }

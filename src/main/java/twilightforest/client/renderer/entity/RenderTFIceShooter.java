@@ -3,7 +3,7 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.client.model.ModelTFIceShooter;
+import twilightforest.client.model.entity.ModelTFIceShooter;
 import twilightforest.entity.EntityTFIceShooter;
 
 public class RenderTFIceShooter extends RenderTFBiped<EntityTFIceShooter> {

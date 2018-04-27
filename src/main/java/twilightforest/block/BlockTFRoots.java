@@ -54,7 +54,7 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 			case ROOT:
 				return Items.STICK;
 			case LIVEROOT:
-				return TFItems.liveRoot;
+				return TFItems.liveroot;
 		}
 	}
 

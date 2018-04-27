@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import slimeknights.tconstruct.library.client.RenderUtil;
 import twilightforest.TwilightForestMod;
 
 import java.util.Collection;
@@ -57,7 +56,7 @@ public class GradientMappedTexture extends TextureAtlasSprite {
 
             if (this.shouldStretchMinimumMaximum) {
                 for (int pixel : textureTo[0]) {
-                    if (RenderUtil.alpha(pixel) == 0) continue;
+                    if ((pixel >> 24 & 0xFF) == 0) continue;
 
                     minimumValue = Math.min(minimumValue, getPerceptualBrightness(pixel));
                     maximumValue = Math.max(maximumValue, getPerceptualBrightness(pixel));
@@ -108,7 +107,7 @@ public class GradientMappedTexture extends TextureAtlasSprite {
     // borrowed from Shadows of Physis
     // Thanks TTFTCUTS! :)
     private static int getPerceptualBrightness(int col) {
-        return getPerceptualBrightness(RenderUtil.red(col) / 255.0, RenderUtil.green(col) / 255.0, RenderUtil.blue(col) / 255.0);
+        return getPerceptualBrightness(red(col) / 255.0, green(col) / 255.0, blue(col) / 255.0);
     }
 
     private static int getPerceptualBrightness(double r, double g, double b) {
@@ -116,7 +115,7 @@ public class GradientMappedTexture extends TextureAtlasSprite {
     }
 
     public static int getGradient(int packedColor, GradientNode[] gradientMap, float minimumValue, float maximumValue) {
-        int a = RenderUtil.alpha(packedColor);
+        int a = packedColor >> 24 & 0xFF;
 
         if(a == 0) {
             return packedColor;
@@ -128,39 +127,39 @@ public class GradientMappedTexture extends TextureAtlasSprite {
         float gray = getBalancedValue(getPerceptualBrightness(packedColor) / 255.0F, minimumValue, maximumValue);
 
         if (gray <= gradientMap[0].node) {
-            rTo = RenderUtil.red  (gradientMap[0].color);
-            gTo = RenderUtil.green(gradientMap[0].color);
-            bTo = RenderUtil.blue (gradientMap[0].color);
+            rTo = red  (gradientMap[0].color);
+            gTo = green(gradientMap[0].color);
+            bTo = blue (gradientMap[0].color);
         } else if (gray >= gradientMap[gradientMap.length-1].node) {
             int i = gradientMap[gradientMap.length-1].color;
 
-            rTo = RenderUtil.red  (i);
-            gTo = RenderUtil.green(i);
-            bTo = RenderUtil.blue (i);
+            rTo = red  (i);
+            gTo = green(i);
+            bTo = blue (i);
         } else {
             for (int i = 0; i < gradientMap.length - 1; i++) {
                 if (gray == gradientMap[i].node) {
-                    rTo = RenderUtil.red  (gradientMap[i].color);
-                    gTo = RenderUtil.green(gradientMap[i].color);
-                    bTo = RenderUtil.blue (gradientMap[i].color);
+                    rTo = red  (gradientMap[i].color);
+                    gTo = green(gradientMap[i].color);
+                    bTo = blue (gradientMap[i].color);
                 } else if (gray >= gradientMap[i].node && gray <= gradientMap[i+1].node) {
                     return getColorFromBetweenNodes(getBalancedValue(gray, gradientMap[i].node, gradientMap[i+1].node), gradientMap[i].color, gradientMap[i+1].color, a);
                 }
             }
         }
 
-        return RenderUtil.compose(rTo, gTo, bTo, a);
+        return getColorFromARGB(rTo, gTo, bTo, a);
     }
 
     public static int getColorFromBetweenNodes(float placement, int color1, int color2, int alpha) {
-        int r1 = RenderUtil.red  (color1);
-        int g1 = RenderUtil.green(color1);
-        int b1 = RenderUtil.blue (color1);
-        int r2 = RenderUtil.red  (color2);
-        int g2 = RenderUtil.green(color2);
-        int b2 = RenderUtil.blue (color2);
+        int r1 = red  (color1);
+        int g1 = green(color1);
+        int b1 = blue (color1);
+        int r2 = red  (color2);
+        int g2 = green(color2);
+        int b2 = blue (color2);
 
-        return RenderUtil.compose(
+        return getColorFromARGB(
                 pickIntInBetween(placement, r1, r2),
                 pickIntInBetween(placement, g1, g2),
                 pickIntInBetween(placement, b1, b2), alpha);
@@ -172,5 +171,21 @@ public class GradientMappedTexture extends TextureAtlasSprite {
 
     public static float getBalancedValue(float valueIn, float minimumValue, float maximumValue) {
         return (valueIn - minimumValue) / (maximumValue - minimumValue);
+    }
+
+    static int red(int pixel) {
+        return pixel >> 16 & 0xFF;
+    }
+
+    static int green(int pixel) {
+        return pixel >> 8 & 0xFF;
+    }
+
+    static int blue(int pixel) {
+        return pixel & 0xFF;
+    }
+
+    static int getColorFromARGB(int r, int g, int b, int a) {
+        return (((a << 8) + r << 8) + g << 8) + b;
     }
 }

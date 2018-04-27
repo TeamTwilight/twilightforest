@@ -27,7 +27,7 @@ public class EntityAITFLichMinions extends EntityAIBase {
 
 	@Override
 	public void startExecuting() {
-		lich.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.scepterZombie));
+		lich.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.zombie_scepter));
 	}
 
 	@Override

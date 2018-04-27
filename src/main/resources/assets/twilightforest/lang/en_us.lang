@@ -65,7 +65,7 @@ advancement.twilight_quest_ram=Consummate Baaahs
 advancement.twilight_quest_ram.desc=Give the Quest Ram what it is missing.
 
 advancement.twilight_progress_labyrinth=Mighty Stroganoff
-advancement.twilight_progress_labyrinth.desc=The meat & musroom stew pleasantly warms you, enough so that that you feel you're acclimatised enough to venture into the Fire Swamp.
+advancement.twilight_progress_labyrinth.desc=The meat & mushroom stew pleasantly warms you, enough so that that you feel you're acclimatised enough to venture into the Fire Swamp.
 advancement.twilight_progress_trophy_pedestal=Trophied Champion
 advancement.twilight_progress_trophy_pedestal.desc=Claim your title by placing a trophy on the pedestal in the dark forest ruins.
 advancement.twilight_progress_knights=Carminite Acclimation
@@ -497,6 +497,8 @@ entity.twilightforest.ice_crystal.name=Ice Crystal
 entity.twilightforest.apocalypse_cube.name=Apocolypse Cube [NYI]
 entity.twilightforest.adherent.name=Adherent [NYI]
 
+twilightforest.effect.frosted=Frosted
+
 twilightforest.misc.wip0=This block is a work in progress and may have bugs or unintended effects that may damage your world.
 twilightforest.misc.wip1=Use with caution.
 twilightforest.misc.nyi=This block has effects that are not yet implemented.
@@ -511,7 +513,7 @@ twilightforest.config.dimension_id=Dimension ID
 twilightforest.config.dimension_id.tooltip=What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.
 twilightforest.config.dimension_seed=Dimension Seed
 twilightforest.config.dimension_seed.tooltip=If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.
-twilightforest.config.spawn_in_tf=Dimension Seed
+twilightforest.config.spawn_in_tf=New Players Spawn in Twilight Forest
 twilightforest.config.spawn_in_tf.tooltip=If true, players spawning for the first time will spawn in the Twilight Forest.
 
 twilightforest.config.compat=Compatibility

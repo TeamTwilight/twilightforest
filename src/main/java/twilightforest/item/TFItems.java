@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -31,363 +30,363 @@ public class TFItems {
 	public static Item.ToolMaterial TOOL_GLASS = EnumHelper.addToolMaterial("TFGLASS", 0, 1, 1.0F, 36.0F, 30);
 
 	@GameRegistry.ObjectHolder("naga_scale")
-	public static final Item nagaScale;
+	public static final Item naga_scale;
 	@GameRegistry.ObjectHolder("naga_chestplate")
-	public static final Item plateNaga;
+	public static final Item naga_chestplate;
 	@GameRegistry.ObjectHolder("naga_leggings")
-	public static final Item legsNaga;
+	public static final Item naga_leggings;
 	@GameRegistry.ObjectHolder("twilight_scepter")
-	public static final Item scepterTwilight;
+	public static final Item twilight_scepter;
 	@GameRegistry.ObjectHolder("lifedrain_scepter")
-	public static final Item scepterLifeDrain;
+	public static final Item lifedrain_scepter;
 	@GameRegistry.ObjectHolder("zombie_scepter")
-	public static final Item scepterZombie;
+	public static final Item zombie_scepter;
 	@GameRegistry.ObjectHolder("ore_meter")
-	public static final Item oreMeter;
+	public static final Item ore_meter;
 	@GameRegistry.ObjectHolder("magic_map")
-	public static final Item magicMap;
+	public static final Item magic_map;
 	@GameRegistry.ObjectHolder("maze_map")
-	public static final Item mazeMap;
+	public static final Item maze_map;
 	@GameRegistry.ObjectHolder("ore_map")
-	public static final Item oreMap;
+	public static final Item ore_map;
 	@GameRegistry.ObjectHolder("raven_feather")
-	public static final Item feather;
+	public static final Item raven_feather;
 	@GameRegistry.ObjectHolder("magic_map_focus")
-	public static final Item magicMapFocus;
+	public static final Item magic_map_focus;
 	@GameRegistry.ObjectHolder("maze_map_focus")
-	public static final Item mazeMapFocus;
+	public static final Item maze_map_focus;
 	@GameRegistry.ObjectHolder("liveroot")
-	public static final Item liveRoot;
+	public static final Item liveroot;
 	@GameRegistry.ObjectHolder("ironwood_raw")
-	public static final Item ironwoodRaw;
+	public static final Item ironwood_raw;
 	@GameRegistry.ObjectHolder("ironwood_ingot")
-	public static final Item ironwoodIngot;
+	public static final Item ironwood_ingot;
 	@GameRegistry.ObjectHolder("ironwood_helmet")
-	public static final Item ironwoodHelm;
+	public static final Item ironwood_helmet;
 	@GameRegistry.ObjectHolder("ironwood_chestplate")
-	public static final Item ironwoodPlate;
+	public static final Item ironwood_chestplate;
 	@GameRegistry.ObjectHolder("ironwood_leggings")
-	public static final Item ironwoodLegs;
+	public static final Item ironwood_leggings;
 	@GameRegistry.ObjectHolder("ironwood_boots")
-	public static final Item ironwoodBoots;
+	public static final Item ironwood_boots;
 	@GameRegistry.ObjectHolder("ironwood_sword")
-	public static final Item ironwoodSword;
+	public static final Item ironwood_sword;
 	@GameRegistry.ObjectHolder("ironwood_shovel")
-	public static final Item ironwoodShovel;
+	public static final Item ironwood_shovel;
 	@GameRegistry.ObjectHolder("ironwood_pickaxe")
-	public static final Item ironwoodPick;
+	public static final Item ironwood_pickaxe;
 	@GameRegistry.ObjectHolder("ironwood_axe")
-	public static final Item ironwoodAxe;
+	public static final Item ironwood_axe;
 	@GameRegistry.ObjectHolder("ironwood_hoe")
-	public static final Item ironwoodHoe;
+	public static final Item ironwood_hoe;
 	@GameRegistry.ObjectHolder("torchberries")
 	public static final Item torchberries;
 	@GameRegistry.ObjectHolder("raw_venison")
-	public static final Item venisonRaw;
+	public static final Item raw_venison;
 	@GameRegistry.ObjectHolder("cooked_venison")
-	public static final Item venisonCooked;
+	public static final Item cooked_venison;
 	@GameRegistry.ObjectHolder("hydra_chop")
-	public static final Item hydraChop;
+	public static final Item hydra_chop;
 	@GameRegistry.ObjectHolder("fiery_blood")
-	public static final Item fieryBlood;
+	public static final Item fiery_blood;
 	@GameRegistry.ObjectHolder("trophy")
 	public static final Item trophy;
 	@GameRegistry.ObjectHolder("fiery_ingot")
-	public static final Item fieryIngot;
+	public static final Item fiery_ingot;
 	@GameRegistry.ObjectHolder("fiery_helmet")
-	public static final Item fieryHelm;
+	public static final Item fiery_helmet;
 	@GameRegistry.ObjectHolder("fiery_chestplate")
-	public static final Item fieryPlate;
+	public static final Item fiery_chestplate;
 	@GameRegistry.ObjectHolder("fiery_leggings")
-	public static final Item fieryLegs;
+	public static final Item fiery_leggings;
 	@GameRegistry.ObjectHolder("fiery_boots")
-	public static final Item fieryBoots;
+	public static final Item fiery_boots;
 	@GameRegistry.ObjectHolder("fiery_sword")
-	public static final Item fierySword;
+	public static final Item fiery_sword;
 	@GameRegistry.ObjectHolder("fiery_pickaxe")
-	public static final Item fieryPick;
+	public static final Item fiery_pickaxe;
 	@GameRegistry.ObjectHolder("steeleaf_ingot")
-	public static final Item steeleafIngot;
+	public static final Item steeleaf_ingot;
 	@GameRegistry.ObjectHolder("steeleaf_helmet")
-	public static final Item steeleafHelm;
+	public static final Item steeleaf_helmet;
 	@GameRegistry.ObjectHolder("steeleaf_chestplate")
-	public static final Item steeleafPlate;
+	public static final Item steeleaf_chestplate;
 	@GameRegistry.ObjectHolder("steeleaf_leggings")
-	public static final Item steeleafLegs;
+	public static final Item steeleaf_leggings;
 	@GameRegistry.ObjectHolder("steeleaf_boots")
-	public static final Item steeleafBoots;
+	public static final Item steeleaf_boots;
 	@GameRegistry.ObjectHolder("steeleaf_sword")
-	public static final Item steeleafSword;
+	public static final Item steeleaf_sword;
 	@GameRegistry.ObjectHolder("steeleaf_shovel")
-	public static final Item steeleafShovel;
+	public static final Item steeleaf_shovel;
 	@GameRegistry.ObjectHolder("steeleaf_pickaxe")
-	public static final Item steeleafPick;
+	public static final Item steeleaf_pickaxe;
 	@GameRegistry.ObjectHolder("steeleaf_axe")
-	public static final Item steeleafAxe;
+	public static final Item steeleaf_axe;
 	@GameRegistry.ObjectHolder("steeleaf_hoe")
-	public static final Item steeleafHoe;
+	public static final Item steeleaf_hoe;
 	@GameRegistry.ObjectHolder("minotaur_axe")
-	public static final Item minotaurAxe;
+	public static final Item minotaur_axe;
 	@GameRegistry.ObjectHolder("mazebreaker_pickaxe")
-	public static final Item mazebreakerPick;
+	public static final Item mazebreaker_pickaxe;
 	@GameRegistry.ObjectHolder("transformation_powder")
-	public static final Item transformPowder;
+	public static final Item transformation_powder;
 	@GameRegistry.ObjectHolder("raw_meef")
-	public static final Item meefRaw;
+	public static final Item raw_meef;
 	@GameRegistry.ObjectHolder("cooked_meef")
-	public static final Item meefSteak;
+	public static final Item cooked_meef;
 	@GameRegistry.ObjectHolder("meef_stroganoff")
-	public static final Item meefStroganoff;
+	public static final Item meef_stroganoff;
 	@GameRegistry.ObjectHolder("maze_wafer")
-	public static final Item mazeWafer;
+	public static final Item maze_wafer;
 	@GameRegistry.ObjectHolder("magic_map_empty")
-	public static final Item emptyMagicMap;
+	public static final Item magic_map_empty;
 	@GameRegistry.ObjectHolder("maze_map_empty")
-	public static final Item emptyMazeMap;
+	public static final Item maze_map_empty;
 	@GameRegistry.ObjectHolder("ore_map_empty")
-	public static final Item emptyOreMap;
+	public static final Item ore_map_empty;
 	@GameRegistry.ObjectHolder("ore_magnet")
-	public static final Item oreMagnet;
+	public static final Item ore_magnet;
 	@GameRegistry.ObjectHolder("crumble_horn")
-	public static final Item crumbleHorn;
+	public static final Item crumble_horn;
 	@GameRegistry.ObjectHolder("peacock_fan")
-	public static final Item peacockFan;
+	public static final Item peacock_fan;
 	@GameRegistry.ObjectHolder("moonworm_queen")
-	public static final Item moonwormQueen;
+	public static final Item moonworm_queen;
 	@GameRegistry.ObjectHolder("charm_of_life_1")
-	public static final Item charmOfLife1;
+	public static final Item charm_of_life_1;
 	@GameRegistry.ObjectHolder("charm_of_life_2")
-	public static final Item charmOfLife2;
+	public static final Item charm_of_life_2;
 	@GameRegistry.ObjectHolder("charm_of_keeping_1")
-	public static final Item charmOfKeeping1;
+	public static final Item charm_of_keeping_1;
 	@GameRegistry.ObjectHolder("charm_of_keeping_2")
-	public static final Item charmOfKeeping2;
+	public static final Item charm_of_keeping_2;
 	@GameRegistry.ObjectHolder("charm_of_keeping_3")
-	public static final Item charmOfKeeping3;
+	public static final Item charm_of_keeping_3;
 	@GameRegistry.ObjectHolder("tower_key")
-	public static final Item towerKey;
+	public static final Item tower_key;
 	@GameRegistry.ObjectHolder("borer_essence")
-	public static final Item borerEssence;
+	public static final Item borer_essence;
 	@GameRegistry.ObjectHolder("carminite")
 	public static final Item carminite;
 	@GameRegistry.ObjectHolder("experiment_115")
-	public static final Item experiment115;
+	public static final Item experiment_115;
 	@GameRegistry.ObjectHolder("armor_shard")
-	public static final Item armorShard;
+	public static final Item armor_shard;
 	@GameRegistry.ObjectHolder("knightmetal_ingot")
-	public static final Item knightMetal;
+	public static final Item knightmetal_ingot;
 	@GameRegistry.ObjectHolder("armor_shard_cluster")
-	public static final Item shardCluster;
+	public static final Item armor_shard_cluster;
 	@GameRegistry.ObjectHolder("knightmetal_helmet")
-	public static final Item knightlyHelm;
+	public static final Item knightmetal_helmet;
 	@GameRegistry.ObjectHolder("knightmetal_chestplate")
-	public static final Item knightlyPlate;
+	public static final Item knightmetal_chestplate;
 	@GameRegistry.ObjectHolder("knightmetal_leggings")
-	public static final Item knightlyLegs;
+	public static final Item knightmetal_leggings;
 	@GameRegistry.ObjectHolder("knightmetal_boots")
-	public static final Item knightlyBoots;
+	public static final Item knightmetal_boots;
 	@GameRegistry.ObjectHolder("knightmetal_sword")
-	public static final Item knightlySword;
+	public static final Item knightmetal_sword;
 	@GameRegistry.ObjectHolder("knightmetal_pickaxe")
-	public static final Item knightlyPick;
+	public static final Item knightmetal_pickaxe;
 	@GameRegistry.ObjectHolder("knightmetal_axe")
-	public static final Item knightlyAxe;
+	public static final Item knightmetal_axe;
 	@GameRegistry.ObjectHolder("phantom_helmet")
-	public static final Item phantomHelm;
+	public static final Item phantom_helmet;
 	@GameRegistry.ObjectHolder("phantom_chestplate")
-	public static final Item phantomPlate;
+	public static final Item phantom_chestplate;
 	@GameRegistry.ObjectHolder("lamp_of_cinders")
-	public static final Item lampOfCinders;
+	public static final Item lamp_of_cinders;
 	@GameRegistry.ObjectHolder("fiery_tears")
-	public static final Item fieryTears;
+	public static final Item fiery_tears;
 	@GameRegistry.ObjectHolder("alpha_fur")
-	public static final Item alphaFur;
+	public static final Item alpha_fur;
 	@GameRegistry.ObjectHolder("yeti_helmet")
-	public static final Item yetiHelm;
+	public static final Item yeti_helmet;
 	@GameRegistry.ObjectHolder("yeti_chestplate")
-	public static final Item yetiPlate;
+	public static final Item yeti_chestplate;
 	@GameRegistry.ObjectHolder("yeti_leggings")
-	public static final Item yetiLegs;
+	public static final Item yeti_leggings;
 	@GameRegistry.ObjectHolder("yeti_boots")
-	public static final Item yetiBoots;
+	public static final Item yeti_boots;
 	@GameRegistry.ObjectHolder("ice_bomb")
-	public static final Item iceBomb;
+	public static final Item ice_bomb;
 	@GameRegistry.ObjectHolder("arctic_fur")
-	public static final Item arcticFur;
+	public static final Item arctic_fur;
 	@GameRegistry.ObjectHolder("arctic_helmet")
-	public static final Item arcticHelm;
+	public static final Item arctic_helmet;
 	@GameRegistry.ObjectHolder("arctic_chestplate")
-	public static final Item arcticPlate;
+	public static final Item arctic_chestplate;
 	@GameRegistry.ObjectHolder("arctic_leggings")
-	public static final Item arcticLegs;
+	public static final Item arctic_leggings;
 	@GameRegistry.ObjectHolder("arctic_boots")
-	public static final Item arcticBoots;
+	public static final Item arctic_boots;
 	@GameRegistry.ObjectHolder("magic_beans")
-	public static final Item magicBeans;
+	public static final Item magic_beans;
 	@GameRegistry.ObjectHolder("giant_pickaxe")
-	public static final Item giantPick;
+	public static final Item giant_pickaxe;
 	@GameRegistry.ObjectHolder("giant_sword")
-	public static final Item giantSword;
+	public static final Item giant_sword;
 	@GameRegistry.ObjectHolder("triple_bow")
-	public static final Item tripleBow;
+	public static final Item triple_bow;
 	@GameRegistry.ObjectHolder("seeker_bow")
-	public static final Item seekerBow;
+	public static final Item seeker_bow;
 	@GameRegistry.ObjectHolder("ice_bow")
-	public static final Item iceBow;
+	public static final Item ice_bow;
 	@GameRegistry.ObjectHolder("ender_bow")
-	public static final Item enderBow;
+	public static final Item ender_bow;
 	@GameRegistry.ObjectHolder("ice_sword")
-	public static final Item iceSword;
+	public static final Item ice_sword;
 	@GameRegistry.ObjectHolder("glass_sword")
-	public static final Item glassSword;
+	public static final Item glass_sword;
 	@GameRegistry.ObjectHolder("knightmetal_ring")
-	public static final Item knightmetalRing;
+	public static final Item knightmetal_ring;
 	@GameRegistry.ObjectHolder("block_and_chain")
 	public static final Item chainBlock;
 	@GameRegistry.ObjectHolder("cube_talisman")
-	public static final Item cubeTalisman;
+	public static final Item cube_talisman;
 	@GameRegistry.ObjectHolder("cube_of_annihilation")
-	public static final Item cubeOfAnnihilation;
+	public static final Item cube_of_annihilation;
 	@GameRegistry.ObjectHolder("miniature_structure")
-	public static final Item miniture_structure;
+	public static final Item miniature_structure;
 	@GameRegistry.ObjectHolder("castle_door")
-	public static final Item castleDoor;
+	public static final Item castle_door;
 	@GameRegistry.ObjectHolder("block_storage")
 	public static final Item block_storage;
 
 	public static CreativeTabTwilightForest creativeTab = new CreativeTabTwilightForest("twilightForest");
 
 	public static void initRepairMaterials() {
-		ARMOR_NAGA.setRepairItem(new ItemStack(nagaScale));
-		ARMOR_IRONWOOD.setRepairItem(new ItemStack(ironwoodIngot));
-		ARMOR_FIERY.setRepairItem(new ItemStack(fieryIngot));
-		ARMOR_STEELEAF.setRepairItem(new ItemStack(steeleafIngot));
-		ARMOR_KNIGHTLY.setRepairItem(new ItemStack(knightMetal));
-		ARMOR_PHANTOM.setRepairItem(new ItemStack(knightMetal));
-		ARMOR_YETI.setRepairItem(new ItemStack(alphaFur));
-		ARMOR_ARCTIC.setRepairItem(new ItemStack(arcticFur));
+		ARMOR_NAGA.setRepairItem(new ItemStack(naga_scale));
+		ARMOR_IRONWOOD.setRepairItem(new ItemStack(ironwood_ingot));
+		ARMOR_FIERY.setRepairItem(new ItemStack(fiery_ingot));
+		ARMOR_STEELEAF.setRepairItem(new ItemStack(steeleaf_ingot));
+		ARMOR_KNIGHTLY.setRepairItem(new ItemStack(knightmetal_ingot));
+		ARMOR_PHANTOM.setRepairItem(new ItemStack(knightmetal_ingot));
+		ARMOR_YETI.setRepairItem(new ItemStack(alpha_fur));
+		ARMOR_ARCTIC.setRepairItem(new ItemStack(arctic_fur));
 
-		TOOL_IRONWOOD.setRepairItem(new ItemStack(ironwoodIngot));
-		TOOL_FIERY.setRepairItem(new ItemStack(fieryIngot));
-		TOOL_STEELEAF.setRepairItem(new ItemStack(steeleafIngot));
-		TOOL_KNIGHTLY.setRepairItem(new ItemStack(knightMetal));
-		TOOL_GIANT.setRepairItem(new ItemStack(knightMetal));
+		TOOL_IRONWOOD.setRepairItem(new ItemStack(ironwood_ingot));
+		TOOL_FIERY.setRepairItem(new ItemStack(fiery_ingot));
+		TOOL_STEELEAF.setRepairItem(new ItemStack(steeleaf_ingot));
+		TOOL_KNIGHTLY.setRepairItem(new ItemStack(knightmetal_ingot));
+		TOOL_GIANT.setRepairItem(new ItemStack(knightmetal_ingot));
 		TOOL_ICE.setRepairItem(new ItemStack(Blocks.PACKED_ICE));
 	}
 
 	static {
-		nagaScale = null;
-		plateNaga = null;
-		legsNaga = null;
-		scepterTwilight = null;
-		scepterLifeDrain = null;
-		scepterZombie = null;
+		naga_scale = null;
+		naga_chestplate = null;
+		naga_leggings = null;
+		twilight_scepter = null;
+		lifedrain_scepter = null;
+		zombie_scepter = null;
 		//items.register(wandPacification, "Wand of Pacification [NYI]");
-		oreMeter = null;
-		magicMap = null;
-		mazeMap = null;
-		oreMap = null;
-		feather = null;
-		magicMapFocus = null;
-		mazeMapFocus = null;
-		liveRoot = null;
-		ironwoodRaw = null;
-		ironwoodIngot = null;
-		ironwoodHelm = null;
-		ironwoodPlate = null;
-		ironwoodLegs = null;
-		ironwoodBoots = null;
-		ironwoodSword = null;
-		ironwoodShovel = null;
-		ironwoodPick = null;
-		ironwoodAxe = null;
-		ironwoodHoe = null;
+		ore_meter = null;
+		magic_map = null;
+		maze_map = null;
+		ore_map = null;
+		raven_feather = null;
+		magic_map_focus = null;
+		maze_map_focus = null;
+		liveroot = null;
+		ironwood_raw = null;
+		ironwood_ingot = null;
+		ironwood_helmet = null;
+		ironwood_chestplate = null;
+		ironwood_leggings = null;
+		ironwood_boots = null;
+		ironwood_sword = null;
+		ironwood_shovel = null;
+		ironwood_pickaxe = null;
+		ironwood_axe = null;
+		ironwood_hoe = null;
 		torchberries = null;
-		venisonRaw = null;
-		venisonCooked = null;
-		hydraChop = null;
-		fieryBlood = null;
+		raw_venison = null;
+		cooked_venison = null;
+		hydra_chop = null;
+		fiery_blood = null;
 		trophy = null;
-		fieryIngot = null;
-		fieryHelm = null;
-		fieryPlate = null;
-		fieryLegs = null;
-		fieryBoots = null;
-		fierySword = null;
-		fieryPick = null;
-		steeleafIngot = null;
-		steeleafHelm = null;
-		steeleafPlate = null;
-		steeleafLegs = null;
-		steeleafBoots = null;
-		steeleafSword = null;
-		steeleafShovel = null;
-		steeleafPick = null;
-		steeleafAxe = null;
-		steeleafHoe = null;
-		minotaurAxe = null;
-		mazebreakerPick = null;
-		transformPowder = null;
-		meefRaw = null;
-		meefSteak = null;
-		meefStroganoff = null;
-		mazeWafer = null;
-		emptyMagicMap = null;
-		emptyMazeMap = null;
-		emptyOreMap = null;
-		oreMagnet = null;
-		crumbleHorn = null;
-		peacockFan = null;
-		moonwormQueen = null;
-		charmOfLife1 = null;
-		charmOfLife2 = null;
-		charmOfKeeping1 = null;
-		charmOfKeeping2 = null;
-		charmOfKeeping3 = null;
-		towerKey = null;
-		borerEssence = null;
+		fiery_ingot = null;
+		fiery_helmet = null;
+		fiery_chestplate = null;
+		fiery_leggings = null;
+		fiery_boots = null;
+		fiery_sword = null;
+		fiery_pickaxe = null;
+		steeleaf_ingot = null;
+		steeleaf_helmet = null;
+		steeleaf_chestplate = null;
+		steeleaf_leggings = null;
+		steeleaf_boots = null;
+		steeleaf_sword = null;
+		steeleaf_shovel = null;
+		steeleaf_pickaxe = null;
+		steeleaf_axe = null;
+		steeleaf_hoe = null;
+		minotaur_axe = null;
+		mazebreaker_pickaxe = null;
+		transformation_powder = null;
+		raw_meef = null;
+		cooked_meef = null;
+		meef_stroganoff = null;
+		maze_wafer = null;
+		magic_map_empty = null;
+		maze_map_empty = null;
+		ore_map_empty = null;
+		ore_magnet = null;
+		crumble_horn = null;
+		peacock_fan = null;
+		moonworm_queen = null;
+		charm_of_life_1 = null;
+		charm_of_life_2 = null;
+		charm_of_keeping_1 = null;
+		charm_of_keeping_2 = null;
+		charm_of_keeping_3 = null;
+		tower_key = null;
+		borer_essence = null;
 		carminite = null;
-		experiment115 = null;
-		armorShard = null;
-		knightMetal = null;
-		shardCluster = null;
-		knightlyHelm = null;
-		knightlyPlate = null;
-		knightlyLegs = null;
-		knightlyBoots = null;
-		knightlySword = null;
-		knightlyPick = null;
-		knightlyAxe = null;
-		phantomHelm = null;
-		phantomPlate = null;
-		lampOfCinders = null;
-		fieryTears = null;
-		alphaFur = null;
-		yetiHelm = null;
-		yetiPlate = null;
-		yetiLegs = null;
-		yetiBoots = null;
-		iceBomb = null;
-		arcticFur = null;
-		arcticHelm = null;
-		arcticPlate = null;
-		arcticLegs = null;
-		arcticBoots = null;
-		magicBeans = null;
-		giantPick = null;
-		giantSword = null;
-		tripleBow = null;
-		seekerBow = null;
-		iceBow = null;
-		enderBow = null;
-		iceSword = null;
-		glassSword = null;
-		knightmetalRing = null;
+		experiment_115 = null;
+		armor_shard = null;
+		knightmetal_ingot = null;
+		armor_shard_cluster = null;
+		knightmetal_helmet = null;
+		knightmetal_chestplate = null;
+		knightmetal_leggings = null;
+		knightmetal_boots = null;
+		knightmetal_sword = null;
+		knightmetal_pickaxe = null;
+		knightmetal_axe = null;
+		phantom_helmet = null;
+		phantom_chestplate = null;
+		lamp_of_cinders = null;
+		fiery_tears = null;
+		alpha_fur = null;
+		yeti_helmet = null;
+		yeti_chestplate = null;
+		yeti_leggings = null;
+		yeti_boots = null;
+		ice_bomb = null;
+		arctic_fur = null;
+		arctic_helmet = null;
+		arctic_chestplate = null;
+		arctic_leggings = null;
+		arctic_boots = null;
+		magic_beans = null;
+		giant_pickaxe = null;
+		giant_sword = null;
+		triple_bow = null;
+		seeker_bow = null;
+		ice_bow = null;
+		ender_bow = null;
+		ice_sword = null;
+		glass_sword = null;
+		knightmetal_ring = null;
 		chainBlock = null;
-		cubeTalisman = null;
-		cubeOfAnnihilation = null;
-		miniture_structure = null;
-		castleDoor = null;
+		cube_talisman = null;
+		cube_of_annihilation = null;
+		miniature_structure = null;
+		castle_door = null;
 		block_storage = null;
 	}
 }

@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.client.model.ModelTFMoonworm;
+import twilightforest.client.model.entity.ModelTFMoonworm;
 import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
 import javax.annotation.Nullable;

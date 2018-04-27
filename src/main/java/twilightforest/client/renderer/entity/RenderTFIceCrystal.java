@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFIceCrystal;
+import twilightforest.client.model.entity.ModelTFIceCrystal;
 import twilightforest.entity.boss.EntityTFIceCrystal;
 
 public class RenderTFIceCrystal extends RenderLiving<EntityTFIceCrystal> {

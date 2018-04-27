@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.client.model.ModelTFCicada;
+import twilightforest.client.model.entity.ModelTFCicada;
 import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
 import javax.annotation.Nullable;

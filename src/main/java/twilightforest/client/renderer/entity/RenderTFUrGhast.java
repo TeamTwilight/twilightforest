@@ -3,7 +3,7 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFGhast;
+import twilightforest.client.model.entity.ModelTFGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 
 

@@ -1,0 +1,25 @@
+{
+  "result": {
+    "nbt": "{ench:[{lvl:2s,id:20s}]}",
+    "item": "twilightforest:fiery_sword",
+    "type": "minecraft:item_nbt"
+  },
+  "group": "fiery_convert_tool",
+  "ingredients": [
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    {
+      "item": "minecraft:iron_sword"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

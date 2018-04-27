@@ -2,6 +2,7 @@
   "result": {
     "item": "twilightforest:giant_sword"
   },
+  "group": "giant_tool",
   "pattern": [
     "#",
     "#",

@@ -4,6 +4,7 @@
     "data": 0,
     "count": 8
   },
+  "group": "nagastone_stairs_left",
   "pattern": [
     "#  ",
     "## ",

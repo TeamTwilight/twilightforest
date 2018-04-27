@@ -4,6 +4,7 @@
     "item": "twilightforest:ironwood_boots",
     "type": "minecraft:item_nbt"
   },
+  "group": "ironwood_armor",
   "pattern": [
     "# #",
     "# #"

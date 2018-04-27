@@ -4,6 +4,7 @@
     "item": "twilightforest:ironwood_axe",
     "type": "minecraft:item_nbt"
   },
+  "group": "ironwood_tool",
   "pattern": [
     "##",
     "#X",

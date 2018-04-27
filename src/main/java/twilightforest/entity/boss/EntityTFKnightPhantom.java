@@ -71,9 +71,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
-		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
-		setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantomPlate));
-		setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantomHelm));
+		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
+		setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantom_chestplate));
+		setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantom_helmet));
 		return data;
 	}
 
@@ -142,7 +142,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		if (isChargingAtPlayer()) {
 			// make particles
 			for (int i = 0; i < 4; ++i) {
-				Item particleID = rand.nextBoolean() ? TFItems.phantomHelm : TFItems.knightlySword;
+				Item particleID = rand.nextBoolean() ? TFItems.phantom_helmet : TFItems.knightmetal_sword;
 
 				world.spawnParticle(EnumParticleTypes.ITEM_CRACK, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, -0.1, 0, Item.getIdFromItem(particleID));
 				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, 0.1, 0);
@@ -391,15 +391,15 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	public boolean isSwordKnight() {
-		return getHeldItemMainhand().getItem() == TFItems.knightlySword;
+		return getHeldItemMainhand().getItem() == TFItems.knightmetal_sword;
 	}
 
 	public boolean isAxeKnight() {
-		return getHeldItemMainhand().getItem() == TFItems.knightlyAxe;
+		return getHeldItemMainhand().getItem() == TFItems.knightmetal_axe;
 	}
 
 	public boolean isPickKnight() {
-		return getHeldItemMainhand().getItem() == TFItems.knightlyPick;
+		return getHeldItemMainhand().getItem() == TFItems.knightmetal_pickaxe;
 	}
 
 	public int getNumber() {
@@ -412,13 +412,13 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		// set weapon per number
 		switch (number % 3) {
 			case 0:
-				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlySword));
+				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
 				break;
 			case 1:
-				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlyAxe));
+				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_axe));
 				break;
 			case 2:
-				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightlyPick));
+				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe));
 				break;
 		}
 	}

@@ -2,6 +2,7 @@
   "result": {
     "item": "twilightforest:giant_pickaxe"
   },
+  "group": "giant_tool",
   "pattern": [
     "###",
     " X ",

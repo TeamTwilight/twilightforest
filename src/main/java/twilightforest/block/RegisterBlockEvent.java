@@ -4,12 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TFClientEvents;
@@ -125,10 +123,19 @@ public final class RegisterBlockEvent {
 	public static final Fluid moltenKnightmetal;
 	public static final Fluid essenceFiery;
 
+	public static final ResourceLocation moltenFieryStill = new ResourceLocation(TwilightForestMod.ID, "blocks/molten_fiery_still");
+	public static final ResourceLocation moltenFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/molten_fiery_flow");
+
+	public static final ResourceLocation moltenKnightmetalStill = new ResourceLocation(TwilightForestMod.ID, "blocks/molten_knightmetal_still");
+	public static final ResourceLocation moltenKnightmetalFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/molten_knightmetal_flow");
+
+	public static final ResourceLocation essenceFieryStill = new ResourceLocation(TwilightForestMod.ID, "blocks/fluid_fiery_still");
+	public static final ResourceLocation essenceFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/fluid_fiery_flow");
+
 	static {
-		moltenFiery       = registerFluid(new Fluid("fierymetal" , TFClientEvents.moltenFieryStill, TFClientEvents.moltenFieryFlow).setTemperature(9001).setLuminosity(15));
-		moltenKnightmetal = registerFluid(new Fluid("knightmetal", TFClientEvents.moltenKnightmetalStill, TFClientEvents.moltenKnightmetalFlow).setTemperature(700));
-		essenceFiery      = registerFluid(new Fluid("fiery_essence", TFClientEvents.essenceFieryStill, TFClientEvents.essenceFieryFlow).setTemperature(9001));
+		moltenFiery       = registerFluid(new Fluid("fierymetal" , moltenFieryStill, moltenFieryFlow).setTemperature(9001).setLuminosity(15));
+		moltenKnightmetal = registerFluid(new Fluid("knightmetal", moltenKnightmetalStill, moltenKnightmetalFlow).setTemperature(700));
+		essenceFiery      = registerFluid(new Fluid("fiery_essence", essenceFieryStill, essenceFieryFlow).setTemperature(9001));
 	}
 
 	private static Fluid registerFluid(Fluid fluidIn) {

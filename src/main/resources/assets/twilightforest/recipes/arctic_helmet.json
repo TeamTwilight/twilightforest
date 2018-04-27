@@ -2,6 +2,7 @@
   "result": {
     "item": "twilightforest:arctic_helmet"
   },
+  "group": "arctic_armor",
   "pattern": [
     "###",
     "# #"

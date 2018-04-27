@@ -17,7 +17,7 @@ public class RenderTFCharm extends RenderSnowball<EntityTFCharmEffect> {
 	@Override
 	public ItemStack getStackToRender(EntityTFCharmEffect charm) {
 		if (charm.getItemID() > -1) {
-			return new ItemStack(TFItems.charmOfKeeping1);
+			return new ItemStack(TFItems.charm_of_keeping_1);
 		} else {
 			return ItemStack.EMPTY;
 		}

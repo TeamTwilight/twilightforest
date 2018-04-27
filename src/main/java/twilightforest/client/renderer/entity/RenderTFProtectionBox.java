@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFProtectionBox;
+import twilightforest.client.model.entity.ModelTFProtectionBox;
 import twilightforest.entity.EntityTFProtectionBox;
 
 public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {

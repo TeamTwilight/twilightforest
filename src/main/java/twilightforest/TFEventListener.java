@@ -59,6 +59,7 @@ import twilightforest.entity.EntityTFYeti;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
+import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
@@ -151,7 +152,7 @@ public class TFEventListener {
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.getSource());
 
 			if (chillLevel > 0) {
-				((EntityLivingBase) event.getSource().getTrueSource()).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, chillLevel * 5 + 5, chillLevel));
+				((EntityLivingBase) event.getSource().getTrueSource()).addPotionEffect(new PotionEffect(TFPotions.frosty, chillLevel * 5 + 5, chillLevel));
 
 			}
 		}
@@ -160,8 +161,8 @@ public class TFEventListener {
 		if (event.getSource().damageType.equals("arrow") && event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 
-			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.tripleBow
-					|| !player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.tripleBow) {
+			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.triple_bow
+					|| !player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.triple_bow) {
 				living.hurtResistantTime = 0;
 			}
 		}
@@ -170,8 +171,8 @@ public class TFEventListener {
 		if (event.getSource().damageType.equals("arrow") && event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 
-			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.enderBow ||
-					!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.enderBow) {
+			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.ender_bow ||
+					!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.ender_bow) {
 
 				double sourceX = player.posX;
 				double sourceY = player.posY;
@@ -221,9 +222,9 @@ public class TFEventListener {
 
 	private static boolean charmOfLife(EntityLivingBase living) {
 		boolean charm1 = false;
-		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife2, 1);
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_life_2, 1);
 		if (!charm2) {
-			charm1 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfLife1, 1);
+			charm1 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_life_1, 1);
 		}
 
 		if (charm2 || charm1) {
@@ -242,10 +243,10 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			EntityTFCharmEffect effect = new EntityTFCharmEffect(living.world, living, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
+			EntityTFCharmEffect effect = new EntityTFCharmEffect(living.world, living, charm1 ? TFItems.charm_of_life_1 : TFItems.charm_of_life_2);
 			living.world.spawnEntity(effect);
 
-			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(living.world, living, charm1 ? TFItems.charmOfLife1 : TFItems.charmOfLife2);
+			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(living.world, living, charm1 ? TFItems.charm_of_life_1 : TFItems.charm_of_life_2);
 			effect2.offset = (float) Math.PI;
 			living.world.spawnEntity(effect2);
 
@@ -258,9 +259,9 @@ public class TFEventListener {
 	private static void charmOfKeeping(EntityLivingBase living) {
 		if (living instanceof EntityPlayer && !living.world.getGameRules().getBoolean("keepInventory")) {
 			EntityPlayer player = (EntityPlayer) living;
-			boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping3, 1);
-			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping2, 1);
-			boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charmOfKeeping1, 1);
+			boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_3, 1);
+			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_2, 1);
+			boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_1, 1);
 
 			InventoryPlayer keepInventory = new InventoryPlayer(null);
 
@@ -287,7 +288,7 @@ public class TFEventListener {
 
 			// always keep tower keys
 			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-				if (!player.inventory.mainInventory.get(i).isEmpty() && player.inventory.mainInventory.get(i).getItem() == TFItems.towerKey) {
+				if (!player.inventory.mainInventory.get(i).isEmpty() && player.inventory.mainInventory.get(i).getItem() == TFItems.tower_key) {
 					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
@@ -430,7 +431,7 @@ public class TFEventListener {
 			event.setCanceled(true);
 		} else if (!isBreakingWithGiantPick
 				&& !event.getPlayer().getHeldItemMainhand().isEmpty()
-				&& event.getPlayer().getHeldItemMainhand().getItem() == TFItems.giantPick
+				&& event.getPlayer().getHeldItemMainhand().getItem() == TFItems.giant_pickaxe
 				&& event.getPlayer().getHeldItemMainhand().getItem().canHarvestBlock(event.getState(), event.getPlayer().getHeldItemMainhand())) {
 
 			isBreakingWithGiantPick = true;

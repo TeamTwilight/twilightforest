@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFQuestRam;
+import twilightforest.client.model.entity.ModelTFQuestRam;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
 public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {

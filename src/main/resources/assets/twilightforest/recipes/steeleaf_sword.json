@@ -4,6 +4,7 @@
     "item": "twilightforest:steeleaf_sword",
     "type": "minecraft:item_nbt"
   },
+  "group": "steeleaf_tool",
   "pattern": [
     "#",
     "#",

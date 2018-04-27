@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import slimeknights.tconstruct.library.client.RenderUtil;
 import twilightforest.TwilightForestMod;
 
 import java.util.Collection;
@@ -54,7 +53,7 @@ public class MoltenFieryTexture extends TextureAtlasSprite {
             }
 
             for (int pixel : textureTo[0]) {
-                if (RenderUtil.alpha(pixel) == 0) continue;
+                if ((pixel >> 24 & 0xFF) == 0) continue;
 
                 minimumValue = Math.min(minimumValue, getPerceptualBrightness(pixel));
                 maximumValue = Math.max(maximumValue, getPerceptualBrightness(pixel));
@@ -92,7 +91,7 @@ public class MoltenFieryTexture extends TextureAtlasSprite {
     // borrowed from Shadows of Physis
     // Thanks TTFTCUTS! :)
     private static int getPerceptualBrightness(int col) {
-        return getPerceptualBrightness(RenderUtil.red(col) / 255.0, RenderUtil.green(col) / 255.0, RenderUtil.blue(col) / 255.0);
+        return getPerceptualBrightness((col >> 16 & 0xFF) / 255.0, (col >> 8 & 0xFF) / 255.0, (col & 0xFF) / 255.0);
     }
 
     private static int getPerceptualBrightness(double r, double g, double b) {

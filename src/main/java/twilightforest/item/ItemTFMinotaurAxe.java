@@ -48,7 +48,7 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 				&& evt.getSource().getImmediateSource().isSprinting()) {
 			ItemStack weapon = ((EntityLivingBase) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
-			if (!weapon.isEmpty() && weapon.getItem() == TFItems.minotaurAxe) {
+			if (!weapon.isEmpty() && weapon.getItem() == TFItems.minotaur_axe) {
 				target.attackEntityFrom(DamageSource.MAGIC, BONUS_CHARGING_DAMAGE);
 				// don't prevent main damage from applying
 				target.hurtResistantTime = 0;

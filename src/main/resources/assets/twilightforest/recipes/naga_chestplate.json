@@ -4,6 +4,7 @@
     "item": "twilightforest:naga_chestplate",
     "type": "minecraft:item_nbt"
   },
+  "group": "naga_armor",
   "pattern": [
     "# #",
     "###",

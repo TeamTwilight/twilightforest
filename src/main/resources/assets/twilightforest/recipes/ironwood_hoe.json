@@ -2,6 +2,7 @@
   "result": {
     "item": "twilightforest:ironwood_hoe"
   },
+  "group": "ironwood_tool",
   "pattern": [
     "##",
     " X",

@@ -104,7 +104,7 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
-		return TFItems.magicBeans;
+		return TFItems.magic_beans;
 	}
 
 	@Override

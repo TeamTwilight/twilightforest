@@ -20,7 +20,7 @@ public class ItemTFGiantSword extends ItemSword implements ModelRegisterCallback
 
 	@Override
 	public boolean getIsRepairable(ItemStack stack, ItemStack material) {
-		return material.getItem() == TFItems.ironwoodIngot || super.getIsRepairable(stack, material);
+		return material.getItem() == TFItems.ironwood_ingot || super.getIsRepairable(stack, material);
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class EntityAITFLichShadows extends EntityAIBase {
 
 	@Override
 	public void startExecuting() {
-		lich.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.scepterTwilight));
+		lich.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.twilight_scepter));
 	}
 
 	@Override
