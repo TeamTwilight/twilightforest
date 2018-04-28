@@ -33,8 +33,8 @@ advancement.twilight_experiment_115_3.desc=エクスペリメント115を食べ�
 advancement.twilight_glass_sword=ワン・ヒット・ワンダー
 advancement.twilight_glass_sword.desc=ガラスの剣をうまく使ってほしい。
 
-advancement.twilight_hydra_chop=ヒドラの肉！
-advancement.twilight_hydra_chop.desc=満腹度が空の時にヒドラの肉を食べる。
+advancement.twilight_hydra_chop=ヒドラ肉！
+advancement.twilight_hydra_chop.desc=満腹度が空の時にヒドラ肉を食べる。
 
 advancement.twilight_dining=黄昏の晩餐
 advancement.twilight_dining.desc=黄昏の森で追加された全ての食べ物を食べる（調理した肉を除く）
@@ -329,8 +329,8 @@ item.ironwoodPick.name=樹鉄のツルハシ
 item.ironwoodAxe.name=樹鉄の斧
 item.ironwoodHoe.name=樹鉄のクワ
 item.torchberries.name=トーチベリーの実
-item.venisonRaw.name=生の鹿肉
-item.venisonCooked.name=鹿肉ステーキ
+item.venisonRaw.name=生の黄昏鹿肉
+item.venisonCooked.name=黄昏鹿肉ステーキ
 item.hydraChop.name=ヒドラ肉
 item.fieryBlood.name=焦熱の血
 item.fieryIngot.name=焦熱インゴット
@@ -436,9 +436,9 @@ item.yetiBoots.tooltip=凍えるオーラ
 
 item.arctic_armor.tooltip=染色可能
 
-entity.twilightforest.wild_boar.name=イノシシ
+entity.twilightforest.wild_boar.name=黄昏イノシシ
 entity.twilightforest.bighorn_sheep.name=オオツノヒツジ
-entity.twilightforest.deer.name=鹿
+entity.twilightforest.deer.name=黄昏鹿
 entity.twilightforest.redcap.name=レッドキャップ
 entity.twilightforest.swarm_spider.name=群れ蜘蛛
 entity.twilightforest.naga.name=ナーガ
@@ -453,8 +453,8 @@ entity.twilightforest.lich.name=リッチ
 entity.twilightforest.penguin.name=ペンギン
 entity.twilightforest.tiny_bird.name=小鳥
 entity.twilightforest.squirrel.name=リス
-entity.twilightforest.bunny.name=バニー
-entity.twilightforest.raven.name=カラス
+entity.twilightforest.bunny.name=黄昏ウサギ
+entity.twilightforest.raven.name=黄昏カラス
 entity.twilightforest.quest_ram.name=色食みの羊
 entity.twilightforest.kobold.name=コボルト
 entity.twilightforest.boggard.name=幽霊 [未実装]
@@ -490,12 +490,14 @@ entity.twilightforest.snow_guardian.name=スノーガーディアン
 entity.twilightforest.stable_ice_core.name=アイスコア
 entity.twilightforest.unstable_ice_core.name=アイスコア(炸裂)
 entity.twilightforest.snow_queen.name=雪の女王
-entity.twilightforest.troll.name=トロール
+entity.twilightforest.troll.name=ケイブトロール
 entity.twilightforest.giant_miner.name=巨人(ツルハシ)
 entity.twilightforest.armored_giant.name=巨人(剣)
 entity.twilightforest.ice_crystal.name=アイスクリスタル
 entity.twilightforest.apocalypse_cube.name=アポカリプスキューブ [未実装]
 entity.twilightforest.adherent.name=使徒 [未実装]
+
+twilightforest.effect.frosted=凍結
 
 twilightforest.misc.wip0=このブロックは制作中であり、世界を傷つけたり意図しない影響を与えたりするバグが存在する可能性があります。
 twilightforest.misc.wip1=慎重に使用してください。
@@ -508,9 +510,9 @@ twilightforest.loading.title.leave=黄昏の森から抜け出しています...
 twilightforest.config.dimension=ディメンジョンの設定
 twilightforest.config.dimension.tooltip=Minecraftを再起動するまで有効になりません。
 twilightforest.config.dimension_id=ディメンジョンID
-twilightforest.config.dimension_id.tooltip=Twilight Forestディメンジョンに割り当てるID。 他のMODと競合している場合は変更して下さい。
+twilightforest.config.dimension_id.tooltip=黄昏の森ディメンジョンに割り当てるID。 他のMODと競合している場合は変更して下さい。
 twilightforest.config.dimension_seed=ディメンジョンシード
-twilightforest.config.dimension_seed.tooltip=これを設定すると、Twilight Forestディメンションの一部を 生成するときに、通常のワールドのシードよりも優先されます。
+twilightforest.config.dimension_seed.tooltip=これを設定すると、黄昏の森ディメンションの一部を 生成するときに、通常のワールドのシードよりも優先されます。
 twilightforest.config.spawn_in_tf=黄昏の森にスポーンする
 twilightforest.config.spawn_in_tf.tooltip=trueにすると、初期スポーン地点が黄昏の森になります。
 
@@ -522,13 +524,13 @@ twilightforest.config.tree_tweaks.tooltip=ワールドのパフォーマンス�
 twilightforest.config.canopy_coverage=林冠木のカバレッジ
 twilightforest.config.canopy_coverage.tooltip=林冠木のカバレッジの量。小さな値にするとワールド生成スピードが向上しますが、薄い森になります。
 twilightforest.config.twilight_oaks=トワイライトオークの出現率
-twilightforest.config.twilight_oaks.tooltip=Twilight Forestのチャンク内にトワイライトオークの木が出現する確率。 数値が高いほどトワイライトオークの木の数が少なくなり、パフォーマンスが向上します。
-twilightforest.config.leaves_light_opacity=Twilight Forestの木の葉の不透明度
+twilightforest.config.twilight_oaks.tooltip=黄昏の森のチャンク内にトワイライトオークの木が出現する確率。 数値が高いほどトワイライトオークの木の数が少なくなり、パフォーマンスが向上します。
+twilightforest.config.leaves_light_opacity=黄昏の森の木の葉の不透明度
 twilightforest.config.leaves_light_opacity.tooltip=葉が完全な立方体でない場合、遮光量を調整するために葉の不透明度を設定します。
 twilightforest.config.leaves_full_cube=Twilight Forestの木の葉をフルブロックにする
 twilightforest.config.leaves_full_cube.tooltip=これをfalseに設定すると、葉は完全な立方体ではなくなります。これにより、光を遮断しなくなるので、ガラスと同等の扱いになります。一部の照明チェックの負担を軽減します。
 twilightforest.config.glacer_packed_ice=氷河の氷を氷塊にする
-twilightforest.config.glacer_packed_ice.tooltip=これを設定すると、Twilight Forestの氷河が氷ではなく氷塊になり、 光チェックの計算量が減少します。
+twilightforest.config.glacer_packed_ice.tooltip=これを設定すると、黄昏の森の氷河が氷ではなく氷塊になり、 光チェックの計算量が減少します。
 
 twilightforest.config.silent_cicadas=セミを静かにする
 twilightforest.config.silent_cicadas.tooltip=音が気になる人はtrueに設定してください。
@@ -608,6 +610,10 @@ twilightforest.book.trollcave.3=私の推論では、そのようなものは氷
 twilightforest.book.unknown.1=§8[[この本は何度もコピーされているようだ]]§0 私にはこの構造を取り巻くフィールドを説明することはできないが、魔法は強力だ。この呪いが他と同様のものなら、それを解く答えはどこかにある。
 twilightforest.book.unknown.2=恐らく、私がやり残したこと、あるいはまだ倒していないモンスターがいるのだろう。私は戻る必要がある。後でこの場所に戻り、何かが変わるかどうか確認してみよう。
 
+fluid.fierymetal=溶融焦熱
+fluid.knightmetal=溶融ナイトメタル
+fluid.fiery_essence=焦熱エッセンス
+
 material.nagascale.name=ナーガの鱗
 material.nagascale.prefix=ナーガの鱗の%s
 material.steeleaf.name=葉鋼
@@ -618,3 +624,16 @@ material.knightmetal.name=ナイトメタル
 material.knightmetal.prefix=ナイトメタルの%s
 material.raven_feather.name=カラスの羽根
 material.raven_feather.prefix=カラスの羽根の%s
+
+modifier.twilit.name=トワイリット
+modifier.twilit.desc=§o黄昏の森の明かりの祝福§r\n黄昏の森での採掘速度が上がる。\n黄昏の森以外では攻撃力が上がる。
+modifier.twilit.extra.speed=黄昏の森での採掘速度: +%s
+modifier.twilit.extra.damage=黄昏の森以外でのダメージ増加: +%s
+modifier.precipitate.name=まっしぐら
+modifier.precipitate.desc=§o最後に残された脱出プラン§r\n体力が減ると採掘速度が上がる！
+modifier.synergy.name=シナジー
+modifier.synergy.desc=§oほら、苔なしだ！§r\n葉鋼がホットバーにあると、自動的に耐久力を回復させる。
+modifier.stalwart.name=屈強
+modifier.stalwart.desc=§o勇猛果敢§r\n攻撃が当たると勇気が湧いてくる。
+modifier.veiled.name=ヴェール
+modifier.veiled.desc=幽霊のようだ！§r\n飛翔体が見えなくなる。
