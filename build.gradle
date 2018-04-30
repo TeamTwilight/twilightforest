@@ -94,20 +94,29 @@ jar {
 
 repositories {
     maven {
-        name 'progwm\'s maven' // JEI
+        name 'progwm\'s maven' // JEI + Mantle + TCon
         url 'http://dvs1.progwml6.com/files/maven'
     }
     maven {
         name 'tterrag\'s maven' // CTM
         url 'http://maven.tterrag.com/'
     }
+    maven {
+        name 'Curseforge Maven' // Baubles + Thaumcraft
+        url 'https://minecraft.curseforge.com/api/maven/'
+    }
 }
 
 dependencies {   
-    compile "mezz.jei:jei_1.12.2:${jei_version}"
-    compile "team.chisel.ctm:CTM:MC1.12-${ctm_version}"
+    compile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+
+    compile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}:deobf"
+    compile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}:deobf"
+
+    compile "team.chisel.ctm:CTM:MC${minecraft_sub_version}-${ctm_version}"
     compile "team.chisel:Chisel:MC${chisel_version}:api"
     runtime "team.chisel:Chisel:MC${chisel_version}"
-    compile "slimeknights:TConstruct:$minecraft_version-$tcon_version:deobf"
-    compile "slimeknights.mantle:Mantle:1.12-$mantle_version:deobf"
+
+    compile "baubles:Baubles:${minecraft_sub_version}:${baubles_version}"
+    compile "thaumcraft:Thaumcraft:${minecraft_version}:${thaumcraft_version}"
 }

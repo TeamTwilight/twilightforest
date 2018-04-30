@@ -34,7 +34,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12-0.2.3.12,);required-after:forge@[14.23.1.2607,)",
+		dependencies = "after:ctm@[MC1.12-0.2.3.12,);required-after:forge@[14.23.3.2675,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )
 public class TwilightForestMod {
