@@ -76,8 +76,8 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 		}
 
 		// only hit living things
-		if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase && mop.entityHit != this.getThrower()) {
-			if (mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10)) {
+		if (mop.entityHit instanceof EntityLivingBase && mop.entityHit != this.getThrower()) {
+			if (mop.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
 				// age when we hit a monster so that we go back to the player faster
 				this.ticksExisted += 60;
 			}
@@ -141,6 +141,17 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 			if (this.blocksSmashed > MAX_SMASH && this.ticksExisted < 60) {
 				this.ticksExisted += 60;
 			}
+		}
+	}
+
+	private DamageSource getDamageSource() {
+		EntityLivingBase thrower = this.getThrower();
+		if (thrower instanceof EntityPlayer) {
+			return DamageSource.causePlayerDamage((EntityPlayer) thrower);
+		} else if (thrower != null) {
+			return DamageSource.causeMobDamage(thrower);
+		} else {
+			return DamageSource.causeThrownDamage(this, null);
 		}
 	}
 

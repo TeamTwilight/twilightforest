@@ -116,6 +116,11 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 	}
 
 	@Override
+	public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker) {
+		return true;
+	}
+
+	@Override
 	public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState state) {
 		if ("pickaxe".equals(toolClass)) {
 			return 2;

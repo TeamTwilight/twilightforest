@@ -53,13 +53,23 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 			return;
 
 		// only hit living things
-		if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase
-				&& mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10)) {
+		if (mop.entityHit instanceof EntityLivingBase && mop.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
 			this.ticksExisted += 60;
 		}
 
 		if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
 			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
+		}
+	}
+
+	private DamageSource getDamageSource() {
+		EntityLivingBase thrower = this.getThrower();
+		if (thrower instanceof EntityPlayer) {
+			return DamageSource.causePlayerDamage((EntityPlayer) thrower);
+		} else if (thrower != null) {
+			return DamageSource.causeMobDamage(thrower);
+		} else {
+			return DamageSource.causeThrownDamage(this, null);
 		}
 	}
 
