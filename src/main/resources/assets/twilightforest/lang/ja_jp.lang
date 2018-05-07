@@ -2,19 +2,12 @@
 
 itemGroup.twilightForest=Twilight Forest
 
+# ADVANCEMENTS
 advancement.twilightforest.desc=黄昏の森へのポータルを作成する。
 
-advancement.twilight_magic_map_focus=火で書き込む
-advancement.twilight_magic_map_focus.desc=カラスの羽根とグロウストーンダストとトーチベリーで、魔法の羽根をクラフトする。
-
-advancement.twilight_hunter=森の静寂
-advancement.twilight_hunter.desc=黄昏の森の野生動物を狩る。
-advancement.twilight_kill_naga=秤を均等にする時だ
-advancement.twilight_kill_naga.desc=ナーガ神殿でナーガを倒してナーガの鱗を手に入れ、リッチタワーを取り巻く結界魔法を破る。
-advancement.twilight_kill_lich=死者を差し出せ
-advancement.twilight_kill_lich.desc=リッチタワーの最上階でリッチを倒して杖を手に入れ、沼地の毒蚊を追い払う。
-advancement.twilight_kill_hydra=ヒドラスレイヤー
-advancement.twilight_kill_hydra.desc=ヒドラを倒して、闇の森の盲目の呪いに打ち勝つ力を手に入れる。
+# General progression
+advancement.twilight_hedge=虫を踏みつける者
+advancement.twilight_hedge.desc=生垣迷路で蜘蛛を倒す。
 
 advancement.twilight_hill1=そのブーツは私のものだ！
 advancement.twilight_hill1.desc=亡霊鉱山(小)でレッドキャップを倒す。
@@ -23,6 +16,53 @@ advancement.twilight_hill2.desc=亡霊鉱山(中)でレッドキャップ工兵�
 advancement.twilight_hill3=私にはお見通しだ
 advancement.twilight_hill3.desc=亡霊鉱山(大)でレイスを倒す。
 
+advancement.twilight_quest_ram=完璧なもこもこ？
+advancement.twilight_quest_ram.desc=色食みの羊に探しものを渡す。
+
+# Map
+advancement.twilight_magic_map_focus=火で書き込む
+advancement.twilight_magic_map_focus.desc=カラスの羽根とグロウストーンダストとトーチベリーで、魔法の羽根をクラフトする。
+advancement.twilight_magic_map=何マイル先も見える
+advancement.twilight_magic_map.desc=魔法の地図(地上)を広げる。
+advancement.twilight_maze_map=そして今、出口を見つけるために
+advancement.twilight_maze_map.desc=魔法の地図(迷宮)を広げる。
+advancement.twilight_ore_map=そんなに価値があるのか？
+advancement.twilight_ore_map.desc=魔法の地図(迷宮/鉱石)を広げる。
+
+# Mainline beginning progression
+advancement.twilight_hunter=森の静寂
+advancement.twilight_hunter.desc=黄昏の森の野生動物を狩る。
+
+advancement.twilight_kill_naga=秤を均等にする時だ
+advancement.twilight_kill_naga.desc=ナーガ神殿でナーガを倒してナーガの鱗を手に入れ、リッチタワーを取り巻く結界魔法を破る。
+advancement.twilight_naga_armors=ナーガの甲冑士
+advancement.twilight_naga_armors.desc=ナーガアーマー(胴)と(脚)をクラフトして、インベントリに両方を持つ。
+
+advancement.twilight_kill_lich=死者を差し出せ
+advancement.twilight_kill_lich.desc=リッチタワーの最上階でリッチを倒して杖を手に入れ、沼地の毒蚊を追い払い、闇の森の盲目の呪いを打ち破り、雪の森の寒さに耐える力を得る。
+advancement.twilight_lich_scepters=力を合わせて！
+advancement.twilight_lich_scepters.desc=リッチの3種類の杖を全て手に入れる。
+
+# Swamp Progression
+advancement.twilight_progress_labyrinth=マイティストロガノフ
+advancement.twilight_progress_labyrinth.desc=肉とキノコのシチューを食す事で、焼け沼に入る強靭さを得る。
+advancement.twilight_kill_hydra=ヒドラスレイヤー
+advancement.twilight_kill_hydra.desc=強大なヒドラを倒して、自分自身を力づける。
+advancement.twilight_mazebreaker=迷宮を砕く者
+advancement.twilight_mazebreaker.desc=ラビリンスの納骨堂でメイズブレイカーを手に入れる。
+advancement.twilight_hydra_chop=ヒドラ肉だ！
+advancement.twilight_hydra_chop.desc=満腹度が空の時にヒドラ肉を食べる。
+
+# Dark Forest Progression
+advancement.twilight_progress_trophy_pedestal=トロフィー・チャンピオン
+advancement.twilight_progress_trophy_pedestal.desc=闇の森の廃墟にある台座にトロフィーを置き、自らの力を示せ。
+advancement.twilight_progress_knights=カーミナイト・アクリメーション
+advancement.twilight_progress_knights.desc=ゴブリン騎士の拠点のナイトファントムを鎮めれば、ダークタワーの装置を動かすことができる。
+advancement.twilight_ghast_trap=タワーウッドの不思議なもの
+advancement.twilight_ghast_trap.desc=ガストトラップの近くでカーミナイトガストリングを倒して起動させ、ウルガストを降下させる。
+advancement.twilight_progress_urghast=炎の涙
+advancement.twilight_progress_urghast.desc=ウルガストの燃える如く赤い涙に触れる。
+
 advancement.twilight_experiment_115=神秘的な肉？
 advancement.twilight_experiment_115.desc=ケーキのように見えるが、これは...
 advancement.twilight_experiment_115_2=メモ: 大成功！
@@ -30,57 +70,34 @@ advancement.twilight_experiment_115_2.desc=しっとりとしていてとても�
 advancement.twilight_experiment_115_3=115日、115年、そして永遠に
 advancement.twilight_experiment_115_3.desc=エクスペリメント115を食べ続ける。
 
+# Snow Forest Progression
+advancement.twilight_progress_yeti=アルファの毛皮
+advancement.twilight_progress_yeti.desc=アルファイエティの柔らかな毛皮の装備を身に着ければ、氷河の極寒から身を守れる。
+advancement.twilight_progress_glacier=晴天
+advancement.twilight_progress_glacier.desc=オーロラ宮殿の最上階で雪の女王を倒す。
+advancement.twilight_arctic_dyed=最新ファッション
+advancement.twilight_arctic_dyed.desc=全ての防寒装備を染色する。
+
+# Mid-way Misc. Stuff
 advancement.twilight_glass_sword=ワン・ヒット・ワンダー
 advancement.twilight_glass_sword.desc=ガラスの剣をうまく使ってほしい。
-
-advancement.twilight_hydra_chop=ヒドラ肉！
-advancement.twilight_hydra_chop.desc=満腹度が空の時にヒドラ肉を食べる。
 
 advancement.twilight_dining=黄昏の晩餐
 advancement.twilight_dining.desc=黄昏の森で追加された全ての食べ物を食べる（調理した肉を除く）
 
-advancement.twilight_ghast_trap=タワーウッドの不思議なもの
-advancement.twilight_ghast_trap.desc=ガストトラップの近くでカーミナイトガストリングを倒して起動させ、ウルガストを降下させる。
-
-advancement.twilight_arctic_dyed=最新ファッション
-advancement.twilight_arctic_dyed.desc=全ての防寒装備を染色する。
-
-advancement.twilight_naga_armors=ナーガの甲冑士
-advancement.twilight_naga_armors.desc=ナーガアーマー(胴)と(脚)をクラフトする。
-advancement.twilight_lich_scepters=力を合わせて！
-advancement.twilight_lich_scepters.desc=リッチの3種類の杖を全て手に入れる。
-advancement.twilight_hedge=虫を踏みつける者
-advancement.twilight_hedge.desc=生垣迷路で蜘蛛を倒す。
-advancement.twilight_magic_map=何マイル先も見える
-advancement.twilight_magic_map.desc=魔法の地図(地上)を広げる。
-advancement.twilight_maze_map=そして今、出口を見つけるために
-advancement.twilight_maze_map.desc=魔法の地図(迷宮)を広げる。
-advancement.twilight_ore_map=そんなに価値があるのか？
-advancement.twilight_ore_map.desc=魔法の地図(迷宮/鉱石)を広げる。
-advancement.twilight_mazebreaker=迷宮を砕く者
-advancement.twilight_mazebreaker.desc=ラビリンスの納骨堂でメイズブレイカーを手に入れる。
 advancement.twilight_fiery_set=血と涙のガロン
 advancement.twilight_fiery_set.desc=1箇所以上の焦熱防具と、焦熱武器または道具を装備する。
-advancement.twilight_quest_ram=完璧なもこもこ？
-advancement.twilight_quest_ram.desc=色食みの羊に探しものを渡す。
 
-advancement.twilight_progress_labyrinth=マイティストロガノフ
-advancement.twilight_progress_labyrinth.desc=肉とキノコのシチューを食す事で、焼け沼に入る強靭さを得る。
-advancement.twilight_progress_trophy_pedestal=トロフィー・チャンピオン
-advancement.twilight_progress_trophy_pedestal.desc=闇の森の廃墟にある台座にトロフィーを置き、自らの力を示せ。
-advancement.twilight_progress_knights=カーミナイト・アクリメーション
-advancement.twilight_progress_knights.desc=ゴブリン騎士の拠点のナイトファントムを鎮めれば、ダークタワーの装置を動かすことができる。
-advancement.twilight_progress_urghast=炎の涙
-advancement.twilight_progress_urghast.desc=ウルガストの燃える如く赤い涙に触れれば、雪の森の寒さに耐えられる。
-advancement.twilight_progress_yeti=アルファの毛皮
-advancement.twilight_progress_yeti.desc=アルファイエティの柔らかな毛皮の装備を身に着ければ、氷河の極寒から身を守れる。
-advancement.twilight_progress_glacier=晴天
-advancement.twilight_progress_glacier.desc=オーロラ宮殿の最上階で雪の女王を倒し、高地に降る酸の雨を晴らせ。
+
+
+# Highlands
+advancement.twilight_progress_merge=究極の対決
+advancement.twilight_progress_merge.desc=ヒドラ、ウルガスト、雪の女王を倒して酸性雨を晴らし、高地へ向かう自身を勇気づける。
 advancement.twilight_progress_troll=もっと炎を
 advancement.twilight_progress_troll.desc=トロールの洞窟で灰のランプを見つけ、茨の障壁を焼き払え。
-advancement.twilight_progress_thorns=茨を越えて
+advancement.twilight_progress_thorns=茨を越えて [制作中]
 advancement.twilight_progress_thorns.desc=茨の大地を突破し、城の扉を開錠せよ。
-advancement.twilight_progress_castle=驚異の城
+advancement.twilight_progress_castle=驚異の城 [制作中]
 advancement.twilight_progress_castle.desc=その城には一体何が待ち構えているのか！？
 
 twilightforest.trophyPedestal.ineligible=あなたには資格がありません。
@@ -273,7 +290,7 @@ tile.CinderFurnaceIdle.name=灰のかまど [未実装]
 tile.CinderLog.0.name=灰の原木 [未実装]
 tile.MiniatureStructure=%sのミニチュア [未実装]
 tile.SpiralBricks.name=螺旋状の石レンガ [製作中]
-tile.BlockOfLapisTF.name=ラピスブロック [未実装]
+tile.BlockOfLapisTF.name=ラピスラズリブロック [未実装]
 tile.EtchedNagastone.name=エッチングナーガストーン
 tile.NagastonePillar.name=ナーガストーンの柱
 tile.NagastoneStairs.0.name=ナーガストーンの階段(左)
