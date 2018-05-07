@@ -20,6 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
 
@@ -233,6 +234,15 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 					this.motionZ = this.velZ * (1.0 - age) + (back.z * 2F * age);
 				}
 			}
+		}
+	}
+
+	@Override
+	public void setDead() {
+		super.setDead();
+		EntityLivingBase thrower = this.getThrower();
+		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.chainBlock) {
+			thrower.resetActiveHand();
 		}
 	}
 

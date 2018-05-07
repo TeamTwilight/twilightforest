@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFPacketHandler;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
+import twilightforest.item.TFItems;
 import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.util.WorldUtil;
 
@@ -158,6 +159,15 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 
 			// demolish some blocks
 			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
+		}
+	}
+
+	@Override
+	public void setDead() {
+		super.setDead();
+		EntityLivingBase thrower = this.getThrower();
+		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation) {
+			thrower.resetActiveHand();
 		}
 	}
 
