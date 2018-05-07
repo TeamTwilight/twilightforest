@@ -20,9 +20,9 @@ public class TFGenMinersTree extends TFTreeGenerator {
 
 	public TFGenMinersTree(boolean notify) {
 		super(notify);
-		this.treeState = TFBlocks.magicLog.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
+		this.treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
 		this.branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magicLeaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
+		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
 		this.rootState = TFBlocks.root.getDefaultState();
 	}
 
@@ -53,8 +53,8 @@ public class TFGenMinersTree extends TFTreeGenerator {
 		putBranchWithLeaves(world, pos.add(0, 6, -5), false);
 
 		// place minewood core
-		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magicLogSpecial.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE));
-		world.scheduleUpdate(pos.up(), TFBlocks.magicLogSpecial, TFBlocks.magicLogSpecial.tickRate(world));
+		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magic_log_core.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE));
+		world.scheduleUpdate(pos.up(), TFBlocks.magic_log_core, TFBlocks.magic_log_core.tickRate(world));
 
 
 		// root bulb

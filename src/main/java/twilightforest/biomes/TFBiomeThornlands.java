@@ -75,7 +75,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 	}
 
 	@Override
-	protected ResourceLocation getRequiredAchievement() {
-		return new ResourceLocation(TwilightForestMod.ID, "progress_glacier");
+	protected ResourceLocation[] getRequiredAdvancements() {
+		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_troll") };
 	}
 }

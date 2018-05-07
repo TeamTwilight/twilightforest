@@ -26,9 +26,9 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator {
 		super(par1);
 		this.minTreeHeight = par2;
 
-		treeState = TFBlocks.log.getDefaultState();
+		treeState = TFBlocks.twilight_log.getDefaultState();
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+		leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 		rootState = TFBlocks.root.getDefaultState();
 	}
 

@@ -214,7 +214,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 
 		for (int var5 = par2 + this.leafDistanceLimit; var4 < var5; ++var4) {
 			float var6 = this.leafSize(var4 - par2);
-			this.genTreeLayer(par1, var4, par3, var6, (byte) 1, TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK).withProperty(BlockLeaves.CHECK_DECAY, false));
+			this.genTreeLayer(par1, var4, par3, var6, (byte) 1, TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK).withProperty(BlockLeaves.CHECK_DECAY, false));
 		}
 	}
 
@@ -305,18 +305,18 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 		int var4 = this.basePos[2];
 		int[] var5 = new int[]{var1, var2, var4};
 		int[] var6 = new int[]{var1, var3, var4};
-		this.placeBlockLine(var5, var6, TFBlocks.log);
+		this.placeBlockLine(var5, var6, TFBlocks.twilight_log);
 
 		if (this.trunkSize == 2) {
 			++var5[0];
 			++var6[0];
-			this.placeBlockLine(var5, var6, TFBlocks.log);
+			this.placeBlockLine(var5, var6, TFBlocks.twilight_log);
 			++var5[2];
 			++var6[2];
-			this.placeBlockLine(var5, var6, TFBlocks.log);
+			this.placeBlockLine(var5, var6, TFBlocks.twilight_log);
 			var5[0] += -1;
 			var6[0] += -1;
-			this.placeBlockLine(var5, var6, TFBlocks.log);
+			this.placeBlockLine(var5, var6, TFBlocks.twilight_log);
 		}
 	}
 
@@ -334,7 +334,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 			int var6 = var3[1] - this.basePos[1];
 
 			if (this.leafNodeNeedsBase(var6)) {
-				this.placeBlockLine(var3, var5, TFBlocks.log);
+				this.placeBlockLine(var3, var5, TFBlocks.twilight_log);
 			}
 		}
 	}

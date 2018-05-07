@@ -41,7 +41,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	private static final WorldGenMegaPineTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
 	private static final WorldGenBlockBlob genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
 	private static final TFGenTrollRoots genTrollRoots = new TFGenTrollRoots();
-	private static final TFGenTallGrass worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+	private static final TFGenTallGrass worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
 
 	public TFBiomeHighlands(BiomeProperties props) {
@@ -136,8 +136,13 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	}
 
 	@Override
-	protected ResourceLocation getRequiredAchievement() {
-		return new ResourceLocation(TwilightForestMod.ID, "progress_glacier");
+	protected ResourceLocation[] getRequiredAdvancements() {
+		return new ResourceLocation[] {
+                //new ResourceLocation(TwilightForestMod.ID, "progress_hydra"),
+                //new ResourceLocation(TwilightForestMod.ID, "progress_ur_ghast"),
+                //new ResourceLocation(TwilightForestMod.ID, "progress_glacier")
+                new ResourceLocation(TwilightForestMod.ID, "progress_troll")
+		};
 	}
 
 	@Override
@@ -147,9 +152,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 			// hint monster?
-			if (world.rand.nextInt(4) == 0) {
-				TFFeature.trollCave.trySpawnHintMonster(world, player);
-			}
+			if (world.rand.nextInt(4) == 0) TFFeature.trollCave.trySpawnHintMonster(world, player);
 		}
 	}
 

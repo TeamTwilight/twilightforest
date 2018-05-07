@@ -43,27 +43,27 @@ public class TFFeature {
 
 	public static final TFFeature[] featureList = new TFFeature[256];
 
-	public static final TFFeature nothing = new TFFeature(0, 0, "no_feature").enableDecorations().disableStructure();
-	public static final TFFeature hill1 = new TFFeature(1, 1, "small_hollow_hill").enableDecorations().enableTerrainAlterations();
-	public static final TFFeature hill2 = new TFFeature(2, 2, "medium_hollow_hill").enableDecorations().enableTerrainAlterations();
-	public static final TFFeature hill3 = new TFFeature(3, 3, "large_hollow_hill").enableDecorations().enableTerrainAlterations();
-	public static final TFFeature hedgeMaze = new TFFeature(4, 2, "hedge_maze").enableTerrainAlterations();
-	public static final TFFeature nagaCourtyard = new TFFeature(5, 3, "naga_courtyard").enableTerrainAlterations();
-	public static final TFFeature lichTower = new TFFeature(6, 1, "lich_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_naga"));
-	public static final TFFeature iceTower = new TFFeature(7, 2, "ice_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_yeti"));
-	public static final TFFeature questIsland = new TFFeature(8, 1, "quest_island").disableStructure();
-	public static final TFFeature questGrove = new TFFeature(9, 1, "quest_grove").enableTerrainAlterations();
-	public static final TFFeature druidGrove = new TFFeature(10, 1, "druid_grove").disableStructure();
-	public static final TFFeature floatRuins = new TFFeature(11, 3, "floating_ruins").disableStructure();
-	public static final TFFeature hydraLair = new TFFeature(12, 2, "hydra_lair").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth")).enableTerrainAlterations();
-	public static final TFFeature labyrinth = new TFFeature(13, 3, "labyrinth").enableDecorations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_lich"));
-	public static final TFFeature darkTower = new TFFeature(14, 1, "dark_tower").setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_knights"));
-	public static final TFFeature tfStronghold = new TFFeature(15, 3, "knight_stronghold").enableDecorations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal")).disableProtectionAura();
-	public static final TFFeature worldTree = new TFFeature(16, 3, "world_tree").disableStructure();
-	public static final TFFeature yetiCave = new TFFeature(17, 2, "yeti_lairs").enableDecorations().enableTerrainAlterations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_ur_ghast"));
-	public static final TFFeature trollCave = new TFFeature(18, 3, "troll_lairs").enableDecorations().enableTerrainAlterations().setRequiredAchievement(new ResourceLocation(TwilightForestMod.ID, "progress_glacier")).disableProtectionAura();
-	public static final TFFeature finalCastle = new TFFeature(19, 3, "final_castle");
-	public static final TFFeature mushroomTower = new TFFeature(20, 2, "mushroom_tower");
+	public static final TFFeature nothing       = new TFFeature( 0, 0, "no_feature"        ).enableDecorations().disableStructure();
+	public static final TFFeature hill1         = new TFFeature( 1, 1, "small_hollow_hill" ).enableDecorations().enableTerrainAlterations();
+	public static final TFFeature hill2         = new TFFeature( 2, 2, "medium_hollow_hill").enableDecorations().enableTerrainAlterations();
+	public static final TFFeature hill3         = new TFFeature( 3, 3, "large_hollow_hill" ).enableDecorations().enableTerrainAlterations();
+	public static final TFFeature hedgeMaze     = new TFFeature( 4, 2, "hedge_maze"        ).enableTerrainAlterations();
+	public static final TFFeature nagaCourtyard = new TFFeature( 5, 3, "naga_courtyard"    ).enableTerrainAlterations();
+	public static final TFFeature lichTower     = new TFFeature( 6, 1, "lich_tower"        , new ResourceLocation(TwilightForestMod.ID, "progress_naga"           ));
+	public static final TFFeature iceTower      = new TFFeature( 7, 2, "ice_tower"         , new ResourceLocation(TwilightForestMod.ID, "progress_yeti"           ));
+	public static final TFFeature questIsland   = new TFFeature( 8, 1, "quest_island"      ).disableStructure();
+	public static final TFFeature questGrove    = new TFFeature( 9, 1, "quest_grove"       ).enableTerrainAlterations();
+	public static final TFFeature druidGrove    = new TFFeature(10, 1, "druid_grove"       ).disableStructure();
+	public static final TFFeature floatRuins    = new TFFeature(11, 3, "floating_ruins"    ).disableStructure();
+	public static final TFFeature hydraLair     = new TFFeature(12, 2, "hydra_lair"        , new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth"      )).enableTerrainAlterations();
+	public static final TFFeature labyrinth     = new TFFeature(13, 3, "labyrinth"         , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )).enableDecorations();
+	public static final TFFeature darkTower     = new TFFeature(14, 1, "dark_tower"        , new ResourceLocation(TwilightForestMod.ID, "progress_knights"        ));
+	public static final TFFeature tfStronghold  = new TFFeature(15, 3, "knight_stronghold" , new ResourceLocation(TwilightForestMod.ID, "progress_trophy_pedestal")).enableDecorations().disableProtectionAura();
+	public static final TFFeature worldTree     = new TFFeature(16, 3, "world_tree"        ).disableStructure();
+	public static final TFFeature yetiCave      = new TFFeature(17, 2, "yeti_lairs"        , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )).enableDecorations().enableTerrainAlterations();
+	public static final TFFeature trollCave     = new TFFeature(18, 3, "troll_lairs"       , new ResourceLocation(TwilightForestMod.ID, "progress_merge"          )).enableDecorations().enableTerrainAlterations().disableProtectionAura();
+	public static final TFFeature finalCastle   = new TFFeature(19, 3, "final_castle"      );
+	public static final TFFeature mushroomTower = new TFFeature(20, 2, "mushroom_tower"    );
 
 	static {
 		// spawn lists!
@@ -177,14 +177,14 @@ public class TFFeature {
 	private List<List<SpawnListEntry>> spawnableMonsterLists;
 	private List<SpawnListEntry> ambientCreatureList;
 	private List<SpawnListEntry> waterCreatureList;
-	private ResourceLocation requiredAchievement = null;
+	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 
 	private long lastSpawnedHintMonsterTime;
 
 	private static int maxSize;
 
-	public TFFeature(int parID, int parSize, String parName) {
+	public TFFeature(int parID, int parSize, String parName, ResourceLocation... requiredAdvancements) {
 		this.featureID = parID;
 		TFFeature.featureList[parID] = this;
 		this.size = parSize;
@@ -200,6 +200,8 @@ public class TFFeature {
 		ambientCreatureList.add(new SpawnListEntry(EntityBat.class, 10, 8, 8));
 
 		maxSize = Math.max(maxSize, parSize);
+
+		this.requiredAdvancements = requiredAdvancements;
 	}
 
 	public static int getMaxSize() {
@@ -708,20 +710,14 @@ public class TFFeature {
 		}
 	}
 
-	private TFFeature setRequiredAchievement(ResourceLocation required) {
-		this.requiredAchievement = required;
+	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {
+		if (this.requiredAdvancements.length > 0)
+			for (ResourceLocation advancement : requiredAdvancements)
+				if (!TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancement))
+					return false;
 
-		return this;
+		return true; // no required achievement
 	}
-
-	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
-		if (this.requiredAchievement != null) {
-			return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, requiredAchievement);
-		} else {
-			return true; // no required achievement
-		}
-	}
-
 
 	/**
 	 * Try to spawn a hint monster near the specified player

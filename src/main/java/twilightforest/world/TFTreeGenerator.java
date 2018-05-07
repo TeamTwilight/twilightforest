@@ -17,8 +17,8 @@ import twilightforest.enums.WoodVariant;
 
 public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IBlockSettable {
 
-	protected IBlockState treeState = TFBlocks.log.getDefaultState();
-	protected IBlockState branchState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE).withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+	protected IBlockState treeState = TFBlocks.twilight_log.getDefaultState();
+	protected IBlockState branchState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE).withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 	protected IBlockState leafState = TFBlocks.hedge.getDefaultState().withProperty(BlockTFHedge.VARIANT, HedgeVariant.DARKWOOD_LEAVES);
 	protected IBlockState rootState = TFBlocks.root.getDefaultState();
 
@@ -72,8 +72,8 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 			return TFGenerator.isNearSolid(world, pos);
 		} else {
 			return (blockState.getBlockHardness(world, pos) >= 0)
-					&& blockID != TFBlocks.shield
-					&& blockID != TFBlocks.trophyPedestal
+					&& blockID != TFBlocks.stronghold_shield
+					&& blockID != TFBlocks.trophy_pedestal
 					&& blockID != TFBlocks.bossSpawner
 					&& (blockState.getMaterial() == Material.GRASS || blockState.getMaterial() == Material.GROUND || blockState.getMaterial() == Material.ROCK);
 		}

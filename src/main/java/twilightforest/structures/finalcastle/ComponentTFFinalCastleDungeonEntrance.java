@@ -30,11 +30,11 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.castleMagic
+		this.deco.blockState = TFBlocks.castle_rune_brick
 				.getDefaultState()
 				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(2));
 
-		this.deco.fenceState = TFBlocks.forceField
+		this.deco.fenceState = TFBlocks.force_field
 				.getDefaultState()
 				.withProperty(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(1));
 
@@ -59,7 +59,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 		}
 
 		// door
-		final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState()
+		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 2);
 		this.fillWithBlocks(world, sbb, 23, 0, 12, 23, 3, 14, castleDoor, AIR, false);
 		this.fillWithBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);

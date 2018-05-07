@@ -52,7 +52,7 @@ public class BlockTFTrollRoot extends Block implements IShearable, ModelRegister
 		IBlockState state = world.getBlockState(pos);
 		Block blockAbove = state.getBlock();
 
-		return state.getMaterial() == Material.ROCK || blockAbove == TFBlocks.trollVidr || blockAbove == TFBlocks.trollBer || blockAbove == TFBlocks.unripeTrollBer;
+		return state.getMaterial() == Material.ROCK || blockAbove == TFBlocks.trollvidr || blockAbove == TFBlocks.trollber || blockAbove == TFBlocks.unripe_trollber;
 	}
 
 	@Override

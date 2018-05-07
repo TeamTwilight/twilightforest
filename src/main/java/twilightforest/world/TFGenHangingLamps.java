@@ -22,7 +22,7 @@ public class TFGenHangingLamps extends TFGenerator {
 				// we need to be at least 4 above ground
 				if (isClearBelow(par1World, pos)) {
 					// generate lamp
-					par1World.setBlockState(pos, TFBlocks.fireflyJar.getDefaultState());
+					par1World.setBlockState(pos, TFBlocks.firefly_jar.getDefaultState());
 
 					for (int cy = 1; cy < MAX_HANG; cy++) {
 						Material above = par1World.getBlockState(pos.up(cy)).getMaterial();

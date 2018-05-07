@@ -15,7 +15,7 @@ public class BlockTFUnripeTorchCluster extends BlockTFTrollRoot {
 
 		if (world.getLight(pos) >= RIPEN_THRESHHOLD) {
 			// ripen!
-			world.setBlockState(pos, TFBlocks.trollBer.getDefaultState());
+			world.setBlockState(pos, TFBlocks.trollber.getDefaultState());
 		}
 	}
 }

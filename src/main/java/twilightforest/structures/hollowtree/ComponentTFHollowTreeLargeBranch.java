@@ -90,7 +90,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 		if (!drawLeaves)
 		{
 			// main branch
-			final IBlockState defaultState = TFBlocks.log.getDefaultState();
+			final IBlockState defaultState = TFBlocks.twilight_log.getDefaultState();
 			drawBresehnam(world, sbb, rsrc.getX(), rsrc.getY(), rsrc.getZ(), rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE));
 
 			// reinforce it

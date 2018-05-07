@@ -18,14 +18,14 @@ public class TFRecipes {
 
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-		OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.log, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.magicLog, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("treeSapling", new ItemStack(TFBlocks.sapling, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.leaves, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.magicLeaves, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.leaves3, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.darkleaves, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("plankWood", new ItemStack(TFBlocks.towerWood, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.twilight_log, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("logWood", new ItemStack(TFBlocks.magic_log, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeSapling", new ItemStack(TFBlocks.twilight_sapling, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.twilight_leaves, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.magic_leaves, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.twilight_leaves_3, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.dark_leaves, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre("plankWood", new ItemStack(TFBlocks.tower_wood, 1, OreDictionary.WILDCARD_VALUE));
 
 		OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fiery_ingot));
 		OreDictionary.registerOre("blockFiery", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.FIERY.ordinal()));
@@ -38,7 +38,7 @@ public class TFRecipes {
 
 		OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.armor_shard_cluster));
 		OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightmetal_ingot));
-		OreDictionary.registerOre("blockKnightmetal", new ItemStack(TFBlocks.knightmetalStorage));
+		OreDictionary.registerOre("blockKnightmetal", new ItemStack(TFBlocks.knightmetal_block));
 
 		OreDictionary.registerOre("carminite", new ItemStack(TFItems.carminite));
 		OreDictionary.registerOre("furArctic", new ItemStack(TFItems.arctic_fur));
@@ -46,8 +46,8 @@ public class TFRecipes {
 		// recipe sorter
 		// RecipeSorter.register(TwilightForestMod.ID + ":mapcloning", TFMapCloningRecipe.class, SHAPELESS, "after:minecraft:shapeless");
 
-		GameRegistry.addSmelting(TFBlocks.log, new ItemStack(Items.COAL, 1, 1), 0.1F);
-		GameRegistry.addSmelting(TFBlocks.magicLog, new ItemStack(Items.COAL, 1, 1), 0.1F);
+		GameRegistry.addSmelting(TFBlocks.twilight_log, new ItemStack(Items.COAL, 1, 1), 0.1F);
+		GameRegistry.addSmelting(TFBlocks.magic_log, new ItemStack(Items.COAL, 1, 1), 0.1F);
 		GameRegistry.addSmelting(TFItems.ironwood_raw, new ItemStack(TFItems.ironwood_ingot, 2), 1.0F);
 		GameRegistry.addSmelting(TFItems.raw_venison, new ItemStack(TFItems.cooked_venison), 0.3F);
 		GameRegistry.addSmelting(TFItems.raw_meef, new ItemStack(TFItems.cooked_meef), 0.3F);

@@ -105,7 +105,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
 		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
-			if (!isPlayerEligible(player)) player.sendMessage(new TextComponentTranslation(TwilightForestMod.ID + ".trophyPedestal.ineligible"));
+			if (!isPlayerEligible(player)) player.sendMessage(new TextComponentTranslation(TwilightForestMod.ID + ".trophy_pedestal.ineligible"));
 	}
 
 	private boolean areNearbyPlayersEligible(World world, BlockPos pos) {
@@ -135,7 +135,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 		for (int sx = -5; sx <= 5; sx++)
 			for (int sy = -5; sy <= 5; sy++)
 				for (int sz = -5; sz <= 5; sz++)
-					if (world.getBlockState(pos.add(sx, sy, sz)).getBlock() == TFBlocks.shield) {
+					if (world.getBlockState(pos.add(sx, sy, sz)).getBlock() == TFBlocks.stronghold_shield) {
 						world.destroyBlock(pos.add(sx, sy, sz), false);
 					}
 	}

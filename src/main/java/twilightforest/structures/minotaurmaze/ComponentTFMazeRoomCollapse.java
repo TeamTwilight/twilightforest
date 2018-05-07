@@ -41,7 +41,7 @@ public class ComponentTFMazeRoomCollapse extends ComponentTFMazeRoom {
 					this.fillWithAir(world, sbb, x, gravel, z, x, gravel + 5, z);
 				} else if (root > 0) {
 					this.fillWithBlocks(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT.getDefaultState(), AIR, true);
-					this.fillWithBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, ROOT_STRAND), AIR, false);
+					this.fillWithBlocks(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, ROOT_STRAND), AIR, false);
 				} else if (rand.nextInt(dist + 1) > 0) {
 					// remove ceiling
 					this.fillWithAir(world, sbb, x, 5, z, x, 5, z);

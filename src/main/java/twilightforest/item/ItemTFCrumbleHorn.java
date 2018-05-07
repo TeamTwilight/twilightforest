@@ -101,8 +101,8 @@ public class ItemTFCrumbleHorn extends ItemTF {
 				cost++;
 			}
 
-			if (currentID == TFBlocks.mazestone && state.getValue(BlockTFMazestone.VARIANT) == MazestoneVariant.BRICK && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
-				world.setBlockState(pos, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CRACKED), 3);
+			if (currentID == TFBlocks.maze_stone && state.getValue(BlockTFMazestone.VARIANT) == MazestoneVariant.BRICK && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
+				world.setBlockState(pos, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CRACKED), 3);
 				world.playEvent(2001, pos, Block.getStateId(state));
 				cost++;
 			}

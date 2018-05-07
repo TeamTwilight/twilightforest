@@ -11,6 +11,6 @@ import twilightforest.block.TFBlocks;
 public class JEI implements IModPlugin {
     @Override
     public void register(IModRegistry registry) {
-        registry.addRecipeCatalyst(new ItemStack(TFBlocks.uncraftingTable), VanillaRecipeCategoryUid.CRAFTING);
+        registry.addRecipeCatalyst(new ItemStack(TFBlocks.uncrafting_table), VanillaRecipeCategoryUid.CRAFTING);
     }
 }

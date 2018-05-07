@@ -10,134 +10,134 @@ import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 @ObjectHolder(TwilightForestMod.ID)
 public class TFBlocks {
 	@ObjectHolder("twilight_log")
-	public static Block log;
+	public static Block twilight_log;
 	@ObjectHolder("twilight_leaves")
-	public static Block leaves;
+	public static Block twilight_leaves;
 	@ObjectHolder("firefly")
 	public static Block firefly;
 	@ObjectHolder("twilight_portal")
 	public static Block portal;
 	@ObjectHolder("maze_stone")
-	public static Block mazestone;
+	public static Block maze_stone;
 	@ObjectHolder("hedge")
 	public static Block hedge;
 	@ObjectHolder("boss_spawner")
 	public static Block bossSpawner;
 	@ObjectHolder("firefly_jar")
-	public static Block fireflyJar;
+	public static Block firefly_jar;
 	@ObjectHolder("twilight_plant")
-	public static Block plant;
+	public static Block twilight_plant;
 	@ObjectHolder("cicada")
 	public static Block cicada;
 	@ObjectHolder("root")
 	public static Block root;
 	@ObjectHolder("uncrafting_table")
-	public static Block uncraftingTable;
+	public static Block uncrafting_table;
 	@ObjectHolder("fire_jet")
-	public static Block fireJet;
+	public static Block fire_jet;
 	@ObjectHolder("naga_stone")
-	public static Block nagastone;
+	public static Block naga_stone;
 	@ObjectHolder("twilight_sapling")
-	public static Block sapling;
+	public static Block twilight_sapling;
 	@ObjectHolder("magic_log")
-	public static Block magicLog;
+	public static Block magic_log;
 	@ObjectHolder("magic_log_core")
-	public static Block magicLogSpecial;
+	public static Block magic_log_core;
 	@ObjectHolder("magic_leaves")
-	public static Block magicLeaves;
+	public static Block magic_leaves;
 	@ObjectHolder("moonworm")
 	public static Block moonworm;
 	@ObjectHolder("tower_wood")
-	public static Block towerWood;
+	public static Block tower_wood;
 	@ObjectHolder("tower_device")
-	public static Block towerDevice;
+	public static Block tower_device;
 	//public static Block towerAntenna;
 	@ObjectHolder("tower_translucent")
-	public static Block towerTranslucent;
+	public static Block tower_translucent;
 	@ObjectHolder("trophy")
 	public static Block trophy;
 	@ObjectHolder("stronghold_shield")
-	public static Block shield;
+	public static Block stronghold_shield;
 	@ObjectHolder("trophy_pedestal")
-	public static Block trophyPedestal;
+	public static Block trophy_pedestal;
 	@ObjectHolder("aurora_block")
-	public static Block auroraBlock;
+	public static Block aurora_block;
 	@ObjectHolder("underbrick")
-	public static Block underBrick;
+	public static Block underbrick;
 	@ObjectHolder("thorns")
 	public static Block thorns;
 	@ObjectHolder("burnt_thorns")
-	public static Block burntThorns;
+	public static Block burnt_thorns;
 	@ObjectHolder("thorn_rose")
-	public static Block thornRose;
+	public static Block thorn_rose;
 	@ObjectHolder("twilight_leaves_3")
-	public static Block leaves3;
+	public static Block twilight_leaves_3;
 	@ObjectHolder("deadrock")
 	public static Block deadrock;
 	@ObjectHolder("dark_leaves")
-	public static Block darkleaves;
+	public static Block dark_leaves;
 	@ObjectHolder("aurora_pillar")
-	public static Block auroraPillar;
+	public static Block aurora_pillar;
 	@ObjectHolder("aurora_slab")
-	public static BlockSlab auroraSlab;
+	public static BlockSlab aurora_slab;
 	@ObjectHolder("double_aurora_slab")
-	public static BlockSlab auroraDoubleSlab;
+	public static BlockSlab double_aurora_slab;
 	@ObjectHolder("trollsteinn")
-	public static Block trollSteinn;
+	public static Block trollsteinn;
 	@ObjectHolder("wispy_cloud")
-	public static Block wispyCloud;
+	public static Block wispy_cloud;
 	@ObjectHolder("fluffy_cloud")
-	public static Block fluffyCloud;
+	public static Block fluffy_cloud;
 	@ObjectHolder("giant_cobblestone")
-	public static Block giantCobble;
+	public static Block giant_cobblestone;
 	@ObjectHolder("giant_log")
-	public static Block giantLog;
+	public static Block giant_log;
 	@ObjectHolder("giant_leaves")
-	public static Block giantLeaves;
+	public static Block giant_leaves;
 	@ObjectHolder("giant_obsidian")
-	public static Block giantObsidian;
+	public static Block giant_obsidian;
 	@ObjectHolder("uberous_soil")
-	public static Block uberousSoil;
+	public static Block uberous_soil;
 	@ObjectHolder("huge_stalk")
-	public static Block hugeStalk;
+	public static Block huge_stalk;
 	@ObjectHolder("huge_mushgloom")
-	public static Block hugeGloomBlock;
+	public static Block huge_mushgloom;
 	@ObjectHolder("trollvidr")
-	public static Block trollVidr;
+	public static Block trollvidr;
 	@ObjectHolder("unripe_trollber")
-	public static Block unripeTrollBer;
+	public static Block unripe_trollber;
 	@ObjectHolder("trollber")
-	public static Block trollBer;
+	public static Block trollber;
 	@ObjectHolder("knightmetal_block")
-	public static Block knightmetalStorage;
+	public static Block knightmetal_block;
 	@ObjectHolder("huge_lilypad")
-	public static Block hugeLilyPad;
+	public static Block huge_lilypad;
 	@ObjectHolder("huge_waterlily")
-	public static Block hugeWaterLily;
+	public static Block huge_waterlily;
 	@ObjectHolder("slider")
 	public static Block slider;
 	@ObjectHolder("castle_brick")
-	public static Block castleBlock;
+	public static Block castle_brick;
 	@ObjectHolder("castle_stairs")
-	public static Block castleStairs;
+	public static Block castle_stairs;
 	@ObjectHolder("castle_pillar")
-	public static Block castlePillar;
+	public static Block castle_pillar;
 	@ObjectHolder("castle_rune_brick")
-	public static Block castleMagic;
+	public static Block castle_rune_brick;
 	@ObjectHolder("force_field")
-	public static Block forceField;
+	public static Block force_field;
 	@ObjectHolder("cinder_furnace")
-	public static Block cinderFurnace;
+	public static Block cinder_furnace;
 	@ObjectHolder("cinder_furnace_lit")
-	public static Block cinderFurnaceLit;
+	public static Block cinder_furnace_lit;
 	@ObjectHolder("cinder_log")
-	public static Block cinderLog;
+	public static Block cinder_log;
 	@ObjectHolder("castle_door")
-	public static Block castleDoor;
+	public static Block castle_door;
 	@ObjectHolder("castle_door_vanished")
-	public static Block castleDoorVanished;
+	public static Block castle_door_vanished;
 	@ObjectHolder("castle_unlock")
-	public static Block castleUnlock;
+	public static Block castle_unlock;
 	@ObjectHolder("experiment_115")
 	public static Block experiment_115;
 	@ObjectHolder("miniature_structure")

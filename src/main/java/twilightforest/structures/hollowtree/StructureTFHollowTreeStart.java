@@ -27,7 +27,7 @@ public class StructureTFHollowTreeStart extends StructureStart {
 	}
 
 	/**
-	 * Do everything except leaves before we do leaves.
+	 * Do everything except leaves before we do twilight_leaves.
 	 */
 	public void generateStructure(World worldIn, Random rand, StructureBoundingBox sbb)
 	{

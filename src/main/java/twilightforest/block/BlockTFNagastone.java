@@ -102,7 +102,7 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 
 		// get sides
 		for (EnumFacing side : EnumFacing.VALUES)
-			if (world.getBlockState(pos.offset(side)).getBlock() == TFBlocks.nagastone)
+			if (world.getBlockState(pos.offset(side)).getBlock() == TFBlocks.naga_stone)
 				if (++connectionCount > 2) break;
 				else facings[connectionCount - 1] = side;
 

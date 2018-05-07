@@ -38,7 +38,7 @@ public class ComponentTFHollowTreeSmallBranch extends
 
 		if (!drawLeaves)
 		{
-			IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			IBlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		} else {
 			int leafRad = random.nextInt(2) + 1;

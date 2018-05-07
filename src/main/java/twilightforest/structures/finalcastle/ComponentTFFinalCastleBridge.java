@@ -42,7 +42,7 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponentOld {
 		// rails
 		//fillWithRandomizedBlocks(world, sbb, 0, 1, 0, length, 2, 0, false, rand, deco.randomBlocks);
 		//fillWithRandomizedBlocks(world, sbb, 0, 1, 6, length, 2, 6, false, rand, deco.randomBlocks);
-		IBlockState castlePillar = TFBlocks.castlePillar.getDefaultState().withProperty(BlockLog.LOG_AXIS, (this.rotation == Rotation.NONE || this.rotation == Rotation.CLOCKWISE_180) ? BlockLog.EnumAxis.X : BlockLog.EnumAxis.Z);
+		IBlockState castlePillar = TFBlocks.castle_pillar.getDefaultState().withProperty(BlockLog.LOG_AXIS, (this.rotation == Rotation.NONE || this.rotation == Rotation.CLOCKWISE_180) ? BlockLog.EnumAxis.X : BlockLog.EnumAxis.Z);
 
 		fillWithBlocks(world, sbb, 0, 2, 0, length, 2, 0, castlePillar, castlePillar, false);
 		fillWithBlocks(world, sbb, 0, 2, 6, length, 2, 6, castlePillar, castlePillar, false);

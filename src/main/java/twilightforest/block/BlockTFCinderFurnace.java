@@ -91,9 +91,9 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 		keepInventory = true;
 
 		if (active) {
-			worldIn.setBlockState(pos, TFBlocks.cinderFurnaceLit.getDefaultState().withProperty(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
+			worldIn.setBlockState(pos, TFBlocks.cinder_furnace_lit.getDefaultState().withProperty(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, TFBlocks.cinderFurnace.getDefaultState().withProperty(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
+			worldIn.setBlockState(pos, TFBlocks.cinder_furnace.getDefaultState().withProperty(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
 		}
 
 		keepInventory = false;
@@ -128,11 +128,11 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(TFBlocks.cinderFurnace);
+		return Item.getItemFromBlock(TFBlocks.cinder_furnace);
 	}
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(Item.getItemFromBlock(TFBlocks.cinderFurnace));
+		return new ItemStack(Item.getItemFromBlock(TFBlocks.cinder_furnace));
 	}
 }

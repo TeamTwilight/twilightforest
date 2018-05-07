@@ -1,5 +1,6 @@
 package twilightforest.compat;
 
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import slimeknights.tconstruct.library.MaterialIntegration;
@@ -107,5 +108,9 @@ public class TConstruct {
                 .addTrait(TConstruct.veiled)
                 .setCraftable(true).setCastable(false)
                 .setRepresentativeItem(TFItems.raven_feather);
+    }
+
+    static void postInit() {
+        TinkerRegistry.registerSmelteryFuel(new FluidStack(RegisterBlockEvent.essenceFiery, 50), 1000);
     }
 }

@@ -111,8 +111,8 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	}
 
 	@Override
-	protected ResourceLocation getRequiredAchievement() {
-		return new ResourceLocation(TwilightForestMod.ID, "progress_hydra");
+	protected ResourceLocation[] getRequiredAdvancements() {
+		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_lich") };
 	}
 
 	@Override

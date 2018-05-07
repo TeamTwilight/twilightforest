@@ -5,6 +5,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -15,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -146,6 +148,25 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+
+        EnumFacing.Axis axis = state.getValue(AXIS_FACING);
+        if (face.getAxis() == axis) {
+            return BlockFaceShape.UNDEFINED;
+        }
+
+        EnumFacing top  = axis == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.UP;
+        EnumFacing left = axis == EnumFacing.Axis.X ? EnumFacing.SOUTH : EnumFacing.WEST;
+
+        Diagonals diagonal = state.getValue(DIAGONAL);
+        if (face == (diagonal.isLeft() ? left : left.getOpposite()) || face == (diagonal.isTop() ? top : top.getOpposite())) {
+            return BlockFaceShape.SOLID;
+        } else {
+            return BlockFaceShape.UNDEFINED;
+        }
     }
 
     @Override

@@ -148,9 +148,9 @@ public class TFClientEvents {
 			Minecraft mc = Minecraft.getMinecraft();
 			World world = mc.world;
 
-			((BlockLeaves) TFBlocks.leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-			((BlockLeaves) TFBlocks.leaves3).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-			((BlockLeaves) TFBlocks.magicLeaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+			((BlockLeaves) TFBlocks.twilight_leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+			((BlockLeaves) TFBlocks.twilight_leaves_3).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+			((BlockLeaves) TFBlocks.magic_leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
 
 			// only fire if we're in the twilight forest
 			if (world != null && (world.provider instanceof WorldProviderTwilightForest)) {

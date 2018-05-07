@@ -458,8 +458,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	private boolean isTrapAt(BlockPos pos) {
-		IBlockState inactive = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
-		IBlockState active = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE);
+		IBlockState inactive = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
+		IBlockState active = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE);
 		return world.isBlockLoaded(pos)
 				&& (world.getBlockState(pos) == inactive || world.getBlockState(pos) == active);
 	}

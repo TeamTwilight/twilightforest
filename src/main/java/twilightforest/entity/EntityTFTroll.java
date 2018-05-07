@@ -149,8 +149,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 	}
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripeTrollBer && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.world.setBlockState(pos, TFBlocks.trollBer.getDefaultState());
+		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.world.setBlockState(pos, TFBlocks.trollber.getDefaultState());
 			world.playEvent(2004, pos, 0);
 		}
 	}
@@ -165,8 +165,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 
 		for (BlockPos pos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
 			if (world.isAirBlock(pos)) {
-				world.setBlockState(pos, TFBlocks.trollSteinn.getDefaultState());
-				world.playEvent(2001, pos, Block.getStateId(TFBlocks.trollSteinn.getDefaultState()));
+				world.setBlockState(pos, TFBlocks.trollsteinn.getDefaultState());
+				world.playEvent(2001, pos, Block.getStateId(TFBlocks.trollsteinn.getDefaultState()));
 			}
 		}
 	}

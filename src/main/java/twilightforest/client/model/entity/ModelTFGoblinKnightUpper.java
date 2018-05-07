@@ -214,10 +214,10 @@ public class ModelTFGoblinKnightUpper extends ModelBiped {
 		this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
 		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
 
-		// shield arm points somewhat inward
+		// stronghold_shield arm points somewhat inward
 		this.bipedLeftArm.rotateAngleZ = -this.bipedLeftArm.rotateAngleZ;
 
-		// fix shield so that it's always perpendicular to the floor
+		// fix stronghold_shield so that it's always perpendicular to the floor
 		this.shield.rotateAngleX = (float) (Math.PI * 2 - this.bipedLeftArm.rotateAngleX);
 	}
 

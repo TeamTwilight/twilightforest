@@ -38,7 +38,7 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// add second layer of floor
-		final IBlockState castleMagic = TFBlocks.castleMagic.getDefaultState()
+		final IBlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
 				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(3));
 		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
 

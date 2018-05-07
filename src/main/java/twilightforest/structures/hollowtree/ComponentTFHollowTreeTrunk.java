@@ -215,13 +215,13 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 				for (int dy = 0; dy <= height; dy++) {
 					// fill the body of the trunk
 					if (dist <= radius && dist > hollow) {
-						this.setBlockState(world, TFBlocks.log.getDefaultState(), dx + 1, dy, dz + 1, sbb); // offset, since our BB is slightly larger than the trunk
+						this.setBlockState(world, TFBlocks.twilight_log.getDefaultState(), dx + 1, dy, dz + 1, sbb); // offset, since our BB is slightly larger than the trunk
 					}
 				}
 
 				// fill to ground
 				if (dist <= radius) {
-					this.replaceAirAndLiquidDownwards(world, TFBlocks.log.getDefaultState(), dx + 1, -1, dz + 1, sbb);
+					this.replaceAirAndLiquidDownwards(world, TFBlocks.twilight_log.getDefaultState(), dx + 1, -1, dz + 1, sbb);
 				}
 
 				// add vines

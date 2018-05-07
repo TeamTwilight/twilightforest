@@ -35,7 +35,7 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// make walls
-		this.fillWithBlocks(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giantObsidian.getDefaultState(), TFBlocks.giantObsidian.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.getDefaultState(), TFBlocks.giant_obsidian.getDefaultState(), false);
 
 		// clear inside
 		this.fillWithAir(world, sbb, 4, 4, 4, 7, 7, 7);

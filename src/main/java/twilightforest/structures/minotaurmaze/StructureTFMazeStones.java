@@ -18,7 +18,7 @@ public class StructureTFMazeStones extends StructureComponent.BlockSelector {
 		if (!wall) {
 			this.blockstate = Blocks.AIR.getDefaultState();
 		} else {
-			this.blockstate = TFBlocks.mazestone.getDefaultState();
+			this.blockstate = TFBlocks.maze_stone.getDefaultState();
 			float rf = par1Random.nextFloat();
 
 			if (rf < 0.2F) {

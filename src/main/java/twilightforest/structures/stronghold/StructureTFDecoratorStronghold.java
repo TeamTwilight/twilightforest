@@ -13,8 +13,8 @@ public class StructureTFDecoratorStronghold extends StructureTFDecorator {
 
 
 	public StructureTFDecoratorStronghold() {
-		this.blockState = TFBlocks.underBrick.getDefaultState();
-		this.accentState = TFBlocks.underBrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED);
+		this.blockState = TFBlocks.underbrick.getDefaultState();
+		this.accentState = TFBlocks.underbrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED);
 		this.fenceState = Blocks.COBBLESTONE_WALL.getDefaultState();
 		this.stairState = Blocks.STONE_BRICK_STAIRS.getDefaultState();
 		this.pillarState = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);

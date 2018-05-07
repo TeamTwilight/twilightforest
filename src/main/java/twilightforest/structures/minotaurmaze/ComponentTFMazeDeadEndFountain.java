@@ -27,7 +27,7 @@ public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 		super.addComponentParts(world, rand, sbb);
 
 		// back wall brick
-		this.fillWithBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, false);
 
 		// water
 		this.setBlockState(world, Blocks.FLOWING_WATER.getDefaultState(), 2, 3, 4, sbb);

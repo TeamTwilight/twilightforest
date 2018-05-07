@@ -98,8 +98,8 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	protected ResourceLocation getRequiredAchievement() {
-		return new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth");
+	protected ResourceLocation[] getRequiredAdvancements() {
+		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth") };
 	}
 
 	@Override

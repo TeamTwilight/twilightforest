@@ -54,7 +54,7 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 			}
 
 			if (chargeLevel >= 1 && counter % 10 == 0) {
-				((BlockTFTowerDevice) TFBlocks.towerDevice).sparkle(world, getPos());
+				((BlockTFTowerDevice) TFBlocks.tower_device).sparkle(world, getPos());
 
 				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 			}
@@ -66,7 +66,7 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 			}
 			if (chargeLevel >= 3) {
 				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.pos.getX() + 0.1 + rand.nextFloat() * 0.8, this.pos.getY() + 1.05, this.pos.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.05, (rand.nextFloat() - rand.nextFloat()) * 0.05);
-				((BlockTFTowerDevice) TFBlocks.towerDevice).sparkle(world, this.pos);
+				((BlockTFTowerDevice) TFBlocks.tower_device).sparkle(world, this.pos);
 				if (counter % 5 == 0) {
 					world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 1.5F, 2F, false);
 				}

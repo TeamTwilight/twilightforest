@@ -66,7 +66,7 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(TFBlocks.burntThorns);
+		return new ItemStack(TFBlocks.burnt_thorns);
 	}
 
 	@SideOnly(Side.CLIENT)

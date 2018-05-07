@@ -150,7 +150,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 			for (int dy = -2; dy <= 2; dy++) {
 				for (int dz = -2; dz <= 2; dz++) {
 					IBlockState state = world.getBlockState(pos.add(dx, dy, dz));
-					if (state.getBlock() == TFBlocks.towerDevice
+					if (state.getBlock() == TFBlocks.tower_device
 							&& state.getValue(VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
 						return true;
 					}
@@ -167,7 +167,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	public static void unlockBlock(World par1World, BlockPos pos) {
 		IBlockState thereState = par1World.getBlockState(pos);
 
-		if (thereState.getBlock() == TFBlocks.towerDevice || thereState.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
+		if (thereState.getBlock() == TFBlocks.tower_device || thereState.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
 			changeToBlockMeta(par1World, pos, thereState.withProperty(VARIANT, TowerDeviceVariant.VANISH_UNLOCKED));
 			par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
@@ -180,7 +180,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	private static void changeToBlockMeta(World par1World, BlockPos pos, IBlockState state) {
 		Block thereBlockID = par1World.getBlockState(pos).getBlock();
 
-		if (thereBlockID == TFBlocks.towerDevice || thereBlockID == TFBlocks.towerTranslucent) {
+		if (thereBlockID == TFBlocks.tower_device || thereBlockID == TFBlocks.tower_translucent) {
 			par1World.setBlockState(pos, state, 3);
 			par1World.markBlockRangeForRenderUpdate(pos, pos);
 			par1World.notifyNeighborsRespectDebug(pos, thereBlockID, false);
@@ -257,8 +257,8 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 				if (variant == TowerDeviceVariant.VANISH_ACTIVE) {
 					par1World.setBlockToAir(pos);
 				} else {
-					par1World.setBlockState(pos, TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REAPPEARING_INACTIVE));
-					par1World.scheduleUpdate(pos, TFBlocks.towerTranslucent, 80);
+					par1World.setBlockState(pos, TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REAPPEARING_INACTIVE));
+					par1World.scheduleUpdate(pos, TFBlocks.tower_translucent, 80);
 				}
 				par1World.notifyNeighborsRespectDebug(pos, this, false);
 				par1World.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
@@ -368,21 +368,21 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		IBlockState state = world.getBlockState(pos);
 		Block thereID = state.getBlock();
 
-		if (thereID == TFBlocks.towerDevice && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_INACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.VANISH_UNLOCKED) && !areNearbyLockBlocks(world, pos)) {
+		if (thereID == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_INACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.VANISH_UNLOCKED) && !areNearbyLockBlocks(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TowerDeviceVariant.VANISH_ACTIVE);
-		} else if (thereID == TFBlocks.towerDevice && state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_INACTIVE && !areNearbyLockBlocks(world, pos)) {
+		} else if (thereID == TFBlocks.tower_device && state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_INACTIVE && !areNearbyLockBlocks(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TowerDeviceVariant.REAPPEARING_ACTIVE);
-		} else if (thereID == TFBlocks.towerTranslucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_INACTIVE) {
+		} else if (thereID == TFBlocks.tower_translucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_INACTIVE) {
 			changeToActiveVanishBlock(world, pos, TowerTranslucentVariant.BUILT_ACTIVE);
 		}
 	}
 
 	public static void changeToActiveVanishBlock(World world, BlockPos pos, TowerDeviceVariant variant) {
-		changeToActiveVanishBlock(world, pos, TFBlocks.towerDevice.getDefaultState().withProperty(VARIANT, variant));
+		changeToActiveVanishBlock(world, pos, TFBlocks.tower_device.getDefaultState().withProperty(VARIANT, variant));
 	}
 
 	public static void changeToActiveVanishBlock(World world, BlockPos pos, TowerTranslucentVariant variant) {
-		changeToActiveVanishBlock(world, pos, TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, variant));
+		changeToActiveVanishBlock(world, pos, TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, variant));
 	}
 
 	/**
@@ -398,9 +398,9 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	 * We need variable, metadata-based tick rates
 	 */
 	private static int getTickRateFor(IBlockState state, Random rand) {
-		if (state.getBlock() == TFBlocks.towerDevice && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_ACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_ACTIVE)) {
+		if (state.getBlock() == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_ACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_ACTIVE)) {
 			return 2 + rand.nextInt(5);
-		} else if (state.getBlock() == TFBlocks.towerTranslucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_ACTIVE) {
+		} else if (state.getBlock() == TFBlocks.tower_translucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_ACTIVE) {
 			return 10;
 		}
 

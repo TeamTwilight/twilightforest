@@ -28,7 +28,7 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 	public TFBiomeFireflyForest(BiomeProperties props) {
 		super(props);
 
-		this.worldGenMushgloom = new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+		this.worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 		this.tfGenHangingLamps = new TFGenHangingLamps();
 		this.tfGenLampposts = new TFGenLampposts();
 

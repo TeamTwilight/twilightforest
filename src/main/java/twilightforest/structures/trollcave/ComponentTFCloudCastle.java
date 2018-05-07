@@ -76,9 +76,9 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// make haus
-		this.fillWithBlocks(world, sbb, 0, -4, 0, 15, -1, 15, TFBlocks.fluffyCloud.getDefaultState(), TFBlocks.fluffyCloud.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 11, 15, TFBlocks.giantCobble.getDefaultState(), TFBlocks.giantCobble.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 0, 12, 0, 15, 15, 15, TFBlocks.giantLog.getDefaultState(), TFBlocks.giantLog.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, -4, 0, 15, -1, 15, TFBlocks.fluffy_cloud.getDefaultState(), TFBlocks.fluffy_cloud.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 11, 15, TFBlocks.giant_cobblestone.getDefaultState(), TFBlocks.giant_cobblestone.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 12, 0, 15, 15, 15, TFBlocks.giant_log.getDefaultState(), TFBlocks.giant_log.getDefaultState(), false);
 
 
 		// clear inside

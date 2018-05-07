@@ -11,16 +11,14 @@
     },
     "frame": "goal"
   },
-  "parent": "twilightforest:progress_hydra",
+  "parent": "twilightforest:progress_lich",
   "criteria": {
     "trophy_pedestal": {
       "trigger": "twilightforest:placed_on_trophy_pedestal"
     },
     "kill_hydra": {
       "trigger": "twilightforest:has_advancement",
-      "conditions": {
-        "advancement": "twilightforest:progress_hydra"
-      }
+      "conditions": { "advancement": "twilightforest:progress_lich" }
     }
   }
 }

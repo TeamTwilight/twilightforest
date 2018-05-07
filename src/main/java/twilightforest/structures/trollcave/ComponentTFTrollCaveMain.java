@@ -28,7 +28,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public static final TFGenMyceliumBlob uberousGen = new TFGenMyceliumBlob(TFBlocks.uberousSoil, 4);
+	public static final TFGenMyceliumBlob uberousGen = new TFGenMyceliumBlob(TFBlocks.uberous_soil, 4);
 
 	public ComponentTFTrollCaveMain() {
 	}
@@ -168,7 +168,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 					if (dist > threshold) {
 						this.setBlockState(par1World, Blocks.AIR.getDefaultState(), x, y, z, par2StructureBoundingBox);
 					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlockStateFromPos(par1World, x, y, z, par2StructureBoundingBox).getBlock() == Blocks.STONE) {
-						this.setBlockState(par1World, TFBlocks.trollSteinn.getDefaultState(), x, y, z, par2StructureBoundingBox);
+						this.setBlockState(par1World, TFBlocks.trollsteinn.getDefaultState(), x, y, z, par2StructureBoundingBox);
 					}
 				}
 			}

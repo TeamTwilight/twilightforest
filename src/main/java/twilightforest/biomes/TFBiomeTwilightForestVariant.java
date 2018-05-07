@@ -31,8 +31,8 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(5) == 0) {
 			new WorldGenShrub(
-					TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.OAK),
-					TFBlocks.leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.OAK));
+					TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.OAK),
+					TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.OAK));
 		} else if (random.nextInt(10) == 0) {
 			return new WorldGenBigTree(false);
 		}
@@ -45,7 +45,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 		if (par1Random.nextInt(4) != 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
 		} else if (par1Random.nextBoolean()) {
-			return new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
+			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 		}

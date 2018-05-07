@@ -60,7 +60,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 			makeStripes(decoRNG, mural);
 		}
 
-		final IBlockState castleMagic = TFBlocks.castleMagic.getDefaultState()
+		final IBlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
 				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(1));
 
 		// copy mural to world

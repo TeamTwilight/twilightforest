@@ -81,7 +81,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 	private boolean canAnnihilate(BlockPos pos, IBlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		if (block == TFBlocks.deadrock || block == TFBlocks.castleBlock || (block == TFBlocks.castleMagic && state.getValue(BlockTFCastleMagic.COLOR) != EnumDyeColor.PURPLE) || block == TFBlocks.forceField || block == TFBlocks.thorns) {
+		if (block == TFBlocks.deadrock || block == TFBlocks.castle_brick || (block == TFBlocks.castle_rune_brick && state.getValue(BlockTFCastleMagic.COLOR) != EnumDyeColor.PURPLE) || block == TFBlocks.force_field || block == TFBlocks.thorns) {
 			return true;
 		}
 

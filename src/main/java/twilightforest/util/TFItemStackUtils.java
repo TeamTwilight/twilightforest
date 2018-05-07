@@ -1,9 +1,12 @@
 package twilightforest.util;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import twilightforest.compat.Baubles;
+import twilightforest.compat.TFCompat;
 
 import java.util.function.Predicate;
 
@@ -21,6 +24,9 @@ public class TFItemStackUtils {
 				consumedSome = true;
 			}
 		}
+
+		if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer)
+            consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
 
 		return consumedSome;
 	}

@@ -57,7 +57,7 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		super.addComponentParts(world, rand, sbb);
 
 		// door
-		final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState()
+		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 2);
 		this.fillWithBlocks(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
 		this.fillWithBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);

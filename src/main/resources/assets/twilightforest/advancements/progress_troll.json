@@ -1,33 +1,19 @@
 {
   "display": {
-    "icon": {
-      "item": "twilightforest:lamp_of_cinders"
-    },
-    "title": {
-      "translate": "advancement.twilight_progress_troll"
-    },
-    "description": {
-      "translate": "advancement.twilight_progress_troll.desc"
-    },
+    "icon"       : { "item"     : "twilightforest:lamp_of_cinders"           },
+    "title"      : { "translate": "advancement.twilight_progress_troll"      },
+    "description": { "translate": "advancement.twilight_progress_troll.desc" },
     "frame": "goal"
   },
-  "parent": "twilightforest:progress_glacier",
+  "parent": "twilightforest:progress_merge",
   "criteria": {
     "lamp": {
       "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "twilightforest:lamp_of_cinders"
-          }
-        ]
-      }
+      "conditions": { "items": [ { "item": "twilightforest:lamp_of_cinders" } ] }
     },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
-      "conditions": {
-        "advancement": "twilightforest:progress_glacier"
-      }
+      "conditions": { "advancement": "twilightforest:progress_merge" }
     }
   }
 }

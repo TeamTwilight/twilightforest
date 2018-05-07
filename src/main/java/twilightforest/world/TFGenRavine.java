@@ -218,7 +218,7 @@ public class TFGenRavine extends MapGenBase {
 		IBlockState top = biome.topBlock;
 		IBlockState filler = Blocks.DIRT.getDefaultState();
 
-		if (block == Blocks.STONE || block == TFBlocks.trollSteinn || block == Blocks.DIRT || block == Blocks.GRASS) {
+		if (block == Blocks.STONE || block == TFBlocks.trollsteinn || block == Blocks.DIRT || block == Blocks.GRASS) {
 			data.setBlockState(x, y, z, AIR);
 
 			if (foundTop && data.getBlockState(x, y - 1, z).getBlock() == filler.getBlock()) {

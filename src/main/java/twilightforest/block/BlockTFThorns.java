@@ -73,8 +73,8 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	@Override
 	protected boolean canConnectTo(IBlockState state, IBlockState otherState, IBlockAccess world, BlockPos pos, EnumFacing connectTo) {
 		return (otherState.getBlock() instanceof BlockTFThorns
-				|| otherState.getBlock() == TFBlocks.thornRose
-				||(otherState.getBlock() == TFBlocks.leaves3 && otherState.getValue(BlockTFLeaves3.VARIANT) == Leaves3Variant.THORN)
+				|| otherState.getBlock() == TFBlocks.thorn_rose
+				||(otherState.getBlock() == TFBlocks.twilight_leaves_3 && otherState.getValue(BlockTFLeaves3.VARIANT) == Leaves3Variant.THORN)
 				|| otherState.getMaterial() == Material.GRASS
 				|| otherState.getMaterial() == Material.GROUND)
 				|| super.canConnectTo(state, otherState, world, pos, connectTo);

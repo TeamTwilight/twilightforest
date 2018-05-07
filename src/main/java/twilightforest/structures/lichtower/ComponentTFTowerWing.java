@@ -2106,7 +2106,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		// near the middle
 		int startZ = 3 + rand.nextInt(this.size - 6);
 
-		final IBlockState magicBlock = TFBlocks.castleMagic.getDefaultState().withProperty(COLOR, colour);
+		final IBlockState magicBlock = TFBlocks.castle_rune_brick.getDefaultState().withProperty(COLOR, colour);
 
 		// make a line all the way down to the foundation
 		int dx = this.getXWithOffsetRotated(0, startZ, rotation);
@@ -2114,7 +2114,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		if (sbb.isVecInside(new BlockPos(dx, this.boundingBox.minY + 1, dz))) {
 			for (int dy = this.getYWithOffset(startHeight); dy > 0; dy--) {
 				final BlockPos pos = new BlockPos(dx, dy, dz);
-				if (world.getBlockState(pos).getBlock() == TFBlocks.castleBlock) {
+				if (world.getBlockState(pos).getBlock() == TFBlocks.castle_brick) {
 					world.setBlockState(pos, magicBlock, 2);
 				} else {
 					break;

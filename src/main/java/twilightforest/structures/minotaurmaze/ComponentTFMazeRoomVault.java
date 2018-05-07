@@ -28,8 +28,8 @@ public class ComponentTFMazeRoomVault extends ComponentTFMazeRoom {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// fill room with bricks
-		fillWithBlocks(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
-		fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, false);
+		fillWithBlocks(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
+		fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, false);
 
 		// 4x4 room in the middle
 		fillWithAir(world, sbb, 6, 2, 6, 9, 3, 9);

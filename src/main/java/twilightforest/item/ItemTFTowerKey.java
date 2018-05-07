@@ -18,7 +18,7 @@ public class ItemTFTowerKey extends ItemTF {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fx, float fy, float fz) {
 		IBlockState state = world.getBlockState(pos);
-		if (state.getBlock() == TFBlocks.towerDevice && state.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
+		if (state.getBlock() == TFBlocks.tower_device && state.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
 			if (!world.isRemote) {
 				BlockTFTowerDevice.unlockBlock(world, pos);
 				player.getHeldItem(hand).shrink(1);

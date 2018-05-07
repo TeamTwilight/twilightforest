@@ -113,7 +113,7 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(TFBlocks.forceField, 1, VALID_COLORS.indexOf(state.getValue(COLOR)));
+		return new ItemStack(TFBlocks.force_field, 1, VALID_COLORS.indexOf(state.getValue(COLOR)));
 	}
 
 	@SideOnly(Side.CLIENT)

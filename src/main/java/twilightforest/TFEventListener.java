@@ -52,6 +52,8 @@ import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.compat.Baubles;
+import twilightforest.compat.TFCompat;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.EntityTFPinchBeetle;
@@ -64,9 +66,7 @@ import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * So much of the mod logic in this one class
@@ -75,6 +75,7 @@ import java.util.UUID;
 public class TFEventListener {
 
 	private static Map<UUID, InventoryPlayer> playerKeepsMap = new HashMap<>();
+	private static Map<UUID, ItemStack[]> playerKeepsMapBaubles = new HashMap<>();
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
@@ -96,7 +97,7 @@ public class TFEventListener {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 
-			if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(TFBlocks.giantLog)) {
+			if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(TFBlocks.giant_log)) {
 				return true;
 			}
 		}
@@ -115,7 +116,7 @@ public class TFEventListener {
 			if (event.getDrops().get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
 				event.getDrops().remove(0);
 				if (amountOfCobbleToReplace == 64) {
-					event.getDrops().add(new ItemStack(TFBlocks.giantCobble));
+					event.getDrops().add(new ItemStack(TFBlocks.giant_cobblestone));
 				}
 
 				amountOfCobbleToReplace--;
@@ -265,6 +266,8 @@ public class TFEventListener {
 
 			InventoryPlayer keepInventory = new InventoryPlayer(null);
 
+            UUID playerUUID = player.getUniqueID();
+
 			if (tier1) {
 				keepAllArmor(player, keepInventory);
 				keepOffHand(player, keepInventory);
@@ -294,8 +297,13 @@ public class TFEventListener {
 				}
 			}
 
+            if (TFCompat.BAUBLES.isActivated()) {
+                ItemStack[] items = new ItemStack[Baubles.getSlotAmount(player)];
+                Baubles.keepBaubles(player, items);
+                playerKeepsMapBaubles.put(playerUUID, items);
+            }
 
-			playerKeepsMap.put(player.getUniqueID(), keepInventory);
+			playerKeepsMap.put(playerUUID, keepInventory);
 		}
 	}
 
@@ -371,6 +379,14 @@ public class TFEventListener {
 				player.world.playSound(player.posX + 0.5D, player.posY + 0.5D, player.posZ + 0.5D, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.HOSTILE, 1.5F, 1.0F, true);
 			}
 		}
+
+        if (TFCompat.BAUBLES.isActivated()) {
+		    if (keepInventory == null)
+                TwilightForestMod.LOGGER.debug("Player {} respawned and received baubles held in storage", player.getName());
+
+            ItemStack[] baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
+            if (baubles != null) Baubles.respawnBaubles(player, baubles);
+        }
 	}
 
 	/**
@@ -381,12 +397,24 @@ public class TFEventListener {
 		EntityPlayer player = event.player;
 		InventoryPlayer keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player %s but they logged out!  Items are being dropped.", player.getName());
+			TwilightForestMod.LOGGER.warn("Mod was keeping inventory items in reserve for player %s but they logged out! Items are being dropped.", player.getName());
 
 			// set player to the player logging out
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
+
+        if (TFCompat.BAUBLES.isActivated()) {
+		    if (keepInventory == null)
+                TwilightForestMod.LOGGER.warn("Mod was keeping bauble items in reserve for player %s but they logged out! Items are being dropped.", player.getName());
+
+            ItemStack[] baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
+
+            if (baubles != null)
+                for (ItemStack itemStack : baubles)
+                    if (!itemStack.isEmpty())
+                        player.dropItem(itemStack, true, false);
+        }
 	}
 
 	/**
@@ -504,7 +532,7 @@ public class TFEventListener {
 	private static boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
 
-		if (block == TFBlocks.towerDevice || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
+		if (block == TFBlocks.tower_device || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
 				|| block == Blocks.STONE_BUTTON || block == Blocks.WOODEN_BUTTON || block == Blocks.LEVER) {
 			return true;
 		} else {
@@ -529,7 +557,7 @@ public class TFEventListener {
 				// what feature is nearby?  is it one the player has not unlocked?
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAchievement(player) && chunkProvider.isBlockProtected(pos)) {
+				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkProvider.isBlockProtected(pos)) {
 					
 					// send protection packet
 					StructureBoundingBox sbb = chunkProvider.getSBBAt(pos);
@@ -570,7 +598,7 @@ public class TFEventListener {
 				// what feature is nearby?  is it one the player has not unlocked?
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), event.getEntityLiving().world);
 
-				if (!nearbyFeature.doesPlayerHaveRequiredAchievement((EntityPlayer) event.getSource().getTrueSource())) {
+				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements((EntityPlayer) event.getSource().getTrueSource())) {
 					event.setResult(Result.DENY);
 					event.setCanceled(true);
 					

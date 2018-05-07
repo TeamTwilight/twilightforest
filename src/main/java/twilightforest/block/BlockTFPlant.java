@@ -183,7 +183,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			// can always hang below dirt blocks
 			return true;
 		} else {
-			return (state.getBlock() == TFBlocks.plant && state.getValue(BlockTFPlant.VARIANT) == PlantVariant.ROOT_STRAND)
+			return (state.getBlock() == TFBlocks.twilight_plant && state.getValue(BlockTFPlant.VARIANT) == PlantVariant.ROOT_STRAND)
 					|| state == TFBlocks.root.getDefaultState();
 		}
 	}

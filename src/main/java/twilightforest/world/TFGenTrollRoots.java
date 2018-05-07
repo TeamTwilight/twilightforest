@@ -17,9 +17,9 @@ public class TFGenTrollRoots extends TFGenerator {
 		for (; pos.getY() > 5; pos = pos.down()) {
 			if (par1World.isAirBlock(pos) && BlockTFTrollRoot.canPlaceRootBelow(par1World, pos.up()) && par2Random.nextInt(6) > 0) {
 				if (par2Random.nextInt(10) == 0) {
-					par1World.setBlockState(pos, TFBlocks.unripeTrollBer.getDefaultState());
+					par1World.setBlockState(pos, TFBlocks.unripe_trollber.getDefaultState());
 				} else {
-					par1World.setBlockState(pos, TFBlocks.trollVidr.getDefaultState());
+					par1World.setBlockState(pos, TFBlocks.trollvidr.getDefaultState());
 				}
 			} else {
 				pos = new BlockPos(

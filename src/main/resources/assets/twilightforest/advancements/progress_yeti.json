@@ -11,31 +11,19 @@
     },
     "frame": "goal"
   },
-  "parent": "twilightforest:progress_ur_ghast",
+  "parent": "twilightforest:progress_lich",
   "criteria": {
     "yeti": {
       "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": {
-          "type": "twilightforest:yeti_alpha"
-        }
-      }
+      "conditions": { "entity": { "type": "twilightforest:yeti_alpha" } }
     },
     "fur": {
       "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "twilightforest:alpha_fur"
-          }
-        ]
-      }
+      "conditions": { "items": [  { "item": "twilightforest:alpha_fur" } ] }
     },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
-      "conditions": {
-        "advancement": "twilightforest:progress_ur_ghast"
-      }
+      "conditions": { "advancement": "twilightforest:progress_lich" }
     }
   },
   "requirements": [

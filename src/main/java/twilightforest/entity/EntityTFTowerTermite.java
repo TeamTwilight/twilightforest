@@ -144,7 +144,7 @@ public class EntityTFTowerTermite extends EntityMob {
 					BlockPos blockpos = (new BlockPos(this.silverfish.posX, this.silverfish.posY + 0.5D, this.silverfish.posZ)).offset(this.facing);
 					IBlockState iblockstate = this.silverfish.world.getBlockState(blockpos);
 
-					if (iblockstate == TFBlocks.towerWood.getDefaultState()) // TF - Change block check
+					if (iblockstate == TFBlocks.tower_wood.getDefaultState()) // TF - Change block check
 					{
 						this.doMerge = true;
 						return true;
@@ -174,10 +174,10 @@ public class EntityTFTowerTermite extends EntityMob {
 				BlockPos blockpos = (new BlockPos(this.silverfish.posX, this.silverfish.posY + 0.5D, this.silverfish.posZ)).offset(this.facing);
 				IBlockState iblockstate = world.getBlockState(blockpos);
 
-				if (iblockstate == TFBlocks.towerWood.getDefaultState()) // TF - Change block check
+				if (iblockstate == TFBlocks.tower_wood.getDefaultState()) // TF - Change block check
 				{
 					// TF - Change block type
-					world.setBlockState(blockpos, TFBlocks.towerWood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED), 3);
+					world.setBlockState(blockpos, TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED), 3);
 					this.silverfish.spawnExplosionParticle();
 					this.silverfish.setDead();
 				}
@@ -224,13 +224,13 @@ public class EntityTFTowerTermite extends EntityMob {
 							BlockPos blockpos1 = blockpos.add(j, i, k);
 							IBlockState iblockstate = world.getBlockState(blockpos1);
 
-							if (iblockstate == TFBlocks.towerWood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED)) // TF - Change block check
+							if (iblockstate == TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED)) // TF - Change block check
 							{
 								if (world.getGameRules().getBoolean("mobGriefing")) {
 									world.destroyBlock(blockpos1, true);
 								} else {
 									// TF - reset to normal tower wood
-									world.setBlockState(blockpos1, TFBlocks.towerWood.getDefaultState(), 3);
+									world.setBlockState(blockpos1, TFBlocks.tower_wood.getDefaultState(), 3);
 								}
 
 								if (random.nextBoolean()) {

@@ -44,10 +44,10 @@ public class TFGenThorns extends TFGenerator {
 					if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
 						if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 							// leaf
-							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.leaves3.getDefaultState());
+							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.twilight_leaves_3.getDefaultState());
 						} else {
 							// rose
-							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.thornRose.getDefaultState());
+							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.thorn_rose.getDefaultState());
 						}
 					}
 				}
@@ -90,7 +90,7 @@ public class TFGenThorns extends TFGenerator {
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 
 			if (world.isAirBlock(nextPos)) {
-				this.setBlockAndNotifyAdequately(world, nextPos, TFBlocks.leaves3.getDefaultState());
+				this.setBlockAndNotifyAdequately(world, nextPos, TFBlocks.twilight_leaves_3.getDefaultState());
 			}
 		}
 	}

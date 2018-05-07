@@ -16,6 +16,7 @@ import twilightforest.enums.*;
         @Optional.Interface(modid = "chisel", iface = "team.chisel.api.IMC")
 })
 public enum TFCompat {
+    BAUBLES("Baubles") {},
     CHISEL("Chisel") {
         @Override
         public void init() {
@@ -28,25 +29,25 @@ public enum TFCompat {
             addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.nagastone_pillar_weathered));
 
             for (MazestoneVariant variant : MazestoneVariant.values())
-                addBlockToCarvingGroup("mazestone", new ItemStack(TFBlocks.mazestone, 1, variant.ordinal()));
+                addBlockToCarvingGroup("mazestone", new ItemStack(TFBlocks.maze_stone, 1, variant.ordinal()));
 
             for (UnderBrickVariant variant : UnderBrickVariant.values())
-                addBlockToCarvingGroup("underbrick", new ItemStack(TFBlocks.underBrick, 1, variant.ordinal()));
+                addBlockToCarvingGroup("underbrick", new ItemStack(TFBlocks.underbrick, 1, variant.ordinal()));
 
             for (TowerWoodVariant variant : TowerWoodVariant.values())
-                addBlockToCarvingGroup("towerwood", new ItemStack(TFBlocks.towerWood, 1, variant.ordinal()));
+                addBlockToCarvingGroup("towerwood", new ItemStack(TFBlocks.tower_wood, 1, variant.ordinal()));
 
             for (DeadrockVariant variant : DeadrockVariant.values())
                 addBlockToCarvingGroup("deadrock", new ItemStack(TFBlocks.deadrock, 1, variant.ordinal()));
 
             for (CastleBrickVariant variant : CastleBrickVariant.values())
-                addBlockToCarvingGroup("castlebrick", new ItemStack(TFBlocks.castleBlock, 1, variant.ordinal()));
+                addBlockToCarvingGroup("castlebrick", new ItemStack(TFBlocks.castle_brick, 1, variant.ordinal()));
 
             for (int i = 0; i < 4; i++)
-                addBlockToCarvingGroup("castlebrick", new ItemStack(TFBlocks.castlePillar, 1, i));
+                addBlockToCarvingGroup("castlebrick", new ItemStack(TFBlocks.castle_pillar, 1, i));
 
-            addBlockToCarvingGroup("castlebrickstairs", new ItemStack(TFBlocks.castleStairs, 1, 0));
-            addBlockToCarvingGroup("castlebrickstairs", new ItemStack(TFBlocks.castleStairs, 1, 8));
+            addBlockToCarvingGroup("castlebrickstairs", new ItemStack(TFBlocks.castle_stairs, 1, 0));
+            addBlockToCarvingGroup("castlebrickstairs", new ItemStack(TFBlocks.castle_stairs, 1, 8));
         }
 
         private void addBlockToCarvingGroup(String group, ItemStack stack) {
@@ -56,9 +57,7 @@ public enum TFCompat {
             FMLInterModComms.sendMessage(ChiselAPIProps.MOD_ID, IMC.ADD_VARIATION_V2.toString(), nbt);
         }
     }, // TODO Forestry
-    JEI("Just Enough Items") {
-
-    },
+    JEI("Just Enough Items") {},
     @SuppressWarnings("WeakerAccess")
     TCONSTRUCT("Tinkers' Construct") {
         @Override
@@ -69,6 +68,11 @@ public enum TFCompat {
         @Override
         protected void init() {
             TConstruct.init();
+        }
+
+        @Override
+        protected void postInit() {
+            TConstruct.postInit();
         }
     },
     THAUMCRAFT("Thaumcraft") {
@@ -85,6 +89,10 @@ public enum TFCompat {
     final private String modName;
 
     private boolean isActivated = false;
+
+    public boolean isActivated() {
+        return isActivated;
+    }
 
     TFCompat(String modName) {
         this.modName = modName;

@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.TFClientEvents;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class RegisterBlockEvent {
@@ -133,9 +132,9 @@ public final class RegisterBlockEvent {
 	public static final ResourceLocation essenceFieryFlow = new ResourceLocation(TwilightForestMod.ID,"blocks/fluid_fiery_flow");
 
 	static {
-		moltenFiery       = registerFluid(new Fluid("fierymetal" , moltenFieryStill, moltenFieryFlow).setTemperature(9001).setLuminosity(15));
-		moltenKnightmetal = registerFluid(new Fluid("knightmetal", moltenKnightmetalStill, moltenKnightmetalFlow).setTemperature(700));
-		essenceFiery      = registerFluid(new Fluid("fiery_essence", essenceFieryStill, essenceFieryFlow).setTemperature(9001));
+		moltenFiery       = registerFluid(new Fluid("fierymetal" , moltenFieryStill, moltenFieryFlow).setTemperature(1000).setLuminosity(15));
+		moltenKnightmetal = registerFluid(new Fluid("knightmetal", moltenKnightmetalStill, moltenKnightmetalFlow).setTemperature(1000).setLuminosity(15));
+		essenceFiery      = registerFluid(new Fluid("fiery_essence", essenceFieryStill, essenceFieryFlow).setTemperature(1000));
 	}
 
 	private static Fluid registerFluid(Fluid fluidIn) {

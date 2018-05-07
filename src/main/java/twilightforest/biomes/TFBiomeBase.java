@@ -32,6 +32,7 @@ import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -200,17 +201,16 @@ public class TFBiomeBase extends Biome {
 	 * Does the player have the achievement needed to be in this biome?
 	 */
 	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
-		if (getRequiredAchievement() != null) {
-			return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, getRequiredAchievement());
-		} else {
-			return true;
-		}
+        for (ResourceLocation advancementLocation : getRequiredAdvancements())
+            if (!TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancementLocation))
+                return false;
+
+        return true;
 	}
 
-	@Nullable
-	protected ResourceLocation getRequiredAchievement() {
-		return null;
-	}
+    protected ResourceLocation[] getRequiredAdvancements() {
+        return new ResourceLocation[0];
+    }
 
 	/**
 	 * Do something bad to a player in the wrong biome.

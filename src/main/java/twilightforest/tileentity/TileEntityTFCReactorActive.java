@@ -53,8 +53,8 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 
 			if (counter % 5 == 0) {
 				if (counter == 5) {
-					IBlockState fakeGold = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_GOLD);
-					IBlockState fakeDiamond = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_DIAMOND);
+					IBlockState fakeGold = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_GOLD);
+					IBlockState fakeDiamond = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_DIAMOND);
 
 					// transformation!
 					world.setBlockState(pos.add(1, 1, 1), fakeDiamond, 2);
@@ -99,7 +99,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 					drawBlob(this.pos, (primary - offset) / 40, Blocks.AIR.getDefaultState(), primary - offset, false);
 				}
 				if (primary <= 200) {
-					drawBlob(this.pos, primary / 40, TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REACTOR_DEBRIS), counter, false);
+					drawBlob(this.pos, primary / 40, TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REACTOR_DEBRIS), counter, false);
 				}
 
 				// secondary burst

@@ -80,8 +80,8 @@ public class TFBiomeSnow extends TFBiomeBase {
 	}
 
 	@Override
-	protected ResourceLocation getRequiredAchievement() {
-		return new ResourceLocation(TwilightForestMod.ID, "progress_ur_ghast");
+	protected ResourceLocation[] getRequiredAdvancements() {
+		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_lich") };
 	}
 
 	@Override

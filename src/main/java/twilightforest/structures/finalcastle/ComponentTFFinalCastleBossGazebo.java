@@ -1,12 +1,7 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockStandingSign;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -39,9 +34,9 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.castleMagic.getDefaultState().withProperty(BlockTFCastleMagic.COLOR, EnumDyeColor.BLUE);
+		this.deco.blockState = TFBlocks.castle_rune_brick.getDefaultState().withProperty(BlockTFCastleMagic.COLOR, EnumDyeColor.BLUE);
 
-		this.deco.fenceState = TFBlocks.forceField.getDefaultState().withProperty(BlockTFForceField.COLOR, EnumDyeColor.PURPLE);
+		this.deco.fenceState = TFBlocks.force_field.getDefaultState().withProperty(BlockTFForceField.COLOR, EnumDyeColor.PURPLE);
 	}
 
 	@Override

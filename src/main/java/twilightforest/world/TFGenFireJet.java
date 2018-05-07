@@ -30,7 +30,7 @@ public class TFGenFireJet extends TFGenerator {
 					&& world.getBlockState(dPos.east().down()).getMaterial() == Material.GRASS && world.getBlockState(dPos.west().down()).getMaterial() == Material.GRASS
 					&& world.getBlockState(dPos.south().down()).getMaterial() == Material.GRASS && world.getBlockState(dPos.north().down()).getMaterial() == Material.GRASS) {
 				// jet
-				world.setBlockState(dPos.down(), TFBlocks.fireJet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, variant), 0);
+				world.setBlockState(dPos.down(), TFBlocks.fire_jet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, variant), 0);
 
 				// create reservoir with stone walls
 				for (int rx = -2; rx <= 2; rx++) {

@@ -77,7 +77,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
 			// wood
-			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);
+			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);
 			// then treasure chest
 			// which direction is this chest in?
 			this.placeTreasureAtCurrentPosition(world, random, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
@@ -86,7 +86,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 			setSpawner(world, radius, radius, radius, sbb, EntityList.getKey(EntityTFSwarmSpider.class));
 		} else {
 			// hollow sphere of leaves on the outside
-			drawHollowBlob(world, sbb, radius, radius, radius, 4, 2, TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false), true);
+			drawHollowBlob(world, sbb, radius, radius, radius, 4, 2, TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false), true);
 		}
 		return true;
 	}

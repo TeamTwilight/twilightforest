@@ -41,7 +41,7 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 	public float getStrVsBlock(ItemStack stack, IBlockState state) {
 		float strVsBlock = super.getStrVsBlock(stack, state);
 		// extra 64X strength vs giant obsidian
-		strVsBlock *= (state.getBlock() == TFBlocks.giantObsidian) ? 64 : 1;
+		strVsBlock *= (state.getBlock() == TFBlocks.giant_obsidian) ? 64 : 1;
 		// 64x strength vs giant blocks
 		return state.getBlock() instanceof BlockTFGiantBlock ? strVsBlock * 64 : strVsBlock;
 	}

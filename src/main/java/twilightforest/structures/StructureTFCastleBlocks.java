@@ -26,7 +26,7 @@ public class StructureTFCastleBlocks extends StructureComponent.BlockSelector {
 				variant = CastleBrickVariant.NORMAL;
 			}
 
-			blockstate = TFBlocks.castleBlock.getDefaultState().withProperty(BlockTFCastleBlock.VARIANT, variant);
+			blockstate = TFBlocks.castle_brick.getDefaultState().withProperty(BlockTFCastleBlock.VARIANT, variant);
 		}
 	}
 

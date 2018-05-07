@@ -168,12 +168,12 @@ public class TFGenCaves extends MapGenCaves {
 												hitGrass = true;
 											}
 
-											if (blockAt != null && (blockAt == Blocks.STONE || blockAt == TFBlocks.trollSteinn || blockStateAt.getMaterial() == Material.GROUND || blockStateAt.getMaterial() == Material.GRASS)) {
+											if (blockAt != null && (blockAt == Blocks.STONE || blockAt == TFBlocks.trollsteinn || blockStateAt.getMaterial() == Material.GROUND || blockStateAt.getMaterial() == Material.GRASS)) {
 												if (var59 * var59 + var51 * var51 + var46 * var46 < 0.85D) {
 													final IBlockState state = (caveY < 10 ? Blocks.WATER : Blocks.AIR).getDefaultState();
 													blockStorage.setBlockState(genX, caveY, genZ, state);
 												} else {
-													Block localBlock = mossRNG.nextInt(6) == 0 ? TFBlocks.trollSteinn : Blocks.STONE;
+													Block localBlock = mossRNG.nextInt(6) == 0 ? TFBlocks.trollsteinn : Blocks.STONE;
 													localBlock = isHighlands ? localBlock : Blocks.DIRT;
 													localBlock = hitGrass ? Blocks.GRASS : localBlock;
 													blockStorage.setBlockState(genX, caveY, genZ, localBlock.getDefaultState());

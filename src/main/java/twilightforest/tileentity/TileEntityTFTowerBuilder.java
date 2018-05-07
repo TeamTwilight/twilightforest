@@ -29,7 +29,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 
 	private EntityPlayer trackedPlayer;
 
-	private IBlockState blockBuiltState = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.BUILT_INACTIVE);
+	private IBlockState blockBuiltState = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.BUILT_INACTIVE);
 
 	/**
 	 * Start building stuffs
@@ -82,8 +82,8 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 			this.trackedPlayer = null;
 			if (++ticksStopped == 60) {
 				// force the builder back into an inactive state
-				world.setBlockState(getPos(), TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
-				world.scheduleUpdate(getPos(), TFBlocks.towerDevice, 4);
+				world.setBlockState(getPos(), TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
+				world.scheduleUpdate(getPos(), TFBlocks.tower_device, 4);
 			}
 		}
 	}

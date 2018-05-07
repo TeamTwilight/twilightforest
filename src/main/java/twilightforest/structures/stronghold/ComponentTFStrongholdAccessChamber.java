@@ -72,7 +72,7 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		this.setBlockState(world, deco.pillarState, 2, 0, 2, sbb);
 
 		// pedestal
-		final IBlockState blockstateIn = TFBlocks.trophyPedestal
+		final IBlockState blockstateIn = TFBlocks.trophy_pedestal
 				.getDefaultState()
 				.withProperty(BlockTFTrophyPedestal.LATENT, true)
 				//TODO: Atomic: Verify this facing.
@@ -80,7 +80,7 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		this.setBlockState(world, blockstateIn, 2, 1, 2, sbb);
 
 		// block point
-		this.fillWithBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.shield.getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.stronghold_shield.getDefaultState(), AIR, false);
 
 		return true;
 	}

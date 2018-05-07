@@ -117,7 +117,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 		if (!drawLeaves)
 		{
-			IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			IBlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY() + 1, rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		}
@@ -192,7 +192,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
-						final IBlockState leaves = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+						final IBlockState leaves = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz + dz, sbb);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz - dz, sbb);
 						placeLeafBlock(world, leaves, sx - dx, sy + dy, sz + dz, sbb);
@@ -217,7 +217,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 		if (!drawLeaves)
 		{
-			IBlockState log = TFBlocks.log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			IBlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, sx, sy, sz, branchDest.getX(), branchDest.getY(), branchDest.getZ(), log);
 		}
 		else

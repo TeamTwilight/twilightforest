@@ -72,12 +72,12 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(TFBlocks.auroraSlab);
+		return Item.getItemFromBlock(TFBlocks.aurora_slab);
 	}
 
 	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(TFBlocks.auroraSlab), 2, 0);
+		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab), 2, 0);
 	}
 
 	@Override

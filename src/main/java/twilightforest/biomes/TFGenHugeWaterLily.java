@@ -26,7 +26,7 @@ public class TFGenHugeWaterLily extends WorldGenerator {
 			);
 
 			if (shouldPlacePadAt(world, pos_)) {
-				world.setBlockState(pos_, TFBlocks.hugeWaterLily.getDefaultState());
+				world.setBlockState(pos_, TFBlocks.huge_waterlily.getDefaultState());
 			}
 		}
 

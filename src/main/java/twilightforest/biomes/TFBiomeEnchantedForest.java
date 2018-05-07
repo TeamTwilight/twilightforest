@@ -93,7 +93,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		if (par1Random.nextInt(3) > 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
 		} else if (par1Random.nextInt(3) == 0) {
-			return new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FIDDLEHEAD));
+			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FIDDLEHEAD));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 		}

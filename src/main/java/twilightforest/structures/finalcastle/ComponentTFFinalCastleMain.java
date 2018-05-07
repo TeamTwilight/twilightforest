@@ -284,7 +284,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		fillWithRandomizedBlocks(world, sbb, 1, 20, 1, 47, 20, 47, false, rand, deco.randomBlocks);
 
 		// force field around dungeon stairs
-		IBlockState fieldBlock = TFBlocks.forceField.getDefaultState().withProperty(BlockTFForceField.COLOR, EnumDyeColor.PINK);
+		IBlockState fieldBlock = TFBlocks.force_field.getDefaultState().withProperty(BlockTFForceField.COLOR, EnumDyeColor.PINK);
 		this.fillWithBlocks(world, sbb, 12, 1, 12, 24, 10, 12, fieldBlock, fieldBlock, false);
 		this.fillWithBlocks(world, sbb, 12, 1, 12, 12, 10, 24, fieldBlock, fieldBlock, false);
 		this.fillWithBlocks(world, sbb, 24, 1, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
@@ -293,7 +293,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		this.fillWithBlocks(world, sbb, 12, 10, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
 
 		// doors in dungeon force field
-		final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState();
+		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState();
 		this.fillWithBlocks(world, sbb, 17, 1, 12, 19, 4, 12, castleDoor.withProperty(LOCK_INDEX, 2), AIR, false);
 		this.fillWithBlocks(world, sbb, 17, 1, 24, 19, 4, 24, castleDoor.withProperty(LOCK_INDEX, 2), AIR, false);
 

@@ -28,7 +28,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 
 		// generate!
 		for (int dy = 0; dy < height - 2; dy++) {
-			this.setBlockAndNotifyAdequately(world, pos.up(dy), TFBlocks.hugeGloomBlock.getDefaultState().withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.STEM));
+			this.setBlockAndNotifyAdequately(world, pos.up(dy), TFBlocks.huge_mushgloom.getDefaultState().withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.STEM));
 		}
 
 		makeMushroomCap(world, pos.up(height - 2));
@@ -40,7 +40,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 	}
 
 	private void makeMushroomCap(World world, BlockPos pos) {
-		IBlockState defState = TFBlocks.hugeGloomBlock.getDefaultState();
+		IBlockState defState = TFBlocks.huge_mushgloom.getDefaultState();
 		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
 		this.setBlockAndNotifyAdequately(world, pos.add(0, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH));
 		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));

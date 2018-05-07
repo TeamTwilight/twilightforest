@@ -158,7 +158,7 @@ public class EntityTFIceExploder extends EntityMob {
 
 
 	private boolean shouldTransformGlass(IBlockState state, BlockPos pos) {
-		return state.getBlock() != Blocks.AIR && this.isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.auroraBlock);
+		return state.getBlock() != Blocks.AIR && this.isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.aurora_block);
 	}
 
 

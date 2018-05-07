@@ -1,6 +1,5 @@
 package twilightforest;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -116,7 +115,7 @@ public class TFTickHandler {
 
 			TFFeature nearFeature = TFFeature.getFeatureForRegion(center.getX() >> 4, center.getZ() >> 4, world);
 
-			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAchievement(player)) {
+			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
 				sendAllClearPacket(world, player);
 				return false;
 			} else {

@@ -81,7 +81,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		if (par1Random.nextInt(4) == 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
 		} else if (par1Random.nextInt(4) == 0) {
-			return new TFGenTallGrass(TFBlocks.plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
+			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 		}
@@ -137,8 +137,8 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	protected ResourceLocation getRequiredAchievement() {
-		return new ResourceLocation(TwilightForestMod.ID, "progress_lich");
+	protected ResourceLocation[] getRequiredAdvancements() {
+		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_lich") };
 	}
 
 	@Override

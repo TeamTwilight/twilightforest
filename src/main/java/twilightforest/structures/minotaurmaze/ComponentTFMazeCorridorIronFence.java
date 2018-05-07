@@ -23,8 +23,8 @@ public class ComponentTFMazeCorridorIronFence extends ComponentTFMazeCorridor {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		this.fillWithBlocks(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
-		this.fillWithBlocks(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED), AIR, false);
 		this.fillWithBlocks(world, sbb, 2, 1, 2, 3, 3, 3, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		return true;
 	}

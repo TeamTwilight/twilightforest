@@ -38,8 +38,8 @@ public class ComponentTFMazeRoom extends StructureTFComponentOld {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// floor border
-		fillWithBlocks(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BORDER), AIR, true);
-		fillWithBlocks(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), AIR, true);
+		fillWithBlocks(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BORDER), AIR, true);
+		fillWithBlocks(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), AIR, true);
 
 		// doorways
 		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {

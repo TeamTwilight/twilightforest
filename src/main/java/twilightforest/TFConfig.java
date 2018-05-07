@@ -63,7 +63,7 @@ public class TFConfig {
 
 		@Config.LangKey(config + "leaves_light_opacity")
 		@Config.RangeInt(min = 0, max = 255)
-		@Config.Comment("If leaves are not full cubes, this controls the opacity of leaves to control amount of light blocking.")
+		@Config.Comment("If leaves are not full cubes, this controls the opacity of twilight_leaves to control amount of light blocking.")
 		public int leavesLightOpacity = 1;
 
 		@Config.LangKey(config + "leaves_full_cube")

@@ -6,7 +6,7 @@ import net.minecraft.util.DamageSource;
 
 public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
 	public EntityTFSnowQueenIceShield(EntityTFSnowQueen goblin) {
-		super(goblin, "shield", 0.75F, 0.75F);
+		super(goblin, "stronghold_shield", 0.75F, 0.75F);
 	}
 
 	@Override

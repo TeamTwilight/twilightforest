@@ -72,7 +72,7 @@ public class EntityTFMazeSlime extends EntitySlime {
 			// EnumParticleTypes enumparticletypes = this.getParticleType();
 			double d0 = this.posX + (double) f2;
 			double d1 = this.posZ + (double) f3;
-			IBlockState state = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
+			IBlockState state = TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
 			world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, d0, this.getEntityBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D, Block.getStateId(state));
 		}
 		return true;

@@ -61,7 +61,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 	private boolean burnBlock(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		if (state.getBlock() == TFBlocks.thorns) {
-			world.setBlockState(pos, TFBlocks.burntThorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, state.getValue(BlockRotatedPillar.AXIS)));
+			world.setBlockState(pos, TFBlocks.burnt_thorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, state.getValue(BlockRotatedPillar.AXIS)));
 			return true;
 		} else {
 			return false;

@@ -20,9 +20,9 @@ public class TFGenHollowTree extends TFGenerator {
 
 	private static final int LEAF_DUNGEON_CHANCE = 8;
 
-	protected IBlockState treeState = TFBlocks.log.getDefaultState();
+	protected IBlockState treeState = TFBlocks.twilight_log.getDefaultState();
 	protected IBlockState branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-	protected IBlockState leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+	protected IBlockState leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 	protected IBlockState rootState = TFBlocks.root.getDefaultState();
 
 	public TFGenHollowTree() {

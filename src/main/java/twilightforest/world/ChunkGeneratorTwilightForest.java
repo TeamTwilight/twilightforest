@@ -617,14 +617,14 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 
 						if (dist < 7 || cv < 0.05F) {
 
-							primer.setBlockState(lx, y, lz, TFBlocks.wispyCloud.getDefaultState());
+							primer.setBlockState(lx, y, lz, TFBlocks.wispy_cloud.getDefaultState());
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffyCloud.getDefaultState());
+								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffy_cloud.getDefaultState());
 							}
-							primer.setBlockState(lx, y - depth, lz, TFBlocks.wispyCloud.getDefaultState());
+							primer.setBlockState(lx, y - depth, lz, TFBlocks.wispy_cloud.getDefaultState());
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffyCloud.getDefaultState());
+								primer.setBlockState(lx, y - d, lz, TFBlocks.fluffy_cloud.getDefaultState());
 							}
 						}
 					}
@@ -756,7 +756,7 @@ public class ChunkGeneratorTwilightForest implements IChunkGenerator {
 						treeBottom -= noise;
 
 						for (int y = treeBottom; y < treeTop; y++) {
-							primer.setBlockState(x, y, z, TFBlocks.darkleaves.getDefaultState());
+							primer.setBlockState(x, y, z, TFBlocks.dark_leaves.getDefaultState());
 						}
 					}
 				}

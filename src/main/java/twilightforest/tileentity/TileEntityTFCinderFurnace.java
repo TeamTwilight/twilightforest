@@ -100,8 +100,8 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 		if (this.world.isBlockLoaded(pos)) {
 			Block nearbyBlock = this.getWorld().getBlockState(pos).getBlock();
 
-			if (nearbyBlock != TFBlocks.cinderLog && this.isLog(nearbyBlock)) {
-				this.getWorld().setBlockState(pos, TFBlocks.cinderLog.getDefaultState().withProperty(BlockTFCinderLog.LOG_AXIS, getCinderFacing(dx, dy, dz)), 2);
+			if (nearbyBlock != TFBlocks.cinder_log && this.isLog(nearbyBlock)) {
+				this.getWorld().setBlockState(pos, TFBlocks.cinder_log.getDefaultState().withProperty(BlockTFCinderLog.LOG_AXIS, getCinderFacing(dx, dy, dz)), 2);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playSound(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -163,7 +163,7 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
 					BlockPos pos = getPos().add(dx, dy, dz);
-					if (this.world.isBlockLoaded(pos) && this.getWorld().getBlockState(pos).getBlock() == TFBlocks.cinderLog) {
+					if (this.world.isBlockLoaded(pos) && this.getWorld().getBlockState(pos).getBlock() == TFBlocks.cinder_log) {
 						count++;
 					}
 				}

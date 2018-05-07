@@ -231,7 +231,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
 			if (replaceWith.getBlock() != Blocks.AIR) {
-				replaceWith = TFBlocks.towerTranslucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REVERTER_REPLACEMENT);
+				replaceWith = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REVERTER_REPLACEMENT);
 			}
 
 			world.setBlockState(pos, replaceWith, 2);
@@ -249,11 +249,11 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 	}
 
 	private boolean isUnrevertable(IBlockState stateThere, IBlockState replaceWith) {
-		if (stateThere.getBlock() == TFBlocks.towerDevice || replaceWith.getBlock() == TFBlocks.towerDevice) {
+		if (stateThere.getBlock() == TFBlocks.tower_device || replaceWith.getBlock() == TFBlocks.tower_device) {
 			return true;
 		}
-		if ((stateThere.getBlock() == TFBlocks.towerTranslucent && stateThere.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)
-				|| (replaceWith.getBlock() == TFBlocks.towerTranslucent && replaceWith.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)) {
+		if ((stateThere.getBlock() == TFBlocks.tower_translucent && stateThere.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)
+				|| (replaceWith.getBlock() == TFBlocks.tower_translucent && replaceWith.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)) {
 			return true;
 		}
 		if (stateThere.getBlock() == Blocks.REDSTONE_LAMP && replaceWith.getBlock() == Blocks.LIT_REDSTONE_LAMP) {

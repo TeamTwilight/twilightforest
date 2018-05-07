@@ -91,7 +91,7 @@ public class ModelTFLich extends ModelBiped {
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		EntityTFLich lich = (EntityTFLich) entity;
 
-		// on regular pass, render everything about the master lich except the shield
+		// on regular pass, render everything about the master lich except the stronghold_shield
 		if (!renderPass) {
 			if (!lich.isShadowClone()) {
 				super.render(entity, f, f1, f2, f3, f4, f5 * 1.125F);
@@ -99,7 +99,7 @@ public class ModelTFLich extends ModelBiped {
 				cloak.render(f5 * 1.125F);
 			}
 		} else {
-			// on the special render pass, render the shadow clone and the shield
+			// on the special render pass, render the shadow clone and the stronghold_shield
 			if (lich.isShadowClone()) {
 //    	        GL11.glDisable(GL11.GL_DEPTH_TEST);
 
@@ -130,7 +130,7 @@ public class ModelTFLich extends ModelBiped {
 	@Override
 	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time) {
 		EntityTFLich lich = (EntityTFLich) par1EntityLiving;
-		// make the shield belt
+		// make the stronghold_shield belt
 		int shields = lich.getShieldStrength();
 		if (!lich.isShadowClone() && shields > 0) {
 			if (shieldBelt.childModels == null || shieldBelt.childModels.size() != shields) {

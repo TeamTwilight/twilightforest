@@ -56,7 +56,7 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 	private void placePillarEnclosure(World world, StructureBoundingBox sbb,
 									  int dx, int dz) {
 		for (int y = 1; y < 5; y++) {
-			final IBlockState chiselledMazeBlock = TFBlocks.mazestone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
+			final IBlockState chiselledMazeBlock = TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
 			setBlockState(world, chiselledMazeBlock, dx + 0, y, dz + 0, sbb);
 			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz + 0, sbb);
 			setBlockState(world, chiselledMazeBlock, dx + 0, y, dz + 2, sbb);

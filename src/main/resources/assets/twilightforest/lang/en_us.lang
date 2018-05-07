@@ -2,19 +2,12 @@
 
 itemGroup.twilightForest=Twilight Forest
 
+# ADVANCEMENTS
 advancement.twilightforest.desc=Enter the mysterious magical woodlands; the Twilight Forest.
 
-advancement.twilight_magic_map_focus=With Fire It Writes
-advancement.twilight_magic_map_focus.desc=Craft the magic map focus with a raven's feather, glowstone dust, and torchberries.
-
-advancement.twilight_hunter=The Silence of the Forest
-advancement.twilight_hunter.desc=Hunt some of the local wildlife.
-advancement.twilight_kill_naga=Time To Even The Scales
-advancement.twilight_kill_naga.desc=Slay the naga in its forest courtyard and obtain a Naga Scale to overcome the barrier magic surrounding the Lich's Tower.
-advancement.twilight_kill_lich=Bring Out Your Dead
-advancement.twilight_kill_lich.desc=Slay the Lich at the top of his tower and retrieve a Scepter to clear the poisonous mosquitoes from the swamp.
-advancement.twilight_kill_hydra=Hydra Slayer
-advancement.twilight_kill_hydra.desc=Defeat the mighty hydra and empower yourself to see through the blinding darkness of the Dark Forest's curse.
+# General progression
+advancement.twilight_hedge=Bug Stomper
+advancement.twilight_hedge.desc=Defeat a spider in a hedge maze.
 
 advancement.twilight_hill1=The Boots Are Mine!
 advancement.twilight_hill1.desc=Defeat a redcap goblin in a small hollow hill.
@@ -23,6 +16,53 @@ advancement.twilight_hill2.desc=Defeat a redcap sapper in a medium hollow hill.
 advancement.twilight_hill3=I See Right Through You
 advancement.twilight_hill3.desc=Defeat a twilight wraith in a large hollow hill.
 
+advancement.twilight_quest_ram=Consummate Baaahs
+advancement.twilight_quest_ram.desc=Give the Quest Ram what it is missing.
+
+# Map
+advancement.twilight_magic_map_focus=With Fire It Writes
+advancement.twilight_magic_map_focus.desc=Craft the magic map focus with a raven's feather, glowstone dust, and torchberries.
+advancement.twilight_magic_map=I Can See For Miles
+advancement.twilight_magic_map.desc=Craft the magic map.
+advancement.twilight_maze_map=And Now, to Find the Exit
+advancement.twilight_maze_map.desc=Craft the maze map after obtaining the focus from the labyrinth.
+advancement.twilight_ore_map=How Can That Be Worth It?
+advancement.twilight_ore_map.desc=Craft the maze/ore map.
+
+# Mainline beginning progression
+advancement.twilight_hunter=The Silence of the Forest
+advancement.twilight_hunter.desc=Hunt some of the local wildlife.
+
+advancement.twilight_kill_naga=Time To Even The Scales
+advancement.twilight_kill_naga.desc=Slay the naga in its forest courtyard and obtain a Naga Scale to overcome the barrier magic surrounding the Lich's Tower.
+advancement.twilight_naga_armors=Naga Armorer
+advancement.twilight_naga_armors.desc=Craft both naga scale chest and leg armor.
+
+advancement.twilight_kill_lich=Bring Out Your Dead
+advancement.twilight_kill_lich.desc=Slay the Lich at top of his tower and retrieve a Scepter to clear poisonous mosquitoes from the swamp, see through blinding darkness of the Dark Forest's curse, and resist the snow forest's chill.
+advancement.twilight_lich_scepters=By Our Powers Combined!
+advancement.twilight_lich_scepters.desc=Acquire all three scepters of power.
+
+# Swamp Progression
+advancement.twilight_progress_labyrinth=Mighty Stroganoff
+advancement.twilight_progress_labyrinth.desc=The meat & mushroom stew pleasantly warms you, enough so that that you feel you're acclimatised enough to venture into the Fire Swamp.
+advancement.twilight_kill_hydra=Hydra Slayer
+advancement.twilight_kill_hydra.desc=Defeat the mighty hydra and empower yourself.
+advancement.twilight_mazebreaker=Breaking the Maze
+advancement.twilight_mazebreaker.desc=Find the Mazebreaker pickaxe in the secret labyrinth vault.
+advancement.twilight_hydra_chop=Hydra Chop, Baby!
+advancement.twilight_hydra_chop.desc=Chow down on some overpowered hydra meat when your food bar is empty.
+
+# Dark Forest Progression
+advancement.twilight_progress_trophy_pedestal=Trophied Champion
+advancement.twilight_progress_trophy_pedestal.desc=Claim your title by placing a trophy on the pedestal in the dark forest ruins.
+advancement.twilight_progress_knights=Carminite Acclimation
+advancement.twilight_progress_knights.desc=Settle the restless phantoms in the Knight's Tomb and the carminite tower's devices will obey you.
+advancement.twilight_ghast_trap=Something Strange in Towerwood
+advancement.twilight_ghast_trap.desc=Slay the Ghastlings around a Ghast Trap and activate to wrench the Ur-Ghast from the sky!
+advancement.twilight_progress_urghast=Tears of Fire
+advancement.twilight_progress_urghast.desc=Touch the fiery red tears of the Ur-ghast.
+
 advancement.twilight_experiment_115=Mystery Meat?
 advancement.twilight_experiment_115.desc=It looks like cake, though...
 advancement.twilight_experiment_115_2=Making a note: Huge Success!
@@ -30,52 +70,27 @@ advancement.twilight_experiment_115_2.desc=It's so delicious and moist!
 advancement.twilight_experiment_115_3=Eating 115 Everyday, 115 Years, Forever
 advancement.twilight_experiment_115_3.desc=eating experiment one-hundred-fifteen all day, forever, one-hundred-fifteen times experiment one-hundred-fifteen, experiment one-hundred-fifteen dot com, double-u double-u double-u dot experiment one-hundred-fifteen dot com, one-hundred-fifteen years, every minute experiment one-hundred-fifteen dot com, double-u double-u double-u dot one-hundred-fifteen times experiment one-hundred-fifteen dot com
 
+# Snow Forest Progression
+advancement.twilight_progress_yeti=Alpha Fur
+advancement.twilight_progress_yeti.desc=Line your garments with the soft fur from the alpha yeti, keeping you safe from the glacier's cold.
+advancement.twilight_progress_glacier=Clear Skies
+advancement.twilight_progress_glacier.desc=Defeat the Snow Queen atop the Aurora Palace.
+advancement.twilight_arctic_dyed=Getting in Fashion
+advancement.twilight_arctic_dyed.desc=Dye all four pieces of Arctic Armor.
+
+# Mid-way Misc. Stuff
 advancement.twilight_glass_sword=One Hit Wonder
 advancement.twilight_glass_sword.desc=Hope you made good use of that.
-
-advancement.twilight_hydra_chop=Hydra Chop, Baby!
-advancement.twilight_hydra_chop.desc=Chow down on some overpowered hydra meat when your food bar is empty.
 
 advancement.twilight_dining=We Dine At Eternal Sundown
 advancement.twilight_dining.desc=Eat ALL of the Food exclusive to the Twilight Forest.
 
-advancement.twilight_ghast_trap=Something Strange in Towerwood
-advancement.twilight_ghast_trap.desc=Slay the Ghastlings around a Ghast Trap and activate to wrench the Ur-Ghast from the sky!
-
-advancement.twilight_arctic_dyed=Getting in Fashion
-advancement.twilight_arctic_dyed.desc=Dye all four pieces of Arctic Armor.
-
-advancement.twilight_naga_armors=Naga Armorer
-advancement.twilight_naga_armors.desc=Craft both naga scale chest and leg armor.
-advancement.twilight_lich_scepters=By Our Powers Combined!
-advancement.twilight_lich_scepters.desc=Acquire all three scepters of power.
-advancement.twilight_hedge=Bug Stomper
-advancement.twilight_hedge.desc=Defeat a spider in a hedge maze.
-advancement.twilight_magic_map=I Can See For Miles
-advancement.twilight_magic_map.desc=Craft the magic map.
-advancement.twilight_maze_map=And Now, to Find the Exit
-advancement.twilight_maze_map.desc=Craft the maze map after obtaining the focus from the labyrinth.
-advancement.twilight_ore_map=How Can That Be Worth It?
-advancement.twilight_ore_map.desc=Craft the maze/ore map.
-advancement.twilight_mazebreaker=Breaking the Maze
-advancement.twilight_mazebreaker.desc=Find the Mazebreaker pickaxe in the secret labyrinth vault.
 advancement.twilight_fiery_set=Gallons of Blood and Tears
 advancement.twilight_fiery_set.desc=Wield a fiery tool or weapon while wearing at least one piece of fiery armor.
-advancement.twilight_quest_ram=Consummate Baaahs
-advancement.twilight_quest_ram.desc=Give the Quest Ram what it is missing.
 
-advancement.twilight_progress_labyrinth=Mighty Stroganoff
-advancement.twilight_progress_labyrinth.desc=The meat & mushroom stew pleasantly warms you, enough so that that you feel you're acclimatised enough to venture into the Fire Swamp.
-advancement.twilight_progress_trophy_pedestal=Trophied Champion
-advancement.twilight_progress_trophy_pedestal.desc=Claim your title by placing a trophy on the pedestal in the dark forest ruins.
-advancement.twilight_progress_knights=Carminite Acclimation
-advancement.twilight_progress_knights.desc=Settle the restless phantoms in the Knight's Tomb and the carminite tower's devices will obey you.
-advancement.twilight_progress_urghast=Tears of Fire
-advancement.twilight_progress_urghast.desc=Touch the fiery red tears of the Ur-ghast, allowing you to resist the snow forest's chill.
-advancement.twilight_progress_yeti=Alpha Fur
-advancement.twilight_progress_yeti.desc=Line your garments with the soft fur from the alpha yeti, keeping you safe from the glacier's cold.
-advancement.twilight_progress_glacier=Clear Skies
-advancement.twilight_progress_glacier.desc=Defeat the Snow Queen atop the Aurora Palace, clearing away the acid rain from the highlands.
+# Highlands
+advancement.twilight_progress_merge=Ultimate Showdown
+advancement.twilight_progress_merge.desc=Slay the Hydra, Ur-Ghast, and Snow Queen to clear the acid rain and embolden yourself for the Highlands.
 advancement.twilight_progress_troll=I Wish For More Burning
 advancement.twilight_progress_troll.desc=Find the Lamp of Cinders in the troll caves, and you can burn away the thorn barriers.
 advancement.twilight_progress_thorns=Past the Thorns [NYI]

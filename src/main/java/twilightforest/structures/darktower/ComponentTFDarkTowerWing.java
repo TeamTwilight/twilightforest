@@ -569,7 +569,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Decorate with a pressure plate triggered reappearing floor.  Only suitable for small towers
 	 */
 	private void decorateReappearingFloor(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y) {
-		final IBlockState inactiveReappearing = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
+		final IBlockState inactiveReappearing = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
 		final IBlockState woodenPressurePlate = Blocks.WOODEN_PRESSURE_PLATE.getDefaultState();
 		// floor
 		this.fillBlocksRotated(world, sbb, 4, y, 3, 7, y, 5, inactiveReappearing, rotation);
@@ -794,8 +794,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 
 				StructureTFDecorator logDeco = new StructureDecoratorDarkTower();
 
-				logDeco.pillarState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
-				logDeco.platformState = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+				logDeco.pillarState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+				logDeco.platformState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 
 				decorateTreasureRoom(world, sbb, rotation, y, 4, logDeco);
 			} else {
@@ -810,7 +810,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Make a mostly soid timber floor
 	 */
 	protected void makeTimberFloor(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, int spacing) {
-		IBlockState beamID = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+		IBlockState beamID = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 		IBlockState beamStateNS = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 		IBlockState beamStateUD = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
 		IBlockState beamStateEW = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
@@ -844,7 +844,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Make a lattice of log blocks
 	 */
 	protected void makeSmallTimberBeams(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top) {
-		IBlockState beamID = TFBlocks.log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+		IBlockState beamID = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 		IBlockState beamStateNS = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
 		IBlockState beamStateUD = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
 		IBlockState beamStateEW = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
@@ -1131,7 +1131,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		// nullify sky light
 		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final IBlockState inactiveVanish = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
+		final IBlockState inactiveVanish = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {
@@ -1151,7 +1151,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		// nullify sky light
 		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final IBlockState inactiveReappearing = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
+		final IBlockState inactiveReappearing = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {
@@ -1173,8 +1173,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
 		// clear the door
-		final IBlockState lockedVanish = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_LOCKED);
-		final IBlockState inactiveVanish = TFBlocks.towerDevice.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
+		final IBlockState lockedVanish = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_LOCKED);
+		final IBlockState inactiveVanish = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
 
 		if (dx == 0 || dx == size - 1) {
 			this.fillWithBlocks(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);

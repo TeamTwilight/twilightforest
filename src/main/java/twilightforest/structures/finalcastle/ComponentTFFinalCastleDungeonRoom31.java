@@ -155,9 +155,9 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		EnumDyeColor forceFieldMeta = this.getForceFieldMeta(decoRNG);
 		EnumDyeColor runeMeta = getRuneMeta(forceFieldMeta);
 
-		final IBlockState forceField = TFBlocks.forceField.getDefaultState()
+		final IBlockState forceField = TFBlocks.force_field.getDefaultState()
 				.withProperty(BlockTFForceField.COLOR, forceFieldMeta);
-		final IBlockState castleMagic = TFBlocks.castleMagic.getDefaultState()
+		final IBlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
 				.withProperty(BlockTFCastleMagic.COLOR, runeMeta);
 
 		for (Rotation rotation : RotationUtil.ROTATIONS) {

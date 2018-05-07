@@ -60,7 +60,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 		this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final IBlockState castleDoor = TFBlocks.castleDoor.getDefaultState()
+		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 0); //this.getGlyphMeta()?
 		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 

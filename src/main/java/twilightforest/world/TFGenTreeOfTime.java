@@ -15,9 +15,9 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 	public TFGenTreeOfTime(boolean par1) {
 		super(par1);
 
-		this.treeState = TFBlocks.magicLog.getDefaultState();
+		this.treeState = TFBlocks.magic_log.getDefaultState();
 		this.branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magicLeaves.getDefaultState();
+		this.leafState = TFBlocks.magic_leaves.getDefaultState();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		buildBranchRing(world, random, pos, diameter, 1, 2, 18, 0, 0.9D, 0, 3, 5, 3, false);
 
 		// add clock block
-		this.setBlockAndNotifyAdequately(world, pos.add(-1, 2, 0), TFBlocks.magicLogSpecial.getDefaultState());
+		this.setBlockAndNotifyAdequately(world, pos.add(-1, 2, 0), TFBlocks.magic_log_core.getDefaultState());
 
 		return true;
 	}

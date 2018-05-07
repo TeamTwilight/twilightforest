@@ -22,9 +22,9 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 
 	public TFGenCanopyOak(boolean par1) {
 		super(par1);
-		this.treeState = TFBlocks.log.getDefaultState();
+		this.treeState = TFBlocks.twilight_log.getDefaultState();
 		this.branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+		this.leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 		this.rootState = TFBlocks.root.getDefaultState();
 
 	}

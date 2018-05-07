@@ -10,10 +10,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -23,7 +21,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
-import twilightforest.enums.MagicWoodVariant;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketChangeBiome;
@@ -48,7 +45,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
-		return Item.getItemFromBlock(TFBlocks.magicLog);
+		return Item.getItemFromBlock(TFBlocks.magic_log);
 	}
 
 	@Override
@@ -60,23 +57,30 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if (state.getValue(LOG_AXIS) != EnumAxis.NONE) return;
 
-		if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TIME) {
-			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
-			doTreeOfTimeEffect(world, pos, rand);
-		} else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.TRANS) {
-			doTreeOfTransformationEffect(world, pos, rand);
-		} else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.MINE) {
-			doMinersTreeEffect(world, pos, rand);
-		} else if (!world.isRemote && state.getValue(VARIANT) == MagicWoodVariant.SORT) {
-			doSortingTreeEffect(world, pos, rand);
-		}
+		if (!world.isRemote) {
+		    switch (state.getValue(VARIANT)) {
+                case TIME:
+                    world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
+                    doTreeOfTimeEffect(world, pos, rand);
+                    break;
+                case TRANS:
+                    doTreeOfTransformationEffect(world, pos, rand);
+                    break;
+                case MINE:
+                    doMinersTreeEffect(world, pos, rand);
+                    break;
+                case SORT:
+                    doSortingTreeEffect(world, pos, rand);
+                    break;
+            }
+        }
 
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9) {
-		if (state.getValue(LOG_AXIS) == EnumAxis.Y) {
+		if (state.getValue(LOG_AXIS) != EnumAxis.NONE) {
 			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.NONE));
 			world.scheduleUpdate(pos, this, this.tickRate(world));
 			return true;
@@ -106,6 +110,9 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 			if (thereID != Blocks.AIR && thereID.getTickRandomly()) {
 				thereID.updateTick(world, dPos, thereState, rand);
+
+                TileEntity te = world.getTileEntity(pos);
+				if (te instanceof ITickable) ((ITickable) te).update();
 			}
 		}
 	}
@@ -151,7 +158,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	 * The miner's tree generates the ore magnet effect randomly every second
 	 */
 	private void doMinersTreeEffect(World world, BlockPos pos, Random rand) {
-		BlockPos dPos = pos.add(
+        BlockPos dPos = pos.add(
 				rand.nextInt(64) - 32,
 				rand.nextInt(64) - 32,
 				rand.nextInt(64) - 32
