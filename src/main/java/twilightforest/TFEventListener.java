@@ -4,12 +4,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandGameRule;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -21,13 +25,16 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -36,6 +43,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -55,9 +63,8 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.compat.Baubles;
 import twilightforest.compat.TFCompat;
 import twilightforest.enchantment.TFEnchantment;
-import twilightforest.entity.EntityTFCharmEffect;
-import twilightforest.entity.EntityTFPinchBeetle;
-import twilightforest.entity.EntityTFYeti;
+import twilightforest.entity.*;
+import twilightforest.entity.boss.*;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
@@ -661,8 +668,9 @@ public class TFEventListener {
 		}
 	}
 
-	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
+	// Teleport first-time players to Twilight Forest
 
+	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 	@SubscribeEvent
 	public static void banishNewbieToTwilightZone(PlayerEvent.PlayerLoggedInEvent event) {
 		NBTTagCompound tagCompound = event.player.getEntityData();
@@ -675,5 +683,109 @@ public class TFEventListener {
 		tagCompound.setTag(EntityPlayer.PERSISTED_NBT_TAG, playerData); // commit
 
 		if (shouldBanishPlayer) BlockTFPortal.attemptSendPlayer(event.player, true); // See ya hate to be ya
+	}
+
+	// Parrying
+
+	private static boolean globalParry = !Loader.isModLoaded("parry");
+
+	@SubscribeEvent
+	public static void arrowParry(ProjectileImpactEvent.Arrow event) {
+		final EntityArrow projectile = event.getArrow();
+
+		if (!projectile.getEntityWorld().isRemote && globalParry &&
+				(TFConfig.shieldInteractions.parryNonTwilightAttacks
+				|| projectile instanceof EntityIceArrow)
+				|| projectile instanceof EntitySeekerArrow) {
+
+			Entity entity = event.getRayTraceResult().entityHit;
+
+			if (event.getEntity() != null && entity instanceof EntityLivingBase) {
+				EntityLivingBase entityBlocking = (EntityLivingBase) entity;
+
+				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
+				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksArrow) {
+					Vec3d playerVec3 = entityBlocking.getLookVec();
+
+					projectile.setThrowableHeading(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
+
+					projectile.shootingEntity = entityBlocking;
+
+					event.setCanceled(true);
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void fireballParry(ProjectileImpactEvent.Fireball event) {
+		final EntityFireball projectile = event.getFireball();
+
+		if (!projectile.getEntityWorld().isRemote && globalParry &&
+				(TFConfig.shieldInteractions.parryNonTwilightAttacks
+				|| projectile instanceof EntityTFUrGhastFireball)) {
+
+			Entity entity = event.getRayTraceResult().entityHit;
+
+			if (event.getEntity() != null && entity instanceof EntityLivingBase) {
+				EntityLivingBase entityBlocking = (EntityLivingBase) entity;
+
+				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
+				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksFireball) {
+					Vec3d playerVec3 = entityBlocking.getLookVec();
+
+					projectile.motionX = playerVec3.x;
+					projectile.motionY = playerVec3.y;
+					projectile.motionZ = playerVec3.z;
+					projectile.accelerationX = projectile.motionX * 0.1D;
+					projectile.accelerationY = projectile.motionY * 0.1D;
+					projectile.accelerationZ = projectile.motionZ * 0.1D;
+
+					projectile.shootingEntity = entityBlocking;
+
+					event.setCanceled(true);
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void throwableParry(ProjectileImpactEvent.Throwable event) {
+		final EntityThrowable projectile = event.getThrowable();
+
+		if (!projectile.getEntityWorld().isRemote && globalParry &&
+				(TFConfig.shieldInteractions.parryNonTwilightAttacks
+				|| projectile instanceof EntityTFTwilightWandBolt
+				|| projectile instanceof EntityTFLichBolt
+				|| projectile instanceof EntityTFLichBomb
+				|| projectile instanceof EntityTFThrownAxe
+				|| projectile instanceof EntityTFThrownPick
+				|| projectile instanceof EntityTFIceBomb
+				|| projectile instanceof EntityTFIceSnowball
+				|| projectile instanceof EntityTFSlimeProjectile
+				|| projectile instanceof EntityTFMoonwormShot
+				|| projectile instanceof EntityTFTomeBolt
+				|| projectile instanceof EntityTFNatureBolt)) {
+
+			Entity entity = event.getRayTraceResult().entityHit;
+
+			if (event.getEntity() != null && entity instanceof EntityLivingBase) {
+				EntityLivingBase entityBlocking = (EntityLivingBase) entity;
+
+				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
+				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksThrowable) {
+					Vec3d playerVec3 = entityBlocking.getLookVec();
+
+					projectile.setThrowableHeading(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
+
+					projectile.thrower = entityBlocking;
+
+					event.setCanceled(true);
+				}
+			}
+		}
 	}
 }

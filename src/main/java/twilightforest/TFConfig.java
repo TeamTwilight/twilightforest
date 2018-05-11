@@ -124,6 +124,30 @@ public class TFConfig {
 	@Config.Comment("Client only: Controls for the Loading screen")
 	public static final TFConfig.loadingScreen loadingScreen = new loadingScreen();
 
+	@Config.LangKey(config + "shield_parry")
+	public static ShieldInteractions shieldInteractions = new ShieldInteractions();
+
+	public static class ShieldInteractions {
+		@Config.LangKey(config + "parry_non_twilight")
+		public boolean parryNonTwilightAttacks = false;
+
+		@Config.LangKey(config + "parry_window_arrow")
+		@Config.RangeInt(min = 0)
+		public int shieldParryTicksArrow = 40;
+
+		@Config.LangKey(config + "parry_window_fireball")
+		@Config.RangeInt(min = 0)
+		public int shieldParryTicksFireball = 40;
+
+		@Config.LangKey(config + "parry_window_throwable")
+		@Config.RangeInt(min = 0)
+		public int shieldParryTicksThrowable = 40;
+
+		@Config.LangKey(config + "parry_window_beam")
+		@Config.RangeInt(min = 0)
+		public int shieldParryTicksBeam = 10;
+	}
+
 	public static class loadingScreen {
 		@Config.LangKey(config + "loading_icon_enable")
 		@Config.Comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")

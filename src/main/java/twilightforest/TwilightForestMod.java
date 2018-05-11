@@ -18,15 +18,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.client.TFClientProxy;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.structures.StructureTFMajorFeatureStart;
 import twilightforest.tileentity.*;
-import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
-import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
-import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 import twilightforest.util.TFEntityNames;
 import twilightforest.world.WorldProviderTwilightForest;
 

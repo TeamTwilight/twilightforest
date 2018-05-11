@@ -141,7 +141,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
                 //new ResourceLocation(TwilightForestMod.ID, "progress_hydra"),
                 //new ResourceLocation(TwilightForestMod.ID, "progress_ur_ghast"),
                 //new ResourceLocation(TwilightForestMod.ID, "progress_glacier")
-                new ResourceLocation(TwilightForestMod.ID, "progress_troll")
+                new ResourceLocation(TwilightForestMod.ID, "progress_merge")
 		};
 	}
 
@@ -155,5 +155,4 @@ public class TFBiomeHighlands extends TFBiomeBase {
 			if (world.rand.nextInt(4) == 0) TFFeature.trollCave.trySpawnHintMonster(world, player);
 		}
 	}
-
 }

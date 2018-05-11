@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public class EntityTFLichBolt extends EntityThrowable {
+	@SuppressWarnings("unused")
 	public EntityTFLichBolt(World par1World) {
 		super(par1World);
 	}
@@ -53,23 +54,21 @@ public class EntityTFLichBolt extends EntityThrowable {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		super.attackEntityFrom(damagesource, i);
+	public boolean attackEntityFrom(DamageSource damagesource, float amount) {
+		super.attackEntityFrom(damagesource, amount);
 
 		if (!this.world.isRemote && damagesource.getTrueSource() != null) {
 			Vec3d vec3d = damagesource.getTrueSource().getLookVec();
-			if (vec3d != null) {
-				// reflect faster and more accurately
-				this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
-			}
+			// reflect faster and more accurately
+			this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 
-			if (damagesource.getImmediateSource() instanceof EntityLivingBase) {
+			if (damagesource.getImmediateSource() instanceof EntityLivingBase)
 				this.thrower = (EntityLivingBase) damagesource.getImmediateSource();
-			}
+
 			return true;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	@Override

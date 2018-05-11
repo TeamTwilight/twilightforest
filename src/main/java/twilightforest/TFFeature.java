@@ -62,7 +62,7 @@ public class TFFeature {
 	public static final TFFeature worldTree     = new TFFeature(16, 3, "world_tree"        ).disableStructure();
 	public static final TFFeature yetiCave      = new TFFeature(17, 2, "yeti_lairs"        , new ResourceLocation(TwilightForestMod.ID, "progress_lich"           )).enableDecorations().enableTerrainAlterations();
 	public static final TFFeature trollCave     = new TFFeature(18, 3, "troll_lairs"       , new ResourceLocation(TwilightForestMod.ID, "progress_merge"          )).enableDecorations().enableTerrainAlterations().disableProtectionAura();
-	public static final TFFeature finalCastle   = new TFFeature(19, 3, "final_castle"      );
+	public static final TFFeature finalCastle   = new TFFeature(19, 3, "final_castle"      , new ResourceLocation(TwilightForestMod.ID, "progress_troll"          ));
 	public static final TFFeature mushroomTower = new TFFeature(20, 2, "mushroom_tower"    );
 
 	static {

@@ -101,4 +101,9 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
 		return EnumAction.BLOCK;
 	}
+
+	@Override
+	public boolean canDisableShield(ItemStack stack, ItemStack shield, EntityLivingBase entity, EntityLivingBase attacker) {
+		return true;
+	}
 }

@@ -25,6 +25,13 @@ public enum Diagonals implements IStringSerializable {
         this.isLeft = isLeft;
     }
 
+    public static Diagonals getDiagonalFromUpDownLeftRight(boolean isLeft, boolean isTop) {
+        if (isLeft)
+            return isTop ? TOP_LEFT : BOTTOM_LEFT;
+        else
+            return isTop ? TOP_RIGHT : BOTTOM_RIGHT;
+    }
+
     public static Diagonals rotate(Diagonals diagonal, Rotation rotation) {
         return Diagonals.values()[(diagonal.ordinal() + rotation.ordinal()) % 4];
     }
@@ -36,7 +43,7 @@ public enum Diagonals implements IStringSerializable {
             case Z:
                 return mirrorOnZ(diagonal, mirror);
             default:
-                return mirrorDefault(diagonal, mirror);
+                return mirror(diagonal, mirror);
         }
     }
 
@@ -88,7 +95,7 @@ public enum Diagonals implements IStringSerializable {
         return diagonal;
     }
 
-    public static Diagonals mirrorDefault(Diagonals diagonal, Mirror mirror) {
+    public static Diagonals mirror(Diagonals diagonal, Mirror mirror) {
         switch (mirror) {
             case LEFT_RIGHT:
                 return mirrorLeftRight(diagonal);

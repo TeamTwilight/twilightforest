@@ -287,7 +287,7 @@ tile.BlockOfStorage.4.name=Block of Carminite
 tile.CinderFurnaceIdle.name=Cinder Furnace [NYI]
 tile.CinderLog.0.name=Cinder Log [NYI]
 tile.MiniatureStructure=Miniature %s [NYI]
-tile.SpiralBricks.name=Spiral Stone Bricks [WIP]
+tile.SpiralBricks.name=Spiral Stone Bricks
 tile.BlockOfLapisTF.name=Block Of Lapis [NYI]
 tile.EtchedNagastone.name=Etched Nagastone
 tile.NagastonePillar.name=Nagastone Pillar
@@ -573,6 +573,19 @@ twilightforest.config.antibuilder_blacklist.tooltip=Anti-Builder blacklist. (dom
 
 twilightforest.config.animate_trophyitem=Rotate Trophy Heads on Item model
 twilightforest.config.animate_trophyitem.tooltip=Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.
+
+twilightforest.config.shield_parry=Shield Parrying
+twilightforest.config.shield_parry.tooltip=We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.
+twilightforest.config.parry_non_twilight=Parry non-Twilight projectiles
+twilightforest.config.parry_non_twilight.tooltip=Set to true to parry non-Twilight projectiles. We recommend downloading the Shield Parry mod instead.
+twilightforest.config.parry_window_arrow=Timing Windowspan for Arrows
+twilightforest.config.parry_window_arrow.tooltip=The amount of ticks after raising a shield that makes it OK to parry an arrow. There is 20 ticks in 1 second.
+twilightforest.config.parry_window_fireball=Timing Windowspan for Fireballs
+twilightforest.config.parry_window_fireball.tooltip=The amount of ticks after raising a shield that makes it OK to parry a fireball. There is 20 ticks in 1 second.
+twilightforest.config.parry_window_throwable=Timing Windowspan for Throwables
+twilightforest.config.parry_window_throwable.tooltip=The amount of ticks after raising a shield that makes it OK to parry a throwable. There is 20 ticks in 1 second.
+twilightforest.config.shieldParryTicksBeam=Timing Windowspan for Beams???
+twilightforest.config.shieldParryTicksBeam.tooltip=???
 
 twilightforest.config.loading_screen=Loading Screen
 twilightforest.config.loading_screen.tooltip=Client only: Controls for the Loading screen

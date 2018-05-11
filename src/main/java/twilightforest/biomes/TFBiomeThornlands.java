@@ -2,11 +2,16 @@ package twilightforest.biomes;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
@@ -77,5 +82,16 @@ public class TFBiomeThornlands extends TFBiomeBase {
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
 		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_troll") };
+	}
+
+	@Override
+	public void enforceProgession(EntityPlayer player, World world) {
+		if (!world.isRemote && player.ticksExisted % 5 == 0) {
+			player.attackEntityFrom(DamageSource.MAGIC, 1.0F);
+			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
+			// hint monster?
+			if (world.rand.nextInt(4) == 0) TFFeature.trollCave.trySpawnHintMonster(world, player);
+		}
 	}
 }

@@ -56,29 +56,63 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
 
     @Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        EnumFacing playerFacing = /*facing.getAxis() != EnumFacing.Axis.Y ? facing.getAxis() :*/ placer.getHorizontalFacing();
+        IBlockState state = worldIn.getBlockState(pos.offset(facing.getOpposite()));
 
-        // The Spiral should face the player when they place. It is two-sided.
-        // This should divide the placement zone into a 2x2 zones and
-        // should determine which quarter of the spiral the player shall place.
+        if (!placer.isSneaking() && worldIn.getBlockState(pos.offset(facing.getOpposite())).getBlock() instanceof BlockTFSpiralBrick) {
+            EnumFacing.Axis axis = state.getValue(AXIS_FACING);
+
+            return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
+                    .withProperty(AXIS_FACING, axis)
+                    .withProperty(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), facing.getAxis() == EnumFacing.Axis.X ? Mirror.LEFT_RIGHT : Mirror.FRONT_BACK));
+        }
+
+        EnumFacing playerFacing = EnumFacing.getDirectionFromEntityLiving(pos, placer);
+
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
                 .withProperty(AXIS_FACING, playerFacing.getAxis())
-                .withProperty(DIAGONAL, getDiagonalFromPlacement(facing, playerFacing, playerFacing.getAxis() == EnumFacing.Axis.X ? hitZ : hitX, hitY));
+                .withProperty(DIAGONAL, getDiagonalFromPlayerPlacement(placer, facing));
     }
 
-    private static Diagonals getDiagonalFromPlacement(EnumFacing blockFace, EnumFacing playerHorizontalFace, float hitXorZ, float hitY) {
-        float correctedHitXorZ = (playerHorizontalFace.getAxis() == EnumFacing.Axis.X) /* ^ (playerHorizontalFace.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)*/
-                ? hitXorZ : (hitXorZ - 1F) * (-1F);
+    private static Diagonals getDiagonalFromPlayerPlacement(EntityLivingBase placer, EnumFacing facing) {
+        int angleX = (int) ((placer.rotationPitch + 180f) / 180f) & 1;
+        int angleY = (int) ((placer.rotationYaw + 180f) / 90f) & 3;
 
-        if (blockFace.getAxis() == EnumFacing.Axis.Y)
-            return getDiagonalFromDirectionals(correctedHitXorZ < 0.5F, blockFace == EnumFacing.UP);
-        else
-            return getDiagonalFromDirectionals(correctedHitXorZ < 0.5F, hitY < 0.5F);
+        switch (facing) {
+            case DOWN:
+            case UP:
+                switch (angleY) {
+                    default: return Diagonals.TOP_RIGHT; // NORTH EAST
+                    case 1: return Diagonals.BOTTOM_RIGHT; // SOUTH EAST
+                    case 2: return Diagonals.BOTTOM_LEFT; // SOUTH WEST
+                    case 3: return Diagonals.TOP_LEFT; // NORTH WEST
+                }
+
+                /*
+                NORTH
+                3   0
+
+                2   1
+                */
+
+            case NORTH:
+                return Diagonals.getDiagonalFromUpDownLeftRight(  isEast(angleY), angleX < 1);
+            case SOUTH:
+                return Diagonals.getDiagonalFromUpDownLeftRight( !isEast(angleY), angleX < 1);
+            case EAST:
+                return Diagonals.getDiagonalFromUpDownLeftRight( isNorth(angleY), angleX < 1);
+            case WEST:
+                return Diagonals.getDiagonalFromUpDownLeftRight(!isNorth(angleY), angleX < 1);
+        }
+
+        return Diagonals.TOP_RIGHT;
     }
 
-    private static Diagonals getDiagonalFromDirectionals(boolean isRight, boolean isBottom) {
-        if (isRight) return isBottom ? Diagonals.BOTTOM_RIGHT : Diagonals.TOP_RIGHT;
-        else return isBottom ? Diagonals.BOTTOM_LEFT : Diagonals.TOP_LEFT;
+    private static boolean isNorth(int intIn) {
+        return intIn == 0 || intIn == 3;
+    }
+
+    private static boolean isEast(int intIn) {
+        return intIn == 0 || intIn == 1;
     }
 
     @SideOnly(Side.CLIENT)
@@ -98,7 +132,7 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
             return state.withProperty(DIAGONAL, Diagonals.rotate(state.getValue(DIAGONAL), rot));
         } else {
             if (rot == Rotation.CLOCKWISE_180 || (axis == EnumFacing.Axis.X && rot == Rotation.COUNTERCLOCKWISE_90) || (axis == EnumFacing.Axis.Z && rot == Rotation.CLOCKWISE_90))
-                state = state.withProperty(DIAGONAL, Diagonals.mirrorDefault(state.getValue(DIAGONAL), Mirror.LEFT_RIGHT));
+                state = state.withProperty(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), Mirror.LEFT_RIGHT));
 
             return rot.ordinal() % 2 == 0 ? state : state.withProperty(AXIS_FACING, axis == EnumFacing.Axis.X ? EnumFacing.Axis.Z : EnumFacing.Axis.X);
         }

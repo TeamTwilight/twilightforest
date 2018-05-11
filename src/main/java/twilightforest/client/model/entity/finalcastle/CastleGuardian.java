@@ -1,5 +1,6 @@
 package twilightforest.client.model.entity.finalcastle;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,7 @@ import net.minecraft.entity.Entity;
  */
 
 // TODO Optimize, holy fudge
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class CastleGuardian extends ModelBase {
     public ModelRenderer MainBody;
     public ModelRenderer MidBody;
@@ -550,11 +552,15 @@ public class CastleGuardian extends ModelBase {
         this.PlateGroup5.addChild(this.Plating_4);
     }
 
+    private static final Minecraft minecraft = Minecraft.getMinecraft();
+
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
-        this.MainBody.render(f5);
-        this.MidBody.render(f5);
-        this.Head.render(f5);
+    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        final float partialTicks = minecraft.getRenderPartialTicks();
+
+        this.MainBody.render(scale);
+        this.MidBody.render(scale);
+        this.Head.render(scale);
     }
 
     /**
