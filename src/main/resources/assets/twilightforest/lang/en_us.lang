@@ -606,46 +606,57 @@ twilightforest.config.loading_icon_tilt_pushback.tooltip=Pushback value to re-ce
 
 twilightforest.book.lichtower.1=\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse
 twilightforest.book.lichtower.2=is boiling off into the surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...
-twilightforest.book.lichtower.3=\u00A78[[Many entries later]]\u00A70\n\nA breakthrough!  In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the
+twilightforest.book.lichtower.3=\u00A78[[Many entries later]]\u00A70\n\nA breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the
 twilightforest.book.lichtower.4=curse-breaking properties I need, but the magic is too dim. I may need to acquire a fresher specimen, directly from the creature.
+
 twilightforest.book.labyrinth.1=\u00A78[[An explorer's notebook, written on waterproof paper]]\u00A70\n\nThe mosquitoes in this swamp are vexing, but strange. The vast majority of them seem to have no natural source, nor do they seem to have a role in the local ecology. I have begun to
 twilightforest.book.labyrinth.2=suspect that they are some kind of magical curse.\n\n\u00A78[[Next entry]]\u00A70\n\nNow that I have encountered a protection spell on the ruined labyrinth here, I consider my suspicions confirmed. Both the protection
 twilightforest.book.labyrinth.3=spell and the mosquitoes are a curse. This curse seems to have a different source from the others I have encountered. I will have to research further...\n\n\u00A78[[Next entry]]\u00A70\n\nThe curse seems to
-twilightforest.book.labyrinth.4=be of a type too powerful for one being alone to produce. several wizards working in combination would be necessary.\n\nif one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. strangely,
+twilightforest.book.labyrinth.4=be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary.\n\nIf one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. Strangely,
 twilightforest.book.labyrinth.5=my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...
+
 twilightforest.book.hydralair.1=\u00A78[[An explorer's notebook, written on fireproof paper]]\u00A70\n\nFire is a trivial obstacle for a master explorer such as myself. I have traversed seas of fire, and swam through oceans of lava. The burning air here is an interesting variation,
 twilightforest.book.hydralair.2=but ultimately no hinderance.\n\nWhat does stop me though is that I have encountered another protection spell, this time surrounding a mighty creature that must be king of this fire swamp. This is not the first protection spell I have
 twilightforest.book.hydralair.3=encountered, and I am beginning to unravel the mysteries of how they work.\n\nIf this spell is like the others, it will be sustained by a powerful creature nearby. Surrounding the fire swamp are several wet swamps, and under those
 twilightforest.book.hydralair.4=swamps are labyrinths full of minotaurs. The logical choice to bind such a spell to would be some sort of powerful minotaur, different in some way from the others that surround it...
+
 twilightforest.book.tfstronghold.1=\u00A78[[An explorer's notebook, written on faintly glowing paper]]\u00A70\n\nThe tendrils of darkness surrounding this area are just a manifestation of a protective spell over the entire dark forest. The spell causes blindness, which is quite vexing. I have
-twilightforest.book.tfstronghold.2=seen several interesting things in the area and would like to keep exploring.\n\n\u00A78[[Next entry]]\u00A70\n\nI have found ruins in the dark forest.  They belong to a stronghold, of a type usually inhabited by knights. Rather than
+twilightforest.book.tfstronghold.2=seen several interesting things in the area and would like to keep exploring.\n\n\u00A78[[Next entry]]\u00A70\n\nI have found ruins in the dark forest. They belong to a stronghold, of a type usually inhabited by knights. Rather than
 twilightforest.book.tfstronghold.3=knights though, this stronghold is full of goblins. They wear knightly armor, but their behavior is most un-knightly.\n\n\u00A78[[Next entry]]\u00A70\n\nDeep in the ruins, I have found a pedestal. The pedestal seems to be of a type that
-twilightforest.book.tfstronghold.4=knights would place trophies on to prove their strength.\n\nKilling a powerful creature would seem to weaken the curse on the dark forest, and placing a trophy associated with the creature on the pedestal would likely grant access into the
-twilightforest.book.tfstronghold.5=main part of the stronghold.\n\nThe only creature I have seen so far seen so far of sufficient power is the many-headed beast in the fire swamp. How vexing...
+twilightforest.book.tfstronghold.4=knights would place trophies on to prove their strength.\n\Obtaining a powerful scepter would seem to weaken the curse on the dark forest, and placing a trophy associated with a powerful creature on the pedestal would likely grant access into the
+twilightforest.book.tfstronghold.5=main part of the stronghold.
+
 twilightforest.book.darktower.1=\u00A78[[An explorer's notebook that seems to have survived an explosion]]\u00A70\n\nThis tower clearly has mechanisms that are not responding to me. Their magic almost yearns to acknowledge my touch, but it cannot. It is if the devices of the tower are being
 twilightforest.book.darktower.2=suppressed by a powerful group of beings nearby.\n\n\u00A78[[Next entry]]\u00A70\n\nThe magic seems to emanate from deep within the strongholds nearby. It can't come from the goblins, as their magic is charming, but unfocused. There
 twilightforest.book.darktower.3=must still be some force still active in the strongholds.\n\n\u00A78[[Next entry]]\u00A70\n\nMy analysis indicates that it comes from several sources, operating as a group. I will head back to the stronghold after I resupply...
+
 twilightforest.book.yeticave.1=\u00A78[[An explorer's notebook, covered in frost]]\u00A70\n\nThe blizzard surrounding these snowy lands is unceasing. This is no ordinary snowfall--this is a magical phenomenon. I will have to conduct experiments to find
-twilightforest.book.yeticave.2=what is capable of causing such an effect.\n\n\u00A78[[Next entry]]\u00A70\n\nAt the center of the dark forest, where the leaves turn red and the grass dies, there is a wooden tower. The tops of the tower are affixed with
-twilightforest.book.yeticave.3=structures acting as antennae. The antennae are not the source of the snowfall, but serve merely to boost the power of the curse causing it.\n\nA blizzard this intense must be caused by a powerful creature, most likely found
-twilightforest.book.yeticave.4=near the top of the dark forest tower. Stop the creature, and the blizzard will fade.
+twilightforest.book.yeticave.2=what is capable of causing such an effect.\n\n\u00A78[[Next entry]]\u00A70\n\nThe curse seems to be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary.
+twilightforest.book.yeticave.3=If one of the wizards stopped contributing, the blizzard would calm. Strangely, my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...
+
 twilightforest.book.icetower.1=\u00A78[[An explorer's notebook, caked in ice]]\u00A70\n\nI overcame one blizzard, only to run into this terrible ice storm atop the glacier. My explorations have shown me the splendor of an ice palace, shining with the colors of the polar aurora. It
-twilightforest.book.icetower.2=all seems protected by some sort of curse.\n\n\u00A78[[Next entry]]\u00A70\n\nI am no novice.  This curse is fed by the power of a creature nearby.  The cause of the curse surrounding the fire swamp was built off the power of the leader of the
-twilightforest.book.icetower.3=minotaurs nearby.\n\nSurrounding this glacier, there are masses of yetis.  Perhaps the yetis have some sort of leader...
+twilightforest.book.icetower.2=all seems protected by some sort of curse.\n\n\u00A78[[Next entry]]\u00A70\n\nI am no novice. This curse is fed by the power of a creature nearby. The cause of the curse surrounding the fire swamp was built off the power of the leader of the
+twilightforest.book.icetower.3=minotaurs nearby.\n\nSurrounding this glacier, there are masses of yetis. Perhaps the yetis have some sort of leader...
+
 twilightforest.book.trollcave.1=\u00A78[[An explorer's notebook, damaged by acid]]\u00A70\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the
-twilightforest.book.trollcave.2=others I have witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n\u00A78[[Next entry]]\u00A70\n\nSuch supreme weather magic must be the result of an unequaled weather
-twilightforest.book.trollcave.3=magician. Such a person would likely hide themselves in an extreme environment, far away.\n\nBased on my logic, I would expect to find such a person somewhere on the glacier, perhaps in some sort of fortress there...
-twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful.  If this curse is like the others, then the answer to unlocking it lies elsewhere.  Perhaps there is
+twilightforest.book.trollcave.2=others I have witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n\u00A78[[Next entry]]\u00A70\n\nSuch supreme weather magic must be the result of
+twilightforest.book.trollcave.3=multiple undefeated great evils in this world. My studies contain several clues pointing at a searing swamp, a forest coated in deep darkness, and a realm coated in snow.
+
+twilightforest.book.unknown.1=\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is
 twilightforest.book.unknown.2=something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.
+
+# Fluid
 
 fluid.fierymetal=Molten Fiery
 fluid.knightmetal=Molten Knightmetal
 fluid.fiery_essence=Fiery Essence
 
+# TCon
+
 material.nagascale.name=Naga Scale
 material.steeleaf.name=Steeleaf
 material.fierymetal.name=Fiery
-material.knightmetal.name=Knightmetal
+material.knightmetal.name=Knightly
 material.raven_feather.name=Raven's Feather
 
 modifier.twilit.name=Twilit

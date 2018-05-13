@@ -187,6 +187,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 		}
 
+		if (this.isInTantrum())
+			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.BOSS_TEAR, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0, 0, 0);
+
 		// extra death explosions
 		if (deathTime > 0) {
 			for (int k = 0; k < 5; k++) {
@@ -341,7 +344,6 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		}
 
 		if (this.isInTantrum()) {
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.BOSS_TEAR, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0, 0, 0);
 			setAttackTarget(null);
 
 			// cry?

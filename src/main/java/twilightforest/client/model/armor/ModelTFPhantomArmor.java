@@ -1,7 +1,8 @@
-package twilightforest.client.model.entity;
+package twilightforest.client.model.armor;
 
 
 import net.minecraft.inventory.EntityEquipmentSlot;
+import twilightforest.client.model.armor.ModelTFKnightlyArmor;
 
 public class ModelTFPhantomArmor extends ModelTFKnightlyArmor {
 

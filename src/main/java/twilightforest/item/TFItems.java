@@ -242,7 +242,7 @@ public class TFItems {
 	@GameRegistry.ObjectHolder("knightmetal_ring")
 	public static final Item knightmetal_ring;
 	@GameRegistry.ObjectHolder("block_and_chain")
-	public static final Item chainBlock;
+	public static final Item block_and_chain;
 	@GameRegistry.ObjectHolder("cube_talisman")
 	public static final Item cube_talisman;
 	@GameRegistry.ObjectHolder("cube_of_annihilation")
@@ -382,7 +382,7 @@ public class TFItems {
 		ice_sword = null;
 		glass_sword = null;
 		knightmetal_ring = null;
-		chainBlock = null;
+		block_and_chain = null;
 		cube_talisman = null;
 		cube_of_annihilation = null;
 		miniature_structure = null;

@@ -30,7 +30,7 @@ import twilightforest.client.model.entity.ModelTFKnightPhantom2;
 import twilightforest.client.model.entity.ModelTFLich;
 import twilightforest.client.model.entity.ModelTFMinoshroom;
 import twilightforest.client.model.entity.ModelTFNaga;
-import twilightforest.client.model.entity.ModelTFPhantomArmor;
+import twilightforest.client.model.armor.ModelTFPhantomArmor;
 import twilightforest.client.model.entity.ModelTFQuestRam;
 import twilightforest.client.model.entity.ModelTFSnowQueen;
 import twilightforest.client.model.entity.ModelTFTowerBoss;
@@ -43,10 +43,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEntityTFTrophy> {
-
-	// https://github.com/creatubbles/ctb-mcmod/blob/52585c9526ab8199dd88687c3942c100b62dbc96/src/main/java/com/creatubbles/ctbmod/client/render/RenderPaintingItem.java
-	// :thonk:
-
 	public static class DummyTile extends TileEntityTFTrophy {}
 
 	private ModelTFHydraHead hydraHeadModel;

@@ -202,8 +202,9 @@ public class Thaumcraft {
                     .add(Aspect.PROTECT, 5));
 
             registerTCObjectTag(TFBlocks.trophy_pedestal, -1, new AspectList()
-                    .add(Aspect.EARTH, 5)
-                    .add(Aspect.MECHANISM, 35));
+                    .add(Aspect.MECHANISM, 35)
+                    .add(Aspect.SENSES, 10)
+                    .add(Aspect.EARTH, 5));
 
             registerTCObjectTag(TFBlocks.aurora_block, -1, new AspectList()
                     .add(Aspect.COLD, 6)
@@ -302,7 +303,7 @@ public class Thaumcraft {
             registerTCObjectTag(TFBlocks.trollber, -1, new AspectList()
                     .add(Aspect.PLANT, 5)
                     .add(Aspect.LIGHT, 25)
-                    .add(Aspect.DARKNESS, 1));
+                    .add(Aspect.DARKNESS, 3));
 
             registerTCObjectTag(TFBlocks.knightmetal_block, -1, new AspectList()
                     .add(Aspect.METAL, 121)
@@ -415,17 +416,17 @@ public class Thaumcraft {
                     .add(Aspect.MOTION, 12));
 
             registerTCObjectTag(TFItems.twilight_scepter, -1, new AspectList()
-                    .add(Aspect.MAGIC, 28)
+                    .add(Aspect.MAGIC, 60)
                     .add(Aspect.DARKNESS, 30)
                     .add(Aspect.VOID, 15));
 
             registerTCObjectTag(TFItems.lifedrain_scepter, -1, new AspectList()
-                    .add(Aspect.MAGIC,  28)
+                    .add(Aspect.MAGIC,  60)
                     .add(Aspect.LIFE, 26)
                     .add(Aspect.EXCHANGE,18));
 
             registerTCObjectTag(TFItems.zombie_scepter, -1, new AspectList()
-                    .add(Aspect.MAGIC, 28)
+                    .add(Aspect.MAGIC, 60)
                     .add(Aspect.DEATH, 25)
                     .add(Aspect.SOUL, 25)
                     .add(Aspect.TRAP, 22));
@@ -439,21 +440,21 @@ public class Thaumcraft {
             registerTCObjectTag(TFItems.magic_map, -1, new AspectList()
                     .add(Aspect.PLANT, 18)
                     .add(Aspect.MIND, 16)
-                    .add(Aspect.MAGIC, 4)
+                    .add(Aspect.MAGIC, 12)
                     .add(Aspect.SENSES, 10)
                     .add(Aspect.LIGHT, 5));
 
             registerTCObjectTag(TFItems.maze_map, -1, new AspectList()
-                    .add(Aspect.PLANT, 1)
-                    .add(Aspect.MIND, 1)
+                    .add(Aspect.PLANT, 18)
+                    .add(Aspect.MIND, 16)
                     .add(Aspect.MAGIC, 12)
-                    .add(Aspect.SENSES, 1)
+                    .add(Aspect.SENSES, 10)
                     .add(Aspect.TRAP, 10));
 
             registerTCObjectTag(TFItems.ore_map, -1, new AspectList()
                     .add(Aspect.PLANT, 18)
                     .add(Aspect.MIND, 16)
-                    .add(Aspect.MAGIC, 4)
+                    .add(Aspect.MAGIC, 12)
                     .add(Aspect.SENSES, 10)
                     .add(Aspect.DESIRE, 72));
 
@@ -487,54 +488,9 @@ public class Thaumcraft {
                     .add(Aspect.METAL, 8)
                     .add(Aspect.PLANT, 3));
 
-            /*registerTCObjectTag(TFItems.ironwood_helmet, -1, new AspectList()
-                    .add(Aspect.PROTECT, 8)
-                    .add(Aspect.METAL, 52)
-                    .add(Aspect.PLANT, 34));
-
-            registerTCObjectTag(TFItems.ironwood_chestplate, -1, new AspectList()
-                    .add(Aspect.PROTECT, 28)
-                    .add(Aspect.METAL, 86)
-                    .add(Aspect.PLANT, 57));
-
-            registerTCObjectTag(TFItems.ironwood_leggings, -1, new AspectList()
-                    .add(Aspect.PROTECT, 20)
-                    .add(Aspect.METAL, 72)
-                    .add(Aspect.PLANT, 48));
-
-            registerTCObjectTag(TFItems.ironwood_boots, -1, new AspectList()
-                    .add(Aspect.PROTECT, 8)
-                    .add(Aspect.METAL, 38)
-                    .add(Aspect.PLANT, 25));
-
-            registerTCObjectTag(TFItems.ironwood_sword, -1, new AspectList()
-                    .add(Aspect.AVERSION, 12)
-                    .add(Aspect.METAL, 22)
-                    .add(Aspect.PLANT, 14));
-
-            registerTCObjectTag(TFItems.ironwood_shovel, -1, new AspectList()
-                    .add(Aspect.TOOL, 12)
-                    .add(Aspect.METAL, 11)
-                    .add(Aspect.PLANT, 7));
-
-            registerTCObjectTag(TFItems.ironwood_pickaxe, -1, new AspectList()
-                    .add(Aspect.TOOL, 12)
-                    .add(Aspect.METAL, 33)
-                    .add(Aspect.PLANT, 22));
-
-            registerTCObjectTag(TFItems.ironwood_axe, -1, new AspectList()
-                    .add(Aspect.TOOL, 12)
-                    .add(Aspect.METAL, 33)
-                    .add(Aspect.PLANT, 22));
-
-            registerTCObjectTag(TFItems.ironwood_hoe, -1, new AspectList()
-                    .add(Aspect.TOOL, 12)
-                    .add(Aspect.METAL, 22)
-                    .add(Aspect.PLANT, 14));*/
-
             registerTCObjectTag(TFItems.torchberries, -1, new AspectList()
-                    .add(Aspect.LIGHT, 7)
-                    .add(Aspect.PLANT, 8));
+                    .add(Aspect.LIGHT, 8)
+                    .add(Aspect.PLANT, 3));
 
             registerTCObjectTag(TFItems.raw_venison, -1, new AspectList()
                     .add(Aspect.BEAST, 5)
@@ -552,53 +508,54 @@ public class Thaumcraft {
                     .add(Aspect.FIRE, 5));
 
             registerTCObjectTag(TFItems.fiery_blood, -1, new AspectList()
-                    .add(Aspect.FIRE, 20)
-                    .add(Aspect.LIFE, 20));
+                    .add(Aspect.FIRE, 40)
+                    .add(Aspect.LIFE, 22));
 
             registerTCObjectTag(TFItems.trophy, 0, new AspectList()
-                    .add(Aspect.DEATH, 50)
+                    .add(Aspect.DEATH, 45)
                     .add(Aspect.SENSES, 20)
-                    .add(Aspect.BEAST, 30)
-                    .add(Aspect.PROTECT, 40)
-                    .add(Aspect.MOTION, 10));
+                    .add(Aspect.BEAST, 80)
+                    .add(Aspect.MOTION, 40));
 
             registerTCObjectTag(TFItems.trophy, 1, new AspectList()
-                    .add(Aspect.DEATH, 50)
+                    .add(Aspect.DEATH, 45)
                     .add(Aspect.SENSES, 20)
-                    .add(Aspect.UNDEAD, 100)
+                    .add(Aspect.UNDEAD, 75)
                     .add(Aspect.MAN, 5)
                     .add(Aspect.ELDRITCH, 40));
 
             registerTCObjectTag(TFItems.trophy, 2, new AspectList()
-                    .add(Aspect.DEATH, 50)
+                    .add(Aspect.DEATH, 45)
                     .add(Aspect.SENSES, 20)
                     .add(Aspect.BEAST, 30)
-                    .add(Aspect.FIRE, 100));
+                    .add(Aspect.FIRE, 80));
 
             registerTCObjectTag(TFItems.trophy, 3, new AspectList()
-                    .add(Aspect.DEATH, 50)
-                    .add(Aspect.SENSES, 20));
+                    .add(Aspect.DEATH, 45)
+                    .add(Aspect.SENSES, 20)
+                    .add(Aspect.FLUX, 80)
+                    .add(Aspect.ALCHEMY, 40));
 
             registerTCObjectTag(TFItems.trophy, 4, new AspectList()
-                    .add(Aspect.DEATH, 50)
+                    .add(Aspect.DEATH, 45)
                     .add(Aspect.SENSES, 20)
-                    .add(Aspect.SOUL, 100)
+                    .add(Aspect.SOUL, 80)
                     .add(Aspect.MAN, 40));
 
             registerTCObjectTag(TFItems.trophy, 5, new AspectList()
-                    .add(Aspect.DEATH, 50)
+                    .add(Aspect.DEATH, 45)
                     .add(Aspect.SENSES, 20)
-                    .add(Aspect.COLD, 100)
+                    .add(Aspect.COLD, 80)
                     .add(Aspect.MAN, 40));
 
             registerTCObjectTag(TFItems.trophy, 6, new AspectList()
-                    .add(Aspect.DEATH, 50)
+                    .add(Aspect.DEATH, 45)
                     .add(Aspect.SENSES, 20)
-                    .add(Aspect.BEAST, 60)
-                    .add(Aspect.MAN, 40));
+                    .add(Aspect.BEAST, 70)
+                    .add(Aspect.MAN, 50));
 
             registerTCObjectTag(TFItems.trophy, 8, new AspectList()
-                    .add(Aspect.LIFE, 50)
+                    .add(Aspect.LIFE, 45)
                     .add(Aspect.DESIRE, 40)
                     .add(Aspect.EXCHANGE, 40));
 
@@ -652,7 +609,7 @@ public class Thaumcraft {
             registerTCObjectTag(TFItems.peacock_fan, -1, new AspectList()
                     .add(Aspect.BEAST, 35)
                     .add(Aspect.MOTION, 48)
-                    .add(Aspect.FLIGHT, 53)
+                    .add(Aspect.FLIGHT, 60)
                     .add(Aspect.MAGIC, 32));
 
             registerTCObjectTag(TFItems.moonworm_queen, -1, new AspectList()
@@ -701,7 +658,7 @@ public class Thaumcraft {
                     .add(Aspect.ENERGY, 42));
 
             registerTCObjectTag(TFItems.fiery_tears, -1, new AspectList()
-                    .add(Aspect.FIRE, 15)
+                    .add(Aspect.FIRE, 40)
                     .add(Aspect.WATER, 22));
 
             registerTCObjectTag(TFItems.alpha_fur, -1, new AspectList()
@@ -747,6 +704,109 @@ public class Thaumcraft {
             registerTCObjectTag(TFItems.glass_sword, -1, new AspectList()
                     .add(Aspect.AVERSION, 148)
                     .add(Aspect.CRYSTAL, 96));
+
+            registerTCObjectTag(TFItems.fiery_ingot, -1, new AspectList()
+                    .add(Aspect.FIRE, 40)
+                    .add(Aspect.METAL, 15)
+                    .add(Aspect.AURA, 12));
+
+            registerTCObjectTag(TFItems.fiery_boots, -1, new AspectList()
+                    .add(Aspect.METAL, 45)
+                    .add(Aspect.FIRE, 120)
+                    .add(Aspect.PROTECT, 16)
+                    .add(Aspect.AURA, 36));
+
+            registerTCObjectTag(TFItems.fiery_leggings, -1, new AspectList()
+                    .add(Aspect.METAL, 78)
+                    .add(Aspect.FIRE, 210)
+                    .add(Aspect.PROTECT, 28)
+                    .add(Aspect.AURA, 63));
+
+            registerTCObjectTag(TFItems.fiery_chestplate, -1, new AspectList()
+                    .add(Aspect.METAL, 90)
+                    .add(Aspect.FIRE, 240)
+                    .add(Aspect.PROTECT, 36)
+                    .add(Aspect.AURA, 72));
+
+            registerTCObjectTag(TFItems.fiery_helmet, -1, new AspectList()
+                    .add(Aspect.METAL, 56)
+                    .add(Aspect.FIRE, 150)
+                    .add(Aspect.PROTECT, 16)
+                    .add(Aspect.AURA, 45));
+
+            registerTCObjectTag(TFItems.yeti_boots, -1, new AspectList()
+                    .add(Aspect.BEAST, 144)
+                    .add(Aspect.COLD, 84)
+                    .add(Aspect.PROTECT, 12)
+                    .add(Aspect.AURA, 36));
+
+            registerTCObjectTag(TFItems.yeti_leggings, -1, new AspectList()
+                    .add(Aspect.BEAST, 252)
+                    .add(Aspect.COLD, 147)
+                    .add(Aspect.PROTECT, 24)
+                    .add(Aspect.AURA, 63));
+
+            registerTCObjectTag(TFItems.yeti_chestplate, -1, new AspectList()
+                    .add(Aspect.BEAST, 288)
+                    .add(Aspect.COLD, 168)
+                    .add(Aspect.PROTECT, 28)
+                    .add(Aspect.AURA, 72));
+
+            registerTCObjectTag(TFItems.yeti_helmet, -1, new AspectList()
+                    .add(Aspect.BEAST, 180)
+                    .add(Aspect.COLD, 105)
+                    .add(Aspect.PROTECT, 16)
+                    .add(Aspect.AURA, 45));
+
+            registerTCObjectTag(TFItems.borer_essence, -1, new AspectList()
+                    .add(Aspect.ALCHEMY, 10));
+
+            registerTCObjectTag(TFItems.carminite, -1, new AspectList()
+                    .add(Aspect.ALCHEMY, 38)
+                    .add(Aspect.ENERGY, 30)
+                    .add(Aspect.FLUX, 26)
+                    .add(Aspect.SOUL, 7)
+                    .add(Aspect.UNDEAD, 3));
+
+            registerTCObjectTag(TFItems.experiment_115, -1, new AspectList()
+                    .add(Aspect.FLUX, 15)
+                    .add(Aspect.ALCHEMY, 2));
+
+            registerTCObjectTag(TFItems.magic_map_empty, -1, new AspectList()
+                    .add(Aspect.PLANT, 18)
+                    .add(Aspect.MIND, 16)
+                    .add(Aspect.MAGIC, 12)
+                    .add(Aspect.SENSES, 10)
+                    .add(Aspect.LIGHT, 5));
+
+            registerTCObjectTag(TFItems.maze_map_empty, -1, new AspectList()
+                    .add(Aspect.PLANT, 18)
+                    .add(Aspect.MIND, 16)
+                    .add(Aspect.MAGIC, 12)
+                    .add(Aspect.SENSES, 10)
+                    .add(Aspect.TRAP, 10));
+
+            registerTCObjectTag(TFItems.ore_map_empty, -1, new AspectList()
+                    .add(Aspect.PLANT, 18)
+                    .add(Aspect.MIND, 16)
+                    .add(Aspect.MAGIC, 12)
+                    .add(Aspect.SENSES, 10)
+                    .add(Aspect.DESIRE, 72));
+
+            registerTCObjectTag(TFItems.block_and_chain, -1, new AspectList()
+                    .add(Aspect.METAL, 171)
+                    .add(Aspect.CRAFT, 57)
+                    .add(Aspect.TOOL, 16)
+                    .add(Aspect.AVERSION, 16));
+
+            registerTCObjectTag(TFBlocks.twilight_plant, 7, new AspectList()
+                    .add(Aspect.LIGHT, 10)
+                    .add(Aspect.PLANT, 5));
+
+            registerTCObjectTag(TFBlocks.thorn_rose, -1, new AspectList()
+                    .add(Aspect.PLANT, 5)
+                    .add(Aspect.AVERSION, 2)
+                    .add(Aspect.SENSES, 2));
 
             //TwilightForestMod.LOGGER.info("Loaded ThaumcraftApi integration.");
         } catch (Exception e) {

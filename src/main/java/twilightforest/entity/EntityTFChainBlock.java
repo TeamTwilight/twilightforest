@@ -241,7 +241,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	public void setDead() {
 		super.setDead();
 		EntityLivingBase thrower = this.getThrower();
-		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.chainBlock) {
+		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain) {
 			thrower.resetActiveHand();
 		}
 	}

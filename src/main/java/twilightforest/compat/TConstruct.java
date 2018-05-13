@@ -95,7 +95,7 @@ public class TConstruct {
 
         TConstruct.knightmetal.addCommonItems("Knightmetal");
         TConstruct.knightmetal.addItem(TFItems.armor_shard, 1, Material.VALUE_Nugget);
-        TConstruct.knightmetal.addItem(TFItems.chainBlock, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
+        TConstruct.knightmetal.addItem(TFItems.block_and_chain, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
         TConstruct.knightmetal
                 .addTrait(TConstruct.twilit)
                 .addTrait(TConstruct.valiant)

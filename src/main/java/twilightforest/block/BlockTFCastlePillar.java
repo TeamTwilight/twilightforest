@@ -46,7 +46,7 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
         ItemStack stack = placer.getHeldItem(hand);
         return this.getDefaultState()
                 .withProperty(LOG_AXIS, (stack.getMetadata() & 1) == 1 ? BlockLog.EnumAxis.NONE : BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()))
-                .withProperty(VARIANT, CastlePillarVariant.values()[stack.getMetadata()/2]);
+                .withProperty(VARIANT, CastlePillarVariant.values()[stack.getMetadata() / 2 & 1]);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     @Override
     @Deprecated
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(VARIANT, CastlePillarVariant.values()[(meta & 0b1100) >> 2]).withProperty(LOG_AXIS, BlockLog.EnumAxis.values()[meta & 0b11]);
+        return this.getDefaultState().withProperty(VARIANT, CastlePillarVariant.values()[(meta & 0b1100) >> 2 & 1]).withProperty(LOG_AXIS, BlockLog.EnumAxis.values()[meta & 0b11]);
     }
 
     @Override

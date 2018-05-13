@@ -26,6 +26,7 @@ import twilightforest.TFCommonProxy;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ColorHandler;
+import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TileEntityTFCicadaRenderer;
