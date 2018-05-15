@@ -574,6 +574,19 @@ twilightforest.config.antibuilder_blacklist.tooltip=反建器黑名单。格式�
 twilightforest.config.animate_trophyitem=战利品头颅旋转
 twilightforest.config.animate_trophyitem.tooltip=启用后，战利品中的头颅会旋转。对性能没有影响。为不苟言笑的人准备的选项。
 
+twilightforest.config.shield_parry=盾牌反弹
+twilightforest.config.shield_parry.tooltip=我们推荐安装 Shield Parry 这个 Mod 来实现一样的效果，但如果你没装，这些便是可供调整的选项。
+twilightforest.config.parry_non_twilight=反弹非暮色森林弹射物
+twilightforest.config.parry_non_twilight.tooltip=启用后，盾牌可以反弹不是暮色森林特有的弹射物。我们推荐安装 Shield Parry 这个 Mod 来实现一样的效果。
+twilightforest.config.parry_window_arrow=箭矢反弹时间
+twilightforest.config.parry_window_arrow.tooltip=要使盾牌反弹箭矢所需要的持盾时间，以刻（tick）为单位，20 tick 为一秒。
+twilightforest.config.parry_window_fireball=火焰弹反弹时间
+twilightforest.config.parry_window_fireball.tooltip=要使盾牌反弹火焰弹所需要的持盾时间，以刻（tick）为单位，20 tick 为一秒。
+twilightforest.config.parry_window_throwable=其他弹射去反弹时间
+twilightforest.config.parry_window_throwable.tooltip=要使盾牌反弹其他弹射物所需要的持盾时间，以刻（tick）为单位，20 tick 为一秒。
+twilightforest.config.shieldParryTicksBeam=激光反弹时间？？？
+twilightforest.config.shieldParryTicksBeam.tooltip=？？？
+
 twilightforest.config.loading_screen=加载界面
 twilightforest.config.loading_screen.tooltip=客户端专有选项，用于控制进入暮色森林时的加载界面。
 twilightforest.config.loading_icon_enable=启用加载图标动画
@@ -632,9 +645,13 @@ twilightforest.book.trollcave.3=我目前收集到的线索指向了这样几个
 twilightforest.book.unknown.1=§8[[一本看上去被传抄了无数遍的书]]§0\n\n我的学识实在不足以解释这建筑周围的力场是怎么回事，我只能说这是一种强力魔法。如果这魔咒和之前的魔咒的原理一样，那么我应该在别的地方寻找答案。
 twilightforest.book.unknown.2=也许我还有什么事情没有做，抑或我还没击败什么怪物。我想是时候掉头回去了。当然，我会回来看看看有没有新进展的。
 
+# Fluid
+
 fluid.fierymetal=熔融炽铁
 fluid.knightmetal=熔融骑士金属
 fluid.fiery_essence=炽血精华
+
+# TCon
 
 material.nagascale.name=娜迦鳞片
 material.steeleaf.name=钢叶
