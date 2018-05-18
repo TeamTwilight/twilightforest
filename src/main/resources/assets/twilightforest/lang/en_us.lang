@@ -98,7 +98,7 @@ advancement.twilight_progress_thorns.desc=Make it past the thornlands, and unloc
 advancement.twilight_progress_castle=So Castle Very Wow [NYI]
 advancement.twilight_progress_castle.desc=What could even be in that castle?!?
 
-twilightforest.trophyPedestal.ineligible=You are unworthy.
+twilightforest.trophy_pedestal.ineligible=You are unworthy.
 twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
 twilightforest.ore_meter.exposed=Exposed: %s
 twilightforest.scepter_charges=%d charges left
