@@ -156,6 +156,7 @@ tile.TFFireJet.7.name=Encased Popping Fire Jet
 tile.TFFireJet.8.name=Encased Flaming Fire Jet
 tile.TFNagastone.0.name=Nagastone Head
 tile.TFNagastone.1.name=Nagastone
+tile.TFSapling.name=Twilight Sapling
 tile.TFSapling.0.name=Sickly Twilight Oak Sapling
 tile.TFSapling.1.name=Canopy Tree Sapling
 tile.TFSapling.2.name=Twilight Mangrove Sapling
@@ -444,6 +445,8 @@ item.fieryHelm.tooltip=Burns attackers
 item.fieryPlate.tooltip=Burns attackers
 item.fieryLegs.tooltip=Burns attackers
 item.fieryBoots.tooltip=Burns attackers
+item.phantomHelm.tooltip=Is never lost on death
+item.phantomPlate.tooltip=Is never lost on death
 item.yetiHelm.tooltip=Chills attackers
 item.yetiPlate.tooltip=Chills attackers
 item.yetiLegs.tooltip=Chills attackers
@@ -511,6 +514,7 @@ entity.twilightforest.armored_giant.name=Armored Giant
 entity.twilightforest.ice_crystal.name=Ice Crystal
 entity.twilightforest.apocalypse_cube.name=Apocolypse Cube [NYI]
 entity.twilightforest.adherent.name=Adherent [NYI]
+entity.twilightforest.castle_guardian.name=Castle Guardian [NYI]
 
 twilightforest.effect.frosted=Frosted
 
