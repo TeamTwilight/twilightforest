@@ -62,7 +62,7 @@ public class EntitySeekerArrow extends EntityArrow {
 				// vector lengths
 				double courseLen = courseVec.lengthVector();
 				double targetLen = targetVec.lengthVector();
-				double totalLen = Math.sqrt(courseLen*courseLen + targetLen*targetLen);
+				double totalLen = MathHelper.sqrt(courseLen*courseLen + targetLen*targetLen);
 
 				double dotProduct = courseVec.dotProduct(targetVec) / (courseLen * targetLen); // cosine similarity
 
