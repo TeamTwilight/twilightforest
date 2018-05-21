@@ -99,6 +99,7 @@ public final class RegisterBlockEvent {
 		blocks.register("etched_nagastone_weathered", etchedNagastoneWeathered);
 		blocks.register("nagastone_stairs_weathered", new BlockTFNagastoneStairs(etchedNagastoneWeathered.getDefaultState()).setUnlocalizedName("NagastoneStairsWeathered").setHardness(1.5F).setResistance(10.0F));
 		blocks.register("nagastone_pillar_weathered", new BlockTFNagastonePillar().setUnlocalizedName("NagastonePillarWeathered").setHardness(1.5F).setResistance(10.0F));
+		blocks.register("auroralized_glass", new BlockTFAuroralizedGlass().setUnlocalizedName("AuroralizedGlass"));
 
 		registerFluidBlock(blocks, moltenFiery);
 		registerFluidBlock(blocks, moltenKnightmetal);

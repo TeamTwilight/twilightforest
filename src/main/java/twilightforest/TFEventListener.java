@@ -65,6 +65,7 @@ import twilightforest.compat.TFCompat;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
+import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
@@ -220,7 +221,7 @@ public class TFEventListener {
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void charms(LivingDeathEvent evt) {
+	public static void onDeath(LivingDeathEvent evt) {
 		EntityLivingBase living = evt.getEntityLiving();
 		if(charmOfLife(living))
 			evt.setCanceled(true);
@@ -267,6 +268,8 @@ public class TFEventListener {
 	private static void charmOfKeeping(EntityLivingBase living) {
 		if (living instanceof EntityPlayer && !living.world.getGameRules().getBoolean("keepInventory")) {
 			EntityPlayer player = (EntityPlayer) living;
+
+			// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
 			boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_3, 1);
 			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_2, 1);
 			boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_1, 1);
@@ -309,6 +312,15 @@ public class TFEventListener {
                 Baubles.keepBaubles(player, items);
                 playerKeepsMapBaubles.put(playerUUID, items);
             }
+
+			for (int i = 0; i < player.inventory.armorInventory.size(); i++) { // TODO also consider Phantom tools, when those get added
+				ItemStack phantomArmor = player.inventory.armorInventory.get(i).copy();
+
+				if (phantomArmor.getItem() instanceof ItemTFPhantomArmor) {
+					keepInventory.armorInventory.set(i, phantomArmor);
+					player.inventory.armorInventory.set(i, ItemStack.EMPTY);
+				}
+			}
 
 			playerKeepsMap.put(playerUUID, keepInventory);
 		}

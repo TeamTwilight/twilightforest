@@ -117,7 +117,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private boolean isPlayerEligible(EntityPlayer player) {
-		return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, new ResourceLocation(TwilightForestMod.ID, "progress_hydra"));
+		return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, new ResourceLocation(TwilightForestMod.ID, "progress_lich"));
 	}
 
 	private void doPedestalEffect(World world, BlockPos pos, IBlockState state) {

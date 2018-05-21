@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 
 // TODO Optimize, holy fudge
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class CastleGuardian extends ModelBase {
+public class ModelTFCastleGuardian extends ModelBase {
     public ModelRenderer MainBody;
     public ModelRenderer MidBody;
     public ModelRenderer Head;
@@ -106,7 +106,7 @@ public class CastleGuardian extends ModelBase {
     public ModelRenderer EyeFrameRB;
     public ModelRenderer HeadSpike_5;
 
-    public CastleGuardian() {
+    public ModelTFCastleGuardian() {
         this.textureWidth = 128;
         this.textureHeight = 64;
         this.SpikeWrapper_5 = new ModelRenderer(this, 0, 0);
@@ -560,6 +560,8 @@ public class CastleGuardian extends ModelBase {
 
         this.MainBody.render(scale);
         this.MidBody.render(scale);
+
+        this.Head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
         this.Head.render(scale);
     }
 
