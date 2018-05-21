@@ -27,7 +27,7 @@ public final class ColorHandler {
 
 	public static void init() {
 		BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(3, 256.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 2.0f), 1.0f, 1.0f), TFBlocks.aurora_block);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(2, 128.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.aurora_block);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -40,7 +40,7 @@ public final class ColorHandler {
 			float[] hsb = Color.RGBtoHSB(red, blue, green, null);
 
 			return Color.HSBtoRGB(hsb[0], hsb[1] * 0.5F, Math.min(hsb[2] + 0.4F, 0.9F));
-		}, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.double_aurora_slab);
+		}, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.double_aurora_slab, TFBlocks.auroralized_glass);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -279,7 +279,7 @@ public final class ColorHandler {
 
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 		// Atomic: This is one place where getStateFromMeta is still commonly used
-		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.aurora_block, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.dark_leaves, TFBlocks.giant_leaves, TFBlocks.fire_jet, TFBlocks.magic_leaves, TFBlocks.twilight_leaves, TFBlocks.twilight_leaves_3, TFBlocks.twilight_plant, TFBlocks.castle_rune_brick, TFBlocks.castle_door, TFBlocks.castle_door_vanished, TFBlocks.miniature_structure, TFBlocks.force_field);
+		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.aurora_block, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.auroralized_glass, TFBlocks.dark_leaves, TFBlocks.giant_leaves, TFBlocks.fire_jet, TFBlocks.magic_leaves, TFBlocks.twilight_leaves, TFBlocks.twilight_leaves_3, TFBlocks.twilight_plant, TFBlocks.castle_rune_brick, TFBlocks.castle_door, TFBlocks.castle_door_vanished, TFBlocks.miniature_structure, TFBlocks.force_field);
 		// Honestly I'd say it makes sense in this context. -Drullkus
 
 		itemColors.registerItemColorHandler((ItemStack stack, int tintIndex) ->

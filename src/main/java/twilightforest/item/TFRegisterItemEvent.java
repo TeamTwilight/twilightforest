@@ -212,6 +212,7 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.etched_nagastone_weathered);
 		items.registerBlock(TFBlocks.nagastone_pillar_weathered);
 		items.registerSubItemBlock(TFBlocks.nagastone_stairs_weathered);
+		items.registerBlock(TFBlocks.auroralized_glass);
 	}
 
 	private static class ItemRegistryHelper {
