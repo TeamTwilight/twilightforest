@@ -1,0 +1,8 @@
+{
+  "forge_marker": 1,
+  "defaults": { "model": "twilightforest:util/tinted_cube_all" },
+  "variants": {
+    "inventory": [{}],
+    "normal": [{ "textures": { "all": "twilightforest:blocks/auroralized_glass" }}]
+  }
+}

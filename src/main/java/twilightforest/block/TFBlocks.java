@@ -166,4 +166,6 @@ public class TFBlocks {
 	public static Block nagastone_pillar_weathered;
 	@ObjectHolder("nagastone_stairs_weathered")
 	public static Block nagastone_stairs_weathered;
+	@ObjectHolder("auroralized_glass")
+	public static Block auroralized_glass;
 }

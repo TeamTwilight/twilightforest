@@ -15,9 +15,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class EntitySeekerArrow extends EntityArrow {
+
 	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntitySeekerArrow.class, DataSerializers.VARINT);
+
 	private static final double seekDistance = 5.0;
+	private static final double seekFactor = 0.2;
+	private static final double seekAngle = Math.PI / 6.0;
+	private static final double seekThreshold = 0.5;
 
 	public EntitySeekerArrow(World par1World) {
 		super(par1World);
@@ -46,39 +53,35 @@ public class EntitySeekerArrow extends EntityArrow {
 				}
 			}
 
-			// TODO this is a bit wonky
-			if (getTarget() != null) {
-				Entity target = getTarget();
-				Vec3d targetVec = new Vec3d(this.posX - target.posX, this.posY - (target.posY + target.getEyeHeight()), this.posZ - target.posZ);
-				targetVec = targetVec.normalize();
+			Entity target = getTarget();
+			if (target != null) {
 
-				Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance);
-				courseVec = courseVec.normalize();
+				Vec3d targetVec = getVectorToTarget(target).scale(seekFactor);
+				Vec3d courseVec = getMotionVec();
 
-				double dotProduct = courseVec.dotProduct(targetVec);
+				// vector lengths
+				double courseLen = courseVec.lengthVector();
+				double targetLen = targetVec.lengthVector();
+				double totalLen = MathHelper.sqrt(courseLen*courseLen + targetLen*targetLen);
 
-				if (dotProduct < 0) {
+				double dotProduct = courseVec.dotProduct(targetVec) / (courseLen * targetLen); // cosine similarity
 
-					// match current speed
-					float currentSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+				if (dotProduct > seekThreshold) {
 
-					currentSpeed *= 1.0;
+					// add vector to target, scale to match current velocity
+					Vec3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(targetLen / totalLen));
 
-					targetVec = targetVec.scale(currentSpeed);
+					this.motionX = newMotion.x;
+					this.motionY = newMotion.y;
+					this.motionZ = newMotion.z;
 
-					// adjust current heading
-					double dx = MathHelper.clamp(targetVec.x, -2.0, 2.0);
-					double dy = MathHelper.clamp(targetVec.y, -1.0, 1.0);
-					double dz = MathHelper.clamp(targetVec.z, -2.0, 2.0);
+					// compensate (mostly) for gravity
+					this.motionY += 0.045F;
 
-					this.motionX -= dx;
-					this.motionY -= dy;
-					this.motionZ -= dz;
 				} else if (!world.isRemote) {
+					// too inaccurate for our intended target, give up on it
 					setTarget(null);
 				}
-
-				this.motionY += 0.045F;
 			}
 		}
 
@@ -91,27 +94,28 @@ public class EntitySeekerArrow extends EntityArrow {
 		}
 
 		if (getTarget() == null) {
-			AxisAlignedBB targetBB = new AxisAlignedBB(lastTickPosX, lastTickPosY, lastTickPosZ, lastTickPosX, lastTickPosY, lastTickPosZ);
+			AxisAlignedBB positionBB = new AxisAlignedBB(posX, posY, posZ, posX, posY, posZ);
+			AxisAlignedBB targetBB = positionBB;
 
 			// add two possible courses to our selection box
-			Vec3d courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance).rotateYaw((float) (Math.PI / 6F));
-			targetBB = targetBB.offset(courseVec.x, courseVec.y, courseVec.z);
+			Vec3d courseVec = getMotionVec().scale(seekDistance).rotateYaw((float) seekAngle);
+			targetBB = targetBB.union(positionBB.offset(courseVec));
 
-			courseVec = new Vec3d(this.motionX * seekDistance, this.motionY * seekDistance, this.motionZ * seekDistance).rotateYaw(-(float) (Math.PI / 6F));
-			targetBB = targetBB.offset(courseVec.x, courseVec.y, courseVec.z).grow(0, 3, 0);
+			courseVec = getMotionVec().scale(seekDistance).rotateYaw((float) -seekAngle);
+			targetBB = targetBB.union(positionBB.offset(courseVec));
 
-			double closestDot = 1;
+			targetBB = targetBB.grow(0, seekDistance * 0.5, 0);
+
+			double closestDot = -1.0;
 
 			for (EntityLivingBase living : this.world.getEntitiesWithinAABB(EntityLivingBase.class, targetBB)) {
 				if (!(living instanceof EntityPlayer)) {
-					courseVec = new Vec3d(this.motionX, this.motionY, this.motionZ).normalize();
-					Vec3d targetVec = new Vec3d(this.posX - living.posX, this.posY - (living.posY + (double) living.getEyeHeight()), this.posZ - living.posZ);
+					courseVec = getMotionVec().normalize();
+					Vec3d targetVec = getVectorToTarget(living).normalize();
 
-					//double d0 = targetVec.lengthVector(); // do we need this?
-					targetVec = targetVec.normalize();
 					double dot = courseVec.dotProduct(targetVec);
 
-					if (dot < closestDot) {
+					if (dot > Math.max(closestDot, seekThreshold)) {
 						setTarget(living);
 						closestDot = dot;
 					}
@@ -120,11 +124,20 @@ public class EntitySeekerArrow extends EntityArrow {
 		}
 	}
 
+	private Vec3d getMotionVec() {
+		return new Vec3d(this.motionX, this.motionY, this.motionZ);
+	}
+
+	private Vec3d getVectorToTarget(Entity target) {
+		return new Vec3d(target.posX - this.posX, (target.posY + (double) target.getEyeHeight()) - this.posY, target.posZ - this.posZ);
+	}
+
+	@Nullable
 	private Entity getTarget() {
 		return world.getEntityByID(dataManager.get(TARGET));
 	}
 
-	private void setTarget(Entity e) {
+	private void setTarget(@Nullable Entity e) {
 		dataManager.set(TARGET, e == null ? -1 : e.getEntityId());
 	}
 
