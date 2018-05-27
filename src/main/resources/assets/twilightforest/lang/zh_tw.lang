@@ -677,7 +677,7 @@ modifier.veiled.name=含蓄
 modifier.veiled.desc=§o像幽靈一樣！§r\n拋射物將隱形。
 
 # Immersive Engineering
-item.tfEngineeringShader=着色器：%s
+item.tfEngineeringShader=皮膚：%s
 twilightforest.shader.twilight=暮光森林
 
 twilightforest.shader.snakestone=蛇石
