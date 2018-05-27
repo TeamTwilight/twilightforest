@@ -33,6 +33,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 		this.setHardness(0.6F);
 		this.setSoundType(SoundType.GROUND);
 		this.setTickRandomly(true);
+		this.useNeighborBrightness = true;
 
 		this.setCreativeTab(TFItems.creativeTab);
 	}

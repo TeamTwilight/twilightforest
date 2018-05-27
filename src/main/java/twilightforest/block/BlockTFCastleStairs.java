@@ -27,6 +27,7 @@ public class BlockTFCastleStairs extends BlockStairs implements ModelRegisterCal
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(getDefaultState().withProperty(VARIANT, CastlePillarVariant.ENCASED));
+		this.useNeighborBrightness = true;
 	}
 
 	@Override
