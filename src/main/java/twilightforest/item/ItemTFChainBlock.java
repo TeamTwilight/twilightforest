@@ -31,7 +31,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	protected ItemTFChainBlock() {
-		super(6, 1.6F, TFItems.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE)); // todo 1.9 attack speed
+		super(6, -3.0F, TFItems.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE));
 		this.maxStackSize = 1;
 		this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
