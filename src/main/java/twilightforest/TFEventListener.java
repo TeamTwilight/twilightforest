@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -353,12 +354,14 @@ public class TFEventListener {
 		if (keepInventory != null) {
 			TwilightForestMod.LOGGER.debug("Player {} respawned and received items held in storage", player.getName());
 
+			NonNullList<ItemStack> displaced = NonNullList.create();
+
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
 				ItemStack kept = keepInventory.armorInventory.get(i);
 				if (!kept.isEmpty()) {
 					ItemStack existing = player.inventory.armorInventory.set(i, kept);
 					if (!existing.isEmpty()) {
-						player.dropItem(existing, false);
+						displaced.add(existing);
 					}
 				}
 			}
@@ -367,13 +370,8 @@ public class TFEventListener {
 				if (!kept.isEmpty()) {
 					ItemStack existing = player.inventory.offHandInventory.set(i, kept);
 					if (!existing.isEmpty()) {
-						player.dropItem(existing, false);
+						displaced.add(existing);
 					}
-				}
-			}
-			for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
-				if (!keepInventory.offHandInventory.get(i).isEmpty()) {
-					player.inventory.offHandInventory.set(i, keepInventory.offHandInventory.get(i));
 				}
 			}
 			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
@@ -381,9 +379,14 @@ public class TFEventListener {
 				if (!kept.isEmpty()) {
 					ItemStack existing = player.inventory.mainInventory.set(i, kept);
 					if (!existing.isEmpty()) {
-						player.dropItem(existing, false);
+						displaced.add(existing);
 					}
 				}
+			}
+
+			// try to give player any displaced items
+			for (ItemStack extra : displaced) {
+				ItemHandlerHelper.giveItemToPlayer(player, extra);
 			}
 
 			// spawn effect thingers
