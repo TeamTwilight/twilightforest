@@ -13,6 +13,10 @@ import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
+
 public class CommandTFFeature extends CommandBase {
 
 	@Override
@@ -22,7 +26,17 @@ public class CommandTFFeature extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return "tffeature accepts the following arguments: info";
+		return "commands.tffeature.usage";
+	}
+
+	@Override
+	public int getRequiredPermissionLevel() {
+		return 2;
+	}
+
+	@Override
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+		return args.length == 1 ? getListOfStringsMatchingLastWord(args, "info", "reactivate", "conquer", "center") : Collections.emptyList();
 	}
 
 	@Override
@@ -38,12 +52,12 @@ public class CommandTFFeature extends CommandBase {
 				int dz = MathHelper.floor(player.posZ);
 
 				if (!(player.world.provider instanceof WorldProviderTwilightForest)) {
-					throw new WrongUsageException("commands.tffeature.not_in_twilight_forest");
+					throw new CommandException("commands.tffeature.not_in_twilight_forest");
 				} else {
 					// nearest feature
 					TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, player.world);
 
-					sender.sendMessage(new TextComponentTranslation("The nearest feature is %s", nearbyFeature.name));
+					sender.sendMessage(new TextComponentTranslation("commands.tffeature.nearest", nearbyFeature.name));
 
 					// are you in a structure?
 
@@ -52,9 +66,9 @@ public class CommandTFFeature extends CommandBase {
 					final BlockPos pos = new BlockPos(dx, dy, dz);
 
 					if (chunkProvider.isBlockInStructureBB(pos)) {
-						sender.sendMessage(new TextComponentTranslation("You are in the structure for that feature."));
+						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.inside"));
 
-						sender.sendMessage(new TextComponentTranslation("Structure conquer flag = %s.", chunkProvider.isStructureConquered(pos)));
+						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.status", chunkProvider.isStructureConquered(pos)));
 						// are you in a room?
 
 						// what is the spawn list
@@ -66,7 +80,7 @@ public class CommandTFFeature extends CommandBase {
 
 
 					} else {
-						sender.sendMessage(new TextComponentTranslation("You are not in the structure for that feature."));
+						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.outside"));
 					}
 				}
 			} else if (args[0].equalsIgnoreCase("reactivate")) {
@@ -83,8 +97,8 @@ public class CommandTFFeature extends CommandBase {
 				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.world);
 
 				boolean fc = TFFeature.isInFeatureChunk(player.world, dx, dz);
-				sender.sendMessage(new TextComponentTranslation("Center of feature = %s.", cc));
-				sender.sendMessage(new TextComponentTranslation("Are in feature chunk = %s.", fc));
+				sender.sendMessage(new TextComponentTranslation("commands.tffeature.center", cc));
+				sender.sendMessage(new TextComponentTranslation("commands.tffeature.chunk", fc));
 			} else {
 				throw new WrongUsageException("commands.tffeature.usage");
 			}
@@ -104,18 +118,18 @@ public class CommandTFFeature extends CommandBase {
 		int dz = MathHelper.floor(player.posZ);
 
 		if (!(player.world.provider instanceof WorldProviderTwilightForest)) {
-			throw new WrongUsageException("commands.tffeature.not_in_twilight_forest");
+			throw new CommandException("commands.tffeature.not_in_twilight_forest");
 		} else {
 			// are you in a structure?
 			ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(player.world);
 
 			final BlockPos pos = new BlockPos(dx, dy, dz);
 			if (chunkProvider.isBlockInStructureBB(pos)) {
-				sender.sendMessage(new TextComponentTranslation("Structure conquer flag was %s.  Changing to %s.", chunkProvider.isStructureConquered(pos), flag));
+				sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.update", chunkProvider.isStructureConquered(pos), flag));
 
 				chunkProvider.setStructureConquered(dx, dy, dz, flag);
 			} else {
-				sender.sendMessage(new TextComponentTranslation("You are not in a structure."));
+				throw new CommandException("commands.tffeature.structure.required");
 			}
 		}
 	}

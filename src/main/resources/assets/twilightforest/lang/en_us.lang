@@ -103,6 +103,19 @@ twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
 twilightforest.ore_meter.exposed=Exposed: %s
 twilightforest.scepter_charges=%d charges left
 
+# Commands
+commands.tffeature.usage=/tffeature <info|reactivate|conquer|center>
+commands.tffeature.not_in_twilight_forest=You are not in the Twilight Forest dimension
+commands.tffeature.nearest=The nearest feature is %s
+commands.tffeature.center=Center of feature: %s
+commands.tffeature.chunk=Are in feature chunk: %s
+commands.tffeature.structure.inside=You are in the structure for that feature
+commands.tffeature.structure.outside=You are not in the structure for that feature
+commands.tffeature.structure.required=You are not in a structure
+commands.tffeature.structure.conquer.status=Structure conquer flag: %s
+commands.tffeature.structure.conquer.update=Structure conquer flag was %s, changing to %s
+
+# Blocks
 tile.TFLog.0.name=Twilight Oak Wood
 tile.TFLog.1.name=Canopy Tree Wood
 tile.TFLog.2.name=Mangrove Wood
