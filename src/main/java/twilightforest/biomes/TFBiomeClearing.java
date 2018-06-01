@@ -12,7 +12,7 @@ public class TFBiomeClearing extends TFBiomeBase {
 	public TFBiomeClearing(BiomeProperties props) {
 		super(props);
 
-		getTFBiomeDecorator().canopyPerChunk = -999;
+		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
 
 		getTFBiomeDecorator().setFlowersPerChunk(4);

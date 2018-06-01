@@ -47,7 +47,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	public TFBiomeHighlands(BiomeProperties props) {
 		super(props);
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 
 		this.decorator.grassPerChunk = 7;
 		this.decorator.deadBushPerChunk = 1;
