@@ -39,7 +39,7 @@ advancement.twilight_naga_armors=Naga Armorer
 advancement.twilight_naga_armors.desc=Craft both Naga Scale chest and leg armor.
 
 advancement.twilight_kill_lich=Bring Out Your Dead
-advancement.twilight_kill_lich.desc=Slay the Lich at top of his tower and retrieve a Scepter to clear poisonous mosquitoes from the Swamp, see through blinding darkness of the Dark Forest's curse, and resist the snow forest's chill.
+advancement.twilight_kill_lich.desc=Slay the Lich at top of his tower and retrieve a Scepter to clear poisonous mosquitoes from the Swamp, see through blinding darkness of the Dark Forest's curse, and resist the Snowy Forest's chill.
 advancement.twilight_lich_scepters=By Our Powers Combined!
 advancement.twilight_lich_scepters.desc=Acquire all three scepters of power.
 
@@ -72,7 +72,7 @@ advancement.twilight_experiment_115_3.desc=eating experiment one-hundred-fifteen
 
 # Snow Forest Progression
 advancement.twilight_progress_yeti=Alpha Fur
-advancement.twilight_progress_yeti.desc=Line your garments with the soft fur from the Alpha Yeti, keeping you safe from the glacier's cold.
+advancement.twilight_progress_yeti.desc=Line your garments with the soft fur from the Alpha Yeti, keeping you safe from the Glacier's cold.
 advancement.twilight_progress_glacier=Clear Skies
 advancement.twilight_progress_glacier.desc=Defeat the Snow Queen atop the Aurora Palace.
 advancement.twilight_arctic_dyed=Getting in Fashion
