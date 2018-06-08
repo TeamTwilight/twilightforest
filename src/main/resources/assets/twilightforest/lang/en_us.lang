@@ -22,8 +22,8 @@ advancement.twilight_quest_ram.desc=Give the %s what it is missing.
 # Map
 advancement.twilight_magic_map_focus=With Fire It Writes
 advancement.twilight_magic_map_focus.desc=Craft the %s with a %s, %s, and %s.
-advancement.twilight_magic_map=I Can See For Miles
-advancement.twilight_magic_map.desc=Craft the %s
+advancement.twilight_magic_map=I Can See Forever
+advancement.twilight_magic_map.desc=Craft the %s.
 advancement.twilight_maze_map=And Now, to Find the Exit
 advancement.twilight_maze_map.desc=Craft the %s after obtaining the focus from the labyrinth.
 advancement.twilight_ore_map=How Can That Be Worth It?
