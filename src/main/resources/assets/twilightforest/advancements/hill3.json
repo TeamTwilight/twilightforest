@@ -7,7 +7,11 @@
       "translate": "advancement.twilight_hill3"
     },
     "description": {
-      "translate": "advancement.twilight_hill3.desc"
+      "translate": "advancement.twilight_hill3.desc",
+      "with": [
+        { "translate": "entity.twilightforest.wraith.name" },
+        { "translate": "structure.hollow_hill.name" }
+      ]
     }
   },
   "parent": "twilightforest:hill2",

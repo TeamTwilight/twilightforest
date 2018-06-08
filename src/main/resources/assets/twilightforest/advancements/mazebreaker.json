@@ -7,7 +7,10 @@
       "translate": "advancement.twilight_mazebreaker"
     },
     "description": {
-      "translate": "advancement.twilight_mazebreaker.desc"
+      "translate": "advancement.twilight_mazebreaker.desc",
+      "with": [
+        { "translate": "item.mazebreakerPick.name" }
+      ]
     },
     "frame": "challenge"
   },

@@ -7,7 +7,13 @@
       "translate": "advancement.twilight_magic_map_focus"
     },
     "description": {
-      "translate": "advancement.twilight_magic_map_focus.desc"
+      "translate": "advancement.twilight_magic_map_focus.desc",
+      "with": [
+        { "translate": "item.magicMapFocus.name" },
+        { "translate": "item.tfFeather.name" },
+        { "translate": "item.yellowDust.name" },
+        { "translate": "item.torchberries.name" }
+      ]
     }
   },
   "parent": "twilightforest:twilight_hunter",

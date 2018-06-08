@@ -8,7 +8,11 @@
       "translate": "advancement.twilight_progress_glacier"
     },
     "description": {
-      "translate": "advancement.twilight_progress_glacier.desc"
+      "translate": "advancement.twilight_progress_glacier.desc",
+      "with": [
+        { "translate": "entity.twilightforest.snow_queen.name" },
+        { "translate": "structure.aurora_palace.name" }
+      ]
     },
     "frame": "goal"
   },

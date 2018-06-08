@@ -8,7 +8,11 @@
       "translate": "advancement.twilight_kill_naga"
     },
     "description": {
-      "translate": "advancement.twilight_kill_naga.desc"
+      "translate": "advancement.twilight_kill_naga.desc",
+      "with": [
+        { "translate": "entity.twilightforest.naga.name" },
+        { "translate": "item.nagaScale.name" }
+      ]
     },
     "frame": "goal"
   },

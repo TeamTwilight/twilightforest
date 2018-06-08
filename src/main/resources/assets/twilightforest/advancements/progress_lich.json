@@ -8,7 +8,10 @@
       "translate": "advancement.twilight_kill_lich"
     },
     "description": {
-      "translate": "advancement.twilight_kill_lich.desc"
+      "translate": "advancement.twilight_kill_lich.desc",
+      "with": [
+        { "translate": "entity.twilightforest.lich.name" }
+      ]
     },
     "frame": "goal"
   },

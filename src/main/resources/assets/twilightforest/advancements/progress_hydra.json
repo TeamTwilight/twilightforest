@@ -8,7 +8,10 @@
       "translate": "advancement.twilight_kill_hydra"
     },
     "description": {
-      "translate": "advancement.twilight_kill_hydra.desc"
+      "translate": "advancement.twilight_kill_hydra.desc",
+      "with": [
+        { "translate": "entity.twilightforest.hydra.name" }
+      ]
     },
     "frame": "goal"
   },

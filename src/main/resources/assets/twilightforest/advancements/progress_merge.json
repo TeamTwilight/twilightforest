@@ -2,7 +2,13 @@
   "display": {
     "icon"       : { "item"     : "twilightforest:uberous_soil"              },
     "title"      : { "translate": "advancement.twilight_progress_merge"      },
-    "description": { "translate": "advancement.twilight_progress_merge.desc" },
+    "description": { "translate": "advancement.twilight_progress_merge.desc",
+      "with"       : [
+        { "translate": "entity.twilightforest.hydra.name"      },
+        { "translate": "entity.twilightforest.ur_ghast.name"   },
+        { "translate": "entity.twilightforest.snow_queen.name" }
+      ]
+    },
     "frame": "goal"
   },
   "parent": "twilightforest:progress_lich",

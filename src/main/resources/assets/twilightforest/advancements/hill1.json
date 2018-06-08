@@ -7,7 +7,11 @@
       "translate": "advancement.twilight_hill1"
     },
     "description": {
-      "translate": "advancement.twilight_hill1.desc"
+      "translate": "advancement.twilight_hill1.desc",
+      "with": [
+        { "translate": "entity.twilightforest.redcap.name" },
+        { "translate": "structure.hollow_hill.name" }
+      ]
     }
   },
   "parent": "twilightforest:root",

@@ -8,7 +8,12 @@
       "translate": "advancement.twilight_ghast_trap"
     },
     "description": {
-      "translate": "advancement.twilight_ghast_trap.desc"
+      "translate": "advancement.twilight_ghast_trap.desc",
+      "with": [
+        { "translate": "entity.twilightforest.mini_ghast.name" },
+        { "translate": "tile.TFTowerDevice.10.name" },
+        { "translate": "entity.twilightforest.ur_ghast.name" }
+      ]
     }
   },
   "parent": "twilightforest:progress_knights",

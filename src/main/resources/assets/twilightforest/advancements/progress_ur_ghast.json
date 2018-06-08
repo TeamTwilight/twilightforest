@@ -8,7 +8,10 @@
       "translate": "advancement.twilight_progress_urghast"
     },
     "description": {
-      "translate": "advancement.twilight_progress_urghast.desc"
+      "translate": "advancement.twilight_progress_urghast.desc",
+      "with": [
+        { "translate": "entity.twilightforest.ur_ghast.name" }
+      ]
     },
     "frame": "goal"
   },

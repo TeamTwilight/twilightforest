@@ -7,7 +7,10 @@
       "translate": "advancement.twilight_hydra_chop"
     },
     "description": {
-      "translate": "advancement.twilight_hydra_chop.desc"
+      "translate": "advancement.twilight_hydra_chop.desc",
+      "with": [
+        { "translate": "entity.twilightforest.hydra.name" }
+      ]
     }
   },
   "parent": "twilightforest:progress_hydra",

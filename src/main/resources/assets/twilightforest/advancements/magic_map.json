@@ -7,7 +7,8 @@
       "translate": "advancement.twilight_magic_map"
     },
     "description": {
-      "translate": "advancement.twilight_magic_map.desc"
+      "translate": "advancement.twilight_magic_map.desc",
+      "with": [ { "translate": "item.magicMap.name" } ]
     }
   },
   "parent": "twilightforest:magic_map_focus",

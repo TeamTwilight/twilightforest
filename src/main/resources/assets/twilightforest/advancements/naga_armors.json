@@ -7,7 +7,10 @@
       "translate": "advancement.twilight_naga_armors"
     },
     "description": {
-      "translate": "advancement.twilight_naga_armors.desc"
+      "translate": "advancement.twilight_naga_armors.desc",
+      "with": [
+        { "translate": "item.nagaScale.name" }
+      ]
     },
     "frame": "challenge"
   },

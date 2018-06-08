@@ -7,7 +7,11 @@
       "translate": "advancement.twilight_hill2"
     },
     "description": {
-      "translate": "advancement.twilight_hill2.desc"
+      "translate": "advancement.twilight_hill2.desc",
+      "with": [
+        { "translate": "entity.twilightforest.redcap_sapper.name" },
+        { "translate": "structure.hollow_hill.name" }
+      ]
     }
   },
   "parent": "twilightforest:hill1",

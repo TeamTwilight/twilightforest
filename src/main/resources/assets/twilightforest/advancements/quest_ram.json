@@ -8,7 +8,10 @@
       "translate": "advancement.twilight_quest_ram"
     },
     "description": {
-      "translate": "advancement.twilight_quest_ram.desc"
+      "translate": "advancement.twilight_quest_ram.desc",
+      "with": [
+        { "translate": "entity.twilightforest.quest_ram.name" }
+      ]
     }
   },
   "parent": "twilightforest:root",
