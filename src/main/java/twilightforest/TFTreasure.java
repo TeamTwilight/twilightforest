@@ -18,6 +18,9 @@ import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.entity.passive.*;
 
 public class TFTreasure {
+	// For easy testing:
+	// /give @p chest 1 0 {"display":{"Name":"Master Loot Crate"},"BlockEntityTag":{"LootTable":"twilightforest:entities/all_bosses"}}
+
 	public static final TFTreasure hill1 = new TFTreasure("hill_1");
 	public static final TFTreasure hill2 = new TFTreasure("hill_2");
 	public static final TFTreasure hill3 = new TFTreasure("hill_3");

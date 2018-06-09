@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -83,7 +84,7 @@ import java.util.*;
 public class TFEventListener {
 
 	private static Map<UUID, InventoryPlayer> playerKeepsMap = new HashMap<>();
-	private static Map<UUID, ItemStack[]> playerKeepsMapBaubles = new HashMap<>();
+	private static Map<UUID, NonNullList<ItemStack>> playerKeepsMapBaubles = new HashMap<>();
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
@@ -105,7 +106,7 @@ public class TFEventListener {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 
-			if (!stack.isEmpty() && stack.getItem() == Item.getItemFromBlock(TFBlocks.giant_log)) {
+			if (stack.getItem() == Item.getItemFromBlock(TFBlocks.giant_log)) {
 				return true;
 			}
 		}
@@ -148,40 +149,35 @@ public class TFEventListener {
 			EntityPlayer player = (EntityPlayer) living;
 			int fireLevel = TFEnchantment.getFieryAuraLevel(player.inventory, event.getSource());
 
-
 			if (fireLevel > 0 && player.getRNG().nextInt(25) < fireLevel) {
 				event.getSource().getTrueSource().setFire(fireLevel / 2);
 			}
 		}
 
 		// chill aura
-		if (living instanceof EntityPlayer && event.getSource().damageType.equals("mob")
-				&& event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
+		if (living instanceof EntityPlayer && event.getSource().damageType.equals("mob") && event.getSource().getTrueSource() instanceof EntityLivingBase) {
 			EntityPlayer player = (EntityPlayer) living;
 			int chillLevel = TFEnchantment.getChillAuraLevel(player.inventory, event.getSource());
 
 			if (chillLevel > 0) {
 				((EntityLivingBase) event.getSource().getTrueSource()).addPotionEffect(new PotionEffect(TFPotions.frosty, chillLevel * 5 + 5, chillLevel));
-
 			}
 		}
 
 		// triple bow strips hurtResistantTime
-		if (event.getSource().damageType.equals("arrow") && event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer) {
+		if (event.getSource().damageType.equals("arrow") && event.getSource().getTrueSource() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 
-			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.triple_bow
-					|| !player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.triple_bow) {
+			if (player.getHeldItemMainhand().getItem() == TFItems.triple_bow || player.getHeldItemOffhand().getItem() == TFItems.triple_bow) {
 				living.hurtResistantTime = 0;
 			}
 		}
 
 		// enderbow teleports
-		if (event.getSource().damageType.equals("arrow") && event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer) {
+		if (event.getSource().damageType.equals("arrow") && event.getSource().getTrueSource() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
 
-			if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == TFItems.ender_bow ||
-					!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() == TFItems.ender_bow) {
+			if (player.getHeldItemMainhand().getItem() == TFItems.ender_bow || player.getHeldItemOffhand().getItem() == TFItems.ender_bow) {
 
 				double sourceX = player.posX;
 				double sourceY = player.posY;
@@ -223,7 +219,7 @@ public class TFEventListener {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onDeath(LivingDeathEvent evt) {
 		EntityLivingBase living = evt.getEntityLiving();
-		if(charmOfLife(living))
+		if (charmOfLife(living))
 			evt.setCanceled(true);
 		else
 			charmOfKeeping(living);
@@ -231,9 +227,9 @@ public class TFEventListener {
 
 	private static boolean charmOfLife(EntityLivingBase living) {
 		boolean charm1 = false;
-		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_life_2, 1);
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> s.getItem() == TFItems.charm_of_life_2, 1);
 		if (!charm2) {
-			charm1 = TFItemStackUtils.consumeInventoryItem(living, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_life_1, 1);
+			charm1 = TFItemStackUtils.consumeInventoryItem(living, s -> s.getItem() == TFItems.charm_of_life_1, 1);
 		}
 
 		if (charm2 || charm1) {
@@ -270,13 +266,13 @@ public class TFEventListener {
 			EntityPlayer player = (EntityPlayer) living;
 
 			// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
-			boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_3, 1);
-			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_2, 1);
-			boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> !s.isEmpty() && s.getItem() == TFItems.charm_of_keeping_1, 1);
+			boolean tier3 =          TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_3, 1);
+			boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_2, 1);
+			boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_1, 1);
 
 			InventoryPlayer keepInventory = new InventoryPlayer(null);
 
-            UUID playerUUID = player.getUniqueID();
+			UUID playerUUID = player.getUniqueID();
 
 			if (tier1) {
 				keepAllArmor(player, keepInventory);
@@ -301,23 +297,23 @@ public class TFEventListener {
 
 			// always keep tower keys
 			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-				if (!player.inventory.mainInventory.get(i).isEmpty() && player.inventory.mainInventory.get(i).getItem() == TFItems.tower_key) {
-					keepInventory.mainInventory.set(i, player.inventory.mainInventory.get(i).copy());
+				ItemStack stack = player.inventory.mainInventory.get(i);
+				if (stack.getItem() == TFItems.tower_key) {
+					keepInventory.mainInventory.set(i, stack.copy());
 					player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 				}
 			}
 
-            if (TFCompat.BAUBLES.isActivated()) {
-                ItemStack[] items = new ItemStack[Baubles.getSlotAmount(player)];
-                Baubles.keepBaubles(player, items);
-                playerKeepsMapBaubles.put(playerUUID, items);
-            }
+			if (tier1 && TFCompat.BAUBLES.isActivated()) {
+				NonNullList<ItemStack> items = NonNullList.withSize(Baubles.getSlotAmount(player), ItemStack.EMPTY);
+				Baubles.keepBaubles(player, items);
+				playerKeepsMapBaubles.put(playerUUID, items);
+			}
 
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++) { // TODO also consider Phantom tools, when those get added
-				ItemStack phantomArmor = player.inventory.armorInventory.get(i).copy();
-
-				if (phantomArmor.getItem() instanceof ItemTFPhantomArmor) {
-					keepInventory.armorInventory.set(i, phantomArmor);
+				ItemStack armor = player.inventory.armorInventory.get(i);
+				if (armor.getItem() instanceof ItemTFPhantomArmor) {
+					keepInventory.armorInventory.set(i, armor.copy());
 					player.inventory.armorInventory.set(i, ItemStack.EMPTY);
 				}
 			}
@@ -353,12 +349,14 @@ public class TFEventListener {
 		if (keepInventory != null) {
 			TwilightForestMod.LOGGER.debug("Player {} respawned and received items held in storage", player.getName());
 
+			NonNullList<ItemStack> displaced = NonNullList.create();
+
 			for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
 				ItemStack kept = keepInventory.armorInventory.get(i);
 				if (!kept.isEmpty()) {
 					ItemStack existing = player.inventory.armorInventory.set(i, kept);
 					if (!existing.isEmpty()) {
-						player.dropItem(existing, false);
+						displaced.add(existing);
 					}
 				}
 			}
@@ -367,13 +365,8 @@ public class TFEventListener {
 				if (!kept.isEmpty()) {
 					ItemStack existing = player.inventory.offHandInventory.set(i, kept);
 					if (!existing.isEmpty()) {
-						player.dropItem(existing, false);
+						displaced.add(existing);
 					}
-				}
-			}
-			for (int i = 0; i < player.inventory.offHandInventory.size(); i++) {
-				if (!keepInventory.offHandInventory.get(i).isEmpty()) {
-					player.inventory.offHandInventory.set(i, keepInventory.offHandInventory.get(i));
 				}
 			}
 			for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
@@ -381,9 +374,14 @@ public class TFEventListener {
 				if (!kept.isEmpty()) {
 					ItemStack existing = player.inventory.mainInventory.set(i, kept);
 					if (!existing.isEmpty()) {
-						player.dropItem(existing, false);
+						displaced.add(existing);
 					}
 				}
+			}
+
+			// try to give player any displaced items
+			for (ItemStack extra : displaced) {
+				ItemHandlerHelper.giveItemToPlayer(player, extra);
 			}
 
 			// spawn effect thingers
@@ -399,13 +397,13 @@ public class TFEventListener {
 			}
 		}
 
-        if (TFCompat.BAUBLES.isActivated()) {
-		    if (keepInventory == null)
-                TwilightForestMod.LOGGER.debug("Player {} respawned and received baubles held in storage", player.getName());
-
-            ItemStack[] baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
-            if (baubles != null) Baubles.respawnBaubles(player, baubles);
-        }
+		if (TFCompat.BAUBLES.isActivated()) {
+			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
+			if (baubles != null) {
+				TwilightForestMod.LOGGER.debug("Player {} respawned and received baubles held in storage", player.getName());
+				Baubles.respawnBaubles(player, baubles);
+			}
+		}
 	}
 
 	/**
@@ -423,17 +421,17 @@ public class TFEventListener {
 			keepInventory.dropAllItems();
 		}
 
-        if (TFCompat.BAUBLES.isActivated()) {
-		    if (keepInventory == null)
-                TwilightForestMod.LOGGER.warn("Mod was keeping bauble items in reserve for player %s but they logged out! Items are being dropped.", player.getName());
-
-            ItemStack[] baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
-
-            if (baubles != null)
-                for (ItemStack itemStack : baubles)
-                    if (!itemStack.isEmpty())
-                        player.dropItem(itemStack, true, false);
-        }
+		if (TFCompat.BAUBLES.isActivated()) {
+			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
+			if (baubles != null) {
+				TwilightForestMod.LOGGER.warn("Mod was keeping bauble items in reserve for player %s but they logged out! Items are being dropped.", player.getName());
+				for (ItemStack itemStack : baubles) {
+					if (!itemStack.isEmpty()) {
+						player.dropItem(itemStack, true, false);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -477,7 +475,6 @@ public class TFEventListener {
 		if (!event.getWorld().isRemote && !event.getPlayer().capabilities.isCreativeMode && isAreaProtected(event.getWorld(), event.getPlayer(), event.getPos()) && isBlockProtectedFromBreaking(event.getWorld(), event.getPos())) {
 			event.setCanceled(true);
 		} else if (!isBreakingWithGiantPick
-				&& !event.getPlayer().getHeldItemMainhand().isEmpty()
 				&& event.getPlayer().getHeldItemMainhand().getItem() == TFItems.giant_pickaxe
 				&& event.getPlayer().getHeldItemMainhand().getItem().canHarvestBlock(event.getState(), event.getPlayer().getHeldItemMainhand())) {
 
@@ -772,8 +769,7 @@ public class TFEventListener {
 				|| projectile instanceof EntityTFTwilightWandBolt
 				|| projectile instanceof EntityTFLichBolt
 				|| projectile instanceof EntityTFLichBomb
-				|| projectile instanceof EntityTFThrownAxe
-				|| projectile instanceof EntityTFThrownPick
+				|| projectile instanceof EntityTFThrownWep
 				|| projectile instanceof EntityTFIceBomb
 				|| projectile instanceof EntityTFIceSnowball
 				|| projectile instanceof EntityTFSlimeProjectile

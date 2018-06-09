@@ -772,6 +772,7 @@ public class TFFeature {
 
 			hinty.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, book);
 			hinty.setDropChance(EntityEquipmentSlot.MAINHAND, 1.0F);
+			//hinty.setDropItemsWhenDead(true);
 
 			world.spawnEntity(hinty);
 			return true;
@@ -843,7 +844,6 @@ public class TFFeature {
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.1"))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.2"))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.3"))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentTranslation(TwilightForestMod.ID + ".book.yeticave.4"))));
 
 			book.setTagInfo("pages", bookPages);
 			book.setTagInfo("author", new NBTTagString("A Forgotten Explorer"));

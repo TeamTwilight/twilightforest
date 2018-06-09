@@ -66,7 +66,7 @@ public class ItemTFTrophy extends ItemTF {
 	@Nonnull
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return TwilightForestMod.getRarity();
 	}
 
 	// [VanillaCopy] ItemSkull, with own block and no player heads

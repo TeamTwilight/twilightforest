@@ -40,7 +40,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(7);
 		getTFBiomeDecorator().setGrassPerChunk(1);
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().generateFalls = false;
 
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFYeti.class, 20, 4, 4));

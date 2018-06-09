@@ -32,6 +32,22 @@
         "name": "twilightforest:trophy",
         "functions": [{ "function": "set_data", "data": 2 }]
       }]
+    }, {
+      "name": "shader",
+      "rolls": 1,
+      "conditions": [{ "condition": "twilightforest:mod_exists", "mod_id": "immersiveengineering" }],
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:fiery_blood",
+        "functions": [{
+          "function": "twilightforest:item_or_default",
+          "item": "twilightforest:shader",
+          "default": "twilightforest:fiery_blood"
+        }, {
+          "function": "set_nbt",
+          "tag": "{\"shader_type\":\"Hydra\"}"
+        }]
+      }]
     }
   ]
 }

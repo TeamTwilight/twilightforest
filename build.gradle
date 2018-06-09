@@ -94,29 +94,38 @@ jar {
 
 repositories {
     maven {
-        name 'progwm\'s maven' // JEI + Mantle + TCon
+        name 'progwm\'s Maven' // JEI + Mantle + TCon
         url 'http://dvs1.progwml6.com/files/maven'
     }
     maven {
-        name 'tterrag\'s maven' // CTM
+        name 'tterrag\'s Maven' // CTM
         url 'http://maven.tterrag.com/'
     }
     maven {
+        name 'Jared\'s Maven' // Immersive Engineering
+        url 'http://blamejared.com/maven'
+    }
+    maven {
         name 'Curseforge Maven' // Baubles + Thaumcraft
-        url 'https://minecraft.curseforge.com/api/maven/'
+        url 'http://minecraft.curseforge.com/api/maven/'
     }
 }
 
-dependencies {   
+dependencies {
+    // progwml6
     compile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 
+    deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
     compile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}:deobf"
-    compile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}:deobf"
 
+    // tterrag
     compile "team.chisel.ctm:CTM:MC${minecraft_sub_version}-${ctm_version}"
-    compile "team.chisel:Chisel:MC${chisel_version}:api"
-    runtime "team.chisel:Chisel:MC${chisel_version}"
+    compile "team.chisel:Chisel:MC${minecraft_sub_version}-${chisel_version}"
 
+    // blamejared
+    compile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"
+
+    // curseforge
     compile "baubles:Baubles:${minecraft_sub_version}:${baubles_version}"
     compile "thaumcraft:Thaumcraft:${minecraft_version}:${thaumcraft_version}"
 }

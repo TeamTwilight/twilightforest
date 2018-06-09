@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.compat.TFCompat;
 import twilightforest.enums.DeadrockVariant;
 import twilightforest.enums.ThornVariant;
 
@@ -21,7 +22,6 @@ import static twilightforest.item.TFItems.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFRegisterItemEvent {
-
 	@SubscribeEvent
 	public static void onRegisterItems(RegistryEvent.Register<Item> event) {
 		ItemRegistryHelper items = new ItemRegistryHelper(event.getRegistry());
@@ -213,16 +213,18 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.nagastone_pillar_weathered);
 		items.registerSubItemBlock(TFBlocks.nagastone_stairs_weathered);
 		items.registerBlock(TFBlocks.auroralized_glass);
+
+		TFCompat.initCompatItems(items);
 	}
 
-	private static class ItemRegistryHelper {
+	public static class ItemRegistryHelper {
 		private final IForgeRegistry<Item> registry;
 
 		ItemRegistryHelper(IForgeRegistry<Item> registry) {
 			this.registry = registry;
 		}
 
-		private void register(String registryName, Item item) {
+		public void register(String registryName, Item item) {
 			item.setRegistryName(TwilightForestMod.ID, registryName);
 			registry.register(item);
 		}

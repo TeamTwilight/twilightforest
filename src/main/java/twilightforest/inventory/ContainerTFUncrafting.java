@@ -200,15 +200,6 @@ public class ContainerTFUncrafting extends Container {
 					EnchantmentHelper.setEnchantments(inputEnchantments, result);
 				}
 
-				this.tinkerResult.setInventorySlotContents(0, result);
-				this.uncraftingMatrix.uncraftingCost = 0;
-				this.uncraftingMatrix.recraftingCost = calculateRecraftingCost();
-
-				// if there is a recrafting cost, increment the repair cost of the output
-				if (this.uncraftingMatrix.recraftingCost > 0 && !result.hasDisplayName()) {
-					result.setRepairCost(input.getRepairCost() + 2);
-				}
-
 				// finally, add any innate enchantments back onto the result
 				for (Enchantment ench : resultInnateEnchantments.keySet()) {
 					int level = resultInnateEnchantments.get(ench);
@@ -220,6 +211,15 @@ public class ContainerTFUncrafting extends Container {
 					if (EnchantmentHelper.getEnchantmentLevel(ench, result) < level) {
 						result.addEnchantment(ench, level);
 					}
+				}
+
+				this.tinkerResult.setInventorySlotContents(0, result);
+				this.uncraftingMatrix.uncraftingCost = 0;
+				this.uncraftingMatrix.recraftingCost = calculateRecraftingCost();
+
+				// if there is a recrafting cost, increment the repair cost of the output
+				if (this.uncraftingMatrix.recraftingCost > 0 && !result.hasDisplayName()) {
+					result.setRepairCost(input.getRepairCost() + 2);
 				}
 			}
 		}

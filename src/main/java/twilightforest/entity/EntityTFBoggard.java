@@ -35,7 +35,7 @@ public class EntityTFBoggard extends EntityMob {
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 //        this.tasks.addTask(1, new EntityAITFRedcapShy(this, this.moveSpeed));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
+		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F, false));
 		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

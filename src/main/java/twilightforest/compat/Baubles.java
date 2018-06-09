@@ -8,8 +8,10 @@ import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nonnull;
@@ -35,36 +37,40 @@ public class Baubles {
         return consumedSome;
     }
 
-    public static void keepBaubles(EntityPlayer player, ItemStack[] arrayIn) {
+    public static void keepBaubles(EntityPlayer player, NonNullList<ItemStack> items) {
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
 
-        if (baubles.getSlots() != arrayIn.length) {
-            TwilightForestMod.LOGGER.warn("The arrayin doesn't equal amount of bauble slots, wtf did you do?");
+        if (baubles.getSlots() != items.size()) {
+            TwilightForestMod.LOGGER.warn("The list size doesn't equal amount of bauble slots, wtf did you do?");
         } else {
-            for (int i = 0; i < baubles.getSlots() && i < arrayIn.length; i++) {
-                arrayIn[i] = baubles.getStackInSlot(i);
+            for (int i = 0; i < baubles.getSlots() && i < items.size(); i++) {
+                items.set(i, baubles.getStackInSlot(i));
                 baubles.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
     }
 
-    public static void respawnBaubles(EntityPlayer player, ItemStack[] arrayIn) {
+    public static void respawnBaubles(EntityPlayer player, NonNullList<ItemStack> items) {
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
 
-        if (arrayIn.length == baubles.getSlots()) {
-            for (int i = 0; i < baubles.getSlots() && i < arrayIn.length; i++)
-                baubles.setStackInSlot(i, arrayIn[i]);
+        if (items.size() == baubles.getSlots()) {
+            for (int i = 0; i < baubles.getSlots() && i < items.size(); i++) {
+                baubles.setStackInSlot(i, items.get(i));
+            }
         } else {
-            TwilightForestMod.LOGGER.warn("The arrayin doesn't equal amount of bauble slots, wtf did you do?");
-            dropTableItems(player, arrayIn);
+            TwilightForestMod.LOGGER.warn("The list size doesn't equal amount of bauble slots, wtf did you do?");
+            dropTableItems(player, items);
         }
     }
 
-    private static void dropTableItems(EntityPlayer player, @Nullable ItemStack[] arrayIn) {
-        if (arrayIn != null)
-            for (ItemStack itemStack : arrayIn)
-                if (!itemStack.isEmpty() && !(player.inventory.addItemStackToInventory(itemStack)))
-                    player.dropItem(itemStack, true, false);
+    private static void dropTableItems(EntityPlayer player, @Nullable NonNullList<ItemStack> items) {
+        if (items != null) {
+            for (ItemStack itemStack : items) {
+                if (!itemStack.isEmpty()) {
+                    ItemHandlerHelper.giveItemToPlayer(player, itemStack);
+                }
+            }
+        }
     }
 
     public static int getSlotAmount(EntityPlayer player) {

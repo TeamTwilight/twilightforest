@@ -2,19 +2,12 @@
 
 itemGroup.twilightForest=暮光森林
 
+# ADVANCEMENTS
 advancement.twilightforest.desc=前往那神秘的魔法林地——暮光森林！
 
-advancement.twilight_magic_map_focus=用火書寫
-advancement.twilight_magic_map_focus.desc=用烏鴉羽毛、螢石粉、火炬漿果合成魔法地圖核心。
-
-advancement.twilight_hunter=森林的沉默
-advancement.twilight_hunter.desc=獵殺一些暮色的野生動物。
-advancement.twilight_kill_naga=是時候擺平天枰了
-advancement.twilight_kill_naga.desc=獵殺森林角落裡的娜迦，取得可以幫你突破巫妖塔魔法壁壘的娜迦鱗片。
-advancement.twilight_kill_lich=帶出你的死亡
-advancement.twilight_kill_lich.desc=擊敗塔頂的巫妖，借助他留下的巫妖權杖的魔法來驅散沼澤中的毒蚊。
-advancement.twilight_kill_hydra=九頭蛇殺手
-advancement.twilight_kill_hydra.desc=獵殺強大的九頭蛇﹔你在經過它的試煉后，便能抵抗黑暗森林的失明詛咒。
+# General progression
+advancement.twilight_hedge=爬蟲踐踏者
+advancement.twilight_hedge.desc=在樹籬迷宮殺死一隻蜘蛛。
 
 advancement.twilight_hill1=靴子是我的！
 advancement.twilight_hill1.desc=在小型礦山裏擊敗一個紅帽哥布林。
@@ -23,6 +16,53 @@ advancement.twilight_hill2.desc=在中型礦山裏擊敗一個紅帽地精。
 advancement.twilight_hill3=我看到你了
 advancement.twilight_hill3.desc=在大型礦山裏擊敗一個暮光幽靈。
 
+advancement.twilight_quest_ram=博學的羊
+advancement.twilight_quest_ram.desc=將缺失的東西轉交給謎題羊。
+
+# Map
+advancement.twilight_magic_map_focus=用火書寫
+advancement.twilight_magic_map_focus.desc=用烏鴉羽毛、螢石粉、火炬漿果合成魔法地圖核心。
+advancement.twilight_magic_map=我可以看到千里之外
+advancement.twilight_magic_map.desc=合成魔法地圖。
+advancement.twilight_maze_map=現在，尋找出口
+advancement.twilight_maze_map.desc=從哥布林身上獲取用來合成迷宮地圖的核心，並用其來合成迷宮地圖。
+advancement.twilight_ore_map=這怎麼可能呢？
+advancement.twilight_ore_map.desc=合成迷宮/礦石地圖。
+
+# Mainline beginning progression
+advancement.twilight_hunter=森林的沉默
+advancement.twilight_hunter.desc=獵殺一些暮色的野生動物。
+
+advancement.twilight_kill_naga=是時候擺平天枰了
+advancement.twilight_kill_naga.desc=獵殺森林角落裡的娜迦，取得可以幫你突破巫妖塔魔法壁壘的娜迦鱗片。
+advancement.twilight_naga_armors=娜迦鍛甲師
+advancement.twilight_naga_armors.desc=合成娜迦鱗胸甲和護腿。
+
+advancement.twilight_kill_lich=帶出你的死亡
+advancement.twilight_kill_lich.desc=擊敗塔頂的巫妖，借助他留下的巫妖權杖的魔法來驅散沼澤中的毒蚊。
+advancement.twilight_lich_scepters=由我們的力量相結合！
+advancement.twilight_lich_scepters.desc=獲得所有三個權杖的力量。
+
+# Swamp Progression
+advancement.twilight_progress_labyrinth=強力的牛頭人醬肉
+advancement.twilight_progress_labyrinth.desc=在吃下迷宮中找到的牛頭人醬肉后，你覺得你適應了足夠的風險前往火焰沼澤的准備。
+advancement.twilight_kill_hydra=九頭蛇殺手
+advancement.twilight_kill_hydra.desc=獵殺強大的九頭蛇﹔你在經過它的試煉后，便能抵抗黑暗森林的失明詛咒。
+advancement.twilight_mazebreaker=破壞迷宮
+advancement.twilight_mazebreaker.desc=在迷宮的秘密房間中找到迷宮破壞者鎬。
+advancement.twilight_hydra_chop=九頭蛇肉排，寶貝！
+advancement.twilight_hydra_chop.desc=當你的飽食度是空的時候，吃一些會吃得過飽的九頭蛇肉。
+
+# Dark Forest Progression
+advancement.twilight_progress_trophy_pedestal=得獎的冠軍
+advancement.twilight_progress_trophy_pedestal.desc=將獎杯放置於黑暗森林遺跡中的獎杯基座上，並獲得你的頭銜。
+advancement.twilight_progress_knights=號令砷鉛鐵機關
+advancement.twilight_progress_knights.desc=令騎士之墓的幻影安息，之后你將能控制高塔中的砷鉛鐵機關。
+advancement.twilight_ghast_trap=高塔裏奇怪的東西
+advancement.twilight_ghast_trap.desc=在一個幽靈陷阱周圍殺死幽靈，激活以從天空拉下暮光幽靈！
+advancement.twilight_progress_urghast=火之淚
+advancement.twilight_progress_urghast.desc=觸碰暮光惡魂那熾紅的眼淚，它的熱量可以幫你抵抗冰雪森林的寒冷。
+
 advancement.twilight_experiment_115=神秘的肉？
 advancement.twilight_experiment_115.desc=盡管它看起來像蛋糕……
 advancement.twilight_experiment_115_2=做個記錄：大勝利！
@@ -30,52 +70,27 @@ advancement.twilight_experiment_115_2.desc=鬆軟，美味！
 advancement.twilight_experiment_115_3=每天都吃115，堅持115年，一刻不要停
 advancement.twilight_experiment_115_3.desc=每天都吃實驗物品1-1-5，不要停，115次實驗物品1-1-5，experiment1-1-5.com，www.experiment1-1-5.com，115年，每時每刻都來experiment1-1-5.com，www.1-1-5experiment1-1-5.com
 
-advancement.twilight_glass_sword=一命中奇蹟
-advancement.twilight_glass_sword.desc=希望你好好利用。
-
-advancement.twilight_hydra_chop=九頭蛇肉排，寶貝！
-advancement.twilight_hydra_chop.desc=當你的飽食度是空的時候，吃一些會吃得過飽的九頭蛇肉。
-
-advancement.twilight_dining=我們在永恆的日落用餐
-advancement.twilight_dining.desc=吃掉所有專屬暮光森林的食物。
-
-advancement.twilight_ghast_trap=高塔裏奇怪的東西
-advancement.twilight_ghast_trap.desc=在一個幽靈陷阱周圍殺死幽靈，激活以從天空拉下暮光幽靈！
-
-advancement.twilight_arctic_dyed=進入時尚
-advancement.twilight_arctic_dyed.desc=把四件北極盔甲染色。
-
-advancement.twilight_naga_armors=娜迦鍛甲師
-advancement.twilight_naga_armors.desc=合成娜迦鱗胸甲和護腿。
-advancement.twilight_lich_scepters=由我們的力量相結合！
-advancement.twilight_lich_scepters.desc=獲得所有三個權杖的力量。
-advancement.twilight_hedge=爬蟲踐踏者
-advancement.twilight_hedge.desc=在樹籬迷宮殺死一隻蜘蛛。
-advancement.twilight_magic_map=我可以看到千里之外
-advancement.twilight_magic_map.desc=合成魔法地圖。
-advancement.twilight_maze_map=現在，尋找出口
-advancement.twilight_maze_map.desc=從哥布林身上獲取用來合成迷宮地圖的核心，並用其來合成迷宮地圖。
-advancement.twilight_ore_map=這怎麼可能呢？
-advancement.twilight_ore_map.desc=合成迷宮/礦石地圖。
-advancement.twilight_mazebreaker=破壞迷宮
-advancement.twilight_mazebreaker.desc=在迷宮的秘密房間中找到迷宮破壞者鎬。
-advancement.twilight_fiery_set=血淚成河
-advancement.twilight_fiery_set.desc=身著至少一件熾熱金屬裝備時，手持熾熱金屬工具。
-advancement.twilight_quest_ram=博學的羊
-advancement.twilight_quest_ram.desc=將缺失的東西轉交給謎題羊。
-
-advancement.twilight_progress_labyrinth=強力的牛頭人醬肉
-advancement.twilight_progress_labyrinth.desc=在吃下迷宮中找到的牛頭人醬肉后，你覺得你適應了足夠的風險前往火焰沼澤的准備。
-advancement.twilight_progress_trophy_pedestal=得獎的冠軍
-advancement.twilight_progress_trophy_pedestal.desc=將獎杯放置於黑暗森林遺跡中的獎杯基座上，並獲得你的頭銜。
-advancement.twilight_progress_knights=號令砷鉛鐵機關
-advancement.twilight_progress_knights.desc=令騎士之墓的幻影安息，之后你將能控制高塔中的砷鉛鐵機關。
-advancement.twilight_progress_urghast=火之淚
-advancement.twilight_progress_urghast.desc=觸碰高塔惡魂那熾紅的眼淚，它的熱量可以幫你抵抗冰雪森林的寒冷。
+# Snow Forest Progression
 advancement.twilight_progress_yeti=首領的毛皮
 advancement.twilight_progress_yeti.desc=披上雪怪首領鬆軟的毛皮，籍此抵抗冰川裡那刺骨的寒風。
 advancement.twilight_progress_glacier=澄澈之空
 advancement.twilight_progress_glacier.desc=擊敗極光宮殿裡的冰雪女王，籍此驅散高地上空的酸雨。
+advancement.twilight_arctic_dyed=進入時尚
+advancement.twilight_arctic_dyed.desc=把四件北極盔甲染色。
+
+# Mid-way Misc. Stuff
+advancement.twilight_glass_sword=一命中奇蹟
+advancement.twilight_glass_sword.desc=希望你好好利用。
+
+advancement.twilight_dining=我們在永恆的日落用餐
+advancement.twilight_dining.desc=吃掉所有專屬暮光森林的食物。
+
+advancement.twilight_fiery_set=血淚成河
+advancement.twilight_fiery_set.desc=身著至少一件熾熱金屬裝備時，手持熾熱金屬工具。
+
+# Highlands
+advancement.twilight_progress_merge=終極對決
+advancement.twilight_progress_merge.desc=殺死九頭蛇，高塔幽靈和冰雪女王，清除酸雨，為高地壯膽。
 advancement.twilight_progress_troll=讓烈焰燃燒得更猛烈些吧！
 advancement.twilight_progress_troll.desc=在巨魔洞穴中找到余燼之燈，用它來焚燒掉荊棘之牆。
 advancement.twilight_progress_thorns=穿越荊棘
@@ -141,6 +156,7 @@ tile.TFFireJet.7.name=被封閉的噴射火焰噴口
 tile.TFFireJet.8.name=被封閉的熾盛火焰噴口
 tile.TFNagastone.0.name=娜迦石頭顱
 tile.TFNagastone.1.name=娜迦石
+tile.TFSapling.name=暮光樹苗
 tile.TFSapling.0.name=暮光橡樹樹苗
 tile.TFSapling.1.name=蒼穹樹樹苗
 tile.TFSapling.2.name=紅樹樹樹苗
@@ -429,6 +445,8 @@ item.fieryHelm.tooltip=灼燒攻擊者
 item.fieryPlate.tooltip=灼燒攻擊者
 item.fieryLegs.tooltip=灼燒攻擊者
 item.fieryBoots.tooltip=灼燒攻擊者
+item.phantomHelm.tooltip=死亡永遠不會掉落
+item.phantomPlate.tooltip=死亡永遠不會掉落
 item.yetiHelm.tooltip=冰凍攻擊者
 item.yetiPlate.tooltip=冰凍攻擊者
 item.yetiLegs.tooltip=冰凍攻擊者
@@ -496,6 +514,9 @@ entity.twilightforest.armored_giant.name=武裝巨人
 entity.twilightforest.ice_crystal.name=冰晶
 entity.twilightforest.apocalypse_cube.name=天啟立方 [尚無實作]
 entity.twilightforest.adherent.name=信徒 [尚無實作]
+entity.twilightforest.castle_guardian.name=城堡衛士 [尚無實作]
+
+twilightforest.effect.frosted=結霜
 
 twilightforest.misc.wip0=這個方塊仍在研制中，可能有錯誤或意想不到的效果，可能會損害你的世界。
 twilightforest.misc.wip1=謹慎使用。
@@ -557,6 +578,19 @@ twilightforest.config.antibuilder_blacklist.tooltip=防建築者的黑名單（�
 twilightforest.config.animate_trophyitem=旋轉項目模型上的獎杯頭顱
 twilightforest.config.animate_trophyitem.tooltip=旋轉項目模型上的獎杯頭顱。完全沒有性能影響。為那些不喜歡有趣的人而設。
 
+twilightforest.config.shield_parry=盾牌格擋
+twilightforest.config.shield_parry.tooltip=我們建議下載盾牌格擋模組（Shield Parry mod）進行格擋，但這些控件保持不用。
+twilightforest.config.parry_non_twilight=格擋非暮光拋射物
+twilightforest.config.parry_non_twilight.tooltip=設置為是以格擋非暮光拋射物。我們建議下載盾牌格擋模組（Shield Parry mod）。
+twilightforest.config.parry_window_arrow=格擋箭矢計時
+twilightforest.config.parry_window_arrow.tooltip=舉起一個盾後多少刻（ticks）可以讓它能夠格擋一支箭矢。1秒內有20刻（ticks）。
+twilightforest.config.parry_window_fireball=格擋火球計時
+twilightforest.config.parry_window_fireball.tooltip=舉起一個盾後多少刻（ticks）可以讓它能夠格擋一支火球。1秒內有20刻（ticks）。
+twilightforest.config.parry_window_throwable=格擋拋出物計時
+twilightforest.config.parry_window_throwable.tooltip=舉起一個盾後多少刻（ticks）可以讓它能夠格擋一支拋出物。1秒內有20刻（ticks）。
+twilightforest.config.shieldParryTicksBeam=格擋光束計時？？？
+twilightforest.config.shieldParryTicksBeam.tooltip=？？？
+
 twilightforest.config.loading_screen=載入畫面
 twilightforest.config.loading_screen.tooltip=僅限客戶端：控制載入畫面
 twilightforest.config.loading_icon_enable=啟用載入圖標動畫
@@ -578,40 +612,55 @@ twilightforest.book.lichtower.1=\u00A78[[探險家的筆記本，被怪物啃過
 twilightforest.book.lichtower.2=正在向周圍地區沸騰。\n\n在我的家鄉，我會有很多選擇來處理這個魔法，但是在這裡我的資源是有限的。我不得不研究……
 twilightforest.book.lichtower.3=\u00A78[[很多條目以後]]\u00A70\n\n一個突破！在我的旅程中，我在裝飾的庭院裡看到了一條巨大的蛇狀怪物。在附近，我拾起了一個磨損、被丟棄的綠色鳞片。\n\n鱗片上的魔法似乎具有
 twilightforest.book.lichtower.4=我所需要的詛咒破壞屬性，但魔法太暗淡了。我可能需要直接從生物身上獲取更新鮮的標本。
+
 twilightforest.book.labyrinth.1=\u00A78[[探險家的筆記本，寫在防水紙上]]\u00A70\n\n沼澤中的蚊子令人煩惱，但很奇怪。牠們絕大多數似乎沒有自然資源，似乎也沒有在當地生態中發揮作用。我開始
 twilightforest.book.labyrinth.2=懷疑牠們是某種神奇的詛咒。\n\n\u00A78[[下一項]]\u00A70\n\n現在我在這裡遇到了破敗的迷宮上的保護咒語，我認為我的懷疑得到證實。保護咒語和
 twilightforest.book.labyrinth.3=蚊子都是詛咒。這個詛咒似乎與我遇到的其他人有不同的來源。我不得不進一步研究……\n\n\u00A78[[下一項]]\u00A70\n\n這種詛咒似乎
 twilightforest.book.labyrinth.4=對於一個人獨自創造而言過於強大。幾個組合工作的巫師是必要的。\n\n如果其中一個巫師停止了貢獻，整個沼澤的整個詛咒就會下降。奇怪的是，
 twilightforest.book.labyrinth.5=我的占卜並沒有顯示任何附近的生活巫師的跡象。我在附近的一座尖塔上看到了一些有趣的東西……
+
 twilightforest.book.hydralair.1=\u00A78[[探險家的筆記本，寫在防火紙上]]\u00A70\n\n對於像我這樣的高手來說，火是一個微不足道的障礙。我穿過火海，游過海洋的熔岩。這裡的燃燒中的空氣是一個有趣的變化，
 twilightforest.book.hydralair.2=但最終沒有任何障礙。\n\n然而，阻止我的是我遇到了另一個保護咒語，這次是一個強大的生物，一定是這場火焰沼澤之王。這不是我遇到的第一個保護
 twilightforest.book.hydralair.3=咒語，我開始解開他們工作的奧秘。如果此咒語與其他咒語相同，則會由附近的強大生物維持。在火沼附近有幾塊濕沼澤，
 twilightforest.book.hydralair.4=沼澤地下面是充滿牛頭怪的迷宮。將這種咒語綁定的邏輯選擇將是某種強大的牛頭怪，與周圍的其他人不同。
+
 twilightforest.book.tfstronghold.1=\u00A78[[探險家的筆記本，寫在微弱的發光紙上]]\u00A70\n\n這個區域周圍黑暗的捲須只是在整個黑暗森林上的一種保護性咒語的體現。這個咒語會導致失明，這很令人煩惱。我已經
 twilightforest.book.tfstronghold.2=看到了該地區的一些有趣的事情，並希望繼續探索。\n\n\u00A78[[下一項]]\u00A70\n\n我在黑暗的森林裡找到了廢墟。他們屬於一個通常由騎士居住的類型的堡壘。雖然不是
 twilightforest.book.tfstronghold.3=騎士，但這個堡壘充滿了哥布林。他們穿著騎士盔甲，但他們的行為最不像騎士。\n\n\u00A78[[下一項]]\u00A70\n\n在廢墟深處，我找到了一個基座。基座似乎是騎士會
 twilightforest.book.tfstronghold.4=放置獎杯來證明他們的力量的一種類型。\n\n殺死一個強大的生物似乎削弱了黑暗森林上的詛咒，並且將與該生物相關的獎杯放置在基座上可能允許進入
 twilightforest.book.tfstronghold.5=大本營的主要部分。\n\n到目前為止，我所見過的唯一生物足夠的力量是火沼澤中的許多頭獸。多麼煩人……
+
 twilightforest.book.darktower.1=\u00A78[[似乎在爆炸中倖存下來的探險家的筆記本]]\u00A70\n\n這座塔顯然具有不響應我的機制。他們的魔力幾乎渴望承認我的觸摸，但它不能。這是當塔的設備正在
 twilightforest.book.darktower.2=被附近的一個強大的群眾壓制。\n\n\u00A78[[下一項]]\u00A70\n\n這種魔法似乎是從附近的據點內發出的。它不能來自妖精，因為它們的魅力非常迷人，但卻沒有重點。一定
 twilightforest.book.darktower.3=仍然有一些力量依然活躍在據點。\n\n\u00A78[[下一項]]\u00A70\n\n我的分析表明它來自多個來源，作為一個團體運作。補給後我會回到要塞……
+
 twilightforest.book.yeticave.1=\u00A78[[探險家的筆記本，覆蓋着霜]]\u00A70\n\n圍繞這些雪地的暴風雪不斷。這不是普通的降雪，這是一個神奇的現象。我不得不進行實驗以找出
-twilightforest.book.yeticave.2=能夠產生這種效果的因素。\n\n\u00A78[[下一項]]\u00A70\n\n在黑暗森林的中心，那裡的樹葉變紅，草地消失，那裡有一座木塔。塔樓的頂部貼有
-twilightforest.book.yeticave.3=充當天線的結構。觸角不是降雪的來源，而僅僅是為了增強造成它的詛咒的力量。\n\n這種激烈的暴風雪必定是由一個強大的生物造成的，很可能是在黑暗的森林
-twilightforest.book.yeticave.4=塔頂附近發現的。停止生物，風雪會消失。
+twilightforest.book.yeticave.2=能夠產生這種效果的因素。\n\n\u00A78[[下一項]]\u00A70\n\n這種詛咒似乎對於一個人獨自創造而言過於強大。幾個組合工作的巫師是必要的。
+twilightforest.book.yeticave.3=如果其中一個巫師停止了貢獻，整個沼澤的整個詛咒就會下降。奇怪的是，我的占卜並沒有顯示任何附近的生活巫師的跡象。我在附近的一座尖塔上看到了一些有趣的東西……
+
 twilightforest.book.icetower.1=\u00A78[[一個探險家的筆記本，在冰上結冰]]\u00A70\n\n我克服了一場暴風雪，只是在冰川頂上遇到了這場可怕的冰暴。我的探索向我展示了冰宮的輝煌，閃爍著極光極光的色彩。這
 twilightforest.book.icetower.2=一切似乎都受到某種詛咒的保護。\n\n\u00A78[[下一項]]\u00A70\n\n我不是新手。這個詛咒由附近的生物的力量提供。圍繞火沼澤的詛咒的原因是靠近附近的
 twilightforest.book.icetower.3=牛頭怪頭目的力量。\n\n圍繞著這個冰川，有大量的雪怪。也許這些雪怪有某種首領……
+
 twilightforest.book.trollcave.1=\u00A78[[一個探險家的筆記本，被強酸損壞]]\u00A70\n\n似乎沒有辦法保護我自己免受這個地區周圍的有毒暴雨的襲擊。在我短暫的短途旅行中，我也遇到了另一個保護咒語，類似於我見過的
 twilightforest.book.trollcave.2=其它保護咒語。該法術必須以某種方式連接到有毒風暴。進一步的研究要遵循……\n\n\u00A78[[下一項]]\u00A70\n\n這種至高無上的天氣魔法必定是無與倫比的天氣
 twilightforest.book.trollcave.3=魔術師的結果。這樣的人可能會躲藏在極端的環境中，遠離他人。\n\n根據我的邏輯，我期望在冰川的某個地方找到這樣一個人，也許在那裡有一個堡壘……
+
 twilightforest.book.unknown.1=\u00A78[[這本書顯示了被多次復制的跡象]]\u00A70\n\n我無法解釋圍繞這個結構的領域，但是魔法是強大的。如果這種詛咒像其他人一樣，那麼解鎖它的答案就在別處。也許有些
 twilightforest.book.unknown.2=東西我還沒有完成，或者還有一些我還沒有擊敗的怪物。我不得不退後。稍後我會回到這個地方，看看有沒有什麼改變。
+
+# Fluid
+
+fluid.fierymetal=熔融熾熱血/淚
+fluid.knightmetal=熔融騎士金屬錠
+fluid.fiery_essence=熾熱精華
+
+# TCon
 
 material.nagascale.name=納迦鱗片
 material.steeleaf.name=鋼葉
 material.fierymetal.name=熾熱血/淚
-material.knightmetal.name=騎士金屬錠
+material.knightmetal.name=騎士金屬
 material.raven_feather.name=烏鴉羽毛
 
 modifier.twilit.name=暮色
@@ -626,3 +675,26 @@ modifier.stalwart.name=偉岸
 modifier.stalwart.desc=§o勇敢和大膽。§r\n擊中一個實體可以讓你感到底氣。
 modifier.veiled.name=含蓄
 modifier.veiled.desc=§o像幽靈一樣！§r\n拋射物將隱形。
+
+# Immersive Engineering
+item.tfEngineeringShader=皮膚：%s
+twilightforest.shader.twilight=暮光森林
+
+twilightforest.shader.snakestone=蛇石
+twilightforest.shader.naga=娜迦
+twilightforest.shader.lich=巫妖
+
+twilightforest.shader.mazestone=迷宮石
+twilightforest.shader.minoshroom=米諾菇
+twilightforest.shader.hydra=九頭蛇
+
+twilightforest.shader.underbrick=磚下
+twilightforest.shader.knight_phantom=幻影騎士
+twilightforest.shader.towerwood=塔木
+twilightforest.shader.ur-ghast=暮光惡魂
+
+twilightforest.shader.alpha_yeti=雪怪首領
+twilightforest.shader.auroralized=極光化
+twilightforest.shader.snow_queen=冰雪女王
+
+twilightforest.shader.final_castle=終結城堡

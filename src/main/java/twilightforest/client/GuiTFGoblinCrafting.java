@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 import twilightforest.inventory.ContainerTFUncrafting;
 
 public class GuiTFGoblinCrafting extends GuiContainer {
@@ -31,10 +32,9 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		renderHoveredToolTip(mouseX, mouseY);
 	}
 
-
 	@Override
 	protected void drawGuiContainerForegroundLayer(int var1, int var2) {
-		this.fontRenderer.drawString("Uncrafting Table", 8, 6, 4210752);
+		this.fontRenderer.drawString(I18n.format(TFBlocks.uncrafting_table.getUnlocalizedName() + ".name"), 8, 6, 4210752);
 		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 

@@ -33,7 +33,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(3);
 		getTFBiomeDecorator().setWaterlilyPerChunk(6);
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().lavaPoolChance = 0.125F;
 		getTFBiomeDecorator().mangrovesPerChunk = 3;
 	}

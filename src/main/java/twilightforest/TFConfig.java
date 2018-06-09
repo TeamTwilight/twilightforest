@@ -73,6 +73,9 @@ public class TFConfig {
 		@Config.LangKey(config + "glacer_packed_ice")
 		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")
 		public boolean glacierPackedIce = false;
+
+		@Config.Ignore
+		public boolean shadersSupported = true;
 	}
 
 	@Config.LangKey(config + "silent_cicadas")

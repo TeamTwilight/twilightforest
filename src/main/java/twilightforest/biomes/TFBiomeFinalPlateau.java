@@ -22,7 +22,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 		this.topBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SURFACE);
 		this.fillerBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.CRACKED);
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
 
 		this.decorator.generateFalls = false;

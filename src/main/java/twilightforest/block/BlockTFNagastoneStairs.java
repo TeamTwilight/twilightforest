@@ -28,6 +28,7 @@ public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegister
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(this.getDefaultState().withProperty(DIRECTION, LeftRight.LEFT));
+		this.useNeighborBrightness = true;
 	}
 
 	@Override

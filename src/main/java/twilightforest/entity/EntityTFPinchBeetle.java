@@ -29,7 +29,7 @@ public class EntityTFPinchBeetle extends EntityMob {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
+		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F, false));
 		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

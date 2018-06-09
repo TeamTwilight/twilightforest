@@ -11,30 +11,39 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.shader.ShaderHelper;
 import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
+import twilightforest.compat.IEShaderRegister;
+import twilightforest.compat.TFCompat;
 import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.item.ItemTFBowBase;
 import twilightforest.world.WorldProviderTwilightForest;
 
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
+@SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public class TFClientEvents {
 
@@ -42,19 +51,32 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void texStitch(TextureStitchEvent.Pre evt) {
-		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_0"));
-		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_1"));
-		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_2"));
-		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_3"));
-		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
-		evt.getMap().registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/firefly"));
+		TextureMap map = evt.getMap();
 
-		evt.getMap().setTextureEntry(new MoltenFieryTexture(new ResourceLocation("minecraft","blocks/lava_still"), RegisterBlockEvent.moltenFieryStill));
-		evt.getMap().setTextureEntry(new MoltenFieryTexture(new ResourceLocation("minecraft","blocks/lava_flow"), RegisterBlockEvent.moltenFieryFlow));
-		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/lava_still"), RegisterBlockEvent.moltenKnightmetalStill, true, KNIGHTMETAL_GRADIENT_MAP));
-		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/lava_flow"), RegisterBlockEvent.moltenKnightmetalFlow, true, KNIGHTMETAL_GRADIENT_MAP));
-		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/water_still"), RegisterBlockEvent.essenceFieryStill, true, FIERY_ESSENCE_GRADIENT_MAP));
-		evt.getMap().setTextureEntry(new GradientMappedTexture(new ResourceLocation("minecraft","blocks/water_flow"), RegisterBlockEvent.essenceFieryFlow, true, FIERY_ESSENCE_GRADIENT_MAP));
+		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_0"));
+		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_1"));
+		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_2"));
+		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_3"));
+		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
+		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/firefly"));
+
+		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenFieryStill                                        ));
+		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenFieryFlow                                         ));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenKnightmetalStill, true, KNIGHTMETAL_GRADIENT_MAP  ));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenKnightmetalFlow , true, KNIGHTMETAL_GRADIENT_MAP  ));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_still" ), RegisterBlockEvent.essenceFieryStill     , true, FIERY_ESSENCE_GRADIENT_MAP));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));
+
+		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_grip" ), IEShaderRegister.processedRevolverGripLayer, true, EASY_GRAYSCALING_MAP));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_0"    ), IEShaderRegister.processedRevolverLayer    , true, EASY_GRAYSCALING_MAP));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/chemthrower_0"     ), IEShaderRegister.processedChemthrowLayer   , true, EASY_GRAYSCALING_MAP));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/drill_diesel_0"    ), IEShaderRegister.processedDrillLayer       , true, EASY_GRAYSCALING_MAP));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/railgun_0"         ), IEShaderRegister.processedRailgunLayer     , true, EASY_GRAYSCALING_MAP));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/shield_0"          ), IEShaderRegister.processedShieldLayer      , true, EASY_GRAYSCALING_MAP));
+		//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), IEShaderRegister.processedMinecartLayer    , true, EASY_GRAYSCALING_MAP));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "blocks/shaders/balloon_0"        ), IEShaderRegister.processedBalloonLayer     , true, EASY_GRAYSCALING_MAP));
+		}
 	}
 
 	public static final GradientNode[] KNIGHTMETAL_GRADIENT_MAP = {
@@ -69,6 +91,11 @@ public class TFClientEvents {
 	public static final GradientNode[] FIERY_ESSENCE_GRADIENT_MAP = {
 			new GradientNode(0.2f, 0xFF_3D_17_17),
 			new GradientNode(0.8f, 0xFF_5C_0B_0B)
+	};
+
+	public static final GradientNode[] EASY_GRAYSCALING_MAP = {
+			new GradientNode(0.0f, 0xFF_80_80_80),
+			new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};
 
 	// Slowness potion uses an attribute modifier with specific UUID
@@ -171,14 +198,27 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent event) {
+		if (event.phase != TickEvent.Phase.END) return;
+		time++;
 
-		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 0.5F;
-		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 0.5F;
+		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 1.0F;
+		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 1.0F;
 
 		BugModelAnimationHelper.animate();
 	}
 
+	@SubscribeEvent
+	public static void shouldReloadShader(ClientChatEvent event) {
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient() && Minecraft.getMinecraft().isSingleplayer() && event.getOriginalMessage().toLowerCase(Locale.ROOT).equals("TFReload")) {
+			Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString( "Reloading Twilight Forest Shaders!" ));
+			ShaderHelper.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
+			IEShaderRegister.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
+		}
+	}
+
+	public static int time = 0;
 	public static float rotationTicker = 0;
 	public static float sineTicker = 0;
-	public static final float SINE_TICKER_BOUND = (float) (Math.PI * 200.0F) - 1.0F;
+	public static final float PI = (float) Math.PI;
+	public static final float SINE_TICKER_BOUND = PI * 200.0F - 1.0F;
 }

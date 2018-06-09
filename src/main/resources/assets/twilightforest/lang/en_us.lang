@@ -103,6 +103,20 @@ twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
 twilightforest.ore_meter.exposed=Exposed: %s
 twilightforest.scepter_charges=%d charges left
 
+# Commands
+commands.tffeature.usage=/tffeature <info|reactivate|conquer|center>
+commands.tffeature.not_in_twilight_forest=You are not in the Twilight Forest dimension
+commands.tffeature.nearest=The nearest feature is %s
+commands.tffeature.center=Center of feature: %s
+commands.tffeature.chunk=Are in feature chunk: %s
+commands.tffeature.structure.inside=You are in the structure for that feature
+commands.tffeature.structure.outside=You are not in the structure for that feature
+commands.tffeature.structure.required=You are not in a structure
+commands.tffeature.structure.conquer.status=Structure conquer flag: %s
+commands.tffeature.structure.conquer.update=Structure conquer flag was %s, changing to %s
+commands.tffeature.locate.usage=/tffeature locate <feature>
+
+# Blocks
 tile.TFLog.0.name=Twilight Oak Wood
 tile.TFLog.1.name=Canopy Tree Wood
 tile.TFLog.2.name=Mangrove Wood
@@ -113,6 +127,7 @@ tile.TFLeaves.2.name=Mangrove Leaves
 tile.TFLeaves.3.name=Rainbow Oak Leaves
 tile.TFFirefly.name=Firefly
 tile.TFCicada.name=Cicada
+tile.TFCicada.desc=What if this could be launched at someone with a Railgun...?
 item.TFPortal.name=Twilight Forest Portal
 tile.TFPortal.name=Twilight Forest Portal
 tile.TFMazestone.0.name=Mazestone
@@ -675,3 +690,26 @@ modifier.stalwart.name=Stalwart
 modifier.stalwart.desc=§oThe Brave and Bold.§r\nHitting an entity can make you feel emboldened.
 modifier.veiled.name=Veiled
 modifier.veiled.desc=§oLike a Specter!§r\nProjectile will be invisible.
+
+# Immersive Engineering
+item.tfEngineeringShader=Shader: %s
+twilightforest.shader.twilight=Twilight Forest
+
+twilightforest.shader.snakestone=Snakestone
+twilightforest.shader.naga=Naga
+twilightforest.shader.lich=Lich
+
+twilightforest.shader.mazestone=Mazestone
+twilightforest.shader.minoshroom=Minoshroom
+twilightforest.shader.hydra=Hydra
+
+twilightforest.shader.underbrick=Underbrick
+twilightforest.shader.knight_phantom=Knight Phantom
+twilightforest.shader.towerwood=Towerwood
+twilightforest.shader.ur-ghast=Ur-Ghast
+
+twilightforest.shader.alpha_yeti=Alpha Yeti
+twilightforest.shader.auroralized=Auroralized
+twilightforest.shader.snow_queen=Snow Queen
+
+twilightforest.shader.final_castle=Final Castle

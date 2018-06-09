@@ -1,9 +1,12 @@
 package twilightforest;
 
+import net.minecraft.item.EnumRarity;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -33,7 +36,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12-0.2.3.12,);required-after:forge@[14.23.3.2655,)",
+		dependencies = "after:ctm@[MC1.12-0.3.0.15,);after:immersiveengineering@[0.12-83-397,);required-after:forge@[14.23.3.2655,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )
 public class TwilightForestMod {
@@ -45,6 +48,7 @@ public class TwilightForestMod {
 	public static final String ENVRIO_DIR = "twilightforest:textures/environment/";
 	public static final String ARMOR_DIR = "twilightforest:textures/armor/";
 	public static final String ENFORCED_PROGRESSION_RULE = "tfEnforcedProgression";
+	public static final int DATA_FIXER_VERSION = 1;
 
 	public static final int GUI_ID_UNCRAFTING = 1;
 	public static final int GUI_ID_FURNACE = 2;
@@ -53,6 +57,8 @@ public class TwilightForestMod {
 	public static int backupdimensionID = -777;
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
+
+	private static final EnumRarity rarity = EnumHelper.addRarity("TWILIGHT", TextFormatting.DARK_GREEN, "Twilight");
 
 	private static boolean compat = true;
 
@@ -75,11 +81,13 @@ public class TwilightForestMod {
 		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 
 		// sounds on client, and whatever else needs to be registered pre-load
-		proxy.doPreLoadRegistration();
+		proxy.preInit();
 
 		TFTreasure.init();
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
+		LootFunctionManager.registerFunction(new LootFunctionModItemSwap.Serializer());
 		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
+		LootConditionManager.registerCondition(new LootConditionModExists.Serializer());
 
 		// just call this so that we register structure IDs correctly
 		new StructureTFMajorFeatureStart();
@@ -99,11 +107,11 @@ public class TwilightForestMod {
 
 	@SuppressWarnings("unused")
 	@EventHandler
-	public void load(FMLInitializationEvent evt) {
+	public void init(FMLInitializationEvent evt) {
 		TFItems.initRepairMaterials();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		TFPacketHandler.init();
-		proxy.doOnLoadRegistration();
+		proxy.init();
 		TFAdvancements.init();
 
 		if (compat) {
@@ -115,6 +123,8 @@ public class TwilightForestMod {
 				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
 			}
 		}
+
+		TFDataFixers.init();
 	}
 
 	@SuppressWarnings("unused")
@@ -218,8 +228,7 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.MOONWORM_SHOT, EntityTFMoonwormShot.class, id++, 150, 3, true);
 		TFEntities.registerEntity(TFEntityNames.SLIME_BLOB, EntityTFSlimeProjectile.class, id++, 150, 3, true);
 		TFEntities.registerEntity(TFEntityNames.CHARM_EFFECT, EntityTFCharmEffect.class, id++, 80, 3, true);
-		TFEntities.registerEntity(TFEntityNames.THROWN_AXE, EntityTFThrownAxe.class, id++, 80, 3, true);
-		TFEntities.registerEntity(TFEntityNames.THROWN_PICK, EntityTFThrownPick.class, id++, 80, 3, true);
+		TFEntities.registerEntity(TFEntityNames.THROWN_WEP, EntityTFThrownWep.class, id++, 80, 3, true);
 		TFEntities.registerEntity(TFEntityNames.FALLING_ICE, EntityTFFallingIce.class, id++, 80, 3, true);
 		TFEntities.registerEntity(TFEntityNames.THROWN_ICE, EntityTFIceBomb.class, id++, 80, 2, true);
 		TFEntities.registerEntity(TFEntityNames.SEEKER_ARROW, EntitySeekerArrow.class, id++, 150, 1, true);
@@ -231,27 +240,30 @@ public class TwilightForestMod {
 		TFEntities.registerEntity(TFEntityNames.BOGGARD, EntityTFBoggard.class, id++);
 	}
 
-
 	private void registerTileEntities() {
 		proxy.registerCritterTileEntities();
 
-		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner.class, "naga_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFLichSpawner.class, "lich_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner.class, "hydra_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFSmoker.class, "smoker");
-		GameRegistry.registerTileEntity(TileEntityTFPoppingJet.class, "popping_jet");
-		GameRegistry.registerTileEntity(TileEntityTFFlameJet.class, "flame_jet");
-		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder.class, "tower_builder");
-		GameRegistry.registerTileEntity(TileEntityTFAntibuilder.class, "tower_reverter");
-		GameRegistry.registerTileEntity(TileEntityTFTrophy.class, "trophy");
-		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner.class, "tower_boss_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive.class, "ghast_trap_inactive");
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive.class, "ghast_trap_active");
-		GameRegistry.registerTileEntity(TileEntityTFCReactorActive.class, "carminite_reactor_active");
-		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, "knight_phantom_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner.class, "snow_queen_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace.class, "cinder_furnace");
-		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner.class, "minoshroom_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner.class, "alpha_yeti_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner.class, "twilightforest:naga_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFLichSpawner.class, "twilightforest:lich_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner.class, "twilightforest:hydra_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFSmoker.class, "twilightforest:smoker");
+		GameRegistry.registerTileEntity(TileEntityTFPoppingJet.class, "twilightforest:popping_jet");
+		GameRegistry.registerTileEntity(TileEntityTFFlameJet.class, "twilightforest:flame_jet");
+		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder.class, "twilightforest:tower_builder");
+		GameRegistry.registerTileEntity(TileEntityTFAntibuilder.class, "twilightforest:tower_reverter");
+		GameRegistry.registerTileEntity(TileEntityTFTrophy.class, "twilightforest:trophy");
+		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner.class, "twilightforest:tower_boss_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive.class, "twilightforest:ghast_trap_inactive");
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive.class, "twilightforest:ghast_trap_active");
+		GameRegistry.registerTileEntity(TileEntityTFCReactorActive.class, "twilightforest:carminite_reactor_active");
+		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, "twilightforest:knight_phantom_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner.class, "twilightforest:snow_queen_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace.class, "twilightforest:cinder_furnace");
+		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner.class, "twilightforest:minoshroom_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner.class, "twilightforest:alpha_yeti_spawner"); //*/
+	}
+
+	public static EnumRarity getRarity() {
+		return rarity != null ? rarity : EnumRarity.EPIC;
 	}
 }

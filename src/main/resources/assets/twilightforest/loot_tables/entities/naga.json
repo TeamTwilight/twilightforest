@@ -8,14 +8,29 @@
         "name": "twilightforest:naga_scale",
         "functions": [{ "function": "set_count", "count": { "min": 6, "max": 11 } }]
       }]
-    },
-    {
+    }, {
       "name": "trophy",
       "rolls": 1,
       "entries": [{
         "type": "item",
         "name": "twilightforest:trophy",
         "functions": [{ "function": "set_data", "data": 0 }]
+      }]
+    }, {
+      "name": "shader",
+      "rolls": 1,
+      "conditions": [{ "condition": "twilightforest:mod_exists", "mod_id": "immersiveengineering" }],
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:naga_scale",
+        "functions": [{
+          "function": "twilightforest:item_or_default",
+          "item": "twilightforest:shader",
+          "default": "twilightforest:naga_scale"
+        }, {
+          "function": "set_nbt",
+          "tag": "{\"shader_type\":\"Naga\"}"
+        }]
       }]
     }
   ]

@@ -7,32 +7,42 @@
         "type": "loot_table",
         "name": "twilightforest:structures/stronghold_boss/common"
       }]
-    },
-
-    {
+    }, {
       "name": "uncommon",
       "rolls": 2,
       "entries": [{
         "type": "loot_table",
         "name": "twilightforest:structures/stronghold_boss/uncommon"
       }]
-    },
-
-    {
+    }, {
       "name": "rare",
       "rolls": 1,
       "entries": [{
         "type": "loot_table",
         "name": "twilightforest:structures/stronghold_boss/rare"
       }]
-    },
-    
-    {
+    }, {
       "name": "trophy",
       "rolls": 1,
       "entries": [{
         "type": "loot_table",
         "name": "twilightforest:structures/stronghold_boss/trophy"
+      }]
+    }, {
+      "name": "shader",
+      "rolls": 1,
+      "conditions": [{ "condition": "twilightforest:mod_exists", "mod_id": "immersiveengineering" }],
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:knightmetal_ingot",
+        "functions": [{
+          "function": "twilightforest:item_or_default",
+          "item": "twilightforest:shader",
+          "default": "twilightforest:knightmetal_ingot"
+        }, {
+          "function": "set_nbt",
+          "tag": "{\"shader_type\":\"Knight Phantom\"}"
+        }]
       }]
     }
   ]

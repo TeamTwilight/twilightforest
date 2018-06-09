@@ -28,6 +28,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
+import twilightforest.entity.boss.EntityTFMinoshroom;
 
 public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minotaur");
@@ -40,7 +41,7 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
+		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F, this instanceof EntityTFMinoshroom));
 		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

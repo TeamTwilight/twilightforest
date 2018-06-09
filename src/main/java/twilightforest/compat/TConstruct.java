@@ -87,9 +87,11 @@ public class TConstruct {
         TConstruct.fierymetal.addCommonItems("Fiery");
         TConstruct.fierymetal
                 .addTrait(TConstruct.twilit)
+                .addTrait(TinkerTraits.flammable)
+                .addTrait(TConstruct.twilit, MaterialTypes.HEAD)
                 .addTrait(TinkerTraits.autosmelt, MaterialTypes.HEAD)
                 .addTrait(TinkerTraits.superheat, MaterialTypes.HEAD)
-                .addTrait(TinkerTraits.flammable)
+                .addTrait(TinkerTraits.flammable, MaterialTypes.HEAD)
                 .setCraftable(false).setCastable(true)
                 .setRepresentativeItem(TFItems.fiery_ingot);
 

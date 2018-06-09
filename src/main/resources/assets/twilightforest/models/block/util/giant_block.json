@@ -1,8 +1,7 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "#all",
-    "all"     : "minecraft:blocks/cobblestone"
+    "particle": "#all"
   },
   "elements": [{
     "from": [  0,  0,  0 ],
@@ -18,11 +17,11 @@
   }],
   "ctm_version": 1,
   "ctm_overrides": {
-    "0": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
+    "0": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 2 }},
     "1": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
-    "2": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 2 }},
-    "3": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 2 }},
-    "4": { "type": "V", "extra": { "size": 4, "x_offset":  1, "y_offset": 2 }},
-    "5": { "type": "V", "extra": { "size": 4, "x_offset": -1, "y_offset": 2 }}
+    "2": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
+    "3": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
+    "4": { "type": "V", "extra": { "size": 4, "x_offset": -1, "y_offset": 1 }},
+    "5": { "type": "V", "extra": { "size": 4, "x_offset":  1, "y_offset": 1 }}
   }
 }

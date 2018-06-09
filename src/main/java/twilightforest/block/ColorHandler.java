@@ -13,6 +13,7 @@ import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.TFCompat;
 import twilightforest.enums.Leaves3Variant;
 import twilightforest.enums.LeavesVariant;
 import twilightforest.enums.MagicWoodVariant;
@@ -287,6 +288,9 @@ public final class ColorHandler {
 						? ((ItemTFArcticArmor) stack.getItem()).getColor(stack, tintIndex)
 						: 0xFFFFFF,
 				TFItems.arctic_helmet, TFItems.arctic_chestplate, TFItems.arctic_leggings, TFItems.arctic_boots);
+
+		if (TFCompat.IMMERSIVEENGINEERING.isActivated())
+			itemColors.registerItemColorHandler(twilightforest.compat.ItemTFShader::getShaderColors, twilightforest.compat.ItemTFShader.shader);
 	}
 
 	private ColorHandler() {

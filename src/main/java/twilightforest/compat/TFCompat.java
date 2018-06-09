@@ -1,15 +1,25 @@
 package twilightforest.compat;
 
+import blusunrize.immersiveengineering.api.ApiUtils;
+import blusunrize.immersiveengineering.api.tool.RailgunHandler;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import org.apache.commons.lang3.tuple.Pair;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
+import twilightforest.item.TFRegisterItemEvent;
 
 @Optional.InterfaceList({
         @Optional.Interface(modid = "chisel", iface = "team.chisel.api.ChiselAPIProps"),
@@ -57,6 +67,48 @@ public enum TFCompat {
             FMLInterModComms.sendMessage(ChiselAPIProps.MOD_ID, IMC.ADD_VARIATION_V2.toString(), nbt);
         }
     }, // TODO Forestry
+    IMMERSIVEENGINEERING("Immersive Engineering") {
+        @Override
+        protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
+            items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+
+            new IEShaderRegister(); // Calling to initialize it all
+        }
+
+        @Override
+        protected void init() {
+            // Yeah, it's a thing! https://twitter.com/AtomicBlom/status/1004931868012056583
+            RailgunHandler.projectilePropertyMap.add(Pair.of(ApiUtils.createIngredientStack(TFBlocks.cicada), new RailgunHandler.RailgunProjectileProperties(2, 0.25){
+                @Override
+                public boolean overrideHitEntity(Entity entityHit, Entity shooter) {
+                    World world = entityHit.getEntityWorld();
+
+                    new EntityFallingBlock(world, entityHit.posX, entityHit.posY, entityHit.posZ, TFBlocks.cicada.getDefaultState());
+
+                    world.playSound(null, entityHit.posX, entityHit.posY, entityHit.posZ, TFSounds.CICADA, SoundCategory.NEUTRAL, 1.0f, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+
+                    return false;
+                }
+            }));
+
+            excludeFromShaderBags(EntityTFNaga.class);
+
+            excludeFromShaderBags(EntityTFLich.class);
+
+            excludeFromShaderBags(EntityTFMinoshroom.class);
+            excludeFromShaderBags(EntityTFHydra.class);
+
+            excludeFromShaderBags(EntityTFKnightPhantom.class);
+            excludeFromShaderBags(EntityTFUrGhast.class);
+
+            excludeFromShaderBags(EntityTFYetiAlpha.class);
+            excludeFromShaderBags(EntityTFSnowQueen.class);
+        }
+
+        private void excludeFromShaderBags(Class<? extends Entity> entityClass) {
+            FMLInterModComms.sendMessage("immersiveengineering", "shaderbag_exclude", entityClass.getName());
+        }
+    },
     JEI("Just Enough Items") {},
     @SuppressWarnings("WeakerAccess")
     TCONSTRUCT("Tinkers' Construct") {
@@ -86,6 +138,8 @@ public enum TFCompat {
     protected void init() {}
     protected void postInit() {}
 
+    protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {}
+
     final private String modName;
 
     private boolean isActivated = false;
@@ -96,6 +150,20 @@ public enum TFCompat {
 
     TFCompat(String modName) {
         this.modName = modName;
+    }
+
+    public static void initCompatItems(TFRegisterItemEvent.ItemRegistryHelper items) {
+        for (TFCompat compat : TFCompat.values()) {
+            if (compat.isActivated) {
+                try {
+                    compat.initItems(items);
+                } catch (Exception e) {
+                    compat.isActivated = false;
+                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility in initializing items!");
+                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
+                }
+            }
+        }
     }
 
     public static void preInitCompat() {

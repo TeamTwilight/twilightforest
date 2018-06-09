@@ -10,18 +10,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import twilightforest.entity.boss.EntityTFThrownWep;
 
 
-public class RenderTFThrownAxe extends Render<Entity> {
-	private final ItemStack myItem;
+public class RenderTFThrownWep extends Render<EntityTFThrownWep> {
 
-	public RenderTFThrownAxe(RenderManager manager, Item knightlyAxe) {
+	public RenderTFThrownWep(RenderManager manager) {
 		super(manager);
-		this.myItem = new ItemStack(knightlyAxe);
 	}
 
 	@Override
-	public void doRender(Entity entity, double par2, double par4, double par6, float par8, float par9) {
+	public void doRender(EntityTFThrownWep entity, double par2, double par4, double par6, float par8, float par9) {
 
 		GlStateManager.pushMatrix();
 
@@ -34,14 +33,14 @@ public class RenderTFThrownAxe extends Render<Entity> {
 		// size up
 		GlStateManager.scale(1.25F, 1.25F, 1.25F);
 
-		this.renderDroppedItem(par8, spin);
+		this.renderDroppedItem(entity.getItem(), par8, spin);
 
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.popMatrix();
 	}
 
 	// todo recheck transformations
-	private void renderDroppedItem(float rotation, float spin) {
+	private void renderDroppedItem(ItemStack stack, float rotation, float spin) {
 		GlStateManager.pushMatrix();
 
 		float f9 = 0.5F;
@@ -56,13 +55,13 @@ public class RenderTFThrownAxe extends Render<Entity> {
 		GlStateManager.translate(-f9, -f10, -(f12 + f11));
 		GlStateManager.translate(0f, 0f, f12 + f11);
 
-		Minecraft.getMinecraft().getRenderItem().renderItem(myItem, ItemCameraTransforms.TransformType.GROUND);
+		Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 
 		GlStateManager.popMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
+	protected ResourceLocation getEntityTexture(EntityTFThrownWep entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 }

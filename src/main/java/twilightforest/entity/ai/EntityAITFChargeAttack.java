@@ -1,9 +1,13 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.ITFCharger;
@@ -22,13 +26,16 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 
 	protected float speed;
 
+	private final boolean canBreak;
+
 	private int windup;
 
 	private boolean hasAttacked;
 
-	public EntityAITFChargeAttack(EntityCreature entityLiving, float f) {
+	public EntityAITFChargeAttack(EntityCreature entityLiving, float f, boolean canBreak) {
 		this.charger = entityLiving;
 		this.speed = f;
+		this.canBreak = canBreak;
 		this.windup = 0;
 		this.hasAttacked = false;
 		this.setMutexBits(3);
@@ -88,6 +95,29 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 
 				if (this.charger instanceof ITFCharger) {
 					((ITFCharger) charger).setCharging(true);
+				}
+			}
+		} else if (canBreak) {
+			if (!charger.world.isRemote && charger.world.getGameRules().getBoolean("mobGriefing")) {
+				AxisAlignedBB bb = charger.getEntityBoundingBox();
+				int minx = MathHelper.floor(bb.minX - 0.75D);
+				int miny = MathHelper.floor(bb.minY + 0.0D);
+				int minz = MathHelper.floor(bb.minZ - 0.75D);
+				int maxx = MathHelper.floor(bb.maxX + 0.75D);
+				int maxy = MathHelper.floor(bb.maxY + 0.15D);
+				int maxz = MathHelper.floor(bb.maxZ + 0.75D);
+				if (charger.world.isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
+					for (int dx = minx; dx <= maxx; dx++) {
+						for (int dy = miny; dy <= maxy; dy++) {
+							for (int dz = minz; dz <= maxz; dz++) {
+								BlockPos pos = new BlockPos(dx, dy, dz);
+								IBlockState state = charger.world.getBlockState(pos);
+								float hardness = state.getBlockHardness(charger.world, pos);
+								if (hardness >= 0 && hardness < 50 && charger.world.getTileEntity(pos) == null)
+									charger.world.destroyBlock(pos, true);
+							}
+						}
+					}
 				}
 			}
 		}

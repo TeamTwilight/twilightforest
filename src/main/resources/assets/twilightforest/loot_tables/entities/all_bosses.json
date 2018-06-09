@@ -1,0 +1,102 @@
+{
+  "pools": [{
+    "name": "master",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:chest",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Master Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/all_bosses\"}}"
+      }]
+    }]
+  }, {
+    "name": "naga",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:lime_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Naga's Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/naga\"}}"
+      }]
+    }]
+  }, {
+    "name": "lich",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:silver_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Lich's Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/lich\"}}"
+      }]
+    }]
+  }, {
+    "name": "minoshroom",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:red_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Minoshroom's Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/minoshroom\"}}"
+      }]
+    }]
+  }, {
+    "name": "hydra",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:cyan_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Hydra's Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/hydra\"}}"
+      }]
+    }]
+  }, {
+    "name": "knight_phantom",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:green_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Knight Phantoms' Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:structures/stronghold_boss/stronghold_boss\"}}"
+      }]
+    }]
+  }, {
+    "name": "ur-ghast",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:white_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Ur-Ghast's Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:structures/darktower_boss/darktower_boss\"}}"
+      }]
+    }]
+  }, {
+    "name": "alpha_yeti",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:light_blue_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Alpha Yeti's Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/yeti_alpha\"}}"
+      }]
+    }]
+  }, {
+    "name": "snow_queen",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:blue_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Snow Queen's Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/snow_queen\"}}"
+      }]
+    }]
+  }]
+}

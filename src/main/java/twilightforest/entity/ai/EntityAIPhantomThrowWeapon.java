@@ -3,10 +3,11 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
-import twilightforest.entity.boss.EntityTFThrownAxe;
-import twilightforest.entity.boss.EntityTFThrownPick;
+import twilightforest.entity.boss.EntityTFThrownWep;
+import twilightforest.item.TFItems;
 
 public class EntityAIPhantomThrowWeapon extends EntityAIBase {
 
@@ -43,7 +44,7 @@ public class EntityAIPhantomThrowWeapon extends EntityAIBase {
 		double tz = targetedEntity.posZ - sz;
 
 		boss.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, (boss.getRNG().nextFloat() - boss.getRNG().nextFloat()) * 0.2F + 0.4F);
-		EntityTFThrownAxe projectile = new EntityTFThrownAxe(boss.world, boss);
+		EntityTFThrownWep projectile = new EntityTFThrownWep(boss.world, boss).setItem(new ItemStack(TFItems.knightmetal_axe));
 
 		float speed = 0.75F;
 
@@ -69,7 +70,7 @@ public class EntityAIPhantomThrowWeapon extends EntityAIBase {
 			double vz = MathHelper.sin(throwAngle);
 
 
-			EntityTFThrownPick projectile = new EntityTFThrownPick(boss.world, boss);
+			EntityTFThrownWep projectile = new EntityTFThrownWep(boss.world, boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.knightmetal_pickaxe));
 
 
 			projectile.setLocationAndAngles(sx, sy, sz, i * 45F, boss.rotationPitch);

@@ -37,6 +37,7 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
 		this.setLightOpacity(isDouble ? 255 : 0);
+		this.useNeighborBrightness = !isDouble;
 
 		IBlockState state = this.blockState.getBaseState().withProperty(VARIANT, AuroraSlabVariant.AURORA);
 

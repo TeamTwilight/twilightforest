@@ -9,30 +9,24 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -222,118 +216,32 @@ public class BlockTFPortal extends BlockBreakable {
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (state == this.getDefaultState() && !entity.isRiding() && entity.getPassengers().isEmpty() && entity.timeUntilPortal <= 0)
+		if (state == this.getDefaultState() && !entity.isRiding() && !entity.isBeingRidden()) {
 			attemptSendPlayer(entity, false);
-	}
-
-	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
-		if (entity instanceof EntityPlayerMP) {
-			EntityPlayerMP playerMP = (EntityPlayerMP) entity;
-			playerMP.invulnerableDimensionChange = true;
-
-			if ((!forcedEntry) && playerMP.timeUntilPortal > 0) {
-				// do not switch dimensions if the player has any time on this thinger
-				playerMP.timeUntilPortal = 10;
-			} else {
-				// send to twilight
-				if (playerMP.dimension != TFConfig.dimension.dimensionID) {
-					if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(playerMP, TFConfig.dimension.dimensionID)) return;
-
-					//PlayerHelper.grantAdvancement(playerMP, new ResourceLocation(TwilightForestMod.ID, "twilight_portal"));
-					TwilightForestMod.LOGGER.debug("Player touched the portal block.  Sending the player to dimension {}", TFConfig.dimension.dimensionID);
-
-					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, TFConfig.dimension.dimensionID, TFTeleporter.getTeleporterForDim(playerMP.mcServer, TFConfig.dimension.dimensionID));
-
-					// set respawn point for TF dimension to near the arrival portal
-					playerMP.setSpawnChunk(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
-				} else {
-					if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(playerMP, 0)) return;
-
-					playerMP.mcServer.getPlayerList().transferPlayerToDimension(playerMP, 0, TFTeleporter.getTeleporterForDim(playerMP.mcServer, 0));
-				}
-			}
-		} else {
-			if (entity.dimension != TFConfig.dimension.dimensionID) {
-				changeDimension(entity, TFConfig.dimension.dimensionID);
-			} else {
-				changeDimension(entity, 0);
-			}
 		}
 	}
 
-	/**
-	 * [VanillaCopy] Entity.changeDimension. Relevant edits noted.
-	 * `this` -> `toTeleport`
-	 * return value Entity -> void
-	 */
-	@SuppressWarnings("unused")
-	private static void changeDimension(Entity toTeleport, int dimensionIn) {
-		if (!toTeleport.world.isRemote && !toTeleport.isDead) {
-			if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(toTeleport, dimensionIn)) return;
-			toTeleport.world.profiler.startSection("changeDimension");
-			MinecraftServer minecraftserver = toTeleport.getServer();
-			int i = toTeleport.dimension;
-			WorldServer worldserver = minecraftserver.getWorld(i);
-			WorldServer worldserver1 = minecraftserver.getWorld(dimensionIn);
-			toTeleport.dimension = dimensionIn;
+	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
 
-			if (i == 1 && dimensionIn == 1) {
-				worldserver1 = minecraftserver.getWorld(0);
-				toTeleport.dimension = 0;
-			}
+		if (entity.isDead || entity.world.isRemote) {
+			return;
+		}
 
-			toTeleport.world.removeEntity(toTeleport);
-			toTeleport.isDead = false;
-			toTeleport.world.profiler.startSection("reposition");
-			BlockPos blockpos;
+		if (!forcedEntry && entity.timeUntilPortal > 0) {
+			return;
+		}
 
-			if (dimensionIn == 1) {
-				blockpos = worldserver1.getSpawnCoordinate();
-			} else {
-				double d0 = toTeleport.posX;
-				double d1 = toTeleport.posZ;
-				double d2 = 8.0D;
+		// set a cooldown before this can run again
+		entity.timeUntilPortal = 10;
 
-				// Tf - remove 8x scaling for nether
-				d0 = MathHelper.clamp(d0, worldserver1.getWorldBorder().minX() + 16.0D, worldserver1.getWorldBorder().maxX() - 16.0D);
-				d1 = MathHelper.clamp(d1, worldserver1.getWorldBorder().minZ() + 16.0D, worldserver1.getWorldBorder().maxZ() - 16.0D);
+		int destination = entity.dimension != TFConfig.dimension.dimensionID ? TFConfig.dimension.dimensionID : 0;
 
-				d0 = (double) MathHelper.clamp((int) d0, -29999872, 29999872);
-				d1 = (double) MathHelper.clamp((int) d1, -29999872, 29999872);
-				float f = toTeleport.rotationYaw;
-				toTeleport.setLocationAndAngles(d0, toTeleport.posY, d1, 90.0F, 0.0F);
-				Teleporter teleporter = TFTeleporter.getTeleporterForDim(minecraftserver, dimensionIn); // TF - custom teleporter
-				teleporter.placeInExistingPortal(toTeleport, f);
-				blockpos = new BlockPos(toTeleport);
-			}
+		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
-			worldserver.updateEntityWithOptionalForce(toTeleport, false);
-			toTeleport.world.profiler.endStartSection("reloading");
-			Entity entity = EntityList.newEntity(toTeleport.getClass(), worldserver1);
-
-			if (entity != null) {
-				entity.copyDataFromOld(toTeleport);
-
-				if (i == 1 && dimensionIn == 1) {
-					BlockPos blockpos1 = worldserver1.getTopSolidOrLiquidBlock(worldserver1.getSpawnPoint());
-					entity.moveToBlockPosAndAngles(blockpos1, entity.rotationYaw, entity.rotationPitch);
-				} else {
-					// TF - inline moveToBlockPosAndAngles without +0.5 offsets, since teleporter already took care of it
-					entity.setLocationAndAngles((double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity.rotationYaw, entity.rotationPitch);
-				}
-
-				boolean flag = entity.forceSpawn;
-				entity.forceSpawn = true;
-				worldserver1.spawnEntity(entity);
-				entity.forceSpawn = flag;
-				worldserver1.updateEntityWithOptionalForce(entity, false);
-			}
-
-			toTeleport.isDead = true;
-			toTeleport.world.profiler.endSection();
-			worldserver.resetUpdateEntityTick();
-			worldserver1.resetUpdateEntityTick();
-			toTeleport.world.profiler.endSection();
+		if (destination != 0 && entity instanceof EntityPlayerMP) {
+			EntityPlayerMP playerMP = (EntityPlayerMP) entity;
+			// set respawn point for TF dimension to near the arrival portal
+			playerMP.setSpawnChunk(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
 		}
 	}
 
