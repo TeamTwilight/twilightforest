@@ -51,6 +51,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.*;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
@@ -70,10 +71,12 @@ import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
+import twilightforest.network.PacketSetSkylightEnabled;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightForest;
 import twilightforest.world.TFWorld;
+import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.*;
 
@@ -635,6 +638,7 @@ public class TFEventListener {
 		// check enforced progression
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
 			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
+			sendSkylightEnabled((EntityPlayerMP) event.player, TFConfig.dimension.enableSkylight);
 		}
 	}
 
@@ -651,6 +655,15 @@ public class TFEventListener {
 
 	private static void sendEnforcedProgressionStatus(EntityPlayerMP player, boolean isEnforced) {
 		TFPacketHandler.CHANNEL.sendTo(new PacketEnforceProgressionStatus(isEnforced), player);
+	}
+
+	private static void sendSkylightEnabled(EntityPlayerMP player, boolean skylightEnabled) {
+		TFPacketHandler.CHANNEL.sendTo(new PacketSetSkylightEnabled(skylightEnabled), player);
+	}
+
+	@SubscribeEvent
+	public static void onServerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+		WorldProviderTwilightForest.syncFromConfig();
 	}
 
 	/**

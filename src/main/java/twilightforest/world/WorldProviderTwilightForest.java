@@ -1,6 +1,3 @@
-/**
- *
- */
 package twilightforest.world;
 
 import net.minecraft.client.audio.MusicTicker;
@@ -34,7 +31,17 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	private static final String SEED_KEY = "CustomSeed";
 	private static final String SKYLIGHT_KEY = "HasSkylight";
 
+	private static volatile boolean skylightEnabled = true;
+
 	private long seed;
+
+	public static void syncFromConfig() {
+		skylightEnabled = TFConfig.dimension.enableSkylight;
+	}
+
+	public static void setSkylightEnabled(boolean enabled) {
+		skylightEnabled = enabled;
+	}
 
 	public WorldProviderTwilightForest() {
 		setDimension(TFConfig.dimension.dimensionID);
@@ -81,7 +88,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		biomeProvider = new TFBiomeProvider(world);
 		NBTTagCompound data = world.getWorldInfo().getDimensionData(TFConfig.dimension.dimensionID);
 		seed = data.hasKey(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
-		hasSkyLight = data.hasKey(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : TFConfig.dimension.enableSkylight;
+		hasSkyLight = data.hasKey(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : skylightEnabled;
 	}
 
 	@Override
