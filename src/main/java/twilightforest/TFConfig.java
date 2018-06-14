@@ -40,6 +40,9 @@ public class TFConfig {
 		@Config.LangKey(config + "spawn_in_tf")
 		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
 		public boolean newPlayersSpawnInTF = false;
+
+		@Config.Ignore
+		public boolean enableSkylight = true;
 	}
 
 	@Config.LangKey(config + "compat")

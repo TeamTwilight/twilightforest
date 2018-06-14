@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	private static final String SEED_KEY = "CustomSeed";
+	private static final String SKYLIGHT_KEY = "HasSkylight";
 
 	private long seed;
 
@@ -77,10 +78,10 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public void init() {
-		super.init();
-		this.biomeProvider = new TFBiomeProvider(world);
+		biomeProvider = new TFBiomeProvider(world);
 		NBTTagCompound data = world.getWorldInfo().getDimensionData(TFConfig.dimension.dimensionID);
 		seed = data.hasKey(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
+		hasSkyLight = data.hasKey(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : TFConfig.dimension.enableSkylight;
 	}
 
 	@Override
@@ -127,6 +128,16 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
+	public void getLightmapColors(float partialTicks, float sunBrightness, float skyLight, float blockLight, float[] colors) {
+		final float r = 0.22f, g = 0.28f, b = 0.25f;
+		if (!hasSkyLight) {
+			colors[0] = r + blockLight * (1.0f - r);
+			colors[1] = g + blockLight * (1.0f - g);
+			colors[2] = b + blockLight * (1.0f - b);
+		}
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public float getStarBrightness(float par1) {
 		return 1.0F;
@@ -170,6 +181,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	public void onWorldSave() {
 		NBTTagCompound data = new NBTTagCompound();
 		data.setLong(SEED_KEY, seed);
+		data.setBoolean(SKYLIGHT_KEY, hasSkyLight);
 		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data);
 	}
 
