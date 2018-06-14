@@ -68,9 +68,9 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		if (bright > 1.0F) {
 			bright = 1.0F;
 		}
-		float red = 0.7529412F;
-		float green = 1.0F;
-		float blue = 0.8470588F;
+		float red = 0.7529412F; // 192
+		float green = 1.0F; // 255
+		float blue = 0.8470588F; // 216
 		red *= bright * 0.94F + 0.06F;
 		green *= bright * 0.94F + 0.06F;
 		blue *= bright * 0.91F + 0.09F;
@@ -136,7 +136,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public void getLightmapColors(float partialTicks, float sunBrightness, float skyLight, float blockLight, float[] colors) {
-		final float r = 0.22f, g = 0.28f, b = 0.25f;
+		final float r = 64f / 255f, g = 85f / 255f, b = 72f / 255f;
 		if (!hasSkyLight) {
 			colors[0] = r + blockLight * (1.0f - r);
 			colors[1] = g + blockLight * (1.0f - g);
