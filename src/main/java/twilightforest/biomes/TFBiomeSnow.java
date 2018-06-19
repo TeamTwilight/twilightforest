@@ -1,11 +1,7 @@
-/**
- *
- */
 package twilightforest.biomes;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -17,7 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFWinterWolf;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.potions.TFPotions;
-import twilightforest.world.TFGenLargeWinter;
+import twilightforest.world.feature.TFGenLargeWinter;
 
 import java.util.ArrayList;
 import java.util.List;

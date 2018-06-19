@@ -2,7 +2,6 @@ package twilightforest;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandGameRule;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,7 +32,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -54,8 +52,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.*;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.block.BlockTFCritter;
 import twilightforest.block.BlockTFGiantBlock;
@@ -71,10 +67,11 @@ import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
 import twilightforest.network.PacketEnforceProgressionStatus;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.network.PacketSetSkylightEnabled;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -438,23 +435,6 @@ public class TFEventListener {
 	}
 
 	/**
-	 * Stop the game from rendering the mount health for unfriendly creatures
-	 */
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public static boolean preOverlay(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
-			if (isRidingUnfriendly(Minecraft.getMinecraft().player)) {
-				event.setCanceled(true);
-				return false;
-
-			}
-		}
-		return true;
-	}
-
-
-	/**
 	 * Stop the player from sneaking while riding an unfriendly creature
 	 */
 	@SubscribeEvent
@@ -465,7 +445,7 @@ public class TFEventListener {
 		return true;
 	}
 
-	private static boolean isRidingUnfriendly(EntityLivingBase entity) {
+	public static boolean isRidingUnfriendly(EntityLivingBase entity) {
 		return entity.isRiding() && (entity.getRidingEntity() instanceof EntityTFPinchBeetle || entity.getRidingEntity() instanceof EntityTFYeti);
 	}
 
@@ -569,8 +549,8 @@ public class TFEventListener {
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
 	private static boolean isAreaProtected(World world, EntityPlayer player, BlockPos pos) {
-		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
-			ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			
 			if (chunkProvider != null && chunkProvider.isBlockInStructureBB(pos)) {
 				// what feature is nearby?  is it one the player has not unlocked?
@@ -607,9 +587,9 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void livingAttack(LivingAttackEvent event) {
 		// area protection check
-		if (event.getEntityLiving() instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayerMP && !((EntityPlayer)event.getSource().getTrueSource()).capabilities.isCreativeMode && TFWorld.getChunkGenerator(event.getEntityLiving().world) instanceof ChunkGeneratorTwilightForest && event.getEntityLiving().world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (event.getEntityLiving() instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayerMP && !((EntityPlayer)event.getSource().getTrueSource()).capabilities.isCreativeMode && TFWorld.getChunkGenerator(event.getEntityLiving().world) instanceof ChunkGeneratorTFBase && event.getEntityLiving().world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
-			ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(event.getEntityLiving().getEntityWorld());
+			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(event.getEntityLiving().getEntityWorld());
 
 			BlockPos pos = new BlockPos(event.getEntityLiving());
 

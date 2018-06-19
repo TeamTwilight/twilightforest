@@ -10,7 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -86,7 +86,7 @@ public class CommandTFFeature extends CommandBase {
 			throw new CommandException("commands.tffeature.not_in_twilight_forest");
 		} else {
 			// are you in a structure?
-			ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(player.world);
+			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(player.world);
 
 			final BlockPos pos = new BlockPos(dx, dy, dz);
 			if (chunkProvider.isBlockInStructureBB(pos)) {
@@ -142,7 +142,7 @@ public class CommandTFFeature extends CommandBase {
 					sender.sendMessage(new TextComponentTranslation("commands.tffeature.nearest", nearbyFeature.name));
 
 					// are you in a structure?
-					ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(player.world);
+					ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(player.world);
 
 					final BlockPos pos = new BlockPos(dx, dy, dz);
 

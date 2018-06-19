@@ -132,6 +132,7 @@ public final class RegisterBlockEvent {
 		}
 	}
 
+	// our internal fluid instances
 	public static final Fluid moltenFiery;
 	public static final Fluid moltenKnightmetal;
 	public static final Fluid essenceFiery;
@@ -151,26 +152,19 @@ public final class RegisterBlockEvent {
 		essenceFiery      = registerFluid(new Fluid("fiery_essence", essenceFieryStill, essenceFieryFlow).setTemperature(1000));
 	}
 
-	private static Fluid registerFluid(Fluid fluidIn) {
-		fluidIn.setUnlocalizedName(fluidIn.getName());
-
-		if (!FluidRegistry.isFluidRegistered(fluidIn.getName())) {
-			FluidRegistry.registerFluid(fluidIn);
-
-			FluidRegistry.addBucketForFluid(fluidIn);
-		} else {
-			fluidIn = FluidRegistry.getFluid(fluidIn.getName());
-		}
-
-		return fluidIn;
+	private static Fluid registerFluid(Fluid fluid) {
+		fluid.setUnlocalizedName(fluid.getName());
+		FluidRegistry.registerFluid(fluid);
+		FluidRegistry.addBucketForFluid(fluid);
+		return fluid;
 	}
 
-	private static void registerFluidBlock(BlockRegistryHelper blocks, Fluid fluidIn) {
-		registerFluidBlock("molten_" + fluidIn.getName(), blocks, fluidIn);
+	private static void registerFluidBlock(BlockRegistryHelper blocks, Fluid fluid) {
+		registerFluidBlock("molten_" + fluid.getName(), blocks, fluid);
 	}
 
-	private static void registerFluidBlock(String registryName, BlockRegistryHelper blocks, Fluid fluidIn) {
-		Block block = new BlockTFFluid(fluidIn, Material.LAVA).setUnlocalizedName(TwilightForestMod.ID + "." + fluidIn.getName()).setLightLevel(1.0F);
+	private static void registerFluidBlock(String registryName, BlockRegistryHelper blocks, Fluid fluid) {
+		Block block = new BlockTFFluid(fluid, Material.LAVA).setUnlocalizedName(TwilightForestMod.ID + "." + fluid.getName()).setLightLevel(1.0F);
 		blocks.register(registryName, block);
 	}
 }

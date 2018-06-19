@@ -12,7 +12,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFGenerator;
+import twilightforest.world.feature.TFGenerator;
 
 import java.util.List;
 import java.util.Random;

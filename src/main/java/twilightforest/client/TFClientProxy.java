@@ -1,6 +1,5 @@
 package twilightforest.client;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
@@ -44,6 +43,7 @@ import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
 import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.shader.ShaderHelper;
+import twilightforest.compat.TFCompat;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
@@ -52,7 +52,6 @@ import twilightforest.tileentity.TileEntityTFTrophy;
 import twilightforest.tileentity.critters.*;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 public class TFClientProxy extends TFCommonProxy {
@@ -217,7 +216,8 @@ public class TFClientProxy extends TFCommonProxy {
 				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 					Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
 					twilightforest.client.shader.ShaderHelper.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
-					twilightforest.compat.IEShaderRegister.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
+					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
+						twilightforest.compat.ie.IEShaderRegister.initShaders();
 				}
 			}
 		});
@@ -379,8 +379,8 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "cicada");
-		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "moonworm");
+		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "twilightforest:firefly");
+		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "twilightforest:cicada");
+		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "twilightforest:moonworm");
 	}
 }

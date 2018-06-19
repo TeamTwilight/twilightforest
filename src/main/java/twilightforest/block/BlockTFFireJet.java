@@ -16,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
@@ -88,18 +87,14 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (world.getBlockState(pos) == state) {
-			switch (state.getValue(VARIANT)) {
-				case JET_FLAME:
-				case ENCASED_JET_FLAME:
-					return 15;
-				case SMOKER:
-				default:
-					return 0;
-			}
-		} else {
-			return 0;
+	public int getLightValue(IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			case JET_FLAME:
+			case ENCASED_JET_FLAME:
+				return 15;
+			case SMOKER:
+			default:
+				return 0;
 		}
 	}
 

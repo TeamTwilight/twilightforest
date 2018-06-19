@@ -11,15 +11,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
+import net.minecraftforge.fml.common.versioning.VersionRange;
 import org.apache.commons.lang3.tuple.Pair;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.compat.ie.IEShaderRegister;
+import twilightforest.compat.ie.ItemTFShader;
 import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.TFRegisterItemEvent;
+
+import java.util.Locale;
 
 @Optional.InterfaceList({
         @Optional.Interface(modid = "chisel", iface = "team.chisel.api.ChiselAPIProps"),
@@ -69,6 +75,17 @@ public enum TFCompat {
     }, // TODO Forestry
     IMMERSIVEENGINEERING("Immersive Engineering") {
         @Override
+        protected boolean preInit() {
+            try {
+                VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
+
+                return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
+            } catch (InvalidVersionSpecificationException e) {
+                return false;
+            }
+        }
+
+        @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
             items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
 
@@ -113,8 +130,9 @@ public enum TFCompat {
     @SuppressWarnings("WeakerAccess")
     TCONSTRUCT("Tinkers' Construct") {
         @Override
-        protected void preInit() {
+        protected boolean preInit() {
             TConstruct.preInit();
+            return true;
         }
 
         @Override
@@ -134,7 +152,7 @@ public enum TFCompat {
         }
     };
 
-    protected void preInit() {}
+    protected boolean preInit() { return true; }
     protected void init() {}
     protected void postInit() {}
 
@@ -170,9 +188,13 @@ public enum TFCompat {
         for (TFCompat compat : TFCompat.values()) {
             if (Loader.isModLoaded(compat.name().toLowerCase())) {
                 try {
-                    compat.preInit();
-                    compat.isActivated = true;
-                    TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.modName + ".");
+                    compat.isActivated = compat.preInit();
+
+                    if (compat.isActivated()) {
+                        TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " has loaded compatibility for mod " + compat.modName + ".");
+                    } else {
+                        TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " couldn't activate compatibility for mod " + compat.modName + "!");
+                    }
                 } catch (Exception e) {
                     compat.isActivated = false;
                     TwilightForestMod.LOGGER.info(TwilightForestMod.ID + " had a " + e.getLocalizedMessage() + " error loading " + compat.modName + " compatibility!");

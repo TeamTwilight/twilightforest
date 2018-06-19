@@ -28,8 +28,9 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.StructureBoundingBoxUtils;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
@@ -100,9 +101,9 @@ public class TFTickHandler {
 	@SuppressWarnings({"UnusedReturnValue", "ConstantConditions"})
 	private static boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
 		IChunkGenerator uncheckedChunkProvider = TFWorld.getChunkGenerator(world);
-		if (!(uncheckedChunkProvider instanceof ChunkGeneratorTwilightForest)) return false;
+		if (!(uncheckedChunkProvider instanceof ChunkGeneratorTFBase)) return false;
 
-		ChunkGeneratorTwilightForest chunkProvider = (ChunkGeneratorTwilightForest) uncheckedChunkProvider;
+		ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) uncheckedChunkProvider;
 
 		int px = MathHelper.floor(player.posX);
 		int pz = MathHelper.floor(player.posZ);

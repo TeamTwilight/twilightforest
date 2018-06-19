@@ -42,7 +42,7 @@ import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.List;
@@ -241,8 +241,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
-				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
 				if (nearbyFeature == TFFeature.lichTower) {

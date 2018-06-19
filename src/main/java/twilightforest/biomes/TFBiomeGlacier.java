@@ -1,10 +1,6 @@
-/**
- *
- */
 package twilightforest.biomes;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;
-import twilightforest.world.TFGenPenguins;
+import twilightforest.world.feature.TFGenPenguins;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;

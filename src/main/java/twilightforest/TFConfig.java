@@ -66,12 +66,8 @@ public class TFConfig {
 
 		@Config.LangKey(config + "leaves_light_opacity")
 		@Config.RangeInt(min = 0, max = 255)
-		@Config.Comment("If leaves are not full cubes, this controls the opacity of twilight_leaves to control amount of light blocking.")
+		@Config.Comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.")
 		public int leavesLightOpacity = 1;
-
-		@Config.LangKey(config + "leaves_full_cube")
-		@Config.Comment("Setting this false makes leaves not full cubes. This results in not blocking light at all, making them the equivalent of glass in terms of blocking light. Decreases complexity in some lighting checks.")
-		public boolean leavesFullCube = true;
 
 		@Config.LangKey(config + "glacer_packed_ice")
 		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")

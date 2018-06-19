@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSwarmSpider;

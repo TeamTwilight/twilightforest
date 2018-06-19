@@ -28,8 +28,8 @@ import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
 import twilightforest.entity.EntityTFTroll;
-import twilightforest.world.TFGenTallGrass;
-import twilightforest.world.TFGenTrollRoots;
+import twilightforest.world.feature.TFGenTallGrass;
+import twilightforest.world.feature.TFGenTrollRoots;
 
 import java.util.Random;
 

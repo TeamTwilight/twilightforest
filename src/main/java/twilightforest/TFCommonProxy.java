@@ -108,8 +108,8 @@ public class TFCommonProxy implements IGuiHandler {
 	}
 
 	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFirefly.class, "firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicada.class, "cicada");
-		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, "moonworm");
+		GameRegistry.registerTileEntity(TileEntityTFFirefly.class, "twilightforest:firefly");
+		GameRegistry.registerTileEntity(TileEntityTFCicada.class, "twilightforest:cicada");
+		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, "twilightforest:moonworm");
 	}
 }

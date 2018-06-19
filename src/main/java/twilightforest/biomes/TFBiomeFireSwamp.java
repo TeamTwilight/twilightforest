@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.world.TFGenFireJet;
-import twilightforest.world.TFGenVines;
+import twilightforest.world.feature.TFGenFireJet;
+import twilightforest.world.feature.TFGenVines;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;

@@ -24,7 +24,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -408,12 +407,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (world.getBlockState(pos) != state) {
-			// why are you asking me?
-			return world.getBlockState(pos).getLightValue(world, pos);
-		}
-
+	public int getLightValue(IBlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case BUILDER_ACTIVE:
 			case VANISH_ACTIVE:

@@ -21,11 +21,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.RootVariant;
-import twilightforest.world.TFGenerator;
+import twilightforest.world.feature.TFGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

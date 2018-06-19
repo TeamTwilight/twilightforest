@@ -22,12 +22,12 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TFPacketHandler;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAnnihilateBlock;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -145,8 +145,8 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	private static boolean isBlockLocked(World par1World, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
-		if (!par1World.isRemote && TFWorld.getChunkGenerator(par1World) instanceof ChunkGeneratorTwilightForest) {
-			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(par1World);
+		if (!par1World.isRemote && TFWorld.getChunkGenerator(par1World) instanceof ChunkGeneratorTFBase) {
+			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(par1World);
 			return generator.isStructureLocked(pos, par1World.getBlockState(pos).getValue(LOCK_INDEX));
 		} else {
 			return false;

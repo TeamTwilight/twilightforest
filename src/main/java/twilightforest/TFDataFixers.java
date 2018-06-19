@@ -27,6 +27,9 @@ public class TFDataFixers {
             ImmutableMap.Builder<String, String> nameMap = ImmutableMap.builder();
 
             nameMap
+                    .put("minecraft:firefly"                 , "twilightforest:firefly"                 )
+                    .put("minecraft:cicada"                  , "twilightforest:cicada"                  )
+                    .put("minecraft:moonworm"                , "twilightforest:moonworm"                )
                     .put("minecraft:naga_spawner"            , "twilightforest:naga_spawner"            )
                     .put("minecraft:lich_spawner"            , "twilightforest:lich_spawner"            )
                     .put("minecraft:hydra_spawner"           , "twilightforest:hydra_spawner"           )
@@ -45,6 +48,9 @@ public class TFDataFixers {
                     .put("minecraft:cinder_furnace"          , "twilightforest:cinder_furnace"          )
                     .put("minecraft:minoshroom_spawner"      , "twilightforest:minoshroom_spawner"      )
                     .put("minecraft:alpha_yeti_spawner"      , "twilightforest:alpha_yeti_spawner"      )
+                    .put(          "firefly"                 , "twilightforest:firefly"                 )
+                    .put(          "cicada"                  , "twilightforest:cicada"                  )
+                    .put(          "moonworm"                , "twilightforest:moonworm"                )
                     .put(          "naga_spawner"            , "twilightforest:naga_spawner"            )
                     .put(          "lich_spawner"            , "twilightforest:lich_spawner"            )
                     .put(          "hydra_spawner"           , "twilightforest:hydra_spawner"           )

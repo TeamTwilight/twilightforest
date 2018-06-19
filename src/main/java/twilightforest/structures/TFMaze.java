@@ -9,7 +9,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.MazestoneVariant;
-import twilightforest.world.TFGenCanopyTree;
+import twilightforest.world.feature.TFGenCanopyTree;
 
 import java.util.Random;
 

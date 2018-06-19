@@ -11,6 +11,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import twilightforest.TFFeature;
 
 /**
@@ -59,6 +60,8 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager) {
         super.readStructureFromNBT(tagCompound, manager);
         this.templatePosition = new BlockPos(tagCompound.getInteger("TPX"), tagCompound.getInteger("TPY"), tagCompound.getInteger("TPZ"));
+        this.placeSettings.setRotation(this.rotation);
+        setup(manager, FMLCommonHandler.instance().getMinecraftServerInstance());
     }
 
     protected final void setModifiedTemplatePositionFromRotation() {

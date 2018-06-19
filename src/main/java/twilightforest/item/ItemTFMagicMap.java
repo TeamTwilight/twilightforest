@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
-import twilightforest.TFPacketHandler;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.network.PacketMagicMap;

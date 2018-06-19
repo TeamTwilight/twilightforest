@@ -290,7 +290,7 @@ public final class ColorHandler {
 				TFItems.arctic_helmet, TFItems.arctic_chestplate, TFItems.arctic_leggings, TFItems.arctic_boots);
 
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated())
-			itemColors.registerItemColorHandler(twilightforest.compat.ItemTFShader::getShaderColors, twilightforest.compat.ItemTFShader.shader);
+			itemColors.registerItemColorHandler(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
 	}
 
 	private ColorHandler() {

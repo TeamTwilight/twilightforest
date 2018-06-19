@@ -28,9 +28,10 @@ import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
 import twilightforest.entity.EntityTFMosquitoSwarm;
-import twilightforest.world.TFGenHugeLilyPad;
-import twilightforest.world.TFGenTallGrass;
-import twilightforest.world.TFGenVines;
+import twilightforest.world.feature.TFGenHugeLilyPad;
+import twilightforest.world.feature.TFGenHugeWaterLily;
+import twilightforest.world.feature.TFGenTallGrass;
+import twilightforest.world.feature.TFGenVines;
 import twilightforest.world.TFWorld;
 
 import java.util.List;

@@ -17,7 +17,6 @@ import java.util.function.IntConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 
-import net.minecraft.client.renderer.texture.PngSizeInfo;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
@@ -29,8 +28,6 @@ import twilightforest.client.TFClientEvents;
 import javax.annotation.Nullable;
 
 public final class ShaderHelper {
-    private static final Minecraft MINECRAFT = Minecraft.getMinecraft();
-
     private static IResourceManagerReloadListener shaderReloadListener;
 
     private static final int VERT = ARBVertexShader.GL_VERTEX_SHADER_ARB;
@@ -43,13 +40,14 @@ public final class ShaderHelper {
             twilightSkyShader,
             fireflyShader,
             auroraShader,
-            spiralShader,
+            carminiteShader,
+            towerDeviceShader,
             bloomShader;
 
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + MINECRAFT.getRenderPartialTicks());
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (MINECRAFT.player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat PITCH      = new ShaderUniformFloat("pitch"     , () -> -(MINECRAFT.player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
-    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt2  RESOLUTION = new ShaderUniformInt2 ("resolution", () -> MINECRAFT.displayWidth, () -> MINECRAFT.displayHeight);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (Minecraft.getMinecraft().player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat PITCH      = new ShaderUniformFloat("pitch"     , () -> -(Minecraft.getMinecraft().player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
+    @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt2  RESOLUTION = new ShaderUniformInt2 ("resolution", () -> Minecraft.getMinecraft().displayWidth, () -> Minecraft.getMinecraft().displayHeight);
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   ZERO       = new ShaderUniformInt  ("zero"      , () -> 0);
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   ONE        = new ShaderUniformInt  ("one"       , () -> 1);
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformInt   TWO        = new ShaderUniformInt  ("two"       , () -> 2);
@@ -63,13 +61,14 @@ public final class ShaderHelper {
     public static void initShaders() {
         IResourceManager iManager;
 
-        if ((iManager = MINECRAFT.getResourceManager()) instanceof SimpleReloadableResourceManager) {
+        if ((iManager = Minecraft.getMinecraft().getResourceManager()) instanceof SimpleReloadableResourceManager) {
             ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager -> {
                 //deleteShader(enderPortalShader);
                 deleteShader(twilightSkyShader);
                 deleteShader(fireflyShader);
                 deleteShader(auroraShader);
-                deleteShader(spiralShader);
+                deleteShader(carminiteShader);
+                deleteShader(towerDeviceShader);
                 //deleteShader(bloomShader);
 
                 initShaderList();
@@ -92,7 +91,8 @@ public final class ShaderHelper {
         twilightSkyShader      = createProgram("standard_texcoord.vert" , "twilight_sky.frag");
         fireflyShader          = createProgram("standard_texcoord2.vert", "firefly.frag");
         auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
-        spiralShader           = createProgram("camera_fixed.vert"      , "spiral.frag");
+        carminiteShader        = createProgram("camera_fixed.vert"      , "spiral.frag");
+        towerDeviceShader      = createProgram("standard_texcoord2.vert", "pulsing.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
     }
 

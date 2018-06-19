@@ -19,7 +19,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -116,11 +116,11 @@ public class TFTeleporter extends Teleporter {
 
 	private boolean checkStructure(BlockPos pos) {
 		IChunkGenerator generator = world.getChunkProvider().chunkGenerator;
-		if (generator instanceof ChunkGeneratorTwilightForest) {
+		if (generator instanceof ChunkGeneratorTFBase) {
 			if (!world.isBlockLoaded(pos)) {
 				generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4);
 			}
-			return !((ChunkGeneratorTwilightForest) generator).isBlockInFullStructure(pos.getX(), pos.getZ());
+			return !((ChunkGeneratorTFBase) generator).isBlockInFullStructure(pos.getX(), pos.getZ());
 		}
 		return true;
 	}
@@ -267,7 +267,7 @@ public class TFTeleporter extends Teleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found ideal portal spot for {} at {}", name, spot);
-			makePortalAt(world, spot);
+			cachePortalCoords(entity, makePortalAt(world, spot));
 			return true;
 		}
 
@@ -276,7 +276,7 @@ public class TFTeleporter extends Teleporter {
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found okay portal spot for {} at {}", name, spot);
-			makePortalAt(world, spot);
+			cachePortalCoords(entity, makePortalAt(world, spot));
 			return true;
 		}
 
@@ -286,7 +286,7 @@ public class TFTeleporter extends Teleporter {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = world.provider.getDimension() == 0 ? 2 : 0.5;
 		// modified copy of base Teleporter method:
-		makePortalAt(world, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ));
+		cachePortalCoords(entity, makePortalAt(world, new BlockPos(entity.posX, entity.posY * yFactor, entity.posZ)));
 
 		return false;
 	}
@@ -366,7 +366,7 @@ public class TFTeleporter extends Teleporter {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = -1; potentialY < 3; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
-                    Material material = world.getBlockState(tPos).getMaterial();
+					Material material = world.getBlockState(tPos).getMaterial();
 					if (potentialY == -1 && !material.isSolid() && !material.isLiquid()
 							|| potentialY >= 0 && !material.isReplaceable()) {
 						return false;
@@ -377,7 +377,12 @@ public class TFTeleporter extends Teleporter {
 		return true;
 	}
 
-	private void makePortalAt(World world, BlockPos pos) {
+	private void cachePortalCoords(Entity entity, BlockPos pos) {
+		int x = MathHelper.floor(entity.posX), z = MathHelper.floor(entity.posZ);
+		destinationCoordinateCache.put(ChunkPos.asLong(x, z), new PortalPosition(pos, world.getTotalWorldTime()));
+	}
+
+	private BlockPos makePortalAt(World world, BlockPos pos) {
 
 		if (pos.getY() < 30) {
 			pos = new BlockPos(pos.getX(), 30, pos.getZ());
@@ -448,12 +453,12 @@ public class TFTeleporter extends Teleporter {
 		world.setBlockState(pos.south(2).up(), randNatureBlock(world.rand), 2);
 		world.setBlockState(pos.east().south(2).up(), randNatureBlock(world.rand), 2);
 		world.setBlockState(pos.east(2).south(2).up(), randNatureBlock(world.rand), 2);
+
+		return pos;
 	}
 
 	private IBlockState randNatureBlock(Random random) {
-		Block[] block = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER};
-
-		return block[random.nextInt(block.length)].getDefaultState();
+		Block[] blocks = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER};
+		return blocks[random.nextInt(blocks.length)].getDefaultState();
 	}
-
 }

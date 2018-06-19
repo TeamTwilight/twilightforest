@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFHedgeSpider;
 import twilightforest.entity.EntityTFHostileWolf;

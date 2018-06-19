@@ -11,27 +11,25 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
-import twilightforest.client.shader.ShaderHelper;
 import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
-import twilightforest.compat.IEShaderRegister;
+import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
@@ -39,7 +37,6 @@ import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.item.ItemTFBowBase;
 import twilightforest.world.WorldProviderTwilightForest;
 
-import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
@@ -98,6 +95,20 @@ public class TFClientEvents {
 			new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
 			new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};
+
+	/**
+	 * Stop the game from rendering the mount health for unfriendly creatures
+	 */
+	@SubscribeEvent
+	public static boolean preOverlay(RenderGameOverlayEvent.Pre event) {
+		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
+			if (TFEventListener.isRidingUnfriendly(Minecraft.getMinecraft().player)) {
+				event.setCanceled(true);
+				return false;
+			}
+		}
+		return true;
+	}
 
 	// Slowness potion uses an attribute modifier with specific UUID
 	// We can detect whether an entity has slowness from the client by looking for this UUID

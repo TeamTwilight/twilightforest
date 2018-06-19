@@ -16,7 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.DeadrockVariant;
-import twilightforest.world.TFGenThorns;
+import twilightforest.world.feature.TFGenThorns;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;

@@ -560,9 +560,7 @@ twilightforest.config.canopy_coverage.tooltip=Amount of canopy coverage. Lower n
 twilightforest.config.twilight_oaks=Twilight Oak Chance
 twilightforest.config.twilight_oaks.tooltip=Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.
 twilightforest.config.leaves_light_opacity=Twilight Leaves opacity
-twilightforest.config.leaves_light_opacity.tooltip="If leaves are not full cubes, this controls the opacity of leaves to control amount of light blocking.
-twilightforest.config.leaves_full_cube=Can Twilight Leaves be full blocks
-twilightforest.config.leaves_full_cube.tooltip=Setting this false makes leaves not full cubes. This results in not blocking light at all, making them the equivalent of glass in terms of blocking light. Decreases complexity in some lighting checks.
+twilightforest.config.leaves_light_opacity.tooltip=This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.
 twilightforest.config.glacer_packed_ice=Glaciers made of Packed Ice instead of Ice
 twilightforest.config.glacer_packed_ice.tooltip=Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.
 

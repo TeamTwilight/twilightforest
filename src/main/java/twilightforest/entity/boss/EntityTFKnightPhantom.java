@@ -32,7 +32,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
@@ -43,7 +43,7 @@ import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -167,12 +167,12 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		super.onDeath(par1DamageSource);
 
 		// mark the stronghold as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
+		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
 			int dx = getHomePosition().getX();
 			int dy = getHomePosition().getY();
 			int dz = getHomePosition().getZ();
 
-			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
 			if (nearbyFeature == TFFeature.tfStronghold) {
