@@ -254,7 +254,9 @@ public class TFConfig {
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
 			loadAntiBuilderBlacklist();
 			loadingScreen.loadLoadingScreenIcons();
-			WorldProviderTwilightForest.syncFromConfig();
+			if (!event.isWorldRunning()) {
+				WorldProviderTwilightForest.syncFromConfig();
+			}
 		}
 	}
 
