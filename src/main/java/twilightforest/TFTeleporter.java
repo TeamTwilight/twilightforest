@@ -15,6 +15,7 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
@@ -27,6 +28,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class TFTeleporter extends Teleporter {
+
 	public static TFTeleporter getTeleporterForDim(MinecraftServer server, int dim) {
 		WorldServer ws = server.getWorld(dim);
 
@@ -166,6 +168,9 @@ public class TFTeleporter extends Teleporter {
 						continue;
 					}
 
+					// TF - explicitly fetch chunk so it can be unloaded if needed
+					Chunk chunk = this.world.getChunkFromChunkCoords(chunkPos.x, chunkPos.z);
+
 					for (BlockPos blockpos1 = blockpos3.add(i1, getScanHeight(blockpos3) - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
 						blockpos2 = blockpos1.down();
 
@@ -175,8 +180,8 @@ public class TFTeleporter extends Teleporter {
 						}
 
 						// TF - use our portal block
-						if (this.world.getBlockState(blockpos1).getBlock() == TFBlocks.portal) {
-							for (blockpos2 = blockpos1.down(); this.world.getBlockState(blockpos2).getBlock() == TFBlocks.portal; blockpos2 = blockpos2.down()) {
+						if (chunk.getBlockState(blockpos1).getBlock() == TFBlocks.portal) {
+							for (blockpos2 = blockpos1.down(); chunk.getBlockState(blockpos2).getBlock() == TFBlocks.portal; blockpos2 = blockpos2.down()) {
 								blockpos1 = blockpos2;
 							}
 
@@ -189,6 +194,11 @@ public class TFTeleporter extends Teleporter {
 								i = MathHelper.ceil(MathHelper.sqrt(d1));
 							}
 						}
+					}
+
+					// TF - mark unwatched chunks for unload
+					if (!this.world.getPlayerChunkMap().contains(chunkPos.x, chunkPos.z)) {
+						this.world.getChunkProvider().queueUnload(chunk);
 					}
 				}
 			}

@@ -21,17 +21,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import twilightforest.TFConfig;
 
 import java.util.Map;
 
 public class ContainerTFUncrafting extends Container {
+
 	private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
 	private InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
 	private InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
@@ -72,14 +72,15 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory par1IInventory) {
+	public void onCraftMatrixChanged(IInventory inventory) {
 		// we need to see what inventory is calling this, and update appropriately
-		if (par1IInventory == this.tinkerInput) {
+		if (inventory == this.tinkerInput) {
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getStackInSlot(0);
 			IRecipe recipe = getRecipeFor(inputStack);
 
-			if (recipe != null) {
+			if (recipe != null && recipe.canFit(3, 3)) {
+
 				int recipeWidth = getRecipeWidth(recipe);
 				int recipeHeight = getRecipeHeight(recipe);
 				ItemStack[] recipeItems = getIngredients(recipe);
@@ -93,7 +94,12 @@ public class ContainerTFUncrafting extends Container {
 				// set uncrafting grid
 				for (int invY = 0; invY < recipeHeight; invY++) {
 					for (int invX = 0; invX < recipeWidth; invX++) {
-						ItemStack ingredient = recipeItems[invX + invY * recipeWidth].copy();
+
+						int index = invX + invY * recipeWidth;
+						if (index >= recipeItems.length) continue;
+
+						ItemStack ingredient = recipeItems[index].copy();
+
 						// fix weird recipe for diamond/ingot blocks
 						if (!ingredient.isEmpty() && ingredient.getCount() > 1) {
 							ingredient.setCount(1);
@@ -141,7 +147,7 @@ public class ContainerTFUncrafting extends Container {
 			}
 		}
 
-		if (par1IInventory == this.assemblyMatrix || par1IInventory == this.tinkerInput) {
+		if (inventory == this.assemblyMatrix || inventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
 				// display the output
 				this.tinkerResult.setInventorySlotContents(0, CraftingManager.findMatchingResult(this.assemblyMatrix, this.world));
@@ -163,7 +169,7 @@ public class ContainerTFUncrafting extends Container {
 		}
 
 		// repairing / recrafting: if there is an input item, and items in both grids, can we combine them to produce an output item that is the same type as the input item?
-		if (par1IInventory != this.combineMatrix && !this.uncraftingMatrix.isEmpty() && !this.assemblyMatrix.isEmpty()) {
+		if (inventory != this.combineMatrix && !this.uncraftingMatrix.isEmpty() && !this.assemblyMatrix.isEmpty()) {
 			// combine the two matrixen
 			for (int i = 0; i < 9; i++) {
 				if (!this.assemblyMatrix.getStackInSlot(i).isEmpty()) {
@@ -235,7 +241,7 @@ public class ContainerTFUncrafting extends Container {
 	private IRecipe getRecipeFor(ItemStack inputStack) {
 		if (!inputStack.isEmpty()) {
 			for (IRecipe recipe : CraftingManager.REGISTRY) {
-				if ((recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe)
+				if (recipe instanceof IShapedRecipe
 						&& recipe.getRecipeOutput().getItem() == inputStack.getItem() && inputStack.getCount() >= recipe.getRecipeOutput().getCount()
 						&& (!recipe.getRecipeOutput().getHasSubtypes() || recipe.getRecipeOutput().getItemDamage() == inputStack.getItemDamage())) {
 					return recipe;
@@ -382,10 +388,10 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slotNum, int mouseButton, ClickType shiftHeld, EntityPlayer par4EntityPlayer) {
+	public ItemStack slotClick(int slotNum, int mouseButton, ClickType shiftHeld, EntityPlayer player) {
 
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
-		if (slotNum > 0 && par4EntityPlayer.inventory.getItemStack().isEmpty() && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix && !this.inventorySlots.get(slotNum).getHasStack()) {
+		if (slotNum > 0 && player.inventory.getItemStack().isEmpty() && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix && !this.inventorySlots.get(slotNum).getHasStack()) {
 			// is the assembly matrix empty?
 			if (this.assemblyMatrix.isEmpty()) {
 				slotNum -= 9;
@@ -394,13 +400,13 @@ public class ContainerTFUncrafting extends Container {
 
 		// if the player is trying to take the result item and they don't have the XP to pay for it, reject them
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.tinkerResult
-				&& calculateRecraftingCost() > par4EntityPlayer.experienceLevel && !par4EntityPlayer.capabilities.isCreativeMode) {
+				&& calculateRecraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
 			return ItemStack.EMPTY;
 		}
 
 		// similarly, reject uncrafting if they can't do that either
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix
-				&& calculateUncraftingCost() > par4EntityPlayer.experienceLevel && !par4EntityPlayer.capabilities.isCreativeMode) {
+				&& calculateUncraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
 			return ItemStack.EMPTY;
 		}
 
@@ -415,7 +421,7 @@ public class ContainerTFUncrafting extends Container {
 		}
 
 		// also we may need to detect here when the player is increasing the stack size of the input slot
-		ItemStack ret = super.slotClick(slotNum, mouseButton, shiftHeld, par4EntityPlayer);
+		ItemStack ret = super.slotClick(slotNum, mouseButton, shiftHeld, player);
 
 		// just trigger this event whenever the input slot is clicked for any reason
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory instanceof InventoryTFGoblinInput) {
@@ -529,7 +535,7 @@ public class ContainerTFUncrafting extends Container {
 
 	private ItemStack[] getIngredients(IRecipe recipe) {
 		// todo 1.12 recheck
-		if (recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe) {
+		if (recipe instanceof IShapedRecipe) {
 			ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
 			for (int i = 0; i < recipe.getIngredients().size(); i++) {
@@ -544,27 +550,21 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	private int getRecipeWidth(IRecipe recipe) {
-		if (recipe instanceof ShapedRecipes) {
-			return ((ShapedRecipes) recipe).recipeWidth;
-		}
-		if (recipe instanceof ShapedOreRecipe) {
-			return ((ShapedOreRecipe) recipe).getWidth();
+		if (recipe instanceof IShapedRecipe) {
+			return ((IShapedRecipe) recipe).getRecipeWidth();
 		}
 		return -1;
 	}
 
 	private int getRecipeHeight(IRecipe recipe) {
-		if (recipe instanceof ShapedRecipes) {
-			return ((ShapedRecipes) recipe).recipeHeight;
-		}
-		if (recipe instanceof ShapedOreRecipe) {
-			return ((ShapedOreRecipe) recipe).getHeight();
+		if (recipe instanceof IShapedRecipe) {
+			return ((IShapedRecipe) recipe).getRecipeHeight();
 		}
 		return -1;
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer var1) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 

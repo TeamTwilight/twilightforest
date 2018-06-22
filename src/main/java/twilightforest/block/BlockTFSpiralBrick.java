@@ -24,6 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.enums.Diagonals;
+import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 
@@ -36,6 +37,7 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         this.setHardness(1.5F);
         this.setResistance(10.0F);
         this.setSoundType(SoundType.STONE);
+        this.setCreativeTab(TFItems.creativeTab);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DIAGONAL, Diagonals.TOP_RIGHT).withProperty(AXIS_FACING, EnumFacing.Axis.X));
     }
 

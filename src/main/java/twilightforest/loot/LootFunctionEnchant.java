@@ -19,6 +19,7 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.registries.IRegistryDelegate;
 import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
@@ -27,23 +28,23 @@ import java.util.Random;
 
 // Similar to EnchantRandomly but applies everything and with exact levels
 public class LootFunctionEnchant extends LootFunction {
-	private final Map<Enchantment, Short> enchantments;
 
-	protected LootFunctionEnchant(LootCondition[] conditions, Map<Enchantment, Short> enchantments) {
+	private final Map<IRegistryDelegate<Enchantment>, Short> enchantments;
+
+	protected LootFunctionEnchant(LootCondition[] conditions, Map<IRegistryDelegate<Enchantment>, Short> enchantments) {
 		super(conditions);
 		this.enchantments = enchantments;
 	}
 
 	@Override
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
-		for (Map.Entry<Enchantment, Short> e : enchantments.entrySet()) {
+		for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : enchantments.entrySet()) {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
-				ItemEnchantedBook.addEnchantment(stack, new EnchantmentData(e.getKey(), e.getValue()));
+				ItemEnchantedBook.addEnchantment(stack, new EnchantmentData(e.getKey().get(), e.getValue()));
 			} else {
-				addEnchantment(stack, e.getKey(), e.getValue());
+				addEnchantment(stack, e.getKey().get(), e.getValue());
 			}
 		}
-
 		return stack;
 	}
 
@@ -85,8 +86,8 @@ public class LootFunctionEnchant extends LootFunction {
 			if (!function.enchantments.isEmpty()) {
 				JsonObject obj = new JsonObject();
 
-				for (Map.Entry<Enchantment, Short> e : function.enchantments.entrySet()) {
-					obj.addProperty(e.getKey().getRegistryName().toString(), e.getValue());
+				for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : function.enchantments.entrySet()) {
+					obj.addProperty(e.getKey().get().getRegistryName().toString(), e.getValue());
 				}
 
 				object.add("enchantments", obj);
@@ -95,7 +96,7 @@ public class LootFunctionEnchant extends LootFunction {
 
 		@Override
 		public LootFunctionEnchant deserialize(JsonObject object, JsonDeserializationContext ctx, LootCondition[] conditions) {
-			Map<Enchantment, Short> enchantments = new HashMap<>();
+			Map<IRegistryDelegate<Enchantment>, Short> enchantments = new HashMap<>();
 
 			if (object.has("enchantments")) {
 				JsonObject enchantObj = JsonUtils.getJsonObject(object, "enchantments");
@@ -108,13 +109,13 @@ public class LootFunctionEnchant extends LootFunction {
 
 					short lvl = e.getValue().getAsShort();
 
-					for (Enchantment other : enchantments.keySet()) {
-						if (!ench.isCompatibleWith(other)) {
-							throw new JsonParseException(String.format("Enchantments %s and %s conflict", ench.getRegistryName(), other.getRegistryName()));
+					for (IRegistryDelegate<Enchantment> other : enchantments.keySet()) {
+						if (!ench.isCompatibleWith(other.get())) {
+							throw new JsonParseException(String.format("Enchantments %s and %s conflict", ench.getRegistryName(), other.get().getRegistryName()));
 						}
 					}
 
-					enchantments.put(ench, lvl);
+					enchantments.put(ench.delegate, lvl);
 				}
 			}
 

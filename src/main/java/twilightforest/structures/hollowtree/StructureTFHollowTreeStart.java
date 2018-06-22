@@ -4,7 +4,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
-import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.world.TFWorld;
 
@@ -27,7 +26,7 @@ public class StructureTFHollowTreeStart extends StructureStart {
 	}
 
 	/**
-	 * Do everything except leaves before we do twilight_leaves.
+	 * Do everything except leaves before we do leaves.
 	 */
 	public void generateStructure(World worldIn, Random rand, StructureBoundingBox sbb)
 	{

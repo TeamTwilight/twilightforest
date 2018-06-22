@@ -44,6 +44,11 @@ public class TFConfig {
 
 		@Config.Ignore
 		public boolean enableSkylight = true;
+
+		@Config.LangKey(config + "skylight_forest")
+		@Config.RequiresWorldRestart
+		@Config.Comment("If true, Twilight Forest will generate as a void except for Major Structures")
+		public boolean skylightForest = false;
 	}
 
 	@Config.LangKey(config + "compat")

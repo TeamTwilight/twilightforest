@@ -256,7 +256,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 //			for (StructureComponent component : (LinkedList<StructureComponent>) getComponents())
 //			{
 //				
-//				// TODO: we need to test the stronghold_shield bounding box here, otherwise we lose stronghold_shield facings across chunk boundires
+//				// TODO: we need to test the shield bounding box here, otherwise we lose shield facings across chunk boundires
 //				
 //	            if (isShieldable(component) ? isIntersectingLarger(par3StructureBoundingBox, component) : isIntersectingLarger(par3StructureBoundingBox, component))
 //	            {
@@ -290,7 +290,7 @@ public class StructureTFMajorFeatureStart extends StructureStart {
 	}
 
 	/**
-	 * Make the stronghold stronghold_shield around a component's bounding box
+	 * Make the stronghold shield around a component's bounding box
 	 */
 	private void addShieldFor(World world, StructureComponent component, List<StructureComponent> otherComponents, StructureBoundingBox chunkBox) {
 		StructureBoundingBox shieldBox = new StructureBoundingBox(component.getBoundingBox());

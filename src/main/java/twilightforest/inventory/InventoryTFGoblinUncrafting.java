@@ -3,23 +3,19 @@ package twilightforest.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import twilightforest.TFConfig;
 
-import java.util.Arrays;
-
-
 public class InventoryTFGoblinUncrafting implements IInventory {
 
-	private ItemStack[] contents = new ItemStack[9];
+	private final NonNullList<ItemStack> contents = NonNullList.withSize(9, ItemStack.EMPTY);
+
 	public int numberOfInputItems;
 	public int uncraftingCost;
 	public int recraftingCost;
 
-
-	public InventoryTFGoblinUncrafting(ContainerTFUncrafting containerTFGoblinCrafting) {
-		Arrays.fill(contents, ItemStack.EMPTY);
-	}
+	public InventoryTFGoblinUncrafting(ContainerTFUncrafting container) {}
 
 	@Override
 	public int getSizeInventory() {
@@ -33,53 +29,51 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 				return false;
 			}
 		}
-
 		return true;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int var1) {
-		return contents[var1];
+	public ItemStack getStackInSlot(int index) {
+		return contents.get(index);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int slotNum, int amount) {
-		if (!this.contents[slotNum].isEmpty()) {
+		if (!this.contents.get(slotNum).isEmpty()) {
 			ItemStack takenStack;
 
-			if (this.contents[slotNum].getCount() <= amount) {
-				takenStack = this.contents[slotNum];
-				this.contents[slotNum] = ItemStack.EMPTY;
+			if (this.contents.get(slotNum).getCount() <= amount) {
+				takenStack = this.contents.get(slotNum);
+				this.contents.set(slotNum, ItemStack.EMPTY);
 
 				//this.eventHandler.onCraftMatrixChanged(this);
 				return takenStack;
 			} else {
-				takenStack = this.contents[slotNum].splitStack(amount);
+				takenStack = this.contents.get(slotNum).splitStack(amount);
 				return takenStack;
 			}
 		} else {
 			return ItemStack.EMPTY;
 		}
-
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int par1) {
-		if (!this.contents[par1].isEmpty()) {
-			ItemStack var2 = this.contents[par1];
-			this.contents[par1] = ItemStack.EMPTY;
-			return var2;
+	public ItemStack removeStackFromSlot(int index) {
+		if (!this.contents.get(index).isEmpty()) {
+			ItemStack stack = this.contents.get(index);
+			this.contents.set(index, ItemStack.EMPTY);
+			return stack;
 		} else {
 			return ItemStack.EMPTY;
 		}
 	}
 
 	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-		this.contents[par1] = par2ItemStack;
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		this.contents.set(index, stack);
 
-		if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit()) {
-			par2ItemStack.setCount(this.getInventoryStackLimit());
+		if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit()) {
+			stack.setCount(this.getInventoryStackLimit());
 		}
 
 		this.markDirty();
@@ -100,7 +94,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer var1) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
 		return !TFConfig.disableUncrafting;
 	}
 
@@ -113,7 +107,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return false;
 	}
 
@@ -134,7 +128,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public void clear() {
-		Arrays.fill(contents, ItemStack.EMPTY);
+		contents.clear();
 	}
 
 	@Override

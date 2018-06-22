@@ -102,7 +102,9 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public IChunkGenerator createChunkGenerator() {
-		return new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
+		return TFConfig.dimension.skylightForest
+				? new ChunkGeneratorTwilightVoid(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled())
+				: new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
 	}
 
 	/**
@@ -224,6 +226,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	// no sideonly
 	@Override
 	public float getCloudHeight() {
-		return 161.0F;
+		return TFConfig.dimension.skylightForest ? -1F : 161F;
 	}
 }

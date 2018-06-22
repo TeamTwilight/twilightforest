@@ -511,7 +511,7 @@ public class TFFeature {
 	 * @return The feature nearest to the specified chunk coordinates
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, World world) {
-		for (int rad = 1; rad <= 4; rad++) {
+		for (int rad = 1; rad <= maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					TFFeature directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
@@ -621,7 +621,7 @@ public class TFFeature {
 	 * If we're near a hollow hill, this returns relative block coordinates indicating the center of that hill relative to the current chunk block coordinate system.
 	 */
 	public static int[] getNearestCenter(int cx, int cz, World world) {
-		for (int rad = 1; rad <= 4; rad++) {
+		for (int rad = 1; rad <= maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
 					if (getFeatureDirectlyAt(x + cx, z + cz, world).size == rad) {

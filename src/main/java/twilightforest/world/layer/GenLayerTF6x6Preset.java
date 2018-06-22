@@ -1,6 +1,5 @@
 package twilightforest.world.layer;
 
-
 public class GenLayerTF6x6Preset extends GenLayerTF7x7Preset {
 
 	public GenLayerTF6x6Preset(long par1) {
@@ -20,14 +19,10 @@ public class GenLayerTF6x6Preset extends GenLayerTF7x7Preset {
 				{'P', 'P', 'Y', 'S', 'f', 'L', 'O', 'G', 'P'},
 				{'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'}};
 
-
 		for (int x = 0; x < map.length; x++) {
 			for (int z = 0; z < map[x].length; z++) {
-				preset[x][z] = getBiomeFor(map[z][x]);
+				preset[x][z] = map[z][x];
 			}
 		}
-
 	}
-
-
 }

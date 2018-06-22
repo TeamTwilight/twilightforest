@@ -42,6 +42,7 @@ public final class ShaderHelper {
             auroraShader,
             carminiteShader,
             towerDeviceShader,
+            yellowCircuitShader,
             bloomShader;
 
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
@@ -69,6 +70,7 @@ public final class ShaderHelper {
                 deleteShader(auroraShader);
                 deleteShader(carminiteShader);
                 deleteShader(towerDeviceShader);
+                deleteShader(yellowCircuitShader);
                 //deleteShader(bloomShader);
 
                 initShaderList();
@@ -93,6 +95,7 @@ public final class ShaderHelper {
         auroraShader           = createProgram("standard_texcoord2.vert", "aurora.frag");
         carminiteShader        = createProgram("camera_fixed.vert"      , "spiral.frag");
         towerDeviceShader      = createProgram("standard_texcoord2.vert", "pulsing.frag");
+        yellowCircuitShader    = createProgram("standard_texcoord2.vert", "pulsing_yellow.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
     }
 

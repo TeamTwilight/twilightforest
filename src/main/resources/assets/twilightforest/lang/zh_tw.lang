@@ -103,6 +103,20 @@ twilightforest.ore_meter.range=半徑：%s，原點：[%s, %s]
 twilightforest.ore_meter.exposed=已露出：%s
 twilightforest.scepter_charges=剩下%d充能
 
+# Commands
+commands.tffeature.usage=用法：/tffeature <info|reactivate|conquer|center>
+commands.tffeature.not_in_twilight_forest=你不在暮光森林維度中
+commands.tffeature.nearest=距離最近的區域是%s
+commands.tffeature.center=中心的區域：%s
+commands.tffeature.chunk=在區域的區塊中：%s
+commands.tffeature.structure.inside=你在區域的建築物內
+commands.tffeature.structure.outside=你不在區域的建築物內
+commands.tffeature.structure.required=你不在建築物內
+commands.tffeature.structure.conquer.status=建築物征服旗幟：%s
+commands.tffeature.structure.conquer.update=建築物征服旗幟原本是%s，改變至%s
+commands.tffeature.locate.usage=用法：/tffeature locate <區域名稱>
+
+# Blocks
 tile.TFLog.0.name=暮光橡木
 tile.TFLog.1.name=蒼穹木
 tile.TFLog.2.name=紅木
@@ -113,6 +127,7 @@ tile.TFLeaves.2.name=紅樹樹葉
 tile.TFLeaves.3.name=彩虹橡木樹葉
 tile.TFFirefly.name=螢火蟲
 tile.TFCicada.name=蟬
+tile.TFCicada.desc=如果這個可以用軌道炮發射到某些人身上……？
 item.TFPortal.name=暮光森林傳送門
 tile.TFPortal.name=暮光森林傳送門
 tile.TFMazestone.0.name=迷宮石頭

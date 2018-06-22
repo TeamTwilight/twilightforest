@@ -8,8 +8,7 @@ import twilightforest.biomes.TFBiomes;
 
 public class GenLayerTF7x7Preset extends GenLayer {
 
-
-	Biome preset[][] = new Biome[9][9];
+	char[][] preset = new char[9][9];
 
 	public GenLayerTF7x7Preset(long par1) {
 		super(par1);
@@ -18,23 +17,24 @@ public class GenLayerTF7x7Preset extends GenLayer {
 
 	@Override
 	public int[] getInts(int x, int z, int width, int depth) {
+
 		int dest[] = IntCache.getIntCache(width * depth);
+
 		for (int dz = 0; dz < depth; dz++) {
 			for (int dx = 0; dx < width; dx++) {
+
 				int sx = x + dx + 4;
 				int sz = z + dz + 4;
 
 				if (sx >= 0 && sx < 8 && sz >= 0 && sz < 8) {
-					dest[dx + dz * width] = Biome.getIdForBiome(preset[sx][sz]);
+					dest[dx + dz * width] = Biome.getIdForBiome(getBiomeFor(preset[sx][sz]));
 				} else {
 					dest[dx + dz * width] = Biome.getIdForBiome(Biomes.OCEAN);
 				}
 			}
-
 		}
 
 		return dest;
-
 	}
 
 	private void initPresets() {
@@ -49,16 +49,14 @@ public class GenLayerTF7x7Preset extends GenLayer {
 				{'P', 'Y', 'S', 'S', 'L', 'L', 'O', 'G', 'P'},
 				{'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'}};
 
-
 		for (int x = 0; x < map.length; x++) {
 			for (int z = 0; z < map[x].length; z++) {
-				preset[x][z] = getBiomeFor(map[z][x]);
+				preset[x][z] = map[z][x];
 			}
 		}
-
 	}
 
-	protected Biome getBiomeFor(char c) {
+	protected final Biome getBiomeFor(char c) {
 		switch (c) {
 			default:
 				return Biomes.OCEAN;
@@ -92,6 +90,4 @@ public class GenLayerTF7x7Preset extends GenLayer {
 				return TFBiomes.highlands;
 		}
 	}
-
-
 }

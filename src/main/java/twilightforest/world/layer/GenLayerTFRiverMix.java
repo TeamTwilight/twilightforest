@@ -34,12 +34,15 @@ public class GenLayerTFRiverMix extends GenLayer {
 	 */
 	@Override
 	public int[] getInts(int par1, int par2, int par3, int par4) {
+
 		int[] biomeInputs = this.biomeLayer.getInts(par1, par2, par3, par4);
 		int[] riverInputs = this.riverLayer.getInts(par1, par2, par3, par4);
 		int[] outputs = IntCache.getIntCache(par3 * par4);
 
+		int stream = Biome.getIdForBiome(TFBiomes.stream);
+
 		for (int i = 0; i < par3 * par4; ++i) {
-			if (riverInputs[i] == Biome.getIdForBiome(TFBiomes.stream)) {
+			if (riverInputs[i] == stream) {
 				outputs[i] = riverInputs[i] & 255;
 			} else {
 				outputs[i] = biomeInputs[i];
@@ -48,5 +51,4 @@ public class GenLayerTFRiverMix extends GenLayer {
 
 		return outputs;
 	}
-
 }
