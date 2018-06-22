@@ -12,6 +12,7 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.List;
 
@@ -246,10 +247,9 @@ public class TFConfig {
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
-
 			loadAntiBuilderBlacklist();
-
 			loadingScreen.loadLoadingScreenIcons();
+			WorldProviderTwilightForest.syncFromConfig();
 		}
 	}
 
