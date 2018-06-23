@@ -618,7 +618,7 @@ public class TFEventListener {
 		// check enforced progression
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
 			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
-			sendSkylightEnabled((EntityPlayerMP) event.player, TFConfig.dimension.enableSkylight);
+			sendSkylightEnabled((EntityPlayerMP) event.player, WorldProviderTwilightForest.isSkylightEnabled(TFWorld.getDimensionData(event.player.world)));
 		}
 	}
 

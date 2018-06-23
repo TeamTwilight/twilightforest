@@ -43,6 +43,10 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		skylightEnabled = enabled;
 	}
 
+	public static boolean isSkylightEnabled(NBTTagCompound data) {
+		return data.hasKey(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : skylightEnabled;
+	}
+
 	public WorldProviderTwilightForest() {
 		setDimension(TFConfig.dimension.dimensionID);
 	}
@@ -86,9 +90,9 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
 	public void init() {
 		biomeProvider = new TFBiomeProvider(world);
-		NBTTagCompound data = world.getWorldInfo().getDimensionData(TFConfig.dimension.dimensionID);
+		NBTTagCompound data = TFWorld.getDimensionData(world);
 		seed = data.hasKey(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
-		hasSkyLight = data.hasKey(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : skylightEnabled;
+		hasSkyLight = isSkylightEnabled(data);
 	}
 
 	@Override
@@ -200,7 +204,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		NBTTagCompound data = new NBTTagCompound();
 		data.setLong(SEED_KEY, seed);
 		data.setBoolean(SKYLIGHT_KEY, hasSkyLight);
-		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data);
+		TFWorld.setDimensionData(world, data);
 	}
 
 	@Override
