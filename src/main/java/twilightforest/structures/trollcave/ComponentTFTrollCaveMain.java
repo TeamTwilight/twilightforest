@@ -273,16 +273,19 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		int dx = getXWithOffset(x, z);
 		int dy = y;
 		int dz = getZWithOffset(x, z);
-		BlockPos pos = new BlockPos(dx, dy, dz);
+
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, dy, dz);
+
 		if (sbb.isVecInside(pos)) {
 			// find surface above the listed coords
 			for (dy = y; dy < y + 32; dy++) {
+				pos.setY(dy);
 				if (world.isAirBlock(pos)) {
 					break;
 				}
 			}
 
-			generator.generate(world, rand, pos);
+			generator.generate(world, rand, pos.toImmutable());
 		}
 	}
 

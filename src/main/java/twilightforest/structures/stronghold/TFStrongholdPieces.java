@@ -5,6 +5,7 @@ import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
+import twilightforest.structures.start.StructureStartKnightStronghold;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class TFStrongholdPieces {
 	private static TFStrongholdPieceWeight lastPieceMade;
 
 	public static void registerPieces() {
+		MapGenStructureIO.registerStructure(StructureStartKnightStronghold.class, "TFKSt");
+
 		MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdSmallHallway.class, "TFSSH");
 		MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdLeftTurn.class, "TFSLT");
 		MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdCrossing.class, "TFSCr");
@@ -60,7 +63,7 @@ public class TFStrongholdPieces {
 	 * sets up Arrays with the Structure pieces and their weights
 	 */
 	public void prepareStructurePieces() {
-		pieceList = new ArrayList<TFStrongholdPieceWeight>();
+		pieceList = new ArrayList<>();
 
 		for (TFStrongholdPieceWeight piece : pieceWeightArray) {
 			piece.instancesSpawned = 0;
@@ -125,7 +128,7 @@ public class TFStrongholdPieces {
 		}
 
 		// dead end?
-		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponentOld ? ((StructureTFComponentOld)parent).getFeatureType() : TFFeature.nothing, index, facing, x, y, z);
+		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponentOld ? ((StructureTFComponentOld)parent).getFeatureType() : TFFeature.NOTHING, index, facing, x, y, z);
 
 		if (StructureComponent.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
 			return deadEnd;

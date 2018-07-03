@@ -48,7 +48,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 		if (this.chargeTarget == null) {
 			return false;
 		} else {
-			double distance = this.charger.getDistanceSqToEntity(this.chargeTarget);
+			double distance = this.charger.getDistanceSq(this.chargeTarget);
 			if (distance < MIN_RANGE_SQ || distance > MAX_RANGE_SQ) {
 				return false;
 			} else if (!this.charger.onGround) {

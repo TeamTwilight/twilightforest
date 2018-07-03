@@ -166,7 +166,7 @@ public class TFBiomeBase extends Biome {
 
 						// TF - use block check for air
 						if (j1 < i && (iblockstate == null || iblockstate.getBlock() == Blocks.AIR)) {
-							if (this.getFloatTemperature(blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F) {
+							if (this.getTemperature(blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F) {
 								iblockstate = ICE;
 							} else {
 								iblockstate = WATER;

@@ -26,7 +26,7 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 
 	public EntityTFTwilightWandBolt(World world, EntityLivingBase thrower) {
 		super(world, thrower);
-		setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
+		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 		if (!this.world.isRemote && source.getTrueSource() != null) {
 			Vec3d vec3d = source.getTrueSource().getLookVec();
 			// reflect faster and more accurately
-			this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
+			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 
 			if (source.getImmediateSource() instanceof EntityLivingBase)
 				this.thrower = (EntityLivingBase) source.getImmediateSource();

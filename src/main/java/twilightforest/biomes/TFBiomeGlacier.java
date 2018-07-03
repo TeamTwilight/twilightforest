@@ -79,7 +79,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		}
 		// hint monster?
 		if (world.rand.nextInt(4) == 0) {
-			TFFeature.iceTower.trySpawnHintMonster(world, player);
+			TFFeature.ICE_TOWER.trySpawnHintMonster(world, player);
 		}
 	}
 }

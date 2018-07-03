@@ -90,7 +90,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.world);
 
-			if (nearFeature != TFFeature.questGrove) {
+			if (nearFeature != TFFeature.QUEST_GROVE) {
 				this.detachHome();
 			} else {
 				// set our home position to the center of the quest grove

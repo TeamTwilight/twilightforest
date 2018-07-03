@@ -34,6 +34,7 @@ import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.item.ItemTFBowBase;
+import twilightforest.potions.PotionFrosted;
 import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.Random;
@@ -118,10 +119,10 @@ public class TFClientEvents {
 		return true;
 	}
 
-	// Slowness potion uses an attribute modifier with specific UUID
-	// We can detect whether an entity has slowness from the client by looking for this UUID
+	// Frost effect uses an attribute modifier with specific UUID
+	// We can detect whether an entity has the effect from the client by looking for this UUID
 	private static final AttributeModifier FROSTED_POTION_MODIFIER =
-			new AttributeModifier(UUID.fromString("CE9DBC2A-EE3F-43F5-9DF7-F7F1EE4915A9"), "doesntmatter", 0, 0);
+			new AttributeModifier(UUID.fromString(PotionFrosted.MODIFIER_UUID), "doesntmatter", 0, 0);
 
 	/**
 	 * Do ice effect on slowed monsters

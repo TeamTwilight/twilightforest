@@ -163,40 +163,31 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
 
-		// mark the stronghold as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-			int dx = getHomePosition().getX();
-			int dy = getHomePosition().getY();
-			int dz = getHomePosition().getZ();
+		super.onDeath(cause);
 
-			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
+		if (!world.isRemote && getNearbyKnights().size() <= 1) {
 
-			if (nearbyFeature == TFFeature.tfStronghold) {
-				generator.setStructureConquered(dx, dy, dz, true);
+			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this);
+
+			// make treasure for killing the last knight
+			TFTreasure.stronghold_boss.generateChest(world, treasurePos, false);
+
+			// mark the stronghold as defeated
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+
+				int dx = treasurePos.getX();
+				int dy = treasurePos.getY();
+				int dz = treasurePos.getZ();
+
+				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
+
+				if (nearbyFeature == TFFeature.KNIGHT_STRONGHOLD) {
+					generator.setStructureConquered(dx, dy, dz, true);
+				}
 			}
-		}
-
-		// make treasure for killing the last knight
-		if (!world.isRemote) {
-			// am I the last one?!?!
-			List<EntityTFKnightPhantom> nearbyKnights = getNearbyKnights();
-			if (nearbyKnights.size() <= 1) {
-				// 	make a treasure!'
-				makeATreasure();
-			}
-		}
-
-	}
-
-	private void makeATreasure() {
-		if (hasHome()) {
-			TFTreasure.stronghold_boss.generateChest(world, getHomePosition().down(), false);
-		} else {
-			TFTreasure.stronghold_boss.generateChest(world, new BlockPos(this), false);
 		}
 	}
 

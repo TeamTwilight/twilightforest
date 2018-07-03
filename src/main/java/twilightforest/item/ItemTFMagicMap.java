@@ -148,7 +148,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
 								TFFeature feature = TFFeature.getFeatureAt(worldX, worldZ, world);
 								TFMagicMapData tfData = (TFMagicMapData) data;
-								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature.featureID, mapX, mapZ, (byte) 8));
+								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature.ordinal(), mapX, mapZ, (byte) 8));
 								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
 							}
 						}

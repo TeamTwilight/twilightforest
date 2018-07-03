@@ -40,7 +40,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 		super(world, thrower);
 		this.setSize(1F, 1F);
 		this.isImmuneToFire = true;
-		this.setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override

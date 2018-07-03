@@ -109,7 +109,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		}
 		// hint monster?
 		if (world.rand.nextInt(4) == 0) {
-			TFFeature.hydraLair.trySpawnHintMonster(world, player);
+			TFFeature.HYDRA_LAIR.trySpawnHintMonster(world, player);
 		}
 	}
 }

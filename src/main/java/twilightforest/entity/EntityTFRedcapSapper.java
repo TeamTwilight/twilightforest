@@ -51,7 +51,7 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 			// are we in a level 2 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill2) {
+			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.MEDIUM_HILL) {
 				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill2"), "redcap_sapper");
 			}
 		}

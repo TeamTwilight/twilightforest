@@ -55,7 +55,7 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		// are we near a hedge maze?
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
-		return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze || isValidLightLevel())
+		return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE || isValidLightLevel())
 				&& world.checkNoEntityCollision(getEntityBoundingBox())
 				&& world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0
 				&& !world.containsAnyLiquid(getEntityBoundingBox());

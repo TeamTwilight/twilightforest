@@ -179,7 +179,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 		public void updateTask() {
 			EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
 
-			if (entitylivingbase.getDistanceSqToEntity(this.parentEntity) < 4096.0D && this.parentEntity.getEntitySenses().canSee(entitylivingbase)) {
+			if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.getEntitySenses().canSee(entitylivingbase)) {
 				World world = this.parentEntity.world;
 				this.prevAttackTimer = attackTimer;
 				++this.attackTimer;
@@ -326,7 +326,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 
 			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.world);
 
-			if (nearFeature != TFFeature.darkTower) {
+			if (nearFeature != TFFeature.DARK_TOWER) {
 				this.detachHome();
 				this.idleTime += 5;
 			} else {

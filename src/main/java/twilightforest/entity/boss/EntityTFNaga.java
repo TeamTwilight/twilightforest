@@ -142,7 +142,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			return target != null
 					&& target.getEntityBoundingBox().maxY > taskOwner.getEntityBoundingBox().minY - 2.5
 					&& target.getEntityBoundingBox().minY < taskOwner.getEntityBoundingBox().maxY + 2.5
-					&& taskOwner.getDistanceSqToEntity(target) <= 4.0D
+					&& taskOwner.getDistanceSq(target) <= 4.0D
 					&& taskOwner.getEntitySenses().canSee(target);
 
 		}
@@ -175,7 +175,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		@Override
 		public boolean shouldExecute() {
-			return taskOwner.world.getGameRules().getBoolean("mobGriefing") /*&& taskOwner.getAttackTarget() != null*/ && taskOwner.isCollidedHorizontally;
+			return taskOwner.world.getGameRules().getBoolean("mobGriefing") /*&& taskOwner.getAttackTarget() != null*/ && taskOwner.collidedHorizontally;
 		}
 
 		@Override
@@ -246,14 +246,14 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 			switch (movementState) {
 				case INTIMIDATE: {
-					taskOwner.getNavigator().clearPathEntity();
+					taskOwner.getNavigator().clearPath();
 					taskOwner.getLookHelper().setLookPositionWithEntity(taskOwner.getAttackTarget(), 30F, 30F);
 					taskOwner.faceEntity(taskOwner.getAttackTarget(), 30F, 30F);
 					taskOwner.moveForward = 0.1f;
 					break;
 				}
 				case CRUMBLE: {
-					taskOwner.getNavigator().clearPathEntity();
+					taskOwner.getNavigator().clearPath();
 					taskOwner.crumbleBelowTarget(2);
 					taskOwner.crumbleBelowTarget(3);
 					break;
@@ -452,8 +452,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	protected void updateAITasks() {
 		super.updateAITasks();
 
-		if (getAttackTarget() != null &&
-				(getDistanceSqToEntity(getAttackTarget()) > 80 * 80 || !this.isEntityWithinHomeArea(getAttackTarget()))) {
+		if (getAttackTarget() != null && (getDistanceSq(getAttackTarget()) > 80 * 80 || !this.isEntityWithinHomeArea(getAttackTarget()))) {
 			setAttackTarget(null);
 		}
 
@@ -787,7 +786,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-			if (nearbyFeature == TFFeature.nagaCourtyard) {
+			if (nearbyFeature == TFFeature.NAGA_COURTYARD) {
 				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}

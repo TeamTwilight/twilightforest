@@ -113,19 +113,19 @@ repositories {
 
 dependencies {
     // progwml6
-    compile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 
     deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
-    compile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}:deobf"
+    deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"
 
     // tterrag
-    compile "team.chisel.ctm:CTM:MC${minecraft_sub_version}-${ctm_version}"
-    compile "team.chisel:Chisel:MC${minecraft_sub_version}-${chisel_version}"
+    deobfCompile "team.chisel.ctm:CTM:MC${minecraft_sub_version}-${ctm_version}"
+    deobfCompile "team.chisel:Chisel:MC${minecraft_sub_version}-${chisel_version}"
 
     // blamejared
-    compile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"
+    deobfCompile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"
 
     // curseforge
-    compile "baubles:Baubles:${minecraft_sub_version}:${baubles_version}"
-    compile "thaumcraft:Thaumcraft:${minecraft_version}:${thaumcraft_version}"
+    deobfCompile "baubles:Baubles:${minecraft_sub_version}:${baubles_version}"
+    deobfCompile "thaumcraft:Thaumcraft:${minecraft_version}:${thaumcraft_version}"
 }

@@ -32,7 +32,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TFCommonProxy;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.ColorHandler;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
@@ -160,7 +159,6 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void init() {
-		ColorHandler.init();
 
 		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 

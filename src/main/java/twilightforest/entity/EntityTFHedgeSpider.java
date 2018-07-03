@@ -52,7 +52,7 @@ public class EntityTFHedgeSpider extends EntitySpider {
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze
+		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE
 				|| super.isValidLightLevel();
 	}
 
@@ -63,7 +63,7 @@ public class EntityTFHedgeSpider extends EntitySpider {
 			// are in a hedge maze?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze) {
+			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE) {
 				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hedge"), "hedge_spider");
 			}
 		}

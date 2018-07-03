@@ -42,7 +42,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 		head.motionX = 0;
 		head.motionY = 0;
 		head.motionZ = 0;
-		setHeadingFromThrower(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.5F, 1F);
+		shoot(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.5F, 1F);
 
 		TwilightForestMod.LOGGER.info("Launching mortar! Current head motion is {}, {}", head.motionX, head.motionZ);
 	}
@@ -131,7 +131,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 			Vec3d vec3d = damagesource.getTrueSource().getLookVec();
 			if (vec3d != null) {
 				// reflect faster and more accurately
-				this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
+				this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 				this.onGround = false;
 				this.fuse += 20;
 			}

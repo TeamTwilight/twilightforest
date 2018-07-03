@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
@@ -16,7 +17,6 @@ import twilightforest.structures.TFMaze;
 
 import java.util.List;
 import java.util.Random;
-
 
 public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
@@ -302,7 +302,8 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		fillWithAir(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
 //		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, Blocks.STONE, false);
 //		fillWithBlocks(world, sbb, 0, 5, 0, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, Blocks.STONE, true);
-		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.PLAIN), Blocks.STONE.getDefaultState(), this.level == 1);
+		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.dimension.skylightForest;
+		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.PLAIN), Blocks.STONE.getDefaultState(), onlyReplaceCeiling);
 		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), Blocks.STONE.getDefaultState(), false);
 
 		//

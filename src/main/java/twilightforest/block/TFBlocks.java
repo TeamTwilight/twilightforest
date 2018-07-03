@@ -168,4 +168,12 @@ public class TFBlocks {
 	public static Block nagastone_stairs_weathered;
 	@ObjectHolder("auroralized_glass")
 	public static Block auroralized_glass;
+	@ObjectHolder("castle_stairs_brick")
+	public static Block castle_stairs_brick;
+	@ObjectHolder("castle_stairs_cracked")
+	public static Block castle_stairs_cracked;
+	@ObjectHolder("castle_stairs_worn")
+	public static Block castle_stairs_worn;
+	@ObjectHolder("castle_stairs_mossy")
+	public static Block castle_stairs_mossy;
 }

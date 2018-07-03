@@ -546,7 +546,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-			if (nearbyFeature == TFFeature.darkTower) {
+			if (nearbyFeature == TFFeature.DARK_TOWER) {
 				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}

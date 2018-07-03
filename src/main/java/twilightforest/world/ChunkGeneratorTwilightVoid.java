@@ -10,6 +10,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
+import twilightforest.TFFeature;
 
 public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
@@ -25,7 +26,13 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 		this.biomesForGeneration = world.getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
 		deformTerrainForFeature(x, z, primer);
 		replaceBiomeBlocks(x, z, primer, biomesForGeneration);
-		majorFeatureGenerator.generate(world, x, z, primer);
+
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != TFFeature.NOTHING) {
+				feature.getFeatureGenerator().generate(world, x, z, primer);
+			}
+		}
+
 		return makeChunk(x, z, primer);
 	}
 
@@ -46,7 +53,11 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
 
-		this.majorFeatureGenerator.generateStructure(world, rand, chunkpos);
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != TFFeature.NOTHING) {
+				feature.getFeatureGenerator().generateStructure(world, rand, chunkpos);
+			}
+		}
 
 		blockpos = blockpos.add(8, 0, 8);
 

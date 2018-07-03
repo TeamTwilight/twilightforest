@@ -13,7 +13,7 @@ public class TFRegisterPotionEvent {
 
 	@SubscribeEvent
 	public static void onRegisterPotions(RegistryEvent.Register<Potion> event) {
-		registerPotion("frosted", new PotionFrosted(true, 0x56CBFD).setPotionName(TwilightForestMod.ID + ".effect.frosted").registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "CE9DBC2A-EE3F-43F5-9DF7-F7F1EE4915A9", -0.15000000596046448D, 2), event);
+		registerPotion("frosted", new PotionFrosted(true, 0x56CBFD).setPotionName(TwilightForestMod.ID + ".effect.frosted").registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, PotionFrosted.MODIFIER_UUID, -0.15000000596046448D, 2), event);
 	}
 
 	public static void registerPotion(String name, Potion potion, RegistryEvent.Register<Potion> event){

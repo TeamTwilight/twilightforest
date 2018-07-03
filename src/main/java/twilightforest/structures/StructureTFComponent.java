@@ -17,7 +17,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
-	protected TFFeature feature = TFFeature.nothing;
+	protected TFFeature feature = TFFeature.NOTHING;
 
 	public StructureTFComponent() {
 		this.rotation = Rotation.NONE;

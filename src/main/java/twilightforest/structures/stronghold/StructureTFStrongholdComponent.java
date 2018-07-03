@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -501,7 +502,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
 					Block blockID = this.getBlockStateFromPos(world, x, y, z, sbb).getBlock();
 
-					if (blockID == Blocks.AIR) {
+					if (blockID == Blocks.AIR && !TFConfig.dimension.skylightForest) {
 						// cobblestone to "fill in holes"
 						if (wall) {
 							this.setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y, z, sbb);
@@ -512,8 +513,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 						strongBlocks.selectBlocks(rand, x, y, z, wall);
 						this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
 
-					} else if (!wall || blockID != Blocks.DIRT)  // leave dirt there
-					{
+					} else if (!wall || blockID != Blocks.DIRT) { // leave dirt there
 						// and use decorator (with presumably underbricks) for walls
 						randomBlocks.selectBlocks(rand, x, y, z, wall);
 						this.setBlockState(world, randomBlocks.getBlockState(), x, y, z, sbb);

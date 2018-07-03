@@ -166,22 +166,22 @@ public class CommandTFFeature extends CommandBase {
 		},
 		LOCATE {
 			private final String[] STRUCTURE_LIST = {
-					TFFeature.hill1.name,
-					TFFeature.hill2.name,
-					TFFeature.hill3.name,
-					TFFeature.hedgeMaze.name,
-					TFFeature.nagaCourtyard.name,
-					TFFeature.lichTower.name,
-					TFFeature.iceTower.name,
-					TFFeature.questGrove.name,
-					TFFeature.hydraLair.name,
-					TFFeature.labyrinth.name,
-					TFFeature.darkTower.name,
-					TFFeature.tfStronghold.name,
-					TFFeature.yetiCave.name,
-					TFFeature.trollCave.name,
-					TFFeature.finalCastle.name,
-					TFFeature.mushroomTower.name
+					TFFeature.SMALL_HILL.name,
+					TFFeature.MEDIUM_HILL.name,
+					TFFeature.LARGE_HILL.name,
+					TFFeature.HEDGE_MAZE.name,
+					TFFeature.NAGA_COURTYARD.name,
+					TFFeature.LICH_TOWER.name,
+					TFFeature.ICE_TOWER.name,
+					TFFeature.QUEST_GROVE.name,
+					TFFeature.HYDRA_LAIR.name,
+					TFFeature.LABYRINTH.name,
+					TFFeature.DARK_TOWER.name,
+					TFFeature.KNIGHT_STRONGHOLD.name,
+					TFFeature.YETI_CAVE.name,
+					TFFeature.TROLL_CAVE.name,
+					TFFeature.FINAL_CASTLE.name,
+					TFFeature.MUSHROOM_TOWER.name
 			};
 
 			@Override
@@ -216,33 +216,19 @@ public class CommandTFFeature extends CommandBase {
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				changeStructureActivity(sender, false);
 			}
-		}; /*, RELOADSHADERS {
-			@Override
-			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-				// Reload our shaders without reloading all of the game resources
-				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-					TwilightForestMod.LOGGER.info("Reloaded");
-					twilightforest.client.shader.ShaderHelper.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
-				}
-			}
-		};//*/
+		};
 
 		private final static String[] ACTION_LIST;
-		//private final static String actionListInOneLine;
 
 		static {
 			int length = EnumActions.values().length;
 
 			String[] list = new String[length];
-			//StringBuilder oneLine = new StringBuilder("<");
 
-			for (EnumActions action : EnumActions.values()) {
+			for (EnumActions action : EnumActions.values())
 				list[action.ordinal()] = action.toString().toLowerCase(Locale.ROOT);
-				//oneLine.append(action.toString().toLowerCase(Locale.ROOT)).append(action.ordinal() < length - 1 ? "|" : ">");
-			}
 
 			ACTION_LIST = list;
-			//actionListInOneLine = oneLine.toString();
 		}
 
 		protected abstract void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException;

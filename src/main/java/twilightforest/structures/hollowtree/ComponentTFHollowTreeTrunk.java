@@ -32,7 +32,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	}
 
 	public ComponentTFHollowTreeTrunk(World world, Random rand, int index, int x, int y, int z) {
-		super(TFFeature.nothing, index);
+		super(TFFeature.NOTHING, index);
 
 		height = rand.nextInt(64) + 32;
 		radius = rand.nextInt(4) + 1;

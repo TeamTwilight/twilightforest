@@ -119,9 +119,8 @@ public class TFTeleporter extends Teleporter {
 	private boolean checkStructure(BlockPos pos) {
 		IChunkGenerator generator = world.getChunkProvider().chunkGenerator;
 		if (generator instanceof ChunkGeneratorTFBase) {
-			if (!world.isBlockLoaded(pos)) {
-				generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4);
-			}
+			if (!world.isBlockLoaded(pos)) generator.recreateStructures(world.getChunkFromBlockCoords(pos), pos.getX() >> 4, pos.getZ() >> 4);
+
 			return !((ChunkGeneratorTFBase) generator).isBlockInFullStructure(pos.getX(), pos.getZ());
 		}
 		return true;

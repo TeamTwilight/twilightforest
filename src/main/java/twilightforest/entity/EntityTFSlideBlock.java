@@ -155,7 +155,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 					dataManager.set(MOVE_DIRECTION, dataManager.get(MOVE_DIRECTION).getOpposite());
 				}
 
-				if (this.isCollided) {
+				if (this.collided) {
 					this.motionX *= 0.699999988079071D;
 					this.motionZ *= 0.699999988079071D;
 					this.motionY *= 0.699999988079071D;

@@ -1,10 +1,13 @@
 package twilightforest.structures.lichtower;
 
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import twilightforest.structures.start.StructureStartLichTower;
 
 public class TFLichTowerPieces {
 
 	public static void registerPieces() {
+		MapGenStructureIO.registerStructure(StructureStartLichTower.class, "TFLT");
+
 		MapGenStructureIO.registerStructureComponent(ComponentTFTowerBeard.class, "TFLTBea");
 		MapGenStructureIO.registerStructureComponent(ComponentTFTowerBeardAttached.class, "TFLTBA");
 		MapGenStructureIO.registerStructureComponent(ComponentTFTowerBridge.class, "TFLTBri");

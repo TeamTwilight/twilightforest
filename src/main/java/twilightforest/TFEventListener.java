@@ -710,7 +710,7 @@ public class TFEventListener {
 				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksArrow) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
-					projectile.setThrowableHeading(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
+					projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
 					projectile.shootingEntity = entityBlocking;
 
@@ -780,7 +780,7 @@ public class TFEventListener {
 				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksThrowable) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
-					projectile.setThrowableHeading(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
+					projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
 					projectile.thrower = entityBlocking;
 

@@ -11,7 +11,7 @@ import twilightforest.client.ModelRegisterCallback;
 public class ItemTFSteeleafAxe extends ItemAxe implements ModelRegisterCallback {
 
 	protected ItemTFSteeleafAxe(Item.ToolMaterial material) {
-		super(material, 6F + material.getDamageVsEntity(), material.getEfficiencyOnProperMaterial() * 0.05f - 3.4f);
+		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

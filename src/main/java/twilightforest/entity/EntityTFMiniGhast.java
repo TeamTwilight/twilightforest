@@ -47,7 +47,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		ItemStack helmet = living.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 		if (!helmet.isEmpty() && helmet.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN)) {
 			return false;
-		} else if (living.getDistanceToEntity(this) <= 3.5F) {
+		} else if (living.getDistance(this) <= 3.5F) {
 			return living.canEntityBeSeen(this);
 		} else {
 			Vec3d vec3d = living.getLook(1.0F).normalize();

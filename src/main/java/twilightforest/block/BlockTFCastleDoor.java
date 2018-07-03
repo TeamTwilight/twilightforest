@@ -110,7 +110,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess par1IBlockAccess, BlockPos pos) {
+	public boolean isPassable(IBlockAccess blockAccess, BlockPos pos) {
 		return this.isVanished;
 	}
 
@@ -128,26 +128,26 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 		}
 	}
 
-	private static void changeToActiveBlock(World par1World, BlockPos pos, IBlockState originState) {
-		changeToBlockMeta(par1World, pos, true, originState);
-		playVanishSound(par1World, pos);
+	private static void changeToActiveBlock(World world, BlockPos pos, IBlockState originState) {
+		changeToBlockMeta(world, pos, true, originState);
+		playVanishSound(world, pos);
 
-		par1World.scheduleUpdate(pos, originState.getBlock(), 2 + par1World.rand.nextInt(5));
+		world.scheduleUpdate(pos, originState.getBlock(), 2 + world.rand.nextInt(5));
 	}
 
-	private static void changeToBlockMeta(World par1World, BlockPos pos, boolean active, IBlockState originState) {
+	private static void changeToBlockMeta(World world, BlockPos pos, boolean active, IBlockState originState) {
 		if (originState.getBlock() instanceof BlockTFCastleDoor) {
-			par1World.setBlockState(pos, originState.withProperty(ACTIVE, active), 3);
-			par1World.markBlockRangeForRenderUpdate(pos, pos);
-			par1World.notifyNeighborsRespectDebug(pos, originState.getBlock(), false);
+			world.setBlockState(pos, originState.withProperty(ACTIVE, active), 3);
+			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.notifyNeighborsRespectDebug(pos, originState.getBlock(), false);
 		}
 	}
 
-	private static boolean isBlockLocked(World par1World, BlockPos pos) {
+	private static boolean isBlockLocked(World world, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
-		if (!par1World.isRemote && TFWorld.getChunkGenerator(par1World) instanceof ChunkGeneratorTFBase) {
-			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(par1World);
-			return generator.isStructureLocked(pos, par1World.getBlockState(pos).getValue(LOCK_INDEX));
+		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
+			return generator.isStructureLocked(pos, world.getBlockState(pos).getValue(LOCK_INDEX));
 		} else {
 			return false;
 		}
@@ -159,30 +159,30 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override // todo 1.10 recheck all of this
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {
-		if (!par1World.isRemote) {
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if (!world.isRemote) {
 			if (this.isVanished) {
 				if (state.getValue(ACTIVE)) {
-					par1World.setBlockState(pos, TFBlocks.castle_door.getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
-					playVanishSound(par1World, pos);
+					world.setBlockState(pos, TFBlocks.castle_door.getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
+					playVanishSound(world, pos);
 				} else {
-					changeToActiveBlock(par1World, pos, state);
+					changeToActiveBlock(world, pos, state);
 				}
 			} else {
 
 				// if we have an active castle door, turn it into a vanished door block
 				if (state.getValue(ACTIVE)) {
-					par1World.setBlockState(pos, getOtherBlock(this).getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
-					par1World.scheduleUpdate(pos, getOtherBlock(this), 80);
+					world.setBlockState(pos, getOtherBlock(this).getDefaultState().withProperty(LOCK_INDEX ,state.getValue(LOCK_INDEX)));
+					world.scheduleUpdate(pos, getOtherBlock(this), 80);
 
-					playReappearSound(par1World, pos);
+					playReappearSound(world, pos);
 
-					this.sendAnnihilateBlockPacket(par1World, pos);
+					this.sendAnnihilateBlockPacket(world, pos);
 
 
 					// activate all adjacent inactive doors
 					for (EnumFacing e : EnumFacing.VALUES) {
-						checkAndActivateCastleDoor(par1World, pos.offset(e));
+						checkAndActivateCastleDoor(world, pos.offset(e));
 					}
 				}
 

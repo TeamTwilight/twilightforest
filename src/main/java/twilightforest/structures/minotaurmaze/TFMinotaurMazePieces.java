@@ -1,12 +1,15 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import twilightforest.structures.start.StructureStartLabyrinth;
 
 
 public class TFMinotaurMazePieces {
 
 
 	public static void registerPieces() {
+		MapGenStructureIO.registerStructure(StructureStartLabyrinth.class, "TFLr");
+
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridor.class, "TFMMC");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridorIronFence.class, "TFMMCIF");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridorRoots.class, "TFMMCR");

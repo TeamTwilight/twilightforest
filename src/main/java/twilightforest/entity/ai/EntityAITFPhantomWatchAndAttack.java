@@ -25,7 +25,7 @@ public class EntityAITFPhantomWatchAndAttack extends EntityAIBase {
 			boss.faceEntity(target, 10.0F, 500.0F);
 
 			if (target.isEntityAlive()) {
-				float f1 = target.getDistanceToEntity(boss);
+				float f1 = target.getDistance(boss);
 
 				if (boss.getEntitySenses().canSee(target)) {
 					if (attackTime-- <= 0 && f1 < 2.0F && target.getEntityBoundingBox().maxY > boss.getEntityBoundingBox().minY && boss.getAttackTarget().getEntityBoundingBox().minY < boss.getEntityBoundingBox().maxY) {

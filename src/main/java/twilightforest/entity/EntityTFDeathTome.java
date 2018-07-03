@@ -96,7 +96,7 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 		double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
 		double tz = target.posZ - this.posZ;
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
-		projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
+		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.spawnEntity(projectile);
 	}
 

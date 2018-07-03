@@ -1,17 +1,17 @@
 package twilightforest.block;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
+import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.TFCompat;
 import twilightforest.enums.Leaves3Variant;
@@ -21,18 +21,21 @@ import twilightforest.enums.TowerWoodVariant;
 import twilightforest.item.ItemTFArcticArmor;
 import twilightforest.item.TFItems;
 
-import java.awt.*;
+import java.awt.Color;
 
-@SideOnly(Side.CLIENT)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public final class ColorHandler {
 
-	public static void init() {
-		BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
+	@SubscribeEvent
+	public static void registerBlockColors(ColorHandlerEvent.Block event) {
+
+		BlockColors blockColors = event.getBlockColors();
+
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(2, 128.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.aurora_block);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			int normalColor = Minecraft.getMinecraft().getBlockColors().colorMultiplier(TFBlocks.aurora_block.getDefaultState(), worldIn, pos, tintIndex);
+			int normalColor = blockColors.colorMultiplier(TFBlocks.aurora_block.getDefaultState(), worldIn, pos, tintIndex);
 
 			int red = (normalColor >> 16) & 255;
 			int blue = normalColor & 255;
@@ -64,7 +67,7 @@ public final class ColorHandler {
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 		}, TFBlocks.dark_leaves, TFBlocks.giant_leaves);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) ->  tintIndex > 15 ? 0xFFFFFF :state.getValue(BlockTFFireJet.VARIANT).hasGrassColor ? Minecraft.getMinecraft().getBlockColors().colorMultiplier(Blocks.GRASS.getDefaultState(), worldIn, pos, tintIndex) : 0xFFFFFF, TFBlocks.fire_jet);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : state.getValue(BlockTFFireJet.VARIANT).hasGrassColor ? blockColors.colorMultiplier(Blocks.GRASS.getDefaultState(), worldIn, pos, tintIndex) : 0xFFFFFF, TFBlocks.fire_jet);
 		//blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x208030, TFBlocks.huge_lilypad);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
@@ -277,22 +280,28 @@ public final class ColorHandler {
 					return state.getValue(BlockTFForceField.COLOR).getColorValue();
 			}
 		}, TFBlocks.force_field);
+	}
 
-		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
+	@SubscribeEvent
+	public static void registerItemColors(ColorHandlerEvent.Item event) {
+
+		ItemColors itemColors = event.getItemColors();
+		BlockColors blockColors = event.getBlockColors();
+
 		// Atomic: This is one place where getStateFromMeta is still commonly used
 		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex), TFBlocks.aurora_block, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.auroralized_glass, TFBlocks.dark_leaves, TFBlocks.giant_leaves, TFBlocks.fire_jet, TFBlocks.magic_leaves, TFBlocks.twilight_leaves, TFBlocks.twilight_leaves_3, TFBlocks.twilight_plant, TFBlocks.castle_rune_brick, TFBlocks.castle_door, TFBlocks.castle_door_vanished, TFBlocks.miniature_structure, TFBlocks.force_field);
 		// Honestly I'd say it makes sense in this context. -Drullkus
 
-		itemColors.registerItemColorHandler((ItemStack stack, int tintIndex) ->
+		itemColors.registerItemColorHandler((stack, tintIndex) ->
 				stack.getItem() instanceof ItemTFArcticArmor
 						? ((ItemTFArcticArmor) stack.getItem()).getColor(stack, tintIndex)
 						: 0xFFFFFF,
 				TFItems.arctic_helmet, TFItems.arctic_chestplate, TFItems.arctic_leggings, TFItems.arctic_boots);
 
-		if (TFCompat.IMMERSIVEENGINEERING.isActivated())
+		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			itemColors.registerItemColorHandler(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
+		}
 	}
 
-	private ColorHandler() {
-	}
+	private ColorHandler() {}
 }

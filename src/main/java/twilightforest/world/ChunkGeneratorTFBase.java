@@ -21,6 +21,7 @@ import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -37,7 +38,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	protected double[] depthBuffer = new double[256];
 	protected Biome[] biomesForGeneration;
 
-	protected final MapGenTFMajorFeature majorFeatureGenerator = new MapGenTFMajorFeature();
+	//protected final MapGenTFMajorFeatureOld majorFeatureGenerator = new MapGenTFMajorFeatureOld();
 
 	private final boolean shouldGenerateBedrock;
 
@@ -99,7 +100,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		int hx = nearCenter[0];
 		int hz = nearCenter[1];
 
-		if (nearFeature == TFFeature.trollCave) {
+		if (nearFeature == TFFeature.TROLL_CAVE) {
 			// troll cloud, more like
 			deformTerrainForTrollCloud2(primer, nearFeature, cx, cz, hx, hz);
 		}
@@ -109,20 +110,24 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 				int dx = x - hx;
 				int dz = z - hz;
 
-				if (nearFeature == TFFeature.hill1 || nearFeature == TFFeature.hill2 || nearFeature == TFFeature.hill3 || nearFeature == TFFeature.hydraLair) {
+				if (nearFeature == TFFeature.SMALL_HILL || nearFeature == TFFeature.MEDIUM_HILL || nearFeature == TFFeature.LARGE_HILL || nearFeature == TFFeature.HYDRA_LAIR) {
 					// hollow hills
 					int hdiam = ((nearFeature.size * 2 + 1) * 16);
 					int dist = (int) Math.sqrt(dx * dx + dz * dz);
 					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * ((float) hdiam / 3F));
 
 					raiseHills(primer, nearFeature, hdiam, x, z, dx, dz, hheight);
-				} else if (nearFeature == TFFeature.hedgeMaze || nearFeature == TFFeature.nagaCourtyard || nearFeature == TFFeature.questGrove) {
+				} else if (nearFeature == TFFeature.HEDGE_MAZE || nearFeature == TFFeature.NAGA_COURTYARD || nearFeature == TFFeature.QUEST_GROVE) {
 					// hedge mazes, naga arena
 					flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
-				} else if (nearFeature == TFFeature.yetiCave) {
+				} else if (nearFeature == TFFeature.YETI_CAVE) {
 					// yeti lairs are square
 					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
 				}
+				//else if (nearFeature != TFFeature.NOTHING) {
+				//	// hedge mazes, naga arena
+				//	flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
+				//}
 			}
 		}
 
@@ -150,7 +155,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		int hollow = hillHeight - 4 - nearFeature.size;
 
 		// hydra lair has a piece missing
-		if (nearFeature == TFFeature.hydraLair) {
+		if (nearFeature == TFFeature.HYDRA_LAIR) {
 			int mx = dx + 16;
 			int mz = dz + 16;
 			int mdist = (int) Math.sqrt(mx * mx + mz * mz);
@@ -165,7 +170,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 		// hollow out the hollow parts
 		int hollowFloor = TFWorld.SEALEVEL - 3 - (hollow / 8);
-		if (nearFeature == TFFeature.hydraLair) {
+		if (nearFeature == TFFeature.HYDRA_LAIR) {
 			// different floor
 			hollowFloor = TFWorld.SEALEVEL;
 		}
@@ -426,16 +431,16 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		// are the specified coordinates precisely in a feature?
-		TFFeature nearestFeature = TFFeature.getFeatureForRegion(pos.getX() >> 4, pos.getZ() >> 4, world);
+		TFFeature nearestFeature = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 
-		if (nearestFeature != TFFeature.nothing) {
+		if (nearestFeature != TFFeature.NOTHING) {
 			// if the feature is already conquered, no spawns
 			if (this.isStructureConquered(pos)) {
-				return null;
+				return Collections.emptyList();
 			}
 
 			// check the precise coords.
-			int spawnListIndex = this.majorFeatureGenerator.getSpawnListIndexAt(pos);
+			int spawnListIndex = nearestFeature.getFeatureGenerator().getSpawnListIndexAt(pos);
 			if (spawnListIndex >= 0) {
 				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
 			}
@@ -455,64 +460,71 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	@Override
 	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position, boolean findUnexplored) {
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		if (feature != TFFeature.nothing) {
+
+		if (feature != TFFeature.NOTHING)
 			return TFFeature.findNearestFeaturePosBySpacing(world, feature, position, 20, 11, 10387313, true, 100, findUnexplored);
-		}
+
 		return null;
 	}
 
 	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		this.majorFeatureGenerator.setStructureConquered(mapX, mapY, mapZ, flag);
+		TFFeature.getFeatureForRegionPos(mapX, mapZ, world).getFeatureGenerator().setStructureConquered(mapX, mapY, mapZ, flag);
 	}
 
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
-		return this.majorFeatureGenerator.isStructureLocked(pos, lockIndex);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureLocked(pos, lockIndex);
 	}
 
 	public boolean isBlockInStructureBB(BlockPos pos) {
-		return this.majorFeatureGenerator.isInsideStructure(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isInsideStructure(pos);
 	}
 
+	@Nullable
 	public StructureBoundingBox getSBBAt(BlockPos pos) {
-		return this.majorFeatureGenerator.getSBBAt(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().getSBBAt(pos);
 	}
 
 	public boolean isBlockProtected(BlockPos pos) {
-		return this.majorFeatureGenerator.isBlockProtectedAt(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isBlockProtectedAt(pos);
 	}
 
 	public boolean isStructureConquered(BlockPos pos) {
-		return this.majorFeatureGenerator.isStructureConquered(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().isStructureConquered(pos);
 	}
 
 	public boolean isBlockInFullStructure(int x, int z) {
-		return this.majorFeatureGenerator.isBlockInFullStructure(x, z);
+		return TFFeature.getFeatureForRegionPos(x, z, world).getFeatureGenerator().isBlockInFullStructure(x, z);
 	}
 
 	public boolean isBlockNearFullStructure(int x, int z, int range) {
-		return this.majorFeatureGenerator.isBlockNearFullStructure(x, z, range);
+		return TFFeature.getFeatureForRegionPos(x, z, world).getFeatureGenerator().isBlockNearFullStructure(x, z, range);
 	}
 
-	public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
-		return this.majorFeatureGenerator.getFullSBBAt(mapX, mapZ);
-	}
+	//public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
+	//	TFFeature.getFeatureAt(mapX, mapZ, world).getFeatureGenerator().getFullSBBAt(mapX, mapZ);
+	//}
 
+	@Nullable
 	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-		return this.majorFeatureGenerator.getFullSBBNear(mapX, mapZ, range);
+		return TFFeature.getFeatureForRegionPos(mapX, mapZ, world).getFeatureGenerator().getFullSBBNear(mapX, mapZ, range);
 	}
 
 	public TFFeature getFeatureAt(BlockPos pos) {
-		return majorFeatureGenerator.getFeatureAt(pos);
+		return TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world).getFeatureGenerator().getFeatureAt(pos);
 	}
 
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {
-		majorFeatureGenerator.generate(world, x, z, null);
+		for (TFFeature feature : TFFeature.values()) {
+			if (feature != TFFeature.NOTHING) {
+				feature.getFeatureGenerator().generate(world, x, z, null);
+			}
+		}
 	}
 
 	@Override
 	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		return feature != TFFeature.nothing && getFeatureAt(pos) == feature;
+		return feature != TFFeature.NOTHING && getFeatureAt(pos) == feature;
 	}
 }

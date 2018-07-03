@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "twilightforest:castle_brick",
+    "data": 2,
+    "count": 3
+  },
+  "ingredients": [ {
+    "item": "twilightforest:castle_stairs_cracked",
+    "data": 0
+  }, {
+    "item": "twilightforest:castle_stairs_cracked",
+    "data": 0
+  }, {
+    "item": "twilightforest:castle_stairs_cracked",
+    "data": 0
+  }, {
+    "item": "twilightforest:castle_stairs_cracked",
+    "data": 0
+  } ],
+  "type": "minecraft:crafting_shapeless"
+}

@@ -1,7 +1,6 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.IFixableData;
@@ -9,14 +8,15 @@ import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.Map;
-import java.util.Set;
 
 public class TFDataFixers {
+    public static final int DATA_FIXER_VERSION = 1;
+
     public static void init() {
-        ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(TwilightForestMod.ID, TwilightForestMod.DATA_FIXER_VERSION);
+        ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(TwilightForestMod.ID, DATA_FIXER_VERSION);
 
         fixes.registerFix(FixTypes.BLOCK_ENTITY, new nameSpaceTEFixer());
-        //fixes.registerFix(FixTypes.STRUCTURE, new structureStartIDDataFixer());
+        fixes.registerFix(FixTypes.STRUCTURE, new structureStartIDDataFixer());
     }
 
     private static class nameSpaceTEFixer implements IFixableData {
@@ -89,20 +89,33 @@ public class TFDataFixers {
     }
 
     private static class structureStartIDDataFixer implements IFixableData {
-        private final Set<String> structureStartIDs;
-
-        {
-            ImmutableSet.Builder<String> nameMap = ImmutableSet.builder();
-
-            nameMap
-                    .add("naga_courtyard");
-
-            structureStartIDs = nameMap.build();
-        }
+        private final String[] startIDs = {
+                "TFNothing", // Nothing
+                "TFHill"   , // Small Hill
+                "TFHill"   , // Medium
+                "TFHill"   , // Large
+                "TFHedge"  , // Hedge Maze
+                "TFNC"     , // Courtyard
+                "TFLT"     , // Lich Tower
+                "TFAP"     , // Aurora Palace
+                "TFNothing", // (Quest Island)
+                "TFQuest1" , // Quest Grove
+                "TFNothing", // (Druid Grove)
+                "TFNothing", // (Floating Ruins)
+                "TFHydra"  , // Hydra Lair
+                "TFLr"     , // Labyrinth
+                "TFDT"     , // Dark Tower
+                "TFKSt"    , // Knight Stronghold
+                "TFNothing", // (World Tree)
+                "TFYeti"   , // Yeti Cave
+                "TFTC"     , // Troll cave
+                "TFFC"     , // Final Castle
+                "TFMT"       // Mushroom Tower
+        };
 
         @Override
         public int getFixVersion() {
-            return 2;
+            return 1;
         }
 
         // Basically we just need to shove the structure ID from the `FeatureID` key to the regular `id`.
@@ -110,11 +123,7 @@ public class TFDataFixers {
         public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
             int featureID = compound.getInteger("FeatureID");
 
-            if (featureID >= TFFeature.featureList.length - 1) return compound;
-
-            TFFeature feature = TFFeature.featureList[featureID];
-
-            //if (!compound.getString("id").isEmpty() && featureID != 0) compound.setString("id", );
+            compound.setString("id", featureID < startIDs.length ? startIDs[featureID] : "TFNothing");
 
             return compound;
         }

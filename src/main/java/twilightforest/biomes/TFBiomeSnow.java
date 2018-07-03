@@ -87,7 +87,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {
-				TFFeature.yetiCave.trySpawnHintMonster(world, player);
+				TFFeature.YETI_CAVE.trySpawnHintMonster(world, player);
 			}
 		}
 	}

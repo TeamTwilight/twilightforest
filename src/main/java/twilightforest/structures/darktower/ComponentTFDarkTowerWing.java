@@ -6,6 +6,7 @@ import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockLever;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockRedstoneRepeater;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
@@ -638,18 +639,19 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		int cx = this.size > 9 ? 6 : 5;
 		int cz = this.size > 9 ? 4 : 3;
 
-		final IBlockState redstoneWire = Blocks.REDSTONE_WIRE.getDefaultState();
-		final IBlockState woodenPressurePlate = Blocks.WOODEN_PRESSURE_PLATE.getDefaultState();
+		IBlockState redstoneWire = Blocks.REDSTONE_WIRE.getDefaultState();
+		IBlockState woodenPressurePlate = Blocks.WOODEN_PRESSURE_PLATE.getDefaultState();
+		IBlockState stickyPiston = Blocks.STICKY_PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.SOUTH);
+		IBlockState unpoweredRepeater = Blocks.UNPOWERED_REPEATER.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.WEST).withProperty(BlockRedstoneRepeater.DELAY, 2);
 
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.SOUTH), cx, y + 1, cz + 1, rotation, sbb);
+		setBlockStateRotated(world, stickyPiston, cx, y + 1, cz + 1, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, cx, y + 1, cz, rotation, sbb);
 		setBlockStateRotated(world, redstoneWire, cx + 1, y + 1, cz, rotation, sbb);
 		setBlockStateRotated(world, woodenPressurePlate, cx + 2, y + 1, cz, rotation, sbb);
-		setBlockStateRotated(world, Blocks.UNPOWERED_REPEATER.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.WEST), cx - 1, y + 1, cz, rotation, sbb);
+		setBlockStateRotated(world, unpoweredRepeater, cx - 1, y + 1, cz, rotation, sbb);
 		setBlockStateRotated(world, redstoneWire, cx - 2, y + 1, cz, rotation, sbb);
 		setBlockStateRotated(world, redstoneWire, cx - 2, y + 1, cz + 1, rotation, sbb);
 		setBlockStateRotated(world, redstoneWire, cx - 1, y + 1, cz + 1, rotation, sbb);
-
 	}
 
 	/**
