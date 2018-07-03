@@ -28,11 +28,15 @@ import twilightforest.network.PacketMagicMap;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
+
+	//caches the biomes for one map per online player. This uses ~2MB per online player.
+	private WeakHashMap<EntityPlayer, BiomeCacheEntry> biomeCache = new WeakHashMap<>();
 
 	private static class MapColorBrightness {
 
@@ -108,7 +112,24 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 			// use the generation map, which is larger scale than the other biome map
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-			Biome[] biomes = world.getBiomeProvider().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
+
+			//use the biome cache to prevent regenerating the biomes if the player is using the same map as before
+			BiomeCacheEntry biomeCacheEntry = biomeCache.get(viewer);
+			Biome[] biomes;
+			if(biomeCacheEntry == null) {
+				//first time a player uses a magic map after logging in
+				biomes = world.getBiomeProvider().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
+				biomeCacheEntry = new BiomeCacheEntry(biomes, startX, startZ);
+			} else if(biomeCacheEntry.startX != startX || biomeCacheEntry.startZ != startZ) {
+				//player has switched to a different magic map
+				biomes = world.getBiomeProvider().getBiomesForGeneration(biomeCacheEntry.biomes, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
+				biomeCacheEntry.update(biomes, startX, startZ);
+			} else {
+				//player is using the same magic map, use cached biomes
+				biomes = biomeCacheEntry.biomes;
+			}
+			biomeCache.put((EntityPlayer) viewer, biomeCacheEntry);
+
 
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
@@ -221,5 +242,24 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), "inventory"));
+	}
+
+	private static class BiomeCacheEntry {
+		Biome[] biomes;
+		int startX;
+		int startZ;
+
+
+		BiomeCacheEntry(Biome[] biomes, int startX, int startZ) {
+			this.biomes = biomes;
+			this.startX = startX;
+			this.startZ = startZ;
+		}
+
+		void update(Biome[] biomes, int startX, int startZ) {
+			this.biomes = biomes;
+			this.startX = startX;
+			this.startZ = startZ;
+		}
 	}
 }
