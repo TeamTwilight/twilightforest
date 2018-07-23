@@ -560,9 +560,7 @@ twilightforest.config.canopy_coverage.tooltip=樹冠覆蓋數量。較低的數�
 twilightforest.config.twilight_oaks=暮光橡樹機率
 twilightforest.config.twilight_oaks.tooltip=暮光森林中的一個區塊會包含的暮光橡樹。更高的數字減少了樹木的數量，提高了性能。
 twilightforest.config.leaves_light_opacity=暮光樹葉不透明度
-twilightforest.config.leaves_light_opacity.tooltip=如果樹葉不是滿的立方體，這控制葉子的不透明度來控制遮光量。
-twilightforest.config.leaves_full_cube=暮光樹葉是否完全的方塊
-twilightforest.config.leaves_full_cube.tooltip=設置否會使樹葉不完全。這樣就不會阻擋光線，使它們在阻擋光線方面等同於玻璃。減少一些照明檢查的複雜性。
+twilightforest.config.leaves_light_opacity.tooltip=這控制了樹葉的不透明度，改變了阻擋的光量。可以用來降低一些照明檢查的複雜性。
 twilightforest.config.glacer_packed_ice=由冰磚製成的冰川而不是冰
 twilightforest.config.glacer_packed_ice.tooltip=設定為是將使暮光冰川由冰磚生成，而不是普通的半透明的冰，減少檢查計算光量。
 
