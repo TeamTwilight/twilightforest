@@ -45,8 +45,6 @@ public class TFBiomeThornlands extends TFBiomeBase {
 
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
-		super.decorate(world, rand, pos);
-
 		// add thorns!
 		for (int i = 0; i < 128; i++) {
 			int rx = pos.getX() + rand.nextInt(16) + 8;

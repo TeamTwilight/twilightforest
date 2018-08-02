@@ -41,6 +41,8 @@ public class TFItems {
 	public static final Item lifedrain_scepter;
 	@GameRegistry.ObjectHolder("zombie_scepter")
 	public static final Item zombie_scepter;
+	@GameRegistry.ObjectHolder("shield_scepter")
+	public static final Item shield_scepter;
 	@GameRegistry.ObjectHolder("ore_meter")
 	public static final Item ore_meter;
 	@GameRegistry.ObjectHolder("magic_map")
@@ -281,6 +283,7 @@ public class TFItems {
 		twilight_scepter = null;
 		lifedrain_scepter = null;
 		zombie_scepter = null;
+		shield_scepter = null;
 		//items.register(wandPacification, "Wand of Pacification [NYI]");
 		ore_meter = null;
 		magic_map = null;

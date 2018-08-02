@@ -9,6 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+import net.minecraftforge.common.IPlantable;
 import twilightforest.block.BlockTFHedge;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
@@ -22,6 +23,7 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 	protected IBlockState leafState = TFBlocks.hedge.getDefaultState().withProperty(BlockTFHedge.VARIANT, HedgeVariant.DARKWOOD_LEAVES);
 	protected IBlockState rootState = TFBlocks.root.getDefaultState();
 
+	protected IPlantable source = TFBlocks.twilight_sapling;
 
 	public TFTreeGenerator() {
 		this(false);

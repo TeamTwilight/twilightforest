@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockSlab;
 import twilightforest.TwilightForestMod;
 
@@ -38,7 +39,7 @@ public class TFBlocks {
 	@ObjectHolder("naga_stone")
 	public static Block naga_stone;
 	@ObjectHolder("twilight_sapling")
-	public static Block twilight_sapling;
+	public static BlockBush twilight_sapling;
 	@ObjectHolder("magic_log")
 	public static Block magic_log;
 	@ObjectHolder("magic_log_core")

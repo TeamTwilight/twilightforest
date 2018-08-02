@@ -41,7 +41,7 @@ advancement.twilight_naga_armors.desc=Craft both naga scale chest and leg armor.
 advancement.twilight_kill_lich=Bring Out Your Dead
 advancement.twilight_kill_lich.desc=Slay the Lich at top of his tower and retrieve a Scepter to clear poisonous mosquitoes from the swamp, see through blinding darkness of the Dark Forest's curse, and resist the snow forest's chill.
 advancement.twilight_lich_scepters=By Our Powers Combined!
-advancement.twilight_lich_scepters.desc=Acquire all three scepters of power.
+advancement.twilight_lich_scepters.desc=Acquire all four scepters of power.
 
 # Swamp Progression
 advancement.twilight_progress_labyrinth=Mighty Stroganoff
@@ -247,6 +247,7 @@ tile.TFDeadrock.surface.name=Weathered Deadrock
 tile.TFDeadrock.cracked.name=Cracked Deadrock
 tile.TFDeadrock.solid.name=Deadrock
 tile.DarkLeaves.name=Darkwood Leaves
+tile.AuroralizedGlass.name=Auroralized Glass
 tile.AuroraPillar.name=Aurora Pillar
 tile.AuroraSlab.name=Aurora Slab
 tile.TrollSteinn.name=Trollsteinn
@@ -344,6 +345,7 @@ item.legsNaga.name=Naga Scale Leggings
 item.scepterTwilight.name=Scepter of Twilight
 item.scepterLifeDrain.name=Scepter of Life Draining
 item.scepterZombie.name=Zombie Scepter
+item.scepterShield.name=Scepter of Fortification
 item.oreMeter.name=Ore Meter [WIP]
 item.magicMap.name=Magic Map
 item.mazeMap.name=Maze Map
@@ -580,9 +582,7 @@ twilightforest.config.admin_portals.tooltip=Allow portals only for admins (Opera
 twilightforest.config.portals=Disable Twilight Portals
 twilightforest.config.portals.tooltip=Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.
 twilightforest.config.portal_creator=Portal Creation Item
-twilightforest.config.portal_creator.tooltip=Registry String ID of item used to create the Twilight Forest Portal.
-twilightforest.config.portal_creator_meta=Portal Creation Item's Meta
-twilightforest.config.portal_creator_meta.tooltip=Meta of item used to create the Twilight Forest Portal. -1 for any metadata.
+twilightforest.config.portal_creator.tooltip=Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.
 twilightforest.config.portal_lighting=Portal Creation Lightning Fire
 twilightforest.config.portal_lighting.tooltip=Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.
 twilightforest.config.portal_return=Should Portals generate as a two-way portal
@@ -696,7 +696,9 @@ modifier.veiled.name=Veiled
 modifier.veiled.desc=§oLike a Specter!§r\nProjectile will be invisible.
 
 # Immersive Engineering
-item.tfEngineeringShader=Shader: %s [WIP]
+item.tfEngineeringShader=Twilit Shader: %s
+item.tfEngineeringShaderBag=Twilit %s Shader Bag
+
 twilightforest.shader.twilight=Twilight
 
 twilightforest.shader.snakestone=Snakestone

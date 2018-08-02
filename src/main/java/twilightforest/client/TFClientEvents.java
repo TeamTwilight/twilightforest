@@ -26,6 +26,8 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.model.entity.ModelTFLich;
+import twilightforest.client.renderer.entity.RenderTFLich;
 import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
@@ -43,7 +45,7 @@ import java.util.UUID;
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public class TFClientEvents {
-
+	private static final Minecraft minecraft = Minecraft.getMinecraft();
 	private static final Random random = new Random();
 
 	@SubscribeEvent
@@ -74,7 +76,7 @@ public class TFClientEvents {
 		//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), twilightforest.compat.ie.IEShaderRegister.PROCESSED_MINECART_LAYER     , true, EASY_GRAYSCALING_MAP ));
 			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "blocks/shaders/balloon_0"        ), twilightforest.compat.ie.IEShaderRegister.PROCESSED_BALLOON_LAYER      , true, EASY_GRAYSCALING_MAP ));
 
-			final String[] types = new String[]{ "1_0", "1_2", "1_4", "1_5", "1_6" };
+			final String[] types = new String[]{ "1_0", "1_2", "1_4", "1_5", "1_6", "circuit" };
 
 			for (twilightforest.compat.ie.IEShaderRegister.CaseType caseType: twilightforest.compat.ie.IEShaderRegister.CaseType.everythingButMinecart())
 				for (String type : types)
@@ -111,7 +113,7 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static boolean preOverlay(RenderGameOverlayEvent.Pre event) {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
-			if (TFEventListener.isRidingUnfriendly(Minecraft.getMinecraft().player)) {
+			if (TFEventListener.isRidingUnfriendly(minecraft.player)) {
 				event.setCanceled(true);
 				return false;
 			}
@@ -125,13 +127,16 @@ public class TFClientEvents {
 			new AttributeModifier(UUID.fromString(PotionFrosted.MODIFIER_UUID), "doesntmatter", 0, 0);
 
 	/**
-	 * Do ice effect on slowed monsters
+	 * Render various effects such as an iced entity
 	 */
 	@SubscribeEvent
 	public static void renderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
+		// Ice effect
 		if (event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(FROSTED_POTION_MODIFIER)) {
 			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 		}
+		// Shields
+		renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 	}
 
 	/**
@@ -161,7 +166,7 @@ public class TFClientEvents {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		minecraft.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 		random.setSeed(entity.getEntityId() * entity.getEntityId() * 3121 + entity.getEntityId() * 45238971);
 
@@ -180,11 +185,31 @@ public class TFClientEvents {
 			GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
 
-			Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlockBrightness(Blocks.ICE.getDefaultState(), 1);
+			minecraft.getBlockRendererDispatcher().renderBlockBrightness(Blocks.ICE.getDefaultState(), 1);
 			GlStateManager.popMatrix();
 		}
 
 		GlStateManager.disableBlend();
+	}
+
+
+	private static final ModelTFLich model = new ModelTFLich(true);
+
+	private static void renderShields(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double x, double y, double z) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y, z);
+		GlStateManager.rotate(180, 1, 0, 0);
+		GlStateManager.translate(0, 0.5F - entity.getEyeHeight(), 0);
+		GlStateManager.enableBlend();
+		GlStateManager.disableCull();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		Minecraft.getMinecraft().renderEngine.bindTexture(RenderTFLich.LICH_TEXTURE);
+		float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+		model.setLivingAnimations(entity, 0F, 0F, partialTicks);
+		model.render(entity, 0F, 0F, 0F, 0F, 0F, 0.0625F);
+		GlStateManager.enableCull();
+		GlStateManager.disableBlend();
+		GlStateManager.popMatrix();
 	}
 
 	/**
@@ -193,25 +218,24 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void renderTick(TickEvent.RenderTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
-			Minecraft mc = Minecraft.getMinecraft();
-			World world = mc.world;
+			World world = minecraft.world;
 
-			((BlockLeaves) TFBlocks.twilight_leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-			((BlockLeaves) TFBlocks.twilight_leaves_3).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-			((BlockLeaves) TFBlocks.magic_leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+			((BlockLeaves) TFBlocks.twilight_leaves).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
+			((BlockLeaves) TFBlocks.twilight_leaves_3).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
+			((BlockLeaves) TFBlocks.magic_leaves).setGraphicsLevel(minecraft.gameSettings.fancyGraphics);
 
 			// only fire if we're in the twilight forest
 			if (world != null && (world.provider instanceof WorldProviderTwilightForest)) {
 				// vignette
-				if (mc.ingameGUI != null) {
-					mc.ingameGUI.prevVignetteBrightness = 0.0F;
+				if (minecraft.ingameGUI != null) {
+					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;
 				}
 			}//*/
 
-			if (mc.player != null) {
-				Entity riding = mc.player.getRidingEntity();
+			if (minecraft.player != null) {
+				Entity riding = minecraft.player.getRidingEntity();
 				if (riding instanceof EntityTFPinchBeetle || riding instanceof EntityTFYeti || riding instanceof EntityTFYetiAlpha) {
-					mc.ingameGUI.setOverlayMessage("", false);
+					minecraft.ingameGUI.setOverlayMessage("", false);
 				}
 			}
 		}
@@ -222,15 +246,22 @@ public class TFClientEvents {
 		if (event.phase != TickEvent.Phase.END) return;
 		time++;
 
-		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 1.0F;
-		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 1.0F;
+		float partial = minecraft.getRenderPartialTicks();
+
+		rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
+		sineTickerI = (sineTickerI >= SINE_TICKER_BOUND ? 0 : sineTickerI + 1);
+
+		rotationTicker = rotationTickerI + partial;
+		sineTicker = sineTicker + partial;
 
 		BugModelAnimationHelper.animate();
 	}
 
 	public static int time = 0;
+	private static int rotationTickerI = 0;
+	private static int sineTickerI = 0;
 	public static float rotationTicker = 0;
 	public static float sineTicker = 0;
 	public static final float PI = (float) Math.PI;
-	public static final float SINE_TICKER_BOUND = PI * 200.0F - 1.0F;
+	private static final int SINE_TICKER_BOUND = (int) ((PI * 200.0F) - 1.0F);
 }

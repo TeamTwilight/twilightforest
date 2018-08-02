@@ -1042,7 +1042,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		if (sbb.isVecInside(pos))
 		{
 			EntityItemFrame frame = new EntityItemFrame(world, pos, facing);
-			if (itemStack != null)
+			if (!itemStack.isEmpty())
 			{
 				frame.setDisplayedItem(itemStack);
 			}

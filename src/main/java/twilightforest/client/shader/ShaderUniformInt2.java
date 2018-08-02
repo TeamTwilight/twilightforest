@@ -15,6 +15,7 @@ public class ShaderUniformInt2 extends ShaderUniform {
         this.supplier1 = supplier1;
     }
 
+    @Override
     public final void assignUniform(int shader) {
         ARBShaderObjects.glUniform2iARB(ARBShaderObjects.glGetUniformLocationARB(shader, name), supplier0.getAsInt(), supplier1.getAsInt());
     }

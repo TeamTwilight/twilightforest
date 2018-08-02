@@ -63,6 +63,16 @@
         ]
       }
     },
+    "shield_scepter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:shield_scepter"
+          }
+        ]
+      }
+    },
     "kill_naga": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
@@ -71,7 +81,7 @@
     }
   },
   "requirements": [
-    [ "kill_lich", "trophy", "lifedrain_scepter", "twilight_scepter", "zombie_scepter" ],
+    [ "kill_lich", "trophy", "lifedrain_scepter", "twilight_scepter", "zombie_scepter", "shield_scepter" ],
     [ "kill_naga" ]
   ]
 }

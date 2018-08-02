@@ -6,6 +6,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -13,6 +14,7 @@ import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.DeadrockVariant;
 
+import java.util.Random;
 
 public class TFBiomeFinalPlateau extends TFBiomeBase {
 
@@ -36,6 +38,9 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 	public IBlockState getStoneReplacementState() {
 		return TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SOLID);
 	}
+
+	@Override
+	public void decorate(World world, Random rand, BlockPos pos) {}
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {

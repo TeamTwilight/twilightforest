@@ -1,8 +1,8 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMagicLog;
@@ -31,13 +31,14 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		if (pos.getY() < 1 || pos.getY() + height + diameter > TFWorld.MAXHEIGHT) {
 			return false;
 		}
-		// make a tree!
 
 		// check if we're on dirt or grass
-		Block j1 = world.getBlockState(pos.down()).getBlock();
-		if (j1 != Blocks.GRASS && j1 != Blocks.DIRT) {
+		IBlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
 			return false;
 		}
+
+		// make a tree!
 
 		// build the trunk
 		buildTrunk(world, random, pos, diameter, height);

@@ -206,6 +206,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 		return EnumRarity.UNCOMMON;
 	}
 
+	@Override
 	@Nullable
 	public Packet<?> createMapDataPacket(ItemStack stack, World world, EntityPlayer player) {
 		Packet<?> p = super.createMapDataPacket(stack, world, player);

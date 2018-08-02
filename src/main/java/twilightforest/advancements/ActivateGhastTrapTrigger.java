@@ -24,17 +24,20 @@ public class ActivateGhastTrapTrigger implements ICriterionTrigger<ActivateGhast
     public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "activate_ghast_trap");
     private final Map<PlayerAdvancements, ActivateGhastTrapTrigger.Listeners> listeners = Maps.newHashMap();
 
+    @Override
     public ResourceLocation getId()
     {
         return ID;
     }
 
+    @Override
     public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<ActivateGhastTrapTrigger.Instance> listener) {
         ActivateGhastTrapTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
 
         listeners.add(listener);
     }
 
+    @Override
     public void removeListener(PlayerAdvancements playerAdvancementsIn, Listener<ActivateGhastTrapTrigger.Instance> listener) {
         ActivateGhastTrapTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
 
@@ -47,10 +50,12 @@ public class ActivateGhastTrapTrigger implements ICriterionTrigger<ActivateGhast
         }
     }
 
+    @Override
     public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
         this.listeners.remove(playerAdvancementsIn);
     }
 
+    @Override
     public ActivateGhastTrapTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
         return new ActivateGhastTrapTrigger.Instance();
     }

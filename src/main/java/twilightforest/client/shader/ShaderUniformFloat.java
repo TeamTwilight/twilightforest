@@ -12,6 +12,7 @@ public class ShaderUniformFloat extends ShaderUniform {
         this.supplier = supplier;
     }
 
+    @Override
     public final void assignUniform(int shader) {
         ARBShaderObjects.glUniform1fARB(ARBShaderObjects.glGetUniformLocationARB(shader, name), supplier.get());
     }

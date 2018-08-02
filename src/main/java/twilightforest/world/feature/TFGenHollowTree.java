@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
@@ -25,6 +26,8 @@ public class TFGenHollowTree extends TFGenerator {
 	protected IBlockState branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
 	protected IBlockState leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 	protected IBlockState rootState = TFBlocks.root.getDefaultState();
+
+	protected IPlantable source = TFBlocks.twilight_sapling;
 
 	public TFGenHollowTree() {
 		this(false);
@@ -85,14 +88,13 @@ public class TFGenHollowTree extends TFGenerator {
 			}
 		}
 
-
-		// make a tree!
-
 		// check if we're on dirt or grass
-		Block j1 = world.getBlockState(pos.down()).getBlock();
-		if (j1 != Blocks.GRASS && j1 != Blocks.DIRT) {
+		IBlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
 			return false;
 		}
+
+		// make a tree!
 
 		// build the trunk
 		buildTrunk(world, random, pos, diameter, height);

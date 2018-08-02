@@ -283,6 +283,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 		return mapOres ? EnumRarity.EPIC : EnumRarity.UNCOMMON;
 	}
 
+	@Override
 	@Nullable
 	public Packet<?> createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
 		Packet<?> p = super.createMapDataPacket(stack, worldIn, player);

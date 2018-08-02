@@ -110,6 +110,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		return this.addComponentParts(world, random, sbb, false);
 	}
 
+	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
 
 		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);

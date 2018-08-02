@@ -1,13 +1,15 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFWorld;
 
@@ -25,6 +27,7 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 		branchState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
 		leafState = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE);
 		rootState = TFBlocks.root.getDefaultState();
+		source = (IPlantable) Blocks.SAPLING;
 	}
 
 	@Override
@@ -39,12 +42,15 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 			}
 		}
 
-		// check if we're on dirt or grass
-		Block blockUnder = world.getBlockState(pos.down()).getBlock();
-		if (blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT || pos.getY() >= TFWorld.MAXHEIGHT - treeHeight) {
+		if (pos.getY() >= TFWorld.MAXHEIGHT - treeHeight) {
 			return false;
 		}
 
+		// check if we're on dirt or grass
+		IBlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
+			return false;
+		}
 
 		//okay build a tree!  Go up to the height
 		buildTrunk(world, pos, treeHeight);

@@ -44,6 +44,22 @@
           "tag": "{\"shader_type\":\"Knight Phantom\"}"
         }]
       }]
+    }, {
+      "name": "shader",
+      "rolls": 1,
+      "conditions": [{ "condition": "twilightforest:mod_exists", "mod_id": "immersiveengineering" }],
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:knightmetal_ingot",
+        "functions": [{
+          "function": "twilightforest:item_or_default",
+          "item": "twilightforest:shader_bag",
+          "default": "twilightforest:knightmetal_ingot"
+        }, {
+          "function": "set_nbt",
+          "tag": "{\"shader_rarity\":\"Twilight\"}"
+        }]
+      }]
     }
   ]
 }

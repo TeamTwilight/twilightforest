@@ -1,7 +1,8 @@
 package twilightforest.world.feature;
 
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMagicLog;
@@ -29,9 +30,14 @@ public class TFGenMinersTree extends TFTreeGenerator {
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {
+
+		if (pos.getY() >= TFWorld.MAXHEIGHT - 12) {
+			return false;
+		}
+
 		// check soil
-		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
-		if ((materialUnder != Material.GRASS && materialUnder != Material.GROUND) || pos.getY() >= TFWorld.MAXHEIGHT - 12) {
+		IBlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
 			return false;
 		}
 

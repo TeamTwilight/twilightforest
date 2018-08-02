@@ -122,6 +122,7 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);

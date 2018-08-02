@@ -40,6 +40,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		this.feature = feature;
 	}
 
+	@Override
 	public TFFeature getFeatureType() {
 		return feature;
 	}

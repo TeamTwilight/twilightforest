@@ -192,6 +192,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
+	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
 		float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 		int i = 0;

@@ -501,6 +501,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;

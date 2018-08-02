@@ -22,6 +22,7 @@ import java.util.Random;
 public class GenDruidHut extends TFGenerator {
     private static final ResourceLocation STRUCTURE = new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut");
 
+    @Override
     public boolean generate(World world, Random rand, BlockPos pos) {
         MinecraftServer minecraftserver = world.getMinecraftServer();
         TemplateManager templatemanager = world.getSaveHandler().getStructureTemplateManager();

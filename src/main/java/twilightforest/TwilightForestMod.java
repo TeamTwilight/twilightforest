@@ -5,6 +5,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -20,6 +21,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.capabilities.shield.ShieldCapabilityHandler;
+import twilightforest.capabilities.shield.ShieldCapabilityStorage;
 import twilightforest.compat.TFCompat;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
@@ -33,7 +37,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12-0.3.0.15,);before:immersiveengineering;before:tconstruct;required-after:forge@[14.23.3.2655,)",
+		dependencies = "after:ctm@[MC1.12-0.3.0.15,);before:immersiveengineering@[0.12-83,);before:tconstruct;required-after:forge@[14.23.3.2655,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )
 public class TwilightForestMod {
@@ -77,6 +81,8 @@ public class TwilightForestMod {
 
 		// sounds on client, and whatever else needs to be registered pre-load
 		proxy.preInit();
+
+		CapabilityManager.INSTANCE.register(IShieldCapability.class, new ShieldCapabilityStorage(), ShieldCapabilityHandler.class);
 
 		TFTreasure.init();
 

@@ -28,6 +28,7 @@ public class StructureTFHollowTreeStart extends StructureStart {
 	/**
 	 * Do everything except leaves before we do leaves.
 	 */
+	@Override
 	public void generateStructure(World worldIn, Random rand, StructureBoundingBox sbb)
 	{
 		// first wood

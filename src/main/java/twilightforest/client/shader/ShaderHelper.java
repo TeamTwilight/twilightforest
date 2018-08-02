@@ -43,7 +43,9 @@ public final class ShaderHelper {
             carminiteShader,
             towerDeviceShader,
             yellowCircuitShader,
-            bloomShader;
+            bloomShader,
+            starburstShader,
+            outlineShader;
 
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat TIME       = new ShaderUniformFloat("time"      , () -> TFClientEvents.time + Minecraft.getMinecraft().getRenderPartialTicks());
     @SuppressWarnings("WeakerAccess") public static final ShaderUniformFloat YAW        = new ShaderUniformFloat("yaw"       , () -> (Minecraft.getMinecraft().player.rotationYaw * 2.0f * TFClientEvents.PI) / 360.0f);
@@ -72,6 +74,8 @@ public final class ShaderHelper {
                 deleteShader(towerDeviceShader);
                 deleteShader(yellowCircuitShader);
                 //deleteShader(bloomShader);
+                deleteShader(starburstShader);
+                //deleteShader(outlineShader);
 
                 initShaderList();
             }));
@@ -97,6 +101,8 @@ public final class ShaderHelper {
         towerDeviceShader      = createProgram("standard_texcoord2.vert", "pulsing.frag");
         yellowCircuitShader    = createProgram("standard_texcoord2.vert", "pulsing_yellow.frag");
         //bloomShader            = createProgram("standard.vert", "bloom.frag");
+        starburstShader        = createProgram("standard_texcoord2.vert", "starburst.frag");
+        //outlineShader          = createProgram("outline.vert", "outline.frag");
     }
 
     public static void useShader(int shader, @Nullable IntConsumer callback) {
@@ -108,9 +114,21 @@ public final class ShaderHelper {
         if(shader != 0 && callback != null) callback.accept(shader);
     }
 
+    public static void useShader(int shader, ShaderUniform uniform) {
+        if(!useShaders())
+            return;
+
+        ARBShaderObjects.glUseProgramObjectARB(shader);
+
+        if(shader != 0) uniform.assignUniform(shader);
+    }
+
     @SuppressWarnings("WeakerAccess")
     public static void useShader(int shader) {
-        useShader(shader, null);
+        if(!useShaders())
+            return;
+
+        ARBShaderObjects.glUseProgramObjectARB(shader);
     }
 
     public static void releaseShader() {

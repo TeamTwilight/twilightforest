@@ -1,13 +1,14 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import java.util.Random;
+import twilightforest.world.TFWorld;
 
+import java.util.Random;
 
 /**
  * Makes large mushrooms with flat mushroom tops that provide a canopy for the forest
@@ -25,6 +26,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		treeState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
 		branchState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
 		leafState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
+		source = Blocks.RED_MUSHROOM;
 	}
 
 	@Override
@@ -39,12 +41,15 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 			}
 		}
 
-		// check if we're on dirt or grass
-		Block blockUnder = world.getBlockState(pos.down()).getBlock();
-		if (blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM || pos.getY() >= 256 - treeHeight - 1) {
+		if (pos.getY() >= TFWorld.MAXHEIGHT - treeHeight - 1) {
 			return false;
 		}
 
+		// check if we're on dirt or grass
+		IBlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
+			return false;
+		}
 
 		this.treeState = random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM) : Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
 		this.leafState = treeState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);

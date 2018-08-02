@@ -11,8 +11,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
-import net.minecraftforge.fml.common.versioning.VersionRange;
 import org.apache.commons.lang3.tuple.Pair;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
@@ -21,6 +19,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.compat.ie.ItemTFShader;
+import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.TFRegisterItemEvent;
@@ -74,20 +73,21 @@ public enum TFCompat {
         }
     }, // TODO Forestry
     IMMERSIVEENGINEERING("Immersive Engineering") {
-        @Override
-        protected boolean preInit() {
-            try {
-                VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
+        //@Override
+        //protected boolean preInit() {
+        //    try {
+        //        VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
 
-                return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
-            } catch (InvalidVersionSpecificationException e) {
-                return false;
-            }
-        }
+        //        return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
+        //    } catch (InvalidVersionSpecificationException e) {
+        //        return false;
+        //    }
+        //}
 
         @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
             items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+            items.register("shader_bag", ItemTFShaderGrabbag.shader_bag.setUnlocalizedName("tfEngineeringShaderBag"));
 
             new IEShaderRegister(); // Calling to initialize it all
         }

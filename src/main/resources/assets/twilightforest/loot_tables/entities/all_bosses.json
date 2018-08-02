@@ -11,6 +11,17 @@
       }]
     }]
   }, {
+    "name": "questing_ram",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:gray_shulker_box",
+      "functions": [{
+        "function": "set_nbt",
+        "tag": "{\"display\":{\"Name\":\"Questing Ram's Loot Crate\"},\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/questing_ram_rewards\"}}"
+      }]
+    }]
+  }, {
     "name": "naga",
     "rolls": 1,
     "entries": [{

@@ -100,13 +100,8 @@ public class TFConfig {
 	public static boolean disablePortalCreation = false;
 
 	@Config.LangKey(config + "portal_creator")
-	@Config.Comment("Registry String ID of item used to create the Twilight Forest Portal.")
-	public static String portalCreationItem = "minecraft:diamond";
-
-	@Config.LangKey(config + "portal_creator_meta")
-	@Config.RangeInt(min = -1)
-	@Config.Comment("Meta of item used to create the Twilight Forest Portal. -1 for any metadata.")
-	public static int portalCreationMeta = -1;
+	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.")
+	public static String[] portalCreationItems = {"minecraft:diamond"};
 
 	@Config.LangKey(config + "portal_lighting")
 	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")

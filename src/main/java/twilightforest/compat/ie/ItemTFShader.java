@@ -34,7 +34,7 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
         this.setCreativeTab(TFItems.creativeTab);
     }
 
-    private static final String TAG_SHADER = "shader_type";
+    static final String TAG_SHADER = "shader_type";
 
     public static final ItemTFShader shader = new ItemTFShader();
 
@@ -78,7 +78,7 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
 
     @Override
     public EnumRarity getRarity(ItemStack stack) {
-        return TwilightForestMod.getRarity();
+        return ShaderRegistry.shaderRegistry.get(getShaderType(stack)).getRarity();
     }
 
     @Nonnull

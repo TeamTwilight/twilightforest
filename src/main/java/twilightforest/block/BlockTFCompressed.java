@@ -67,6 +67,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
         }
     }
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return state.getValue(VARIANT) == CompressedVariant.FIERY ? 15728880 : super.getPackedLightmapCoords(state, source, pos);
@@ -184,6 +185,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 		return CompressedVariant.FIERY == world.getBlockState(pos).getValue(VARIANT);
 	}
 
+	@Override
 	@Deprecated
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {

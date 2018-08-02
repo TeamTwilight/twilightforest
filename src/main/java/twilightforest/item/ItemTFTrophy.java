@@ -136,6 +136,7 @@ public class ItemTFTrophy extends ItemTF {
 		return armorType == EntityEquipmentSlot.HEAD;
 	}
 
+	@Override
 	@Nullable
 	public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
 		return EntityEquipmentSlot.HEAD;

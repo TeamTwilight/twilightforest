@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -354,7 +355,9 @@ public class TFClientProxy extends TFCommonProxy {
 		if (player instanceof EntityPlayerSP) {
 			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
 			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
-			return adv != null && manager.advancementToProgress.get(adv).isDone();
+			if (adv == null) return false;
+			AdvancementProgress progress = manager.advancementToProgress.get(adv);
+			return progress != null && progress.isDone();
 		}
 
 		return super.doesPlayerHaveAdvancement(player, advId);

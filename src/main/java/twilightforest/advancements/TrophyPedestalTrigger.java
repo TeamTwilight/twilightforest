@@ -23,17 +23,20 @@ public class TrophyPedestalTrigger implements ICriterionTrigger<TrophyPedestalTr
     public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "placed_on_trophy_pedestal");
     private final Map<PlayerAdvancements, TrophyPedestalTrigger.Listeners> listeners = Maps.newHashMap();
 
+    @Override
     public ResourceLocation getId()
     {
         return ID;
     }
 
+    @Override
     public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<TrophyPedestalTrigger.Instance> listener) {
         TrophyPedestalTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
 
         listeners.add(listener);
     }
 
+    @Override
     public void removeListener(PlayerAdvancements playerAdvancementsIn, Listener<TrophyPedestalTrigger.Instance> listener) {
         TrophyPedestalTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
 
@@ -46,10 +49,12 @@ public class TrophyPedestalTrigger implements ICriterionTrigger<TrophyPedestalTr
         }
     }
 
+    @Override
     public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
         this.listeners.remove(playerAdvancementsIn);
     }
 
+    @Override
     public TrophyPedestalTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
         return new TrophyPedestalTrigger.Instance();
     }
