@@ -116,7 +116,7 @@ public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<Shader
 
             GlStateManager.disableLighting();
             GlStateManager.translate(0.5F, 0.5F, 0F);
-            GlStateManager.rotate(TFConfig.rotateTrophyHeadsGui ? TFClientEvents.rotationTicker : 0F, 0.0625F, 1F, 0.0625F);
+            GlStateManager.rotate(TFConfig.rotateTrophyHeadsGui ? TFClientEvents.rotationTicker : 0F, 0.125F, 1F, 0.125F);
             //GlStateManager.translate(0F, -0.5F, 0F);
 
         }

@@ -1,5 +1,6 @@
 package twilightforest;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandGameRule;
@@ -106,8 +107,13 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFEventListener {
 
-	private static Map<UUID, InventoryPlayer> playerKeepsMap = new HashMap<>();
-	private static Map<UUID, NonNullList<ItemStack>> playerKeepsMapBaubles = new HashMap<>();
+	private static final ImmutableSet<String> SHIELD_DAMAGE_BLACKLIST = ImmutableSet.of(
+			"inWall", "cramming", "drown", "starve", "fall", "flyIntoWall", "outOfWorld", "fallingBlock"
+	);
+
+	private static final Map<UUID, InventoryPlayer> playerKeepsMap = new HashMap<>();
+	private static final Map<UUID, NonNullList<ItemStack>> playerKeepsMapBaubles = new HashMap<>();
+
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
@@ -623,13 +629,10 @@ public class TFEventListener {
 		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
 	}
 
-	/**
-	 * Cancel attacks in protected areas
-	 */
 	@SubscribeEvent
 	public static void livingAttack(LivingAttackEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
-		// area protection check
+		// cancel attacks in protected areas
 		if (living instanceof IMob && event.getSource().getTrueSource() instanceof EntityPlayerMP && !((EntityPlayer) event.getSource().getTrueSource()).capabilities.isCreativeMode && TFWorld.getChunkGenerator(living.world) instanceof ChunkGeneratorTFBase && living.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 
 			ChunkGeneratorTFBase chunkProvider = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(living.getEntityWorld());
@@ -643,15 +646,14 @@ public class TFEventListener {
 				if (!nearbyFeature.doesPlayerHaveRequiredAdvancements((EntityPlayer) event.getSource().getTrueSource())) {
 					event.setResult(Result.DENY);
 					event.setCanceled(true);
-
-
 					for (int i = 0; i < 20; i++) {
 						TwilightForestMod.proxy.spawnParticle(living.world, TFParticleType.PROTECTION, living.posX, living.posY, living.posZ, 0, 0, 0);
 					}
 				}
 			}
 		}
-		if (!living.world.isRemote && living.hasCapability(CapabilityList.SHIELDS, null) && !(event.getSource().damageType.equals("inWall") || event.getSource().damageType.equals("cramming") || event.getSource().damageType.equals("drown") || event.getSource().damageType.equals("starve") || event.getSource().damageType.equals("fall") || event.getSource().damageType.equals("flyIntoWall") || event.getSource().damageType.equals("outOfWorld") || event.getSource().damageType.equals("fallingBlock"))) {
+		// shields
+		if (!living.world.isRemote && living.hasCapability(CapabilityList.SHIELDS, null) && !SHIELD_DAMAGE_BLACKLIST.contains(event.getSource().damageType)) {
 			IShieldCapability cap = living.getCapability(CapabilityList.SHIELDS, null);
 			if (cap != null && cap.shieldsLeft() > 0) {
 				cap.breakShield();

@@ -26,6 +26,7 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
+import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.model.entity.ModelTFLich;
 import twilightforest.client.renderer.entity.RenderTFLich;
 import twilightforest.client.texture.GradientMappedTexture;
@@ -136,7 +137,9 @@ public class TFClientEvents {
 			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
 		}
 		// Shields
-		renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
+		if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null)) {
+			renderShields(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
+		}
 	}
 
 	/**

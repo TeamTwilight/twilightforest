@@ -113,7 +113,11 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private boolean isSafe(BlockPos pos, Entity entity) {
-		return checkBiome(pos, entity) && checkStructure(pos);
+		return checkPos(pos) && checkBiome(pos, entity) && checkStructure(pos);
+	}
+
+	private boolean checkPos(BlockPos pos) {
+		return world.getWorldBorder().contains(pos);
 	}
 
 	private boolean checkStructure(BlockPos pos) {
@@ -160,6 +164,11 @@ public class TFTeleporter extends Teleporter {
 				BlockPos blockpos2;
 
 				for (int j1 = -i; j1 <= i; ++j1) {
+
+					// TF - skip positions outside current world border (MC-114796)
+					if (!this.world.getWorldBorder().contains(blockpos3.add(i1, 0, j1))) {
+						continue;
+					}
 
 					// TF - skip chunks that aren't generated
 					ChunkPos chunkPos = new ChunkPos(blockpos3.add(i1, 0, j1));

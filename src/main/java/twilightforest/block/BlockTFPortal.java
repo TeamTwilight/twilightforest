@@ -216,7 +216,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (state == this.getDefaultState() && !entity.isRiding() && !entity.isBeingRidden()) {
+		if (state == this.getDefaultState()) {
 			attemptSendPlayer(entity, false);
 		}
 	}
@@ -224,6 +224,10 @@ public class BlockTFPortal extends BlockBreakable {
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
 
 		if (entity.isDead || entity.world.isRemote) {
+			return;
+		}
+
+		if (entity.isRiding() || entity.isBeingRidden() || !entity.isNonBoss()) {
 			return;
 		}
 

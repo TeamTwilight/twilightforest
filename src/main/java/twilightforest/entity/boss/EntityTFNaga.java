@@ -19,11 +19,16 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +45,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
+import twilightforest.network.PacketThrowPlayer;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
@@ -63,6 +70,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, 0).setSaved(false);
 	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, 0).setSaved(false);
 
+	private static final DataParameter<Boolean> DATA_DAZE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
 
 	public EntityTFNaga(World world) {
 		super(world);
@@ -77,6 +85,20 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 		this.goNormal();
+	}
+
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(DATA_DAZE, false);
+	}
+
+	public boolean isDazed() {
+		return dataManager.get(DATA_DAZE);
+	}
+
+	protected void setDazed(boolean daze) {
+		dataManager.set(DATA_DAZE, daze);
 	}
 
 	private float getMaxHealthPerDifficulty() {
@@ -208,7 +230,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		INTIMIDATE,
 		CRUMBLE,
 		CHARGE,
-		CIRCLE
+		CIRCLE,
+		DAZE
 	}
 
 	static class AIMovementPattern extends EntityAIBase {
@@ -241,6 +264,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				// If we still have an uncompleted path don't run yet
 				// This isn't in shouldExecute/shouldContinueExecuting because we don't want to reset the task
 				// todo 1.10 there's a better way to do this I think
+				taskOwner.setDazed(false); // Since we have a path, we shouldn't be dazed anymore.
 				return;
 			}
 
@@ -282,6 +306,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
 					break;
 				}
+				case DAZE: {
+					taskOwner.setDazed(true);
+					break;
+				}
 			}
 
 			stateCounter--;
@@ -291,6 +319,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 		private void transitionState() {
+			taskOwner.setDazed(false);
 			switch (movementState) {
 				case INTIMIDATE: {
 					clockwise = !clockwise;
@@ -312,7 +341,16 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				case CIRCLE:
 					doIntimidate();
 					break;
+				case DAZE:
+					doCircle();
+					break;
 			}
+		}
+
+		private void doDaze() {
+			movementState = MovementState.DAZE;
+			taskOwner.getNavigator().clearPath();
+			stateCounter = 60 + taskOwner.rand.nextInt(40);
 		}
 
 		private void doCircle() {
@@ -489,7 +527,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		public void onUpdateMoveHelper() {
 			// TF - slither!
 			MovementState currentState = ((EntityTFNaga) entity).movementAI.movementState;
-			if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
+			if(currentState == MovementState.DAZE) {
+				this.entity.moveStrafing = 0F;
+			} else if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
 				this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * 0.6F;
 			} else {
 				this.entity.moveStrafing *= 0.8F;
@@ -628,6 +668,16 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public boolean attackEntityAsMob(Entity toAttack) {
+		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof EntityLivingBase && ((EntityLivingBase) toAttack).isActiveItemStackBlocking()) {
+			toAttack.setVelocity(motionX * 1.25D, 0.5D, motionZ * 1.25D);
+			setVelocity(motionX * -2D, 0.5D, motionZ * -2D);
+			if (toAttack instanceof EntityPlayerMP)
+				TFPacketHandler.CHANNEL.sendTo(new PacketThrowPlayer((float) toAttack.motionX, (float) toAttack.motionY, (float) toAttack.motionZ), (EntityPlayerMP) toAttack);
+			attackEntityFrom(DamageSource.GENERIC, 4F);
+			world.playSound(null, toAttack.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
+			movementAI.doDaze();
+			return false;
+		}
 		boolean result = super.attackEntityAsMob(toAttack);
 
 		if (result) {

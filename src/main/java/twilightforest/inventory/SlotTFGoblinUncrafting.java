@@ -4,12 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
 
 
 public class SlotTFGoblinUncrafting extends Slot {
-
-
 	protected EntityPlayer thePlayer;
 	protected IInventory inputSlot;
 	protected InventoryTFGoblinUncrafting uncraftingMatrix;
@@ -68,7 +68,6 @@ public class SlotTFGoblinUncrafting extends Slot {
 			this.thePlayer.addExperienceLevel(-this.uncraftingMatrix.uncraftingCost);
 		}
 
-
 		// move all remaining items from the uncrafting grid to the assembly grid
 		// the assembly grid should be empty for this to even happen, so just plop the items right in
 		for (int i = 0; i < 9; i++) {
@@ -89,5 +88,13 @@ public class SlotTFGoblinUncrafting extends Slot {
 		return super.onTake(par1EntityPlayer, par1ItemStack);
 	}
 
+	@SideOnly(Side.CLIENT)
+	public boolean isEnabled() {
+		return false;
+	}
 
+	@Override
+	public boolean isHere(IInventory inv, int slotIn) {
+		return false;
+	}
 }

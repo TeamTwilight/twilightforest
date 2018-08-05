@@ -73,8 +73,10 @@ public class MoltenFieryTexture extends TextureAtlasSprite {
         for (int i = 0; i < framesTextureData.size(); i++) {
             int [][] texture = this.framesTextureData.get(i);
 
-            for (int j = 0; j < texture[0].length; j++) {
-                texture[0][j] = GradientMappedTexture.getGradient(texture[0][j], GRADIENT_MAP, this.minimumValue, this.maximumValue);
+            for (int l = 0; l < texture.length; l++) {
+                for (int j = 0; j < texture[l].length; j++) {
+                    texture[l][j] = GradientMappedTexture.getGradient(texture[l][j], GRADIENT_MAP, this.minimumValue, this.maximumValue);
+                }
             }
         }
 

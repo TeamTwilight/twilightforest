@@ -16,9 +16,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 // TODO Move to shader capability, where we can then just turn item Trophies into the shaders
+@Optional.Interface(modid = "immersiveengineering", iface = "blusunrize.immersiveengineering.api.shader.IShaderItem")
 public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCallback {
     public ItemTFShader() {
         this.setHasSubtypes(true);
@@ -38,11 +39,13 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
 
     public static final ItemTFShader shader = new ItemTFShader();
 
+    @Optional.Method(modid = "immersiveengineering")
     @Override
     public ShaderCase getShaderCase(ItemStack shader, ItemStack tool, String shaderType) {
         return ShaderRegistry.getShader(getShaderType(shader), shaderType);
     }
 
+    @Optional.Method(modid = "immersiveengineering")
     @Override
     public String getShaderName(ItemStack stack) {
         return getShaderType(stack);

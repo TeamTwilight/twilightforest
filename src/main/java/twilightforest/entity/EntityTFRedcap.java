@@ -98,13 +98,19 @@ public class EntityTFRedcap extends EntityMob {
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
 
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
-		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
+		this.setEquipmentBasedOnDifficulty(difficulty);
+		this.setEnchantmentBasedOnDifficulty(difficulty);
 
 		this.setDropChance(EntityEquipmentSlot.MAINHAND, 0.2F);
 		this.setDropChance(EntityEquipmentSlot.FEET, 0.2F);
 
 		return data;
+	}
+
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
+		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
 	}
 
 	@Override

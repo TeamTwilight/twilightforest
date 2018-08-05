@@ -17,14 +17,9 @@ import team.chisel.api.IMC;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.compat.ie.IEShaderRegister;
-import twilightforest.compat.ie.ItemTFShader;
-import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.TFRegisterItemEvent;
-
-import java.util.Locale;
 
 @Optional.InterfaceList({
         @Optional.Interface(modid = "chisel", iface = "team.chisel.api.ChiselAPIProps"),
@@ -86,10 +81,10 @@ public enum TFCompat {
 
         @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
-            items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
-            items.register("shader_bag", ItemTFShaderGrabbag.shader_bag.setUnlocalizedName("tfEngineeringShaderBag"));
+            items.register("shader", twilightforest.compat.ie.ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+            items.register("shader_bag", twilightforest.compat.ie.ItemTFShaderGrabbag.shader_bag.setUnlocalizedName("tfEngineeringShaderBag"));
 
-            new IEShaderRegister(); // Calling to initialize it all
+            new twilightforest.compat.ie.IEShaderRegister(); // Calling to initialize it all
         }
 
         @Override
@@ -146,10 +141,10 @@ public enum TFCompat {
         }
     },
     THAUMCRAFT("Thaumcraft") {
-        @Override
+        /*@Override
         protected void postInit() {
             Thaumcraft.init();
-        }
+        }*/
     };
 
     protected boolean preInit() { return true; }

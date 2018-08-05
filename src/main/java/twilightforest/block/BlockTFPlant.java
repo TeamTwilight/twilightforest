@@ -225,9 +225,10 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			case MOSSPATCH:
 			case MAYAPPLE:
 			case CLOVERPATCH:
-			case ROOT_STRAND:
+			case FIDDLEHEAD:
 			case FORESTGRASS:
 			case DEADBUSH:
+			case ROOT_STRAND:
 				break;
 			default:
 				ret.add(new ItemStack(this, 1, damageDropped(state)));

@@ -28,11 +28,14 @@ import twilightforest.tileentity.TileEntityTFFlameJet;
 import twilightforest.tileentity.TileEntityTFPoppingJet;
 import twilightforest.tileentity.TileEntityTFSmoker;
 
+import java.util.EnumSet;
 import java.util.Random;
+import java.util.Set;
 
 public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	public static final PropertyEnum<FireJetVariant> VARIANT = PropertyEnum.create("variant", FireJetVariant.class);
+	private static final Set<FireJetVariant> ENCASED = EnumSet.of(FireJetVariant.ENCASED_JET_IDLE, FireJetVariant.ENCASED_JET_FLAME, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_SMOKER_ON, FireJetVariant.ENCASED_JET_POPPING);
 
 	protected BlockTFFireJet() {
 		super(Material.ROCK);
@@ -84,6 +87,10 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 		}
 
 		return getMetaFromState(state);
+	}
+	@Override
+	public Material getMaterial(IBlockState state) {
+		return ENCASED.contains(state.getValue(VARIANT)) ? Material.WOOD : Material.ROCK;
 	}
 
 	@Override
@@ -165,41 +172,44 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		FireJetVariant variant = state.getValue(VARIANT);
-
-		return variant == FireJetVariant.SMOKER
-				|| variant == FireJetVariant.JET_POPPING
-				|| variant == FireJetVariant.JET_FLAME
-				|| variant == FireJetVariant.ENCASED_SMOKER_ON
-				|| variant == FireJetVariant.ENCASED_JET_POPPING
-				|| variant == FireJetVariant.ENCASED_JET_FLAME;
-	}
-
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		FireJetVariant variant = state.getValue(VARIANT);
-
-		if (variant == FireJetVariant.SMOKER || variant == FireJetVariant.ENCASED_SMOKER_ON) {
-			return new TileEntityTFSmoker();
-		} else if (variant == FireJetVariant.JET_POPPING) {
-			return new TileEntityTFPoppingJet(FireJetVariant.JET_FLAME);
-		} else if (variant == FireJetVariant.JET_FLAME) {
-			return new TileEntityTFFlameJet(FireJetVariant.JET_IDLE);
-		} else if (variant == FireJetVariant.ENCASED_JET_POPPING) {
-			return new TileEntityTFPoppingJet(FireJetVariant.ENCASED_JET_FLAME);
-		} else if (variant == FireJetVariant.ENCASED_JET_FLAME) {
-			return new TileEntityTFFlameJet(FireJetVariant.ENCASED_JET_IDLE);
-		} else {
-			return null;
+		switch (state.getValue(VARIANT)) {
+			case SMOKER:
+			case JET_POPPING:
+			case JET_FLAME:
+			case ENCASED_SMOKER_ON:
+			case ENCASED_JET_POPPING:
+			case ENCASED_JET_FLAME:
+				return true;
+			default:
+				return false;
 		}
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, FireJetVariant.SMOKER.ordinal()));
-		par3List.add(new ItemStack(this, 1, FireJetVariant.JET_IDLE.ordinal()));
-		par3List.add(new ItemStack(this, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()));
-		par3List.add(new ItemStack(this, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			case SMOKER:
+			case ENCASED_SMOKER_ON:
+				return new TileEntityTFSmoker();
+			case JET_POPPING:
+				return new TileEntityTFPoppingJet(FireJetVariant.JET_FLAME);
+			case JET_FLAME:
+				return new TileEntityTFFlameJet(FireJetVariant.JET_IDLE);
+			case ENCASED_JET_POPPING:
+				return new TileEntityTFPoppingJet(FireJetVariant.ENCASED_JET_FLAME);
+			case ENCASED_JET_FLAME:
+				return new TileEntityTFFlameJet(FireJetVariant.ENCASED_JET_IDLE);
+			default:
+				return null;
+		}
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, FireJetVariant.SMOKER.ordinal()));
+		list.add(new ItemStack(this, 1, FireJetVariant.JET_IDLE.ordinal()));
+		list.add(new ItemStack(this, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()));
+		list.add(new ItemStack(this, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
 	}
 
 	@SideOnly(Side.CLIENT)
