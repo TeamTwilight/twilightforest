@@ -697,11 +697,11 @@ modifier.veiled.desc=§o就像观察者！§r\n弹射物将会隐形。
 
 # Immersive Engineering
 item.tfEngineeringShader=暮色皮肤：%s
-item.tfEngineeringShaderBag=Twilit %s Shader Bag
+item.tfEngineeringShaderBag=%s暮色皮肤奖励袋
 
 twilightforest.shader.twilight=暮色
 
-twilightforest.shader.snakestone=蛇纹石
+twilightforest.shader.snakestone=娜迦石
 twilightforest.shader.naga=娜迦
 twilightforest.shader.lich=巫妖
 
