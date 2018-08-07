@@ -103,6 +103,20 @@ twilightforest.ore_meter.range=半径：%s，原点：[%d, %d]
 twilightforest.ore_meter.exposed=暴露数量：%d
 twilightforest.scepter_charges=剩余使用次数：%d
 
+# Commands
+commands.tffeature.usage=/tffeature <info|reactivate|conquer|center>
+commands.tffeature.not_in_twilight_forest=You are not in the Twilight Forest dimension
+commands.tffeature.nearest=The nearest feature is %s
+commands.tffeature.center=Center of feature: %s
+commands.tffeature.chunk=Are in feature chunk: %s
+commands.tffeature.structure.inside=You are in the structure for that feature
+commands.tffeature.structure.outside=You are not in the structure for that feature
+commands.tffeature.structure.required=You are not in a structure
+commands.tffeature.structure.conquer.status=Structure conquer flag: %s
+commands.tffeature.structure.conquer.update=Structure conquer flag was %s, changing to %s
+commands.tffeature.locate.usage=/tffeature locate <feature>
+
+# Blocks
 tile.TFLog.0.name=暮色橡木
 tile.TFLog.1.name=苍穹木
 tile.TFLog.2.name=红木
@@ -113,6 +127,7 @@ tile.TFLeaves.2.name=红树树叶
 tile.TFLeaves.3.name=彩虹橡树叶
 tile.TFFirefly.name=萤火虫
 tile.TFCicada.name=蝉
+tile.TFCicada.desc=如果它能像电磁炮一样用……？
 item.TFPortal.name=暮色森林传送门
 tile.TFPortal.name=暮色森林传送门
 tile.TFMazestone.0.name=遗迹石头
@@ -232,6 +247,7 @@ tile.TFDeadrock.surface.name=风化死岩
 tile.TFDeadrock.cracked.name=裂纹死岩
 tile.TFDeadrock.solid.name=死岩
 tile.DarkLeaves.name=黑树树叶
+tile.AuroralizedGlass.name=极光玻璃
 tile.AuroraPillar.name=极光柱
 tile.AuroraSlab.name=极光台阶
 tile.TrollSteinn.name=巨魔岩石
@@ -261,6 +277,10 @@ tile.CastleBrick.2.name=碎裂城堡砖
 tile.CastleBrick.3.name=城堡顶瓦
 tile.CastleBrick.4.name=生苔城堡砖
 tile.CastleBrick.5.name=厚重城堡砖
+tile.CastleStairsBrick.0.name=城堡砖楼梯
+tile.CastleStairsWorn.0.name=磨损城堡砖楼梯
+tile.CastleStairsCracked.0.name=碎裂城堡砖楼梯
+tile.CastleStairsMossy.0.name=生苔城堡砖楼梯
 tile.CastleDoor.0.name=黄色城堡门
 tile.CastleDoor.1.name=紫色城堡门
 tile.CastleDoor.2.name=粉红色城堡门
@@ -325,6 +345,7 @@ item.legsNaga.name=娜迦护腿
 item.scepterTwilight.name=黄昏权杖
 item.scepterLifeDrain.name=吸血权杖
 item.scepterZombie.name=僵尸权杖
+item.scepterShield.name=护盾权杖
 item.oreMeter.name=矿石感应仪【未实现】
 item.magicMap.name=魔法地图
 item.mazeMap.name=迷宫地图
@@ -534,6 +555,8 @@ twilightforest.config.dimension_seed=生成种子
 twilightforest.config.dimension_seed.tooltip=设定后会使用给定种子来生成暮色森林维度；默认情况下使用和主世界的地图种子。
 twilightforest.config.spawn_in_tf=新玩家出生于暮色森林
 twilightforest.config.spawn_in_tf.tooltip=启用后，新玩家会直接出生在暮色森林，而不是主世界中。
+twilightforest.config.skylight_forest=天空中的暮色森林【未实现】
+twilightforest.config.skylight_forest.tooltip=启用后，暮色森林将以空岛的风格生成，只在虚空中生成主要建筑。
 
 twilightforest.config.compat=对其他 Mod 兼容
 twilightforest.config.compat.tooltip=是否加载暮色森林对其他 Mod 的兼容？遇到崩溃时，或者不想要兼容时，请禁用此选项。
@@ -546,8 +569,6 @@ twilightforest.config.twilight_oaks=暮色橡树生成概率
 twilightforest.config.twilight_oaks.tooltip=暮色森林维度的每一个区块中生成暮色橡树的概率。该项数值越大，生成概率就越小，性能也会因此提升。
 twilightforest.config.leaves_light_opacity=暮色树叶不透明度
 twilightforest.config.leaves_light_opacity.tooltip=若树叶不是全方块，此选项可控制树叶阻挡光线的程度。
-twilightforest.config.leaves_full_cube=暮色树叶是否为全方块
-twilightforest.config.leaves_full_cube.tooltip=将此项设定为 false 后，暮色森林的树叶将不再是“全方块”（full cubes）。这意味着这些树叶会像玻璃一样令光穿过。在某些时候可降低光照计算的复杂度。
 twilightforest.config.glacer_packed_ice=冰川由浮冰组成
 twilightforest.config.glacer_packed_ice.tooltip=启用后，暮色冰川将全部由浮冰组成，其不透光的性质可帮助降低冰川附近的光照计算量。
 
@@ -561,9 +582,7 @@ twilightforest.config.admin_portals.tooltip=传送门将只向管理员开放。
 twilightforest.config.portals=禁用暮色传送门
 twilightforest.config.portals.tooltip=完全禁用暮色森林传送门；本选项适用于需要严格限制的服务器管理员。
 twilightforest.config.portal_creator=传送门建造物品
-twilightforest.config.portal_creator.tooltip=建造暮色传送门时使用的物品的注册 ID。
-twilightforest.config.portal_creator_meta=传送门建造物品附加值
-twilightforest.config.portal_creator_meta.tooltip=建造暮色传送门时使用的物品的附加值，设定成 -1 代表允许任何附加值。
+twilightforest.config.portal_creator.tooltip=建造暮色传送门时使用的物品的注册 ID，格式为 domain:regname:meta，其中 meta 部分可不写。
 twilightforest.config.portal_lighting=建造传送门时引发闪电
 twilightforest.config.portal_lighting.tooltip=启用后，建造传送门的时候会有闪电击中传送门方块，同时令周围方块起火。为不苟言笑的人准备的选项。
 twilightforest.config.portal_return=是否生成双向传送门
@@ -675,3 +694,28 @@ modifier.stalwart.name=坚毅
 modifier.stalwart.desc=§o勇猛无畏。§r\n击中敌人让你壮胆。
 modifier.veiled.name=遁形
 modifier.veiled.desc=§o就像观察者！§r\n弹射物将会隐形。
+
+# Immersive Engineering
+item.tfEngineeringShader=暮色皮肤：%s
+item.tfEngineeringShaderBag=Twilit %s Shader Bag
+
+twilightforest.shader.twilight=暮色
+
+twilightforest.shader.snakestone=蛇纹石
+twilightforest.shader.naga=娜迦
+twilightforest.shader.lich=巫妖
+
+twilightforest.shader.mazestone=迷宫石
+twilightforest.shader.minoshroom=米诺菇
+twilightforest.shader.hydra=九头蛇
+
+twilightforest.shader.underbrick=地下砖
+twilightforest.shader.knight_phantom=幻影骑士
+twilightforest.shader.towerwood=塔木
+twilightforest.shader.ur-ghast=暮色恶魂
+
+twilightforest.shader.alpha_yeti=雪怪首领
+twilightforest.shader.auroralized=极光
+twilightforest.shader.snow_queen=冰雪女王
+
+twilightforest.shader.final_castle=终焉城堡
