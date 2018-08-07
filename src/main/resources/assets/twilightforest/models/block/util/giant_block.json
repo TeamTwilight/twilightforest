@@ -1,0 +1,27 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "#all"
+  },
+  "elements": [{
+    "from": [  0,  0,  0 ],
+    "to"  : [ 16, 16, 16 ],
+    "faces": {
+      "down" : { "texture": "#all", "tintindex": 0, "cullface": "down"  },
+      "up"   : { "texture": "#all", "tintindex": 1, "cullface": "up"    },
+      "north": { "texture": "#all", "tintindex": 2, "cullface": "north" },
+      "south": { "texture": "#all", "tintindex": 3, "cullface": "south" },
+      "west" : { "texture": "#all", "tintindex": 4, "cullface": "west"  },
+      "east" : { "texture": "#all", "tintindex": 5, "cullface": "east"  }
+    }
+  }],
+  "ctm_version": 1,
+  "ctm_overrides": {
+    "0": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 2 }},
+    "1": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
+    "2": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
+    "3": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
+    "4": { "type": "V", "extra": { "size": 4, "x_offset": -1, "y_offset": 1 }},
+    "5": { "type": "V", "extra": { "size": 4, "x_offset":  1, "y_offset": 1 }}
+  }
+}

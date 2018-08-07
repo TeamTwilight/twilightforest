@@ -28,8 +28,8 @@ import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
 import twilightforest.entity.EntityTFTroll;
-import twilightforest.world.TFGenTallGrass;
-import twilightforest.world.TFGenTrollRoots;
+import twilightforest.world.feature.TFGenTallGrass;
+import twilightforest.world.feature.TFGenTrollRoots;
 
 import java.util.Random;
 
@@ -47,7 +47,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	public TFBiomeHighlands(BiomeProperties props) {
 		super(props);
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 
 		this.decorator.grassPerChunk = 7;
 		this.decorator.deadBushPerChunk = 1;
@@ -152,7 +152,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 			// hint monster?
-			if (world.rand.nextInt(4) == 0) TFFeature.trollCave.trySpawnHintMonster(world, player);
+			if (world.rand.nextInt(4) == 0) TFFeature.TROLL_CAVE.trySpawnHintMonster(world, player);
 		}
 	}
 }

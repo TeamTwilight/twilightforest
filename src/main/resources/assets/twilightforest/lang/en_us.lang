@@ -41,7 +41,7 @@ advancement.twilight_naga_armors.desc=Craft both naga scale chest and leg armor.
 advancement.twilight_kill_lich=Bring Out Your Dead
 advancement.twilight_kill_lich.desc=Slay the Lich at top of his tower and retrieve a Scepter to clear poisonous mosquitoes from the swamp, see through blinding darkness of the Dark Forest's curse, and resist the snow forest's chill.
 advancement.twilight_lich_scepters=By Our Powers Combined!
-advancement.twilight_lich_scepters.desc=Acquire all three scepters of power.
+advancement.twilight_lich_scepters.desc=Acquire all four scepters of power.
 
 # Swamp Progression
 advancement.twilight_progress_labyrinth=Mighty Stroganoff
@@ -103,6 +103,20 @@ twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
 twilightforest.ore_meter.exposed=Exposed: %s
 twilightforest.scepter_charges=%d charges left
 
+# Commands
+commands.tffeature.usage=/tffeature <info|reactivate|conquer|center>
+commands.tffeature.not_in_twilight_forest=You are not in the Twilight Forest dimension
+commands.tffeature.nearest=The nearest feature is %s
+commands.tffeature.center=Center of feature: %s
+commands.tffeature.chunk=Are in feature chunk: %s
+commands.tffeature.structure.inside=You are in the structure for that feature
+commands.tffeature.structure.outside=You are not in the structure for that feature
+commands.tffeature.structure.required=You are not in a structure
+commands.tffeature.structure.conquer.status=Structure conquer flag: %s
+commands.tffeature.structure.conquer.update=Structure conquer flag was %s, changing to %s
+commands.tffeature.locate.usage=/tffeature locate <feature>
+
+# Blocks
 tile.TFLog.0.name=Twilight Oak Wood
 tile.TFLog.1.name=Canopy Tree Wood
 tile.TFLog.2.name=Mangrove Wood
@@ -113,6 +127,7 @@ tile.TFLeaves.2.name=Mangrove Leaves
 tile.TFLeaves.3.name=Rainbow Oak Leaves
 tile.TFFirefly.name=Firefly
 tile.TFCicada.name=Cicada
+tile.TFCicada.desc=What if this could be launched at someone with a Railgun...?
 item.TFPortal.name=Twilight Forest Portal
 tile.TFPortal.name=Twilight Forest Portal
 tile.TFMazestone.0.name=Mazestone
@@ -232,6 +247,7 @@ tile.TFDeadrock.surface.name=Weathered Deadrock
 tile.TFDeadrock.cracked.name=Cracked Deadrock
 tile.TFDeadrock.solid.name=Deadrock
 tile.DarkLeaves.name=Darkwood Leaves
+tile.AuroralizedGlass.name=Auroralized Glass
 tile.AuroraPillar.name=Aurora Pillar
 tile.AuroraSlab.name=Aurora Slab
 tile.TrollSteinn.name=Trollsteinn
@@ -261,6 +277,10 @@ tile.CastleBrick.2.name=Cracked Castle Brick
 tile.CastleBrick.3.name=Castle Roof Tile
 tile.CastleBrick.4.name=Mossy Castle Brick
 tile.CastleBrick.5.name=Thick Castle Brick
+tile.CastleStairsBrick.0.name=Castle Brick Stairs
+tile.CastleStairsWorn.0.name=Worn Castle Brick Stairs
+tile.CastleStairsCracked.0.name=Cracked Castle Brick Stairs
+tile.CastleStairsMossy.0.name=Mossy Castle Brick Stairs
 tile.CastleDoor.0.name=Yellow Castle Door
 tile.CastleDoor.1.name=Violet Castle Door
 tile.CastleDoor.2.name=Pink Castle Door
@@ -325,6 +345,7 @@ item.legsNaga.name=Naga Scale Leggings
 item.scepterTwilight.name=Scepter of Twilight
 item.scepterLifeDrain.name=Scepter of Life Draining
 item.scepterZombie.name=Zombie Scepter
+item.scepterShield.name=Scepter of Fortification
 item.oreMeter.name=Ore Meter [WIP]
 item.magicMap.name=Magic Map
 item.mazeMap.name=Maze Map
@@ -534,6 +555,8 @@ twilightforest.config.dimension_seed=Dimension Seed
 twilightforest.config.dimension_seed.tooltip=If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.
 twilightforest.config.spawn_in_tf=New Players Spawn in Twilight Forest
 twilightforest.config.spawn_in_tf.tooltip=If true, players spawning for the first time will spawn in the Twilight Forest.
+twilightforest.config.skylight_forest=Skylight Forest [WIP]
+twilightforest.config.skylight_forest.tooltip=If true, Twilight Forest will generate as a void except for Major Structures.
 
 twilightforest.config.compat=Compatibility
 twilightforest.config.compat.tooltip=Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.
@@ -545,9 +568,7 @@ twilightforest.config.canopy_coverage.tooltip=Amount of canopy coverage. Lower n
 twilightforest.config.twilight_oaks=Twilight Oak Chance
 twilightforest.config.twilight_oaks.tooltip=Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.
 twilightforest.config.leaves_light_opacity=Twilight Leaves opacity
-twilightforest.config.leaves_light_opacity.tooltip="If leaves are not full cubes, this controls the opacity of leaves to control amount of light blocking.
-twilightforest.config.leaves_full_cube=Can Twilight Leaves be full blocks
-twilightforest.config.leaves_full_cube.tooltip=Setting this false makes leaves not full cubes. This results in not blocking light at all, making them the equivalent of glass in terms of blocking light. Decreases complexity in some lighting checks.
+twilightforest.config.leaves_light_opacity.tooltip=This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.
 twilightforest.config.glacer_packed_ice=Glaciers made of Packed Ice instead of Ice
 twilightforest.config.glacer_packed_ice.tooltip=Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.
 
@@ -561,9 +582,7 @@ twilightforest.config.admin_portals.tooltip=Allow portals only for admins (Opera
 twilightforest.config.portals=Disable Twilight Portals
 twilightforest.config.portals.tooltip=Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.
 twilightforest.config.portal_creator=Portal Creation Item
-twilightforest.config.portal_creator.tooltip=Registry String ID of item used to create the Twilight Forest Portal.
-twilightforest.config.portal_creator_meta=Portal Creation Item's Meta
-twilightforest.config.portal_creator_meta.tooltip=Meta of item used to create the Twilight Forest Portal. -1 for any metadata.
+twilightforest.config.portal_creator.tooltip=Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.
 twilightforest.config.portal_lighting=Portal Creation Lightning Fire
 twilightforest.config.portal_lighting.tooltip=Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.
 twilightforest.config.portal_return=Should Portals generate as a two-way portal
@@ -675,3 +694,28 @@ modifier.stalwart.name=Stalwart
 modifier.stalwart.desc=§oThe Brave and Bold.§r\nHitting an entity can make you feel emboldened.
 modifier.veiled.name=Veiled
 modifier.veiled.desc=§oLike a Specter!§r\nProjectile will be invisible.
+
+# Immersive Engineering
+item.tfEngineeringShader=Twilit Shader: %s
+item.tfEngineeringShaderBag=Twilit %s Shader Bag
+
+twilightforest.shader.twilight=Twilight
+
+twilightforest.shader.snakestone=Snakestone
+twilightforest.shader.naga=Naga
+twilightforest.shader.lich=Lich
+
+twilightforest.shader.mazestone=Mazestone
+twilightforest.shader.minoshroom=Minoshroom
+twilightforest.shader.hydra=Hydra
+
+twilightforest.shader.underbrick=Underbrick
+twilightforest.shader.knight_phantom=Knight Phantom
+twilightforest.shader.towerwood=Towerwood
+twilightforest.shader.ur-ghast=Ur-Ghast
+
+twilightforest.shader.alpha_yeti=Alpha Yeti
+twilightforest.shader.auroralized=Auroralized
+twilightforest.shader.snow_queen=Snow Queen
+
+twilightforest.shader.final_castle=Final Castle

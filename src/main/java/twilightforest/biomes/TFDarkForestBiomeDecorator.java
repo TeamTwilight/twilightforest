@@ -12,9 +12,9 @@ import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.TFGenDarkCanopyTree;
-import twilightforest.world.TFGenTallGrass;
-import twilightforest.world.TFTreeGenerator;
+import twilightforest.world.feature.TFGenDarkCanopyTree;
+import twilightforest.world.feature.TFGenTallGrass;
+import twilightforest.world.feature.TFTreeGenerator;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;

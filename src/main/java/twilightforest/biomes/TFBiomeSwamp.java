@@ -28,9 +28,10 @@ import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
 import twilightforest.entity.EntityTFMosquitoSwarm;
-import twilightforest.world.TFGenHugeLilyPad;
-import twilightforest.world.TFGenTallGrass;
-import twilightforest.world.TFGenVines;
+import twilightforest.world.feature.TFGenHugeLilyPad;
+import twilightforest.world.feature.TFGenHugeWaterLily;
+import twilightforest.world.feature.TFGenTallGrass;
+import twilightforest.world.feature.TFGenVines;
 import twilightforest.world.TFWorld;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		getTFBiomeDecorator().setWaterlilyPerChunk(20);
 
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().lakesPerChunk = 2;
 		getTFBiomeDecorator().mangrovesPerChunk = 3;
 
@@ -113,14 +114,14 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 	@Override
 	public int getGrassColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getFloatTemperature(pos), 0.0F, 1.0F);
+		double var1 = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
 		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
 		return ((ColorizerGrass.getGrassColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
 	@Override
 	public int getFoliageColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getFloatTemperature(pos), 0.0F, 1.0F);
+		double var1 = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
 		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
 		return ((ColorizerFoliage.getFoliageColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
@@ -152,7 +153,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {
-				TFFeature.labyrinth.trySpawnHintMonster(world, player);
+				TFFeature.LABYRINTH.trySpawnHintMonster(world, player);
 			}
 		}
 	}

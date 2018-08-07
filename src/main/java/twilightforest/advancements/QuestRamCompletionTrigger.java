@@ -23,17 +23,20 @@ public class QuestRamCompletionTrigger implements ICriterionTrigger<QuestRamComp
     public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "complete_quest_ram");
     private final Map<PlayerAdvancements, QuestRamCompletionTrigger.Listeners> listeners = Maps.newHashMap();
 
+    @Override
     public ResourceLocation getId()
     {
         return ID;
     }
 
+    @Override
     public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<QuestRamCompletionTrigger.Instance> listener) {
         QuestRamCompletionTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
 
         listeners.add(listener);
     }
 
+    @Override
     public void removeListener(PlayerAdvancements playerAdvancementsIn, Listener<QuestRamCompletionTrigger.Instance> listener) {
         QuestRamCompletionTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
 
@@ -46,10 +49,12 @@ public class QuestRamCompletionTrigger implements ICriterionTrigger<QuestRamComp
         }
     }
 
+    @Override
     public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
         this.listeners.remove(playerAdvancementsIn);
     }
 
+    @Override
     public QuestRamCompletionTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
         return new QuestRamCompletionTrigger.Instance();
     }

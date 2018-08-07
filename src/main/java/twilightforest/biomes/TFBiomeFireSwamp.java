@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.world.TFGenFireJet;
-import twilightforest.world.TFGenVines;
+import twilightforest.world.feature.TFGenFireJet;
+import twilightforest.world.feature.TFGenVines;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;
@@ -33,7 +33,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(3);
 		getTFBiomeDecorator().setWaterlilyPerChunk(6);
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().lavaPoolChance = 0.125F;
 		getTFBiomeDecorator().mangrovesPerChunk = 3;
 	}
@@ -109,7 +109,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		}
 		// hint monster?
 		if (world.rand.nextInt(4) == 0) {
-			TFFeature.hydraLair.trySpawnHintMonster(world, player);
+			TFFeature.HYDRA_LAIR.trySpawnHintMonster(world, player);
 		}
 	}
 }

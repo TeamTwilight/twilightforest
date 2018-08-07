@@ -129,6 +129,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
 		 */
+		@Override
 		public boolean shouldExecute() {
 			if (!this.silverfish.world.getGameRules().getBoolean("mobGriefing")) {
 				return false;
@@ -159,6 +160,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Returns whether an in-progress EntityAIBase should continue executing
 		 */
+		@Override
 		public boolean shouldContinueExecuting() {
 			return this.doMerge ? false : super.shouldContinueExecuting();
 		}
@@ -166,6 +168,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Execute a one shot task or start executing a continuous task
 		 */
+		@Override
 		public void startExecuting() {
 			if (!this.doMerge) {
 				super.startExecuting();
@@ -203,6 +206,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
 		 */
+		@Override
 		public boolean shouldExecute() {
 			return this.lookForFriends > 0;
 		}
@@ -210,6 +214,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Updates the task
 		 */
+		@Override
 		public void updateTask() {
 			--this.lookForFriends;
 

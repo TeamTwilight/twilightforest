@@ -63,7 +63,7 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 

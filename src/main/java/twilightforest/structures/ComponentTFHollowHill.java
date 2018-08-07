@@ -17,14 +17,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.entity.EntityTFFireBeetle;
 import twilightforest.entity.EntityTFPinchBeetle;
 import twilightforest.entity.EntityTFRedcap;
 import twilightforest.entity.EntityTFSlimeBeetle;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.entity.EntityTFWraith;
-import twilightforest.world.TFGenCaveStalactite;
+import twilightforest.world.feature.TFGenCaveStalactite;
 
 import java.util.Random;
 

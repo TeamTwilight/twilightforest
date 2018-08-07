@@ -11,9 +11,9 @@ import net.minecraft.world.gen.feature.WorldGenPumpkin;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.TFGenHangingLamps;
-import twilightforest.world.TFGenLampposts;
-import twilightforest.world.TFGenTallGrass;
+import twilightforest.world.feature.TFGenHangingLamps;
+import twilightforest.world.feature.TFGenLampposts;
+import twilightforest.world.feature.TFGenTallGrass;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;

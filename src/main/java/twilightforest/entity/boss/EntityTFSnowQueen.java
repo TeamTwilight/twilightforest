@@ -32,17 +32,21 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
+import twilightforest.enums.BossVariant;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.List;
@@ -194,8 +198,9 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 
 	@Override
 	public void onUpdate() {
-
 		super.onUpdate();
+
+		despawnIfPeaceful();
 
 		for (int i = 0; i < this.iceArray.length; i++) {
 
@@ -232,6 +237,17 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		}
 	}
 
+	private void despawnIfPeaceful() {
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				BlockPos home = this.getHomePosition();
+				world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
+			}
+
+			setDead();
+		}
+	}
+
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
 		super.onDeath(par1DamageSource);
@@ -241,11 +257,11 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
-				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-				if (nearbyFeature == TFFeature.lichTower) {
+				if (nearbyFeature == TFFeature.ICE_TOWER) {
 					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}
@@ -401,10 +417,19 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		world.spawnEntity(minion);
 
 		for (int i = 0; i < 100; i++) {
-			double attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
-			double attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
-			double attemptZ = targetedEntity.posZ + rand.nextGaussian() * 16D;
-
+			double attemptX;
+			double attemptY;
+			double attemptZ;
+			if (hasHome()) {
+				BlockPos home = getHomePosition();
+				attemptX = home.getX() + rand.nextGaussian() * 7D;
+				attemptY = home.getY() + rand.nextGaussian() * 2D;
+				attemptZ = home.getZ() + rand.nextGaussian() * 7D;
+			} else {
+				attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
+				attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
+				attemptZ = targetedEntity.posZ + rand.nextGaussian() * 16D;
+			}
 			if (minion.attemptTeleport(attemptX, attemptY, attemptZ)) {
 				break;
 			}

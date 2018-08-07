@@ -1,39 +1,56 @@
 package twilightforest;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.storage.loot.conditions.LootConditionManager;
-import net.minecraft.world.storage.loot.functions.LootFunctionManager;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.capabilities.shield.ShieldCapabilityHandler;
+import twilightforest.capabilities.shield.ShieldCapabilityStorage;
 import twilightforest.compat.TFCompat;
-import twilightforest.entity.*;
-import twilightforest.entity.boss.*;
-import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
-import twilightforest.entity.passive.*;
 import twilightforest.item.TFItems;
-import twilightforest.structures.StructureTFMajorFeatureStart;
+import twilightforest.loot.TFTreasure;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.structures.hollowtree.TFHollowTreePieces;
+import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.tileentity.*;
-import twilightforest.util.TFEntityNames;
 import twilightforest.world.WorldProviderTwilightForest;
 
+@SuppressWarnings({"Guava", "unchecked"})
 @Mod( modid = TwilightForestMod.ID,
 		name = "The Twilight Forest",
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12-0.2.3.12,);required-after:forge@[14.23.3.2675,)",
+		dependencies = "after:ctm@[MC1.12-0.3.2.18,);before:immersiveengineering@[0.12-83,);after:tconstruct;required-after:forge@[14.23.3.2655,);after:thaumcraft@[1.12.2-6.1.BETA20,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )
 public class TwilightForestMod {
@@ -54,6 +71,8 @@ public class TwilightForestMod {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
+	private static final EnumRarity rarity = EnumHelper.addRarity("TWILIGHT", TextFormatting.DARK_GREEN, "Twilight");
+
 	private static boolean compat = true;
 
 	@Instance(ID)
@@ -67,22 +86,23 @@ public class TwilightForestMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		if (Loader.isModLoaded("sponge"))
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +
-					"Open the `config/sponge/global.conf` file, and set the `max-bounding-box-size` to `6000` or higher, or `0`.\n" +
-					"Sponge's default maximum bounding box is too low for the Hydra. Have fun!");
+					"If so, please update Sponge to resolve this issue. Have fun!");
 
-		registerCreatures();
 		registerTileEntities();
 		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 
 		// sounds on client, and whatever else needs to be registered pre-load
-		proxy.doPreLoadRegistration();
+		proxy.preInit();
+
+		CapabilityManager.INSTANCE.register(IShieldCapability.class, new ShieldCapabilityStorage(), ShieldCapabilityHandler.class);
 
 		TFTreasure.init();
-		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
-		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
 
 		// just call this so that we register structure IDs correctly
-		new StructureTFMajorFeatureStart();
+		LOGGER.debug("There are " + TFFeature.values().length + " entries in TTFeature enum. Maximum structure size is " + TFFeature.getMaxSize());
+
+		MapGenStructureIO.registerStructure(StructureStartNothing.class,                  				 "TFNothing");
+		TFHollowTreePieces.registerPieces();
 
 		compat = TFConfig.doCompat;
 
@@ -91,19 +111,21 @@ public class TwilightForestMod {
 				TFCompat.preInitCompat();
 			} catch (Exception e) {
 				compat = false;
-				TwilightForestMod.LOGGER.info(ID + " had an error loading preInit compatibility!");
+				TwilightForestMod.LOGGER.error(ID + " had an error loading preInit compatibility!");
 				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
 			}
+		} else {
+			TwilightForestMod.LOGGER.warn(ID + " is skipping! compatibility!");
 		}
 	}
 
 	@SuppressWarnings("unused")
 	@EventHandler
-	public void load(FMLInitializationEvent evt) {
+	public void init(FMLInitializationEvent evt) {
 		TFItems.initRepairMaterials();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		TFPacketHandler.init();
-		proxy.doOnLoadRegistration();
+		proxy.init();
 		TFAdvancements.init();
 
 		if (compat) {
@@ -111,10 +133,12 @@ public class TwilightForestMod {
 				TFCompat.initCompat();
 			} catch (Exception e) {
 				compat = false;
-				TwilightForestMod.LOGGER.info(ID + " had an error loading init compatibility!");
+				TwilightForestMod.LOGGER.error(ID + " had an error loading init compatibility!");
 				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
 			}
 		}
+
+		TFDataFixers.init();
 	}
 
 	@SuppressWarnings("unused")
@@ -123,7 +147,7 @@ public class TwilightForestMod {
 		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
 			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, TwilightForestMod.dimType);
 		} else {
-			TwilightForestMod.LOGGER.warn("Detected that the configured dimension id '{}' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
+			TwilightForestMod.LOGGER.warn("Detected that the configured dimension id '{}' is being used. Using backup ID. It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
 			DimensionManager.registerDimension(TwilightForestMod.backupdimensionID, TwilightForestMod.dimType);
 			TFConfig.dimension.dimensionID = TwilightForestMod.backupdimensionID;
 		}
@@ -132,10 +156,129 @@ public class TwilightForestMod {
 			try {
 				TFCompat.postInitCompat();
 			} catch (Exception e) {
-				TwilightForestMod.LOGGER.info(ID + " had an error loading postInit compatibility!");
+				TwilightForestMod.LOGGER.error(ID + " had an error loading postInit compatibility!");
 				TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
 			}
 		}
+	}
+
+	private static final ImmutableSet.Builder<IBlockState> BLACKLIST_BUILDER = ImmutableSet.builder();
+	private static final ImmutableList.Builder<IBlockState> HILL_BLOCKS_BUILDER = ImmutableList.builder();
+	private static final ImmutableList.Builder<ItemStack> LOADING_ICONS_BUILDER = ImmutableList.builder();
+	private static final ImmutableMultimap.Builder<IBlockState, IBlockState> CRUMBLE_BLOCKS_BUILDER = ImmutableMultimap.builder();
+
+	/**
+	 IMC NBT Format: You can send all of your requests as one big NBT list rather than needing to shotgun a ton of tiny NBT messages.
+
+	 root:
+	 	• "Blacklist"                               - NBTTagList     : List of blockstates to blacklist from blockbreaking (antibuilders, naga, hydra, etc)
+	 		• List Entry                            - NBTTagCompound : An IBlockState
+	 			• "Name"                            - String         : Resource location of block. Is not allowed to be Air.
+	 			• "Properties"                      - NBTTagCompound : Additional blockstate modifications to apply to block
+	 				• [String Property Key]         - String         : Key is nameable to a property key, and the string value attached to it is value to property.
+
+	 	• "Hollow_Hill"                             - NBTTagList     : List of blockstates to add to hollow hills - May chance this to a function in the future
+	 		• List Entry                            - NBTTagCompound : An IBlockState
+	 			• "Name"                            - String         : Resource location of block. Is not allowed to be Air.
+	 			• "Properties"                      - NBTTagCompound : Additional blockstate modifications to apply to block
+	 				• [String Property Key]         - String         : Key is nameable to a property key, and the string value attached to it is value to property.
+
+	 	• "Crumbling"                               - NBTTagList     : List of blockstates to add to hollow hills - May chance this to a function in the future
+	 		• List Entry                            - NBTTagCompound : An IBlockState
+	 			• "Name"                            - String         : Resource location of block. Is not allowed to be Air.
+	 			• "Properties"                      - NBTTagCompound : Additional blockstate modifications to apply to block
+	 			• "Crumbles"                        - NBTTagList     : List of different blockstates that the blockstate can crumble into
+	 				• List Entry                    - NBTTagCompound : An IBlockState.
+	 					• "Name"                    - String         : Resource location of block. Can be Air.
+	 					• "Properties"              - NBTTagCompound : Additional blockstate modifications to apply to block
+	 						• [String Property Key] - String         : Key is nameable to a property key, and the string value attached to it is value to property.
+	 */
+
+	@EventHandler
+	public void onIMC(FMLInterModComms.IMCEvent event) {
+		for (FMLInterModComms.IMCMessage message : event.getMessages()) {
+			if (message.isNBTMessage()) {
+				NBTTagCompound imcCompound = message.getNBTValue();
+
+				deserializeBlockstatesFromTagList(imcCompound.getTagList("Blacklist"  , Constants.NBT.TAG_COMPOUND), BLACKLIST_BUILDER     );
+				deserializeBlockstatesFromTagList(imcCompound.getTagList("Hollow_Hill", Constants.NBT.TAG_COMPOUND), HILL_BLOCKS_BUILDER   );
+
+				deserializeBlockstatesFromTagList(imcCompound.getTagList("Crumbling"  , Constants.NBT.TAG_COMPOUND), CRUMBLE_BLOCKS_BUILDER);
+			}
+
+			if (message.isItemStackMessage()) {
+				LOADING_ICONS_BUILDER.add(message.getItemStackValue());
+			}
+		}
+	}
+
+	private void deserializeBlockstatesFromTagList(NBTTagList list, ImmutableMultimap.Builder<IBlockState, IBlockState> builder) {
+		for (int blockAt = 0; blockAt < list.tagCount(); blockAt++) {
+			NBTTagCompound main = list.getCompoundTagAt(blockAt);
+			IBlockState key = NBTUtil.readBlockState(main);
+
+			if (key.getBlock() != Blocks.AIR) {
+				NBTTagList crumbles = main.getTagList("Crumbling", Constants.NBT.TAG_COMPOUND);
+
+				for (int crumble = 0; crumble < crumbles.tagCount(); crumble++) {
+					IBlockState value = NBTUtil.readBlockState(crumbles.getCompoundTagAt(crumble));
+
+					builder.put(key, value);
+				}
+			}
+		}
+	}
+
+	private void deserializeBlockstatesFromTagList(NBTTagList list, ImmutableCollection.Builder<IBlockState> builder) {
+		for (int blockAt = 0; blockAt < list.tagCount(); blockAt++) {
+			IBlockState state = NBTUtil.readBlockState(list.getCompoundTagAt(blockAt));
+
+			if (state.getBlock() != Blocks.AIR)
+				builder.add(state);
+
+			//Block block = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("name")));
+
+			//if (block != Blocks.AIR) {
+			//	IBlockState blockState = block.getStateFromMeta(compound.getInteger("meta"));
+
+			//	BlockStateContainer stateContainer = block.getBlockState();
+
+			//	NBTTagList properties = compound.getTagList("state", Constants.NBT.TAG_COMPOUND);
+			//	for (int stateAt = 0; stateAt < properties.tagCount(); stateAt++) {
+			//		NBTTagCompound property = properties.getCompoundTagAt(stateAt);
+
+			//		IProperty prop = stateContainer.getProperty(property.getString("property"));
+
+			//		if (prop != null)
+			//			blockState = applyBlockStateProperty(blockState, prop, prop.getValueClass(), prop.parseValue(property.getString("value")));
+			//	}
+
+			//	builder.add(blockState);
+			//}
+		}
+	}
+
+	/*private <V extends Comparable<V>> IBlockState applyBlockStateProperty(IBlockState state, IProperty<V> property, Class<V> target, Optional optional) {
+		if (optional.isPresent() && target.isInstance(optional.get()))
+			return state.withProperty(property, (V) optional.get());
+		else
+			return state;
+	}*/
+
+	public static ImmutableSet<IBlockState> getBlacklistedBlocksFromIMC() {
+		return BLACKLIST_BUILDER.build();
+	}
+
+	public static ImmutableList<IBlockState> getHollowHillBlocksFromIMC() {
+		return HILL_BLOCKS_BUILDER.build();
+	}
+
+	public static ImmutableList<ItemStack> getLoadingIconStacksFromIMC() {
+		return LOADING_ICONS_BUILDER.build();
+	}
+
+	public static ImmutableMultimap<IBlockState, IBlockState> getCrumblingBlocksFromIMC() {
+		return CRUMBLE_BLOCKS_BUILDER.build();
 	}
 
 	@SuppressWarnings("unused")
@@ -144,114 +287,30 @@ public class TwilightForestMod {
 		event.registerServerCommand(new CommandTFFeature());
 	}
 
-	private void registerCreatures() {
-		int id = 0;
-		TFEntities.registerEntity(TFEntityNames.WILD_BOAR, EntityTFBoar.class, id++, 0x83653b, 0xffefca);
-		TFEntities.registerEntity(TFEntityNames.BIGHORN_SHEEP, EntityTFBighorn.class, id++, 0xdbceaf, 0xd7c771);
-		TFEntities.registerEntity(TFEntityNames.DEER, EntityTFDeer.class, id++, 0x7b4d2e, 0x4b241d);
-
-		TFEntities.registerEntity(TFEntityNames.REDCAP, EntityTFRedcap.class, id++, 0x3b3a6c, 0xab1e14);
-		TFEntities.registerEntity(TFEntityNames.SWARM_SPIDER, EntityTFSwarmSpider.class, id++, 0x32022e, 0x17251e);
-		TFEntities.registerEntity(TFEntityNames.NAGA, EntityTFNaga.class, id++, 0xa4d316, 0x1b380b, 150, 1, true);
-		TFEntities.registerEntity(TFEntityNames.SKELETON_DRUID, EntityTFSkeletonDruid.class, id++, 0xa3a3a3, 0x2a3b17);
-		TFEntities.registerEntity(TFEntityNames.HOSTILE_WOLF, EntityTFHostileWolf.class, id++, 0xd7d3d3, 0xab1e14);
-		TFEntities.registerEntity(TFEntityNames.WRAITH, EntityTFWraith.class, id++, 0x505050, 0x838383);
-		TFEntities.registerEntity(TFEntityNames.HEDGE_SPIDER, EntityTFHedgeSpider.class, id++, 0x235f13, 0x562653);
-		TFEntities.registerEntity(TFEntityNames.HYDRA, EntityTFHydra.class, id++, 0x142940, 0x29806b);
-		TFEntities.registerEntity(TFEntityNames.LICH, EntityTFLich.class, id++, 0xaca489, 0x360472);
-		TFEntities.registerEntity(TFEntityNames.PENGUIN, EntityTFPenguin.class, id++, 0x12151b, 0xf9edd2);
-		TFEntities.registerEntity(TFEntityNames.LICH_MINION, EntityTFLichMinion.class, id++);
-		TFEntities.registerEntity(TFEntityNames.LOYAL_ZOMBIE, EntityTFLoyalZombie.class, id++);
-		TFEntities.registerEntity(TFEntityNames.TINY_BIRD, EntityTFTinyBird.class, id++, 0x33aadd, 0x1188ee);
-		TFEntities.registerEntity(TFEntityNames.SQUIRREL, EntityTFSquirrel.class, id++, 0x904f12, 0xeeeeee);
-		TFEntities.registerEntity(TFEntityNames.BUNNY, EntityTFBunny.class, id++, 0xfefeee, 0xccaa99);
-		TFEntities.registerEntity(TFEntityNames.RAVEN, EntityTFRaven.class, id++, 0x000011, 0x222233);
-		TFEntities.registerEntity(TFEntityNames.QUEST_RAM, EntityTFQuestRam.class, id++, 0xfefeee, 0x33aadd);
-		TFEntities.registerEntity(TFEntityNames.KOBOLD, EntityTFKobold.class, id++, 0x372096, 0x895d1b);
-		TFEntities.registerEntity(TFEntityNames.MOSQUITO_SWARM, EntityTFMosquitoSwarm.class, id++, 0x080904, 0x2d2f21);
-		TFEntities.registerEntity(TFEntityNames.DEATH_TOME, EntityTFDeathTome.class, id++, 0x774e22, 0xdbcdbe);
-		TFEntities.registerEntity(TFEntityNames.MINOTAUR, EntityTFMinotaur.class, id++, 0x3f3024, 0xaa7d66);
-		TFEntities.registerEntity(TFEntityNames.MINOSHROOM, EntityTFMinoshroom.class, id++, 0xa81012, 0xaa7d66);
-		TFEntities.registerEntity(TFEntityNames.FIRE_BEETLE, EntityTFFireBeetle.class, id++, 0x1d0b00, 0xcb6f25);
-		TFEntities.registerEntity(TFEntityNames.SLIME_BEETLE, EntityTFSlimeBeetle.class, id++, 0x0c1606, 0x60a74c);
-		TFEntities.registerEntity(TFEntityNames.PINCH_BEETLE, EntityTFPinchBeetle.class, id++, 0xbc9327, 0x241609);
-		TFEntities.registerEntity(TFEntityNames.MAZE_SLIME, EntityTFMazeSlime.class, id++, 0xa3a3a3, 0x2a3b17);
-		TFEntities.registerEntity(TFEntityNames.REDCAP_SAPPER, EntityTFRedcapSapper.class, id++, 0x575d21, 0xab1e14);
-		TFEntities.registerEntity(TFEntityNames.MIST_WOLF, EntityTFMistWolf.class, id++, 0x3a1411, 0xe2c88a);
-		TFEntities.registerEntity(TFEntityNames.KING_SPIDER, EntityTFKingSpider.class, id++, 0x2c1a0e, 0xffc017);
-		TFEntities.registerEntity(TFEntityNames.FIREFLY, EntityTFMobileFirefly.class, id++, 0xa4d316, 0xbaee02);
-		TFEntities.registerEntity(TFEntityNames.MINI_GHAST, EntityTFMiniGhast.class, id++, 0xbcbcbc, 0xa74343);
-		TFEntities.registerEntity(TFEntityNames.TOWER_GHAST, EntityTFTowerGhast.class, id++, 0xbcbcbc, 0xb77878);
-		TFEntities.registerEntity(TFEntityNames.TOWER_GOLEM, EntityTFTowerGolem.class, id++, 0x6b3d20, 0xe2ddda);
-		TFEntities.registerEntity(TFEntityNames.TOWER_TERMITE, EntityTFTowerTermite.class, id++, 0x5d2b21, 0xaca03a);
-		TFEntities.registerEntity(TFEntityNames.TOWER_BROODLING, EntityTFTowerBroodling.class, id++, 0x343c14, 0xbaee02);
-		TFEntities.registerEntity(TFEntityNames.UR_GHAST, EntityTFUrGhast.class, id++, 0xbcbcbc, 0xb77878);
-		TFEntities.registerEntity(TFEntityNames.BLOCKCHAIN_GOBLIN, EntityTFBlockGoblin.class, id++, 0xd3e7bc, 0x1f3fff);
-		TFEntities.registerEntity(TFEntityNames.GOBLIN_KNIGHT_UPPER, EntityTFGoblinKnightUpper.class, id++);
-		TFEntities.registerEntity(TFEntityNames.GOBLIN_KNIGHT_LOWER, EntityTFGoblinKnightLower.class, id++, 0x566055, 0xd3e7bc);
-		TFEntities.registerEntity(TFEntityNames.HELMET_CRAB, EntityTFHelmetCrab.class, id++, 0xfb904b, 0xd3e7bc);
-		TFEntities.registerEntity(TFEntityNames.KNIGHT_PHANTOM, EntityTFKnightPhantom.class, id++, 0xa6673b, 0xd3e7bc);
-		TFEntities.registerEntity(TFEntityNames.YETI, EntityTFYeti.class, id++, 0xdedede, 0x4675bb);
-		TFEntities.registerEntity(TFEntityNames.YETI_ALPHA, EntityTFYetiAlpha.class, id++, 0xcdcdcd, 0x29486e);
-		TFEntities.registerEntity(TFEntityNames.WINTER_WOLF, EntityTFWinterWolf.class, id++, 0xdfe3e5, 0xb2bcca);
-		TFEntities.registerEntity(TFEntityNames.SNOW_GUARDIAN, EntityTFSnowGuardian.class, id++, 0xd3e7bc, 0xfefefe);
-		TFEntities.registerEntity(TFEntityNames.STABLE_ICE_CORE, EntityTFIceShooter.class, id++, 0xa1bff3, 0x7000f8);
-		TFEntities.registerEntity(TFEntityNames.UNSTABLE_ICE_CORE, EntityTFIceExploder.class, id++, 0x9aacf5, 0x9b0fa5);
-		TFEntities.registerEntity(TFEntityNames.SNOW_QUEEN, EntityTFSnowQueen.class, id++, 0xb1b2d4, 0x87006e);
-		TFEntities.registerEntity(TFEntityNames.TROLL, EntityTFTroll.class, id++, 0x9ea98f, 0xb0948e);
-		TFEntities.registerEntity(TFEntityNames.GIANT_MINER, EntityTFGiantMiner.class, id++, 0x211b52, 0x9a9a9a);
-		TFEntities.registerEntity(TFEntityNames.ARMORED_GIANT, EntityTFArmoredGiant.class, id++, 0x239391, 0x9a9a9a);
-		TFEntities.registerEntity(TFEntityNames.ICE_CRYSTAL, EntityTFIceCrystal.class, id++, 0xdce9fe, 0xadcafb);
-		TFEntities.registerEntity(TFEntityNames.HARBINGER_CUBE, EntityTFHarbingerCube.class, id++, 0x00000a, 0x8b0000);
-		TFEntities.registerEntity(TFEntityNames.ADHERENT, EntityTFAdherent.class, id++, 0x0a0000, 0x00008b);
-		TFEntities.registerEntity(TFEntityNames.ROVING_CUBE, EntityTFRovingCube.class, id++, 0x0a0000, 0x00009b);
-		TFEntities.registerEntity(TFEntityNames.CASTLE_GUARDIAN, EntityTFCastleGuardian.class, id++, 80, 3, true);
-
-		TFEntities.registerEntity(TFEntityNames.HYDRA_HEAD, EntityTFHydraHead.class, id++, 150, 3, false);
-
-		TFEntities.registerEntity(TFEntityNames.NATURE_BOLT, EntityTFNatureBolt.class, id++, 150, 5, true);
-		TFEntities.registerEntity(TFEntityNames.LICH_BOLT, EntityTFLichBolt.class, id++, 150, 2, true);
-		TFEntities.registerEntity(TFEntityNames.WAND_BOLT, EntityTFTwilightWandBolt.class, id++, 150, 5, true);
-		TFEntities.registerEntity(TFEntityNames.TOME_BOLT, EntityTFTomeBolt.class, id++, 150, 5, true);
-		TFEntities.registerEntity(TFEntityNames.HYDRA_MORTAR, EntityTFHydraMortar.class, id++, 150, 3, true);
-		TFEntities.registerEntity(TFEntityNames.LICH_BOMB, EntityTFLichBomb.class, id++, 150, 3, true);
-		TFEntities.registerEntity(TFEntityNames.MOONWORM_SHOT, EntityTFMoonwormShot.class, id++, 150, 3, true);
-		TFEntities.registerEntity(TFEntityNames.SLIME_BLOB, EntityTFSlimeProjectile.class, id++, 150, 3, true);
-		TFEntities.registerEntity(TFEntityNames.CHARM_EFFECT, EntityTFCharmEffect.class, id++, 80, 3, true);
-		TFEntities.registerEntity(TFEntityNames.THROWN_AXE, EntityTFThrownAxe.class, id++, 80, 3, true);
-		TFEntities.registerEntity(TFEntityNames.THROWN_PICK, EntityTFThrownPick.class, id++, 80, 3, true);
-		TFEntities.registerEntity(TFEntityNames.FALLING_ICE, EntityTFFallingIce.class, id++, 80, 3, true);
-		TFEntities.registerEntity(TFEntityNames.THROWN_ICE, EntityTFIceBomb.class, id++, 80, 2, true);
-		TFEntities.registerEntity(TFEntityNames.SEEKER_ARROW, EntitySeekerArrow.class, id++, 150, 1, true);
-		TFEntities.registerEntity(TFEntityNames.ICE_ARROW, EntityIceArrow.class, id++, 150, 1, true);
-		TFEntities.registerEntity(TFEntityNames.ICE_SNOWBALL, EntityTFIceSnowball.class, id++, 150, 3, true);
-		TFEntities.registerEntity(TFEntityNames.CHAIN_BLOCK, EntityTFChainBlock.class, id++, 80, 1, true);
-		TFEntities.registerEntity(TFEntityNames.CUBE_OF_ANNIHILATION, EntityTFCubeOfAnnihilation.class, id++, 80, 1, true);
-		TFEntities.registerEntity(TFEntityNames.SLIDER, EntityTFSlideBlock.class, id++, 80, 1, true);
-		TFEntities.registerEntity(TFEntityNames.BOGGARD, EntityTFBoggard.class, id++);
-	}
-
-
 	private void registerTileEntities() {
 		proxy.registerCritterTileEntities();
 
-		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner.class, "naga_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFLichSpawner.class, "lich_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner.class, "hydra_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFSmoker.class, "smoker");
-		GameRegistry.registerTileEntity(TileEntityTFPoppingJet.class, "popping_jet");
-		GameRegistry.registerTileEntity(TileEntityTFFlameJet.class, "flame_jet");
-		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder.class, "tower_builder");
-		GameRegistry.registerTileEntity(TileEntityTFAntibuilder.class, "tower_reverter");
-		GameRegistry.registerTileEntity(TileEntityTFTrophy.class, "trophy");
-		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner.class, "tower_boss_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive.class, "ghast_trap_inactive");
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive.class, "ghast_trap_active");
-		GameRegistry.registerTileEntity(TileEntityTFCReactorActive.class, "carminite_reactor_active");
-		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, "knight_phantom_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner.class, "snow_queen_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace.class, "cinder_furnace");
-		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner.class, "minoshroom_spawner");
-		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner.class, "alpha_yeti_spawner");
+		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner          .class, new ResourceLocation("twilightforest", "naga_spawner"             ));
+		GameRegistry.registerTileEntity(TileEntityTFLichSpawner          .class, new ResourceLocation("twilightforest", "lich_spawner"             ));
+		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner         .class, new ResourceLocation("twilightforest", "hydra_spawner"            ));
+		GameRegistry.registerTileEntity(TileEntityTFSmoker               .class, new ResourceLocation("twilightforest", "smoker"                   ));
+		GameRegistry.registerTileEntity(TileEntityTFPoppingJet           .class, new ResourceLocation("twilightforest", "popping_jet"              ));
+		GameRegistry.registerTileEntity(TileEntityTFFlameJet             .class, new ResourceLocation("twilightforest", "flame_jet"                ));
+		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder         .class, new ResourceLocation("twilightforest", "tower_builder"            ));
+		GameRegistry.registerTileEntity(TileEntityTFAntibuilder          .class, new ResourceLocation("twilightforest", "tower_reverter"           ));
+		GameRegistry.registerTileEntity(TileEntityTFTrophy               .class, new ResourceLocation("twilightforest", "trophy"                   ));
+		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner     .class, new ResourceLocation("twilightforest", "tower_boss_spawner"       ));
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive    .class, new ResourceLocation("twilightforest", "ghast_trap_inactive"      ));
+		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive      .class, new ResourceLocation("twilightforest", "ghast_trap_active"        ));
+		GameRegistry.registerTileEntity(TileEntityTFCReactorActive       .class, new ResourceLocation("twilightforest", "carminite_reactor_active" ));
+		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, new ResourceLocation("twilightforest", "knight_phantom_spawner"   ));
+		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner     .class, new ResourceLocation("twilightforest", "snow_queen_spawner"       ));
+		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace        .class, new ResourceLocation("twilightforest", "cinder_furnace"           ));
+		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner    .class, new ResourceLocation("twilightforest", "minoshroom_spawner"       ));
+		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, new ResourceLocation("twilightforest", "alpha_yeti_spawner"       ));
+	}
+
+	public static EnumRarity getRarity() {
+		return rarity != null ? rarity : EnumRarity.EPIC;
 	}
 }

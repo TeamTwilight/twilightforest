@@ -1,18 +1,13 @@
 package twilightforest.structures;
 
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.BlockStandingSign;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
@@ -20,13 +15,16 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
+import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 @Deprecated
 public abstract class StructureTFComponentOld extends StructureTFComponent {
@@ -42,6 +40,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		this.feature = feature;
 	}
 
+	@Override
 	public TFFeature getFeatureType() {
 		return feature;
 	}
@@ -204,6 +203,50 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
 			treasureType.generateChest(world, pos, trapped);
+		}
+	}
+
+	/**
+	 * Places a tripwire.
+	 *
+	 * Tries to delay notifying tripwire blocks of placement so they won't
+	 * scan unloaded chunks looking for connections.
+	 *
+	 * See {@link net.minecraftforge.common.ForgeHooks#onPlaceItemIntoWorld(ItemStack, EntityPlayer, World, BlockPos, EnumFacing, float, float, float, EnumHand)}
+	 * for block snapshot handling code.
+	 */
+	protected void placeTripwire(World world, int x, int y, int z, int size, EnumFacing facing, StructureBoundingBox sbb) {
+
+		int dx = facing.getFrontOffsetX();
+		int dz = facing.getFrontOffsetZ();
+
+		world.captureBlockSnapshots = true;
+
+		// add tripwire hooks
+		IBlockState tripwireHook = Blocks.TRIPWIRE_HOOK.getDefaultState();
+		setBlockState(world, tripwireHook.withProperty(BlockTripWireHook.FACING, facing.getOpposite()), x, y, z, sbb);
+		setBlockState(world, tripwireHook.withProperty(BlockTripWireHook.FACING, facing), x + dx * size, y, z + dz * size, sbb);
+
+		// add string
+		IBlockState tripwire = Blocks.TRIPWIRE.getDefaultState();
+		for (int i = 1; i < size; i++) {
+			setBlockState(world, tripwire, x + dx * i, y, z + dz * i, sbb);
+		}
+
+		world.captureBlockSnapshots = false;
+
+		@SuppressWarnings("unchecked")
+		List<BlockSnapshot> blockSnapshots = (List<BlockSnapshot>) world.capturedBlockSnapshots.clone();
+		world.capturedBlockSnapshots.clear();
+
+		for (BlockSnapshot snap : blockSnapshots)
+		{
+			int updateFlag = snap.getFlag();
+			IBlockState oldBlock = snap.getReplacedBlock();
+			IBlockState newBlock = world.getBlockState(snap.getPos());
+
+			newBlock.getBlock().onBlockAdded(world, snap.getPos(), newBlock);
+			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag);
 		}
 	}
 
@@ -502,25 +545,21 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	/**
-	 * Find what y level the dirt/grass/stone is.  Just check the center of the chunk we're given
+	 * Find what y-level the ground is. Just check the center of the chunk we're given.
 	 */
-	protected int getSampledDirtLevel(World world, StructureBoundingBox sbb) {
-		int dirtLevel = 256;
+	protected int findGroundLevel(World world, StructureBoundingBox sbb, int start, Predicate<IBlockState> predicate) {
 
-		Vec3i center = new BlockPos(sbb.minX + (sbb.maxX - sbb.minX + 1) / 2, sbb.minY + (sbb.maxY - sbb.minY + 1) / 2, sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2);
+		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
-		for (int y = 90; y > 0; y--) // is 90 like a good place to start? :)
-		{
+		for (int y = start; y > 0; y--) {
 			pos.setY(y);
-			Material material = world.getBlockState(pos).getMaterial();
-			if (material == Material.GROUND || material == Material.ROCK || material == Material.GRASS) {
-				dirtLevel = y;
-				break;
+			if (predicate.test(world.getBlockState(pos))) {
+				return y;
 			}
 		}
 
-		return dirtLevel;
+		return 0;
 	}
 
 	/**

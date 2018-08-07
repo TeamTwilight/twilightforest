@@ -2,7 +2,8 @@ package twilightforest.util;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import twilightforest.compat.Baubles;
@@ -29,5 +30,36 @@ public class TFItemStackUtils {
             consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
 
 		return consumedSome;
+	}
+
+	public static NonNullList<ItemStack> splitToSize(ItemStack stack) {
+
+		NonNullList<ItemStack> result = NonNullList.create();
+
+		int size = stack.getMaxStackSize();
+
+		while (!stack.isEmpty()) {
+			result.add(stack.splitStack(size));
+		}
+
+		return result;
+	}
+
+	public static boolean hasToolMaterial(ItemStack stack, Item.ToolMaterial material) {
+
+		Item item = stack.getItem();
+
+		// see TileEntityFurnace.getItemBurnTime
+		if (item instanceof ItemTool && material.toString().equals(((ItemTool)item).getToolMaterialName())) {
+			return true;
+		}
+		if (item instanceof ItemSword && material.toString().equals(((ItemSword)item).getToolMaterialName())) {
+			return true;
+		}
+		if (item instanceof ItemHoe && material.toString().equals(((ItemHoe)item).getMaterialName())) {
+			return true;
+		}
+
+		return false;
 	}
 }

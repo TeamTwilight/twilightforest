@@ -46,16 +46,16 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 					if (!worldIn.isRemote) {
 						ItemArrow itemarrow = (ItemArrow) ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
 						EntityArrow entityarrow = getArrow(worldIn, itemstack, entityplayer); // TF: use own entity creator
-						entityarrow.setAim(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
+						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation
 						EntityArrow entityarrow1 = new EntityTippedArrow(worldIn, entityLiving);
-						entityarrow1.setAim(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
+						entityarrow1.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow1.motionY += 0.007499999832361937D * 20F;
 						entityarrow1.posY += 0.025F;
 						entityarrow1.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
 						EntityArrow entityarrow2 = new EntityTippedArrow(worldIn, entityLiving);
-						entityarrow2.setAim(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
+						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow2.motionY -= 0.007499999832361937D * 20F;
 						entityarrow2.posY -= 0.025F;
 						entityarrow2.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;

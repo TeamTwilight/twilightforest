@@ -14,10 +14,10 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.TFGenLargeRainboak;
-import twilightforest.world.TFGenSmallRainboak;
-import twilightforest.world.TFGenTallGrass;
-import twilightforest.world.TFGenVines;
+import twilightforest.world.feature.TFGenLargeRainboak;
+import twilightforest.world.feature.TFGenSmallRainboak;
+import twilightforest.world.feature.TFGenTallGrass;
+import twilightforest.world.feature.TFGenVines;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;

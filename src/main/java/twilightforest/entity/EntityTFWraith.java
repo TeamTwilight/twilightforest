@@ -89,7 +89,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			return target != null
 					&& target.getEntityBoundingBox().maxY > taskOwner.getEntityBoundingBox().minY
 					&& target.getEntityBoundingBox().minY < taskOwner.getEntityBoundingBox().maxY
-					&& taskOwner.getDistanceSqToEntity(target) <= 4.0D;
+					&& taskOwner.getDistanceSq(target) <= 4.0D;
 		}
 
 		@Override
@@ -170,7 +170,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			} else {
 				EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
 
-				if (entitylivingbase.getDistanceSqToEntity(this.parentEntity) < 4096.0D) {
+				if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
 					double d1 = entitylivingbase.posX - this.parentEntity.posX;
 					double d2 = entitylivingbase.posZ - this.parentEntity.posZ;
 					this.parentEntity.rotationYaw = -((float) MathHelper.atan2(d1, d2)) * (180F / (float) Math.PI);
@@ -297,7 +297,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			// are we in a level 3 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill3) {
+			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.LARGE_HILL) {
 				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill3"), "wraith");
 			}
 		}

@@ -1,25 +1,23 @@
 package twilightforest.structures.courtyard;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponentTemplate;
-import twilightforest.util.StructureBoundingBoxUtils;
 
 import java.util.Random;
 
 public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFComponentTemplate {
+
     private final ResourceLocation HEDGE;
     private final ResourceLocation HEDGE_BIG;
+
+    private Template templateBig;
 
     @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardHedgeAbstract(ResourceLocation hedge, ResourceLocation hedgeBig) {
@@ -36,28 +34,16 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox structureBoundingBoxIn) {
-        MinecraftServer server = worldIn.getMinecraftServer();
-        TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
-
+    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
         TEMPLATE = templateManager.getTemplate(server, HEDGE);
+        templateBig = templateManager.getTemplate(server, HEDGE_BIG);
+    }
 
-        BlockPos posForSetting = this.getModifiedTemplatePositionFromRotation();
-        this.setBoundingBoxFromTemplate(posForSetting);
-
-        StructureBoundingBox sbb = StructureBoundingBoxUtils.getUnionOfSBBs(this.boundingBox, structureBoundingBoxIn);
-
-        PlacementSettings placementSettings = new PlacementSettings()
-                .setRotation(this.rotation)
-                .setReplacedBlock(Blocks.STRUCTURE_VOID)
-                .setBoundingBox(this.boundingBox);
-                //.setBoundingBox(sbb != null ? sbb : this.boundingBox);
-
-        TEMPLATE.addBlocksToWorld(worldIn, posForSetting, new CourtyardStairsTemplateProcessor(posForSetting, placementSettings), placementSettings, 2);
-
-        Template templateBig = templateManager.getTemplate(server, HEDGE_BIG);
-        templateBig.addBlocksToWorld(worldIn, posForSetting, placementSettings.setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF));
-
+    @Override
+    public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBoundingBox) {
+        placeSettings.setBoundingBox(structureBoundingBox);
+        TEMPLATE.addBlocksToWorld(world, rotatedPosition, new CourtyardStairsTemplateProcessor(rotatedPosition, placeSettings), placeSettings, 18);
+        templateBig.addBlocksToWorld(world, rotatedPosition, placeSettings.copy().setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF), 18);
         return true;
     }
 }

@@ -3,6 +3,7 @@ package twilightforest.inventory;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
@@ -21,26 +22,36 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import twilightforest.TFConfig;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ContainerTFUncrafting extends Container {
 	private InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
-	private InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
+	public InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
 	private InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
-	private IInventory tinkerInput = new InventoryTFGoblinInput(this);
-	private IInventory tinkerResult = new InventoryCraftResult();
+	public IInventory tinkerInput = new InventoryTFGoblinInput(this);
+	private InventoryCraftResult tinkerResult = new InventoryCraftResult();
 	private World world;
+	private final BlockPos pos;
+	private final EntityPlayer player;
+
+	public int unrecipeInCycle = 0;
+	public int ingredientsInCycle = 0;
+	public int recipeInCycle = 0;
 
 	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
 		this.world = world;
+		this.pos = new BlockPos(x, y, z);
+		this.player = inventory.player;
+
 		this.addSlotToContainer(new Slot(this.tinkerInput, 0, 13, 35));
 		this.addSlotToContainer(new SlotTFGoblinCraftResult(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, this.tinkerResult, 0, 147, 35));
 
@@ -72,36 +83,66 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory par1IInventory) {
+	public void onCraftMatrixChanged(IInventory inventory) {
 		// we need to see what inventory is calling this, and update appropriately
-		if (par1IInventory == this.tinkerInput) {
+		if (inventory == this.tinkerInput) {
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getStackInSlot(0);
-			IRecipe recipe = getRecipeFor(inputStack);
+			IRecipe[] recipes = getRecipesFor(inputStack);
 
-			if (recipe != null) {
-				int recipeWidth = getRecipeWidth(recipe);
-				int recipeHeight = getRecipeHeight(recipe);
+			int size = recipes.length;
+
+			if (size > 0) {
+				int recipeType = Math.floorMod(this.unrecipeInCycle, size);
+				IRecipe recipe = recipes[recipeType];
+
 				ItemStack[] recipeItems = getIngredients(recipe);
 
-				// empty whole grid to start with
-				// let's not get leftovers if something changes like the recipe size
-				for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++) {
-					this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
-				}
+				if (recipe instanceof IShapedRecipe) {
+					int recipeWidth = getRecipeWidth((IShapedRecipe) recipe);
+					int recipeHeight = getRecipeHeight((IShapedRecipe) recipe);
 
-				// set uncrafting grid
-				for (int invY = 0; invY < recipeHeight; invY++) {
-					for (int invX = 0; invX < recipeWidth; invX++) {
-						ItemStack ingredient = recipeItems[invX + invY * recipeWidth].copy();
-						// fix weird recipe for diamond/ingot blocks
-						if (!ingredient.isEmpty() && ingredient.getCount() > 1) {
-							ingredient.setCount(1);
+					// empty whole grid to start with
+					// let's not get leftovers if something changes like the recipe size
+					for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++) {
+						this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
+					}
+
+					// set uncrafting grid
+					for (int invY = 0; invY < recipeHeight; invY++) {
+						for (int invX = 0; invX < recipeWidth; invX++) {
+
+							int index = invX + invY * recipeWidth;
+							if (index >= recipeItems.length) continue;
+
+							ItemStack ingredient = recipeItems[index].copy();
+
+							// fix weird recipe for diamond/ingot blocks
+							if (!ingredient.isEmpty() && ingredient.getCount() > 1) {
+								ingredient.setCount(1);
+							}
+							if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+								ingredient.setItemDamage(0);
+							}
+							this.uncraftingMatrix.setInventorySlotContents(invX + invY * 3, ingredient);
 						}
-						if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-							ingredient.setItemDamage(0);
+					}
+				} else {
+					for (int i = 0; i < this.uncraftingMatrix.getSizeInventory(); i++) {
+						if (i < recipeItems.length) {
+							ItemStack ingredient = recipeItems[i].copy();
+
+							// fix weird recipe for diamond/ingot blocks
+							if (!ingredient.isEmpty() && ingredient.getCount() > 1)
+								ingredient.setCount(1);
+
+							if (!ingredient.isEmpty() && ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+								ingredient.setItemDamage(0);
+
+							this.uncraftingMatrix.setInventorySlotContents(i, ingredient);
+						} else {
+							this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
 						}
-						this.uncraftingMatrix.setInventorySlotContents(invX + invY * 3, ingredient);
 					}
 				}
 
@@ -141,10 +182,29 @@ public class ContainerTFUncrafting extends Container {
 			}
 		}
 
-		if (par1IInventory == this.assemblyMatrix || par1IInventory == this.tinkerInput) {
+		IRecipe recipe;
+		ItemStack result = ItemStack.EMPTY;
+
+		if (inventory == this.assemblyMatrix || inventory == this.tinkerInput) {
 			if (this.tinkerInput.isEmpty()) {
 				// display the output
-				this.tinkerResult.setInventorySlotContents(0, CraftingManager.findMatchingResult(this.assemblyMatrix, this.world));
+				IRecipe[] recipes = this.getRecipesFor(assemblyMatrix, world);
+
+				if (recipes.length > 0) {
+					int recipeType = Math.floorMod(this.recipeInCycle, recipes.length);
+					recipe = recipes[recipeType];
+
+					if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
+						this.tinkerResult.setRecipeUsed(recipe);
+
+						this.tinkerResult.setInventorySlotContents(0, result = recipe.getCraftingResult(this.assemblyMatrix));
+					} else {
+						this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+					}
+				} else {
+					this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
+				}
+
 				this.uncraftingMatrix.recraftingCost = 0;
 			} else {
 //    			if (isMatrixEmpty(this.assemblyMatrix)) {
@@ -163,7 +223,7 @@ public class ContainerTFUncrafting extends Container {
 		}
 
 		// repairing / recrafting: if there is an input item, and items in both grids, can we combine them to produce an output item that is the same type as the input item?
-		if (par1IInventory != this.combineMatrix && !this.uncraftingMatrix.isEmpty() && !this.assemblyMatrix.isEmpty()) {
+		if (inventory != this.combineMatrix && !this.uncraftingMatrix.isEmpty() && !this.assemblyMatrix.isEmpty()) {
 			// combine the two matrixen
 			for (int i = 0; i < 9; i++) {
 				if (!this.assemblyMatrix.getStackInSlot(i).isEmpty()) {
@@ -175,7 +235,7 @@ public class ContainerTFUncrafting extends Container {
 				}
 			}
 			// is there a result from this combined thing?
-			ItemStack result = CraftingManager.findMatchingResult(this.combineMatrix, this.world);
+			//ItemStack result = CraftingManager.findMatchingResult(this.combineMatrix, this.world);
 			ItemStack input = this.tinkerInput.getStackInSlot(0);
 
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
@@ -191,22 +251,16 @@ public class ContainerTFUncrafting extends Container {
 
 				// check if the input enchantments can even go onto the result item
 				Map<Enchantment, Integer> inputEnchantments = EnchantmentHelper.getEnchantments(input);
-				inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(result));
+
+				// Needed for Lambda
+				final ItemStack finalResult = result;
+				inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(finalResult));
 
 				if (inputTags != null) {
 					// remove enchantments, copy tags, re-add filtered enchantments
 					inputTags.removeTag("ench");
 					result.setTagCompound(inputTags);
 					EnchantmentHelper.setEnchantments(inputEnchantments, result);
-				}
-
-				this.tinkerResult.setInventorySlotContents(0, result);
-				this.uncraftingMatrix.uncraftingCost = 0;
-				this.uncraftingMatrix.recraftingCost = calculateRecraftingCost();
-
-				// if there is a recrafting cost, increment the repair cost of the output
-				if (this.uncraftingMatrix.recraftingCost > 0 && !result.hasDisplayName()) {
-					result.setRepairCost(input.getRepairCost() + 2);
 				}
 
 				// finally, add any innate enchantments back onto the result
@@ -221,33 +275,55 @@ public class ContainerTFUncrafting extends Container {
 						result.addEnchantment(ench, level);
 					}
 				}
+
+				this.tinkerResult.setInventorySlotContents(0, result);
+				this.uncraftingMatrix.uncraftingCost = 0;
+				this.uncraftingMatrix.recraftingCost = calculateRecraftingCost();
+
+				// if there is a recrafting cost, increment the repair cost of the output
+				if (this.uncraftingMatrix.recraftingCost > 0 && !result.hasDisplayName()) {
+					result.setRepairCost(input.getRepairCost() + 2);
+				}
 			}
 		}
 	}
 
 	private boolean isIngredientProblematic(ItemStack ingredient) {
-		return !ingredient.isEmpty() && (ingredient.getItem().hasContainerItem(ingredient) || ingredient.getUnlocalizedName().contains("itemMatter"));
+		return !ingredient.isEmpty() && (ingredient.getItem().hasContainerItem(ingredient));
 	}
 
-	/**
-	 * Get the first valid shaped recipe for the item in the input
-	 */
-	private IRecipe getRecipeFor(ItemStack inputStack) {
+	private IRecipe[] getRecipesFor(ItemStack inputStack) {
+		ArrayList<IRecipe> recipes = new ArrayList<>();
+
 		if (!inputStack.isEmpty()) {
 			for (IRecipe recipe : CraftingManager.REGISTRY) {
-				if ((recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe)
-						&& recipe.getRecipeOutput().getItem() == inputStack.getItem() && inputStack.getCount() >= recipe.getRecipeOutput().getCount()
-						&& (!recipe.getRecipeOutput().getHasSubtypes() || recipe.getRecipeOutput().getItemDamage() == inputStack.getItemDamage())) {
-					return recipe;
+				if (
+						recipe.canFit(3, 3)
+								&& !recipe.getIngredients().isEmpty()
+								&& recipe.getRecipeOutput().getItem() == inputStack.getItem() && inputStack.getCount() >= recipe.getRecipeOutput().getCount()
+								&& (!recipe.getRecipeOutput().getHasSubtypes() || recipe.getRecipeOutput().getItemDamage() == inputStack.getItemDamage())) {
+					recipes.add(recipe);
 				}
 			}
 		}
-		return null;
+
+		return recipes.toArray(new IRecipe[recipes.size()]);
+	}
+
+	private IRecipe[] getRecipesFor(InventoryCrafting matrix, World world) {
+		ArrayList<IRecipe> recipes = new ArrayList<>();
+
+		for (IRecipe recipe : CraftingManager.REGISTRY)
+			if (recipe.matches(matrix, world))
+				recipes.add(recipe);
+
+		return recipes.toArray(new IRecipe[recipes.size()]);
 	}
 
 	/**
 	 * Checks if the result is a valid match for the input.  Currently only accepts armor or tools that are the same type as the input
 	 */
+	// TODO Should we also check the slot the armors can go into, in case they don't extend armor class..?
 	private boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
 		if (inputStack.getItem() instanceof ItemPickaxe && resultStack.getItem() instanceof ItemPickaxe) {
 			return true;
@@ -382,10 +458,9 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slotNum, int mouseButton, ClickType shiftHeld, EntityPlayer par4EntityPlayer) {
-
+	public ItemStack slotClick(int slotNum, int mouseButton, ClickType shiftHeld, EntityPlayer player) {
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
-		if (slotNum > 0 && par4EntityPlayer.inventory.getItemStack().isEmpty() && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix && !this.inventorySlots.get(slotNum).getHasStack()) {
+		if (slotNum > 0 && player.inventory.getItemStack().isEmpty() && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix && !this.inventorySlots.get(slotNum).getHasStack()) {
 			// is the assembly matrix empty?
 			if (this.assemblyMatrix.isEmpty()) {
 				slotNum -= 9;
@@ -394,13 +469,13 @@ public class ContainerTFUncrafting extends Container {
 
 		// if the player is trying to take the result item and they don't have the XP to pay for it, reject them
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.tinkerResult
-				&& calculateRecraftingCost() > par4EntityPlayer.experienceLevel && !par4EntityPlayer.capabilities.isCreativeMode) {
+				&& calculateRecraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
 			return ItemStack.EMPTY;
 		}
 
 		// similarly, reject uncrafting if they can't do that either
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix
-				&& calculateUncraftingCost() > par4EntityPlayer.experienceLevel && !par4EntityPlayer.capabilities.isCreativeMode) {
+				&& calculateUncraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
 			return ItemStack.EMPTY;
 		}
 
@@ -415,7 +490,7 @@ public class ContainerTFUncrafting extends Container {
 		}
 
 		// also we may need to detect here when the player is increasing the stack size of the input slot
-		ItemStack ret = super.slotClick(slotNum, mouseButton, shiftHeld, par4EntityPlayer);
+		ItemStack ret = super.slotClick(slotNum, mouseButton, shiftHeld, player);
 
 		// just trigger this event whenever the input slot is clicked for any reason
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory instanceof InventoryTFGoblinInput) {
@@ -479,22 +554,35 @@ public class ContainerTFUncrafting extends Container {
 			ItemStack transferStack = transferSlot.getStack();
 			copyItem = transferStack.copy();
 
-			if (slotNum == 0 || slotNum == 1) {
+			if (slotNum == 0) {
 				// result or input goes to inventory or hotbar
 				if (!this.mergeItemStack(transferStack, 20, 56, true)) {
 					return ItemStack.EMPTY;
 				}
 
 				transferSlot.onSlotChange(transferStack, copyItem);  // what does this do?
-			} else if (slotNum >= 20 && slotNum < 47) {
-				// inventory goes to hotbar
-				if (!this.mergeItemStack(transferStack, 47, 56, false)) {
+			} else if (slotNum == 1) {
+				transferStack.getItem().onCreated(transferStack, this.world, player);
+
+				if (!this.mergeItemStack(transferStack, 20, 56, true))
 					return ItemStack.EMPTY;
+
+				transferSlot.onSlotChange(transferStack, copyItem);
+			} else if (slotNum >= 20 && slotNum < 47) {
+				// Checks uncrafting input slot first
+				if (!this.mergeItemStack(transferStack, 0, 1, false)) {
+					// inventory goes to hotbar
+					if (!this.mergeItemStack(transferStack, 47, 56, false)) {
+						return ItemStack.EMPTY;
+					}
 				}
 			} else if (slotNum >= 47 && slotNum < 56) {
-				// hotbar goes to inventory
-				if (!this.mergeItemStack(transferStack, 20, 47, false)) {
-					return ItemStack.EMPTY;
+				// Checks uncrafting input slot first
+				if (!this.mergeItemStack(transferStack, 0, 1, false)) {
+					// hotbar goes to inventory
+					if (!this.mergeItemStack(transferStack, 20, 47, false)) {
+						return ItemStack.EMPTY;
+					}
 				}
 			} else if (!this.mergeItemStack(transferStack, 20, 56, false)) {
 				// crafting area goes to inventory or hotbar
@@ -527,45 +615,31 @@ public class ContainerTFUncrafting extends Container {
 		}
 	}
 
+	//private static Random rand = new Random();
+
 	private ItemStack[] getIngredients(IRecipe recipe) {
 		// todo 1.12 recheck
-		if (recipe instanceof ShapedRecipes || recipe instanceof ShapedOreRecipe) {
-			ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
+		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
-			for (int i = 0; i < recipe.getIngredients().size(); i++) {
-				ItemStack[] matchingStacks = recipe.getIngredients().get(i).getMatchingStacks();
-				stacks[i] = matchingStacks.length > 0 ? matchingStacks[0] : ItemStack.EMPTY;
-			}
-
-			return stacks;
+		for (int i = 0; i < recipe.getIngredients().size(); i++) {
+			ItemStack[] matchingStacks = recipe.getIngredients().get(i).getMatchingStacks();
+			stacks[i] = matchingStacks.length > 0 ? matchingStacks[Math.floorMod(this.ingredientsInCycle, matchingStacks.length)] : ItemStack.EMPTY;
 		}
 
-		return null;
+		return stacks;
 	}
 
-	private int getRecipeWidth(IRecipe recipe) {
-		if (recipe instanceof ShapedRecipes) {
-			return ((ShapedRecipes) recipe).recipeWidth;
-		}
-		if (recipe instanceof ShapedOreRecipe) {
-			return ((ShapedOreRecipe) recipe).getWidth();
-		}
-		return -1;
+	private int getRecipeWidth(IShapedRecipe recipe) {
+		return recipe.getRecipeWidth();
 	}
 
-	private int getRecipeHeight(IRecipe recipe) {
-		if (recipe instanceof ShapedRecipes) {
-			return ((ShapedRecipes) recipe).recipeHeight;
-		}
-		if (recipe instanceof ShapedOreRecipe) {
-			return ((ShapedOreRecipe) recipe).getHeight();
-		}
-		return -1;
+	private int getRecipeHeight(IShapedRecipe recipe) {
+		return recipe.getRecipeHeight();
+
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer var1) {
-		return true;
+	public boolean canInteractWith(EntityPlayer player) {
+		return player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
 	}
-
 }

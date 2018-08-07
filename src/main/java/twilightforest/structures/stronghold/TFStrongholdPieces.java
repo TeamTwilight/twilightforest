@@ -5,8 +5,8 @@ import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
+import twilightforest.structures.start.StructureStartKnightStronghold;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,26 +14,28 @@ import java.util.Random;
 public class TFStrongholdPieces {
 
 	private static final TFStrongholdPieceWeight[] pieceWeightArray = new TFStrongholdPieceWeight[]{
-			new TFStrongholdPieceWeight(ComponentTFStrongholdSmallHallway.class, 40, 0),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdLeftTurn.class, 20, 0),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdCrossing.class, 10, 4),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdRightTurn.class, 20, 0),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdDeadEnd.class, 5, 0),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdBalconyRoom.class, 10, 3, 2),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdTrainingRoom.class, 10, 2),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdSmallStairs.class, 10, 0),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdTreasureCorridor.class, 5, 0),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdAtrium.class, 5, 2, 3),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdFoundry.class, 5, 1, 4),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdTreasureRoom.class, 5, 1, 4),
-			new TFStrongholdPieceWeight(ComponentTFStrongholdBossRoom.class, 10, 1, 4)};
+			new TFStrongholdPieceWeight(ComponentTFStrongholdSmallHallway::new, 40, 0),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdLeftTurn::new, 20, 0),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdCrossing::new, 10, 4),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdRightTurn::new, 20, 0),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdDeadEnd::new, 5, 0),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdBalconyRoom::new, 10, 3, 2),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdTrainingRoom::new, 10, 2),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdSmallStairs::new, 10, 0),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdTreasureCorridor::new, 5, 0),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdAtrium::new, 5, 2, 3),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdFoundry::new, 5, 1, 4),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdTreasureRoom::new, 5, 1, 4),
+			new TFStrongholdPieceWeight(ComponentTFStrongholdBossRoom::new, 10, 1, 4)};
 
 	private List<TFStrongholdPieceWeight> pieceList;
 	static int totalWeight = 0;
 
-	private static Class<? extends StructureTFComponentOld> lastPieceMade;
+	private static TFStrongholdPieceWeight lastPieceMade;
 
 	public static void registerPieces() {
+		MapGenStructureIO.registerStructure(StructureStartKnightStronghold.class, "TFKSt");
+
 		MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdSmallHallway.class, "TFSSH");
 		MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdLeftTurn.class, "TFSLT");
 		MapGenStructureIO.registerStructureComponent(ComponentTFStrongholdCrossing.class, "TFSCr");
@@ -61,7 +63,7 @@ public class TFStrongholdPieces {
 	 * sets up Arrays with the Structure pieces and their weights
 	 */
 	public void prepareStructurePieces() {
-		pieceList = new ArrayList<TFStrongholdPieceWeight>();
+		pieceList = new ArrayList<>();
 
 		for (TFStrongholdPieceWeight piece : pieceWeightArray) {
 			piece.instancesSpawned = 0;
@@ -102,12 +104,12 @@ public class TFStrongholdPieces {
 
 					if (counter < 0) {
 
-						if (!piece.isDeepEnough(index) || piece.pieceClass == lastPieceMade) {
+						if (!piece.isDeepEnough(index) || piece == lastPieceMade) {
 							break;
 						}
 
 						// we're here!
-						StructureTFStrongholdComponent component = instantiateComponent(piece.pieceClass, feature, index, facing, x, y, z);
+						StructureTFStrongholdComponent component = piece.factory.newInstance(feature, index, facing, x, y, z);
 
 						if (StructureComponent.findIntersecting(list, component.getBoundingBox()) == null) {
 							++piece.instancesSpawned;
@@ -116,7 +118,7 @@ public class TFStrongholdPieces {
 								pieceList.remove(piece);
 							}
 
-							lastPieceMade = piece.pieceClass;
+							lastPieceMade = piece;
 
 							return component;
 						}
@@ -126,7 +128,7 @@ public class TFStrongholdPieces {
 		}
 
 		// dead end?
-		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponentOld ? ((StructureTFComponentOld)parent).getFeatureType() : TFFeature.nothing, index, facing, x, y, z);
+		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponentOld ? ((StructureTFComponentOld)parent).getFeatureType() : TFFeature.NOTHING, index, facing, x, y, z);
 
 		if (StructureComponent.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
 			return deadEnd;
@@ -134,18 +136,4 @@ public class TFStrongholdPieces {
 			return null;
 		}
 	}
-
-	private static StructureTFStrongholdComponent instantiateComponent(Class<? extends StructureTFComponentOld> pieceClass, TFFeature feature, int index, EnumFacing facing, int x, int y, int z) {
-		// todo 1.9
-		try {
-			return (StructureTFStrongholdComponent) pieceClass.getConstructor(TFFeature.class, int.class, EnumFacing.class, int.class, int.class, int.class).newInstance(feature, index, facing, x, y, z);
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | IllegalArgumentException e) {
-			e.printStackTrace();
-		}
-
-		////			attempted = new ComponentTFStrongholdRoom(index, nFacing, nx, ny, nz);
-
-		return null;
-	}
-
 }

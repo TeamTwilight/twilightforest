@@ -2,19 +2,12 @@
 
 itemGroup.twilightForest=Twilight Forest
 
+# ADVANCEMENTS
 advancement.twilightforest.desc=黄昏の森へのポータルを作成する。
 
-advancement.twilight_magic_map_focus=火で書き込む
-advancement.twilight_magic_map_focus.desc=カラスの羽根とグロウストーンダストとトーチベリーで、魔法の羽根をクラフトする。
-
-advancement.twilight_hunter=森の静寂
-advancement.twilight_hunter.desc=黄昏の森の野生動物を狩る。
-advancement.twilight_kill_naga=秤を均等にする時だ
-advancement.twilight_kill_naga.desc=ナーガ神殿でナーガを倒してナーガの鱗を手に入れ、リッチタワーを取り巻く結界魔法を破る。
-advancement.twilight_kill_lich=死者を差し出せ
-advancement.twilight_kill_lich.desc=リッチタワーの最上階でリッチを倒して杖を手に入れ、沼地の毒蚊を追い払う。
-advancement.twilight_kill_hydra=ヒドラスレイヤー
-advancement.twilight_kill_hydra.desc=ヒドラを倒して、闇の森の盲目の呪いに打ち勝つ力を手に入れる。
+# General progression
+advancement.twilight_hedge=虫を踏みつける者
+advancement.twilight_hedge.desc=生垣迷路で蜘蛛を倒す。
 
 advancement.twilight_hill1=そのブーツは私のものだ！
 advancement.twilight_hill1.desc=亡霊鉱山(小)でレッドキャップを倒す。
@@ -23,6 +16,53 @@ advancement.twilight_hill2.desc=亡霊鉱山(中)でレッドキャップ工兵�
 advancement.twilight_hill3=私にはお見通しだ
 advancement.twilight_hill3.desc=亡霊鉱山(大)でレイスを倒す。
 
+advancement.twilight_quest_ram=完璧なもこもこ？
+advancement.twilight_quest_ram.desc=色食みの羊に探しものを渡す。
+
+# Map
+advancement.twilight_magic_map_focus=火で書き込む
+advancement.twilight_magic_map_focus.desc=カラスの羽根とグロウストーンダストとトーチベリーで、魔法の羽根をクラフトする。
+advancement.twilight_magic_map=何マイル先も見える
+advancement.twilight_magic_map.desc=魔法の地図(地上)を広げる。
+advancement.twilight_maze_map=そして今、出口を見つけるために
+advancement.twilight_maze_map.desc=魔法の地図(迷宮)を広げる。
+advancement.twilight_ore_map=そんなに価値があるのか？
+advancement.twilight_ore_map.desc=魔法の地図(迷宮/鉱石)を広げる。
+
+# Mainline beginning progression
+advancement.twilight_hunter=森の静寂
+advancement.twilight_hunter.desc=黄昏の森の野生動物を狩る。
+
+advancement.twilight_kill_naga=秤を均等にする時だ
+advancement.twilight_kill_naga.desc=ナーガ神殿でナーガを倒してナーガの鱗を手に入れ、リッチタワーを取り巻く結界魔法を破る。
+advancement.twilight_naga_armors=ナーガの甲冑士
+advancement.twilight_naga_armors.desc=ナーガアーマー(胴)と(脚)をクラフトして、インベントリに両方を持つ。
+
+advancement.twilight_kill_lich=死者を差し出せ
+advancement.twilight_kill_lich.desc=リッチタワーの最上階でリッチを倒して杖を手に入れ、沼地の毒蚊を追い払い、闇の森の盲目の呪いを打ち破り、雪の森の寒さに耐える力を得る。
+advancement.twilight_lich_scepters=力を合わせて！
+advancement.twilight_lich_scepters.desc=リッチの3種類の杖を全て手に入れる。
+
+# Swamp Progression
+advancement.twilight_progress_labyrinth=マイティストロガノフ
+advancement.twilight_progress_labyrinth.desc=肉とキノコのシチューを食す事で、焼け沼に入る強靭さを得る。
+advancement.twilight_kill_hydra=ヒドラスレイヤー
+advancement.twilight_kill_hydra.desc=強大なヒドラを倒して、自分自身を力づける。
+advancement.twilight_mazebreaker=迷宮を砕く者
+advancement.twilight_mazebreaker.desc=ラビリンスの納骨堂でメイズブレイカーを手に入れる。
+advancement.twilight_hydra_chop=ヒドラ肉だ！
+advancement.twilight_hydra_chop.desc=満腹度が空の時にヒドラ肉を食べる。
+
+# Dark Forest Progression
+advancement.twilight_progress_trophy_pedestal=トロフィー・チャンピオン
+advancement.twilight_progress_trophy_pedestal.desc=闇の森の廃墟にある台座にトロフィーを置き、自らの力を示せ。
+advancement.twilight_progress_knights=カーミナイト・アクリメーション
+advancement.twilight_progress_knights.desc=ゴブリン騎士の拠点のナイトファントムを鎮めれば、ダークタワーの装置を動かすことができる。
+advancement.twilight_ghast_trap=タワーウッドの不思議なもの
+advancement.twilight_ghast_trap.desc=ガストトラップの近くでカーミナイトガストリングを倒して起動させ、ウルガストを降下させる。
+advancement.twilight_progress_urghast=炎の涙
+advancement.twilight_progress_urghast.desc=ウルガストの燃える如く赤い涙に触れる。
+
 advancement.twilight_experiment_115=神秘的な肉？
 advancement.twilight_experiment_115.desc=ケーキのように見えるが、これは...
 advancement.twilight_experiment_115_2=メモ: 大成功！
@@ -30,57 +70,34 @@ advancement.twilight_experiment_115_2.desc=しっとりとしていてとても�
 advancement.twilight_experiment_115_3=115日、115年、そして永遠に
 advancement.twilight_experiment_115_3.desc=エクスペリメント115を食べ続ける。
 
+# Snow Forest Progression
+advancement.twilight_progress_yeti=アルファの毛皮
+advancement.twilight_progress_yeti.desc=アルファイエティの柔らかな毛皮の装備を身に着ければ、氷河の極寒から身を守れる。
+advancement.twilight_progress_glacier=晴天
+advancement.twilight_progress_glacier.desc=オーロラ宮殿の最上階で雪の女王を倒す。
+advancement.twilight_arctic_dyed=最新ファッション
+advancement.twilight_arctic_dyed.desc=全ての防寒装備を染色する。
+
+# Mid-way Misc. Stuff
 advancement.twilight_glass_sword=ワン・ヒット・ワンダー
 advancement.twilight_glass_sword.desc=ガラスの剣をうまく使ってほしい。
-
-advancement.twilight_hydra_chop=ヒドラ肉！
-advancement.twilight_hydra_chop.desc=満腹度が空の時にヒドラ肉を食べる。
 
 advancement.twilight_dining=黄昏の晩餐
 advancement.twilight_dining.desc=黄昏の森で追加された全ての食べ物を食べる（調理した肉を除く）
 
-advancement.twilight_ghast_trap=タワーウッドの不思議なもの
-advancement.twilight_ghast_trap.desc=ガストトラップの近くでカーミナイトガストリングを倒して起動させ、ウルガストを降下させる。
-
-advancement.twilight_arctic_dyed=最新ファッション
-advancement.twilight_arctic_dyed.desc=全ての防寒装備を染色する。
-
-advancement.twilight_naga_armors=ナーガの甲冑士
-advancement.twilight_naga_armors.desc=ナーガアーマー(胴)と(脚)をクラフトする。
-advancement.twilight_lich_scepters=力を合わせて！
-advancement.twilight_lich_scepters.desc=リッチの3種類の杖を全て手に入れる。
-advancement.twilight_hedge=虫を踏みつける者
-advancement.twilight_hedge.desc=生垣迷路で蜘蛛を倒す。
-advancement.twilight_magic_map=何マイル先も見える
-advancement.twilight_magic_map.desc=魔法の地図(地上)を広げる。
-advancement.twilight_maze_map=そして今、出口を見つけるために
-advancement.twilight_maze_map.desc=魔法の地図(迷宮)を広げる。
-advancement.twilight_ore_map=そんなに価値があるのか？
-advancement.twilight_ore_map.desc=魔法の地図(迷宮/鉱石)を広げる。
-advancement.twilight_mazebreaker=迷宮を砕く者
-advancement.twilight_mazebreaker.desc=ラビリンスの納骨堂でメイズブレイカーを手に入れる。
 advancement.twilight_fiery_set=血と涙のガロン
 advancement.twilight_fiery_set.desc=1箇所以上の焦熱防具と、焦熱武器または道具を装備する。
-advancement.twilight_quest_ram=完璧なもこもこ？
-advancement.twilight_quest_ram.desc=色食みの羊に探しものを渡す。
 
-advancement.twilight_progress_labyrinth=マイティストロガノフ
-advancement.twilight_progress_labyrinth.desc=肉とキノコのシチューを食す事で、焼け沼に入る強靭さを得る。
-advancement.twilight_progress_trophy_pedestal=トロフィー・チャンピオン
-advancement.twilight_progress_trophy_pedestal.desc=闇の森の廃墟にある台座にトロフィーを置き、自らの力を示せ。
-advancement.twilight_progress_knights=カーミナイト・アクリメーション
-advancement.twilight_progress_knights.desc=ゴブリン騎士の拠点のナイトファントムを鎮めれば、ダークタワーの装置を動かすことができる。
-advancement.twilight_progress_urghast=炎の涙
-advancement.twilight_progress_urghast.desc=ウルガストの燃える如く赤い涙に触れれば、雪の森の寒さに耐えられる。
-advancement.twilight_progress_yeti=アルファの毛皮
-advancement.twilight_progress_yeti.desc=アルファイエティの柔らかな毛皮の装備を身に着ければ、氷河の極寒から身を守れる。
-advancement.twilight_progress_glacier=晴天
-advancement.twilight_progress_glacier.desc=オーロラ宮殿の最上階で雪の女王を倒し、高地に降る酸の雨を晴らせ。
+
+
+# Highlands
+advancement.twilight_progress_merge=究極の対決
+advancement.twilight_progress_merge.desc=ヒドラ、ウルガスト、雪の女王を倒して酸性雨を晴らし、高地へ向かう自身を勇気づける。
 advancement.twilight_progress_troll=もっと炎を
 advancement.twilight_progress_troll.desc=トロールの洞窟で灰のランプを見つけ、茨の障壁を焼き払え。
-advancement.twilight_progress_thorns=茨を越えて
+advancement.twilight_progress_thorns=茨を越えて [制作中]
 advancement.twilight_progress_thorns.desc=茨の大地を突破し、城の扉を開錠せよ。
-advancement.twilight_progress_castle=驚異の城
+advancement.twilight_progress_castle=驚異の城 [制作中]
 advancement.twilight_progress_castle.desc=その城には一体何が待ち構えているのか！？
 
 twilightforest.trophyPedestal.ineligible=あなたには資格がありません。
@@ -141,9 +158,10 @@ tile.TFFireJet.7.name=間欠炎装置(破裂)
 tile.TFFireJet.8.name=間欠炎装置(炎上)
 tile.TFNagastone.0.name=ナーガストーン(頭)
 tile.TFNagastone.1.name=ナーガストーン
-tile.TFSapling.0.name=トワイライトオークの苗木
+tile.TFSapling.name=黄昏の苗木
+tile.TFSapling.0.name=ひ弱なトワイライトオークの苗木
 tile.TFSapling.1.name=林冠木の苗木
-tile.TFSapling.2.name=マングローブの苗木
+tile.TFSapling.2.name=トワイライトマングローブの苗木
 tile.TFSapling.3.name=ダークウッドの苗木
 tile.TFSapling.4.name=丈夫なトワイライトオークの苗木
 tile.TFSapling.5.name=刻の木の苗木
@@ -273,7 +291,7 @@ tile.CinderFurnaceIdle.name=灰のかまど [未実装]
 tile.CinderLog.0.name=灰の原木 [未実装]
 tile.MiniatureStructure=%sのミニチュア [未実装]
 tile.SpiralBricks.name=螺旋状の石レンガ [製作中]
-tile.BlockOfLapisTF.name=ラピスブロック [未実装]
+tile.BlockOfLapisTF.name=ラピスラズリブロック [未実装]
 tile.EtchedNagastone.name=エッチングナーガストーン
 tile.NagastonePillar.name=ナーガストーンの柱
 tile.NagastoneStairs.0.name=ナーガストーンの階段(左)
@@ -429,6 +447,8 @@ item.fieryHelm.tooltip=炎のオーラ
 item.fieryPlate.tooltip=炎のオーラ
 item.fieryLegs.tooltip=炎のオーラ
 item.fieryBoots.tooltip=炎のオーラ
+item.phantomHelm.tooltip=不滅のオーラ
+item.phantomPlate.tooltip=不滅のオーラ
 item.yetiHelm.tooltip=凍えるオーラ
 item.yetiPlate.tooltip=凍えるオーラ
 item.yetiLegs.tooltip=凍えるオーラ
@@ -496,6 +516,7 @@ entity.twilightforest.armored_giant.name=巨人(剣)
 entity.twilightforest.ice_crystal.name=アイスクリスタル
 entity.twilightforest.apocalypse_cube.name=アポカリプスキューブ [未実装]
 entity.twilightforest.adherent.name=使徒 [未実装]
+entity.twilightforest.castle_guardian.name=キャッスルガーディアン [未実装]
 
 twilightforest.effect.frosted=凍結
 
@@ -559,6 +580,19 @@ twilightforest.config.antibuilder_blacklist.tooltip=アンチビルダーが破�
 twilightforest.config.animate_trophyitem=インベントリ内でトロフィーを回転させる
 twilightforest.config.animate_trophyitem.tooltip=インベントリ内でトロフィーを回転させます。パフォーマンスへの影響は全くありません。好きではない人はfalseにして下さい。
 
+twilightforest.config.shield_parry=盾による受け流し
+twilightforest.config.shield_parry.tooltip=我々は受け流しのために Shield Parry mod を導入することを推奨しますが、なくても設定は残ります。
+twilightforest.config.parry_non_twilight=黄昏の森以外の飛翔体の受け流し
+twilightforest.config.parry_non_twilight.tooltip=trueに設定すると、黄昏の森以外の飛翔体も受け流します。Shield Parry mod をダウンロードすることを推奨します。
+twilightforest.config.parry_window_arrow=矢の受け流し時間
+twilightforest.config.parry_window_arrow.tooltip=盾を上げた後に矢を受け流すことができる時間(ティック)。1秒は20ティックです。
+twilightforest.config.parry_window_fireball=火の玉の受け流し時間
+twilightforest.config.parry_window_fireball.tooltip=盾を上げた後に火の玉を受け流すことができる時間(ティック)。1秒は20ティックです。
+twilightforest.config.parry_window_throwable=投擲物の受け流し時間
+twilightforest.config.parry_window_throwable.tooltip=盾を上げた後に投擲物を受け流すことができる時間(ティック)。1秒は20ティックです。
+twilightforest.config.shieldParryTicksBeam=ビーム???の受け流し時間
+twilightforest.config.shieldParryTicksBeam.tooltip=???
+
 twilightforest.config.loading_screen=ローディング画面
 twilightforest.config.loading_screen.tooltip=クライアント限定: ローディング画面を設定します
 twilightforest.config.loading_icon_enable=アイテムアイコンのアニメーションを有効にする
@@ -576,43 +610,54 @@ twilightforest.config.loading_icon_tilting.tooltip=アイコンをどれだけ�
 twilightforest.config.loading_icon_tilt_pushback=アイコンの傾き(オフセット)
 twilightforest.config.loading_icon_tilt_pushback.tooltip=アイコンの傾きを戻すためのプッシュバック値を設定します。
 
-twilightforest.book.lichtower.1=§8[[冒険者のノート]] モンスターに齧られている§0 =========================== 私はこの塔を囲む奇妙なオーラを調べ始めた。塔のレンガは、私が以前見たよりも強い呪いによって保護されている。呪いの魔力は周辺まで広がっている。
+twilightforest.book.lichtower.1=§8[[冒険者のノート]]\nモンスターに齧られている§0\n\n私はこの塔を囲む奇妙なオーラを調べ始めた。塔のレンガは、私が以前見たよりも強い呪いによって保護されている。呪いの魔力は周辺まで広がっている。
 twilightforest.book.lichtower.2=私の故郷では、この魔力を扱う選択肢がたくさんあるが、私にできることは限られている。研究しなければならないだろう...
-twilightforest.book.lichtower.3=§8[[数ページ後]]§0 画期的な発見だ！旅の途中、私は飾られた神殿の中に巨大な蛇のようなモンスターを見つけた。そしてその近くで、風化した緑色の鱗を拾った。鱗の魔力は、私が求めていた呪いを打ち破る力を持っているようだが、かなり弱い。
+twilightforest.book.lichtower.3=§8[[数ページ後]]§0\n\n画期的な発見だ！旅の途中、私は飾られた神殿の中に巨大な蛇のようなモンスターを見つけた。そしてその近くで、風化した緑色の鱗を拾った。鱗の魔力は、私が求めていた呪いを打ち破る力を持っているようだが、かなり弱い。
 twilightforest.book.lichtower.4=モンスターから直接鱗を採取する必要があるだろう。
-twilightforest.book.labyrinth.1=§8[[冒険者のノート]] 防水紙に書かれている§0 =========================== この沼地の蚊は厄介だが、奇妙だ。それらの大半は自然に発生したようではなく、生態系にも影響していないようだ。
+
+twilightforest.book.labyrinth.1=§8[[冒険者のノート]]\n防水紙に書かれている§0\n\nこの沼地の蚊は厄介だが、奇妙だ。それらの大半は自然に発生したようではなく、生態系にも影響していないようだ。
 twilightforest.book.labyrinth.2=この蚊は、何らかの魔法の呪いではないかと疑い始めた。
-twilightforest.book.labyrinth.3=§8[[次のページ]]§0 更に私は、ここでラビリンスの保護呪文にも遭遇した。保護呪文と蚊はどちらも呪いだ。この呪いは私が過去に経験したものとは異なる源泉からなるようだ。更に研究しなければならない。
-twilightforest.book.labyrinth.4=§8[[次のページ]]§0 呪いは、単独では作れないほどの強力なもののようだ。複数の魔法使いが協力する必要がある。魔法使いが一人でも協力を止めると、沼全体の呪いが落ちるようだ。
+twilightforest.book.labyrinth.3=§8[[次のページ]]§0\n\n更に私は、ここでラビリンスの保護呪文にも遭遇した。保護呪文と蚊はどちらも呪いだ。この呪いは私が過去に経験したものとは異なる源泉からなるようだ。更に研究しなければならない。
+twilightforest.book.labyrinth.4=§8[[次のページ]]§0\n\n呪いは、単独では作れないほどの強力なもののようだ。複数の魔法使いが協力する必要がある。魔法使いが一人でも協力を止めると、沼全体の呪いが落ちるようだ。
 twilightforest.book.labyrinth.5=不思議なことに、私の占いでは、この呪いは近くにいる魔法使いのものではなさそうだ。私は、近くの尖った屋根の塔の一つで興味深いものを見つけた...
-twilightforest.book.hydralair.1=§8[[冒険者のノート]] 耐火性のある紙に書かれている§0 =========================== 炎は、私のような達人の冒険者にとってはたいした障害ではない。私は火の海を横切り、溶岩の海を泳いだ。この燃えるような大気は興味深いものだが、最終的には何の妨げにもならない。
+
+twilightforest.book.hydralair.1=§8[[冒険者のノート]]\n耐火性のある紙に書かれている§0\n\n炎は、私のような達人の冒険者にとってはたいした障害ではない。私は火の海を横切り、溶岩の海を泳いだ。この燃えるような大気は興味深いものだが、最終的には何の妨げにもならない。
 twilightforest.book.hydralair.2=私を足止めさせたのは、別の保護呪文である。今回は、この炎の沼地の王である巨大なモンスターを取り囲んでいる。これは私が遭遇した最初の保護呪文ではなく、私はその仕組みの謎を解明し始めている。
 twilightforest.book.hydralair.3=この呪文が他の呪文と同じようなものであるなら、周辺の強力なモンスターによって維持されていると考えられる。炎の沼地を取り囲むようにいくつかの沼地があり、その沼地の地下にはミノタウロスの住処であるラビリンスがある。
 twilightforest.book.hydralair.4=呪文の主は、他のミノタウロスとは異なる、更に強力なミノタウロスのような生物と考えるのが妥当だろう...
-twilightforest.book.tfstronghold.1=§8[[冒険者のノート]] かすかに輝く紙に書かれている§0 =========================== このエリアを取り巻く暗闇の渦は、闇の森全体の保護呪文の兆候だろう。この呪文は失明の原因になる。私はこのエリアでいくつかの興味深いものを見つけており、探索を続けたいと思う。
-twilightforest.book.tfstronghold.2=§8[[次のページ]]§0 私は闇の森の中で遺跡を見つけた。これらは騎士が住むタイプの拠点のようだ。しかし、この拠点は騎士ではなくゴブリンだらけだ。彼らは騎士の鎧を身に着けてはいるが、騎士とはかけ離れた振る舞いである。
-twilightforest.book.tfstronghold.3=§8[[次のページ]]§0 遺跡の奥で、私は台座を見つけた。台座は、騎士が自らの強さを証明するためにトロフィーを置くタイプのもののようだ。
-twilightforest.book.tfstronghold.4=強力なモンスターを倒せば、闇の森の呪いを弱めることができそうだ。また、台座の上にトロフィーを置けば、拠点の主要部分にアクセスすることができそうだ。
-twilightforest.book.tfstronghold.5=私がこれまでに見たことのあるモンスターで、呪いを弱めることができるほどの力を持ったものは、炎の沼地にいた多くの頭を持つ獣だろう。これは厄介だ...
-twilightforest.book.darktower.1=§8[[冒険者のノート]] 爆発に耐えたようだ§0 =========================== この塔の装置は、私には反応しない。魔法は反応しているようだが、駄目だ。塔の装置が近くの強力なグループによって抑制されているようだ。
-twilightforest.book.darktower.2=§8[[次のページ]]§0 近くの拠点の奥から魔力が供給されているようだ。それはゴブリンのものではなく、強力だが焦点が合っていないようだ。拠点にはまだ何かいるようだ。
-twilightforest.book.darktower.3=§8[[次のページ]]§0 私の分析では、この魔力は何らかのグループから発せられているようだ。補給をして、拠点に戻ることにしよう...
-twilightforest.book.yeticave.1=§8[[冒険者のノート]] 霜で覆われている§0 =========================== この雪の大地を取り巻く吹雪は絶え間なく続いている。これは普通の雪ではなく、魔法によるものだ。これを引き起こしている原因を見つけるために実験を行う必要がありそうだ。
-twilightforest.book.yeticave.2=§8[[次のページ]]§0 闇の森の中央は、葉が赤くなっており草が死んでいる。そこには木製の塔が存在し、塔の上部にはアンテナとして機能している構造がある。
-twilightforest.book.yeticave.3=このアンテナは、雪を降らせている原因ではなく、それを引き起こす呪いの力を増幅させていると思われる。
-twilightforest.book.yeticave.4=この激しい吹雪は、闇の森の塔の頂上近くにいる強力なモンスターによって引き起こされているに違いない。モンスターを倒せば、吹雪は止むだろう。
-twilightforest.book.icetower.1=§8[[冒険者のノート]] 氷漬けになっていた§0 =========================== 私は、吹雪を乗り越え、氷河の頂上にある恐ろしい氷嵐に遭遇した。更に探検し、極地に存在するオーロラ色に輝く素晴らしい氷の宮殿を見つけた。それは何らかの呪いによって保護されているようだ。
-twilightforest.book.icetower.2=§8[[次のページ]]§0 私とて初心者ではない。この手の呪いは、近くのモンスターの力によって与えられているはずだ。
+
+twilightforest.book.tfstronghold.1=§8[[冒険者のノート]]\nかすかに輝く紙に書かれている§0\n\nこのエリアを取り巻く暗闇の渦は、闇の森全体の保護呪文の兆候だろう。この呪文は失明の原因になる。私はこのエリアでいくつかの興味深いものを見つけており、探索を続けたいと思う。
+twilightforest.book.tfstronghold.2=§8[[次のページ]]§0\n\n私は闇の森の中で遺跡を見つけた。これらは騎士が住むタイプの拠点のようだ。しかし、この拠点は騎士ではなくゴブリンだらけだ。彼らは騎士の鎧を身に着けてはいるが、騎士とはかけ離れた振る舞いである。
+twilightforest.book.tfstronghold.3=§8[[次のページ]]§0\n\n遺跡の奥で、私は台座を見つけた。台座は、騎士が自らの強さを証明するためにトロフィーを置くタイプのもののようだ。
+twilightforest.book.tfstronghold.4=強力な杖を手に入れれば、闇の森の呪いを弱めることができそうだ。また、台座の上にトロフィーを置けば、拠点の主要部分にアクセスすることが
+twilightforest.book.tfstronghold.5=できそうだ。
+
+twilightforest.book.darktower.1=§8[[冒険者のノート]]\n爆発に耐えたようだ§0\n\nこの塔の装置は、私には反応しない。魔法は反応しているようだが、駄目だ。塔の装置が近くの強力なグループによって抑制されているようだ。
+twilightforest.book.darktower.2=§8[[次のページ]]§0\n\n近くの拠点の奥から魔力が供給されているようだ。それはゴブリンのものではなく、強力だが焦点が合っていないようだ。拠点にはまだ何かいるようだ。
+twilightforest.book.darktower.3=§8[[次のページ]]§0\n\n私の分析では、この魔力は何らかのグループから発せられているようだ。補給をして、拠点に戻ることにしよう...
+
+twilightforest.book.yeticave.1=§8[[冒険者のノート]]\n霜で覆われている§0\n\nこの雪の大地を取り巻く吹雪は絶え間なく続いている。これは普通の雪ではなく、魔法によるものだ。これを引き起こしている原因を見つけるために実験を行う必要がありそうだ。
+twilightforest.book.yeticave.2=§8[[次のページ]]§0\n\n呪いは、単独では作れないほどの強力なもののようだ。複数の魔法使いが協力する必要がある。魔法使いが一人でも協力を止めると、吹雪は止むようだ。
+twilightforest.book.yeticave.3=不思議なことに、私の占いでは、この呪いは近くにいる魔法使いのものではなさそうだ。私は、近くの尖った屋根の塔の一つで興味深いものを見つけた...
+
+twilightforest.book.icetower.1=§8[[冒険者のノート]]\n氷漬けになっていた§0\n\n私は、吹雪を乗り越え、氷河の頂上にある恐ろしい氷嵐に遭遇した。更に探検し、極地に存在するオーロラ色に輝く素晴らしい氷の宮殿を見つけた。それは何らかの呪いによって保護されているようだ。
+twilightforest.book.icetower.2=§8[[次のページ]]§0\n\n私とて初心者ではない。この手の呪いは、近くのモンスターの力によって与えられているはずだ。
 twilightforest.book.icetower.3=炎の沼地を取り巻く呪いの原因は、ミノタウロスのリーダーだった。氷河の周辺には多くのイエティがいる。恐らく、彼らのリーダーがいるのだろう...
-twilightforest.book.trollcave.1=§8[[冒険者のノート]] 酸で傷ついている§0 =========================== この地域を取り巻く有毒な暴風雨から身を守る方法はなさそうだ。少し調べたところ、私が過去に遭遇した保護呪文とは異なる保護呪文がかかっているようだ。この呪文が何らかの形でこの天候に関わっていると思われる。さらなる研究が必要だ...
-twilightforest.book.trollcave.2=§8[[次のページ]]§0 このような魔法は、比類のない天候の魔術師にしか使えないだろう。そのようなものは、遠くの極端な環境に身を隠す可能性が高い。
-twilightforest.book.trollcave.3=私の推論では、そのようなものは氷河のどこかの、恐らく砦のようなものの中にいるのではないだろうか...
-twilightforest.book.unknown.1=§8[[この本は何度もコピーされているようだ]]§0 私にはこの構造を取り巻くフィールドを説明することはできないが、魔法は強力だ。この呪いが他と同様のものなら、それを解く答えはどこかにある。
+
+twilightforest.book.trollcave.1=§8[[冒険者のノート]]\n酸で傷ついている§0\n\nこの地域を取り巻く有毒な暴風雨から身を守る方法はなさそうだ。少し調べたところ、私が過去に遭遇した保護呪文とは異なる保護呪文がかかっているようだ。
+twilightforest.book.trollcave.2=この呪文が何らかの形でこの天候に関わっていると思われる。さらなる研究が必要だ...\n\n§8[[次のページ]]§0\n\nこのような魔法は、この世界の複数の無敗の強大な悪によるものに違いない。
+twilightforest.book.trollcave.3=私の研究では、猛烈な沼地、深い暗闇で覆われた森、そして雪で覆われた地域に手がかりがあるのではないかと思われる。
+
+twilightforest.book.unknown.1=§8[[この本は何度もコピーされているようだ]]§0\n\n私にはこの構造を取り巻くフィールドを説明することはできないが、魔法は強力だ。この呪いが他と同様のものなら、それを解く答えはどこかにある。
 twilightforest.book.unknown.2=恐らく、私がやり残したこと、あるいはまだ倒していないモンスターがいるのだろう。私は戻る必要がある。後でこの場所に戻り、何かが変わるかどうか確認してみよう。
+
+# Fluid
 
 fluid.fierymetal=溶融焦熱
 fluid.knightmetal=溶融ナイトメタル
 fluid.fiery_essence=焦熱エッセンス
+
+# TCon
 
 material.nagascale.name=ナーガの鱗
 material.nagascale.prefix=ナーガの鱗の%s
@@ -636,4 +681,4 @@ modifier.synergy.desc=§oほら、苔なしだ！§r\n葉鋼がホットバー�
 modifier.stalwart.name=屈強
 modifier.stalwart.desc=§o勇猛果敢§r\n攻撃が当たると勇気が湧いてくる。
 modifier.veiled.name=ヴェール
-modifier.veiled.desc=幽霊のようだ！§r\n飛翔体が見えなくなる。
+modifier.veiled.desc=§o幽霊のようだ！§r\n飛翔体が見えなくなる。

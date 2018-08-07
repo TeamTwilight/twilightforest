@@ -5,7 +5,6 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import twilightforest.biomes.TFBiomes;
 
-
 public class GenLayerTFCompanionBiomes extends GenLayer {
 
 	public GenLayerTFCompanionBiomes(long l, GenLayer genlayer) {
@@ -18,32 +17,44 @@ public class GenLayerTFCompanionBiomes extends GenLayer {
 	 */
 	@Override
 	public int[] getInts(int x, int z, int width, int depth) {
+
 		int nx = x - 1;
 		int nz = z - 1;
 		int nwidth = width + 2;
 		int ndepth = depth + 2;
 		int input[] = parent.getInts(nx, nz, nwidth, ndepth);
 		int output[] = IntCache.getIntCache(width * depth);
+
+		int fireSwamp        = Biome.getIdForBiome(TFBiomes.fireSwamp);
+		int swamp            = Biome.getIdForBiome(TFBiomes.tfSwamp);
+		int glacier          = Biome.getIdForBiome(TFBiomes.glacier);
+		int snowyForest      = Biome.getIdForBiome(TFBiomes.snowy_forest);
+		int darkForestCenter = Biome.getIdForBiome(TFBiomes.darkForestCenter);
+		int darkForest       = Biome.getIdForBiome(TFBiomes.darkForest);
+		int highlandsCenter  = Biome.getIdForBiome(TFBiomes.highlandsCenter);
+		int highlands        = Biome.getIdForBiome(TFBiomes.highlands);
+
 		for (int dz = 0; dz < depth; dz++) {
 			for (int dx = 0; dx < width; dx++) {
-				int right = input[dx + 0 + (dz + 1) * nwidth];
-				int left = input[dx + 2 + (dz + 1) * nwidth];
-				int up = input[dx + 1 + (dz + 0) * nwidth];
-				int down = input[dx + 1 + (dz + 2) * nwidth];
+
+				int right  = input[dx + 0 + (dz + 1) * nwidth];
+				int left   = input[dx + 2 + (dz + 1) * nwidth];
+				int up     = input[dx + 1 + (dz + 0) * nwidth];
+				int down   = input[dx + 1 + (dz + 2) * nwidth];
 				int center = input[dx + 1 + (dz + 1) * nwidth];
-				if (isKey(Biome.getIdForBiome(TFBiomes.fireSwamp), center, right, left, up, down)) {
-					output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.tfSwamp);
-				} else if (isKey(Biome.getIdForBiome(TFBiomes.glacier), center, right, left, up, down)) {
-					output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.snowy_forest);
-				} else if (isKey(Biome.getIdForBiome(TFBiomes.darkForestCenter), center, right, left, up, down)) {
-					output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.darkForest);
-				} else if (isKey(Biome.getIdForBiome(TFBiomes.highlandsCenter), center, right, left, up, down)) {
-					output[dx + dz * width] = Biome.getIdForBiome(TFBiomes.highlands);
+
+				if (isKey(fireSwamp, center, right, left, up, down)) {
+					output[dx + dz * width] = swamp;
+				} else if (isKey(glacier, center, right, left, up, down)) {
+					output[dx + dz * width] = snowyForest;
+				} else if (isKey(darkForestCenter, center, right, left, up, down)) {
+					output[dx + dz * width] = darkForest;
+				} else if (isKey(highlandsCenter, center, right, left, up, down)) {
+					output[dx + dz * width] = highlands;
 				} else {
 					output[dx + dz * width] = center;
 				}
 			}
-
 		}
 
 		return output;
@@ -56,5 +67,4 @@ public class GenLayerTFCompanionBiomes extends GenLayer {
 
 		return center != biome && (right == biome || left == biome || up == biome || down == biome);
 	}
-
 }

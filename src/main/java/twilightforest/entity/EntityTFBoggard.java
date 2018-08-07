@@ -35,7 +35,7 @@ public class EntityTFBoggard extends EntityMob {
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 //        this.tasks.addTask(1, new EntityAITFRedcapShy(this, this.moveSpeed));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
+		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F, false));
 		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -79,7 +79,7 @@ public class EntityTFBoggard extends EntityMob {
 			// are we in a level 1 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill1) {
+			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.SMALL_HILL) {
 				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill1"), "boggard");
 			}
 		}

@@ -1,9 +1,12 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import twilightforest.structures.start.StructureStartCourtyard;
 
 public class NagaCourtyardPieces {
     public static void registerPieces() {
+        MapGenStructureIO.registerStructure(StructureStartCourtyard.class, "TFNC");
+
         MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardMain.class, "TFNCMn");
         MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardHedgeCap.class, "TFNCCp");
         MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardHedgeCapPillar.class, "TFNCCpP");

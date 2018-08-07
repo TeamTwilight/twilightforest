@@ -52,12 +52,12 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 		this.setSize(0.6F, 0.6F);
 		this.isReturning = false;
 		this.hand = hand;
-		this.setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override
-	public void setThrowableHeading(double x, double y, double z, float speed, float accuracy) {
-		super.setThrowableHeading(x, y, z, speed, accuracy);
+	public void shoot(double x, double y, double z, float speed, float accuracy) {
+		super.shoot(x, y, z, speed, accuracy);
 
 		// save velocity
 		this.velX = this.motionX;

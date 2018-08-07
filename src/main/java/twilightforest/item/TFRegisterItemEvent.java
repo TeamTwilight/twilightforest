@@ -1,17 +1,27 @@
 package twilightforest.item;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemMultiTexture;
+import net.minecraft.item.ItemSlab;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.compat.TFCompat;
 import twilightforest.enums.DeadrockVariant;
 import twilightforest.enums.ThornVariant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.Arrays.stream;
 import static net.minecraft.init.MobEffects.REGENERATION;
@@ -21,7 +31,6 @@ import static twilightforest.item.TFItems.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFRegisterItemEvent {
-
 	@SubscribeEvent
 	public static void onRegisterItems(RegistryEvent.Register<Item> event) {
 		ItemRegistryHelper items = new ItemRegistryHelper(event.getRegistry());
@@ -32,6 +41,7 @@ public class TFRegisterItemEvent {
 		items.register("twilight_scepter", new ItemTFTwilightWand().setUnlocalizedName("scepterTwilight").setMaxStackSize(1));
 		items.register("lifedrain_scepter", new ItemTFScepterLifeDrain().setUnlocalizedName("scepterLifeDrain").setMaxStackSize(1));
 		items.register("zombie_scepter", new ItemTFZombieWand().setUnlocalizedName("scepterZombie").setMaxStackSize(1));
+		items.register("shield_scepter", new ItemTFShieldWand().setUnlocalizedName("scepterShield").setMaxStackSize(1));
 		//items.register("Wand of Pacification [NYI]", new ItemTF().setIconIndex(6).setUnlocalizedName("wandPacification").setMaxStackSize(1));
 		items.register("ore_meter", new ItemTFOreMeter().setUnlocalizedName("oreMeter").setMaxStackSize(1));
 		items.register("magic_map", new ItemTFMagicMap().setUnlocalizedName("magicMap").setMaxStackSize(1));
@@ -153,7 +163,12 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.uncrafting_table);
 		items.registerSubItemBlock(TFBlocks.fire_jet);
 		items.registerSubItemBlock(TFBlocks.naga_stone);
-		items.registerSubItemBlock(TFBlocks.twilight_sapling);
+		items.register(new ItemBlockTFMeta(TFBlocks.twilight_sapling) {
+			@Override
+			public int getItemBurnTime(ItemStack itemStack) {
+				return 100;
+			}
+		}.setAppend(true));
 		items.register(new ItemBlockWearable(TFBlocks.moonworm));
 		items.registerSubItemBlock(TFBlocks.magic_log);
 		items.register(new ItemBlockTFLeaves(TFBlocks.magic_leaves));
@@ -191,6 +206,10 @@ public class TFRegisterItemEvent {
 		items.register(new ItemBlockTFHugeWaterLily(TFBlocks.huge_waterlily));
 		items.registerSubItemBlock(TFBlocks.slider);
 		items.registerSubItemBlock(TFBlocks.castle_brick);
+		items.registerSubItemBlock(TFBlocks.castle_stairs_brick);
+		items.registerSubItemBlock(TFBlocks.castle_stairs_cracked);
+		items.registerSubItemBlock(TFBlocks.castle_stairs_worn);
+		items.registerSubItemBlock(TFBlocks.castle_stairs_mossy);
 		items.registerSubItemBlock(TFBlocks.castle_pillar);
 		items.registerSubItemBlock(TFBlocks.castle_stairs);
 		items.registerSubItemBlock(TFBlocks.castle_rune_brick);
@@ -213,17 +232,27 @@ public class TFRegisterItemEvent {
 		items.registerBlock(TFBlocks.nagastone_pillar_weathered);
 		items.registerSubItemBlock(TFBlocks.nagastone_stairs_weathered);
 		items.registerBlock(TFBlocks.auroralized_glass);
+
+		TFCompat.initCompatItems(items);
 	}
 
-	private static class ItemRegistryHelper {
+	public static class ItemRegistryHelper {
 		private final IForgeRegistry<Item> registry;
+
+		private static List<ModelRegisterCallback> itemModels = new ArrayList<>();
+
+		public static List<ModelRegisterCallback> getItemModels() {
+			return ImmutableList.copyOf(itemModels);
+		}
 
 		ItemRegistryHelper(IForgeRegistry<Item> registry) {
 			this.registry = registry;
 		}
 
-		private void register(String registryName, Item item) {
+		public void register(String registryName, Item item) {
 			item.setRegistryName(TwilightForestMod.ID, registryName);
+			if (item instanceof ModelRegisterCallback)
+				itemModels.add((ModelRegisterCallback) item);
 			registry.register(item);
 		}
 

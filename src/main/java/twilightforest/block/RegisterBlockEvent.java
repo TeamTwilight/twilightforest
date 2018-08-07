@@ -1,7 +1,9 @@
 package twilightforest.block;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -10,6 +12,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.enums.CastleBrickVariant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class RegisterBlockEvent {
@@ -70,7 +77,13 @@ public final class RegisterBlockEvent {
 		blocks.register("huge_lilypad", (new BlockTFHugeLilyPad()).setUnlocalizedName("HugeLilyPad"));
 		blocks.register("huge_waterlily", (new BlockTFHugeWaterLily()).setUnlocalizedName("HugeWaterLily"));
 		blocks.register("slider", (new BlockTFSlider()).setUnlocalizedName("Slider"));
-		blocks.register("castle_brick", (new BlockTFCastleBlock()).setUnlocalizedName("CastleBrick"));
+		Block castleBrick = new BlockTFCastleBlock().setUnlocalizedName("CastleBrick");
+		IBlockState castleState = castleBrick.getDefaultState();
+		blocks.register("castle_brick", castleBrick);
+		blocks.register("castle_stairs_brick", new BlockTFStairs(castleState).setUnlocalizedName("CastleStairsBrick"));
+		blocks.register("castle_stairs_worn", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.WORN)).setUnlocalizedName("CastleStairsWorn"));
+		blocks.register("castle_stairs_cracked", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.CRACKED)).setUnlocalizedName("CastleStairsCracked"));
+		blocks.register("castle_stairs_mossy", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.MOSSY)).setUnlocalizedName("CastleStairsMossy"));
 		Block castlePillar = new BlockTFCastlePillar();
 		blocks.register("castle_pillar", castlePillar.setUnlocalizedName("CastlePillar"));
 		blocks.register("castle_stairs", (new BlockTFCastleStairs(castlePillar.getDefaultState())).setUnlocalizedName("CastleStairs"));
@@ -106,8 +119,14 @@ public final class RegisterBlockEvent {
 		registerFluidBlock("fiery_essence", blocks, essenceFiery);
 	}
 
+	public static List<ModelRegisterCallback> getBlockModels() {
+		return ImmutableList.copyOf(BlockRegistryHelper.blockModels);
+	}
+
 	private static class BlockRegistryHelper {
 		private final IForgeRegistry<Block> registry;
+
+		private static List<ModelRegisterCallback> blockModels = new ArrayList<>();
 
 		BlockRegistryHelper(IForgeRegistry<Block> registry) {
 			this.registry = registry;
@@ -115,10 +134,13 @@ public final class RegisterBlockEvent {
 
 		private void register(String registryName, Block block) {
 			block.setRegistryName(TwilightForestMod.ID, registryName);
+			if (block instanceof ModelRegisterCallback)
+				blockModels.add((ModelRegisterCallback) block);
 			registry.register(block);
 		}
 	}
 
+	// our internal fluid instances
 	public static final Fluid moltenFiery;
 	public static final Fluid moltenKnightmetal;
 	public static final Fluid essenceFiery;
@@ -138,26 +160,19 @@ public final class RegisterBlockEvent {
 		essenceFiery      = registerFluid(new Fluid("fiery_essence", essenceFieryStill, essenceFieryFlow).setTemperature(1000));
 	}
 
-	private static Fluid registerFluid(Fluid fluidIn) {
-		fluidIn.setUnlocalizedName(fluidIn.getName());
-
-		if (!FluidRegistry.isFluidRegistered(fluidIn.getName())) {
-			FluidRegistry.registerFluid(fluidIn);
-
-			FluidRegistry.addBucketForFluid(fluidIn);
-		} else {
-			fluidIn = FluidRegistry.getFluid(fluidIn.getName());
-		}
-
-		return fluidIn;
+	private static Fluid registerFluid(Fluid fluid) {
+		fluid.setUnlocalizedName(fluid.getName());
+		FluidRegistry.registerFluid(fluid);
+		FluidRegistry.addBucketForFluid(fluid);
+		return fluid;
 	}
 
-	private static void registerFluidBlock(BlockRegistryHelper blocks, Fluid fluidIn) {
-		registerFluidBlock("molten_" + fluidIn.getName(), blocks, fluidIn);
+	private static void registerFluidBlock(BlockRegistryHelper blocks, Fluid fluid) {
+		registerFluidBlock("molten_" + fluid.getName(), blocks, fluid);
 	}
 
-	private static void registerFluidBlock(String registryName, BlockRegistryHelper blocks, Fluid fluidIn) {
-		Block block = new BlockTFFluid(fluidIn, Material.LAVA).setUnlocalizedName(TwilightForestMod.ID + "." + fluidIn.getName()).setLightLevel(1.0F);
+	private static void registerFluidBlock(String registryName, BlockRegistryHelper blocks, Fluid fluid) {
+		Block block = new BlockTFFluid(fluid, Material.LAVA).setUnlocalizedName(TwilightForestMod.ID + "." + fluid.getName()).setLightLevel(1.0F);
 		blocks.register(registryName, block);
 	}
 }

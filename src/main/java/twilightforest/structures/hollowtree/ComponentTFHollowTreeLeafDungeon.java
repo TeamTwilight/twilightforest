@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSwarmSpider;
@@ -74,6 +74,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 		return this.addComponentParts(world, random, sbb, false);
 	}
 
+	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
 			// wood

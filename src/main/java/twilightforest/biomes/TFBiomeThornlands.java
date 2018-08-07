@@ -16,7 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.DeadrockVariant;
-import twilightforest.world.TFGenThorns;
+import twilightforest.world.feature.TFGenThorns;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;
@@ -32,7 +32,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		this.topBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SURFACE);
 		this.fillerBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.CRACKED);
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
 		this.decorator.deadBushPerChunk = 2;
 		this.decorator.cactiPerChunk = -9999;
@@ -45,8 +45,6 @@ public class TFBiomeThornlands extends TFBiomeBase {
 
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
-		super.decorate(world, rand, pos);
-
 		// add thorns!
 		for (int i = 0; i < 128; i++) {
 			int rx = pos.getX() + rand.nextInt(16) + 8;
@@ -91,7 +89,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 			// hint monster?
-			if (world.rand.nextInt(4) == 0) TFFeature.trollCave.trySpawnHintMonster(world, player);
+			if (world.rand.nextInt(4) == 0) TFFeature.TROLL_CAVE.trySpawnHintMonster(world, player);
 		}
 	}
 }

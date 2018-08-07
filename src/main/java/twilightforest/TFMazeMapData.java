@@ -32,8 +32,8 @@ public class TFMazeMapData extends MapData {
 		super.calculateMapCenter(x, z, mapScale);
 		this.yCenter = MathHelper.floor(y);
 
-		// when we are in a labyrinth, snap to the labyrinth
-		if (world.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor(x) >> 4, MathHelper.floor(z) >> 4, world) == TFFeature.labyrinth) {
+		// when we are in a labyrinth, snap to the LABYRINTH
+		if (world.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor(x) >> 4, MathHelper.floor(z) >> 4, world) == TFFeature.LABYRINTH) {
 			BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor(x) >> 4, MathHelper.floor(z) >> 4, world);
 			this.xCenter = mc.getX();
 			this.zCenter = mc.getZ();

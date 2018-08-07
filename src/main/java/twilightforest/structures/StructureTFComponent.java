@@ -17,7 +17,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
-	protected TFFeature feature = TFFeature.nothing;
+	protected TFFeature feature = TFFeature.NOTHING;
 
 	public StructureTFComponent() {
 		this.rotation = Rotation.NONE;
@@ -74,8 +74,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 				armorStand.setAlwaysRenderNameTag(true);
 				armorStand.setSilent(true);
 				armorStand.setNoGravity(true);
-				// set marker to false
-				armorStand.getDataManager().set(EntityArmorStand.STATUS, (byte) (armorStand.getDataManager().get(EntityArmorStand.STATUS) & ~16));
+				// set marker flag
+				armorStand.getDataManager().set(EntityArmorStand.STATUS, (byte) (armorStand.getDataManager().get(EntityArmorStand.STATUS) | 16));
 				world.spawnEntity(armorStand);
 			}
 		}

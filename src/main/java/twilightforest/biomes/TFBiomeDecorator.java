@@ -13,8 +13,7 @@ import net.minecraft.world.gen.feature.WorldGenLiquids;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
-import twilightforest.features.GenDruidHut;
-import twilightforest.world.*;
+import twilightforest.world.feature.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -23,7 +23,7 @@ public class TFCommonProxy implements IGuiHandler {
 	 * Called during the pre-load step.  Register stuff here.
 	 * Obviously most stuff in the common category will be just registered in the mod file
 	 */
-	public void doPreLoadRegistration() {
+	public void preInit() {
 		;
 	}
 
@@ -31,7 +31,7 @@ public class TFCommonProxy implements IGuiHandler {
 	 * Called during the load step.  Register stuff here.
 	 * Obviously most stuff in the common category will be just registered in the mod file
 	 */
-	public void doOnLoadRegistration() {
+	public void init() {
 		;
 	}
 
@@ -108,8 +108,8 @@ public class TFCommonProxy implements IGuiHandler {
 	}
 
 	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFirefly.class, "firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicada.class, "cicada");
-		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, "moonworm");
+		GameRegistry.registerTileEntity(TileEntityTFFirefly.class, "twilightforest:firefly");
+		GameRegistry.registerTileEntity(TileEntityTFCicada.class, "twilightforest:cicada");
+		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, "twilightforest:moonworm");
 	}
 }

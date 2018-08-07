@@ -48,13 +48,8 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	}
 
 	@Override
-	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public int getLightOpacity(IBlockState state) {
 		return TFConfig.performance.leavesLightOpacity;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return TFConfig.performance.leavesFullCube;
 	}
 
 	// [VanillaCopy] BlockLeavesNew.getMetaFromState - could subclass, but different VARIANT property

@@ -34,7 +34,7 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
@@ -333,14 +333,14 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 			// let's pick an attack
 			if (this.getAttackTarget().isEntityAlive()) {
-				float distance = this.getAttackTarget().getDistanceToEntity(this);
+				float distance = this.getAttackTarget().getDistance(this);
 
 				if (this.getEntitySenses().canSee(this.getAttackTarget())) {
 					this.attackEntity(this.getAttackTarget(), distance);
 				}
 			}
 
-			if (numTicksToChaseTarget-- <= 0 || getAttackTarget().isDead || getAttackTarget().getDistanceSqToEntity(this) > (double) (f * f)) {
+			if (numTicksToChaseTarget-- <= 0 || getAttackTarget().isDead || getAttackTarget().getDistanceSq(this) > (double) (f * f)) {
 				setAttackTarget(null);
 			}
 		} else {
@@ -505,7 +505,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		EntityLivingBase secondaryTarget = findSecondaryTarget(20);
 
 		if (secondaryTarget != null) {
-			float distance = secondaryTarget.getDistanceToEntity(this);
+			float distance = secondaryTarget.getDistance(this);
 
 			for (int i = 1; i < numHeads; i++) {
 				if (hc[i].isActive() && hc[i].currentState == HydraHeadContainer.State.IDLE && isTargetOnThisSide(i, secondaryTarget)) {
@@ -546,8 +546,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 				.stream()
 				.filter(e -> !(e instanceof EntityTFHydra || e instanceof EntityTFHydraPart))
 				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
-				.sorted(Comparator.comparingDouble(this::getDistanceSqToEntity))
-				.findFirst().orElse(null);
+				.min(Comparator.comparingDouble(this::getDistanceSq)).orElse(null);
 	}
 
 	private boolean isAnyHeadTargeting(Entity targetEntity) {
@@ -670,7 +669,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	private double calculateRange(DamageSource damagesource) {
-		return damagesource.getTrueSource() != null ? getDistanceSqToEntity(damagesource.getTrueSource()) : -1;
+		return damagesource.getTrueSource() != null ? getDistanceSq(damagesource.getTrueSource()) : -1;
 	}
 
 	@Override
@@ -736,15 +735,15 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		super.onDeath(par1DamageSource);
 
 		// mark the lair as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
+		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 
-			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-			if (nearbyFeature == TFFeature.hydraLair) {
+			if (nearbyFeature == TFFeature.HYDRA_LAIR) {
 				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}

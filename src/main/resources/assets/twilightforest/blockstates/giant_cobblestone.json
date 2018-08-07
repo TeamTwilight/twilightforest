@@ -1,7 +1,8 @@
 {
   "forge_marker": 1,
+  "defaults": { "textures": { "all": "minecraft:blocks/cobblestone" } },
   "variants": {
-    "inventory": [{ "model": "cube_all", "textures": { "all": "minecraft:blocks/cobblestone"}}],
-    "normal": [{ "model": "twilightforest:giant_cobblestone" }]
+    "inventory": [{ "model": "cube_all" }],
+    "normal": [{ "model": "twilightforest:util/giant_block" }]
   }
 }

@@ -13,7 +13,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFGenerator;
+import twilightforest.world.feature.TFGenerator;
 
 import java.util.List;
 import java.util.Random;
@@ -32,7 +32,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	}
 
 	public ComponentTFHollowTreeTrunk(World world, Random rand, int index, int x, int y, int z) {
-		super(TFFeature.nothing, index);
+		super(TFFeature.NOTHING, index);
 
 		height = rand.nextInt(64) + 32;
 		radius = rand.nextInt(4) + 1;

@@ -1,5 +1,6 @@
 package twilightforest.tileentity;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -14,6 +15,7 @@ import twilightforest.enums.TowerTranslucentVariant;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 	private static final int REVERT_CHANCE = 10;
@@ -272,7 +274,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 			return true;
 		}
 
-		List<IBlockState> blacklist = TFConfig.getAntiBuilderBlacklist();
+		ImmutableSet<IBlockState> blacklist = TFConfig.getDisallowedBlocks();
 		return blacklist.contains(stateThere) || blacklist.contains(replaceWith);
 	}
 

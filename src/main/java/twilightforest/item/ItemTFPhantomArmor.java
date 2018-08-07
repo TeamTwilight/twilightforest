@@ -60,6 +60,7 @@ public class ItemTFPhantomArmor extends ItemArmor implements ModelRegisterCallba
 		return !(enchantment instanceof EnchantmentVanishingCurse) && !(enchantment instanceof EnchantmentBindingCurse) && enchantment.type.canEnchantItem(stack.getItem());
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18n.format(getUnlocalizedName() + ".tooltip"));

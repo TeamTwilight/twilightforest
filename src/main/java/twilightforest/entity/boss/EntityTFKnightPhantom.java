@@ -32,7 +32,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
@@ -43,7 +43,7 @@ import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -71,10 +71,16 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+		setEquipmentBasedOnDifficulty(difficulty);
+		setEnchantmentBasedOnDifficulty(difficulty);
+		return data;
+	}
+
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
 		setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantom_chestplate));
 		setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantom_helmet));
-		return data;
 	}
 
 	@Override
@@ -163,44 +169,36 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
 
-		// mark the stronghold as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
-			int dx = getHomePosition().getX();
-			int dy = getHomePosition().getY();
-			int dz = getHomePosition().getZ();
+		super.onDeath(cause);
 
-			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
+		if (!world.isRemote && getNearbyKnights().size() <= 1) {
 
-			if (nearbyFeature == TFFeature.tfStronghold) {
-				generator.setStructureConquered(dx, dy, dz, true);
+			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this);
+
+			// make treasure for killing the last knight
+			TFTreasure.stronghold_boss.generateChest(world, treasurePos, false);
+
+			// mark the stronghold as defeated
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+
+				int dx = treasurePos.getX();
+				int dy = treasurePos.getY();
+				int dz = treasurePos.getZ();
+
+				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
+
+				if (nearbyFeature == TFFeature.KNIGHT_STRONGHOLD) {
+					generator.setStructureConquered(dx, dy, dz, true);
+				}
 			}
-		}
-
-		// make treasure for killing the last knight
-		if (!world.isRemote) {
-			// am I the last one?!?!
-			List<EntityTFKnightPhantom> nearbyKnights = getNearbyKnights();
-			if (nearbyKnights.size() <= 1) {
-				// 	make a treasure!'
-				makeATreasure();
-			}
-		}
-
-	}
-
-	private void makeATreasure() {
-		if (hasHome()) {
-			TFTreasure.stronghold_boss.generateChest(world, getHomePosition().down(), false);
-		} else {
-			TFTreasure.stronghold_boss.generateChest(world, new BlockPos(this), false);
 		}
 	}
 
 	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
+	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
 		float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 		int i = 0;

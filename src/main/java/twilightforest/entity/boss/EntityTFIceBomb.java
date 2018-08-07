@@ -38,7 +38,7 @@ public class EntityTFIceBomb extends EntityThrowable {
 		this.hasHit = true;
 
 		if (!world.isRemote) {
-			if (this.getThrower() instanceof EntityTFYetiAlpha && getDistanceSqToEntity(this.getThrower()) <= 100) {
+			if (this.getThrower() instanceof EntityTFYetiAlpha && getDistanceSq(this.getThrower()) <= 100) {
 				this.setDead();
 			}
 

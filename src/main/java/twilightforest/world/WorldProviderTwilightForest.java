@@ -5,6 +5,7 @@ package twilightforest.world;
 
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -13,6 +14,7 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
@@ -24,11 +26,15 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 
 import javax.annotation.Nullable;
 
-
 /**
  * @author Ben
  */
 public class WorldProviderTwilightForest extends WorldProviderSurface {
+
+	private static final String SEED_KEY = "CustomSeed";
+
+	private long seed;
+
 	public WorldProviderTwilightForest() {
 		setDimension(TFConfig.dimension.dimensionID);
 	}
@@ -73,11 +79,15 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	public void init() {
 		super.init();
 		this.biomeProvider = new TFBiomeProvider(world);
+		NBTTagCompound data = world.getWorldInfo().getDimensionData(TFConfig.dimension.dimensionID);
+		seed = data.hasKey(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
 	}
 
 	@Override
 	public IChunkGenerator createChunkGenerator() {
-		return new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
+		return TFConfig.dimension.skylightForest
+				? new ChunkGeneratorTwilightVoid(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled())
+				: new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
 	}
 
 	/**
@@ -143,11 +153,26 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	 */
 	@Override
 	public long getSeed() {
-		if (TFConfig.dimension.twilightForestSeed == null || TFConfig.dimension.twilightForestSeed.length() == 0) {
-			return super.getSeed();
-		} else {
-			return TFConfig.dimension.twilightForestSeed.hashCode();
+		return seed == 0L ? super.getSeed() : seed;
+	}
+
+	private long loadSeed() {
+		String seed = TFConfig.dimension.twilightForestSeed;
+		if (seed != null && !seed.isEmpty()) {
+			try {
+				return Long.parseLong(seed);
+			} catch (NumberFormatException e) {
+				return seed.hashCode();
+			}
 		}
+		return 0L;
+	}
+
+	@Override
+	public void onWorldSave() {
+		NBTTagCompound data = new NBTTagCompound();
+		data.setLong(SEED_KEY, seed);
+		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data);
 	}
 
 	@Override
@@ -173,6 +198,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	// no sideonly
 	@Override
 	public float getCloudHeight() {
-		return 161.0F;
+		return TFConfig.dimension.skylightForest ? -1F : 161F;
 	}
 }

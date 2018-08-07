@@ -32,6 +32,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 		this.entityLiving = entityLivingIn;
 		this.predicate = new Predicate<Entity>()
 		{
+			@Override
 			public boolean apply(@Nullable Entity entity)
 			{
 				if (!(entity instanceof EntityPlayer))
@@ -46,7 +47,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 				{
 					double maxRange = EntityAITFFindEntityNearestPlayer.this.maxTargetRange();
 
-					return (double)entity.getDistanceToEntity(EntityAITFFindEntityNearestPlayer.this.entityLiving) > maxRange ? false : EntityAITarget.isSuitableTarget(EntityAITFFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase)entity, false, false);
+					return (double)entity.getDistance(EntityAITFFindEntityNearestPlayer.this.entityLiving) > maxRange ? false : EntityAITarget.isSuitableTarget(EntityAITFFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase)entity, false, false);
 				}
 			}
 		};
@@ -57,6 +58,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 	/**
 	 * VanillaCopy super, but change bounding box y expansion from 4 to full range
 	 */
+	@Override
 	public boolean shouldExecute()
 	{
 		double maxRange = this.maxTargetRange();
@@ -77,6 +79,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 	/**
 	 * Use our target instead of super's.
 	 */
+	@Override
 	public void startExecuting()
 	{
 		this.entityLiving.setAttackTarget(this.entityTarget);

@@ -32,7 +32,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.List;
@@ -313,7 +313,7 @@ public class EntityTFLich extends EntityMob {
 
 		EntityTFLichBolt projectile = new EntityTFLichBolt(world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
-		projectile.setThrowableHeading(tx, ty, tz, 0.5F, 1.0F);
+		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
 		world.spawnEntity(projectile);
 	}
@@ -332,7 +332,7 @@ public class EntityTFLich extends EntityMob {
 
 		EntityTFLichBomb projectile = new EntityTFLichBomb(world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
-		projectile.setThrowableHeading(tx, ty, tz, 0.35F, 1.0F);
+		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 
 		world.spawnEntity(projectile);
 	}
@@ -583,11 +583,11 @@ public class EntityTFLich extends EntityMob {
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
-				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-				if (nearbyFeature == TFFeature.lichTower) {
+				if (nearbyFeature == TFFeature.LICH_TOWER) {
 					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}

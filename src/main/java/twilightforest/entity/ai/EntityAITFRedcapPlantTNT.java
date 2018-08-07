@@ -16,7 +16,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 		EntityLivingBase attackTarget = this.entityObj.getAttackTarget();
 		return attackTarget != null
 				&& !entityObj.heldTNT.isEmpty()
-				&& entityObj.getDistanceSqToEntity(attackTarget) < 25
+				&& entityObj.getDistanceSq(attackTarget) < 25
 				&& !isTargetLookingAtMe(attackTarget)
 				&& !isLitTNTNearby(8)
 				&& findBlockTNTNearby(5) == null;

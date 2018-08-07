@@ -1,7 +1,8 @@
 {
   "forge_marker": 1,
+  "defaults": { "textures": { "all": "minecraft:blocks/obsidian" } },
   "variants": {
-    "inventory": [{ "model": "cube_all", "textures": { "all": "minecraft:blocks/obsidian"}}],
-    "normal": [{ "model": "cube_all", "textures": { "all": "twilightforest:blocks/giant/obsidian" } }]
+    "inventory": [{ "model": "cube_all" }],
+    "normal": [{ "model": "twilightforest:util/giant_block" }]
   }
 }

@@ -12,13 +12,13 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.TFGenCaveStalactite;
-import twilightforest.world.TFGenMyceliumBlob;
+import twilightforest.world.feature.TFGenCaveStalactite;
+import twilightforest.world.feature.TFGenMyceliumBlob;
 
 import java.util.List;
 import java.util.Random;
@@ -273,16 +273,19 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		int dx = getXWithOffset(x, z);
 		int dy = y;
 		int dz = getZWithOffset(x, z);
-		BlockPos pos = new BlockPos(dx, dy, dz);
+
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, dy, dz);
+
 		if (sbb.isVecInside(pos)) {
 			// find surface above the listed coords
 			for (dy = y; dy < y + 32; dy++) {
+				pos.setY(dy);
 				if (world.isAirBlock(pos)) {
 					break;
 				}
 			}
 
-			generator.generate(world, rand, pos);
+			generator.generate(world, rand, pos.toImmutable());
 		}
 	}
 

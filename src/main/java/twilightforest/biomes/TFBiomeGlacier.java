@@ -1,10 +1,6 @@
-/**
- *
- */
 package twilightforest.biomes;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;
-import twilightforest.world.TFGenPenguins;
+import twilightforest.world.feature.TFGenPenguins;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;
@@ -30,11 +26,10 @@ public class TFBiomeGlacier extends TFBiomeBase {
 
 		getTFBiomeDecorator().setTreesPerChunk(1);
 		getTFBiomeDecorator().setGrassPerChunk(0);
+		getTFBiomeDecorator().hasCanopy = false;
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
-
+		spawnableCreatureList.clear();
 		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFPenguin.class, 10, 4, 4));
-
 	}
 
 	@Override
@@ -84,7 +79,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		}
 		// hint monster?
 		if (world.rand.nextInt(4) == 0) {
-			TFFeature.iceTower.trySpawnHintMonster(world, player);
+			TFFeature.ICE_TOWER.trySpawnHintMonster(world, player);
 		}
 	}
 }

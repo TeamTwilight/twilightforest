@@ -22,7 +22,13 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
 
     @Nullable
     @Override
-    public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
+    public Template.BlockInfo processBlock(World world, BlockPos pos, Template.BlockInfo blockInfo) {
+
+        // TODO: remove when/if no longer needed
+        if (!world.isBlockLoaded(pos)) {
+            return null;
+        }
+
         if (shouldPlaceBlock()) {
             boolean shouldMakeNewBlockInfo = false;
             IBlockState state = blockInfo.blockState;
@@ -34,7 +40,7 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
             //final IBlockState SANDSTONE_STATE = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND).withProperty(BlockDoubleStoneSlab.SEAMLESS, false);
 
             if (state.getBlock() == Blocks.DOUBLE_STONE_SLAB && state.getValue(BlockDoubleStoneSlab.VARIANT) == BlockStoneSlab.EnumType.SAND) {
-                IBlockState stateCheck = worldIn.getBlockState(pos);
+                IBlockState stateCheck = world.getBlockState(pos);
                 if (stateCheck == SMOOTHBRICK_SLAB_STATE)
                     return new Template.BlockInfo(pos, SMOOTHBRICK_SLAB_STATE, null);
                 else if (stateCheck.getMaterial() == Material.AIR)
@@ -46,7 +52,7 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
             }
 
             if (state.getBlock() == Blocks.STONE_SLAB && state.getValue(BlockStoneSlab.VARIANT) == BlockStoneSlab.EnumType.SAND) {
-                IBlockState stateCheck = worldIn.getBlockState(pos);
+                IBlockState stateCheck = world.getBlockState(pos);
 
                 if (stateCheck.getMaterial() == Material.AIR)
                     return null;

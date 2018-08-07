@@ -23,17 +23,20 @@ public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Inst
     public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "consume_hydra_chop_on_low_hunger");
     private final Map<PlayerAdvancements, HydraChopTrigger.Listeners> listeners = Maps.newHashMap();
 
+    @Override
     public ResourceLocation getId()
     {
         return ID;
     }
 
+    @Override
     public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<HydraChopTrigger.Instance> listener) {
         HydraChopTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
 
         listeners.add(listener);
     }
 
+    @Override
     public void removeListener(PlayerAdvancements playerAdvancementsIn, Listener<HydraChopTrigger.Instance> listener) {
         HydraChopTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
 
@@ -46,10 +49,12 @@ public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Inst
         }
     }
 
+    @Override
     public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
         this.listeners.remove(playerAdvancementsIn);
     }
 
+    @Override
     public HydraChopTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
         return new HydraChopTrigger.Instance();
     }

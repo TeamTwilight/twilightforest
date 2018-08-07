@@ -162,18 +162,14 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (world.getBlockState(pos).getBlock() != this) {
-			return world.getBlockState(pos).getLightValue(world, pos);
-		} else {
-			switch (state.getValue(VARIANT)) {
-				case MUSHGLOOM:
-					return 3;
-				case TORCHBERRY:
-					return 8;
-				default:
-					return 0;
-			}
+	public int getLightValue(IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			case MUSHGLOOM:
+				return 3;
+			case TORCHBERRY:
+				return 8;
+			default:
+				return 0;
 		}
 	}
 
@@ -229,9 +225,10 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			case MOSSPATCH:
 			case MAYAPPLE:
 			case CLOVERPATCH:
-			case ROOT_STRAND:
+			case FIDDLEHEAD:
 			case FORESTGRASS:
 			case DEADBUSH:
+			case ROOT_STRAND:
 				break;
 			default:
 				ret.add(new ItemStack(this, 1, damageDropped(state)));

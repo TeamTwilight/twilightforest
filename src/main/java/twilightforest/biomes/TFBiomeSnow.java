@@ -1,11 +1,7 @@
-/**
- *
- */
 package twilightforest.biomes;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -17,7 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFWinterWolf;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.potions.TFPotions;
-import twilightforest.world.TFGenLargeWinter;
+import twilightforest.world.feature.TFGenLargeWinter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +36,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(7);
 		getTFBiomeDecorator().setGrassPerChunk(1);
 
-		((TFBiomeDecorator) decorator).hasCanopy = false;
+		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().generateFalls = false;
 
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFYeti.class, 20, 4, 4));
@@ -91,7 +87,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {
-				TFFeature.yetiCave.trySpawnHintMonster(world, player);
+				TFFeature.YETI_CAVE.trySpawnHintMonster(world, player);
 			}
 		}
 	}

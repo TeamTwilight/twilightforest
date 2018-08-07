@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -9,23 +10,29 @@ import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TFCommonProxy;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.ColorHandler;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
@@ -35,13 +42,14 @@ import twilightforest.client.renderer.TileEntityTFFireflyRenderer;
 import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
 import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
 import twilightforest.client.renderer.entity.*;
+import twilightforest.client.shader.ShaderManager;
+import twilightforest.compat.TFCompat;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import twilightforest.entity.passive.*;
-import twilightforest.item.TFItems;
-import twilightforest.tileentity.critters.*;
 import twilightforest.tileentity.TileEntityTFTrophy;
+import twilightforest.tileentity.critters.*;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -58,7 +66,7 @@ public class TFClientProxy extends TFCommonProxy {
 	public static MusicTicker.MusicType TFMUSICTYPE;
 
 	@Override
-	public void doPreLoadRegistration() {
+	public void preInit() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBoar.class, m -> new RenderTFBoar(m, new ModelTFBoar()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBighorn.class, m -> new RenderTFBighorn(m, new ModelTFBighorn(), new ModelTFBighornFur(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFDeer.class, m -> new RenderTFDeer(m, new ModelTFDeer(), 0.7F));
@@ -137,8 +145,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMoonwormShot.class, RenderTFMoonwormShot::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFCharmEffect.class, m -> new RenderTFCharm(m, Minecraft.getMinecraft().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBomb.class, m -> new RenderSnowball<>(m, Items.MAGMA_CREAM, Minecraft.getMinecraft().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownAxe.class, m -> new RenderTFThrownAxe(m, TFItems.knightmetal_axe));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownPick.class, m -> new RenderTFThrownAxe(m, TFItems.knightmetal_pickaxe));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownWep.class, RenderTFThrownWep::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFFallingIce.class, RenderTFFallingIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceBomb.class, RenderTFThrownIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceSnowball.class, m -> new RenderSnowball<>(m, Items.SNOWBALL, Minecraft.getMinecraft().getRenderItem()));
@@ -152,8 +159,7 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 
 	@Override
-	public void doOnLoadRegistration() {
-		ColorHandler.init();
+	public void init() {
 
 		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 
@@ -190,6 +196,30 @@ public class TFClientProxy extends TFCommonProxy {
 		fieryArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFFieryArmor(0.5F));
 
 		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 3600);
+
+		ShaderManager.initShaders();
+
+		ClientCommandHandler.instance.registerCommand(new CommandBase() {
+			@Override
+			public String getName() {
+				return "tfreload";
+			}
+
+			@Override
+			public String getUsage(ICommandSender sender) {
+				return "commands.tffeature.reload";
+			}
+
+			@Override
+			public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+					Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
+					twilightforest.client.shader.ShaderManager.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
+					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
+						twilightforest.compat.ie.IEShaderRegister.initShaders();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -325,7 +355,9 @@ public class TFClientProxy extends TFCommonProxy {
 		if (player instanceof EntityPlayerSP) {
 			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
 			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
-			return adv != null && manager.advancementToProgress.get(adv).isDone();
+			if (adv == null) return false;
+			AdvancementProgress progress = manager.advancementToProgress.get(adv);
+			return progress != null && progress.isDone();
 		}
 
 		return super.doesPlayerHaveAdvancement(player, advId);
@@ -348,8 +380,8 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "cicada");
-		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "moonworm");
+		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "twilightforest:firefly");
+		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "twilightforest:cicada");
+		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "twilightforest:moonworm");
 	}
 }

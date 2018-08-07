@@ -154,6 +154,7 @@ public class EntityTFSnowGuardian extends EntityMob {
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingData);
 		this.setEquipmentBasedOnDifficulty(difficulty);
+		this.setEnchantmentBasedOnDifficulty(difficulty);
 		return data;
 	}
 

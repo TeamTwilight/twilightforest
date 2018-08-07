@@ -19,7 +19,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.BlockTFLog;
@@ -35,8 +35,8 @@ import twilightforest.structures.TFMaze;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
 import twilightforest.util.VanillaEntityNames;
-import twilightforest.world.TFGenSmallRainboak;
-import twilightforest.world.TFGenSmallTwilightOak;
+import twilightforest.world.feature.TFGenSmallRainboak;
+import twilightforest.world.feature.TFGenSmallTwilightOak;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1042,7 +1042,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		if (sbb.isVecInside(pos))
 		{
 			EntityItemFrame frame = new EntityItemFrame(world, pos, facing);
-			if (itemStack != null)
+			if (!itemStack.isEmpty())
 			{
 				frame.setDisplayedItem(itemStack);
 			}

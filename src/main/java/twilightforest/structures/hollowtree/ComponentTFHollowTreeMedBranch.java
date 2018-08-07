@@ -12,7 +12,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFGenerator;
+import twilightforest.world.feature.TFGenerator;
 
 import java.util.List;
 import java.util.Random;
@@ -110,6 +110,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		return this.addComponentParts(world, random, sbb, false);
 	}
 
+	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
 
 		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);

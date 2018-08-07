@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:shield_scepter"
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:shield_scepter",
+      "data": 32767
+    },
+    {
+      "item": "minecraft:golden_apple",
+	  "data": 0
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

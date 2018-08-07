@@ -9,6 +9,8 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TwilightForestMod;
 
+import java.util.UUID;
+
 @GameRegistry.ObjectHolder(TwilightForestMod.ID)
 public class TFItems {
 	public static ItemArmor.ArmorMaterial ARMOR_NAGA = EnumHelper.addArmorMaterial("NAGA_SCALE", "naga_scale", 21, new int[]{3, 6, 7, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.5F);
@@ -29,6 +31,8 @@ public class TFItems {
 	public static Item.ToolMaterial TOOL_ICE = EnumHelper.addToolMaterial("TFICE", 0, 32, 1.0F, 3.5F, 5);
 	public static Item.ToolMaterial TOOL_GLASS = EnumHelper.addToolMaterial("TFGLASS", 0, 1, 1.0F, 36.0F, 30);
 
+	static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
+
 	@GameRegistry.ObjectHolder("naga_scale")
 	public static final Item naga_scale;
 	@GameRegistry.ObjectHolder("naga_chestplate")
@@ -41,6 +45,8 @@ public class TFItems {
 	public static final Item lifedrain_scepter;
 	@GameRegistry.ObjectHolder("zombie_scepter")
 	public static final Item zombie_scepter;
+	@GameRegistry.ObjectHolder("shield_scepter")
+	public static final Item shield_scepter;
 	@GameRegistry.ObjectHolder("ore_meter")
 	public static final Item ore_meter;
 	@GameRegistry.ObjectHolder("magic_map")
@@ -281,6 +287,7 @@ public class TFItems {
 		twilight_scepter = null;
 		lifedrain_scepter = null;
 		zombie_scepter = null;
+		shield_scepter = null;
 		//items.register(wandPacification, "Wand of Pacification [NYI]");
 		ore_meter = null;
 		magic_map = null;

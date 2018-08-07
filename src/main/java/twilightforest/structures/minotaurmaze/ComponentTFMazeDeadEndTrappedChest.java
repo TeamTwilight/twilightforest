@@ -1,6 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.BlockTripWireHook;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -24,22 +24,18 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEndCh
 		// normal chest room
 		super.addComponentParts(world, rand, sbb);
 
-		// add tripwire hooks
-		this.setBlockState(world, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.WEST), 1, 1, 2, sbb);
-		this.setBlockState(world, Blocks.TRIPWIRE_HOOK.getDefaultState().withProperty(BlockTripWireHook.FACING, EnumFacing.EAST), 4, 1, 2, sbb);
-
-		// add string
-		this.setBlockState(world, Blocks.TRIPWIRE.getDefaultState(), 2, 1, 2, sbb);
-		this.setBlockState(world, Blocks.TRIPWIRE.getDefaultState(), 3, 1, 2, sbb);
+		// add tripwire
+		this.placeTripwire(world, 1, 1, 2, 3, EnumFacing.EAST, sbb);
 
 		// TNT!
-		this.setBlockState(world, Blocks.TNT.getDefaultState(), 0, 0, 2, sbb);
+		IBlockState tnt = Blocks.TNT.getDefaultState();
+		this.setBlockState(world, tnt, 0,  0, 2, sbb);
 		this.setBlockState(world, AIR, 0, -1, 2, sbb);
 		this.setBlockState(world, AIR, 1, -1, 2, sbb);
-		this.setBlockState(world, Blocks.TNT.getDefaultState(), 2, 0, 4, sbb);
-		this.setBlockState(world, Blocks.TNT.getDefaultState(), 3, 0, 4, sbb);
-		this.setBlockState(world, Blocks.TNT.getDefaultState(), 2, 0, 3, sbb);
-		this.setBlockState(world, Blocks.TNT.getDefaultState(), 3, 0, 3, sbb);
+		this.setBlockState(world, tnt, 2,  0, 4, sbb);
+		this.setBlockState(world, tnt, 3,  0, 4, sbb);
+		this.setBlockState(world, tnt, 2,  0, 3, sbb);
+		this.setBlockState(world, tnt, 3,  0, 3, sbb);
 
 		return true;
 	}

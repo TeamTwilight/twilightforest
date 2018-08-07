@@ -1,5 +1,7 @@
 package twilightforest;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -14,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
@@ -40,6 +43,11 @@ public class TFConfig {
 		@Config.LangKey(config + "spawn_in_tf")
 		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
 		public boolean newPlayersSpawnInTF = false;
+
+		@Config.LangKey(config + "skylight_forest")
+		@Config.RequiresWorldRestart
+		@Config.Comment("If true, Twilight Forest will generate as a void except for Major Structures")
+		public boolean skylightForest = false;
 	}
 
 	@Config.LangKey(config + "compat")
@@ -63,16 +71,15 @@ public class TFConfig {
 
 		@Config.LangKey(config + "leaves_light_opacity")
 		@Config.RangeInt(min = 0, max = 255)
-		@Config.Comment("If leaves are not full cubes, this controls the opacity of twilight_leaves to control amount of light blocking.")
+		@Config.Comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.")
 		public int leavesLightOpacity = 1;
-
-		@Config.LangKey(config + "leaves_full_cube")
-		@Config.Comment("Setting this false makes leaves not full cubes. This results in not blocking light at all, making them the equivalent of glass in terms of blocking light. Decreases complexity in some lighting checks.")
-		public boolean leavesFullCube = true;
 
 		@Config.LangKey(config + "glacer_packed_ice")
 		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")
 		public boolean glacierPackedIce = false;
+
+		@Config.Ignore
+		public boolean shadersSupported = true;
 	}
 
 	@Config.LangKey(config + "silent_cicadas")
@@ -92,13 +99,8 @@ public class TFConfig {
 	public static boolean disablePortalCreation = false;
 
 	@Config.LangKey(config + "portal_creator")
-	@Config.Comment("Registry String ID of item used to create the Twilight Forest Portal.")
-	public static String portalCreationItem = "minecraft:diamond";
-
-	@Config.LangKey(config + "portal_creator_meta")
-	@Config.RangeInt(min = -1)
-	@Config.Comment("Meta of item used to create the Twilight Forest Portal. -1 for any metadata.")
-	public static int portalCreationMeta = -1;
+	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.")
+	public static String[] portalCreationItems = {"minecraft:diamond"};
 
 	@Config.LangKey(config + "portal_lighting")
 	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
@@ -221,7 +223,9 @@ public class TFConfig {
 		}
 
 		void loadLoadingScreenIcons() {
-			List<ItemStack> iconList = Lists.newArrayList();
+			ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
+
+			iconList.addAll(TwilightForestMod.getLoadingIconStacksFromIMC());
 
 			for (String s : loadingIconStacks) {
 				String[] data = s.split(":");
@@ -236,7 +240,7 @@ public class TFConfig {
 				iconList.add(new ItemStack(item, 1, meta));
 			}
 
-			loadingScreenIcons = iconList;
+			loadingScreenIcons = iconList.build();
 		}
 	}
 
@@ -252,7 +256,10 @@ public class TFConfig {
 	}
 
 	private static void loadAntiBuilderBlacklist() {
-		List<IBlockState> blacklist = Lists.newArrayList();
+		ImmutableSet.Builder<IBlockState> builder = ImmutableSet.builder();
+
+		builder.addAll(TwilightForestMod.getBlacklistedBlocksFromIMC());
+
 		for (String s : antibuilderBlacklist) {
 			String[] data = s.split(":");
 			if (data.length < 2)
@@ -260,6 +267,7 @@ public class TFConfig {
 			Block block = Block.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
 			if (block != Blocks.AIR) {
 				int meta = 0;
+
 				if (data.length >= 3) {
 					try {
 						meta = Integer.parseInt(data[2]);
@@ -268,18 +276,19 @@ public class TFConfig {
 						meta = 0;
 					}
 				}
-				blacklist.add(block.getStateFromMeta(meta));
+
+				builder.add(block.getStateFromMeta(meta));
 			}
 		}
 
-		antibuilderStateBlacklist = blacklist;
+		disallowBreakingBlockList = builder.build();
 	}
 
 	@Config.Ignore
-	private static List<IBlockState> antibuilderStateBlacklist;
+	private static ImmutableSet<IBlockState> disallowBreakingBlockList;
 
-	public static List<IBlockState> getAntiBuilderBlacklist() {
-		if (antibuilderStateBlacklist == null || antibuilderStateBlacklist.isEmpty()) loadAntiBuilderBlacklist();
-		return antibuilderStateBlacklist;
+	public static ImmutableSet<IBlockState> getDisallowedBlocks() {
+		if (disallowBreakingBlockList == null || disallowBreakingBlockList.isEmpty()) loadAntiBuilderBlacklist();
+		return disallowBreakingBlockList;
 	}
 }
