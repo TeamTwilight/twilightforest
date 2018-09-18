@@ -20,16 +20,16 @@ public class RenderTFCubeOfAnnihilation extends Render<EntityTFCubeOfAnnihilatio
 	}
 
 	@Override
-	public void doRender(EntityTFCubeOfAnnihilation par1Entity, double x, double y, double z, float yaw, float partialTicks) {
-		super.doRender(par1Entity, x, y, z, yaw, partialTicks);
+	public void doRender(EntityTFCubeOfAnnihilation entity, double x, double y, double z, float yaw, float partialTicks) {
+		super.doRender(entity, x, y, z, yaw, partialTicks);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x, (float) y, (float) z);
 
-		this.bindEntityTexture(par1Entity);
+		this.bindEntityTexture(entity);
 
 		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
 
-		GlStateManager.rotate(MathHelper.wrapDegrees(((float) x + (float) z + par1Entity.ticksExisted + partialTicks) * 11F), 0, 1, 0);
+		GlStateManager.rotate(MathHelper.wrapDegrees(((float) x + (float) z + entity.ticksExisted + partialTicks) * 11F), 0, 1, 0);
 
 
 		GlStateManager.disableLighting();
@@ -37,7 +37,7 @@ public class RenderTFCubeOfAnnihilation extends Render<EntityTFCubeOfAnnihilatio
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		GlStateManager.translate(0F, -0.5F, 0F);
-		this.model.render(par1Entity, 0.0F, 0.0F, 0.0F, 0.0F, partialTicks, 0.0625F / 2F);
+		this.model.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, partialTicks, 0.0625F / 2F);
 		GlStateManager.enableLighting();
 		GlStateManager.disableBlend();
 
@@ -46,7 +46,7 @@ public class RenderTFCubeOfAnnihilation extends Render<EntityTFCubeOfAnnihilatio
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFCubeOfAnnihilation par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFCubeOfAnnihilation entity) {
 		return textureLoc;
 	}
 }

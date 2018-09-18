@@ -19,7 +19,7 @@ public class ItemTFIceBow extends ItemTFBowBase {
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem() == Item.getItemFromBlock(Blocks.ICE) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack repairWith) {
+		return repairWith.getItem() == Item.getItemFromBlock(Blocks.ICE) || super.getIsRepairable(toRepair, repairWith);
 	}
 }

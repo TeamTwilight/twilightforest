@@ -101,7 +101,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block par4) {}
+	protected void playStepSound(BlockPos pos, Block block) {}
 
 	public void selfDestruct() {
 		this.deathCounter = 10;

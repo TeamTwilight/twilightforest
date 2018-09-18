@@ -20,7 +20,7 @@ public class TFBiomeClearing extends TFBiomeBase {
 	}
 
 	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 	}
 

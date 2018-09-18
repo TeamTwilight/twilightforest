@@ -18,12 +18,12 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<Tile
 	private final ModelTFMoonworm moonwormModel = new ModelTFMoonworm();
 
 	@Override
-	public void render(@Nullable TileEntityTFMoonwormTicking tileentity, double d, double d1, double d2, float partialTime, int destroyStage, float alpha) {
+	public void render(@Nullable TileEntityTFMoonwormTicking tileentity, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
 		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentRotation;
 		if (tileentity == null) partialTime = Minecraft.getMinecraft().getRenderPartialTicks();
 
 		GlStateManager.pushMatrix();
-		EnumFacing facing = EnumFacing.getFront(tileentity != null ? tileentity.getBlockMetadata() : 0);
+		EnumFacing facing = EnumFacing.byIndex(tileentity != null ? tileentity.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;
@@ -45,7 +45,7 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<Tile
 		if (facing == EnumFacing.DOWN) {
 			rotX = 180F;
 		}
-		GlStateManager.translate(d + 0.5F, d1 + 0.5F, d2 + 0.5F);
+		GlStateManager.translate(x + 0.5F, y + 0.5F, z + 0.5F);
 		GlStateManager.rotate(rotX, 1F, 0F, 0F);
 		GlStateManager.rotate(rotZ, 0F, 0F, 1F);
 		GlStateManager.rotate(yaw, 0F, 1F, 0F);

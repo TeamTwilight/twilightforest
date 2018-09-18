@@ -3,6 +3,7 @@ package twilightforest.block;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -20,7 +21,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 
-	public static final PropertyInteger VARIANT = PropertyInteger.create("variant", 0, 15);
+	public static final IProperty<Integer> VARIANT = PropertyInteger.create("variant", 0, 15);
 
 	public BlockTFAuroraBrick() {
 		super(Material.PACKED_ICE);
@@ -71,8 +72,8 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+		items.add(new ItemStack(this, 1, 0));
 	}
 
 	@Override

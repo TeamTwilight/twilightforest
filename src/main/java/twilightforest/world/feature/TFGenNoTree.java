@@ -13,8 +13,8 @@ public class TFGenNoTree extends TFTreeGenerator {
 	public TFGenNoTree() {
 	}
 
-	public TFGenNoTree(boolean par1) {
-		super(par1);
+	public TFGenNoTree(boolean notify) {
+		super(notify);
 	}
 
 	@Override

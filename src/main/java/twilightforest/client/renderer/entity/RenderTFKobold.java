@@ -8,8 +8,8 @@ import twilightforest.entity.EntityTFKobold;
 
 public class RenderTFKobold extends RenderTFBiped<EntityTFKobold> {
 
-	public RenderTFKobold(RenderManager manager, ModelBiped modelBiped, float scale, String textureName) {
-		super(manager, modelBiped, scale, textureName);
+	public RenderTFKobold(RenderManager manager, ModelBiped modelBiped, float shadowSize, String textureName) {
+		super(manager, modelBiped, shadowSize, textureName);
 		this.addLayer(new LayerHeldItem(this));
 	}
 

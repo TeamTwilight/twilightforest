@@ -15,27 +15,28 @@ import twilightforest.tileentity.TileEntityTFTowerBossSpawner;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public enum BossVariant implements IStringSerializable {
-	NAGA          (TrophyType.GOLD    , TileEntityTFNagaSpawner.class),
-	LICH          (TrophyType.GOLD    , TileEntityTFLichSpawner.class),
-	HYDRA         (TrophyType.GOLD    , TileEntityTFHydraSpawner.class),
-	UR_GHAST      (TrophyType.GOLD    , TileEntityTFTowerBossSpawner.class),
-	KNIGHT_PHANTOM(TrophyType.IRON    , TileEntityTFKnightPhantomsSpawner.class),
-	SNOW_QUEEN    (TrophyType.GOLD    , TileEntityTFSnowQueenSpawner.class),
-	MINOSHROOM    (TrophyType.IRON    , TileEntityTFMinoshroomSpawner.class),
-	ALPHA_YETI    (TrophyType.IRON    , TileEntityTFAlphaYetiSpawner.class),
+	NAGA          (TrophyType.GOLD    , TileEntityTFNagaSpawner::new),
+	LICH          (TrophyType.GOLD    , TileEntityTFLichSpawner::new),
+	HYDRA         (TrophyType.GOLD    , TileEntityTFHydraSpawner::new),
+	UR_GHAST      (TrophyType.GOLD    , TileEntityTFTowerBossSpawner::new),
+	KNIGHT_PHANTOM(TrophyType.IRON    , TileEntityTFKnightPhantomsSpawner::new),
+	SNOW_QUEEN    (TrophyType.GOLD    , TileEntityTFSnowQueenSpawner::new),
+	MINOSHROOM    (TrophyType.IRON    , TileEntityTFMinoshroomSpawner::new),
+	ALPHA_YETI    (TrophyType.IRON    , TileEntityTFAlphaYetiSpawner::new),
 	QUEST_RAM     (TrophyType.IRONWOOD, null);
 
-	private final Class<? extends TileEntityTFBossSpawner> spawnerClass;
+	private final Supplier<? extends TileEntityTFBossSpawner> factory;
 	private final TrophyType trophyType;
 
 	public static final BossVariant[] VARIANTS = values();
 
-	BossVariant(TrophyType trophyType, @Nullable Class<? extends TileEntityTFBossSpawner> spawnerClass) {
-		this.spawnerClass = spawnerClass;
+	BossVariant(TrophyType trophyType, @Nullable Supplier<? extends TileEntityTFBossSpawner> factory) {
+		this.factory = factory;
 		this.trophyType = trophyType;
 	}
 
@@ -48,9 +49,13 @@ public enum BossVariant implements IStringSerializable {
 		return this.trophyType;
 	}
 
+	public boolean hasSpawner() {
+		return factory != null;
+	}
+
 	@Nullable
-	public Class<? extends TileEntityTFBossSpawner> getSpawnerClass() {
-		return spawnerClass;
+	public TileEntityTFBossSpawner getSpawner() {
+		return factory != null ? factory.get() : null;
 	}
 
 	public static BossVariant getVariant(int id) {

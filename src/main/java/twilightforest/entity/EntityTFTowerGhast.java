@@ -32,8 +32,8 @@ public class EntityTFTowerGhast extends EntityGhast {
 	protected float wanderFactor;
 	private int inTrapCounter;
 
-	public EntityTFTowerGhast(World par1World) {
-		super(par1World);
+	public EntityTFTowerGhast(World world) {
+		super(world);
 		this.setSize(4.0F, 6.0F);
 
 		this.wanderFactor = 16.0F;

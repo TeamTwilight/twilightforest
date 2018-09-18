@@ -15,7 +15,7 @@ public class ParticleProtection extends ParticleSuspendedTown {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public int getBrightnessForRender(float par1) {
+	public int getBrightnessForRender(float partialTicks) {
 		return 0xF000F0;
 	}
 }

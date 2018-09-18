@@ -4,14 +4,17 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -20,18 +23,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.advancements.TFAdvancements;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
+import twilightforest.advancements.TFAdvancements;
+import twilightforest.client.ModelRegisterCallbackCTM;
 import twilightforest.item.TFItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallback {
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyBool LATENT = PropertyBool.create("latent");
+@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
+public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbackCTM, IInfusionStabiliser {
+
+	public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final IProperty<Boolean> LATENT = PropertyBool.create("latent");
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
 
@@ -62,7 +71,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		IBlockState ret = getDefaultState();
-		ret = ret.withProperty(FACING, EnumFacing.getHorizontal(meta & 0b11));
+		ret = ret.withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 0b11));
 		if ((meta & 0b100) > 0) {
 			ret = ret.withProperty(LATENT, true);
 		}
@@ -73,6 +82,12 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Deprecated
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 
 	@Override
@@ -166,5 +181,20 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Override
 	public int damageDropped(IBlockState state) {
 		return 0;
+	}
+
+	@Override
+	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
+		return true;
+	}
+
+	@Override
+	public void registerItemModel() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, Loader.isModLoaded("ctm") ? new ModelResourceLocation(this.getRegistryName() + "_ctm", "latent=false") : new ModelResourceLocation(this.getRegistryName(), "latent=false"));
+	}
+
+	@Override
+	public IProperty<?>[] getIgnoredProperties() {
+		return new IProperty[] { FACING };
 	}
 }

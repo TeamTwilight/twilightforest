@@ -9,6 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+import net.minecraftforge.common.IPlantable;
 import twilightforest.block.BlockTFHedge;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
@@ -22,13 +23,14 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 	protected IBlockState leafState = TFBlocks.hedge.getDefaultState().withProperty(BlockTFHedge.VARIANT, HedgeVariant.DARKWOOD_LEAVES);
 	protected IBlockState rootState = TFBlocks.root.getDefaultState();
 
+	protected IPlantable source = TFBlocks.twilight_sapling;
 
 	public TFTreeGenerator() {
 		this(false);
 	}
 
-	public TFTreeGenerator(boolean par1) {
-		super(par1);
+	public TFTreeGenerator(boolean notify) {
+		super(notify);
 	}
 
 	@Override
@@ -74,7 +76,7 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 			return (blockState.getBlockHardness(world, pos) >= 0)
 					&& blockID != TFBlocks.stronghold_shield
 					&& blockID != TFBlocks.trophy_pedestal
-					&& blockID != TFBlocks.bossSpawner
+					&& blockID != TFBlocks.boss_spawner
 					&& (blockState.getMaterial() == Material.GRASS || blockState.getMaterial() == Material.GROUND || blockState.getMaterial() == Material.ROCK);
 		}
 	}

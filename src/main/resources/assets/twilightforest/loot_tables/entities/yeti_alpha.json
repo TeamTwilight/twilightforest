@@ -39,6 +39,22 @@
           "tag": "{\"shader_type\":\"Alpha Yeti\"}"
         }]
       }]
+    }, {
+      "name": "shader",
+      "rolls": 1,
+      "conditions": [{ "condition": "twilightforest:mod_exists", "mod_id": "immersiveengineering" }],
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:ice_bomb",
+        "functions": [{
+          "function": "twilightforest:item_or_default",
+          "item": "twilightforest:shader_bag",
+          "default": "twilightforest:ice_bomb"
+        }, {
+          "function": "set_nbt",
+          "tag": "{\"shader_rarity\":\"Twilight\"}"
+        }]
+      }]
     }
   ]
 }

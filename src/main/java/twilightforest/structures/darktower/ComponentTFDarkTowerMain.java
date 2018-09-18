@@ -418,7 +418,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		if (bottom == 0)
 		{
 			makeLargeStairsUp(world, sbb, rotation, 0);
-			rotation.add(Rotation.COUNTERCLOCKWISE_90);
+			rotation = rotation.add(Rotation.COUNTERCLOCKWISE_90);
 			bottom += spacing;
 		}
 
@@ -905,7 +905,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 	private void decorateBossSpawner(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y)
 	{
-		this.setBlockStateRotated(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
+		this.setBlockStateRotated(world, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
 	}
 
 
@@ -1042,7 +1042,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		if (sbb.isVecInside(pos))
 		{
 			EntityItemFrame frame = new EntityItemFrame(world, pos, facing);
-			if (itemStack != null)
+			if (!itemStack.isEmpty())
 			{
 				frame.setDisplayedItem(itemStack);
 			}
@@ -1641,9 +1641,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 				EnumFacing facing = EnumFacing.VALUES[direction];
 
 
-				lx += facing.getFrontOffsetX();
-				ly += facing.getFrontOffsetY();
-				lz += facing.getFrontOffsetZ();
+				lx += facing.getXOffset();
+				ly += facing.getYOffset();
+				lz += facing.getZOffset();
 
 				// if we are out of bounds, stop iterating
 				if (lx > sx + radius || lx < sx - radius || ly > y + radius || ly < y - radius || lz > sz + radius || lz < sz - radius)
@@ -1678,9 +1678,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 				// move randomly
 				EnumFacing direction = directions[move];
 
-				lx += direction.getFrontOffsetX();
-				ly += direction.getFrontOffsetY();
-				lz += direction.getFrontOffsetZ();
+				lx += direction.getXOffset();
+				ly += direction.getYOffset();
+				lz += direction.getZOffset();
 
 				// if we are out of bounds, stop iterating
 				if (lx > sx + radius || lx < sx - radius || ly > y + radius || ly < y - radius || lz > sz + radius || lz < sz - radius)

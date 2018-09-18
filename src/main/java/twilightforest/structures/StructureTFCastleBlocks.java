@@ -11,11 +11,11 @@ import java.util.Random;
 public class StructureTFCastleBlocks extends StructureComponent.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random par1Random, int x, int y, int z, boolean isWall) {
+	public void selectBlocks(Random random, int x, int y, int z, boolean isWall) {
 		if (!isWall) {
 			blockstate = Blocks.AIR.getDefaultState();
 		} else {
-			float randFloat = par1Random.nextFloat();
+			float randFloat = random.nextFloat();
 			CastleBrickVariant variant = null;
 
 			if (randFloat < 0.1F) {

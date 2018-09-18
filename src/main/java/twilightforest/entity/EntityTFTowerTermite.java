@@ -33,8 +33,8 @@ public class EntityTFTowerTermite extends EntityMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_termite");
 	private AISummonSilverfish summonSilverfish;
 
-	public EntityTFTowerTermite(World par1World) {
-		super(par1World);
+	public EntityTFTowerTermite(World world) {
+		super(world);
 		this.setSize(0.3F, 0.7F);
 	}
 
@@ -94,7 +94,7 @@ public class EntityTFTowerTermite extends EntityMob {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block par4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
 	}
 
@@ -129,6 +129,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
 		 */
+		@Override
 		public boolean shouldExecute() {
 			if (!this.silverfish.world.getGameRules().getBoolean("mobGriefing")) {
 				return false;
@@ -159,6 +160,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Returns whether an in-progress EntityAIBase should continue executing
 		 */
+		@Override
 		public boolean shouldContinueExecuting() {
 			return this.doMerge ? false : super.shouldContinueExecuting();
 		}
@@ -166,6 +168,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Execute a one shot task or start executing a continuous task
 		 */
+		@Override
 		public void startExecuting() {
 			if (!this.doMerge) {
 				super.startExecuting();
@@ -203,6 +206,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
 		 */
+		@Override
 		public boolean shouldExecute() {
 			return this.lookForFriends > 0;
 		}
@@ -210,6 +214,7 @@ public class EntityTFTowerTermite extends EntityMob {
 		/**
 		 * Updates the task
 		 */
+		@Override
 		public void updateTask() {
 			--this.lookForFriends;
 

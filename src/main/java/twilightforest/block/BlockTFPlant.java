@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -38,7 +39,7 @@ import java.util.Random;
 
 public class BlockTFPlant extends BlockBush implements IShearable, ModelRegisterCallback
 {
-	public static final PropertyEnum<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
+	public static final IProperty<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
 
 	protected BlockTFPlant() {
 		super(Material.PLANTS);
@@ -108,7 +109,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
 		PlantVariant variant = state.getValue(VARIANT);
 
 		long seed = pos.getX() * 3129871 ^ pos.getY() * 116129781L ^ pos.getZ();
@@ -120,10 +121,10 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			int zOff0 = (int) (seed >> 18 & 3L);
 			int zOff1 = (int) (seed >> 21 & 3L);
 
-			boolean xConnect0 = par1IBlockAccess.getBlockState(pos.east()).getBlock() == this && par1IBlockAccess.getBlockState(pos.east()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
-			boolean xConnect1 = par1IBlockAccess.getBlockState(pos.west()).getBlock() == this && par1IBlockAccess.getBlockState(pos.west()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
-			boolean zConnect0 = par1IBlockAccess.getBlockState(pos.south()).getBlock() == this && par1IBlockAccess.getBlockState(pos.south()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
-			boolean zConnect1 = par1IBlockAccess.getBlockState(pos.north()).getBlock() == this && par1IBlockAccess.getBlockState(pos.north()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
+			boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
+			boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
+			boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.south()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
+			boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.north()).getValue(VARIANT) == PlantVariant.MOSSPATCH;
 
 			return new AxisAlignedBB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
 					xConnect0 ? 1F : (15F - xOff0) / 16F, 1F / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F);
@@ -137,10 +138,10 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			int yOff0 = (int) (seed >> 24 & 1L);
 			int yOff1 = (int) (seed >> 27 & 1L);
 
-			boolean xConnect0 = par1IBlockAccess.getBlockState(pos.east()).getBlock() == this && par1IBlockAccess.getBlockState(pos.east()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
-			boolean xConnect1 = par1IBlockAccess.getBlockState(pos.west()).getBlock() == this && par1IBlockAccess.getBlockState(pos.west()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
-			boolean zConnect0 = par1IBlockAccess.getBlockState(pos.south()).getBlock() == this && par1IBlockAccess.getBlockState(pos.south()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
-			boolean zConnect1 = par1IBlockAccess.getBlockState(pos.north()).getBlock() == this && par1IBlockAccess.getBlockState(pos.north()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
+			boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
+			boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
+			boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.south()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
+			boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.north()).getValue(VARIANT) == PlantVariant.CLOVERPATCH;
 
 			return new AxisAlignedBB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
 					xConnect0 ? 1F : (15F - xOff0) / 16F, (1F + yOff0 + yOff1) / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F);
@@ -152,7 +153,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -225,9 +226,10 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			case MOSSPATCH:
 			case MAYAPPLE:
 			case CLOVERPATCH:
-			case ROOT_STRAND:
+			case FIDDLEHEAD:
 			case FORESTGRASS:
 			case DEADBUSH:
+			case ROOT_STRAND:
 				break;
 			default:
 				ret.add(new ItemStack(this, 1, damageDropped(state)));
@@ -263,9 +265,9 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> stackList) {
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
 		for (int i = 0; i < PlantVariant.values().length; i++) {
-			stackList.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 
@@ -286,18 +288,18 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random) {
-		super.randomDisplayTick(state, par1World, pos, par5Random);
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+		super.randomDisplayTick(state, world, pos, random);
 
-		if (state.getValue(VARIANT) == PlantVariant.MOSSPATCH && par5Random.nextInt(10) == 0) {
-			par1World.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + par5Random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + par5Random.nextFloat(), 0.0D, 0.0D, 0.0D);
+		if (state.getValue(VARIANT) == PlantVariant.MOSSPATCH && random.nextInt(10) == 0) {
+			world.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 

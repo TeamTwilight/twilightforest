@@ -19,11 +19,16 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +45,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
+import twilightforest.network.PacketThrowPlayer;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.util.EntityUtil;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
@@ -63,6 +71,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, 0).setSaved(false);
 	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, 0).setSaved(false);
 
+	private static final DataParameter<Boolean> DATA_DAZE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
 
 	public EntityTFNaga(World world) {
 		super(world);
@@ -77,6 +86,20 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 		this.goNormal();
+	}
+
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(DATA_DAZE, false);
+	}
+
+	public boolean isDazed() {
+		return dataManager.get(DATA_DAZE);
+	}
+
+	protected void setDazed(boolean daze) {
+		dataManager.set(DATA_DAZE, daze);
 	}
 
 	private float getMaxHealthPerDifficulty() {
@@ -181,7 +204,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		@Override
 		public void startExecuting() {
 			// NAGA SMASH!
-			if (!taskOwner.getWorld().isRemote) {
+			if (!taskOwner.world.isRemote) {
+
 				AxisAlignedBB bb = taskOwner.getEntityBoundingBox();
 				int minx = MathHelper.floor(bb.minX - 0.75D);
 				int miny = MathHelper.floor(bb.minY + 1.01D);
@@ -189,14 +213,14 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				int maxx = MathHelper.floor(bb.maxX + 0.75D);
 				int maxy = MathHelper.floor(bb.maxY + 0.0D);
 				int maxz = MathHelper.floor(bb.maxZ + 0.75D);
-				if (taskOwner.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
-					for (int dx = minx; dx <= maxx; dx++) {
-						for (int dy = miny; dy <= maxy; dy++) {
-							for (int dz = minz; dz <= maxz; dz++) {
-								BlockPos pos = new BlockPos(dx, dy, dz);
-								if (taskOwner.getWorld().getBlockState(pos).getBlockHardness(taskOwner.getWorld(), pos) >= 0)
-									taskOwner.getWorld().destroyBlock(pos, true);
-							}
+
+				BlockPos min = new BlockPos(minx, miny, minz);
+				BlockPos max = new BlockPos(maxx, maxy, maxz);
+
+				if (taskOwner.world.isAreaLoaded(min, max)) {
+					for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+						if (EntityUtil.canDestroyBlock(taskOwner.world, pos, taskOwner)) {
+							taskOwner.world.destroyBlock(pos, true);
 						}
 					}
 				}
@@ -208,7 +232,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		INTIMIDATE,
 		CRUMBLE,
 		CHARGE,
-		CIRCLE
+		CIRCLE,
+		DAZE
 	}
 
 	static class AIMovementPattern extends EntityAIBase {
@@ -241,6 +266,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				// If we still have an uncompleted path don't run yet
 				// This isn't in shouldExecute/shouldContinueExecuting because we don't want to reset the task
 				// todo 1.10 there's a better way to do this I think
+				taskOwner.setDazed(false); // Since we have a path, we shouldn't be dazed anymore.
 				return;
 			}
 
@@ -282,6 +308,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
 					break;
 				}
+				case DAZE: {
+					taskOwner.setDazed(true);
+					break;
+				}
 			}
 
 			stateCounter--;
@@ -291,6 +321,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 		private void transitionState() {
+			taskOwner.setDazed(false);
 			switch (movementState) {
 				case INTIMIDATE: {
 					clockwise = !clockwise;
@@ -312,7 +343,16 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				case CIRCLE:
 					doIntimidate();
 					break;
+				case DAZE:
+					doCircle();
+					break;
 			}
+		}
+
+		private void doDaze() {
+			movementState = MovementState.DAZE;
+			taskOwner.getNavigator().clearPath();
+			stateCounter = 60 + taskOwner.rand.nextInt(40);
 		}
 
 		private void doCircle() {
@@ -350,6 +390,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		super.onLivingUpdate();
 
 		if (!world.isRemote && this.world.getGameRules().getBoolean("mobGriefing")) {
+
 			AxisAlignedBB bb = this.getEntityBoundingBox();
 			int minx = MathHelper.floor(bb.minX - 0.75D);
 			int miny = MathHelper.floor(bb.minY + 1.01D);
@@ -357,15 +398,15 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			int maxx = MathHelper.floor(bb.maxX + 0.75D);
 			int maxy = MathHelper.floor(bb.maxY + 0.0D);
 			int maxz = MathHelper.floor(bb.maxZ + 0.75D);
-			if (this.getWorld().isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
-				for (int dx = minx; dx <= maxx; dx++) {
-					for (int dy = miny; dy <= maxy; dy++) {
-						for (int dz = minz; dz <= maxz; dz++) {
-							BlockPos pos = new BlockPos(dx, dy, dz);
-							IBlockState state = this.getWorld().getBlockState(pos);
-							if (state.getMaterial() == Material.LEAVES && state.getBlockHardness(this.getWorld(), pos) >= 0)
-								this.getWorld().destroyBlock(pos, true);
-						}
+
+			BlockPos min = new BlockPos(minx, miny, minz);
+			BlockPos max = new BlockPos(maxx, maxy, maxz);
+
+			if (world.isAreaLoaded(min, max)) {
+				for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+					IBlockState state = world.getBlockState(pos);
+					if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(world, pos, state, this)) {
+						world.destroyBlock(pos, true);
 					}
 				}
 			}
@@ -489,7 +530,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		public void onUpdateMoveHelper() {
 			// TF - slither!
 			MovementState currentState = ((EntityTFNaga) entity).movementAI.movementState;
-			if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
+			if(currentState == MovementState.DAZE) {
+				this.entity.moveStrafing = 0F;
+			} else if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
 				this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * 0.6F;
 			} else {
 				this.entity.moveStrafing *= 0.8F;
@@ -536,9 +579,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			}
 
 			BlockPos pos = new BlockPos(dx, dy, dz);
-			IBlockState state = world.getBlockState(pos);
 
-			if (state.getBlockHardness(world, pos) >= 0.0F && !state.getBlock().isAir(state, world, pos)) {
+			if (EntityUtil.canDestroyBlock(world, pos, this)) {
 				// todo limit what can be broken
 				world.destroyBlock(pos, true);
 
@@ -617,8 +659,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		if (damagesource != DamageSource.FALL && super.attackEntityFrom(damagesource, i)) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (source != DamageSource.FALL && super.attackEntityFrom(source, amount)) {
 			this.ticksSinceDamaged = 0;
 			return true;
 		} else {
@@ -628,6 +670,18 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public boolean attackEntityAsMob(Entity toAttack) {
+		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof EntityLivingBase && ((EntityLivingBase) toAttack).isActiveItemStackBlocking()) {
+			toAttack.addVelocity(motionX * 1.25D, 0.5D, motionZ * 1.25D);
+			motionX *= -1.5D;
+			motionY += 0.5D;
+			motionZ *= -1.5D;
+			if (toAttack instanceof EntityPlayerMP)
+				TFPacketHandler.CHANNEL.sendTo(new PacketThrowPlayer((float) toAttack.motionX, (float) toAttack.motionY, (float) toAttack.motionZ), (EntityPlayerMP) toAttack);
+			attackEntityFrom(DamageSource.GENERIC, 4F);
+			world.playSound(null, toAttack.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
+			movementAI.doDaze();
+			return false;
+		}
 		boolean result = super.attackEntityAsMob(toAttack);
 
 		if (result) {
@@ -651,7 +705,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			if (hasHome()) {
 				BlockPos home = this.getHomePosition();
-				world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
+				world.setBlockState(home, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
 			}
 
 			setDead();
@@ -727,7 +781,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position
-			diff = diff.addVector(idealX, 0, idealZ).normalize();
+			diff = diff.add(idealX, 0, idealZ).normalize();
 
 			double f = 2.0D;
 
@@ -741,7 +795,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 			if (i == 0) {
 				// tilt segment next to head up towards head
-				diff = diff.addVector(0, -0.15, 0);
+				diff = diff.add(0, -0.15, 0);
 			}
 
 			bodySegments[i].setRotation((float) (Math.atan2(diff.z, diff.x) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.y, distance) * 180.0D / Math.PI));
@@ -749,21 +803,21 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 		if (hasHome()) {
 			BlockPos home = this.getHomePosition();
-			nbttagcompound.setTag("Home", new NBTTagIntArray(new int[]{home.getX(), home.getY(), home.getZ()}));
+			compound.setTag("Home", new NBTTagIntArray(new int[]{home.getX(), home.getY(), home.getZ()}));
 		}
 
-		super.writeEntityToNBT(nbttagcompound);
+		super.writeEntityToNBT(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
 
-		if (nbttagcompound.hasKey("Home", Constants.NBT.TAG_INT_ARRAY)) {
-			int[] home = nbttagcompound.getIntArray("Home");
+		if (compound.hasKey("Home", Constants.NBT.TAG_INT_ARRAY)) {
+			int[] home = compound.getIntArray("Home");
 			this.setHomePosAndDistance(new BlockPos(home[0], home[1], home[2]), 20);
 		} else {
 			this.detachHome();
@@ -775,8 +829,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 		// mark the courtyard as defeated
 		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
 			int dx = MathHelper.floor(this.posX);

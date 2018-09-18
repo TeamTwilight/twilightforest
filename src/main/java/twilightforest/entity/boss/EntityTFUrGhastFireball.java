@@ -5,8 +5,9 @@ import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import twilightforest.entity.ITFProjectile;
 
-public class EntityTFUrGhastFireball extends EntityLargeFireball {
+public class EntityTFUrGhastFireball extends EntityLargeFireball implements ITFProjectile {
 
 	public EntityTFUrGhastFireball(World world, EntityTFUrGhast entityTFTowerBoss, double x, double y, double z) {
 		super(world, entityTFTowerBoss, x, y, z);

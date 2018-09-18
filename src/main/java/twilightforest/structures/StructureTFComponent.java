@@ -74,8 +74,8 @@ public abstract class StructureTFComponent extends StructureComponent {
 				armorStand.setAlwaysRenderNameTag(true);
 				armorStand.setSilent(true);
 				armorStand.setNoGravity(true);
-				// set marker to false
-				armorStand.getDataManager().set(EntityArmorStand.STATUS, (byte) (armorStand.getDataManager().get(EntityArmorStand.STATUS) & ~16));
+				// set marker flag
+				armorStand.getDataManager().set(EntityArmorStand.STATUS, (byte) (armorStand.getDataManager().get(EntityArmorStand.STATUS) | 16));
 				world.spawnEntity(armorStand);
 			}
 		}

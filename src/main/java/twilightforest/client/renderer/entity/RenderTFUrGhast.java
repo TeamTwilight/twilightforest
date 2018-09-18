@@ -17,8 +17,8 @@ public class RenderTFUrGhast extends RenderTFTowerGhast {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFTowerGhast par1Entity) {
-		switch (par1Entity.isAttacking() ? 2 : par1Entity.getAttackStatus()) {
+	protected ResourceLocation getEntityTexture(EntityTFTowerGhast entity) {
+		switch (entity.isAttacking() ? 2 : entity.getAttackStatus()) {
 			default:
 			case 0:
 				return textureLocClosed;

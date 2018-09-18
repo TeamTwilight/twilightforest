@@ -3,7 +3,8 @@ package twilightforest.world.feature;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLog;
@@ -21,8 +22,8 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		this(false);
 	}
 
-	public TFGenCanopyOak(boolean par1) {
-		super(par1);
+	public TFGenCanopyOak(boolean notify) {
+		super(notify);
 		this.treeState = TFBlocks.twilight_log.getDefaultState();
 		this.branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
 		this.leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
@@ -32,23 +33,25 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 
 	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {
-		int treeHeight;
-
-		// check if we're on dirt or grass
-		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
-		if ((materialUnder != Material.GRASS && materialUnder != Material.GROUND) || pos.getY() >= TFWorld.MAXHEIGHT - 12) {
-			return false;
-		}
-
 
 		// determine a height
-		treeHeight = minHeight;
+		int treeHeight = minHeight;
 		if (random.nextInt(chanceAddFirstFive) == 0) {
 			treeHeight += random.nextInt(5);
 
 			if (random.nextInt(chanceAddSecondFive) == 0) {
 				treeHeight += random.nextInt(5);
 			}
+		}
+
+		if (pos.getY() >= TFWorld.MAXHEIGHT - treeHeight) {
+			return false;
+		}
+
+		// check if we're on dirt or grass
+		IBlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
+			return false;
 		}
 
 		this.leaves.clear();

@@ -209,7 +209,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.getHorizontal(rand.nextInt(4))),
+		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.byHorizontalIndex(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
 	}
 

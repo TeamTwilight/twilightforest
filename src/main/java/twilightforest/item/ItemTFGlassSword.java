@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 
 public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback {
 
-	public ItemTFGlassSword(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	public ItemTFGlassSword(Item.ToolMaterial toolMaterial) {
+		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
@@ -30,11 +30,12 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
 		if (player.world.isRemote) {
-			for (int var1 = 0; var1 < 20; ++var1) {
+			int stateId = Block.getStateId(Blocks.STAINED_GLASS.getDefaultState());
+			for (int i = 0; i < 20; ++i) {
 				double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
 				double py = entity.posY + itemRand.nextFloat() * entity.height;
 				double pz = entity.posZ + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				entity.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, px, py, pz, 0, 0, 0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
+				entity.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, px, py, pz, 0, 0, 0, stateId);
 			}
 
 			player.playSound(Blocks.GLASS.getSoundType(Blocks.GLASS.getDefaultState(), entity.world, entity.getPosition(), player).getBreakSound(), 1F, 0.5F);

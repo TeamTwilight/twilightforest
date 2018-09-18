@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:trans_plate",
+    "data": 0,
+    "count": 1
+  },
+  "pattern": [
+    "##"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:trans_planks",
+      "data": 0
+    }
+  }
+}

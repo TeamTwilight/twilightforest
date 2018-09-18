@@ -18,9 +18,9 @@ public class RenderTFTinyBird extends RenderTFBird {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFBird par1Entity) {
-		if (par1Entity instanceof EntityTFTinyBird) {
-			switch (((EntityTFTinyBird) par1Entity).getBirdType()) {
+	protected ResourceLocation getEntityTexture(EntityTFBird entity) {
+		if (entity instanceof EntityTFTinyBird) {
+			switch (((EntityTFTinyBird) entity).getBirdType()) {
 				default:
 				case 0:
 					return textureLocSparrow;

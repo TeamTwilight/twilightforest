@@ -33,22 +33,22 @@ public class ModelTFCubeOfAnnihilation extends ModelBase {
 
 
 	@Override
-	public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 
-		this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_, p_78088_1_);
+		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
-		box.render(p_78088_7_);
-		boxX.render(p_78088_7_);
-		boxY.render(p_78088_7_);
-		boxZ.render(p_78088_7_);
+		box.render(scale);
+		boxX.render(scale);
+		boxY.render(scale);
+		boxZ.render(scale);
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float time, float f5, Entity entity) {
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
 
-		boxX.rotateAngleX = (float) Math.sin((entity.ticksExisted + time)) / 5F;
-		boxY.rotateAngleY = (float) Math.sin((entity.ticksExisted + time)) / 5F;
-		boxZ.rotateAngleZ = (float) Math.sin((entity.ticksExisted + time)) / 5F;
+		boxX.rotateAngleX = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;
+		boxY.rotateAngleY = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;
+		boxZ.rotateAngleZ = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;
 
 	}
 

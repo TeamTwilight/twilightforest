@@ -21,14 +21,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+public class EntityTFNatureBolt extends EntityThrowable implements ITFProjectile {
 
-public class EntityTFNatureBolt extends EntityThrowable {
-	public EntityTFNatureBolt(World par1World) {
-		super(par1World);
+	public EntityTFNatureBolt(World world) {
+		super(world);
 	}
 
-	public EntityTFNatureBolt(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFNatureBolt(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
 	@Override

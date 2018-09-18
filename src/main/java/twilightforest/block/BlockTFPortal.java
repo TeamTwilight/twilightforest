@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -35,7 +36,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class BlockTFPortal extends BlockBreakable {
-	public static final PropertyBool DISALLOW_RETURN = PropertyBool.create("is_one_way");
+
+	public static final IProperty<Boolean> DISALLOW_RETURN = PropertyBool.create("is_one_way");
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F);
 	private static final AxisAlignedBB AABB_ITEM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.4F, 1.0F);
@@ -109,7 +111,7 @@ public class BlockTFPortal extends BlockBreakable {
 				causeLightning(world, pos, TFConfig.portalLightning);
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet())
-					if (checkedPos.getValue()) world.setBlockState(checkedPos.getKey(), TFBlocks.portal.getDefaultState(), 2);
+					if (checkedPos.getValue()) world.setBlockState(checkedPos.getKey(), TFBlocks.twilight_portal.getDefaultState(), 2);
 
 				return true;
 			}
@@ -210,13 +212,13 @@ public class BlockTFPortal extends BlockBreakable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (state == this.getDefaultState() && !entity.isRiding() && !entity.isBeingRidden()) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (state == this.getDefaultState()) {
 			attemptSendPlayer(entity, false);
 		}
 	}
@@ -224,6 +226,10 @@ public class BlockTFPortal extends BlockBreakable {
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
 
 		if (entity.isDead || entity.world.isRemote) {
+			return;
+		}
+
+		if (entity.isRiding() || entity.isBeingRidden() || !entity.isNonBoss()) {
 			return;
 		}
 

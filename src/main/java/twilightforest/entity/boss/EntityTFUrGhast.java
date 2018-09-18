@@ -52,8 +52,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	private boolean noTrapMode; // are there no traps nearby?  just float around
 	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 
-	public EntityTFUrGhast(World par1World) {
-		super(par1World);
+	public EntityTFUrGhast(World world) {
+		super(world);
 		this.setSize(14.0F, 18.0F);
 		this.wanderFactor = 32.0F;
 		this.noClip = true;
@@ -492,8 +492,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		return dataManager.get(DATA_TANTRUM);
 	}
 
-	public void setInTantrum(boolean par1) {
-		dataManager.set(DATA_TANTRUM, par1);
+	public void setInTantrum(boolean inTantrum) {
+		dataManager.set(DATA_TANTRUM, inTantrum);
 		this.damageUntilNextPhase = 48;
 	}
 
@@ -508,15 +508,15 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		nbttagcompound.setBoolean("inTantrum", this.isInTantrum());
-		super.writeEntityToNBT(nbttagcompound);
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		compound.setBoolean("inTantrum", this.isInTantrum());
+		super.writeEntityToNBT(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		this.setInTantrum(nbttagcompound.getBoolean("inTantrum"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setInTantrum(compound.getBoolean("inTantrum"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -533,8 +533,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 
 		// mark the tower as defeated
 		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {

@@ -119,8 +119,8 @@ dependencies {
     deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"
 
     // tterrag
-    deobfCompile "team.chisel.ctm:CTM:MC${minecraft_sub_version}-${ctm_version}"
-    deobfCompile "team.chisel:Chisel:MC${minecraft_sub_version}-${chisel_version}"
+    deobfCompile "team.chisel.ctm:CTM:MC${minecraft_version}-${ctm_version}"
+    deobfCompile "team.chisel:Chisel:MC${minecraft_version}-${chisel_version}"
 
     // blamejared
     deobfCompile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"

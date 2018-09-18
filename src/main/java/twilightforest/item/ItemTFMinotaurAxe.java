@@ -67,7 +67,7 @@ public class ItemTFMinotaurAxe extends ItemAxe implements ModelRegisterCallback 
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags) {
 		super.addInformation(stack, world, list, flags);
-		list.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+		list.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 }
 

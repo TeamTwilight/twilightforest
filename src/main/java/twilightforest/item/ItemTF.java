@@ -17,7 +17,7 @@ public class ItemTF extends Item implements ModelRegisterCallback {
 
 	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return isRare ? EnumRarity.RARE : EnumRarity.UNCOMMON;
 	}
 

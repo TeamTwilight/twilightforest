@@ -5,10 +5,15 @@
       "data": 10
     },
     "title": {
-      "translate": "advancement.twilight_ghast_trap"
+      "translate": "advancement.twilightforest.ghast_trap"
     },
     "description": {
-      "translate": "advancement.twilight_ghast_trap.desc"
+      "translate": "advancement.twilightforest.ghast_trap.desc",
+      "with": [
+        { "translate": "entity.twilightforest.mini_ghast.name" },
+        { "translate": "tile.twilightforest.TowerDevice.10.name" },
+        { "translate": "entity.twilightforest.ur_ghast.name" }
+      ]
     }
   },
   "parent": "twilightforest:progress_knights",

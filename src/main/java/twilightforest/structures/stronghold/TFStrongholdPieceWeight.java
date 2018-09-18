@@ -28,8 +28,8 @@ public class TFStrongholdPieceWeight {
 		this.minimumDepth = minDepth;
 	}
 
-	public boolean isDeepEnough(int par1) {
-		return canSpawnMoreStructures() && par1 >= this.minimumDepth;
+	public boolean isDeepEnough(int depth) {
+		return canSpawnMoreStructures() && depth >= this.minimumDepth;
 	}
 
 	public boolean canSpawnMoreStructures() {

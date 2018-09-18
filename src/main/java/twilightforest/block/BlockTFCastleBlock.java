@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -31,7 +32,7 @@ import twilightforest.item.TFItems;
  */
 public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 
-	public static final PropertyEnum<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
+	public static final IProperty<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
 
 	public BlockTFCastleBlock() {
 		super(Material.ROCK);
@@ -87,7 +88,7 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 }

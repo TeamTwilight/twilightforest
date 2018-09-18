@@ -14,6 +14,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 import twilightforest.entity.EntityTFSlideBlock;
 
 public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
@@ -45,7 +46,7 @@ public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 					}
 
-					vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
+					vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
 					GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					/*// spin FIXME
@@ -106,7 +107,7 @@ public class RenderTFSlideBlock extends Render<EntityTFSlideBlock> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFSlideBlock p_110775_1_) {
+	protected ResourceLocation getEntityTexture(EntityTFSlideBlock entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

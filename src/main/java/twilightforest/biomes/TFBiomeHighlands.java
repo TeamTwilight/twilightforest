@@ -76,8 +76,8 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	}
 
 	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-		return par1Random.nextInt(5) > 0 ? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN) : new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
+		return random.nextInt(5) > 0 ? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN) : new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 	}
 
 	@Override

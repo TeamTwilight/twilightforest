@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFApocalypseCube;
 import twilightforest.entity.EntityTFHarbingerCube;
 
 public class RenderTFHarbingerCube extends RenderLiving<EntityTFHarbingerCube> {
@@ -15,12 +16,12 @@ public class RenderTFHarbingerCube extends RenderLiving<EntityTFHarbingerCube> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFHarbingerCube par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFHarbingerCube entity) {
 		return textureLoc;
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFHarbingerCube par1EntityLivingBase, float par2) {
+	protected void preRenderCallback(EntityTFHarbingerCube entity, float partialTicks) {
 		float scale = 1.0F;
 		GlStateManager.scale(scale, scale, scale);
 	}

@@ -36,6 +36,22 @@
           "tag": "{\"shader_type\":\"Minoshroom\"}"
         }]
       }]
+    }, {
+      "name": "shader",
+      "rolls": 1,
+      "conditions": [{ "condition": "twilightforest:mod_exists", "mod_id": "immersiveengineering" }],
+      "entries": [{
+        "type": "item",
+        "name": "twilightforest:maze_map_focus",
+        "functions": [{
+          "function": "twilightforest:item_or_default",
+          "item": "twilightforest:shader_bag",
+          "default": "twilightforest:maze_map_focus"
+        }, {
+          "function": "set_nbt",
+          "tag": "{\"shader_rarity\":\"Twilight\"}"
+        }]
+      }]
     }
   ]
 }

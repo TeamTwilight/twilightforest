@@ -81,18 +81,18 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
 	}
 
 	@Override
-	public void randomDisplayTick(IBlockState state, World par1World, BlockPos pos, Random par5Random) {
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 		if (state.getValue(BlockTFMagicLog.VARIANT) == MagicWoodVariant.TRANS) {
 			for (int i = 0; i < 1; ++i) {
-				this.sparkleRunes(par1World, pos, par5Random);
+				this.sparkleRunes(world, pos, random);
 			}
 		}
 	}

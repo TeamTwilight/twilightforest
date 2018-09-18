@@ -4,10 +4,13 @@
       "item": "twilightforest:hydra_chop"
     },
     "title": {
-      "translate": "advancement.twilight_hydra_chop"
+      "translate": "advancement.twilightforest.hydra_chop"
     },
     "description": {
-      "translate": "advancement.twilight_hydra_chop.desc"
+      "translate": "advancement.twilightforest.hydra_chop.desc",
+      "with": [
+        { "translate": "entity.twilightforest.hydra.name" }
+      ]
     }
   },
   "parent": "twilightforest:progress_hydra",

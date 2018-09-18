@@ -185,20 +185,20 @@ public class ModelTFPinchBeetle extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		super.render(entity, f, f1, f2, f3, f4, f5);
-		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		thorax.render(f5);
-		head.render(f5);
-		connector2.render(f5);
-		RearEnd.render(f5);
-		Leg6.render(f5);
-		Leg4.render(f5);
-		Leg2.render(f5);
-		Leg5.render(f5);
-		Leg3.render(f5);
-		Leg1.render(f5);
-		connector1.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		thorax.render(scale);
+		head.render(scale);
+		connector2.render(scale);
+		RearEnd.render(scale);
+		Leg6.render(scale);
+		Leg4.render(scale);
+		Leg2.render(scale);
+		Leg5.render(scale);
+		Leg3.render(scale);
+		Leg1.render(scale);
+		connector1.render(scale);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -208,14 +208,14 @@ public class ModelTFPinchBeetle extends ModelBase {
 	}
 
 	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
+	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
-		this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
-		this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
 		float legZ = ((float) Math.PI / 11F);
 		this.Leg1.rotateAngleZ = -legZ;
@@ -234,13 +234,13 @@ public class ModelTFPinchBeetle extends ModelBase {
 		this.Leg5.rotateAngleY = -var10 * 2.0F + var9;
 		this.Leg6.rotateAngleY = var10 * 2.0F - var9;
 
-		float var11 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 0.0F) * 0.4F) * par2;
-		float var12 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * par2;
-		float var14 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * par2;
+		float var11 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + 0.0F) * 0.4F) * limbSwingAmount;
+		float var12 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
+		float var14 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 
-		float var15 = Math.abs(MathHelper.sin(par1 * 0.6662F + 0.0F) * 0.4F) * par2;
-		float var16 = Math.abs(MathHelper.sin(par1 * 0.6662F + (float) Math.PI) * 0.4F) * par2;
-		float var18 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * par2;
+		float var15 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + 0.0F) * 0.4F) * limbSwingAmount;
+		float var16 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
+		float var18 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 
 		this.Leg1.rotateAngleY += var11;
 		this.Leg2.rotateAngleY += -var11;
@@ -262,8 +262,8 @@ public class ModelTFPinchBeetle extends ModelBase {
 	}
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float partialTick) {
-		EntityTFPinchBeetle beetle = (EntityTFPinchBeetle) par1EntityLiving;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		EntityTFPinchBeetle beetle = (EntityTFPinchBeetle) entity;
 
 		if (beetle.isBeingRidden()) {
 			// open jaws

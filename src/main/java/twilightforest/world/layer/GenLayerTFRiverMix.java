@@ -10,10 +10,10 @@ public class GenLayerTFRiverMix extends GenLayer {
 	private GenLayer biomeLayer;
 	private GenLayer riverLayer;
 
-	public GenLayerTFRiverMix(long par1, GenLayer par3GenLayer, GenLayer par4GenLayer) {
-		super(par1);
-		this.biomeLayer = par3GenLayer;
-		this.riverLayer = par4GenLayer;
+	public GenLayerTFRiverMix(long seed, GenLayer biomeLayer, GenLayer riverLayer) {
+		super(seed);
+		this.biomeLayer = biomeLayer;
+		this.riverLayer = riverLayer;
 	}
 
 	/**
@@ -21,10 +21,10 @@ public class GenLayerTFRiverMix extends GenLayer {
 	 * argument).
 	 */
 	@Override
-	public void initWorldGenSeed(long par1) {
-		this.biomeLayer.initWorldGenSeed(par1);
-		this.riverLayer.initWorldGenSeed(par1);
-		super.initWorldGenSeed(par1);
+	public void initWorldGenSeed(long seed) {
+		this.biomeLayer.initWorldGenSeed(seed);
+		this.riverLayer.initWorldGenSeed(seed);
+		super.initWorldGenSeed(seed);
 	}
 
 	/**
@@ -33,15 +33,15 @@ public class GenLayerTFRiverMix extends GenLayer {
 	 * based on the particular GenLayer subclass.
 	 */
 	@Override
-	public int[] getInts(int par1, int par2, int par3, int par4) {
+	public int[] getInts(int x, int z, int width, int depth) {
 
-		int[] biomeInputs = this.biomeLayer.getInts(par1, par2, par3, par4);
-		int[] riverInputs = this.riverLayer.getInts(par1, par2, par3, par4);
-		int[] outputs = IntCache.getIntCache(par3 * par4);
+		int[] biomeInputs = this.biomeLayer.getInts(x, z, width, depth);
+		int[] riverInputs = this.riverLayer.getInts(x, z, width, depth);
+		int[] outputs = IntCache.getIntCache(width * depth);
 
 		int stream = Biome.getIdForBiome(TFBiomes.stream);
 
-		for (int i = 0; i < par3 * par4; ++i) {
+		for (int i = 0; i < width * depth; ++i) {
 			if (riverInputs[i] == stream) {
 				outputs[i] = riverInputs[i] & 255;
 			} else {

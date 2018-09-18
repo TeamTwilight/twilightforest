@@ -19,23 +19,23 @@ public class RenderTFSpikeBlock extends Render<Entity> {
 	}
 
 	@Override
-	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
+	public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTicks) {
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(par2, par4, par6);
-		GlStateManager.rotate(180 - MathHelper.wrapDegrees(par8), 0.0F, 1.0F, 0.0F);
+		GlStateManager.translate(x, y, z);
+		GlStateManager.rotate(180 - MathHelper.wrapDegrees(yaw), 0.0F, 1.0F, 0.0F);
 
-		float pitch = par1Entity.prevRotationPitch + (par1Entity.rotationPitch - par1Entity.prevRotationPitch) * par9;
+		float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
 
 		GlStateManager.rotate(pitch, 1.0F, 0.0F, 0.0F);
-		this.bindEntityTexture(par1Entity);
+		this.bindEntityTexture(entity);
 
 		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-		this.model.render(par1Entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.model.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GlStateManager.popMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity par1Entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
 		return textureLoc;
 	}
 }

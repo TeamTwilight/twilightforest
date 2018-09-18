@@ -34,12 +34,12 @@ import java.util.Random;
 public class TFWeatherRenderer extends IRenderHandler {
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
-	private static final ResourceLocation locationBlizzardPng = new ResourceLocation(TwilightForestMod.ENVRIO_DIR + "blizzard.png");
-	private static final ResourceLocation locationMosquitoPng = new ResourceLocation(TwilightForestMod.ENVRIO_DIR + "mosquitoes.png");
-	private static final ResourceLocation locationAshesPng = new ResourceLocation(TwilightForestMod.ENVRIO_DIR + "ashes.png");
-	private static final ResourceLocation locationDarkstreamPng = new ResourceLocation(TwilightForestMod.ENVRIO_DIR + "darkstream.png");
-	private static final ResourceLocation locationBigrainPng = new ResourceLocation(TwilightForestMod.ENVRIO_DIR + "bigrain.png");
-	private static final ResourceLocation locationSparklesPng = new ResourceLocation(TwilightForestMod.ENVRIO_DIR + "sparkles.png");
+	private static final ResourceLocation locationBlizzardPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "blizzard.png");
+	private static final ResourceLocation locationMosquitoPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "mosquitoes.png");
+	private static final ResourceLocation locationAshesPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "ashes.png");
+	private static final ResourceLocation locationDarkstreamPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "darkstream.png");
+	private static final ResourceLocation locationBigrainPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "bigrain.png");
+	private static final ResourceLocation locationSparklesPng = new ResourceLocation(TwilightForestMod.ENVIRO_DIR + "sparkles.png");
 
 	private final float[] rainxs = new float[1024];
 	private final float[] rainys = new float[1024];

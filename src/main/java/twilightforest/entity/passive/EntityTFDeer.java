@@ -45,7 +45,7 @@ public class EntityTFDeer extends EntityCow {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block par4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 	}
 
 	@Override

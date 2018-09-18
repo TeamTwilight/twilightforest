@@ -15,11 +15,11 @@ public class TFDataFixers {
     public static void init() {
         ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(TwilightForestMod.ID, DATA_FIXER_VERSION);
 
-        fixes.registerFix(FixTypes.BLOCK_ENTITY, new nameSpaceTEFixer());
+        fixes.registerFix(FixTypes.BLOCK_ENTITY, new NamespaceTEFixer());
         fixes.registerFix(FixTypes.STRUCTURE, new structureStartIDDataFixer());
     }
 
-    private static class nameSpaceTEFixer implements IFixableData {
+    private static class NamespaceTEFixer implements IFixableData {
         // array only needs to cover legacy tile entity ids, no need to add future tile entity ids to list.
         private final Map<String, String> tileEntityNames;
 

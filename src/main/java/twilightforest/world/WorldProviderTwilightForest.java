@@ -83,7 +83,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	// Pin the celestial angle at night/evening so things that use it see night
 	@Override
-	public float calculateCelestialAngle(long par1, float par3) {
+	public float calculateCelestialAngle(long worldTime, float partialTicks) {
 		return 0.225f;
 	}
 
@@ -161,7 +161,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public float getStarBrightness(float par1) {
+	public float getStarBrightness(float partialTicks) {
 		return 1.0F;
 	}
 

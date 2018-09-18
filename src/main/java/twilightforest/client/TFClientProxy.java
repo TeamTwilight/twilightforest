@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -41,7 +42,7 @@ import twilightforest.client.renderer.TileEntityTFFireflyRenderer;
 import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
 import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
 import twilightforest.client.renderer.entity.*;
-import twilightforest.client.shader.ShaderHelper;
+import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
@@ -76,8 +77,8 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydra.class, m -> new RenderTFHydra(m, new ModelTFHydra(), 4.0F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFLich.class, m -> new RenderTFLich(m, new ModelTFLich(), 0.6F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFPenguin.class, m -> new RenderTFBird(m, new ModelTFPenguin(), 0.375F, "penguin.png"));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichMinion.class, m -> new RenderTFBiped<>(m, new ModelTFLichMinion(), 1.0F, "textures/entity/zombie/zombie.png"));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFLoyalZombie.class, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 1.0F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichMinion.class, m -> new RenderTFBiped<>(m, new ModelTFLichMinion(), 0.5F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFLoyalZombie.class, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.5F, "textures/entity/zombie/zombie.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFTinyBird.class, m -> new RenderTFTinyBird(m, new ModelTFTinyBird(), 1.0F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSquirrel.class, m -> new RenderTFGenericLiving<>(m, new ModelTFSquirrel(), 1.0F, "squirrel2.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBunny.class, m -> new RenderTFBunny(m, new ModelTFBunny(), 1.0F));
@@ -196,7 +197,7 @@ public class TFClientProxy extends TFCommonProxy {
 
 		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 3600);
 
-		ShaderHelper.initShaders();
+		ShaderManager.initShaders();
 
 		ClientCommandHandler.instance.registerCommand(new CommandBase() {
 			@Override
@@ -213,7 +214,7 @@ public class TFClientProxy extends TFCommonProxy {
 			public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 					Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
-					twilightforest.client.shader.ShaderHelper.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
+					twilightforest.client.shader.ShaderManager.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
 					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
 						twilightforest.compat.ie.IEShaderRegister.initShaders();
 				}
@@ -354,7 +355,9 @@ public class TFClientProxy extends TFCommonProxy {
 		if (player instanceof EntityPlayerSP) {
 			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
 			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
-			return adv != null && manager.advancementToProgress.get(adv).isDone();
+			if (adv == null) return false;
+			AdvancementProgress progress = manager.advancementToProgress.get(adv);
+			return progress != null && progress.isDone();
 		}
 
 		return super.doesPlayerHaveAdvancement(player, advId);
@@ -377,8 +380,8 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "twilightforest:firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "twilightforest:cicada");
-		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "twilightforest:moonworm");
+		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class,  prefix("firefly" ));
+		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class,   prefix("cicada"  ));
+		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, prefix("moonworm"));
 	}
 }

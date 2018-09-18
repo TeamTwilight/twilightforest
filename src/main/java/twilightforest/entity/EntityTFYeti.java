@@ -15,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -27,13 +26,14 @@ import twilightforest.entity.ai.EntityAITFThrowRider;
 
 import javax.annotation.Nullable;
 
-public class EntityTFYeti extends EntityMob {
+public class EntityTFYeti extends EntityMob implements IHostileMount {
+
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/yeti");
 	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, 0).setSaved(false);
 
-	public EntityTFYeti(World par1World) {
-		super(par1World);
+	public EntityTFYeti(World world) {
+		super(world);
 		this.setSize(1.4F, 2.4F);
 	}
 
@@ -85,13 +85,13 @@ public class EntityTFYeti extends EntityMob {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if (par1DamageSource.getTrueSource() != null) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (source.getTrueSource() != null) {
 			// become angry
 			this.setAngry(true);
 		}
 
-		return super.attackEntityFrom(par1DamageSource, par2);
+		return super.attackEntityFrom(source, amount);
 	}
 
 	public boolean isAngry() {
@@ -113,15 +113,15 @@ public class EntityTFYeti extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("Angry", this.isAngry());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("Angry", this.isAngry());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setAngry(par1NBTTagCompound.getBoolean("Angry"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setAngry(compound.getBoolean("Angry"));
 	}
 
 	/**
@@ -148,10 +148,10 @@ public class EntityTFYeti extends EntityMob {
 		if (passenger != null) {
 			float distance = 0.4F;
 
-			double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-			double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.posX + var1, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + var3);
+			return new Vec3d(this.posX + dx, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + dz);
 		} else {
 			return new Vec3d(this.posX, this.posY, this.posZ);
 		}

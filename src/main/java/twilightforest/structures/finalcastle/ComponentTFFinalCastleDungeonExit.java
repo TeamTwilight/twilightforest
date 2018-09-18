@@ -20,13 +20,12 @@ import java.util.List;
 import java.util.Random;
 
 public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDungeonRoom31 {
-	public ComponentTFFinalCastleDungeonExit() {
-	}
+
+	public ComponentTFFinalCastleDungeonExit() {}
 
 	public ComponentTFFinalCastleDungeonExit(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
 		super(feature, rand, i, x, y, z, direction, level);
 	}
-
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
@@ -51,7 +50,6 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		}
 	}
 
-
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		super.addComponentParts(world, rand, sbb);
@@ -59,13 +57,12 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		// door
 		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 2);
+
 		this.fillWithBlocks(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
 		this.fillWithBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
 
-
 		return true;
 	}
-
 
 	public Rotation findStairDirectionTowards(int x, int z) {
 		Vec3i center = StructureBoundingBoxUtils.getCenter(this.boundingBox);
@@ -84,12 +81,12 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	}
 
 	@Override
-	protected EnumDyeColor getForceFieldMeta(Random decoRNG) {
+	protected EnumDyeColor getForceFieldColor(Random decoRNG) {
 		return BlockTFForceField.VALID_COLORS.get(1);
 	}
 
 	@Override
-	protected EnumDyeColor getRuneMeta(EnumDyeColor fieldMeta) {
+	protected EnumDyeColor getRuneColor(EnumDyeColor fieldColor) {
 		return BlockTFCastleMagic.VALID_COLORS.get(0);
 	}
 }

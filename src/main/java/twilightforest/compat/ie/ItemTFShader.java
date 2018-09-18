@@ -16,9 +16,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
@@ -28,21 +28,24 @@ import java.util.List;
 import java.util.Locale;
 
 // TODO Move to shader capability, where we can then just turn item Trophies into the shaders
+@Optional.Interface(modid = "immersiveengineering", iface = "blusunrize.immersiveengineering.api.shader.IShaderItem")
 public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCallback {
     public ItemTFShader() {
         this.setHasSubtypes(true);
         this.setCreativeTab(TFItems.creativeTab);
     }
 
-    private static final String TAG_SHADER = "shader_type";
+    static final String TAG_SHADER = "shader_type";
 
     public static final ItemTFShader shader = new ItemTFShader();
 
+    @Optional.Method(modid = "immersiveengineering")
     @Override
     public ShaderCase getShaderCase(ItemStack shader, ItemStack tool, String shaderType) {
         return ShaderRegistry.getShader(getShaderType(shader), shaderType);
     }
 
+    @Optional.Method(modid = "immersiveengineering")
     @Override
     public String getShaderName(ItemStack stack) {
         return getShaderType(stack);
@@ -55,15 +58,15 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
         String localizedShaderName = I18n.translateToLocal(unlocalizedShaderName);
 
         if (unlocalizedShaderName.equals(localizedShaderName))
-            return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack), rawShaderName); // Translation failure
+            return I18n.translateToLocalFormatted(this.getTranslationKey(stack), rawShaderName); // Translation failure
         else
-            return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack), localizedShaderName);
+            return I18n.translateToLocalFormatted(this.getTranslationKey(stack), localizedShaderName);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<String> list, ITooltipFlag flag) {
-        list.add(I18n.translateToLocalFormatted("Level: " + this.getRarity(stack).rarityColor + this.getRarity(stack).rarityName));
+        list.add(I18n.translateToLocalFormatted("Level: " + this.getRarity(stack).color + this.getRarity(stack).rarityName));
 
         if(!GuiScreen.isShiftKeyDown())
             list.add(I18n.translateToLocalFormatted(Lib.DESC_INFO + "shader.applyTo") + " " + I18n.translateToLocalFormatted(Lib.DESC_INFO + "holdShift"));
@@ -78,7 +81,7 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
 
     @Override
     public EnumRarity getRarity(ItemStack stack) {
-        return TwilightForestMod.getRarity();
+        return ShaderRegistry.shaderRegistry.get(getShaderType(stack)).getRarity();
     }
 
     @Nonnull

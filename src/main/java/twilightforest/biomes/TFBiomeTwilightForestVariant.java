@@ -41,10 +41,10 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 	}
 
 	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-		if (par1Random.nextInt(4) != 0) {
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
+		if (random.nextInt(4) != 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
-		} else if (par1Random.nextBoolean()) {
+		} else if (random.nextBoolean()) {
 			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
@@ -52,17 +52,17 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 	}
 
 	@Override
-	public void decorate(World par1World, Random par2Random, BlockPos pos) {
+	public void decorate(World world, Random random, BlockPos pos) {
 		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
 
 		for (int i = 0; i < 7; ++i) {
-			int rx = pos.getX() + par2Random.nextInt(16) + 8;
-			int rz = pos.getZ() + par2Random.nextInt(16) + 8;
-			int ry = par2Random.nextInt(par1World.getHeight(new BlockPos(rx, 0, rz)).getY() + 32);
-			DOUBLE_PLANT_GENERATOR.generate(par1World, par2Random, new BlockPos(rx, ry, rz));
+			int rx = pos.getX() + random.nextInt(16) + 8;
+			int rz = pos.getZ() + random.nextInt(16) + 8;
+			int ry = random.nextInt(world.getHeight(new BlockPos(rx, 0, rz)).getY() + 32);
+			DOUBLE_PLANT_GENERATOR.generate(world, random, new BlockPos(rx, ry, rz));
 		}
 
-		super.decorate(par1World, par2Random, pos);
+		super.decorate(world, random, pos);
 	}
 
 

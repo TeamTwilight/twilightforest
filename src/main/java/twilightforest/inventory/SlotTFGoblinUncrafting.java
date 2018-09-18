@@ -4,20 +4,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
 
 
 public class SlotTFGoblinUncrafting extends Slot {
-
-
 	protected EntityPlayer thePlayer;
 	protected IInventory inputSlot;
 	protected InventoryTFGoblinUncrafting uncraftingMatrix;
 	protected IInventory assemblyMatrix;
 
-	public SlotTFGoblinUncrafting(EntityPlayer par1EntityPlayer, IInventory inputSlot, InventoryTFGoblinUncrafting uncraftingMatrix, IInventory assemblyMatrix, int slotNum, int x, int y) {
+	public SlotTFGoblinUncrafting(EntityPlayer player, IInventory inputSlot, InventoryTFGoblinUncrafting uncraftingMatrix, IInventory assemblyMatrix, int slotNum, int x, int y) {
 		super(uncraftingMatrix, slotNum, x, y);
-		this.thePlayer = par1EntityPlayer;
+		this.thePlayer = player;
 		this.inputSlot = inputSlot;
 		this.uncraftingMatrix = uncraftingMatrix;
 		this.assemblyMatrix = assemblyMatrix;
@@ -28,7 +28,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
 	 */
 	@Override
-	public boolean isItemValid(ItemStack par1ItemStack) {
+	public boolean isItemValid(ItemStack stack) {
 		// don't put things in this matrix
 		return false;
 	}
@@ -37,7 +37,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 	 * Return whether this slot's stack can be taken from this slot.
 	 */
 	@Override
-	public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+	public boolean canTakeStack(EntityPlayer player) {
 		// if there is anything in the assembly matrix, then you cannot have these items
 		for (int i = 0; i < this.assemblyMatrix.getSizeInventory(); i++) {
 			if (!this.assemblyMatrix.getStackInSlot(i).isEmpty()) {
@@ -51,7 +51,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 		}
 
 		// if you don't have enough XP, no
-		if (this.uncraftingMatrix.uncraftingCost > par1EntityPlayer.experienceLevel && !par1EntityPlayer.capabilities.isCreativeMode) {
+		if (this.uncraftingMatrix.uncraftingCost > player.experienceLevel && !player.capabilities.isCreativeMode) {
 			return false;
 		}
 
@@ -62,12 +62,11 @@ public class SlotTFGoblinUncrafting extends Slot {
 	 * Called when the player picks up an item from an inventory slot
 	 */
 	@Override
-	public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack) {
+	public ItemStack onTake(EntityPlayer player, ItemStack stack) {
 		// charge the player for this
 		if (this.uncraftingMatrix.uncraftingCost > 0) {
 			this.thePlayer.addExperienceLevel(-this.uncraftingMatrix.uncraftingCost);
 		}
-
 
 		// move all remaining items from the uncrafting grid to the assembly grid
 		// the assembly grid should be empty for this to even happen, so just plop the items right in
@@ -86,8 +85,17 @@ public class SlotTFGoblinUncrafting extends Slot {
 		}
 
 
-		return super.onTake(par1EntityPlayer, par1ItemStack);
+		return super.onTake(player, stack);
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean isEnabled() {
+		return false;
+	}
 
+	@Override
+	public boolean isHere(IInventory inv, int slotIn) {
+		return false;
+	}
 }

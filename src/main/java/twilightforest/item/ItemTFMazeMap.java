@@ -38,8 +38,8 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	private static final int YSEARCH = 3;
 	protected boolean mapOres;
 
-	protected ItemTFMazeMap(boolean par2MapOres) {
-		this.mapOres = par2MapOres;
+	protected ItemTFMazeMap(boolean mapOres) {
+		this.mapOres = mapOres;
 	}
 
 	// [VanillaCopy] super with own item and id, and y parameter, also whether we have an ore map or not
@@ -124,7 +124,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
 							Multiset<MapColor> multiset = HashMultiset.<MapColor>create();
-							Chunk chunk = world.getChunkFromBlockCoords(new BlockPos(worldX, 0, worldZ));
+							Chunk chunk = world.getChunk(new BlockPos(worldX, 0, worldZ));
 
 							int brightness = 1;
 							if (!chunk.isEmpty()) {
@@ -187,7 +187,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 											multiset.add(MapColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MapColor.EMERALD, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getUnlocalizedName().toLowerCase().contains("ore")) // TODO 1.10: improve this 0.o
+										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getTranslationKey().toLowerCase().contains("ore")) // TODO 1.10: improve this 0.o
 										{
 											// any other ore, catchall
 											multiset.add(MapColor.PINK, 1000);
@@ -274,15 +274,16 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		// disable zooming
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return mapOres ? EnumRarity.EPIC : EnumRarity.UNCOMMON;
 	}
 
+	@Override
 	@Nullable
 	public Packet<?> createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
 		Packet<?> p = super.createMapDataPacket(stack, worldIn, player);

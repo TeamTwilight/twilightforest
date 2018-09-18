@@ -7,8 +7,8 @@ public class EntityAITFBirdFly extends EntityAIBase {
 
 	private EntityTFTinyBird entity;
 
-	public EntityAITFBirdFly(EntityTFTinyBird par1EntityCreature) {
-		this.entity = par1EntityCreature;
+	public EntityAITFBirdFly(EntityTFTinyBird bird) {
+		this.entity = bird;
 		this.setMutexBits(5);
 	}
 

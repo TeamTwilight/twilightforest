@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
@@ -14,9 +15,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.block.TFBlocks;
 
-public class EntityTFMoonwormShot extends EntityThrowable {
-	public EntityTFMoonwormShot(World par1World) {
-		super(par1World);
+public class EntityTFMoonwormShot extends EntityThrowable implements ITFProjectile {
+
+	public EntityTFMoonwormShot(World world) {
+		super(world);
 	}
 
 	public EntityTFMoonwormShot(World world, EntityLivingBase thrower) {
@@ -75,7 +77,7 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			for (int var3 = 0; var3 < 8; ++var3) {
+			for (int i = 0; i < 8; ++i) {
 				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, Block.getStateId(TFBlocks.moonworm.getDefaultState()));
 			}
 		} else {
@@ -84,16 +86,21 @@ public class EntityTFMoonwormShot extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult mop) {
+	protected void onImpact(RayTraceResult ray) {
 		if (!world.isRemote) {
-			if (mop.typeOfHit == Type.BLOCK) {
-				IBlockState state = TFBlocks.moonworm.getDefaultState().withProperty(BlockDirectional.FACING, mop.sideHit);
-				world.setBlockState(mop.getBlockPos().offset(mop.sideHit), state);
-				// todo sound
+			if (ray.typeOfHit == Type.BLOCK) {
+
+				BlockPos pos = ray.getBlockPos().offset(ray.sideHit);
+				IBlockState currentState = world.getBlockState(pos);
+
+				if (currentState.getBlock().isReplaceable(world, pos)) {
+					world.setBlockState(pos, TFBlocks.moonworm.getDefaultState().withProperty(BlockDirectional.FACING, ray.sideHit));
+					// todo sound
+				}
 			}
 
-			if (mop.entityHit != null) {
-				mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
+			if (ray.entityHit != null) {
+				ray.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
 			}
 
 			this.world.setEntityState(this, (byte) 3);

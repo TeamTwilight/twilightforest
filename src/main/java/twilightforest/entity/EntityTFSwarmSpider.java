@@ -134,26 +134,26 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		super.writeEntityToNBT(nbttagcompound);
-		nbttagcompound.setBoolean("SpawnMore", shouldSpawnMore());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("SpawnMore", shouldSpawnMore());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		setSpawnMore(nbttagcompound.getBoolean("SpawnMore"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		setSpawnMore(compound.getBoolean("SpawnMore"));
 	}
 
 	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
+		if (cause.getTrueSource() instanceof EntityPlayerMP) {
 			// are we in a hedge maze?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hedge"), "swarm_spider");
+				PlayerHelper.grantCriterion((EntityPlayerMP) cause.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hedge"), "swarm_spider");
 			}
 		}
 	}

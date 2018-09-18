@@ -119,32 +119,32 @@ public class ModelTFYetiAlpha extends ModelBiped {
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
-		this.bipedBody.render(par7);
-		this.bipedRightLeg.render(par7);
-		this.bipedLeftLeg.render(par7);
+		this.bipedBody.render(scale);
+		this.bipedRightLeg.render(scale);
+		this.bipedLeftLeg.render(scale);
 	}
 
 	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
+	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
-		EntityTFYetiAlpha yeti = (EntityTFYetiAlpha) par7Entity;
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		EntityTFYetiAlpha yeti = (EntityTFYetiAlpha) entity;
 
 
-		this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
-		this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
+		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
-		this.bipedBody.rotateAngleX = par5 / (180F / (float) Math.PI);
+		this.bipedBody.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
 
-		this.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+		this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.bipedRightLeg.rotateAngleY = 0.0F;
 		this.bipedLeftLeg.rotateAngleY = 0.0F;
 
@@ -158,10 +158,10 @@ public class ModelTFYetiAlpha extends ModelBiped {
 		this.bipedLeftArm.rotateAngleX = -((float) Math.PI / 2F);
 		this.bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
 		this.bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-		this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-		this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+		this.bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 
 		this.bipedBody.rotationPointY = -6F;
 		this.bipedRightLeg.rotationPointY = 4F;
@@ -170,8 +170,8 @@ public class ModelTFYetiAlpha extends ModelBiped {
 
 		if (yeti.isTired()) {
 			// arms down
-			this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
-			this.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+			this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+			this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
 			this.bipedRightArm.rotateAngleZ = 0.0F;
 			this.bipedLeftArm.rotateAngleZ = 0.0F;
 
@@ -191,14 +191,14 @@ public class ModelTFYetiAlpha extends ModelBiped {
 
 		if (yeti.isRampaging()) {
 			// arms up
-			this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.66F + (float) Math.PI) * 2.0F * par2 * 0.5F;
-			this.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.66F) * 2.0F * par2 * 0.5F;
+			this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.66F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+			this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.66F) * 2.0F * limbSwingAmount * 0.5F;
 
-//            this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-//            this.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+//            this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+//            this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
 
-			this.bipedRightArm.rotateAngleY += MathHelper.cos(par1 * 0.25F) * 0.5F + 0.5F;
-			this.bipedLeftArm.rotateAngleY -= MathHelper.cos(par1 * 0.25F) * 0.5F + 0.5F;
+			this.bipedRightArm.rotateAngleY += MathHelper.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
+			this.bipedLeftArm.rotateAngleY -= MathHelper.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
 
 			this.bipedRightArm.rotateAngleX += Math.PI * 1.25;
 			this.bipedLeftArm.rotateAngleX += Math.PI * 1.25;
@@ -206,7 +206,7 @@ public class ModelTFYetiAlpha extends ModelBiped {
 			this.bipedLeftArm.rotateAngleZ = 0.0F;
 		}
 
-		if (par7Entity.isBeingRidden()) {
+		if (entity.isBeingRidden()) {
 			// arms up!
 			this.bipedRightArm.rotateAngleX += Math.PI;
 			this.bipedLeftArm.rotateAngleX += Math.PI;

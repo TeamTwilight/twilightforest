@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentBindingCurse;
 import net.minecraft.enchantment.EnchantmentVanishingCurse;
 import net.minecraft.entity.Entity;
@@ -24,13 +25,13 @@ import java.util.List;
 
 public class ItemTFPhantomArmor extends ItemArmor implements ModelRegisterCallback {
 
-	public ItemTFPhantomArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, 0, armorType);
+	public ItemTFPhantomArmor(ItemArmor.ArmorMaterial armorMaterial, EntityEquipmentSlot armorType) {
+		super(armorMaterial, 0, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.EPIC;
 	}
 
@@ -56,12 +57,13 @@ public class ItemTFPhantomArmor extends ItemArmor implements ModelRegisterCallba
 	}
 
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, net.minecraft.enchantment.Enchantment enchantment) {
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return !(enchantment instanceof EnchantmentVanishingCurse) && !(enchantment instanceof EnchantmentBindingCurse) && enchantment.type.canEnchantItem(stack.getItem());
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 }

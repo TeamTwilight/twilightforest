@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "twilightforest:knightmetal_shield"
+  },
+  "pattern": [
+    "#W",
+    "#R",
+    "#W"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "#INGOTKNIGHTMETAL"
+    },
+    "R": {
+      "item": "twilightforest:knightmetal_ring"
+    },
+    "W": [{
+      "item": "twilightforest:tower_wood",
+      "data": 0
+    }, {
+      "item": "twilightforest:tower_wood",
+      "data": 2
+    }, {
+      "item": "twilightforest:tower_wood",
+      "data": 3
+    }]
+  }
+}

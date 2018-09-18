@@ -65,25 +65,25 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(World par1World, StructureBoundingBox par2StructureBoundingBox) {
-		int var3 = 0;
-		int var4 = 0;
+	protected int getAverageGroundLevel(World world, StructureBoundingBox boundingBox) {
+		int yTotal = 0;
+		int count = 0;
 
-		for (int var5 = this.boundingBox.minZ; var5 <= this.boundingBox.maxZ; ++var5) {
-			for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6) {
-				BlockPos pos = new BlockPos(var6, 64, var5);
-				if (par2StructureBoundingBox.isVecInside(pos)) {
-					final BlockPos topBlock = par1World.getTopSolidOrLiquidBlock(pos);
-					var3 += Math.max(topBlock.getY(), par1World.provider.getAverageGroundLevel());
-					++var4;
+		for (int z = this.boundingBox.minZ; z <= this.boundingBox.maxZ; ++z) {
+			for (int x = this.boundingBox.minX; x <= this.boundingBox.maxX; ++x) {
+				BlockPos pos = new BlockPos(x, 64, z);
+				if (boundingBox.isVecInside(pos)) {
+					final BlockPos topBlock = world.getTopSolidOrLiquidBlock(pos);
+					yTotal += Math.max(topBlock.getY(), world.provider.getAverageGroundLevel());
+					++count;
 				}
 			}
 		}
 
-		if (var4 == 0) {
+		if (count == 0) {
 			return -1;
 		} else {
-			return var3 / var4;
+			return yTotal / count;
 		}
 	}
 }

@@ -1,0 +1,82 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "uvlock": true
+  },
+  "variants": {
+    "inventory": [{ "model": "button_inventory", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" } }],
+    
+    "facing=up,powered=false"   : [
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }                     },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }                     },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }                     },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }                     }
+    ],
+    "facing=down,powered=false" : [
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 180           },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 180           },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 180           },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 180           }
+    ],
+    "facing=east,powered=false" : [
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 90 , "y": 90  },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 90 , "y": 90  },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 90 , "y": 90  },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 90 , "y": 90  }
+    ],
+    "facing=west,powered=false" : [
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 90 , "y": 270 },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 90 , "y": 270 },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 90 , "y": 270 },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 90 , "y": 270 }
+    ],
+    "facing=south,powered=false": [
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 90 , "y": 180 },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 90 , "y": 180 },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 90 , "y": 180 },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 90 , "y": 180 }
+    ],
+    "facing=north,powered=false": [
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 90            },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 90            },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 90            },
+      { "model": "button"        , "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 90            }
+    ],
+    "facing=up,powered=true"    : [
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }                     },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }                     },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }                     },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }                     }
+    ],
+    "facing=down,powered=true"  : [
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 180           },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 180           },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 180           },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 180           }
+    ],
+    "facing=east,powered=true"  : [
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 90 , "y": 90  },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 90 , "y": 90  },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 90 , "y": 90  },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 90 , "y": 90  }
+    ],
+    "facing=west,powered=true"  : [
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 90 , "y": 270 },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 90 , "y": 270 },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 90 , "y": 270 },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 90 , "y": 270 }
+    ],
+    "facing=south,powered=true" : [
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 90 , "y": 180 },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 90 , "y": 180 },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 90 , "y": 180 },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 90 , "y": 180 }
+    ],
+    "facing=north,powered=true" : [
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_0" }, "x": 90            },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_1" }, "x": 90            },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_2" }, "x": 90            },
+      { "model": "button_pressed", "textures": { "texture": "twilightforest:blocks/wood/planks_canopy_3" }, "x": 90            }
+    ]
+  }
+}

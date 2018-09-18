@@ -34,8 +34,8 @@ import net.minecraft.world.World;
 
 public class EntityTFLoyalZombie extends EntityTameable {
 
-	public EntityTFLoyalZombie(World par1World) {
-		super(par1World);
+	public EntityTFLoyalZombie(World world) {
+		super(world);
 		this.setSize(0.6F, 1.8F);
 	}
 
@@ -67,11 +67,11 @@ public class EntityTFLoyalZombie extends EntityTameable {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
-		boolean success = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), 7);
+	public boolean attackEntityAsMob(Entity entity) {
+		boolean success = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 7);
 
 		if (success) {
-			par1Entity.motionY += 0.2;
+			entity.motionY += 0.2;
 		}
 
 		return success;
@@ -127,7 +127,7 @@ public class EntityTFLoyalZombie extends EntityTameable {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block par4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		playSound(SoundEvents.ENTITY_ZOMBIE_STEP, 0.15F, 1.0F);
 	}
 

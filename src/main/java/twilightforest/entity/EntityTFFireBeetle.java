@@ -76,7 +76,7 @@ public class EntityTFFireBeetle extends EntityMob implements IBreathAttacker {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block var4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
 	}
 

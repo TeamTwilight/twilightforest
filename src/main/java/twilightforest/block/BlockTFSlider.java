@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -30,7 +31,7 @@ import java.util.Random;
 
 public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCallback {
 
-	public static final PropertyInteger DELAY = PropertyInteger.create("delay", 0, 3);
+	public static final IProperty<Integer> DELAY = PropertyInteger.create("delay", 0, 3);
 
 	private static final int TICK_TIME = 80;
 	private static final int OFFSET_TIME = 20;
@@ -96,7 +97,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random par5Random) {
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
 		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
 			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
 
@@ -151,15 +152,15 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
 		if (entity instanceof EntityLivingBase) {
 			double kx = (pos.getX() + 0.5 - entity.posX) * 2.0;

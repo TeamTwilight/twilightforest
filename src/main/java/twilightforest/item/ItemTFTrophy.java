@@ -60,7 +60,7 @@ public class ItemTFTrophy extends ItemTF {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack), I18n.translateToLocal("entity.twilightforest." + BossVariant.values()[stack.getMetadata() % BossVariant.values().length].getName().toLowerCase(Locale.ROOT) + ".name"));
+		return I18n.translateToLocalFormatted(this.getTranslationKey(stack), I18n.translateToLocal("entity.twilightforest." + BossVariant.values()[stack.getMetadata() % BossVariant.values().length].getName().toLowerCase(Locale.ROOT) + ".name"));
 	}
 
 	@Nonnull
@@ -126,9 +126,9 @@ public class ItemTFTrophy extends ItemTF {
 
 	@Nonnull
 	@Override
-	public String getUnlocalizedName(ItemStack stack) {
+	public String getTranslationKey(ItemStack stack) {
 		//int meta = MathHelper.clamp(stack.getItemDamage(), 0, BossVariant.values().length);
-		return "item.tf_trophy.name"; //super.getUnlocalizedName() + "." + BossVariant.values()[meta].getName();
+		return "item.twilightforest.tf_trophy.name"; //super.getUnlocalizedName() + "." + BossVariant.values()[meta].getName();
 	}
 
 	@Override
@@ -136,6 +136,7 @@ public class ItemTFTrophy extends ItemTF {
 		return armorType == EntityEquipmentSlot.HEAD;
 	}
 
+	@Override
 	@Nullable
 	public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
 		return EntityEquipmentSlot.HEAD;

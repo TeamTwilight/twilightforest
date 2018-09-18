@@ -47,6 +47,7 @@ import twilightforest.world.MapGenTFMajorFeature;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -371,7 +372,7 @@ public enum TFFeature {
 		}
 	},
 	// TODO split cloud giants from this
-	TROLL_CAVE ( 3, "troll_lairs", true, new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
+	TROLL_CAVE ( 4, "troll_lairs", true, new ResourceLocation( TwilightForestMod.ID, "progress_merge" )) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
@@ -402,7 +403,7 @@ public enum TFFeature {
 			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
 		}
 	},
-	FINAL_CASTLE ( 3, "final_castle", true, new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
+	FINAL_CASTLE ( 4, "final_castle", true, new ResourceLocation( TwilightForestMod.ID, "progress_troll" )) {
 		{
 			TFFinalCastlePieces.registerFinalCastlePieces();
 
@@ -501,8 +502,8 @@ public enum TFFeature {
 	 * modid sensitive
 	 */
 	public static TFFeature getFeatureByName(ResourceLocation name) {
-		if (name.getResourceDomain().equalsIgnoreCase(TwilightForestMod.ID))
-			return getFeatureByName(name.getResourcePath());
+		if (name.getNamespace().equalsIgnoreCase(TwilightForestMod.ID))
+			return getFeatureByName(name.getPath());
 		return NOTHING;
 	}
 
@@ -726,6 +727,7 @@ public enum TFFeature {
 	}
 
 	// [Vanilla Copy] from MapGenStructure#findNearestStructurePosBySpacing; changed 2nd param to be TFFeature instead of MapGenStructure
+	@Nullable
 	public static BlockPos findNearestFeaturePosBySpacing(World worldIn, TFFeature feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
 		int i = blockPos.getX() >> 4;
 		int j = blockPos.getZ() >> 4;
@@ -871,31 +873,30 @@ public enum TFFeature {
 	/**
 	 * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
 	 */
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType) {
-		if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
-			return this.getSpawnableList(EnumCreatureType.MONSTER, 0);
-		} else if (par1EnumCreatureType == EnumCreatureType.AMBIENT) {
-			return this.ambientCreatureList;
-		} else if (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE) {
-			return this.waterCreatureList;
-		} else {
-			return Lists.newArrayList();
+	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+		switch (creatureType) {
+			case MONSTER:
+				return this.getSpawnableList(EnumCreatureType.MONSTER, 0);
+			case AMBIENT:
+				return this.ambientCreatureList;
+			case WATER_CREATURE:
+				return this.waterCreatureList;
+			default:
+				return Lists.newArrayList();
 		}
 	}
 
 	/**
 	 * Returns a list of hostile monsters in the specified indexed category
 	 */
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType, int index) {
-		if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
-			if (index >= 0 && index < this.spawnableMonsterLists.size()) {
-				return this.spawnableMonsterLists.get(index);
-			} else {
-				return Lists.newArrayList();
-			}
-		} else {
-			return getSpawnableList(par1EnumCreatureType);
+	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType, int index) {
+		if (creatureType != EnumCreatureType.MONSTER) {
+			return getSpawnableList(creatureType);
 		}
+		if (index >= 0 && index < this.spawnableMonsterLists.size()) {
+			return this.spawnableMonsterLists.get(index);
+		}
+		return Lists.newArrayList();
 	}
 
 	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {

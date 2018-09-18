@@ -8,6 +8,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -38,8 +39,8 @@ import java.util.List;
 @MethodsReturnNonnullByDefault
 public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallback {
 
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	public static final PropertyEnum<HugeLilypadPiece> PIECE = PropertyEnum.create("piece", HugeLilypadPiece.class);
+	public static final IProperty<EnumFacing> FACING = BlockHorizontal.FACING;
+	public static final IProperty<HugeLilypadPiece> PIECE = PropertyEnum.create("piece", HugeLilypadPiece.class);
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.015625, 1);
 
 	private boolean isSelfDestructing = false;
@@ -65,7 +66,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
 		meta = meta & 0b1111;
-		return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 0b0011)).withProperty(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
+		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 0b0011)).withProperty(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
 	}
 
 	@Override
@@ -162,7 +163,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getMobilityFlag(IBlockState state) {
+	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
 
@@ -175,8 +176,8 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-		super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
+	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+		super.onEntityCollision(worldIn, pos, state, entityIn);
 
 		if (entityIn instanceof EntityBoat) {
 			worldIn.destroyBlock(new BlockPos(pos), true);
@@ -185,7 +186,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 

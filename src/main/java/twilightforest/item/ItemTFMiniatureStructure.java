@@ -15,6 +15,6 @@ public class ItemTFMiniatureStructure extends ItemBlockTFMeta {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.translateToLocalFormatted(this.getUnlocalizedName(stack), I18n.translateToLocal("structure." + StructureVariant.values()[stack.getMetadata() % StructureVariant.values().length].getName().toLowerCase(Locale.ROOT) + ".name"));
+        return I18n.translateToLocalFormatted(this.getTranslationKey(stack), I18n.translateToLocal("structure." + StructureVariant.values()[stack.getMetadata() % StructureVariant.values().length].getName().toLowerCase(Locale.ROOT) + ".name"));
     }
 }

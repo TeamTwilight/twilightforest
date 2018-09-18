@@ -35,7 +35,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// naga spawner seems important
-		setBlockState(world, TFBlocks.bossSpawner.getDefaultState(), RADIUS, 2, RADIUS, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.getDefaultState(), RADIUS, 2, RADIUS, sbb);
 
 		return true;
 	}

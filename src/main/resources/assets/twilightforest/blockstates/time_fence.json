@@ -1,0 +1,111 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "uvlock": true
+  },
+  "variants": {
+    "inventory": [{ "model": "fence_inventory", "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }}],
+    
+    "east=false,north=false,south=false,west=false": [
+      { "model": "fence_post"    , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }           },
+      { "model": "fence_post"    , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }           },
+      { "model": "fence_post"    , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }           },
+      { "model": "fence_post"    , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }           }
+    ],
+    
+    "east=false,north=true,south=false,west=false" : [
+      { "model": "twilightforest:util/fence_single"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }           },
+      { "model": "twilightforest:util/fence_single"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }           },
+      { "model": "twilightforest:util/fence_single"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }           },
+      { "model": "twilightforest:util/fence_single"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }           }
+    ],
+    "east=true,north=false,south=false,west=false" : [
+      { "model": "twilightforest:util/fence_single"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 90  },
+      { "model": "twilightforest:util/fence_single"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 90  },
+      { "model": "twilightforest:util/fence_single"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 90  },
+      { "model": "twilightforest:util/fence_single"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 90  }
+    ],
+    "east=false,north=false,south=true,west=false" : [
+      { "model": "twilightforest:util/fence_single"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 180 },
+      { "model": "twilightforest:util/fence_single"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 180 },
+      { "model": "twilightforest:util/fence_single"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 180 },
+      { "model": "twilightforest:util/fence_single"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 180 }
+    ],
+    "east=false,north=false,south=false,west=true" : [
+      { "model": "twilightforest:util/fence_single"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 270 },
+      { "model": "twilightforest:util/fence_single"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 270 },
+      { "model": "twilightforest:util/fence_single"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 270 },
+      { "model": "twilightforest:util/fence_single"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 270 }
+    ],
+    
+    "east=false,north=true,south=false,west=true"  : [
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }           },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }           },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }           },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }           }
+    ],
+    "east=true,north=true,south=false,west=false"  : [
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 90  },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 90  },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 90  },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 90  }
+    ],
+    "east=true,north=false,south=true,west=false"  : [
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 180 },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 180 },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 180 },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 180 }
+    ],
+    "east=false,north=false,south=true,west=true"  : [
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 270 },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 270 },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 270 },
+      { "model": "twilightforest:util/fence_elbow"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 270 }
+    ],
+    
+    "east=false,north=true,south=true,west=false"  : [
+      { "model": "twilightforest:util/fence_straight", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }           },
+      { "model": "twilightforest:util/fence_straight", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }           },
+      { "model": "twilightforest:util/fence_straight", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }           },
+      { "model": "twilightforest:util/fence_straight", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }           }
+    ],
+    "east=true,north=false,south=false,west=true"  : [
+      { "model": "twilightforest:util/fence_straight", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 90  },
+      { "model": "twilightforest:util/fence_straight", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 90  },
+      { "model": "twilightforest:util/fence_straight", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 90  },
+      { "model": "twilightforest:util/fence_straight", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 90  }
+    ],
+    
+    "east=false,north=true,south=true,west=true"   : [
+      { "model": "twilightforest:util/fence_t"       , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }           },
+      { "model": "twilightforest:util/fence_t"       , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }           },
+      { "model": "twilightforest:util/fence_t"       , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }           },
+      { "model": "twilightforest:util/fence_t"       , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }           }
+    ],
+    "east=true,north=true,south=false,west=true"   : [
+      { "model": "twilightforest:util/fence_t"       , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 90  },
+      { "model": "twilightforest:util/fence_t"       , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 90  },
+      { "model": "twilightforest:util/fence_t"       , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 90  },
+      { "model": "twilightforest:util/fence_t"       , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 90  }
+    ],
+    "east=true,north=true,south=true,west=false"   : [
+      { "model": "twilightforest:util/fence_t"       , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 180 },
+      { "model": "twilightforest:util/fence_t"       , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 180 },
+      { "model": "twilightforest:util/fence_t"       , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 180 },
+      { "model": "twilightforest:util/fence_t"       , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 180 }
+    ],
+    "east=true,north=false,south=true,west=true"   : [
+      { "model": "twilightforest:util/fence_t"       , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }, "y": 270 },
+      { "model": "twilightforest:util/fence_t"       , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }, "y": 270 },
+      { "model": "twilightforest:util/fence_t"       , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }, "y": 270 },
+      { "model": "twilightforest:util/fence_t"       , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }, "y": 270 }
+    ],
+    
+    "east=true,north=true,south=true,west=true"    : [
+      { "model": "twilightforest:util/fence_all"     , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_0" }           },
+      { "model": "twilightforest:util/fence_all"     , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_time_1" }           },
+      { "model": "twilightforest:util/fence_all"     , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_2" }           },
+      { "model": "twilightforest:util/fence_all"     , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_time_3" }           }
+    ]
+  }
+}

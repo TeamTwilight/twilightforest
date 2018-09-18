@@ -14,12 +14,12 @@ import static twilightforest.enums.MazestoneVariant.MOSSY;
 public class StructureTFMazeStones extends StructureComponent.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random par1Random, int par2, int par3, int par4, boolean wall) {
+	public void selectBlocks(Random random, int x, int y, int z, boolean wall) {
 		if (!wall) {
 			this.blockstate = Blocks.AIR.getDefaultState();
 		} else {
 			this.blockstate = TFBlocks.maze_stone.getDefaultState();
-			float rf = par1Random.nextFloat();
+			float rf = random.nextFloat();
 
 			if (rf < 0.2F) {
 				this.blockstate = blockstate.withProperty(BlockTFMazestone.VARIANT, MOSSY);

@@ -28,7 +28,7 @@ public class RenderTFBird extends RenderLiving<EntityTFBird> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFBird par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFBird entity) {
 		return textureLoc;
 	}
 }

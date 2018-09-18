@@ -2,32 +2,363 @@
   "forge_marker": 1,
   "defaults": {
     "model": "twilightforest:util/pedestal",
+    "uvlock": true,
     "textures": {
-      "particle": "blocks/stone_slab_top"
+      "particle": "twilightforest:blocks/pedestal/top"
     }
   },
   "variants": {
-    "facing": {
-      "north": {},
-      "south": { "y": 180 },
-      "west":  { "y": 270 },
-      "east":  { "y": 90 }
-    },
-    "latent": {
-      "true": { "textures": {
-        "end"  : "twilightforest:blocks/pedestal_top_active",
-        "north": "twilightforest:blocks/pedestal_naga_active",
-        "south": "twilightforest:blocks/pedestal_urghast_active",
-        "west" : "twilightforest:blocks/pedestal_lich_active",
-        "east" : "twilightforest:blocks/pedestal_hydra_active"
-      } },
-      "false": { "textures": {
-        "end": "twilightforest:blocks/pedestal_top",
-        "north": "twilightforest:blocks/pedestal_naga",
-        "south": "twilightforest:blocks/pedestal_urghast",
-        "west" : "twilightforest:blocks/pedestal_lich",
-        "east" : "twilightforest:blocks/pedestal_hydra"
-      } }
-    }
+    "latent=true": [{
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/naga_latent",
+        "south": "twilightforest:blocks/pedestal/lich_latent",
+        "west" : "twilightforest:blocks/pedestal/hydra_latent",
+        "east" : "twilightforest:blocks/pedestal/ur-ghast_latent"
+      }
+    }, {
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/snow_queen_latent",
+        "south": "twilightforest:blocks/pedestal/naga_latent",
+        "west" : "twilightforest:blocks/pedestal/lich_latent",
+        "east" : "twilightforest:blocks/pedestal/hydra_latent"
+      }
+    }, {
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "south": "twilightforest:blocks/pedestal/snow_queen_latent",
+        "west" : "twilightforest:blocks/pedestal/naga_latent",
+        "east" : "twilightforest:blocks/pedestal/lich_latent"
+      }
+    }, {
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/hydra_latent",
+        "south": "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "west" : "twilightforest:blocks/pedestal/snow_queen_latent",
+        "east" : "twilightforest:blocks/pedestal/naga_latent"
+      }
+    }, {
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/lich_latent",
+        "south": "twilightforest:blocks/pedestal/hydra_latent",
+        "west" : "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "east" : "twilightforest:blocks/pedestal/snow_queen_latent"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/naga_latent",
+        "south": "twilightforest:blocks/pedestal/lich_latent",
+        "west" : "twilightforest:blocks/pedestal/hydra_latent",
+        "east" : "twilightforest:blocks/pedestal/ur-ghast_latent"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/snow_queen_latent",
+        "south": "twilightforest:blocks/pedestal/naga_latent",
+        "west" : "twilightforest:blocks/pedestal/lich_latent",
+        "east" : "twilightforest:blocks/pedestal/hydra_latent"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "south": "twilightforest:blocks/pedestal/snow_queen_latent",
+        "west" : "twilightforest:blocks/pedestal/naga_latent",
+        "east" : "twilightforest:blocks/pedestal/lich_latent"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/hydra_latent",
+        "south": "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "west" : "twilightforest:blocks/pedestal/snow_queen_latent",
+        "east" : "twilightforest:blocks/pedestal/naga_latent"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/lich_latent",
+        "south": "twilightforest:blocks/pedestal/hydra_latent",
+        "west" : "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "east" : "twilightforest:blocks/pedestal/snow_queen_latent"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/naga_latent",
+        "south": "twilightforest:blocks/pedestal/lich_latent",
+        "west" : "twilightforest:blocks/pedestal/hydra_latent",
+        "east" : "twilightforest:blocks/pedestal/ur-ghast_latent"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/snow_queen_latent",
+        "south": "twilightforest:blocks/pedestal/naga_latent",
+        "west" : "twilightforest:blocks/pedestal/lich_latent",
+        "east" : "twilightforest:blocks/pedestal/hydra_latent"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "south": "twilightforest:blocks/pedestal/snow_queen_latent",
+        "west" : "twilightforest:blocks/pedestal/naga_latent",
+        "east" : "twilightforest:blocks/pedestal/lich_latent"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/hydra_latent",
+        "south": "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "west" : "twilightforest:blocks/pedestal/snow_queen_latent",
+        "east" : "twilightforest:blocks/pedestal/naga_latent"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/lich_latent",
+        "south": "twilightforest:blocks/pedestal/hydra_latent",
+        "west" : "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "east" : "twilightforest:blocks/pedestal/snow_queen_latent"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/naga_latent",
+        "south": "twilightforest:blocks/pedestal/lich_latent",
+        "west" : "twilightforest:blocks/pedestal/hydra_latent",
+        "east" : "twilightforest:blocks/pedestal/ur-ghast_latent"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/snow_queen_latent",
+        "south": "twilightforest:blocks/pedestal/naga_latent",
+        "west" : "twilightforest:blocks/pedestal/lich_latent",
+        "east" : "twilightforest:blocks/pedestal/hydra_latent"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "south": "twilightforest:blocks/pedestal/snow_queen_latent",
+        "west" : "twilightforest:blocks/pedestal/naga_latent",
+        "east" : "twilightforest:blocks/pedestal/lich_latent"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/hydra_latent",
+        "south": "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "west" : "twilightforest:blocks/pedestal/snow_queen_latent",
+        "east" : "twilightforest:blocks/pedestal/naga_latent"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top",
+        "north": "twilightforest:blocks/pedestal/lich_latent",
+        "south": "twilightforest:blocks/pedestal/hydra_latent",
+        "west" : "twilightforest:blocks/pedestal/ur-ghast_latent",
+        "east" : "twilightforest:blocks/pedestal/snow_queen_latent"
+      }
+    }],
+    "latent=false" : [{
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/naga_flat",
+        "south": "twilightforest:blocks/pedestal/lich_flat",
+        "west" : "twilightforest:blocks/pedestal/hydra_flat",
+        "east" : "twilightforest:blocks/pedestal/ur-ghast_flat"
+      }
+    }, {
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/snow_queen_flat",
+        "south": "twilightforest:blocks/pedestal/naga_flat",
+        "west" : "twilightforest:blocks/pedestal/lich_flat",
+        "east" : "twilightforest:blocks/pedestal/hydra_flat"
+      }
+    }, {
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "south": "twilightforest:blocks/pedestal/snow_queen_flat",
+        "west" : "twilightforest:blocks/pedestal/naga_flat",
+        "east" : "twilightforest:blocks/pedestal/lich_flat"
+      }
+    }, {
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/hydra_flat",
+        "south": "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "west" : "twilightforest:blocks/pedestal/snow_queen_flat",
+        "east" : "twilightforest:blocks/pedestal/naga_flat"
+      }
+    }, {
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/lich_flat",
+        "south": "twilightforest:blocks/pedestal/hydra_flat",
+        "west" : "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "east" : "twilightforest:blocks/pedestal/snow_queen_flat"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/naga_flat",
+        "south": "twilightforest:blocks/pedestal/lich_flat",
+        "west" : "twilightforest:blocks/pedestal/hydra_flat",
+        "east" : "twilightforest:blocks/pedestal/ur-ghast_flat"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/snow_queen_flat",
+        "south": "twilightforest:blocks/pedestal/naga_flat",
+        "west" : "twilightforest:blocks/pedestal/lich_flat",
+        "east" : "twilightforest:blocks/pedestal/hydra_flat"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "south": "twilightforest:blocks/pedestal/snow_queen_flat",
+        "west" : "twilightforest:blocks/pedestal/naga_flat",
+        "east" : "twilightforest:blocks/pedestal/lich_flat"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/hydra_flat",
+        "south": "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "west" : "twilightforest:blocks/pedestal/snow_queen_flat",
+        "east" : "twilightforest:blocks/pedestal/naga_flat"
+      }
+    }, {
+      "y": 90,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/lich_flat",
+        "south": "twilightforest:blocks/pedestal/hydra_flat",
+        "west" : "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "east" : "twilightforest:blocks/pedestal/snow_queen_flat"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/naga_flat",
+        "south": "twilightforest:blocks/pedestal/lich_flat",
+        "west" : "twilightforest:blocks/pedestal/hydra_flat",
+        "east" : "twilightforest:blocks/pedestal/ur-ghast_flat"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/snow_queen_flat",
+        "south": "twilightforest:blocks/pedestal/naga_flat",
+        "west" : "twilightforest:blocks/pedestal/lich_flat",
+        "east" : "twilightforest:blocks/pedestal/hydra_flat"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "south": "twilightforest:blocks/pedestal/snow_queen_flat",
+        "west" : "twilightforest:blocks/pedestal/naga_flat",
+        "east" : "twilightforest:blocks/pedestal/lich_flat"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/hydra_flat",
+        "south": "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "west" : "twilightforest:blocks/pedestal/snow_queen_flat",
+        "east" : "twilightforest:blocks/pedestal/naga_flat"
+      }
+    }, {
+      "y": 180,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/lich_flat",
+        "south": "twilightforest:blocks/pedestal/hydra_flat",
+        "west" : "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "east" : "twilightforest:blocks/pedestal/snow_queen_flat"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/naga_flat",
+        "south": "twilightforest:blocks/pedestal/lich_flat",
+        "west" : "twilightforest:blocks/pedestal/hydra_flat",
+        "east" : "twilightforest:blocks/pedestal/ur-ghast_flat"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/snow_queen_flat",
+        "south": "twilightforest:blocks/pedestal/naga_flat",
+        "west" : "twilightforest:blocks/pedestal/lich_flat",
+        "east" : "twilightforest:blocks/pedestal/hydra_flat"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "south": "twilightforest:blocks/pedestal/snow_queen_flat",
+        "west" : "twilightforest:blocks/pedestal/naga_flat",
+        "east" : "twilightforest:blocks/pedestal/lich_flat"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/hydra_flat",
+        "south": "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "west" : "twilightforest:blocks/pedestal/snow_queen_flat",
+        "east" : "twilightforest:blocks/pedestal/naga_flat"
+      }
+    }, {
+      "y": 270,
+      "textures": {
+        "end"  : "twilightforest:blocks/pedestal/top_flat",
+        "north": "twilightforest:blocks/pedestal/lich_flat",
+        "south": "twilightforest:blocks/pedestal/hydra_flat",
+        "west" : "twilightforest:blocks/pedestal/ur-ghast_flat",
+        "east" : "twilightforest:blocks/pedestal/snow_queen_flat"
+      }
+    }]
   }
 }

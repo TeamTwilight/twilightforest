@@ -22,8 +22,8 @@ public class EntityTFIceCrystal extends EntityMob {
 	private int crystalAge;
 	private int maxCrystalAge = -1;
 
-	public EntityTFIceCrystal(World par1World) {
-		super(par1World);
+	public EntityTFIceCrystal(World world) {
+		super(world);
 		this.setSize(0.6F, 1.8F);
 
 		//this.setCurrentItemOrArmor(0, new ItemStack(TFItems.iceSword));

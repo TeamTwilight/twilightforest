@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +31,7 @@ import java.util.Random;
  */
 public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 
-	public static final PropertyEnum<TowerWoodVariant> VARIANT = PropertyEnum.create("variant", TowerWoodVariant.class);
+	public static final IProperty<TowerWoodVariant> VARIANT = PropertyEnum.create("variant", TowerWoodVariant.class);
 
 	public BlockTFTowerWood() {
 		super(Material.WOOD);
@@ -58,12 +59,12 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
-		par3List.add(new ItemStack(this, 1, 4));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
+		list.add(new ItemStack(this, 1, 4));
 	}
 
 	@Override
@@ -91,15 +92,15 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float chance, int something) {
-		if (!par1World.isRemote && state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
-			EntityTFTowerTermite termite = new EntityTFTowerTermite(par1World);
+	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+		if (!world.isRemote && state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
+			EntityTFTowerTermite termite = new EntityTFTowerTermite(world);
 			termite.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
-			par1World.spawnEntity(termite);
+			world.spawnEntity(termite);
 			termite.spawnExplosionParticle();
 		}
 
-		super.dropBlockAsItemWithChance(par1World, pos, state, chance, something);
+		super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
 	}
 
 	@Override

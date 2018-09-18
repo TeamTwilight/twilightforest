@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +24,7 @@ import java.util.Random;
 
 public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 
-	public static final PropertyEnum<MagicWoodVariant> VARIANT = PropertyEnum.create("variant", MagicWoodVariant.class);
+	public static final IProperty<MagicWoodVariant> VARIANT = PropertyEnum.create("variant", MagicWoodVariant.class);
 
 	protected BlockTFMagicLog() {
 		this.setHardness(2.0F);
@@ -94,11 +95,11 @@ public class BlockTFMagicLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
 	}
 
 	@SideOnly(Side.CLIENT)

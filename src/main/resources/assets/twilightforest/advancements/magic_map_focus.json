@@ -4,10 +4,16 @@
       "item": "twilightforest:magic_map_focus"
     },
     "title": {
-      "translate": "advancement.twilight_magic_map_focus"
+      "translate": "advancement.twilightforest.magic_map_focus"
     },
     "description": {
-      "translate": "advancement.twilight_magic_map_focus.desc"
+      "translate": "advancement.twilightforest.magic_map_focus.desc",
+      "with": [
+        { "translate": "item.twilightforest.magicMapFocus.name" },
+        { "translate": "item.twilightforest.tfFeather.name" },
+        { "translate": "item.yellowDust.name" },
+        { "translate": "item.twilightforest.torchberries.name" }
+      ]
     }
   },
   "parent": "twilightforest:twilight_hunter",

@@ -1,8 +1,12 @@
 package twilightforest.item;
 
+import com.google.common.collect.Multimap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
@@ -26,7 +30,7 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 
@@ -34,7 +38,7 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 
 	@Override
@@ -46,5 +50,14 @@ public class ItemTFGiantPick extends ItemPickaxe implements ModelRegisterCallbac
 		return state.getBlock() instanceof BlockTFGiantBlock ? destroySpeed * 64 : destroySpeed;
 	}
 
+	@Override
+	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
+		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 
+		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+			multimap.put(EntityPlayer.REACH_DISTANCE.getName(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Tool modifier", 2.5, 0));
+		}
+
+		return multimap;
+	}
 }

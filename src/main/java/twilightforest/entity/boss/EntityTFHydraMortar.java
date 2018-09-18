@@ -21,13 +21,13 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	public int fuse = 80;
 	private boolean megaBlast = false;
 
-	public EntityTFHydraMortar(World par1World) {
-		super(par1World);
+	public EntityTFHydraMortar(World world) {
+		super(world);
 		this.setSize(0.75F, 0.75F);
 	}
 
-	public EntityTFHydraMortar(World par1World, EntityTFHydraHead head) {
-		super(par1World, head);
+	public EntityTFHydraMortar(World world, EntityTFHydraHead head) {
+		super(world, head);
 		this.setSize(0.75F, 0.75F);
 
 		Vec3d vector = head.getLookVec();
@@ -69,19 +69,19 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult mop) {
-		if (mop.entityHit == null && !megaBlast) {
+	protected void onImpact(RayTraceResult ray) {
+		if (ray.entityHit == null && !megaBlast) {
 			// we hit the ground
 			this.motionY = 0;
 			this.onGround = true;
-		} else if (!world.isRemote && mop.entityHit != thrower && !isPartOfHydra(mop.entityHit)) {
+		} else if (!world.isRemote && ray.entityHit != thrower && !isPartOfHydra(ray.entityHit)) {
 			detonate();
 		}
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
 		if (thrower instanceof EntityTFHydraPart) {
-			EntityTFHydra hydra = ((EntityTFHydraPart) thrower).hydraObj;
+			EntityTFHydra hydra = ((EntityTFHydraPart) thrower).hydra;
 			if (hydra == null || hydra.getParts() == null)
 				return false;
 			if (entity == hydra)
@@ -97,14 +97,14 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	}
 
 	@Override
-	public float getExplosionResistance(Explosion par1Explosion, World par2World, BlockPos pos, IBlockState state) {
-		float var6 = super.getExplosionResistance(par1Explosion, par2World, pos, state);
+	public float getExplosionResistance(Explosion explosion, World world, BlockPos pos, IBlockState state) {
+		float resistance = super.getExplosionResistance(explosion, world, pos, state);
 
 		if (this.megaBlast && state.getBlock() != Blocks.BEDROCK && state.getBlock() != Blocks.END_PORTAL && state.getBlock() != Blocks.END_PORTAL_FRAME) {
-			var6 = Math.min(0.8F, var6);
+			resistance = Math.min(0.8F, resistance);
 		}
 
-		return var6;
+		return resistance;
 	}
 
 	private void detonate() {
@@ -124,11 +124,11 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		super.attackEntityFrom(damagesource, i);
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		super.attackEntityFrom(source, amount);
 
-		if (damagesource.getTrueSource() != null && !this.world.isRemote) {
-			Vec3d vec3d = damagesource.getTrueSource().getLookVec();
+		if (source.getTrueSource() != null && !this.world.isRemote) {
+			Vec3d vec3d = source.getTrueSource().getLookVec();
 			if (vec3d != null) {
 				// reflect faster and more accurately
 				this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
@@ -136,8 +136,8 @@ public class EntityTFHydraMortar extends EntityThrowable {
 				this.fuse += 20;
 			}
 
-			if (damagesource.getTrueSource() instanceof EntityLivingBase) {
-				this.thrower = (EntityLivingBase) damagesource.getTrueSource();
+			if (source.getTrueSource() instanceof EntityLivingBase) {
+				this.thrower = (EntityLivingBase) source.getTrueSource();
 			}
 			return true;
 		} else {

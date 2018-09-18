@@ -16,7 +16,7 @@ public class RenderTFBoar extends RenderPig {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityPig par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityPig entity) {
 		return textureLoc;
 	}
 

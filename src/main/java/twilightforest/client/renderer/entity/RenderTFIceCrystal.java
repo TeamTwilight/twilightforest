@@ -17,13 +17,13 @@ public class RenderTFIceCrystal extends RenderLiving<EntityTFIceCrystal> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFIceCrystal par1EntityLivingBase, float partialTick) {
-		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
+	protected void preRenderCallback(EntityTFIceCrystal entity, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
 		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFIceCrystal var1) {
+	protected ResourceLocation getEntityTexture(EntityTFIceCrystal entity) {
 		return textureLoc;
 	}
 

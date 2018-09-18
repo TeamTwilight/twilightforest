@@ -76,12 +76,12 @@ public class ItemTFPeacockFan extends ItemTF {
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BLOCK;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 20;
 	}
 
@@ -113,7 +113,7 @@ public class ItemTFPeacockFan extends ItemTF {
 		double radius = 2.0D;
 		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d lookVec = player.getLookVec().scale(range);
-		Vec3d destVec = srcVec.addVector(lookVec.x, lookVec.y, lookVec.z);
+		Vec3d destVec = srcVec.add(lookVec.x, lookVec.y, lookVec.z);
 
 		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}

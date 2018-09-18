@@ -17,8 +17,8 @@ public class RenderTFBunny extends RenderLiving<EntityTFBunny> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFBunny par1Entity) {
-		switch (par1Entity.getBunnyType()) {
+	protected ResourceLocation getEntityTexture(EntityTFBunny entity) {
+		switch (entity.getBunnyType()) {
 			default:
 			case 0:
 			case 1:

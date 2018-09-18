@@ -43,11 +43,11 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getFront(meta));
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.byIndex(meta));
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random) {
+	public int quantityDropped(Random random) {
 		return 0;
 	}
 
@@ -85,7 +85,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
 		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
+		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
 		return world.rayTraceBlocks(position, dest);
 	}
 

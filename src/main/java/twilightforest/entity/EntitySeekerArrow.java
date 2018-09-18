@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class EntitySeekerArrow extends EntityArrow {
+public class EntitySeekerArrow extends EntityArrow implements ITFProjectile {
 
 	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntitySeekerArrow.class, DataSerializers.VARINT);
 
@@ -26,8 +26,8 @@ public class EntitySeekerArrow extends EntityArrow {
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
-	public EntitySeekerArrow(World par1World) {
-		super(par1World);
+	public EntitySeekerArrow(World world) {
+		super(world);
 	}
 
 	public EntitySeekerArrow(World world, EntityPlayer player) {
@@ -60,8 +60,8 @@ public class EntitySeekerArrow extends EntityArrow {
 				Vec3d courseVec = getMotionVec();
 
 				// vector lengths
-				double courseLen = courseVec.lengthVector();
-				double targetLen = targetVec.lengthVector();
+				double courseLen = courseVec.length();
+				double targetLen = targetVec.length();
 				double totalLen = MathHelper.sqrt(courseLen*courseLen + targetLen*targetLen);
 
 				double dotProduct = courseVec.dotProduct(targetVec) / (courseLen * targetLen); // cosine similarity

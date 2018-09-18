@@ -106,15 +106,15 @@ public class ModelTFSnowQueen extends ModelBiped {
 	}
 
 	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
+	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
-		super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
-		EntityTFSnowQueen queen = (EntityTFSnowQueen) par7Entity;
+		EntityTFSnowQueen queen = (EntityTFSnowQueen) entity;
 
 		// in beam phase, arms forwards
 		if (queen.getCurrentPhase() == Phase.BEAM) {
@@ -129,10 +129,10 @@ public class ModelTFSnowQueen extends ModelBiped {
 				this.bipedLeftArm.rotateAngleX = -((float) Math.PI / 2F);
 				this.bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
 				this.bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-				this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-				this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-				this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-				this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+				this.bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+				this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+				this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+				this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 			} else {
 				// arms up
 				this.bipedRightArm.rotateAngleX += Math.PI;

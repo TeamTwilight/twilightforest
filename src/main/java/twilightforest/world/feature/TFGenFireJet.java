@@ -19,7 +19,7 @@ public class TFGenFireJet extends TFGenerator {
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {
-		for (int var6 = 0; var6 < 4; ++var6) {
+		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.add(
 					rand.nextInt(8) - rand.nextInt(8),
 					rand.nextInt(4) - rand.nextInt(4),

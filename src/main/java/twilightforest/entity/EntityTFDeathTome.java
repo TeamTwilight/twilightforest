@@ -28,8 +28,8 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome");
 	public static final ResourceLocation HURT_LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome_hurt");
 
-	public EntityTFDeathTome(World par1World) {
-		super(par1World);
+	public EntityTFDeathTome(World world) {
+		super(world);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		EntityThrowable projectile = new EntityTFTomeBolt(this.world, this);
 		double tx = target.posX - this.posX;
 		double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;

@@ -4,10 +4,10 @@
       "item": "twilightforest:fiery_sword"
     },
     "title": {
-      "translate": "advancement.twilight_fiery_set"
+      "translate": "advancement.twilightforest.fiery_set"
     },
     "description": {
-      "translate": "advancement.twilight_fiery_set.desc"
+      "translate": "advancement.twilightforest.fiery_set.desc"
     },
     "frame": "challenge"
   },

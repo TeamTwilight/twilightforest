@@ -10,14 +10,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFSlimeProjectile extends EntityThrowable {
+public class EntityTFSlimeProjectile extends EntityThrowable implements ITFProjectile {
 
-	public EntityTFSlimeProjectile(World par1World) {
-		super(par1World);
+	public EntityTFSlimeProjectile(World world) {
+		super(world);
 	}
 
-	public EntityTFSlimeProjectile(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFSlimeProjectile(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class EntityTFSlimeProjectile extends EntityThrowable {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		super.attackEntityFrom(damagesource, i);
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		super.attackEntityFrom(source, amount);
 		die();
 		return true;
 	}

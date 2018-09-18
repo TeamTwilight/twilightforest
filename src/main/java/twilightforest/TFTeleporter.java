@@ -51,60 +51,61 @@ public class TFTeleporter extends Teleporter {
 	public void placeInPortal(Entity entity, float facing) {
 		if (!this.placeInExistingPortal(entity, facing)) {
 			// if we're in enforced progression mode, check the biomes for safety
-			if (entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-				BlockPos pos = new BlockPos(entity);
-				if (!isSafeAround(pos, entity)) {
-					TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
+			boolean checkProgression = entity.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
 
-					BlockPos safeCoords = findSafeCoords(200, pos, entity);
+			BlockPos pos = new BlockPos(entity);
+			if (!isSafeAround(pos, entity, checkProgression)) {
+				TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
+
+				BlockPos safeCoords = findSafeCoords(200, pos, entity, checkProgression);
+				if (safeCoords != null) {
+					entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+					TwilightForestMod.LOGGER.debug("Safely rerouted!");
+
+				} else {
+					TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
+					safeCoords = findSafeCoords(400, pos, entity, checkProgression);
 
 					if (safeCoords != null) {
 						entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+						TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
 
-						TwilightForestMod.LOGGER.debug("Safely rerouted!");
 					} else {
-						TwilightForestMod.LOGGER.debug("Did not find a safe spot at first try, trying again with longer range.");
-						safeCoords = findSafeCoords(400, pos, entity);
-						if (safeCoords != null) {
-							entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
-
-							TwilightForestMod.LOGGER.debug("Safely rerouted to long range portal.  Return trip not guaranteed.");
-						} else {
-							TwilightForestMod.LOGGER.debug("Did not find a safe spot.");
-						}
+						TwilightForestMod.LOGGER.debug("Did not find a safe spot.");
 					}
 				}
-
 			}
+
 			this.makePortal(entity);
 			this.placeInExistingPortal(entity, facing);
 		}
 	}
 
 	@Nullable
-	private BlockPos findSafeCoords(int range, BlockPos pos, Entity entity) {
-		for (int i = 0; i < 25; i++) {
+	private BlockPos findSafeCoords(int range, BlockPos pos, Entity entity, boolean checkProgression) {
+		int attempts = range / 8;
+		for (int i = 0; i < attempts; i++) {
 			BlockPos dPos = new BlockPos(
 					pos.getX() + random.nextInt(range) - random.nextInt(range),
 					100,
 					pos.getZ() + random.nextInt(range) - random.nextInt(range)
 			);
 
-			if (isSafeAround(dPos, entity)) {
+			if (isSafeAround(dPos, entity, checkProgression)) {
 				return dPos;
 			}
 		}
 		return null;
 	}
 
-	private boolean isSafeAround(BlockPos pos, Entity entity) {
+	private boolean isSafeAround(BlockPos pos, Entity entity, boolean checkProgression) {
 
-		if (!isSafe(pos, entity)) {
+		if (!isSafe(pos, entity, checkProgression)) {
 			return false;
 		}
 
 		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
-			if (!isSafe(pos.offset(facing, 16), entity)) {
+			if (!isSafe(pos.offset(facing, 16), entity, checkProgression)) {
 				return false;
 			}
 		}
@@ -112,14 +113,18 @@ public class TFTeleporter extends Teleporter {
 		return true;
 	}
 
-	private boolean isSafe(BlockPos pos, Entity entity) {
-		return checkBiome(pos, entity) && checkStructure(pos);
+	private boolean isSafe(BlockPos pos, Entity entity, boolean checkProgression) {
+		return checkPos(pos) && (!checkProgression || checkBiome(pos, entity)) && checkStructure(pos);
+	}
+
+	private boolean checkPos(BlockPos pos) {
+		return world.getWorldBorder().contains(pos);
 	}
 
 	private boolean checkStructure(BlockPos pos) {
 		IChunkGenerator generator = world.getChunkProvider().chunkGenerator;
 		if (generator instanceof ChunkGeneratorTFBase) {
-			if (!world.isBlockLoaded(pos)) generator.recreateStructures(world.getChunkFromBlockCoords(pos), pos.getX() >> 4, pos.getZ() >> 4);
+			if (!world.isBlockLoaded(pos)) generator.recreateStructures(world.getChunk(pos), pos.getX() >> 4, pos.getZ() >> 4);
 
 			return !((ChunkGeneratorTFBase) generator).isBlockInFullStructure(pos.getX(), pos.getZ());
 		}
@@ -161,6 +166,11 @@ public class TFTeleporter extends Teleporter {
 
 				for (int j1 = -i; j1 <= i; ++j1) {
 
+					// TF - skip positions outside current world border (MC-114796)
+					if (!this.world.getWorldBorder().contains(blockpos3.add(i1, 0, j1))) {
+						continue;
+					}
+
 					// TF - skip chunks that aren't generated
 					ChunkPos chunkPos = new ChunkPos(blockpos3.add(i1, 0, j1));
 					if (!this.world.isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
@@ -168,7 +178,7 @@ public class TFTeleporter extends Teleporter {
 					}
 
 					// TF - explicitly fetch chunk so it can be unloaded if needed
-					Chunk chunk = this.world.getChunkFromChunkCoords(chunkPos.x, chunkPos.z);
+					Chunk chunk = this.world.getChunk(chunkPos.x, chunkPos.z);
 
 					for (BlockPos blockpos1 = blockpos3.add(i1, getScanHeight(blockpos3) - blockpos3.getY(), j1); blockpos1.getY() >= 0; blockpos1 = blockpos2) {
 						blockpos2 = blockpos1.down();
@@ -179,8 +189,8 @@ public class TFTeleporter extends Teleporter {
 						}
 
 						// TF - use our portal block
-						if (chunk.getBlockState(blockpos1).getBlock() == TFBlocks.portal) {
-							for (blockpos2 = blockpos1.down(); chunk.getBlockState(blockpos2).getBlock() == TFBlocks.portal; blockpos2 = blockpos2.down()) {
+						if (chunk.getBlockState(blockpos1).getBlock() == TFBlocks.twilight_portal) {
+							for (blockpos2 = blockpos1.down(); chunk.getBlockState(blockpos2).getBlock() == TFBlocks.twilight_portal; blockpos2 = blockpos2.down()) {
 								blockpos1 = blockpos2;
 							}
 
@@ -236,7 +246,7 @@ public class TFTeleporter extends Teleporter {
 
 	private int getScanHeight(int x, int z) {
 		int worldHeight = world.getActualHeight() - 1;
-		int chunkHeight = world.getChunkFromChunkCoords(x >> 4, z >> 4).getTopFilledSegment() + 15;
+		int chunkHeight = world.getChunk(x >> 4, z >> 4).getTopFilledSegment() + 15;
 		return Math.min(worldHeight, chunkHeight);
 	}
 
@@ -262,7 +272,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private boolean isBlockPortal(World world, BlockPos pos) {
-		return world.getBlockState(pos).getBlock() == TFBlocks.portal;
+		return world.getBlockState(pos).getBlock() == TFBlocks.twilight_portal;
 	}
 
 	@Override
@@ -307,7 +317,7 @@ public class TFTeleporter extends Teleporter {
 
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
-				world.getChunkFromChunkCoords(x + dx, z + dz);
+				world.getChunk(x + dx, z + dz);
 			}
 		}
 	}
@@ -430,7 +440,7 @@ public class TFTeleporter extends Teleporter {
 		world.setBlockState(pos.east().south().down(), dirt);
 
 		// portal in it
-		IBlockState portal = TFBlocks.portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
+		IBlockState portal = TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
 
 		world.setBlockState(pos, portal, 2);
 		world.setBlockState(pos.east(), portal, 2);

@@ -82,7 +82,7 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	}
 
 	@Override
-	public boolean isBreedingItem(ItemStack par1ItemStack) {
+	public boolean isBreedingItem(ItemStack stack) {
 		return false;
 	}
 

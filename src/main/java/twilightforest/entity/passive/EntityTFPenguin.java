@@ -44,8 +44,8 @@ public class EntityTFPenguin extends EntityTFBird {
 	}
 
 	@Override
-	public boolean isBreedingItem(ItemStack par1ItemStack) {
-		return par1ItemStack != null && par1ItemStack.getItem() == Items.FISH;
+	public boolean isBreedingItem(ItemStack stack) {
+		return stack.getItem() == Items.FISH;
 	}
 
 	@Override

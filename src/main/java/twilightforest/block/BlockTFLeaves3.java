@@ -3,6 +3,7 @@ package twilightforest.block;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -34,7 +35,7 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback {
 
-	public static final PropertyEnum<Leaves3Variant> VARIANT = PropertyEnum.create("variant", Leaves3Variant.class);
+	public static final IProperty<Leaves3Variant> VARIANT = PropertyEnum.create("variant", Leaves3Variant.class);
 
 	protected BlockTFLeaves3() {
 		this.setCreativeTab(TFItems.creativeTab);
@@ -98,14 +99,14 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return TFItems.magic_beans;
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
 		for (int i = 0; i < Leaves3Variant.values().length; i++) {
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 

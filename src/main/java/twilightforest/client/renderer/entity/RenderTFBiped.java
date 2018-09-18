@@ -11,8 +11,8 @@ import twilightforest.TwilightForestMod;
 public class RenderTFBiped<T extends EntityLiving> extends RenderBiped<T> {
 	private final ResourceLocation textureLoc;
 
-	public RenderTFBiped(RenderManager manager, ModelBiped modelBiped, float scale, String textureName) {
-		super(manager, modelBiped, scale);
+	public RenderTFBiped(RenderManager manager, ModelBiped modelBiped, float shadowSize, String textureName) {
+		super(manager, modelBiped, shadowSize);
 		this.addLayer(new LayerBipedArmor(this));
 
 		if (textureName.startsWith("textures")) {
@@ -23,7 +23,7 @@ public class RenderTFBiped<T extends EntityLiving> extends RenderBiped<T> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T par1Entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 }

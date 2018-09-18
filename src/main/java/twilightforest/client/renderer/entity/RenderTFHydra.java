@@ -16,12 +16,12 @@ public class RenderTFHydra extends RenderLiving<EntityTFHydra> {
 	}
 
 	@Override
-	protected float getDeathMaxRotation(EntityTFHydra par1EntityLiving) {
+	protected float getDeathMaxRotation(EntityTFHydra entity) {
 		return 0F;
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFHydra par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFHydra entity) {
 		return textureLoc;
 	}
 }

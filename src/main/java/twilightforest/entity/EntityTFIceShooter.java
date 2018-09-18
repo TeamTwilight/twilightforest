@@ -25,8 +25,8 @@ import twilightforest.client.particle.TFParticleType;
 public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_shooter");
 
-	public EntityTFIceShooter(World par1World) {
-		super(par1World);
+	public EntityTFIceShooter(World world) {
+		super(world);
 		this.setSize(0.8F, 1.8F);
 	}
 
@@ -93,7 +93,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float par2) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		EntityTFIceSnowball snowball = new EntityTFIceSnowball(this.world, this);
 
 		// [VanillaCopy] Adapted from EntitySnowman

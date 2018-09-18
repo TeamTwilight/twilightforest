@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -10,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -32,7 +34,8 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockTFHedge extends Block implements ModelRegisterCallback {
-	public static final PropertyEnum<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
+
+	public static final IProperty<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
 	private static final AxisAlignedBB HEDGE_BB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
 
 	private final int damageDone;
@@ -79,7 +82,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if (state.getValue(VARIANT) == HedgeVariant.HEDGE && shouldDamage(entity)) {
 			entity.attackEntityFrom(DamageSource.CACTUS, damageDone);
 		}
@@ -141,7 +144,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
 		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
+		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
 		return world.rayTraceBlocks(position, dest);
 	}
 
@@ -161,16 +164,16 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random) {
-		return par1Random.nextInt(40) == 0 ? 1 : 0;
+	public int quantityDropped(Random random) {
+		return random.nextInt(40) == 0 ? 1 : 0;
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
 			return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 		} else {
-			return null;
+			return Items.AIR;
 		}
 	}
 
@@ -180,10 +183,10 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int fortune) {
-		if (!par1World.isRemote && state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
-			if (par1World.rand.nextInt(40) == 0) {
-				this.dropBlockAsItem(par1World, pos, state, fortune);
+	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+		if (!world.isRemote && state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
+			if (world.rand.nextInt(40) == 0) {
+				this.dropBlockAsItem(world, pos, state, fortune);
 			}
 		}
 	}

@@ -4,10 +4,13 @@
       "item": "twilightforest:alpha_fur"
     },
     "title": {
-      "translate": "advancement.twilight_progress_yeti"
+      "translate": "advancement.twilightforest.progress_yeti"
     },
     "description": {
-      "translate": "advancement.twilight_progress_yeti.desc"
+      "translate": "advancement.twilightforest.progress_yeti.desc",
+      "with": [
+        { "translate": "entity.twilightforest.yeti_alpha.name" }
+      ]
     },
     "frame": "goal"
   },
@@ -29,5 +32,8 @@
   "requirements": [
     [ "yeti", "fur" ],
     [ "previous_progression" ]
-  ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  }
 }

@@ -3,6 +3,9 @@ package twilightforest.entity.boss;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.MobEffects;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -10,26 +13,34 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-
 public class EntityTFLichMinion extends EntityZombie {
+
+	private static final DataParameter<Boolean> STRONG = EntityDataManager.createKey(EntityTFLichMinion.class, DataSerializers.BOOLEAN);
+
 	EntityTFLich master;
 
-	public EntityTFLichMinion(World par1World) {
-		super(par1World);
+	public EntityTFLichMinion(World world) {
+		super(world);
 		this.master = null;
 	}
 
-	public EntityTFLichMinion(World par1World, EntityTFLich entityTFLich) {
-		super(par1World);
+	public EntityTFLichMinion(World world, EntityTFLich entityTFLich) {
+		super(world);
 		this.master = entityTFLich;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(STRONG, false);
+	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		EntityLivingBase prevTarget = getAttackTarget();
 
-		if (super.attackEntityFrom(par1DamageSource, par2)) {
-			if (par1DamageSource.getTrueSource() instanceof EntityTFLich) {
+		if (super.attackEntityFrom(source, amount)) {
+			if (source.getTrueSource() instanceof EntityTFLich) {
 				// return to previous target but speed up
 				setRevengeTarget(prevTarget);
 				addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 4));
@@ -70,5 +81,25 @@ public class EntityTFLichMinion extends EntityZombie {
 				break;
 			}
 		}
+	}
+
+	@Override
+	protected void onNewPotionEffect(PotionEffect effect) {
+		super.onNewPotionEffect(effect);
+		if (!world.isRemote && effect.getPotion() == MobEffects.STRENGTH) {
+			dataManager.set(STRONG, true);
+		}
+	}
+
+	@Override
+	protected void onFinishedPotionEffect(PotionEffect effect) {
+		super.onFinishedPotionEffect(effect);
+		if (!world.isRemote && effect.getPotion() == MobEffects.STRENGTH) {
+			dataManager.set(STRONG, false);
+		}
+	}
+
+	public boolean isStrong() {
+		return dataManager.get(STRONG);
 	}
 }

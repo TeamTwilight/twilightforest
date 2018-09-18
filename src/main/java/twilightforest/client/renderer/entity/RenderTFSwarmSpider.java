@@ -20,7 +20,7 @@ public class RenderTFSwarmSpider extends RenderSpider<EntityTFSwarmSpider> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFSwarmSpider par1EntityLivingBase, float par2) {
+	protected void preRenderCallback(EntityTFSwarmSpider entity, float partialTicks) {
 		float scale = 0.5F;
 		GlStateManager.scale(scale, scale, scale);
 	}

@@ -64,7 +64,7 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block var4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
 	}
 
@@ -84,7 +84,7 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		EntityThrowable projectile = new EntityTFSlimeProjectile(this.world, this);
 		playSound(SoundEvents.ENTITY_SMALL_SLIME_SQUISH, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		double tx = target.posX - this.posX;

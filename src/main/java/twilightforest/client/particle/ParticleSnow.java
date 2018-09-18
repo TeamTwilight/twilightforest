@@ -10,26 +10,27 @@ import twilightforest.TwilightForestMod;
 
 @SideOnly(Side.CLIENT)
 public class ParticleSnow extends Particle {
+
 	float initialParticleScale;
 
-	public ParticleSnow(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
-		this(par1World, par2, par4, par6, par8, par10, par12, 1.0F);
+	public ParticleSnow(World world, double x, double y, double z, double vx, double vy, double vz) {
+		this(world, x, y, z, vx, vy, vz, 1.0F);
 	}
 
-	public ParticleSnow(World par1World, double par2, double par4, double par6, double par8, double par10, double par12, float par14) {
-		super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
+	public ParticleSnow(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
 		this.motionY *= 0.10000000149011612D;
 		this.motionZ *= 0.10000000149011612D;
-		this.motionX += par8 * 0.4D;
-		this.motionY += par10 * 0.4D;
-		this.motionZ += par12 * 0.4D;
+		this.motionX += vx * 0.4D;
+		this.motionY += vy * 0.4D;
+		this.motionZ += vz * 0.4D;
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
 		this.particleScale *= 0.75F;
-		this.particleScale *= par14;
+		this.particleScale *= scale;
 		this.initialParticleScale = this.particleScale;
 		this.particleMaxAge = (int) (6.0D / (Math.random() * 0.8D + 0.6D));
-		this.particleMaxAge = (int) ((float) this.particleMaxAge * par14);
+		this.particleMaxAge = (int) ((float) this.particleMaxAge * scale);
 		this.canCollide = true;
 
 		this.particleTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_" + (rand.nextInt(4))).toString());
@@ -61,7 +62,7 @@ public class ParticleSnow extends Particle {
 	}
 
 	@Override
-	public int getBrightnessForRender(float par1) {
+	public int getBrightnessForRender(float partialTicks) {
 		return 240 | 240 << 16;
 	}
 

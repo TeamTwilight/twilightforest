@@ -68,7 +68,7 @@ public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITF
 		double d2 = d0 - natureBolt.posY;
 		double d3 = attackTarget.posZ - this.posZ;
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
-		natureBolt.shoot(d1, d2 + (double) f, d3, 0.6F, 10 - this.world.getDifficulty().getDifficultyId() * 4);
+		natureBolt.shoot(d1, d2 + (double) f, d3, 0.6F, 10 - this.world.getDifficulty().getId() * 4);
 
 		this.world.spawnEntity(natureBolt);
 

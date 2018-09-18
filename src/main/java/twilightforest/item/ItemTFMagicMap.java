@@ -197,15 +197,16 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		// disable zooming
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.UNCOMMON;
 	}
 
+	@Override
 	@Nullable
 	public Packet<?> createMapDataPacket(ItemStack stack, World world, EntityPlayer player) {
 		Packet<?> p = super.createMapDataPacket(stack, world, player);

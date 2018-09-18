@@ -43,12 +43,12 @@ public class BlockTFDarkLeaves extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random) {
-		return par1Random.nextInt(40) == 0 ? 1 : 0;
+	public int quantityDropped(Random random) {
+		return random.nextInt(40) == 0 ? 1 : 0;
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 	}
 
@@ -58,10 +58,10 @@ public class BlockTFDarkLeaves extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int fortune) {
-		if (!par1World.isRemote) {
-			if (par1World.rand.nextInt(40) == 0) {
-				this.dropBlockAsItem(par1World, pos, state, fortune);
+	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+		if (!world.isRemote) {
+			if (world.rand.nextInt(40) == 0) {
+				this.dropBlockAsItem(world, pos, state, fortune);
 			}
 		}
 	}

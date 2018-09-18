@@ -108,8 +108,6 @@ public class ModelTFTowerBoss extends ModelTFGhast {
 
 	/**
 	 * Make one of the small tentacles
-	 *
-	 * @param i
 	 */
 	protected void makeSmallTentacle(int num) {
 		;
@@ -121,8 +119,8 @@ public class ModelTFTowerBoss extends ModelTFGhast {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float timeAlive, float yaw, float pitch, float par6, Entity par7Entity) {
-		super.setRotationAngles(par1, par2, timeAlive, yaw, pitch, par6, par7Entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
 		// wave tentacles
 		for (int i = 0; i < this.subTentacles.length; ++i) {
@@ -132,9 +130,9 @@ public class ModelTFTowerBoss extends ModelTFGhast {
 //            	
 //            }
 
-			float wiggle = Math.min(par2, 0.6F);
+			float wiggle = Math.min(limbSwingAmount, 0.6F);
 
-			float time = (timeAlive + (i * 9)) / 2.0F;
+			float time = (ageInTicks + (i * 9)) / 2.0F;
 
 			this.subTentacles[i][0].rotateAngleX = (MathHelper.cos(time * 0.6662F) * 1.0F - (float) Math.PI / 3.0F) * wiggle;
 			this.subTentacles[i][1].rotateAngleX = MathHelper.cos(time * 0.7774F) * 1.2F * wiggle;

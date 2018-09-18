@@ -1,16 +1,10 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package twilightforest.client.particle;
-
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
@@ -19,12 +13,12 @@ public class ParticleFirefly extends Particle {
 	private int lifeTime;
 	private int halfLife;
 
-	public ParticleFirefly(World world, double d, double d1, double d2, double f, double f1, double f2) {
-		this(world, d, d1, d2, 1.0F, f, f1, f2);
+	public ParticleFirefly(World world, double x, double y, double z, double f, double f1, double f2) {
+		this(world, x, y, z, 1.0F, f, f1, f2);
 	}
 
-	public ParticleFirefly(World world, double d, double d1, double d2, float f, double f1, double f2, double f3) {
-		super(world, d, d1, d2, 0.0D, 0.0D, 0.0D);
+	public ParticleFirefly(World world, double x, double y, double z, float f, double f1, double f2, double f3) {
+		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		motionX *= 2.10000000149011612D;
 		motionY *= 2.10000000149011612D;
 		motionZ *= 2.10000000149011612D;
@@ -42,9 +36,11 @@ public class ParticleFirefly extends Particle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks,
+	                           float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+
 		particleAlpha = getGlowBrightness();
-		super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 	}
 
 	@Override
@@ -65,7 +61,7 @@ public class ParticleFirefly extends Particle {
 	}
 
 	@Override
-	public int getBrightnessForRender(float p_189214_1_) {
+	public int getBrightnessForRender(float partialTicks) {
 		return 0xF000F0;
 	}
 

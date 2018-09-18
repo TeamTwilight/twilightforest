@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -26,8 +27,9 @@ import java.util.List;
  * @author Ben
  */
 public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
+
 	public static final List<EnumDyeColor> VALID_COLORS = ImmutableList.of(EnumDyeColor.PINK, EnumDyeColor.BLUE, EnumDyeColor.YELLOW, EnumDyeColor.PURPLE);
-	public static final PropertyEnum<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
+	public static final IProperty<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
 
 	public BlockTFCastleMagic() {
 		super(Material.ROCK);
@@ -55,11 +57,11 @@ public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
 	}
 
 	@Override
@@ -75,7 +77,7 @@ public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 }

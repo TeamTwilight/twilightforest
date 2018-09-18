@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +22,7 @@ import twilightforest.item.TFItems;
 
 public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 
-	public static final PropertyEnum<WoodVariant> VARIANT = PropertyEnum.create("variant", WoodVariant.class);
+	public static final IProperty<WoodVariant> VARIANT = PropertyEnum.create("variant", WoodVariant.class);
 
 	protected BlockTFLog() {
 		this.setHardness(2.0F);
@@ -92,11 +93,11 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
 	}
 
 	@SideOnly(Side.CLIENT)

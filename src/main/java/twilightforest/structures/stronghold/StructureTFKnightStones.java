@@ -11,15 +11,15 @@ import java.util.Random;
 public class StructureTFKnightStones extends StructureComponent.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random par1Random, int par2, int par3, int par4, boolean par5) {
-		if (!par5) {
+	public void selectBlocks(Random random, int x, int y, int z, boolean edge) {
+		if (!edge) {
 			this.blockstate = Blocks.AIR.getDefaultState();
 		} else {
-			float var6 = par1Random.nextFloat();
+			float f = random.nextFloat();
 
-			if (var6 < 0.2F) {
+			if (f < 0.2F) {
 				this.blockstate = TFBlocks.underbrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED);
-			} else if (var6 < 0.5F) {
+			} else if (f < 0.5F) {
 				this.blockstate = TFBlocks.underbrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.MOSSY);
 			} else {
 				this.blockstate = TFBlocks.underbrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.NORMAL);

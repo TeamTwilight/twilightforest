@@ -30,11 +30,10 @@ public class ItemBlockTFMeta extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
+	public String getTranslationKey(ItemStack itemstack) {
 		if (appendNumber) {
-			int meta = itemstack.getItemDamage();
-			return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
-		} else return super.getUnlocalizedName();
+			return super.getTranslationKey() + "." + itemstack.getMetadata();
+		} else return super.getTranslationKey();
 	}
 
 	@Override

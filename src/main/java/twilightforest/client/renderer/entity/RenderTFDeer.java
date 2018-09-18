@@ -15,7 +15,7 @@ public class RenderTFDeer extends RenderLiving<EntityTFDeer> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFDeer par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFDeer entity) {
 		return textureLoc;
 	}
 }

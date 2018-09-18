@@ -2,6 +2,7 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
@@ -52,23 +53,22 @@ public class ModelTFIceExploder extends ModelBiped {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		this.bipedHead.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		this.bipedHead.render(scale);
 
 		for (int i = 0; i < spikes.length; i++) {
 
 			if (entity.isEntityAlive()) {
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				GlStateManager.enableBlend();
+				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-				GL11.glColor4f(1F, 1F, 1F, 0.6F);
+				GlStateManager.color(1F, 1F, 1F, 0.6F);
 			}
 
-			this.spikes[i].render(f5);
+			this.spikes[i].render(scale);
 
-			GL11.glDisable(GL11.GL_BLEND);
-
+			GlStateManager.disableBlend();
 		}
 	}
 
@@ -77,22 +77,22 @@ public class ModelTFIceExploder extends ModelBiped {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time) {
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		for (int i = 0; i < spikes.length; i++) {
 			// rotate the spikes
-			this.spikes[i].rotateAngleY = (par1EntityLiving.ticksExisted + time) / 5.0F;
-			this.spikes[i].rotateAngleX = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
-			this.spikes[i].rotateAngleZ = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+			this.spikes[i].rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
+			this.spikes[i].rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
+			this.spikes[i].rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 
 			this.spikes[i].rotateAngleX += i * 5;
 			this.spikes[i].rotateAngleY += i * 2.5f;
 			this.spikes[i].rotateAngleZ += i * 3;
 
-			this.spikes[i].rotationPointX = MathHelper.cos((par1EntityLiving.ticksExisted + time) / (float) i) * 3F;
-			this.spikes[i].rotationPointY = 5F + MathHelper.sin((par1EntityLiving.ticksExisted + time) / (float) i) * 3F;
-			this.spikes[i].rotationPointZ = MathHelper.sin((par1EntityLiving.ticksExisted + time) / (float) i) * 3F;
+			this.spikes[i].rotationPointX = MathHelper.cos((entity.ticksExisted + partialTicks) / (float) i) * 3F;
+			this.spikes[i].rotationPointY = 5F + MathHelper.sin((entity.ticksExisted + partialTicks) / (float) i) * 3F;
+			this.spikes[i].rotationPointZ = MathHelper.sin((entity.ticksExisted + partialTicks) / (float) i) * 3F;
 
-			((ModelRenderer) this.spikes[i].childModels.get(0)).rotationPointY = 10 + MathHelper.sin((i + par1EntityLiving.ticksExisted + time) / i) * 3F;
+			((ModelRenderer) this.spikes[i].childModels.get(0)).rotationPointY = 10 + MathHelper.sin((i + entity.ticksExisted + partialTicks) / i) * 3F;
 
 		}
 	}

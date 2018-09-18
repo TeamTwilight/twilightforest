@@ -55,15 +55,15 @@ public class TFBiomeGlacier extends TFBiomeBase {
 	}
 
 	@Override
-	public void decorate(World par1World, Random par2Random, BlockPos pos) {
-		super.decorate(par1World, par2Random, pos);
+	public void decorate(World world, Random random, BlockPos pos) {
+		super.decorate(world, random, pos);
 		TFGenPenguins penguins = new TFGenPenguins();
 
-		if (par2Random.nextInt(4) == 0) {
-			int j = pos.getX() + par2Random.nextInt(16) + 8;
+		if (random.nextInt(4) == 0) {
+			int j = pos.getX() + random.nextInt(16) + 8;
 			int y = TFWorld.SEALEVEL;
-			int k = pos.getZ() + par2Random.nextInt(16) + 8;
-			penguins.generate(par1World, par2Random, new BlockPos(j, y, k));
+			int k = pos.getZ() + random.nextInt(16) + 8;
+			penguins.generate(world, random, new BlockPos(j, y, k));
 		}
 	}
 

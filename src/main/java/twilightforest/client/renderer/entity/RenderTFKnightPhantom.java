@@ -25,8 +25,8 @@ public class RenderTFKnightPhantom extends RenderBiped<EntityTFKnightPhantom> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFKnightPhantom par1EntityLivingBase, float par2) {
-		float scale = par1EntityLivingBase.isChargingAtPlayer() ? 1.8F : 1.2F;
+	protected void preRenderCallback(EntityTFKnightPhantom entity, float partialTicks) {
+		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
 		GlStateManager.scale(scale, scale, scale);
 	}
 

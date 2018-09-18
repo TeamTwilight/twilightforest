@@ -18,7 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.compat.TFCompat;
-import twilightforest.tileentity.critters.TileEntityTFCicada;
 import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
 import javax.annotation.Nullable;
@@ -44,6 +43,8 @@ public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallba
 	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
 
-		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) tooltip.add(TextFormatting.ITALIC.toString() + TwilightForestMod.getRarity().rarityColor.toString() + I18n.translateToLocalFormatted("tile.TFCicada.desc"));
+		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
+			tooltip.add(TextFormatting.ITALIC.toString() + TwilightForestMod.getRarity().color.toString() + I18n.translateToLocalFormatted("tile.twilightforest.Cicada.desc"));
+		}
 	}
 }

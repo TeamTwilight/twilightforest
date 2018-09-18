@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "twilightforest:time_fence",
+    "data": 0,
+    "count": 3
+  },
+  "pattern": [
+    "#S#",
+    "#S#"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:time_planks",
+      "data": 0
+    },
+    "S": {
+      "item": "#STICKWOOD"
+    }
+  }
+}

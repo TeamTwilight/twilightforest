@@ -11,8 +11,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.particle.TFParticleType;
@@ -20,7 +22,8 @@ import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
+@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
+public class BlockTFFireflyJar extends Block implements ModelRegisterCallback, IInfusionStabiliser {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
 
@@ -52,7 +55,7 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
@@ -87,5 +90,10 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback {
 		dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
 		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
+	}
+
+	@Override
+	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
+		return true;
 	}
 }

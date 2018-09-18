@@ -73,14 +73,14 @@ public class EntityTFBoggard extends EntityMob {
 	}
 
 	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
+		if (cause.getTrueSource() instanceof EntityPlayerMP) {
 			// are we in a level 1 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.SMALL_HILL) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill1"), "boggard");
+				PlayerHelper.grantCriterion((EntityPlayerMP) cause.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill1"), "boggard");
 			}
 		}
 	}

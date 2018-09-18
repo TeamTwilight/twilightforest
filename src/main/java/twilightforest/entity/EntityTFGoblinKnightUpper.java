@@ -47,8 +47,8 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	public int heavySpearTimer;
 
 
-	public EntityTFGoblinKnightUpper(World par1World) {
-		super(par1World);
+	public EntityTFGoblinKnightUpper(World world) {
+		super(world);
 		setSize(1.1F, 1.3F);
 
 		this.setHasArmor(true);
@@ -110,17 +110,17 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("hasArmor", this.hasArmor());
-		par1NBTTagCompound.setBoolean("hasShield", this.hasShield());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("hasArmor", this.hasArmor());
+		compound.setBoolean("hasShield", this.hasShield());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setHasArmor(par1NBTTagCompound.getBoolean("hasArmor"));
-		this.setHasShield(par1NBTTagCompound.getBoolean("hasShield"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setHasArmor(compound.getBoolean("hasArmor"));
+		this.setHasShield(compound.getBoolean("hasShield"));
 	}
 
 	@Override
@@ -197,21 +197,21 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte par1) {
-		if (par1 == 4) {
+	public void handleStatusUpdate(byte id) {
+		if (id == 4) {
 			this.heavySpearTimer = HEAVY_SPEAR_TIMER_START;
-		} else if (par1 == 5) {
+		} else if (id == 5) {
 			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);
 			this.renderBrokenItemStack(broken);
 			this.renderBrokenItemStack(broken);
 			this.renderBrokenItemStack(broken);
 		} else {
-			super.handleStatusUpdate(par1);
+			super.handleStatusUpdate(id);
 		}
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
+	public boolean attackEntityAsMob(Entity entity) {
 
 		if (this.heavySpearTimer > 0) {
 			return false;
@@ -224,17 +224,17 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		}
 
 		this.swingArm(EnumHand.MAIN_HAND);
-		return super.attackEntityAsMob(par1Entity);
+		return super.attackEntityAsMob(entity);
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float damageAmount) {
+	public boolean attackEntityFrom(DamageSource damageSource, float amount) {
 		// don't take suffocation damage while riding
-		if (par1DamageSource == DamageSource.IN_WALL && !this.getPassengers().isEmpty()) {
+		if (damageSource == DamageSource.IN_WALL && !this.getPassengers().isEmpty()) {
 			return false;
 		}
 
-		Entity attacker = par1DamageSource.getTrueSource();
+		Entity attacker = damageSource.getTrueSource();
 
 		if (attacker != null) {
 			double dx = this.posX - attacker.posX;
@@ -244,7 +244,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 			float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);
 
 			if (this.hasShield() && difference > 150 && difference < 230) {
-				if (takeHitOnShield(par1DamageSource, damageAmount)) {
+				if (takeHitOnShield(damageSource, amount)) {
 					return false;
 				}
 			} else {
@@ -258,7 +258,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 			}
 		}
 
-		return super.attackEntityFrom(par1DamageSource, damageAmount);
+		return super.attackEntityFrom(damageSource, amount);
 	}
 
 	private void breakArmor() {
@@ -272,8 +272,8 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	}
 
 
-	public boolean takeHitOnShield(DamageSource par1DamageSource, float damageAmount) {
-		if (damageAmount > SHIELD_DAMAGE_THRESHOLD && !this.world.isRemote) {
+	public boolean takeHitOnShield(DamageSource source, float amount) {
+		if (amount > SHIELD_DAMAGE_THRESHOLD && !this.world.isRemote) {
 			damageShield();
 		} else {
 			playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -283,19 +283,19 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 		// knock back slightly
 		EntityLiving toKnockback = (getRidingEntity() instanceof EntityLiving) ? (EntityLiving) getRidingEntity() : this;
 
-		if (par1DamageSource.getTrueSource() != null) {
-			double d0 = par1DamageSource.getTrueSource().posX - this.posX;
+		if (source.getTrueSource() != null) {
+			double d0 = source.getTrueSource().posX - this.posX;
 			double d1;
 
-			for (d1 = par1DamageSource.getTrueSource().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
+			for (d1 = source.getTrueSource().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
 				d0 = (Math.random() - Math.random()) * 0.01D;
 			}
 
-			toKnockback.knockBack(par1DamageSource.getTrueSource(), 0, d0 / 4D, d1 / 4D);
+			toKnockback.knockBack(source.getTrueSource(), 0, d0 / 4D, d1 / 4D);
 
 			// also set revenge target
-			if (par1DamageSource.getTrueSource() instanceof EntityLiving) {
-				this.setRevengeTarget((EntityLiving) par1DamageSource.getTrueSource());
+			if (source.getTrueSource() instanceof EntityLiving) {
+				this.setRevengeTarget((EntityLiving) source.getTrueSource());
 			}
 		}
 

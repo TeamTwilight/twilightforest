@@ -6,8 +6,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import java.util.Random;
+import twilightforest.world.TFWorld;
 
+import java.util.Random;
 
 /**
  * Makes large mushrooms with flat mushroom tops that provide a canopy for the forest
@@ -20,11 +21,12 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 		this(false);
 	}
 
-	public TFGenCanopyMushroom(boolean par1) {
-		super(par1);
-		treeState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
+	public TFGenCanopyMushroom(boolean notify) {
+		super(notify);
+		treeState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
 		branchState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
-		leafState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
+		leafState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
+		source = Blocks.RED_MUSHROOM;
 	}
 
 	@Override
@@ -39,15 +41,21 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 			}
 		}
 
-		// check if we're on dirt or grass
-		Block blockUnder = world.getBlockState(pos.down()).getBlock();
-		if (blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM || pos.getY() >= 256 - treeHeight - 1) {
+		if (pos.getY() >= TFWorld.MAXHEIGHT - treeHeight - 1) {
 			return false;
 		}
 
+		// check if we're on dirt or grass
+		Block blockUnder = world.getBlockState(pos.down()).getBlock();
+		if (blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM) {
+			return false;
+		}
 
-		this.treeState = random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM) : Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
-		this.leafState = treeState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
+		IBlockState baseState = (random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
+
+		this.treeState   = baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
+		this.branchState = baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
+		this.leafState   = baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
 
 		//okay build a tree!  Go up to the height
 		buildBranch(world, pos, 0, treeHeight, 0, 0, true, random);

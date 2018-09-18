@@ -16,8 +16,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	private BlockPos spawnPosition;
 
-	public EntityTFMobileFirefly(World par1World) {
-		super(par1World);
+	public EntityTFMobileFirefly(World world) {
+		super(world);
 		this.setSize(0.5F, 0.5F);
 	}
 
@@ -47,7 +47,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	}
 
 	@Override
-	protected void collideWithEntity(Entity par1Entity) {
+	protected void collideWithEntity(Entity entity) {
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	}
 
 	@Override
-	protected void updateFallState(double par1, boolean par3, IBlockState state, BlockPos pos) {
+	protected void updateFallState(double y, boolean onGround, IBlockState state, BlockPos pos) {
 	}
 
 	@Override

@@ -19,13 +19,13 @@ public class RenderTFHydraMortar extends Render<EntityTFHydraMortar> {
 	}
 
 	@Override
-	public void doRender(EntityTFHydraMortar mortar, double x, double y, double z, float var8, float partialTick) {
+	public void doRender(EntityTFHydraMortar mortar, double x, double y, double z, float yaw, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x, (float) y, (float) z);
 		float var10;
 
-		if ((float) mortar.fuse - partialTick + 1.0F < 10.0F) {
-			var10 = 1.0F - ((float) mortar.fuse - partialTick + 1.0F) / 10.0F;
+		if ((float) mortar.fuse - partialTicks + 1.0F < 10.0F) {
+			var10 = 1.0F - ((float) mortar.fuse - partialTicks + 1.0F) / 10.0F;
 
 			if (var10 < 0.0F) {
 				var10 = 0.0F;
@@ -41,7 +41,7 @@ public class RenderTFHydraMortar extends Render<EntityTFHydraMortar> {
 			GlStateManager.scale(var11, var11, var11);
 		}
 
-		var10 = (1.0F - ((float) mortar.fuse - partialTick + 1.0F) / 100.0F) * 0.8F;
+		var10 = (1.0F - ((float) mortar.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 		this.bindTexture(textureLoc);
 
 		mortarModel.render(0.075F);
@@ -65,7 +65,7 @@ public class RenderTFHydraMortar extends Render<EntityTFHydraMortar> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFHydraMortar par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFHydraMortar entity) {
 		return textureLoc;
 	}
 }

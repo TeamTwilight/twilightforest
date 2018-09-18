@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
@@ -14,10 +13,10 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.potions.TFPotions;
 
-public class EntityIceArrow extends EntityArrow {
+public class EntityIceArrow extends EntityArrow implements ITFProjectile {
 
-	public EntityIceArrow(World par1World) {
-		super(par1World);
+	public EntityIceArrow(World world) {
+		super(world);
 	}
 
 	public EntityIceArrow(World world, EntityPlayer player) {
@@ -35,11 +34,11 @@ public class EntityIceArrow extends EntityArrow {
 	}
 
 	@Override
-	protected void onHit(RayTraceResult rtr) {
-		super.onHit(rtr);
-		if (!world.isRemote && rtr.entityHit instanceof EntityLivingBase) {
+	protected void onHit(RayTraceResult ray) {
+		super.onHit(ray);
+		if (!world.isRemote && ray.entityHit instanceof EntityLivingBase) {
 			int chillLevel = 2;
-			((EntityLivingBase) rtr.entityHit).addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 10, chillLevel));
+			((EntityLivingBase) ray.entityHit).addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 10, chillLevel));
 		}
 	}
 

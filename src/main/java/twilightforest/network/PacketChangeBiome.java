@@ -42,7 +42,7 @@ public class PacketChangeBiome implements IMessage {
 				@Override
 				public void run() {
 					World world = Minecraft.getMinecraft().world;
-					Chunk chunkAt = world.getChunkFromBlockCoords(message.pos);
+					Chunk chunkAt = world.getChunk(message.pos);
 
 					chunkAt.getBiomeArray()[(message.pos.getZ() & 15) << 4 | (message.pos.getX() & 15)] = message.biomeId;
 

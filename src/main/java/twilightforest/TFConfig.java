@@ -1,6 +1,7 @@
 package twilightforest;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -49,6 +50,11 @@ public class TFConfig {
 		@Config.RequiresWorldRestart
 		@Config.Comment("If true, Twilight Forest will generate as a void except for Major Structures")
 		public boolean skylightForest = false;
+
+		@Config.LangKey(config + "skylight_oaks")
+		@Config.RequiresWorldRestart
+		@Config.Comment("If true, giant Twilight Oaks will also spawn in void worlds")
+		public boolean skylightOaks = true;
 	}
 
 	@Config.LangKey(config + "compat")
@@ -87,12 +93,16 @@ public class TFConfig {
 	@Config.Comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.")
 	public static boolean silentCicadas = false;
 
+	@Config.LangKey(config + "first_person_effects")
+	@Config.Comment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.")
+	public static boolean firstPersonEffects = true;
+
 	@Config.LangKey(config + "portals_in_other_dimensions")
 	@Config.Comment("Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.")
 	public static boolean allowPortalsInOtherDimensions = false;
 
 	@Config.LangKey(config + "admin_portals")
-	@Config.Comment("Allow portals only for admins (Operators). This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
+	@Config.Comment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
 	public static boolean adminOnlyPortals = false;
 
 	@Config.LangKey(config + "portals")
@@ -100,13 +110,8 @@ public class TFConfig {
 	public static boolean disablePortalCreation = false;
 
 	@Config.LangKey(config + "portal_creator")
-	@Config.Comment("Registry String ID of item used to create the Twilight Forest Portal.")
-	public static String portalCreationItem = "minecraft:diamond";
-
-	@Config.LangKey(config + "portal_creator_meta")
-	@Config.RangeInt(min = -1)
-	@Config.Comment("Meta of item used to create the Twilight Forest Portal. -1 for any metadata.")
-	public static int portalCreationMeta = -1;
+	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.")
+	public static String[] portalCreationItems = {"minecraft:diamond"};
 
 	@Config.LangKey(config + "portal_lighting")
 	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
@@ -127,10 +132,6 @@ public class TFConfig {
 	@Config.LangKey(config + "animate_trophyitem")
 	@Config.Comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
 	public static boolean rotateTrophyHeadsGui = true;
-
-	@Config.LangKey(config + "loading_screen")
-	@Config.Comment("Client only: Controls for the Loading screen")
-	public static final TFConfig.loadingScreen loadingScreen = new loadingScreen();
 
 	@Config.LangKey(config + "shield_parry")
 	public static ShieldInteractions shieldInteractions = new ShieldInteractions();
@@ -156,7 +157,11 @@ public class TFConfig {
 		public int shieldParryTicksBeam = 10;
 	}
 
-	public static class loadingScreen {
+	@Config.LangKey(config + "loading_screen")
+	@Config.Comment("Client only: Controls for the Loading screen")
+	public static final LoadingScreen loadingScreen = new LoadingScreen();
+
+	public static class LoadingScreen {
 		@Config.LangKey(config + "loading_icon_enable")
 		@Config.Comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")
 		public boolean enable = true;
@@ -229,7 +234,9 @@ public class TFConfig {
 		}
 
 		void loadLoadingScreenIcons() {
-			List<ItemStack> iconList = Lists.newArrayList();
+			ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
+
+			iconList.addAll(IMCHandler.getLoadingIconStacks());
 
 			for (String s : loadingIconStacks) {
 				String[] data = s.split(":");
@@ -244,7 +251,7 @@ public class TFConfig {
 				iconList.add(new ItemStack(item, 1, meta));
 			}
 
-			loadingScreenIcons = iconList;
+			loadingScreenIcons = iconList.build();
 		}
 	}
 
@@ -261,7 +268,10 @@ public class TFConfig {
 	}
 
 	private static void loadAntiBuilderBlacklist() {
-		List<IBlockState> blacklist = Lists.newArrayList();
+		ImmutableSet.Builder<IBlockState> builder = ImmutableSet.builder();
+
+		builder.addAll(IMCHandler.getBlacklistedBlocks());
+
 		for (String s : antibuilderBlacklist) {
 			String[] data = s.split(":");
 			if (data.length < 2)
@@ -269,6 +279,7 @@ public class TFConfig {
 			Block block = Block.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
 			if (block != Blocks.AIR) {
 				int meta = 0;
+
 				if (data.length >= 3) {
 					try {
 						meta = Integer.parseInt(data[2]);
@@ -277,18 +288,19 @@ public class TFConfig {
 						meta = 0;
 					}
 				}
-				blacklist.add(block.getStateFromMeta(meta));
+
+				builder.add(block.getStateFromMeta(meta));
 			}
 		}
 
-		antibuilderStateBlacklist = blacklist;
+		disallowBreakingBlockList = builder.build();
 	}
 
 	@Config.Ignore
-	private static List<IBlockState> antibuilderStateBlacklist;
+	private static ImmutableSet<IBlockState> disallowBreakingBlockList;
 
-	public static List<IBlockState> getAntiBuilderBlacklist() {
-		if (antibuilderStateBlacklist == null || antibuilderStateBlacklist.isEmpty()) loadAntiBuilderBlacklist();
-		return antibuilderStateBlacklist;
+	public static ImmutableSet<IBlockState> getDisallowedBlocks() {
+		if (disallowBreakingBlockList == null || disallowBreakingBlockList.isEmpty()) loadAntiBuilderBlacklist();
+		return disallowBreakingBlockList;
 	}
 }

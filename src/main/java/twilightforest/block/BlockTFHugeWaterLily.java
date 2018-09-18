@@ -53,7 +53,7 @@ public class BlockTFHugeWaterLily extends BlockLilyPad implements ModelRegisterC
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 

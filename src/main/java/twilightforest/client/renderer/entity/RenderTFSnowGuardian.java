@@ -15,8 +15,8 @@ public class RenderTFSnowGuardian extends RenderTFBiped<EntityTFSnowGuardian> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFSnowGuardian par1EntityLivingBase, float partialTick) {
-		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
+	protected void preRenderCallback(EntityTFSnowGuardian entity, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
 		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}
 }

@@ -23,11 +23,11 @@ public class SlotTFGoblinCraftResult extends SlotCrafting {
 	}
 
 	@Override
-	public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack) {
+	public ItemStack onTake(EntityPlayer player, ItemStack stack) {
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
 		boolean combined = true;
 
-		if (ItemStack.areItemStacksEqual(CraftingManager.findMatchingResult(this.assemblyMatrix, this.thePlayer.world), par1ItemStack)) {
+		if (ItemStack.areItemStacksEqual(CraftingManager.findMatchingResult(this.assemblyMatrix, this.thePlayer.world), stack)) {
 			combined = false;
 		}
 
@@ -44,7 +44,7 @@ public class SlotTFGoblinCraftResult extends SlotCrafting {
 			}
 		}
 
-		return super.onTake(par1EntityPlayer, par1ItemStack);
+		return super.onTake(player, stack);
 	}
 
 

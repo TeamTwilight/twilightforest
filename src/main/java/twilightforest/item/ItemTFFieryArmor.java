@@ -21,13 +21,13 @@ import java.util.List;
 
 public class ItemTFFieryArmor extends ItemArmor implements ModelRegisterCallback {
 
-	public ItemTFFieryArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, 0, armorType);
+	public ItemTFFieryArmor(ItemArmor.ArmorMaterial armorMaterial, EntityEquipmentSlot armorType) {
+		super(armorMaterial, 0, armorType);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.EPIC;
 	}
 
@@ -53,7 +53,7 @@ public class ItemTFFieryArmor extends ItemArmor implements ModelRegisterCallback
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 
 	@Override

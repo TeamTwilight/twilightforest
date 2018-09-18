@@ -42,7 +42,7 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		// dissolve
 		if (!world.isRemote && entity instanceof EntityLivingBase) {
 			world.destroyBlock(pos, false);

@@ -46,24 +46,24 @@ public class ModelTFGhast extends ModelBase {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float yaw, float pitch, float par6, Entity par7Entity) {
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
 		// wave tentacles
 		for (int i = 0; i < this.tentacles.length; ++i) {
-			this.tentacles[i].rotateAngleX = 0.2F * MathHelper.sin(par3 * 0.3F + (float) i) + 0.4F;
+			this.tentacles[i].rotateAngleX = 0.2F * MathHelper.sin(ageInTicks * 0.3F + (float) i) + 0.4F;
 		}
 
 		// make body face what we're looking at
-		this.body.rotateAngleX = pitch / (180F / (float) Math.PI);
-		this.body.rotateAngleY = yaw / (180F / (float) Math.PI);
+		this.body.rotateAngleX = headPitch / (180F / (float) Math.PI);
+		this.body.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 	}
 
 	/**
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float yaw, float pitch, float time) {
-		this.setRotationAngles(par2, par3, par4, yaw, pitch, time, par1Entity);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
-		this.body.render(time);
+		this.body.render(scale);
 	}
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 /* Copied from net.minecraft.item.crafting.RecipesArmorDyes with a bit of modification */
 public class TFArmorDyeingRecipe extends RecipesArmorDyes {
+    @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
         ItemStack itemstack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.<ItemStack>newArrayList();
@@ -34,6 +35,7 @@ public class TFArmorDyeingRecipe extends RecipesArmorDyes {
         return !itemstack.isEmpty() && !list.isEmpty();
     }
 
+    @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
         ItemStack stackAccumulator = ItemStack.EMPTY;
         int[] aint = new int[3];

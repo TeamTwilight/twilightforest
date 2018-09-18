@@ -59,7 +59,7 @@ public abstract class BlockTFCritter extends Block {
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getFront(meta));
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.byIndex(meta));
 	}
 
 	@Override

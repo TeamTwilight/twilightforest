@@ -15,6 +15,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 	public boolean shouldExecute() {
 		EntityLivingBase attackTarget = this.entityObj.getAttackTarget();
 		return attackTarget != null
+				&& entityObj.world.getGameRules().getBoolean("mobGriefing")
 				&& !entityObj.heldTNT.isEmpty()
 				&& entityObj.getDistanceSq(attackTarget) < 25
 				&& !isTargetLookingAtMe(attackTarget)

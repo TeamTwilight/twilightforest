@@ -21,7 +21,7 @@ public class RenderTFGenericLiving<T extends EntityLiving> extends RenderLiving<
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T par1Entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 

@@ -69,10 +69,10 @@ public class ItemTFLampOfCinders extends ItemTF {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityLivingBase living, int useRemaining) {
-		int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
+		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
 
-		if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage(par1ItemStack)) {
+		if (useTime > FIRING_TIME && (stack.getItemDamage() + 1) < this.getMaxDamage(stack)) {
 			doBurnEffect(world, living);
 		}
 	}
@@ -113,12 +113,12 @@ public class ItemTFLampOfCinders extends ItemTF {
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 }

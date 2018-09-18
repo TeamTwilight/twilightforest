@@ -24,8 +24,8 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		this(false);
 	}
 
-	public TFGenDarkCanopyTree(boolean par1) {
-		super(par1);
+	public TFGenDarkCanopyTree(boolean notify) {
+		super(notify);
 		treeState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
 		leafState = TFBlocks.dark_leaves.getDefaultState();

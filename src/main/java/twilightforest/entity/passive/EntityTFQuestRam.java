@@ -37,8 +37,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 	private int randomTickDivider;
 
-	public EntityTFQuestRam(World par1World) {
-		super(par1World);
+	public EntityTFQuestRam(World world) {
+		super(world);
 		this.setSize(1.25F, 2.9F);
 		this.randomTickDivider = 0;
 	}
@@ -150,25 +150,25 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("ColorFlags", this.getColorFlags());
-		par1NBTTagCompound.setBoolean("Rewarded", this.getRewarded());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setInteger("ColorFlags", this.getColorFlags());
+		compound.setBoolean("Rewarded", this.getRewarded());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setColorFlags(par1NBTTagCompound.getInteger("ColorFlags"));
-		this.setRewarded(par1NBTTagCompound.getBoolean("Rewarded"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setColorFlags(compound.getInteger("ColorFlags"));
+		this.setRewarded(compound.getBoolean("Rewarded"));
 	}
 
 	public int getColorFlags() {
 		return dataManager.get(DATA_COLOR);
 	}
 
-	public void setColorFlags(int par1) {
-		dataManager.set(DATA_COLOR, par1);
+	public void setColorFlags(int flags) {
+		dataManager.set(DATA_COLOR, flags);
 	}
 
 	public boolean isColorPresent(EnumDyeColor color) {
@@ -183,8 +183,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 		return dataManager.get(DATA_REWARDED);
 	}
 
-	public void setRewarded(boolean par1) {
-		dataManager.set(DATA_REWARDED, par1);
+	public void setRewarded(boolean rewarded) {
+		dataManager.set(DATA_REWARDED, rewarded);
 	}
 
 	public void animateAddColor(EnumDyeColor color, int iterations) {
@@ -231,7 +231,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block p_145780_4_) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
 	}
 }

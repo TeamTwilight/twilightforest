@@ -2,8 +2,8 @@ package twilightforest.world.layer;
 
 public class GenLayerTF6x6Preset extends GenLayerTF7x7Preset {
 
-	public GenLayerTF6x6Preset(long par1) {
-		super(par1);
+	public GenLayerTF6x6Preset(long seed) {
+		super(seed);
 		initPresets();
 	}
 

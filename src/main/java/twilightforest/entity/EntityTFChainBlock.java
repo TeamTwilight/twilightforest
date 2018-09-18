@@ -9,7 +9,6 @@ import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -42,8 +41,8 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	public final EntityTFGoblinChain chain5 = new EntityTFGoblinChain(this);
 	private final Entity[] partsArray = { chain1, chain2, chain3, chain4, chain5 };
 
-	public EntityTFChainBlock(World par1World) {
-		super(par1World);
+	public EntityTFChainBlock(World world) {
+		super(world);
 		this.setSize(0.6F, 0.6F);
 	}
 
@@ -71,26 +70,26 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult mop) {
+	protected void onImpact(RayTraceResult ray) {
 		if (world.isRemote) {
 			return;
 		}
 
 		// only hit living things
-		if (mop.entityHit instanceof EntityLivingBase && mop.entityHit != this.getThrower()) {
-			if (mop.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
+		if (ray.entityHit instanceof EntityLivingBase && ray.entityHit != this.getThrower()) {
+			if (ray.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
 				// age when we hit a monster so that we go back to the player faster
 				this.ticksExisted += 60;
 			}
 		}
 
-		if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
+		if (ray.getBlockPos() != null && !this.world.isAirBlock(ray.getBlockPos())) {
 			if (!this.isReturning) {
 				playSound(SoundEvents.BLOCK_ANVIL_LAND, 0.125f, this.rand.nextFloat());
 			}
 
 			if (this.blocksSmashed < MAX_SMASH) {
-				if (this.world.getBlockState(mop.getBlockPos()).getBlockHardness(world, mop.getBlockPos()) > 0.3F) {
+				if (this.world.getBlockState(ray.getBlockPos()).getBlockHardness(world, ray.getBlockPos()) > 0.3F) {
 					// riccochet
 					double bounce = 0.6;
 					this.velX *= bounce;
@@ -98,7 +97,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 					this.velZ *= bounce;
 
 
-					switch (mop.sideHit) {
+					switch (ray.sideHit) {
 						case DOWN:
 							if (this.velY > 0) {
 								this.velY *= -bounce;
@@ -158,10 +157,12 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 	private void affectBlocksInAABB(AxisAlignedBB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(world, pos) >= 0) {
+			if (!block.isAir(state, world, pos) && block.getExplosionResistance(this) < 7F
+					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
 				if (getThrower() instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) getThrower();
@@ -252,7 +253,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	}
 
 	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart p_70965_1_, DamageSource p_70965_2_, float p_70965_3_) {
+	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
 		return false;
 	}
 

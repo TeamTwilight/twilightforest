@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.critereon.AbstractCriterionInstance;
@@ -13,15 +12,13 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTrigger.Instance> {
+
     private static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "has_advancement");
     private final Map<PlayerAdvancements, HasAdvancementTrigger.Listeners> listeners = Maps.newHashMap();
 
@@ -33,21 +30,15 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
     @Override
     public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<Instance> listener) {
         HasAdvancementTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
-
         listeners.add(listener);
     }
 
     @Override
-    public void removeListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<HasAdvancementTrigger.Instance> listener)
-    {
+    public void removeListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<HasAdvancementTrigger.Instance> listener) {
         HasAdvancementTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
-
-        if (listeners != null)
-        {
+        if (listeners != null) {
             listeners.remove(listener);
-
-            if (listeners.isEmpty())
-            {
+            if (listeners.isEmpty()) {
                 this.listeners.remove(playerAdvancementsIn);
             }
         }
@@ -72,6 +63,7 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
     }
 
     static class Instance extends AbstractCriterionInstance {
+
         private final ResourceLocation advancementLocation;
 
         Instance(ResourceLocation advancementLocation) {
@@ -85,6 +77,7 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
     }
 
     private static class Listeners {
+
         private final PlayerAdvancements playerAdvancements;
         private final Set<Listener<HasAdvancementTrigger.Instance>> listeners = Sets.newHashSet();
 
@@ -92,8 +85,7 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
             this.playerAdvancements = playerAdvancements;
         }
 
-        public boolean isEmpty()
-        {
+        public boolean isEmpty() {
             return this.listeners.isEmpty();
         }
 

@@ -20,7 +20,7 @@ public class RenderTFKingSpider extends RenderSpider<EntityTFKingSpider> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFKingSpider par1EntityLivingBase, float par2) {
+	protected void preRenderCallback(EntityTFKingSpider entity, float partialTicks) {
 		float scale = 1.9F;
 		GlStateManager.scale(scale, scale, scale);
 	}

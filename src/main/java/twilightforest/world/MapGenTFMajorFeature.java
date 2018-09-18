@@ -1,5 +1,8 @@
 package twilightforest.world;
 
+import com.google.common.base.Predicates;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
@@ -8,10 +11,14 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.start.StructureStartTFAbstract;
+import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;
+
+import java.util.List;
 
 import static twilightforest.TFFeature.NOTHING;
 
@@ -153,7 +160,6 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         }
 
         return blockProtected;
-
     }
 
     public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
@@ -164,9 +170,19 @@ public class MapGenTFMajorFeature extends MapGenStructure {
                     featureStart.isConquered = flag;
                     this.structureData.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
                     this.structureData.setDirty(true);
+                    if (flag) {
+                        for (EntityPlayerMP player : getPlayersInsideStructure(start)) {
+                            TFAdvancements.STRUCTURE_CLEARED.trigger(player, FEATURE.name);
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private List<EntityPlayerMP> getPlayersInsideStructure(StructureStart start) {
+        return world.getPlayers(EntityPlayerMP.class, Predicates.and(EntitySelectors.IS_ALIVE,
+                p -> p.getEntityBoundingBox().intersects(StructureBoundingBoxUtils.toAABB(start.getBoundingBox()))));
     }
 
     public boolean isStructureConquered(BlockPos pos) {

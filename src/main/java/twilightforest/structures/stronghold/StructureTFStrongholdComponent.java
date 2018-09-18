@@ -460,8 +460,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 	}
 
-	protected int getRelativeY(int par1) {
-		return par1 - this.boundingBox.minY;
+	protected int getRelativeY(int y) {
+		return y - this.boundingBox.minY;
 	}
 
 	protected int getRelativeZ(int x, int z) {

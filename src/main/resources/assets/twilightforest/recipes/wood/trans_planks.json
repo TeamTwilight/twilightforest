@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "twilightforest:trans_planks",
+    "data": 0,
+    "count": 4
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{
+    "item": "twilightforest:magic_log",
+    "data": 1
+  }]
+}

@@ -4,10 +4,10 @@
       "item": "twilightforest:arctic_chestplate"
     },
     "title": {
-      "translate": "advancement.twilight_arctic_dyed"
+      "translate": "advancement.twilightforest.arctic_dyed"
     },
     "description": {
-      "translate": "advancement.twilight_arctic_dyed.desc"
+      "translate": "advancement.twilightforest.arctic_dyed.desc"
     }
   },
   "parent": "twilightforest:progress_yeti",

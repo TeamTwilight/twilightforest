@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -29,14 +30,17 @@ import twilightforest.item.TFItems;
 import javax.annotation.Nullable;
 
 public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
-    public static final PropertyEnum<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
-    public static final PropertyEnum<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
+
+    public static final IProperty<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
+    public static final IProperty<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 
     public BlockTFSpiralBrick() {
         super(Material.ROCK, MapColor.STONE);
         this.setHardness(1.5F);
         this.setResistance(10.0F);
         this.setSoundType(SoundType.STONE);
+        this.setLightOpacity(255);
+        this.useNeighborBrightness = true;
         this.setCreativeTab(TFItems.creativeTab);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DIAGONAL, Diagonals.TOP_RIGHT).withProperty(AXIS_FACING, EnumFacing.Axis.X));
     }
@@ -176,8 +180,7 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
-    {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
@@ -203,6 +206,11 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         } else {
             return BlockFaceShape.UNDEFINED;
         }
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return getBlockFaceShape(world, state, pos, face) == BlockFaceShape.SOLID;
     }
 
     @Override

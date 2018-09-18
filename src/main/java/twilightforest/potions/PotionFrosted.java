@@ -8,9 +8,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 
+import java.util.UUID;
+
 public class PotionFrosted extends Potion {
 
-	public static final String MODIFIER_UUID = "CE9DBC2A-EE3F-43F5-9DF7-F7F1EE4915A9";
+	public static final UUID MODIFIER_UUID = UUID.fromString("CE9DBC2A-EE3F-43F5-9DF7-F7F1EE4915A9");
 
 	private static final ResourceLocation sprite = new ResourceLocation(TwilightForestMod.ID, "textures/gui/frosty.png");
 

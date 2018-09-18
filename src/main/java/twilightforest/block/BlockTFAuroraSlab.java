@@ -26,7 +26,7 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallback {
 
-	private static final PropertyEnum<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
+	private static final IProperty<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
 
 	private final boolean isDouble;
 
@@ -52,8 +52,8 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 	}
 
 	@Override
-	public String getUnlocalizedName(int meta) {
-		return super.getUnlocalizedName();
+	public String getTranslationKey(int meta) {
+		return super.getTranslationKey();
 	}
 
 	@Override

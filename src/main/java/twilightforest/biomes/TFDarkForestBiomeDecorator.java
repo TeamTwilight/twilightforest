@@ -52,9 +52,9 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 				int rx = pos.getX() + rand.nextInt(16) + 8;
 				int rz = pos.getZ() + rand.nextInt(16) + 8;
 				int ry = getGroundLevel(world, new BlockPos(rx, 0, rz));
-				WorldGenerator var5 = biome.getRandomTreeFeature(rand);
-				var5.setDecorationDefaults();
-				var5.generate(world, rand, new BlockPos(rx, ry, rz));
+				WorldGenerator treeFeature = biome.getRandomTreeFeature(rand);
+				treeFeature.setDecorationDefaults();
+				treeFeature.generate(world, rand, new BlockPos(rx, ry, rz));
 			}
 
 			// dead bushes
@@ -126,7 +126,7 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 
 	private int getGroundLevel(World world, BlockPos pos) {
 		// go from sea level up.  If we get grass, return that, otherwise return the last dirt, stone or gravel we got
-		Chunk chunk = world.getChunkFromBlockCoords(pos);
+		Chunk chunk = world.getChunk(pos);
 		int lastDirt = TFWorld.SEALEVEL;
 		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT - 1; y++) {
 			Block blockID = chunk.getBlockState(new BlockPos(pos.getX(), y, pos.getZ())).getBlock();

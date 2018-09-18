@@ -39,8 +39,8 @@ public class EntityTFKingSpider extends EntitySpider {
 	}
 
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData par1EntityLivingData) {
-		IEntityLivingData par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
+		livingData = super.onInitialSpawn(difficulty, livingData);
 
 		// always a spider jockey
 		EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.world);
@@ -49,7 +49,7 @@ public class EntityTFKingSpider extends EntitySpider {
 		this.world.spawnEntity(druid);
 		druid.startRiding(this);
 
-		return par1EntityLivingData1;
+		return livingData;
 	}
 
 	@Override

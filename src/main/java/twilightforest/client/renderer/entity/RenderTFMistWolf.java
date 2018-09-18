@@ -18,7 +18,7 @@ public class RenderTFMistWolf extends RenderWolf {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityWolf par1EntityLiving, float par2) {
+	protected void preRenderCallback(EntityWolf entity, float partialTicks) {
 		float wolfScale = 1.9F;
 		GlStateManager.scale(wolfScale, wolfScale, wolfScale);
 
@@ -28,10 +28,10 @@ public class RenderTFMistWolf extends RenderWolf {
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		//GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
 
-		float misty = par1EntityLiving.getBrightness() * 3F + 0.25F;
+		float misty = entity.getBrightness() * 3F + 0.25F;
 		misty = Math.min(1F, misty);
 
-		float smoky = par1EntityLiving.getBrightness() * 2F + 0.6F;
+		float smoky = entity.getBrightness() * 2F + 0.6F;
 
 		GlStateManager.color(misty, misty, misty, smoky);
 	}
@@ -48,7 +48,7 @@ public class RenderTFMistWolf extends RenderWolf {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityWolf par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityWolf entity) {
 		return textureLoc;
 	}
 

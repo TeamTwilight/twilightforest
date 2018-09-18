@@ -4,10 +4,13 @@
       "item": "twilightforest:ore_map"
     },
     "title": {
-      "translate": "advancement.twilight_ore_map"
+      "translate": "advancement.twilightforest.ore_map"
     },
     "description": {
-      "translate": "advancement.twilight_ore_map.desc"
+      "translate": "advancement.twilightforest.ore_map.desc",
+      "with": [
+        { "translate": "item.twilightforest.oreMap.name" }
+      ]
     },
     "frame": "challenge",
     "hidden": true

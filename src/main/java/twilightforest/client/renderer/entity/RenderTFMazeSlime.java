@@ -15,7 +15,7 @@ public class RenderTFMazeSlime extends RenderSlime {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySlime par1Entity) {
+	protected ResourceLocation getEntityTexture(EntitySlime entity) {
 		return textureLoc;
 	}
 }

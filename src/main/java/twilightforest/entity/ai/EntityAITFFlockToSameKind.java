@@ -17,9 +17,9 @@ public class EntityAITFFlockToSameKind extends EntityAIBase {
 	double speed;
 	private int moveTimer;
 
-	public EntityAITFFlockToSameKind(EntityLiving par1EntityLiving, double par2) {
-		this.flockCreature = par1EntityLiving;
-		this.speed = par2;
+	public EntityAITFFlockToSameKind(EntityLiving living, double speed) {
+		this.flockCreature = living;
+		this.speed = speed;
 	}
 
 	/**

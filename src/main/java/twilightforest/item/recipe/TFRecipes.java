@@ -43,6 +43,70 @@ public class TFRecipes {
 		OreDictionary.registerOre("carminite", new ItemStack(TFItems.carminite));
 		OreDictionary.registerOre("furArctic", new ItemStack(TFItems.arctic_fur));
 
+		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.twilight_oak_planks ));
+		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.twilight_oak_stairs ));
+		OreDictionary.registerOre("slabWood"     , new ItemStack(TFBlocks.twilight_oak_slab   ));
+		//OreDictionary.registerOre("buttonWood"   , new ItemStack(TFBlocks.twilight_oak_button ));
+		OreDictionary.registerOre("fenceWood"    , new ItemStack(TFBlocks.twilight_oak_fence  ));
+		OreDictionary.registerOre("fenceGateWood", new ItemStack(TFBlocks.twilight_oak_gate   ));
+		//OreDictionary.registerOre("plateWood"    , new ItemStack(TFBlocks.twilight_oak_plate  ));
+
+		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.canopy_planks       ));
+		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.canopy_stairs       ));
+		OreDictionary.registerOre("slabWood"     , new ItemStack(TFBlocks.canopy_slab         ));
+		//OreDictionary.registerOre("buttonWood"   , new ItemStack(TFBlocks.canopy_button       ));
+		OreDictionary.registerOre("fenceWood"    , new ItemStack(TFBlocks.canopy_fence        ));
+		OreDictionary.registerOre("fenceGateWood", new ItemStack(TFBlocks.canopy_gate         ));
+		//OreDictionary.registerOre("plateWood"    , new ItemStack(TFBlocks.canopy_plate        ));
+
+		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.mangrove_planks     ));
+		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.mangrove_stairs     ));
+		OreDictionary.registerOre("slabWood"     , new ItemStack(TFBlocks.mangrove_slab       ));
+		//OreDictionary.registerOre("buttonWood"   , new ItemStack(TFBlocks.mangrove_button     ));
+		OreDictionary.registerOre("fenceWood"    , new ItemStack(TFBlocks.mangrove_fence      ));
+		OreDictionary.registerOre("fenceGateWood", new ItemStack(TFBlocks.mangrove_gate       ));
+		//OreDictionary.registerOre("plateWood"    , new ItemStack(TFBlocks.mangrove_plate      ));
+
+		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.dark_planks         ));
+		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.dark_stairs         ));
+		OreDictionary.registerOre("slabWood"     , new ItemStack(TFBlocks.dark_slab           ));
+		//OreDictionary.registerOre("buttonWood"   , new ItemStack(TFBlocks.dark_button         ));
+		OreDictionary.registerOre("fenceWood"    , new ItemStack(TFBlocks.dark_fence          ));
+		OreDictionary.registerOre("fenceGateWood", new ItemStack(TFBlocks.dark_gate           ));
+		//OreDictionary.registerOre("plateWood"    , new ItemStack(TFBlocks.dark_plate          ));
+
+		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.time_planks         ));
+		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.time_stairs         ));
+		OreDictionary.registerOre("slabWood"     , new ItemStack(TFBlocks.time_slab           ));
+		//OreDictionary.registerOre("buttonWood"   , new ItemStack(TFBlocks.time_button         ));
+		OreDictionary.registerOre("fenceWood"    , new ItemStack(TFBlocks.time_fence          ));
+		OreDictionary.registerOre("fenceGateWood", new ItemStack(TFBlocks.time_gate           ));
+		//OreDictionary.registerOre("plateWood"    , new ItemStack(TFBlocks.time_plate          ));
+
+		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.trans_planks        ));
+		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.trans_stairs        ));
+		OreDictionary.registerOre("slabWood"     , new ItemStack(TFBlocks.trans_slab          ));
+		//OreDictionary.registerOre("buttonWood"   , new ItemStack(TFBlocks.trans_button        ));
+		OreDictionary.registerOre("fenceWood"    , new ItemStack(TFBlocks.trans_fence         ));
+		OreDictionary.registerOre("fenceGateWood", new ItemStack(TFBlocks.trans_gate          ));
+		//OreDictionary.registerOre("plateWood"    , new ItemStack(TFBlocks.trans_plate         ));
+
+		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.mine_planks         ));
+		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.mine_stairs         ));
+		OreDictionary.registerOre("slabWood"     , new ItemStack(TFBlocks.mine_slab           ));
+		//OreDictionary.registerOre("buttonWood"   , new ItemStack(TFBlocks.mine_button         ));
+		OreDictionary.registerOre("fenceWood"    , new ItemStack(TFBlocks.mine_fence          ));
+		OreDictionary.registerOre("fenceGateWood", new ItemStack(TFBlocks.mine_gate           ));
+		//OreDictionary.registerOre("plateWood"    , new ItemStack(TFBlocks.mine_plate          ));
+
+		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.sort_planks         ));
+		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.sort_stairs         ));
+		OreDictionary.registerOre("slabWood"     , new ItemStack(TFBlocks.sort_slab           ));
+		//OreDictionary.registerOre("buttonWood"   , new ItemStack(TFBlocks.sort_button         ));
+		OreDictionary.registerOre("fenceWood"    , new ItemStack(TFBlocks.sort_fence          ));
+		OreDictionary.registerOre("fenceGateWood", new ItemStack(TFBlocks.sort_gate           ));
+		//OreDictionary.registerOre("plateWood"    , new ItemStack(TFBlocks.sort_plate          ));
+
 		// recipe sorter
 		// RecipeSorter.register(TwilightForestMod.ID + ":mapcloning", TFMapCloningRecipe.class, SHAPELESS, "after:minecraft:shapeless");
 

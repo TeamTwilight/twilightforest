@@ -21,22 +21,22 @@ public class RenderTFRovingCube extends Render<EntityTFRovingCube> {
 	}
 
 	@Override
-	public void doRender(EntityTFRovingCube par1Entity, double par2, double par4, double par6, float par8, float par9) {
+	public void doRender(EntityTFRovingCube entity, double x, double y, double z, float yaw, float partialTicks) {
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(par2, par4, par6);
+		GlStateManager.translate(x, y, z);
 
-		this.bindEntityTexture(par1Entity);
+		this.bindEntityTexture(entity);
 
 		GlStateManager.scale(2.0F, 2.0F, 2.0F);
 
-		GlStateManager.rotate(MathHelper.wrapDegrees(((float) par2 + (float) par6 + ((Entity) par1Entity).ticksExisted + par9) * 11F), 0, 1, 0);
+		GlStateManager.rotate(MathHelper.wrapDegrees(((float) x + (float) z + ((Entity) entity).ticksExisted + partialTicks) * 11F), 0, 1, 0);
 
 		GlStateManager.disableLighting();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		GlStateManager.translate(0F, 0.75F, 0F);
-		this.model.render(par1Entity, 0.0F, 0.0F, 0.0F, 0.0F, par9, 0.0625F / 2F);
+		this.model.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, partialTicks, 0.0625F / 2F);
 		GlStateManager.enableLighting();
 		GlStateManager.disableBlend();
 
@@ -44,7 +44,7 @@ public class RenderTFRovingCube extends Render<EntityTFRovingCube> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFRovingCube par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFRovingCube entity) {
 		return textureLoc;
 	}
 }

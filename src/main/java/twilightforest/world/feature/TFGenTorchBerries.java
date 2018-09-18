@@ -11,18 +11,18 @@ import java.util.Random;
 
 public class TFGenTorchBerries extends TFGenerator {
 	@Override
-	public boolean generate(World par1World, Random par2Random, BlockPos pos) {
+	public boolean generate(World world, Random random, BlockPos pos) {
 		int copyX = pos.getX();
 		int copyZ = pos.getZ();
 
 		for (; pos.getY() > 5; pos = pos.down()) {
-			if (par1World.isAirBlock(pos) && BlockTFPlant.canPlaceRootAt(par1World, pos) && par2Random.nextInt(6) > 0) {
-				par1World.setBlockState(pos, TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.TORCHBERRY), 2);
+			if (world.isAirBlock(pos) && BlockTFPlant.canPlaceRootAt(world, pos) && random.nextInt(6) > 0) {
+				world.setBlockState(pos, TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.TORCHBERRY), 2);
 			} else {
 				pos = new BlockPos(
-						copyX + par2Random.nextInt(4) - par2Random.nextInt(4),
+						copyX + random.nextInt(4) - random.nextInt(4),
 						pos.getY(),
-						copyZ + par2Random.nextInt(4) - par2Random.nextInt(4)
+						copyZ + random.nextInt(4) - random.nextInt(4)
 				);
 			}
 		}

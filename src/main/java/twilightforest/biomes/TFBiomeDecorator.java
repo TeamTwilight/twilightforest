@@ -13,6 +13,7 @@ import net.minecraft.world.gen.feature.WorldGenLiquids;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
+import twilightforest.features.GenDruidHut;
 import twilightforest.world.feature.*;
 
 import java.util.ArrayList;
@@ -48,7 +49,6 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		// make list of ruins
 		ruinList.add(new RuinEntry(new TFGenStoneCircle(), 10));
 		ruinList.add(new RuinEntry(new TFGenWell(), 10));
-		ruinList.add(new RuinEntry(new TFGenWitchHut(), 5)); //TODO Fix ground algorithm for new druid hut then re-add
 		ruinList.add(new RuinEntry(new TFGenOutsideStalagmite(), 12));
 		ruinList.add(new RuinEntry(new TFGenFoundation(), 10));
 		ruinList.add(new RuinEntry(new TFGenMonolith(), 10));
@@ -56,6 +56,8 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		ruinList.add(new RuinEntry(new TFGenHollowStump(), 12));
 		ruinList.add(new RuinEntry(new TFGenFallenHollowLog(), 10));
 		ruinList.add(new RuinEntry(new TFGenFallenSmallLog(), 10));
+
+		ruinList.add(new RuinEntry(new GenDruidHut(), 5));
 	}
 
 	private static class RuinEntry extends WeightedRandom.Item {

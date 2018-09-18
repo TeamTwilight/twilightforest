@@ -1,18 +1,27 @@
 package twilightforest.client.model.entity;
 
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.ForgeHooksClient;
+import org.lwjgl.opengl.GL11;
+import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.entity.boss.EntityTFLich;
-
+import twilightforest.item.TFItems;
 
 public class ModelTFLich extends ModelBiped {
-
 
 	ModelRenderer collar;
 	ModelRenderer cloak;
@@ -88,31 +97,78 @@ public class ModelTFLich extends ModelBiped {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		EntityTFLich lich = (EntityTFLich) entity;
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		if(entity instanceof EntityTFLich) {
+			EntityTFLich lich = (EntityTFLich) entity;
 
-		// on regular pass, render everything about the master lich except the shield
-		if (!renderPass) {
-			if (!lich.isShadowClone()) {
-				super.render(entity, f, f1, f2, f3, f4, f5 * 1.125F);
-				collar.render(f5 * 1.125F);
-				cloak.render(f5 * 1.125F);
-			}
-		} else {
-			// on the special render pass, render the shadow clone and the shield
-			if (lich.isShadowClone()) {
-//    	        GL11.glDisable(GL11.GL_DEPTH_TEST);
-
-				super.render(entity, f, f1, f2, f3, f4, f5 * 1.125F);
-//               	GL11.glEnable(GL11.GL_DEPTH_TEST);
-
+			// on regular pass, render everything about the master lich except the shield
+			if (!renderPass) {
+				if (!lich.isShadowClone()) {
+					super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale * 1.125F);
+					collar.render(scale * 1.125F);
+					cloak.render(scale * 1.125F);
+				}
 			} else {
-				if (lich.getShieldStrength() > 0) {
-					shieldBelt.render(f5 * 1.125F);
+				// on the special render pass, render the shadow clone and the shield
+				if (lich.isShadowClone()) {
+					//    	        GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+					super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale * 1.125F);
+					//               	GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+				} else {
+					if (lich.getShieldStrength() > 0) {
+						//shieldBelt.render(scale * 1.125F);
+						renderShields(scale * 13, lich.getShieldStrength(), lich);
+					}
 				}
 			}
+		} else if (entity.hasCapability(CapabilityList.SHIELDS, null)) {
+			IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
+			if (cap != null && cap.shieldsLeft() > 0 && (entity instanceof EntityLivingBase)) {
+				//shieldBelt.render(scale * 1.125F);
+				renderShields(scale * 13, cap.shieldsLeft(), (EntityLivingBase) entity);
+			}
+		}
+	}
+
+	private static final float PI = (float) Math.PI;
+
+	private void renderShields(float scale, int count, EntityLivingBase entityLivingBase) {
+
+		ItemStack shieldStack = new ItemStack(TFItems.experiment_115, 1, 3);
+		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(shieldStack, entityLivingBase.world, entityLivingBase);
+
+		// Texture was bound to the Lich texture, re-bind to the blocks texture
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+		float prevX = OpenGlHelper.lastBrightnessX, prevY = OpenGlHelper.lastBrightnessY;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
+		GL11.glMaterial(GL11.GL_FRONT_AND_BACK, GL11.GL_EMISSION, RenderHelper.setColorBuffer(1f, 1f, 1f, 1f));
+
+		for (int c = 0; c < count; c++) {
+			GlStateManager.pushMatrix();
+
+			// GL Calls should be similar to those found in ModelRenderer.render
+			GlStateManager.translate(shieldBelt.offsetX, shieldBelt.offsetY, shieldBelt.offsetZ);
+			GlStateManager.translate(shieldBelt.rotationPointX * scale, shieldBelt.rotationPointY * scale, shieldBelt.rotationPointZ * scale);
+			GlStateManager.rotate(shieldBelt.rotateAngleZ * (180F / PI)                       , 0.0F, 0.0F, 1.0F);
+			GlStateManager.rotate(shieldBelt.rotateAngleY * (180F / PI) + (c * (360F / count)), 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(shieldBelt.rotateAngleX * (180F / PI)                       , 1.0F, 0.0F, 0.0F);
+
+			// It's upside-down, gotta make it upside-up
+			GlStateManager.scale(scale, -scale, scale);
+
+			// Move the draw away from the entity being drawn around
+			GlStateManager.translate(0F, 0F, 1F);
+
+			Minecraft.getMinecraft().getRenderItem().renderItem(shieldStack, ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false));
+
+			GlStateManager.popMatrix();
 		}
 
+		GL11.glMaterial(GL11.GL_FRONT_AND_BACK, GL11.GL_EMISSION, RenderHelper.setColorBuffer(0f, 0f, 0f, 1f));
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, prevX, prevY);
 	}
 
 	@Override
@@ -128,41 +184,48 @@ public class ModelTFLich extends ModelBiped {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time) {
-		EntityTFLich lich = (EntityTFLich) par1EntityLiving;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		EntityTFLich lich = null;
+		if (entity instanceof EntityTFLich)
+			lich = (EntityTFLich) entity;
+
+		IShieldCapability cap = null;
+		if (entity.hasCapability(CapabilityList.SHIELDS, null))
+			cap = entity.getCapability(CapabilityList.SHIELDS, null);
+
 		// make the shield belt
-		int shields = lich.getShieldStrength();
-		if (!lich.isShadowClone() && shields > 0) {
-			if (shieldBelt.childModels == null || shieldBelt.childModels.size() != shields) {
-				// clear shields if we have the wrong number
-				if (shieldBelt.childModels != null) {
-					shieldBelt.childModels.clear();
-				}
-				// make or remake a belt of shields around the lich
-				Vec3d vec;
-				for (int i = 0; i < shields; i++) {
-					vec = new Vec3d(11, 0, 0);
-					float rotateY = ((i * (360F / shields)) * 3.141593F) / 180F;
-					vec = vec.rotateYaw(rotateY);
-					ModelRenderer shield = new ModelRenderer(this, 26, 40);
-					shield.addBox(0.5F, -6F, -6F, 1, 12, 12);
-					shield.setRotationPoint((float) vec.x, (float) vec.y, (float) vec.z);
-					shield.setTextureSize(64, 64);
-					shield.rotateAngleY = rotateY;
-					shieldBelt.addChild(shield);
-				}
-			}
+		int shields = lich != null ? lich.getShieldStrength() : cap != null ? cap.shieldsLeft() : 0;
+		if ((lich == null || !lich.isShadowClone()) && shields > 0) {
+			//if (shieldBelt.childModels == null || shieldBelt.childModels.size() != shields) {
+			//	// clear shields if we have the wrong number
+			//	if (shieldBelt.childModels != null) {
+			//		shieldBelt.childModels.clear();
+			//	}
+			//	// make or remake a belt of shields around the lich
+			//	Vec3d vec;
+			//	for (int i = 0; i < shields; i++) {
+			//		vec = new Vec3d(11, 0, 0);
+			//		float rotateY = ((i * (360F / shields)) * 3.141593F) / 180F;
+			//		vec = vec.rotateYaw(rotateY);
+			//		ModelRenderer shield = new ModelRenderer(this, 26, 40);
+			//		shield.addBox(0.5F, -6F, -6F, 1, 12, 12);
+			//		shield.setRotationPoint((float) vec.x, (float) vec.y, (float) vec.z);
+			//		shield.setTextureSize(64, 64);
+			//		shield.rotateAngleY = rotateY;
+			//		shieldBelt.addChild(shield);
+			//	}
+			//}
 
 			// rotate the belt
-			shieldBelt.rotateAngleY = (lich.ticksExisted + time) / 5.0F;
-			shieldBelt.rotateAngleX = MathHelper.sin((lich.ticksExisted + time) / 5.0F) / 4.0F;
-			shieldBelt.rotateAngleZ = MathHelper.cos((lich.ticksExisted + time) / 5.0F) / 4.0F;
+			shieldBelt.rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
+			shieldBelt.rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
+			shieldBelt.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 		}
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 		float ogSin = MathHelper.sin(swingProgress * 3.141593F);
 		float otherSin = MathHelper.sin((1.0F - (1.0F - swingProgress) * (1.0F - swingProgress)) * 3.141593F);
 		bipedRightArm.rotateAngleZ = 0.0F;
@@ -173,10 +236,10 @@ public class ModelTFLich extends ModelBiped {
 		bipedLeftArm.rotateAngleX = -3.141593F;
 		bipedRightArm.rotateAngleX -= ogSin * 1.2F - otherSin * 0.4F;
 		bipedLeftArm.rotateAngleX -= ogSin * 1.2F - otherSin * 0.4F;
-		bipedRightArm.rotateAngleZ += MathHelper.cos(f2 * 0.26F) * 0.15F + 0.05F;
-		bipedLeftArm.rotateAngleZ -= MathHelper.cos(f2 * 0.26F) * 0.15F + 0.05F;
-		bipedRightArm.rotateAngleX += MathHelper.sin(f2 * 0.167F) * 0.15F;
-		bipedLeftArm.rotateAngleX -= MathHelper.sin(f2 * 0.167F) * 0.15F;
+		bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
+		bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.26F) * 0.15F + 0.05F;
+		bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.167F) * 0.15F;
+		bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.167F) * 0.15F;
 
 		bipedHead.rotationPointY = -4.0F;
 		bipedHeadwear.rotationPointY = -4.0F;

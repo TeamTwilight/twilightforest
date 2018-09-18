@@ -1,13 +1,10 @@
 package twilightforest.client.model.entity;
 
-
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.MobEffects;
 import twilightforest.entity.boss.EntityTFLichMinion;
-
 
 public class ModelTFLichMinion extends ModelZombie {
 
@@ -16,10 +13,10 @@ public class ModelTFLichMinion extends ModelZombie {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time) {
-		EntityTFLichMinion minion = (EntityTFLichMinion) par1EntityLiving;
-		// make minions greener
-		if (minion.getActivePotionEffect(MobEffects.STRENGTH) != null) {
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		EntityTFLichMinion minion = (EntityTFLichMinion) entity;
+		// make strong minions greener
+		if (minion.isStrong()) {
 			GlStateManager.color(0.25F, 2.0F, 0.25F);
 		} else {
 			GlStateManager.color(0.5F, 1.0F, 0.5F);
@@ -27,14 +24,13 @@ public class ModelTFLichMinion extends ModelZombie {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		EntityTFLichMinion minion = (EntityTFLichMinion) par1Entity;
-		// make strong minions bigger
-		if (minion.getActivePotionEffect(MobEffects.STRENGTH) != null) {
-			super.render(par1Entity, par2, par3, par4, par5, par6, par7);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		EntityTFLichMinion minion = (EntityTFLichMinion) entity;
+		// make strong minions bigger FIXME: actually do this?
+		if (minion.isStrong()) {
+			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		} else {
-			super.render(par1Entity, par2, par3, par4, par5, par6, par7);
+			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		}
 	}
-
 }

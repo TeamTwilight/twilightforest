@@ -13,14 +13,14 @@ public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFIceExploder par1EntityLivingBase, float partialTick) {
-		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
+	protected void preRenderCallback(EntityTFIceExploder entity, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
 
 		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 
 		// flash
 
-		float f1 = par1EntityLivingBase.deathTime;
+		float f1 = entity.deathTime;
 		if (f1 > 0) {
 			float f2 = 1.0F + MathHelper.sin(f1 * 100.0F) * f1 * 0.01F;
 
@@ -41,14 +41,14 @@ public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
 	}
 
 	@Override
-	protected void applyRotations(EntityTFIceExploder par1EntityLivingBase, float par2, float par3, float par4) {
-		GlStateManager.rotate(180.0F - par3, 0.0F, 1.0F, 0.0F);
+	protected void applyRotations(EntityTFIceExploder entity, float ageInTicks, float rotationYaw, float partialTicks) {
+		GlStateManager.rotate(180.0F - rotationYaw, 0.0F, 1.0F, 0.0F);
 	}
 
 	@Override
-	protected int getColorMultiplier(EntityTFIceExploder par1EntityLivingBase, float brightness, float partialTicks) {
-		if (par1EntityLivingBase.deathTime > 0) {
-			float f2 = par1EntityLivingBase.deathTime + partialTicks;
+	protected int getColorMultiplier(EntityTFIceExploder entity, float brightness, float partialTicks) {
+		if (entity.deathTime > 0) {
+			float f2 = entity.deathTime + partialTicks;
 
 			if ((int) (f2 / 2) % 2 == 0) {
 				return 0;

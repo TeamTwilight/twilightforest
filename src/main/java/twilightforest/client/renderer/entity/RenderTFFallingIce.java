@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFFallingIce;
 
 // [VanillaCopy] complete copy of RenderFallingBlock but scaling by 3 before rendering
@@ -44,7 +45,7 @@ public class RenderTFFallingIce extends Render<EntityTFFallingIce> {
 						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 					}
 
-					vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
+					vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
 					GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					// TF - 3 times as big

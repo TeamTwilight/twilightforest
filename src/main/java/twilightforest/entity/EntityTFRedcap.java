@@ -98,8 +98,8 @@ public class EntityTFRedcap extends EntityMob {
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
 
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
-		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
+		this.setEquipmentBasedOnDifficulty(difficulty);
+		this.setEnchantmentBasedOnDifficulty(difficulty);
 
 		this.setDropChance(EntityEquipmentSlot.MAINHAND, 0.2F);
 		this.setDropChance(EntityEquipmentSlot.FEET, 0.2F);
@@ -108,26 +108,32 @@ public class EntityTFRedcap extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("TNTLeft", heldTNT.getCount());
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
+		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		heldTNT.setCount(par1NBTTagCompound.getInteger("TNTLeft"));
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setInteger("TNTLeft", heldTNT.getCount());
 	}
 
 	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		heldTNT.setCount(compound.getInteger("TNTLeft"));
+	}
+
+	@Override
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
+		if (cause.getTrueSource() instanceof EntityPlayerMP) {
 			// are we in a level 1 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.SMALL_HILL) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill1"), "redcap");
+				PlayerHelper.grantCriterion((EntityPlayerMP) cause.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill1"), "redcap");
 			}
 
 		}

@@ -4,10 +4,14 @@
       "item": "minecraft:iron_boots"
     },
     "title": {
-      "translate": "advancement.twilight_hill1"
+      "translate": "advancement.twilightforest.hill1"
     },
     "description": {
-      "translate": "advancement.twilight_hill1.desc"
+      "translate": "advancement.twilightforest.hill1.desc",
+      "with": [
+        { "translate": "entity.twilightforest.redcap.name" },
+        { "translate": "structure.hollow_hill.name" }
+      ]
     }
   },
   "parent": "twilightforest:root",

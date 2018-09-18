@@ -28,7 +28,7 @@ public class RenderTFMobileFirefly extends Render<EntityTFMobileFirefly> {
 		// undo rotations so we can draw a billboarded firefly
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
 
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
+		GlStateManager.getFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -66,12 +66,12 @@ public class RenderTFMobileFirefly extends Render<EntityTFMobileFirefly> {
 
 
 	@Override
-	public void doRender(EntityTFMobileFirefly firefly, double d, double d1, double d2, float f, float f1) {
-		doRenderTinyFirefly(firefly, d, d1, d2, firefly.getGlowBrightness(), 1.0F);
+	public void doRender(EntityTFMobileFirefly firefly, double x, double y, double z, float yaw, float partialTicks) {
+		doRenderTinyFirefly(firefly, x, y, z, firefly.getGlowBrightness(), 1.0F);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFMobileFirefly par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFMobileFirefly entity) {
 		return textureLoc;
 	}
 

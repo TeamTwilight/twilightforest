@@ -8,11 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
-import net.minecraftforge.fml.common.versioning.VersionRange;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.tuple.Pair;
 import team.chisel.api.ChiselAPIProps;
 import team.chisel.api.IMC;
@@ -21,11 +22,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.compat.ie.ItemTFShader;
+import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.entity.boss.*;
 import twilightforest.enums.*;
 import twilightforest.item.TFRegisterItemEvent;
-
-import java.util.Locale;
 
 @Optional.InterfaceList({
         @Optional.Interface(modid = "chisel", iface = "team.chisel.api.ChiselAPIProps"),
@@ -76,18 +76,21 @@ public enum TFCompat {
     IMMERSIVEENGINEERING("Immersive Engineering") {
         @Override
         protected boolean preInit() {
-            try {
-                VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
+            //try {
+            //    VersionRange range = VersionRange.createFromVersionSpec("[0.12-83-407,)");
 
-                return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
-            } catch (InvalidVersionSpecificationException e) {
-                return false;
-            }
+            //    return range.containsVersion(Loader.instance().getIndexedModList().get(this.name().toLowerCase(Locale.ROOT)).getProcessedVersion());
+            //} catch (InvalidVersionSpecificationException e) {
+            //    return false;
+            //}
+            registerSidedHandler(Side.CLIENT, ItemTFShaderGrabbag.ClientEventHandler.class);
+            return true;
         }
 
         @Override
         protected void initItems(TFRegisterItemEvent.ItemRegistryHelper items) {
-            items.register("shader", ItemTFShader.shader.setUnlocalizedName("tfEngineeringShader"));
+            items.register("shader", ItemTFShader.shader.setTranslationKey("tfEngineeringShader"));
+            items.register("shader_bag", ItemTFShaderGrabbag.shader_bag.setTranslationKey("tfEngineeringShaderBag"));
 
             new IEShaderRegister(); // Calling to initialize it all
         }
@@ -147,8 +150,9 @@ public enum TFCompat {
     },
     THAUMCRAFT("Thaumcraft") {
         @Override
-        protected void postInit() {
-            Thaumcraft.init();
+        protected boolean preInit() {
+            MinecraftForge.EVENT_BUS.register(Thaumcraft.class);
+            return true;
         }
     };
 
@@ -232,6 +236,12 @@ public enum TFCompat {
                     TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
                 }
             }
+        }
+    }
+
+    static void registerSidedHandler(Side side, Object handler) {
+        if (FMLCommonHandler.instance().getSide() == side) {
+            MinecraftForge.EVENT_BUS.register(handler);
         }
     }
 }

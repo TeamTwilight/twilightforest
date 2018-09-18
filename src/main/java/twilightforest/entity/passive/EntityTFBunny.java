@@ -25,8 +25,8 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bunny");
 	private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
 
-	public EntityTFBunny(World par1World) {
-		super(par1World);
+	public EntityTFBunny(World world) {
+		super(world);
 		this.setSize(0.3F, 0.7F);
 
 		// maybe this will help them move cuter?
@@ -63,15 +63,15 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("BunnyType", this.getBunnyType());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setInteger("BunnyType", this.getBunnyType());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setBunnyType(par1NBTTagCompound.getInteger("BunnyType"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setBunnyType(compound.getInteger("BunnyType"));
 	}
 
 	@Override
@@ -83,8 +83,8 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		return dataManager.get(DATA_TYPE);
 	}
 
-	public void setBunnyType(int par1) {
-		dataManager.set(DATA_TYPE, (byte) par1);
+	public void setBunnyType(int type) {
+		dataManager.set(DATA_TYPE, (byte) type);
 	}
 
 	@Override

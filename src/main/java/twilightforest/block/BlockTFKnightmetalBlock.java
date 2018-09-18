@@ -39,7 +39,7 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, BLOCK_DAMAGE);
 	}
 
@@ -51,16 +51,15 @@ public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallb
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	@Deprecated
-	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing side) {
-		return true;
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess access, BlockPos pos, EnumFacing side) {
+		return !access.getBlockState(pos.offset(side)).doesSideBlockRendering(access, pos.offset(side), side.getOpposite());
 	}
 
 	@SideOnly(Side.CLIENT)

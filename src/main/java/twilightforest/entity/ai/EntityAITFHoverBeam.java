@@ -169,7 +169,7 @@ public class EntityAITFHoverBeam extends EntityAIBase {
 		double offset = 10.0D;
 		Vec3d srcVec = new Vec3d(this.attacker.posX, this.attacker.posY + 0.25, this.attacker.posZ);
 		Vec3d lookVec = this.attacker.getLook(1.0F);
-		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getEntityBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(range, range, range));
 		double hitDist = 0;
 

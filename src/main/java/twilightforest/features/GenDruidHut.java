@@ -1,5 +1,7 @@
 package twilightforest.features;
 
+import com.google.common.math.StatsAccumulator;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -9,25 +11,30 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+
 import twilightforest.TwilightForestMod;
 import twilightforest.world.feature.TFGenerator;
 
 import java.util.Random;
 
 public class GenDruidHut extends TFGenerator {
+
     private static final ResourceLocation STRUCTURE = new ResourceLocation(TwilightForestMod.ID, "landscape/druid_hut");
 
+    @Override // Loosely based on WorldGenFossils
     public boolean generate(World world, Random rand, BlockPos pos) {
+
         MinecraftServer minecraftserver = world.getMinecraftServer();
         TemplateManager templatemanager = world.getSaveHandler().getStructureTemplateManager();
         Template template = templatemanager.getTemplate(minecraftserver, STRUCTURE);
 
-        Random random = world.getChunkFromBlockCoords(pos).getRandomWithSeed(987234911L);
+        Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 
         Rotation[] rotations = Rotation.values();
         Rotation rotation = rotations[random.nextInt(rotations.length)];
@@ -35,53 +42,71 @@ public class GenDruidHut extends TFGenerator {
         Mirror[] mirrors = Mirror.values();
         Mirror mirror = mirrors[random.nextInt(mirrors.length+1) % mirrors.length];
 
-        ChunkPos chunkpos = new ChunkPos(pos);
-        StructureBoundingBox structureboundingbox = new StructureBoundingBox(chunkpos.getXStart(), 0, chunkpos.getZStart(), chunkpos.getXEnd(), 256, chunkpos.getZEnd());
+        ChunkPos chunkpos = new ChunkPos(pos.add(-8, 0, -8));
+        StructureBoundingBox structureboundingbox = new StructureBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
         PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
-        BlockPos posSnap = new BlockPos.MutableBlockPos(
-                pos.getX() - (pos.getX()%16) - (pos.getX() < 0 ? 16 : 0),
-                pos.getY()-1,
-                pos.getZ() - (pos.getZ()%16) - (pos.getZ() < 0 ? 16 : 0)
-        );
+        BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
 
-        BlockPos.MutableBlockPos placementPos = new BlockPos.MutableBlockPos(template.getZeroPositionWithTransform(posSnap, mirror, rotation));
+        BlockPos transformedSize = template.transformedSize(rotation);
+        int dx = random.nextInt(17 - transformedSize.getX());
+        int dz = random.nextInt(17 - transformedSize.getZ());
 
-        if (offsetToAverageGroundLevel(world, placementPos, template.getSize())) {
-            template.addBlocksToWorld(world, placementPos, placementsettings, 20);
-            //for (int i = 0; i < 16; i++) {
-            //    world.setBlockState(placementPos, Blocks.WOOL.getStateFromMeta(i));
-            //    placementPos.setY(placementPos.getY() + 1);
-            //}
+        BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap.add(dx, 0, dz));
+
+        if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
+            return false;
         }
+
+        BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
+        template.addBlocksToWorld(world, placementPos, placementsettings, 20);
 
         return true;
     }
 
-    private static boolean offsetToAverageGroundLevel(World world, BlockPos.MutableBlockPos actualPos, BlockPos size) {
-        final int originLevel = actualPos.getY();
+    private static boolean offsetToAverageGroundLevel(World world, BlockPos.MutableBlockPos startPos, BlockPos size) {
 
-        for (int x = 0; x < size.getX(); x++) {
-            for (int z = 0; z < size.getZ(); z++) {
-                IBlockState state = world.getBlockState(new BlockPos(actualPos.getX() + x, originLevel, actualPos.getZ() + z));
+        StatsAccumulator heights = new StatsAccumulator();
 
-                if (isBlockNotOk(state)) return false;
+        for (int dx = 0; dx < size.getX(); dx++) {
+            for (int dz = 0; dz < size.getZ(); dz++) {
 
-                if (!isBlockOk(state)) {
-                    for (int y = originLevel - 1; y >= 0; y--) {
-                        IBlockState stateAt = world.getBlockState(new BlockPos(actualPos.getX()+x, y, actualPos.getZ()+z));
+                int x = startPos.getX() + dx;
+                int z = startPos.getZ() + dz;
 
-                        if (isBlockNotOk(stateAt)) return false;
+                int y = world.getHeight(x, z);
 
-                        if (isBlockOk(stateAt)) {
-                            if (y < actualPos.getY()) actualPos.setY(y);
-                            break;
-                        }
-                    }
+                while (y >= 0) {
+                    IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+                    if (isBlockNotOk(state)) return false;
+                    if (isBlockOk(state)) break;
+                    y--;
                 }
+
+                if (y < 0) return false;
+
+                heights.add(y);
             }
         }
 
+        if (heights.populationStandardDeviation() > 2.0) {
+            return false;
+        }
+
+        int baseY = (int) Math.round(heights.mean());
+        int maxY = (int) heights.max();
+
+        startPos.setY(baseY);
+
+        return isAreaClear(world, startPos.up(maxY - baseY + 1), startPos.add(size));
+    }
+
+    private static boolean isAreaClear(IBlockAccess world, BlockPos min, BlockPos max) {
+        for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
+            if (!world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
+                return false;
+            }
+        }
         return true;
     }
 

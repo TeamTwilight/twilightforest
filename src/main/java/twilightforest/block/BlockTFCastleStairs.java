@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +19,7 @@ import twilightforest.item.TFItems;
 
 public class BlockTFCastleStairs extends BlockStairs implements ModelRegisterCallback {
 
-	public static final PropertyEnum<CastlePillarVariant> VARIANT = PropertyEnum.create("variant", CastlePillarVariant.class);
+	public static final IProperty<CastlePillarVariant> VARIANT = PropertyEnum.create("variant", CastlePillarVariant.class);
 
 	BlockTFCastleStairs(IBlockState state) {
 		super(state);
@@ -47,9 +48,9 @@ public class BlockTFCastleStairs extends BlockStairs implements ModelRegisterCal
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 8));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 8));
 	}
 
 	@Override

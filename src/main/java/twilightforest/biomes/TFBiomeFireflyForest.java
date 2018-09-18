@@ -86,7 +86,7 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 
 	private int getGroundLevel(World world, BlockPos pos) {
 		// go from sea level up.  If we get grass, return that, otherwise return the last dirt, stone or gravel we got
-		Chunk chunk = world.getChunkFromBlockCoords(pos);
+		Chunk chunk = world.getChunk(pos);
 		int lastDirt = TFWorld.SEALEVEL;
 		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT - 1; y++) {
 			Block block = chunk.getBlockState(new BlockPos(pos.getX(), y, pos.getZ())).getBlock();

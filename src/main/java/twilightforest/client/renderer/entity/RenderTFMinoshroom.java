@@ -25,8 +25,8 @@ public class RenderTFMinoshroom extends RenderBiped<EntityTFMinoshroom> {
 	// TODO fix offsets (currently copypastedfrom LayerMooshroomMushroom)
 	class LayerMinoshroomMushroom implements LayerRenderer<EntityTFMinoshroom> {
 		@Override
-		public void doRenderLayer(EntityTFMinoshroom entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-			if (!entitylivingbaseIn.isChild() && !entitylivingbaseIn.isInvisible()) {
+		public void doRenderLayer(EntityTFMinoshroom minoshroom, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+			if (!minoshroom.isChild() && !minoshroom.isInvisible()) {
 				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 				RenderTFMinoshroom.this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 				GlStateManager.enableCull();
@@ -66,7 +66,7 @@ public class RenderTFMinoshroom extends RenderBiped<EntityTFMinoshroom> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFMinoshroom par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFMinoshroom entity) {
 		return textureLoc;
 	}
 

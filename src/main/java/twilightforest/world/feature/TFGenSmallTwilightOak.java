@@ -18,13 +18,13 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator {
 	 */
 	protected final int minTreeHeight;
 
-	public TFGenSmallTwilightOak(boolean par1) {
-		this(par1, 4);
+	public TFGenSmallTwilightOak(boolean notify) {
+		this(notify, 4);
 	}
 
-	public TFGenSmallTwilightOak(boolean par1, int par2) {
-		super(par1);
-		this.minTreeHeight = par2;
+	public TFGenSmallTwilightOak(boolean notify, int minHeight) {
+		super(notify);
+		this.minTreeHeight = minHeight;
 
 		treeState = TFBlocks.twilight_log.getDefaultState();
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
@@ -33,8 +33,8 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator {
 	}
 
 	@Override
-	public boolean generate(World par1World, Random par2Random, BlockPos pos) {
-		int height = par2Random.nextInt(3) + this.minTreeHeight;
+	public boolean generate(World world, Random random, BlockPos pos) {
+		int height = random.nextInt(3) + this.minTreeHeight;
 		boolean allClear = true;
 
 		if (pos.getY() >= 1 && pos.getY() + height + 1 <= 256) {
@@ -59,14 +59,14 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator {
 						if (cy >= 0 && cy < 256) {
 							BlockPos cPos = new BlockPos(cx, cy, cz);
 
-							IBlockState block = par1World.getBlockState(cPos);
+							IBlockState block = world.getBlockState(cPos);
 							blockID = block.getBlock();
 
 							if (blockID != Blocks.AIR &&
-									!blockID.isLeaves(block, par1World, cPos) &&
+									!blockID.isLeaves(block, world, cPos) &&
 									blockID != Blocks.GRASS &&
 									blockID != Blocks.DIRT &&
-									!blockID.isWood(par1World, cPos)) {
+									!blockID.isWood(world, cPos)) {
 								allClear = false;
 							}
 						} else {
@@ -79,10 +79,10 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator {
 			if (!allClear) {
 				return false;
 			} else {
-				Block blockUsing = par1World.getBlockState(pos.down()).getBlock();
+				Block blockUsing = world.getBlockState(pos.down()).getBlock();
 
 				if ((blockUsing == Blocks.GRASS || blockUsing == Blocks.DIRT) && pos.getY() < 256 - height - 1) {
-					setBlockAndNotifyAdequately(par1World, pos.down(), Blocks.DIRT.getDefaultState());
+					setBlockAndNotifyAdequately(world, pos.down(), Blocks.DIRT.getDefaultState());
 					width = 3;
 					byte var18 = 0;
 					int treeWidth;
@@ -101,11 +101,11 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator {
 
 								BlockPos tPos = new BlockPos(tx, cz, tz);
 
-								IBlockState state = par1World.getBlockState(tPos);
+								IBlockState state = world.getBlockState(tPos);
 
-								if ((Math.abs(var15) != treeWidth || Math.abs(var17) != treeWidth || par2Random.nextInt(2) != 0 && number != 0) &&
-										state.getBlock().canBeReplacedByLeaves(state, par1World, tPos)) {
-									this.setBlockAndNotifyAdequately(par1World, tPos, leafState);
+								if ((Math.abs(var15) != treeWidth || Math.abs(var17) != treeWidth || random.nextInt(2) != 0 && number != 0) &&
+										state.getBlock().canBeReplacedByLeaves(state, world, tPos)) {
+									this.setBlockAndNotifyAdequately(world, tPos, leafState);
 								}
 							}
 						}
@@ -113,11 +113,11 @@ public class TFGenSmallTwilightOak extends TFTreeGenerator {
 
 					for (cz = 0; cz < height; ++cz) {
 						BlockPos cPos = pos.up(cz);
-						IBlockState block = par1World.getBlockState(cPos);
+						IBlockState block = world.getBlockState(cPos);
 						blockID = block.getBlock();
 
-						if (blockID == Blocks.AIR || blockID.isLeaves(block, par1World, cPos)) {
-							this.setBlockAndNotifyAdequately(par1World, cPos, treeState);
+						if (blockID == Blocks.AIR || blockID.isLeaves(block, world, cPos)) {
+							this.setBlockAndNotifyAdequately(world, cPos, treeState);
 						}
 					}
 

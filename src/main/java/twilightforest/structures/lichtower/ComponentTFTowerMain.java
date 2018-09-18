@@ -305,7 +305,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		decoratePaintings(world, rand, floorLevel, sbb);
 
 		// seems like we should have a spawner
-		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
 

@@ -74,6 +74,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 		return this.addComponentParts(world, random, sbb, false);
 	}
 
+	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
 			// wood

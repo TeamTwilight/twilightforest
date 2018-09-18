@@ -1,5 +1,6 @@
 package twilightforest.tileentity;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -14,6 +15,7 @@ import twilightforest.enums.TowerTranslucentVariant;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 	private static final int REVERT_CHANCE = 10;
@@ -35,12 +37,11 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 			this.tickCount++;
 
 			if (this.world.isRemote) {
-				double var1 = (double) ((float) this.pos.getX() + this.world.rand.nextFloat());
-				double var3 = (double) ((float) this.pos.getY() + this.world.rand.nextFloat());
-				double var5 = (double) ((float) this.pos.getZ() + this.world.rand.nextFloat());
-//				this.world.spawnParticle("smoke", var1, var3, var5, 0.0D, 0.0D, 0.0D);
-				this.world.spawnParticle(EnumParticleTypes.REDSTONE, var1, var3, var5, 0.0D, 0.0D, 0.0D);
-
+				double x = this.pos.getX() + this.world.rand.nextFloat();
+				double y = this.pos.getY() + this.world.rand.nextFloat();
+				double z = this.pos.getZ() + this.world.rand.nextFloat();
+//				this.world.spawnParticle("smoke", x, y, z, 0.0D, 0.0D, 0.0D);
+				this.world.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
 
 				// occasionally make a little red dust line to outline our radius
 				if (this.rand.nextInt(10) == 0) {
@@ -272,7 +273,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 			return true;
 		}
 
-		List<IBlockState> blacklist = TFConfig.getAntiBuilderBlacklist();
+		ImmutableSet<IBlockState> blacklist = TFConfig.getDisallowedBlocks();
 		return blacklist.contains(stateThere) || blacklist.contains(replaceWith);
 	}
 

@@ -971,10 +971,9 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		int worldY = this.getYWithOffset(y);
 		int worldZ = this.getZWithOffsetRotated(x, z, rotation);
 		final BlockPos vec = new BlockPos(worldX, worldY, worldZ);
-		IBlockState blockState = sbb.isVecInside(vec) ? world.getBlockState(vec) : Blocks.AIR.getDefaultState();
-
-
-		return !(blockState == Blocks.AIR || blockState == deco.accentState);
+		if (!sbb.isVecInside(vec)) return false;
+		IBlockState blockState = world.getBlockState(vec);
+		return blockState.getBlock() != Blocks.AIR && blockState != deco.accentState;
 	}
 
 

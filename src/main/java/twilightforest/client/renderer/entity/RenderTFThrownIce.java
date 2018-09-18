@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFIceBomb;
 
 // [VanillaCopy] direct of RenderFallingBlock because of generic type restrictions
@@ -45,7 +46,7 @@ public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
 						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 					}
 
-					vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
+					vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
 					GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
@@ -66,7 +67,7 @@ public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFIceBomb var1) {
+	protected ResourceLocation getEntityTexture(EntityTFIceBomb entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

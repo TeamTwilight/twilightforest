@@ -1,5 +1,6 @@
 package twilightforest;
 
+import com.google.common.collect.Maps;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.BlockTFPortal;
@@ -35,6 +37,7 @@ import twilightforest.world.TFWorld;
 import twilightforest.world.WorldProviderTwilightForest;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -67,10 +70,10 @@ public class TFTickHandler {
 		}
 
 		// check for advancement get.
-		if (event.phase == TickEvent.Phase.END && player.ticksExisted % 50 == 0
-				&& player instanceof EntityPlayerMP) {
-			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
-		}
+		//if (event.phase == TickEvent.Phase.END && player.ticksExisted % 50 == 0
+		//		&& player instanceof EntityPlayerMP) {
+		//	TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
+		//}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
@@ -134,32 +137,47 @@ public class TFTickHandler {
 		if (world.provider.getDimension() == 0
 				|| world.provider.getDimension() == TFConfig.dimension.dimensionID
 				|| TFConfig.allowPortalsInOtherDimensions) {
-			Item item = Item.REGISTRY.getObject(new ResourceLocation(TFConfig.portalCreationItem));
-			int metadata = TFConfig.portalCreationMeta;
-			if (item == null) {
-				item = Items.DIAMOND;
-				metadata = -1;
+			Map<Item, Integer> validItems = Maps.newHashMap();
+			for (String s : TFConfig.portalCreationItems) {
+				String[] split = s.split(":");
+				if (split.length < 2)
+					continue;
+				Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0], split[1]));
+				if (item == null)
+					continue;
+				int meta = -1;
+				if (split.length > 2)
+					try {
+						meta = Integer.parseInt(split[2]);
+					} catch (NumberFormatException e) {
+
+					}
+				validItems.put(item, meta);
 			}
+			if (validItems.isEmpty())
+				validItems.put(Items.DIAMOND, -1);
 
 			final List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.getEntityBoundingBox().grow(rangeToCheck, rangeToCheck, rangeToCheck));
 
 			for (final EntityItem entityItem : itemList) {
 				IBlockState state = world.getBlockState(entityItem.getPosition());
-				if (item == entityItem.getItem().getItem()
-						&& (state.getBlock() == Blocks.WATER || state == TFBlocks.portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, true))
-						&& (metadata == -1 || entityItem.getItem().getMetadata() == metadata)) {
-					Random rand = new Random();
-					for (int k = 0; k < 2; k++) {
-						double d = rand.nextGaussian() * 0.02D;
-						double d1 = rand.nextGaussian() * 0.02D;
-						double d2 = rand.nextGaussian() * 0.02D;
+				if (validItems.containsKey(entityItem.getItem().getItem())) {
+					int metadata = validItems.get(entityItem.getItem().getItem());
+					if ((state.getBlock() == Blocks.WATER || state == TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, true))
+							&& (metadata == -1 || entityItem.getItem().getMetadata() == metadata)) {
+						Random rand = new Random();
+						for (int k = 0; k < 2; k++) {
+							double d = rand.nextGaussian() * 0.02D;
+							double d1 = rand.nextGaussian() * 0.02D;
+							double d2 = rand.nextGaussian() * 0.02D;
 
-						world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
-					}
+							world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
+						}
 
-					if (((BlockTFPortal) TFBlocks.portal).tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
-						TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
-						return;
+						if (((BlockTFPortal) TFBlocks.twilight_portal).tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
+							TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
+							return;
+						}
 					}
 				}
 			}

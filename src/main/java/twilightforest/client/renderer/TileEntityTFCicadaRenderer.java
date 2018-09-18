@@ -20,11 +20,11 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
 	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "cicada-model.png");
 
 	@Override
-	public void render(@Nullable TileEntityTFCicadaTicking tileentity, double d, double d1, double d2, float partialTicks, int destroyStage, float alpha) {
+	public void render(@Nullable TileEntityTFCicadaTicking tileentity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		int yaw = tileentity != null ? tileentity.currentYaw : BugModelAnimationHelper.currentYaw;
 
 		GlStateManager.pushMatrix();
-		EnumFacing facing = EnumFacing.getFront(tileentity != null ? tileentity.getBlockMetadata() : 0);
+		EnumFacing facing = EnumFacing.byIndex(tileentity != null ? tileentity.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;
@@ -46,7 +46,7 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
 		if (facing == EnumFacing.DOWN) {
 			rotX = 180F;
 		}
-		GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+		GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		GlStateManager.rotate(rotX, 1F, 0F, 0F);
 		GlStateManager.rotate(rotZ, 0F, 0F, 1F);
 		GlStateManager.rotate(yaw, 0F, 1F, 0F);

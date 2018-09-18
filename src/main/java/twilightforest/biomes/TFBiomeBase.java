@@ -113,8 +113,8 @@ public class TFBiomeBase extends Biome {
 	}
 
 	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-		if (par1Random.nextInt(4) == 0) {
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
+		if (random.nextInt(4) == 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);

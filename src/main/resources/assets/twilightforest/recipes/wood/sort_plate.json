@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:sort_plate",
+    "data": 0,
+    "count": 1
+  },
+  "pattern": [
+    "##"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:sort_planks",
+      "data": 0
+    }
+  }
+}

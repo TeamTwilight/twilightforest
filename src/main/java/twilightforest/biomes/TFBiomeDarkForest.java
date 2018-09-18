@@ -83,26 +83,25 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 
 	@Override
 	public int getGrassColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerGrass.getGrassColor(var1, var3) & 0xFEFEFE) + 0x1E0E4E) / 2;
+		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+		return ((ColorizerGrass.getGrassColor(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
 	}
 
 	@Override
 	public int getFoliageColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerFoliage.getFoliageColor(var1, var3) & 0xFEFEFE) + 0x1E0E4E) / 2;
+		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+		return ((ColorizerFoliage.getFoliageColor(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
 	}
 
 	@Override
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType) {
-		// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
+	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+		if (creatureType == EnumCreatureType.MONSTER) {
 			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : Lists.newArrayList();
-		} else {
-			return par1EnumCreatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));
 		}
+		return super.getSpawnableList(creatureType);
 	}
 
 	@Override

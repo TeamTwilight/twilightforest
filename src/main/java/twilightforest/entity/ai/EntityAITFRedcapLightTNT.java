@@ -20,6 +20,10 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public boolean shouldExecute() {
+		if (!entityObj.world.getGameRules().getBoolean("mobGriefing")) {
+			return false;
+		}
+
 		if (this.delay > 0) {
 			--this.delay;
 			return false;
@@ -59,7 +63,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 		if (this.entityObj.getDistanceSq(tntPos) < 2.4D * 2.4D) {
 			entityObj.playLivingSound();
 
-			Blocks.TNT.onBlockDestroyedByPlayer(entityObj.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
+			Blocks.TNT.onPlayerDestroy(entityObj.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
 			entityObj.swingArm(EnumHand.MAIN_HAND);
 			entityObj.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
 			this.entityObj.getNavigator().clearPath();

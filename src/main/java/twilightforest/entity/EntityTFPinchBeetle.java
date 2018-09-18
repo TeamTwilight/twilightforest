@@ -20,7 +20,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
-public class EntityTFPinchBeetle extends EntityMob {
+public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
+
 	public EntityTFPinchBeetle(World world) {
 		super(world);
 		setSize(1.2F, 1.1F);
@@ -58,7 +59,7 @@ public class EntityTFPinchBeetle extends EntityMob {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block var4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
 	}
 
@@ -87,12 +88,12 @@ public class EntityTFPinchBeetle extends EntityMob {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
-		if (this.getPassengers().isEmpty() && !par1Entity.isRiding()) {
-			par1Entity.startRiding(this);
+	public boolean attackEntityAsMob(Entity entity) {
+		if (this.getPassengers().isEmpty() && !entity.isRiding()) {
+			entity.startRiding(this);
 		}
 
-		return super.attackEntityAsMob(par1Entity);
+		return super.attackEntityAsMob(entity);
 	}
 
 	@Override
@@ -118,10 +119,10 @@ public class EntityTFPinchBeetle extends EntityMob {
 		if (!this.getPassengers().isEmpty()) {
 			float distance = 0.9F;
 
-			double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-			double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.posX + var1, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + var3);
+			return new Vec3d(this.posX + dx, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + dz);
 		} else {
 			return new Vec3d(this.posX, this.posY, this.posZ);
 		}

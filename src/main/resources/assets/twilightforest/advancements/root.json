@@ -7,7 +7,7 @@
       "translate": "itemGroup.twilightForest"
     },
     "description": {
-      "translate": "advancement.twilightforest.desc"
+      "translate": "advancement.twilightforest.root.desc"
     },
     "background": "twilightforest:textures/blocks/mazestone_large_brick.png",
     "announce_to_chat": false

@@ -1,0 +1,105 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "uvlock": true
+  },
+  "variants": {
+    "inventory": [{ "model": "fence_gate_closed", "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }}],
+    "facing=south,in_wall=false,open=false": [
+      { "model": "fence_gate_closed", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }           },
+      { "model": "fence_gate_closed", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }           },
+      { "model": "fence_gate_closed", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }           },
+      { "model": "fence_gate_closed", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }           }
+    ],
+    "facing=west,in_wall=false,open=false" : [
+      { "model": "fence_gate_closed", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 90  },
+      { "model": "fence_gate_closed", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 90  },
+      { "model": "fence_gate_closed", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 90  },
+      { "model": "fence_gate_closed", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 90  }
+    ],
+    "facing=north,in_wall=false,open=false": [
+      { "model": "fence_gate_closed", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 180 },
+      { "model": "fence_gate_closed", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 180 },
+      { "model": "fence_gate_closed", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 180 },
+      { "model": "fence_gate_closed", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 180 }
+    ],
+    "facing=east,in_wall=false,open=false" : [
+      { "model": "fence_gate_closed", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 270 },
+      { "model": "fence_gate_closed", "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 270 },
+      { "model": "fence_gate_closed", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 270 },
+      { "model": "fence_gate_closed", "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 270 }
+    ],
+    "facing=south,in_wall=false,open=true" : [
+      { "model": "fence_gate_open"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }           },
+      { "model": "fence_gate_open"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }           },
+      { "model": "fence_gate_open"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }           },
+      { "model": "fence_gate_open"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }           }
+    ],
+    "facing=west,in_wall=false,open=true"  : [
+      { "model": "fence_gate_open"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 90  },
+      { "model": "fence_gate_open"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 90  },
+      { "model": "fence_gate_open"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 90  },
+      { "model": "fence_gate_open"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 90  }
+    ],
+    "facing=north,in_wall=false,open=true" : [
+      { "model": "fence_gate_open"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 180 },
+      { "model": "fence_gate_open"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 180 },
+      { "model": "fence_gate_open"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 180 },
+      { "model": "fence_gate_open"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 180 }
+    ],
+    "facing=east,in_wall=false,open=true"  : [
+      { "model": "fence_gate_open"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 270 },
+      { "model": "fence_gate_open"  , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 270 },
+      { "model": "fence_gate_open"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 270 },
+      { "model": "fence_gate_open"  , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 270 }
+    ],
+    "facing=south,in_wall=true,open=false" : [
+      { "model": "wall_gate_closed" , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }           },
+      { "model": "wall_gate_closed" , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }           },
+      { "model": "wall_gate_closed" , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }           },
+      { "model": "wall_gate_closed" , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }           }
+    ],
+    "facing=west,in_wall=true,open=false"  : [
+      { "model": "wall_gate_closed" , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 90  },
+      { "model": "wall_gate_closed" , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 90  },
+      { "model": "wall_gate_closed" , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 90  },
+      { "model": "wall_gate_closed" , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 90  }
+    ],
+    "facing=north,in_wall=true,open=false" : [
+      { "model": "wall_gate_closed" , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 180 },
+      { "model": "wall_gate_closed" , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 180 },
+      { "model": "wall_gate_closed" , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 180 },
+      { "model": "wall_gate_closed" , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 180 }
+    ],
+    "facing=east,in_wall=true,open=false"  : [
+      { "model": "wall_gate_closed" , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 270 },
+      { "model": "wall_gate_closed" , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 270 },
+      { "model": "wall_gate_closed" , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 270 },
+      { "model": "wall_gate_closed" , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 270 }
+    ],
+    "facing=south,in_wall=true,open=true"  : [
+      { "model": "wall_gate_open"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }           },
+      { "model": "wall_gate_open"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }           },
+      { "model": "wall_gate_open"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }           },
+      { "model": "wall_gate_open"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }           }
+    ],
+    "facing=west,in_wall=true,open=true"   : [
+      { "model": "wall_gate_open"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 90  },
+      { "model": "wall_gate_open"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 90  },
+      { "model": "wall_gate_open"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 90  },
+      { "model": "wall_gate_open"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 90  }
+    ],
+    "facing=north,in_wall=true,open=true"  : [
+      { "model": "wall_gate_open"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 180 },
+      { "model": "wall_gate_open"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 180 },
+      { "model": "wall_gate_open"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 180 },
+      { "model": "wall_gate_open"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 180 }
+    ],
+    "facing=east,in_wall=true,open=true"   : [
+      { "model": "wall_gate_open"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_0" }, "y": 270 },
+      { "model": "wall_gate_open"   , "weight": 10, "textures": { "texture": "twilightforest:blocks/wood/planks_sort_1" }, "y": 270 },
+      { "model": "wall_gate_open"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_2" }, "y": 270 },
+      { "model": "wall_gate_open"   , "weight": 1 , "textures": { "texture": "twilightforest:blocks/wood/planks_sort_3" }, "y": 270 }
+    ]
+  }
+}

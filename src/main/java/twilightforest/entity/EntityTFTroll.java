@@ -42,8 +42,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 	private EntityAIAttackRanged aiArrowAttack;
 	private EntityAIAttackMelee aiAttackOnCollide;
 
-	public EntityTFTroll(World par1World) {
-		super(par1World);
+	public EntityTFTroll(World world) {
+		super(world);
 		this.setSize(1.4F, 2.4F);
 	}
 
@@ -100,21 +100,21 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
+	public boolean attackEntityAsMob(Entity entity) {
 		swingArm(EnumHand.MAIN_HAND);
-		return super.attackEntityAsMob(par1Entity);
+		return super.attackEntityAsMob(entity);
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("HasRock", this.hasRock());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("HasRock", this.hasRock());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setHasRock(par1NBTTagCompound.getBoolean("HasRock"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setHasRock(compound.getBoolean("HasRock"));
 	}
 
 	private void setCombatTask() {
@@ -155,13 +155,13 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 		}
 	}
 
-	private void makeTrollStoneInAABB(AxisAlignedBB par1AxisAlignedBB) {
-		int minX = MathHelper.ceil(par1AxisAlignedBB.minX);
-		int minY = MathHelper.ceil(par1AxisAlignedBB.minY);
-		int minZ = MathHelper.ceil(par1AxisAlignedBB.minZ);
-		int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
-		int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
-		int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
+	private void makeTrollStoneInAABB(AxisAlignedBB aabb) {
+		int minX = MathHelper.ceil(aabb.minX);
+		int minY = MathHelper.ceil(aabb.minY);
+		int minZ = MathHelper.ceil(aabb.minZ);
+		int maxX = MathHelper.floor(aabb.maxX);
+		int maxY = MathHelper.floor(aabb.maxY);
+		int maxZ = MathHelper.floor(aabb.maxZ);
 
 		for (BlockPos pos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
 			if (world.isAirBlock(pos)) {
@@ -177,7 +177,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float par2) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		if (this.hasRock()) {
 			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 
@@ -186,7 +186,7 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 			double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - ice.posY;
 			double d2 = target.posZ - this.posZ;
 			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
+			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
 
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			this.world.spawnEntity(ice);

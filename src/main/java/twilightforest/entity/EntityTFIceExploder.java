@@ -30,8 +30,8 @@ public class EntityTFIceExploder extends EntityMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_exploder");
 	private static final float EXPLOSION_RADIUS = 1;
 
-	public EntityTFIceExploder(World par1World) {
-		super(par1World);
+	public EntityTFIceExploder(World world) {
+		super(world);
 		this.setSize(0.8F, 1.8F);
 	}
 

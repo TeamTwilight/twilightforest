@@ -9,7 +9,7 @@ import twilightforest.entity.EntityTFProtectionBox;
 public class ModelTFProtectionBox extends ModelBase {
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4) {
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 	}
 
 	public ModelRenderer box;
@@ -26,9 +26,9 @@ public class ModelTFProtectionBox extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 
-		EntityTFProtectionBox boxEntity = (EntityTFProtectionBox) par1Entity;
+		EntityTFProtectionBox boxEntity = (EntityTFProtectionBox) entity;
 
 		int pixelsX = boxEntity.sizeX * 16 + 2;
 		int pixelsY = boxEntity.sizeY * 16 + 2;
@@ -38,7 +38,7 @@ public class ModelTFProtectionBox extends ModelBase {
 			resizeBoxElement(pixelsX, pixelsY, pixelsZ);
 		}
 
-		box.render(par7);
+		box.render(scale);
 	}
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {

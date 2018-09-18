@@ -86,12 +86,12 @@ public class ModelTFKobold extends ModelBiped {
 	}
 
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity) {
-		this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
-		this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
-		this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
-		this.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
+		this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+		this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
 		this.bipedRightArm.rotateAngleZ = 0.0F;
 		this.bipedLeftArm.rotateAngleZ = 0.0F;
 
@@ -99,15 +99,15 @@ public class ModelTFKobold extends ModelBiped {
 		this.bipedLeftArm.rotateAngleX = -((float) Math.PI * .15F);
 
 
-		this.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+		this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.bipedRightLeg.rotateAngleY = 0.0F;
 		this.bipedLeftLeg.rotateAngleY = 0.0F;
 
-		this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.19F) * 0.15F + 0.05F;
-		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.19F) * 0.15F + 0.05F;
-		this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.267F) * 0.25F;
-		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.267F) * 0.25F;
+		this.bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.19F) * 0.15F + 0.05F;
+		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.19F) * 0.15F + 0.05F;
+		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.267F) * 0.25F;
+		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.267F) * 0.25F;
 
 		if (this.isJumping) {
 			// open jaw
@@ -118,20 +118,20 @@ public class ModelTFKobold extends ModelBiped {
 	}
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float partialTick) {
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		// check if entity is jumping
-		this.isJumping = par1EntityLiving.motionY > 0;
+		this.isJumping = entity.motionY > 0;
 	}
 
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		bipedHead.render(f5);
-		bipedBody.render(f5);
-		bipedRightArm.render(f5);
-		bipedLeftArm.render(f5);
-		bipedRightLeg.render(f5);
-		bipedLeftLeg.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		bipedHead.render(scale);
+		bipedBody.render(scale);
+		bipedRightArm.render(scale);
+		bipedLeftArm.render(scale);
+		bipedRightLeg.render(scale);
+		bipedLeftLeg.render(scale);
 	}
 }

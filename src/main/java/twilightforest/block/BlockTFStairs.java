@@ -7,10 +7,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
+import twilightforest.item.TFItems;
 
 public class BlockTFStairs extends BlockStairs implements ModelRegisterCallback {
+
     protected BlockTFStairs(IBlockState modelState) {
         super(modelState);
+        this.setCreativeTab(TFItems.creativeTab);
+        this.useNeighborBrightness = true;
     }
 
     @SideOnly(Side.CLIENT)

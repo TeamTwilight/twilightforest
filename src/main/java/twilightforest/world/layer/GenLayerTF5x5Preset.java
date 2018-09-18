@@ -2,8 +2,8 @@ package twilightforest.world.layer;
 
 public class GenLayerTF5x5Preset extends GenLayerTF7x7Preset {
 
-	public GenLayerTF5x5Preset(long par1) {
-		super(par1);
+	public GenLayerTF5x5Preset(long seed) {
+		super(seed);
 		initPresets();
 	}
 

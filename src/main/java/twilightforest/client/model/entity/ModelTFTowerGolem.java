@@ -88,40 +88,40 @@ public class ModelTFTowerGolem extends ModelBase {
 
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		//super.render(entity, f, f1, f2, f3, f4, f5);
-		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		head.render(f5);
-		body.render(f5);
-		rightarm.render(f5);
-		leftarm.render(f5);
-		rightleg.render(f5);
-		leftleg.render(f5);
-		ribs.render(f5);
-		hips.render(f5);
-		spine.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		//super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		head.render(scale);
+		body.render(scale);
+		rightarm.render(scale);
+		leftarm.render(scale);
+		rightleg.render(scale);
+		leftleg.render(scale);
+		ribs.render(scale);
+		hips.render(scale);
+		spine.render(scale);
 	}
 
 	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
+	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
-		this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
-		this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
-		this.leftleg.rotateAngleX = -1.5F * this.func_78172_a(par1, 13.0F) * par2;
-		this.rightleg.rotateAngleX = 1.5F * this.func_78172_a(par1, 13.0F) * par2;
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
+		this.leftleg.rotateAngleX = -1.5F * this.func_78172_a(limbSwing, 13.0F) * limbSwingAmount;
+		this.rightleg.rotateAngleX = 1.5F * this.func_78172_a(limbSwing, 13.0F) * limbSwingAmount;
 		this.leftleg.rotateAngleY = 0.0F;
 		this.rightleg.rotateAngleY = 0.0F;
 
-//        this.leftleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2; // biped leg movement
-//        this.rightleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+//        this.leftleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount; // biped leg movement
+//        this.rightleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
 
 
-		this.rightarm.rotateAngleZ = MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-		this.leftarm.rotateAngleZ = -MathHelper.cos(par3 * 0.09F) * 0.05F - 0.05F;
+		this.rightarm.rotateAngleZ = MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.leftarm.rotateAngleZ = -MathHelper.cos(ageInTicks * 0.09F) * 0.05F - 0.05F;
 
 	}
 
@@ -131,16 +131,16 @@ public class ModelTFTowerGolem extends ModelBase {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float par4) {
-		EntityTFTowerGolem var5 = (EntityTFTowerGolem) par1EntityLiving;
-		int var6 = var5.getAttackTimer();
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		EntityTFTowerGolem golem = (EntityTFTowerGolem) entity;
+		int var6 = golem.getAttackTimer();
 
 		if (var6 > 0) {
-			this.rightarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float) var6 - par4, 10.0F);
-			this.leftarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float) var6 - par4, 10.0F);
+			this.rightarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float) var6 - partialTicks, 10.0F);
+			this.leftarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float) var6 - partialTicks, 10.0F);
 		} else {
-			this.rightarm.rotateAngleX = (-0.2F + 1.5F * this.func_78172_a(par2, 25.0F)) * par3;
-			this.leftarm.rotateAngleX = (-0.2F - 1.5F * this.func_78172_a(par2, 25.0F)) * par3;
+			this.rightarm.rotateAngleX = (-0.2F + 1.5F * this.func_78172_a(limbSwing, 25.0F)) * limbSwingAmount;
+			this.leftarm.rotateAngleX = (-0.2F - 1.5F * this.func_78172_a(limbSwing, 25.0F)) * limbSwingAmount;
 		}
 	}
 

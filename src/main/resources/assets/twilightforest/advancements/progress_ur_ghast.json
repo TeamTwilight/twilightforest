@@ -5,10 +5,13 @@
       "data": 3
     },
     "title": {
-      "translate": "advancement.twilight_progress_urghast"
+      "translate": "advancement.twilightforest.progress_ur_ghast"
     },
     "description": {
-      "translate": "advancement.twilight_progress_urghast.desc"
+      "translate": "advancement.twilightforest.progress_ur_ghast.desc",
+      "with": [
+        { "translate": "entity.twilightforest.ur_ghast.name" }
+      ]
     },
     "frame": "goal"
   },
@@ -53,5 +56,8 @@
   "requirements": [
     [ "ghast", "trophy", "tear" ],
     [ "previous_progression" ]
-  ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  }
 }

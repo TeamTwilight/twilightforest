@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:canopy_slab",
+    "data": 0,
+    "count": 6
+  },
+  "pattern": [
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:canopy_planks",
+      "data": 0
+    }
+  }
+}

@@ -13,6 +13,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -40,6 +41,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		this.feature = feature;
 	}
 
+	@Override
 	public TFFeature getFeatureType() {
 		return feature;
 	}
@@ -118,7 +120,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos) != Blocks.MOB_SPAWNER) {
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER) {
 			world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState(), 2);
 			tileEntitySpawner = (TileEntityMobSpawner) world.getTileEntity(pos);
 			if (tileEntitySpawner != null) {
@@ -216,8 +218,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 */
 	protected void placeTripwire(World world, int x, int y, int z, int size, EnumFacing facing, StructureBoundingBox sbb) {
 
-		int dx = facing.getFrontOffsetX();
-		int dz = facing.getFrontOffsetZ();
+		int dx = facing.getXOffset();
+		int dz = facing.getZOffset();
 
 		world.captureBlockSnapshots = true;
 
@@ -480,6 +482,32 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		setCoordBaseMode(oldBaseMode);
 	}
 
+	protected void fillWithAir(World world, StructureBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, Predicate<IBlockState> predicate) {
+		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, Blocks.AIR.getDefaultState(), predicate);
+	}
+
+	protected void fillWithBlocks(World world, StructureBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, IBlockState state, Predicate<IBlockState> predicate) {
+		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, state, state, predicate);
+	}
+
+	protected void fillWithBlocks(World world, StructureBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, IBlockState borderState, IBlockState interiorState, Predicate<IBlockState> predicate) {
+		for (int y = yMin; y <= yMax; ++y) {
+			for (int x = xMin; x <= xMax; ++x) {
+				for (int z = zMin; z <= zMax; ++z) {
+
+					if (predicate.test(this.getBlockStateFromPos(world, x, y, z, boundingBox))) {
+
+						boolean isBorder = yMin != yMax && (y == yMin || y == yMax)
+								|| xMin != xMax && (x == xMin || x == xMax)
+								|| zMin != zMax && (z == zMin || z == zMax);
+
+						this.setBlockState(world, isBorder ? borderState : interiorState, x, y, z, boundingBox);
+					}
+				}
+			}
+		}
+	}
+
 	protected static StructureComponent.BlockSelector getStrongholdStones() {
 		return strongholdStones;
 	}
@@ -561,9 +589,30 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		return 0;
 	}
 
+	protected boolean isBoundingBoxOutsideBiomes(World world, StructureBoundingBox sbb, Predicate<Biome> predicate) {
+
+		int minX = this.boundingBox.minX - 1;
+		int minZ = this.boundingBox.minZ - 1;
+		int maxX = this.boundingBox.maxX + 1;
+		int maxZ = this.boundingBox.maxZ + 1;
+
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+		for (int x = minX; x <= maxX; x++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				if (!predicate.test(world.getBiome(pos.setPos(x, 0, z)))) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
+	@Nullable
 	public static StructureComponent findIntersectingExcluding(List<StructureComponent> list, StructureBoundingBox toCheck, StructureComponent exclude) {
 		Iterator<StructureComponent> iterator = list.iterator();
 		StructureComponent structurecomponent;
@@ -579,7 +628,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 
 		return structurecomponent;
 	}
-
 
 	public BlockPos getBlockPosWithOffset(int x, int y, int z) {
 		return new BlockPos(

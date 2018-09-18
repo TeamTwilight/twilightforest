@@ -20,8 +20,8 @@ public abstract class EntityTFBird extends EntityAnimal {
 	public float lastFlapLength;
 	public float flapSpeed = 1.0F;
 
-	public EntityTFBird(World par1World) {
-		super(par1World);
+	public EntityTFBird(World world) {
+		super(world);
 	}
 
 	@Override

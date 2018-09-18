@@ -29,7 +29,7 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 
 	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.EPIC;
 	}
 
@@ -73,6 +73,6 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltips, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltips, flags);
-		tooltips.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+		tooltips.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 }

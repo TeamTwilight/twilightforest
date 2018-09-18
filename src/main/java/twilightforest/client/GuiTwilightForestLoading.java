@@ -14,6 +14,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
@@ -152,7 +153,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				BufferBuilder buffer = tessellator.getBuffer();
 				Minecraft.getMinecraft().getTextureManager().bindTexture(mazestoneDecor);
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				buffer.pos(0, 24F, 0F)
 						.tex(0F, 0.75F)
 						.color(0.5F, 0.5F, 0.5F, 1F)
@@ -174,7 +175,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				float halfScale = backgroundScale / 2F;
 				float bottomGrid = height - (height % halfScale);
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				buffer.pos(0, bottomGrid, 0F)
 						.tex(0F, 0.75F)
 						.color(0.5F, 0.5F, 0.5F, 1F)
@@ -227,7 +228,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					for (float y = backgroundScale + headerDepthHeight; y < footerDepthHeight + backgroundScale; y += backgroundScale) {
 						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
-						buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+						buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 						buffer.pos(x - backgroundScale, y, 0)
 								.tex(0, 1)
 								.color(0.5f, 0.5f, 0.5f, 1f)
@@ -264,7 +265,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				final float footerTop = height - headerBottom;
 				final float footerDepthHeight = height - headerDepthHeight;
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.pos(0F, headerBottom, 0F)
 						.tex(textureHeaderXMin, 1F)
@@ -285,7 +286,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 						.endVertex();
 				tessellator.draw();
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.pos(0F, headerDepthHeight, 0F)
 						.tex(0F, 1F)
@@ -306,7 +307,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 						.endVertex();
 				tessellator.draw();
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.pos(0F, height, 0F)
 						.tex(textureHeaderXMin, 1F)
@@ -327,7 +328,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 						.endVertex();
 				tessellator.draw();
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.pos(0F, footerTop, 0F)
 						.tex(textureHeaderXMin, 1F)
@@ -387,7 +388,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					Minecraft.getMinecraft().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
-					buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 					buffer.pos(x - backgroundScale, backgroundScale + (backgroundScale / 2), 0)
 							.tex(0, 1)
 							.color(r, g, b, 255)
@@ -409,7 +410,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					Minecraft.getMinecraft().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
-					buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 					buffer.pos(x - backgroundScale, height - (backgroundScale / 2), 0)
 							.tex(0, 1)
 							.color(r, g, b, 255)

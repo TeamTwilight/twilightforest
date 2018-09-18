@@ -18,8 +18,8 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 		this(false);
 	}
 
-	public TFGenerator(boolean par1) {
-		super(par1);
+	public TFGenerator(boolean notify) {
+		super(notify);
 	}
 
 	@Override

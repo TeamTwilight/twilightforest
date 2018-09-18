@@ -23,8 +23,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 	private WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom();
 	private TFGenBigMushgloom bigMushgloomGen = new TFGenBigMushgloom();
 
-	public ComponentTFTrollCaveGarden() {
-	}
+	public ComponentTFTrollCaveGarden() {}
 
 	public ComponentTFTrollCaveGarden(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
 		super(feature, index);
@@ -44,57 +43,57 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		if (this.isBoundingBoxOutOfHighlands(world, sbb)) {
+
+		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
 			return false;
-		} else {
-			// clear inside
-			hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
-
-			// treasure!
-			makeTreasureCrate(world, rand, sbb);
-
-			// dirt!
-			for (int i = 0; i < 24; i++) {
-				BlockPos dest = getCoordsInCave(decoRNG);
-				generate(world, dirtGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
-			}
-
-			// mycelium!
-			for (int i = 0; i < 16; i++) {
-				BlockPos dest = getCoordsInCave(decoRNG);
-				generate(world, myceliumBlobGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
-			}
-
-			// uberous!
-			for (int i = 0; i < 16; i++) {
-				BlockPos dest = getCoordsInCave(decoRNG);
-				generate(world, uberousGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
-
-				generateAtSurface(world, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
-			}
-
-			// mushglooms first
-			for (int i = 0; i < 32; i++) {
-				BlockPos dest = getCoordsInCave(decoRNG);
-				generate(world, bigMushgloomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
-			}
-
-			// mushrooms!
-			for (int i = 0; i < 64; i++) {
-				BlockPos dest = getCoordsInCave(decoRNG);
-				generate(world, bigMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
-			}
-
-			// stone stalactites!
-			for (int i = 0; i < 128; i++) {
-				BlockPos dest = getCoordsInCave(decoRNG);
-				generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
-			}
-
-
-			return true;
 		}
+
+		// clear inside
+		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+
+		// treasure!
+		makeTreasureCrate(world, rand, sbb);
+
+		// dirt!
+		for (int i = 0; i < 24; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, dirtGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+		}
+
+		// mycelium!
+		for (int i = 0; i < 16; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, myceliumBlobGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+		}
+
+		// uberous!
+		for (int i = 0; i < 16; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, uberousGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+
+			generateAtSurface(world, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
+		}
+
+		// mushglooms first
+		for (int i = 0; i < 32; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, bigMushgloomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+		}
+
+		// mushrooms!
+		for (int i = 0; i < 64; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, bigMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+		}
+
+		// stone stalactites!
+		for (int i = 0; i < 128; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
+		}
+
+		return true;
 	}
 
 	protected void generate(World world, WorldGenerator generator, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
@@ -102,11 +101,10 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
+
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos)) {
 			generator.generate(world, rand, pos);
 		}
 	}
-
-
 }

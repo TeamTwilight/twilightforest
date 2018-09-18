@@ -5,10 +5,14 @@
       "data": 5
     },
     "title": {
-      "translate": "advancement.twilight_kill_naga"
+      "translate": "advancement.twilightforest.kill_naga"
     },
     "description": {
-      "translate": "advancement.twilight_kill_naga.desc"
+      "translate": "advancement.twilightforest.kill_naga.desc",
+      "with": [
+        { "translate": "entity.twilightforest.naga.name" },
+        { "translate": "item.twilightforest.nagaScale.name" }
+      ]
     },
     "frame": "goal"
   },
@@ -42,5 +46,8 @@
   "requirements": [
     [ "naga", "scale" ],
     [ "kill_mob" ]
-  ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  }
 }

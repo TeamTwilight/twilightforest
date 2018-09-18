@@ -13,10 +13,12 @@ public class ItemBlockWearable extends ItemBlock {
         super(block);
     }
 
+    @Override
     public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
         return armorType == EntityEquipmentSlot.HEAD;
     }
 
+    @Override
     @Nullable
     public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
         return EntityEquipmentSlot.HEAD;

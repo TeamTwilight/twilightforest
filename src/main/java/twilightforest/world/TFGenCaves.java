@@ -201,9 +201,9 @@ public class TFGenCaves extends MapGenCaves {
 	}
 
 	@Override
-	protected void recursiveGenerate(World par1World, int genX, int genZ, int centerX, int centerZ, ChunkPrimer blockStorage) {
+	protected void recursiveGenerate(World world, int genX, int genZ, int centerX, int centerZ, ChunkPrimer primer) {
 		int numberOfCaves = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
-		boolean isHighlands = par1World.getBiome(new BlockPos(genX * 16, 0, genZ * 16)) instanceof TFBiomeHighlands;
+		boolean isHighlands = world.getBiome(new BlockPos(genX * 16, 0, genZ * 16)) instanceof TFBiomeHighlands;
 
 		if (this.rand.nextInt(15) != 0) {
 			numberOfCaves = 0;
@@ -216,7 +216,7 @@ public class TFGenCaves extends MapGenCaves {
 			int numberOfNormalNodes = 1;
 
 			if (this.rand.nextInt(4) == 0) {
-				this.generateLargeCaveNode(this.rand.nextLong(), centerX, centerZ, blockStorage, randX, randY, randZ, isHighlands);
+				this.generateLargeCaveNode(this.rand.nextLong(), centerX, centerZ, primer, randX, randY, randZ, isHighlands);
 				numberOfNormalNodes += this.rand.nextInt(4);
 			}
 
@@ -229,7 +229,7 @@ public class TFGenCaves extends MapGenCaves {
 					caveSize *= this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F;
 				}
 
-				this.generateCaveNode(this.rand.nextLong(), centerX, centerZ, blockStorage, randX, randY, randZ, caveSize, randPi, randEight, 0, 0, 1.0D, isHighlands);
+				this.generateCaveNode(this.rand.nextLong(), centerX, centerZ, primer, randX, randY, randZ, caveSize, randPi, randEight, 0, 0, 1.0D, isHighlands);
 			}
 		}
 	}

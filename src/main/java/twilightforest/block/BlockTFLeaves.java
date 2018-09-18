@@ -3,6 +3,7 @@ package twilightforest.block;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -34,7 +35,8 @@ import java.util.Random;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback {
-	public static final PropertyEnum<LeavesVariant> VARIANT = PropertyEnum.create("variant", LeavesVariant.class);
+
+	public static final IProperty<LeavesVariant> VARIANT = PropertyEnum.create("variant", LeavesVariant.class);
 
 	protected BlockTFLeaves() {
 		this.setHardness(0.2F);
@@ -81,15 +83,15 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 	}
 

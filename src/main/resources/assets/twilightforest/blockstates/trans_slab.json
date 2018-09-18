@@ -1,0 +1,77 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "half_slab"
+  },
+  "variants": {
+    "inventory": [{
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_0",
+        "top"   : "twilightforest:blocks/wood/planks_trans_0",
+        "side"  : "twilightforest:blocks/wood/planks_trans_0"
+      }
+    }],
+    "half=bottom": [{
+      "weight": 10,
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_0",
+        "top"   : "twilightforest:blocks/wood/planks_trans_0",
+        "side"  : "twilightforest:blocks/wood/planks_trans_0"
+      }
+    }, {
+      "weight": 10,
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_1",
+        "top"   : "twilightforest:blocks/wood/planks_trans_1",
+        "side"  : "twilightforest:blocks/wood/planks_trans_1"
+      }
+    }, {
+      "weight": 1,
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_2",
+        "top"   : "twilightforest:blocks/wood/planks_trans_2",
+        "side"  : "twilightforest:blocks/wood/planks_trans_2"
+      }
+    }, {
+      "weight": 1,
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_3",
+        "top"   : "twilightforest:blocks/wood/planks_trans_3",
+        "side"  : "twilightforest:blocks/wood/planks_trans_3"
+      }
+    }],
+    "half=top": [{
+      "model": "upper_slab",
+      "weight": 10,
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_0",
+        "top"   : "twilightforest:blocks/wood/planks_trans_0",
+        "side"  : "twilightforest:blocks/wood/planks_trans_0"
+      }
+    }, {
+      "model": "upper_slab",
+      "weight": 10,
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_1",
+        "top"   : "twilightforest:blocks/wood/planks_trans_1",
+        "side"  : "twilightforest:blocks/wood/planks_trans_1"
+      }
+    }, {
+      "model": "upper_slab",
+      "weight": 1,
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_2",
+        "top"   : "twilightforest:blocks/wood/planks_trans_2",
+        "side"  : "twilightforest:blocks/wood/planks_trans_2"
+      }
+    }, {
+      "model": "upper_slab",
+      "weight": 1,
+      "textures": {
+        "bottom": "twilightforest:blocks/wood/planks_trans_3",
+        "top"   : "twilightforest:blocks/wood/planks_trans_3",
+        "side"  : "twilightforest:blocks/wood/planks_trans_3"
+      }
+    }]
+  }
+}

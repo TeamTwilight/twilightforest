@@ -73,10 +73,10 @@ public class ModelTFHydraHead extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		super.render(entity, f, f1, f2, f3, f4, f5);
-		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		head.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		head.render(scale);
 	}
 
 	public void render(float f5) {
@@ -84,17 +84,17 @@ public class ModelTFHydraHead extends ModelBase {
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity par7Entity) {
-//		head.rotateAngleY = f3 / (180F / (float)Math.PI);
-//		head.rotateAngleX = f4 / (180F / (float)Math.PI);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+//		head.rotateAngleY = netHeadYaw / (180F / (float)Math.PI);
+//		head.rotateAngleX = headPitch / (180F / (float)Math.PI);
 	}
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase entityliving, float f, float f1, float time) {
-		EntityTFHydraHead whichHead = (EntityTFHydraHead) entityliving;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		EntityTFHydraHead whichHead = (EntityTFHydraHead) entity;
 
-		head.rotateAngleY = getRotationY(whichHead, time);
-		head.rotateAngleX = getRotationX(whichHead, time);
+		head.rotateAngleY = getRotationY(whichHead, partialTicks);
+		head.rotateAngleX = getRotationX(whichHead, partialTicks);
 
 		float mouthOpen = whichHead.getMouthOpen();
 		head.rotateAngleX -= (float) (mouthOpen * (Math.PI / 12.0));

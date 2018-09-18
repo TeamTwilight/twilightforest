@@ -9,10 +9,6 @@ varying vec3 position;
 varying vec3 worldPos;
 varying vec2 texCoord0;
 
-float getPerceptualBrightness(vec3 c) {
-    return sqrt(0.241 * c.r * c.r + 0.691 * c.g * c.g + 0.068 * c.b * c.b);
-}
-
 float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
 vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
 vec4 perm(vec4 x){return mod289(((x * 34.0) + 1.0) * x);}

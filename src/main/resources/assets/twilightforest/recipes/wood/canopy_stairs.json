@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "twilightforest:canopy_stairs",
+    "data": 0,
+    "count": 8
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:canopy_planks",
+      "data": 0
+    }
+  }
+}

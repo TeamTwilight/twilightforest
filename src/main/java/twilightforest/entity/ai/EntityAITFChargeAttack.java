@@ -1,7 +1,5 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.ITFCharger;
+import twilightforest.util.EntityUtil;
 
 public class EntityAITFChargeAttack extends EntityAIBase {
 
@@ -99,6 +98,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 			}
 		} else if (canBreak) {
 			if (!charger.world.isRemote && charger.world.getGameRules().getBoolean("mobGriefing")) {
+
 				AxisAlignedBB bb = charger.getEntityBoundingBox();
 				int minx = MathHelper.floor(bb.minX - 0.75D);
 				int miny = MathHelper.floor(bb.minY + 0.0D);
@@ -106,16 +106,14 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 				int maxx = MathHelper.floor(bb.maxX + 0.75D);
 				int maxy = MathHelper.floor(bb.maxY + 0.15D);
 				int maxz = MathHelper.floor(bb.maxZ + 0.75D);
-				if (charger.world.isAreaLoaded(new BlockPos(minx, miny, minz), new BlockPos(maxx, maxy, maxz))) {
-					for (int dx = minx; dx <= maxx; dx++) {
-						for (int dy = miny; dy <= maxy; dy++) {
-							for (int dz = minz; dz <= maxz; dz++) {
-								BlockPos pos = new BlockPos(dx, dy, dz);
-								IBlockState state = charger.world.getBlockState(pos);
-								float hardness = state.getBlockHardness(charger.world, pos);
-								if (hardness >= 0 && hardness < 50 && charger.world.getTileEntity(pos) == null)
-									charger.world.destroyBlock(pos, true);
-							}
+
+				BlockPos min = new BlockPos(minx, miny, minz);
+				BlockPos max = new BlockPos(maxx, maxy, maxz);
+
+				if (charger.world.isAreaLoaded(min, max)) {
+					for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+						if (EntityUtil.canDestroyBlock(charger.world, pos, charger) && charger.world.getTileEntity(pos) == null) {
+							charger.world.destroyBlock(pos, true);
 						}
 					}
 				}
@@ -123,9 +121,9 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 		}
 
 		// attack the target when we get in range
-		double var1 = this.charger.width * 2.1F * this.charger.width * 2.1F;
+		double rangeSq = this.charger.width * 2.1F * this.charger.width * 2.1F;
 
-		if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.getEntityBoundingBox().minY, this.chargeTarget.posZ) <= var1) {
+		if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.getEntityBoundingBox().minY, this.chargeTarget.posZ) <= rangeSq) {
 			if (!this.hasAttacked) {
 				this.hasAttacked = true;
 				this.charger.attackEntityAsMob(this.chargeTarget);

@@ -11,11 +11,11 @@ public class RenderTFGoblinKnightUpper extends RenderTFBiped<EntityTFGoblinKnigh
 	}
 
 	@Override
-	protected void applyRotations(EntityTFGoblinKnightUpper upperKnight, float par2, float par3, float par4) {
-		super.applyRotations(upperKnight, par2, par3, par4);
+	protected void applyRotations(EntityTFGoblinKnightUpper upperKnight, float ageInTicks, float rotationYaw, float partialTicks) {
+		super.applyRotations(upperKnight, ageInTicks, rotationYaw, partialTicks);
 
 		if (upperKnight.heavySpearTimer > 0) {
-			GlStateManager.rotate(getPitchForAttack((60 - upperKnight.heavySpearTimer) + par4), 1.0F, 0.0F, 0.0F);
+			GlStateManager.rotate(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks), 1.0F, 0.0F, 0.0F);
 		}
 	}
 

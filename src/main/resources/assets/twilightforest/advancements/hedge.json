@@ -4,10 +4,13 @@
       "item": "twilightforest:hedge"
     },
     "title": {
-      "translate": "advancement.twilight_hedge"
+      "translate": "advancement.twilightforest.hedge"
     },
     "description": {
-      "translate": "advancement.twilight_hedge.desc"
+      "translate": "advancement.twilightforest.hedge.desc",
+      "with": [
+        { "translate": "structure.hedge_maze.name" }
+      ]
     }
   },
   "parent": "twilightforest:root",

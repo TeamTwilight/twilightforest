@@ -36,7 +36,7 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements ModelRegisterCallback {
 
-	public static final PropertyEnum<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
+	public static final IProperty<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
 
 	private static final float THORN_DAMAGE = 4.0F;
 
@@ -99,7 +99,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
 	}
 
@@ -108,7 +108,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 		IBlockState state = world.getBlockState(pos);
 
 		if (state.getBlock() instanceof BlockTFThorns && state.getValue(AXIS) == EnumFacing.Axis.Y)
-			onEntityCollidedWithBlock(world, pos, state, entity);
+			onEntityCollision(world, pos, state, entity);
 
 		super.onEntityWalk(world, pos, entity);
 	}
@@ -131,7 +131,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getMobilityFlag(IBlockState state) {
+	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
 
@@ -203,9 +203,9 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
 		for (int i = 0; i < (hasVariant() ? ThornVariant.values().length : 1); i++) {
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 
@@ -216,7 +216,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 

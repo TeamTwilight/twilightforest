@@ -25,10 +25,10 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		this(false);
 	}
 
-	public TFGenMangroveTree(boolean par1) {
-		super(par1);
+	public TFGenMangroveTree(boolean notify) {
+		super(notify);
 
-		this.checkForWater = !par1;
+		this.checkForWater = !notify;
 
 		treeState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
 		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
@@ -45,7 +45,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {
 		// we only start over water
-		if ((this.checkForWater && world.getBlockState(pos.down()).getBlock() != Blocks.WATER) || pos.getY() >= 128 - 18 - 1) {
+		if (pos.getY() >= 128 - 18 - 1 || (this.checkForWater && world.getBlockState(pos.down()).getBlock() != Blocks.WATER)) {
 			return false;
 		}
 

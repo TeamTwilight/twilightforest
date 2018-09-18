@@ -20,8 +20,8 @@ import net.minecraft.world.World;
 
 public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 
-	public EntityTFSquirrel(World par1World) {
-		super(par1World);
+	public EntityTFSquirrel(World world) {
+		super(world);
 		this.setSize(0.3F, 0.7F);
 
 		// maybe this will help them move cuter?
@@ -52,7 +52,7 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 	 * TODO: maybe they should just take less damage?
 	 */
 	@Override
-	public void fall(float dmg, float mult) {
+	public void fall(float distance, float multiplier) {
 	}
 
 	@Override

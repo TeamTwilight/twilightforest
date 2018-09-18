@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -12,7 +13,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
@@ -24,9 +27,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.enums.CompressedVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
+import twilightforest.enums.CompressedVariant;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
@@ -34,7 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockTFCompressed extends Block implements ModelRegisterCallback {
-    public static final PropertyEnum<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
+
+    public static final IProperty<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
 
     public BlockTFCompressed() {
         super(Material.IRON, MapColor.IRON);
@@ -67,6 +71,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
         }
     }
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return state.getValue(VARIANT) == CompressedVariant.FIERY ? 15728880 : super.getPackedLightmapCoords(state, source, pos);
@@ -109,6 +114,12 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 			case CARMINITE:
 				return Material.CLAY;
 		}
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos) {
+		// ItemShears#getDestroySpeed is really dumb and doesn't check IShearable so we have to do it this way to try to match the wool break speed with shears
+		return state.getValue(VARIANT) == CompressedVariant.ARCTIC_FUR && player.getHeldItemMainhand().getItem() instanceof ItemShears ? 0.2F : super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
 	}
 
 	@Override
@@ -175,7 +186,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
@@ -184,6 +195,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 		return CompressedVariant.FIERY == world.getBlockState(pos).getValue(VARIANT);
 	}
 
+	@Override
 	@Deprecated
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {

@@ -21,8 +21,8 @@ import twilightforest.TwilightForestMod;
 public class EntityTFRaven extends EntityTFTinyBird {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/raven");
 
-	public EntityTFRaven(World par1World) {
-		super(par1World);
+	public EntityTFRaven(World world) {
+		super(world);
 		this.setSize(0.3F, 0.7F);
 
 		// maybe this will help them move cuter?

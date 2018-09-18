@@ -255,9 +255,9 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		if (super.attackEntityFrom(damagesource, i)) {
-			Entity entity = damagesource.getTrueSource();
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (super.attackEntityFrom(source, amount)) {
+			Entity entity = source.getTrueSource();
 			if (getRidingEntity() == entity || getPassengers().contains(entity)) {
 				return true;
 			}
@@ -291,14 +291,14 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
+		if (cause.getTrueSource() instanceof EntityPlayerMP) {
 			// are we in a level 3 hill?
 			int chunkX = MathHelper.floor(posX) >> 4;
 			int chunkZ = MathHelper.floor(posZ) >> 4;
 			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.LARGE_HILL) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill3"), "wraith");
+				PlayerHelper.grantCriterion((EntityPlayerMP) cause.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill3"), "wraith");
 			}
 		}
 	}

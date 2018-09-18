@@ -99,7 +99,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
 		// the moo-cen-mino-shrom-taur!
-		final IBlockState taurSpawner = TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
+		final IBlockState taurSpawner = TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
 		setBlockStateRotated(world, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
 
 		return true;

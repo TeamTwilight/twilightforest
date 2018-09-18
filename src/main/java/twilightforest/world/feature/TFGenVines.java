@@ -17,8 +17,9 @@ import java.util.Random;
  * This class fixes the vanilla WorldGenVines, which appears to be nonfunctional in 1.11
  */
 public class TFGenVines extends WorldGenerator {
+	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos position) {
-		Chunk c = worldIn.getChunkFromBlockCoords(position);
+		Chunk c = worldIn.getChunk(position);
 		BlockPos original = new BlockPos(c.x * 16 + 8, position.getY(), c.z * 16 + 8);
 		
 		for (; position.getY() > TFWorld.SEALEVEL; position = position.down()) {

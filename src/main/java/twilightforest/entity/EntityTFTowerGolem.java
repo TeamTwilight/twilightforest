@@ -30,8 +30,8 @@ public class EntityTFTowerGolem extends EntityMob {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/tower_golem");
 	private int attackTimer;
 
-	public EntityTFTowerGolem(World par1World) {
-		super(par1World);
+	public EntityTFTowerGolem(World world) {
+		super(world);
 		this.setSize(1.4F, 2.9F);
 	}
 
@@ -56,13 +56,13 @@ public class EntityTFTowerGolem extends EntityMob {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
+	public boolean attackEntityAsMob(Entity entity) {
 		this.attackTimer = 10;
 		this.world.setEntityState(this, (byte) 4);
-		boolean attackSuccess = super.attackEntityAsMob(par1Entity);
+		boolean attackSuccess = super.attackEntityAsMob(entity);
 
 		if (attackSuccess) {
-			par1Entity.motionY += 0.4000000059604645D;
+			entity.motionY += 0.4000000059604645D;
 		}
 
 		return attackSuccess;
@@ -111,12 +111,12 @@ public class EntityTFTowerGolem extends EntityMob {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte par1) {
-		if (par1 == 4) {
+	public void handleStatusUpdate(byte id) {
+		if (id == 4) {
 			this.attackTimer = 10;
 			this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
 		} else {
-			super.handleStatusUpdate(par1);
+			super.handleStatusUpdate(id);
 		}
 	}
 

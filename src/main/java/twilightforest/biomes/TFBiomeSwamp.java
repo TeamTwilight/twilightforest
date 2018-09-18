@@ -78,10 +78,10 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-		if (par1Random.nextInt(4) == 0) {
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
+		if (random.nextInt(4) == 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
-		} else if (par1Random.nextInt(4) == 0) {
+		} else if (random.nextInt(4) == 0) {
 			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
@@ -89,52 +89,50 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public void decorate(World par1World, Random par2Random, BlockPos pos) {
-		super.decorate(par1World, par2Random, pos);
+	public void decorate(World world, Random random, BlockPos pos) {
+		super.decorate(world, random, pos);
 
 		for (int i = 0; i < 50; i++) {
-			int j = pos.getX() + par2Random.nextInt(16) + 8;
+			int j = pos.getX() + random.nextInt(16) + 8;
 			int l = TFWorld.SEALEVEL + 128;
-			int k = pos.getZ() + par2Random.nextInt(16) + 8;
-			worldgenvines.generate(par1World, par2Random, new BlockPos(j, l, k));
+			int k = pos.getZ() + random.nextInt(16) + 8;
+			worldgenvines.generate(world, random, new BlockPos(j, l, k));
 		}
 		for (int i = 0; i < 25; i++) {
-			int x = pos.getX() + par2Random.nextInt(15) + 8;
+			int x = pos.getX() + random.nextInt(15) + 8;
 			int y = TFWorld.SEALEVEL;
-			int z = pos.getZ() + par2Random.nextInt(15) + 8;
-			hugeLilyPadGen.generate(par1World, par2Random, new BlockPos(x, y, z));
+			int z = pos.getZ() + random.nextInt(15) + 8;
+			hugeLilyPadGen.generate(world, random, new BlockPos(x, y, z));
 		}
 		for (int i = 0; i < 2; i++) {
-			int x = pos.getX() + par2Random.nextInt(16) + 8;
+			int x = pos.getX() + random.nextInt(16) + 8;
 			int y = TFWorld.SEALEVEL;
-			int z = pos.getZ() + par2Random.nextInt(16) + 8;
-			hugeWaterLilyGen.generate(par1World, par2Random, new BlockPos(x, y, z));
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			hugeWaterLilyGen.generate(world, random, new BlockPos(x, y, z));
 		}
 	}
 
 	@Override
 	public int getGrassColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerGrass.getGrassColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
+		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+		return ((ColorizerGrass.getGrassColor(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
 	@Override
 	public int getFoliageColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerFoliage.getFoliageColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
+		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+		return ((ColorizerFoliage.getFoliageColor(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
-
 	@Override
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType) {
-		// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
+	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+		if (creatureType == EnumCreatureType.MONSTER) {
 			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : Lists.newArrayList();
-		} else {
-			return par1EnumCreatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));
 		}
+		return super.getSpawnableList(creatureType);
 	}
 
 	@Override

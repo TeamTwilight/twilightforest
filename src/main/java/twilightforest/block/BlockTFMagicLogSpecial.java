@@ -34,17 +34,17 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	@Override
-	public int tickRate(World par1World) {
+	public int tickRate(World world) {
 		return 20;
 	}
 
 	@Override
-	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state) {
-		par1World.scheduleUpdate(pos, this, this.tickRate(par1World));
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(TFBlocks.magic_log);
 	}
 
@@ -79,7 +79,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumHand hand, EnumFacing side, float par7, float par8, float par9) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (state.getValue(LOG_AXIS) != EnumAxis.NONE) {
 			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.NONE));
 			world.scheduleUpdate(pos, this, this.tickRate(world));
@@ -132,7 +132,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 				Biome biomeAt = world.getBiome(dPos);
 
 				if (biomeAt != TFBiomes.enchantedForest) {
-					Chunk chunkAt = world.getChunkFromBlockCoords(dPos);
+					Chunk chunkAt = world.getChunk(dPos);
 					chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte) Biome.getIdForBiome(TFBiomes.enchantedForest);
 
 					if (world instanceof WorldServer) {
@@ -345,11 +345,11 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
 	}
 
 	@Override

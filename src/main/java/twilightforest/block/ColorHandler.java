@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.TFCompat;
+import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.enums.Leaves3Variant;
 import twilightforest.enums.LeavesVariant;
 import twilightforest.enums.MagicWoodVariant;
@@ -174,12 +175,12 @@ public final class ColorHandler {
 				int green = 0;
 				int blue = 0;
 
-				for (int var9 = -1; var9 <= 1; ++var9) {
-					for (int var10 = -1; var10 <= 1; ++var10) {
-						int var11 = world.getBiome(pos.add(var10, 0, var9)).getFoliageColorAtPos(pos);
-						red += (var11 & 16711680) >> 16;
-						green += (var11 & 65280) >> 8;
-						blue += var11 & 255;
+				for (int dz = -1; dz <= 1; ++dz) {
+					for (int dx = -1; dx <= 1; ++dx) {
+						int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColorAtPos(pos);
+						red += (color & 16711680) >> 16;
+						green += (color & 65280) >> 8;
+						blue += color & 255;
 					}
 				}
 
@@ -284,7 +285,6 @@ public final class ColorHandler {
 
 	@SubscribeEvent
 	public static void registerItemColors(ColorHandlerEvent.Item event) {
-
 		ItemColors itemColors = event.getItemColors();
 		BlockColors blockColors = event.getBlockColors();
 
@@ -300,6 +300,15 @@ public final class ColorHandler {
 
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			itemColors.registerItemColorHandler(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
+			itemColors.registerItemColorHandler((stack, tintIndex) -> {
+				int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).color);
+
+				float d = tintIndex + 1;
+
+				return (int) ((c >> 16 & 0xFF) / d) << 16
+						| (int) ((c >> 8 & 0xFF) / d) << 8
+						| (int) ((c & 0xFF) / d);
+			}, twilightforest.compat.ie.ItemTFShaderGrabbag.shader_bag);
 		}
 	}
 

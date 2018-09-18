@@ -10,8 +10,8 @@ public class GenLayerTF7x7Preset extends GenLayer {
 
 	char[][] preset = new char[9][9];
 
-	public GenLayerTF7x7Preset(long par1) {
-		super(par1);
+	public GenLayerTF7x7Preset(long seed) {
+		super(seed);
 		initPresets();
 	}
 

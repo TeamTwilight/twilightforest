@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -20,12 +21,12 @@ import java.util.Random;
 
 public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 
-	static final PropertyBool DOWN_LIT = PropertyBool.create("down");
-	static final PropertyBool UP_LIT = PropertyBool.create("up");
-	static final PropertyBool NORTH_LIT = PropertyBool.create("north");
-	static final PropertyBool SOUTH_LIT = PropertyBool.create("south");
-	static final PropertyBool WEST_LIT = PropertyBool.create("west");
-	static final PropertyBool EAST_LIT = PropertyBool.create("east");
+	static final IProperty<Boolean> DOWN_LIT  = PropertyBool.create("down");
+	static final IProperty<Boolean> UP_LIT    = PropertyBool.create("up");
+	static final IProperty<Boolean> NORTH_LIT = PropertyBool.create("north");
+	static final IProperty<Boolean> SOUTH_LIT = PropertyBool.create("south");
+	static final IProperty<Boolean> WEST_LIT  = PropertyBool.create("west");
+	static final IProperty<Boolean> EAST_LIT  = PropertyBool.create("east");
 
 	private static final int LIGHT_THRESHHOLD = 7;
 
@@ -117,10 +118,10 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 		WEST(WEST_LIT, EnumFacing.WEST),
 		EAST(EAST_LIT, EnumFacing.EAST);
 
-		private final PropertyBool prop;
+		private final IProperty<Boolean> prop;
 		private final EnumFacing facing;
 
-		SideProps(PropertyBool prop, EnumFacing faceing) {
+		SideProps(IProperty<Boolean> prop, EnumFacing faceing) {
 			this.prop = prop;
 			this.facing = faceing;
 		}

@@ -1,0 +1,59 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "pressure_plate_up"
+  },
+  "variants": {
+    "inventory": [{
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_0"
+      }
+    }],
+    "powered=false": [{
+      "weight": 10,
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_0"
+      }
+    }, {
+      "weight": 10,
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_1"
+      }
+    }, {
+      "weight": 1,
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_2"
+      }
+    }, {
+      "weight": 1,
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_3"
+      }
+    }],
+    "powered=true": [{
+      "model": "pressure_plate_down",
+      "weight": 10,
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_0"
+      }
+    }, {
+      "model": "pressure_plate_down",
+      "weight": 10,
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_1"
+      }
+    }, {
+      "model": "pressure_plate_down",
+      "weight": 1,
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_2"
+      }
+    }, {
+      "model": "pressure_plate_down",
+      "weight": 1,
+      "textures": {
+        "texture": "twilightforest:blocks/wood/planks_sort_3"
+      }
+    }]
+  }
+}

@@ -14,14 +14,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+public class EntityTFTomeBolt extends EntityThrowable implements ITFProjectile {
 
-public class EntityTFTomeBolt extends EntityThrowable {
-	public EntityTFTomeBolt(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFTomeBolt(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
-	public EntityTFTomeBolt(World par1World) {
-		super(par1World);
+	public EntityTFTomeBolt(World world) {
+		super(world);
 	}
 
 	@Override

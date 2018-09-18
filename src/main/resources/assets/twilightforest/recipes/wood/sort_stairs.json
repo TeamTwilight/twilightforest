@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "twilightforest:sort_stairs",
+    "data": 0,
+    "count": 8
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:sort_planks",
+      "data": 0
+    }
+  }
+}

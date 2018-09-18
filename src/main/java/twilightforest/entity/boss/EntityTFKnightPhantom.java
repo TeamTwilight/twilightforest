@@ -58,8 +58,8 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	private Formation currentFormation;
 	private BlockPos chargePos = BlockPos.ORIGIN;
 
-	public EntityTFKnightPhantom(World par1World) {
-		super(par1World);
+	public EntityTFKnightPhantom(World world) {
+		super(world);
 		setSize(1.5F, 3.0F);
 		noClip = true;
 		isImmuneToFire = true;
@@ -71,10 +71,16 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+		setEquipmentBasedOnDifficulty(difficulty);
+		setEnchantmentBasedOnDifficulty(difficulty);
+		return data;
+	}
+
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
 		setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantom_chestplate));
 		setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantom_helmet));
-		return data;
 	}
 
 	@Override
@@ -127,7 +133,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
 			if (hasHome() && getNumber() == 0) {
 				BlockPos home = this.getHomePosition();
-				world.setBlockState(home, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM));
+				world.setBlockState(home, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM));
 			}
 
 			setDead();
@@ -192,6 +198,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
+	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
 		float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 		int i = 0;
@@ -243,16 +250,16 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public void knockBack(Entity par1Entity, float damage, double par3, double par5) {
+	public void knockBack(Entity entity, float damage, double xRatio, double zRatio) {
 		isAirBorne = true;
-		float f = MathHelper.sqrt(par3 * par3 + par5 * par5);
+		float f = MathHelper.sqrt(xRatio * xRatio + zRatio * zRatio);
 		float distance = 0.2F;
 		motionX /= 2.0D;
 		motionY /= 2.0D;
 		motionZ /= 2.0D;
-		motionX -= par3 / (double) f * (double) distance;
+		motionX -= xRatio / (double) f * (double) distance;
 		motionY += (double) distance;
-		motionZ -= par5 / (double) f * (double) distance;
+		motionZ -= zRatio / (double) f * (double) distance;
 
 		if (motionY > 0.4000000059604645D) {
 			motionY = 0.4000000059604645D;
@@ -415,23 +422,23 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		super.writeEntityToNBT(nbttagcompound);
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
 		if (hasHome()) {
 			BlockPos home = getHomePosition();
-			nbttagcompound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
+			compound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
 		}
-		nbttagcompound.setInteger("MyNumber", getNumber());
-		nbttagcompound.setInteger("Formation", getFormationAsNumber());
-		nbttagcompound.setInteger("TicksProgress", getTicksProgress());
+		compound.setInteger("MyNumber", getNumber());
+		compound.setInteger("Formation", getFormationAsNumber());
+		compound.setInteger("TicksProgress", getTicksProgress());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
 
-		if (nbttagcompound.hasKey("Home", 9)) {
-			NBTTagList nbttaglist = nbttagcompound.getTagList("Home", 6);
+		if (compound.hasKey("Home", 9)) {
+			NBTTagList nbttaglist = compound.getTagList("Home", 6);
 			int hx = (int) nbttaglist.getDoubleAt(0);
 			int hy = (int) nbttaglist.getDoubleAt(1);
 			int hz = (int) nbttaglist.getDoubleAt(2);
@@ -439,9 +446,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		} else {
 			detachHome();
 		}
-		setNumber(nbttagcompound.getInteger("MyNumber"));
-		switchToFormationByNumber(nbttagcompound.getInteger("Formation"));
-		setTicksProgress(nbttagcompound.getInteger("TicksProgress"));
+		setNumber(compound.getInteger("MyNumber"));
+		switchToFormationByNumber(compound.getInteger("Formation"));
+		setTicksProgress(compound.getInteger("TicksProgress"));
 	}
 
 	public enum Formation {

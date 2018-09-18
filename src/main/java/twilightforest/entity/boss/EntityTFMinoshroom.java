@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -14,8 +13,8 @@ import twilightforest.item.TFItems;
 public class EntityTFMinoshroom extends EntityTFMinotaur {
 	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minoshroom");
 
-	public EntityTFMinoshroom(World par1World) {
-		super(par1World);
+	public EntityTFMinoshroom(World world) {
+		super(world);
 		this.setSize(1.49F, 2.9F);
 		this.experienceValue = 100;
 		this.setDropChance(EntityEquipmentSlot.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped
@@ -28,10 +27,9 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	}
 
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
-		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		super.setEquipmentBasedOnDifficulty(difficulty);
 		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe));
-		return data;
 	}
 
 	@Override

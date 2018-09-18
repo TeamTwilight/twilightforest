@@ -4,14 +4,24 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
 public class BlockTFUncraftingTable extends Block implements ModelRegisterCallback {
@@ -31,5 +41,20 @@ public class BlockTFUncraftingTable extends Block implements ModelRegisterCallba
 		player.openGui(TwilightForestMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
 		player.addStat(StatList.CRAFTING_TABLE_INTERACTION);
 		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		final ModelResourceLocation mrl = Loader.isModLoaded("ctm") ? new ModelResourceLocation(this.getRegistryName(), "ctm") : new ModelResourceLocation(this.getRegistryName(), "normal");
+
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return mrl;
+			}
+		});
+
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, mrl);
 	}
 }

@@ -40,7 +40,7 @@ public class RenderTFNagaSegment extends Render<EntityTFNagaSegment> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFNagaSegment par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFNagaSegment entity) {
 		return textureLoc;
 	}
 }

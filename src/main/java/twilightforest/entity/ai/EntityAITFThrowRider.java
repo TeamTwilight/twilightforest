@@ -16,8 +16,8 @@ public class EntityAITFThrowRider extends EntityAIAttackMelee {
 	private int throwTimer;
 	private int timeout;
 
-	public EntityAITFThrowRider(EntityCreature par1EntityCreature, double speedIn, boolean useLongMemory) {
-		super(par1EntityCreature, speedIn, useLongMemory);
+	public EntityAITFThrowRider(EntityCreature creature, double speedIn, boolean useLongMemory) {
+		super(creature, speedIn, useLongMemory);
 	}
 
 	@Override

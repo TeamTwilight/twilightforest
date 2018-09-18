@@ -79,23 +79,23 @@ public abstract class StructureStartTFAbstract extends StructureStart {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
 
-        par1NBTTagCompound.setBoolean("Conquered", this.isConquered);
-        par1NBTTagCompound.setByteArray("Locks", this.lockBytes);
+        compound.setBoolean("Conquered", this.isConquered);
+        compound.setByteArray("Locks", this.lockBytes);
 
-        par1NBTTagCompound.setInteger("FeatureID", this.feature.ordinal());
+        compound.setInteger("FeatureID", this.feature.ordinal());
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
 
-        this.isConquered = nbttagcompound.getBoolean("Conquered");
-        this.lockBytes = nbttagcompound.getByteArray("Locks");
+        this.isConquered = compound.getBoolean("Conquered");
+        this.lockBytes = compound.getByteArray("Locks");
 
-        this.feature = TFFeature.values()[nbttagcompound.getInteger("FeatureID")];
+        this.feature = TFFeature.values()[compound.getInteger("FeatureID")];
     }
 
     protected void setupComponents(World world) {
