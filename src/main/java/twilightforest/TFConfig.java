@@ -43,9 +43,6 @@ public class TFConfig {
 		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
 		public boolean newPlayersSpawnInTF = false;
 
-		@Config.Ignore
-		public boolean enableSkylight = true;
-
 		@Config.LangKey(config + "skylight_forest")
 		@Config.RequiresWorldRestart
 		@Config.Comment("If true, Twilight Forest will generate as a void except for Major Structures")
@@ -84,6 +81,12 @@ public class TFConfig {
 		@Config.LangKey(config + "glacer_packed_ice")
 		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")
 		public boolean glacierPackedIce = false;
+
+		@Config.LangKey(config + "enable_skylight")
+		@Config.Comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
+				"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!")
+		@Config.RequiresWorldRestart
+		public boolean enableSkylight = true;
 
 		@Config.Ignore
 		public boolean shadersSupported = true;

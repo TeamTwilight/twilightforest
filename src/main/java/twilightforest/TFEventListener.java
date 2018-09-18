@@ -24,6 +24,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
@@ -650,7 +652,6 @@ public class TFEventListener {
 		// check enforced progression
 		if (!event.player.world.isRemote && event.player instanceof EntityPlayerMP) {
 			sendEnforcedProgressionStatus((EntityPlayerMP) event.player, event.player.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE));
-			sendSkylightEnabled((EntityPlayerMP) event.player, WorldProviderTwilightForest.isSkylightEnabled(TFWorld.getDimensionData(event.player.world)));
 		}
 	}
 
@@ -671,6 +672,15 @@ public class TFEventListener {
 
 	private static void sendSkylightEnabled(EntityPlayerMP player, boolean skylightEnabled) {
 		TFPacketHandler.CHANNEL.sendTo(new PacketSetSkylightEnabled(skylightEnabled), player);
+	}
+
+	@SubscribeEvent
+	public static void onClientConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
+		INetHandlerPlayServer handler = event.getHandler();
+		if (handler instanceof NetHandlerPlayServer) {
+			EntityPlayerMP player = ((NetHandlerPlayServer) handler).player;
+			sendSkylightEnabled(player, WorldProviderTwilightForest.isSkylightEnabled(TFWorld.getDimensionData(player.world)));
+		}
 	}
 
 	@SubscribeEvent

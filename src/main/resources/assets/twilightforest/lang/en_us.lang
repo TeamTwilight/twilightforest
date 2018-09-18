@@ -642,6 +642,8 @@ twilightforest.config.leaves_light_opacity=Twilight Leaves opacity
 twilightforest.config.leaves_light_opacity.tooltip=This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.
 twilightforest.config.glacer_packed_ice=Glaciers made of Packed Ice instead of Ice
 twilightforest.config.glacer_packed_ice.tooltip=Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.
+twilightforest.config.enable_skylight=Enable Skylight
+twilightforest.config.enable_skylight.tooltip=If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere.\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!
 
 twilightforest.config.silent_cicadas=Silent Cicadas
 twilightforest.config.silent_cicadas.tooltip=Make cicadas silent for those having sound library problems, or otherwise finding them annoying.

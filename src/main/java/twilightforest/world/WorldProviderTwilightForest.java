@@ -36,7 +36,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	private long seed;
 
 	public static void syncFromConfig() {
-		skylightEnabled = TFConfig.dimension.enableSkylight;
+		skylightEnabled = TFConfig.performance.enableSkylight;
 	}
 
 	public static void setSkylightEnabled(boolean enabled) {
@@ -203,7 +203,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	public void onWorldSave() {
 		NBTTagCompound data = new NBTTagCompound();
 		data.setLong(SEED_KEY, seed);
-		data.setBoolean(SKYLIGHT_KEY, hasSkyLight);
+		// TODO: decide on persisting this
+		//data.setBoolean(SKYLIGHT_KEY, hasSkyLight);
 		TFWorld.setDimensionData(world, data);
 	}
 
