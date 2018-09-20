@@ -1,7 +1,5 @@
 package twilightforest.advancements;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
@@ -14,39 +12,14 @@ import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTrigger.Instance> {
+public class HasAdvancementTrigger extends TriggerTF<HasAdvancementTrigger.Instance> {
 
     private static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "has_advancement");
-    private final Map<PlayerAdvancements, HasAdvancementTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override
     public ResourceLocation getId() {
         return ID;
-    }
-
-    @Override
-    public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<Instance> listener) {
-        HasAdvancementTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
-        listeners.add(listener);
-    }
-
-    @Override
-    public void removeListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<HasAdvancementTrigger.Instance> listener) {
-        HasAdvancementTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
-        if (listeners != null) {
-            listeners.remove(listener);
-            if (listeners.isEmpty()) {
-                this.listeners.remove(playerAdvancementsIn);
-            }
-        }
-    }
-
-    @Override
-    public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
-        this.listeners.remove(playerAdvancementsIn);
     }
 
     @Override
@@ -56,7 +29,7 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
     }
 
     public void trigger(EntityPlayerMP player) {
-        Listeners l = listeners.get(player.getAdvancements());
+        Listeners l = (Listeners) listeners.get(player.getAdvancements());
         if (l != null) {
             l.trigger(player);
         }
@@ -76,25 +49,10 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
         }
     }
 
-    private static class Listeners {
-
-        private final PlayerAdvancements playerAdvancements;
-        private final Set<Listener<HasAdvancementTrigger.Instance>> listeners = Sets.newHashSet();
+    private static class Listeners extends TriggerTF.Listeners<HasAdvancementTrigger.Instance> {
 
         Listeners(PlayerAdvancements playerAdvancements) {
-            this.playerAdvancements = playerAdvancements;
-        }
-
-        public boolean isEmpty() {
-            return this.listeners.isEmpty();
-        }
-
-        public void add(ICriterionTrigger.Listener<HasAdvancementTrigger.Instance> listener) {
-            this.listeners.add(listener);
-        }
-
-        public void remove(ICriterionTrigger.Listener<HasAdvancementTrigger.Instance> listener) {
-            this.listeners.remove(listener);
+            super(playerAdvancements);
         }
 
         public void trigger(EntityPlayerMP player) {
