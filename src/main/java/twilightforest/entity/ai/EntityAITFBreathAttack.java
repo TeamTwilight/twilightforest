@@ -14,7 +14,7 @@ import java.util.List;
 
 public class EntityAITFBreathAttack extends EntityAIBase {
 
-	private EntityLiving entityHost;
+	private final EntityLiving entityHost;
 	private EntityLivingBase attackTarget;
 
 	private double breathX;
@@ -98,13 +98,13 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	@Override
 	public void resetTask() {
 		this.durationLeft = 0;
+		this.attackTarget = null;
 
 		// set breather flag
 		if (this.entityHost instanceof IBreathAttacker) {
 			((IBreathAttacker) entityHost).setBreathing(false);
 		}
 	}
-
 
 	/**
 	 * What, if anything, is the head currently looking at?
@@ -176,6 +176,4 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 
 		return current + delta;
 	}
-
-
 }

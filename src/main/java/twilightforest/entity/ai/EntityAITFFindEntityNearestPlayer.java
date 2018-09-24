@@ -84,4 +84,11 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 	{
 		this.entityLiving.setAttackTarget(this.entityTarget);
 	}
+
+	@Override
+	public void resetTask()
+	{
+		this.entityTarget = null;
+		super.resetTask();
+	}
 }

@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityAITFFlockTarget extends EntityAITarget {
-	private EntityLivingBase flockCreature;
+
+	private final EntityLivingBase flockCreature;
 	private EntityLivingBase flockTarget;
 
 	public EntityAITFFlockTarget(EntityCreature creature, boolean checkSight) {
@@ -41,5 +42,11 @@ public class EntityAITFFlockTarget extends EntityAITarget {
 	public void startExecuting() {
 		this.taskOwner.setAttackTarget(this.flockTarget);
 		super.startExecuting();
+	}
+
+	@Override
+	public void resetTask() {
+		this.flockTarget = null;
+		super.resetTask();
 	}
 }
