@@ -7,34 +7,34 @@ advancement.twilightforest.root.desc=前往那神秘的魔法林地——暮色�
 
 # General progression
 advancement.twilightforest.hedge=碾碎爬虫
-advancement.twilightforest.hedge.desc=在树篱迷宫杀死一只蜘蛛。
+advancement.twilightforest.hedge.desc=在%s中杀死一只蜘蛛。
 
 advancement.twilightforest.hill1=靴子都是我的！
-advancement.twilightforest.hill1.desc=在小矿山里击败红帽哥布林。
+advancement.twilightforest.hill1.desc=在小%2$s里击败%1$s。
 advancement.twilightforest.hill2=什么动静？
-advancement.twilightforest.hill2.desc=在中矿山里击败红帽地精。
+advancement.twilightforest.hill2.desc=在中%2$s里击败%1$s。
 advancement.twilightforest.hill3=我看到你了
-advancement.twilightforest.hill3.desc=在大矿山里杀死一只暮色幽魂。
+advancement.twilightforest.hill3.desc=在大%2$s里杀死一只%1$s。
 
 advancement.twilightforest.quest_ram=博学的羊
 advancement.twilightforest.quest_ram.desc=将遗失的东西交给谜题羊。
 
 # Map
 advancement.twilightforest.magic_map_focus=用火书写
-advancement.twilightforest.magic_map_focus.desc=用乌鸦毛、萤石粉、火炬浆果合成魔法地图核心。
+advancement.twilightforest.magic_map_focus.desc=用%2$s、%3$和%4$s合成%1$s。
 advancement.twilightforest.magic_map=我有千里眼
-advancement.twilightforest.magic_map.desc=合成魔法地图。
+advancement.twilightforest.magic_map.desc=合成%s。
 advancement.twilightforest.maze_map=现在，寻找出口
 advancement.twilightforest.maze_map.desc=从哥布林身上获取用来合成迷宫地图的核心，并用其来合成迷宫地图。
 advancement.twilightforest.ore_map=这玩意值这么多？
-advancement.twilightforest.ore_map.desc=合成迷宫 / 矿石地图。
+advancement.twilightforest.ore_map.desc=合成%s。
 
 # Mainline beginning progression
 advancement.twilightforest.twilight_hunter=森林之静
 advancement.twilightforest.twilight_hunter.desc=猎杀一些暮色的野生动物。
 
 advancement.twilightforest.kill_naga=娜迦猎人
-advancement.twilightforest.kill_naga.desc=猎杀森林角落里的娜迦，取得可以帮你突破巫妖塔魔法壁垒的娜迦鳞片。
+advancement.twilightforest.kill_naga.desc=猎杀森林角落里的%s，取得可以帮你突破巫妖塔魔法壁垒的娜迦鳞片。
 advancement.twilightforest.naga_armors=娜迦装备锻造师
 advancement.twilightforest.naga_armors.desc=合成娜迦鳞胸甲和护腿。
 
@@ -62,13 +62,6 @@ advancement.twilightforest.ghast_trap=高塔里的奇怪装置
 advancement.twilightforest.ghast_trap.desc=以高塔幽灵为祭品，激活恶魂陷阱，把暮色恶魂拉下来！
 advancement.twilightforest.progress_ur_ghast=火之泪
 advancement.twilightforest.progress_ur_ghast.desc=触碰高塔恶魂那炽红的眼泪。
-
-advancement.twilightforest.experiment_115=神秘的肉？
-advancement.twilightforest.experiment_115.desc=尽管它看起来像蛋糕……
-advancement.twilightforest.experiment_115_2=做个记录：大胜利！
-advancement.twilightforest.experiment_115_2.desc=松软，美味！
-advancement.twilightforest.experiment_115_3=每天都吃 115，坚持 115 年，一刻不要停
-advancement.twilightforest.experiment_115_3.desc=每天都吃实验物品 1-1-5，不要停，115 次实验物品 1-1-5，experiment115 点 com，三 w 点 experiment115 点 com，115 年，每时每刻都来 experiment115 点 com，三 w 点 115xexperiment115 点 com
 
 # Snow Forest Progression
 advancement.twilightforest.progress_yeti=首领的毛皮
@@ -98,6 +91,16 @@ advancement.twilightforest.progress_thorns.desc=穿越荆棘之地，打开通�
 advancement.twilightforest.progress_castle=这就是，城堡吗……【未实现】
 advancement.twilightforest.progress_castle.desc=这城堡里究竟有什么？！
 
+# Collections
+advancement.twilightforest.experiment_115=神秘的肉？
+advancement.twilightforest.experiment_115.desc=尽管它看起来像蛋糕……
+advancement.twilightforest.experiment_115_2=做个记录：大胜利！
+advancement.twilightforest.experiment_115_2.desc=松软，美味！
+advancement.twilightforest.experiment_115_3=每天都吃 115，坚持 115 年，一刻不要停
+advancement.twilightforest.experiment_115_3.desc=每天都吃实验物品 1-1-5，不要停，115 次实验物品 1-1-5，experiment115 点 com，三 w 点 experiment115 点 com，115 年，每时每刻都来 experiment115 点 com，三 w 点 115xexperiment115 点 com
+advancement.twilightforest.arborist=疯狂树木学家
+advancement.twilightforest.arborist.desc=准备好斧子和剪刀。把所有的犄角旮旯全部搜索一遍。然后收集齐所有从树上出来的东西！不论是合成出来还是战利品箱子里搜，不论是台阶还是树苗还是树叶，只要是从树上的哪个部分做出来的都算！
+
 twilightforest.trophy_pedestal.ineligible=你还不够格。
 twilightforest.ore_meter.range=半径：%s，原点：[%d, %d]
 twilightforest.ore_meter.exposed=暴露数量：%d
@@ -105,15 +108,15 @@ twilightforest.scepter_charges=剩余使用次数：%d
 
 # Commands
 commands.tffeature.usage=/tffeature <info|reactivate|conquer|center>
-commands.tffeature.not_in_twilight_forest=You are not in the Twilight Forest dimension
-commands.tffeature.nearest=The nearest feature is %s
-commands.tffeature.center=Center of feature: %s
-commands.tffeature.chunk=Are in feature chunk: %s
-commands.tffeature.structure.inside=You are in the structure for that feature
-commands.tffeature.structure.outside=You are not in the structure for that feature
-commands.tffeature.structure.required=You are not in a structure
-commands.tffeature.structure.conquer.status=Structure conquer flag: %s
-commands.tffeature.structure.conquer.update=Structure conquer flag was %s, changing to %s
+commands.tffeature.not_in_twilight_forest=你现在不在暮色森林维度中！
+commands.tffeature.nearest=距离当前位置最近的地图特性：%s
+commands.tffeature.center=地图特性中心：%s
+commands.tffeature.chunk=是否在地图特性区块中：%s
+commands.tffeature.structure.inside=你现在在该地图特性的结构中
+commands.tffeature.structure.outside=你现在不在该地图特性的结构中
+commands.tffeature.structure.required=你现在不在某个结构中
+commands.tffeature.structure.conquer.status=当前结构征服标记：%s
+commands.tffeature.structure.conquer.update=当前结构征服标记现已从 %s 更改为 %s
 commands.tffeature.locate.usage=/tffeature locate <feature>
 
 # Blocks
@@ -323,6 +326,70 @@ tile.twilightforest.NagastonePillarWeathered.name=风化的娜迦石柱
 tile.twilightforest.NagastoneStairsWeathered.0.name=风化的娜迦石楼梯（左）
 tile.twilightforest.NagastoneStairsWeathered.8.name=风化的娜迦石楼梯（右）
 
+tile.twilightforest.CanopyPlanks.name=苍穹木板
+tile.twilightforest.CanopyStairs.name=苍穹木楼梯
+tile.twilightforest.CanopySlab.name=苍穹木台阶
+tile.twilightforest.CanopyButton.name=苍穹木按钮
+tile.twilightforest.CanopyFence.name=苍穹木栅栏
+tile.twilightforest.CanopyGate.name=苍穹木栅栏门
+tile.twilightforest.CanopyPlate.name=苍穹木压力板
+
+tile.twilightforest.DarkPlanks.name=黑木木板
+tile.twilightforest.DarkStairs.name=黑木楼梯
+tile.twilightforest.DarkSlab.name=黑木台阶
+tile.twilightforest.DarkButton.name=黑木按钮
+tile.twilightforest.DarkFence.name=黑木栅栏
+tile.twilightforest.DarkGate.name=黑木栅栏门
+tile.twilightforest.DarkPlate.name=黑木压力板
+
+tile.twilightforest.MangrovePlanks.name=红木板
+tile.twilightforest.MangroveStairs.name=红木楼梯
+tile.twilightforest.MangroveSlab.name=红木台阶
+tile.twilightforest.MangroveButton.name=红木按钮
+tile.twilightforest.MangroveFence.name=红木栅栏
+tile.twilightforest.MangroveGate.name=红木栅栏门
+tile.twilightforest.MangrovePlate.name=红木压力板
+
+tile.twilightforest.TwilightOakPlanks.name=暮色橡木板
+tile.twilightforest.TwilightOakStairs.name=暮色橡木楼梯
+tile.twilightforest.TwilightOakSlab.name=暮色橡木台阶
+tile.twilightforest.TwilightOakButton.name=暮色橡木按钮
+tile.twilightforest.TwilightOakFence.name=暮色橡木栅栏
+tile.twilightforest.TwilightOakGate.name=暮色橡木栅栏门
+tile.twilightforest.TwilightOakPlate.name=暮色橡木压力板
+
+tile.twilightforest.TimePlanks.name=时光木板
+tile.twilightforest.TimeStairs.name=时光木楼梯
+tile.twilightforest.TimeSlab.name=时光木台阶
+tile.twilightforest.TimeButton.name=时光木按钮
+tile.twilightforest.TimeFence.name=时光木栅栏
+tile.twilightforest.TimeGate.name=时光木栅栏门
+tile.twilightforest.TimePlate.name=时光木压力板
+
+tile.twilightforest.TransPlanks.name=变化木板
+tile.twilightforest.TransStairs.name=变化木楼梯
+tile.twilightforest.TransSlab.name=变化木台阶
+tile.twilightforest.TransButton.name=变化木按钮
+tile.twilightforest.TransFence.name=变化木栅栏
+tile.twilightforest.TransGate.name=变化木栅栏门
+tile.twilightforest.TransPlate.name=变化木压力板
+
+tile.twilightforest.MinePlanks.name=矿石木板
+tile.twilightforest.MineStairs.name=矿石木楼梯
+tile.twilightforest.MineSlab.name=矿石木台阶
+tile.twilightforest.MineButton.name=矿石木按钮
+tile.twilightforest.MineFence.name=矿石木栅栏
+tile.twilightforest.MineGate.name=矿石木栅栏门
+tile.twilightforest.MinePlate.name=矿石木压力板
+
+tile.twilightforest.SortPlanks.name=分类木板
+tile.twilightforest.SortStairs.name=分类木楼梯
+tile.twilightforest.SortSlab.name=分类木台阶
+tile.twilightforest.SortButton.name=分类木按钮
+tile.twilightforest.SortFence.name=分类木栅栏
+tile.twilightforest.SortGate.name=分类木栅栏门
+tile.twilightforest.SortPlate.name=分类木压力板
+
 structure.twilight_portal.name=暮色森林传送门
 structure.hedge_maze.name=树篱迷宫
 structure.hollow_hill.name=亡灵矿山
@@ -426,6 +493,7 @@ item.twilightforest.knightlyBoots.name=骑士靴
 item.twilightforest.knightlySword.name=骑士剑
 item.twilightforest.knightlyPick.name=骑士镐
 item.twilightforest.knightlyAxe.name=骑士斧
+item.twilightforest.knightlyShield.name=骑士盾
 item.twilightforest.phantomHelm.name=幻影头盔
 item.twilightforest.phantomPlate.name=幻影胸甲
 item.twilightforest.lampOfCinders.name=余烬之灯
@@ -454,6 +522,7 @@ item.twilightforest.knightmetalRing.name=骑士金属环
 item.twilightforest.chainBlock.name=链锤
 item.twilightforest.cubeTalisman.name=立方护符
 item.twilightforest.cubeOfAnnihilation.name=湮灭立方
+item.twilightforest.moonDial.name=月相罗盘
 
 item.twilightforest.minotaurAxe.tooltip=蓄力时造成额外伤害
 item.twilightforest.knightlySword.tooltip=对有护甲的目标造成额外伤害
@@ -478,7 +547,7 @@ item.twilightforest.arctic_armor.tooltip=能像皮革盔甲一样染色
 entity.twilightforest.wild_boar.name=野猪
 entity.twilightforest.bighorn_sheep.name=大角山羊
 entity.twilightforest.deer.name=野鹿
-entity.twilightforest.redcap.name=红帽
+entity.twilightforest.redcap.name=红帽哥布林
 entity.twilightforest.swarm_spider.name=集群蜘蛛
 entity.twilightforest.naga.name=娜迦
 entity.twilightforest.naga_segment.name=娜迦身体
@@ -492,7 +561,7 @@ entity.twilightforest.lich.name=巫妖
 entity.twilightforest.penguin.name=企鹅
 entity.twilightforest.tiny_bird.name=小鸟
 entity.twilightforest.squirrel.name=松鼠
-entity.twilightforest.bunny.name=兔子
+entity.twilightforest.bunny.name=小兔子
 entity.twilightforest.raven.name=乌鸦
 entity.twilightforest.quest_ram.name=谜题羊
 entity.twilightforest.kobold.name=哥布林
@@ -555,8 +624,10 @@ twilightforest.config.dimension_seed=生成种子
 twilightforest.config.dimension_seed.tooltip=设定后会使用给定种子来生成暮色森林维度；默认情况下使用和主世界的地图种子。
 twilightforest.config.spawn_in_tf=新玩家出生于暮色森林
 twilightforest.config.spawn_in_tf.tooltip=启用后，新玩家会直接出生在暮色森林，而不是主世界中。
-twilightforest.config.skylight_forest=天空中的暮色森林【未实现】
+twilightforest.config.skylight_forest=天空中的暮色森林【开发中】
 twilightforest.config.skylight_forest.tooltip=启用后，暮色森林将以空岛的风格生成，只在虚空中生成主要建筑。
+twilightforest.config.skylight_oaks=天空中的橡树【开发中】
+twilightforest.config.skylight_oaks.tooltip=启用后，暮色橡树也会在虚空中生成。
 
 twilightforest.config.compat=对其他 Mod 兼容
 twilightforest.config.compat.tooltip=是否加载暮色森林对其他 Mod 的兼容？遇到崩溃时，或者不想要兼容时，请禁用此选项。
@@ -571,10 +642,17 @@ twilightforest.config.leaves_light_opacity=暮色树叶不透明度
 twilightforest.config.leaves_light_opacity.tooltip=若树叶不是全方块，此选项可控制树叶阻挡光线的程度。
 twilightforest.config.glacer_packed_ice=冰川由浮冰组成
 twilightforest.config.glacer_packed_ice.tooltip=启用后，暮色冰川将全部由浮冰组成，其不透光的性质可帮助降低冰川附近的光照计算量。
+twilightforest.config.enable_skylight=启用天空光照
+twilightforest.config.enable_skylight.tooltip=决定暮色森林维度中的方块是否有基于每个方块的天空光照数据。禁用此选项可极大提升世界生成的性能，但代价是没有阴影的平整光照。\n警告：一旦区块在没有天空光照的情况下加载，相应的数据也会一并丢失且难以恢复，请小心操作！
 
 twilightforest.config.silent_cicadas=禁止蝉鸣
 twilightforest.config.silent_cicadas.tooltip=若声音库出现问题，或者只是觉得蝉很吵，可考虑启用此项。
 
+twilightforest.config.first_person_effects=渲染第一人称视角特效
+twilightforest.config.first_person_effects.tooltip=控制暮色森林的诸多特效是否在第一人称视角下显示。觉得很烦的话可以关闭。
+
+twilightforest.config.origin_dimension=始发维度
+twilightforest.config.origin_dimension.tooltip=默认使用的能在暮色森林之间往返的维度，默认为原版主世界。
 twilightforest.config.portals_in_other_dimensions=非主世界建造暮色传送门
 twilightforest.config.portals_in_other_dimensions.tooltip=允许在主世界之外的维度建造暮色森林传送门，某些情况下可视作作弊。
 twilightforest.config.admin_portals=仅管理员可使用暮色传送门
@@ -587,6 +665,9 @@ twilightforest.config.portal_lighting=建造传送门时引发闪电
 twilightforest.config.portal_lighting.tooltip=启用后，建造传送门的时候会有闪电击中传送门方块，同时令周围方块起火。为不苟言笑的人准备的选项。
 twilightforest.config.portal_return=是否生成双向传送门
 twilightforest.config.portal_return.tooltip=禁用后，返回的传送门需要额外的传送门建造物品。
+
+twilightforest.config.progression_default=默认进度规则
+twilightforest.config.progression_default.tooltip=设定强制进度的游戏规则的默认值。
 
 twilightforest.config.uncrafting=禁用拆解台的拆解功能
 twilightforest.config.uncrafting.tooltip=禁用拆解台的拆解功能，可用于防止利用某些合成刷物品。
