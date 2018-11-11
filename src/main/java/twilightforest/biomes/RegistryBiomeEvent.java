@@ -213,7 +213,7 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"highlands_center",
 				new TFBiomeFinalPlateau(
-						new BiomeProperties("Highlands Center")
+						new BiomeProperties("Final Plateau")
 								.setTemperature(0.3F)
 								.setRainfall(0.2F)
 								.setBaseHeight(10.5F)
