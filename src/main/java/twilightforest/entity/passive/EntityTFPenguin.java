@@ -20,6 +20,8 @@ import net.minecraft.world.World;
 
 public class EntityTFPenguin extends EntityTFBird {
 
+	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/penguin");
+
 	public EntityTFPenguin(World world) {
 		super(world);
 		this.setSize(0.5F, 0.9F);
