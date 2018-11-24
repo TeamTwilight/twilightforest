@@ -41,6 +41,11 @@ public class EntityTFPenguin extends EntityTFBird {
 	}
 
 	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
+	@Override
 	public EntityAnimal createChild(EntityAgeable entityanimal) {
 		return new EntityTFPenguin(world);
 	}
