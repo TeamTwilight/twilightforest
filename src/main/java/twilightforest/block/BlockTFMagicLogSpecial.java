@@ -20,6 +20,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import twilightforest.TFConfig;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFOreMagnet;
@@ -64,17 +65,25 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 		switch (state.getValue(VARIANT)) {
 			case TIME:
-				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
-				doTreeOfTimeEffect(world, pos, rand);
+				if (TFConfig.magicTrees.timeEnable) {
+					world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
+					doTreeOfTimeEffect(world, pos, rand);
+				}
 				break;
 			case TRANS:
-				doTreeOfTransformationEffect(world, pos, rand);
+				if (TFConfig.magicTrees.transformationEnable) {
+					doTreeOfTransformationEffect(world, pos, rand);
+				}
 				break;
 			case MINE:
-				doMinersTreeEffect(world, pos, rand);
+				if (TFConfig.magicTrees.miningEnable) {
+					doMinersTreeEffect(world, pos, rand);
+				}
 				break;
 			case SORT:
-				doSortingTreeEffect(world, pos, rand);
+				if (TFConfig.magicTrees.sortingEnable) {
+					doSortingTreeEffect(world, pos, rand);
+				}
 				break;
 		}
 
@@ -104,9 +113,9 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 		for (int i = 0; i < numticks; i++) {
 			BlockPos dPos = pos.add(
-					rand.nextInt(33) - 16,
-					rand.nextInt(33) - 16,
-					rand.nextInt(33) - 16
+					rand.nextInt(TFConfig.magicTrees.timeRange + 1) - TFConfig.magicTrees.timeRange / 2,
+  					rand.nextInt(TFConfig.magicTrees.timeRange + 1) - TFConfig.magicTrees.timeRange / 2,
+					rand.nextInt(TFConfig.magicTrees.timeRange + 1) - TFConfig.magicTrees.timeRange / 2
 			);
 
 			IBlockState state = world.getBlockState(dPos);
@@ -133,7 +142,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		Biome targetBiome = TFBiomes.enchantedForest;
 
 		for (int i = 0; i < 1; i++) {
-			BlockPos dPos = pos.add(rand.nextInt(33) - 16, 0, rand.nextInt(33) - 16);
+			BlockPos dPos = pos.add(rand.nextInt(TFConfig.magicTrees.transformationRange + 1) - TFConfig.magicTrees.transformationRange / 2, 0, rand.nextInt(TFConfig.magicTrees.transformationRange + 1) - TFConfig.magicTrees.transformationRange / 2);
 
 			world.playSound(null, pos, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 0.1F, rand.nextFloat() * 2F);
 
@@ -166,9 +175,9 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	 */
 	private void doMinersTreeEffect(World world, BlockPos pos, Random rand) {
 		BlockPos dPos = pos.add(
-				rand.nextInt(65) - 32,
-				rand.nextInt(65) - 32,
-				rand.nextInt(65) - 32
+				rand.nextInt(TFConfig.magicTrees.miningRange + 1) - TFConfig.magicTrees.miningRange / 2,
+				rand.nextInt(TFConfig.magicTrees.miningRange + 1) - TFConfig.magicTrees.miningRange / 2,
+				rand.nextInt(TFConfig.magicTrees.miningRange + 1) - TFConfig.magicTrees.miningRange / 2
 		);
 
 		//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.5F);
@@ -189,7 +198,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		List<IInventory> chests = new ArrayList<>();
 		int itemCount = 0;
 
-		for (BlockPos iterPos : WorldUtil.getAllAround(pos, 16)) {
+		for (BlockPos iterPos : WorldUtil.getAllAround(pos, TFConfig.magicTrees.sortingRange)) {
 
 			IInventory chestInventory = null, teInventory = null;
 

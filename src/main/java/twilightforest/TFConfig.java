@@ -221,6 +221,52 @@ public class TFConfig {
 		public int shieldParryTicksBeam = 10;
 	}
 
+	@Config.LangKey(config + "tree_control")
+	@Config.Comment("Control the function and range of magical tree effects")
+	public static final MagicTrees magicTrees = new MagicTrees();
+
+	public static class MagicTrees {
+		// Sorting
+		@Config.LangKey(config + "tree_control_sorting_enable")
+		@Config.Comment("Enable the sorting tree effect.")
+		public boolean sortingEnable = true;
+
+		@Config.LangKey(config + "tree_control_sorting_range")
+		@Config.Comment("Specify the range of the sorting tree effect.")
+		@Config.RangeInt(min=1, max=64)
+		public int sortingRange = 16;
+
+		// Miner
+		@Config.LangKey(config + "tree_control_mining_enable")
+		@Config.Comment("Enable the mining tree effect.")
+		public boolean miningEnable = true;
+
+		@Config.LangKey(config + "tree_control_mining_range")
+		@Config.Comment("Specify the range of the mining tree effect.")
+		@Config.RangeInt(min=1, max=128)
+		public int miningRange = 64;
+
+		// Transformation
+		@Config.LangKey(config + "tree_control_transformation_enable")
+		@Config.Comment("Enable the transformation tree effect.")
+		public boolean transformationEnable = true;
+
+		@Config.LangKey(config + "tree_control_transformation_range")
+		@Config.Comment("Specify the range of the tree of transformation effect.")
+		@Config.RangeInt(min=1, max=64)
+		public int transformationRange = 32;
+
+		// Time
+		@Config.LangKey(config + "tree_control_time_enable")
+		@Config.Comment("Enable the tree of time effect.")
+		public boolean timeEnable = true;
+
+		@Config.LangKey(config + "tree_control_time_range")
+		@Config.Comment("Specify the range of the tree of time effect.")
+		@Config.RangeInt(min=2, max=64)
+		public int timeRange = 16;
+	}
+
 	@Config.LangKey(config + "loading_screen")
 	@Config.Comment("Client only: Controls for the Loading screen")
 	public static final LoadingScreen loadingScreen = new LoadingScreen();
