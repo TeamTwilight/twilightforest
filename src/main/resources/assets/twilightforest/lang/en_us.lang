@@ -712,6 +712,25 @@ twilightforest.config.parry_window_throwable.tooltip=The amount of ticks after r
 twilightforest.config.shieldParryTicksBeam=Timing Windowspan for Beams???
 twilightforest.config.shieldParryTicksBeam.tooltip=???
 
+twilightforest.config.tree_control=Magical Tree Control
+twilightforest.config.tree_control.tooltip=Control functionality and range of the various magical trees.
+twilightforest.config.tree_control_sorting_enable=Enable Sorting Tree
+twilightforest.config.tree_control_sorting_enable.tooltip=Set to false to disable the Sorting Tree core from functioning.
+twilightforest.config.tree_control_sorting_range=Sorting Tree range
+twilightforest.config.tree_control_sorting_range.tooltip=Set the range for which to search for chests. (Min 1, max 64)
+twilightforest.config.tree_control_mining_enable=Enable Mining Tree
+twilightforest.config.tree_control_mining_enable.tooltip=Set to false to disable the effect of the Mining Tree.
+twilightforest.config.tree_control_mining_range=Mining Tree Range
+twilightforest.config.tree_control_mining_range.tooltip=Set the range for which to search for ores. (Min 1, max 128)
+twilightforest.config.tree_control_transformation_enable=Enable Tree of Transformation
+twilightforest.config.tree_control_transformation_enable.tooltip=Set to false to disable the Tree of Transformation from functioning.
+twilightforest.config.tree_control_transformation_range=Tree of Transformation Range
+twilightforest.config.tree_control_transformation_range.tooltip=Set the range of the Tree of Transformation biome changing effect. (Min 1, max 64)
+twilightforest.config.tree_control_time_enable=Enable Tree of Time
+twilightforest.config.tree_control_time_enable.tooltip=Set to false to disable the effect of the Tree of Time.
+twilightforest.config.tree_control_time_range=Tree of Time Range
+twilightforest.config.tree_control_time_range.tooltip=Set the range of the Tree of Time effect. (Min 1, max 64)
+
 twilightforest.config.loading_screen=Loading Screen
 twilightforest.config.loading_screen.tooltip=Client only: Controls for the Loading screen
 twilightforest.config.loading_icon_enable=Enable Loading Icon Animation
