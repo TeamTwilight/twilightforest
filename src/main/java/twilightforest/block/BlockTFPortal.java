@@ -29,6 +29,8 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.mutable.MutableInt;
+
+import twilightforest.NoPortalTFTeleporter;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
@@ -235,6 +237,10 @@ public class BlockTFPortal extends BlockBreakable {
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
+		attemptSendPlayer(entity, forcedEntry, true);
+	}
+	
+	public static void attemptSendPlayer(Entity entity, boolean forcedEntry, boolean shouldSpawnReturnPortal) {
 
 		if (entity.isDead || entity.world.isRemote) {
 			return;
@@ -252,8 +258,11 @@ public class BlockTFPortal extends BlockBreakable {
 		entity.timeUntilPortal = 10;
 
 		int destination = getDestination(entity);
-
-		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
+		if (shouldSpawnReturnPortal) {
+			entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
+		} else {
+			entity.changeDimension(destination, NoPortalTFTeleporter.getTeleporterForDim(entity.getServer(), destination));
+		}
 
 		if (destination == TFConfig.dimension.dimensionID && entity instanceof EntityPlayerMP) {
 			EntityPlayerMP playerMP = (EntityPlayerMP) entity;

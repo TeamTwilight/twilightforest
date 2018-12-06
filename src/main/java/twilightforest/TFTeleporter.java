@@ -43,7 +43,7 @@ public class TFTeleporter extends Teleporter {
 		return tp;
 	}
 
-	private TFTeleporter(WorldServer dest) {
+	protected TFTeleporter(WorldServer dest) {
 		super(dest);
 	}
 
@@ -405,7 +405,7 @@ public class TFTeleporter extends Teleporter {
 		destinationCoordinateCache.put(ChunkPos.asLong(x, z), new PortalPosition(pos, world.getTotalWorldTime()));
 	}
 
-	private BlockPos makePortalAt(World world, BlockPos pos) {
+	protected BlockPos makePortalAt(World world, BlockPos pos) {
 
 		if (pos.getY() < 30) {
 			pos = new BlockPos(pos.getX(), 30, pos.getZ());

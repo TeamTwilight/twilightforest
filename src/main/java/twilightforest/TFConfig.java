@@ -47,6 +47,10 @@ public class TFConfig {
 		@Config.LangKey(config + "spawn_in_tf")
 		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
 		public boolean newPlayersSpawnInTF = false;
+		
+		@Config.LangKey(config + "spawn_return_portal")
+		@Config.Comment("If true and spawn_in_tf is true, players spawning into the Twilight Forest will spawn a portal next to them")
+		public boolean newPlayersSpawnReturnPortal = true;
 
 		@Config.LangKey(config + "skylight_forest")
 		@Config.RequiresWorldRestart
