@@ -1,0 +1,18 @@
+{
+  "name": "Carminite Reactor",
+  "icon": "twilightforest:tower_device:12",
+  "category": "devices",
+  "advancement": "twilightforest:alt/treasures/carminite",
+  "sortnum": 6260,
+  "pages": [
+    {
+      "type": "spotlight",
+      "title": "Carminite Reactor",
+      "item": "twilightforest:tower_device:12",
+      "text": "I cannot seem to understand what this is for. It is a reactor of sorts, so I'd assume it would emit power, but all it does is idle. Perhaps it is the one that needs power?"
+    }, {
+      "type": "text",
+      "text": "Should I be in awe or afraid? If I can give this device enough Redstone power, the surrounding area turns into Gold and Diamond. I cannot describe it, but those blocks are fake, and the reactor implodes on me, releasing Carminite Ghastlings. Whether or not this may have been a failed experiment, I will never know."
+    }
+  ]
+}
