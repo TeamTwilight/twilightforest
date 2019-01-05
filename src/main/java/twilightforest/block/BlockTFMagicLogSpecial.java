@@ -20,6 +20,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFOreMagnet;
@@ -186,40 +188,33 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	private void doSortingTreeEffect(World world, BlockPos pos, Random rand) {
 
 		// find all the chests nearby
-		List<IInventory> chests = new ArrayList<>();
+		List<IItemHandlerModifiable> inventories = new ArrayList<>();
 		int itemCount = 0;
 
 		for (BlockPos iterPos : WorldUtil.getAllAround(pos, 16)) {
-
-			IInventory chestInventory = null, teInventory = null;
-
-			Block block = world.getBlockState(iterPos).getBlock();
-			if (block instanceof BlockChest) {
-				chestInventory = ((BlockChest) block).getContainer(world, iterPos, true);
-			}
+			IItemHandlerModifiable handler = null;
 
 			TileEntity te = world.getTileEntity(iterPos);
-			if (te instanceof IInventory && !te.isInvalid()) {
-				teInventory = (IInventory) te;
-			}
+			if (te == null) continue;
+
+			if (!te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) continue;
+
+			handler = (IItemHandlerModifiable) te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 
 			// make sure we haven't counted this chest
-			if (chestInventory != null && teInventory != null && !checkIfChestsContains(chests, teInventory)) {
+			if (inventories.contains(handler)) continue;
 
-				boolean empty = true;
-				// count items
-				for (int i = 0; i < chestInventory.getSizeInventory(); i++) {
-					if (!chestInventory.getStackInSlot(i).isEmpty()) {
-						empty = false;
-						itemCount++;
-					}
-				}
+			boolean empty = true;
 
-				// only add non-empty chests
-				if (!empty) {
-					chests.add(chestInventory);
+			for (int i = 0; i < handler.getSlots(); i++) {
+				if (!handler.getStackInSlot(i).isEmpty()) {
+					empty = false;
+					itemCount++;
 				}
 			}
+
+			if (!empty)
+				inventories.add(handler);
 		}
 
 		//TwilightForestMod.LOGGER.info("Found " + chests.size() + " non-empty chests, containing " + itemCount + " items");
@@ -234,9 +229,9 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		int itemNumber = rand.nextInt(itemCount);
 		int currentNumber = 0;
 
-		for (int i = 0; i < chests.size(); i++) {
-			IInventory chest = chests.get(i);
-			for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++) {
+		for (int i = 0; i < inventories.size(); i++) {
+			IItemHandlerModifiable chest = inventories.get(i);
+			for (int slotNum = 0; slotNum < chest.getSlots(); slotNum++) {
 				ItemStack currentItem = chest.getStackInSlot(slotNum);
 
 				if (!currentItem.isEmpty()) {
@@ -257,11 +252,11 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		int matchCount = 0;
 
 		// decide where to put it, if anywhere
-		for (int chestNum = 0; chestNum < chests.size(); chestNum++) {
-			IInventory chest = chests.get(chestNum);
+		for (int chestNum = 0; chestNum < inventories.size(); chestNum++) {
+			IItemHandlerModifiable chest = inventories.get(chestNum);
 			int currentChestMatches = 0;
 
-			for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++) {
+			for (int slotNum = 0; slotNum < chest.getSlots(); slotNum++) {
 
 				ItemStack currentItem = chest.getStackInSlot(slotNum);
 				if (!currentItem.isEmpty() && isSortingMatch(beingSorted, currentItem)) {
@@ -277,18 +272,18 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 		// soooo, did we find a better match?
 		if (matchChestNum >= 0 && matchChestNum != sortedChestNum) {
-			IInventory moveChest = chests.get(matchChestNum);
-			IInventory oldChest = chests.get(sortedChestNum);
+			IItemHandlerModifiable moveChest = inventories.get(matchChestNum);
+			IItemHandlerModifiable oldChest = inventories.get(sortedChestNum);
 
 			// is there an empty inventory slot in the new chest?
 			int moveSlot = getEmptySlotIn(moveChest);
 
 			if (moveSlot >= 0) {
 				// remove old item
-				oldChest.setInventorySlotContents(sortedSlotNum, ItemStack.EMPTY);
+				oldChest.setStackInSlot(sortedSlotNum, ItemStack.EMPTY);
 
 				// add new item
-				moveChest.setInventorySlotContents(moveSlot, beingSorted);
+				moveChest.setStackInSlot(moveSlot, beingSorted);
 
 				//TwilightForestMod.LOGGER.info("Moved sorted item " + beingSorted + " to chest " + matchChestNum + ", slot " + moveSlot);
 			}
@@ -296,13 +291,13 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 		// if the stack is not full, combine items from other stacks
 		if (beingSorted.getCount() < beingSorted.getMaxStackSize()) {
-			for (IInventory chest : chests) {
-				for (int slotNum = 0; slotNum < chest.getSizeInventory(); slotNum++) {
+			for (IItemHandlerModifiable chest : inventories) {
+				for (int slotNum = 0; slotNum < chest.getSlots(); slotNum++) {
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
 
 					if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.isItemEqual(currentItem)) {
 						if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
-							chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
+							chest.setStackInSlot(slotNum, ItemStack.EMPTY);
 							beingSorted.grow(currentItem.getCount());
 							currentItem.setCount(0);
 						}
@@ -317,26 +312,10 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	/**
-	 * Is the chest we're testing part of our chest list already?
-	 */
-	private boolean checkIfChestsContains(List<IInventory> chests, IInventory testChest) {
-		for (IInventory chest : chests) {
-			if (chest == testChest) {
-				return true;
-			}
-
-			if (chest instanceof InventoryLargeChest && ((InventoryLargeChest) chest).isPartOfLargeChest(testChest)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * @return an empty slot number in the chest, or -1 if the chest is full
 	 */
-	private int getEmptySlotIn(IInventory chest) {
-		for (int i = 0; i < chest.getSizeInventory(); i++) {
+	private int getEmptySlotIn(IItemHandlerModifiable chest) {
+		for (int i = 0; i < chest.getSlots(); i++) {
 			if (chest.getStackInSlot(i).isEmpty()) {
 				return i;
 			}
