@@ -2,7 +2,7 @@
   "name": "Smoking Block",
   "icon": "twilightforest:fire_jet:0",
   "category": "devices",
-  "advancement": "twilightforest:alt/treasures/fire_jet",
+  "advancement": "twilightforest:alt/treasures/smoking_block",
   "sortnum": 5050,
   "pages": [
     {
