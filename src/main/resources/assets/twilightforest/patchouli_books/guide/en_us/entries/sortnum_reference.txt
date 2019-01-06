@@ -117,6 +117,14 @@ mazebreaker_pickaxe.json
 5040
 minoshroom.json
 
+5050
+smoking_block.json
+fire_jet.json
+
+5060
+encased_smoking_block.json
+encased_fire_jet.json
+
 5100
 hydra_lair.json
 
