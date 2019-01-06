@@ -5,6 +5,6 @@
     "fire_swamp": { "trigger": "twilightforest:has_advancement", "conditions": { "advancement": "twilightforest:alt/biomes/fire_swamp"       }}
   },
   "requirements": [
-    [ "fire_jst", "fire_swamp" ]
+    [ "fire_jet", "fire_swamp" ]
   ]
 }
