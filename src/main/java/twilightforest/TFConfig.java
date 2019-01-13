@@ -21,6 +21,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
@@ -242,15 +243,18 @@ public class TFConfig {
 	public static final MagicTrees magicTrees = new MagicTrees();
 
 	public static class MagicTrees {
+		public int modifiedRange (Random rand, int range) {
+			return rand.nextInt(range * 2 + 1) / range;
+		}
+
 		// Sorting
 		@Config.LangKey(config + "tree_control_sorting_enable")
 		@Config.Comment("Enable the sorting tree effect.")
 		public boolean sortingEnable = true;
 
 		@Config.LangKey(config + "tree_control_sorting_range")
-		@Config.Comment("Specify the range of the sorting tree effect.")
 		@Config.RangeInt(min=1, max=64)
-		public int sortingRange = 16;
+		public int sortingRange = 8;
 
 		// Miner
 		@Config.LangKey(config + "tree_control_mining_enable")
@@ -258,9 +262,8 @@ public class TFConfig {
 		public boolean miningEnable = true;
 
 		@Config.LangKey(config + "tree_control_mining_range")
-		@Config.Comment("Specify the range of the mining tree effect.")
 		@Config.RangeInt(min=1, max=128)
-		public int miningRange = 64;
+		public int miningRange = 32;
 
 		// Transformation
 		@Config.LangKey(config + "tree_control_transformation_enable")
@@ -268,9 +271,8 @@ public class TFConfig {
 		public boolean transformationEnable = true;
 
 		@Config.LangKey(config + "tree_control_transformation_range")
-		@Config.Comment("Specify the range of the tree of transformation effect.")
 		@Config.RangeInt(min=1, max=64)
-		public int transformationRange = 32;
+		public int transformationRange = 16;
 
 		// Time
 		@Config.LangKey(config + "tree_control_time_enable")
@@ -278,9 +280,8 @@ public class TFConfig {
 		public boolean timeEnable = true;
 
 		@Config.LangKey(config + "tree_control_time_range")
-		@Config.Comment("Specify the range of the tree of time effect.")
 		@Config.RangeInt(min=2, max=64)
-		public int timeRange = 16;
+		public int timeRange = 8;
 	}
 
 	@Config.LangKey(config + "loading_screen")
