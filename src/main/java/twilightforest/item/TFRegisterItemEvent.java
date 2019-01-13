@@ -254,6 +254,8 @@ public class TFRegisterItemEvent {
 		items.registerSubItemBlock(TFBlocks.nagastone_stairs_weathered);
 		items.registerBlock(TFBlocks.auroralized_glass);
 		items.registerBlock(TFBlocks.iron_ladder);
+		items.registerBlock(TFBlocks.terrorcotta_circle);
+		items.registerBlock(TFBlocks.terrorcotta_diagonal);
 
 		registerWoodVariants(items, BlockTFLog.VARIANT, WoodVariant.values());
 		registerWoodVariants(items, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());

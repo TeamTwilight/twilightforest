@@ -97,6 +97,8 @@ public class TFBlocks {
 	public static final Block castle_stairs_worn         = iCantBelieveItsNotNull();
 	public static final Block castle_stairs_mossy        = iCantBelieveItsNotNull();
 	public static final BlockTFLadderBars iron_ladder    = iCantBelieveItsNotNull();
+	public static final Block terrorcotta_circle         = iCantBelieveItsNotNull();
+	public static final Block terrorcotta_diagonal       = iCantBelieveItsNotNull();
 
 	public static final BlockTF              twilight_oak_planks     = iCantBelieveItsNotNull();
 	public static final BlockTFStairs        twilight_oak_stairs     = iCantBelieveItsNotNull();

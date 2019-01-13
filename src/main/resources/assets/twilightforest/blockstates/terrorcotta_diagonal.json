@@ -1,0 +1,20 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:util/terracotta",
+    "textures": {
+      "down"     : "twilightforest:blocks/terrorcotta_0",
+      "up"       : "twilightforest:blocks/terrorcotta_0",
+      "top_left" : "twilightforest:blocks/terrorcotta_0",
+      "top_right": "twilightforest:blocks/terrorcotta_1",
+      "bot_left" : "twilightforest:blocks/terrorcotta_0",
+      "bot_right": "twilightforest:blocks/terrorcotta_1"
+    },
+    "uvlock": true
+  },
+  "variants": {
+    "inventory"       : [{}],
+    "is_rotated=false": [{}],
+    "is_rotated=true" : [{ "textures": { "up": "twilightforest:blocks/terrorcotta_1", "down": "twilightforest:blocks/terrorcotta_1" }, "y": 90  }]
+  }
+}

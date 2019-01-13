@@ -16,9 +16,11 @@ import twilightforest.TFFeature;
 import twilightforest.features.GenDruidHut;
 import twilightforest.world.feature.*;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class TFBiomeDecorator extends BiomeDecorator {
 
@@ -47,23 +49,30 @@ public class TFBiomeDecorator extends BiomeDecorator {
 
 	static {
 		// make list of ruins
-		ruinList.add(new RuinEntry(new TFGenStoneCircle()      , TFConfig.dimension.worldGenWeights.stoneCircleWeight     ));
-		ruinList.add(new RuinEntry(new TFGenWell()             , TFConfig.dimension.worldGenWeights.wellWeight            ));
-		ruinList.add(new RuinEntry(new TFGenOutsideStalagmite(), TFConfig.dimension.worldGenWeights.stalagmiteWeight      ));
-		ruinList.add(new RuinEntry(new TFGenFoundation()       , TFConfig.dimension.worldGenWeights.foundationWeight      ));
-		ruinList.add(new RuinEntry(new TFGenMonolith()         , TFConfig.dimension.worldGenWeights.monolithWeight        ));
-		ruinList.add(new RuinEntry(new TFGenGroveRuins()       , TFConfig.dimension.worldGenWeights.groveRuinsWeight      ));
-		ruinList.add(new RuinEntry(new TFGenHollowStump()      , TFConfig.dimension.worldGenWeights.hollowStumpWeight     ));
-		ruinList.add(new RuinEntry(new TFGenFallenHollowLog()  , TFConfig.dimension.worldGenWeights.fallenHollowLogWeight ));
-		ruinList.add(new RuinEntry(new TFGenFallenSmallLog()   , TFConfig.dimension.worldGenWeights.fallenSmallLogWeight  ));
+		addRuin(TFGenStoneCircle::new      , TFConfig.dimension.worldGenWeights.stoneCircleWeight    );
+		addRuin(TFGenWell::new             , TFConfig.dimension.worldGenWeights.wellWeight           );
+		addRuin(TFGenOutsideStalagmite::new, TFConfig.dimension.worldGenWeights.stalagmiteWeight     );
+		addRuin(TFGenFoundation::new       , TFConfig.dimension.worldGenWeights.foundationWeight     );
+		addRuin(TFGenMonolith::new         , TFConfig.dimension.worldGenWeights.monolithWeight       );
+		addRuin(TFGenGroveRuins::new       , TFConfig.dimension.worldGenWeights.groveRuinsWeight     );
+		addRuin(TFGenHollowStump::new      , TFConfig.dimension.worldGenWeights.hollowStumpWeight    );
+		addRuin(TFGenFallenHollowLog::new  , TFConfig.dimension.worldGenWeights.fallenHollowLogWeight);
+		addRuin(TFGenFallenSmallLog::new   , TFConfig.dimension.worldGenWeights.fallenSmallLogWeight );
 
-		ruinList.add(new RuinEntry(new GenDruidHut()           , TFConfig.dimension.worldGenWeights.druidHutWeight ));
+		addRuin(GenDruidHut::new           , TFConfig.dimension.worldGenWeights.druidHutWeight       );
+	}
+
+	private static void addRuin(Supplier<TFGenerator> generator, int weight) {
+		if (weight > 0) {
+			ruinList.add(new RuinEntry(generator.get(), weight));
+		}
 	}
 
 	private static class RuinEntry extends WeightedRandom.Item {
+
 		public final TFGenerator generator;
 
-		public RuinEntry(TFGenerator generator, int weight) {
+		RuinEntry(TFGenerator generator, int weight) {
 			super(weight);
 			this.generator = generator;
 		}
@@ -100,7 +109,9 @@ public class TFBiomeDecorator extends BiomeDecorator {
 			int rx = chunkPos.getX() + randomGenerator.nextInt(14) + 8;
 			int rz = chunkPos.getZ() + randomGenerator.nextInt(14) + 8;
 			TFGenerator rf = randomFeature(randomGenerator);
-			rf.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)));
+			if (rf != null) {
+				rf.generate(world, randomGenerator, new BlockPos(rx, world.getHeight(rx, rz), rz));
+			}
 		}
 
 		if (this.hasCanopy) {
@@ -218,10 +229,11 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	}
 
 	/**
-	 * Gets a random feature suitible to the current biome.
+	 * Gets a random feature suitable for the current biome.
 	 */
+	@Nullable
 	public TFGenerator randomFeature(Random rand) {
-		return WeightedRandom.getRandomItem(rand, ruinList).generator;
+		return ruinList.isEmpty() ? null : WeightedRandom.getRandomItem(rand, ruinList).generator;
 	}
 
 	public void setTreesPerChunk(int treesPerChunk) {
@@ -259,6 +271,4 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	public void setGrassPerChunk(int grassPerChunk) {
 		this.grassPerChunk = grassPerChunk;
 	}
-
-
 }

@@ -12,7 +12,7 @@ import static net.minecraft.util.Rotation.NONE;
 
 public final class RotationUtil {
 	public static final Rotation[] ROTATIONS = Rotation.values();
-	public static final EnumFacing[] CARDINALS = {EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
+	public static final EnumFacing[] CARDINALS = { EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST };
 
 	private RotationUtil() {
 	}

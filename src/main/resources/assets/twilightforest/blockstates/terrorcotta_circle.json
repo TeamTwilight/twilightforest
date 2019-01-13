@@ -1,0 +1,22 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "twilightforest:util/terracotta",
+    "textures": {
+      "down"     : "twilightforest:blocks/terrorcotta_c",
+      "up"       : "twilightforest:blocks/terrorcotta_d",
+      "top_left" : "twilightforest:blocks/terrorcotta_b",
+      "top_right": "twilightforest:blocks/terrorcotta_a",
+      "bot_left" : "twilightforest:blocks/terrorcotta_d",
+      "bot_right": "twilightforest:blocks/terrorcotta_c"
+    },
+    "uvlock": true
+  },
+  "variants": {
+    "inventory"   : [{}],
+    "facing=north": [{ "textures": { "up": "twilightforest:blocks/terrorcotta_a", "down": "twilightforest:blocks/terrorcotta_b" }           }],
+    "facing=west" : [{ "textures": { "up": "twilightforest:blocks/terrorcotta_c", "down": "twilightforest:blocks/terrorcotta_d" }, "y": 270 }],
+    "facing=south": [{                                                                                                             "y": 180 }],
+    "facing=east" : [{ "textures": { "up": "twilightforest:blocks/terrorcotta_b", "down": "twilightforest:blocks/terrorcotta_a" }, "y": 90  }]
+  }
+}

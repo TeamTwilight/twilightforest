@@ -53,7 +53,6 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	private final double[] heightMap;
 	private final float[] biomeWeights;
 
-	//protected final MapGenTFMajorFeatureOld majorFeatureGenerator = new MapGenTFMajorFeatureOld();
 	protected final MapGenTFHollowTree hollowTreeGenerator = new MapGenTFHollowTree();
 
 	private final boolean shouldGenerateBedrock;

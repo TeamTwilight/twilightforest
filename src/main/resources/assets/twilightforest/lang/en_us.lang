@@ -101,6 +101,7 @@ advancement.twilightforest.experiment_115_3.desc=eating experiment one-hundred-f
 advancement.twilightforest.arborist=Maniacal Dendrologist
 advancement.twilightforest.arborist.desc=Get your axes and shears ready. Search every nook and cranny and get anything and everything that comes from trees! Craft, loot, obtain every slab... sapling... leaves... more... everything. ALL OF IT!
 
+twilightforest.twilight_portal.unsafe=It doesn't seem safe here...
 twilightforest.trophy_pedestal.ineligible=You are unworthy.
 twilightforest.ore_meter.range=Radius: %s, Origin: [%s, %s]
 twilightforest.ore_meter.exposed=Exposed: %s
@@ -326,6 +327,8 @@ tile.twilightforest.NagastonePillarWeathered.name=Ruined Nagastone Pillar
 tile.twilightforest.NagastoneStairsWeathered.0.name=Weathered Nagastone Stairs (Left)
 tile.twilightforest.NagastoneStairsWeathered.8.name=Weathered Nagastone Stairs (Right)
 tile.twilightforest.IronLadder.name=Iron Ladder
+tile.twilightforest.TerrorCottaCircle.name=Terrorcotta (Circular)
+tile.twilightforest.TerrorCottaDiagonal.name=Terrorcotta (Diagonal)
 
 tile.twilightforest.CanopyPlanks.name=Canopy Planks
 tile.twilightforest.CanopyStairs.name=Canopy Stairs
@@ -686,6 +689,8 @@ twilightforest.config.portal_lighting=Portal Creation Lightning Fire
 twilightforest.config.portal_lighting.tooltip=Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.
 twilightforest.config.portal_return=Should Portals generate as a two-way portal
 twilightforest.config.portal_return.tooltip=If false, the return portal will require the activation item.
+twilightforest.config.check_portal_destination=Pre-Check Portal Destination
+twilightforest.config.check_portal_destination.tooltip=Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination.\nNote that enabling this also reduces the rate at which portal formation checks are performed.
 
 twilightforest.config.progression_default=Progression Rule Default
 twilightforest.config.progression_default.tooltip=Sets the default value of the game rule controlling enforced progression.

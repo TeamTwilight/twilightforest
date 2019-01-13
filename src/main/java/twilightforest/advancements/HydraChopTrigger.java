@@ -60,14 +60,12 @@ public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Inst
     }
 
     public static class Instance extends AbstractCriterionInstance {
-
         public Instance() {
             super(HydraChopTrigger.ID);
         }
     }
 
     static class Listeners {
-
         private final PlayerAdvancements playerAdvancements;
         private final Set<Listener<HydraChopTrigger.Instance>> listeners = Sets.newHashSet();
 

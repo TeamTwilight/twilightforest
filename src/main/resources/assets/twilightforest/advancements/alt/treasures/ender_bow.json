@@ -1,6 +1,6 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "bow": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:ice_bow" }]}}
+    "bow": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:ender_bow" }]}}
   }
 }

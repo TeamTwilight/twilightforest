@@ -1,0 +1,7 @@
+{
+  "pools": [{
+    "name": "vanilla",
+    "rolls": 1,
+    "entries": [{ "type": "loot_table", "name": "minecraft:entities/sheep/white" }]
+  }]
+}

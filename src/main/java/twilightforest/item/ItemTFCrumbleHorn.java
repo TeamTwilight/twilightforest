@@ -6,6 +6,7 @@ import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.commons.lang3.tuple.Pair;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.BlockTFUnderBrick;
@@ -108,7 +110,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
 		if (count > 10 && count % 5 == 0 && !living.world.isRemote) {
-			int crumbled = doCrumble(living.world, living);
+			int crumbled = doCrumble(stack, living.world, living);
 
 			if (crumbled > 0) {
 				stack.damageItem(crumbled, living);
@@ -133,7 +135,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
 	}
 
-	private int doCrumble(World world, EntityLivingBase living) {
+	private int doCrumble(ItemStack stack, World world, EntityLivingBase living) {
 
 		final double range = 3.0D;
 		final double radius = 2.0D;
@@ -144,19 +146,18 @@ public class ItemTFCrumbleHorn extends ItemTF {
 
 		AxisAlignedBB crumbleBox = new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 
-		return crumbleBlocksInAABB(world, living, crumbleBox);
+		return crumbleBlocksInAABB(stack, world, living, crumbleBox);
 	}
 
-	private int crumbleBlocksInAABB(World world, EntityLivingBase living, AxisAlignedBB box) {
+	private int crumbleBlocksInAABB(ItemStack stack, World world, EntityLivingBase living, AxisAlignedBB box) {
 		int crumbled = 0;
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			if (crumbleBlock(world, living, pos)) crumbled++;
+			if (crumbleBlock(stack, world, living, pos)) crumbled++;
 		}
 		return crumbled;
 	}
 
-	private boolean crumbleBlock(World world, EntityLivingBase living, BlockPos pos) {
-
+	private boolean crumbleBlock(ItemStack stack, World world, EntityLivingBase living, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
@@ -166,6 +167,9 @@ public class ItemTFCrumbleHorn extends ItemTF {
 			if (transform.getLeft().test(state) && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
 				world.setBlockState(pos, transform.getRight().apply(state), 3);
 				world.playEvent(2001, pos, Block.getStateId(state));
+
+				postTrigger(living, stack, world, pos);
+
 				return true;
 			}
 		}
@@ -177,15 +181,26 @@ public class ItemTFCrumbleHorn extends ItemTF {
 						world.setBlockToAir(pos);
 						block.harvestBlock(world, (EntityPlayer) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
 						world.playEvent(2001, pos, Block.getStateId(state));
+
+						postTrigger(living, stack, world, pos);
+
 						return true;
 					}
 				} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
 					world.destroyBlock(pos, true);
+
+					postTrigger(living, stack, world, pos);
+
 					return true;
 				}
 			}
 		}
 
 		return false;
+	}
+
+	private void postTrigger(EntityLivingBase living, ItemStack stack, World world, BlockPos pos) {
+		if (living instanceof EntityPlayerMP)
+			TFAdvancements.ITEM_USE_TRIGGER.trigger((EntityPlayerMP) living, stack, world, pos);
 	}
 }

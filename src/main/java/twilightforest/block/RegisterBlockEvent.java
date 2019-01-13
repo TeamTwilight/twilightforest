@@ -131,6 +131,9 @@ public final class RegisterBlockEvent {
 		registerWoodVariants(blocks, BlockTFLog.VARIANT, WoodVariant.values());
 		registerWoodVariants(blocks, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());
 
+		blocks.register("terrorcotta_circle", "TerrorCottaCircle", new BlockTFHorizontal(Material.ROCK).setSoundType(SoundType.STONE).setHardness(1.7F));
+		blocks.register("terrorcotta_diagonal", "TerrorCottaDiagonal", new BlockTFDiagonal(Material.ROCK).setSoundType(SoundType.STONE).setHardness(1.7F));
+
 		registerFluidBlock(blocks, moltenFiery);
 		registerFluidBlock(blocks, moltenKnightmetal);
 		registerFluidBlock("fiery_essence", blocks, essenceFiery);

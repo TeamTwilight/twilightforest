@@ -16,7 +16,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:adherent"
+          "type": "twilightforest:adherent",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -24,7 +27,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:blockchain_goblin"
+          "type": "twilightforest:blockchain_goblin",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -32,7 +38,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:boggard"
+          "type": "twilightforest:boggard",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -40,7 +49,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:death_tome"
+          "type": "twilightforest:death_tome",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -48,7 +60,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:fire_beetle"
+          "type": "twilightforest:fire_beetle",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -56,7 +71,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:hedge_spider"
+          "type": "twilightforest:hedge_spider",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -64,7 +82,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:helmet_crab"
+          "type": "twilightforest:helmet_crab",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -72,7 +93,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:hostile_wolf"
+          "type": "twilightforest:hostile_wolf",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -80,7 +104,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:stable_ice_core"
+          "type": "twilightforest:stable_ice_core",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -88,7 +115,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:unstable_ice_core"
+          "type": "twilightforest:unstable_ice_core",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -96,7 +126,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:kobold"
+          "type": "twilightforest:kobold",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -104,7 +137,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:minotaur"
+          "type": "twilightforest:minotaur",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -112,7 +148,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:mosquito_swarm"
+          "type": "twilightforest:mosquito_swarm",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -120,7 +159,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:pinch_beetle"
+          "type": "twilightforest:pinch_beetle",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -128,7 +170,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:redcap"
+          "type": "twilightforest:redcap",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -136,7 +181,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:redcap_sapper"
+          "type": "twilightforest:redcap_sapper",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -144,7 +192,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:skeleton_druid"
+          "type": "twilightforest:skeleton_druid",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -152,7 +203,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:slime_beetle"
+          "type": "twilightforest:slime_beetle",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -160,7 +214,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:swarm_spider"
+          "type": "twilightforest:swarm_spider",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -168,7 +225,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:troll"
+          "type": "twilightforest:troll",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -176,7 +236,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:wraith"
+          "type": "twilightforest:wraith",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -184,7 +247,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:yeti"
+          "type": "twilightforest:yeti",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -193,7 +259,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:hydra"
+          "type": "twilightforest:hydra",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -201,7 +270,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:knight_phantom"
+          "type": "twilightforest:knight_phantom",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -209,7 +281,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:lich"
+          "type": "twilightforest:lich",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -217,7 +292,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:lich_minion"
+          "type": "twilightforest:lich_minion",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -225,7 +303,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:naga"
+          "type": "twilightforest:naga",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -233,7 +314,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:snow_queen"
+          "type": "twilightforest:snow_queen",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -241,7 +325,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:ur_ghast"
+          "type": "twilightforest:ur_ghast",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -249,7 +336,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:yeti_alpha"
+          "type": "twilightforest:yeti_alpha",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -258,7 +348,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:bighorn_sheep"
+          "type": "twilightforest:bighorn_sheep",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -266,7 +359,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:wild_boar"
+          "type": "twilightforest:wild_boar",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -274,7 +370,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:bunny"
+          "type": "twilightforest:bunny",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -282,7 +381,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:deer"
+          "type": "twilightforest:deer",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -290,7 +392,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:penguin"
+          "type": "twilightforest:penguin",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -298,7 +403,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:squirrel"
+          "type": "twilightforest:squirrel",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     },
@@ -306,7 +414,10 @@
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "twilightforest:tiny_bird"
+          "type": "twilightforest:tiny_bird",
+          "location": {
+            "dimension": "twilight_forest"
+          }
         }
       }
     }

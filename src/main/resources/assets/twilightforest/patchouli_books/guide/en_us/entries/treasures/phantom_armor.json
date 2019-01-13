@@ -1,0 +1,20 @@
+{
+  "name": "Phantom Armor",
+  "icon": "twilightforest:phantom_helmet",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/phantom_armor_set",
+  "sortnum": 6030,
+  "pages": [
+    {
+      "title": "Phantom Armor",
+      "type": "twilightforest:headed_spotlight2",
+      "item0": "twilightforest:phantom_helmet",
+      "item1": "twilightforest:phantom_chestplate",
+      "text": "It's strange, but from simply looking at it, it's clear as twilight this is no ordinary helm. The material seems metallic in nature, but feels lukewarm to the touch and it's almost as if it resonates with its surroundings."
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/phantom_armor_worn",
+      "text": "Quite apparent despite the eerie nature of the piece is that the quality of the helm is superb, no doubt offering great protection from any physical harm. When this gear is worn it gives off a strange sense of familiarity, something that feels like an urge and refusal to let go at all costs. Sometimes, just out of audible reach, you swear on hearing malevolent whispers from what almost sounds like yourself."
+    }
+  ]
+}

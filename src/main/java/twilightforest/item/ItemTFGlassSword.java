@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,14 +11,15 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback {
-
 	public ItemTFGlassSword(Item.ToolMaterial toolMaterial) {
 		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
@@ -49,5 +51,18 @@ public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		super.getSubItems(tab, items);
+
+		if (isInCreativeTab(tab)) {
+			ItemStack stack = new ItemStack(this);
+			NBTTagCompound tags = new NBTTagCompound();
+			tags.setBoolean("Unbreakable", true);
+			stack.setTagCompound(tags);
+			items.add(stack);
+		}
 	}
 }

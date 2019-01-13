@@ -37,6 +37,7 @@ import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
@@ -738,6 +739,14 @@ public class TFEventListener {
 		EntityPlayer player = event.getEntityPlayer();
 		if (player instanceof EntityPlayerMP) {
 			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
+		}
+	}
+
+	@SubscribeEvent
+	public static void armorChanged(LivingEquipmentChangeEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
+		if (!living.world.isRemote && living instanceof EntityPlayerMP) {
+			TFAdvancements.ARMOR_CHANGED.trigger((EntityPlayerMP) living, event.getFrom(), event.getTo());
 		}
 	}
 

@@ -23,7 +23,7 @@
     },
     "5": {
       "trigger": "twilightforest:has_advancement",
-      "conditions": { "advancement": "twilightforest:alt/treasures/foods/experiment_115.json" }
+      "conditions": { "advancement": "twilightforest:alt/treasures/foods/experiment_115" }
     }
   },
   "requirements": [

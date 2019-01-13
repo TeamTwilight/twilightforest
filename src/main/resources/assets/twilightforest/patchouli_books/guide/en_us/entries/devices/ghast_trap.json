@@ -1,0 +1,18 @@
+{
+  "name": "Ghast Trap",
+  "icon": "twilightforest:tower_device:10",
+  "category": "devices",
+  "advancement": "twilightforest:alt/treasures/carminite",
+  "sortnum": 6250,
+  "pages": [
+    {
+      "type": "spotlight",
+      "title": "Ghast Trap",
+      "item": "twilightforest:tower_device:10",
+      "text": "Namesake, it appears that this device's sole purpose is to trap Ghasts. It seems giving this thing a Redstone signal does nothing, perhaps it needs some sort of power source?"
+    }, {
+      "type": "text",
+      "text": "It is just what I'm after! If I can kill enough of these weak Ghastlings around one of these traps, it will gain the energy from those killed. There is a quiet pinging noise that emanates from this device, and if it is loud enough, I can trigger a Redstone signal to execute this device and wrench Ghasts from the sky, sucking up their life, too."
+    }
+  ]
+}

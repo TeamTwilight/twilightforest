@@ -27,6 +27,8 @@ public class TFRecipes {
 		OreDictionary.registerOre("treeLeaves", new ItemStack(TFBlocks.dark_leaves, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre("plankWood", new ItemStack(TFBlocks.tower_wood, 1, OreDictionary.WILDCARD_VALUE));
 
+		OreDictionary.registerOre("feather", new ItemStack(TFItems.raven_feather));
+
 		OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fiery_ingot));
 		OreDictionary.registerOre("blockFiery", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.FIERY.ordinal()));
 

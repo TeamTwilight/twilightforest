@@ -44,7 +44,7 @@ public class TFTickHandler {
 		World world = player.world;
 
 		// check for portal creation, at least if it's not disabled
-		if (!world.isRemote && !TFConfig.disablePortalCreation && event.phase == TickEvent.Phase.END && player.ticksExisted % 20 == 0) {
+		if (!world.isRemote && !TFConfig.disablePortalCreation && event.phase == TickEvent.Phase.END && player.ticksExisted % (TFConfig.checkPortalDestination ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
 			if (TFConfig.adminOnlyPortals) {
 				if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getPermissionLevel(player.getGameProfile()) != 0) {
@@ -140,7 +140,7 @@ public class TFTickHandler {
 							world.spawnParticle(EnumParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, vx, vy, vz);
 						}
 
-						if (TFBlocks.twilight_portal.tryToCreatePortal(world, entityItem.getPosition(), entityItem)) {
+						if (TFBlocks.twilight_portal.tryToCreatePortal(world, entityItem.getPosition(), entityItem, player)) {
 							TFAdvancements.MADE_TF_PORTAL.trigger((EntityPlayerMP) player);
 							return;
 						}

@@ -1,0 +1,30 @@
+{
+  "name": "Glass Sword",
+  "icon": "twilightforest:glass_sword",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/glass_sword",
+  "sortnum": 7120,
+  "pages": [
+    {
+      "title": "Glass Sword",
+      "type": "twilightforest:headed_spotlight",
+      "item": "twilightforest:glass_sword",
+      "text": "A stunning example of what a master craftsman is able to produce. Not only is the blade of this sabre unparalleled in sharpness beyond anything comparable, but its reflective and see-through surface also cascade the twilight through to cast snowflake like imagery on your surroundings. Truly, this is the height of craftsmanship."
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:break_glass_sword",
+      "text": "Alas, with great beauty comes great cost. The Glass Sabre turns out to be nothing more than an exhibition of skill in crafting, rather than utility. Its sharpness is still unparalleled, but the brunt of the force is caused by glass shattering into thousands of tiny shards, it's actually rather barbaric as opposed to such a dignified-looking piece. This turned out to be nothing but a mere one-hit-wonder."
+    }
+  ],
+  
+  
+  
+  "pages_EXAMPLE_OF_EDITABLE": [
+    {
+      "type": "twilightforest:editable",
+      "advancement_key": "twilightforest:break_glass_sword",
+      "locked"  : "A stunning example of what a master craftsman is able to produce. Not only is the blade of this sabre unparalleled in sharpness beyond anything comparable, but its reflective and see-through surface also cascade the twilight through to cast snowflake like imagery on your surroundings. Truly, this is the height of craftsmanship.",
+      "unlocked": "A stunning example of what a master craftsman is able to produce. Not only is the blade of this sabre unparalleled in sharpness beyond anything comparable, but its reflective and see-through surface also cascade the twilight through to cast snowflake like imagery on your surroundings. Truly, this is the height of craftsmanship.$(br2)Alas, with great beauty comes great cost. The Glass Sabre turns out to be nothing more than an exhibition of skill in crafting, rather than utility. Its sharpness is still unparalleled, but the brunt of the force is caused by glass shattering into thousands of tiny shards, it's actually rather barbaric as opposed to such a dignified-looking piece. This turned out to be nothing but a mere one-hit-wonder."
+    }
+  ]
+}

@@ -34,10 +34,6 @@
       "text": "Ice Sword"
     }, {
       "type": "text",
-      "advancement": "twilightforest:alt/treasures/glass_sword",
-      "text": "Glass Sword"
-    }, {
-      "type": "text",
       "advancement": "twilightforest:alt/treasures/giant_tool_set",
       "text": "Giant Tools"
     }

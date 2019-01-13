@@ -94,19 +94,19 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Override
 	@Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if (!world.isRemote && state.getValue(LATENT)) {
-			if (isTrophyOnTop(world, pos)) {
-				if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-					if (this.areNearbyPlayersEligible(world, pos))
-						doPedestalEffect(world, pos, state);
-					warnIneligiblePlayers(world, pos);
-				} else {
-					doPedestalEffect(world, pos, state);
-				}
 
-				rewardNearbyPlayers(world, pos);
+		if (world.isRemote || !state.getValue(LATENT) || !isTrophyOnTop(world, pos)) return;
+
+		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+			if (areNearbyPlayersEligible(world, pos)) {
+				doPedestalEffect(world, pos, state);
 			}
+			warnIneligiblePlayers(world, pos);
+		} else {
+			doPedestalEffect(world, pos, state);
 		}
+
+		rewardNearbyPlayers(world, pos);
 	}
 
 	private boolean isTrophyOnTop(World world, BlockPos pos) {
@@ -114,15 +114,17 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
-		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
-			if (!isPlayerEligible(player)) player.sendMessage(new TextComponentTranslation(TwilightForestMod.ID + ".trophy_pedestal.ineligible"));
+		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D))) {
+			if (!isPlayerEligible(player)) {
+				player.sendStatusMessage(new TextComponentTranslation(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
+			}
+		}
 	}
 
 	private boolean areNearbyPlayersEligible(World world, BlockPos pos) {
-		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D, 16.0D, 16.0D)))
-			if (isPlayerEligible(player))
-				return true;
-
+		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D))) {
+			if (isPlayerEligible(player)) return true;
+		}
 		return false;
 	}
 

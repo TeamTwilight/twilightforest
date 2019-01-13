@@ -14,6 +14,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.structures.StructureTFComponent;
 import twilightforest.structures.start.StructureStartTFAbstract;
+import twilightforest.structures.start.StructureStartTFFeatureAbstract;
 import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;
@@ -165,8 +166,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
-                if (start instanceof StructureStartTFAbstract) {
-                    StructureStartTFAbstract featureStart = (StructureStartTFAbstract) start;
+                if (start instanceof StructureStartTFFeatureAbstract) {
+                    StructureStartTFFeatureAbstract featureStart = (StructureStartTFFeatureAbstract) start;
                     featureStart.isConquered = flag;
                     this.structureData.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
                     this.structureData.setDirty(true);
@@ -190,8 +191,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
         for (StructureStart start : this.structureMap.values())
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
-                if (start instanceof StructureStartTFAbstract)
-                    conquered = ((StructureStartTFAbstract) start).isConquered;
+                if (start instanceof StructureStartTFFeatureAbstract)
+                    conquered = ((StructureStartTFFeatureAbstract) start).isConquered;
 
         return conquered;
     }
@@ -204,8 +205,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
         for (StructureStart start : this.structureMap.values())
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
-                if (start instanceof StructureStartTFAbstract)
-                    locked = ((StructureStartTFAbstract) start).isLocked(lockIndex);
+                if (start instanceof StructureStartTFFeatureAbstract)
+                    locked = ((StructureStartTFFeatureAbstract) start).isLocked(lockIndex);
 
         return locked;
     }

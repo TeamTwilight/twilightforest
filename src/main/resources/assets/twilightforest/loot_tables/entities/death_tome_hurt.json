@@ -5,13 +5,11 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "empty",
-          "weight": 50
+          "type": "empty"
         },
         {
           "type": "item",
-          "name": "minecraft:paper",
-          "weight": 50
+          "name": "minecraft:paper"
         }
       ]
     }

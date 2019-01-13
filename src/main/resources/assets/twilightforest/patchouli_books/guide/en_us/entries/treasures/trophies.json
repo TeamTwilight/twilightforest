@@ -14,6 +14,10 @@
       "text": "things and stuff"
     }, {
       "type": "text",
+      "advancement": "twilightforest:quest_ram",
+      "text": "The ram — grateful for the feast — has bestowed the gift of a... replica of its head. Sometimes, it's better to not look into these kind of things. The trophy can be placed to showcase your appreciation of fine dining wool and even worn as a helm, truly a satisfying reward for a job well done... Probably."
+    }, {
+      "type": "text",
       "advancement": "twilightforest:progress_naga",
       "text": "things and stuff"
     }, {

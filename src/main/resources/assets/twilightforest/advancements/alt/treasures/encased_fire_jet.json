@@ -1,0 +1,11 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "ingredient":  { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:fire_jet",     "data": 3 }]}},
+    "ingredient2": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:tower_wood",   "data": 1 }]}},
+    "encased_jet": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:fire_jet",     "data": 6 }]}}
+  },
+  "requirements": [
+    [ "ingredient", "ingredient2", "encased_jet" ]
+  ]
+}

@@ -51,7 +51,7 @@ public class TFTreasure {
 		// Preload all entity tables
 		LootTableList.register(EntityTFArmoredGiant.LOOT_TABLE);
 		LootTableList.register(EntityTFBird.LOOT_TABLE);
-		LootTableList.register(EntityTFBighorn.LOOT_TABLE);
+		for (ResourceLocation RL : EntityTFBighorn.LOOT_TABLES) LootTableList.register(RL);
 		LootTableList.register(EntityTFBlockGoblin.LOOT_TABLE);
 		LootTableList.register(EntityTFBoar.LOOT_TABLE);
 		LootTableList.register(EntityTFBunny.LOOT_TABLE);

@@ -21,10 +21,6 @@
       "trigger": "twilightforest:has_advancement",
       "conditions": { "advancement": "twilightforest:alt/treasures/knightmetal_armor_set" }
     },
-    "5": {
-      "trigger": "twilightforest:has_advancement",
-      "conditions": { "advancement": "twilightforest:alt/treasures/phantom_armor_set" }
-    },
     "6": {
       "trigger": "twilightforest:has_advancement",
       "conditions": { "advancement": "twilightforest:alt/treasures/arctic_armor_set" }
@@ -35,6 +31,6 @@
     }
   },
   "requirements": [
-    [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+    [ "0", "1", "2", "3", "4", "6", "7" ]
   ]
 }

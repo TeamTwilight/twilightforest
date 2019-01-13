@@ -64,42 +64,52 @@ public class TFConfig {
 		public WorldGenWeights worldGenWeights = new WorldGenWeights();
 
 		public static class WorldGenWeights {
+
 			@Config.LangKey(config + "stone_circle_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int stoneCircleWeight = 10;
+
 			@Config.LangKey(config + "well_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int wellWeight = 10;
+
 			@Config.LangKey(config + "stalagmite_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int stalagmiteWeight = 12;
+
 			@Config.LangKey(config + "foundation_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int foundationWeight = 10;
+
 			@Config.LangKey(config + "monolith_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int monolithWeight = 10;
+
 			@Config.LangKey(config + "grove_ruins_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int groveRuinsWeight = 5;
+
 			@Config.LangKey(config + "hollow_stump_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int hollowStumpWeight = 12;
+
 			@Config.LangKey(config + "fallen_hollow_log_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int fallenHollowLogWeight = 10;
+
 			@Config.LangKey(config + "fallen_small_log_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
 			public int fallenSmallLogWeight = 10;
+
 			@Config.LangKey(config + "druid_hut_weight")
 			@Config.RequiresMcRestart
 			@Config.RangeInt(min = 0)
@@ -173,6 +183,11 @@ public class TFConfig {
 	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.")
 	public static String[] portalCreationItems = {"minecraft:diamond"};
 
+	@Config.LangKey(config + "check_portal_destination")
+	@Config.Comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
+			"\nNote that enabling this also reduces the rate at which portal formation checks are performed.")
+	public static boolean checkPortalDestination = false;
+
 	@Config.LangKey(config + "portal_lighting")
 	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
 	public static boolean portalLightning = false;
@@ -185,6 +200,7 @@ public class TFConfig {
 	@Config.Comment("Sets the default value of the game rule controlling enforced progression.")
 	public static boolean progressionRuleDefault = true;
 
+	@Config.RequiresMcRestart
 	@Config.LangKey(config + "uncrafting")
 	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
 	public static boolean disableUncrafting = false;

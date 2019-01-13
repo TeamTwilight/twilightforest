@@ -91,6 +91,10 @@ processResources {
     }
 }
 
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
 jar {
     classifier = 'universal'
     manifest {

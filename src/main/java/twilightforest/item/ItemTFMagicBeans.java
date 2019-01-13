@@ -3,12 +3,15 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.BlockTFLeaves3;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.Leaves3Variant;
@@ -26,8 +29,12 @@ public class ItemTFMagicBeans extends ItemTF {
 		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 25));
 		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil) {
 			if (!world.isRemote) {
-				player.getHeldItem(hand).shrink(1);
+				ItemStack is = player.getHeldItem(hand);
+				is.shrink(1);
 				makeHugeStalk(world, pos, minY, maxY);
+
+				if (player instanceof EntityPlayerMP)
+					TFAdvancements.ITEM_USE_TRIGGER.trigger((EntityPlayerMP) player, is, world, pos);
 			}
 
 			return EnumActionResult.SUCCESS;

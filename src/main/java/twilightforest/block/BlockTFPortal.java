@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -21,13 +22,16 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
+import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -97,7 +101,8 @@ public class BlockTFPortal extends BlockBreakable {
 		return BlockFaceShape.UNDEFINED;
 	}
 
-	public boolean tryToCreatePortal(World world, BlockPos pos, EntityItem activationItem) {
+	public boolean tryToCreatePortal(World world, BlockPos pos, EntityItem catalyst, @Nullable EntityPlayer player) {
+
 		IBlockState state = world.getBlockState(pos);
 
 		if (state == Blocks.WATER.getDefaultState() || (state.getBlock() == this && state.getValue(DISALLOW_RETURN))) {
@@ -106,12 +111,28 @@ public class BlockTFPortal extends BlockBreakable {
 
 			MutableInt size = new MutableInt(0);
 
-			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.get() > 3) {
-				activationItem.getItem().shrink(1);
+			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.intValue() > 3) {
+
+				if (TFConfig.checkPortalDestination) {
+					TFTeleporter teleporter = TFTeleporter.getTeleporterForDim(catalyst.getServer(), getDestination(catalyst));
+					boolean checkProgression = catalyst.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
+					if (!teleporter.isSafeAround(pos, catalyst, checkProgression)) {
+						// TODO: "failure" effect - particles?
+						if (player != null) {
+							player.sendStatusMessage(new TextComponentTranslation(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
+						}
+						return false;
+					}
+				}
+
+				catalyst.getItem().shrink(1);
 				causeLightning(world, pos, TFConfig.portalLightning);
 
-				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet())
-					if (checkedPos.getValue()) world.setBlockState(checkedPos.getKey(), TFBlocks.twilight_portal.getDefaultState(), 2);
+				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
+					if (checkedPos.getValue()) {
+						world.setBlockState(checkedPos.getKey(), TFBlocks.twilight_portal.getDefaultState(), 2);
+					}
+				}
 
 				return true;
 			}
@@ -140,9 +161,9 @@ public class BlockTFPortal extends BlockBreakable {
 		boolean isPoolProbablyEnclosed = true;
 
 		waterLimit.increment();
-		if (waterLimit.get() > PORTAL_SIZE_LIMIT) return false;
+		if (waterLimit.intValue() > PORTAL_SIZE_LIMIT) return false;
 
-		for (int i = 0; i < EnumFacing.HORIZONTALS.length && waterLimit.get() <= PORTAL_SIZE_LIMIT; i++) {
+		for (int i = 0; i < EnumFacing.HORIZONTALS.length && waterLimit.intValue() <= PORTAL_SIZE_LIMIT; i++) {
 			BlockPos positionCheck = pos.offset(EnumFacing.HORIZONTALS[i]);
 
 			if (!blocksChecked.containsKey(positionCheck)) {
@@ -161,22 +182,6 @@ public class BlockTFPortal extends BlockBreakable {
 		return isPoolProbablyEnclosed;
 	}
 
-	private static class MutableInt {
-		private int anInt;
-
-		MutableInt(int anInt) {
-			this.anInt = anInt;
-		}
-
-		int get() {
-			return anInt;
-		}
-
-		void increment() {
-			this.anInt++;
-		}
-	}
-
 	private static boolean isNatureBlock(IBlockState state) {
 		Material mat = state.getMaterial();
 		return (mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES);
@@ -188,6 +193,7 @@ public class BlockTFPortal extends BlockBreakable {
 	}
 
 	@Override
+	@Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed, BlockPos fromPos) {
 		boolean good = world.getBlockState(pos.down()).isFullCube();
 
@@ -223,6 +229,11 @@ public class BlockTFPortal extends BlockBreakable {
 		}
 	}
 
+	private static int getDestination(Entity entity) {
+		return entity.dimension != TFConfig.dimension.dimensionID
+				? TFConfig.dimension.dimensionID : TFConfig.originDimension;
+	}
+
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
 
 		if (entity.isDead || entity.world.isRemote) {
@@ -240,8 +251,7 @@ public class BlockTFPortal extends BlockBreakable {
 		// set a cooldown before this can run again
 		entity.timeUntilPortal = 10;
 
-		int destination = entity.dimension != TFConfig.dimension.dimensionID
-				? TFConfig.dimension.dimensionID : TFConfig.originDimension;
+		int destination = getDestination(entity);
 
 		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 

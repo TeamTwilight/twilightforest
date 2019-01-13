@@ -30,10 +30,6 @@
       "text": "Knightly Armors"
     }, {
       "type": "text",
-      "advancement": "twilightforest:alt/treasures/phantom_armor_set",
-      "text": "Phantom Armors"
-    }, {
-      "type": "text",
       "advancement": "twilightforest:alt/treasures/arctic_armor_set",
       "text": "Arctic Armors"
     }, {

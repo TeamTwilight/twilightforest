@@ -40,6 +40,16 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.boundingBox = new StructureBoundingBox(x, y, z, x, y, z);
     }
 
+    public StructureTFComponentTemplate(TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
+        super(i);
+        this.feature = feature;
+        this.rotation = rotation;
+        this.mirror = mirror;
+        this.placeSettings.setRotation(rotation);
+        this.templatePosition = new BlockPos(x, y, z);
+        this.boundingBox = new StructureBoundingBox(x, y, z, x, y, z);
+    }
+
     public final void setup(TemplateManager templateManager, MinecraftServer server) {
         loadTemplates(templateManager, server);
         setModifiedTemplatePositionFromRotation();
