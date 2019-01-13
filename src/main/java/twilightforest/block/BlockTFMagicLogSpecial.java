@@ -21,6 +21,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
@@ -192,14 +193,18 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		int itemCount = 0;
 
 		for (BlockPos iterPos : WorldUtil.getAllAround(pos, 16)) {
-			IItemHandlerModifiable handler = null;
-
 			TileEntity te = world.getTileEntity(iterPos);
-			if (te == null) continue;
 
-			if (!te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) continue;
+			if (te == null || !te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) continue;
 
-			handler = (IItemHandlerModifiable) te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+			IItemHandler temp = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+
+			if (!(temp instanceof IItemHandlerModifiable)) continue;
+
+			IItemHandlerModifiable handler = (IItemHandlerModifiable) temp;
+
+			// This should be a configurable value, but ignore small inventories that are accessible from the top
+			if (temp.getSlots() < 10) continue;
 
 			// make sure we haven't counted this chest
 			if (inventories.contains(handler)) continue;
