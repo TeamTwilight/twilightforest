@@ -6,12 +6,6 @@
   "sortnum": 3010,
   "pages": [
     {
-      "type": "text",
-      "text": "That was quite a housewarming reception I received when I wandered into the massive courtyard. There appears to be quite a massive snake or a creature along those lines.$(br2)It slithered around the garden with such surprising speeds and then made a mad dash at me. $(action)I rapidly pulled up my shield in reflex$() and rebounded its face so hard $(result)it looked like it got disoriented.$()"
-    }, {
-      "type": "text",
-      "text": "$(action)I scrambled to the top of the walls$() in retreat, but it gave me a glare so sharp $(result)it broke down the wall I was standing on$(). This creature seems to enjoy smashing into the hedges and glaring at the crumbling walls.$(br2)"
-    }, {
       "type": "entity",
       "entity": "twilightforest:naga",
       "text": "It's an immense green snake-like creature with a human-like face. Its scales have subtle hints of other colors."

@@ -1,5 +1,5 @@
 {
   "conditions": {
-    "config": "twilightforest.item.recipe.ConditionFactoryConfig"
+    "uncrafting_enabled": "twilightforest.item.recipe.ConditionFactories$UncraftingEnabled"
   }
 }
