@@ -70,12 +70,12 @@ public class BlockPredicate {
             String value,
             String comparisonType) {
 
-        Optional<T> schrödingersVar = key.parseValue(value);
+        Optional<T> schrodingersVar = key.parseValue(value);
         PropertyPredicate.ComparisonType predicateComparator = PropertyPredicate.ComparisonType.get(comparisonType);
 
-        if (predicateComparator == null || !schrödingersVar.isPresent()) return; // Skip
+        if (predicateComparator == null || !schrodingersVar.isPresent()) return; // Skip
 
-        predicateSet.add(new PropertyPredicate<>(key, schrödingersVar.get(), predicateComparator));
+        predicateSet.add(new PropertyPredicate<>(key, schrodingersVar.get(), predicateComparator));
     }
 
     public boolean test(World world, BlockPos pos) {
