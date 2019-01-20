@@ -21,6 +21,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
@@ -235,6 +236,52 @@ public class TFConfig {
 		@Config.LangKey(config + "parry_window_beam")
 		@Config.RangeInt(min = 0)
 		public int shieldParryTicksBeam = 10;
+	}
+
+	@Config.LangKey(config + "tree_control")
+	@Config.Comment("Control the function and range of magical tree effects")
+	public static final MagicTrees magicTrees = new MagicTrees();
+
+	public static class MagicTrees {
+		public int modifiedRange (Random rand, int range) {
+			return rand.nextInt(range * 2 + 1) / range;
+		}
+
+		// Sorting
+		@Config.LangKey(config + "tree_control_sorting_enable")
+		@Config.Comment("Enable the sorting tree effect.")
+		public boolean sortingEnable = true;
+
+		@Config.LangKey(config + "tree_control_sorting_range")
+		@Config.RangeInt(min=1, max=64)
+		public int sortingRange = 8;
+
+		// Miner
+		@Config.LangKey(config + "tree_control_mining_enable")
+		@Config.Comment("Enable the mining tree effect.")
+		public boolean miningEnable = true;
+
+		@Config.LangKey(config + "tree_control_mining_range")
+		@Config.RangeInt(min=1, max=128)
+		public int miningRange = 32;
+
+		// Transformation
+		@Config.LangKey(config + "tree_control_transformation_enable")
+		@Config.Comment("Enable the transformation tree effect.")
+		public boolean transformationEnable = true;
+
+		@Config.LangKey(config + "tree_control_transformation_range")
+		@Config.RangeInt(min=1, max=64)
+		public int transformationRange = 16;
+
+		// Time
+		@Config.LangKey(config + "tree_control_time_enable")
+		@Config.Comment("Enable the tree of time effect.")
+		public boolean timeEnable = true;
+
+		@Config.LangKey(config + "tree_control_time_range")
+		@Config.RangeInt(min=2, max=64)
+		public int timeRange = 8;
 	}
 
 	@Config.LangKey(config + "loading_screen")
