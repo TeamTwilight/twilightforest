@@ -88,7 +88,9 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.isImmuneToFire()) {
-			spawnParticles((WorldServer) target.world, target.posX, target.posY, target.posZ);
+			if (target.world instanceof WorldServer) {
+				spawnParticles((WorldServer) target.world, target.posX, target.posY, target.posZ);
+			}
 			target.setFire(15);
 		}
 
