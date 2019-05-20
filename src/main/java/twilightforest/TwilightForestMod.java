@@ -28,6 +28,7 @@ import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.tileentity.*;
 import twilightforest.tileentity.spawner.*;
 import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.feature.TFGenCaveStalactite;
 
 @Mod( modid = TwilightForestMod.ID,
 		name = TwilightForestMod.NAME,
@@ -154,6 +155,7 @@ public class TwilightForestMod {
 		}
 
 		TFConfig.build();
+		TFGenCaveStalactite.loadStalactites();
 	}
 
 	@EventHandler
