@@ -5,12 +5,13 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 
 public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
-	public EntityTFSnowQueenIceShield(EntityTFSnowQueen goblin) {
-		super(goblin, "stronghold_shield", 0.75F, 0.75F);
+
+	public EntityTFSnowQueenIceShield(EntityTFSnowQueen waifu) {
+		super(waifu, "shield", 0.75F, 0.75F);
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		return false;
 	}

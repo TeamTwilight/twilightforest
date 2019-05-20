@@ -1,4 +1,6 @@
 package twilightforest.tileentity.critters;
 
-public class TileEntityTFCicada extends TileEntityTFCritter {
+import net.minecraft.tileentity.TileEntity;
+
+public class TileEntityTFCicada extends TileEntity {
 }

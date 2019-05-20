@@ -21,17 +21,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 
 public class EntityTFIceExploder extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_exploder");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_exploder");
 	private static final float EXPLOSION_RADIUS = 1;
 
-	public EntityTFIceExploder(World par1World) {
-		super(par1World);
+	public EntityTFIceExploder(World world) {
+		super(world);
 		this.setSize(0.8F, 1.8F);
 	}
 
@@ -61,13 +63,15 @@ public class EntityTFIceExploder extends EntityMob {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		// make snow particles
-		for (int i = 0; i < 3; i++) {
-			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
-			float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
-			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+		if (this.world.isRemote) {
+			// make snow particles
+			for (int i = 0; i < 3; i++) {
+				float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+				float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
+				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			}
 		}
 	}
 
@@ -98,7 +102,7 @@ public class EntityTFIceExploder extends EntityMob {
 		if (this.deathTime == 60) // delay until 3 seconds
 		{
 			if (!world.isRemote) {
-				boolean mobGriefing = this.world.getGameRules().getBoolean("mobGriefing");
+				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(world, this);
 				this.world.createExplosion(this, this.posX, this.posY, this.posZ, EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
 
 				if (mobGriefing) {

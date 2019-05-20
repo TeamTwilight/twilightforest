@@ -1,37 +1,25 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube",
+    "model": "cube_column",
     "textures": {
-      "particle": "twilightforest:blocks/nagastone_pillar_vertical_mossy"
+      "side": "twilightforest:blocks/nagastone_pillar_side_mossy",
+      "end" : "twilightforest:blocks/nagastone_pillar_end_mossy"
     }
   },
   "variants": {
     "axis": {
-      "y":    { "textures": {
-        "up":    "twilightforest:blocks/nagastone_pillar_end_mossy",
-        "down":  "twilightforest:blocks/nagastone_pillar_end_mossy",
-        "north": "twilightforest:blocks/nagastone_pillar_vertical_mossy",
-        "south": "twilightforest:blocks/nagastone_pillar_vertical_mossy",
-        "west":  "twilightforest:blocks/nagastone_pillar_vertical_mossy",
-        "east":  "twilightforest:blocks/nagastone_pillar_vertical_mossy"
-      } },
-      "z":    { "textures": {
-        "up":    "twilightforest:blocks/nagastone_pillar_vertical_mossy",
-        "down":  "twilightforest:blocks/nagastone_pillar_vertical_mossy",
-        "north": "twilightforest:blocks/nagastone_pillar_end_mossy",
-        "south": "twilightforest:blocks/nagastone_pillar_end_mossy",
-        "west":  "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
-        "east":  "twilightforest:blocks/nagastone_pillar_horizontal_mossy"
-      } },
-      "x":    { "textures": {
-        "up":    "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
-        "down":  "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
-        "north": "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
-        "south": "twilightforest:blocks/nagastone_pillar_horizontal_mossy",
-        "west":  "twilightforest:blocks/nagastone_pillar_end_mossy",
-        "east":  "twilightforest:blocks/nagastone_pillar_end_mossy"
-      } }
+      "y": {},
+      "z": { "x": -90 },
+      "x": { "x": -90, "y": -90 }
+    },
+    "reversed": {
+      "true":  {
+        "textures": {
+          "side": "twilightforest:blocks/nagastone_pillar_side_mossy_alt"
+        }
+      },
+      "false": {}
     }
   }
 }

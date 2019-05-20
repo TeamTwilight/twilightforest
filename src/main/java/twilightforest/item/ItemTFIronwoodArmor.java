@@ -5,22 +5,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFIronwoodArmor extends ItemArmor implements ModelRegisterCallback {
+public class ItemTFIronwoodArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-	public ItemTFIronwoodArmor(ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, 0, armorType);
+	public ItemTFIronwoodArmor(ArmorMaterial armorMaterial, EntityEquipmentSlot armorType, EnumRarity rarity) {
+		super(armorMaterial, armorType, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
-	}
-
-	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.UNCOMMON;
 	}
 
 	@Override

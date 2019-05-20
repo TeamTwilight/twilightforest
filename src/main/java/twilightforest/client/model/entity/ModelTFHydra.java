@@ -222,31 +222,31 @@ public class ModelTFHydra extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		super.render(entity, f, f1, f2, f3, f4, f5);
-		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		body.render(f5);
-		leg1.render(f5);
-		leg2.render(f5);
-		tail1.render(f5);
-		tail2.render(f5);
-		tail3.render(f5);
-		tail4.render(f5);
-//		neck1a.render(f5);
-//		neck1b.render(f5);
-//		neck1c.render(f5);
-//		neck1d.render(f5);
-//		head1.render(f5);
-//		neck2a.render(f5);
-//		neck2b.render(f5);
-//		neck2c.render(f5);
-//		neck2d.render(f5);
-//		head2.render(f5);
-//		neck3a.render(f5);
-//		neck3b.render(f5);
-//		neck3c.render(f5);
-//		neck3d.render(f5);
-//		head3.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		body.render(scale);
+		leg1.render(scale);
+		leg2.render(scale);
+		tail1.render(scale);
+		tail2.render(scale);
+		tail3.render(scale);
+		tail4.render(scale);
+//		neck1a.render(scale);
+//		neck1b.render(scale);
+//		neck1c.render(scale);
+//		neck1d.render(scale);
+//		head1.render(scale);
+//		neck2a.render(scale);
+//		neck2b.render(scale);
+//		neck2c.render(scale);
+//		neck2d.render(scale);
+//		head2.render(scale);
+//		neck3a.render(scale);
+//		neck3b.render(scale);
+//		neck3c.render(scale);
+//		neck3d.render(scale);
+//		head3.render(scale);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -256,11 +256,11 @@ public class ModelTFHydra extends ModelBase {
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
-		leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-		leg2.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
+		leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		leg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbSwingAmount;
 
 		leg1.rotateAngleY = 0.0F;
 		leg2.rotateAngleY = 0.0F;

@@ -1,12 +1,15 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import twilightforest.structures.start.StructureStartLabyrinth;
 
 
 public class TFMinotaurMazePieces {
 
 
 	public static void registerPieces() {
+		MapGenStructureIO.registerStructure(StructureStartLabyrinth.class, "TFLr");
+
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridor.class, "TFMMC");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridorIronFence.class, "TFMMCIF");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridorRoots.class, "TFMMCR");
@@ -19,7 +22,8 @@ public class TFMinotaurMazePieces {
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndRoots.class, "TFMMDER");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndShrooms.class, "TFMMDES");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTorches.class, "TFMMDET");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTrappedChest.class, "TFMMDETC");
+		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTrappedChest.class, "TFMMDETrC");
+		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTripwireChest.class, "TFMMDETC");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeEntranceShaft.class, "TFMMES");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeMound.class, "TFMMMound");
 		MapGenStructureIO.registerStructureComponent(ComponentTFMazeMushRoom.class, "TFMMMR");

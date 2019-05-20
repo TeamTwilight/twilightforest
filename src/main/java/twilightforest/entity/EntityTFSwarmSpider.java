@@ -7,16 +7,10 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
-import twilightforest.util.PlayerHelper;
-
 
 public class EntityTFSwarmSpider extends EntitySpider {
 
@@ -122,7 +116,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze || super.isValidLightLevel();
+		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE || super.isValidLightLevel();
 	}
 
 	public boolean shouldSpawnMore() {
@@ -134,28 +128,15 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		super.writeEntityToNBT(nbttagcompound);
-		nbttagcompound.setBoolean("SpawnMore", shouldSpawnMore());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("SpawnMore", shouldSpawnMore());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		setSpawnMore(nbttagcompound.getBoolean("SpawnMore"));
-	}
-
-	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
-			// are we in a hedge maze?
-			int chunkX = MathHelper.floor(posX) >> 4;
-			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hedge"), "swarm_spider");
-			}
-		}
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		setSpawnMore(compound.getBoolean("SpawnMore"));
 	}
 
 	@Override
@@ -167,5 +148,4 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	public int getMaxSpawnedInChunk() {
 		return 16;
 	}
-
 }

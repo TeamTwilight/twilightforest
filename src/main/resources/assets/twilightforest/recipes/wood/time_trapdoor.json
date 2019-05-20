@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "twilightforest:time_trapdoor",
+    "data": 0,
+    "count": 6
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:time_planks",
+      "data": 0
+    }
+  }
+}

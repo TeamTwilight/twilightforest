@@ -1,0 +1,24 @@
+{
+  "conditions": [{
+    "type": "forge:mod_loaded",
+    "modid": "patchouli"
+  }],
+  "result": {
+    "item": "patchouli:guide_book",
+    "nbt": "{\"patchouli:book\":\"twilightforest:guide\"}"
+  },
+  "ingredients": [
+    [{
+      "item": "twilightforest:twilight_sapling",
+      "data": 0
+    }, {
+      "item": "twilightforest:twilight_sapling",
+      "data": 1
+    }, {
+      "item": "twilightforest:twilight_sapling",
+      "data": 2
+    }],
+    { "item": "minecraft:writable_book" }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

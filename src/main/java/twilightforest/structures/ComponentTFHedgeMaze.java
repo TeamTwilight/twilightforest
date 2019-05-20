@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFHedgeSpider;
 import twilightforest.entity.EntityTFHostileWolf;
@@ -209,7 +209,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.getHorizontal(rand.nextInt(4))),
+		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.byHorizontalIndex(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
 	}
 

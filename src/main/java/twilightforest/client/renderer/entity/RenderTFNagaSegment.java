@@ -9,7 +9,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFNagaSegment;
 
 public class RenderTFNagaSegment extends Render<EntityTFNagaSegment> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "nagasegment.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
 	private final ModelBase model;
 
 	public RenderTFNagaSegment(RenderManager manager, ModelBase model) {
@@ -40,7 +41,7 @@ public class RenderTFNagaSegment extends Render<EntityTFNagaSegment> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFNagaSegment par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFNagaSegment entity) {
 		return textureLoc;
 	}
 }

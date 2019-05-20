@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "scepter": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shield_scepter" }]}}
+  }
+}

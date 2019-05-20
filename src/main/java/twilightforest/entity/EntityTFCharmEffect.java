@@ -12,6 +12,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class EntityTFCharmEffect extends Entity {
 	private static final DataParameter<Integer> DATA_OWNER = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> DATA_ITEMID = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
@@ -25,13 +27,13 @@ public class EntityTFCharmEffect extends Entity {
 
 	public float offset;
 
-	public EntityTFCharmEffect(World par1World) {
-		super(par1World);
+	public EntityTFCharmEffect(World world) {
+		super(world);
 		this.setSize(0.25F, 0.25F);
 	}
 
-	public EntityTFCharmEffect(World par1World, EntityLivingBase owner, Item item) {
-		this(par1World);
+	public EntityTFCharmEffect(World world, EntityLivingBase owner, Item item) {
+		this(world);
 
 		this.setOwner(owner);
 		this.setItemID(item);
@@ -115,6 +117,7 @@ public class EntityTFCharmEffect extends Entity {
 		dataManager.set(DATA_OWNER, owner.getEntityId());
 	}
 
+	@Nullable
 	public EntityLivingBase getOwner() {
 		Entity e = this.world.getEntityByID(dataManager.get(DATA_OWNER));
 		if (e instanceof EntityLivingBase)

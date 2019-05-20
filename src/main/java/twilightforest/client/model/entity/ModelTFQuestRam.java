@@ -6,17 +6,15 @@
 
 package twilightforest.client.model.entity;
 
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 import twilightforest.entity.passive.EntityTFQuestRam;
-
 
 public class ModelTFQuestRam extends ModelBase {
 	//fields
@@ -143,34 +141,34 @@ public class ModelTFQuestRam extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		super.render(entity, f, f1, f2, f3, f4, f5);
-		setRotationAngles(f, f1, f2, f3, f4, f5);
-		frontbody.render(f5);
-		rearbody.render(f5);
-		leg1.render(f5);
-		haunch1.render(f5);
-		leg2.render(f5);
-		haunch2.render(f5);
-		leg3.render(f5);
-		haunch3.render(f5);
-		leg4.render(f5);
-		haunch4.render(f5);
-		neck.render(f5);
-		//nose.render(f5);
-		head.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		frontbody.render(scale);
+		rearbody.render(scale);
+		leg1.render(scale);
+		haunch1.render(scale);
+		leg2.render(scale);
+		haunch2.render(scale);
+		leg3.render(scale);
+		haunch3.render(scale);
+		leg4.render(scale);
+		haunch4.render(scale);
+		neck.render(scale);
+		//nose.render(scale);
+		head.render(scale);
 
 		for (int i = 0; i < 16; i++) {
 			if (segmentEnabled[i]) {
 				float var4 = 1.0F;
 				final float[] dyeRgb = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(i));
 
-				GL11.glColor3f(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
-				segments[i].render(f5);
+				GlStateManager.color(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
+				segments[i].render(scale);
 
 			}
 		}
-		GL11.glColor3f(1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -182,16 +180,17 @@ public class ModelTFQuestRam extends ModelBase {
 	/**
 	 * Sets the models various rotation angles.
 	 */
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6) {
-		this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
-		this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
+	@Override
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
+		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
 		this.neck.rotateAngleY = this.head.rotateAngleY;
 
-		this.leg1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2 * 0.5F;
-		this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2 * 0.5F;
-		this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2 * 0.5F;
-		this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2 * 0.5F;
+		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
+		this.leg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
+		this.leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
+		this.leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
 		this.haunch1.rotateAngleX = this.leg1.rotateAngleX;
 		this.haunch2.rotateAngleX = this.leg2.rotateAngleX;
 		this.haunch3.rotateAngleX = this.leg3.rotateAngleX;
@@ -203,8 +202,8 @@ public class ModelTFQuestRam extends ModelBase {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float partialTick) {
-		EntityTFQuestRam ram = (EntityTFQuestRam) par1EntityLiving;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		EntityTFQuestRam ram = (EntityTFQuestRam) entity;
 
 		// how many colors should we display?
 		int count = ram.countColorsSet();

@@ -1,37 +1,25 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube",
+    "model": "cube_column",
     "textures": {
-      "particle": "twilightforest:blocks/nagastone_pillar_vertical_weathered"
+      "side": "twilightforest:blocks/nagastone_pillar_side_weathered",
+      "end" : "twilightforest:blocks/nagastone_pillar_end_weathered"
     }
   },
   "variants": {
     "axis": {
-      "y":    { "textures": {
-        "up":    "twilightforest:blocks/nagastone_pillar_end_weathered",
-        "down":  "twilightforest:blocks/nagastone_pillar_end_weathered",
-        "north": "twilightforest:blocks/nagastone_pillar_vertical_weathered",
-        "south": "twilightforest:blocks/nagastone_pillar_vertical_weathered",
-        "west":  "twilightforest:blocks/nagastone_pillar_vertical_weathered",
-        "east":  "twilightforest:blocks/nagastone_pillar_vertical_weathered"
-      } },
-      "z":    { "textures": {
-        "up":    "twilightforest:blocks/nagastone_pillar_vertical_weathered",
-        "down":  "twilightforest:blocks/nagastone_pillar_vertical_weathered",
-        "north": "twilightforest:blocks/nagastone_pillar_end_weathered",
-        "south": "twilightforest:blocks/nagastone_pillar_end_weathered",
-        "west":  "twilightforest:blocks/nagastone_pillar_horizontal_weathered",
-        "east":  "twilightforest:blocks/nagastone_pillar_horizontal_weathered"
-      } },
-      "x":    { "textures": {
-        "up":    "twilightforest:blocks/nagastone_pillar_horizontal_weathered",
-        "down":  "twilightforest:blocks/nagastone_pillar_horizontal_weathered",
-        "north": "twilightforest:blocks/nagastone_pillar_horizontal_weathered",
-        "south": "twilightforest:blocks/nagastone_pillar_horizontal_weathered",
-        "west":  "twilightforest:blocks/nagastone_pillar_end_weathered",
-        "east":  "twilightforest:blocks/nagastone_pillar_end_weathered"
-      } }
+      "y": {},
+      "z": { "x": -90 },
+      "x": { "x": -90, "y": -90 }
+    },
+    "reversed": {
+      "true":  {
+        "textures": {
+          "side": "twilightforest:blocks/nagastone_pillar_side_weathered_alt"
+        }
+      },
+      "false": {}
     }
   }
 }

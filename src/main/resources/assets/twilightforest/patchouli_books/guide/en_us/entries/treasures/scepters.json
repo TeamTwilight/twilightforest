@@ -1,0 +1,37 @@
+{
+  "name": "Scepters",
+  "icon": "twilightforest:twilight_scepter",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/scepters",
+  "sortnum": 4030,
+  "pages": [
+    {
+      "type": "text",
+      "text": "It seems that Lich I had fought utilized a few different scepters. When I had slain it, one of its scepters dropped. Perhaps if I fought it multiple times I could retrieve all of its different scepters."
+    }, {
+      "type": "spotlight",
+      "title": "Twilight Scepter",
+      "item": "twilightforest:twilight_scepter",
+      "advancement": "twilightforest:alt/treasures/twilight_scepter",
+      "text": "Shoots orbs."
+    }, {
+      "type": "spotlight",
+      "title": "Twilight Scepter",
+      "item": "twilightforest:lifedrain_scepter",
+      "advancement": "twilightforest:alt/treasures/lifedrain_scepter",
+      "text": "Drains health."
+    }, {
+      "type": "spotlight",
+      "title": "Twilight Scepter",
+      "item": "twilightforest:zombie_scepter",
+      "advancement": "twilightforest:alt/treasures/zombie_scepter",
+      "text": "Summons monsters from beyond the grave to aid you in combat."
+    }, {
+      "type": "spotlight",
+      "title": "Twilight Scepter",
+      "item": "twilightforest:shield_scepter",
+      "advancement": "twilightforest:alt/treasures/shield_scepter",
+      "text": "Generates a temporary warding aura."
+    }
+  ]
+}

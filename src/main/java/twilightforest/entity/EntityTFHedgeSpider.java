@@ -5,14 +5,9 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
-import twilightforest.util.PlayerHelper;
 
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.
@@ -52,20 +47,7 @@ public class EntityTFHedgeSpider extends EntitySpider {
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze
+		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE
 				|| super.isValidLightLevel();
-	}
-
-	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
-			// are in a hedge maze?
-			int chunkX = MathHelper.floor(posX) >> 4;
-			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hedgeMaze) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hedge"), "hedge_spider");
-			}
-		}
 	}
 }

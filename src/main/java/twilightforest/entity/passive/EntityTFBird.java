@@ -3,6 +3,8 @@ package twilightforest.entity.passive;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.init.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -10,9 +12,12 @@ import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nonnull;
 
-
 public abstract class EntityTFBird extends EntityAnimal {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/bird");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/bird");
+
+	// same items as EntityChicken / EntityParrot
+	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public float flapLength = 0.0F;
 	public float flapIntensity = 0.0F;
@@ -20,8 +25,8 @@ public abstract class EntityTFBird extends EntityAnimal {
 	public float lastFlapLength;
 	public float flapSpeed = 1.0F;
 
-	public EntityTFBird(World par1World) {
-		super(par1World);
+	public EntityTFBird(World world) {
+		super(world);
 	}
 
 	@Override

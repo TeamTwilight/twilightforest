@@ -12,8 +12,9 @@ import twilightforest.client.model.entity.ModelTFQuestRam;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
 public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram.png");
-	private static final ResourceLocation textureLocLines = new ResourceLocation(TwilightForestMod.MODEL_DIR + "questram_lines.png");
+
+	private static final ResourceLocation textureLoc      = TwilightForestMod.getModelTexture("questram.png");
+	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
 	public RenderTFQuestRam(RenderManager manager) {
 		super(manager, new ModelTFQuestRam(), 1.0F);
@@ -21,14 +22,14 @@ public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFQuestRam par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFQuestRam entity) {
 		return textureLoc;
 	}
 
 	// todo verify / cleanup gl state?
 	class LayerGlowingLines implements LayerRenderer<EntityTFQuestRam> {
 		@Override
-		public void doRenderLayer(EntityTFQuestRam entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		public void doRenderLayer(EntityTFQuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 			RenderTFQuestRam.this.bindTexture(textureLocLines);
 			float var4 = 1.0F;
 			GlStateManager.enableBlend();
@@ -41,7 +42,7 @@ public class RenderTFQuestRam extends RenderLiving<EntityTFQuestRam> {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var6 / 1.0F, (float) var7 / 1.0F);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, var4);
-			RenderTFQuestRam.this.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+			RenderTFQuestRam.this.getMainModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
 

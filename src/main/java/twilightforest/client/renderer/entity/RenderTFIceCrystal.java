@@ -10,20 +10,21 @@ import twilightforest.client.model.entity.ModelTFIceCrystal;
 import twilightforest.entity.boss.EntityTFIceCrystal;
 
 public class RenderTFIceCrystal extends RenderLiving<EntityTFIceCrystal> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "icecrystal.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("icecrystal.png");
 
 	public RenderTFIceCrystal(RenderManager manager) {
 		super(manager, new ModelTFIceCrystal(), 0.25F);
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFIceCrystal par1EntityLivingBase, float partialTick) {
-		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
+	protected void preRenderCallback(EntityTFIceCrystal entity, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
 		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFIceCrystal var1) {
+	protected ResourceLocation getEntityTexture(EntityTFIceCrystal entity) {
 		return textureLoc;
 	}
 

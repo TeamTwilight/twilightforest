@@ -30,37 +30,45 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
+
+		double x = this.pos.getX();
+		double y = this.pos.getY();
+		double z = this.pos.getZ();
+
 		if (++counter > 60) {
 			counter = 0;
 			// idle again
 			if (!world.isRemote && world.getBlockState(pos).getBlock() == TFBlocks.fire_jet) {
 				world.setBlockState(pos, TFBlocks.fire_jet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, this.nextVariant));
 			}
-		} else if (counter % 2 == 0) {
-			world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, 0.0D, 0.5D, 0.0D);
-//			TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, 
-//    				Math.cos(counter / 4.0) * 0.2, 0.35D, Math.sin(counter / 4.0) * 0.2);			
-//			TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, 
-//    				Math.cos(counter / 4.0 + Math.PI) * 0.2, 0.35D, Math.sin(counter / 4.0 + Math.PI) * 0.2);			
-//			TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, this.pos.getX() + 0.5 + Math.cos(counter / 4.0), this.pos.getY() + 1.0, this.pos.getZ() + 0.5 + Math.sin(counter / 4.0), 
-//    				Math.sin(counter / 4.0) * 0.05, 0.35D, Math.cos(counter / 4.0) * 0.05);			
-//			TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, this.pos.getX() +  0.5 + Math.cos(counter / 4.0 + Math.PI), this.pos.getY() + 1.0, this.pos.getZ() + 0.5 + Math.sin(counter / 4.0 + Math.PI), 
-//    				Math.sin(counter / 4.0 + Math.PI) * 0.05, 0.35D, Math.cos(counter / 4.0 + Math.PI) * 0.05);			
-
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.pos.getX() - 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, 0.05D, 0.5D, 0.0D);
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() - 0.5, 0.0D, 0.5D, 0.05D);
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.pos.getX() + 1.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, -0.05D, 0.5D, 0.0D);
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.LARGE_FLAME, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 1.5, 0.0D, 0.5D, -0.05D);
-
 		}
 
-		// sounds
-		if (counter % 4 == 0) {
-			world.playSound(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
+		if (world.isRemote) {
+			if (counter % 2 == 0) {
+				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
+//			    TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5,
+//    				Math.cos(counter / 4.0) * 0.2, 0.35D, Math.sin(counter / 4.0) * 0.2);			
+//			    TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, this.pos.getZ() + 0.5,
+//    				Math.cos(counter / 4.0 + Math.PI) * 0.2, 0.35D, Math.sin(counter / 4.0 + Math.PI) * 0.2);			
+//		    	TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5 + Math.cos(counter / 4.0), y + 1.0, z + 0.5 + Math.sin(counter / 4.0),
+//    				Math.sin(counter / 4.0) * 0.05, 0.35D, Math.cos(counter / 4.0) * 0.05);			
+//			    TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5 + Math.cos(counter / 4.0 + Math.PI), y + 1.0, z + 0.5 + Math.sin(counter / 4.0 + Math.PI),
+//    				Math.sin(counter / 4.0 + Math.PI) * 0.05, 0.35D, Math.cos(counter / 4.0 + Math.PI) * 0.05);			
 
-		} else if (counter == 1) {
-			world.playSound(this.pos.getX() + 0.5, this.pos.getY() + 0.5, this.pos.getZ() + 0.5, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x - 0.5, y + 1.0, z + 0.5, 0.05D, 0.5D, 0.0D);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z - 0.5, 0.0D, 0.5D, 0.05D);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 1.5, y + 1.0, z + 0.5, -0.05D, 0.5D, 0.0D);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 1.5, 0.0D, 0.5D, -0.05D);
+			}
+
+			// sounds
+			if (counter % 4 == 0) {
+				world.playSound(x + 0.5, y + 0.5, z + 0.5, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
+
+			} else if (counter == 1) {
+				world.playSound(x + 0.5, y + 0.5, z + 0.5, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
+			}
 		}
 
 		// actual fire effects
@@ -81,15 +89,15 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readFromNBT(par1NBTTagCompound);
-		this.nextVariant = FireJetVariant.values()[par1NBTTagCompound.getInteger("NextMeta")];
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		this.nextVariant = FireJetVariant.values()[compound.getInteger("NextMeta")];
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("NextMeta", this.nextVariant.ordinal());
-		return par1NBTTagCompound;
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
+		compound.setInteger("NextMeta", this.nextVariant.ordinal());
+		return compound;
 	}
 }

@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFGenericLiving<T extends EntityLiving> extends RenderLiving<T> {
+
 	private final ResourceLocation textureLoc;
 
 	public RenderTFGenericLiving(RenderManager manager, ModelBase model, float shadowSize, String textureName) {
@@ -16,12 +17,12 @@ public class RenderTFGenericLiving<T extends EntityLiving> extends RenderLiving<
 		if (textureName.startsWith("textures")) {
 			textureLoc = new ResourceLocation(textureName);
 		} else {
-			textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + textureName);
+			textureLoc = TwilightForestMod.getModelTexture(textureName);
 		}
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T par1Entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 

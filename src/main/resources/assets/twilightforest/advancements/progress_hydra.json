@@ -5,10 +5,13 @@
       "data": 2
     },
     "title": {
-      "translate": "advancement.twilight_kill_hydra"
+      "translate": "advancement.twilightforest.kill_hydra"
     },
     "description": {
-      "translate": "advancement.twilight_kill_hydra.desc"
+      "translate": "advancement.twilightforest.kill_hydra.desc",
+      "with": [
+        { "translate": "entity.twilightforest.hydra.name" }
+      ]
     },
     "frame": "goal"
   },
@@ -53,5 +56,8 @@
   "requirements": [
     [ "hydra", "trophy", "blood" ],
     [ "stroganoff" ]
-  ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  }
 }

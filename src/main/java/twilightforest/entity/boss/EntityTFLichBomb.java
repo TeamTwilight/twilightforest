@@ -1,20 +1,20 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import twilightforest.entity.EntityTFThrowable;
 
+public class EntityTFLichBomb extends EntityTFThrowable {
 
-public class EntityTFLichBomb extends EntityThrowable {
-	public EntityTFLichBomb(World par1World) {
-		super(par1World);
+	public EntityTFLichBomb(World world) {
+		super(world);
 	}
 
-	public EntityTFLichBomb(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFLichBomb(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
 	@Override
@@ -54,11 +54,11 @@ public class EntityTFLichBomb extends EntityThrowable {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		super.attackEntityFrom(damagesource, i);
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		super.attackEntityFrom(source, amount);
 
-		if (damagesource.getImmediateSource() != null) {
-			if (!damagesource.isExplosion())
+		if (source.getImmediateSource() != null) {
+			if (!source.isExplosion())
 				explode();
 			return true;
 		} else {

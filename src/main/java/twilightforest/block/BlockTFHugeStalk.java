@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +14,7 @@ import twilightforest.item.TFItems;
 public class BlockTFHugeStalk extends Block implements ModelRegisterCallback {
 
 	protected BlockTFHugeStalk() {
-		super(Material.WOOD);
+		super(Material.WOOD, MapColor.FOLIAGE);
 
 		this.setHardness(1.25F);
 		this.setResistance(7.0F);

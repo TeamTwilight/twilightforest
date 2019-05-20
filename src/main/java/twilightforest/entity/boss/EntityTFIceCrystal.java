@@ -18,12 +18,14 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFIceCrystal extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_crystal");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_crystal");
+
 	private int crystalAge;
 	private int maxCrystalAge = -1;
 
-	public EntityTFIceCrystal(World par1World) {
-		super(par1World);
+	public EntityTFIceCrystal(World world) {
+		super(world);
 		this.setSize(0.6F, 1.8F);
 
 		//this.setCurrentItemOrArmor(0, new ItemStack(TFItems.iceSword));

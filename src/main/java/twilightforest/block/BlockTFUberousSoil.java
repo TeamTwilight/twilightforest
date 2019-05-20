@@ -115,7 +115,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean var5) {
+	public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean isClient) {
 		return true;
 	}
 

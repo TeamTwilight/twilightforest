@@ -16,7 +16,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import twilightforest.TFPacketHandler;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
@@ -30,8 +30,8 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 
 	private boolean hasHitObstacle = false;
 
-	public EntityTFCubeOfAnnihilation(World par1World) {
-		super(par1World);
+	public EntityTFCubeOfAnnihilation(World world) {
+		super(world);
 		this.setSize(1F, 1F);
 		this.isImmuneToFire = true;
 	}
@@ -40,7 +40,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 		super(world, thrower);
 		this.setSize(1F, 1F);
 		this.isImmuneToFire = true;
-		this.setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override
@@ -49,16 +49,16 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult mop) {
+	protected void onImpact(RayTraceResult ray) {
 		if (world.isRemote)
 			return;
 
 		// only hit living things
-		if (mop.entityHit instanceof EntityLivingBase && mop.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
+		if (ray.entityHit instanceof EntityLivingBase && ray.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
 			this.ticksExisted += 60;
 		}
 
-		if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
+		if (ray.getBlockPos() != null && !this.world.isAirBlock(ray.getBlockPos())) {
 			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
 		}
 	}

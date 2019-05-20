@@ -162,15 +162,15 @@ public class ModelTFBlockGoblin extends ModelBiped {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		super.render(entity, f, f1, f2, f3, f4, f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-		//block.render(f5);
+		//block.render(scale);
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float yaw, float pitch, float time, Entity entity) {
-		super.setRotationAngles(f, f1, f2, yaw, pitch, time, entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
 		bipedHead.rotationPointY = 11.0F;
 		bipedHeadwear.rotationPointY = 11.0F;
@@ -188,7 +188,7 @@ public class ModelTFBlockGoblin extends ModelBiped {
 
 		bipedLeftArm.rotateAngleX += Math.PI;
 
-		float angle = f2 / 4F;
+		float angle = ageInTicks / 4F;
 		float length = 0;//16F;
 
 		block.rotationPointX = (float) Math.sin(angle) * length;

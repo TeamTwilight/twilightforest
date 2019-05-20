@@ -1,0 +1,20 @@
+{
+  "name": "Magic Beans",
+  "icon": "twilightforest:magic_beans",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/magic_beans",
+  "sortnum": 8010,
+  "pages": [
+    {
+      "title": "Magic Beans",
+      "type": "twilightforest:headed_spotlight",
+      "item": "twilightforest:magic_beans",
+      "text": "These beans are huge! It is fairly obvious that beans this large wont be properly accommodated by just any regular soil, if they're found here then surely their natural habitat must be around these highlands as well."
+    }, {
+      "type": "spotlight",
+      "advancement": "twilightforest:alt/treasures/magic_beanstalk",
+      "item": "twilightforest:huge_stalk",
+      "text": "The beans instantly reacted to to the incredible fertility of the soil, the result is rather spectacular. The beanstalk has grown in a way that is reminiscent of a rudimentary staircase, it feels as if it's whispering me to push on and upwards. I fear nothing when I do nothing wrong, and so I toddle on my way and sing a merry song."
+    }
+  ]
+}

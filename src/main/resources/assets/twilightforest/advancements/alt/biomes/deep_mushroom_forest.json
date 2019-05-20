@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:location",
+      "conditions": { "biome": "twilightforest:deep_mushroom_forest" }
+    }
+  }
+}

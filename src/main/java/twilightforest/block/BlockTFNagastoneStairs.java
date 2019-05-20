@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +22,7 @@ import java.util.Locale;
 
 public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegisterCallback {
 
-	public static final PropertyEnum<LeftRight> DIRECTION = PropertyEnum.create("direction", LeftRight.class);
+	public static final IProperty<LeftRight> DIRECTION = PropertyEnum.create("direction", LeftRight.class);
 
 	BlockTFNagastoneStairs(IBlockState state) {
 		super(state);
@@ -48,9 +49,9 @@ public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegister
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 8));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 8));
 	}
 
 	@Override
@@ -66,8 +67,8 @@ public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegister
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
-		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, EnumFacing.SOUTH).withProperty(DIRECTION, LeftRight.RIGHT));
+		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.EAST));
+		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, EnumFacing.EAST).withProperty(DIRECTION, LeftRight.RIGHT));
 	}
 
 	private enum LeftRight implements IStringSerializable {

@@ -1,0 +1,18 @@
+{
+  "name": "Locked Vanishing Block",
+  "icon": "twilightforest:tower_device:4",
+  "category": "devices",
+  "advancement": "twilightforest:alt/treasures/carminite",
+  "sortnum": 6220,
+  "pages": [
+    {
+      "type": "spotlight",
+      "title": "Locked Vanishing Block",
+      "item": "twilightforest:tower_device:4",
+      "text": "There's something not right with this thing. No matter what I do to it, nothing happens to it, and neither do the connected Vanishing Blocks. I noticed this strange shape in the center of this device, perhaps it needs a key of some sort?"
+    }, {
+      "type": "text",
+      "text": "Of course, these devices are like locks to doors. If I give one of these a Tower Key, they will be unlocked, and thus interacting with one will cause them to vanish before me, and allow neighboring Vanishing Blocks to disappear."
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 package twilightforest.biomes;
 
-
 public class TFBiomeDeepMushrooms extends TFBiomeBase {
 
 	public TFBiomeDeepMushrooms(BiomeProperties props) {
@@ -13,7 +12,5 @@ public class TFBiomeDeepMushrooms extends TFBiomeBase {
 
 		getTFBiomeDecorator().myceliumPerChunk = 3;
 		getTFBiomeDecorator().alternateCanopyChance = 0.9F;
-
 	}
-
 }

@@ -1,38 +1,24 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
-public class EntityAITFHoverSummon extends EntityAIBase {
+public class EntityAITFHoverSummon extends EntityAITFHoverBase {
 
-	private static final float HOVER_HEIGHT = 6F;
-	private static final float HOVER_RADIUS = 6F;
 	private static final int MAX_MINIONS_AT_ONCE = 4;
 
-
-	private Class<? extends EntityLivingBase> classTarget;
-	private EntityTFSnowQueen attacker;
-
-	private double hoverPosX;
-	private double hoverPosY;
-	private double hoverPosZ;
 	private int seekTimer;
-	private int maxSeekTime;
 
-	public EntityAITFHoverSummon(EntityTFSnowQueen entityTFSnowQueen, Class<EntityPlayer> class1, double speed) {
-		this.attacker = entityTFSnowQueen;
-		this.classTarget = class1;
+	private final int maxSeekTime;
+
+	public EntityAITFHoverSummon(EntityTFSnowQueen snowQueen, Class<EntityPlayer> targetClass, double speed) {
+		super(snowQueen, targetClass, 6F, 6F);
+
 		this.setMutexBits(3);
 		this.maxSeekTime = 80;
-
 	}
 
 	@Override
@@ -50,7 +36,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 		} else {
 			return attacker.getEntitySenses().canSee(target);
 		}
-
 	}
 
 	@Override
@@ -69,21 +54,11 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 	}
 
 	@Override
-	public void startExecuting() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
-
-		if (target != null) {
-			// find a spot above the player
-			makeNewHoverSpot(target);
-		}
-	}
-
-	@Override
-	public void resetTask() {
-	}
+	public void resetTask() {}
 
 	@Override
 	public void updateTask() {
+
 		this.seekTimer++;
 		EntityLivingBase target = this.attacker.getAttackTarget();
 
@@ -103,7 +78,6 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 
 		distanceDesired = (double) MathHelper.sqrt(distanceDesired);
 
-
 		// add velocity
 		double velX = offsetX / distanceDesired * 0.05D;
 		double velY = offsetY / distanceDesired * 0.1D;
@@ -121,52 +95,10 @@ public class EntityAITFHoverSummon extends EntityAIBase {
 		}
 	}
 
-
-	/**
-	 * Make a new spot to hover at!
-	 */
-	private void makeNewHoverSpot(EntityLivingBase target) {
-		double hx = 0, hy = 0, hz = 0;
-
-		int tries = 100;
-
-		for (int i = 0; i < tries; i++) {
-			hx = target.posX + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * HOVER_RADIUS;
-			hy = target.posY + HOVER_HEIGHT;
-			hz = target.posZ + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * HOVER_RADIUS;
-
-			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
-				break;
-			}
-		}
-
-		if (tries == 99) {
-			TwilightForestMod.LOGGER.debug("Found no spots, giving up");
-		}
-
-		this.hoverPosX = hx;
-		this.hoverPosY = hy;
-		this.hoverPosZ = hz;
-
+	@Override
+	protected void makeNewHoverSpot(EntityLivingBase target) {
+		super.makeNewHoverSpot(target);
 		this.seekTimer = 0;
-
-	}
-
-	private boolean isPositionOccupied(double hx, double hy, double hz) {
-		float radius = this.attacker.width / 2F;
-		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
-
-		boolean isOccupied = this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
-
-		return isOccupied;
-	}
-
-	/**
-	 * Can the specified entity see the specified location?
-	 */
-	protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-		return entity.world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double) entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
-
 	}
 
 	private void checkAndSummon() {

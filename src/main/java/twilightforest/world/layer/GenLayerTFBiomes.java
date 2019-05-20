@@ -5,6 +5,9 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import twilightforest.biomes.TFBiomes;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Applies the twilight forest biomes to the map
@@ -14,19 +17,20 @@ import twilightforest.biomes.TFBiomes;
 public class GenLayerTFBiomes extends GenLayer {
 
 	private static final int RARE_BIOME_CHANCE = 15;
-	protected Biome commonBiomes[] = (new Biome[]{
-			TFBiomes.twilightForest,
-			TFBiomes.denseTwilightForest,
-			TFBiomes.mushrooms,
-			TFBiomes.oakSavanna,
-			TFBiomes.fireflyForest
-	});
-	protected Biome rareBiomes[] = (new Biome[]{
-			TFBiomes.tfLake,
-			TFBiomes.deepMushrooms,
-			TFBiomes.enchantedForest,
-			TFBiomes.clearing
-	});
+
+	protected static final List<Supplier<Biome>> commonBiomes = Arrays.asList(
+			() -> TFBiomes.twilightForest,
+			() -> TFBiomes.denseTwilightForest,
+			() -> TFBiomes.mushrooms,
+			() -> TFBiomes.oakSavanna,
+			() -> TFBiomes.fireflyForest
+	);
+	protected static final List<Supplier<Biome>> rareBiomes = Arrays.asList(
+			() -> TFBiomes.tfLake,
+			() -> TFBiomes.deepMushrooms,
+			() -> TFBiomes.enchantedForest,
+			() -> TFBiomes.clearing
+	);
 
 	public GenLayerTFBiomes(long l, GenLayer genlayer) {
 		super(l);
@@ -39,19 +43,20 @@ public class GenLayerTFBiomes extends GenLayer {
 
 	@Override
 	public int[] getInts(int x, int z, int width, int depth) {
+
 		int dest[] = IntCache.getIntCache(width * depth);
+
 		for (int dz = 0; dz < depth; dz++) {
 			for (int dx = 0; dx < width; dx++) {
 				initChunkSeed(dx + x, dz + z);
 				if (nextInt(RARE_BIOME_CHANCE) == 0) {
 					// make rare biome
-					dest[dx + dz * width] = Biome.getIdForBiome(rareBiomes[nextInt(rareBiomes.length)]);
+					dest[dx + dz * width] = Biome.getIdForBiome(getRandomBiome(rareBiomes));
 				} else {
 					// make common biome
-					dest[dx + dz * width] = Biome.getIdForBiome(commonBiomes[nextInt(commonBiomes.length)]);
+					dest[dx + dz * width] = Biome.getIdForBiome(getRandomBiome(commonBiomes));
 				}
 			}
-
 		}
 
 //		for (int i = 0; i < width * depth; i++)
@@ -63,5 +68,9 @@ public class GenLayerTFBiomes extends GenLayer {
 //		}
 
 		return dest;
+	}
+
+	private Biome getRandomBiome(List<Supplier<Biome>> biomes) {
+		return biomes.get(nextInt(biomes.size())).get();
 	}
 }

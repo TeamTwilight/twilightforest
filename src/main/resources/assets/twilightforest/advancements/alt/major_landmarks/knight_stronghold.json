@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:location",
+      "conditions": { "feature": "twilightforest:knight_stronghold", "position": { "y": { "max": 30 } } }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "twilightforest:items/borer_essence"
+    "layer0": "twilightforest:items/borer_essence",
+    "layer1": "twilightforest:items/borer_essence_particles"
   }
 }

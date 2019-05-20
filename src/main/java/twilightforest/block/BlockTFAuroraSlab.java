@@ -1,16 +1,18 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,15 +20,12 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallback {
 
-	private static final PropertyEnum<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
+	private static final IProperty<AuroraSlabVariant> VARIANT = PropertyEnum.create("variant", AuroraSlabVariant.class);
 
 	private final boolean isDouble;
 
@@ -52,8 +51,8 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 	}
 
 	@Override
-	public String getUnlocalizedName(int meta) {
-		return super.getUnlocalizedName();
+	public String getTranslationKey(int meta) {
+		return super.getTranslationKey();
 	}
 
 	@Override
@@ -77,8 +76,13 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 	}
 
 	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab));
+	}
+
+	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab), 2, 0);
+		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab), isDouble() ? 2 : 1, 0);
 	}
 
 	@Override
@@ -96,10 +100,11 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 	@Override
 	public void registerModel() {
 		if (this.isDouble())
-			ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).ignore(HALF).build());
+			ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT, HALF).build());
 		else {
-			ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
-			ModelUtils.registerToState(this, 0, getDefaultState());
+			IStateMapper stateMapper = new StateMap.Builder().ignore(VARIANT).build();
+			ModelLoader.setCustomStateMapper(this, stateMapper);
+			ModelUtils.registerToState(this, 0, getDefaultState(), stateMapper);
 		}
 	}
 

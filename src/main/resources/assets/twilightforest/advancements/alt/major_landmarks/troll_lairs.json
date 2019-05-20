@@ -1,0 +1,12 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "feature": "twilightforest:troll_lairs",
+        "position": { "y": { "max": 50 } }
+      }
+    }
+  }
+}

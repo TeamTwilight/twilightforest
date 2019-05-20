@@ -11,19 +11,11 @@ import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
-import javax.annotation.Nonnull;
+public class ItemTFSteeleafArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-public class ItemTFSteeleafArmor extends ItemArmor implements ModelRegisterCallback {
-
-	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot) {
-		super(material, 0, slot);
+	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot, EnumRarity rarity) {
+		super(material, slot, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
-	}
-
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.UNCOMMON;
 	}
 
 	@Override

@@ -1,0 +1,11 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "sapling": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:twilight_sapling", "data": 8 }]}},
+    "log"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:magic_log"       , "data": 3 }]}},
+    "leaves" : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:magic_leaves"    , "data": 3 }]}}
+  },
+  "requirements": [
+    [ "sapling", "log", "leaves" ]
+  ]
+}

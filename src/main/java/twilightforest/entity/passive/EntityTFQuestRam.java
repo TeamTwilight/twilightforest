@@ -29,16 +29,17 @@ import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
 
-
 public class EntityTFQuestRam extends EntityAnimal {
-	public static final ResourceLocation REWARD_LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/questing_ram_rewards");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/quest_ram");
+	public static final ResourceLocation REWARD_LOOT_TABLE = TwilightForestMod.prefix("entities/questing_ram_rewards");
 	private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.BOOLEAN);
 
 	private int randomTickDivider;
 
-	public EntityTFQuestRam(World par1World) {
-		super(par1World);
+	public EntityTFQuestRam(World world) {
+		super(world);
 		this.setSize(1.25F, 2.9F);
 		this.randomTickDivider = 0;
 	}
@@ -80,6 +81,11 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
+	@Override
 	protected void updateAITasks() {
 		if (--this.randomTickDivider <= 0) {
 			this.randomTickDivider = 70 + this.rand.nextInt(50);
@@ -90,7 +96,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.world);
 
-			if (nearFeature != TFFeature.questGrove) {
+			if (nearFeature != TFFeature.QUEST_GROVE) {
 				this.detachHome();
 			} else {
 				// set our home position to the center of the quest grove
@@ -150,25 +156,25 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("ColorFlags", this.getColorFlags());
-		par1NBTTagCompound.setBoolean("Rewarded", this.getRewarded());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setInteger("ColorFlags", this.getColorFlags());
+		compound.setBoolean("Rewarded", this.getRewarded());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setColorFlags(par1NBTTagCompound.getInteger("ColorFlags"));
-		this.setRewarded(par1NBTTagCompound.getBoolean("Rewarded"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setColorFlags(compound.getInteger("ColorFlags"));
+		this.setRewarded(compound.getBoolean("Rewarded"));
 	}
 
 	public int getColorFlags() {
 		return dataManager.get(DATA_COLOR);
 	}
 
-	public void setColorFlags(int par1) {
-		dataManager.set(DATA_COLOR, par1);
+	public void setColorFlags(int flags) {
+		dataManager.set(DATA_COLOR, flags);
 	}
 
 	public boolean isColorPresent(EnumDyeColor color) {
@@ -183,8 +189,8 @@ public class EntityTFQuestRam extends EntityAnimal {
 		return dataManager.get(DATA_REWARDED);
 	}
 
-	public void setRewarded(boolean par1) {
-		dataManager.set(DATA_REWARDED, par1);
+	public void setRewarded(boolean rewarded) {
+		dataManager.set(DATA_REWARDED, rewarded);
 	}
 
 	public void animateAddColor(EnumDyeColor color, int iterations) {
@@ -231,7 +237,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block p_145780_4_) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
 	}
 }

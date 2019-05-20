@@ -4,10 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -24,18 +26,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.enums.Diagonals;
+import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 
 public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
-    public static final PropertyEnum<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
-    public static final PropertyEnum<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
+
+    public static final IProperty<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
+    public static final IProperty<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
 
     public BlockTFSpiralBrick() {
         super(Material.ROCK, MapColor.STONE);
         this.setHardness(1.5F);
         this.setResistance(10.0F);
         this.setSoundType(SoundType.STONE);
+        this.setLightOpacity(255);
+        this.useNeighborBrightness = true;
+        this.setCreativeTab(TFItems.creativeTab);
         this.setDefaultState(this.blockState.getBaseState().withProperty(DIAGONAL, Diagonals.TOP_RIGHT).withProperty(AXIS_FACING, EnumFacing.Axis.X));
     }
 
@@ -118,8 +125,9 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel() {
-        ModelLoader.setCustomStateMapper(this, new StateMap.Builder().withName(AXIS_FACING).withSuffix("_spiral_bricks").build());
-        ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(DIAGONAL, Diagonals.BOTTOM_LEFT));
+        IStateMapper stateMapper = new StateMap.Builder().withName(AXIS_FACING).withSuffix("_spiral_bricks").build();
+        ModelLoader.setCustomStateMapper(this, stateMapper);
+        ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(DIAGONAL, Diagonals.BOTTOM_LEFT), stateMapper);
     }
 
     @Override
@@ -174,8 +182,7 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
-    {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
@@ -201,6 +208,11 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         } else {
             return BlockFaceShape.UNDEFINED;
         }
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return getBlockFaceShape(world, state, pos, face) == BlockFaceShape.SOLID;
     }
 
     @Override

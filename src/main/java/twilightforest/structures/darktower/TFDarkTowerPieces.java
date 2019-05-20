@@ -1,11 +1,14 @@
 package twilightforest.structures.darktower;
 
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import twilightforest.structures.start.StructureStartDarkTower;
 
 
 public class TFDarkTowerPieces {
 
 	public static void registerPieces() {
+		MapGenStructureIO.registerStructure(StructureStartDarkTower.class, "TFDT");
+
 		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerBalcony.class, "TFDTBal");
 		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerBeard.class, "TFDTBea");
 		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerBossBridge.class, "TFDTBB");

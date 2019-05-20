@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "twilightforest:iron_ladder",
+    "count": 3
+  },
+  "pattern": [
+    "•#•",
+    "•#•"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "•": { "item": "#NUGGETIRON" },
+    "#": { "item": "minecraft:iron_bars" }
+  }
+}

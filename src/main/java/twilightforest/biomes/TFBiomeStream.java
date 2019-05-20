@@ -7,5 +7,4 @@ public class TFBiomeStream extends TFBiomeBase {
 		getTFBiomeDecorator().setWaterlilyPerChunk(2);
 		spawnableCreatureList.clear();
 	}
-
 }

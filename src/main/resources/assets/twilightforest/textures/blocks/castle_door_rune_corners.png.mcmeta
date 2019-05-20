@@ -8,6 +8,7 @@
     ],
     "extra": {
       "ignore_states": true,
+      "connect_inside": true,
       "light": 15,
       "connect_to": [
         { "block": "twilightforest:castle_door" },

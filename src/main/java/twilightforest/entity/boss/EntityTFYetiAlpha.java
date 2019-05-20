@@ -1,10 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -25,7 +22,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -33,31 +29,38 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
 import twilightforest.entity.ai.EntityAITFYetiTired;
+import twilightforest.enums.BossVariant;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
-public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/yeti_alpha");
+public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IHostileMount {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/yeti_alpha");
 	private static final DataParameter<Byte> RAMPAGE_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> TIRED_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;
 
-	public EntityTFYetiAlpha(World par1World) {
-		super(par1World);
+	public EntityTFYetiAlpha(World world) {
+		super(world);
 		this.setSize(3.8F, 5.0F);
 		this.experienceValue = 317;
 	}
@@ -113,7 +116,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 		if (!world.isRemote) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 
-			if (this.isCollided) {
+			if (this.collided) {
 				this.collisionCounter++;
 			}
 
@@ -146,18 +149,18 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 		double py = hgt % 5F;
 		double pz = 3F * Math.sin(rotation);
 
-		TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+		TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
-		if (!this.canRampage && !this.isTired() && par1DamageSource.isProjectile()) {
+		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
 			return false;
 		}
 
 		this.canRampage = true;
-		return super.attackEntityFrom(par1DamageSource, par2);
+		return super.attackEntityFrom(source, amount);
 	}
 
 	@Override
@@ -183,10 +186,10 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 		if (isBeingRidden()) {
 			float distance = 0.4F;
 
-			double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-			double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.posX + var1, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + var3);
+			return new Vec3d(this.posX + dx, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + dz);
 		} else {
 			return new Vec3d(this.posX, this.posY, this.posZ);
 		}
@@ -198,12 +201,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
-		if (world.getGameRules().getBoolean("mobGriefing")) {
+		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				IBlockState state = world.getBlockState(pos);
-				Block block = state.getBlock();
-
-				if (!block.isAir(state, world, pos) && block != Blocks.OBSIDIAN && block != Blocks.END_STONE && block != Blocks.BEDROCK && state.getBlockHardness(world, pos) >= 0 && state.getMaterial() != Material.WATER && state.getMaterial() != Material.LAVA) {
+				if (EntityUtil.canDestroyBlock(world, pos, this)) {
 					world.destroyBlock(pos, false);
 				}
 			}
@@ -261,7 +261,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float par2) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		if (!this.canRampage) {
 			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 
@@ -270,7 +270,7 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 			double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - ice.posY;
 			double d2 = target.posZ - this.posZ;
 			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-			ice.setThrowableHeading(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
+			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
 
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			this.world.spawnEntity(ice);
@@ -285,20 +285,32 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 		return false;
 	}
 
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
+	}
+
 	public boolean canRampage() {
 		return this.canRampage;
 	}
 
-	public void setRampaging(boolean par1) {
-		dataManager.set(RAMPAGE_FLAG, (byte) (par1 ? 1 : 0));
+	public void setRampaging(boolean rampaging) {
+		dataManager.set(RAMPAGE_FLAG, (byte) (rampaging ? 1 : 0));
 	}
 
 	public boolean isRampaging() {
 		return dataManager.get(RAMPAGE_FLAG) == 1;
 	}
 
-	public void setTired(boolean par1) {
-		dataManager.set(TIRED_FLAG, (byte) (par1 ? 1 : 0));
+	public void setTired(boolean tired) {
+		dataManager.set(TIRED_FLAG, (byte) (tired ? 1 : 0));
 		this.canRampage = false;
 	}
 
@@ -307,8 +319,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void fall(float par1, float mult) {
-		super.fall(par1, mult);
+	public void fall(float distance, float multiplier) {
+		super.fall(distance, multiplier);
 
 		if (!this.world.isRemote && isRampaging()) {
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -325,8 +337,8 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 
 		// mark the lair as defeated
 		if (!world.isRemote) {
@@ -334,11 +346,11 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
-				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-				if (nearbyFeature == TFFeature.yetiCave) {
+				if (nearbyFeature == TFFeature.YETI_CAVE) {
 					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}
@@ -364,24 +376,24 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 		BlockPos home = this.getHomePosition();
-		nbttagcompound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
-		nbttagcompound.setBoolean("HasHome", this.hasHome());
-		super.writeEntityToNBT(nbttagcompound);
+		compound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
+		compound.setBoolean("HasHome", this.hasHome());
+		super.writeEntityToNBT(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		if (nbttagcompound.hasKey("Home", 9)) {
-			NBTTagList nbttaglist = nbttagcompound.getTagList("Home", 6);
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		if (compound.hasKey("Home", 9)) {
+			NBTTagList nbttaglist = compound.getTagList("Home", 6);
 			int hx = (int) nbttaglist.getDoubleAt(0);
 			int hy = (int) nbttaglist.getDoubleAt(1);
 			int hz = (int) nbttaglist.getDoubleAt(2);
 			this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 30);
 		}
-		if (!nbttagcompound.getBoolean("HasHome")) {
+		if (!compound.getBoolean("HasHome")) {
 			this.detachHome();
 		}
 		if (this.hasCustomName()) {
@@ -393,5 +405,4 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob {
 	public boolean isNonBoss() {
 		return false;
 	}
-
 }

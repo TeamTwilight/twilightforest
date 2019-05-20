@@ -10,7 +10,7 @@ import java.util.Random;
 public class StructureTFAuroraBricks extends StructureComponent.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random par1Random, int x, int y, int z, boolean wall) {
+	public void selectBlocks(Random random, int x, int y, int z, boolean wall) {
 		if (!wall) {
 			this.blockstate = Blocks.AIR.getDefaultState();
 		} else {

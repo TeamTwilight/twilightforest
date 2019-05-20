@@ -1,9 +1,12 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import twilightforest.structures.start.StructureStartFinalCastle;
 
 public class TFFinalCastlePieces {
 	public static void registerFinalCastlePieces() {
+		MapGenStructureIO.registerStructure(StructureStartFinalCastle.class, "TFFC");
+
 		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleMain.class, "TFFCMain");
 		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleStairTower.class, "TFFCStTo");
 		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleLargeTower.class, "TFFCLaTo");

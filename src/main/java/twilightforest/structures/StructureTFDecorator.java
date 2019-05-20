@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.structures.darktower.StructureDecoratorDarkTower;
+import twilightforest.structures.finalcastle.StructureTFDecoratorCastle;
 import twilightforest.structures.icetower.StructureDecoratorIceTower;
 import twilightforest.structures.mushroomtower.StructureDecoratorMushroomTower;
 import twilightforest.structures.stronghold.StructureTFDecoratorStronghold;

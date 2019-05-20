@@ -8,7 +8,8 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFBoar extends RenderPig {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "wildboar.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("wildboar.png");
 
 	public RenderTFBoar(RenderManager manager, ModelBase model) {
 		super(manager);
@@ -16,7 +17,7 @@ public class RenderTFBoar extends RenderPig {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityPig par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityPig entity) {
 		return textureLoc;
 	}
 

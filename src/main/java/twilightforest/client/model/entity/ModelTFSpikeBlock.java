@@ -127,8 +127,8 @@ public class ModelTFSpikeBlock extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		block.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		block.render(scale);
 	}
 
 }

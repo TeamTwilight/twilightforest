@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -23,23 +24,27 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
 public class BlockTFMiniatureStructure extends Block implements ModelRegisterCallback {
-    public static final PropertyEnum<StructureVariant> VARIANT = PropertyEnum.create("variant", StructureVariant.class);
+
+    public static final IProperty<StructureVariant> VARIANT = PropertyEnum.create("variant", StructureVariant.class);
 
     public BlockTFMiniatureStructure() {
         super(Material.BARRIER);
         this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, StructureVariant.TWILIGHT_PORTAL));
     }
 
+    @Override
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
+    @Override
     public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
+    @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }
@@ -69,7 +74,7 @@ public class BlockTFMiniatureStructure extends Block implements ModelRegisterCal
 
     @SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 

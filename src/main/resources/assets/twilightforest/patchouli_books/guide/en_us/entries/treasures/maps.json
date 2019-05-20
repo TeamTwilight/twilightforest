@@ -1,0 +1,31 @@
+{
+  "name": "Maps",
+  "icon": "twilightforest:magic_map",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/maps",
+  "sortnum": 1100,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Map information"
+    }, {
+      "type": "spotlight",
+      "title": "Magic Map",
+      "item": "twilightforest:magic_map",
+      "advancement": "twilightforest:alt/treasures/treasures/magic_map",
+      "text": "Magic Map helps you find biomes and structures"
+    }, {
+      "type": "spotlight",
+      "title": "Maze Map",
+      "item": "twilightforest:maze_map",
+      "advancement": "twilightforest:alt/treasures/treasures/maze_map",
+      "text": "Maze Map helps you see maze layouts"
+    }, {
+      "type": "spotlight",
+      "title": "Ore Map",
+      "item": "twilightforest:ore_map",
+      "advancement": "twilightforest:alt/treasures/treasures/ore_map",
+      "text": "Ore Map helps you see what's underground, especially those ores"
+    }
+  ]
+}

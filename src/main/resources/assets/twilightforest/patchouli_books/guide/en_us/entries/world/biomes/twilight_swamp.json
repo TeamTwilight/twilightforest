@@ -1,0 +1,17 @@
+{
+  "name": "Swamp",
+  "icon": "twilightforest:twilight_sapling:2",
+  "category": "biomes",
+  "advancement": "twilightforest:alt/biomes/twilight_swamp",
+  "sortnum": 5000,
+  "pages": [
+    {
+      "type": "text",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/biomes/fire_swamp",
+      "text": "things and stuff"
+    }
+  ]
+}

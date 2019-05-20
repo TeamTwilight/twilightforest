@@ -10,8 +10,8 @@ import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFIronwoodShovel extends ItemSpade implements ModelRegisterCallback {
 
-	public ItemTFIronwoodShovel(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	public ItemTFIronwoodShovel(Item.ToolMaterial toolMaterial) {
+		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 

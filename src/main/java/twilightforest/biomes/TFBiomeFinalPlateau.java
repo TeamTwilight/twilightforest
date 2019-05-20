@@ -6,13 +6,16 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.passive.EntityTFRaven;
 import twilightforest.enums.DeadrockVariant;
 
+import java.util.Random;
 
 public class TFBiomeFinalPlateau extends TFBiomeBase {
 
@@ -29,7 +32,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 
 		// custom creature list.
 		spawnableCreatureList.clear();
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFRaven.class, 10, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFRaven.class, 10, 4, 4));
 	}
 
 	@Override
@@ -38,18 +41,21 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 	}
 
 	@Override
+	public void decorate(World world, Random rand, BlockPos pos) {}
+
+	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
-		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_troll") };
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_troll") };
 	}
 
 	@Override
-	public void enforceProgession(EntityPlayer player, World world) {
+	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 5 == 0) {
 			player.attackEntityFrom(DamageSource.MAGIC, 1.5F);
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 			// hint monster?
-			if (world.rand.nextInt(4) == 0) TFFeature.trollCave.trySpawnHintMonster(world, player);
+			if (world.rand.nextInt(4) == 0) TFFeature.TROLL_CAVE.trySpawnHintMonster(world, player);
 		}
 	}
 }

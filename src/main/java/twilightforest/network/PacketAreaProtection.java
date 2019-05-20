@@ -2,6 +2,7 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -13,11 +14,11 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFProtectionBox;
 
 public class PacketAreaProtection implements IMessage {
+
 	private StructureBoundingBox sbb;
 	private BlockPos pos;
 
-	public PacketAreaProtection() {
-	}
+	public PacketAreaProtection() {}
 
 	public PacketAreaProtection(StructureBoundingBox sbb, BlockPos pos) {
 		this.sbb = sbb;
@@ -51,30 +52,40 @@ public class PacketAreaProtection implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					// make a box entity
-					World world = Minecraft.getMinecraft().world;
-					StructureBoundingBox sbb = message.sbb;
-					EntityTFProtectionBox box = new EntityTFProtectionBox(world, sbb.minX, sbb.minY, sbb.minZ, sbb.maxX, sbb.maxY, sbb.maxZ);
 
-					world.addWeatherEffect(box);
+					World world = Minecraft.getMinecraft().world;
+					addProtectionBox(world, message.sbb);
 
 					for (int i = 0; i < 20; i++) {
 
-						double d0 = world.rand.nextGaussian() * 0.02D;
-						double d1 = world.rand.nextGaussian() * 0.02D;
-						double d2 = world.rand.nextGaussian() * 0.02D;
+						double vx = world.rand.nextGaussian() * 0.02D;
+						double vy = world.rand.nextGaussian() * 0.02D;
+						double vz = world.rand.nextGaussian() * 0.02D;
 
-						float dx = message.pos.getX() + 0.5F + world.rand.nextFloat() - world.rand.nextFloat();
-						float dy = message.pos.getY() + 0.5F + world.rand.nextFloat() - world.rand.nextFloat();
-						float dz = message.pos.getZ() + 0.5F + world.rand.nextFloat() - world.rand.nextFloat();
+						double x = message.pos.getX() + 0.5D + world.rand.nextFloat() - world.rand.nextFloat();
+						double y = message.pos.getY() + 0.5D + world.rand.nextFloat() - world.rand.nextFloat();
+						double z = message.pos.getZ() + 0.5D + world.rand.nextFloat() - world.rand.nextFloat();
 
-						TwilightForestMod.proxy.spawnParticle(world, TFParticleType.PROTECTION, dx, dy, dz, d0, d1, d2);
-
+						TwilightForestMod.proxy.spawnParticle(TFParticleType.PROTECTION, x, y, z, vx, vy, vz);
 					}
 				}
 			});
-
 			return null;
+		}
+
+		static void addProtectionBox(World world, StructureBoundingBox sbb) {
+
+			for (Entity entity : world.weatherEffects) {
+				if (entity instanceof EntityTFProtectionBox) {
+					EntityTFProtectionBox protectionBox = (EntityTFProtectionBox) entity;
+					if (protectionBox.matches(sbb)) {
+						protectionBox.resetLifetime();
+						return;
+					}
+				}
+			}
+
+			world.addWeatherEffect(new EntityTFProtectionBox(world, sbb));
 		}
 	}
 }

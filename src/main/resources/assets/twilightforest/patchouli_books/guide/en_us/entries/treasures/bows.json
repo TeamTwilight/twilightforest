@@ -1,0 +1,37 @@
+{
+  "name": "Bows",
+  "icon": "twilightforest:seeker_bow",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/bows",
+  "sortnum": 1100,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Bow Information"
+    }, {
+      "type": "spotlight",
+      "title": "Ender Bow",
+      "item": "twilightforest:ender_bow",
+      "advancement": "twilightforest:alt/treasures/ender_bow",
+      "text": "things and stuff"
+    }, {
+      "type": "spotlight",
+      "title": "Ice Bow",
+      "item": "twilightforest:ice_bow",
+      "advancement": "twilightforest:alt/treasures/ice_bow",
+      "text": "things and stuff"
+    }, {
+      "type": "spotlight",
+      "title": "Seeker Bow",
+      "item": "twilightforest:seeker_bow",
+      "advancement": "twilightforest:alt/treasures/seeker_bow",
+      "text": "things and stuff"
+    }, {
+      "type": "spotlight",
+      "title": "Tri-bow",
+      "item": "twilightforest:triple_bow",
+      "advancement": "twilightforest:alt/treasures/triple_bow",
+      "text": "things and stuff"
+    }
+  ]
+}

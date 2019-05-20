@@ -9,7 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class RenderTFBighorn extends RenderSheep {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "bighorn.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("bighorn.png");
 
 	public RenderTFBighorn(RenderManager manager, ModelBase baseModel, ModelBase coatModel, float shadowSize) {
 		super(manager);

@@ -10,7 +10,8 @@ import twilightforest.client.model.entity.ModelTFProtectionBox;
 import twilightforest.entity.EntityTFProtectionBox;
 
 public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "protectionbox.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("protectionbox.png");
 	private final ModelTFProtectionBox boxModel = new ModelTFProtectionBox();
 
 	public RenderTFProtectionBox(RenderManager manager) {
@@ -19,7 +20,7 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 	}
 
 	@Override
-	public void doRender(EntityTFProtectionBox var1, double x, double y, double z, float var8, float partialTick) {
+	public void doRender(EntityTFProtectionBox entity, double x, double y, double z, float yaw, float partialTicks) {
 		GlStateManager.pushMatrix();
 
 
@@ -28,7 +29,7 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 		this.bindTexture(textureLoc);
 
 		// move texture
-		float f1 = (float) var1.ticksExisted + partialTick;
+		float f1 = (float) entity.ticksExisted + partialTicks;
 		GlStateManager.matrixMode(GL11.GL_TEXTURE);
 		GlStateManager.loadIdentity();
 		float f2 = f1 * 0.05F;
@@ -47,16 +48,18 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 		GlStateManager.disableLighting();
 
 		float alpha = 1.0F;
-		if (var1.lifeTime < 20) {
-			alpha = var1.lifeTime / 20F;
+		if (entity.lifeTime < 20) {
+			alpha = entity.lifeTime / 20F;
 		}
 
 		GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 
-		boxModel.render(var1, 0F, 0F, 0F, 0F, 0F, 1F / 16F);
+		boxModel.render(entity, 0F, 0F, 0F, 0F, 0F, 1F / 16F);
 
 		GlStateManager.disableBlend();
 		GlStateManager.enableCull();
+		GlStateManager.enableAlpha();
+		GlStateManager.enableLighting();
 
 		GlStateManager.matrixMode(GL11.GL_TEXTURE);
 		GlStateManager.loadIdentity();
@@ -66,7 +69,7 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFProtectionBox par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFProtectionBox entity) {
 		return textureLoc;
 	}
 

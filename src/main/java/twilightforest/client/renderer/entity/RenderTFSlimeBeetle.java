@@ -11,7 +11,8 @@ import twilightforest.client.model.entity.ModelTFSlimeBeetle;
 import twilightforest.entity.EntityTFSlimeBeetle;
 
 public class RenderTFSlimeBeetle extends RenderLiving<EntityTFSlimeBeetle> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "slimebeetle.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("slimebeetle.png");
 
 	public RenderTFSlimeBeetle(RenderManager manager, ModelBase par1ModelBase, float shadowSize) {
 		super(manager, par1ModelBase, shadowSize);
@@ -19,7 +20,7 @@ public class RenderTFSlimeBeetle extends RenderLiving<EntityTFSlimeBeetle> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFSlimeBeetle par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFSlimeBeetle entity) {
 		return textureLoc;
 	}
 
@@ -27,14 +28,14 @@ public class RenderTFSlimeBeetle extends RenderLiving<EntityTFSlimeBeetle> {
 		private final ModelBase innerModel = new ModelTFSlimeBeetle(true);
 
 		@Override
-		public void doRenderLayer(EntityTFSlimeBeetle entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-			if (!entitylivingbaseIn.isInvisible()) {
+		public void doRenderLayer(EntityTFSlimeBeetle entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+			if (!entity.isInvisible()) {
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				GlStateManager.enableNormalize();
 				GlStateManager.enableBlend();
 				GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 				this.innerModel.setModelAttributes(RenderTFSlimeBeetle.this.getMainModel());
-				this.innerModel.render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				this.innerModel.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 				GlStateManager.disableBlend();
 				GlStateManager.disableNormalize();
 			}

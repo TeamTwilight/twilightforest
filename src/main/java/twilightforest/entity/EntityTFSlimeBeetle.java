@@ -26,7 +26,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/slime_beetle");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/slime_beetle");
 
 	public EntityTFSlimeBeetle(World world) {
 		super(world);
@@ -64,7 +65,7 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block var4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
 	}
 
@@ -84,14 +85,14 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		EntityThrowable projectile = new EntityTFSlimeProjectile(this.world, this);
 		playSound(SoundEvents.ENTITY_SMALL_SLIME_SQUISH, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		double tx = target.posX - this.posX;
 		double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
 		double tz = target.posZ - this.posZ;
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
-		projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
+		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.spawnEntity(projectile);
 	}
 

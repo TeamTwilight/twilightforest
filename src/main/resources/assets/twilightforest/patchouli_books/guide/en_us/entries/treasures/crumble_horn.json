@@ -1,0 +1,19 @@
+{
+  "name": "Crumble Horn",
+  "icon": "twilightforest:crumble_horn",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/crumble_horn",
+  "sortnum": 2310,
+  "pages": [
+    {
+      "title": "Crumble Horn",
+      "type": "twilightforest:headed_spotlight",
+      "item": "twilightforest:crumble_horn",
+      "text": "The quest for colored wool has come to an end, resulting in the ram gifting me a horn. It almost seems to have the form of an instrument though, perhaps I should try blowing on it."
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/crumble_horn_used",
+      "text": "The horn has ended up with more value than just a nice mantle piece it seems. When blown in the presence of rock and earth, the sound coming from it resonates in such a way that the material crumbles like snow before the sun. Perhaps there is a way this can be automated in a useful way."
+    }
+  ]
+}

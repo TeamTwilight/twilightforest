@@ -1,6 +1,5 @@
 package twilightforest.biomes;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -28,22 +27,25 @@ import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
 import twilightforest.entity.EntityTFMosquitoSwarm;
-import twilightforest.world.TFGenHugeLilyPad;
-import twilightforest.world.TFGenTallGrass;
-import twilightforest.world.TFGenVines;
+import twilightforest.world.feature.TFGenHugeLilyPad;
+import twilightforest.world.feature.TFGenHugeWaterLily;
+import twilightforest.world.feature.TFGenTallGrass;
+import twilightforest.world.feature.TFGenVines;
 import twilightforest.world.TFWorld;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class TFBiomeSwamp extends TFBiomeBase {
 
 	private static final int MONSTER_SPAWN_RATE = 20;
-	private Random monsterRNG = new Random(53439L);
 
-	private TFGenVines worldgenvines = new TFGenVines();
-	private WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
-	private WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
+	private final Random monsterRNG = new Random(53439L);
+
+	private final WorldGenerator vinesGen = new TFGenVines();
+	private final WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
+	private final WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
 
 	public TFBiomeSwamp(BiomeProperties props) {
 		super(props);
@@ -54,7 +56,6 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		getTFBiomeDecorator().setClayPerChunk(1);
 		getTFBiomeDecorator().setTreesPerChunk(2);
 		getTFBiomeDecorator().setWaterlilyPerChunk(20);
-
 
 		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().lakesPerChunk = 2;
@@ -68,19 +69,20 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(3) == 0) {
-			new WorldGenShrub(
+			return new WorldGenShrub(
 					Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK));
+					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK)
+			);
+		} else {
+			return SWAMP_FEATURE;
 		}
-
-		return SWAMP_FEATURE;
 	}
 
 	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-		if (par1Random.nextInt(4) == 0) {
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
+		if (random.nextInt(4) == 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
-		} else if (par1Random.nextInt(4) == 0) {
+		} else if (random.nextInt(4) == 0) {
 			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
@@ -88,61 +90,59 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public void decorate(World par1World, Random par2Random, BlockPos pos) {
-		super.decorate(par1World, par2Random, pos);
+	public void decorate(World world, Random random, BlockPos pos) {
+		super.decorate(world, random, pos);
 
 		for (int i = 0; i < 50; i++) {
-			int j = pos.getX() + par2Random.nextInt(16) + 8;
-			int l = TFWorld.SEALEVEL + 128;
-			int k = pos.getZ() + par2Random.nextInt(16) + 8;
-			worldgenvines.generate(par1World, par2Random, new BlockPos(j, l, k));
+			int x = pos.getX() + random.nextInt(16) + 8;
+			int y = TFWorld.SEALEVEL + 128;
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			vinesGen.generate(world, random, new BlockPos(x, y, z));
 		}
 		for (int i = 0; i < 25; i++) {
-			int x = pos.getX() + par2Random.nextInt(15) + 8;
+			int x = pos.getX() + random.nextInt(15) + 8;
 			int y = TFWorld.SEALEVEL;
-			int z = pos.getZ() + par2Random.nextInt(15) + 8;
-			hugeLilyPadGen.generate(par1World, par2Random, new BlockPos(x, y, z));
+			int z = pos.getZ() + random.nextInt(15) + 8;
+			hugeLilyPadGen.generate(world, random, new BlockPos(x, y, z));
 		}
 		for (int i = 0; i < 2; i++) {
-			int x = pos.getX() + par2Random.nextInt(16) + 8;
+			int x = pos.getX() + random.nextInt(16) + 8;
 			int y = TFWorld.SEALEVEL;
-			int z = pos.getZ() + par2Random.nextInt(16) + 8;
-			hugeWaterLilyGen.generate(par1World, par2Random, new BlockPos(x, y, z));
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			hugeWaterLilyGen.generate(world, random, new BlockPos(x, y, z));
 		}
 	}
 
 	@Override
 	public int getGrassColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getFloatTemperature(pos), 0.0F, 1.0F);
-		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerGrass.getGrassColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
+		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+		return ((ColorizerGrass.getGrassColor(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
 	@Override
 	public int getFoliageColorAtPos(BlockPos pos) {
-		double var1 = (double) MathHelper.clamp(this.getFloatTemperature(pos), 0.0F, 1.0F);
-		double var3 = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerFoliage.getFoliageColor(var1, var3) & 0xFEFEFE) + 0x4E0E4E) / 2;
+		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
+		return ((ColorizerFoliage.getFoliageColor(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
-
 	@Override
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType par1EnumCreatureType) {
-		// if is is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (par1EnumCreatureType == EnumCreatureType.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : Lists.newArrayList();
-		} else {
-			return par1EnumCreatureType == EnumCreatureType.CREATURE ? this.spawnableCreatureList : (par1EnumCreatureType == EnumCreatureType.WATER_CREATURE ? this.spawnableWaterCreatureList : (par1EnumCreatureType == EnumCreatureType.AMBIENT ? this.spawnableCaveCreatureList : null));
+	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+		if (creatureType == EnumCreatureType.MONSTER) {
+			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
 		}
+		return super.getSpawnableList(creatureType);
 	}
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
-		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_lich") };
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_lich") };
 	}
 
 	@Override
-	public void enforceProgession(EntityPlayer player, World world) {
+	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			PotionEffect currentHunger = player.getActivePotionEffect(MobEffects.HUNGER);
 
@@ -152,7 +152,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 			// hint monster?
 			if (world.rand.nextInt(4) == 0) {
-				TFFeature.labyrinth.trySpawnHintMonster(world, player);
+				TFFeature.LABYRINTH.trySpawnHintMonster(world, player);
 			}
 		}
 	}

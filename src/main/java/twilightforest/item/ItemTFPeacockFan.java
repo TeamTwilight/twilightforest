@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
@@ -24,8 +25,8 @@ import twilightforest.util.WorldUtil;
 import javax.annotation.Nonnull;
 
 public class ItemTFPeacockFan extends ItemTF {
-	protected ItemTFPeacockFan() {
-		this.setCreativeTab(TFItems.creativeTab);
+	ItemTFPeacockFan(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(1024);
 	}
@@ -76,12 +77,12 @@ public class ItemTFPeacockFan extends ItemTF {
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BLOCK;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 20;
 	}
 
@@ -113,7 +114,7 @@ public class ItemTFPeacockFan extends ItemTF {
 		double radius = 2.0D;
 		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d lookVec = player.getLookVec().scale(range);
-		Vec3d destVec = srcVec.addVector(lookVec.x, lookVec.y, lookVec.z);
+		Vec3d destVec = srcVec.add(lookVec.x, lookVec.y, lookVec.z);
 
 		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}

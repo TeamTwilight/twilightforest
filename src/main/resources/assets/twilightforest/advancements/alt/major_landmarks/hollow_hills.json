@@ -1,0 +1,20 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "0": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/major_landmarks/small_hollow_hill" }
+    },
+    "1": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/major_landmarks/medium_hollow_hill" }
+    },
+    "2": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/major_landmarks/large_hollow_hill" }
+    }
+  },
+  "requirements": [
+    [ "0", "1", "2" ]
+  ]
+}

@@ -3,7 +3,6 @@ package twilightforest.client.model.armor;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import twilightforest.client.model.entity.ModelTFArmor;
 
 public class ModelTFYetiArmor extends ModelTFArmor {
 
@@ -123,7 +122,7 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		switch (slot) {
 			case HEAD:
 				this.bipedHead.showModel = true;
@@ -176,7 +175,7 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 			default:
 				break;
 		}
-		super.render(par1Entity, par2, par3, par4, par5, par6, par7);
-		this.bipedLegBody.render(par7);
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		this.bipedLegBody.render(scale);
 	}
 }

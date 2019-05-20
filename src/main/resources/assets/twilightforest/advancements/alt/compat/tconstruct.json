@@ -1,0 +1,18 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "book"       : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:book"                  }]}},
+    "cast"       : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:cast"                  }]}},
+    "clay_cast"  : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:clay_cast"             }]}},
+    "pattern"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:pattern"               }]}},
+    "tooltable1" : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:tooltables", "data": 1 }]}},
+    "tooltable2" : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:tooltables", "data": 2 }]}},
+    "tooltable3" : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:tooltables", "data": 3 }]}},
+    "tooltable4" : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:tooltables", "data": 4 }]}},
+    "tooltable5" : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:tooltables", "data": 5 }]}},
+    "toolforge"  : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:toolforge"             }]}}
+  },
+  "requirements": [
+    [ "book", "cast", "clay_cast", "pattern", "tooltable1", "tooltable2", "tooltable3", "tooltable4", "tooltable5", "toolforge" ]
+  ]
+}

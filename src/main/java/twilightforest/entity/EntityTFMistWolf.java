@@ -24,11 +24,11 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
-		if (super.attackEntityAsMob(par1Entity)) {
+	public boolean attackEntityAsMob(Entity entity) {
+		if (super.attackEntityAsMob(entity)) {
 			float myBrightness = this.getBrightness();
 
-			if (par1Entity instanceof EntityLivingBase && myBrightness < 0.10F) {
+			if (entity instanceof EntityLivingBase && myBrightness < 0.10F) {
 				int effectDuration;
 				switch (world.getDifficulty()) {
 					case EASY:
@@ -44,7 +44,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 				}
 
 				if (effectDuration > 0) {
-					((EntityLivingBase) par1Entity).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, effectDuration * 20, 0));
+					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, effectDuration * 20, 0));
 				}
 			}
 

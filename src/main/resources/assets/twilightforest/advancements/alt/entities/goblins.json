@@ -1,0 +1,24 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "0": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/redcap" }
+    },
+    "1": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/redcap_sapper" }
+    },
+    "2": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/goblin_knight" }
+    },
+    "3": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/blockchain_goblin" }
+    }
+  },
+  "requirements": [
+    [ "0", "1", "2", "3" ]
+  ]
+}

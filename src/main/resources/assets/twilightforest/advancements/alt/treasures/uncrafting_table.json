@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "uncrafting_table": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:uncrafting_table" }]}}
+  }
+}

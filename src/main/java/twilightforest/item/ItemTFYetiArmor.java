@@ -17,20 +17,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback {
+public class ItemTFYetiArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-	public ItemTFYetiArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot) {
-		super(material, 0, slot);
+	public ItemTFYetiArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot, EnumRarity rarity) {
+		super(material, slot, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
-	}
-
-	@Nonnull
-	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.EPIC;
 	}
 
 	@Override
@@ -71,8 +65,8 @@ public class ItemTFYetiArmor extends ItemArmor implements ModelRegisterCallback 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltips, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltips, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltips, flags);
-		tooltips.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+		tooltips.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 }

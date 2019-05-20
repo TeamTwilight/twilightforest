@@ -22,7 +22,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFHelmetCrab extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/helmet_crab");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/helmet_crab");
 
 	public EntityTFHelmetCrab(World world) {
 		super(world);
@@ -66,7 +67,7 @@ public class EntityTFHelmetCrab extends EntityMob {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block par4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
 	}
 

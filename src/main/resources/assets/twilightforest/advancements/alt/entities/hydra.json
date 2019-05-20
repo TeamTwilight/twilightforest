@@ -1,0 +1,60 @@
+{
+  "parent": "twilightforest:alt/root",
+  "__hidden": "This advancement should not be visible. There is no display tag group. This is for Patchouli to track if you've interacted with an entity.",
+  "criteria": {
+    "hurt_by_indirect": {
+      "trigger": "minecraft:entity_hurt_player",
+      "conditions": { "damage": { "source_entity": { "type": "twilightforest:hydra" }}}
+    },
+    "slain_by": {
+      "trigger": "minecraft:entity_killed_player",
+      "conditions": { "entity": { "type": "twilightforest:hydra" }}
+    },
+    "hurt": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": { "entity": { "type": "twilightforest:hydra" }}
+    },
+    "slay": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": { "entity": { "type": "twilightforest:hydra" }}
+    },
+    "summon": {
+      "trigger": "minecraft:summoned_entity",
+      "conditions": { "entity": { "type": "twilightforest:hydra" }}
+    },
+    "tame": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": { "entity": { "type": "twilightforest:hydra" }}
+    },
+    "hurt_by_indirect_alt": {
+      "trigger": "minecraft:entity_hurt_player",
+      "conditions": { "damage": { "source_entity": { "type": "twilightforest:hydra_head" }}}
+    },
+    "slain_by_alt": {
+      "trigger": "minecraft:entity_killed_player",
+      "conditions": { "entity": { "type": "twilightforest:hydra_head" }}
+    },
+    "hurt_alt": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": { "entity": { "type": "twilightforest:hydra_head" }}
+    },
+    "slay_alt": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": { "entity": { "type": "twilightforest:hydra_head" }}
+    },
+    "summon_alt": {
+      "trigger": "minecraft:summoned_entity",
+      "conditions": { "entity": { "type": "twilightforest:hydra_head" }}
+    },
+    "tame_alt": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": { "entity": { "type": "twilightforest:hydra_head" }}
+    }
+  },
+  "requirements": [
+    [
+      "hurt_by_indirect", "slain_by", "hurt", "slay", "summon", "tame",
+      "hurt_by_indirect_alt", "slain_by_alt", "hurt_alt", "slay_alt", "summon_alt", "tame_alt"
+    ]
+  ]
+}

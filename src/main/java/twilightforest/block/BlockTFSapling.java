@@ -1,9 +1,9 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -24,25 +24,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.enums.SaplingVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
-import twilightforest.world.TFGenCanopyTree;
-import twilightforest.world.TFGenDarkCanopyTree;
-import twilightforest.world.TFGenHollowTree;
-import twilightforest.world.TFGenLargeRainboak;
-import twilightforest.world.TFGenMangroveTree;
-import twilightforest.world.TFGenMinersTree;
-import twilightforest.world.TFGenSmallRainboak;
-import twilightforest.world.TFGenSmallTwilightOak;
-import twilightforest.world.TFGenSortingTree;
-import twilightforest.world.TFGenTreeOfTime;
-import twilightforest.world.TFGenTreeOfTransformation;
+import twilightforest.world.feature.TFGenCanopyTree;
+import twilightforest.world.feature.TFGenDarkCanopyTree;
+import twilightforest.world.feature.TFGenHollowTree;
+import twilightforest.world.feature.TFGenLargeRainboak;
+import twilightforest.world.feature.TFGenMangroveTree;
+import twilightforest.world.feature.TFGenMinersTree;
+import twilightforest.world.feature.TFGenSmallRainboak;
+import twilightforest.world.feature.TFGenSmallTwilightOak;
+import twilightforest.world.feature.TFGenSortingTree;
+import twilightforest.world.feature.TFGenTreeOfTime;
+import twilightforest.world.feature.TFGenTreeOfTransformation;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegisterCallback {
-	public static final PropertyEnum<SaplingVariant> TF_TYPE = PropertyEnum.create("tf_type", SaplingVariant.class);
+
+	public static final IProperty<SaplingVariant> TF_TYPE = PropertyEnum.create("tf_type", SaplingVariant.class);
 	protected static final AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 
 	protected BlockTFSapling() {
@@ -108,17 +106,17 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-		par3List.add(new ItemStack(this, 1, 3));
-		par3List.add(new ItemStack(this, 1, 4));
-		par3List.add(new ItemStack(this, 1, 5));
-		par3List.add(new ItemStack(this, 1, 6));
-		par3List.add(new ItemStack(this, 1, 7));
-		par3List.add(new ItemStack(this, 1, 8));
-		par3List.add(new ItemStack(this, 1, 9));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+		list.add(new ItemStack(this, 1, 2));
+		list.add(new ItemStack(this, 1, 3));
+		list.add(new ItemStack(this, 1, 4));
+		list.add(new ItemStack(this, 1, 5));
+		list.add(new ItemStack(this, 1, 6));
+		list.add(new ItemStack(this, 1, 7));
+		list.add(new ItemStack(this, 1, 8));
+		list.add(new ItemStack(this, 1, 9));
 	}
 
 	@Override

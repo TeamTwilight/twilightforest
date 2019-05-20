@@ -1,11 +1,12 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,15 +27,12 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback {
 
-	public static final PropertyEnum<Leaves3Variant> VARIANT = PropertyEnum.create("variant", Leaves3Variant.class);
+	public static final IProperty<Leaves3Variant> VARIANT = PropertyEnum.create("variant", Leaves3Variant.class);
 
 	protected BlockTFLeaves3() {
 		this.setCreativeTab(TFItems.creativeTab);
@@ -48,13 +46,8 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	}
 
 	@Override
-	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public int getLightOpacity(IBlockState state) {
 		return TFConfig.performance.leavesLightOpacity;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return TFConfig.performance.leavesFullCube;
 	}
 
 	// [VanillaCopy] BlockLeavesNew.getMetaFromState - could subclass, but different VARIANT property
@@ -103,14 +96,14 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return TFItems.magic_beans;
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
 		for (int i = 0; i < Leaves3Variant.values().length; i++) {
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 
@@ -127,8 +120,9 @@ public class BlockTFLeaves3 extends BlockLeaves implements ModelRegisterCallback
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY).ignore(DECAYABLE).build());
-		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+		IStateMapper stateMapper = new StateMap.Builder().ignore(CHECK_DECAY, DECAYABLE).build();
+		ModelLoader.setCustomStateMapper(this, stateMapper);
+		ModelUtils.registerToStateSingleVariant(this, VARIANT, stateMapper);
 	}
 
 	@Override

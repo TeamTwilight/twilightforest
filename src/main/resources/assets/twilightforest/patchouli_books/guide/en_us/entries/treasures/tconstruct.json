@@ -1,0 +1,14 @@
+{
+  "name": "[TCon] Tools",
+  "icon": "tconstruct:large_plate{Material:\"fierymetal\"}",
+  "category": "treasures",
+  "flag": "mod:tconstruct",
+  "advancement": "twilightforest:alt/compat/tconstruct",
+  "sortnum": 1200,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Tinker's Construct info about TF Tools"
+    }
+  ]
+}

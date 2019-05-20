@@ -1,0 +1,28 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all",
+    "textures": { "all": "twilightforest:blocks/wood/planks_trans_0" }
+  },
+  "variants": {
+    "inventory": [{}],
+    "normal": [{
+      "weight": 10
+    }, {
+      "weight": 10,
+      "textures": {
+        "all": "twilightforest:blocks/wood/planks_trans_1"
+      }
+    }, {
+      "weight": 1,
+      "textures": {
+        "all": "twilightforest:blocks/wood/planks_trans_2"
+      }
+    }, {
+      "weight": 1,
+      "textures": {
+        "all": "twilightforest:blocks/wood/planks_trans_3"
+      }
+    }]
+  }
+}

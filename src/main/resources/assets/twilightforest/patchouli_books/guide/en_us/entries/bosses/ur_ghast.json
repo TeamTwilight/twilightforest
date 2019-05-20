@@ -1,0 +1,14 @@
+{
+  "name": "Ur-Ghast",
+  "icon": "twilightforest:trophy:3",
+  "category": "bosses",
+  "advancement": "twilightforest:alt/entities/ur_ghast",
+  "sortnum": 6120,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "twilightforest:ur_ghast",
+      "text": "Time to call the Ghastbusters"
+    }
+  ]
+}

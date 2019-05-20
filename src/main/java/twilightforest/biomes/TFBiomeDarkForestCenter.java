@@ -24,6 +24,6 @@ public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
-		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_knights") };
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_knights") };
 	}
 }

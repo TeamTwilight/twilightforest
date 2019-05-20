@@ -20,8 +20,8 @@ import twilightforest.biomes.TFBiomes;
 
 public class EntityTFMosquitoSwarm extends EntityMob {
 
-	public EntityTFMosquitoSwarm(World par1World) {
-		super(par1World);
+	public EntityTFMosquitoSwarm(World world) {
+		super(world);
 
 		setSize(.7F, 1.9F);
 		this.stepHeight = 2.1f;
@@ -50,9 +50,9 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
-		if (super.attackEntityAsMob(par1Entity)) {
-			if (par1Entity instanceof EntityLivingBase) {
+	public boolean attackEntityAsMob(Entity entity) {
+		if (super.attackEntityAsMob(entity)) {
+			if (entity instanceof EntityLivingBase) {
 				int duration;
 				switch (world.getDifficulty()) {
 					case EASY:
@@ -67,7 +67,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 						break;
 				}
 
-				((EntityLivingBase) par1Entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, duration * 20, 0));
+				((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, duration * 20, 0));
 			}
 
 			return true;

@@ -1,10 +1,6 @@
-/**
- *
- */
 package twilightforest.biomes;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -12,10 +8,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.passive.EntityTFPenguin;
 import twilightforest.potions.TFPotions;
-import twilightforest.world.TFGenPenguins;
+import twilightforest.world.feature.TFGenPenguins;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;
@@ -33,7 +31,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		getTFBiomeDecorator().hasCanopy = false;
 
 		spawnableCreatureList.clear();
-		spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFPenguin.class, 10, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFPenguin.class, 10, 4, 4));
 	}
 
 	@Override
@@ -59,31 +57,31 @@ public class TFBiomeGlacier extends TFBiomeBase {
 	}
 
 	@Override
-	public void decorate(World par1World, Random par2Random, BlockPos pos) {
-		super.decorate(par1World, par2Random, pos);
-		TFGenPenguins penguins = new TFGenPenguins();
+	public void decorate(World world, Random random, BlockPos pos) {
+		super.decorate(world, random, pos);
 
-		if (par2Random.nextInt(4) == 0) {
-			int j = pos.getX() + par2Random.nextInt(16) + 8;
+		WorldGenerator penguins = new TFGenPenguins();
+		if (random.nextInt(4) == 0) {
+			int x = pos.getX() + random.nextInt(16) + 8;
 			int y = TFWorld.SEALEVEL;
-			int k = pos.getZ() + par2Random.nextInt(16) + 8;
-			penguins.generate(par1World, par2Random, new BlockPos(j, y, k));
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			penguins.generate(world, random, new BlockPos(x, y, z));
 		}
 	}
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
-		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_yeti") };
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_yeti") };
 	}
 
 	@Override
-	public void enforceProgession(EntityPlayer player, World world) {
+	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.addPotionEffect(new PotionEffect(TFPotions.frosty, 100, 3));
 		}
 		// hint monster?
 		if (world.rand.nextInt(4) == 0) {
-			TFFeature.iceTower.trySpawnHintMonster(world, player);
+			TFFeature.ICE_TOWER.trySpawnHintMonster(world, player);
 		}
 	}
 }

@@ -8,13 +8,13 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.EntityTFBird;
 
-
 public class RenderTFBird extends RenderLiving<EntityTFBird> {
+
 	private final ResourceLocation textureLoc;
 
 	public RenderTFBird(RenderManager manager, ModelBase model, float shadowSize, String textureName) {
 		super(manager, model, shadowSize);
-		textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + textureName);
+		textureLoc = TwilightForestMod.getModelTexture(textureName);
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class RenderTFBird extends RenderLiving<EntityTFBird> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFBird par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFBird entity) {
 		return textureLoc;
 	}
 }

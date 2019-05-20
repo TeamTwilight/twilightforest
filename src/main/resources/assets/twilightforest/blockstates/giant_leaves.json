@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": { "textures": { "all": "minecraft:blocks/leaves_oak" } },
   "variants": {
-    "inventory": [{ "model": "cube_all" }],
+    "inventory": [{ "model": "leaves" }],
     "normal": [{ "model": "twilightforest:util/giant_block" }]
   }
 }

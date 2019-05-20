@@ -1,106 +1,100 @@
 package twilightforest.item;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.entity.EntityTFHedgeSpider;
-import twilightforest.entity.EntityTFHostileWolf;
-import twilightforest.entity.EntityTFMinotaur;
-import twilightforest.entity.EntityTFRedcap;
-import twilightforest.entity.EntityTFSkeletonDruid;
-import twilightforest.entity.EntityTFSwarmSpider;
-import twilightforest.entity.EntityTFWraith;
-import twilightforest.entity.passive.EntityTFBighorn;
-import twilightforest.entity.passive.EntityTFBoar;
-import twilightforest.entity.passive.EntityTFDeer;
-import twilightforest.entity.passive.EntityTFPenguin;
-import twilightforest.entity.passive.EntityTFRaven;
+
+import twilightforest.TwilightForestMod;
+import twilightforest.util.TFEntityNames;
+import twilightforest.util.VanillaEntityNames;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class ItemTFTransformPowder extends ItemTF {
-	private final Map<Class<? extends EntityLivingBase>, Class<? extends EntityLivingBase>> transformMap = new HashMap<>();
+
+	private final Map<ResourceLocation, ResourceLocation> transformMap = new HashMap<>();
 
 	protected ItemTFTransformPowder() {
 		this.maxStackSize = 64;
 		this.setCreativeTab(TFItems.creativeTab);
 
-		addTwoWayTransformation(EntityTFMinotaur.class, EntityPigZombie.class);
-		addTwoWayTransformation(EntityTFDeer.class, EntityCow.class);
-		addTwoWayTransformation(EntityTFBighorn.class, EntitySheep.class);
-		addTwoWayTransformation(EntityTFBoar.class, EntityPig.class);
-		addTwoWayTransformation(EntityTFRaven.class, EntityBat.class);
-		addTwoWayTransformation(EntityTFHostileWolf.class, EntityWolf.class);
-		addTwoWayTransformation(EntityTFPenguin.class, EntityChicken.class);
-		addTwoWayTransformation(EntityTFHedgeSpider.class, EntitySpider.class);
-		addTwoWayTransformation(EntityTFSwarmSpider.class, EntityCaveSpider.class);
-		addTwoWayTransformation(EntityTFWraith.class, EntityBlaze.class);
-		addTwoWayTransformation(EntityTFRedcap.class, EntityVillager.class);
-		addTwoWayTransformation(EntityTFSkeletonDruid.class, EntityWitch.class);
+		addTwoWayTransformation(TFEntityNames.MINOTAUR,       VanillaEntityNames.ZOMBIE_PIGMAN);
+		addTwoWayTransformation(TFEntityNames.DEER,           VanillaEntityNames.COW);
+		addTwoWayTransformation(TFEntityNames.BIGHORN_SHEEP,  VanillaEntityNames.SHEEP);
+		addTwoWayTransformation(TFEntityNames.WILD_BOAR,      VanillaEntityNames.PIG);
+		addTwoWayTransformation(TFEntityNames.BUNNY,          VanillaEntityNames.RABBIT);
+		addTwoWayTransformation(TFEntityNames.TINY_BIRD,      VanillaEntityNames.PARROT);
+		addTwoWayTransformation(TFEntityNames.RAVEN,          VanillaEntityNames.BAT);
+		addTwoWayTransformation(TFEntityNames.HOSTILE_WOLF,   VanillaEntityNames.WOLF);
+		addTwoWayTransformation(TFEntityNames.PENGUIN,        VanillaEntityNames.CHICKEN);
+		addTwoWayTransformation(TFEntityNames.HEDGE_SPIDER,   VanillaEntityNames.SPIDER);
+		addTwoWayTransformation(TFEntityNames.SWARM_SPIDER,   VanillaEntityNames.CAVE_SPIDER);
+		addTwoWayTransformation(TFEntityNames.WRAITH,         VanillaEntityNames.BLAZE);
+		addTwoWayTransformation(TFEntityNames.REDCAP,         VanillaEntityNames.VILLAGER);
+		addTwoWayTransformation(TFEntityNames.SKELETON_DRUID, VanillaEntityNames.WITCH);
 	}
 
-	private void addTwoWayTransformation(Class<? extends EntityLivingBase> class1, Class<? extends EntityLivingBase> class2) {
-		transformMap.put(class1, class2);
-		transformMap.put(class2, class1);
+	private void addTwoWayTransformation(ResourceLocation from, ResourceLocation to) {
+		transformMap.put(from, to);
+		transformMap.put(to, from);
 	}
 
 	@Override
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
-		Class<?> transformClass = transformMap.get(target.getClass());
 
-		if (transformClass != null) {
-			if (target.world.isRemote) {
-				if (target instanceof EntityLiving) {
-					((EntityLiving) target).spawnExplosionParticle();
-					((EntityLiving) target).spawnExplosionParticle();
-				}
+		if (target.isDead) return false;
 
-				target.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F);
-			} else {
-				EntityLivingBase newMonster = null;
-				try {
-					newMonster = (EntityLivingBase) transformClass.getConstructor(World.class).newInstance(target.world);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		ResourceLocation location = transformMap.get(EntityList.getKey(target));
+		if (location == null) return false;
 
-				if (newMonster == null) {
-					return false;
-				} else {
-					newMonster.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
-					target.world.spawnEntity(newMonster);
-					target.setDead();
-					stack.shrink(1);
-				}
-			}
-
-			return true;
-		} else {
-			return false;
+		if (target.world.isRemote) {
+			return EntityList.isRegistered(location);
 		}
+
+		Entity newEntity = EntityList.createEntityByIDFromName(location, target.world);
+		if (newEntity == null) return false;
+
+		newEntity.setLocationAndAngles(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
+		if (newEntity instanceof EntityLiving) {
+			((EntityLiving) newEntity).onInitialSpawn(target.world.getDifficultyForLocation(new BlockPos(target)), null);
+		}
+
+		try { // try copying what can be copied
+			UUID uuid = newEntity.getUniqueID();
+			newEntity.readFromNBT(target.writeToNBT(newEntity.writeToNBT(new NBTTagCompound())));
+			newEntity.setUniqueId(uuid);
+		} catch (Exception e) {
+			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data: {}", e);
+		}
+
+		target.world.spawnEntity(newEntity);
+		target.setDead();
+		stack.shrink(1);
+
+		if (target instanceof EntityLiving) {
+			((EntityLiving) target).spawnExplosionParticle();
+			((EntityLiving) target).spawnExplosionParticle();
+		}
+		target.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F);
+
+		return true;
 	}
 
 	@Nonnull
@@ -127,9 +121,8 @@ public class ItemTFTransformPowder extends ItemTF {
 		double radius = 1.0D;
 		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
 		Vec3d lookVec = player.getLookVec();
-		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 
 		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}
-
 }

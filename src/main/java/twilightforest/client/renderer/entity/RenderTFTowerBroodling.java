@@ -9,7 +9,7 @@ import twilightforest.entity.EntityTFTowerBroodling;
 
 public class RenderTFTowerBroodling extends RenderSpider<EntityTFTowerBroodling> {
 
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerbroodling.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("towerbroodling.png");
 
 	public RenderTFTowerBroodling(RenderManager manager) {
 		super(manager);

@@ -6,12 +6,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -19,15 +16,19 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBirdFly;
+import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFTinyBird extends EntityTFBird {
 
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tiny_bird");
 	private static final DataParameter<Byte> DATA_BIRDTYPE = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_BIRDFLAGS = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
 
@@ -35,9 +36,9 @@ public class EntityTFTinyBird extends EntityTFBird {
 	private BlockPos spawnPosition;
 	private int currentFlightTime;
 
-	public EntityTFTinyBird(World par1World) {
-		super(par1World);
-		this.setSize(0.5F, 0.9F);
+	public EntityTFTinyBird(World world) {
+		super(world);
+		this.setSize(0.3F, 0.3F);
 		setBirdType(rand.nextInt(4));
 		setIsBirdLanded(true);
 	}
@@ -46,7 +47,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	protected void initEntityAI() {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAITFBirdFly(this));
-		this.tasks.addTask(1, new EntityAITempt(this, 1.0F, Items.WHEAT_SEEDS, true));
+		this.tasks.addTask(1, new EntityAITFTempt(this, 1.0F, true, SEEDS));
 		this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(4, new EntityAILookIdle(this));
@@ -67,23 +68,28 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("BirdType", this.getBirdType());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setInteger("BirdType", this.getBirdType());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setBirdType(par1NBTTagCompound.getInteger("BirdType"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setBirdType(compound.getInteger("BirdType"));
 	}
 
 	public int getBirdType() {
 		return dataManager.get(DATA_BIRDTYPE);
 	}
 
-	public void setBirdType(int par1) {
-		dataManager.set(DATA_BIRDTYPE, (byte) par1);
+	public void setBirdType(int type) {
+		dataManager.set(DATA_BIRDTYPE, (byte) type);
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 
 	@Override
@@ -99,6 +105,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.TINYBIRD_HURT;
+	}
+
+	@Override
+	public float getEyeHeight() {
+		return this.height * 0.7F;
 	}
 
 	@Override
@@ -124,19 +135,17 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (underMaterial == Material.GRASS) {
 			return 9.0F;
 		}
-		// default to just prefering lighter areas
+		// default to just preferring lighter areas
 		return this.world.getLightBrightness(pos) - 0.5F;
 	}
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
 		// while we are flying, try to level out somewhat
 		if (!this.isBirdLanded()) {
 			this.motionY *= 0.6000000238418579D;
 		}
-
 	}
 
 	@Override
@@ -176,9 +185,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 			double d0 = (double) this.spawnPosition.getX() + 0.5D - this.posX;
 			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.posY;
 			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.posZ;
+
 			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
 			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
 			this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
+
 			float f = (float) (MathHelper.atan2(this.motionZ, this.motionX) * (180D / Math.PI)) - 90.0F;
 			float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);
 			this.moveForward = 0.5F;
@@ -196,20 +207,18 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	public boolean isSpooked() {
+		if (this.hurtTime > 0) return true;
 		EntityPlayer closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
-
-		return this.hurtTime > 0 || (closestPlayer != null && (closestPlayer.inventory.getCurrentItem() == null || closestPlayer.inventory.getCurrentItem().getItem() != Items.WHEAT_SEEDS));
+		return closestPlayer != null
+				&& !SEEDS.apply(closestPlayer.getHeldItemMainhand())
+				&& !SEEDS.apply(closestPlayer.getHeldItemOffhand());
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-
-		if (block == Blocks.AIR) {
-			return false;
-		} else {
-			return block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, EnumFacing.UP);
-		}
+		return !block.isAir(state, world, pos)
+				&& (block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, EnumFacing.UP));
 	}
 
 	@Override
@@ -217,14 +226,9 @@ public class EntityTFTinyBird extends EntityTFBird {
 		return (dataManager.get(DATA_BIRDFLAGS) & 1) != 0;
 	}
 
-	public void setIsBirdLanded(boolean par1) {
-		byte b0 = dataManager.get(DATA_BIRDFLAGS);
-
-		if (par1) {
-			dataManager.set(DATA_BIRDFLAGS, (byte) (b0 | 1));
-		} else {
-			dataManager.set(DATA_BIRDFLAGS, (byte) (b0 & -2));
-		}
+	public void setIsBirdLanded(boolean landed) {
+		byte flags = dataManager.get(DATA_BIRDFLAGS);
+		dataManager.set(DATA_BIRDFLAGS, (byte) (landed ? flags | 1 : flags & ~1));
 	}
 
 	@Override
@@ -233,7 +237,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	protected void collideWithEntity(Entity par1Entity) {
+	protected void collideWithEntity(Entity entity) {
 	}
 
 	@Override

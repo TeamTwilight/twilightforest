@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -12,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import java.util.List;
 
 public class EntityTFNagaSegment extends MultiPartEntityPart {
+
 	private final EntityTFNaga naga;
 	private final int segment;
 	private int deathCounter;
@@ -101,7 +101,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block par4) {}
+	protected void playStepSound(BlockPos pos, Block block) {}
 
 	public void selfDestruct() {
 		this.deathCounter = 10;

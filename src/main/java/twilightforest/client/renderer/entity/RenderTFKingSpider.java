@@ -8,7 +8,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKingSpider;
 
 public class RenderTFKingSpider extends RenderSpider<EntityTFKingSpider> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "kingspider.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("kingspider.png");
 
 	public RenderTFKingSpider(RenderManager manager) {
 		super(manager);
@@ -20,7 +21,7 @@ public class RenderTFKingSpider extends RenderSpider<EntityTFKingSpider> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFKingSpider par1EntityLivingBase, float par2) {
+	protected void preRenderCallback(EntityTFKingSpider entity, float partialTicks) {
 		float scale = 1.9F;
 		GlStateManager.scale(scale, scale, scale);
 	}

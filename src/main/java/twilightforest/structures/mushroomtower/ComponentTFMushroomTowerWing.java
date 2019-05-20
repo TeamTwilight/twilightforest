@@ -69,21 +69,18 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		// should we build a base?
 		this.hasBase = size > 3;
 
-		// if we are an acender, build the destination tower
+		// if we are an ascender, build the destination tower
 		if (this.isAscender) {
+
 			int[] dest = getValidOpening(rand, Rotation.CLOCKWISE_180);
-
 			dest[1] = this.height - 3;
-
 			int childHeight = (rand.nextInt(3) + rand.nextInt(3) + 2) * FLOOR_HEIGHT + 1;
-
-
 			boolean madeIt = makeMainBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], size + 4, childHeight, Rotation.CLOCKWISE_180);
 
 			if (!madeIt) {
 				TwilightForestMod.LOGGER.info("Did not make bridge back to new main");
 			} else {
-				TwilightForestMod.LOGGER.info("Made bridge back to new main");
+				TwilightForestMod.LOGGER.debug("Made bridge back to new main");
 			}
 		}
 

@@ -16,12 +16,13 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 import twilightforest.TFSounds;
 import twilightforest.enums.BossVariant;
 import twilightforest.client.ModelRegisterCallback;
@@ -31,7 +32,9 @@ import twilightforest.tileentity.TileEntityTFTrophy;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
+@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
+public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, IInfusionStabiliser {
+
 	private static final AxisAlignedBB HYDRA_Y_BB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 	private static final AxisAlignedBB HYDRA_EAST_BB = new AxisAlignedBB(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
 	private static final AxisAlignedBB HYDRA_WEST_BB = new AxisAlignedBB(0.5F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
@@ -49,30 +52,31 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess par1IBlockAccess, BlockPos pos) {
-		EnumFacing facing = state.getValue(BlockSkull.FACING);
-		TileEntityTFTrophy trophy = (TileEntityTFTrophy) par1IBlockAccess.getTileEntity(pos);
-
-		if (trophy != null && trophy.getSkullType() == 0) {
-			// hydra bounds
-			switch (facing) {
-				case UP:
-				default:
-					return HYDRA_Y_BB;
-				case NORTH:
-					return HYDRA_NORTH_BB;
-				case SOUTH:
-					return HYDRA_SOUTH_BB;
-				case WEST:
-					return HYDRA_WEST_BB;
-				case EAST:
-					return HYDRA_EAST_BB;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
+		TileEntity te = access.getTileEntity(pos);
+		if (te instanceof TileEntityTFTrophy) {
+			switch (BossVariant.getVariant(((TileEntityTFTrophy) te).getSkullType())) {
+				case HYDRA:
+					// hydra bounds TODO: actually use non-default bounds here
+					switch (state.getValue(BlockSkull.FACING)) {
+						case UP:
+						default:
+							return HYDRA_Y_BB;
+						case NORTH:
+							return HYDRA_NORTH_BB;
+						case SOUTH:
+							return HYDRA_SOUTH_BB;
+						case WEST:
+							return HYDRA_WEST_BB;
+						case EAST:
+							return HYDRA_EAST_BB;
+					}
+				case UR_GHAST:
+					return URGHAST_BB;
+				// TODO: also add case for Questing Ram?
 			}
-		} else if (trophy != null && trophy.getSkullType() == 3) {
-			return URGHAST_BB;
-		} else {
-			return super.getBoundingBox(state, par1IBlockAccess, pos);
 		}
+		return super.getBoundingBox(state, access, pos);
 	}
 
 	@Override
@@ -117,17 +121,8 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 	}
 
 	@Override
-	public TileEntity createTileEntity(World var1, IBlockState state) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityTFTrophy();
-	}
-
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileEntityTFTrophy) {
-			return new ItemStack(TFItems.trophy, 1, ((TileEntityTFTrophy) te).getSkullType());
-		}
-		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -177,4 +172,8 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(NODROP).ignore(FACING).build());
 	}
 
+	@Override
+	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
+		return true;
+	}
 }

@@ -4,10 +4,10 @@
             "item": "twilightforest:glass_sword"
         },
         "title": {
-            "translate": "advancement.twilight_glass_sword"
+            "translate": "advancement.twilightforest.glass_sword"
         },
         "description": {
-            "translate": "advancement.twilight_glass_sword.desc"
+            "translate": "advancement.twilightforest.glass_sword.desc"
         },
         "frame": "challenge",
         "hidden": true

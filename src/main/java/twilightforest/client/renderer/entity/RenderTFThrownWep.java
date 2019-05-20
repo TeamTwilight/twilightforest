@@ -6,12 +6,9 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.entity.boss.EntityTFThrownWep;
-
 
 public class RenderTFThrownWep extends Render<EntityTFThrownWep> {
 
@@ -20,20 +17,20 @@ public class RenderTFThrownWep extends Render<EntityTFThrownWep> {
 	}
 
 	@Override
-	public void doRender(EntityTFThrownWep entity, double par2, double par4, double par6, float par8, float par9) {
+	public void doRender(EntityTFThrownWep entity, double x, double y, double z, float yaw, float partialTicks) {
 
 		GlStateManager.pushMatrix();
 
-		float spin = (entity.ticksExisted + par9) * -10F + 90F;
+		float spin = (entity.ticksExisted + partialTicks) * -10F + 90F;
 
 
-		GlStateManager.translate((float) par2, (float) par4, (float) par6);
+		GlStateManager.translate((float) x, (float) y, (float) z);
 		GlStateManager.enableRescaleNormal();
 
 		// size up
 		GlStateManager.scale(1.25F, 1.25F, 1.25F);
 
-		this.renderDroppedItem(entity.getItem(), par8, spin);
+		this.renderDroppedItem(entity.getItem(), yaw, spin);
 
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.popMatrix();

@@ -1,11 +1,11 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
@@ -32,14 +32,12 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class BlockTFExperiment115 extends Block implements ModelRegisterCallback {
-    public static final PropertyInteger NOMS = PropertyInteger.create("omnomnom", 0, 7);
-    private static final PropertyBool REGENERATE = PropertyBool.create("regenerate");
+
+    public static final IProperty<Integer> NOMS = PropertyInteger.create("omnomnom", 0, 7);
+    public static final IProperty<Boolean> REGENERATE = PropertyBool.create("regenerate");
 
     private static final AxisAlignedBB[] AABB = new AxisAlignedBB[] {
             new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
@@ -175,7 +173,7 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
 
     @Override
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
@@ -200,10 +198,14 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
         return state.getValue(REGENERATE) ? 15-(state.getValue(NOMS)*2) : 0;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerModel() {
         ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 0, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory"));
         ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 1, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_full"));
         ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 2, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_think"));
+
+        // Sorry, just gonna tack this here for now. The Shielding Scepter doesn't allow me to tack on another model like I would here. I'd like to not make a placeholder item either >.>
+        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 3, new ModelResourceLocation(TwilightForestMod.ID + ":shield", "inventory"));
     }
 }

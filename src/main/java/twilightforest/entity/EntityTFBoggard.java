@@ -10,21 +10,17 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
-import twilightforest.util.PlayerHelper;
-
 
 public class EntityTFBoggard extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/boggard");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/boggard");
 
 	public EntityTFBoggard(World world) {
 		super(world);
@@ -70,18 +66,5 @@ public class EntityTFBoggard extends EntityMob {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
-	}
-
-	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
-			// are we in a level 1 hill?
-			int chunkX = MathHelper.floor(posX) >> 4;
-			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill1) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill1"), "boggard");
-			}
-		}
 	}
 }

@@ -1,0 +1,40 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "0": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/bighorn_sheep" }
+    },
+    "1": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/bunny" }
+    },
+    "2": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/deer" }
+    },
+    "3": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/raven" }
+    },
+    "4": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/squirrel" }
+    },
+    "5": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/wild_boar" }
+    },
+    "6": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/wild_boar" }
+    },
+    "7": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/penguin" }
+    }
+  },
+  "requirements": [
+    [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "0": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/twilight_forest" }
+    },
+    "1": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/firefly_forest" }
+    },
+    "2": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/twilight_clearing" }
+    },
+    "3": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/oak_savannah" }
+    },
+    "4": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/dense_twilight_forest" }
+    },
+    "5": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/mushroom_forest" }
+    },
+    "6": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/deep_mushroom_forest" }
+    },
+    "7": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/twilight_lake" }
+    }
+  },
+  "requirements": [
+    [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+  ]
+}

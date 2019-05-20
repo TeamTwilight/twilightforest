@@ -35,7 +35,7 @@ public class EntityAITFLichMinions extends EntityAIBase {
 		EntityLivingBase targetedEntity = lich.getAttackTarget();
 		if (targetedEntity == null)
 			return;
-		float dist = lich.getDistanceToEntity(targetedEntity);
+		float dist = lich.getDistance(targetedEntity);
 		// spawn minions every so often
 		if (lich.getAttackCooldown() % 15 == 0) {
 			checkAndSpawnMinions();

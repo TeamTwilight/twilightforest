@@ -9,7 +9,6 @@ import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -18,13 +17,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
-
 public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiPart, IEntityAdditionalSpawnData {
+
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
@@ -42,8 +40,8 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	public final EntityTFGoblinChain chain5 = new EntityTFGoblinChain(this);
 	private final Entity[] partsArray = { chain1, chain2, chain3, chain4, chain5 };
 
-	public EntityTFChainBlock(World par1World) {
-		super(par1World);
+	public EntityTFChainBlock(World world) {
+		super(world);
 		this.setSize(0.6F, 0.6F);
 	}
 
@@ -52,12 +50,12 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 		this.setSize(0.6F, 0.6F);
 		this.isReturning = false;
 		this.hand = hand;
-		this.setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override
-	public void setThrowableHeading(double x, double y, double z, float speed, float accuracy) {
-		super.setThrowableHeading(x, y, z, speed, accuracy);
+	public void shoot(double x, double y, double z, float speed, float accuracy) {
+		super.shoot(x, y, z, speed, accuracy);
 
 		// save velocity
 		this.velX = this.motionX;
@@ -71,26 +69,26 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult mop) {
+	protected void onImpact(RayTraceResult ray) {
 		if (world.isRemote) {
 			return;
 		}
 
 		// only hit living things
-		if (mop.entityHit instanceof EntityLivingBase && mop.entityHit != this.getThrower()) {
-			if (mop.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
+		if (ray.entityHit instanceof EntityLivingBase && ray.entityHit != this.getThrower()) {
+			if (ray.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
 				// age when we hit a monster so that we go back to the player faster
 				this.ticksExisted += 60;
 			}
 		}
 
-		if (mop.getBlockPos() != null && !this.world.isAirBlock(mop.getBlockPos())) {
+		if (ray.getBlockPos() != null && !this.world.isAirBlock(ray.getBlockPos())) {
 			if (!this.isReturning) {
 				playSound(SoundEvents.BLOCK_ANVIL_LAND, 0.125f, this.rand.nextFloat());
 			}
 
 			if (this.blocksSmashed < MAX_SMASH) {
-				if (this.world.getBlockState(mop.getBlockPos()).getBlockHardness(world, mop.getBlockPos()) > 0.3F) {
+				if (this.world.getBlockState(ray.getBlockPos()).getBlockHardness(world, ray.getBlockPos()) > 0.3F) {
 					// riccochet
 					double bounce = 0.6;
 					this.velX *= bounce;
@@ -98,7 +96,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 					this.velZ *= bounce;
 
 
-					switch (mop.sideHit) {
+					switch (ray.sideHit) {
 						case DOWN:
 							if (this.velY > 0) {
 								this.velY *= -bounce;
@@ -158,16 +156,18 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 
 	private void affectBlocksInAABB(AxisAlignedBB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (block != Blocks.AIR && block.getExplosionResistance(this) < 7F && state.getBlockHardness(world, pos) >= 0) {
+			if (!block.isAir(state, world, pos) && block.getExplosionResistance(this) < 7F
+					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
 				if (getThrower() instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) getThrower();
 
-					if (ForgeHooks.canHarvestBlock(block, player, world, pos)) {
-						block.harvestBlock(this.world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
+					if (block.canHarvestBlock(world, pos, player)) {
+						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
 					}
 				}
 
@@ -252,7 +252,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	}
 
 	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart p_70965_1_, DamageSource p_70965_2_, float p_70965_3_) {
+	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
 		return false;
 	}
 

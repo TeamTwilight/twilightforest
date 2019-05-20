@@ -7,8 +7,8 @@ public class EntityAITFHeavySpearAttack extends EntityAIBase {
 
 	private EntityTFGoblinKnightUpper entity;
 
-	public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper par1EntityCreature) {
-		this.entity = par1EntityCreature;
+	public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper upperKnight) {
+		this.entity = upperKnight;
 		this.setMutexBits(3); // Prevent moving
 	}
 

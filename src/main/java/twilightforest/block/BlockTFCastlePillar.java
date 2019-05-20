@@ -1,10 +1,11 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -23,17 +24,14 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFCastlePillar extends Block implements ModelRegisterCallback {
-    public static final PropertyEnum<CastlePillarVariant> VARIANT = PropertyEnum.create("variant", CastlePillarVariant.class);
+
+    public static final IProperty<CastlePillarVariant> VARIANT = PropertyEnum.create("variant", CastlePillarVariant.class);
 
     BlockTFCastlePillar() {
-        super(Material.ROCK);
+        super(Material.ROCK, MapColor.QUARTZ);
         this.setHardness(100F);
         this.setResistance(35F);
         this.setSoundType(SoundType.STONE);
@@ -66,10 +64,10 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+    public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
         for (CastlePillarVariant variant : CastlePillarVariant.values()) {
-            par3List.add(new ItemStack(this, 1, variant.ordinal()*2));
-            par3List.add(new ItemStack(this, 1, (variant.ordinal()*2)+1));
+            list.add(new ItemStack(this, 1, variant.ordinal()*2));
+            list.add(new ItemStack(this, 1, (variant.ordinal()*2)+1));
         }
     }
 
@@ -92,5 +90,10 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     @Override
     public int damageDropped(IBlockState state) {
         return state.getValue(VARIANT).ordinal() << 1 | (state.getValue(LOG_AXIS) == BlockLog.EnumAxis.NONE ? 1 : 0);
+    }
+
+    @Override
+    protected ItemStack getSilkTouchDrop(IBlockState state) {
+        return new ItemStack(this, 1, damageDropped(state));
     }
 }

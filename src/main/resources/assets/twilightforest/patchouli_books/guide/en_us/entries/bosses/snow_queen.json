@@ -1,0 +1,14 @@
+{
+  "name": "Snow Queen",
+  "icon": "twilightforest:trophy:5",
+  "category": "bosses",
+  "advancement": "twilightforest:alt/entities/snow_queen",
+  "sortnum": 7130,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "twilightforest:snow_queen",
+      "text": "Best Waifu Material"
+    }
+  ]
+}

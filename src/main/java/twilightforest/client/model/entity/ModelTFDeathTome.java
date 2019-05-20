@@ -43,9 +43,9 @@ public class ModelTFDeathTome extends ModelBook {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		GlStateManager.enableCull();
-		this.setRotationAngles(par1Entity.ticksExisted, 0.4F, 0.6F, 0.9F, headPitch, 0.0625F, par1Entity);
+		this.setRotationAngles(entity.ticksExisted, 0.4F, 0.6F, 0.9F, headPitch, 0.0625F, entity);
 		this.everything.render(scale);
 		GlStateManager.disableCull();
 
@@ -58,8 +58,8 @@ public class ModelTFDeathTome extends ModelBook {
 	}
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float partialTick) {
-		float bounce = par1EntityLiving.ticksExisted + partialTick;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
 		float open = 0.9f;
 		float flipRight = 0.4f;
 		float flipLeft = 0.6f;

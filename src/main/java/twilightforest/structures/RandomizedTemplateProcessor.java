@@ -10,6 +10,7 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import java.util.Random;
 
 public abstract class RandomizedTemplateProcessor implements ITemplateProcessor {
+
     protected final Random random;
     private final float integrity;
 
@@ -26,27 +27,17 @@ public abstract class RandomizedTemplateProcessor implements ITemplateProcessor 
         return blocks[random.nextInt(blocks.length)];
     }
 
-    protected static IBlockState translateState(IBlockState stateIn, Block blockOut, IProperty property) {
-        //noinspection unchecked
+    protected static <T extends Comparable<T>> IBlockState translateState(IBlockState stateIn, Block blockOut, IProperty<T> property) {
         return blockOut.getDefaultState().withProperty(property, stateIn.getValue(property));
     }
 
-    protected static IBlockState translateState(IBlockState stateIn, Block blockOut, IProperty p1, IProperty p2, IProperty p3, IProperty p4) {
-        //noinspection unchecked
-        return blockOut.getDefaultState()
-                .withProperty(p1, stateIn.getValue(p1))
-                .withProperty(p2, stateIn.getValue(p2))
-                .withProperty(p3, stateIn.getValue(p3))
-                .withProperty(p4, stateIn.getValue(p4));
+    protected static IBlockState translateState(IBlockState stateIn, Block blockOut, IProperty<?>... properties) {
+        IBlockState stateOut = blockOut.getDefaultState();
+        for (IProperty<?> property : properties) stateOut = copyValue(stateIn, stateOut, property);
+        return stateOut;
     }
 
-    protected static IBlockState translateState(IBlockState stateIn, Block blockOut, IProperty p1, IProperty p2, IProperty p3, IProperty p4, IProperty p5) {
-        //noinspection unchecked
-        return blockOut.getDefaultState()
-                .withProperty(p1, stateIn.getValue(p1))
-                .withProperty(p2, stateIn.getValue(p2))
-                .withProperty(p3, stateIn.getValue(p3))
-                .withProperty(p4, stateIn.getValue(p4))
-                .withProperty(p5, stateIn.getValue(p5));
+    private static <T extends Comparable<T>> IBlockState copyValue(IBlockState from, IBlockState to, IProperty<T> property) {
+        return to.withProperty(property, from.getValue(property));
     }
 }

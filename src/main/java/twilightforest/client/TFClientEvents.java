@@ -1,53 +1,43 @@
 package twilightforest.client;
 
-import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
+import twilightforest.TFConfig;
+import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
-import twilightforest.client.shader.ShaderHelper;
+import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
 import twilightforest.client.texture.MoltenFieryTexture;
-import twilightforest.compat.IEShaderRegister;
 import twilightforest.compat.TFCompat;
-import twilightforest.entity.EntityTFPinchBeetle;
-import twilightforest.entity.EntityTFYeti;
-import twilightforest.entity.boss.EntityTFYetiAlpha;
+import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.item.ItemTFBowBase;
 import twilightforest.world.WorldProviderTwilightForest;
-
-import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
 public class TFClientEvents {
-
-	private static final Random random = new Random();
 
 	@SubscribeEvent
 	public static void texStitch(TextureStitchEvent.Pre evt) {
@@ -68,14 +58,26 @@ public class TFClientEvents {
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));
 
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_grip" ), IEShaderRegister.processedRevolverGripLayer, true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_0"    ), IEShaderRegister.processedRevolverLayer    , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/chemthrower_0"     ), IEShaderRegister.processedChemthrowLayer   , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/drill_diesel_0"    ), IEShaderRegister.processedDrillLayer       , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/railgun_0"         ), IEShaderRegister.processedRailgunLayer     , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/shield_0"          ), IEShaderRegister.processedShieldLayer      , true, EASY_GRAYSCALING_MAP));
-		//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), IEShaderRegister.processedMinecartLayer    , true, EASY_GRAYSCALING_MAP));
-			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "blocks/shaders/balloon_0"        ), IEShaderRegister.processedBalloonLayer     , true, EASY_GRAYSCALING_MAP));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_grip" ), IEShaderRegister.PROCESSED_REVOLVER_GRIP_LAYER, true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_0"    ), IEShaderRegister.PROCESSED_REVOLVER_LAYER     , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/chemthrower_0"     ), IEShaderRegister.PROCESSED_CHEMTHROW_LAYER    , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/drill_diesel_0"    ), IEShaderRegister.PROCESSED_DRILL_LAYER        , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/railgun_0"         ), IEShaderRegister.PROCESSED_RAILGUN_LAYER      , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/shield_0"          ), IEShaderRegister.PROCESSED_SHIELD_LAYER       , true, EASY_GRAYSCALING_MAP ));
+		//	map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", ""                                ), IEShaderRegister.PROCESSED_MINECART_LAYER     , true, EASY_GRAYSCALING_MAP ));
+			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "blocks/shaders/balloon_0"        ), IEShaderRegister.PROCESSED_BALLOON_LAYER      , true, EASY_GRAYSCALING_MAP ));
+
+			final String[] types = new String[]{ "1_0", "1_2", "1_4", "1_5", "1_6" };
+
+			for (IEShaderRegister.CaseType caseType : IEShaderRegister.CaseType.everythingButMinecart()) {
+				for (String type : types) {
+					map.setTextureEntry(new GradientMappedTexture(
+							IEShaderRegister.ModType.IMMERSIVE_ENGINEERING.provideTex(caseType, type),
+							IEShaderRegister.ModType.TWILIGHT_FOREST.provideTex(caseType, type),
+							true, EASY_GRAYSCALING_MAP
+					));
+				}
+			}
 		}
 	}
 
@@ -95,31 +97,83 @@ public class TFClientEvents {
 
 	public static final GradientNode[] EASY_GRAYSCALING_MAP = {
 			new GradientNode(0.0f, 0xFF_80_80_80),
+			new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
 			new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};
 
-	// Slowness potion uses an attribute modifier with specific UUID
-	// We can detect whether an entity has slowness from the client by looking for this UUID
-	private static final AttributeModifier FROSTED_POTION_MODIFIER =
-			new AttributeModifier(UUID.fromString("CE9DBC2A-EE3F-43F5-9DF7-F7F1EE4915A9"), "doesntmatter", 0, 0);
+	/**
+	 * Stop the game from rendering the mount health for unfriendly creatures
+	 */
+	@SubscribeEvent
+	public static boolean preOverlay(RenderGameOverlayEvent.Pre event) {
+		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
+			if (TFEventListener.isRidingUnfriendly(Minecraft.getMinecraft().player)) {
+				event.setCanceled(true);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//FIXME shove onto an external player layer, like armor
+	//@SubscribeEvent
+	//public static void renderLivingPre(RenderLivingEvent.Pre<EntityLivingBase> event) {
+	//	// Shields
+	//	if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null)) {
+	//		ShaderManager.useShader(ShaderManager.shieldShader, ShaderManager.TIME);
+	//	}
+	//}
 
 	/**
-	 * Do ice effect on slowed monsters
+	 * Render various effects such as an iced entity
 	 */
 	@SubscribeEvent
 	public static void renderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
-		if (event.getEntity().getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).hasModifier(FROSTED_POTION_MODIFIER)) {
-			renderIcedEntity(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ());
+		for (RenderEffect effect : RenderEffect.VALUES) {
+			if (effect.shouldRender(event.getEntity(), false)) {
+				effect.render(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), event.getPartialRenderTick(), false);
+			}
 		}
 	}
+
+	/**
+	 * Render effects in first-person perspective
+	 */
+	@SubscribeEvent
+	public static void renderWorldLast(RenderWorldLastEvent event) {
+
+		if (!TFConfig.firstPersonEffects) return;
+
+		GameSettings settings = Minecraft.getMinecraft().gameSettings;
+		if (settings.thirdPersonView != 0 || settings.hideGUI) return;
+
+		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		if (entity instanceof EntityLivingBase) {
+			Render<? extends Entity> renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);
+			if (renderer instanceof RenderLivingBase<?>) {
+				for (RenderEffect effect : RenderEffect.VALUES) {
+					if (effect.shouldRender((EntityLivingBase) entity, true)) {
+						effect.render((EntityLivingBase) entity, (RenderLivingBase<? extends EntityLivingBase>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks(), true);
+					}
+				}
+			}
+		}
+	}
+
+	// TODO: remove this check (and the event handler) whenever we depend on a greater Forge version
+	private static final boolean shouldUpdateFOV = Loader.instance().getIndexedModList().get("forge")
+			.getProcessedVersion().compareTo(new DefaultArtifactVersion("14.23.5.2813")) < 0;
 
 	/**
 	 * Alter FOV for our bows
 	 */
 	@SubscribeEvent
 	public static void fovUpdate(FOVUpdateEvent event) {
-		if (event.getEntity().isHandActive() && (event.getEntity().getHeldItem(event.getEntity().getActiveHand()).getItem() instanceof ItemTFBowBase)) {
-			int i = event.getEntity().getItemInUseCount();
+		if (!shouldUpdateFOV) return;
+		EntityPlayer player = event.getEntity();
+		// Logic from AbstractClientPlayer.getFovModifier()
+		if (player.isHandActive() && player.getActiveItemStack().getItem() instanceof ItemTFBowBase) {
+			int i = player.getItemInUseMaxCount();
 			float f1 = (float) i / 20.0F;
 
 			if (f1 > 1.0F) {
@@ -133,64 +187,29 @@ public class TFClientEvents {
 	}
 
 	/**
-	 * Render an entity with the ice effect.
-	 * This just displays a bunch of ice cubes around on their model
-	 */
-	private static void renderIcedEntity(EntityLivingBase entity, RenderLivingBase<EntityLivingBase> renderer, double x, double y, double z) {
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-
-		random.setSeed(entity.getEntityId() * entity.getEntityId() * 3121 + entity.getEntityId() * 45238971);
-
-		// number of cubes
-		int numCubes = (int) (entity.height / 0.4F);
-
-		// make cubes
-		for (int i = 0; i < numCubes; i++) {
-			GlStateManager.pushMatrix();
-			float dx = (float) (x + random.nextGaussian() * 0.2F * entity.width);
-			float dy = (float) (y + random.nextGaussian() * 0.2F * entity.height) + entity.height / 2F;
-			float dz = (float) (z + random.nextGaussian() * 0.2F * entity.width);
-			GlStateManager.translate(dx, dy, dz);
-			GlStateManager.scale(0.5F, 0.5F, 0.5F);
-			GlStateManager.rotate(random.nextFloat() * 360F, 1.0F, 0.0F, 0.0F);
-			GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
-			GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
-
-			Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlockBrightness(Blocks.ICE.getDefaultState(), 1);
-			GlStateManager.popMatrix();
-		}
-
-		GlStateManager.disableBlend();
-	}
-
-	/**
 	 * On the tick, we kill the vignette
 	 */
 	@SubscribeEvent
 	public static void renderTick(TickEvent.RenderTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
-			Minecraft mc = Minecraft.getMinecraft();
-			World world = mc.world;
+			Minecraft minecraft = Minecraft.getMinecraft();
 
-			((BlockLeaves) TFBlocks.twilight_leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-			((BlockLeaves) TFBlocks.twilight_leaves_3).setGraphicsLevel(mc.gameSettings.fancyGraphics);
-			((BlockLeaves) TFBlocks.magic_leaves).setGraphicsLevel(mc.gameSettings.fancyGraphics);
+			boolean fancyGraphics = minecraft.gameSettings.fancyGraphics;
+			TFBlocks.twilight_leaves.setGraphicsLevel(fancyGraphics);
+			TFBlocks.twilight_leaves_3.setGraphicsLevel(fancyGraphics);
+			TFBlocks.magic_leaves.setGraphicsLevel(fancyGraphics);
 
 			// only fire if we're in the twilight forest
-			if (world != null && (world.provider instanceof WorldProviderTwilightForest)) {
+			if (minecraft.world != null && minecraft.world.provider instanceof WorldProviderTwilightForest) {
 				// vignette
-				if (mc.ingameGUI != null) {
-					mc.ingameGUI.prevVignetteBrightness = 0.0F;
+				if (minecraft.ingameGUI != null) {
+					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;
 				}
 			}//*/
 
-			if (mc.player != null) {
-				Entity riding = mc.player.getRidingEntity();
-				if (riding instanceof EntityTFPinchBeetle || riding instanceof EntityTFYeti || riding instanceof EntityTFYetiAlpha) {
-					mc.ingameGUI.setOverlayMessage("", false);
+			if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
+				if (minecraft.ingameGUI != null) {
+					minecraft.ingameGUI.setOverlayMessage("", false);
 				}
 			}
 		}
@@ -201,24 +220,27 @@ public class TFClientEvents {
 		if (event.phase != TickEvent.Phase.END) return;
 		time++;
 
-		rotationTicker = rotationTicker >= 359.0F ? 0.0F : rotationTicker + 1.0F;
-		sineTicker = sineTicker >= SINE_TICKER_BOUND ? 0.0F : sineTicker + 1.0F;
+		Minecraft mc = Minecraft.getMinecraft();
+		float partial = mc.getRenderPartialTicks();
+
+		rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
+		sineTickerI = (sineTickerI >= SINE_TICKER_BOUND ? 0 : sineTickerI + 1);
+
+		rotationTicker = rotationTickerI + partial;
+		sineTicker = sineTicker + partial;
 
 		BugModelAnimationHelper.animate();
-	}
 
-	@SubscribeEvent
-	public static void shouldReloadShader(ClientChatEvent event) {
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient() && Minecraft.getMinecraft().isSingleplayer() && event.getOriginalMessage().toLowerCase(Locale.ROOT).equals("TFReload")) {
-			Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString( "Reloading Twilight Forest Shaders!" ));
-			ShaderHelper.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
-			IEShaderRegister.getShaderReloadListener().onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
+		if (!mc.isGamePaused() && mc.world != null && mc.world.provider.getWeatherRenderer() instanceof TFWeatherRenderer) {
+			((TFWeatherRenderer) mc.world.provider.getWeatherRenderer()).tick();
 		}
 	}
 
 	public static int time = 0;
+	private static int rotationTickerI = 0;
+	private static int sineTickerI = 0;
 	public static float rotationTicker = 0;
 	public static float sineTicker = 0;
 	public static final float PI = (float) Math.PI;
-	public static final float SINE_TICKER_BOUND = PI * 200.0F - 1.0F;
+	private static final int SINE_TICKER_BOUND = (int) ((PI * 200.0F) - 1.0F);
 }

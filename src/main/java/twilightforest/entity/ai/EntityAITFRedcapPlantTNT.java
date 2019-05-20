@@ -4,39 +4,42 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
+
 	public EntityAITFRedcapPlantTNT(EntityTFRedcap entityTFRedcap) {
 		super(entityTFRedcap);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase attackTarget = this.entityObj.getAttackTarget();
+		EntityLivingBase attackTarget = this.redcap.getAttackTarget();
 		return attackTarget != null
-				&& !entityObj.heldTNT.isEmpty()
-				&& entityObj.getDistanceSqToEntity(attackTarget) < 25
+				&& !redcap.heldTNT.isEmpty()
+				&& redcap.getDistanceSq(attackTarget) < 25
 				&& !isTargetLookingAtMe(attackTarget)
+				&& ForgeEventFactory.getMobGriefingEvent(redcap.world, redcap)
 				&& !isLitTNTNearby(8)
 				&& findBlockTNTNearby(5) == null;
 	}
 
 	@Override
 	public void startExecuting() {
-		BlockPos entityPos = new BlockPos(entityObj);
+		BlockPos entityPos = new BlockPos(redcap);
 
-		this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.heldTNT);
+		this.redcap.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, redcap.heldTNT);
 
-		if (this.entityObj.world.isAirBlock(entityPos)) {
-			entityObj.heldTNT.shrink(1);
-			entityObj.playLivingSound();
-			entityObj.world.setBlockState(entityPos, Blocks.TNT.getDefaultState());
+		if (this.redcap.world.isAirBlock(entityPos)) {
+			redcap.heldTNT.shrink(1);
+			redcap.playLivingSound();
+			redcap.world.setBlockState(entityPos, Blocks.TNT.getDefaultState());
 		}
 	}
 
 	@Override
 	public void resetTask() {
-		this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.heldPick);
+		this.redcap.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, redcap.heldPick);
 	}
 }

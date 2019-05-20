@@ -97,16 +97,16 @@ public class ModelTFSquirrel extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		super.render(entity, f, f1, f2, f3, f4, f5);
-		setRotationAngles(f, f1, f2, f3, f4, f5);
-		body.render(f5);
-		leg1.render(f5);
-		leg2.render(f5);
-		leg3.render(f5);
-		leg4.render(f5);
-		head.render(f5);
-		tail.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		body.render(scale);
+		leg1.render(scale);
+		leg2.render(scale);
+		leg3.render(scale);
+		leg4.render(scale);
+		head.render(scale);
+		tail.render(scale);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -121,8 +121,8 @@ public class ModelTFSquirrel extends ModelBase {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float par4) {
-		//EntityTFSquirrel squirrel = (EntityTFSquirrel)par1EntityLiving;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTickTime) {
+		//EntityTFSquirrel squirrel = (EntityTFSquirrel)entity;
 
 
 	}
@@ -130,23 +130,24 @@ public class ModelTFSquirrel extends ModelBase {
 	/**
 	 * Sets the models various rotation angles.
 	 */
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6) {
-		this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
-		this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
-		this.leg1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-		this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-		this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-		this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+	@Override
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
+		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
-		if (par2 > 0.2) {
-			float wiggle = Math.min(par2, 0.6F);
-			this.tail.rotateAngleX = (MathHelper.cos(par3 * 0.6662F) * 1.0F - (float) Math.PI / 3) * wiggle;
-			this.fluff2.rotateAngleX = MathHelper.cos(par3 * 0.7774F) * 1.2F * wiggle;
-			this.fluff3.rotateAngleX = MathHelper.cos(par3 * 0.8886F + (float) Math.PI / 2) * 1.4F * wiggle;
+		if (limbSwingAmount > 0.2) {
+			float wiggle = Math.min(limbSwingAmount, 0.6F);
+			this.tail.rotateAngleX = (MathHelper.cos(ageInTicks * 0.6662F) * 1.0F - (float) Math.PI / 3) * wiggle;
+			this.fluff2.rotateAngleX = MathHelper.cos(ageInTicks * 0.7774F) * 1.2F * wiggle;
+			this.fluff3.rotateAngleX = MathHelper.cos(ageInTicks * 0.8886F + (float) Math.PI / 2) * 1.4F * wiggle;
 		} else {
-			this.tail.rotateAngleX = 0.2F + MathHelper.cos(par3 * 0.3335F) * 0.15F;
-			this.fluff2.rotateAngleX = 0.1F + MathHelper.cos(par3 * 0.4445F) * 0.20F;
-			this.fluff3.rotateAngleX = 0.1F + MathHelper.cos(par3 * 0.5555F) * 0.25F;
+			this.tail.rotateAngleX = 0.2F + MathHelper.cos(ageInTicks * 0.3335F) * 0.15F;
+			this.fluff2.rotateAngleX = 0.1F + MathHelper.cos(ageInTicks * 0.4445F) * 0.20F;
+			this.fluff3.rotateAngleX = 0.1F + MathHelper.cos(ageInTicks * 0.5555F) * 0.25F;
 		}
 
 	}

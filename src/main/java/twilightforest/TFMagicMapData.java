@@ -109,7 +109,9 @@ public class TFMagicMapData extends MapData {
 	}
 
 	public static class TFMapDecoration extends MapDecoration {
-		private static final ResourceLocation MAP_ICONS = new ResourceLocation(TwilightForestMod.ID, "textures/gui/mapicons.png");
+
+		private static final ResourceLocation MAP_ICONS = TwilightForestMod.prefix("textures/gui/mapicons.png");
+
 		final int featureId;
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {

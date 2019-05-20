@@ -29,13 +29,15 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.entity.boss.EntityTFMinoshroom;
+import twilightforest.item.TFItems;
 
 public class EntityTFMinotaur extends EntityMob implements ITFCharger {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/minotaur");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minotaur");
 	private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityTFMinotaur.class, DataSerializers.BOOLEAN);
 
-	public EntityTFMinotaur(World par1World) {
-		super(par1World);
+	public EntityTFMinotaur(World world) {
+		super(world);
 	}
 
 	@Override
@@ -66,8 +68,23 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
+		this.setEquipmentBasedOnDifficulty(difficulty);
+		this.setEnchantmentBasedOnDifficulty(difficulty);
 		return data;
+	}
+
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		int random = this.rand.nextInt(10);
+
+		float additionalDiff = difficulty.getAdditionalDifficulty() + 1;
+
+		int result = (int) (random / additionalDiff);
+
+		if (result == 0)
+			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe_gold));
+		else
+			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}
 
 	@Override
@@ -81,11 +98,11 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
-		boolean success = super.attackEntityAsMob(par1Entity);
+	public boolean attackEntityAsMob(Entity entity) {
+		boolean success = super.attackEntityAsMob(entity);
 
 		if (success && this.isCharging()) {
-			par1Entity.motionY += 0.4;
+			entity.motionY += 0.4;
 			playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
 		}
 
@@ -117,7 +134,7 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block par4) {
+	protected void playStepSound(BlockPos pos, Block block) {
 		playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 0.8F);
 	}
 

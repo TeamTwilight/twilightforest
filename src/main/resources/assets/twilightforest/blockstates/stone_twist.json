@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_column",
+    "textures": {
+      "end" : "twilightforest:blocks/stone_twist/twist_end",
+      "side": "twilightforest:blocks/stone_twist/twist_side"
+    }
+  },
+  "variants": {
+    "inventory": [{}],
+    "axis": {
+      "y": {},
+      "z": { "x": 90 },
+      "x": { "x": 90, "y": 90 }
+    }
+  }
+}

@@ -3,7 +3,6 @@ package twilightforest.entity.boss;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityTFHydraHead extends EntityTFHydraPart {
@@ -13,13 +12,12 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
 
 	public EntityTFHydraHead(World world) {
 		super(world);
-
 		// the necks draw with the head, so we just draw the head at all times, sorry
 		this.ignoreFrustumCheck = true;
 	}
 
-	public EntityTFHydraHead(EntityTFHydra hydra, String s, float f, float f1) {
-		super(hydra, s, f, f1);
+	public EntityTFHydraHead(EntityTFHydra hydra, String name, float width, float height) {
+		super(hydra, name, width, height);
 	}
 
 	@Override

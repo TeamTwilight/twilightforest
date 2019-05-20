@@ -24,9 +24,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFlockToSameKind;
 import twilightforest.entity.ai.EntityAITFPanicOnFlockDeath;
 
-
 public class EntityTFKobold extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/kobold");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/kobold");
 	private static final DataParameter<Boolean> PANICKED = EntityDataManager.createKey(EntityTFKobold.class, DataSerializers.BOOLEAN);
 
 	public EntityTFKobold(World world) {

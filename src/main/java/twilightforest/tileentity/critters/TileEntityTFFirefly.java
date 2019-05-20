@@ -1,4 +1,6 @@
 package twilightforest.tileentity.critters;
 
-public class TileEntityTFFirefly extends TileEntityTFCritter {
+import net.minecraft.tileentity.TileEntity;
+
+public class TileEntityTFFirefly extends TileEntity {
 }

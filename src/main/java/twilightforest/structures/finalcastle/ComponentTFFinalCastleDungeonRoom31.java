@@ -1,30 +1,35 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.block.BlockTFCastleBlock;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
+import twilightforest.enums.CastleBrickVariant;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
+
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
-	public ComponentTFFinalCastleDungeonRoom31() {
-	}
+	public ComponentTFFinalCastleDungeonRoom31() {}
 
 	public ComponentTFFinalCastleDungeonRoom31(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
 		super(feature, i);
@@ -38,7 +43,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponentOld) {
+		if (parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 
@@ -69,15 +74,13 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	private boolean isExitBuildForLevel(StructureComponent parent) {
 		if (parent instanceof ComponentTFFinalCastleDungeonEntrance) {
 			return ((ComponentTFFinalCastleDungeonEntrance) parent).hasExit;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	private void setExitBuiltForLevel(StructureComponent parent, boolean exit) {
 		if (parent instanceof ComponentTFFinalCastleDungeonEntrance) {
 			((ComponentTFFinalCastleDungeonEntrance) parent).hasExit = exit;
-		} else {
 		}
 	}
 
@@ -101,9 +104,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 			list.add(dRoom);
 			dRoom.buildComponent(parent, list, rand);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	protected boolean addDungeonExit(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation) {
@@ -118,9 +120,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 			list.add(dRoom);
 			dRoom.buildComponent(this, list, rand);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	private BlockPos getNewRoomCoords(Random rand, Rotation rotation) {
@@ -145,23 +146,37 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		if (this.isBoundingBoxOutOfPlateau(world, sbb)) {
+
+		if (this.isBoundingBoxOutsideBiomes(world, sbb, plateauBiomes)) {
 			return false;
 		}
 
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
-		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
-		EnumDyeColor forceFieldMeta = this.getForceFieldMeta(decoRNG);
-		EnumDyeColor runeMeta = getRuneMeta(forceFieldMeta);
+		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.ROCK);
 
-		final IBlockState forceField = TFBlocks.force_field.getDefaultState()
-				.withProperty(BlockTFForceField.COLOR, forceFieldMeta);
-		final IBlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
-				.withProperty(BlockTFCastleMagic.COLOR, runeMeta);
+		IBlockState floor = TFBlocks.castle_brick.getDefaultState();
+		IBlockState border = floor.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.FRAME);
+
+		Predicate<IBlockState> replacing = state -> {
+			Material material = state.getMaterial();
+			return material == Material.ROCK || material == Material.AIR;
+		};
+
+		final int cs = 7;
+
+		this.fillWithBlocks(world, sbb, cs , -1, cs, this.size - 1 - cs, -1, this.size - 1 - cs, border, floor, replacing);
+		this.fillWithBlocks(world, sbb, cs , this.height, cs, this.size - 1 - cs, this.height, this.size - 1 - cs, border, floor, replacing);
+
+		EnumDyeColor forceFieldColor = this.getForceFieldColor(decoRNG);
+		EnumDyeColor runeColor = getRuneColor(forceFieldColor);
+
+		IBlockState forceField = TFBlocks.force_field.getDefaultState()
+				.withProperty(BlockTFForceField.COLOR, forceFieldColor);
+		IBlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
+				.withProperty(BlockTFCastleMagic.COLOR, runeColor);
 
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
-			int cs = 7;
 
 			this.fillBlocksRotated(world, sbb, cs, 0, cs + 1, cs, this.height - 1, this.size - 2 - cs, forceField, rotation);
 			// verticals
@@ -177,32 +192,14 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		return true;
 	}
 
-	private boolean isBoundingBoxOutOfPlateau(World world, StructureBoundingBox sbb) {
-		int minX = this.boundingBox.minX - 1;
-		int minZ = this.boundingBox.minZ - 1;
-		int maxX = this.boundingBox.maxX + 1;
-		int maxZ = this.boundingBox.maxZ + 1;
+	protected static final Predicate<Biome> plateauBiomes = biome ->
+			biome == TFBiomes.highlandsCenter || biome == TFBiomes.thornlands;
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-
-		for (int x = minX; x <= maxX; x++) {
-			for (int z = minZ; z <= maxZ; z++) {
-				pos.setPos(x, 0, z);
-				if (world.getBiome(pos) != TFBiomes.highlandsCenter && world.getBiome(pos) != TFBiomes.thornlands) {
-					return true;
-				}
-			}
-		}
-
-		return false;
+	protected EnumDyeColor getRuneColor(EnumDyeColor forceFieldColor) {
+		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldColor == BlockTFForceField.VALID_COLORS.get(4) ? 1 : 2);
 	}
 
-	protected EnumDyeColor getRuneMeta(EnumDyeColor forceFieldMeta) {
-		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldMeta == BlockTFForceField.VALID_COLORS.get(4) ? 1 : 2);
-	}
-
-	protected EnumDyeColor getForceFieldMeta(Random decoRNG) {
+	protected EnumDyeColor getForceFieldColor(Random decoRNG) {
 		return BlockTFForceField.VALID_COLORS.get(decoRNG.nextInt(2) + 3);
 	}
-
 }

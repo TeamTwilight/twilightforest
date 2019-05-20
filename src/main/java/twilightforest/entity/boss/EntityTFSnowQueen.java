@@ -32,30 +32,35 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
+import twilightforest.enums.BossVariant;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.List;
 
 public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IBreathAttacker {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/snow_queen");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/snow_queen");
 	private static final int MAX_SUMMONS = 6;
 	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> PHASE_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BYTE);
 	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
-
 
 	public enum Phase {SUMMON, DROP, BEAM}
 
@@ -66,8 +71,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	private int maxDrops;
 	private int damageWhileBeaming;
 
-	public EntityTFSnowQueen(World par1World) {
-		super(par1World);
+	public EntityTFSnowQueen(World world) {
+		super(world);
 		this.setSize(0.7F, 2.2F);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
@@ -138,25 +143,31 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		if (!world.isRemote)
+		if (!world.isRemote) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
+		} else {
+			spawnParticles();
+		}
+	}
+
+	private void spawnParticles() {
 		// make snow particles
 		for (int i = 0; i < 3; i++) {
 			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 			float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 		}
 
 		// during drop phase, all the ice blocks should make particles
 		if (this.getCurrentPhase() == Phase.DROP) {
-			for (int i = 0; i < this.iceArray.length; i++) {
+			for (Entity ice : this.iceArray) {
 				float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 				float py = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_WARNING, this.iceArray[i].lastTickPosX + px, this.iceArray[i].lastTickPosY + py, this.iceArray[i].lastTickPosZ + pz, 0, 0, 0);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_WARNING, ice.lastTickPosX + px, ice.lastTickPosY + py, ice.lastTickPosZ + pz, 0, 0, 0);
 			}
 		}
 
@@ -185,16 +196,13 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 				dy *= velocity;
 				dz *= velocity;
 
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
 			}
-
-			//playBreathSound();
 		}
 	}
 
 	@Override
 	public void onUpdate() {
-
 		super.onUpdate();
 
 		for (int i = 0; i < this.iceArray.length; i++) {
@@ -233,19 +241,36 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	protected boolean canDespawn() {
+		return false;
+	}
+
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
+	}
+
+	@Override
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote) {
 			int dx = MathHelper.floor(this.posX);
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
-				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-				if (nearbyFeature == TFFeature.lichTower) {
+				if (nearbyFeature == TFFeature.ICE_TOWER) {
 					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}
@@ -292,8 +317,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float damage) {
-		boolean result = super.attackEntityFrom(par1DamageSource, damage);
+	public boolean attackEntityFrom(DamageSource source, float damage) {
+		boolean result = super.attackEntityFrom(source, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
 			this.damageWhileBeaming += damage;
@@ -307,16 +332,15 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		return this.getIceShieldPosition(getIceShieldAngle(idx), 1F);
 	}
 
-
 	private float getIceShieldAngle(int idx) {
 		return 60F * idx + (this.ticksExisted * 5F);
 	}
 
 	private Vec3d getIceShieldPosition(float angle, float distance) {
-		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
+		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
+		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return new Vec3d(this.posX + var1, this.posY + this.getShieldYOffset(), this.posZ + var3);
+		return new Vec3d(this.posX + dx, this.posY + this.getShieldYOffset(), this.posZ + dz);
 	}
 
 	private double getShieldYOffset() {
@@ -324,7 +348,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public void fall(float par1, float mult) {
+	public void fall(float distance, float damageMultiplier) {
 	}
 
 	@Override
@@ -333,7 +357,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart MultiPartEntityPart, DamageSource damagesource, float i) {
+	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
 		return false;
 	}
 
@@ -346,7 +370,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
-		if (world.getGameRules().getBoolean("mobGriefing")) {
+		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				IBlockState state = world.getBlockState(pos);
 				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
@@ -401,10 +425,19 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		world.spawnEntity(minion);
 
 		for (int i = 0; i < 100; i++) {
-			double attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
-			double attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
-			double attemptZ = targetedEntity.posZ + rand.nextGaussian() * 16D;
-
+			double attemptX;
+			double attemptY;
+			double attemptZ;
+			if (hasHome()) {
+				BlockPos home = getHomePosition();
+				attemptX = home.getX() + rand.nextGaussian() * 7D;
+				attemptY = home.getY() + rand.nextGaussian() * 2D;
+				attemptZ = home.getZ() + rand.nextGaussian() * 7D;
+			} else {
+				attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
+				attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
+				attemptZ = targetedEntity.posZ + rand.nextGaussian() * 16D;
+			}
 			if (minion.attemptTeleport(attemptX, attemptY, attemptZ)) {
 				break;
 			}
@@ -449,8 +482,8 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
 		if (this.hasCustomName())
 			this.bossInfo.setName(this.getDisplayName());
 	}

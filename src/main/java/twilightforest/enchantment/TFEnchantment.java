@@ -19,10 +19,10 @@ public class TFEnchantment extends Enchantment {
 	/**
 	 * Add up the number of fiery armor pieces the player is wearing, multiplied by 5
 	 */
-	public static int getFieryAuraLevel(InventoryPlayer par0InventoryPlayer, DamageSource par1DamageSource) {
+	public static int getFieryAuraLevel(InventoryPlayer inventory, DamageSource source) {
 		int modifier = 0;
 
-		for (ItemStack armor : par0InventoryPlayer.armorInventory) {
+		for (ItemStack armor : inventory.armorInventory) {
 			if (!armor.isEmpty() && armor.getItem() instanceof ItemTFFieryArmor) {
 				modifier += 5;
 			}
@@ -34,10 +34,10 @@ public class TFEnchantment extends Enchantment {
 	/**
 	 * Add up the number of yeti armor pieces the player is wearing, 0-4
 	 */
-	public static int getChillAuraLevel(InventoryPlayer par0InventoryPlayer, DamageSource par1DamageSource) {
+	public static int getChillAuraLevel(InventoryPlayer inventory, DamageSource source) {
 		int modifier = 0;
 
-		for (ItemStack armor : par0InventoryPlayer.armorInventory) {
+		for (ItemStack armor : inventory.armorInventory) {
 			if (!armor.isEmpty() && armor.getItem() instanceof ItemTFYetiArmor) {
 				modifier++;
 			}

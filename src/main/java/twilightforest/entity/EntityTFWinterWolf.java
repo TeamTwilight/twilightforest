@@ -24,7 +24,8 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/winter_wolf");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/winter_wolf");
 	private static final DataParameter<Boolean> BREATH_FLAG = EntityDataManager.createKey(EntityTFWinterWolf.class, DataSerializers.BOOLEAN);
 	private static final float BREATH_DAMAGE = 2.0F;
 
@@ -63,35 +64,40 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 		super.onLivingUpdate();
 
 		if (isBreathing()) {
-			Vec3d look = this.getLookVec();
-
-			double dist = 0.5;
-			double px = this.posX + look.x * dist;
-			double py = this.posY + 1.25 + look.y * dist;
-			double pz = this.posZ + look.z * dist;
-
-			for (int i = 0; i < 10; i++) {
-				double dx = look.x;
-				double dy = look.y;
-				double dz = look.z;
-
-				double spread = 5 + this.getRNG().nextDouble() * 2.5;
-				double velocity = 3.0 + this.getRNG().nextDouble() * 0.15;
-
-				// spread flame
-				dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-				dy += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-				dz += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-				dx *= velocity;
-				dy *= velocity;
-				dz *= velocity;
-
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW, px, py, pz, dx, dy, dz);
+			if (this.world.isRemote) {
+				spawnBreathParticles();
 			}
-
 			playBreathSound();
 		}
+	}
 
+	private void spawnBreathParticles() {
+
+		Vec3d look = this.getLookVec();
+
+		final double dist = 0.5;
+		double px = this.posX + look.x * dist;
+		double py = this.posY + 1.25 + look.y * dist;
+		double pz = this.posZ + look.z * dist;
+
+		for (int i = 0; i < 10; i++) {
+			double dx = look.x;
+			double dy = look.y;
+			double dz = look.z;
+
+			double spread   = 5.0 + this.getRNG().nextDouble() * 2.5;
+			double velocity = 3.0 + this.getRNG().nextDouble() * 0.15;
+
+			// spread flame
+			dx += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+			dy += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+			dz += this.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+			dx *= velocity;
+			dy *= velocity;
+			dz *= velocity;
+
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW, px, py, pz, dx, dy, dz);
+		}
 	}
 
 	private void playBreathSound() {
@@ -106,7 +112,6 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 	@Override
 	public boolean isBreathing() {
 		return dataManager.get(BREATH_FLAG);
-
 	}
 
 	@Override

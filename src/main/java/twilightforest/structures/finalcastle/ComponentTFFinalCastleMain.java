@@ -14,7 +14,6 @@ import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
-import twilightforest.structures.StructureTFDecoratorCastle;
 import twilightforest.util.RotationUtil;
 
 import java.util.LinkedList;
@@ -42,8 +41,8 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		int cx = (x >> 8) << 8;
 		int cz = (z >> 8) << 8;
 
-		TwilightForestMod.LOGGER.info("Making castle at " + x + ", " + z + ". center is " + cc.getX() + ", " + cc.getZ());
-		TwilightForestMod.LOGGER.info("Natural center at " + cx + ", " + cz);
+		TwilightForestMod.LOGGER.debug("Making castle at {}, {}. center is {}, {}", x, z, cc.getX(), cc.getZ());
+		TwilightForestMod.LOGGER.debug("Natural center at {}, {}", cx, cz);
 
 		// decorator
 		if (this.deco == null) {
@@ -150,13 +149,13 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 			sTower.buildTowards(this, list, rand, dest);
 
 			// check if we've successfully built the end tower
-			TwilightForestMod.LOGGER.info("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
+			TwilightForestMod.LOGGER.debug("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
 			if (this.isMazeComplete(list, type)) {
-				TwilightForestMod.LOGGER.info("Tower maze color " + type + " complete!");
+				TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
 				complete = true;
 			} else {
 				// TODO: add limit on retrying, in case of infinite loop?
-				TwilightForestMod.LOGGER.info("Tower maze color " + type + " INCOMPLETE, retrying!");
+				TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
 				list.clear();
 				list.addAll(before);
 				//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, color, dest);
@@ -165,17 +164,15 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 	}
 
 	private boolean isMazeComplete(List<StructureComponent> list, EnumDyeColor type) {
-		int componentsCounted = 0;
+		if (list.size() > 60) {
+			TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
+		}
 		for (StructureComponent structurecomponent : list) {
-			componentsCounted++;
 			StructureBoundingBox boundingBox = structurecomponent.getBoundingBox();
 			int x = (boundingBox.maxX - boundingBox.minX / 2) + boundingBox.minX;
 			int y = (boundingBox.maxY - boundingBox.minY / 2) + boundingBox.minY;
 			int z = (boundingBox.maxZ - boundingBox.minZ / 2) + boundingBox.minZ;
-			TwilightForestMod.LOGGER.info("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
-			if (componentsCounted >= 60) {
-				TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
-			}
+			TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
 			if (type == BlockTFCastleMagic.VALID_COLORS.get(0) && structurecomponent instanceof ComponentTFFinalCastleEntranceTower) {
 				return true;
 			}

@@ -13,7 +13,6 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -25,11 +24,12 @@ import net.minecraft.world.storage.loot.LootContext;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome");
-	public static final ResourceLocation HURT_LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/death_tome_hurt");
 
-	public EntityTFDeathTome(World par1World) {
-		super(par1World);
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome");
+	public static final ResourceLocation HURT_LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome_hurt");
+
+	public EntityTFDeathTome(World world) {
+		super(world);
 	}
 
 	@Override
@@ -90,13 +90,13 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float p_82196_2_) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		EntityThrowable projectile = new EntityTFTomeBolt(this.world, this);
 		double tx = target.posX - this.posX;
 		double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
 		double tz = target.posZ - this.posZ;
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
-		projectile.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
+		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.spawnEntity(projectile);
 	}
 

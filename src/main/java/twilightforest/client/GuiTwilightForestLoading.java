@@ -4,33 +4,31 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketKeepAlive;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
-import java.io.IOException;
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
 public class GuiTwilightForestLoading extends GuiScreen {
 
-	private Minecraft client = FMLClientHandler.instance().getClient();
 	private boolean isEntering;
 	private boolean contentNeedsAssignment = false;
 	private long lastWorldUpdateTick = 0L;
 	private long seed;
-	private static Random random = new Random();
 	private BackgroundThemes backgroundTheme;
 	private ItemStack item;
+
+	private static final Random random = new Random();
 	private static final float backgroundScale = 32.0F;
 
 	GuiTwilightForestLoading() {
@@ -48,8 +46,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-	}
+	protected void keyTyped(char typedChar, int keyCode) {}
 
 	@Override
 	public boolean doesGuiPauseGame() {
@@ -75,7 +72,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 		}
 
 		FontRenderer fontRenderer = mc.fontRenderer;
-		ScaledResolution resolution = new ScaledResolution(client);
+		ScaledResolution resolution = new ScaledResolution(mc);
 
 		drawBackground(resolution.getScaledWidth(), resolution.getScaledHeight());
 
@@ -84,11 +81,11 @@ public class GuiTwilightForestLoading extends GuiScreen {
 		String loadTitle = I18n.translateToLocal(TwilightForestMod.ID + ".loading.title." + (isEntering ? "enter" : "leave"));
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(
-				((resolution.getScaledWidth()) / 2) - (fontRenderer.getStringWidth(loadTitle) / 4),
-				(resolution.getScaledHeight() / 3),
-				0
+				(resolution.getScaledWidth() / 2f) - (fontRenderer.getStringWidth(loadTitle) / 4f),
+				(resolution.getScaledHeight() / 3f),
+				0f
 		);
-		GlStateManager.translate(-(fontRenderer.getStringWidth(loadTitle) / 4), 0, 0);
+		GlStateManager.translate(-(fontRenderer.getStringWidth(loadTitle) / 4f), 0f, 0f);
 		fontRenderer.drawStringWithShadow(loadTitle, 0, 0, 0xEEEEEE); //eeeeeeeeeeeeeeeeee
 		GlStateManager.popMatrix();
 		GlStateManager.color(1F, 1F, 1F, 1F);
@@ -109,22 +106,22 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 	private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
 		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * TFConfig.loadingScreen.frequency;
-		float sineTicker2 = (TFClientEvents.sineTicker + 314 + partialTicks) * TFConfig.loadingScreen.frequency;
+		float sineTicker2 = (TFClientEvents.sineTicker + 314f + partialTicks) * TFConfig.loadingScreen.frequency;
 		GlStateManager.pushMatrix();
 
 		// Shove it!
-		GlStateManager.translate(width - ((width / 30) * TFConfig.loadingScreen.scale), height - (height / 10), 0); // Bottom right Corner
+		GlStateManager.translate(width - ((width / 30f) * TFConfig.loadingScreen.scale), height - (height / 10f), 0f); // Bottom right Corner
 
 		if (TFConfig.loadingScreen.enable) {
 			// Wobble it!
-			GlStateManager.rotate((float) Math.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0, 0, 1);
+			GlStateManager.rotate(MathHelper.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0f, 0f, 1f);
 
 			// Bounce it!
-			GlStateManager.scale(((Math.sin(((sineTicker2 + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), ((Math.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2), 1F);
+			GlStateManager.scale(((MathHelper.sin(((sineTicker2 + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2F), ((MathHelper.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2F), 1F);
 		}
 
 		// Shift it!
-		GlStateManager.translate(-8, -16.5, 0);
+		GlStateManager.translate(-8f, -16.5f, 0f);
 
 		RenderHelper.enableGUIStandardItemLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
@@ -138,13 +135,13 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	}
 
 	public enum BackgroundThemes {
-		LABYRINTH(new ResourceLocation[]{
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_brick.png"),
-				//new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_mossy.png"     ),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_cracked.png")
-		}) {
-			private final ResourceLocation mazestoneDecor = new ResourceLocation(TwilightForestMod.ID, "textures/blocks/mazestone_decorative.png");
+		LABYRINTH(
+				TwilightForestMod.prefix("textures/blocks/mazestone_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/mazestone_brick.png"),
+				//TwilightForestMod.prefix("textures/blocks/mazestone_mossy.png"     ),
+				TwilightForestMod.prefix("textures/blocks/mazestone_cracked.png")
+		) {
+			private final ResourceLocation mazestoneDecor = TwilightForestMod.prefix("textures/blocks/mazestone_decorative.png");
 
 			@Override
 			void postRenderBackground(float width, float height) {
@@ -152,7 +149,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				BufferBuilder buffer = tessellator.getBuffer();
 				Minecraft.getMinecraft().getTextureManager().bindTexture(mazestoneDecor);
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				buffer.pos(0, 24F, 0F)
 						.tex(0F, 0.75F)
 						.color(0.5F, 0.5F, 0.5F, 1F)
@@ -174,7 +171,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				float halfScale = backgroundScale / 2F;
 				float bottomGrid = height - (height % halfScale);
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				buffer.pos(0, bottomGrid, 0F)
 						.tex(0F, 0.75F)
 						.color(0.5F, 0.5F, 0.5F, 1F)
@@ -194,20 +191,20 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				tessellator.draw();
 			}
 		},
-		STRONGHOLD(new ResourceLocation[]{
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick_mossy.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/knightbrick_cracked.png")
-		}),
-		DARKTOWER(new ResourceLocation[]{
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_planks.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_planks.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_mossy.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_cracked.png"),
-				//new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_infested.png"  ),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_alt.png")
-		}) {
-			private final ResourceLocation towerwoodEncased = new ResourceLocation(TwilightForestMod.ID, "textures/blocks/towerwood_encased.png");
+		STRONGHOLD(
+				TwilightForestMod.prefix("textures/blocks/knightbrick.png"),
+				TwilightForestMod.prefix("textures/blocks/knightbrick_mossy.png"),
+				TwilightForestMod.prefix("textures/blocks/knightbrick_cracked.png")
+		),
+		DARKTOWER(
+				TwilightForestMod.prefix("textures/blocks/towerwood_planks.png"),
+				TwilightForestMod.prefix("textures/blocks/towerwood_planks.png"),
+				TwilightForestMod.prefix("textures/blocks/towerwood_mossy.png"),
+				TwilightForestMod.prefix("textures/blocks/towerwood_cracked.png"),
+				//TwilightForestMod.prefix("textures/blocks/towerwood_infested.png"  ),
+				TwilightForestMod.prefix("textures/blocks/towerwood_alt.png")
+		) {
+			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/blocks/towerwood_encased.png");
 
 			private final float stretch = 0.985F;
 			private final float offset = 0.4F;
@@ -227,7 +224,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					for (float y = backgroundScale + headerDepthHeight; y < footerDepthHeight + backgroundScale; y += backgroundScale) {
 						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
-						buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+						buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 						buffer.pos(x - backgroundScale, y, 0)
 								.tex(0, 1)
 								.color(0.5f, 0.5f, 0.5f, 1f)
@@ -264,7 +261,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				final float footerTop = height - headerBottom;
 				final float footerDepthHeight = height - headerDepthHeight;
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.pos(0F, headerBottom, 0F)
 						.tex(textureHeaderXMin, 1F)
@@ -285,7 +282,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 						.endVertex();
 				tessellator.draw();
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.pos(0F, headerDepthHeight, 0F)
 						.tex(0F, 1F)
@@ -306,7 +303,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 						.endVertex();
 				tessellator.draw();
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.pos(0F, height, 0F)
 						.tex(textureHeaderXMin, 1F)
@@ -327,7 +324,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 						.endVertex();
 				tessellator.draw();
 
-				buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				// BOTTOM VERTEXES
 				buffer.pos(0F, footerTop, 0F)
 						.tex(textureHeaderXMin, 1F)
@@ -349,25 +346,25 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				tessellator.draw();
 			}
 		},
-		FINALCASTLE(new ResourceLocation[]{
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_brick.png"),
-				//new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_cracked.png"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_faded.png")
-		}) {
+		FINALCASTLE(
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
+				//TwilightForestMod.prefix("textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
+				TwilightForestMod.prefix("textures/blocks/castleblock_cracked.png"),
+				TwilightForestMod.prefix("textures/blocks/castleblock_faded.png")
+		) {
 			private final ResourceLocation[] magic = new ResourceLocation[]{
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_0.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_1.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_2.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_3.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_4.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_5.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_6.png"),
-					new ResourceLocation(TwilightForestMod.ID, "textures/blocks/castleblock_magic_7.png")
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_0.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_1.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_2.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_3.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_4.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_5.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_6.png"),
+					TwilightForestMod.prefix("textures/blocks/castleblock_magic_7.png")
 			};
 
 			private final int[] colors = new int[]{0xFF00FF, 0x00FFFF, 0xFFFF00, 0x4B0082};
@@ -387,7 +384,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					Minecraft.getMinecraft().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
-					buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 					buffer.pos(x - backgroundScale, backgroundScale + (backgroundScale / 2), 0)
 							.tex(0, 1)
 							.color(r, g, b, 255)
@@ -409,7 +406,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					Minecraft.getMinecraft().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
-					buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 					buffer.pos(x - backgroundScale, height - (backgroundScale / 2), 0)
 							.tex(0, 1)
 							.color(r, g, b, 255)
@@ -433,7 +430,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 		private final ResourceLocation[] backgroundMaterials;
 
-		BackgroundThemes(ResourceLocation[] backgroundMaterials) {
+		BackgroundThemes(ResourceLocation... backgroundMaterials) {
 			this.backgroundMaterials = backgroundMaterials;
 		}
 

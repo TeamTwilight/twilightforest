@@ -1,26 +1,33 @@
 package twilightforest;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
+import twilightforest.world.WorldProviderTwilightForest;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
 	@Config.Ignore
-	private final static String config = TwilightForestMod.ID + ".config.";
+	private static final String config = TwilightForestMod.ID + ".config.";
 
 	@Config.LangKey(config + "dimension")
 	@Config.Comment("Settings that are not reversible without consequences.")
@@ -40,13 +47,81 @@ public class TFConfig {
 		@Config.LangKey(config + "spawn_in_tf")
 		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
 		public boolean newPlayersSpawnInTF = false;
+
+		@Config.LangKey(config + "skylight_forest")
+		@Config.RequiresWorldRestart
+		@Config.Comment("If true, Twilight Forest will generate as a void except for Major Structures")
+		public boolean skylightForest = false;
+
+		@Config.LangKey(config + "skylight_oaks")
+		@Config.RequiresWorldRestart
+		@Config.Comment("If true, giant Twilight Oaks will also spawn in void worlds")
+		public boolean skylightOaks = true;
+
+		@Config.LangKey(config + "world_gen_weights")
+		@Config.Comment("Weights for various small features")
+		@Config.RequiresMcRestart
+		public WorldGenWeights worldGenWeights = new WorldGenWeights();
+
+		public static class WorldGenWeights {
+
+			@Config.LangKey(config + "stone_circle_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int stoneCircleWeight = 10;
+
+			@Config.LangKey(config + "well_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int wellWeight = 10;
+
+			@Config.LangKey(config + "stalagmite_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int stalagmiteWeight = 12;
+
+			@Config.LangKey(config + "foundation_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int foundationWeight = 10;
+
+			@Config.LangKey(config + "monolith_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int monolithWeight = 10;
+
+			@Config.LangKey(config + "grove_ruins_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int groveRuinsWeight = 5;
+
+			@Config.LangKey(config + "hollow_stump_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int hollowStumpWeight = 12;
+
+			@Config.LangKey(config + "fallen_hollow_log_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int fallenHollowLogWeight = 10;
+
+			@Config.LangKey(config + "fallen_small_log_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int fallenSmallLogWeight = 10;
+
+			@Config.LangKey(config + "druid_hut_weight")
+			@Config.RequiresMcRestart
+			@Config.RangeInt(min = 0)
+			public int druidHutWeight = 10;
+		}
 	}
 
 	@Config.LangKey(config + "compat")
 	@Config.Comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
 	public static boolean doCompat = true;
 
-	@Config.LangKey(config + "tree_tweaks")
+	@Config.LangKey(config + "performance")
 	@Config.Comment("Lets you sacrifice various things to improve world performance.")
 	public static Performance performance = new Performance();
 
@@ -63,16 +138,18 @@ public class TFConfig {
 
 		@Config.LangKey(config + "leaves_light_opacity")
 		@Config.RangeInt(min = 0, max = 255)
-		@Config.Comment("If leaves are not full cubes, this controls the opacity of twilight_leaves to control amount of light blocking.")
+		@Config.Comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.")
 		public int leavesLightOpacity = 1;
 
-		@Config.LangKey(config + "leaves_full_cube")
-		@Config.Comment("Setting this false makes leaves not full cubes. This results in not blocking light at all, making them the equivalent of glass in terms of blocking light. Decreases complexity in some lighting checks.")
-		public boolean leavesFullCube = true;
-
-		@Config.LangKey(config + "glacer_packed_ice")
+		@Config.LangKey(config + "glacier_packed_ice")
 		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")
 		public boolean glacierPackedIce = false;
+
+		@Config.LangKey(config + "enable_skylight")
+		@Config.Comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
+				"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!")
+		@Config.RequiresWorldRestart
+		public boolean enableSkylight = true;
 
 		@Config.Ignore
 		public boolean shadersSupported = true;
@@ -82,12 +159,20 @@ public class TFConfig {
 	@Config.Comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.")
 	public static boolean silentCicadas = false;
 
+	@Config.LangKey(config + "first_person_effects")
+	@Config.Comment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.")
+	public static boolean firstPersonEffects = true;
+
+	@Config.LangKey(config + "origin_dimension")
+	@Config.Comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.")
+	public static int originDimension = 0;
+
 	@Config.LangKey(config + "portals_in_other_dimensions")
-	@Config.Comment("Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.")
+	@Config.Comment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.")
 	public static boolean allowPortalsInOtherDimensions = false;
 
 	@Config.LangKey(config + "admin_portals")
-	@Config.Comment("Allow portals only for admins (Operators). This severly reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
+	@Config.Comment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
 	public static boolean adminOnlyPortals = false;
 
 	@Config.LangKey(config + "portals")
@@ -95,13 +180,13 @@ public class TFConfig {
 	public static boolean disablePortalCreation = false;
 
 	@Config.LangKey(config + "portal_creator")
-	@Config.Comment("Registry String ID of item used to create the Twilight Forest Portal.")
-	public static String portalCreationItem = "minecraft:diamond";
+	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.")
+	public static String[] portalCreationItems = {"minecraft:diamond"};
 
-	@Config.LangKey(config + "portal_creator_meta")
-	@Config.RangeInt(min = -1)
-	@Config.Comment("Meta of item used to create the Twilight Forest Portal. -1 for any metadata.")
-	public static int portalCreationMeta = -1;
+	@Config.LangKey(config + "check_portal_destination")
+	@Config.Comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
+			"\nNote that enabling this also reduces the rate at which portal formation checks are performed.")
+	public static boolean checkPortalDestination = false;
 
 	@Config.LangKey(config + "portal_lighting")
 	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
@@ -111,6 +196,11 @@ public class TFConfig {
 	@Config.Comment("If false, the return portal will require the activation item.")
 	public static boolean shouldReturnPortalBeUsable = true;
 
+	@Config.LangKey(config + "progression_default")
+	@Config.Comment("Sets the default value of the game rule controlling enforced progression.")
+	public static boolean progressionRuleDefault = true;
+
+	@Config.RequiresMcRestart
 	@Config.LangKey(config + "uncrafting")
 	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
 	public static boolean disableUncrafting = false;
@@ -123,27 +213,28 @@ public class TFConfig {
 	@Config.Comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
 	public static boolean rotateTrophyHeadsGui = true;
 
-	@Config.LangKey(config + "loading_screen")
-	@Config.Comment("Client only: Controls for the Loading screen")
-	public static final TFConfig.loadingScreen loadingScreen = new loadingScreen();
-
 	@Config.LangKey(config + "shield_parry")
+	@Config.Comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.")
 	public static ShieldInteractions shieldInteractions = new ShieldInteractions();
 
 	public static class ShieldInteractions {
 		@Config.LangKey(config + "parry_non_twilight")
+		@Config.Comment("Set to true to parry non-Twilight projectiles.")
 		public boolean parryNonTwilightAttacks = false;
 
 		@Config.LangKey(config + "parry_window_arrow")
 		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry an arrow.")
 		public int shieldParryTicksArrow = 40;
 
 		@Config.LangKey(config + "parry_window_fireball")
 		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry a fireball.")
 		public int shieldParryTicksFireball = 40;
 
 		@Config.LangKey(config + "parry_window_throwable")
 		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry a thrown item.")
 		public int shieldParryTicksThrowable = 40;
 
 		@Config.LangKey(config + "parry_window_beam")
@@ -151,7 +242,11 @@ public class TFConfig {
 		public int shieldParryTicksBeam = 10;
 	}
 
-	public static class loadingScreen {
+	@Config.LangKey(config + "loading_screen")
+	@Config.Comment("Client only: Controls for the Loading screen")
+	public static final LoadingScreen loadingScreen = new LoadingScreen();
+
+	public static class LoadingScreen {
 		@Config.LangKey(config + "loading_icon_enable")
 		@Config.Comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")
 		public boolean enable = true;
@@ -216,30 +311,22 @@ public class TFConfig {
 		};
 
 		@Config.Ignore
-		private List<ItemStack> loadingScreenIcons;
+		private ImmutableList<ItemStack> loadingScreenIcons;
 
-		public List<ItemStack> getLoadingScreenIcons() {
-			if (loadingScreenIcons == null || loadingScreenIcons.isEmpty()) loadLoadingScreenIcons();
+		public ImmutableList<ItemStack> getLoadingScreenIcons() {
 			return loadingScreenIcons;
 		}
 
 		void loadLoadingScreenIcons() {
-			List<ItemStack> iconList = Lists.newArrayList();
+			ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
+
+			iconList.addAll(IMCHandler.getLoadingIconStacks());
 
 			for (String s : loadingIconStacks) {
-				String[] data = s.split(":");
-
-				Item item = Item.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
-				int meta;
-
-				if (item == null) continue;
-				try                 { meta = Integer.parseInt(data[2]); }
-				catch (Exception e) { meta = 0;                         }
-
-				iconList.add(new ItemStack(item, 1, meta));
+				parseItemStack(s, 0).ifPresent(iconList::add);
 			}
 
-			loadingScreenIcons = iconList;
+			loadingScreenIcons = iconList.build();
 		}
 	}
 
@@ -247,42 +334,95 @@ public class TFConfig {
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
-
-			loadAntiBuilderBlacklist();
-
-			loadingScreen.loadLoadingScreenIcons();
+			if (!event.isWorldRunning()) {
+				WorldProviderTwilightForest.syncFromConfig();
+			}
+			build();
 		}
+	}
+
+	public static void build() {
+		loadAntiBuilderBlacklist();
+		buildPortalIngredient();
+		loadingScreen.loadLoadingScreenIcons();
 	}
 
 	private static void loadAntiBuilderBlacklist() {
-		List<IBlockState> blacklist = Lists.newArrayList();
+		ImmutableSet.Builder<IBlockState> builder = ImmutableSet.builder();
+
+		builder.addAll(IMCHandler.getBlacklistedBlocks());
+
 		for (String s : antibuilderBlacklist) {
-			String[] data = s.split(":");
-			if (data.length < 2)
-				continue;
-			Block block = Block.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
-			if (block != Blocks.AIR) {
-				int meta = 0;
-				if (data.length >= 3) {
-					try {
-						meta = Integer.parseInt(data[2]);
-					} catch (NumberFormatException e) {
-						TwilightForestMod.LOGGER.warn("Had a slight hiccup processing \"" + s + "\" as part of the antibuilder blacklist.");
-						meta = 0;
-					}
-				}
-				blacklist.add(block.getStateFromMeta(meta));
-			}
+			parseBlockState(s).ifPresent(builder::add);
 		}
 
-		antibuilderStateBlacklist = blacklist;
+		disallowBreakingBlockList = builder.build();
 	}
 
 	@Config.Ignore
-	private static List<IBlockState> antibuilderStateBlacklist;
+	private static ImmutableSet<IBlockState> disallowBreakingBlockList;
 
-	public static List<IBlockState> getAntiBuilderBlacklist() {
-		if (antibuilderStateBlacklist == null || antibuilderStateBlacklist.isEmpty()) loadAntiBuilderBlacklist();
-		return antibuilderStateBlacklist;
+	public static ImmutableSet<IBlockState> getDisallowedBlocks() {
+		return disallowBreakingBlockList;
+	}
+
+	@Config.Ignore
+	public static Ingredient portalIngredient;
+
+	private static void buildPortalIngredient() {
+
+		List<ItemStack> stacks = new ArrayList<>();
+
+		for (String s : portalCreationItems) {
+			parseItemStack(s, OreDictionary.WILDCARD_VALUE).ifPresent(stacks::add);
+		}
+
+		if (stacks.isEmpty()) {
+			stacks.add(new ItemStack(Items.DIAMOND));
+		}
+
+		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
+	}
+
+	private static Optional<ItemStack> parseItemStack(String string, int defaultMeta) {
+
+		String[] split = string.split(":");
+		if (split.length < 2) return Optional.empty();
+
+		Item item = Item.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
+		if (item == null || item == Items.AIR) return Optional.empty();
+
+		int meta = defaultMeta;
+		if (split.length > 2) {
+			try {
+				meta = Integer.parseInt(split[2]);
+			} catch (NumberFormatException e) {
+				return Optional.empty();
+			}
+		}
+		if (meta < 0 || meta > Short.MAX_VALUE) return Optional.empty();
+
+		return Optional.of(new ItemStack(item, 1, meta));
+	}
+
+	private static Optional<IBlockState> parseBlockState(String string) {
+
+		String[] split = string.split(":");
+		if (split.length < 2) return Optional.empty();
+
+		Block block = Block.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
+		if (block == Blocks.AIR) return Optional.empty();
+
+		int meta = 0;
+		if (split.length > 2) {
+			try {
+				meta = Integer.parseInt(split[2]);
+			} catch (NumberFormatException e) {
+				return Optional.empty();
+			}
+		}
+		if (meta < 0 || meta > 15) return Optional.empty();
+
+		return Optional.of(block.getStateFromMeta(meta));
 	}
 }

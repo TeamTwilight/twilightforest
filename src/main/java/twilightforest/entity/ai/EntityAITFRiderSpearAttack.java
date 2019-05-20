@@ -8,8 +8,8 @@ public class EntityAITFRiderSpearAttack extends EntityAIBase {
 
 	private EntityTFGoblinKnightLower entity;
 
-	public EntityAITFRiderSpearAttack(EntityTFGoblinKnightLower par1EntityCreature) {
-		this.entity = par1EntityCreature;
+	public EntityAITFRiderSpearAttack(EntityTFGoblinKnightLower lowerKnight) {
+		this.entity = lowerKnight;
 		this.setMutexBits(3); // Prevent moving
 	}
 

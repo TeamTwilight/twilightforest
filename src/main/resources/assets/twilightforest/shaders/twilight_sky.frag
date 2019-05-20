@@ -35,12 +35,6 @@ mat4 rotationMatrix(vec3 axis, float angle){
                 0.0,                                0.0,                                0.0,                                1.0);
 }
 
-float roundEither(float valueIn) {
-    float valueOut = valueIn + 0.5;
-
-    return valueOut - mod(valueOut, 1.0);
-}
-
 void main() {
     float fixedPitch = (pitch/3.2) + 0.5;
     float fixedY = gl_FragCoord.y / (resolution.y / 2.0);
@@ -103,5 +97,5 @@ void main() {
 		col = col*(1-a) + vec4(1)*a;
 	}
 
-    gl_FragColor = vec4(col.xyz, texture2D(zero, vec2(texCoord0)).a * 2.0-1);//roundEither(texture2D(zero, vec2(texCoord0)).a * 2.0-1));
+    gl_FragColor = vec4(col.xyz, texture2D(zero, vec2(texCoord0)).a);//roundEither(texture2D(zero, vec2(texCoord0)).a * 2.0-1));
 }

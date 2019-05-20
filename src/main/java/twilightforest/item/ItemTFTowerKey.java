@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -14,6 +15,10 @@ import twilightforest.enums.TowerDeviceVariant;
 import javax.annotation.Nonnull;
 
 public class ItemTFTowerKey extends ItemTF {
+	ItemTFTowerKey(EnumRarity rarity) {
+		super(rarity);
+	}
+
 	@Nonnull
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fx, float fy, float fz) {

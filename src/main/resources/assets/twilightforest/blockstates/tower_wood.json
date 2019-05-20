@@ -2,13 +2,26 @@
   "forge_marker": 1,
   "defaults": { "model": "leaves" },
   "variants": {
-    "variant=plain": [{ "textures": { "all": "twilightforest:blocks/towerwood_planks" } }],
-    "variant=encased": [{ "model": "cube_all", "textures": { "all": "twilightforest:blocks/towerwood_encased" } }],
+    "variant=plain": [
+      { "textures": { "all": "twilightforest:blocks/towerwood_planks" } },
+      { "textures": { "all": "twilightforest:blocks/towerwood_planks" }, "model": "twilightforest:util/leaves_flipped_v" }
+    ],
+    "variant=encased": [
+      { "textures": { "all": "twilightforest:blocks/towerwood_encased" } }
+    ],
     "variant=cracked": [
       { "textures": { "all": "twilightforest:blocks/towerwood_cracked" } },
-      { "textures": { "all": "twilightforest:blocks/towerwood_alt" } }
+      { "textures": { "all": "twilightforest:blocks/towerwood_alt" } },
+      { "textures": { "all": "twilightforest:blocks/towerwood_cracked" }, "model": "twilightforest:util/leaves_flipped_v" },
+      { "textures": { "all": "twilightforest:blocks/towerwood_alt" }, "model": "twilightforest:util/leaves_flipped_v" }
     ],
-    "variant=mossy": [{ "textures": { "all": "twilightforest:blocks/towerwood_mossy" } }],
-    "variant=infested": [{ "textures": { "all": "twilightforest:blocks/towerwood_infested" } }]
+    "variant=mossy": [
+      { "textures": { "all": "twilightforest:blocks/towerwood_mossy" } },
+      { "textures": { "all": "twilightforest:blocks/towerwood_mossy" }, "model": "twilightforest:util/leaves_flipped_v" }
+    ],
+    "variant=infested": [
+      { "textures": { "all": "twilightforest:blocks/towerwood_infested" } },
+      { "textures": { "all": "twilightforest:blocks/towerwood_infested" }, "model": "twilightforest:util/leaves_flipped_v" }
+    ]
   }
 }

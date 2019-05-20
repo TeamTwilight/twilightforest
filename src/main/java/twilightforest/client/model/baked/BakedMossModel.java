@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.util.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 
@@ -15,7 +14,7 @@ import java.util.List;
 
 public class BakedMossModel implements IBakedModel {
     private static final FaceBakery bakery = new FaceBakery();
-    private static final String spriteString = new ResourceLocation(TwilightForestMod.ID, "blocks/mosspatch").toString();
+    private static final String spriteString = TwilightForestMod.ID + ":blocks/mosspatch";
     private static final TextureAtlasSprite mossTex = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(spriteString);
 
     @Override

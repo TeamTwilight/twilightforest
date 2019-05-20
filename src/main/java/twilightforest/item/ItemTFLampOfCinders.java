@@ -1,11 +1,14 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -20,10 +23,10 @@ import twilightforest.block.TFBlocks;
 import javax.annotation.Nonnull;
 
 public class ItemTFLampOfCinders extends ItemTF {
-
 	private static final int FIRING_TIME = 12;
 
-	public ItemTFLampOfCinders() {
+	ItemTFLampOfCinders(EnumRarity rarity) {
+		super(rarity);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
 		this.setMaxDamage(1024);
@@ -40,6 +43,9 @@ public class ItemTFLampOfCinders extends ItemTF {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (burnBlock(world, pos)) {
+			if (player instanceof EntityPlayerMP)
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, player.getHeldItem(hand));
+
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F, 1.5F);
 
 			// spawn flame particles
@@ -69,10 +75,10 @@ public class ItemTFLampOfCinders extends ItemTF {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityLivingBase living, int useRemaining) {
-		int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
+		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
 
-		if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage(par1ItemStack)) {
+		if (useTime > FIRING_TIME && (stack.getItemDamage() + 1) < this.getMaxDamage(stack)) {
 			doBurnEffect(world, living);
 		}
 	}
@@ -113,12 +119,12 @@ public class ItemTFLampOfCinders extends ItemTF {
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 }

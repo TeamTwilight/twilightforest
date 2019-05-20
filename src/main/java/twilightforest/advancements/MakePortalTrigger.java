@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import java.util.Map;
 import java.util.Set;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.critereon.AbstractCriterionInstance;
@@ -16,61 +15,59 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.Instance> {
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.Instance>
-{
-    public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "make_tf_portal");
+    public static final ResourceLocation ID = TwilightForestMod.prefix("make_tf_portal");
     private final Map<PlayerAdvancements, MakePortalTrigger.Listeners> listeners = Maps.newHashMap();
 
-    public ResourceLocation getId()
-    {
+    @Override
+    public ResourceLocation getId() {
         return ID;
     }
 
+    @Override
     public void addListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
         MakePortalTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
-
         listeners.add(listener);
     }
 
+    @Override
     public void removeListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener<MakePortalTrigger.Instance> listener) {
         MakePortalTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
-
         if (listeners != null) {
             listeners.remove(listener);
-
             if (listeners.isEmpty()) {
                 this.listeners.remove(playerAdvancementsIn);
             }
         }
     }
 
+    @Override
     public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
         this.listeners.remove(playerAdvancementsIn);
     }
 
+    @Override
     public MakePortalTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
         return new MakePortalTrigger.Instance();
     }
 
     public void trigger(EntityPlayerMP player) {
         MakePortalTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
-
         if (listeners != null) {
             listeners.trigger();
         }
     }
 
     public static class Instance extends AbstractCriterionInstance {
+
         public Instance() {
             super(MakePortalTrigger.ID);
         }
     }
 
     static class Listeners {
+
         private final PlayerAdvancements playerAdvancements;
         private final Set<ICriterionTrigger.Listener<MakePortalTrigger.Instance>> listeners = Sets.newHashSet();
 

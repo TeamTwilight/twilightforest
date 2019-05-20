@@ -1,6 +1,3 @@
-/**
- *
- */
 package twilightforest.world;
 
 import net.minecraft.client.audio.MusicTicker;
@@ -32,12 +29,35 @@ import javax.annotation.Nullable;
 public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	private static final String SEED_KEY = "CustomSeed";
+	private static final String SKYLIGHT_KEY = "HasSkylight";
+
+	private static volatile boolean skylightEnabled = true;
 
 	private long seed;
+
+	public static void syncFromConfig() {
+		skylightEnabled = TFConfig.performance.enableSkylight;
+	}
+
+	public static void setSkylightEnabled(boolean enabled) {
+		skylightEnabled = enabled;
+	}
+
+	public static boolean isSkylightEnabled(NBTTagCompound data) {
+		return data.hasKey(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : skylightEnabled;
+	}
 
 	public WorldProviderTwilightForest() {
 		setDimension(TFConfig.dimension.dimensionID);
 	}
+
+	/* TODO Breaking change. Uncomment for 1.13.
+	Reason for adding ID is if we want multiple TF worlds for servers in future.
+
+	@Override
+	public String getSaveFolder() {
+		return "twilightforest" + getDimension();
+	}*/
 
 	@Nullable
 	@Override
@@ -60,9 +80,9 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		if (bright > 1.0F) {
 			bright = 1.0F;
 		}
-		float red = 0.7529412F;
-		float green = 1.0F;
-		float blue = 0.8470588F;
+		float red = 0.7529412F; // 192
+		float green = 1.0F; // 255
+		float blue = 0.8470588F; // 216
 		red *= bright * 0.94F + 0.06F;
 		green *= bright * 0.94F + 0.06F;
 		blue *= bright * 0.91F + 0.09F;
@@ -71,21 +91,32 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	// Pin the celestial angle at night/evening so things that use it see night
 	@Override
-	public float calculateCelestialAngle(long par1, float par3) {
+	public float calculateCelestialAngle(long worldTime, float partialTicks) {
 		return 0.225f;
 	}
 
 	@Override
 	public void init() {
-		super.init();
-		this.biomeProvider = new TFBiomeProvider(world);
-		NBTTagCompound data = world.getWorldInfo().getDimensionData(TFConfig.dimension.dimensionID);
+		NBTTagCompound data = TFWorld.getDimensionData(world);
 		seed = data.hasKey(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
+		hasSkyLight = isSkylightEnabled(data);
+		biomeProvider = new TFBiomeProvider(world);
+	}
+
+	@Override
+	protected void generateLightBrightnessTable() {
+		float f = this.hasSkyLight ? 0.0F : 0.1F;
+		for (int i = 0; i <= 15; ++i) {
+			float f1 = 1.0F - (float)i / 15.0F;
+			this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
+		}
 	}
 
 	@Override
 	public IChunkGenerator createChunkGenerator() {
-		return new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
+		return TFConfig.dimension.skylightForest
+				? new ChunkGeneratorTwilightVoid(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled())
+				: new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
 	}
 
 	/**
@@ -100,6 +131,12 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	@Override
 	public int getAverageGroundLevel() {
 		return 30;
+	}
+
+	@Override
+	public double getVoidFogYFactor() {
+		// allow for terrain squashing
+		return super.getVoidFogYFactor() * 2.0;
 	}
 
 	@Override
@@ -120,6 +157,11 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
+	public boolean shouldMapSpin(String entityName, double x, double z, double rotation) {
+		return false;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
 		// TODO Maybe in the future we can get the return of sky color by biome?
@@ -127,8 +169,18 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
+	public void getLightmapColors(float partialTicks, float sunBrightness, float skyLight, float blockLight, float[] colors) {
+		final float r = 64f / 255f, g = 85f / 255f, b = 72f / 255f;
+		if (!hasSkyLight) {
+			colors[0] = r + blockLight * (1.0f - r);
+			colors[1] = g + blockLight * (1.0f - g);
+			colors[2] = b + blockLight * (1.0f - b);
+		}
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
-	public float getStarBrightness(float par1) {
+	public float getStarBrightness(float partialTicks) {
 		return 1.0F;
 	}
 
@@ -170,7 +222,9 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	public void onWorldSave() {
 		NBTTagCompound data = new NBTTagCompound();
 		data.setLong(SEED_KEY, seed);
-		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data);
+		// TODO: decide on persisting this
+		//data.setBoolean(SKYLIGHT_KEY, hasSkyLight);
+		TFWorld.setDimensionData(world, data);
 	}
 
 	@Override
@@ -179,7 +233,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		if (super.getSkyRenderer() == null) {
 			this.setSkyRenderer(new TFSkyRenderer());
 		}
-
 		return super.getSkyRenderer();
 	}
 
@@ -189,13 +242,12 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		if (super.getWeatherRenderer() == null) {
 			this.setWeatherRenderer(new TFWeatherRenderer());
 		}
-
 		return super.getWeatherRenderer();
 	}
 
 	// no sideonly
 	@Override
 	public float getCloudHeight() {
-		return 161.0F;
+		return TFConfig.dimension.skylightForest ? -1F : 161F;
 	}
 }

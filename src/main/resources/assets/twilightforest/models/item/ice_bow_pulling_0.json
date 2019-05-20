@@ -1,6 +1,7 @@
 {
   "parent": "twilightforest:item/ice_bow",
   "textures": {
-    "layer0": "twilightforest:items/icebow_pulling_0"
+    "layer0": "twilightforest:items/ice_bow_solid_pulling_0",
+    "layer1": "twilightforest:items/ice_bow_clear_pulling_0"
   }
 }

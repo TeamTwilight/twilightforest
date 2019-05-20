@@ -1,0 +1,41 @@
+{
+  "name": "Armors",
+  "icon": "twilightforest:ironwood_chestplate",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/armors",
+  "sortnum": 1100,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Armor Information"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/ironwood_armor_set",
+      "text": "Ironwood Armors"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/naga_armor_set",
+      "text": "Naga Scale Armors"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/steeleaf_armor_set",
+      "text": "Steeleaf Armors"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/fiery_armor_set",
+      "text": "Fiery Armors"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/knightmetal_armor_set",
+      "text": "Knightly Armors"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/arctic_armor_set",
+      "text": "Arctic Armors"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/yeti_armor_set",
+      "text": "Yeti Armors"
+    }
+  ]
+}

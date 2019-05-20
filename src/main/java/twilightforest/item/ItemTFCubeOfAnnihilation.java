@@ -4,13 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,12 +22,13 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class ItemTFCubeOfAnnihilation extends ItemTF {
+
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 
-	protected ItemTFCubeOfAnnihilation() {
+	protected ItemTFCubeOfAnnihilation(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
-		this.setCreativeTab(TFItems.creativeTab);
-		this.addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "thrown"), new IItemPropertyGetter() {
+		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
@@ -93,12 +94,12 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BLOCK;
 	}
 

@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:world",
+  "name": "Minor Landmarks",
+  "description": "Huts, Wells, Ruins!",
+  "icon": "twilightforest:magic_map",
+  "sortnum": 1000
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Ice Bomb",
+  "icon": "twilightforest:ice_bomb",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/ice_bomb",
+  "sortnum": 7120,
+  "pages": [
+    {
+      "type": "spotlight",
+      "title": "Ice Bomb",
+      "item": "twilightforest:ice_bomb",
+      "text": "The Ice Bomb is the best thing ever. It's so chill, and so cool! It's literally da bomb"
+    }
+  ]
+}

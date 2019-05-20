@@ -3,23 +3,26 @@ package twilightforest.client.particle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ParticleGhastTrap extends Particle {
+
 	float reddustParticleScale;
+
 	private double originX;
 	private double originY;
 	private double originZ;
 
-	public ParticleGhastTrap(World par1World, double par2, double par4, double par6, double par8, double par9, double par10) {
-		this(par1World, par2, par4, par6, 3.0F, par8, par9, par10);
+	public ParticleGhastTrap(World world, double x, double y, double z, double vx, double vy, double vz) {
+		this(world, x, y, z, 3.0F, vx, vy, vz);
 	}
 
-	public ParticleGhastTrap(World par1World, double x, double y, double z, float scale, double mx, double my, double mz) {
-		super(par1World, x + mx, y + my, z + mz, mx, my, mz);
+	public ParticleGhastTrap(World world, double x, double y, double z, float scale, double mx, double my, double mz) {
+		super(world, x + mx, y + my, z + mz, mx, my, mz);
 		this.motionX = mx;
 		this.motionY = my;
 		this.motionZ = mz;
@@ -28,10 +31,10 @@ public class ParticleGhastTrap extends Particle {
 		this.originY = y;
 		this.originZ = z;
 
-		float f4 = (float) Math.random() * 0.4F;// + 0.6F;
-		//this.particleRed = ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * f4;
-		this.particleGreen = ((float) (Math.random() * 0.20000000298023224D) + 0.8F) * f4;
-		this.particleBlue = ((float) (Math.random() * 0.20000000298023224D) + 0.8F) * f4;
+		float brightness = (float) Math.random() * 0.4F;// + 0.6F;
+		//this.particleRed = ((float) (Math.random() * 0.20000000298023224D) + 0.8F) * brightness;
+		this.particleGreen = ((float) (Math.random() * 0.20000000298023224D) + 0.8F) * brightness;
+		this.particleBlue  = ((float) (Math.random() * 0.20000000298023224D) + 0.8F) * brightness;
 
 		this.particleRed = 1.0F;
 
@@ -45,19 +48,14 @@ public class ParticleGhastTrap extends Particle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		float f6 = ((float) this.particleAge + par2) / (float) this.particleMaxAge * 32.0F;
+	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks,
+	                           float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 
-		if (f6 < 0.0F) {
-			f6 = 0.0F;
-		}
-
-		if (f6 > 1.0F) {
-			f6 = 1.0F;
-		}
+		float f6 = ((float) this.particleAge + partialTicks) / (float) this.particleMaxAge * 32.0F;
+		f6 = MathHelper.clamp(f6, 0f, 1f);
 
 		this.particleScale = this.reddustParticleScale * f6;
-		super.renderParticle(buffer, entity, par2, par3, par4, par5, par6, par7);
+		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 	}
 
 //    /**

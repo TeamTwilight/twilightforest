@@ -6,7 +6,6 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-
 public class TFBiomeClearing extends TFBiomeBase {
 
 	public TFBiomeClearing(BiomeProperties props) {
@@ -20,8 +19,7 @@ public class TFBiomeClearing extends TFBiomeBase {
 	}
 
 	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 	}
-
 }

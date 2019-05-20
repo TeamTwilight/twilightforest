@@ -3,9 +3,6 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -17,7 +14,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class EntitySeekerArrow extends EntityArrow {
+public class EntitySeekerArrow extends EntityTFArrow {
 
 	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntitySeekerArrow.class, DataSerializers.VARINT);
 
@@ -26,8 +23,8 @@ public class EntitySeekerArrow extends EntityArrow {
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
-	public EntitySeekerArrow(World par1World) {
-		super(par1World);
+	public EntitySeekerArrow(World world) {
+		super(world);
 	}
 
 	public EntitySeekerArrow(World world, EntityPlayer player) {
@@ -60,8 +57,8 @@ public class EntitySeekerArrow extends EntityArrow {
 				Vec3d courseVec = getMotionVec();
 
 				// vector lengths
-				double courseLen = courseVec.lengthVector();
-				double targetLen = targetVec.lengthVector();
+				double courseLen = courseVec.length();
+				double targetLen = targetVec.length();
 				double totalLen = MathHelper.sqrt(courseLen*courseLen + targetLen*targetLen);
 
 				double dotProduct = courseVec.dotProduct(targetVec) / (courseLen * targetLen); // cosine similarity
@@ -141,13 +138,7 @@ public class EntitySeekerArrow extends EntityArrow {
 		dataManager.set(TARGET, e == null ? -1 : e.getEntityId());
 	}
 
-	@Override
-	protected ItemStack getArrowStack() {
-		return new ItemStack(Items.ARROW);
-	}
-
 	private boolean isThisArrowFlying() {
 		return MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) > 1.0;
 	}
-
 }

@@ -1,15 +1,23 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,14 +27,12 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
-	public static final PropertyEnum<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class);
+
+	public static final IProperty<BossVariant> VARIANT = PropertyEnum.create("boss", BossVariant.class);
 
 	protected BlockTFBossSpawner() {
 		super(Material.ROCK);
@@ -48,34 +54,42 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, BossVariant.values()[meta]);
+		return getDefaultState().withProperty(VARIANT, BossVariant.getVariant(meta));
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		for (BossVariant variant : BossVariant.values()) {
+			if (variant.hasSpawner()) {
+				list.add(new ItemStack(this, 1, variant.ordinal()));
+			}
+		}
 	}
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		return true;
+		return state.getValue(VARIANT).hasSpawner();
 	}
 
 	@Override
-	@Nonnull
+	@Nullable
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		try {
-			return state.getValue(VARIANT).getSpawnerClass().newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return state.getValue(VARIANT).getSpawner();
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int fortune) {
-		return null;
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
+		return Items.AIR;
 	}
 
 	@Override
 	public int quantityDropped(Random random) {
 		return 0;
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+		return blockHardness >= 0f;
 	}
 
 	@Override
@@ -86,14 +100,15 @@ public class BlockTFBossSpawner extends Block implements ModelRegisterCallback {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(VARIANT).build());
-		ModelUtils.registerToState(this, 0, getDefaultState());
+		IStateMapper stateMapper = new StateMap.Builder().ignore(VARIANT).build();
+		ModelLoader.setCustomStateMapper(this, stateMapper);
+		ModelUtils.registerToStateSingleVariant(this, VARIANT, stateMapper);
 	}
 }

@@ -4,20 +4,38 @@
       "item": "twilightforest:hedge"
     },
     "title": {
-      "translate": "advancement.twilight_hedge"
+      "translate": "advancement.twilightforest.hedge"
     },
     "description": {
-      "translate": "advancement.twilight_hedge.desc"
+      "translate": "advancement.twilightforest.hedge.desc",
+      "with": [
+        { "translate": "structure.hedge_maze.name" }
+      ]
     }
   },
   "parent": "twilightforest:root",
-  "__comment": "These are triggered by code in order to test for a Hedge nearby. In the future, these may become data-driven",
   "criteria": {
     "hedge_spider": {
-      "trigger": "minecraft:impossible"
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:hedge_spider",
+          "location": {
+            "feature": "twilightforest:hedge_maze"
+          }
+        }
+      }
     },
     "swarm_spider": {
-      "trigger": "minecraft:impossible"
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:swarm_spider",
+          "location": {
+            "feature": "twilightforest:hedge_maze"
+          }
+        }
+      }
     }
   },
   "requirements": [

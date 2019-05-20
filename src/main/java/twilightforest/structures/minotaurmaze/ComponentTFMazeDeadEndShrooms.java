@@ -37,14 +37,15 @@ public class ComponentTFMazeDeadEndShrooms extends ComponentTFMazeDeadEndRoots {
 		}
 
 		// brackets?
-		IBlockState mushType = (rand.nextBoolean() ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
+		boolean mushFlag = rand.nextBoolean();
+		IBlockState mushType = (mushFlag ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
 		int mushY = rand.nextInt(4) + 1;
 		int mushZ = rand.nextInt(3) + 1;
 		this.setBlockState(world, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM), 1, mushY - 1, mushZ, sbb);
 		this.fillWithBlocks(world, sbb, 1, 1, mushZ, 1, mushY, mushZ, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM), AIR, false);
 		this.fillWithBlocks(world, sbb, 1, mushY, mushZ - 1, 2, mushY, mushZ + 1, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE), AIR, false);
 
-		mushType = (mushType == Blocks.BROWN_MUSHROOM_BLOCK ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
+		mushType = (mushFlag ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK).getDefaultState();
 		mushY = rand.nextInt(4) + 1;
 		mushZ = rand.nextInt(3) + 1;
 		this.fillWithBlocks(world, sbb, 4, 1, mushZ, 4, mushY, mushZ, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM), AIR, false);

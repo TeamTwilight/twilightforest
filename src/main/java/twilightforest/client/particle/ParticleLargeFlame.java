@@ -9,16 +9,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ParticleLargeFlame extends Particle {
-	/**
-	 * the scale of the flame FX
-	 */
+
 	private float flameScale;
 
-	public ParticleLargeFlame(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
-		super(par1World, par2, par4, par6, par8, par10, par12);
-		this.motionX = this.motionX * 0.009999999776482582D + par8;
-		this.motionY = this.motionY * 0.009999999776482582D + par10;
-		this.motionZ = this.motionZ * 0.009999999776482582D + par12;
+	public ParticleLargeFlame(World world, double x, double y, double z, double vx, double vy, double vz) {
+		super(world, x, y, z, vx, vy, vz);
+		this.motionX = this.motionX * 0.009999999776482582D + vx;
+		this.motionY = this.motionY * 0.009999999776482582D + vy;
+		this.motionZ = this.motionZ * 0.009999999776482582D + vz;
 		this.particleScale *= 5.0D;
 		this.flameScale = this.particleScale;
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
@@ -28,15 +26,17 @@ public class ParticleLargeFlame extends Particle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		float var8 = ((float) this.particleAge + par2) / (float) this.particleMaxAge;
+	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks,
+	                           float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+
+		float var8 = ((float) this.particleAge + partialTicks) / (float) this.particleMaxAge;
 		this.particleScale = this.flameScale * (1.0F - var8 * var8 * 0.5F);
-		super.renderParticle(buffer, entity, par2, par3, par4, par5, par6, par7);
+		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 	}
 
 	@Override
-	public int getBrightnessForRender(float par1) {
-		float var2 = ((float) this.particleAge + par1) / (float) this.particleMaxAge;
+	public int getBrightnessForRender(float partialTicks) {
+		float var2 = ((float) this.particleAge + partialTicks) / (float) this.particleMaxAge;
 
 		if (var2 < 0.0F) {
 			var2 = 0.0F;
@@ -46,7 +46,7 @@ public class ParticleLargeFlame extends Particle {
 			var2 = 1.0F;
 		}
 
-		int var3 = super.getBrightnessForRender(par1);
+		int var3 = super.getBrightnessForRender(partialTicks);
 		int var4 = var3 & 255;
 		int var5 = var3 >> 16 & 255;
 		var4 += (int) (var2 * 15.0F * 16.0F);

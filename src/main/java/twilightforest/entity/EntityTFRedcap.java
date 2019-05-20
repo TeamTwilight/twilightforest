@@ -13,7 +13,6 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -22,18 +21,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFRedcapLightTNT;
 import twilightforest.entity.ai.EntityAITFRedcapShy;
-import twilightforest.util.PlayerHelper;
 
 public class EntityTFRedcap extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/redcap");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/redcap");
 
 	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
 	public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
@@ -98,8 +95,8 @@ public class EntityTFRedcap extends EntityMob {
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
 
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
-		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
+		this.setEquipmentBasedOnDifficulty(difficulty);
+		this.setEnchantmentBasedOnDifficulty(difficulty);
 
 		this.setDropChance(EntityEquipmentSlot.MAINHAND, 0.2F);
 		this.setDropChance(EntityEquipmentSlot.FEET, 0.2F);
@@ -108,29 +105,20 @@ public class EntityTFRedcap extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("TNTLeft", heldTNT.getCount());
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, heldPick);
+		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		heldTNT.setCount(par1NBTTagCompound.getInteger("TNTLeft"));
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setInteger("TNTLeft", heldTNT.getCount());
 	}
 
 	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
-			// are we in a level 1 hill?
-			int chunkX = MathHelper.floor(posX) >> 4;
-			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill1) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill1"), "redcap");
-			}
-
-		}
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		heldTNT.setCount(compound.getInteger("TNTLeft"));
 	}
-
 }

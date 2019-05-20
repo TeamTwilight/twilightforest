@@ -14,7 +14,7 @@ import java.util.List;
 
 public class EntityAITFBreathAttack extends EntityAIBase {
 
-	private EntityLiving entityHost;
+	private final EntityLiving entityHost;
 	private EntityLivingBase attackTarget;
 
 	private double breathX;
@@ -27,8 +27,8 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 
 	private int durationLeft;
 
-	public EntityAITFBreathAttack(EntityLiving par1EntityLiving, float speed, float range, int time, float chance) {
-		this.entityHost = par1EntityLiving;
+	public EntityAITFBreathAttack(EntityLiving living, float speed, float range, int time, float chance) {
+		this.entityHost = living;
 		this.breathRange = range;
 		this.maxDuration = time;
 		this.attackChance = chance;
@@ -39,7 +39,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	public boolean shouldExecute() {
 		this.attackTarget = this.entityHost.getAttackTarget();
 
-		if (this.attackTarget == null || this.entityHost.getDistanceToEntity(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
+		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
 			return false;
 		} else {
 			breathX = attackTarget.posX;
@@ -69,7 +69,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	@Override
 	public boolean shouldContinueExecuting() {
 		return this.durationLeft > 0 && !this.entityHost.isDead && !this.attackTarget.isDead
-				&& this.entityHost.getDistanceToEntity(attackTarget) <= this.breathRange
+				&& this.entityHost.getDistance(attackTarget) <= this.breathRange
 				&& this.entityHost.getEntitySenses().canSee(attackTarget);
 	}
 
@@ -98,13 +98,13 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	@Override
 	public void resetTask() {
 		this.durationLeft = 0;
+		this.attackTarget = null;
 
 		// set breather flag
 		if (this.entityHost instanceof IBreathAttacker) {
 			((IBreathAttacker) entityHost).setBreathing(false);
 		}
 	}
-
 
 	/**
 	 * What, if anything, is the head currently looking at?
@@ -115,7 +115,7 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 		double offset = 3.0D;
 		Vec3d srcVec = new Vec3d(this.entityHost.posX, this.entityHost.posY + 0.25, this.entityHost.posZ);
 		Vec3d lookVec = this.entityHost.getLook(1.0F);
-		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 0.5F;
 		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getEntityBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(var9, var9, var9));
 		double hitDist = 0;
@@ -163,19 +163,17 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	/**
 	 * Arguments: current rotation, intended rotation, max increment.
 	 */
-	private float updateRotation(float par1, float par2, float par3) {
-		float var4 = MathHelper.wrapDegrees(par2 - par1);
+	private float updateRotation(float current, float target, float maxDelta) {
+		float delta = MathHelper.wrapDegrees(target - current);
 
-		if (var4 > par3) {
-			var4 = par3;
+		if (delta > maxDelta) {
+			delta = maxDelta;
 		}
 
-		if (var4 < -par3) {
-			var4 = -par3;
+		if (delta < -maxDelta) {
+			delta = -maxDelta;
 		}
 
-		return par1 + var4;
+		return current + delta;
 	}
-
-
 }

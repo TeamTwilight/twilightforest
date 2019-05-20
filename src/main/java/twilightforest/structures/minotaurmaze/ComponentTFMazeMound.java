@@ -97,17 +97,17 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(World par1World, StructureBoundingBox par2StructureBoundingBox) {
+	protected int getAverageGroundLevel(World world, StructureBoundingBox boundingBox) {
 		int totalHeight = 0;
 		int totalMeasures = 0;
 
-		for (int var5 = this.boundingBox.minZ; var5 <= this.boundingBox.maxZ; ++var5) {
-			for (int var6 = this.boundingBox.minX; var6 <= this.boundingBox.maxX; ++var6) {
-				BlockPos pos = new BlockPos(var6, 64, var5);
+		for (int z = this.boundingBox.minZ; z <= this.boundingBox.maxZ; ++z) {
+			for (int x = this.boundingBox.minX; x <= this.boundingBox.maxX; ++x) {
+				BlockPos pos = new BlockPos(x, 64, z);
 
-				if (par2StructureBoundingBox.isVecInside(pos)) {
-					final BlockPos topPos = par1World.getTopSolidOrLiquidBlock(pos);
-					totalHeight += Math.max(topPos.getY(), par1World.provider.getAverageGroundLevel());
+				if (boundingBox.isVecInside(pos)) {
+					final BlockPos topPos = world.getTopSolidOrLiquidBlock(pos);
+					totalHeight += Math.max(topPos.getY(), world.provider.getAverageGroundLevel());
 					++totalMeasures;
 				}
 			}

@@ -16,8 +16,8 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.world.TFGenSmallRainboak;
-import twilightforest.world.TFGenSmallTwilightOak;
+import twilightforest.world.feature.TFGenSmallRainboak;
+import twilightforest.world.feature.TFGenSmallTwilightOak;
 
 import java.util.List;
 import java.util.Random;

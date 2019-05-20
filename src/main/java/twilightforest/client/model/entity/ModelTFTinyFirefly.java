@@ -2,6 +2,7 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.Entity;
 
 
 public class ModelTFTinyFirefly extends ModelBase {
@@ -11,8 +12,9 @@ public class ModelTFTinyFirefly extends ModelBase {
 
 	}
 
-	public void render(float f, float f1, float f2, float f3, float f4, float f5) {
-		glow1.render(f5);
+	@Override
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		glow1.render(scale);
 	}
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {

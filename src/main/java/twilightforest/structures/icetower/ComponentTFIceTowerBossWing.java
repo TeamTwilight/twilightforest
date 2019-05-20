@@ -98,7 +98,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 			}
 		}
 
-		final IBlockState snowQueenSpawner = TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN);
+		final IBlockState snowQueenSpawner = TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN);
 
 		this.setBlockStateRotated(world, snowQueenSpawner, 7, top - 6, 7, Rotation.NONE, sbb);
 

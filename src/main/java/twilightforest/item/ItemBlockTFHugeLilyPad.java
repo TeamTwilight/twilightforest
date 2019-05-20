@@ -1,10 +1,12 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemColored;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -73,6 +75,13 @@ public class ItemBlockTFHugeLilyPad extends ItemColored {
 					worldIn.setBlockState(blockpos1.east(), lilypad.withProperty(PIECE, NE), 10);
 					worldIn.setBlockState(blockpos1.east().south(), lilypad.withProperty(PIECE, SE), 10);
 					worldIn.setBlockState(blockpos1.south(), lilypad.withProperty(PIECE, SW), 11);
+
+					if (playerIn instanceof EntityPlayerMP) {
+						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, blockpos1, itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, blockpos1.east(), itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, blockpos1.east().south(), itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, blockpos1.south(), itemstack);
+					}
 
 					if (!playerIn.capabilities.isCreativeMode) {
 						itemstack.shrink(1);

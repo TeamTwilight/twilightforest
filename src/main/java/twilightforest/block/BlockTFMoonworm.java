@@ -4,7 +4,10 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -63,13 +66,17 @@ public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCall
 			world.destroyBlock(pos, false);
 			return false;
 		}
-
 		return true;
 	}
 
 	@Override
 	public int quantityDropped(IBlockState state, int fortune, Random random) {
 		return 0;
+	}
+
+	@Override
+	public ItemStack getSquishResult() {
+		return new ItemStack(Items.DYE, 1, EnumDyeColor.LIME.getDyeDamage());
 	}
 
 	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)

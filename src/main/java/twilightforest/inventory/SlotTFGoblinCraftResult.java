@@ -7,34 +7,34 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 
-
 public class SlotTFGoblinCraftResult extends SlotCrafting {
-	private EntityPlayer thePlayer;
-	private IInventory inputSlot;
-	private InventoryTFGoblinUncrafting uncraftingMatrix;
-	private InventoryCrafting assemblyMatrix;
+
+	private final EntityPlayer player;
+	private final IInventory inputSlot;
+	private final InventoryTFGoblinUncrafting uncraftingMatrix;
+	private final InventoryCrafting assemblyMatrix;
 
 	public SlotTFGoblinCraftResult(EntityPlayer player, IInventory input, IInventory uncraftingMatrix, IInventory assemblyMatrix, IInventory result, int slotIndex, int x, int y) {
 		super(player, (InventoryCrafting) assemblyMatrix, result, slotIndex, x, y);
-		this.thePlayer = player;
+		this.player = player;
 		this.inputSlot = input;
 		this.uncraftingMatrix = (InventoryTFGoblinUncrafting) uncraftingMatrix;
 		this.assemblyMatrix = (InventoryCrafting) assemblyMatrix;
 	}
 
 	@Override
-	public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack) {
+	public ItemStack onTake(EntityPlayer player, ItemStack stack) {
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
 		boolean combined = true;
 
-		if (ItemStack.areItemStacksEqual(CraftingManager.findMatchingResult(this.assemblyMatrix, this.thePlayer.world), par1ItemStack)) {
+		if (ItemStack.areItemStacksEqual(CraftingManager.findMatchingResult(this.assemblyMatrix, this.player.world), stack)) {
 			combined = false;
 		}
 
 		if (combined) {
 			// charge the player before the stacks empty
 			if (this.uncraftingMatrix.recraftingCost > 0) {
-				this.thePlayer.addExperienceLevel(-this.uncraftingMatrix.recraftingCost);
+				this.player.addExperienceLevel(-this.uncraftingMatrix.recraftingCost);
 			}
 
 			// if we are using a combined recipe, wipe the uncrafting matrix and decrement the input appropriately
@@ -44,8 +44,6 @@ public class SlotTFGoblinCraftResult extends SlotCrafting {
 			}
 		}
 
-		return super.onTake(par1EntityPlayer, par1ItemStack);
+		return super.onTake(player, stack);
 	}
-
-
 }

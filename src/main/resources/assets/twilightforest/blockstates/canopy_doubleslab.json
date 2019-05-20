@@ -1,0 +1,29 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all"
+  },
+  "variants": {
+    "normal": [{
+      "weight": 10,
+      "textures": {
+        "all": "twilightforest:blocks/wood/planks_canopy_0"
+      }
+    }, {
+      "weight": 10,
+      "textures": {
+        "all": "twilightforest:blocks/wood/planks_canopy_1"
+      }
+    }, {
+      "weight": 1,
+      "textures": {
+        "all": "twilightforest:blocks/wood/planks_canopy_2"
+      }
+    }, {
+      "weight": 1,
+      "textures": {
+        "all": "twilightforest:blocks/wood/planks_canopy_3"
+      }
+    }]
+  }
+}

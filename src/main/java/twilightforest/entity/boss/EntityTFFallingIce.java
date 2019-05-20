@@ -16,15 +16,16 @@ import twilightforest.client.particle.TFParticleType;
 import java.util.List;
 
 public class EntityTFFallingIce extends EntityFallingBlock {
+
 	private static final int HANG_TIME = 100;
 
-	public EntityTFFallingIce(World par1World) {
-		super(par1World, 0, 0, 0, Blocks.PACKED_ICE.getDefaultState()); // set falling tile on client to prevent crash
+	public EntityTFFallingIce(World world) {
+		super(world, 0, 0, 0, Blocks.PACKED_ICE.getDefaultState()); // set falling tile on client to prevent crash
 		this.setSize(2.98F, 2.98F);
 	}
 
-	public EntityTFFallingIce(World par1World, int x, int y, int z) {
-		super(par1World, x, y, z, Blocks.PACKED_ICE.getDefaultState());
+	public EntityTFFallingIce(World world, int x, int y, int z) {
+		super(world, x, y, z, Blocks.PACKED_ICE.getDefaultState());
 		this.setSize(2.98F, 2.98F);
 		this.fallHurtAmount = 10.0F;
 		this.fallHurtMax = 30;
@@ -63,7 +64,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 			double dy = this.posY - 3F + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dz = this.posZ + 2F * (rand.nextFloat() - rand.nextFloat());
 
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_WARNING, dx, dy, dz, 0, -1, 0);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_WARNING, dx, dy, dz, 0, -1, 0);
 		}
 	}
 
@@ -85,24 +86,25 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 			}
 		}
 
+		int stateId = Block.getStateId(Blocks.PACKED_ICE.getDefaultState());
 		for (int i = 0; i < 200; i++) {
 			double dx = this.posX + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dz = this.posZ + 3F * (rand.nextFloat() - rand.nextFloat());
 
-			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
+			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, stateId);
 		}
 
 		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, getPosition(), null).getBreakSound(), 3F, 0.5F);
 	}
 
-	private void destroyIceInAABB(AxisAlignedBB par1AxisAlignedBB) {
-		int minX = MathHelper.floor(par1AxisAlignedBB.minX);
-		int minY = MathHelper.floor(par1AxisAlignedBB.minY);
-		int minZ = MathHelper.floor(par1AxisAlignedBB.minZ);
-		int maxX = MathHelper.floor(par1AxisAlignedBB.maxX);
-		int maxY = MathHelper.floor(par1AxisAlignedBB.maxY);
-		int maxZ = MathHelper.floor(par1AxisAlignedBB.maxZ);
+	private void destroyIceInAABB(AxisAlignedBB aabb) {
+		int minX = MathHelper.floor(aabb.minX);
+		int minY = MathHelper.floor(aabb.minY);
+		int minZ = MathHelper.floor(aabb.minZ);
+		int maxX = MathHelper.floor(aabb.maxX);
+		int maxY = MathHelper.floor(aabb.maxY);
+		int maxZ = MathHelper.floor(aabb.maxZ);
 
 		for (int dx = minX; dx <= maxX; ++dx) {
 			for (int dy = minY; dy <= maxY; ++dy) {

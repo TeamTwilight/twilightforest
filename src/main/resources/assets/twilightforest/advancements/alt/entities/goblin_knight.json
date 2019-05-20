@@ -1,0 +1,60 @@
+{
+  "parent": "twilightforest:alt/root",
+  "__hidden": "This advancement should not be visible. There is no display tag group. This is for Patchouli to track if you've interacted with an entity.",
+  "criteria": {
+    "hurt_by_indirect": {
+      "trigger": "minecraft:entity_hurt_player",
+      "conditions": { "damage": { "source_entity": { "type": "twilightforest:goblin_knight_upper" }}}
+    },
+    "slain_by": {
+      "trigger": "minecraft:entity_killed_player",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_upper" }}
+    },
+    "hurt": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_upper" }}
+    },
+    "slay": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_upper" }}
+    },
+    "summon": {
+      "trigger": "minecraft:summoned_entity",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_upper" }}
+    },
+    "tame": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_upper" }}
+    },
+    "hurt_by_indirect_alt": {
+      "trigger": "minecraft:entity_hurt_player",
+      "conditions": { "damage": { "source_entity": { "type": "twilightforest:goblin_knight_lower" }}}
+    },
+    "slain_by_alt": {
+      "trigger": "minecraft:entity_killed_player",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_lower" }}
+    },
+    "hurt_alt": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_lower" }}
+    },
+    "slay_alt": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_lower" }}
+    },
+    "summon_alt": {
+      "trigger": "minecraft:summoned_entity",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_lower" }}
+    },
+    "tame_alt": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": { "entity": { "type": "twilightforest:goblin_knight_lower" }}
+    }
+  },
+  "requirements": [
+    [
+      "hurt_by_indirect", "slain_by", "hurt", "slay", "summon", "tame",
+      "hurt_by_indirect_alt", "slain_by_alt", "hurt_alt", "slay_alt", "summon_alt", "tame_alt"
+    ]
+  ]
+}

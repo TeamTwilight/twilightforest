@@ -4,8 +4,7 @@
   },
   "ingredients": [
     {
-      "item": "twilightforest:maze_map_empty",
-      "data": 32767
+      "item": "twilightforest:maze_map_empty"
     },
     {
       "item": "#BLOCKGOLD"

@@ -21,10 +21,11 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFGiantMiner extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/giant_miner");
 
-	public EntityTFGiantMiner(World par1World) {
-		super(par1World);
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/giant_miner");
+
+	public EntityTFGiantMiner(World world) {
+		super(world);
 		this.setSize(this.width * 4.0F, this.height * 4.0F);
 
 		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
@@ -60,8 +61,14 @@ public class EntityTFGiantMiner extends EntityMob {
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
 		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
-		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
+		setEquipmentBasedOnDifficulty(difficulty);
+		setEnchantmentBasedOnDifficulty(difficulty);
 		return data;
+	}
+
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
 	}
 
 	@Override

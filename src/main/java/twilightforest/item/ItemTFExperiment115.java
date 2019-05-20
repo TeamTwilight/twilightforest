@@ -48,5 +48,4 @@ public class ItemTFExperiment115 extends ItemTFFood {
 			return EnumActionResult.SUCCESS;
 		} else return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
 	}
-
 }

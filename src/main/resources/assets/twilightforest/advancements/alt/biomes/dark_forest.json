@@ -1,0 +1,16 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "0": {
+      "trigger": "minecraft:location",
+      "conditions": { "biome": "twilightforest:dark_forest" }
+    },
+    "1": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/biomes/dark_forest_center" }
+    }
+  },
+  "requirements": [
+    [ "0", "1" ]
+  ]
+}

@@ -8,23 +8,24 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFBlockGoblin;
 
 public class RenderTFBlockGoblin extends RenderBiped<EntityTFBlockGoblin> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "blockgoblin.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 
 	public RenderTFBlockGoblin(RenderManager manager, ModelBiped model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 
 	@Override
-	public void doRender(EntityTFBlockGoblin goblin, double d, double d1, double d2, float f, float f1) {
-		super.doRender(goblin, d, d1, d2, f, f1);
-		renderManager.renderEntityStatic(goblin.block, f1, false);
-		renderManager.renderEntityStatic(goblin.chain1, f1, false);
-		renderManager.renderEntityStatic(goblin.chain2, f1, false);
-		renderManager.renderEntityStatic(goblin.chain3, f1, false);//renderEntity
+	public void doRender(EntityTFBlockGoblin goblin, double x, double y, double z, float yaw, float partialTicks) {
+		super.doRender(goblin, x, y, z, yaw, partialTicks);
+		renderManager.renderEntityStatic(goblin.block, partialTicks, false);
+		renderManager.renderEntityStatic(goblin.chain1, partialTicks, false);
+		renderManager.renderEntityStatic(goblin.chain2, partialTicks, false);
+		renderManager.renderEntityStatic(goblin.chain3, partialTicks, false);//renderEntity
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFBlockGoblin par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFBlockGoblin entity) {
 		return textureLoc;
 	}
 }

@@ -48,7 +48,7 @@ public class EntityAIPhantomThrowWeapon extends EntityAIBase {
 
 		float speed = 0.75F;
 
-		projectile.setThrowableHeading(tx, ty, tz, speed, 1.0F);
+		projectile.shoot(tx, ty, tz, speed, 1.0F);
 
 		projectile.setLocationAndAngles(sx, sy, sz, boss.rotationYaw, boss.rotationPitch);
 
@@ -77,7 +77,7 @@ public class EntityAIPhantomThrowWeapon extends EntityAIBase {
 
 			float speed = 0.5F;
 
-			projectile.setThrowableHeading(vx, vy, vz, speed, 1.0F);
+			projectile.shoot(vx, vy, vz, speed, 1.0F);
 
 			boss.world.spawnEntity(projectile);
 		}

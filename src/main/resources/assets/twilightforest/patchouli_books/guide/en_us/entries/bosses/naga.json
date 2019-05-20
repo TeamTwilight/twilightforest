@@ -1,0 +1,14 @@
+{
+  "name": "Naga",
+  "icon": "twilightforest:trophy:0",
+  "category": "bosses",
+  "advancement": "twilightforest:alt/entities/naga",
+  "sortnum": 3010,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "twilightforest:naga",
+      "text": "It's an immense green snake-like creature with a human-like face. Its scales have subtle hints of other colors."
+    }
+  ]
+}

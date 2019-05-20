@@ -16,7 +16,7 @@ public class TileEntityTFMoonwormTicking extends TileEntityTFMoonworm implements
 
 	@Override
 	public void update() {
-		if (isClient) {
+		if (world.isRemote) {
 			if (currentYaw == -1) {
 				currentYaw = world.rand.nextInt(4) * 90;
 			}

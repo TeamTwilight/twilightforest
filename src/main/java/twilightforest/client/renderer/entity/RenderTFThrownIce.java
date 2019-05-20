@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFIceBomb;
 
 // [VanillaCopy] direct of RenderFallingBlock because of generic type restrictions
@@ -38,18 +39,18 @@ public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
 					GlStateManager.pushMatrix();
 					GlStateManager.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
-					BufferBuilder vertexbuffer = tessellator.getBuffer();
+					BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 					if (this.renderOutlines) {
 						GlStateManager.enableColorMaterial();
 						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 					}
 
-					vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
+					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
 					GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, vertexbuffer, false, MathHelper.getPositionRandom(BlockPos.ORIGIN));
+					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(BlockPos.ORIGIN));
 					tessellator.draw();
 
 					if (this.renderOutlines) {
@@ -66,7 +67,7 @@ public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFIceBomb var1) {
+	protected ResourceLocation getEntityTexture(EntityTFIceBomb entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

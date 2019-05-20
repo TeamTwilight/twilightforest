@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:location",
+      "conditions": { "feature": "twilightforest:large_hollow_hill" }
+    }
+  }
+}

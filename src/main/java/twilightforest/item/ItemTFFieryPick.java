@@ -12,8 +12,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,7 +19,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.util.ParticleHelper;
+import twilightforest.util.TFItemStackUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,27 +30,30 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallback {
 
-	protected ItemTFFieryPick(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+	protected ItemTFFieryPick(Item.ToolMaterial toolMaterial) {
+		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@SubscribeEvent
 	public static void onDrops(BlockEvent.HarvestDropsEvent event) {
-		if (event.getHarvester() != null && !event.getHarvester().getHeldItemMainhand().isEmpty()
-				&& event.getHarvester().inventory.getCurrentItem().getItem() == TFItems.fiery_pickaxe
-				&& ForgeHooks.canHarvestBlock(event.getState().getBlock(), event.getHarvester(), event.getWorld(), event.getPos())) {
-			List<ItemStack> removeThese = new ArrayList<ItemStack>();
-			List<ItemStack> addThese = new ArrayList<ItemStack>();
+		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe
+				&& event.getState().getBlock().canHarvestBlock(event.getWorld(), event.getPos(), event.getHarvester())) {
+
+			List<ItemStack> removeThese = new ArrayList<>();
+			List<ItemStack> addThese = new ArrayList<>();
 
 			for (ItemStack input : event.getDrops()) {
 				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
 				if (!result.isEmpty()) {
-					addThese.add(new ItemStack(result.getItem(), input.getCount(), result.getItemDamage()));
+
+					int combinedCount = input.getCount() * result.getCount();
+
+					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount, result.getItemDamage())));
 					removeThese.add(input);
 
 					// [VanillaCopy] SlotFurnaceOutput.onCrafting
-					int i = result.getCount();
+					int i = combinedCount;
 					float f = FurnaceRecipes.instance().getSmeltingExperience(result);
 
 					if (f == 0.0F) {
@@ -70,16 +74,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 						event.getHarvester().world.spawnEntity(new EntityXPOrb(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
 					}
 
-					for (int var1 = 0; var1 < 5; ++var1) {
-						double rx = itemRand.nextGaussian() * 0.02D;
-						double ry = itemRand.nextGaussian() * 0.02D;
-						double rz = itemRand.nextGaussian() * 0.02D;
-						double magnitude = 20.0;
-						WorldServer ws = ((WorldServer) event.getWorld());
-						ws.spawnParticle(EnumParticleTypes.FLAME, event.getPos().getX() + 0.5 + (rx * magnitude), event.getPos().getY() + 0.5 + (ry * magnitude), event.getPos().getZ() + 0.5 + (rz * magnitude),
-								5, 0, 0, 0,
-								0.02);
-					}
+					ParticleHelper.spawnParticles(event.getWorld(), event.getPos(), EnumParticleTypes.FLAME, 5, 0.02);
 				}
 			}
 
@@ -89,35 +84,29 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, @Nullable EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !target.isImmuneToFire()) {
-			for (int var1 = 0; var1 < 5; ++var1) {
-				double rx = itemRand.nextGaussian() * 0.02D;
-				double ry = itemRand.nextGaussian() * 0.02D;
-				double rz = itemRand.nextGaussian() * 0.02D;
-				double magnitude = 20.0;
-				WorldServer ws = ((WorldServer) target.world);
-				ws.spawnParticle(EnumParticleTypes.FLAME, target.posX + 0.5 + (rx * magnitude), target.posY + 0.5 + (ry * magnitude), target.posZ + 0.5 + (rz * magnitude),
-						5, 0, 0, 0,
-						0.02);
-			}
+		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
+			ParticleHelper.spawnParticles(target, EnumParticleTypes.FLAME, 20, 0.02);
 			target.setFire(15);
 		}
 
 		return result;
 	}
 
+	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+
+	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.RARE;
+	public EnumRarity getRarity(ItemStack stack) {
+		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 }

@@ -33,7 +33,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 	public boolean shouldExecute() {
 		EntityLivingBase attackTarget = this.me.getAttackTarget();
 
-		if (attackTarget == null || attackTarget.getDistanceToEntity(me) > maxDistance || attackTarget.getDistanceToEntity(me) < minDistance || !isTargetLookingAtMe(attackTarget)) {
+		if (attackTarget == null || attackTarget.getDistance(me) > maxDistance || attackTarget.getDistance(me) < minDistance || !isTargetLookingAtMe(attackTarget)) {
 			return false;
 		} else {
 			this.entityTarget = attackTarget;
@@ -68,7 +68,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 			return false;
 		}
 
-		return attackTarget.getDistanceToEntity(me) < maxDistance && attackTarget.getDistanceToEntity(me) > minDistance && isTargetLookingAtMe(attackTarget);
+		return attackTarget.getDistance(me) < maxDistance && attackTarget.getDistance(me) > minDistance && isTargetLookingAtMe(attackTarget);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 	@Override
 	public void resetTask() {
 		this.entityTarget = null;
-		this.me.getNavigator().clearPathEntity();
+		this.me.getNavigator().clearPath();
 	}
 
 	/**

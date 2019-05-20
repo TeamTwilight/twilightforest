@@ -11,58 +11,69 @@ import net.minecraft.world.gen.ChunkGeneratorSettings;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenLiquids;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.features.GenDruidHut;
-import twilightforest.world.*;
+import twilightforest.world.feature.*;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class TFBiomeDecorator extends BiomeDecorator {
 
-	TFGenCanopyTree canopyTreeGen = new TFGenCanopyTree();
-	TFTreeGenerator alternateCanopyGen = new TFGenCanopyMushroom();
-	private TFGenHollowTree hollowTreeGen = new TFGenHollowTree();
-	private TFGenMyceliumBlob myceliumBlobGen = new TFGenMyceliumBlob(5);
-	private WorldGenLakes extraLakeGen = new WorldGenLakes(Blocks.WATER);
-	private WorldGenLakes extraLavaPoolGen = new WorldGenLakes(Blocks.LAVA);
-	private TFGenMangroveTree mangroveTreeGen = new TFGenMangroveTree();
+	WorldGenerator canopyTreeGen = new TFGenCanopyTree();
+	WorldGenerator alternateCanopyGen = new TFGenCanopyMushroom();
 
-	private TFGenPlantRoots plantRootGen = new TFGenPlantRoots();
-	private TFGenWoodRoots woodRootGen = new TFGenWoodRoots();
-	private WorldGenLiquids caveWaterGen = new WorldGenLiquids(Blocks.FLOWING_WATER);
-	private TFGenTorchBerries torchBerryGen = new TFGenTorchBerries();
+	//private final WorldGenerator hollowTreeGen = new TFGenHollowTree();
+	private final WorldGenerator myceliumBlobGen = new TFGenMyceliumBlob(5);
+	private final WorldGenerator extraLakeGen = new WorldGenLakes(Blocks.WATER);
+	private final WorldGenerator extraLavaPoolGen = new WorldGenLakes(Blocks.LAVA);
+	private final WorldGenerator mangroveTreeGen = new TFGenMangroveTree();
+	private final WorldGenerator plantRootGen = new TFGenPlantRoots();
+	private final WorldGenerator woodRootGen = new TFGenWoodRoots();
+	private final WorldGenerator caveWaterGen = new WorldGenLiquids(Blocks.FLOWING_WATER);
+	private final WorldGenerator torchBerryGen = new TFGenTorchBerries();
 
 	public float canopyPerChunk = TFConfig.performance.canopyCoverage;
 	public boolean hasCanopy = true;
-	public float alternateCanopyChance = 0;
+	public float alternateCanopyChance = 0f;
 	public int myceliumPerChunk = 0;
 	public int mangrovesPerChunk = 0;
 	public int lakesPerChunk = 0;
-	public float lavaPoolChance = 0;
+	public float lavaPoolChance = 0f;
 
-	private static final List<RuinEntry> ruinList = new ArrayList<RuinEntry>();
+	private static final List<RuinEntry> ruinList = new ArrayList<>();
 
 	static {
 		// make list of ruins
-		ruinList.add(new RuinEntry(new TFGenStoneCircle(), 10));
-		ruinList.add(new RuinEntry(new TFGenWell(), 10));
-		ruinList.add(new RuinEntry(new TFGenWitchHut(), 5)); //TODO Fix ground algorithm for new druid hut then re-add
-		ruinList.add(new RuinEntry(new TFGenOutsideStalagmite(), 12));
-		ruinList.add(new RuinEntry(new TFGenFoundation(), 10));
-		ruinList.add(new RuinEntry(new TFGenMonolith(), 10));
-		ruinList.add(new RuinEntry(new TFGenGroveRuins(), 5));
-		ruinList.add(new RuinEntry(new TFGenHollowStump(), 12));
-		ruinList.add(new RuinEntry(new TFGenFallenHollowLog(), 10));
-		ruinList.add(new RuinEntry(new TFGenFallenSmallLog(), 10));
+		addRuin(TFGenStoneCircle::new      , TFConfig.dimension.worldGenWeights.stoneCircleWeight    );
+		addRuin(TFGenWell::new             , TFConfig.dimension.worldGenWeights.wellWeight           );
+		addRuin(TFGenOutsideStalagmite::new, TFConfig.dimension.worldGenWeights.stalagmiteWeight     );
+		addRuin(TFGenFoundation::new       , TFConfig.dimension.worldGenWeights.foundationWeight     );
+		addRuin(TFGenMonolith::new         , TFConfig.dimension.worldGenWeights.monolithWeight       );
+		addRuin(TFGenGroveRuins::new       , TFConfig.dimension.worldGenWeights.groveRuinsWeight     );
+		addRuin(TFGenHollowStump::new      , TFConfig.dimension.worldGenWeights.hollowStumpWeight    );
+		addRuin(TFGenFallenHollowLog::new  , TFConfig.dimension.worldGenWeights.fallenHollowLogWeight);
+		addRuin(TFGenFallenSmallLog::new   , TFConfig.dimension.worldGenWeights.fallenSmallLogWeight );
+
+		addRuin(GenDruidHut::new           , TFConfig.dimension.worldGenWeights.druidHutWeight       );
+	}
+
+	private static void addRuin(Supplier<TFGenerator> generator, int weight) {
+		if (weight > 0) {
+			ruinList.add(new RuinEntry(generator.get(), weight));
+		}
 	}
 
 	private static class RuinEntry extends WeightedRandom.Item {
+
 		public final TFGenerator generator;
 
-		public RuinEntry(TFGenerator generator, int weight) {
+		RuinEntry(TFGenerator generator, int weight) {
 			super(weight);
 			this.generator = generator;
 		}
@@ -99,7 +110,9 @@ public class TFBiomeDecorator extends BiomeDecorator {
 			int rx = chunkPos.getX() + randomGenerator.nextInt(14) + 8;
 			int rz = chunkPos.getZ() + randomGenerator.nextInt(14) + 8;
 			TFGenerator rf = randomFeature(randomGenerator);
-			rf.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)));
+			if (rf != null) {
+				rf.generate(world, randomGenerator, new BlockPos(rx, world.getHeight(rx, rz), rz));
+			}
 		}
 
 		if (this.hasCanopy) {
@@ -111,8 +124,8 @@ public class TFBiomeDecorator extends BiomeDecorator {
 			for (int i = 0; i < nc; i++) {
 				int rx = chunkPos.getX() + randomGenerator.nextInt(16) + 8;
 				int rz = chunkPos.getZ() + randomGenerator.nextInt(16) + 8;
-				BlockPos genPos = world.getHeight(new BlockPos(rx, 0, rz));
-				if (this.alternateCanopyChance > 0 && randomGenerator.nextFloat() <= alternateCanopyChance) {
+				BlockPos genPos = new BlockPos(rx, world.getHeight(rx, rz), rz);
+				if (alternateCanopyChance > 0 && randomGenerator.nextFloat() < alternateCanopyChance) {
 					alternateCanopyGen.generate(world, randomGenerator, genPos);
 				} else {
 					canopyTreeGen.generate(world, randomGenerator, genPos);
@@ -124,34 +137,31 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		for (int i = 0; i < mangrovesPerChunk; i++) {
 			int rx = chunkPos.getX() + randomGenerator.nextInt(16) + 8;
 			int rz = chunkPos.getZ() + randomGenerator.nextInt(16) + 8;
-			mangroveTreeGen.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)));
+			mangroveTreeGen.generate(world, randomGenerator, new BlockPos(rx, world.getHeight(rx, rz), rz));
 		}
 		// add extra lakes for swamps
 		for (int i = 0; i < lakesPerChunk; i++) {
 			int rx = chunkPos.getX() + randomGenerator.nextInt(16) + 8;
 			int rz = chunkPos.getZ() + randomGenerator.nextInt(16) + 8;
-			extraLakeGen.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)));
+			extraLakeGen.generate(world, randomGenerator, new BlockPos(rx, world.getHeight(rx, rz), rz));
 		}
 
 		// add extra lava for fire swamps
-		if (randomGenerator.nextFloat() <= lavaPoolChance) {
+		if (randomGenerator.nextFloat() < lavaPoolChance) {
 			int rx = chunkPos.getX() + randomGenerator.nextInt(16) + 8;
 			int rz = chunkPos.getZ() + randomGenerator.nextInt(16) + 8;
-			extraLavaPoolGen.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)));
+			extraLavaPoolGen.generate(world, randomGenerator, new BlockPos(rx, world.getHeight(rx, rz), rz));
 		}
 
 		// mycelium blobs
 		for (int i = 0; i < myceliumPerChunk; i++) {
 			int rx = chunkPos.getX() + randomGenerator.nextInt(16) + 8;
 			int rz = chunkPos.getZ() + randomGenerator.nextInt(16) + 8;
-			myceliumBlobGen.generate(world, randomGenerator, world.getHeight(new BlockPos(rx, 0, rz)));
+			myceliumBlobGen.generate(world, randomGenerator, new BlockPos(rx, world.getHeight(rx, rz), rz));
 		}
 
 		super.genDecorations(biome, world, randomGenerator);
-
 		decorateUnderground(world, randomGenerator, chunkPos);
-
-
 	}
 
 	/**
@@ -161,7 +171,7 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		// generate roots
 		for (int i = 0; i < 12; ++i) {
 			int rx = pos.getX() + rand.nextInt(16) + 8;
-			byte ry = 64;
+			int ry = 64;
 			int rz = pos.getZ() + rand.nextInt(16) + 8;
 			plantRootGen.generate(world, rand, new BlockPos(rx, ry, rz));
 		}
@@ -217,10 +227,11 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	}
 
 	/**
-	 * Gets a random feature suitible to the current biome.
+	 * Gets a random feature suitable for the current biome.
 	 */
+	@Nullable
 	public TFGenerator randomFeature(Random rand) {
-		return WeightedRandom.getRandomItem(rand, ruinList).generator;
+		return ruinList.isEmpty() ? null : WeightedRandom.getRandomItem(rand, ruinList).generator;
 	}
 
 	public void setTreesPerChunk(int treesPerChunk) {
@@ -258,6 +269,4 @@ public class TFBiomeDecorator extends BiomeDecorator {
 	public void setGrassPerChunk(int grassPerChunk) {
 		this.grassPerChunk = grassPerChunk;
 	}
-
-
 }

@@ -10,13 +10,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenShrub;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.world.TFGenFireJet;
-import twilightforest.world.TFGenVines;
+import twilightforest.world.feature.TFGenFireJet;
+import twilightforest.world.feature.TFGenVines;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;
@@ -41,12 +42,13 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(3) == 0) {
-			new WorldGenShrub(
+			return new WorldGenShrub(
 					Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK));
+					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK)
+			);
+		} else {
+			return SWAMP_FEATURE;
 		}
-
-		return SWAMP_FEATURE;
 	}
 
 	@Override
@@ -55,32 +57,30 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 
 		TFFeature nearFeature = TFFeature.getNearestFeature(pos.getX() >> 4, pos.getZ() >> 4, world);
 		if (nearFeature.areChunkDecorationsEnabled) {
-			TFGenVines vines = new TFGenVines();
-			BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos(0, 0, 0);
+			BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos();
+
+			WorldGenerator vines = new TFGenVines();
 			for (int i = 0; i < 20; i++) {
 				int rx = pos.getX() + rand.nextInt(16) + 8;
 				int ry = TFWorld.SEALEVEL + 128;
 				int rz = pos.getZ() + rand.nextInt(16) + 8;
-				mutPos.setPos(rx, ry, rz);
-				vines.generate(world, rand, mutPos);
+				vines.generate(world, rand, mutPos.setPos(rx, ry, rz));
 			}
 
-			TFGenFireJet genSmoker = new TFGenFireJet(FireJetVariant.SMOKER);
-
+			WorldGenerator genSmoker = new TFGenFireJet(FireJetVariant.SMOKER);
 			if (rand.nextInt(4) == 0) {
-				int j = pos.getX() + rand.nextInt(14) + 8;
-				byte byte0 = (byte) TFWorld.SEALEVEL;
-				int k = pos.getZ() + rand.nextInt(14) + 8;
-				genSmoker.generate(world, rand, new BlockPos(j, byte0, k));
+				int rx = pos.getX() + rand.nextInt(14) + 8;
+				int ry = TFWorld.SEALEVEL;
+				int rz = pos.getZ() + rand.nextInt(14) + 8;
+				genSmoker.generate(world, rand, mutPos.setPos(rx, ry, rz));
 			}
 
-			TFGenFireJet genFireJet = new TFGenFireJet(FireJetVariant.JET_IDLE);
-
+			WorldGenerator genFireJet = new TFGenFireJet(FireJetVariant.JET_IDLE);
 			for (int i = 0; i < 1; i++) {
-				int j = pos.getX() + rand.nextInt(14) + 8;
-				byte byte0 = (byte) TFWorld.SEALEVEL;
-				int k = pos.getZ() + rand.nextInt(14) + 8;
-				genFireJet.generate(world, rand, new BlockPos(j, byte0, k));
+				int rx = pos.getX() + rand.nextInt(14) + 8;
+				int ry = TFWorld.SEALEVEL;
+				int rz = pos.getZ() + rand.nextInt(14) + 8;
+				genFireJet.generate(world, rand, mutPos.setPos(rx, ry, rz));
 			}
 		}
 	}
@@ -99,17 +99,17 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
-		return new ResourceLocation[]{ new ResourceLocation(TwilightForestMod.ID, "progress_labyrinth") };
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_labyrinth") };
 	}
 
 	@Override
-	public void enforceProgession(EntityPlayer player, World world) {
+	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.setFire(8);
 		}
 		// hint monster?
 		if (world.rand.nextInt(4) == 0) {
-			TFFeature.hydraLair.trySpawnHintMonster(world, player);
+			TFFeature.HYDRA_LAIR.trySpawnHintMonster(world, player);
 		}
 	}
 }

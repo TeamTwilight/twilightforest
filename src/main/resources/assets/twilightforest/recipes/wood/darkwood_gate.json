@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "twilightforest:dark_gate",
+    "data": 0,
+    "count": 1
+  },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:dark_planks",
+      "data": 0
+    },
+    "S": {
+      "item": "#STICKWOOD"
+    }
+  }
+}

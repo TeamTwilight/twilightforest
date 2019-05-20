@@ -1,0 +1,39 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "#side_x"
+  },
+  "elements": [{
+    "from": [  2,  0,  0 ],
+    "to"  : [ 14, 16, 16 ],
+    "faces": {
+      "west" : { "texture": "#side_x" },
+      "east" : { "texture": "#side_x" }
+    }
+  }, {
+    "from": [  0,  0,  2 ],
+    "to"  : [ 16, 16, 14 ],
+    "faces": {
+      "north": { "texture": "#side_z" },
+      "south": { "texture": "#side_z" }
+    }
+  }, {
+    "from": [  0,  3,  0 ],
+    "to"  : [ 16, 13, 16 ],
+    "faces": {
+      "up"  : { "texture": "#blank", "tintindex": 0 },
+      "down": { "texture": "#blank", "tintindex": 0 }
+    }
+  }],
+  "ctm_overrides": {
+    "1": {
+      "type": "CTM",
+      "layer": "CUTOUT",
+      "textures": [ "#crown" ],
+      "extra": {
+        "connect_inside": true
+      }
+    }
+  }
+}
+

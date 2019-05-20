@@ -1,0 +1,37 @@
+{
+  "name": "Meats, Meals, and Edibles",
+  "icon": "twilightforest:experiment_115:2",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/foods/any",
+  "sortnum": 1100,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Food glorious food"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/foods/hydra_chop",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/foods/maze_wafer",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/foods/meef",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/foods/vension",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_labyrinth",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/foods/experiment_115",
+      "text": "things and stuff"
+    }
+  ]
+}

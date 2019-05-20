@@ -4,14 +4,29 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Random;
 
-
 public class EntityTFBighorn extends EntitySheep {
+
+	public static final ResourceLocation SHEARED_LOOT_TABLE = TwilightForestMod.prefix("entities/bighorn_sheep/sheared");
+	public static final Map<EnumDyeColor, ResourceLocation> COLORED_LOOT_TABLES;
+
+	static {
+		Map<EnumDyeColor, ResourceLocation> map = new EnumMap<>(EnumDyeColor.class);
+		for (EnumDyeColor color : EnumDyeColor.values()) {
+			map.put(color, TwilightForestMod.prefix("entities/bighorn_sheep/" + color.getName()));
+		}
+		COLORED_LOOT_TABLES = Collections.unmodifiableMap(map);
+	}
 
 	public EntityTFBighorn(World world) {
 		super(world);
@@ -23,12 +38,15 @@ public class EntityTFBighorn extends EntitySheep {
 		this.setPosition(x, y, z);
 	}
 
+	@Override
+	public ResourceLocation getLootTable() {
+		return this.getSheared() ? SHEARED_LOOT_TABLE : COLORED_LOOT_TABLES.get(this.getFleeceColor());
+	}
+
 	private static EnumDyeColor getRandomFleeceColor(Random random) {
-		if (random.nextBoolean()) {
-			return EnumDyeColor.BROWN;
-		} else {
-			return EnumDyeColor.byMetadata(random.nextInt(15));
-		}
+		return random.nextBoolean()
+				? EnumDyeColor.BROWN
+				: EnumDyeColor.byMetadata(random.nextInt(16));
 	}
 
 	@Override
@@ -39,15 +57,10 @@ public class EntityTFBighorn extends EntitySheep {
 	}
 
 	@Override
-	public EntitySheep createChild(EntityAgeable entityanimal) {
-		EntityTFBighorn otherParent = (EntityTFBighorn) entityanimal;
+	public EntitySheep createChild(EntityAgeable ageable) {
+		EntityTFBighorn otherParent = (EntityTFBighorn) ageable;
 		EntityTFBighorn babySheep = new EntityTFBighorn(world);
-		if (rand.nextBoolean()) {
-			babySheep.setFleeceColor(getFleeceColor());
-		} else {
-			babySheep.setFleeceColor(otherParent.getFleeceColor());
-		}
+		babySheep.setFleeceColor(getDyeColorMixFromParents(this, otherParent));
 		return babySheep;
 	}
-
 }

@@ -104,7 +104,7 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getMobilityFlag(IBlockState state) {
+	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
 

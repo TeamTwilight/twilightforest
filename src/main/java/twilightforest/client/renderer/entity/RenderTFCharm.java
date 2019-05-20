@@ -7,9 +7,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import twilightforest.entity.EntityTFCharmEffect;
-import twilightforest.item.TFItems;
 
 public class RenderTFCharm extends RenderSnowball<EntityTFCharmEffect> {
+
 	public RenderTFCharm(RenderManager manager, RenderItem itemRenderer) {
 		super(manager, Item.getItemFromBlock(Blocks.BARRIER), itemRenderer);
 	}

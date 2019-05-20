@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +28,8 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
-	public static final PropertyEnum<NagastoneVariant> VARIANT = PropertyEnum.create("variant", NagastoneVariant.class);
+
+	public static final IProperty<NagastoneVariant> VARIANT = PropertyEnum.create("variant", NagastoneVariant.class);
 
 	public BlockTFNagastone() {
 		super(Material.ROCK);

@@ -1,7 +1,6 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
@@ -9,15 +8,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTFIceSnowball extends EntityThrowable {
+public class EntityTFIceSnowball extends EntityTFThrowable {
+
 	private static final int DAMAGE = 8;
 
-	public EntityTFIceSnowball(World par1World) {
-		super(par1World);
+	public EntityTFIceSnowball(World world) {
+		super(world);
 	}
 
-	public EntityTFIceSnowball(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFIceSnowball(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class EntityTFIceSnowball extends EntityThrowable {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		super.attackEntityFrom(damagesource, i);
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		super.attackEntityFrom(source, amount);
 		die();
 		return true;
 	}

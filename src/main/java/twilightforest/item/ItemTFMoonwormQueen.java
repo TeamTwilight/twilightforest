@@ -1,20 +1,22 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,13 +30,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ItemTFMoonwormQueen extends ItemTF {
+
 	private static final int FIRING_TIME = 12;
 
-	protected ItemTFMoonwormQueen() {
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFMoonwormQueen(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(256);
-		addPropertyOverride(new ResourceLocation(TwilightForestMod.ID, "alt"), new IItemPropertyGetter() {
+		addPropertyOverride(TwilightForestMod.prefix("alt"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
@@ -98,6 +101,9 @@ public class ItemTFMoonwormQueen extends ItemTF {
 		IBlockState real = world.getBlockState(pos);
 		if (real.getBlock() == TFBlocks.moonworm) {
 			TFBlocks.moonworm.onBlockPlacedBy(world, pos, state, player, stack);
+			if (player instanceof EntityPlayerMP) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
+			}
 		}
 
 		return true;
@@ -121,13 +127,12 @@ public class ItemTFMoonwormQueen extends ItemTF {
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
-
 }

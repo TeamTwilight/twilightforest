@@ -6,16 +6,18 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
+import twilightforest.util.EntityUtil;
 
 import java.util.Random;
 
@@ -43,11 +45,11 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getFront(meta));
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.byIndex(meta));
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random) {
+	public int quantityDropped(Random random) {
 		return 0;
 	}
 
@@ -61,9 +63,9 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Deprecated
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
 		// why can't we just pass the side to this method?  This is annoying and failure-prone
-		RayTraceResult mop = getPlayerPointVec(world, player, 6.0);
+		RayTraceResult ray = EntityUtil.rayTrace(player, 6.0);
 
-		EnumFacing hitFace = mop != null ? mop.sideHit : null;
+		EnumFacing hitFace = ray != null ? ray.sideHit : null;
 		EnumFacing blockFace = state.getValue(BlockDirectional.FACING);
 
 		//System.out.printf("Determining relative hardness; facing = %d, meta = %d\n", facing, meta);
@@ -73,20 +75,6 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 		} else {
 			return super.getPlayerRelativeBlockHardness(state, player, world, pos);
 		}
-	}
-
-	/**
-	 * What block is the player pointing at?
-	 * <p>
-	 * This very similar to player.rayTrace, but that method is not available on the server.
-	 *
-	 * @return
-	 */
-	private RayTraceResult getPlayerPointVec(World world, EntityPlayer player, double range) {
-		Vec3d position = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-		Vec3d look = player.getLook(1.0F);
-		Vec3d dest = position.addVector(look.x * range, look.y * range, look.z * range);
-		return world.rayTraceBlocks(position, dest);
 	}
 
 	@Override
@@ -102,5 +90,10 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Override
 	public int damageDropped(IBlockState state) {
 		return 0;
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+		return false;
 	}
 }

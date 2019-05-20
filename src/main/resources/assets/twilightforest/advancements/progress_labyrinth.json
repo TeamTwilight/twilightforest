@@ -4,10 +4,10 @@
       "item": "twilightforest:meef_stroganoff"
     },
     "title": {
-      "translate": "advancement.twilight_progress_labyrinth"
+      "translate": "advancement.twilightforest.progress_labyrinth"
     },
     "description": {
-      "translate": "advancement.twilight_progress_labyrinth.desc"
+      "translate": "advancement.twilightforest.progress_labyrinth.desc"
     },
     "frame": "goal"
   },
@@ -27,5 +27,8 @@
         "advancement": "twilightforest:progress_lich"
       }
     }
+  },
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
   }
 }

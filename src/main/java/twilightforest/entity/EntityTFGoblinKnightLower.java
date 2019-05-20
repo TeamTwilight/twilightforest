@@ -30,8 +30,8 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 	private static final DataParameter<Boolean> ARMOR = EntityDataManager.createKey(EntityTFGoblinKnightLower.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, 0).setSaved(false);
 
-	public EntityTFGoblinKnightLower(World par1World) {
-		super(par1World);
+	public EntityTFGoblinKnightLower(World world) {
+		super(world);
 		setSize(0.7F, 1.1F);
 		this.setHasArmor(true);
 	}
@@ -81,20 +81,20 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("hasArmor", this.hasArmor());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("hasArmor", this.hasArmor());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-		this.setHasArmor(par1NBTTagCompound.getBoolean("hasArmor"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setHasArmor(compound.getBoolean("hasArmor"));
 	}
 
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData par1EntityLivingData) {
-		Object par1EntityLivingData1 = super.onInitialSpawn(difficulty, par1EntityLivingData);
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
+		livingData = super.onInitialSpawn(difficulty, livingData);
 
 		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.world);
 		upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
@@ -102,7 +102,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 		this.world.spawnEntity(upper);
 		upper.startRiding(this);
 
-		return (IEntityLivingData) par1EntityLivingData1;
+		return livingData;
 	}
 
 	@Override
@@ -120,26 +120,26 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
+	public boolean attackEntityAsMob(Entity entity) {
 
 		if (isBeingRidden() && getPassengers().get(0) instanceof EntityLiving) {
-			return ((EntityLiving) this.getPassengers().get(0)).attackEntityAsMob(par1Entity);
+			return ((EntityLiving) this.getPassengers().get(0)).attackEntityAsMob(entity);
 		} else {
-			return super.attackEntityAsMob(par1Entity);
+			return super.attackEntityAsMob(entity);
 		}
 
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float damageAmount) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		// check the angle of attack, if applicable
 		Entity attacker = null;
-		if (par1DamageSource.getTrueSource() != null) {
-			attacker = par1DamageSource.getTrueSource();
+		if (source.getTrueSource() != null) {
+			attacker = source.getTrueSource();
 		}
 
-		if (par1DamageSource.getTrueSource() != null) {
-			attacker = par1DamageSource.getTrueSource();
+		if (source.getTrueSource() != null) {
+			attacker = source.getTrueSource();
 		}
 
 		if (attacker != null) {
@@ -159,7 +159,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 			}
 
 			if (upper != null && upper.hasShield() && difference > 150 && difference < 230) {
-				if (upper.takeHitOnShield(par1DamageSource, damageAmount)) {
+				if (upper.takeHitOnShield(source, amount)) {
 					return false;
 				}
 			}
@@ -170,7 +170,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 			}
 		}
 
-		return super.attackEntityFrom(par1DamageSource, damageAmount);
+		return super.attackEntityFrom(source, amount);
 	}
 
 	private void breakArmor() {

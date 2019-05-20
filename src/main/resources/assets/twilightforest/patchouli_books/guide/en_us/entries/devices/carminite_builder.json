@@ -1,0 +1,15 @@
+{
+  "name": "Carminite Builder",
+  "icon": "twilightforest:tower_device:6",
+  "category": "devices",
+  "advancement": "twilightforest:alt/treasures/carminite",
+  "sortnum": 6230,
+  "pages": [
+    {
+      "type": "spotlight",
+      "title": "Carminite Builder",
+      "item": "twilightforest:tower_device:6",
+      "text": "This strange device will augment red transparent blocks when it receives a Redstone signal. Once triggered, the Carminite Builder will create a path and will build depending on where I am looking. This path is only temporary, and will need another Redstone signal to reactivate it."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "0": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/skeleton_druid" }
+    },
+    "1": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/wraith" }
+    },
+    "2": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/snow_guardian" }
+    }
+  },
+  "requirements": [
+    [ "0", "1", "2" ]
+  ]
+}

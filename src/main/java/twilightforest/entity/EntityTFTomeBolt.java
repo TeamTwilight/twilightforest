@@ -1,7 +1,6 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -14,14 +13,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+public class EntityTFTomeBolt extends EntityTFThrowable {
 
-public class EntityTFTomeBolt extends EntityThrowable {
-	public EntityTFTomeBolt(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFTomeBolt(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
-	public EntityTFTomeBolt(World par1World) {
-		super(par1World);
+	public EntityTFTomeBolt(World world) {
+		super(world);
 	}
 
 	@Override
@@ -48,8 +47,9 @@ public class EntityTFTomeBolt extends EntityThrowable {
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
+			int itemId = Item.getIdFromItem(Items.PAPER);
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.PAPER));
+				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
 			}
 		} else {
 			super.handleStatusUpdate(id);

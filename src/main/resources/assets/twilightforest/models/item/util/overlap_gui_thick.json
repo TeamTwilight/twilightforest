@@ -1,5 +1,5 @@
 {
-  "parent": "item/handheld",
+  "parent": "item/generated",
   "display": {
     "gui": {
       "rotation": [ 0, 0, 0 ],

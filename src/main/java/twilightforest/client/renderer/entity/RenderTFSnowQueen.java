@@ -9,29 +9,30 @@ import twilightforest.client.model.entity.ModelTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 
 public class RenderTFSnowQueen extends RenderBiped<EntityTFSnowQueen> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "snowqueen.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("snowqueen.png");
 
 	public RenderTFSnowQueen(RenderManager manager) {
 		super(manager, new ModelTFSnowQueen(), 0.625F);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFSnowQueen par1Entity) {
+	protected ResourceLocation getEntityTexture(EntityTFSnowQueen entity) {
 		return textureLoc;
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFSnowQueen queen, float par2) {
+	protected void preRenderCallback(EntityTFSnowQueen queen, float partialTicks) {
 		float scale = 1.2F;
 		GlStateManager.scale(scale, scale, scale);
 	}
 
 	@Override
-	public void doRender(EntityTFSnowQueen queen, double d, double d1, double d2, float f, float f1) {
-		super.doRender(queen, d, d1, d2, f, f1);
+	public void doRender(EntityTFSnowQueen queen, double x, double y, double z, float yaw, float partialTicks) {
+		super.doRender(queen, x, y, z, yaw, partialTicks);
 
 		for (int i = 0; i < queen.iceArray.length; i++) {
-			renderManager.renderEntityStatic(queen.iceArray[i], f1, false);
+			renderManager.renderEntityStatic(queen.iceArray[i], partialTicks, false);
 		}
 	}
 }

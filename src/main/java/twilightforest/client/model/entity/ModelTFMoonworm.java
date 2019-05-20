@@ -45,25 +45,25 @@ public class ModelTFMoonworm extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		super.render(entity, f, f1, f2, f3, f4, f5);
-		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
-		head.render(f5);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		Shape1.render(scale);
+		Shape2.render(scale);
+		Shape3.render(scale);
+		head.render(scale);
 	}
 
-	public void render(float f5) {
-		Shape1.render(f5);
-		Shape2.render(f5);
-		Shape3.render(f5);
-		head.render(f5);
+	public void render(float scale) {
+		Shape1.render(scale);
+		Shape2.render(scale);
+		Shape3.render(scale);
+		head.render(scale);
 	}
 
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 	}
 
 	public void setLivingAnimations(@Nullable TileEntityTFMoonwormTicking moonworm, float partialTime) {

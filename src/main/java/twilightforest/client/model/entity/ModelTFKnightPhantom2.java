@@ -12,21 +12,21 @@ public class ModelTFKnightPhantom2 extends ModelBiped {
 		this(0.0F);
 	}
 
-	public ModelTFKnightPhantom2(float par1) {
-		super(par1, 0.0F, 64, 32);
+	public ModelTFKnightPhantom2(float scale) {
+		super(scale, 0.0F, 64, 32);
 		this.bipedRightArm = new ModelRenderer(this, 40, 16);
-		this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, par1);
+		this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
 		this.bipedLeftArm = new ModelRenderer(this, 40, 16);
 		this.bipedLeftArm.mirror = true;
-		this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, par1);
+		this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
 		this.bipedRightLeg = new ModelRenderer(this, 0, 16);
-		this.bipedRightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, par1);
+		this.bipedRightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedRightLeg.setRotationPoint(-2.0F, 12.0F, 0.0F);
 		this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
 		this.bipedLeftLeg.mirror = true;
-		this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, par1);
+		this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
 	}
 
@@ -34,24 +34,24 @@ public class ModelTFKnightPhantom2 extends ModelBiped {
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
-		if (((EntityTFKnightPhantom) par1Entity).isChargingAtPlayer()) {
+		if (((EntityTFKnightPhantom) entity).isChargingAtPlayer()) {
 			// render full skeleton
-			super.render(par1Entity, par2, par3, par4, par5, par6, par7);
+			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		}
 	}
 
 
 	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
+	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
-		super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 		this.bipedLeftLeg.rotateAngleX = 0;
 		this.bipedLeftLeg.rotateAngleY = 0;
 		this.bipedLeftLeg.rotateAngleZ = 0;
@@ -60,8 +60,8 @@ public class ModelTFKnightPhantom2 extends ModelBiped {
 		this.bipedRightLeg.rotateAngleY = 0;
 		this.bipedRightLeg.rotateAngleZ = 0;
 
-		this.bipedRightLeg.rotateAngleX = 0.2F * MathHelper.sin(par3 * 0.3F) + 0.4F;
-		this.bipedLeftLeg.rotateAngleX = 0.2F * MathHelper.sin(par3 * 0.3F) + 0.4F;
+		this.bipedRightLeg.rotateAngleX = 0.2F * MathHelper.sin(ageInTicks * 0.3F) + 0.4F;
+		this.bipedLeftLeg.rotateAngleX = 0.2F * MathHelper.sin(ageInTicks * 0.3F) + 0.4F;
 
 
 	}

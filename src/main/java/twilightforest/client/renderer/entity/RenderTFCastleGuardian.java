@@ -10,6 +10,7 @@ import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import javax.annotation.Nonnull;
 
 public class RenderTFCastleGuardian extends RenderLivingBase<EntityTFCastleGuardian> {
+
 	private final ResourceLocation textureLoc;
 
 	public RenderTFCastleGuardian(RenderManager manager, ModelBase model, float shadowSize, String textureName) {
@@ -18,7 +19,7 @@ public class RenderTFCastleGuardian extends RenderLivingBase<EntityTFCastleGuard
 		if (textureName.startsWith("textures"))
 			textureLoc = new ResourceLocation(textureName);
 		else
-			textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + textureName);
+			textureLoc = TwilightForestMod.getModelTexture(textureName);
 	}
 
 	@Override

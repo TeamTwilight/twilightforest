@@ -8,6 +8,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,17 +22,13 @@ import javax.annotation.Nonnull;
 public abstract class BlockTFCritter extends Block {
 
 	private final float WIDTH = getWidth();
-	private final AxisAlignedBB DOWN_BB = new AxisAlignedBB(0.5F - WIDTH, 1.0F - WIDTH * 2.0F, 0.2F, 0.5F + WIDTH, 1.0F, 0.8F);
-	;
-	private final AxisAlignedBB UP_BB = new AxisAlignedBB(0.5F - WIDTH, 0.0F, 0.2F, 0.5F + WIDTH, WIDTH * 2.0F, 0.8F);
-	;
+
+	private final AxisAlignedBB DOWN_BB  = new AxisAlignedBB(0.5F - WIDTH, 1.0F - WIDTH * 2.0F, 0.2F, 0.5F + WIDTH, 1.0F, 0.8F);
+	private final AxisAlignedBB UP_BB    = new AxisAlignedBB(0.5F - WIDTH, 0.0F, 0.2F, 0.5F + WIDTH, WIDTH * 2.0F, 0.8F);
 	private final AxisAlignedBB NORTH_BB = new AxisAlignedBB(0.5F - WIDTH, 0.2F, 1.0F - WIDTH * 2.0F, 0.5F + WIDTH, 0.8F, 1.0F);
-	;
 	private final AxisAlignedBB SOUTH_BB = new AxisAlignedBB(0.5F - WIDTH, 0.2F, 0.0F, 0.5F + WIDTH, 0.8F, WIDTH * 2.0F);
-	;
-	private final AxisAlignedBB WEST_BB = new AxisAlignedBB(1.0F - WIDTH * 2.0F, 0.2F, 0.5F - WIDTH, 1.0F, 0.8F, 0.5F + WIDTH);
-	;
-	private final AxisAlignedBB EAST_BB = new AxisAlignedBB(0.0F, 0.2F, 0.5F - WIDTH, WIDTH * 2.0F, 0.8F, 0.5F + WIDTH);
+	private final AxisAlignedBB WEST_BB  = new AxisAlignedBB(1.0F - WIDTH * 2.0F, 0.2F, 0.5F - WIDTH, 1.0F, 0.8F, 0.5F + WIDTH);
+	private final AxisAlignedBB EAST_BB  = new AxisAlignedBB(0.0F, 0.2F, 0.5F - WIDTH, WIDTH * 2.0F, 0.8F, 0.5F + WIDTH);
 
 	protected BlockTFCritter() {
 		super(Material.CIRCUITS);
@@ -59,7 +56,7 @@ public abstract class BlockTFCritter extends Block {
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getFront(meta));
+		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.byIndex(meta));
 	}
 
 	@Override
@@ -113,10 +110,8 @@ public abstract class BlockTFCritter extends Block {
 				return true;
 			}
 		}
-
 		return false;
 	}
-
 
 	@Override
 	@Deprecated
@@ -141,7 +136,6 @@ public abstract class BlockTFCritter extends Block {
 			world.destroyBlock(pos, true);
 			return false;
 		}
-
 		return true;
 	}
 
@@ -162,4 +156,6 @@ public abstract class BlockTFCritter extends Block {
 
 	@Override
 	public abstract TileEntity createTileEntity(World world, IBlockState state);
+
+	public abstract ItemStack getSquishResult(); // oh no!
 }

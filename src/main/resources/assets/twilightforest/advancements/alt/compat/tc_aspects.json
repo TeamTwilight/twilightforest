@@ -1,0 +1,11 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "thaumonomicon"  : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "thaumcraft:thaumonomicon" }]}},
+    "crystal_essence": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "thaumcraft:crystal_essence" }]}},
+    "thaumometer"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "thaumcraft:thaumometer" }]}}
+  },
+  "requirements": [
+    [ "thaumonomicon", "crystal_essence", "thaumometer" ]
+  ]
+}

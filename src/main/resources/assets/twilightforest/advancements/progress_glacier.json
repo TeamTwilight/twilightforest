@@ -5,10 +5,14 @@
       "data": 5
     },
     "title": {
-      "translate": "advancement.twilight_progress_glacier"
+      "translate": "advancement.twilightforest.progress_glacier"
     },
     "description": {
-      "translate": "advancement.twilight_progress_glacier.desc"
+      "translate": "advancement.twilightforest.progress_glacier.desc",
+      "with": [
+        { "translate": "entity.twilightforest.snow_queen.name" },
+        { "translate": "structure.aurora_palace.name" }
+      ]
     },
     "frame": "goal"
   },
@@ -43,5 +47,8 @@
   "requirements": [
     [ "queen", "trophy" ],
     [ "previous_progression" ]
-  ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  }
 }

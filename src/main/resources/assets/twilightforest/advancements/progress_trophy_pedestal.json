@@ -4,10 +4,10 @@
       "item": "twilightforest:trophy_pedestal"
     },
     "title": {
-      "translate": "advancement.twilight_progress_trophy_pedestal"
+      "translate": "advancement.twilightforest.progress_trophy_pedestal"
     },
     "description": {
-      "translate": "advancement.twilight_progress_trophy_pedestal.desc"
+      "translate": "advancement.twilightforest.progress_trophy_pedestal.desc"
     },
     "frame": "goal"
   },
@@ -16,7 +16,7 @@
     "trophy_pedestal": {
       "trigger": "twilightforest:placed_on_trophy_pedestal"
     },
-    "kill_hydra": {
+    "kill_lich": {
       "trigger": "twilightforest:has_advancement",
       "conditions": { "advancement": "twilightforest:progress_lich" }
     }

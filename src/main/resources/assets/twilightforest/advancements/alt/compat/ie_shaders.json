@@ -1,0 +1,12 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "ie_shader"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader"     }]}},
+    "ie_shader_bag": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader_bag" }]}},
+    "tf_shader"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader"           }]}},
+    "tf_shader_bag": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader_bag"       }]}}
+  },
+  "requirements": [
+    [ "ie_shader", "ie_shader_bag", "tf_shader", "tf_shader_bag" ]
+  ]
+}

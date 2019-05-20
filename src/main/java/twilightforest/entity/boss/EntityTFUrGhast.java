@@ -19,10 +19,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.enums.BossVariant;
+import twilightforest.loot.TFTreasure;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
@@ -31,7 +34,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
@@ -52,8 +55,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	private boolean noTrapMode; // are there no traps nearby?  just float around
 	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 
-	public EntityTFUrGhast(World par1World) {
-		super(par1World);
+	public EntityTFUrGhast(World world) {
+		super(world);
 		this.setSize(14.0F, 18.0F);
 		this.wanderFactor = 32.0F;
 		this.noClip = true;
@@ -180,24 +183,48 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
+	}
+
+	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 
 		if (!world.isRemote) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
-		}
+		} else {
+			if (this.isInTantrum()) {
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.BOSS_TEAR,
+						this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+						this.posY + this.rand.nextDouble() * (double) this.height - 0.25D,
+						this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+						0, 0, 0
+				);
+			}
 
-		if (this.isInTantrum())
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.BOSS_TEAR, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0, 0, 0);
+			// extra death explosions
+			if (deathTime > 0) {
+				for (int k = 0; k < 5; k++) {
 
-		// extra death explosions
-		if (deathTime > 0) {
-			for (int k = 0; k < 5; k++) {
-				double d = rand.nextGaussian() * 0.02D;
-				double d1 = rand.nextGaussian() * 0.02D;
-				double d2 = rand.nextGaussian() * 0.02D;
-				EnumParticleTypes explosionType = rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL;
-				world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+					double d = rand.nextGaussian() * 0.02D;
+					double d1 = rand.nextGaussian() * 0.02D;
+					double d2 = rand.nextGaussian() * 0.02D;
+
+					world.spawnParticle(rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL,
+							(posX + rand.nextFloat() * width * 2.0F) - width,
+							posY + rand.nextFloat() * height,
+							(posZ + rand.nextFloat() * width * 2.0F) - width,
+							d, d1, d2
+					);
+				}
 			}
 		}
 	}
@@ -492,8 +519,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		return dataManager.get(DATA_TANTRUM);
 	}
 
-	public void setInTantrum(boolean par1) {
-		dataManager.set(DATA_TANTRUM, par1);
+	public void setInTantrum(boolean inTantrum) {
+		dataManager.set(DATA_TANTRUM, inTantrum);
 		this.damageUntilNextPhase = 48;
 	}
 
@@ -508,15 +535,15 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		nbttagcompound.setBoolean("inTantrum", this.isInTantrum());
-		super.writeEntityToNBT(nbttagcompound);
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		compound.setBoolean("inTantrum", this.isInTantrum());
+		super.writeEntityToNBT(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		this.setInTantrum(nbttagcompound.getBoolean("inTantrum"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		this.setInTantrum(compound.getBoolean("inTantrum"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -533,20 +560,20 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 
 		// mark the tower as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
+		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
 			BlockPos chestCoords = this.findChestCoords();
 			int dx = chestCoords.getX();
 			int dy = chestCoords.getY();
 			int dz = chestCoords.getZ();
 
-			ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-			if (nearbyFeature == TFFeature.darkTower) {
+			if (nearbyFeature == TFFeature.DARK_TOWER) {
 				generator.setStructureConquered(dx, dy, dz, true);
 			}
 		}

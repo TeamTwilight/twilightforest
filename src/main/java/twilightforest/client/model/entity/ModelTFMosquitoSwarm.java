@@ -65,11 +65,11 @@ public class ModelTFMosquitoSwarm extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		core.render(par7 / 2.0F);
-//		node1.render(par7);
-//		node2.render(par7);
-//		node3.render(par7);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		core.render(scale / 2.0F);
+//		node1.render(scale);
+//		node2.render(scale);
+//		node3.render(scale);
 	}
 
 	/**
@@ -97,34 +97,34 @@ public class ModelTFMosquitoSwarm extends ModelBase {
 	}
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float time) {
-		core.rotateAngleY = (par1EntityLiving.ticksExisted + time) / 5.0F;
-		core.rotateAngleX = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
-		core.rotateAngleZ = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		core.rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
+		core.rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
+		core.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 
-		node1.rotateAngleY = (par1EntityLiving.ticksExisted + time) / 2.0F;
-		node1.rotateAngleX = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 6.0F) / 2.0F;
-		node1.rotateAngleZ = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		node1.rotateAngleY = (entity.ticksExisted + partialTicks) / 2.0F;
+		node1.rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 6.0F) / 2.0F;
+		node1.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 
-		node2.rotateAngleY = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 2.0F) / 3.0F;
-		node2.rotateAngleX = (par1EntityLiving.ticksExisted + time) / 5.0F;
-		node2.rotateAngleZ = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		node2.rotateAngleY = MathHelper.sin((entity.ticksExisted + partialTicks) / 2.0F) / 3.0F;
+		node2.rotateAngleX = (entity.ticksExisted + partialTicks) / 5.0F;
+		node2.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 
-		node3.rotateAngleY = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 7.0F) / 3.0F;
-		node3.rotateAngleX = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 4.0F) / 2.0F;
-		node3.rotateAngleZ = (par1EntityLiving.ticksExisted + time) / 5.0F;
+		node3.rotateAngleY = MathHelper.sin((entity.ticksExisted + partialTicks) / 7.0F) / 3.0F;
+		node3.rotateAngleX = MathHelper.cos((entity.ticksExisted + partialTicks) / 4.0F) / 2.0F;
+		node3.rotateAngleZ = (entity.ticksExisted + partialTicks) / 5.0F;
 
-		node4.rotateAngleX = (par1EntityLiving.ticksExisted + time) / 2.0F;
-		node4.rotateAngleZ = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 6.0F) / 2.0F;
-		node4.rotateAngleY = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		node4.rotateAngleX = (entity.ticksExisted + partialTicks) / 2.0F;
+		node4.rotateAngleZ = MathHelper.sin((entity.ticksExisted + partialTicks) / 6.0F) / 2.0F;
+		node4.rotateAngleY = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 
-		node5.rotateAngleZ = MathHelper.sin((par1EntityLiving.ticksExisted + time) / 2.0F) / 3.0F;
-		node5.rotateAngleY = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
-		node5.rotateAngleX = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 5.0F) / 4.0F;
+		node5.rotateAngleZ = MathHelper.sin((entity.ticksExisted + partialTicks) / 2.0F) / 3.0F;
+		node5.rotateAngleY = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
+		node5.rotateAngleX = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 
-		node6.rotateAngleZ = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 7.0F) / 3.0F;
-		node6.rotateAngleX = MathHelper.cos((par1EntityLiving.ticksExisted + time) / 4.0F) / 2.0F;
-		node6.rotateAngleY = (par1EntityLiving.ticksExisted + time) / 5.0F;
+		node6.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 7.0F) / 3.0F;
+		node6.rotateAngleX = MathHelper.cos((entity.ticksExisted + partialTicks) / 4.0F) / 2.0F;
+		node6.rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
 
 	}
 

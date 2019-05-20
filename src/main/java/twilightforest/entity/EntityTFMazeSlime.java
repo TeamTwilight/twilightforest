@@ -18,11 +18,12 @@ import twilightforest.block.TFBlocks;
 import twilightforest.enums.MazestoneVariant;
 
 public class EntityTFMazeSlime extends EntitySlime {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/maze_slime");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/maze_slime");
 	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, 1).setSaved(false);
 
-	public EntityTFMazeSlime(World par1World) {
-		super(par1World);
+	public EntityTFMazeSlime(World world) {
+		super(world);
 	}
 
 	@Override

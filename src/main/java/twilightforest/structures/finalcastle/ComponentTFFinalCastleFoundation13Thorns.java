@@ -54,7 +54,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 
 		final IBlockState thorns = TFBlocks.thorns.getDefaultState();
 
-		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation) != TFBlocks.deadrock && this.getYWithOffset(y) > 60) {
+		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).getBlock() != TFBlocks.deadrock && this.getYWithOffset(y) > 60) {
 			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
 			// twist vines around the center block
 			switch (twist) {

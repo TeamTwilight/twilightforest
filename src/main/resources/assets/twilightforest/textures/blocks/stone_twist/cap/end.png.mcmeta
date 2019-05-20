@@ -1,0 +1,10 @@
+{
+  "ctm": {
+    "ctm_version": 1,
+    "type": "ctm",
+    "textures": [ "twilightforest:blocks/stone_twist/cap/end_ctm" ],
+    "extra": {
+      "connect_inside": true
+    }
+  }
+}

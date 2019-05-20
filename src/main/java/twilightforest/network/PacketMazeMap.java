@@ -2,13 +2,14 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketMaps;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import twilightforest.item.ItemTFMagicMap;
+import twilightforest.TFMazeMapData;
 import twilightforest.item.ItemTFMazeMap;
 
 import java.io.IOException;
@@ -18,10 +19,10 @@ import java.io.IOException;
  * We rewrap the packet here in order to load our own MapData instances properly.
  */
 public class PacketMazeMap implements IMessage {
+
 	private SPacketMaps inner;
 
-	public PacketMazeMap() {
-	}
+	public PacketMazeMap() {}
 
 	public PacketMazeMap(SPacketMaps inner) {
 		this.inner = inner;
@@ -52,9 +53,28 @@ public class PacketMazeMap implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
+
+					MapItemRenderer mapItemRenderer = Minecraft.getMinecraft().entityRenderer.getMapItemRenderer();
 					MapData mapData = ItemTFMazeMap.loadMapData(message.inner.getMapId(), Minecraft.getMinecraft().world);
+
+					// Adapted from NetHandlerPlayClient#handleMaps
+					if (mapData == null) {
+
+						String s = ItemTFMazeMap.STR_ID + "_" + message.inner.getMapId();
+						mapData = new TFMazeMapData(s);
+
+						if (mapItemRenderer.getMapInstanceIfExists(s) != null) {
+							MapData mapData1 = mapItemRenderer.getData(mapItemRenderer.getMapInstanceIfExists(s));
+							if (mapData1 != null) {
+								mapData = mapData1;
+							}
+						}
+
+						Minecraft.getMinecraft().world.setData(s, mapData);
+					}
+
 					message.inner.setMapdataTo(mapData);
-					Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().updateMapTexture(mapData);
+					mapItemRenderer.updateMapTexture(mapData);
 				}
 			});
 			return null;

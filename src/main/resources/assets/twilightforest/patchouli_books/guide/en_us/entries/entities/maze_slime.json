@@ -1,0 +1,14 @@
+{
+  "name": "Maze Slime",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:maze_slime\"}}",
+  "category": "entities",
+  "advancement": "twilightforest:alt/entities/maze_slime",
+  "sortnum": 5020,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "twilightforest:maze_slime{Size:1}",
+      "text": "things and stuff"
+    }
+  ]
+}

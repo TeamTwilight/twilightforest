@@ -26,21 +26,28 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
-import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.enums.BossVariant;
+import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
 public class EntityTFLich extends EntityMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/lich");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/lich");
 	private static final Set<Class<? extends Entity>> POPPABLE = ImmutableSet.of(EntitySkeleton.class, EntityZombie.class, EntityEnderman.class, EntitySpider.class, EntityCreeper.class, EntityTFSwarmSpider.class);
+
 	private static final DataParameter<Boolean> DATA_ISCLONE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> DATA_SHIELDSTRENGTH = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_MINIONSLEFT = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
@@ -149,6 +156,18 @@ public class EntityTFLich extends EntityMob {
 	@Override
 	protected boolean canDespawn() {
 		return false;
+	}
+
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL && !isShadowClone()) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
 	}
 
 	/**
@@ -313,7 +332,7 @@ public class EntityTFLich extends EntityMob {
 
 		EntityTFLichBolt projectile = new EntityTFLichBolt(world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
-		projectile.setThrowableHeading(tx, ty, tz, 0.5F, 1.0F);
+		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
 		world.spawnEntity(projectile);
 	}
@@ -332,7 +351,7 @@ public class EntityTFLich extends EntityMob {
 
 		EntityTFLichBomb projectile = new EntityTFLichBomb(world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
-		projectile.setThrowableHeading(tx, ty, tz, 0.35F, 1.0F);
+		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 
 		world.spawnEntity(projectile);
 	}
@@ -412,6 +431,7 @@ public class EntityTFLich extends EntityMob {
 	 * Returns coords that would be good to teleport to.
 	 * Returns null if we can't find anything
 	 */
+	@Nullable
 	public Vec3d findVecInLOSOf(Entity targetEntity) {
 		if (targetEntity == null) return null;
 		double origX = posX;
@@ -505,9 +525,9 @@ public class EntityTFLich extends EntityMob {
 		return dataManager.get(DATA_ISCLONE);
 	}
 
-	public void setShadowClone(boolean par1) {
-		bossInfo.setVisible(!par1);
-		dataManager.set(DATA_ISCLONE, par1);
+	public void setShadowClone(boolean shadowClone) {
+		bossInfo.setVisible(!shadowClone);
+		dataManager.set(DATA_ISCLONE, shadowClone);
 	}
 
 	public byte getShieldStrength() {
@@ -555,27 +575,27 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		super.writeEntityToNBT(nbttagcompound);
-		nbttagcompound.setBoolean("ShadowClone", isShadowClone());
-		nbttagcompound.setByte("ShieldStrength", getShieldStrength());
-		nbttagcompound.setByte("MinionsToSummon", getMinionsToSummon());
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("ShadowClone", isShadowClone());
+		compound.setByte("ShieldStrength", getShieldStrength());
+		compound.setByte("MinionsToSummon", getMinionsToSummon());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		super.readEntityFromNBT(nbttagcompound);
-		setShadowClone(nbttagcompound.getBoolean("ShadowClone"));
-		setShieldStrength(nbttagcompound.getByte("ShieldStrength"));
-		setMinionsToSummon(nbttagcompound.getByte("MinionsToSummon"));
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		setShadowClone(compound.getBoolean("ShadowClone"));
+		setShieldStrength(compound.getByte("ShieldStrength"));
+		setMinionsToSummon(compound.getByte("MinionsToSummon"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
 	}
 
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
 
 		// mark the tower as defeated
 		if (!world.isRemote && !this.isShadowClone()) {
@@ -583,11 +603,11 @@ public class EntityTFLich extends EntityMob {
 			int dy = MathHelper.floor(this.posY);
 			int dz = MathHelper.floor(this.posZ);
 
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTwilightForest) {
-				ChunkGeneratorTwilightForest generator = (ChunkGeneratorTwilightForest) TFWorld.getChunkGenerator(world);
+			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
+				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
 
-				if (nearbyFeature == TFFeature.lichTower) {
+				if (nearbyFeature == TFFeature.LICH_TOWER) {
 					generator.setStructureConquered(dx, dy, dz, true);
 				}
 			}

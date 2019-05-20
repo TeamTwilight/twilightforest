@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "twilightforest:mangrove_fence",
+    "data": 0,
+    "count": 3
+  },
+  "pattern": [
+    "#S#",
+    "#S#"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:mangrove_planks",
+      "data": 0
+    },
+    "S": {
+      "item": "#STICKWOOD"
+    }
+  }
+}

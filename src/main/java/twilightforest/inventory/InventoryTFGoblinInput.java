@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-
 public class InventoryTFGoblinInput implements IInventory {
+
 	private ItemStack stackInput = ItemStack.EMPTY;
-	private ContainerTFUncrafting craftingContainer;
+	private final ContainerTFUncrafting craftingContainer;
 
 	public InventoryTFGoblinInput(ContainerTFUncrafting containerTFGoblinCrafting) {
 		this.craftingContainer = containerTFGoblinCrafting;
@@ -26,8 +26,8 @@ public class InventoryTFGoblinInput implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int par1) {
-		return stackInput;
+	public ItemStack getStackInSlot(int index) {
+		return index == 0 ? stackInput : ItemStack.EMPTY;
 	}
 
 	@Override
@@ -36,8 +36,8 @@ public class InventoryTFGoblinInput implements IInventory {
 	}
 
 	@Override
-	public ItemStack decrStackSize(int slotNum, int amount) {
-		if (!this.stackInput.isEmpty()) {
+	public ItemStack decrStackSize(int index, int amount) {
+		if (index == 0 && !this.stackInput.isEmpty()) {
 			ItemStack takenStack;
 
 			if (this.stackInput.getCount() <= amount) {
@@ -56,20 +56,22 @@ public class InventoryTFGoblinInput implements IInventory {
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int par1) {
-		if (!this.stackInput.isEmpty()) {
-			ItemStack var2 = this.stackInput;
+	public ItemStack removeStackFromSlot(int index) {
+		if (index == 0 && !this.stackInput.isEmpty()) {
+			ItemStack stack = this.stackInput;
 			this.stackInput = ItemStack.EMPTY;
-			return var2;
+			return stack;
 		} else {
 			return ItemStack.EMPTY;
 		}
 	}
 
 	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-		this.stackInput = par2ItemStack;
-		this.craftingContainer.onCraftMatrixChanged(this);
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		if (index == 0) {
+			this.stackInput = stack;
+			this.craftingContainer.onCraftMatrixChanged(this);
+		}
 	}
 
 	@Override
@@ -83,7 +85,7 @@ public class InventoryTFGoblinInput implements IInventory {
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
 		return true;
 	}
 
@@ -96,7 +98,7 @@ public class InventoryTFGoblinInput implements IInventory {
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return true;
 	}
 
@@ -129,6 +131,4 @@ public class InventoryTFGoblinInput implements IInventory {
 	public ITextComponent getDisplayName() {
 		return new TextComponentString(getName());
 	}
-
-
 }

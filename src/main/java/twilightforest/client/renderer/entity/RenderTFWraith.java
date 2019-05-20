@@ -1,6 +1,5 @@
 package twilightforest.client.renderer.entity;
 
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
@@ -13,8 +12,9 @@ import twilightforest.entity.EntityTFWraith;
 import javax.annotation.Nonnull;
 
 public class RenderTFWraith extends RenderBiped<EntityTFWraith> {
-	private static final ResourceLocation textureWraith = new ResourceLocation(TwilightForestMod.MODEL_DIR + "ghost.png");
-	private static final ResourceLocation textureCrown = new ResourceLocation(TwilightForestMod.MODEL_DIR + "ghost-crown.png");
+
+	private static final ResourceLocation textureWraith = TwilightForestMod.getModelTexture("ghost.png");
+	private static final ResourceLocation textureCrown  = TwilightForestMod.getModelTexture("ghost-crown.png");
 
 	public RenderTFWraith(RenderManager manager, ModelBiped modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);

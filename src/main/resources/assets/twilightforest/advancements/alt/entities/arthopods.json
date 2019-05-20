@@ -1,0 +1,44 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "0": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/hedge_spider" }
+    },
+    "1": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/swarm_spider" }
+    },
+    "2": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/slime_beetle" }
+    },
+    "3": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/fire_beetle" }
+    },
+    "4": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/pinch_beetle" }
+    },
+    "5": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/mosquito_swarm" }
+    },
+    "6": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/king_spider" }
+    },
+    "7": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/tower_termite" }
+    },
+    "8": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:alt/entities/tower_broodling" }
+    }
+  },
+  "requirements": [
+    [ "0", "1", "2", "3", "4", "5", "6", "7", "8" ]
+  ]
+}

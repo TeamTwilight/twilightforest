@@ -1,0 +1,841 @@
+#PARSE_ESCAPES
+
+itemGroup.twilightForest=Twilight Forest
+
+# ADVANCEMENTS
+advancement.twilightforest.root.desc=Entrer dans le bois magique et mystérieux qu'est la Twilight Forest.
+
+# General progression
+advancement.twilightforest.hedge=Bug Stomper
+advancement.twilightforest.hedge.desc=Vaincre une araignée dans un %s.
+
+advancement.twilightforest.hill1=Ces bottes sont les miennes !
+advancement.twilightforest.hill1.desc=Vaincre un %s dans une petite %s.
+advancement.twilightforest.hill2=Quel était ce bruit ?
+advancement.twilightforest.hill2.desc=Vaincre un %s dans une %s moyenne.
+advancement.twilightforest.hill3=Je te vois
+advancement.twilightforest.hill3.desc=Vaincre un %s dans une grande %s.
+
+advancement.twilightforest.quest_ram=Consomme des bêêê !
+advancement.twilightforest.quest_ram.desc=Donner au %s ce qui lui manque.
+
+# Map
+advancement.twilightforest.magic_map_focus=Il écrit avec du feu
+advancement.twilightforest.magic_map_focus.desc=Fabriquer le %s avec une %s, une %s, et une %s.
+advancement.twilightforest.magic_map=Je peux voir pour toujours
+advancement.twilightforest.magic_map.desc=Fabriquer la %s.
+advancement.twilightforest.maze_map=Trouver la sortie
+advancement.twilightforest.maze_map.desc=Fabriquer la %s après avoir obtenu le foyer du labyrinthe.
+advancement.twilightforest.ore_map=Comment cela peut-il en valoir la peine ?
+advancement.twilightforest.ore_map.desc=Fabriquer la %s.
+
+# Mainline beginning progression
+advancement.twilightforest.twilight_hunter=Le silence de la forêt
+advancement.twilightforest.twilight_hunter.desc=Chasser un animal de la Twilight Forest.
+
+advancement.twilightforest.kill_naga=Il est temps de niveler les écailles
+advancement.twilightforest.kill_naga.desc=Tuer le %s dans sa cour forestière et obtenir des %s pour surmonter la barrière magique entourant la tour du Liche.
+advancement.twilightforest.naga_armors=Armurier du Nâga
+advancement.twilightforest.naga_armors.desc=Fabriquer un plastron et des jambières en %s.
+
+advancement.twilightforest.kill_lich=Faire sortir vos morts
+advancement.twilightforest.kill_lich.desc=Tuer le %s en haut de sa tour et récupérer un sceptre pour éliminer les moustiques toxiques du marais, voir à travers l'obscurité aveuglante de la malédiction de la forêt noire et résister au froid de la forêt enneigée.
+advancement.twilightforest.lich_scepters=Par nos pouvoirs combinés !
+advancement.twilightforest.lich_scepters.desc=Acquérir les quatre sceptres de pouvoir.
+
+# Swamp Progression
+advancement.twilightforest.progress_labyrinth=Puissant Stroganoff
+advancement.twilightforest.progress_labyrinth.desc=Le ragoût de viande et de champignons vous réchauffe agréablement, juste assez pour que vous vous sentiez acclimaté pour vous aventurer dans le marais de feu.
+advancement.twilightforest.kill_hydra=Tueur d'Hydre
+advancement.twilightforest.kill_hydra.desc=Vaincre le puissant %s et devenez plus puissant.
+advancement.twilightforest.mazebreaker=Casser le labyrinthe
+advancement.twilightforest.mazebreaker.desc=Trouver la pioche %s dans la voûte secrète du labyrinthe.
+advancement.twilightforest.hydra_chop=Tranche d'Hydre !
+advancement.twilightforest.hydra_chop.desc=Se goinfrer de viande super-puissante d'%s lorsque votre barre de nourriture est vide.
+
+# Dark Forest Progression
+advancement.twilightforest.progress_trophy_pedestal=Champion de trophée
+advancement.twilightforest.progress_trophy_pedestal.desc=Revendiquez votre titre en plaçant un trophée sur le piédestal des ruines de la forêt noire.
+advancement.twilightforest.progress_knights=Acclimatation à la carminite
+advancement.twilightforest.progress_knights.desc=Tuer les fantômes agités dans la tombe du chevalier et les appareils de la tour carminite vous obéirons.
+advancement.twilightforest.ghast_trap=Quelque chose d'étrange
+advancement.twilightforest.ghast_trap.desc=Tuer les %s autour d'un %s et l'activer pour torturer l'%s depuis le ciel !
+advancement.twilightforest.progress_ur_ghast=Larmes de feu
+advancement.twilightforest.progress_ur_ghast.desc=Toucher les larmes rouges ardentes de l'%s.
+
+advancement.twilightforest.experiment_115=Viande mystère ?
+advancement.twilightforest.experiment_115.desc=Ça ressemble à du gâteau par contre...
+advancement.twilightforest.experiment_115_2=Faire une note : énorme succès !
+advancement.twilightforest.experiment_115_2.desc=C'est tellement délicieux et humide !
+
+# Snow Forest Progression
+advancement.twilightforest.progress_yeti=Fourrure d'Alpha
+advancement.twilightforest.progress_yeti.desc=Améliorez votre garde-robe avec cette douce fourrure du %s, vous protégeant du froid du glacier.
+advancement.twilightforest.progress_glacier=Cieux clairs
+advancement.twilightforest.progress_glacier.desc=Vaincre la %s au sommet du %s.
+advancement.twilightforest.arctic_dyed=Être à la mode
+advancement.twilightforest.arctic_dyed.desc=Teindre les quatre pièces de l'armure arctique.
+
+# Mid-way Misc. Stuff
+advancement.twilightforest.glass_sword=Un coup étonnant
+advancement.twilightforest.glass_sword.desc=J'espère que tu as fait bon usage de cela.
+
+advancement.twilightforest.fiery_set=Des litres de sang et de larmes
+advancement.twilightforest.fiery_set.desc=Manier une arme ou outil ardent en portant au moins une pièce d'armure ardente.
+
+# Highlands
+advancement.twilightforest.progress_merge=Épreuve de force ultime
+advancement.twilightforest.progress_merge.desc=Tuer l'%s, l'%s, et la %s pour nettoyer la pluie acide et vous installer dans les Hauts Plateaux.
+advancement.twilightforest.progress_troll=Je souhaite plus de brûlures
+advancement.twilightforest.progress_troll.desc=Trouver la %s dans les caves de Trolls, et vous pourrez brûler les barrières épineuses.
+advancement.twilightforest.progress_thorns=Passer les épines [NYI]
+advancement.twilightforest.progress_thorns.desc=Passez les Thornlands, et déverrouillez la porte du château.
+advancement.twilightforest.progress_castle=Très château [NYI]
+advancement.twilightforest.progress_castle.desc=Que pourrait-il y avoir dans ce château ?!?
+
+# Collections
+advancement.twilightforest.twilight_dining=Dînons au coucher du soleil
+advancement.twilightforest.twilight_dining.desc=Manger TOUS les aliments exclusifs à la Twilight Forest.
+advancement.twilightforest.experiment_115_3=Manger 115 tous les jours, pendant 115 ans
+advancement.twilightforest.experiment_115_3.desc=manger l'expérience cent quinze toute la journée, pour toujours, cent quinze fois l'expérience cent quinze, expérience cent quinze point com, double-v double-v double-v point expérience cent quinze point com, cent quinze ans, chaque minute expérience cent quinze point com, double-v double-v double-v point cent quinze
+advancement.twilightforest.arborist=Dendrologue maniaque
+advancement.twilightforest.arborist.desc=Préparez vos haches et cisailles. Fouiller chaque coin et recoin et récupérer tout ce qui provient des arbres ! Fabriquez, récupérez, obtenez chaque dalle... pousse... feuilles.... plus… TOUT. TOUT !
+
+twilightforest.twilight_portal.unsafe=Ça n'a pas l'air très sûr ici...
+twilightforest.trophy_pedestal.ineligible=Vous êtes indigne.
+twilightforest.ore_meter.range=Rayon  : %s, Origine : [%s, %s]
+twilightforest.ore_meter.exposed=Exposé : %s
+twilightforest.scepter_charges=%d charge(s) restante(s)
+
+# Commands
+commands.tffeature.usage=/tffeature <info|reactivate|conquer|center>
+commands.tffeature.not_in_twilight_forest=Vous n'êtes pas dans la dimension Twilight Forest
+commands.tffeature.nearest=La structure la plus proche est %s
+commands.tffeature.center=Centre de la fonctionnalité : %s
+commands.tffeature.chunk=Être dans le chunk de la fonctionnalité : %s
+commands.tffeature.structure.inside=Vous êtes dans la structure de cette fonctionnalité
+commands.tffeature.structure.outside=Vous n'êtes pas dans la structure pour cette fonctionnalité
+commands.tffeature.structure.required=Vous n'êtes pas dans une structure
+commands.tffeature.structure.conquer.status=Drapeau de conquête de structure : %s
+commands.tffeature.structure.conquer.update=Le drapeau de conquête de structure était %s, changé pour %s
+commands.tffeature.locate.usage=/tffeature locate <fonctionnalité>
+
+# Blocks
+tile.twilightforest.Log.0.name=Bois de chêne Twilight
+tile.twilightforest.Log.1.name=Bois d'arbre canopée
+tile.twilightforest.Log.2.name=Bois de mangrove
+tile.twilightforest.Log.3.name=Bois sombre
+tile.twilightforest.Leaves.0.name=Feuilles de chêne Twilight
+tile.twilightforest.Leaves.1.name=Feuilles d'arbre canopée
+tile.twilightforest.Leaves.2.name=Feuilles de mangrove
+tile.twilightforest.Leaves.3.name=Feuilles de chêne arc-en-ciel
+tile.twilightforest.Firefly.name=Luciole
+tile.twilightforest.Cicada.name=Cigale
+tile.twilightforest.Cicada.desc=Et si cela pouvait être lancé sur quelqu'un avec un pistolet... ?
+item.twilightforest.Portal.name=Portail de la Twilight Forest
+tile.twilightforest.Portal.name=Portail de la Twilight Forest
+tile.twilightforest.Mazestone.0.name=Pierre du labyrinthe
+tile.twilightforest.Mazestone.1.name=Brique du labyrinthe
+tile.twilightforest.Mazestone.2.name=Pierre du labyrinthe polie
+tile.twilightforest.Mazestone.3.name=Brique de pierre décorée du labyrinthe
+tile.twilightforest.Mazestone.4.name=Brique de pierre craquelée du labyrinthe
+tile.twilightforest.Mazestone.5.name=Brique de pierre moussue du labyrinthe
+tile.twilightforest.Mazestone.6.name=Mosaïque de pierre du labyrinthe
+tile.twilightforest.Mazestone.7.name=Bordure de pierre du labyrinthe
+tile.twilightforest.Mazestone.8.name=Plafond de pierre du labyrinthe
+tile.twilightforest.Hedge.0.name=Haie
+tile.twilightforest.Hedge.1.name=Feuilles de bois sombre
+tile.twilightforest.BossSpawner.0.name=Générateur de Nâga
+tile.twilightforest.BossSpawner.1.name=Générateur de Liche
+tile.twilightforest.BossSpawner.2.name=Générateur d'Hydre
+tile.twilightforest.BossSpawner.3.name=Générateur d'Ur-Ghast
+tile.twilightforest.BossSpawner.4.name=Générateur de Chevalier fantôme
+tile.twilightforest.BossSpawner.5.name=Générateur de Reine des Neiges
+tile.twilightforest.BossSpawner.6.name=Générateur de Minoshroom
+tile.twilightforest.BossSpawner.7.name=Générateur de Yéti Alpha
+tile.twilightforest.FireflyJar.name=Bocal à luciole
+tile.twilightforest.Plant.0.name=Mousse
+tile.twilightforest.Plant.1.name=Podophyllum
+tile.twilightforest.Plant.2.name=Trèfle à quatre feuilles [WIP]
+tile.twilightforest.Plant.3.name=Crosse de fougère
+tile.twilightforest.Plant.4.name=Champignon lumineux
+tile.twilightforest.Plant.5.name=Herbe de Forêt
+tile.twilightforest.Plant.6.name=Arbuste mort
+tile.twilightforest.Plant.7.name=Plante de torche des baies
+tile.twilightforest.Plant.8.name=Brins de racine
+tile.twilightforest.Roots.0.name=Racines
+tile.twilightforest.Roots.1.name=Racines vivantes
+tile.twilightforest.UncraftingTable.name=Établi de défabrication
+tile.twilightforest.FireJet.0.name=Bloc fumant
+tile.twilightforest.FireJet.1.name=Fumeur recouvert
+tile.twilightforest.FireJet.2.name=Fumeur recouvert
+tile.twilightforest.FireJet.3.name=Jet de feu
+tile.twilightforest.FireJet.4.name=Jet de feu bouillant
+tile.twilightforest.FireJet.5.name=Jet de feu flamboyant
+tile.twilightforest.FireJet.6.name=Jet de feu recouvert
+tile.twilightforest.FireJet.7.name=Jet de feu recouvert bouillant
+tile.twilightforest.FireJet.8.name=Jet de feu recouvert flamboyant
+tile.twilightforest.Nagastone.0.name=Tête de nâgastone
+tile.twilightforest.Nagastone.1.name=Nâgastone
+tile.twilightforest.Sapling.name=Pousse de la Twilight
+tile.twilightforest.Sapling.0.name=Pousse de chêne de la Twilight faible
+tile.twilightforest.Sapling.1.name=Pousse d'arbre de canopée
+tile.twilightforest.Sapling.2.name=Pousse de mangrove de la Twilight
+tile.twilightforest.Sapling.3.name=Pousse d'arbre sombre
+tile.twilightforest.Sapling.4.name=Pousse de chêne de la Twilight robuste
+tile.twilightforest.Sapling.5.name=Pousse d'arbre du temps
+tile.twilightforest.Sapling.6.name=Pousse d'arbre de transformation
+tile.twilightforest.Sapling.7.name=Pousse d'arbre du mineur
+tile.twilightforest.Sapling.8.name=Pousse d'arbre de Sorting
+tile.twilightforest.Sapling.9.name=Pousse de chêne arc-en-ciel
+tile.twilightforest.Moonworm.name=Ver de lune
+tile.twilightforest.MagicLog.0.name=Bois du temps
+tile.twilightforest.MagicLog.1.name=Transwood
+tile.twilightforest.MagicLog.2.name=Bois du mineur
+tile.twilightforest.MagicLog.3.name=Bois de Sorting
+tile.twilightforest.MagicLogSpecial.0.name=Horloge de bois du temps
+tile.twilightforest.MagicLogSpecial.1.name=Coeur de transformation
+tile.twilightforest.MagicLogSpecial.2.name=Coeur du mineur
+tile.twilightforest.MagicLogSpecial.3.name=Moteur du bois de Sorting
+tile.twilightforest.MagicLeaves.0.name=Feuilles d'arbre du temps
+tile.twilightforest.MagicLeaves.1.name=Feuilles d'arbre de transformation 
+tile.twilightforest.MagicLeaves.2.name=Feuilles d'arbre du mineur
+tile.twilightforest.MagicLeaves.3.name=Feuilles d'arbre de Sorting
+tile.twilightforest.TowerStone.0.name=Planches de Towerwood
+tile.twilightforest.TowerStone.1.name=Towerwood recouvert
+tile.twilightforest.TowerStone.2.name=Towerwood craquelé
+tile.twilightforest.TowerStone.3.name=Towerwood moussu
+tile.twilightforest.TowerStone.4.name=Towerwood infesté
+tile.twilightforest.TowerDevice.0.name=Bloc de réapparition
+tile.twilightforest.TowerDevice.1.name=Bloc de réapparition actif
+tile.twilightforest.TowerDevice.2.name=Bloc de disparition
+tile.twilightforest.TowerDevice.3.name=Bloc de disparition actif
+tile.twilightforest.TowerDevice.4.name=Bloc de disparition verrouillé
+tile.twilightforest.TowerDevice.5.name=Bloc de disparition déverrouillé
+tile.twilightforest.TowerDevice.6.name=Constructeur carminite
+tile.twilightforest.TowerDevice.7.name=Constructeur carminite actif
+tile.twilightforest.TowerDevice.8.name=Constructeur carminite inactif
+tile.twilightforest.TowerDevice.9.name=Anti-constructeur
+tile.twilightforest.TowerDevice.10.name=Piège à Ghast
+tile.twilightforest.TowerDevice.11.name=Piège à Ghast actif
+tile.twilightforest.TowerDevice.12.name=Réacteur carminite
+tile.twilightforest.TowerDevice.13.name=Réacteur carminite actif
+tile.twilightforest.TowerTranslucent.0.name=Bloc de réapparition
+tile.twilightforest.TowerTranslucent.1.name=Bloc de réapparition actif
+tile.twilightforest.TowerTranslucent.2.name=Bloc de réapparition construit
+tile.twilightforest.TowerTranslucent.3.name=Bloc de réapparition construit actif
+tile.twilightforest.TowerTranslucent.4.name=Bloc d'anti-construction
+tile.twilightforest.TowerTranslucent.5.name=Débris de réacteur carminite
+tile.twilightforest.TowerTranslucent.6.name=Faux or
+tile.twilightforest.TowerTranslucent.7.name=Faux diamant
+tile.twilightforest.Trophy.name=Trophée de la Twilight Forest
+tile.twilightforest.Shield.name=Bouclier stronghold
+tile.twilightforest.TrophyPedestal.0.name=Piédestal à trophée
+tile.twilightforest.TrophyPedestal.15.name=Piédestal à trophée latent
+tile.twilightforest.AuroraBrick.name=Bloc d'aurore
+tile.twilightforest.UnderBrick.0.name=Brique des dessous
+tile.twilightforest.UnderBrick.1.name=Brique des dessous moussue
+tile.twilightforest.UnderBrick.2.name=Brique des dessous craquelée
+tile.twilightforest.UnderBrick.3.name=Sol de brique des dessous
+tile.twilightforest.Thorns.brown.name=Épines
+tile.twilightforest.Thorns.green.name=Épines vertes
+tile.twilightforest.BurntThorns.name=Épines brûlées
+tile.twilightforest.ThornRose.name=Rose d'épines
+tile.twilightforest.Leaves3.0.name=Feuilles d'épines
+tile.twilightforest.Leaves3.1.name=Feuilles d'haricot magique
+tile.twilightforest.Deadrock.surface.name=Deadrock altérée
+tile.twilightforest.Deadrock.cracked.name=Deadrock craquelée
+tile.twilightforest.Deadrock.solid.name=Deadrock
+tile.twilightforest.DarkLeaves.name=Feuilles de Deadrock
+tile.twilightforest.AuroralizedGlass.name=Verre auroralisé
+tile.twilightforest.AuroraPillar.name=Pilier auroralisé
+tile.twilightforest.AuroraSlab.name=Dalle auroralisée
+tile.twilightforest.TrollSteinn.name=Trollsteinn
+tile.twilightforest.WispyCloud.name=Nuage vaporeux
+tile.twilightforest.FluffyCloud.name=Nuage moelleux
+tile.twilightforest.GiantCobble.name=Pierre géante
+tile.twilightforest.GiantLog.name=Bois géant
+tile.twilightforest.GiantLeaves.name=Feuilles géantes
+tile.twilightforest.GiantObsidian.name=Obsidienne géante
+tile.twilightforest.UberousSoil.name=Sol herbeux
+tile.twilightforest.HugeStalk.name=Énorme tige
+tile.twilightforest.HugeGloomBlock.name=Énorme champignon lumieux
+tile.twilightforest.TrollVidr.name=Trollvidr
+tile.twilightforest.UnripeTrollBer.name=Trollber verte
+tile.twilightforest.TrollBer.name=Trollber
+tile.twilightforest.TrollBer.name=Trollber
+tile.twilightforest.KnightmetalBlock.name=Bloc de métal de chevalier
+tile.twilightforest.HugeLilyPad.name=Énorme nénuphar
+tile.twilightforest.HugeWaterLily.name=Énorme fleur à nénuphar
+tile.twilightforest.Slider.0.name=Piège à glissière
+tile.twilightforest.Slider.1.name=Piège à glissière 1
+tile.twilightforest.Slider.2.name=Piège à glissière 2
+tile.twilightforest.Slider.3.name=Piège à glissière 3
+tile.twilightforest.CastleBrick.0.name=Brique de château
+tile.twilightforest.CastleBrick.1.name=Brique de château usée
+tile.twilightforest.CastleBrick.2.name=Brique de château craquelée
+tile.twilightforest.CastleBrick.3.name=Tuile de toit de château
+tile.twilightforest.CastleBrick.4.name=Brique de château moussue
+tile.twilightforest.CastleBrick.5.name=Brique de château épaisse
+tile.twilightforest.CastleStairsBrick.name=Escaliers en pierre de château
+tile.twilightforest.CastleStairsWorn.name=Escaliers en pierre de château usée
+tile.twilightforest.CastleStairsCracked.name=Escaliers en pierre de château craquelée
+tile.twilightforest.CastleStairsMossy.name=Escaliers en pierre de château moussue
+tile.twilightforest.CastleDoor.0.name=Porte de château jaune
+tile.twilightforest.CastleDoor.1.name=Porte de château violette
+tile.twilightforest.CastleDoor.2.name=Porte de château rose
+tile.twilightforest.CastleDoor.3.name=Porte de château bleue
+tile.twilightforest.CastleMagic.0.name=Rune de brique de château rose
+tile.twilightforest.CastleMagic.1.name=Rune de brique de château bleue
+tile.twilightforest.CastleMagic.2.name=Rune de brique de château jaune
+tile.twilightforest.CastleMagic.3.name=Rune de brique de château violette
+tile.twilightforest.CastlePillar.0.name=Pilier de brique de château recouvert
+tile.twilightforest.CastlePillar.1.name=Tuille de brique de château recouverte
+tile.twilightforest.CastlePillar.2.name=Pilier épais de brique de château
+tile.twilightforest.CastlePillar.3.name=Tuille épaisse de brique de château
+tile.twilightforest.CastleStairs.0.name=Escaliers en brique de château recouverts
+tile.twilightforest.CastleStairs.8.name=Escaliers épais en brique de château
+tile.twilightforest.ForceField.0.name=Champ de force violet
+tile.twilightforest.ForceField.1.name=Champ de force rose
+tile.twilightforest.ForceField.2.name=Champ de force orange
+tile.twilightforest.ForceField.3.name=Champ de force vert
+tile.twilightforest.ForceField.4.name=Champ de force bleu
+tile.twilightforest.BlockOfStorage.0.name=Bloc de bois de fer
+tile.twilightforest.BlockOfStorage.1.name=Bloc de métal ardent
+tile.twilightforest.BlockOfStorage.2.name=Bloc de Stealeaf
+tile.twilightforest.BlockOfStorage.3.name=Bloc de fourrure arctique
+tile.twilightforest.BlockOfStorage.4.name=Bloc de carminite
+tile.twilightforest.CinderFurnaceIdle.name=Four à cendres [NYI]
+tile.twilightforest.CinderLog.name=Bois de cendres [NYI]
+tile.twilightforest.MiniatureStructure=%s miniature [NYI]
+tile.twilightforest.SpiralBricks.name=Pierre taillée en spirale
+tile.twilightforest.BlockOfLapisTF.name=Bloc de lapis [NYI]
+tile.twilightforest.EtchedNagastone.name=Nâgastone gravée
+tile.twilightforest.NagastonePillar.name=Pilier de nâgastone
+tile.twilightforest.NagastoneStairs.0.name=Escaliers en nâgastone (gauche)
+tile.twilightforest.NagastoneStairs.8.name=Escaliers en nâgastone (droite)
+tile.twilightforest.EtchedNagastoneMossy.name=Nâgastone gravée moussue
+tile.twilightforest.NagastonePillarMossy.name=Pilier de nâgastone moussue
+tile.twilightforest.NagastoneStairsMossy.0.name=Escaliers de nâgastone moussue (gauche)
+tile.twilightforest.NagastoneStairsMossy.8.name=Escaliers de nâgastone moussue (droite)
+tile.twilightforest.EtchedNagastoneWeathered.name=Nâgastone gravée en ruine
+tile.twilightforest.NagastonePillarWeathered.name=Pilier en nâgastone en ruine
+tile.twilightforest.NagastoneStairsWeathered.0.name=Escaliers en nâgastone altérée (gauche)
+tile.twilightforest.NagastoneStairsWeathered.8.name=Escaliers en nâgastone altérée (droite)
+tile.twilightforest.IronLadder.name=Échelle en fer
+tile.twilightforest.TerrorCottaCircle.name=Terrorcotta (circulaire)
+tile.twilightforest.TerrorCottaDiagonal.name=Terrorcotta (diagonale)
+
+tile.twilightforest.CanopyPlanks.name=Planches de canopée
+tile.twilightforest.CanopyStairs.name=Escaliers en canopée
+tile.twilightforest.CanopySlab.name=Dalle en canopée
+tile.twilightforest.CanopyButton.name=Bouton en canopée
+tile.twilightforest.CanopyFence.name=Barrière en canopée
+tile.twilightforest.CanopyGate.name=Portillon en canopée
+tile.twilightforest.CanopyPlate.name=Plaque de pression en canopée
+tile.twilightforest.CanopyTrapDoor.name=Trappe en canopée
+item.tile.twilightforest.CanopyDoor.name=Porte en canopée
+
+tile.twilightforest.DarkPlanks.name=Planches de bois sombre
+tile.twilightforest.DarkStairs.name=Escaliers en bois sombre
+tile.twilightforest.DarkSlab.name=Dalle en bois sombre
+tile.twilightforest.DarkButton.name=Bouton en bois sombre
+tile.twilightforest.DarkFence.name=Barrière en bois sombre
+tile.twilightforest.DarkGate.name=Portillon en bois sombre
+tile.twilightforest.DarkPlate.name=Plaque de pression en bois sombre
+tile.twilightforest.DarkTrapDoor.name=Trappe en bois sombre
+item.tile.twilightforest.DarkDoor.name=Porte en bois sombre
+
+tile.twilightforest.MangrovePlanks.name=Planches de mangrove
+tile.twilightforest.MangroveStairs.name=Escaliers en mangrove
+tile.twilightforest.MangroveSlab.name=Dalle en mangrove
+tile.twilightforest.MangroveButton.name=Bouton en mangrove
+tile.twilightforest.MangroveFence.name=Barrière en mangrove
+tile.twilightforest.MangroveGate.name=Portillon en mangrove
+tile.twilightforest.MangrovePlate.name=Plaque de pression en mangrove
+tile.twilightforest.MangroveTrapDoor.name=Trappe en mangrove
+item.tile.twilightforest.MangroveDoor.name=Porte en mangrove
+
+tile.twilightforest.TwilightOakPlanks.name=Planches de bois de chêne Twilight
+tile.twilightforest.TwilightOakStairs.name=Escaliers en bois de chêne Twilight
+tile.twilightforest.TwilightOakSlab.name=Dalle en bois de chêne Twilight
+tile.twilightforest.TwilightOakButton.name=Bouton en bois de chêne Twilight
+tile.twilightforest.TwilightOakFence.name=Barrière en bois de chêne Twilight
+tile.twilightforest.TwilightOakGate.name=Portillon en bois de chêne Twilight
+tile.twilightforest.TwilightOakPlate.name=Plaque de pression en bois de chêne Twilight
+tile.twilightforest.TwilightOakTrapDoor.name=Trappe en bois de chêne Twilight
+item.tile.twilightforest.TwilightOakDoor.name=Porte en bois de chêne Twilight
+
+tile.twilightforest.TimePlanks.name=Planches de bois du temps
+tile.twilightforest.TimeStairs.name=Escaliers en bois du temps
+tile.twilightforest.TimeSlab.name=Dalle en bois du temps
+tile.twilightforest.TimeButton.name=Bouton en bois du temps
+tile.twilightforest.TimeFence.name=Barrière en bois du temps
+tile.twilightforest.TimeGate.name=Portillon en bois du temps
+tile.twilightforest.TimePlate.name=Plaque de pression en bois du temps
+tile.twilightforest.TimeTrapDoor.name=Trappe en bois du temps
+item.tile.twilightforest.TimeDoor.name=Porte en bois du temps
+
+tile.twilightforest.TransPlanks.name=Planches de bois de transformation
+tile.twilightforest.TransStairs.name=Escaliers en bois de transformation
+tile.twilightforest.TransSlab.name=Dalle en bois de transformation
+tile.twilightforest.TransButton.name=Bouton en bois de transformation
+tile.twilightforest.TransFence.name=Barrière en bois de transformation
+tile.twilightforest.TransGate.name=Portillon en bois de transformation
+tile.twilightforest.TransPlate.name=Plaque de pression en bois de transformation
+tile.twilightforest.TransTrapDoor.name=Trappe en bois de transformation
+item.tile.twilightforest.TransDoor.name=Porte en bois de transformation
+
+tile.twilightforest.MinePlanks.name=Planches de bois de mine
+tile.twilightforest.MineStairs.name=Escaliers en bois de mine
+tile.twilightforest.MineSlab.name=Dalle en bois de mine
+tile.twilightforest.MineButton.name=Bouton en bois de mine
+tile.twilightforest.MineFence.name=Barrière en bois de mine
+tile.twilightforest.MineGate.name=Portillon
+tile.twilightforest.MinePlate.name=Plaque de pression en bois de mine
+tile.twilightforest.MineTrapDoor.name=Trappe en bois de mine
+item.tile.twilightforest.MineDoor.name=Porte en bois de mine
+
+tile.twilightforest.SortPlanks.name=Planches de Sortingwood
+tile.twilightforest.SortStairs.name=Escaliers en Sortingwood
+tile.twilightforest.SortSlab.name=Dalle en Sortingwood
+tile.twilightforest.SortButton.name=Bouton en Sortingwood
+tile.twilightforest.SortFence.name=Barrière en Sortingwood
+tile.twilightforest.SortGate.name=Portillon en Sortingwood
+tile.twilightforest.SortPlate.name=Plaque de pression en Sortingwood
+tile.twilightforest.SortTrapDoor.name=Trappe en Sortingwood
+item.tile.twilightforest.SortDoor.name=Porte en Sortingwood
+
+# Structures
+structure.twilight_portal.name=Portail de la Twilight
+structure.hedge_maze.name=Labyrinthe
+structure.hollow_hill.name=Colline creuse
+structure.quest_grove.name=Jardin de quête
+structure.mushroom_tower.name=Château de champignons
+structure.naga_courtyard.name=Cour du Nâga
+structure.lich_tower.name=Tour du Liche
+structure.minotaur_labyrinth.name=Labyrinthe du Minotaure
+structure.hydra_lair.name=Repaire de l'Hydre
+structure.goblin_stronghold.name=Forteresse du globin
+structure.dark_tower.name=Tour noire
+structure.yeti_cave.name=Cave du Yéti
+structure.aurora_palace.name=Palace d'aurore
+structure.troll_cave_and_cloud_castle.name=Cave du Troll et Maison dans les Nuages
+structure.final_castle.name=Château final
+
+# Items
+item.twilightforest.nagaScale.name=Écailles de Nâga
+item.twilightforest.plateNaga.name=Plastron en écailles de Nâga
+item.twilightforest.legsNaga.name=Jambières en écailles de Nâga
+item.twilightforest.scepterTwilight.name=Sceptre de la Twilight
+item.twilightforest.scepterLifeDrain.name=Sceptre du drainage de vie
+item.twilightforest.scepterZombie.name=Sceptre du zombie
+item.twilightforest.scepterShield.name=Sceptre de fortification
+item.twilightforest.oreMeter.name=Mètre de minerai [WIP]
+item.twilightforest.magicMap.name=Carte magique
+item.twilightforest.mazeMap.name=Carte de labyrinthe
+item.twilightforest.oreMap.name=Carte du labyrinthe/minerai
+item.twilightforest.tfFeather.name=Plume de corbeau
+item.twilightforest.magicMapFocus.name=Foyer de carte magique
+item.twilightforest.mazeMapFocus.name=Foyer de carte de labyrinthe
+item.twilightforest.liveRoot.name=Racine vivante
+item.twilightforest.ironwoodRaw.name=Matériaux en bois de fer bruts
+item.twilightforest.ironwoodIngot.name=Lingot en bois de fer
+item.twilightforest.ironwoodHelm.name=Casque en bois de fer
+item.twilightforest.ironwoodPlate.name=Plastron en bois de fer
+item.twilightforest.ironwoodLegs.name=Jambières en bois de fer
+item.twilightforest.ironwoodBoots.name=Bottes en bois de fer
+item.twilightforest.ironwoodSword.name=Épée en bois de fer
+item.twilightforest.ironwoodShovel.name=Pelle en bois de fer
+item.twilightforest.ironwoodPick.name=Pioche en bois de fer
+item.twilightforest.ironwoodAxe.name=Hache en bois de fer
+item.twilightforest.ironwoodHoe.name=Houe en bois de fer
+item.twilightforest.torchberries.name=Torche des baies
+item.twilightforest.venisonRaw.name=Chevreuil cru
+item.twilightforest.venisonCooked.name=Steak de chevreuil
+item.twilightforest.hydraChop.name=Tranche d'Hydre
+item.twilightforest.fieryBlood.name=Sang ardent
+item.twilightforest.fieryIngot.name=Lingot ardent
+item.twilightforest.fieryHelm.name=Casque ardent
+item.twilightforest.fieryPlate.name=Plastron ardent
+item.twilightforest.fieryLegs.name=Jambières ardentes
+item.twilightforest.fieryBoots.name=Bottes ardentes
+item.twilightforest.fierySword.name=Épée ardente
+item.twilightforest.fieryPick.name=Pioche ardente
+item.twilightforest.steeleafIngot.name=Steeleaf
+item.twilightforest.steeleafHelm.name=Casque en Stealeaf
+item.twilightforest.steeleafPlate.name=Plastron en Stealeaf
+item.twilightforest.steeleafLegs.name=Jambières en Stealeaf
+item.twilightforest.steeleafBoots.name=Bottes en Stealeaf
+item.twilightforest.steeleafSword.name=Épée en Stealeaf
+item.twilightforest.steeleafShovel.name=Pelle en Stealeaf
+item.twilightforest.steeleafPick.name=Pioche en Stealeaf
+item.twilightforest.steeleafAxe.name=Hache en Stealeaf
+item.twilightforest.steeleafHoe.name=Houe en Stealeaf
+item.twilightforest.minotaurAxe.name=Hache en diamant du Minotaure
+item.twilightforest.minotaurAxeGold.nameHache en or du Minotaure
+item.twilightforest.mazebreakerPick.name=Mazebreaker
+item.twilightforest.transformPowder.name=Poudre de transformation
+item.twilightforest.meefRaw.name=Viande de Meef crue
+item.twilightforest.meefSteak.name=Steak de Meef
+item.twilightforest.meefStroganoff.name=Stroganoff de Meef
+item.twilightforest.mazeWafer.name=Tranche de labyrinthe
+item.twilightforest.emptyMagicMap.name=Carte magique vierge
+item.twilightforest.emptyMazeMap.name=Carte de labyrinthe vierge
+item.twilightforest.emptyOreMap.name=Carte du labyrinthe/minerai vierge
+item.twilightforest.oreMagnet.name=Aimant à minerais
+item.twilightforest.crumbleHorn.name=Corne en ruine
+item.twilightforest.peacockFan.name=Éventail de plumes de paon
+item.twilightforest.moonwormQueen.name=Reine du ver de lune
+item.twilightforest.charmOfLife1.name=Charme de la vie I
+item.twilightforest.charmOfLife2.name=Charme de la vie  II
+item.twilightforest.charmOfKeeping1.name=Charme de Keeping I
+item.twilightforest.charmOfKeeping2.name=Charme de Keeping II
+item.twilightforest.charmOfKeeping3.name=Charme de Keeping III
+item.twilightforest.towerKey.name=Clé de la tour
+item.twilightforest.borerEssence.name=Essence de foreur
+item.twilightforest.carminite.name=Carminite
+item.twilightforest.tf_trophy.name=Trophée de %s
+item.twilightforest.trophy.hydra.name=Trophée d'Hydre
+item.twilightforest.trophy.naga.name=Trophée de Nâga
+item.twilightforest.trophy.lich.name=Trophée de Liche
+item.twilightforest.trophy.ur_ghast.name=Trophée d'Ur-Ghast
+item.twilightforest.trophy.snow_queen.name=Trophée de la Reine des Neiges
+item.twilightforest.experiment115.name=Expérience 115
+item.twilightforest.armorShards.name=Fragment d'armure
+item.twilightforest.knightMetal.name=Lingot de métal de chevalier
+item.twilightforest.shardCluster.name=Amas de fragments d'armure
+item.twilightforest.knightlyHelm.name=Casque chevaleresque
+item.twilightforest.knightlyPlate.name=Plastron chevaleresque
+item.twilightforest.knightlyLegs.name=Jambières chevaleresques
+item.twilightforest.knightlyBoots.name=Bottes chevaleresques
+item.twilightforest.knightlySword.name=Épée chevaleresque
+item.twilightforest.knightlyPick.name=Pioche chevaleresque
+item.twilightforest.knightlyAxe.name=Hache chevaleresque
+item.twilightforest.knightlyShield.name=Bouclier chevaleresque
+item.twilightforest.phantomHelm.name=Casque de fantôme
+item.twilightforest.phantomPlate.name=Plastron de fantôme
+item.twilightforest.lampOfCinders.name=Lampe de cendres
+item.twilightforest.fieryTears.name=Larmes ardentes
+item.twilightforest.iceBomb.name=Bombe glacée
+item.twilightforest.yetiHelm.name=Casque orné de Yéti
+item.twilightforest.yetiPlate.name=Veste de Yéti
+item.twilightforest.yetiLegs.name=Jambières de Yéti
+item.twilightforest.yetiBoots.name=Bottes de Yéti
+item.twilightforest.alphaFur.name=Fourrure de Yéti Alpha
+item.twilightforest.arcticFur.name=Fourrure arctique
+item.twilightforest.arcticHelm.name=Capuche arctique
+item.twilightforest.arcticPlate.name=Manteau arctique
+item.twilightforest.arcticLegs.name=Jambières arctiques
+item.twilightforest.arcticBoots.name=Bottes arctiques
+item.twilightforest.magicBeans.name=Haricots magiques
+item.twilightforest.giantPick.name=Pioche de géant
+item.twilightforest.giantSword.name=Épée de géant
+item.twilightforest.tripleBow.name=Arc-tri
+item.twilightforest.seekerBow.name=Arc du chercheur
+item.twilightforest.iceBow.name=Arc gelé
+item.twilightforest.enderBow.name=Arc de l'Ender
+item.twilightforest.iceSword.name=Épée gelée
+item.twilightforest.glassSword.name=Épée en verre
+item.twilightforest.knightmetalRing.name=Boucle de métal de chevalier
+item.twilightforest.chainBlock.name=Bloc et chaîne
+item.twilightforest.cubeTalisman.name=Talisman du cube
+item.twilightforest.cubeOfAnnihilation.name=Cube d'annihilation
+item.twilightforest.moonDial.name=Cadran lunaire
+
+item.twilightforest.guide.name=Journal de voyageur
+
+item.twilightforest.minotaurAxe.tooltip=Bonus de dégâts lorsque vous chargez
+item.twilightforest.minotaurAxeGold.tooltip=Bonus de dégâts lorsque vous chargez
+item.twilightforest.knightlySword.tooltip=Bonus de dégâts sur les cibles munies d'armure
+item.twilightforest.knightlyPick.tooltip=Bonus de dégâts sur les cibles munies d'armure
+item.twilightforest.knightlyAxe.tooltip=Bonus de dégâts sur les cibles non-munies d'armure
+item.twilightforest.giantPick.tooltip=Casse les blocs géants
+item.twilightforest.fieryPick.tooltip=Cuisson automatique
+item.twilightforest.fierySword.tooltip=Brûle les cibles
+item.twilightforest.fieryHelm.tooltip=Brûle les attaquants
+item.twilightforest.fieryPlate.tooltip=Brûle les attaquants
+item.twilightforest.fieryLegs.tooltip=Brûle les attaquants
+item.twilightforest.fieryBoots.tooltip=Brûle les attaquants
+item.twilightforest.phantomHelm.tooltip=N'est jamais perdu lors d'une mort
+item.twilightforest.phantomPlate.tooltip=N'est jamais perdu lors d'une mort
+item.twilightforest.yetiHelm.tooltip=Ralentit les attaquants
+item.twilightforest.yetiPlate.tooltip=Ralentit les attaquants
+item.twilightforest.yetiLegs.tooltip=Ralentit les attaquants
+item.twilightforest.yetiBoots.tooltip=Ralentit les attaquants
+
+item.twilightforest.arctic_armor.tooltip=Peut être teinte comme les armures en cuir
+
+# Entities
+entity.twilightforest.wild_boar.name=Sanglier sauvage
+entity.twilightforest.bighorn_sheep.name=Mouflon d'Amérique
+entity.twilightforest.deer.name=Cerf sauvage
+entity.twilightforest.redcap.name=Gobelin à casquette rouge
+entity.twilightforest.swarm_spider.name=Essaim d'araignées
+entity.twilightforest.naga.name=Nâga
+entity.twilightforest.naga_segment.name=Segment de Nâga
+entity.twilightforest.skeleton_druid.name=Squelette de druide
+entity.twilightforest.hostile_wolf.name=Loup hostile
+entity.twilightforest.wraith.name=Spectre de la Twilight
+entity.twilightforest.hedge_spider.name=Araignée des haies
+entity.twilightforest.hydra.name=Hydre
+entity.twilightforest.hydra_head.name=Tête d'Hydre
+entity.twilightforest.lich.name=Liche de la Twilight
+entity.twilightforest.penguin.name=Manchot
+entity.twilightforest.tiny_bird.name=Petit oiseau
+entity.twilightforest.squirrel.name=Écureuil de la forêt
+entity.twilightforest.bunny.name=Lapin nain
+entity.twilightforest.raven.name=Corbeau de la forêt
+entity.twilightforest.quest_ram.name=Bélier de quête
+entity.twilightforest.kobold.name=Kobold
+entity.twilightforest.boggard.name=Boggard [NYI]
+entity.twilightforest.lich_minion.name=Serviteur du Liche
+entity.twilightforest.loyal_zombie.name=Zombie loyal
+entity.twilightforest.mosquito_swarm.name=Essaim de moustiques
+entity.twilightforest.death_tome.name=Tome de mort
+entity.twilightforest.minotaur.name=Minotaure
+entity.twilightforest.minoshroom.name=Minoshroom
+entity.twilightforest.fire_beetle.name=Coléoptère de feu
+entity.twilightforest.slime_beetle.name=Coléoptère visqueux
+entity.twilightforest.pinch_beetle.name=Coléoptère
+entity.twilightforest.maze_slime.name=Slime du labyrinthe
+entity.twilightforest.redcap_sapper.name=Sapeur à casquette rouge
+entity.twilightforest.mist_wolf.name=Loup de la brume
+entity.twilightforest.king_spider.name=Reine des araignées
+entity.twilightforest.firefly.name=Luciole
+entity.twilightforest.mini_ghast.name=Carminite Ghastling
+entity.twilightforest.tower_ghast.name=Carminite Ghastguard
+entity.twilightforest.tower_golem.name=Golem Carminite
+entity.twilightforest.tower_termite.name=Foreur de la Towerwood
+entity.twilightforest.tower_broodling.name=Carminite couveuse
+entity.twilightforest.ur_ghast.name=Ur-Ghast
+entity.twilightforest.blockchain_goblin.name=Goblin de bloc et chaîne
+entity.twilightforest.goblin_knight_upper.name=Chevalier goblin supérieur
+entity.twilightforest.goblin_knight_lower.name=Chevalier goblin inférieur
+entity.twilightforest.helmet_crab.name=Casque crabe
+entity.twilightforest.knight_phantom.name=Chevalier fantôme
+entity.twilightforest.yeti.name=Yéti
+entity.twilightforest.yeti_alpha.name=Yéti Alpha
+entity.twilightforest.winter_wolf.name=Loup d'hiver
+entity.twilightforest.snow_guardian.name=Gardin de la neige
+entity.twilightforest.stable_ice_core.name=Coeur de glace stable
+entity.twilightforest.unstable_ice_core.name=Coeur de glace instable
+entity.twilightforest.snow_queen.name=Reine des Neiges
+entity.twilightforest.troll.name=Troll des caves
+entity.twilightforest.giant_miner.name=Mineur géant
+entity.twilightforest.armored_giant.name=Géant en armure
+entity.twilightforest.ice_crystal.name=Cristal de glace
+entity.twilightforest.apocalypse_cube.name=Cube de l'apocalypse [NYI]
+entity.twilightforest.adherent.name=Adhérent [NYI]
+entity.twilightforest.castle_guardian.name=Garde du château [NYI]
+
+twilightforest.effect.frosted=Givré
+
+twilightforest.misc.wip0=Ce bloc est en cours de devéloppement et peut être bugué ou avoir des effets involontaires qui pourraient endommager votre monde.
+twilightforest.misc.wip1=Utiliser avec précaution.
+twilightforest.misc.nyi=Ce bloc a des effets qui n'ont pas encore été implémentés.
+
+twilightforest.loading.title.enter=Nous vous emmenons dans la Twilight Forest...
+twilightforest.loading.title.leave=Nous vous sortons de la Twilight Forest...
+
+#Config
+twilightforest.config.dimension=Paramètres de la dimension
+twilightforest.config.dimension.tooltip=Vous ne pourrez pas modifier ces paramètres sans un relancement du jeu.
+twilightforest.config.dimension_id=ID de dimension
+twilightforest.config.dimension_id.tooltip=Quel ID à assigner à la dimension de la Twilight Forest. Changez cette valeur si vous avez des conflits avec d'autres mods.
+twilightforest.config.dimension_seed=Graine de la dimension
+twilightforest.config.dimension_seed.tooltip=Si une graine est ajoutée, elle passera outre la graine de génération par défaut lors de la génération de la Twilight Forest.
+twilightforest.config.spawn_in_tf=Nouveaux joueurs apparaissent dans la Twilight Forest
+twilightforest.config.spawn_in_tf.tooltip=Si cette fontionnalité est activée, les joueurs qui apparaissent pour la première fois apparaîtront dans la Twilight Forest.
+twilightforest.config.skylight_forest=Forêt de ciel [WIP]
+twilightforest.config.skylight_forest.tooltip=Si cette fontionnalité est activée, la Twilight Forest sera générée de vide sauf pour les structures.
+twilightforest.config.skylight_oaks=Chênes de ciel [WIP]
+twilightforest.config.skylight_oaks.tooltip=Si cette fontionnalité est activée, les chênes géants de la Twilight apparaîtront aussi dans la Twilight vide.
+
+twilightforest.config.world_gen_weights=Hauteurs de génération
+twilightforest.config.world_gen_weights.tooltip=Hauteurs pour les diverses structures
+twilightforest.config.stone_circle_weight=Hauteur du cercle de roche
+twilightforest.config.well_weight=Hauteur de la source
+twilightforest.config.stalagmite_weight=Hauteur des stalagmites
+twilightforest.config.foundation_weight=Hauteur de la fondation
+twilightforest.config.monolith_weight=Hauteur du monolithe
+twilightforest.config.grove_ruins_weight=Hauteur du jardin en ruine
+twilightforest.config.hollow_stump_weight=Hauteur de la colline creuse
+twilightforest.config.fallen_hollow_log_weight=Hauteur de la buche creuse tombée
+twilightforest.config.fallen_small_log_weight=Hauteur de la petite buche tombée
+twilightforest.config.druid_hut_weight=Hauteur de la hutte du druide
+
+twilightforest.config.compat=Compatibilité
+twilightforest.config.compat.tooltip=La TF devrait-elle charger les compatibilités ? Désactiver si les compatibilités de la TF causent des plantages, ou si vous ne les souhaitez pas.
+
+twilightforest.config.performance=Paramètres de performances
+twilightforest.config.performance.tooltip=Sacrifie diverses choses pour améliorer les performances du monde.
+twilightforest.config.canopy_coverage=Couverture du canopée
+twilightforest.config.canopy_coverage.tooltip=Nombre de couverture du canopée. Un plus petit nombre améliore la vitesse de génération des chunks mais crée une forêt plus petite.
+twilightforest.config.twilight_oaks=Apparition des chênes de la Twilight
+twilightforest.config.twilight_oaks.tooltip=Les chances qu'un chunk dans la Twilight Forest contienne un chêne de la Twilight. Les nombres élevés réduisent le nombre d'arbres mais améliorent les performances.
+twilightforest.config.leaves_light_opacity=Densité des feuilles
+twilightforest.config.leaves_light_opacity.tooltip=Ceci contrôle la densité densité des feuilles, changeant la quantité de lumière bloquée. Peut être utilisé pour diminuer la complexité de certains calculs de lumière.
+twilightforest.config.glacier_packed_ice=Glaciers faits de glace compactée au lieu de glace
+twilightforest.config.glacier_packed_ice.tooltip=Activer cette fonctionnalité va générer des glaciers faits de glace compactée au lieu de glace transparente, augmentant la vitesse des calculs de lumière.
+twilightforest.config.enable_skylight=Activer la skylight
+twilightforest.config.enable_skylight.tooltip=Si la dimension a des valeurs de skylight par bloc. Désactiver cela va significativement améliorer les performances de génération, mais la lumière sera monotone partout.\nAVERTISSEMENT : lorsque les chunks sont chargés sans la skylight, la donnée est perdue et ne peut pas être regénérée facilement. Soyez prudents !
+
+twilightforest.config.silent_cicadas=Cigales silencieuses
+twilightforest.config.silent_cicadas.tooltip=Rendre les cigales silencieuses, pour ceux qui ont des problèmes de sons, ou ceux qui les trouvent agaçantes.
+
+twilightforest.config.first_person_effects=Rendre les effets 1ère personne
+twilightforest.config.first_person_effects.tooltip=Contrôle si les divers effets du mod sont rendus en vue première personne. Désactivez cela si vous les trouvez distrayants.
+
+twilightforest.config.origin_dimension=Dimension d'origine
+twilightforest.config.origin_dimension.tooltip=La dimension qui vous permet toujours de voyager dans la Twilight Forest, en plus d'être la dimension de retour. L'overworld est la dimension par défaut.
+twilightforest.config.portals_in_other_dimensions=Portails dans les autres dimensions
+twilightforest.config.portals_in_other_dimensions.tooltip=Permet de créer des portails de la Twilight Forest en dehors la dimension d'origine.
+twilightforest.config.admin_portals=Portails de la Twilight admins
+twilightforest.config.admin_portals.tooltip=Autoriser seulement les admins (opérateurs) à créer des portails. Cela réduit considérablement la plage dans laquelle le mod analyse généralement les condtions de portails valides.
+twilightforest.config.portals=Désactiver les portails Twilight
+twilightforest.config.portals.tooltip=Désactiver entièrement la création de portails Twilight Forest. Permet aux opérateurs de serveur de limiter l'accès à la dimension.
+twilightforest.config.portal_creator=Élément de création de portail
+twilightforest.config.portal_creator.tooltip=Les ID des objets à utiliser pour créer un portail de la Twilight Forest (domain:regname:meta) meta est facultatif.
+twilightforest.config.portal_lighting=Création de portail ne crée pas de feu
+twilightforest.config.portal_lighting.tooltip=Activer cette fonctionnalité pour désactiver le feu généré par l'éclair lors de la création de portail. Pour ceux qui n'aiment pas le fun.
+twilightforest.config.portal_return=Les portails devraient-ils créer deux portails
+twilightforest.config.portal_return.tooltip=Si désactivé, le portail de retour aura besoin de l'objet d'activation pour être actif.
+twilightforest.config.check_portal_destination=Vérifier la destination du portail
+twilightforest.config.check_portal_destination.tooltip=Détermine si le nouveau portail devrait être vérifié pour des questions de sécurité. Si activé, les portails ne seront pas créés au lieu de les rediriger vers une destination alternative sécurisée.\nNoter qu'activer cela réduit la fréquence des vérifications de portails.
+
+twilightforest.config.progression_default=Règle de progression par défaut
+twilightforest.config.progression_default.tooltip=Définit la valeur par défaut de la règle de jeu contrôlant la progression forcée.
+
+twilightforest.config.uncrafting=Désactiver la table de défabrication
+twilightforest.config.uncrafting.tooltip=Désactiver la fonctionnalité de défabrication de la table de défabrication. Permet d'empêcher certaines exploitations de bugs avec d'autres mods.
+
+twilightforest.config.antibuilder_blacklist=Liste noire de l'anti-constructeur
+twilightforest.config.antibuilder_blacklist.tooltip=Liste noire de l'anti-constructeur. (domain:block:meta) meta est facultatif.
+
+twilightforest.config.animate_trophyitem=Pivoter les têtes de trophées sur l'apparence
+twilightforest.config.animate_trophyitem.tooltip=Pivoter les têtes de trophées sur l'apparence de l'objet (lorsque tenu en main notamment). N'a pas d'impact sur les performances. Pour ceux qui n'aiment pas le fun.
+
+twilightforest.config.shield_parry=Parer avec le bouclier
+twilightforest.config.shield_parry.tooltip=Nous vous recommandons le mod Shield Parry pour parer.
+twilightforest.config.parry_non_twilight=Parer les projectiles non-Twilight
+twilightforest.config.parry_non_twilight.tooltip=Activer pour parer les projectiles non-Twilight. Nous vous recommandons d'installer le mod Shield Parry.
+twilightforest.config.parry_window_arrow=Délai de windowspan pour flèches
+twilightforest.config.parry_window_arrow.tooltip=Le nombre de ticks après avoir levé le bouclier qui permet de parer une flèche. Il y a 20 ticks dans une seconde.
+twilightforest.config.parry_window_fireball=Délai de windowspan pour boules de feu
+twilightforest.config.parry_window_fireball.tooltip=Le nombre de ticks après avoir levé le bouclier qui permet de parer une boule de feu. Il y a 20 ticks dans une seconde.
+twilightforest.config.parry_window_throwable=Délai de windowspan pour les jetables
+twilightforest.config.parry_window_throwable.tooltip=Le nombre de ticks après avoir levé le bouclier qui permet de parer un objet jetable. Il y a 20 ticks dans une seconde.
+twilightforest.config.shieldParryTicksBeam=Délai de windowspan pour les faisceaux???
+twilightforest.config.shieldParryTicksBeam.tooltip=???
+
+twilightforest.config.loading_screen=Écran de chargement
+twilightforest.config.loading_screen.tooltip=Client seulement : contrôles pour l'écran de chargement
+twilightforest.config.loading_icon_enable=Activer l'animation de chargement
+twilightforest.config.loading_icon_enable.tooltip=Fait osciller l'icône de chargement. N'a pas d'impact sur les performances. Pour ceux qui n'aiment pas le fun.
+twilightforest.config.loading_screen_swap_frequency=Écran de chargement : fonds
+twilightforest.config.loading_screen_swap_frequency.tooltip=Combien de ticks entre chaque changement d'image. Fixer à 0 pour qu'il n'y a pas de cycle.
+twilightforest.config.loading_icon_wobble_bounce_frequency=Vitesse d'animation de l'icône
+twilightforest.config.loading_icon_wobble_bounce_frequency.tooltip=Vitesse d'oscillement et de rebondissement..
+twilightforest.config.loading_icon_scale=Taille de l'icône
+twilightforest.config.loading_icon_scale.tooltip=Taille de l'icône de chargement.
+twilightforest.config.loading_icon_bounciness=Rebondissement de l'icône
+twilightforest.config.loading_icon_bounciness.tooltip=Vitesse de rebondissement de l'icône.
+twilightforest.config.loading_icon_tilting=Vacillement de l'icône
+twilightforest.config.loading_icon_tilting.tooltip=Vitesse de vacillement de l'icône
+twilightforest.config.loading_icon_tilt_pushback=Position initiale
+twilightforest.config.loading_icon_tilt_pushback.tooltip=Modifie la valeur initiale de la position de l'icône.
+
+# Books
+twilightforest.book.lichtower.1=\u00A78[[Un carnet d'explorateur, rongé par des monstres]]\u00A70\n\nJ'ai commencé à examiner l'étrange aura qui entoure cette tour. Les briques de la tour étaient protégées par une malédiction, plus forte que toutes celles que j'ai vues auparavant. Le sort
+twilightforest.book.lichtower.2=de la malédiction bouillonne dans les environs.\n\nDans mon pays, j'aurais eu beaucoup d'options pour gérer ce sort, mais ici, mes ressources sont limitées. Je vais devoir faire des recherches...
+twilightforest.book.lichtower.3=\u00A78[[Après de nombreux essais]]\u00A70\n\nUne percée ! Au cours de mes voyages, j'ai aperçu un énorme monstre semblable à un serpent dans une cour décorée. À côté, j'ai récupéré un petit ver.\n\nLa magie dans l'écaille
+twilightforest.book.lichtower.4=semble avoir des propriétés permettant de briser une malédiction, c'est ce dont j'ai besoin, mais cette magie est si faible. J'ai peut-être besoin d'acquérir un spécimen plus frais, directement depuis la créature.
+
+twilightforest.book.labyrinth.1=\u00A78[[Un carnet d'explorateur, écrit sur du papier résistant à l'eau]]\u00A70\n\nLes moustiques de ce marais sont contrariants, mais curieux. La vaste majorité d'entre-eux ne semble pas avoir de source naturelle, ni de rôle dans l'écosystème local.
+twilightforest.book.labyrinth.2= J'ai commencé à suspecter qu'ils avaient une sorte de malédiction magique.\n\n\u00A78[[Texte suivant]]\u00A70\n\nMaintenant que j'ai rencontré un sort de protection dans ce labyrinthe en ruine, je considère mes suspicions comme confirmées. Les
+twilightforest.book.labyrinth.3=moustiques et le sort de protection sont des malédictions. Cette malédiction semble avoir une source différente de celles que j'ai pu rencontrer. Il faut que j'étudie cela en profondeur...\n\n\u00A78[[Texte suivant]]\u00A70\n\nLa malédiction semble 
+twilightforest.book.labyrinth.4=être d'un type trop puissant pour être produite seule. Plusieurs sorciers associés seraient nécessaires.\n\nSi un des sorciers arrêtait de contribuer, la malédiction toute entière serait annulée sur le marais. Étrangement,
+twilightforest.book.labyrinth.5=mes divinations ne montrent pas de signes de sorcier vivant dans les parages. J'ai cependant vu quelque chose de très intéressant dans une des tours pointues du coin...
+
+twilightforest.book.hydralair.1=\u00A78[[Un carnet d'explorateur, écrit sur du papier résistant au feu]]\u00A70\n\nLe feu est un obstacle banal pour un maître de l'exploration que je suis. J'ai traversé des océans de feu, et nagé dans des océans de lave. Ici, l'air est brûlant, il est
+twilightforest.book.hydralair.2=d'une intéressante variation, mais en aucun cas une entrave.\n\nCe qui me freine par contre, c'est cet autre sort de protection que j'ai rencontré, cette fois-ci, celui-ci entoure une créature puissante, qui doit sûrement être le roi
+twilightforest.book.hydralair.3=de ce marais de feu. Ce n'est pas le premier sort de protection que je rencontre, et je commence à démêler les mystères de leur fonctionnement.\n\nSi ce sortilège est comme les autres, il sera soutenu par une créature très puissante à proximité.
+twilightforest.book.hydralair.4=Autour de ce marais de feu se trouvent de nombreux marais humides, et sous ceux-ci se trouvent des labyrinthes remplis de minotaures. Le choix logique de lier un tel sort serait une sorte de minotaure puissant, différent, en quelque sorte, de ses compagnons...
+
+twilightforest.book.tfstronghold.1=\u00A78[[Un carnet d'explorateur, écrit sur du papier rougeoyant]]\u00A70\n\nLes vrilles des ténèbres entourant cette zone sont juste une manifestation d'un sort de protection qui s'étend sur toute la forêt noire. Ce sort provoque de la cécité, ce qui est très
+twilightforest.book.tfstronghold.2=génant. J'ai vu diverses choses intéressantes dans les parages et aimerais continuer à explorer.\n\n\u00A78[[Texte suivant]]\u00A70\n\nJ'ai trouvé des ruines dans la forêt noire. Elle appartiennent à une forteresse,
+twilightforest.book.tfstronghold.3=probablement habitée par des chevaliers. Au lieu d'être peuplée de chevaliers, elle est en fait peuplée de goblins. Ils portent des armures chevaleresques, mais leur comportement, lui, ne l'est pas.\n\n\u00A78[[Texte suivant]]\u00A70\n\nAu fond des ruines,
+twilightforest.book.tfstronghold.4=j'y ai trouvé un piédestal. Ce dernier semble être celui que les chevaliers placeraient pour prouver leur force.\n\Obtenir un sceptre semble permettre d'affaiblir la malédiction qui règne dans la forêt noire, et placer un trophée associé à une
+twilightforest.book.tfstronghold.5=puissante créature sur un piédestal donnerait probablement accès à la partie principale de la forêt.
+
+twilightforest.book.darktower.1=\u00A78[[Un carnet d'explorateur qui semble avoir résisté à une explosion]]\u00A70\n\nCette tour a clairement des mécanismes qui ne me répondent pas. Leur magie aspire preque à reconnaître mon contact, mais elle ne le peut pas. C'est comme si les
+twilightforest.book.darktower.2=dispositifs de la tour étaient en train d'être supprimés par un groupe d'être-vivants environnant.\n\n\u00A78[[Texte suivant]]\u00A70\n\nLa magie semble émaner des profondeurs des forteresses proches. Elle ne peut pas
+twilightforest.book.darktower.3=provenir des goblins, puisque leur magie est séduisante mais floue.\n\n\u00A78[[Texte suivant]]\u00A70\n\nMon analyse indique qu'elle vient de plusieurs sources, opérant comme un groupe. J'y retournerai plus tard.
+
+twilightforest.book.yeticave.1=\u00A78[[Un carnet d'explorateur, couvert de givre]]\u00A70\n\nLe blizzard qui entoure ces terres enneigées est incessant. Ce n'est pas une tempête de neige ordinaire--c'est un phénomène magique. Il faut que je réalise des expériences pour
+twilightforest.book.yeticave.2=trouver ce qui est capable d'un tel effet.\n\n\u00A78[[Texte suivant]]\u00A70\n\nLa malédiction semble être trop puissante pour être créée par une seule créature. Plusieurs sorciers travaillant ensemble seraient nécessaires.
+twilightforest.book.yeticave.3=Si un des sorciers arrêtait de contribuer, le blizzard serait plus calme. Étrangement, mes divinations ne montrent pas de signes de présence de sorcières dans les environs. J'ai cependant vu quelque chose d'intéressant dans l'une des tours pointues du coin...
+
+twilightforest.book.icetower.1=\u00A78[[Un carnet d'explorateur, recouvert de givre]]\u00A70\n\nJ'ai vaincu un blizzard, mais je suis tombé sur cette terrible tempête de verglas au sommet du glacier. Mes explorations m'ont montré la splendeur d'un palais de glace, brillant des couleurs
+twilightforest.book.icetower.2=de l'aurore polaire. Tout cela semble protégé par une sorte de malédiction.\n\n\u00A78[[Texte suivant]]\u00A70\n\nJe ne suis pas un novice. Cette malédiction est alimentée par le pouvoir d'une créature à proximité. La malédiction
+twilightforest.book.icetower.3=entourant le marais de feu a été construite sur le pouvoir du chef des minotaures à proximité.\n\nAutour de ce glacier, il y a des masses de yétis. Peut-être que les yétis ont une sorte de chef...
+
+twilightforest.book.trollcave.1=\u00A78[[Un carnet d'explorateur, endommagé par ce l'acide]]\u00A70\n\nIl semble n'y avoir aucun moyen de me protéger de cette pluie acide entourant le secteur. Lors de mes brèves excursions, j'ai rencontré un autre sort de protection,
+twilightforest.book.trollcave.2=similaire à ceux dont j'ai été témoin. Le sort doit être lié à cette pluie acide d'une manière ou d'une autre. Il faut que je continue à chercher...\n\n\u00A78[[Texte suivant]]\u00A70\n\nUne telle magie météorologique doit être le résultat
+twilightforest.book.trollcave.3=de multiples grands maux invaincus dans ce monde. Mes études contiennent de nombreux indices pointant vers un marais brûlant, une forêt recouverte d'une profonde obscurité et un royaume recouvert de neige.
+
+twilightforest.book.unknown.1=\u00A78[[Ce livre a des signes comme quoi il a été copié de nombreuses fois]]\u00A70\n\nJe ne peux pas expliquer le champ entourant cette structure, mais cette magie est très puissante. Si cette malédiction est comme les autres, alors la clé pour la faire disparaître se trouve ailleurs. Peut-être qu'il y a
+twilightforest.book.unknown.2=quelque chose que je n'ai pas fait ou un monstre que je n'ai pas encore vaincu. Je vais devoir faire demi-tour. Je retournerai à cet endroit plus tard, pour voir si quelque chose a changé.
+
+# Fluid
+
+fluid.fierymetal=Matériau ardent en fusion
+fluid.knightmetal=Métal de chevalier en fusion
+fluid.fiery_essence=Essence ardente
+
+# TCon
+
+material.nagascale.name=Écaille de nâga
+material.steeleaf.name=Steeleaf
+material.fierymetal.name=Ardent
+material.knightmetal.name=Chevaleresque
+material.raven_feather.name=Plume de corbeau
+
+modifier.twilit.name=Twilit
+modifier.twilit.desc=§oLa bénédiction illuminée de la Twilight Forest.§r\nPlus rapide dans la Twilight Forest.\nPlus de dégâts en dehors de la forêt Twilight.
+modifier.twilit.extra.speed=Vitesse de minage dans la Twilight Forest : +%s
+modifier.twilit.extra.damage=Dégâts en dehors de la Twilight Forest : +%s
+modifier.precipitate.name=Précipité
+modifier.precipitate.desc=§oLe dernier plan d'évacuation existant.§r\nMoins vous avez de santé, plus vite il va !
+modifier.synergy.name=Synergie
+modifier.synergy.desc=§oRegardez-moi, pas de mousse !§r\nSe réparera si vous avez Steeleaves dans votre barre d'outil.
+modifier.stalwart.name=Vigoureux
+modifier.stalwart.desc=§oLe courageux et l'audacieux.§r\nFrapper une entité peut vous faire sentir enhardi.
+modifier.veiled.name=Invisible
+modifier.veiled.desc=§oComme un spectre !§r\nLe projectile sera invisible.
+
+# Immersive Engineering
+item.tfEngineeringShader=Twilit Shader: %s
+item.tfEngineeringShaderBag=Twilit %s Sac de shader
+
+twilightforest.shader.twilight=Twilight
+
+twilightforest.shader.snakestone=Serpent de pierre
+twilightforest.shader.naga=Nâga
+twilightforest.shader.lich=Liche
+
+twilightforest.shader.mazestone=Mazestone
+twilightforest.shader.minoshroom=Minoshroom
+twilightforest.shader.hydra=Hydre
+
+twilightforest.shader.underbrick=Brique des dessous
+twilightforest.shader.knight_phantom=Chevalier fantôme
+twilightforest.shader.towerwood=Towerwood
+twilightforest.shader.ur-ghast=Ur-Ghast
+
+twilightforest.shader.alpha_yeti=Yéti Alpha
+twilightforest.shader.auroralized=Auroralisé
+twilightforest.shader.snow_queen=Reine des Neiges
+
+twilightforest.shader.final_castle=Château final

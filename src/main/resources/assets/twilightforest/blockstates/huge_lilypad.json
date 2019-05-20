@@ -1,25 +1,29 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "twilightforest:util/flat"
+    "model": "waterlily"
   },
   "variants": {
     "inventory": [{ "model": "twilightforest:util/item", "textures": { "layer0": "twilightforest:blocks/huge_lilypad"}}],
+    
     "facing=north,piece=nw": [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_1" }           }],
     "facing=north,piece=ne": [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_0" }           }],
     "facing=north,piece=se": [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_3" }           }],
     "facing=north,piece=sw": [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_2" }           }],
+    
     "facing=south,piece=nw": [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_3" }, "y": 180 }],
     "facing=south,piece=ne": [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_2" }, "y": 180 }],
     "facing=south,piece=se": [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_1" }, "y": 180 }],
     "facing=south,piece=sw": [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_0" }, "y": 180 }],
-    "facing=west,piece=nw":  [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_0" }, "y": 270 }],
-    "facing=west,piece=ne":  [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_3" }, "y": 270 }],
-    "facing=west,piece=se":  [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_2" }, "y": 270 }],
-    "facing=west,piece=sw":  [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_1" }, "y": 270 }],
-    "facing=east,piece=nw":  [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_2" }, "y": 90  }],
-    "facing=east,piece=ne":  [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_1" }, "y": 90  }],
-    "facing=east,piece=se":  [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_0" }, "y": 90  }],
-    "facing=east,piece=sw":  [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_3" }, "y": 90  }]
+    
+    "facing=west,piece=nw" : [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_0" }, "y": 270 }],
+    "facing=west,piece=ne" : [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_3" }, "y": 270 }],
+    "facing=west,piece=se" : [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_2" }, "y": 270 }],
+    "facing=west,piece=sw" : [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_1" }, "y": 270 }],
+    
+    "facing=east,piece=nw" : [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_2" }, "y": 90  }],
+    "facing=east,piece=ne" : [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_1" }, "y": 90  }],
+    "facing=east,piece=se" : [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_0" }, "y": 90  }],
+    "facing=east,piece=sw" : [{ "textures": { "texture": "twilightforest:blocks/huge_lilypad_3" }, "y": 90  }]
   }
 }

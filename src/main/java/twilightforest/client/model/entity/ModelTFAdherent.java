@@ -2,10 +2,10 @@ package twilightforest.client.model.entity;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
 public class ModelTFAdherent extends ModelBiped {
 
@@ -49,30 +49,29 @@ public class ModelTFAdherent extends ModelBiped {
 	}
 
 	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
+	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
+	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
 	 * "far" arms and legs can swing at most.
 	 */
-
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float yaw, float pitch, float time, Entity entity) {
-		//super.setRotationAngles(f, f1, f2, yaw, pitch, time, entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		//super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
 		// rotate head normally
-		this.bipedHead.rotateAngleY = yaw / (180F / (float) Math.PI);
-		this.bipedHead.rotateAngleX = pitch / (180F / (float) Math.PI);
+		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
 		// wave arms more
-		this.bipedRightArm.rotateAngleX = 0.0F;//MathHelper.cos(f * 0.6662F + (float)Math.PI) * 2.0F * f1 * 0.5F;
-		this.bipedLeftArm.rotateAngleX = 0.0F;//MathHelper.cos(f * 0.6662F) * 2.0F * f1 * 0.5F;
+		this.bipedRightArm.rotateAngleX = 0.0F;//MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+		this.bipedLeftArm.rotateAngleX = 0.0F;//MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
 		this.bipedRightArm.rotateAngleZ = 0.0F;
 		this.bipedLeftArm.rotateAngleZ = 0.0F;
 
 
-		this.bipedRightArm.rotateAngleZ += MathHelper.cos((f2 + 10F) * 0.133F) * 0.3F + 0.3F;
-		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos((f2 + 10F) * 0.133F) * 0.3F + 0.3F;
-		this.bipedRightArm.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
-		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
+		this.bipedRightArm.rotateAngleZ += MathHelper.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
+		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
+		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 	}
 
 	/**
@@ -80,10 +79,10 @@ public class ModelTFAdherent extends ModelBiped {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase par1EntityLiving, float par2, float par3, float partialTick) {
-		float bounce = par1EntityLiving.ticksExisted + partialTick;
+	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
 
 		// this is where we add the floating
-		GL11.glTranslatef(0F, -0.125F - MathHelper.sin((bounce) * 0.133F) * 0.1F, 0F);
+		GlStateManager.translate(0F, -0.125F - MathHelper.sin((bounce) * 0.133F) * 0.1F, 0F);
 	}
 }

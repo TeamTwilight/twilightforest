@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.critereon.AbstractCriterionInstance;
@@ -13,50 +12,48 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 import java.util.Set;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class HydraChopTrigger implements ICriterionTrigger<HydraChopTrigger.Instance> {
-    public static final ResourceLocation ID = new ResourceLocation(TwilightForestMod.ID, "consume_hydra_chop_on_low_hunger");
+
+    public static final ResourceLocation ID = TwilightForestMod.prefix("consume_hydra_chop_on_low_hunger");
     private final Map<PlayerAdvancements, HydraChopTrigger.Listeners> listeners = Maps.newHashMap();
 
-    public ResourceLocation getId()
-    {
+    @Override
+    public ResourceLocation getId() {
         return ID;
     }
 
+    @Override
     public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<HydraChopTrigger.Instance> listener) {
         HydraChopTrigger.Listeners listeners = this.listeners.computeIfAbsent(playerAdvancementsIn, Listeners::new);
-
         listeners.add(listener);
     }
 
+    @Override
     public void removeListener(PlayerAdvancements playerAdvancementsIn, Listener<HydraChopTrigger.Instance> listener) {
         HydraChopTrigger.Listeners listeners = this.listeners.get(playerAdvancementsIn);
-
         if (listeners != null) {
             listeners.remove(listener);
-
             if (listeners.isEmpty()) {
                 this.listeners.remove(playerAdvancementsIn);
             }
         }
     }
 
+    @Override
     public void removeAllListeners(PlayerAdvancements playerAdvancementsIn) {
         this.listeners.remove(playerAdvancementsIn);
     }
 
+    @Override
     public HydraChopTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
         return new HydraChopTrigger.Instance();
     }
 
     public void trigger(EntityPlayerMP player) {
         HydraChopTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
-
         if (listeners != null) {
             listeners.trigger();
         }

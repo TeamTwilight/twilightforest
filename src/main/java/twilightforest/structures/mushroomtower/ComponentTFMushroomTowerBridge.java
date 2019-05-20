@@ -61,13 +61,11 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		}
 
 		int[] dest = new int[]{dSize - 1, 1, 1};
-
 		boolean madeWing = makeTowerWing(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], dSize, dHeight, Rotation.NONE);
 
 		if (!madeWing) {
 			int[] dx = offsetTowerCoords(dest[0], dest[1], dest[2], dSize, EnumFacing.SOUTH);
-
-			TwilightForestMod.LOGGER.info("Making tower wing failed when bridge was already made.  Size = " + dSize + ", x = " + dx[0] + " z = " + dx[2]);
+			TwilightForestMod.LOGGER.info("Making tower wing failed when bridge was already made.  Size = {}, x = {}, z = {}", dSize, dx[0], dx[2]);
 		}
 	}
 

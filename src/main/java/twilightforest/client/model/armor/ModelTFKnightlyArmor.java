@@ -1,7 +1,6 @@
 package twilightforest.client.model.armor;
 
 import net.minecraft.client.model.ModelRenderer;
-import twilightforest.client.model.entity.ModelTFArmor;
 
 public class ModelTFKnightlyArmor extends ModelTFArmor {
 

@@ -49,7 +49,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		}
 		addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
 		if (!listContainsBossRoom(list)) {
-			TwilightForestMod.LOGGER.info("Did not find boss room from exit 3 - EPIC FAIL");
+			TwilightForestMod.LOGGER.warn("Did not find boss room from exit 3 - EPIC FAIL");
 		}
 		StructureBoundingBox shieldBox = new StructureBoundingBox(this.boundingBox);
 

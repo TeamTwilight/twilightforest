@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:location",
+      "conditions": { "feature": "twilightforest:ice_tower" }
+    }
+  }
+}

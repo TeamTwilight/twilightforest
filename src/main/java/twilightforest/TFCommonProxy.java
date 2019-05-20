@@ -19,28 +19,11 @@ import twilightforest.tileentity.critters.*;
 
 public class TFCommonProxy implements IGuiHandler {
 
-	/**
-	 * Called during the pre-load step.  Register stuff here.
-	 * Obviously most stuff in the common category will be just registered in the mod file
-	 */
-	public void preInit() {
-		;
-	}
+	public void preInit() {}
 
-	/**
-	 * Called during the load step.  Register stuff here.
-	 * Obviously most stuff in the common category will be just registered in the mod file
-	 */
-	public void init() {
-		;
-	}
+	public void init() {}
 
-	public World getClientWorld() {
-		return null;
-	}
-
-	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {
-	}
+	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {}
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -84,9 +67,6 @@ public class TFCommonProxy implements IGuiHandler {
 		return null;
 	}
 
-	public void doBlockAnnihilateEffect(World world, BlockPos pos) {
-	}
-
 	public boolean doesPlayerHaveAdvancement(EntityPlayer player, ResourceLocation advId) {
 		if (player instanceof EntityPlayerMP) {
 			Advancement adv = ((EntityPlayerMP) player).getServerWorld().getAdvancementManager().getAdvancement(advId);
@@ -108,8 +88,12 @@ public class TFCommonProxy implements IGuiHandler {
 	}
 
 	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFirefly.class, "firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicada.class, "cicada");
-		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, "moonworm");
+		GameRegistry.registerTileEntity(TileEntityTFFirefly.class,  prefix("firefly" ));
+		GameRegistry.registerTileEntity(TileEntityTFCicada.class,   prefix("cicada"  ));
+		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, prefix("moonworm"));
+	}
+
+	protected static ResourceLocation prefix(String name) {
+		return new ResourceLocation(TwilightForestMod.ID, name);
 	}
 }

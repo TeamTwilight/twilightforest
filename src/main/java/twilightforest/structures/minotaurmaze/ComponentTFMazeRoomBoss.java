@@ -7,7 +7,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
@@ -99,7 +99,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
 		// the moo-cen-mino-shrom-taur!
-		final IBlockState taurSpawner = TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
+		final IBlockState taurSpawner = TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
 		setBlockStateRotated(world, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
 
 		return true;

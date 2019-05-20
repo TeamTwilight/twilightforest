@@ -2,7 +2,6 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.client.IRenderHandler;
@@ -13,11 +12,11 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.world.WorldProviderTwilightForest;
 
 public class PacketStructureProtection implements IMessage {
+
 	private StructureBoundingBox sbb;
 
 	@SuppressWarnings("unused")
-	public PacketStructureProtection() {
-	}
+	public PacketStructureProtection() {}
 
 	public PacketStructureProtection(StructureBoundingBox sbb) {
 		this.sbb = sbb;

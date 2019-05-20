@@ -128,13 +128,13 @@ public class ModelTFGoblinKnightUpper extends ModelBiped {
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		this.shield.isHidden = !((EntityTFGoblinKnightUpper) par1Entity).hasShield();
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		this.shield.isHidden = !((EntityTFGoblinKnightUpper) entity).hasShield();
 
-		super.render(par1Entity, par2, par3, par4, par5, par6, par7);
+		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-		if (((EntityTFGoblinKnightUpper) par1Entity).hasArmor()) {
-			this.renderBreastplate(par7);
+		if (((EntityTFGoblinKnightUpper) entity).hasArmor()) {
+			this.renderBreastplate(scale);
 		}
 
 	}
@@ -142,8 +142,8 @@ public class ModelTFGoblinKnightUpper extends ModelBiped {
 	/**
 	 * Renders the breastplate, if we're wearing armor
 	 */
-	public void renderBreastplate(float par1) {
-		this.breastplate.render(par1);
+	public void renderBreastplate(float scale) {
+		this.breastplate.render(scale);
 	}
 
 
@@ -153,30 +153,30 @@ public class ModelTFGoblinKnightUpper extends ModelBiped {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
-		EntityTFGoblinKnightUpper upperKnight = ((EntityTFGoblinKnightUpper) par7Entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		EntityTFGoblinKnightUpper upperKnight = ((EntityTFGoblinKnightUpper) entity);
 
 		boolean hasShield = upperKnight.hasShield();
 
-		this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
-		this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
+		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleZ = 0;
 		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
 		this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
 		this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ;
 
 
-		this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
+		this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
 
-		float leftConstraint = hasShield ? 0.2F : par2;
+		float leftConstraint = hasShield ? 0.2F : limbSwingAmount;
 
-		this.bipedLeftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * leftConstraint * 0.5F;
+		this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * leftConstraint * 0.5F;
 		this.bipedRightArm.rotateAngleZ = 0.0F;
 		this.bipedLeftArm.rotateAngleZ = 0.0F;
 
 
-		this.bipedRightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+		this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.bipedRightLeg.rotateAngleY = 0.0F;
 		this.bipedLeftLeg.rotateAngleY = 0.0F;
 
@@ -203,21 +203,21 @@ public class ModelTFGoblinKnightUpper extends ModelBiped {
 
 		// during swing move arm forward
 		if (upperKnight.heavySpearTimer > 0) {
-			bipedRightArm.rotateAngleX -= this.getArmRotationDuringSwing(60 - upperKnight.heavySpearTimer + par6) / (180F / (float) Math.PI);
+			bipedRightArm.rotateAngleX -= this.getArmRotationDuringSwing(60 - upperKnight.heavySpearTimer + scaleFactor) / (180F / (float) Math.PI);
 		}
 
 		this.bipedRightArm.rotateAngleY = 0.0F;
 		this.bipedLeftArm.rotateAngleY = 0.0F;
 
-		this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
-		this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
-		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+		this.bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 
-		// stronghold_shield arm points somewhat inward
+		// shield arm points somewhat inward
 		this.bipedLeftArm.rotateAngleZ = -this.bipedLeftArm.rotateAngleZ;
 
-		// fix stronghold_shield so that it's always perpendicular to the floor
+		// fix shield so that it's always perpendicular to the floor
 		this.shield.rotateAngleX = (float) (Math.PI * 2 - this.bipedLeftArm.rotateAngleX);
 	}
 

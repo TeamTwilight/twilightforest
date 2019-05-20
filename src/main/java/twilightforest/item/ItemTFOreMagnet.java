@@ -21,11 +21,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.RootVariant;
-import twilightforest.world.TFGenerator;
+import twilightforest.world.feature.TFGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,14 +32,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ItemTFOreMagnet extends ItemTF {
+
 	private static final float WIGGLE = 10F;
 
 	protected ItemTFOreMagnet() {
-		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
 		this.setMaxDamage(12);
 		// [VanillaCopy] ItemBow with our item
 		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
+			@Override
 			@SideOnly(Side.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				if (entityIn == null) {
@@ -52,6 +52,7 @@ public class ItemTFOreMagnet extends ItemTF {
 			}
 		});
 		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter() {
+			@Override
 			@SideOnly(Side.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
@@ -67,8 +68,8 @@ public class ItemTFOreMagnet extends ItemTF {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityLivingBase living, int useRemaining) {
-		int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
+		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
 
 		if (!world.isRemote && useTime > 10) {
 			int moved = doMagnet(world, living, 0, 0);
@@ -99,21 +100,25 @@ public class ItemTFOreMagnet extends ItemTF {
 			}
 
 			if (moved > 0) {
-				par1ItemStack.damageItem(moved, living);
+				stack.damageItem(moved, living);
 				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
 			}
 		}
+	}
 
+	@Override
+	public float getXpRepairRatio(ItemStack stack) {
+		return 0.1f;
 	}
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
@@ -126,7 +131,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		double range = 32.0D;
 		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
 		Vec3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
-		Vec3d destVec = srcVec.addVector(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 
 		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
 	}
@@ -251,7 +256,6 @@ public class ItemTFOreMagnet extends ItemTF {
 		}
 	}
 
-
 	private static boolean isOre(IBlockState state) {
         Block block = state.getBlock();
 
@@ -267,12 +271,10 @@ public class ItemTFOreMagnet extends ItemTF {
                 || block == Blocks.QUARTZ_ORE
                 || state == TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT)
                 // todo 1.9 oh god
-                // Good enough for now -Drullkus
-                || state.getBlock().getRegistryName().getResourcePath().contains("ore"))
+				// National treasure -Drullkus
+                || state.getBlock().getRegistryName().getPath().contains("ore"))
 		    return true;
 
 		return false;
 	}
-
-
 }

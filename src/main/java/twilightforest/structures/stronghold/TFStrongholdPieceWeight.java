@@ -1,13 +1,13 @@
 package twilightforest.structures.stronghold;
 
-import twilightforest.structures.StructureTFComponentOld;
+import twilightforest.structures.stronghold.StructureTFStrongholdComponent.Factory;
 
 /**
  * Based off StructureStrongholdPieceWeight
  */
 public class TFStrongholdPieceWeight {
 
-	public Class<? extends StructureTFComponentOld> pieceClass;
+	public final Factory<? extends StructureTFStrongholdComponent> factory;
 	public final int pieceWeight;
 	public int instancesSpawned;
 
@@ -17,19 +17,19 @@ public class TFStrongholdPieceWeight {
 	public int instancesLimit;
 	public int minimumDepth;
 
-	public TFStrongholdPieceWeight(Class<? extends StructureTFComponentOld> par1Class, int weight, int limit) {
-		this(par1Class, weight, limit, 0);
+	public <T extends StructureTFStrongholdComponent> TFStrongholdPieceWeight(Factory<T> factory, int weight, int limit) {
+		this(factory, weight, limit, 0);
 	}
 
-	public TFStrongholdPieceWeight(Class<? extends StructureTFComponentOld> par1Class, int weight, int limit, int minDepth) {
-		this.pieceClass = par1Class;
+	public <T extends StructureTFStrongholdComponent> TFStrongholdPieceWeight(Factory<T> factory, int weight, int limit, int minDepth) {
+		this.factory = factory;
 		this.pieceWeight = weight;
 		this.instancesLimit = limit;
 		this.minimumDepth = minDepth;
 	}
 
-	public boolean isDeepEnough(int par1) {
-		return canSpawnMoreStructures() && par1 >= this.minimumDepth;
+	public boolean isDeepEnough(int depth) {
+		return canSpawnMoreStructures() && depth >= this.minimumDepth;
 	}
 
 	public boolean canSpawnMoreStructures() {

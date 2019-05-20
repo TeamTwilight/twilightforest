@@ -27,19 +27,21 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFMazeMapData;
-import twilightforest.TFPacketHandler;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.network.PacketMazeMap;
 
 import javax.annotation.Nullable;
 
 public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
-	private static final String STR_ID = "mazemap";
-	private static final int YSEARCH = 3;
-	protected boolean mapOres;
 
-	protected ItemTFMazeMap(boolean par2MapOres) {
-		this.mapOres = par2MapOres;
+	public static final String STR_ID = "mazemap";
+	private static final int YSEARCH = 3;
+
+	protected final boolean mapOres;
+
+	protected ItemTFMazeMap(boolean mapOres) {
+		this.mapOres = mapOres;
 	}
 
 	// [VanillaCopy] super with own item and id, and y parameter, also whether we have an ore map or not
@@ -58,17 +60,11 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	// [VanillaCopy] super, with own string ID and class, narrowed types
+	@Nullable
 	@SideOnly(Side.CLIENT)
-	public static TFMazeMapData loadMapData(int mapId, World worldIn) {
+	public static TFMazeMapData loadMapData(int mapId, World world) {
 		String s = STR_ID + "_" + mapId;
-		TFMazeMapData mapdata = (TFMazeMapData) worldIn.loadData(TFMazeMapData.class, s);
-
-		if (mapdata == null) {
-			mapdata = new TFMazeMapData(s);
-			worldIn.setData(s, mapdata);
-		}
-
-		return mapdata;
+		return (TFMazeMapData) world.loadData(TFMazeMapData.class, s);
 	}
 
 	// [VanillaCopy] super, with own string ID and class
@@ -124,7 +120,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
 							Multiset<MapColor> multiset = HashMultiset.<MapColor>create();
-							Chunk chunk = world.getChunkFromBlockCoords(new BlockPos(worldX, 0, worldZ));
+							Chunk chunk = world.getChunk(new BlockPos(worldX, 0, worldZ));
 
 							int brightness = 1;
 							if (!chunk.isEmpty()) {
@@ -187,8 +183,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 											multiset.add(MapColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MapColor.EMERALD, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getUnlocalizedName().toLowerCase().contains("ore")) // TODO 1.10: improve this 0.o
-										{
+										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getRegistryName().getPath().contains("ore")) { // TODO: improve this 0.o
 											// any other ore, catchall
 											multiset.add(MapColor.PINK, 1000);
 										}
@@ -274,15 +269,16 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		// disable zooming
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return mapOres ? EnumRarity.EPIC : EnumRarity.UNCOMMON;
+	public EnumRarity getRarity(ItemStack stack) {
+		return mapOres ? EnumRarity.UNCOMMON : EnumRarity.COMMON;
 	}
 
+	@Override
 	@Nullable
 	public Packet<?> createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
 		Packet<?> p = super.createMapDataPacket(stack, worldIn, player);

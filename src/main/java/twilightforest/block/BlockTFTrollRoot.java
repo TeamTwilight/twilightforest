@@ -3,11 +3,14 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -19,11 +22,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class BlockTFTrollRoot extends Block implements IShearable, ModelRegisterCallback {
+
+	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.0, 0.1, 0.9, 1.0, 0.9);
 
 	protected BlockTFTrollRoot() {
 		super(Material.PLANTS);
@@ -39,7 +43,7 @@ public class BlockTFTrollRoot extends Block implements IShearable, ModelRegister
 
 	@Override
 	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
-		List<ItemStack> ret = new ArrayList<ItemStack>();
+		NonNullList<ItemStack> ret = NonNullList.create();
 		ret.add(new ItemStack(this));
 		return ret;
 	}
@@ -62,13 +66,31 @@ public class BlockTFTrollRoot extends Block implements IShearable, ModelRegister
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess par1World, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return AABB;
+	}
+
+	@Override
+	@Deprecated
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
 	@Override
 	@Deprecated
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	@Override
+	@Deprecated
 	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	@Deprecated
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
@@ -96,7 +118,7 @@ public class BlockTFTrollRoot extends Block implements IShearable, ModelRegister
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 

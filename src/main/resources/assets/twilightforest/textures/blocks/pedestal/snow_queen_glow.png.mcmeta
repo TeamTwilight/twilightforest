@@ -1,0 +1,15 @@
+{
+  "animation": {
+    "width": 1,
+    "height": 16,
+    "frametime": 4,
+    "interpolate": true
+  },
+  "ctm": {
+    "ctm_version": 1,
+    "layer": "TRANSLUCENT",
+    "extra": {
+      "light": 15
+    }
+  }
+}

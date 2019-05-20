@@ -98,25 +98,20 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	}
 
 	/**
-	 * Make a new ascender tower.  Return direction (0-4) if successful, -1 if not.
+	 * Make a new ascender tower.  Returns direction if successful, null if not.
 	 */
 	private Rotation makeAscenderTower(List<StructureComponent> list, Random rand) {
-		Rotation mainDir;
-		int[] dest;
-		int childHeight;
-		mainDir = RotationUtil.ROTATIONS[rand.nextInt(4)];
 
-		dest = getValidOpening(rand, mainDir);
-
-		childHeight = (height - dest[1]) + ((rand.nextInt(2) + rand.nextInt(2) + 3) * FLOOR_HEIGHT) + 1;
-
+		Rotation mainDir = RotationUtil.ROTATIONS[rand.nextInt(4)];
+		int[] dest = getValidOpening(rand, mainDir);
+		int childHeight = (height - dest[1]) + ((rand.nextInt(2) + rand.nextInt(2) + 3) * FLOOR_HEIGHT) + 1;
 		boolean madeIt = makeBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], size - 4, childHeight, mainDir, true);
 
 		if (madeIt) {
-			TwilightForestMod.LOGGER.info("Main tower made a bridge to another tower");
+			TwilightForestMod.LOGGER.debug("Main tower made a bridge to another tower");
 			return mainDir;
 		} else {
-			TwilightForestMod.LOGGER.info("Main tower failed to branch off at index " + this.componentType);
+			TwilightForestMod.LOGGER.info("Main tower failed to branch off at index {}", this.componentType);
 			return null;
 		}
 

@@ -7,7 +7,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFHedgeSpider;
 
 public class RenderTFHedgeSpider extends RenderSpider<EntityTFHedgeSpider> {
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hedgespider.png");
+
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hedgespider.png");
 
 	public RenderTFHedgeSpider(RenderManager manager) {
 		super(manager);

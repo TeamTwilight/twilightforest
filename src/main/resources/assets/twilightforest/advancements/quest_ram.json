@@ -5,10 +5,13 @@
       "data": 8
     },
     "title": {
-      "translate": "advancement.twilight_quest_ram"
+      "translate": "advancement.twilightforest.quest_ram"
     },
     "description": {
-      "translate": "advancement.twilight_quest_ram.desc"
+      "translate": "advancement.twilightforest.quest_ram.desc",
+      "with": [
+        { "translate": "entity.twilightforest.quest_ram.name" }
+      ]
     }
   },
   "parent": "twilightforest:root",
@@ -18,6 +21,7 @@
     }
   },
   "rewards": {
-    "experience": 100
+    "experience": 100,
+    "function": "twilightforest:give_3_shields"
   }
 }

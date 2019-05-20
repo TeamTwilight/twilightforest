@@ -18,9 +18,9 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase {
 
 	private int fleeTimer;
 
-	public EntityAITFPanicOnFlockDeath(EntityCreature par1EntityCreature, float par2) {
-		this.flockCreature = par1EntityCreature;
-		this.speed = par2;
+	public EntityAITFPanicOnFlockDeath(EntityCreature creature, float speed) {
+		this.flockCreature = creature;
+		this.speed = speed;
 		this.setMutexBits(1);
 		this.fleeTimer = 0;
 	}
@@ -41,14 +41,14 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase {
 		if (!yikes) {
 			return false;
 		} else {
-			Vec3d var1 = RandomPositionGenerator.findRandomTarget(this.flockCreature, 5, 4);
+			Vec3d target = RandomPositionGenerator.findRandomTarget(this.flockCreature, 5, 4);
 
-			if (var1 == null) {
+			if (target == null) {
 				return false;
 			} else {
-				this.fleeX = var1.x;
-				this.fleeY = var1.y;
-				this.fleeZ = var1.z;
+				this.fleeX = target.x;
+				this.fleeY = target.y;
+				this.fleeZ = target.z;
 				return true;
 			}
 		}

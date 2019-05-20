@@ -5,9 +5,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
+
 	private float pursueSpeed;
 	private int delay;
 	private BlockPos tntPos = null;
@@ -20,6 +22,10 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public boolean shouldExecute() {
+		if (!ForgeEventFactory.getMobGriefingEvent(redcap.world, redcap)) {
+			return false;
+		}
+
 		if (this.delay > 0) {
 			--this.delay;
 			return false;
@@ -36,36 +42,35 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		return entityObj.world.getBlockState(tntPos).getBlock() == Blocks.TNT;
+		return redcap.world.getBlockState(tntPos).getBlock() == Blocks.TNT;
 	}
 
 	@Override
 	public void startExecuting() {
-		this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.heldFlint);
+		this.redcap.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, redcap.heldFlint);
 	}
 
 	@Override
 	public void resetTask() {
-		this.entityObj.getNavigator().clearPathEntity();
-		this.entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, entityObj.heldPick);
+		this.redcap.getNavigator().clearPath();
+		this.redcap.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, redcap.heldPick);
 		this.delay = 20;
 		this.tntPos = null;
 	}
 
 	@Override
 	public void updateTask() {
-		this.entityObj.getLookHelper().setLookPosition(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.entityObj.getVerticalFaceSpeed());
+		this.redcap.getLookHelper().setLookPosition(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.redcap.getVerticalFaceSpeed());
 
-		if (this.entityObj.getDistanceSq(tntPos) < 2.4D * 2.4D) {
-			entityObj.playLivingSound();
+		if (this.redcap.getDistanceSq(tntPos) < 2.4D * 2.4D) {
+			redcap.playLivingSound();
 
-			Blocks.TNT.onBlockDestroyedByPlayer(entityObj.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
-			entityObj.swingArm(EnumHand.MAIN_HAND);
-			entityObj.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
-			this.entityObj.getNavigator().clearPathEntity();
+			Blocks.TNT.onPlayerDestroy(redcap.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
+			redcap.swingArm(EnumHand.MAIN_HAND);
+			redcap.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
+			this.redcap.getNavigator().clearPath();
 		} else {
-			this.entityObj.getNavigator().tryMoveToXYZ(tntPos.getX(), tntPos.getY(), tntPos.getZ(), this.pursueSpeed);
+			this.redcap.getNavigator().tryMoveToXYZ(tntPos.getX(), tntPos.getY(), tntPos.getZ(), this.pursueSpeed);
 		}
 	}
-
 }

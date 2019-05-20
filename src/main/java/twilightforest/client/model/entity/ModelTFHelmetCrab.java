@@ -156,21 +156,21 @@ public class ModelTFHelmetCrab extends ModelBase {
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
-		body.render(par7);
-		helmetBase.render(par7);
-		Leg8.render(par7);
-		Leg6.render(par7);
-		Leg4.render(par7);
-		rightArm.render(par7);
-		Leg5.render(par7);
-		Leg3.render(par7);
-//		clawbase.render(par7);
-//		clawtop.render(par7);
-//		clawbottom.render(par7);
-//		righteye.render(par7);
-//		lefteye.render(par7);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		body.render(scale);
+		helmetBase.render(scale);
+		Leg8.render(scale);
+		Leg6.render(scale);
+		Leg4.render(scale);
+		rightArm.render(scale);
+		Leg5.render(scale);
+		Leg3.render(scale);
+//		clawbase.render(scale);
+//		clawtop.render(scale);
+//		clawbottom.render(scale);
+//		righteye.render(scale);
+//		lefteye.render(scale);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -185,11 +185,11 @@ public class ModelTFHelmetCrab extends ModelBase {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
-		super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
-		this.body.rotateAngleY = par4 / (180F / (float) Math.PI);
-		this.body.rotateAngleX = par5 / (180F / (float) Math.PI);
+		this.body.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+		this.body.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		float f6 = ((float) Math.PI / 4F);
 		//this.Leg1.rotateAngleZ = -f6;
 		//this.Leg2.rotateAngleZ = f6;
@@ -209,12 +209,12 @@ public class ModelTFHelmetCrab extends ModelBase {
 		this.Leg6.rotateAngleY = f8 * 1.0F - f7;
 		//this.Leg7.rotateAngleY = -f8 * 2.0F + f7;
 		this.Leg8.rotateAngleY = f8 * 2.0F - f7;
-		float f10 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * par2;
-		float f11 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float) Math.PI / 2F)) * 0.4F) * par2;
-		float f12 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * par2;
-		float f14 = Math.abs(MathHelper.sin(par1 * 0.6662F + (float) Math.PI) * 0.4F) * par2;
-		float f15 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float) Math.PI / 2F)) * 0.4F) * par2;
-		float f16 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * par2;
+		float f10 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;
+		float f11 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI / 2F)) * 0.4F) * limbSwingAmount;
+		float f12 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
+		float f14 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + (float) Math.PI) * 0.4F) * limbSwingAmount;
+		float f15 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + ((float) Math.PI / 2F)) * 0.4F) * limbSwingAmount;
+		float f16 = Math.abs(MathHelper.sin(limbSwing * 0.6662F + ((float) Math.PI * 3F / 2F)) * 0.4F) * limbSwingAmount;
 		//this.Leg1.rotateAngleY += f9;
 		//this.Leg2.rotateAngleY += -f9;
 		this.Leg3.rotateAngleY += f10;
@@ -234,7 +234,7 @@ public class ModelTFHelmetCrab extends ModelBase {
 
 		// swing right arm as if it were an arm, not a leg
 		this.rightArm.rotateAngleY = -1.319531F;
-		this.rightArm.rotateAngleY += MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
+		this.rightArm.rotateAngleY += MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
 
 
 	}

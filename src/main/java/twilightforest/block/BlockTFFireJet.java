@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -12,6 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
@@ -29,11 +31,15 @@ import twilightforest.tileentity.TileEntityTFFlameJet;
 import twilightforest.tileentity.TileEntityTFPoppingJet;
 import twilightforest.tileentity.TileEntityTFSmoker;
 
+import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.Random;
+import java.util.Set;
 
 public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
-	public static final PropertyEnum<FireJetVariant> VARIANT = PropertyEnum.create("variant", FireJetVariant.class);
+	public static final IProperty<FireJetVariant> VARIANT = PropertyEnum.create("variant", FireJetVariant.class);
+	private static final Set<FireJetVariant> ENCASED = EnumSet.of(FireJetVariant.ENCASED_JET_IDLE, FireJetVariant.ENCASED_JET_FLAME, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_SMOKER_ON, FireJetVariant.ENCASED_JET_POPPING);
 
 	protected BlockTFFireJet() {
 		super(Material.ROCK);
@@ -88,18 +94,39 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (world.getBlockState(pos) == state) {
-			switch (state.getValue(VARIANT)) {
-				case JET_FLAME:
-				case ENCASED_JET_FLAME:
-					return 15;
-				case SMOKER:
-				default:
-					return 0;
-			}
-		} else {
-			return 0;
+	public Material getMaterial(IBlockState state) {
+		return ENCASED.contains(state.getValue(VARIANT)) ? Material.WOOD : Material.ROCK;
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return ENCASED.contains(state.getValue(VARIANT)) ? MapColor.SAND : MapColor.GRASS;
+	}
+
+	@Override
+	public int getLightValue(IBlockState state) {
+		switch (state.getValue(VARIANT)) {
+			case JET_FLAME:
+			case ENCASED_JET_FLAME:
+				return 15;
+			case SMOKER:
+			default:
+				return 0;
+		}
+	}
+
+	@Nullable
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		switch (state.getValue(VARIANT)) {
+			case JET_POPPING:
+			case ENCASED_JET_POPPING:
+				return PathNodeType.DANGER_FIRE;
+			case JET_FLAME:
+			case ENCASED_JET_FLAME:
+				return PathNodeType.DAMAGE_FIRE;
+			default:
+				return null;
 		}
 	}
 
@@ -118,25 +145,25 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block myBlockID, BlockPos fromPos) {
-		if (!world.isRemote) {
-			FireJetVariant variant = state.getValue(VARIANT);
-			boolean powered = world.isBlockIndirectlyGettingPowered(pos) > 0;
 
-			if (variant == FireJetVariant.ENCASED_SMOKER_OFF && powered) {
-				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);
-				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-			}
+		if (world.isRemote) return;
 
-			if (variant == FireJetVariant.ENCASED_SMOKER_ON && !powered) {
-				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF), 3);
-				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-			}
+		FireJetVariant variant = state.getValue(VARIANT);
+		boolean powered = world.isBlockPowered(pos);
 
-			if (variant == FireJetVariant.ENCASED_JET_IDLE && powered) {
-				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_POPPING), 3);
-				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-			}
+		if (variant == FireJetVariant.ENCASED_SMOKER_OFF && powered) {
+			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+		}
 
+		if (variant == FireJetVariant.ENCASED_SMOKER_ON && !powered) {
+			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF), 3);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+		}
+
+		if (variant == FireJetVariant.ENCASED_JET_IDLE && powered) {
+			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_POPPING), 3);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 
@@ -170,41 +197,45 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		FireJetVariant variant = state.getValue(VARIANT);
-
-		return variant == FireJetVariant.SMOKER
-				|| variant == FireJetVariant.JET_POPPING
-				|| variant == FireJetVariant.JET_FLAME
-				|| variant == FireJetVariant.ENCASED_SMOKER_ON
-				|| variant == FireJetVariant.ENCASED_JET_POPPING
-				|| variant == FireJetVariant.ENCASED_JET_FLAME;
+		switch (state.getValue(VARIANT)) {
+			case SMOKER:
+			case JET_POPPING:
+			case JET_FLAME:
+			case ENCASED_SMOKER_ON:
+			case ENCASED_JET_POPPING:
+			case ENCASED_JET_FLAME:
+				return true;
+			default:
+				return false;
+		}
 	}
 
+	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		FireJetVariant variant = state.getValue(VARIANT);
-
-		if (variant == FireJetVariant.SMOKER || variant == FireJetVariant.ENCASED_SMOKER_ON) {
-			return new TileEntityTFSmoker();
-		} else if (variant == FireJetVariant.JET_POPPING) {
-			return new TileEntityTFPoppingJet(FireJetVariant.JET_FLAME);
-		} else if (variant == FireJetVariant.JET_FLAME) {
-			return new TileEntityTFFlameJet(FireJetVariant.JET_IDLE);
-		} else if (variant == FireJetVariant.ENCASED_JET_POPPING) {
-			return new TileEntityTFPoppingJet(FireJetVariant.ENCASED_JET_FLAME);
-		} else if (variant == FireJetVariant.ENCASED_JET_FLAME) {
-			return new TileEntityTFFlameJet(FireJetVariant.ENCASED_JET_IDLE);
-		} else {
-			return null;
+		switch (state.getValue(VARIANT)) {
+			case SMOKER:
+			case ENCASED_SMOKER_ON:
+				return new TileEntityTFSmoker();
+			case JET_POPPING:
+				return new TileEntityTFPoppingJet(FireJetVariant.JET_FLAME);
+			case JET_FLAME:
+				return new TileEntityTFFlameJet(FireJetVariant.JET_IDLE);
+			case ENCASED_JET_POPPING:
+				return new TileEntityTFPoppingJet(FireJetVariant.ENCASED_JET_FLAME);
+			case ENCASED_JET_FLAME:
+				return new TileEntityTFFlameJet(FireJetVariant.ENCASED_JET_IDLE);
+			default:
+				return null;
 		}
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-		par3List.add(new ItemStack(this, 1, FireJetVariant.SMOKER.ordinal()));
-		par3List.add(new ItemStack(this, 1, FireJetVariant.JET_IDLE.ordinal()));
-		par3List.add(new ItemStack(this, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()));
-		par3List.add(new ItemStack(this, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, FireJetVariant.SMOKER.ordinal()));
+		list.add(new ItemStack(this, 1, FireJetVariant.JET_IDLE.ordinal()));
+		list.add(new ItemStack(this, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()));
+		list.add(new ItemStack(this, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -215,5 +246,4 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 			ModelUtils.registerToState(this, variant.ordinal(), getDefaultState().withProperty(VARIANT, variant));
 		}
 	}
-
 }

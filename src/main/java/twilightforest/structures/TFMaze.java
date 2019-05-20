@@ -9,7 +9,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.MazestoneVariant;
-import twilightforest.world.TFGenCanopyTree;
+import twilightforest.world.feature.TFGenCanopyTree;
 
 import java.util.Random;
 
@@ -130,7 +130,7 @@ public class TFMaze {
 			return getRaw(sx * 2 + 1, sz * 2 + 0);
 		}
 
-		TwilightForestMod.LOGGER.info("Wall check out of bounds; s = " + sx + ", " + sz + "; d = " + dx + ", " + dz);
+		TwilightForestMod.LOGGER.info("Wall check out of bounds; s = {}, {}; d = {}, {}", sx, sz, dx, dz);
 
 		return OUT_OF_BOUNDS;
 	}

@@ -2,7 +2,9 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -14,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,6 +26,7 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.ItemTFMazebreakerPick;
 import twilightforest.item.TFItems;
 
+import javax.annotation.Nullable;
 
 /**
  * Castle block makes a castle
@@ -31,10 +35,10 @@ import twilightforest.item.TFItems;
  */
 public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 
-	public static final PropertyEnum<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
+	public static final IProperty<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
 
 	public BlockTFCastleBlock() {
-		super(Material.ROCK);
+		super(Material.ROCK, MapColor.QUARTZ);
 		this.setHardness(100F);
 		this.setResistance(35F);
 		this.setSoundType(SoundType.STONE);
@@ -59,19 +63,25 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
-		ItemStack cei = entityplayer.getHeldItemMainhand();
-		if (!cei.isEmpty() && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
-			cei.damageItem(16, entityplayer);
-		}
-
-		super.harvestBlock(world, entityplayer, pos, state, te, stack);
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == CastleBrickVariant.ROOF ? MapColor.GRAY : super.getMapColor(state, world, pos);
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		for(int i = 0; i < CastleBrickVariant.values().length; i++)
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+		ItemStack cei = player.getHeldItemMainhand();
+		if (cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
+			cei.damageItem(16, player);
+		}
+
+		super.harvestBlock(world, player, pos, state, te, stack);
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> items) {
+		for (int i = 0; i < CastleBrickVariant.values().length; i++) {
 			items.add(new ItemStack(this, 1, i));
+		}
 	}
 
 	@Override
@@ -87,7 +97,7 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 }

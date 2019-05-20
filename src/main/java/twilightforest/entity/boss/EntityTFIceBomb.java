@@ -4,9 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -14,31 +12,32 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import twilightforest.entity.EntityTFThrowable;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.potions.TFPotions;
 
 import java.util.List;
 
-public class EntityTFIceBomb extends EntityThrowable {
+public class EntityTFIceBomb extends EntityTFThrowable {
 
 	private int zoneTimer = 80;
 	private boolean hasHit;
 
-	public EntityTFIceBomb(World par1World) {
-		super(par1World);
+	public EntityTFIceBomb(World world) {
+		super(world);
 	}
 
-	public EntityTFIceBomb(World par1World, EntityLivingBase thrower) {
-		super(par1World, thrower);
+	public EntityTFIceBomb(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult mop) {
+	protected void onImpact(RayTraceResult ray) {
 		this.motionY = 0;
 		this.hasHit = true;
 
 		if (!world.isRemote) {
-			if (this.getThrower() instanceof EntityTFYetiAlpha && getDistanceSqToEntity(this.getThrower()) <= 100) {
+			if (this.getThrower() instanceof EntityTFYetiAlpha && getDistanceSq(this.getThrower()) <= 100) {
 				this.setDead();
 			}
 
@@ -47,7 +46,9 @@ public class EntityTFIceBomb extends EntityThrowable {
 	}
 
 	private void doTerrainEffects() {
-		int range = 3;
+
+		final int range = 3;
+
 		int ix = MathHelper.floor(this.lastTickPosX);
 		int iy = MathHelper.floor(this.lastTickPosY);
 		int iz = MathHelper.floor(this.lastTickPosZ);
@@ -99,24 +100,26 @@ public class EntityTFIceBomb extends EntityThrowable {
 	}
 
 	public void makeTrail() {
+		int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
 		for (int i = 0; i < 10; i++) {
 			double dx = posX + 0.75F * (rand.nextFloat() - 0.5F);
 			double dy = posY + 0.75F * (rand.nextFloat() - 0.5F);
 			double dz = posZ + 0.75F * (rand.nextFloat() - 0.5F);
 
-			world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, -motionX, -motionY, -motionZ, Block.getStateId(Blocks.SNOW.getDefaultState()));
+			world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, -motionX, -motionY, -motionZ, stateId);
 		}
 	}
 
 	private void makeIceZone() {
 		if (this.world.isRemote) {
 			// sparkles
+			int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
 			for (int i = 0; i < 20; i++) {
 				double dx = this.posX + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dy = this.posY + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dz = this.posZ + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 
-				world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, 0, 0, 0, Block.getStateId(Blocks.SNOW.getDefaultState()));
+				world.spawnParticle(EnumParticleTypes.FALLING_DUST, dx, dy, dz, 0, 0, 0, stateId);
 			}
 		} else {
 			if (this.zoneTimer % 10 == 0) {

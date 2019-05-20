@@ -1,0 +1,14 @@
+{
+  "name": "Minotaur",
+  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:minotaur\"}}",
+  "category": "entities",
+  "advancement": "twilightforest:alt/entities/minotaur",
+  "sortnum": 5020,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "twilightforest:minotaur",
+      "text": "things and stuff"
+    }
+  ]
+}

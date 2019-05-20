@@ -68,7 +68,7 @@ public class EntityAITFFindLoose extends EntityAIBase {
 	@Override
 	public void resetTask() {
 		this.temptingItem = null;
-		this.temptedEntity.getNavigator().clearPathEntity();
+		this.temptedEntity.getNavigator().clearPath();
 		this.delayTemptCounter = 100;
 	}
 
@@ -76,8 +76,8 @@ public class EntityAITFFindLoose extends EntityAIBase {
 	public void updateTask() {
 		this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedEntity.getVerticalFaceSpeed());
 
-		if (this.temptedEntity.getDistanceSqToEntity(this.temptingItem) < 6.25D) {
-			this.temptedEntity.getNavigator().clearPathEntity();
+		if (this.temptedEntity.getDistanceSq(this.temptingItem) < 6.25D) {
+			this.temptedEntity.getNavigator().clearPath();
 		} else {
 			this.temptedEntity.getNavigator().tryMoveToXYZ(temptingItem.posX, temptingItem.posY, temptingItem.posZ, this.pursueSpeed);
 		}

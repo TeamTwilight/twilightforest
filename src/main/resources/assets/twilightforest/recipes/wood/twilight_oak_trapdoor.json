@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "twilightforest:twilight_oak_trapdoor",
+    "data": 0,
+    "count": 6
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:twilight_oak_planks",
+      "data": 0
+    }
+  }
+}

@@ -6,12 +6,11 @@
 
 package twilightforest.client.model.entity;
 
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 import twilightforest.entity.passive.EntityTFBird;
 
 public class ModelTFTinyBird extends ModelBase {
@@ -85,33 +84,33 @@ public class ModelTFTinyBird extends ModelBase {
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-		setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
 		if (isChild) {
 			float f = 2.0F;
-			GL11.glPushMatrix();
-			GL11.glTranslatef(0.0F, 5F * par7, 0.75F * par7);
-			head.render(par7);
-			GL11.glPopMatrix();
-			GL11.glPushMatrix();
-			GL11.glScalef(1.0F / f, 1.0F / f, 1.0F / f);
-			GL11.glTranslatef(0.0F, 24F * par7, 0.0F);
-			body.render(par7);
-			rightleg.render(par7);
-			leftleg.render(par7);
-			rightarm.render(par7);
-			leftarm.render(par7);
-			GL11.glPopMatrix();
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(0.0F, 5F * scale, 0.75F * scale);
+			head.render(scale);
+			GlStateManager.popMatrix();
+			GlStateManager.pushMatrix();
+			GlStateManager.scale(1.0F / f, 1.0F / f, 1.0F / f);
+			GlStateManager.translate(0.0F, 24F * scale, 0.0F);
+			body.render(scale);
+			rightleg.render(scale);
+			leftleg.render(scale);
+			rightarm.render(scale);
+			leftarm.render(scale);
+			GlStateManager.popMatrix();
 		} else {
-			head.render(par7);
-			body.render(par7);
-			rightleg.render(par7);
-			leftleg.render(par7);
-			rightarm.render(par7);
-			leftarm.render(par7);
-			tail.render(par7);
-//			beak.render(par7);
+			head.render(scale);
+			body.render(scale);
+			rightleg.render(scale);
+			leftleg.render(scale);
+			rightarm.render(scale);
+			leftarm.render(scale);
+			tail.render(scale);
+//			beak.render(scale);
 		}
 	}
 
@@ -126,17 +125,17 @@ public class ModelTFTinyBird extends ModelBase {
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
-		head.rotateAngleX = par5 / (180F / (float) Math.PI);
-		head.rotateAngleY = par4 / (180F / (float) Math.PI);
+	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
+		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
-		rightleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-		leftleg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+		rightleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		leftleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 
-		rightarm.rotateAngleZ = par3;
-		leftarm.rotateAngleZ = -par3;
+		rightarm.rotateAngleZ = ageInTicks;
+		leftarm.rotateAngleZ = -ageInTicks;
 
-		if (((EntityTFBird) par7Entity).isBirdLanded()) {
+		if (((EntityTFBird) entity).isBirdLanded()) {
 			rightleg.rotationPointY = 23;
 			leftleg.rotationPointY = 23;
 		} else {

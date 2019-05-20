@@ -20,13 +20,11 @@ import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.Random;
 
-
 public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
-	protected boolean[] openingTowards = new boolean[]{false, false, true, false};
+	protected boolean[] openingTowards = {false, false, true, false};
 
-	public ComponentTFTrollCaveConnect() {
-	}
+	public ComponentTFTrollCaveConnect() {}
 
 	public ComponentTFTrollCaveConnect(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
 		super(feature, index);
@@ -36,9 +34,6 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
-	/**
-	 * Save to NBT
-	 */
 	@Override
 	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
 		super.writeStructureToNBT(tagCompound);
@@ -47,12 +42,8 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		tagCompound.setBoolean("openingTowards1", this.openingTowards[1]);
 		tagCompound.setBoolean("openingTowards2", this.openingTowards[2]);
 		tagCompound.setBoolean("openingTowards3", this.openingTowards[3]);
-
 	}
 
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
@@ -68,59 +59,58 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		// make 4 caves
 		if (this.getComponentType() < 3) {
-
 			for (final Rotation rotation : RotationUtil.ROTATIONS) {
 				BlockPos dest = getValidOpening(rand, 2, rotation);
 
 				if (rand.nextBoolean() || !makeGardenCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 30, 15, rotation)) {
 					makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 20, 15, rotation);
 				}
-
 			}
 		}
 	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		if (this.isBoundingBoxOutOfHighlands(world, sbb)) {
+
+		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
 			return false;
-		} else {
-			// clear inside
-			hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
-
-			Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
-
-			// wall decorations
-			for (Rotation rotation : RotationUtil.ROTATIONS) {
-				if (!this.openingTowards[rotation.ordinal()]) {
-					decorateWall(world, sbb, decoRNG, rotation);
-				}
-			}
-
-			decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
-			// stone stalactites!
-			for (int i = 0; i < 32; i++) {
-				BlockPos dest = getCoordsInCave(decoRNG);
-				generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
-			}
-			// stone stalagmites!
-			for (int i = 0; i < 8; i++) {
-				BlockPos dest = getCoordsInCave(decoRNG);
-				generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
-			}
-
-			// possible treasure
-			decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
-			if (this.countExits() == 1 && decoRNG.nextInt(3) == 0) {
-				// treasure!
-				makeTreasureCrate(world, decoRNG, sbb);
-			} else if (decoRNG.nextInt(3) == 0) {
-				// or a monolith!
-				makeMonolith(world, decoRNG, sbb);
-			}
-
-			return true;
 		}
+
+		// clear inside
+		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
+
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+
+		// wall decorations
+		for (Rotation rotation : RotationUtil.ROTATIONS) {
+			if (!this.openingTowards[rotation.ordinal()]) {
+				decorateWall(world, sbb, decoRNG, rotation);
+			}
+		}
+
+		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		// stone stalactites!
+		for (int i = 0; i < 32; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
+		}
+		// stone stalagmites!
+		for (int i = 0; i < 8; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
+		}
+
+		// possible treasure
+		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		if (this.countExits() == 1 && decoRNG.nextInt(3) == 0) {
+			// treasure!
+			makeTreasureCrate(world, decoRNG, sbb);
+		} else if (decoRNG.nextInt(3) == 0) {
+			// or a monolith!
+			makeMonolith(world, decoRNG, sbb);
+		}
+
+		return true;
 	}
 
 	protected void makeMonolith(World world, Random rand, StructureBoundingBox sbb) {
@@ -138,7 +128,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	private int countExits() {
 		int count = 0;
 		for (int i = 0; i < this.openingTowards.length; i++) {
-			if (this.openingTowards[i] == true) {
+			if (this.openingTowards[i]) {
 				count++;
 			}
 		}
@@ -146,7 +136,6 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	private void decorateWall(World world, StructureBoundingBox sbb, Random decoRNG, Rotation rotation) {
-
 		if (decoRNG.nextBoolean()) {
 			//FIXME: AtomicBlom: Don't do this, bring rotation all the way through.
 			decorateBracketMushrooms(world, sbb, decoRNG, rotation);
@@ -156,7 +145,6 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		} else {
 			decorateStoneProjection(world, sbb, decoRNG, rotation);
 		}
-
 	}
 
 	private void decorateStoneFormation(World world, StructureBoundingBox sbb, Random decoRNG, Rotation rotation) {
@@ -230,7 +218,6 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	 */
 	private void makeSingleBracketMushroom(World world, StructureBoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, IBlockState mushBlock) {
 
-
 		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), mushBlock.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), rotation);
 
 		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, BlockHugeMushroom.EnumType.EAST), rotation);
@@ -248,8 +235,6 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		}
 		final IBlockState southWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH_EAST);
 		this.setBlockStateRotated(world, southWestMushroom, size - (depth + 1), y, z + width, rotation, sbb);
-
-
 	}
 
 	private IBlockState getMushroomState(IBlockState mushroomBlockState, BlockHugeMushroom.EnumType defaultRotation) {
@@ -275,9 +260,8 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 			this.openingTowards[rotation.ordinal()] = true;
 
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	private StructureComponent findNearbyGarden(List<StructureComponent> list, StructureBoundingBox boundingBox) {
@@ -304,8 +288,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		if (super.makeSmallerCave(list, rand, index, x, y, z, caveSize, caveHeight, rotation)) {
 			this.openingTowards[rotation.ordinal()] = true;
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 }

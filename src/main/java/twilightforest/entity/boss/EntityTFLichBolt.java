@@ -1,7 +1,6 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -11,16 +10,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.entity.EntityTFThrowable;
 
+public class EntityTFLichBolt extends EntityTFThrowable {
 
-public class EntityTFLichBolt extends EntityThrowable {
 	@SuppressWarnings("unused")
-	public EntityTFLichBolt(World par1World) {
-		super(par1World);
+	public EntityTFLichBolt(World world) {
+		super(world);
 	}
 
-	public EntityTFLichBolt(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFLichBolt(World world, EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class EntityTFLichBolt extends EntityThrowable {
 		if (!this.world.isRemote && damagesource.getTrueSource() != null) {
 			Vec3d vec3d = damagesource.getTrueSource().getLookVec();
 			// reflect faster and more accurately
-			this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
+			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 
 			if (damagesource.getImmediateSource() instanceof EntityLivingBase)
 				this.thrower = (EntityLivingBase) damagesource.getImmediateSource();
@@ -80,8 +80,9 @@ public class EntityTFLichBolt extends EntityThrowable {
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
+			int itemId = Item.getIdFromItem(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
+				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
 			}
 		} else {
 			super.handleStatusUpdate(id);

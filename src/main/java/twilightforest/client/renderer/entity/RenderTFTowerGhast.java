@@ -22,9 +22,9 @@ public class RenderTFTowerGhast extends RenderTFGhast<EntityTFTowerGhast> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFTowerGhast par1EntityLiving, float partialTicks) {
-		int attackTimer = par1EntityLiving.getAttackTimer();
-		int prevAttackTimer = par1EntityLiving.getPrevAttackTimer();
+	protected void preRenderCallback(EntityTFTowerGhast ghast, float partialTicks) {
+		int attackTimer = ghast.getAttackTimer();
+		int prevAttackTimer = ghast.getPrevAttackTimer();
 		float scaleVariable = (prevAttackTimer + (attackTimer - prevAttackTimer) * partialTicks) / 20.0F;
 		if (scaleVariable < 0.0F) {
 			scaleVariable = 0.0F;

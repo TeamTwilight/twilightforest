@@ -11,7 +11,8 @@ import twilightforest.client.model.entity.ModelTFKnightPhantom2;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
 public class RenderTFKnightPhantom extends RenderBiped<EntityTFKnightPhantom> {
-	private static final ResourceLocation PHANTOM_TEXTURE = new ResourceLocation(TwilightForestMod.MODEL_DIR + "phantomskeleton.png");
+
+	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
 	public RenderTFKnightPhantom(RenderManager manager, ModelTFKnightPhantom2 model, float shadowSize) {
 		super(manager, model, shadowSize);
@@ -25,8 +26,8 @@ public class RenderTFKnightPhantom extends RenderBiped<EntityTFKnightPhantom> {
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFKnightPhantom par1EntityLivingBase, float par2) {
-		float scale = par1EntityLivingBase.isChargingAtPlayer() ? 1.8F : 1.2F;
+	protected void preRenderCallback(EntityTFKnightPhantom entity, float partialTicks) {
+		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
 		GlStateManager.scale(scale, scale, scale);
 	}
 

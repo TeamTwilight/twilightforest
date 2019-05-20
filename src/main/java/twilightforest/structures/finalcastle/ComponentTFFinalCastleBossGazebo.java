@@ -10,7 +10,6 @@ import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
-import twilightforest.structures.StructureTFDecoratorCastle;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
@@ -51,11 +50,11 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 
 		//this.placeSignAtCurrentPosition(world, 10, 0, 10, sbb, "Final Boss Here", "You win!", "discord.gg/6v3z26B");
 
-		setInvisibleTextEntity(world, 10, 0, 10, sbb, "Final Boss Here", true, 0.3f);
-		setInvisibleTextEntity(world, 10, 0, 10, sbb, "You win!", true, 0.0f);
-		setInvisibleTextEntity(world, 10, 0, 10, sbb, "You can join the Twilight Forest Discord server to follow",true, -1.0f);
-		setInvisibleTextEntity(world, 10, 0, 10, sbb, "the latest updates on this castle and other content at:",true, -1.3f);
-		setInvisibleTextEntity(world, 10, 0, 10, sbb, "discord.experiment115.com", true, -1.6f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "Final Boss Here", true, 2.3f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "You win!", true, 2.0f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "You can join the Twilight Forest Discord server to follow",true, 1.0f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "the latest updates on this castle and other content at:",true, 0.7f);
+		setInvisibleTextEntity(world, 10, 0, 10, sbb, "discord.experiment115.com", true, 0.4f);
 
 		return true;
 	}

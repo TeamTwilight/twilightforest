@@ -1,7 +1,6 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.IFixableData;
@@ -9,17 +8,18 @@ import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.Map;
-import java.util.Set;
 
 public class TFDataFixers {
-    public static void init() {
-        ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(TwilightForestMod.ID, TwilightForestMod.DATA_FIXER_VERSION);
+    public static final int DATA_FIXER_VERSION = 1;
 
-        fixes.registerFix(FixTypes.BLOCK_ENTITY, new nameSpaceTEFixer());
-        //fixes.registerFix(FixTypes.STRUCTURE, new structureStartIDDataFixer());
+    public static void init() {
+        ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(TwilightForestMod.ID, DATA_FIXER_VERSION);
+
+        fixes.registerFix(FixTypes.BLOCK_ENTITY, new NamespaceTEFixer());
+        fixes.registerFix(FixTypes.STRUCTURE, new StructureStartIDFixer());
     }
 
-    private static class nameSpaceTEFixer implements IFixableData {
+    private static class NamespaceTEFixer implements IFixableData {
         // array only needs to cover legacy tile entity ids, no need to add future tile entity ids to list.
         private final Map<String, String> tileEntityNames;
 
@@ -27,6 +27,9 @@ public class TFDataFixers {
             ImmutableMap.Builder<String, String> nameMap = ImmutableMap.builder();
 
             nameMap
+                    .put("minecraft:firefly"                 , "twilightforest:firefly"                 )
+                    .put("minecraft:cicada"                  , "twilightforest:cicada"                  )
+                    .put("minecraft:moonworm"                , "twilightforest:moonworm"                )
                     .put("minecraft:naga_spawner"            , "twilightforest:naga_spawner"            )
                     .put("minecraft:lich_spawner"            , "twilightforest:lich_spawner"            )
                     .put("minecraft:hydra_spawner"           , "twilightforest:hydra_spawner"           )
@@ -45,6 +48,9 @@ public class TFDataFixers {
                     .put("minecraft:cinder_furnace"          , "twilightforest:cinder_furnace"          )
                     .put("minecraft:minoshroom_spawner"      , "twilightforest:minoshroom_spawner"      )
                     .put("minecraft:alpha_yeti_spawner"      , "twilightforest:alpha_yeti_spawner"      )
+                    .put(          "firefly"                 , "twilightforest:firefly"                 )
+                    .put(          "cicada"                  , "twilightforest:cicada"                  )
+                    .put(          "moonworm"                , "twilightforest:moonworm"                )
                     .put(          "naga_spawner"            , "twilightforest:naga_spawner"            )
                     .put(          "lich_spawner"            , "twilightforest:lich_spawner"            )
                     .put(          "hydra_spawner"           , "twilightforest:hydra_spawner"           )
@@ -82,21 +88,34 @@ public class TFDataFixers {
         }
     }
 
-    private static class structureStartIDDataFixer implements IFixableData {
-        private final Set<String> structureStartIDs;
-
-        {
-            ImmutableSet.Builder<String> nameMap = ImmutableSet.builder();
-
-            nameMap
-                    .add("naga_courtyard");
-
-            structureStartIDs = nameMap.build();
-        }
+    private static class StructureStartIDFixer implements IFixableData {
+        private final String[] startIDs = {
+                "TFNothing", // Nothing
+                "TFHill"   , // Small Hill
+                "TFHill"   , // Medium
+                "TFHill"   , // Large
+                "TFHedge"  , // Hedge Maze
+                "TFNC"     , // Courtyard
+                "TFLT"     , // Lich Tower
+                "TFAP"     , // Aurora Palace
+                "TFNothing", // (Quest Island)
+                "TFQuest1" , // Quest Grove
+                "TFNothing", // (Druid Grove)
+                "TFNothing", // (Floating Ruins)
+                "TFHydra"  , // Hydra Lair
+                "TFLr"     , // Labyrinth
+                "TFDT"     , // Dark Tower
+                "TFKSt"    , // Knight Stronghold
+                "TFNothing", // (World Tree)
+                "TFYeti"   , // Yeti Cave
+                "TFTC"     , // Troll cave
+                "TFFC"     , // Final Castle
+                "TFMT"       // Mushroom Tower
+        };
 
         @Override
         public int getFixVersion() {
-            return 2;
+            return 1;
         }
 
         // Basically we just need to shove the structure ID from the `FeatureID` key to the regular `id`.
@@ -104,11 +123,7 @@ public class TFDataFixers {
         public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
             int featureID = compound.getInteger("FeatureID");
 
-            if (featureID >= TFFeature.featureList.length - 1) return compound;
-
-            TFFeature feature = TFFeature.featureList[featureID];
-
-            //if (!compound.getString("id").isEmpty() && featureID != 0) compound.setString("id", );
+            compound.setString("id", featureID < startIDs.length ? startIDs[featureID] : "TFNothing");
 
             return compound;
         }

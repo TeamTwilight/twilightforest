@@ -2,10 +2,8 @@ package twilightforest.item;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -16,18 +14,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.entity.EntityTFTwilightWandBolt;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemTFTwilightWand extends ItemTF {
 
-	protected ItemTFTwilightWand() {
+	protected ItemTFTwilightWand(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
 		this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-	//Atomic: Not sure why getMaxDamage was deprecated since it's actively used?
-	@SuppressWarnings("deprecation")
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
@@ -47,13 +45,13 @@ public class ItemTFTwilightWand extends ItemTF {
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.RARE;
+	public float getXpRepairRatio(ItemStack stack) {
+		return 1f;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
 	}

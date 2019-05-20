@@ -1,171 +1,173 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockSlab;
 import twilightforest.TwilightForestMod;
 
+import javax.annotation.Nonnull;
+
 import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "ConstantConditions"})
 @ObjectHolder(TwilightForestMod.ID)
+@Nonnull
 public class TFBlocks {
-	@ObjectHolder("twilight_log")
-	public static Block twilight_log;
-	@ObjectHolder("twilight_leaves")
-	public static Block twilight_leaves;
-	@ObjectHolder("firefly")
-	public static Block firefly;
-	@ObjectHolder("twilight_portal")
-	public static Block portal;
-	@ObjectHolder("maze_stone")
-	public static Block maze_stone;
-	@ObjectHolder("hedge")
-	public static Block hedge;
-	@ObjectHolder("boss_spawner")
-	public static Block bossSpawner;
-	@ObjectHolder("firefly_jar")
-	public static Block firefly_jar;
-	@ObjectHolder("twilight_plant")
-	public static Block twilight_plant;
-	@ObjectHolder("cicada")
-	public static Block cicada;
-	@ObjectHolder("root")
-	public static Block root;
-	@ObjectHolder("uncrafting_table")
-	public static Block uncrafting_table;
-	@ObjectHolder("fire_jet")
-	public static Block fire_jet;
-	@ObjectHolder("naga_stone")
-	public static Block naga_stone;
-	@ObjectHolder("twilight_sapling")
-	public static Block twilight_sapling;
-	@ObjectHolder("magic_log")
-	public static Block magic_log;
-	@ObjectHolder("magic_log_core")
-	public static Block magic_log_core;
-	@ObjectHolder("magic_leaves")
-	public static Block magic_leaves;
-	@ObjectHolder("moonworm")
-	public static Block moonworm;
-	@ObjectHolder("tower_wood")
-	public static Block tower_wood;
-	@ObjectHolder("tower_device")
-	public static Block tower_device;
-	//public static Block towerAntenna;
-	@ObjectHolder("tower_translucent")
-	public static Block tower_translucent;
-	@ObjectHolder("trophy")
-	public static Block trophy;
-	@ObjectHolder("stronghold_shield")
-	public static Block stronghold_shield;
-	@ObjectHolder("trophy_pedestal")
-	public static Block trophy_pedestal;
-	@ObjectHolder("aurora_block")
-	public static Block aurora_block;
-	@ObjectHolder("underbrick")
-	public static Block underbrick;
-	@ObjectHolder("thorns")
-	public static Block thorns;
-	@ObjectHolder("burnt_thorns")
-	public static Block burnt_thorns;
-	@ObjectHolder("thorn_rose")
-	public static Block thorn_rose;
-	@ObjectHolder("twilight_leaves_3")
-	public static Block twilight_leaves_3;
-	@ObjectHolder("deadrock")
-	public static Block deadrock;
-	@ObjectHolder("dark_leaves")
-	public static Block dark_leaves;
-	@ObjectHolder("aurora_pillar")
-	public static Block aurora_pillar;
-	@ObjectHolder("aurora_slab")
-	public static BlockSlab aurora_slab;
-	@ObjectHolder("double_aurora_slab")
-	public static BlockSlab double_aurora_slab;
-	@ObjectHolder("trollsteinn")
-	public static Block trollsteinn;
-	@ObjectHolder("wispy_cloud")
-	public static Block wispy_cloud;
-	@ObjectHolder("fluffy_cloud")
-	public static Block fluffy_cloud;
-	@ObjectHolder("giant_cobblestone")
-	public static Block giant_cobblestone;
-	@ObjectHolder("giant_log")
-	public static Block giant_log;
-	@ObjectHolder("giant_leaves")
-	public static Block giant_leaves;
-	@ObjectHolder("giant_obsidian")
-	public static Block giant_obsidian;
-	@ObjectHolder("uberous_soil")
-	public static Block uberous_soil;
-	@ObjectHolder("huge_stalk")
-	public static Block huge_stalk;
-	@ObjectHolder("huge_mushgloom")
-	public static Block huge_mushgloom;
-	@ObjectHolder("trollvidr")
-	public static Block trollvidr;
-	@ObjectHolder("unripe_trollber")
-	public static Block unripe_trollber;
-	@ObjectHolder("trollber")
-	public static Block trollber;
-	@ObjectHolder("knightmetal_block")
-	public static Block knightmetal_block;
-	@ObjectHolder("huge_lilypad")
-	public static Block huge_lilypad;
-	@ObjectHolder("huge_waterlily")
-	public static Block huge_waterlily;
-	@ObjectHolder("slider")
-	public static Block slider;
-	@ObjectHolder("castle_brick")
-	public static Block castle_brick;
-	@ObjectHolder("castle_stairs")
-	public static Block castle_stairs;
-	@ObjectHolder("castle_pillar")
-	public static Block castle_pillar;
-	@ObjectHolder("castle_rune_brick")
-	public static Block castle_rune_brick;
-	@ObjectHolder("force_field")
-	public static Block force_field;
-	@ObjectHolder("cinder_furnace")
-	public static Block cinder_furnace;
-	@ObjectHolder("cinder_furnace_lit")
-	public static Block cinder_furnace_lit;
-	@ObjectHolder("cinder_log")
-	public static Block cinder_log;
-	@ObjectHolder("castle_door")
-	public static Block castle_door;
-	@ObjectHolder("castle_door_vanished")
-	public static Block castle_door_vanished;
-	@ObjectHolder("castle_unlock")
-	public static Block castle_unlock;
-	@ObjectHolder("experiment_115")
-	public static Block experiment_115;
-	@ObjectHolder("miniature_structure")
-	public static Block miniature_structure;
-	@ObjectHolder("block_storage")
-	public static Block block_storage;
-	@ObjectHolder("lapis_block")
-	public static Block lapis_block;
-	@ObjectHolder("spiral_bricks")
-	public static Block spiral_bricks;
-	@ObjectHolder("etched_nagastone")
-	public static Block etched_nagastone;
-	@ObjectHolder("nagastone_pillar")
-	public static Block nagastone_pillar;
-	@ObjectHolder("nagastone_stairs")
-	public static Block nagastone_stairs;
-	@ObjectHolder("etched_nagastone_mossy")
-	public static Block etched_nagastone_mossy;
-	@ObjectHolder("nagastone_pillar_mossy")
-	public static Block nagastone_pillar_mossy;
-	@ObjectHolder("nagastone_stairs_mossy")
-	public static Block nagastone_stairs_mossy;
-	@ObjectHolder("etched_nagastone_weathered")
-	public static Block etched_nagastone_weathered;
-	@ObjectHolder("nagastone_pillar_weathered")
-	public static Block nagastone_pillar_weathered;
-	@ObjectHolder("nagastone_stairs_weathered")
-	public static Block nagastone_stairs_weathered;
-	@ObjectHolder("auroralized_glass")
-	public static Block auroralized_glass;
+	public static final Block twilight_log               = iCantBelieveItsNotNull();
+	public static final BlockLeaves twilight_leaves      = iCantBelieveItsNotNull();
+	public static final Block firefly                    = iCantBelieveItsNotNull();
+	public static final BlockTFPortal twilight_portal    = iCantBelieveItsNotNull();
+	public static final Block maze_stone                 = iCantBelieveItsNotNull();
+	public static final Block hedge                      = iCantBelieveItsNotNull();
+	public static final Block boss_spawner               = iCantBelieveItsNotNull();
+	public static final Block firefly_jar                = iCantBelieveItsNotNull();
+	public static final Block twilight_plant             = iCantBelieveItsNotNull();
+	public static final Block cicada                     = iCantBelieveItsNotNull();
+	public static final Block root                       = iCantBelieveItsNotNull();
+	public static final Block uncrafting_table           = iCantBelieveItsNotNull();
+	public static final Block fire_jet                   = iCantBelieveItsNotNull();
+	public static final Block naga_stone                 = iCantBelieveItsNotNull();
+	public static final BlockBush twilight_sapling       = iCantBelieveItsNotNull();
+	public static final Block magic_log                  = iCantBelieveItsNotNull();
+	public static final Block magic_log_core             = iCantBelieveItsNotNull();
+	public static final BlockLeaves magic_leaves         = iCantBelieveItsNotNull();
+	public static final Block moonworm                   = iCantBelieveItsNotNull();
+	public static final Block tower_wood                 = iCantBelieveItsNotNull();
+	public static final BlockTFTowerDevice tower_device  = iCantBelieveItsNotNull();
+	//public static Block towerAntenna                   = null; // Not you
+	public static final Block tower_translucent          = iCantBelieveItsNotNull();
+	public static final Block trophy                     = iCantBelieveItsNotNull();
+	public static final Block stronghold_shield          = iCantBelieveItsNotNull();
+	public static final Block trophy_pedestal            = iCantBelieveItsNotNull();
+	public static final Block aurora_block               = iCantBelieveItsNotNull();
+	public static final Block underbrick                 = iCantBelieveItsNotNull();
+	public static final Block thorns                     = iCantBelieveItsNotNull();
+	public static final Block burnt_thorns               = iCantBelieveItsNotNull();
+	public static final Block thorn_rose                 = iCantBelieveItsNotNull();
+	public static final BlockLeaves twilight_leaves_3    = iCantBelieveItsNotNull();
+	public static final Block deadrock                   = iCantBelieveItsNotNull();
+	public static final Block dark_leaves                = iCantBelieveItsNotNull();
+	public static final Block aurora_pillar              = iCantBelieveItsNotNull();
+	public static final BlockSlab aurora_slab            = iCantBelieveItsNotNull();
+	public static final BlockSlab double_aurora_slab     = iCantBelieveItsNotNull();
+	public static final Block trollsteinn                = iCantBelieveItsNotNull();
+	public static final Block wispy_cloud                = iCantBelieveItsNotNull();
+	public static final Block fluffy_cloud               = iCantBelieveItsNotNull();
+	public static final Block giant_cobblestone          = iCantBelieveItsNotNull();
+	public static final Block giant_log                  = iCantBelieveItsNotNull();
+	public static final Block giant_leaves               = iCantBelieveItsNotNull();
+	public static final Block giant_obsidian             = iCantBelieveItsNotNull();
+	public static final Block uberous_soil               = iCantBelieveItsNotNull();
+	public static final Block huge_stalk                 = iCantBelieveItsNotNull();
+	public static final Block huge_mushgloom             = iCantBelieveItsNotNull();
+	public static final Block trollvidr                  = iCantBelieveItsNotNull();
+	public static final Block unripe_trollber            = iCantBelieveItsNotNull();
+	public static final Block trollber                   = iCantBelieveItsNotNull();
+	public static final Block knightmetal_block          = iCantBelieveItsNotNull();
+	public static final Block huge_lilypad               = iCantBelieveItsNotNull();
+	public static final Block huge_waterlily             = iCantBelieveItsNotNull();
+	public static final Block slider                     = iCantBelieveItsNotNull();
+	public static final Block castle_brick               = iCantBelieveItsNotNull();
+	public static final Block castle_stairs              = iCantBelieveItsNotNull();
+	public static final Block castle_pillar              = iCantBelieveItsNotNull();
+	public static final Block castle_rune_brick          = iCantBelieveItsNotNull();
+	public static final Block force_field                = iCantBelieveItsNotNull();
+	public static final Block cinder_furnace             = iCantBelieveItsNotNull();
+	public static final Block cinder_furnace_lit         = iCantBelieveItsNotNull();
+	public static final Block cinder_log                 = iCantBelieveItsNotNull();
+	public static final Block castle_door                = iCantBelieveItsNotNull();
+	public static final Block castle_door_vanished       = iCantBelieveItsNotNull();
+	public static final Block experiment_115             = iCantBelieveItsNotNull();
+	public static final Block miniature_structure        = iCantBelieveItsNotNull();
+	public static final Block block_storage              = iCantBelieveItsNotNull();
+	public static final Block spiral_bricks              = iCantBelieveItsNotNull();
+	public static final Block etched_nagastone           = iCantBelieveItsNotNull();
+	public static final Block nagastone_pillar           = iCantBelieveItsNotNull();
+	public static final Block nagastone_stairs           = iCantBelieveItsNotNull();
+	public static final Block etched_nagastone_mossy     = iCantBelieveItsNotNull();
+	public static final Block nagastone_pillar_mossy     = iCantBelieveItsNotNull();
+	public static final Block nagastone_stairs_mossy     = iCantBelieveItsNotNull();
+	public static final Block etched_nagastone_weathered = iCantBelieveItsNotNull();
+	public static final Block nagastone_pillar_weathered = iCantBelieveItsNotNull();
+	public static final Block nagastone_stairs_weathered = iCantBelieveItsNotNull();
+	public static final Block auroralized_glass          = iCantBelieveItsNotNull();
+	public static final Block castle_stairs_brick        = iCantBelieveItsNotNull();
+	public static final Block castle_stairs_cracked      = iCantBelieveItsNotNull();
+	public static final Block castle_stairs_worn         = iCantBelieveItsNotNull();
+	public static final Block castle_stairs_mossy        = iCantBelieveItsNotNull();
+	public static final BlockTFLadderBars iron_ladder    = iCantBelieveItsNotNull();
+	public static final Block terrorcotta_circle         = iCantBelieveItsNotNull();
+	public static final Block terrorcotta_diagonal       = iCantBelieveItsNotNull();
+	public static final Block stone_twist                = iCantBelieveItsNotNull();
+	public static final Block stone_twist_thin           = iCantBelieveItsNotNull();
+
+	public static final BlockTF              twilight_oak_planks     = iCantBelieveItsNotNull();
+	public static final BlockTFStairs        twilight_oak_stairs     = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          twilight_oak_doubleslab = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          twilight_oak_slab       = iCantBelieveItsNotNull();
+	public static final BlockTFButtonWood    twilight_oak_button     = iCantBelieveItsNotNull();
+	public static final BlockTFFence         twilight_oak_fence      = iCantBelieveItsNotNull();
+	public static final BlockTFFenceGate     twilight_oak_gate       = iCantBelieveItsNotNull();
+	public static final BlockTFPressurePlate twilight_oak_plate      = iCantBelieveItsNotNull();
+	public static final BlockTF              canopy_planks           = iCantBelieveItsNotNull();
+	public static final BlockTFStairs        canopy_stairs           = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          canopy_doubleslab       = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          canopy_slab             = iCantBelieveItsNotNull();
+	public static final BlockTFButtonWood    canopy_button           = iCantBelieveItsNotNull();
+	public static final BlockTFFence         canopy_fence            = iCantBelieveItsNotNull();
+	public static final BlockTFFenceGate     canopy_gate             = iCantBelieveItsNotNull();
+	public static final BlockTFPressurePlate canopy_plate            = iCantBelieveItsNotNull();
+	public static final BlockTF              mangrove_planks         = iCantBelieveItsNotNull();
+	public static final BlockTFStairs        mangrove_stairs         = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          mangrove_doubleslab     = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          mangrove_slab           = iCantBelieveItsNotNull();
+	public static final BlockTFButtonWood    mangrove_button         = iCantBelieveItsNotNull();
+	public static final BlockTFFence         mangrove_fence          = iCantBelieveItsNotNull();
+	public static final BlockTFFenceGate     mangrove_gate           = iCantBelieveItsNotNull();
+	public static final BlockTFPressurePlate mangrove_plate          = iCantBelieveItsNotNull();
+	public static final BlockTF              dark_planks             = iCantBelieveItsNotNull();
+	public static final BlockTFStairs        dark_stairs             = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          dark_doubleslab         = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          dark_slab               = iCantBelieveItsNotNull();
+	public static final BlockTFButtonWood    dark_button             = iCantBelieveItsNotNull();
+	public static final BlockTFFence         dark_fence              = iCantBelieveItsNotNull();
+	public static final BlockTFFenceGate     dark_gate               = iCantBelieveItsNotNull();
+	public static final BlockTFPressurePlate dark_plate              = iCantBelieveItsNotNull();
+	public static final BlockTF              time_planks             = iCantBelieveItsNotNull();
+	public static final BlockTFStairs        time_stairs             = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          time_doubleslab         = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          time_slab               = iCantBelieveItsNotNull();
+	public static final BlockTFButtonWood    time_button             = iCantBelieveItsNotNull();
+	public static final BlockTFFence         time_fence              = iCantBelieveItsNotNull();
+	public static final BlockTFFenceGate     time_gate               = iCantBelieveItsNotNull();
+	public static final BlockTFPressurePlate time_plate              = iCantBelieveItsNotNull();
+	public static final BlockTF              trans_planks            = iCantBelieveItsNotNull();
+	public static final BlockTFStairs        trans_stairs            = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          trans_doubleslab        = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          trans_slab              = iCantBelieveItsNotNull();
+	public static final BlockTFButtonWood    trans_button            = iCantBelieveItsNotNull();
+	public static final BlockTFFence         trans_fence             = iCantBelieveItsNotNull();
+	public static final BlockTFFenceGate     trans_gate              = iCantBelieveItsNotNull();
+	public static final BlockTFPressurePlate trans_plate             = iCantBelieveItsNotNull();
+	public static final BlockTF              mine_planks             = iCantBelieveItsNotNull();
+	public static final BlockTFStairs        mine_stairs             = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          mine_doubleslab         = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          mine_slab               = iCantBelieveItsNotNull();
+	public static final BlockTFButtonWood    mine_button             = iCantBelieveItsNotNull();
+	public static final BlockTFFence         mine_fence              = iCantBelieveItsNotNull();
+	public static final BlockTFFenceGate     mine_gate               = iCantBelieveItsNotNull();
+	public static final BlockTFPressurePlate mine_plate              = iCantBelieveItsNotNull();
+	public static final BlockTF              sort_planks             = iCantBelieveItsNotNull();
+	public static final BlockTFStairs        sort_stairs             = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          sort_doubleslab         = iCantBelieveItsNotNull();
+	public static final BlockTFSlab          sort_slab               = iCantBelieveItsNotNull();
+	public static final BlockTFButtonWood    sort_button             = iCantBelieveItsNotNull();
+	public static final BlockTFFence         sort_fence              = iCantBelieveItsNotNull();
+	public static final BlockTFFenceGate     sort_gate               = iCantBelieveItsNotNull();
+	public static final BlockTFPressurePlate sort_plate              = iCantBelieveItsNotNull();
+
+	private static <T> T iCantBelieveItsNotNull() {
+		return null;
+	}
 }

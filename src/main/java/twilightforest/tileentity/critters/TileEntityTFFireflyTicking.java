@@ -5,6 +5,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 public class TileEntityTFFireflyTicking extends TileEntityTFFirefly implements ITickable {
+
 	private int yawDelay;
 	public int currentYaw;
 	private int desiredYaw;
@@ -15,9 +16,9 @@ public class TileEntityTFFireflyTicking extends TileEntityTFFirefly implements I
 
 	@Override
 	public void update() {
-		if (isClient) {
+		if (world.isRemote) {
 			if (anyPlayerInRange() && world.rand.nextInt(20) == 0) {
-				doFireflyFX();
+				spawnParticles();
 			}
 
 			if (yawDelay > 0) {
@@ -64,14 +65,12 @@ public class TileEntityTFFireflyTicking extends TileEntityTFFirefly implements I
 		return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 16D, false) != null;
 	}
 
-	private void doFireflyFX() {
+	private void spawnParticles() {
 		double rx = pos.getX() + world.rand.nextFloat();
 		double ry = pos.getY() + world.rand.nextFloat();
 		double rz = pos.getZ() + world.rand.nextFloat();
 //    	ModLoader.getMinecraftInstance().effectRenderer.addEffect(fireflyfx);
 		// ^ keeping here only for pure lolz
-		TwilightForestMod.proxy.spawnParticle(world, TFParticleType.FIREFLY, rx, ry, rz, 0, 0, 0);
+		TwilightForestMod.proxy.spawnParticle(TFParticleType.FIREFLY, rx, ry, rz, 0, 0, 0);
 	}
-
-
 }

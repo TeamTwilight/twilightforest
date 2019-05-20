@@ -9,8 +9,8 @@ public class EntityTFSpikeBlock extends Entity {
 
 	private EntityTFBlockGoblin goblin;
 
-	public EntityTFSpikeBlock(World par1World) {
-		super(par1World);
+	public EntityTFSpikeBlock(World world) {
+		super(world);
 		setSize(0.75F, 0.75F);
 	}
 
@@ -20,7 +20,7 @@ public class EntityTFSpikeBlock extends Entity {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+	public boolean attackEntityFrom(DamageSource source, float amount) {
 		return false;
 	}
 
@@ -64,10 +64,10 @@ public class EntityTFSpikeBlock extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+	protected void readEntityFromNBT(NBTTagCompound compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+	protected void writeEntityToNBT(NBTTagCompound compound) {
 	}
 }

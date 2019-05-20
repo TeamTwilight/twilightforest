@@ -7,11 +7,12 @@
   "mcversion": "${mcversion}",
   "url": "https://minecraft.curseforge.com/projects/the-twilight-forest",
   "updateUrl": "",
-  "authors": [
+  "authorList": [
     "Benimatic",
     "AtomicBlom",
     "Drullkus",
     "Killer_Demon",
+    "quadraxis",
     "Tamaized",
     "williewillus"
   ],

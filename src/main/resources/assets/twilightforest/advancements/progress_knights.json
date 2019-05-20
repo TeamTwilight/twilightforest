@@ -5,10 +5,10 @@
       "data": 4
     },
     "title": {
-      "translate": "advancement.twilight_progress_knights"
+      "translate": "advancement.twilightforest.progress_knights"
     },
     "description": {
-      "translate": "advancement.twilight_progress_knights.desc"
+      "translate": "advancement.twilightforest.progress_knights.desc"
     },
     "frame": "goal"
   },
@@ -22,11 +22,36 @@
         }
       }
     },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:trophy",
+            "data": 4
+          }
+        ]
+      }
+    },
+    "structure": {
+      "trigger": "twilightforest:structure_cleared",
+      "conditions": {
+        "structure": "knight_stronghold"
+      }
+    },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
         "advancement": "twilightforest:progress_trophy_pedestal"
       }
     }
+  },
+  "requirements": [
+    [ "knight", "trophy" ],
+    [ "structure" ],
+    [ "previous_progression" ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
   }
 }

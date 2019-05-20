@@ -3,7 +3,8 @@ package twilightforest.client;
 import java.util.Random;
 
 public class BugModelAnimationHelper {
-    private static Random rand = new Random();
+
+    private static final Random rand = new Random();
 
     private static int yawDelay;
     public static int currentYaw;
@@ -18,66 +19,77 @@ public class BugModelAnimationHelper {
     private static int glowDelay;
 
     static void animate() {
+        tickYaw();
+        tickGlow();
+        tickRotation();
+    }
+
+    private static void tickYaw() {
+        if (yawDelay > 0) {
+            yawDelay--;
+            return;
+        }
+
+        if (currentYaw == 0 && desiredYaw == 0) {
+            // make it rotate!
+            yawDelay = 200 + rand.nextInt(200);
+            desiredYaw = rand.nextInt(15) - rand.nextInt(15);
+        }
+
+        if (currentYaw < desiredYaw) {
+            currentYaw++;
+        } else if (currentYaw > desiredYaw) {
+            currentYaw--;
+        } else if (currentYaw == desiredYaw) {
+            desiredYaw = 0;
+        }
+    }
+
+    private static void tickGlow() {
+        if (glowDelay > 0) {
+            glowDelay--;
+            return;
+        }
+
+        if (glowing && glowIntensity >= 1f) {
+            glowing = false;
+        }
+        if (glowing && glowIntensity < 1f) {
+            glowIntensity += 0.05f;
+        }
+        if (!glowing && glowIntensity > 0f) {
+            glowIntensity -= 0.05f;
+        }
+        if (!glowing && glowIntensity <= 0f) {
+            glowing = true;
+            glowDelay = rand.nextInt(50);
+        }
+    }
+
+    private static void tickRotation() {
+        if (yawWriggleDelay > 0) {
+            yawWriggleDelay--;
+            return;
+        }
+
         if (currentRotation == -1) {
             currentRotation = rand.nextInt(4) * 90;
         }
 
-        if (yawDelay > 0) {
-            yawDelay--;
-        } else {
-            if (currentYaw == 0 && desiredYaw == 0) {
-                // make it rotate!
-                yawDelay = 200 + rand.nextInt(200);
-                desiredYaw = rand.nextInt(15) - rand.nextInt(15);
-            }
-
-            if (currentYaw < desiredYaw) {
-                currentYaw++;
-            }
-            if (currentYaw > desiredYaw) {
-                currentYaw--;
-            }
-            if (currentYaw == desiredYaw) {
-                desiredYaw = 0;
-            }
+        if (desiredRotation == 0) {
+            // make it rotate!
+            yawWriggleDelay = 200 + rand.nextInt(200);
+            desiredRotation = rand.nextInt(4) * 90;
         }
 
-        if (glowDelay > 0) {
-            glowDelay--;
-        } else {
-            if (glowing && glowIntensity >= 1.0) {
-                glowing = false;
-            }
-            if (glowing && glowIntensity < 1.0) {
-                glowIntensity += 0.05;
-            }
-            if (!glowing && glowIntensity > 0) {
-                glowIntensity -= 0.05;
-            }
-            if (!glowing && glowIntensity <= 0) {
-                glowing = true;
-                glowDelay = rand.nextInt(50);
-            }
+        currentRotation++;
+
+        if (currentRotation > 360) {
+            currentRotation = 0;
         }
 
-        if (yawWriggleDelay > 0) {
-            yawWriggleDelay--;
-        } else {
-            if (desiredRotation == 0) {
-                // make it rotate!
-                yawWriggleDelay = 200 + rand.nextInt(200);
-                desiredRotation = rand.nextInt(4) * 90;
-            }
-
-            currentRotation++;
-
-            if (currentRotation > 360) {
-                currentRotation = 0;
-            }
-
-            if (currentRotation == desiredRotation) {
-                desiredRotation = 0;
-            }
+        if (currentRotation == desiredRotation) {
+            desiredRotation = 0;
         }
     }
 }

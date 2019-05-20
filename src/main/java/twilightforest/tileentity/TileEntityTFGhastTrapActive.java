@@ -20,9 +20,9 @@ import java.util.Random;
 
 public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable {
 
-	public int counter = 0;
+	private int counter = 0;
 
-	public Random rand = new Random();
+	private final Random rand = new Random();
 
 	@Override
 	public void update() {
@@ -32,19 +32,24 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 		if (world.isRemote) {
 			// smoke when done
 			if (counter > 100 && counter % 4 == 0) {
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.HUGE_SMOKE, this.pos.getX() + 0.5, this.pos.getY() + 0.95, this.pos.getZ() + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.HUGE_SMOKE, this.pos.getX() + 0.5, this.pos.getY() + 0.95, this.pos.getZ() + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
+
 			} else if (counter < 100) {
+
+				double x = this.pos.getX() + 0.5D;
+				double y = this.pos.getY() + 1.0D;
+				double z = this.pos.getZ() + 0.5D;
+
 				double dx = Math.cos(counter / 10.0) * 2.5;
 				double dy = 20D;
 				double dz = Math.sin(counter / 10.0) * 2.5;
 
-
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.pos.getX() + 0.5D, this.pos.getY() + 1.0D, this.pos.getZ() + 0.5D, dx, dy, dz);
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.pos.getX() + 0.5D, this.pos.getY() + 1.0D, this.pos.getZ() + 0.5D, -dx, dy, -dz);
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.pos.getX() + 0.5D, this.pos.getY() + 1.0D, this.pos.getZ() + 0.5D, -dx, dy / 2, dz);
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.pos.getX() + 0.5D, this.pos.getY() + 1.0D, this.pos.getZ() + 0.5D, dx, dy / 2, -dz);
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.pos.getX() + 0.5D, this.pos.getY() + 1.0D, this.pos.getZ() + 0.5D, dx / 2, dy / 4, dz / 2);
-				TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.GHAST_TRAP, this.pos.getX() + 0.5D, this.pos.getY() + 1.0D, this.pos.getZ() + 0.5D, -dx / 2, dy / 4, -dz / 2);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, dx, dy, dz);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx, dy, -dz);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx, dy / 2, dz);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, dx, dy / 2, -dz);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, dx / 2, dy / 4, dz / 2);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx / 2, dy / 4, -dz / 2);
 			}
 
 			// appropriate sound

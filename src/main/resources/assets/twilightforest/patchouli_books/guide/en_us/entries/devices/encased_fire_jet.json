@@ -1,0 +1,15 @@
+{
+  "name": "Encased Fire Jet",
+  "icon": "twilightforest:fire_jet:6",
+  "category": "devices",
+  "advancement": "twilightforest:alt/treasures/encased_fire_jet",
+  "sortnum": 5060,
+  "pages": [
+    {
+      "type": "spotlight",
+      "title": "Encased Fire Jet",
+      "item": "twilightforest:fire_jet:6",
+      "text": "By taking a Fire Jet, and a bit of technical genius, I can create a Fire Jet that is self-sustaining and can fire with the press of a button, or a bit of Redstone signal. Though, a minor flaw with this device seems to be that it needs to warm up before it fires, so I must time the signals right."
+    }
+  ]
+}

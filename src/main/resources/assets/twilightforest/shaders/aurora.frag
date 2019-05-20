@@ -1,7 +1,6 @@
 #version 120
 
 uniform sampler2D zero;
-uniform sampler2D one;
 uniform vec2 texSize;
 
 uniform float time;
@@ -143,5 +142,5 @@ void main() {
                                                                                           // 0.67 - 0.37 = 0.3
     //gl_FragColor = vec4(hsv2rgb(vec3(((sin(posZ + getPerceptualBrightness(color.rgb) * 10.0)+1.0)/2.0) * 0.3 + 0.37, 1.0, 1.0)), color.a);
 
-    gl_FragColor = vec4(hsv2rgb(vec3(abs(mod(val, 0.6)-0.3) + 0.37, 1.0, 1.0)), max(0.0, color.a*2.0 - 1.0) * sin(noiseTwoPass(vec4(worldPos.xyz / 2, time / 128.0)) * 10) * 2.0);
+    gl_FragColor = vec4(hsv2rgb(vec3(abs(mod(val, 0.68)-0.34) + 0.33, 1.0, 1.0)), max(0.0, color.a*2.0 - 1.0) * sin(noiseTwoPass(vec4(worldPos.xyz / 2, time / 128.0)) * 10) * 2.0);
 }

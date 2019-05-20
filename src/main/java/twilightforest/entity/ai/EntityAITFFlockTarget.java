@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityAITFFlockTarget extends EntityAITarget {
-	private EntityLivingBase flockCreature;
+
+	private final EntityLivingBase flockCreature;
 	private EntityLivingBase flockTarget;
 
-	public EntityAITFFlockTarget(EntityCreature par1EntityLiving, boolean b) {
-		super(par1EntityLiving, false);
-		this.flockCreature = par1EntityLiving;
+	public EntityAITFFlockTarget(EntityCreature creature, boolean checkSight) {
+		super(creature, false);
+		this.flockCreature = creature;
 		this.setMutexBits(1);
 	}
 
@@ -41,5 +42,11 @@ public class EntityAITFFlockTarget extends EntityAITarget {
 	public void startExecuting() {
 		this.taskOwner.setAttackTarget(this.flockTarget);
 		super.startExecuting();
+	}
+
+	@Override
+	public void resetTask() {
+		this.flockTarget = null;
+		super.resetTask();
 	}
 }

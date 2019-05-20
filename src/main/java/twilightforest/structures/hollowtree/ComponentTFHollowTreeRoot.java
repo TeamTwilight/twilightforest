@@ -9,16 +9,16 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFGenerator;
+import twilightforest.world.feature.TFGenerator;
 
 import java.util.Random;
+import java.util.function.Predicate;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
-	private int groundLevel = -1;
-
+	protected int groundLevel = -1;
 
 	public ComponentTFHollowTreeRoot() {
 		super();
@@ -26,25 +26,23 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
 	public ComponentTFHollowTreeRoot(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
 		super(feature, i, sx, sy, sz, length, angle, tilt, leafy);
-		this.boundingBox = new StructureBoundingBox(Math.min(src.getX(), dest.getX()), Math.min(src.getY(), dest.getY()), Math.min(src.getZ(), dest.getZ()), Math.max(src.getX(), dest.getX()), Math.max(src.getY(), dest.getY()), Math.max(src.getZ(), dest.getZ()));
+		this.boundingBox = new StructureBoundingBox(src, dest);
 	}
-
 
 	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
-		if (!drawLeaves)
-		{
+		if (!drawLeaves) {
 			// offset bounding box to average ground level
-			if (this.groundLevel < 0)
-			{
-				this.groundLevel = this.getSampledDirtLevel(world, sbb);
+			if (this.groundLevel < 0) {
+				this.groundLevel = this.findGroundLevel(world, sbb, 90, isGround); // is 90 like a good place to start? :)
 
-				if (this.groundLevel < 0)
-				{
+				if (this.groundLevel < 0) {
 					return true;
 				}
 
-				src = new BlockPos(src.getX(), groundLevel + 5, src.getZ());
+				int dy = groundLevel + 5 - src.getY();
+				src = src.add(0, dy, 0);
+				dest = dest.add(0, dy, 0);
 			}
 
 			BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
@@ -56,7 +54,6 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
 		return true;
 	}
-
 
 	/**
 	 * Draws a line
@@ -81,4 +78,9 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 			}
 		}
 	}
+
+	protected static final Predicate<IBlockState> isGround = state -> {
+		Material material = state.getMaterial();
+		return material == Material.GROUND || material == Material.ROCK || material == Material.GRASS;
+	};
 }

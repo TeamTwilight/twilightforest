@@ -99,12 +99,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 			// are we there?
 			if (this.isWithinRange(dest.getX(), dest.getZ(), this.boundingBox.minX + 6, this.boundingBox.minZ + 6, 30)) {
-				TwilightForestMod.LOGGER.info("We are within range of our destination, building final tower");
+				TwilightForestMod.LOGGER.debug("We are within range of our destination, building final tower");
 				int howFar = 20;
 				if (!buildEndTowerTowards(list, rand, dest, this.findBestDirectionTowards(dest), howFar)) {
 					if (!buildEndTowerTowards(list, rand, dest, this.findSecondDirectionTowards(dest), howFar)) {
 						if (!buildEndTowerTowards(list, rand, dest, this.findThirdDirectionTowards(dest), howFar)) {
-							TwilightForestMod.LOGGER.info("Cound not build final tower");
+							TwilightForestMod.LOGGER.info("Could not build final tower");
 						}
 					}
 				}
@@ -172,7 +172,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			absoluteDir = (dz >= 0) ? EnumFacing.SOUTH : EnumFacing.NORTH;
 		}
 
-		TwilightForestMod.LOGGER.info("Determining best direction!  center is at " + cx + ", " + cz + " and dest is at " + dest + " offset is " + dx + ", " + dz + " so the best absolute direction is " + absoluteDir);
+		TwilightForestMod.LOGGER.debug("Determining best direction!  center is at {}, {} and dest is at {}. offset is {}, {} so the best absolute direction is {}", cx, cz, dest, dx, dz, absoluteDir);
 
 		return absoluteDir;
 	}
@@ -194,7 +194,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			absoluteDir = (dz >= 0) ? EnumFacing.SOUTH : EnumFacing.NORTH;
 		}
 
-		TwilightForestMod.LOGGER.info("Determining second direction!  center is at " + cx + ", " + cz + " and dest is at " + dest + " offset is " + dx + ", " + dz + " so the best absolute direction is " + absoluteDir);
+		TwilightForestMod.LOGGER.debug("Determining second direction!  center is at {}, {} and dest is at {}. offset is {}, {} so the best absolute direction is {}", cx, cz, dest, dx, dz, absoluteDir);
 
 		return absoluteDir;
 	}
@@ -205,8 +205,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 		EnumFacing[] cardinals = {EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
 
-		TwilightForestMod.LOGGER.info("Determining third direction!  first is " + first + ", and second is " + second);
-
+		TwilightForestMod.LOGGER.debug("Determining third direction!  first is {}, and second is {}", first, second);
 
 		for (EnumFacing f : cardinals) {
 			if (f != first && f != second && f != Rotation.CLOCKWISE_180.rotate(this.getCoordBaseMode())) {
@@ -231,11 +230,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			);
 		}
 
-		TwilightForestMod.LOGGER.info("original direction is " + facing);
+		TwilightForestMod.LOGGER.debug("original direction is {}", facing);
 
 		// build towards
 		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, facing);
-		TwilightForestMod.LOGGER.info("Our coord mode is " + this.getCoordBaseMode() + ", and direction is " + facing + ", so our door is going to be at " + opening + " and the new tower will appear at " + tc);
+		TwilightForestMod.LOGGER.debug("Our coord mode is {}, and direction is {}, so our door is going to be at {} and the new tower will appear at {}", this.getCoordBaseMode(), facing, opening, tc);
 
 		// find start
 		StructureComponent start = (StructureComponent) list.get(0);
@@ -243,7 +242,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		int centerX = ((start.getBoundingBox().minX + 128) >> 8) << 8;
 		int centerZ = ((start.getBoundingBox().minZ + 128) >> 8) << 8;
 
-		TwilightForestMod.LOGGER.info("Testing range, uncorrected center is at " + centerX + ", " + centerZ);
+		TwilightForestMod.LOGGER.debug("Testing range, uncorrected center is at {}, {}", centerX, centerZ);
 
 		if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
@@ -261,7 +260,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			StructureComponent intersect = StructureComponent.findIntersecting(list, largerBB);
 
 			if (intersect == null) {
-				TwilightForestMod.LOGGER.info("tower success!");
+				TwilightForestMod.LOGGER.debug("tower success!");
 				list.add(sTower);
 				sTower.buildTowards(this, list, rand, dest);
 
@@ -276,7 +275,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 				return true;
 			} else {
-				TwilightForestMod.LOGGER.info("tower blocked by " + intersect);
+				TwilightForestMod.LOGGER.info("tower blocked by {}", intersect);
 				return false;
 			}
 		} else {

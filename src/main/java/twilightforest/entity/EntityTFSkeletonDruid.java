@@ -6,7 +6,9 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -16,7 +18,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFSkeletonDruid extends EntitySkeleton {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/skeleton_druid");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/skeleton_druid");
 
 	public EntityTFSkeletonDruid(World world) {
 		super(world);
@@ -42,7 +45,9 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 
 	@Override
 	public void setCombatTask() {
-		// Don't mess with tasks when switching items
+		if (!(this.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemHoe)) {
+			super.setCombatTask();
+		}
 	}
 
 	@Override
@@ -57,15 +62,19 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
-		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
-		playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+		if (this.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemHoe) {
+			EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
+			playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
-		double tx = attackTarget.posX - this.posX;
-		double ty = attackTarget.posY + attackTarget.getEyeHeight() - 2.699999988079071D - this.posY;
-		double tz = attackTarget.posZ - this.posZ;
-		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
-		natureBolt.setThrowableHeading(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-		this.world.spawnEntity(natureBolt);
+			double tx = attackTarget.posX - this.posX;
+			double ty = attackTarget.posY + attackTarget.getEyeHeight() - 2.699999988079071D - this.posY;
+			double tz = attackTarget.posZ - this.posZ;
+			float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
+			natureBolt.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
+			this.world.spawnEntity(natureBolt);
+		} else {
+			super.attackEntityWithRangedAttack(attackTarget, extraDamage);
+		}
 	}
 
 	// [VanillaCopy] of super. Edits noted.

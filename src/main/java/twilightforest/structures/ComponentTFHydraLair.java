@@ -50,7 +50,7 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 		}
 
 		// boss spawner seems important
-		setBlockState(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA), 27, 3, 27, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA), 27, 3, 27, sbb);
 
 		return true;
 	}

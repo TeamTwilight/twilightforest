@@ -18,7 +18,7 @@ public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITi
 
 	@Override
 	public void update() {
-		if (isClient) {
+		if (world.isRemote) {
 			if (yawDelay > 0) {
 				yawDelay--;
 			} else {

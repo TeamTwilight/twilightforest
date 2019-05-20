@@ -30,8 +30,9 @@
   "mob.ice.death": { "category": "hostile", "sounds": [ "twilightforest:mob/ice/death0", "twilightforest:mob/ice/death1" ] },
   "random.slider": { "category": "block", "sounds": [ "twilightforest:random/creakgo2" ] },
   "music.bg": { "category": "music", "sounds": [
-	{ "name": "twilightforest:music/superstitious", "stream": true, "weight": 3 },
-	{ "name": "twilightforest:music/steps", "stream": true, "weight": 3 },
+	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25, "weight": 7 },
+	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25, "weight": 7 },
+	{ "name": "twilightforest:music/radiance", "stream": true, "volume": 0.25, "weight": 7 },
 	{ "name": "music.game", "stream": true, "weight": 1, "type": "event" }
   ] }
 }

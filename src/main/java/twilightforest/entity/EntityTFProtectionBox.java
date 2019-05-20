@@ -3,24 +3,30 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFProtectionBox extends Entity {
 
 	public int lifeTime = 60;
-	public int sizeX;
-	public int sizeY;
-	public int sizeZ;
 
-	public EntityTFProtectionBox(World world, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	public final int sizeX;
+	public final int sizeY;
+	public final int sizeZ;
+
+	private final StructureBoundingBox sbb;
+
+	public EntityTFProtectionBox(World world, StructureBoundingBox sbb) {
 		super(world);
 
-		this.setLocationAndAngles(minX, minY, minZ, 0.0F, 0.0F);
+		this.sbb = new StructureBoundingBox(sbb);
 
-		sizeX = Math.abs(maxX - minX) + 1;
-		sizeY = Math.abs(maxY - minY) + 1;
-		sizeZ = Math.abs(maxZ - minZ) + 1;
+		this.setLocationAndAngles(sbb.minX, sbb.minY, sbb.minZ, 0.0F, 0.0F);
+
+		sizeX = sbb.getXSize();
+		sizeY = sbb.getYSize();
+		sizeZ = sbb.getZSize();
 
 		this.setSize(Math.max(sizeX, sizeZ), sizeY);
 	}
@@ -34,7 +40,15 @@ public class EntityTFProtectionBox extends Entity {
 		} else {
 			lifeTime--;
 		}
+	}
 
+	public boolean matches(StructureBoundingBox sbb) {
+		return this.sbb.minX == sbb.minX && this.sbb.minY == sbb.minY && this.sbb.minZ == sbb.minZ
+				&& this.sbb.maxX == sbb.maxX && this.sbb.maxY == sbb.maxY && this.sbb.maxZ == sbb.maxZ;
+	}
+
+	public void resetLifetime() {
+		lifeTime = 60;
 	}
 
 	@Override
@@ -49,21 +63,17 @@ public class EntityTFProtectionBox extends Entity {
 	}
 
 	@Override
-	protected void entityInit() {
-	}
+	protected void entityInit() {}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1) {
-	}
+	protected void readEntityFromNBT(NBTTagCompound compound) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1) {
-	}
+	protected void writeEntityToNBT(NBTTagCompound compound) {}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean canRenderOnFire() {
 		return false;
 	}
-
 }

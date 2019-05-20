@@ -19,7 +19,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
-import twilightforest.TFTreasure;
+import twilightforest.loot.TFTreasure;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.BlockTFLog;
@@ -35,8 +35,8 @@ import twilightforest.structures.TFMaze;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
 import twilightforest.util.VanillaEntityNames;
-import twilightforest.world.TFGenSmallRainboak;
-import twilightforest.world.TFGenSmallTwilightOak;
+import twilightforest.world.feature.TFGenSmallRainboak;
+import twilightforest.world.feature.TFGenSmallTwilightOak;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +69,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		{
 			int amtToLower = (((this.boundingBox.maxY - 245) / 5) * 5) + 5;
 
-			TwilightForestMod.LOGGER.info("[TwilightForest] Lowering Dark Tower max height by %d to be within world bounds", amtToLower);
+			TwilightForestMod.LOGGER.info("Lowering Dark Tower max height by {} to be within world bounds", amtToLower);
 
 			this.height -= amtToLower;
 			this.boundingBox.maxY -= amtToLower;
@@ -200,7 +200,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			{
 				if (possibleKeyTowers.size() < 1)
 				{
-					TwilightForestMod.LOGGER.warn("[TwilightForest] Dark forest tower could not find four small towers to place keys in.");
+					TwilightForestMod.LOGGER.warn("Dark forest tower could not find four small towers to place keys in.");
 					break;
 				}
 
@@ -418,7 +418,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		if (bottom == 0)
 		{
 			makeLargeStairsUp(world, sbb, rotation, 0);
-			rotation.add(Rotation.COUNTERCLOCKWISE_90);
+			rotation = rotation.add(Rotation.COUNTERCLOCKWISE_90);
 			bottom += spacing;
 		}
 
@@ -905,7 +905,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 	private void decorateBossSpawner(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y)
 	{
-		this.setBlockStateRotated(world, TFBlocks.bossSpawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
+		this.setBlockStateRotated(world, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
 	}
 
 
@@ -1042,7 +1042,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		if (sbb.isVecInside(pos))
 		{
 			EntityItemFrame frame = new EntityItemFrame(world, pos, facing);
-			if (itemStack != null)
+			if (!itemStack.isEmpty())
 			{
 				frame.setDisplayedItem(itemStack);
 			}
@@ -1641,9 +1641,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 				EnumFacing facing = EnumFacing.VALUES[direction];
 
 
-				lx += facing.getFrontOffsetX();
-				ly += facing.getFrontOffsetY();
-				lz += facing.getFrontOffsetZ();
+				lx += facing.getXOffset();
+				ly += facing.getYOffset();
+				lz += facing.getZOffset();
 
 				// if we are out of bounds, stop iterating
 				if (lx > sx + radius || lx < sx - radius || ly > y + radius || ly < y - radius || lz > sz + radius || lz < sz - radius)
@@ -1678,9 +1678,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 				// move randomly
 				EnumFacing direction = directions[move];
 
-				lx += direction.getFrontOffsetX();
-				ly += direction.getFrontOffsetY();
-				lz += direction.getFrontOffsetZ();
+				lx += direction.getXOffset();
+				ly += direction.getYOffset();
+				lz += direction.getZOffset();
 
 				// if we are out of bounds, stop iterating
 				if (lx > sx + radius || lx < sx - radius || ly > y + radius || ly < y - radius || lz > sz + radius || lz < sz - radius)

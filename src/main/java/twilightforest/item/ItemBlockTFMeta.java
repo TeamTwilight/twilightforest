@@ -9,9 +9,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemBlockTFMeta extends ItemBlock {
+
 	private boolean appendNumber = true;
 
 	public ItemBlockTFMeta(Block block) {
@@ -30,16 +32,15 @@ public class ItemBlockTFMeta extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
+	public String getTranslationKey(ItemStack itemstack) {
 		if (appendNumber) {
-			int meta = itemstack.getItemDamage();
-			return (new StringBuilder()).append(super.getUnlocalizedName()).append(".").append(meta).toString();
-		} else return super.getUnlocalizedName();
+			return super.getTranslationKey() + "." + itemstack.getMetadata();
+		} else return super.getTranslationKey();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 
 		// add warning for [WIP] tag

@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:entities",
+  "name": "Bosses",
+  "description": "The very baddest guys!",
+  "icon": "twilightforest:boss_spawner",
+  "sortnum": 0
+}

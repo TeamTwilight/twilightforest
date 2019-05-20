@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "glass_sword": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:glass_sword" }]}}
+  }
+}

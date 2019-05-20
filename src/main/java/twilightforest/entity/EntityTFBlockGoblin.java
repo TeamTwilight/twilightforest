@@ -32,7 +32,8 @@ import twilightforest.TwilightForestMod;
 import java.util.List;
 
 public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/block_goblin");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/block_goblin");
 	private static final float CHAIN_SPEED = 16F;
 	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_CHAINPOS = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
@@ -123,10 +124,10 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	 * Get the block & chain position
 	 */
 	public Vec3d getChainPosition(float angle, float distance) {
-		double var1 = Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double var3 = Math.sin((angle) * Math.PI / 180.0D) * distance;
+		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
+		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return new Vec3d(this.posX + var1, this.posY + this.getChainYOffset(), this.posZ + var3);
+		return new Vec3d(this.posX + dx, this.posY + this.getChainYOffset(), this.posZ + dz);
 	}
 
 	public boolean isSwingingChain() {
@@ -134,7 +135,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
+	public boolean attackEntityAsMob(Entity entity) {
 		swingArm(EnumHand.MAIN_HAND);
 		return false;
 	}
@@ -253,7 +254,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart MultiPartEntityPart, DamageSource damagesource, float i) {
+	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
 		return false;
 	}
 

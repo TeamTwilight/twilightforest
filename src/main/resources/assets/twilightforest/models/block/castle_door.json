@@ -6,25 +6,37 @@
   },
   "elements": [
     {
-      "from": [ 0, 0, 0 ],
-      "to": [ 16, 16, 16 ],
+      "from": [  0,  0,  0 ],
+      "to":   [ 16, 16, 16 ],
       "faces": {
-        "down":  { "texture": "#all", "tintindex": 16 },
-        "up":    { "texture": "#all", "tintindex": 16 },
-        "north": { "texture": "#all", "tintindex": 16 },
-        "south": { "texture": "#all", "tintindex": 16 },
-        "west":  { "texture": "#all", "tintindex": 16 },
-        "east":  { "texture": "#all", "tintindex": 16 }
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
       }
     }, {
-      "from": [ -0.02, -0.02, -0.02 ],
-      "to": [ 16.02, 16.02, 16.02 ],
+      "from": [  0, -0.02,  0 ],
+      "to":   [ 16, 16.02, 16 ],
       "shade": false,
       "faces": {
         "down":  { "uvs": [0, 0, 16, 16], "texture": "#all2", "cullface": "down" , "tintindex": 0 },
-        "up":    { "uvs": [0, 0, 16, 16], "texture": "#all2", "cullface": "up"   , "tintindex": 0 },
+        "up":    { "uvs": [0, 0, 16, 16], "texture": "#all2", "cullface": "up"   , "tintindex": 0 }
+      }
+    }, {
+      "from": [  0,  0, -0.02 ],
+      "to":   [ 16, 16, 16.02 ],
+      "shade": false,
+      "faces": {
         "north": { "uvs": [0, 0, 16, 16], "texture": "#all2", "cullface": "north", "tintindex": 0 },
-        "south": { "uvs": [0, 0, 16, 16], "texture": "#all2", "cullface": "south", "tintindex": 0 },
+        "south": { "uvs": [0, 0, 16, 16], "texture": "#all2", "cullface": "south", "tintindex": 0 }
+      }
+    }, {
+      "from": [ -0.02,  0,  0 ],
+      "to":   [ 16.02, 16, 16 ],
+      "shade": false,
+      "faces": {
         "west":  { "uvs": [0, 0, 16, 16], "texture": "#all2", "cullface": "west" , "tintindex": 0 },
         "east":  { "uvs": [0, 0, 16, 16], "texture": "#all2", "cullface": "east" , "tintindex": 0 }
       }

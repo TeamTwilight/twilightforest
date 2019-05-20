@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import twilightforest.TFPacketHandler;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.network.PacketThrowPlayer;
 
 public class EntityAITFThrowRider extends EntityAIAttackMelee {
@@ -16,8 +16,8 @@ public class EntityAITFThrowRider extends EntityAIAttackMelee {
 	private int throwTimer;
 	private int timeout;
 
-	public EntityAITFThrowRider(EntityCreature par1EntityCreature, double speedIn, boolean useLongMemory) {
-		super(par1EntityCreature, speedIn, useLongMemory);
+	public EntityAITFThrowRider(EntityCreature creature, double speedIn, boolean useLongMemory) {
+		super(creature, speedIn, useLongMemory);
 	}
 
 	@Override

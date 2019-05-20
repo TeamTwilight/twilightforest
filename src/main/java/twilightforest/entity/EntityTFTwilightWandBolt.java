@@ -1,7 +1,6 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -12,21 +11,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 
-public class EntityTFTwilightWandBolt extends EntityThrowable {
 	@SuppressWarnings("unused")
-	public EntityTFTwilightWandBolt(World par1World) {
-		super(par1World);
+	public EntityTFTwilightWandBolt(World world) {
+		super(world);
 	}
 
 	@SuppressWarnings("unused")
-	public EntityTFTwilightWandBolt(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
+	public EntityTFTwilightWandBolt(World world, double x, double y, double z) {
+		super(world, x, y, z);
 	}
 
 	public EntityTFTwilightWandBolt(World world, EntityLivingBase thrower) {
 		super(world, thrower);
-		setHeadingFromThrower(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
+		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 
 	@Override
@@ -58,8 +57,9 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
+			int itemId = Item.getIdFromItem(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, Item.getIdFromItem(Items.ENDER_PEARL));
+				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -85,10 +85,11 @@ public class EntityTFTwilightWandBolt extends EntityThrowable {
 		if (!this.world.isRemote && source.getTrueSource() != null) {
 			Vec3d vec3d = source.getTrueSource().getLookVec();
 			// reflect faster and more accurately
-			this.setThrowableHeading(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
+			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 
-			if (source.getImmediateSource() instanceof EntityLivingBase)
+			if (source.getImmediateSource() instanceof EntityLivingBase) {
 				this.thrower = (EntityLivingBase) source.getImmediateSource();
+			}
 			return true;
 		}
 

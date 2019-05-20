@@ -1,0 +1,10 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "raw": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:raw_venison" }]}},
+    "cooked": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:cooked_venison" }]}}
+  },
+  "requirements": [
+    [ "raw", "cooked" ]
+  ]
+}

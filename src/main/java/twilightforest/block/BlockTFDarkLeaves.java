@@ -4,12 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
@@ -43,28 +42,26 @@ public class BlockTFDarkLeaves extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random) {
-		return par1Random.nextInt(40) == 0 ? 1 : 0;
+	public int quantityDropped(Random random) {
+		return random.nextInt(40) == 0 ? 1 : 0;
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3) {
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return new ItemStack(this);
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World par1World, BlockPos pos, IBlockState state, float par6, int fortune) {
-		if (!par1World.isRemote) {
-			if (par1World.rand.nextInt(40) == 0) {
-				this.dropBlockAsItem(par1World, pos, state, fortune);
-			}
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+		if (rand.nextInt(40) == 0) {
+			Item item = this.getItemDropped(state, rand, fortune);
+			drops.add(new ItemStack(item, 1, this.damageDropped(state)));
 		}
 	}
-
 }
-

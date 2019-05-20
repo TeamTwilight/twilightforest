@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +19,7 @@ import twilightforest.item.TFItems;
 
 public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
 
-	public static final PropertyEnum<DeadrockVariant> VARIANT = PropertyEnum.create("variant", DeadrockVariant.class);
+	public static final IProperty<DeadrockVariant> VARIANT = PropertyEnum.create("variant", DeadrockVariant.class);
 
 	protected BlockTFDeadrock() {
 		super(Material.ROCK);
@@ -47,9 +48,9 @@ public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
 		for (int i = 0; i < VARIANT.getAllowedValues().size(); i++) {
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 

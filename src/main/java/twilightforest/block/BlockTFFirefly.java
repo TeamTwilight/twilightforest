@@ -4,7 +4,9 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -39,6 +41,11 @@ public class BlockTFFirefly extends BlockTFCritter implements ModelRegisterCallb
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return TwilightForestMod.proxy.getNewFireflyTE();
+	}
+
+	@Override
+	public ItemStack getSquishResult() {
+		return new ItemStack(Items.GLOWSTONE_DUST);
 	}
 
 	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)

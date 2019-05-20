@@ -11,9 +11,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.TFGenCanopyOak;
-import twilightforest.world.TFGenNoTree;
-import twilightforest.world.TFGenTallGrass;
+import twilightforest.world.feature.TFGenCanopyOak;
+import twilightforest.world.feature.TFGenNoTree;
+import twilightforest.world.feature.TFGenTallGrass;
 
 import java.util.Random;
 
@@ -41,10 +41,10 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 	}
 
 	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random par1Random) {
-		if (par1Random.nextInt(10) == 0) {
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
+		if (random.nextInt(10) == 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
-		} else if (par1Random.nextInt(10) == 0) {
+		} else if (random.nextInt(10) == 0) {
 			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
@@ -52,16 +52,16 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 	}
 
 	@Override
-	public void decorate(World par1World, Random par2Random, BlockPos pos) {
-		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.GRASS);
+	public void decorate(World world, Random random, BlockPos pos) {
 
-		for (int k = 0; k < 7; ++k) {
-			int l = pos.getX() + par2Random.nextInt(16) + 8;
-			int i1 = pos.getZ() + par2Random.nextInt(16) + 8;
-			int j1 = par2Random.nextInt(par1World.getHeight(new BlockPos(l, 0, i1)).getY() + 32);
-			DOUBLE_PLANT_GENERATOR.generate(par1World, par2Random, new BlockPos(l, j1, i1));
+		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.GRASS);
+		for (int i = 0; i < 7; ++i) {
+			int x = pos.getX() + random.nextInt(16) + 8;
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			int y = random.nextInt(world.getHeight(x, z) + 32);
+			DOUBLE_PLANT_GENERATOR.generate(world, random, new BlockPos(x, y, z));
 		}
 
-		super.decorate(par1World, par2Random, pos);
+		super.decorate(world, random, pos);
 	}
 }

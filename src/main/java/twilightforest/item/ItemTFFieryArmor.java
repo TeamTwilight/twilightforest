@@ -17,18 +17,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTFFieryArmor extends ItemArmor implements ModelRegisterCallback {
+public class ItemTFFieryArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-	public ItemTFFieryArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, EntityEquipmentSlot armorType) {
-		super(par2EnumArmorMaterial, 0, armorType);
+	public ItemTFFieryArmor(ItemArmor.ArmorMaterial armorMaterial, EntityEquipmentSlot armorType, EnumRarity rarity) {
+		super(armorMaterial, armorType, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
-	}
-
-	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.EPIC;
 	}
 
 	@Override
@@ -43,17 +39,17 @@ public class ItemTFFieryArmor extends ItemArmor implements ModelRegisterCallback
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tab)) {
-			ItemStack istack = new ItemStack(this);
-			//istack.addEnchantment(TFEnchantment.fieryAura, 2);
-			list.add(istack);
+			ItemStack stack = new ItemStack(this);
+			//stack.addEnchantment(TFEnchantment.fieryAura, 2);
+			list.add(stack);
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format(getUnlocalizedName() + ".tooltip"));
+		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 
 	@Override

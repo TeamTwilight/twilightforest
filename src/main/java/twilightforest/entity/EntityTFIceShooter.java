@@ -23,10 +23,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/ice_shooter");
 
-	public EntityTFIceShooter(World par1World) {
-		super(par1World);
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_shooter");
+
+	public EntityTFIceShooter(World world) {
+		super(world);
 		this.setSize(0.8F, 1.8F);
 	}
 
@@ -61,15 +62,16 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		// make snow particles
-		for (int i = 0; i < 3; i++) {
-			float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
-			float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
-			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+		if (this.world.isRemote) {
+			// make snow particles
+			for (int i = 0; i < 3; i++) {
+				float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
+				float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
+				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
-			TwilightForestMod.proxy.spawnParticle(this.world, TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			}
 		}
-
 	}
 
 	@Override
@@ -93,7 +95,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float par2) {
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
 		EntityTFIceSnowball snowball = new EntityTFIceSnowball(this.world, this);
 
 		// [VanillaCopy] Adapted from EntitySnowman
@@ -102,7 +104,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 		double d2 = d0 - snowball.posY;
 		double d3 = target.posZ - this.posZ;
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
-		snowball.setThrowableHeading(d1, d2 + (double) f, d3, 1.6F, 0.0F);
+		snowball.shoot(d1, d2 + (double) f, d3, 1.6F, 0.0F);
 
 		this.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.world.spawnEntity(snowball);

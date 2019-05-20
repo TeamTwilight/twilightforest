@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -9,44 +10,47 @@ import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TFCommonProxy;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.ColorHandler;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
-import twilightforest.client.particle.*;
-import twilightforest.client.renderer.TileEntityTFCicadaRenderer;
-import twilightforest.client.renderer.TileEntityTFFireflyRenderer;
-import twilightforest.client.renderer.TileEntityTFMoonwormRenderer;
-import twilightforest.client.renderer.TileEntityTFTrophyRenderer;
+import twilightforest.client.particle.TFParticleFactory;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.*;
-import twilightforest.client.shader.ShaderHelper;
+import twilightforest.client.renderer.tileentity.*;
+import twilightforest.client.shader.ShaderManager;
+import twilightforest.compat.TFCompat;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import twilightforest.entity.passive.*;
-import twilightforest.tileentity.critters.*;
 import twilightforest.tileentity.TileEntityTFTrophy;
+import twilightforest.tileentity.critters.*;
 
 import java.util.EnumMap;
 import java.util.Map;
 
 public class TFClientProxy extends TFCommonProxy {
+
 	private final Map<EntityEquipmentSlot, ModelBiped> knightlyArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
 	private final Map<EntityEquipmentSlot, ModelBiped> phantomArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
 	private final Map<EntityEquipmentSlot, ModelBiped> yetiArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
@@ -69,8 +73,8 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydra.class, m -> new RenderTFHydra(m, new ModelTFHydra(), 4.0F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFLich.class, m -> new RenderTFLich(m, new ModelTFLich(), 0.6F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFPenguin.class, m -> new RenderTFBird(m, new ModelTFPenguin(), 0.375F, "penguin.png"));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichMinion.class, m -> new RenderTFBiped<>(m, new ModelTFLichMinion(), 1.0F, "textures/entity/zombie/zombie.png"));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFLoyalZombie.class, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 1.0F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichMinion.class, m -> new RenderTFBiped<>(m, new ModelTFLichMinion(), 0.5F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFLoyalZombie.class, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.5F, "textures/entity/zombie/zombie.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFTinyBird.class, m -> new RenderTFTinyBird(m, new ModelTFTinyBird(), 1.0F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSquirrel.class, m -> new RenderTFGenericLiving<>(m, new ModelTFSquirrel(), 1.0F, "squirrel2.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBunny.class, m -> new RenderTFBunny(m, new ModelTFBunny(), 1.0F));
@@ -152,7 +156,6 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void init() {
-		ColorHandler.init();
 
 		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 
@@ -188,81 +191,60 @@ public class TFClientProxy extends TFCommonProxy {
 		fieryArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFFieryArmor(0.5F));
 		fieryArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFFieryArmor(0.5F));
 
-		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 3600);
+		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 12000);
 
-		ShaderHelper.initShaders();
+		ShaderManager.initShaders();
+
+		ClientCommandHandler.instance.registerCommand(new CommandBase() {
+			@Override
+			public String getName() {
+				return "tfreload";
+			}
+
+			@Override
+			public String getUsage(ICommandSender sender) {
+				return "commands.tffeature.reload";
+			}
+
+			@Override
+			public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+					Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
+					twilightforest.client.shader.ShaderManager.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
+					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
+						twilightforest.compat.ie.IEShaderRegister.initShaders();
+				}
+			}
+		});
 	}
 
+	// [VanillaCopy] adapted from RenderGlobal.spawnParticle
 	@Override
-	public World getClientWorld() {
-		return FMLClientHandler.instance().getClient().world;
-	}
+	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {
 
-	// [VanillaCopy] adapted from RenderGlobal.spawnEntityFX
-	@Override
-	public void spawnParticle(World world, TFParticleType particleType, double x, double y, double z, double velX, double velY, double velZ) {
 		Minecraft mc = Minecraft.getMinecraft();
 		Entity entity = mc.getRenderViewEntity();
-
-		// ignore the passed-in world, since on SP we get the integrated server world, which is not really what we want
-		world = this.getClientWorld();
+		World world = mc.world;
 
 		if (entity != null && mc.effectRenderer != null) {
+
 			int i = mc.gameSettings.particleSetting;
 
 			if (i == 1 && world.rand.nextInt(3) == 0) {
 				i = 2;
 			}
 
-			double d0 = entity.posX - x;
-			double d1 = entity.posY - y;
-			double d2 = entity.posZ - z;
+			if (i > 1) return;
 
-			if (d0 * d0 + d1 * d1 + d2 * d2 <= 1024D && i <= 1) {
-				Particle particle = null;
+			double dx = entity.posX - x;
+			double dy = entity.posY - y;
+			double dz = entity.posZ - z;
 
-				switch (particleType) {
-					case LARGE_FLAME:
-						particle = new ParticleLargeFlame(world, x, y, z, velX, velY, velZ);
-						break;
-					case LEAF_RUNE:
-						particle = new ParticleLeafRune(world, x, y, z, velX, velY, velZ);
-						break;
-					case BOSS_TEAR:
-						particle = new ParticleGhastTear(world, x, y, z, velX, velY, velZ, Items.GHAST_TEAR);
-						break;
-					case GHAST_TRAP:
-						particle = new ParticleGhastTrap(world, x, y, z, velX, velY, velZ);
-						break;
-					case PROTECTION:
-						particle = new ParticleProtection(world, x, y, z, velX, velY, velZ);
-						break;
-					case SNOW:
-						particle = new ParticleSnow(world, x, y, z, velX, velY, velZ);
-						break;
-					case SNOW_GUARDIAN:
-						particle = new ParticleSnowGuardian(world, x, y, z, velX, velY, velZ, 0.75F);
-						break;
-					case SNOW_WARNING:
-						particle = new ParticleSnowWarning(world, x, y, z, velX, velY, velZ, 1F);
-						break;
-					case ICE_BEAM:
-						particle = new ParticleIceBeam(world, x, y, z, velX, velY, velZ, 0.75F);
-						break;
-					case ANNIHILATE:
-						particle = new ParticleAnnihilate(world, x, y, z, velX, velY, velZ, 0.75F);
-						break;
-					case HUGE_SMOKE:
-						particle = new ParticleSmokeScale(world, x, y, z, velX, velY, velZ, 4.0F + world.rand.nextFloat());
-						break;
-					case FIREFLY:
-						particle = new ParticleFirefly(world, x, y, z, velX, velY, velZ);
-						break;
-				}
+			if (dx * dx + dy * dy + dz * dz > 1024.0D) return;
 
-				if (particle != null) {
-					mc.effectRenderer.addEffect(particle);
-				}
+			Particle particle = TFParticleFactory.createParticle(particleType, world, x, y, z, vx, vy, vz);
+			if (particle != null) {
+				mc.effectRenderer.addEffect(particle);
 			}
 		}
 	}
@@ -287,7 +269,6 @@ public class TFClientProxy extends TFCommonProxy {
 		return arcticArmorModel.get(armorSlot);
 	}
 
-
 	@Override
 	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
 		return this.fieryArmorModel.get(armorSlot);
@@ -299,26 +280,6 @@ public class TFClientProxy extends TFCommonProxy {
 
 	public void setDangerOverlayShown(boolean isDangerOverlayShown) {
 		this.isDangerOverlayShown = isDangerOverlayShown;
-
-	}
-
-	@Override
-	public void doBlockAnnihilateEffect(World world, BlockPos pos) {
-		for (int dx = 0; dx < 4; ++dx) {
-			for (int dy = 0; dy < 4; ++dy) {
-				for (int dz = 0; dz < 4; ++dz) {
-					double d0 = (double) pos.getX() + ((double) dx + 0.5D) / (double) 4;
-					double d1 = (double) pos.getY() + ((double) dy + 0.5D) / (double) 4;
-					double d2 = (double) pos.getZ() + ((double) dz + 0.5D) / (double) 4;
-
-					double gx = world.rand.nextGaussian() * 0.2D;
-					double gy = world.rand.nextGaussian() * 0.2D;
-					double gz = world.rand.nextGaussian() * 0.2D;
-
-					TwilightForestMod.proxy.spawnParticle(world, TFParticleType.ANNIHILATE, d0, d1, d2, gx, gy, gz);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -326,7 +287,9 @@ public class TFClientProxy extends TFCommonProxy {
 		if (player instanceof EntityPlayerSP) {
 			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
 			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
-			return adv != null && manager.advancementToProgress.get(adv).isDone();
+			if (adv == null) return false;
+			AdvancementProgress progress = manager.advancementToProgress.get(adv);
+			return progress != null && progress.isDone();
 		}
 
 		return super.doesPlayerHaveAdvancement(player, advId);
@@ -349,8 +312,8 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class, "firefly");
-		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class, "cicada");
-		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, "moonworm");
+		GameRegistry.registerTileEntity(TileEntityTFFireflyTicking.class,  prefix("firefly" ));
+		GameRegistry.registerTileEntity(TileEntityTFCicadaTicking.class,   prefix("cicada"  ));
+		GameRegistry.registerTileEntity(TileEntityTFMoonwormTicking.class, prefix("moonworm"));
 	}
 }

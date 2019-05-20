@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawnData {
+
 	private static final int WARMUP_TIME = 20;
 	private static final DataParameter<EnumFacing> MOVE_DIRECTION = EntityDataManager.createKey(EntityTFSlideBlock.class, DataSerializers.FACING);
 
@@ -41,7 +42,6 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		this.setSize(0.98F, 0.98F);
 		//this.yOffset = this.height / 2.0F;
 	}
-
 
 	public EntityTFSlideBlock(World world, double x, double y, double z, IBlockState state) {
 		super(world);
@@ -122,9 +122,11 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 			++this.slideTime;
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
-				this.motionX += dataManager.get(MOVE_DIRECTION).getFrontOffsetX() * 0.04;
-				this.motionY += dataManager.get(MOVE_DIRECTION).getFrontOffsetY() * 0.04;
-				this.motionZ += dataManager.get(MOVE_DIRECTION).getFrontOffsetZ() * 0.04;
+				final double moveAcceleration = 0.04;
+				EnumFacing moveDirection = dataManager.get(MOVE_DIRECTION);
+				this.motionX += moveDirection.getXOffset() * moveAcceleration;
+				this.motionY += moveDirection.getYOffset() * moveAcceleration;
+				this.motionZ += moveDirection.getZOffset() * moveAcceleration;
 				this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 			}
 			this.motionX *= 0.98;
@@ -155,7 +157,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 					dataManager.set(MOVE_DIRECTION, dataManager.get(MOVE_DIRECTION).getOpposite());
 				}
 
-				if (this.isCollided) {
+				if (this.collided) {
 					this.motionX *= 0.699999988079071D;
 					this.motionZ *= 0.699999988079071D;
 					this.motionY *= 0.699999988079071D;
@@ -178,8 +180,8 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		}
 	}
 
-	private void damageKnockbackEntities(List<Entity> par1List) {
-		for (Entity entity : par1List) {
+	private void damageKnockbackEntities(List<Entity> entities) {
+		for (Entity entity : entities) {
 			if (entity instanceof EntityLivingBase) {
 				entity.attackEntityFrom(DamageSource.GENERIC, 5);
 
@@ -192,7 +194,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBox(Entity p_70114_1_) {
+	public AxisAlignedBB getCollisionBox(Entity entity) {
 		return null;
 	}
 
@@ -203,22 +205,23 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	//Atomic: Suppressed deprecation, Ideally I'd use a state string here, but that is more work than I'm willing to put in right now.
+	// TODO: use NBTUtil functions
 	@SuppressWarnings("deprecation")
 	@Override
-	protected void readEntityFromNBT(@Nonnull NBTTagCompound nbtTagCompound) {
-		Block b = Block.REGISTRY.getObject(new ResourceLocation(nbtTagCompound.getString("TileID")));
-		int meta = nbtTagCompound.getByte("Meta");
+	protected void readEntityFromNBT(@Nonnull NBTTagCompound compound) {
+		Block b = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("TileID")));
+		int meta = compound.getByte("Meta");
 		this.myState = b.getStateFromMeta(meta);
-		this.slideTime = nbtTagCompound.getInteger("Time");
-		dataManager.set(MOVE_DIRECTION, EnumFacing.getFront(nbtTagCompound.getByte("Direction")));
+		this.slideTime = compound.getInteger("Time");
+		dataManager.set(MOVE_DIRECTION, EnumFacing.byIndex(compound.getByte("Direction")));
 	}
 
 	@Override
-	protected void writeEntityToNBT(@Nonnull NBTTagCompound nbtTagCompound) {
-		nbtTagCompound.setString("TileID", myState.getBlock().getRegistryName().toString());
-		nbtTagCompound.setByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
-		nbtTagCompound.setInteger("Time", this.slideTime);
-		nbtTagCompound.setByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
+	protected void writeEntityToNBT(@Nonnull NBTTagCompound compound) {
+		compound.setString("TileID", myState.getBlock().getRegistryName().toString());
+		compound.setByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
+		compound.setInteger("Time", this.slideTime);
+		compound.setByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
 	}
 
 	@Override

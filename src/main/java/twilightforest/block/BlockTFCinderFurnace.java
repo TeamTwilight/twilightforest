@@ -32,7 +32,7 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 	private static boolean keepInventory;
 	private final boolean isBurning;
 
-	BlockTFCinderFurnace(Boolean isLit) {
+	BlockTFCinderFurnace(boolean isLit) {
 		super(Material.WOOD);
 
 		this.isBurning = isLit;
@@ -61,11 +61,11 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockFurnace.FACING, EnumFacing.getHorizontal(meta));
+		return getDefaultState().withProperty(BlockFurnace.FACING, EnumFacing.byHorizontalIndex(meta));
 	}
 
 	@Override
-	public TileEntity createTileEntity(World p_149915_1_, IBlockState state) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityTFCinderFurnace();
 	}
 
@@ -134,5 +134,13 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return new ItemStack(Item.getItemFromBlock(TFBlocks.cinder_furnace));
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		if (!isBurning) {
+			ModelRegisterCallback.super.registerModel();
+		}
 	}
 }

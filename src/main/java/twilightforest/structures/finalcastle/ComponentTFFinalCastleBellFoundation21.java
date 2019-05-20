@@ -15,22 +15,17 @@ import java.util.Random;
  * @author benma_000
  */
 public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCastleFoundation13 {
-	public ComponentTFFinalCastleBellFoundation21() {
-	}
+
+	public ComponentTFFinalCastleBellFoundation21() {}
 
 	public ComponentTFFinalCastleBellFoundation21(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
 		super(feature, rand, i, sideTower);
 
 		this.boundingBox = new StructureBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().maxY, sideTower.getBoundingBox().maxZ + 2);
-
 	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		// find ground level
-		if (this.groundLevel < 0) {
-			this.groundLevel = this.getDeadrockLevel(world, sbb);
-		}
 
 		int mid = 16;
 		int low = 32;
@@ -54,11 +49,8 @@ public class ComponentTFFinalCastleBellFoundation21 extends ComponentTFFinalCast
 				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -1, 1, rotation, sbb);
 				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 			}
-
 		}
 
 		return true;
 	}
-
-
 }

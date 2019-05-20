@@ -10,10 +10,11 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFRedcap;
 
 public abstract class EntityAITFRedcapBase extends EntityAIBase {
-	protected final EntityTFRedcap entityObj;
+
+	protected final EntityTFRedcap redcap;
 
 	protected EntityAITFRedcapBase(EntityTFRedcap entity) {
-		this.entityObj = entity;
+		this.redcap = entity;
 	}
 
 	/**
@@ -21,8 +22,8 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase {
 	 */
 	public boolean isTargetLookingAtMe(EntityLivingBase attackTarget) {
 		// find angle of approach
-		double dx = entityObj.posX - attackTarget.posX;
-		double dz = entityObj.posZ - attackTarget.posZ;
+		double dx = redcap.posX - attackTarget.posX;
+		double dz = redcap.posZ - attackTarget.posZ;
 		float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
 		float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);
@@ -31,12 +32,12 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase {
 	}
 
 	public BlockPos findBlockTNTNearby(int range) {
-		BlockPos entityPos = new BlockPos(entityObj);
+		BlockPos entityPos = new BlockPos(redcap);
 
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
-					if (entityObj.world.getBlockState(entityPos.add(x, y, z)).getBlock() == Blocks.TNT) {
+					if (redcap.world.getBlockState(entityPos.add(x, y, z)).getBlock() == Blocks.TNT) {
 						return entityPos.add(x, y, z);
 					}
 				}
@@ -47,8 +48,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase {
 	}
 
 	public boolean isLitTNTNearby(int range) {
-		AxisAlignedBB expandedBox = entityObj.getEntityBoundingBox().grow(range, range, range);
-		return !entityObj.world.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox).isEmpty();
+		AxisAlignedBB expandedBox = redcap.getEntityBoundingBox().grow(range, range, range);
+		return !redcap.world.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox).isEmpty();
 	}
-
 }

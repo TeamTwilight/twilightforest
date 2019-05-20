@@ -4,11 +4,11 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketMaps;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -19,17 +19,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
-import twilightforest.TFPacketHandler;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.network.PacketMagicMap;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 	public static final String STR_ID = "magicmap";
-	private static final HashMap<Biome, MapColorBrightness> BIOME_COLORS = new HashMap<>();
+	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	private static class MapColorBrightness {
 		public MapColor color;
@@ -144,7 +145,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
 								TFFeature feature = TFFeature.getFeatureAt(worldX, worldZ, world);
 								TFMagicMapData tfData = (TFMagicMapData) data;
-								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature.featureID, mapX, mapZ, (byte) 8));
+								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature.ordinal(), mapX, mapZ, (byte) 8));
 								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
 							}
 						}
@@ -156,48 +157,48 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 
 	private MapColorBrightness getMapColorPerBiome(World world, Biome biome) {
 		if (BIOME_COLORS.isEmpty()) {
-			ItemTFMagicMap.setupBiomeColors();
+			setupBiomeColors();
 		}
-
-		if (BIOME_COLORS.containsKey(biome)) {
-			return BIOME_COLORS.get(biome);
+		MapColorBrightness color = BIOME_COLORS.get(biome.getRegistryName());
+		if (color != null) {
+			return color;
 		} else {
 			return new MapColorBrightness(biome.topBlock.getMapColor(world, BlockPos.ORIGIN));
 		}
 	}
 
 	private static void setupBiomeColors() {
-		BIOME_COLORS.put(TFBiomes.twilightForest, new MapColorBrightness(MapColor.FOLIAGE, 1));
-		BIOME_COLORS.put(TFBiomes.denseTwilightForest, new MapColorBrightness(MapColor.FOLIAGE, 0));
-		BIOME_COLORS.put(TFBiomes.tfLake, new MapColorBrightness(MapColor.WATER, 3));
-		BIOME_COLORS.put(TFBiomes.stream, new MapColorBrightness(MapColor.WATER, 1));
-		BIOME_COLORS.put(TFBiomes.tfSwamp, new MapColorBrightness(MapColor.DIAMOND, 3));
-		BIOME_COLORS.put(TFBiomes.fireSwamp, new MapColorBrightness(MapColor.NETHERRACK, 1));
-		BIOME_COLORS.put(TFBiomes.clearing, new MapColorBrightness(MapColor.GRASS, 2));
-		BIOME_COLORS.put(TFBiomes.oakSavanna, new MapColorBrightness(MapColor.GRASS, 0));
-		BIOME_COLORS.put(TFBiomes.highlands, new MapColorBrightness(MapColor.DIRT, 0));
-		BIOME_COLORS.put(TFBiomes.thornlands, new MapColorBrightness(MapColor.WOOD, 3));
-		BIOME_COLORS.put(TFBiomes.highlandsCenter, new MapColorBrightness(MapColor.SILVER, 2));
-		BIOME_COLORS.put(TFBiomes.fireflyForest, new MapColorBrightness(MapColor.EMERALD, 1));
-		BIOME_COLORS.put(TFBiomes.darkForest, new MapColorBrightness(MapColor.GREEN, 3));
-		BIOME_COLORS.put(TFBiomes.darkForestCenter, new MapColorBrightness(MapColor.ADOBE, 3));
-		BIOME_COLORS.put(TFBiomes.snowy_forest, new MapColorBrightness(MapColor.SNOW, 1));
-		BIOME_COLORS.put(TFBiomes.glacier, new MapColorBrightness(MapColor.ICE, 1));
-		BIOME_COLORS.put(TFBiomes.mushrooms, new MapColorBrightness(MapColor.ADOBE, 0));
-		BIOME_COLORS.put(TFBiomes.deepMushrooms, new MapColorBrightness(MapColor.PINK, 0));
-		BIOME_COLORS.put(TFBiomes.enchantedForest, new MapColorBrightness(MapColor.LIME, 2));
+		putBiomeColor(TFBiomes.twilightForest, new MapColorBrightness(MapColor.FOLIAGE, 1));
+		putBiomeColor(TFBiomes.denseTwilightForest, new MapColorBrightness(MapColor.FOLIAGE, 0));
+		putBiomeColor(TFBiomes.tfLake, new MapColorBrightness(MapColor.WATER, 3));
+		putBiomeColor(TFBiomes.stream, new MapColorBrightness(MapColor.WATER, 1));
+		putBiomeColor(TFBiomes.tfSwamp, new MapColorBrightness(MapColor.DIAMOND, 3));
+		putBiomeColor(TFBiomes.fireSwamp, new MapColorBrightness(MapColor.NETHERRACK, 1));
+		putBiomeColor(TFBiomes.clearing, new MapColorBrightness(MapColor.GRASS, 2));
+		putBiomeColor(TFBiomes.oakSavanna, new MapColorBrightness(MapColor.GRASS, 0));
+		putBiomeColor(TFBiomes.highlands, new MapColorBrightness(MapColor.DIRT, 0));
+		putBiomeColor(TFBiomes.thornlands, new MapColorBrightness(MapColor.WOOD, 3));
+		putBiomeColor(TFBiomes.highlandsCenter, new MapColorBrightness(MapColor.SILVER, 2));
+		putBiomeColor(TFBiomes.fireflyForest, new MapColorBrightness(MapColor.EMERALD, 1));
+		putBiomeColor(TFBiomes.darkForest, new MapColorBrightness(MapColor.GREEN, 3));
+		putBiomeColor(TFBiomes.darkForestCenter, new MapColorBrightness(MapColor.ADOBE, 3));
+		putBiomeColor(TFBiomes.snowy_forest, new MapColorBrightness(MapColor.SNOW, 1));
+		putBiomeColor(TFBiomes.glacier, new MapColorBrightness(MapColor.ICE, 1));
+		putBiomeColor(TFBiomes.mushrooms, new MapColorBrightness(MapColor.ADOBE, 0));
+		putBiomeColor(TFBiomes.deepMushrooms, new MapColorBrightness(MapColor.PINK, 0));
+		putBiomeColor(TFBiomes.enchantedForest, new MapColorBrightness(MapColor.LIME, 2));
+	}
+
+	private static void putBiomeColor(Biome biome, MapColorBrightness color) {
+		BIOME_COLORS.put(biome.getRegistryName(), color);
 	}
 
 	@Override
-	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		// disable zooming
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.UNCOMMON;
-	}
-
 	@Nullable
 	public Packet<?> createMapDataPacket(ItemStack stack, World world, EntityPlayer player) {
 		Packet<?> p = super.createMapDataPacket(stack, world, player);

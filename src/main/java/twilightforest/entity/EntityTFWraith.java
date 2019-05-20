@@ -9,7 +9,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -21,16 +20,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
-import twilightforest.util.PlayerHelper;
 
 import java.util.Random;
 
 public class EntityTFWraith extends EntityFlying implements IMob {
-	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(TwilightForestMod.ID, "entities/wraith");
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/wraith");
 
 	public EntityTFWraith(World world) {
 		super(world);
@@ -89,7 +87,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			return target != null
 					&& target.getEntityBoundingBox().maxY > taskOwner.getEntityBoundingBox().minY
 					&& target.getEntityBoundingBox().minY < taskOwner.getEntityBoundingBox().maxY
-					&& taskOwner.getDistanceSqToEntity(target) <= 4.0D;
+					&& taskOwner.getDistanceSq(target) <= 4.0D;
 		}
 
 		@Override
@@ -170,7 +168,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			} else {
 				EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
 
-				if (entitylivingbase.getDistanceSqToEntity(this.parentEntity) < 4096.0D) {
+				if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
 					double d1 = entitylivingbase.posX - this.parentEntity.posX;
 					double d2 = entitylivingbase.posZ - this.parentEntity.posZ;
 					this.parentEntity.rotationYaw = -((float) MathHelper.atan2(d1, d2)) * (180F / (float) Math.PI);
@@ -255,9 +253,9 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		if (super.attackEntityFrom(damagesource, i)) {
-			Entity entity = damagesource.getTrueSource();
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (super.attackEntityFrom(source, amount)) {
+			Entity entity = source.getTrueSource();
 			if (getRidingEntity() == entity || getPassengers().contains(entity)) {
 				return true;
 			}
@@ -288,19 +286,6 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
-	}
-
-	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (source.getTrueSource() instanceof EntityPlayerMP) {
-			// are we in a level 3 hill?
-			int chunkX = MathHelper.floor(posX) >> 4;
-			int chunkZ = MathHelper.floor(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.hill3) {
-				PlayerHelper.grantCriterion((EntityPlayerMP) source.getTrueSource(), new ResourceLocation(TwilightForestMod.ID, "hill3"), "wraith");
-			}
-		}
 	}
 
 	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel

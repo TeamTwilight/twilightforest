@@ -1,9 +1,7 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -11,16 +9,16 @@ import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.StructureBoundingBoxUtils;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld {
+
 	protected int groundLevel = -1;
 
-	public ComponentTFFinalCastleFoundation13() {
-	}
+	public ComponentTFFinalCastleFoundation13() {}
 
 	public ComponentTFFinalCastleFoundation13(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
 		super(feature, i);
@@ -32,7 +30,7 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponentOld) {
+		if (parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
@@ -41,7 +39,7 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// offset bounding box to average ground level
 		if (this.groundLevel < 0) {
-			this.groundLevel = this.getDeadrockLevel(world, sbb);
+			this.groundLevel = this.findGroundLevel(world, sbb, 150, isDeadrock); // is 150 a good place to start? :)
 
 			if (this.groundLevel < 0) {
 				return true;
@@ -73,26 +71,5 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 		return true;
 	}
 
-	/**
-	 * Find what y level the local deadrock is.  Just check the center of the chunk we're given
-	 */
-	protected int getDeadrockLevel(World world, StructureBoundingBox sbb) {
-		int groundLevel = 256;
-
-		for (int y = 150; y > 0; y--) // is 150 a good place to start? :)
-		{
-			final Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
-
-			int cx = center.getX();
-			int cz = center.getZ();
-
-			Block block = world.getBlockState(new BlockPos(cx, y, cz)).getBlock();
-			if (block == TFBlocks.deadrock) {
-				groundLevel = y;
-				break;
-			}
-		}
-
-		return groundLevel;
-	}
+	protected static final Predicate<IBlockState> isDeadrock = state -> state.getBlock() == TFBlocks.deadrock;
 }

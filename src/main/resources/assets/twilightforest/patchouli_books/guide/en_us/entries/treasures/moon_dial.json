@@ -1,0 +1,15 @@
+{
+  "name": "Moon Dial",
+  "icon": "twilightforest:moon_dial",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/moon_dial",
+  "sortnum": 2101,
+  "pages": [
+    {
+      "type": "spotlight",
+      "title": "Moon Dial",
+      "item": "twilightforest:moon_dial",
+      "text": "It reads the moon."
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 package twilightforest.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -12,12 +12,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,26 +29,24 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements ModelRegisterCallback {
 
-	public static final PropertyEnum<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
+	public static final IProperty<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
 
 	private static final float THORN_DAMAGE = 4.0F;
 
 	BlockTFThorns() {
-		super(Material.WOOD, 3, 13);
+		super(Material.WOOD, MapColor.OBSIDIAN, 10);
 		this.setHardness(50.0F);
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
 
-		if (hasVariant())
+		if (hasVariant()) {
 			this.setDefaultState(this.getDefaultState().withProperty(VARIANT, ThornVariant.BROWN));
+		}
 	}
 
 	@Override
@@ -71,6 +69,11 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == ThornVariant.GREEN ? MapColor.FOLIAGE : super.getMapColor(state, world, pos);
+	}
+
+	@Override
 	protected boolean canConnectTo(IBlockState state, IBlockState otherState, IBlockAccess world, BlockPos pos, EnumFacing connectTo) {
 		return (otherState.getBlock() instanceof BlockTFThorns
 				|| otherState.getBlock() == TFBlocks.thorn_rose
@@ -81,25 +84,17 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(TFBlocks.thorns, 1, state.getValue(VARIANT).ordinal());
+	public int damageDropped(IBlockState state) {
+		return hasVariant() ? state.getValue(VARIANT).ordinal() : 0;
 	}
 
 	@Override
-	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return PathNodeType.DAMAGE_CACTUS;
 	}
 
 	@Override
-	@Deprecated
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
 	}
 
@@ -108,7 +103,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 		IBlockState state = world.getBlockState(pos);
 
 		if (state.getBlock() instanceof BlockTFThorns && state.getValue(AXIS) == EnumFacing.Axis.Y)
-			onEntityCollidedWithBlock(world, pos, state, entity);
+			onEntityCollision(world, pos, state, entity);
 
 		super.onEntityWalk(world, pos, entity);
 	}
@@ -131,7 +126,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getMobilityFlag(IBlockState state) {
+	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
 
@@ -203,9 +198,9 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
 		for (int i = 0; i < (hasVariant() ? ThornVariant.values().length : 1); i++) {
-			par3List.add(new ItemStack(this, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 
@@ -216,7 +211,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
