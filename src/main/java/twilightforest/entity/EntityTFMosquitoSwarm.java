@@ -12,13 +12,19 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 
+import javax.annotation.Nullable;
+
 public class EntityTFMosquitoSwarm extends EntityMob {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mosquito_swarm");
 
 	public EntityTFMosquitoSwarm(World world) {
 		super(world);
@@ -89,5 +95,11 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 1;
+	}
+
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

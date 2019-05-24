@@ -5,9 +5,13 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.
@@ -15,6 +19,7 @@ import twilightforest.TFFeature;
  * @author Ben
  */
 public class EntityTFHedgeSpider extends EntitySpider {
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hedge_spider");
 
 	public EntityTFHedgeSpider(World world) {
 		super(world);
@@ -49,5 +54,11 @@ public class EntityTFHedgeSpider extends EntitySpider {
 		// We're allowed to spawn in bright light only in hedge mazes.
 		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE
 				|| super.isValidLightLevel();
+	}
+
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

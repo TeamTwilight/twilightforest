@@ -6,15 +6,21 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	private BlockPos spawnPosition;
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mobile_firefly");
 
 	public EntityTFMobileFirefly(World world) {
 		super(world);
@@ -126,5 +132,11 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 
 	public float getGlowBrightness() {
 		return (float) Math.sin(this.ticksExisted / 7.0) + 1F;
+	}
+
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

@@ -10,6 +10,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -18,11 +19,13 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
 
 public class EntityTFHostileWolf extends EntityWolf implements IMob {
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hostile_wolf");
 
 	public EntityTFHostileWolf(World world) {
 		super(world);
@@ -114,4 +117,9 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		return false;
 	}
 
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 }

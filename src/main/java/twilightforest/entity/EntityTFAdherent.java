@@ -18,11 +18,17 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 
 public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITFCharger {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/adherent");
 
 	private static final DataParameter<Boolean> CHARGE_FLAG = EntityDataManager.createKey(EntityTFAdherent.class, DataSerializers.BOOLEAN);
 
@@ -87,5 +93,9 @@ public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITF
 		dataManager.set(CHARGE_FLAG, flag);
 	}
 
-
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 }

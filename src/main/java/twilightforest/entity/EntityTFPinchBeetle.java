@@ -14,13 +14,19 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
+import javax.annotation.Nullable;
+
 public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/pinch_beetle");
 
 	public EntityTFPinchBeetle(World world) {
 		super(world);
@@ -131,5 +137,11 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 	@Override
 	public boolean canRiderInteract() {
 		return true;
+	}
+
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

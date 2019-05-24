@@ -6,9 +6,14 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 public class EntityTFMistWolf extends EntityTFHostileWolf {
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mist_wolf");
 
 	public EntityTFMistWolf(World world) {
 		super(world);
@@ -57,5 +62,11 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 	@Override
 	protected float getSoundPitch() {
 		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.6F;
+	}
+
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

@@ -9,10 +9,16 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 
 public class EntityTFHarbingerCube extends EntityMob {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/harbinger_cube");
 
 	public EntityTFHarbingerCube(World world) {
 		super(world);
@@ -34,5 +40,11 @@ public class EntityTFHarbingerCube extends EntityMob {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+	}
+
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

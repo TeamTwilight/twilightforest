@@ -1,9 +1,15 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_broodling");
+
 	public EntityTFTowerBroodling(World world) {
 		this(world, true);
 	}
@@ -36,5 +42,11 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 		another.spawnExplosionParticle();
 
 		return true;
+	}
+
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

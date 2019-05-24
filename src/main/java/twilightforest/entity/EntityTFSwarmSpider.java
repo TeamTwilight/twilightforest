@@ -8,11 +8,16 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 
 public class EntityTFSwarmSpider extends EntitySpider {
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/swarm_spider");
 
 	protected boolean shouldSpawn = false;
 
@@ -147,5 +152,11 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 16;
+	}
+
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }
