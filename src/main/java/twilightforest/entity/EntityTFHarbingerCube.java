@@ -13,9 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-
-
 public class EntityTFHarbingerCube extends EntityMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/harbinger_cube");
@@ -42,7 +39,6 @@ public class EntityTFHarbingerCube extends EntityMob {
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

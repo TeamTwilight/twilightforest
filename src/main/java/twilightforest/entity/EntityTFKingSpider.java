@@ -9,8 +9,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-
 public class EntityTFKingSpider extends EntitySpider {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/king_spider");
 
@@ -66,7 +64,6 @@ public class EntityTFKingSpider extends EntitySpider {
 		return (double) this.height * 0.75D;
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

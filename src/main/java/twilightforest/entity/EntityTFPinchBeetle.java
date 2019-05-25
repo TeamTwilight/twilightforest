@@ -22,8 +22,6 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
-import javax.annotation.Nullable;
-
 public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/pinch_beetle");
@@ -139,7 +137,6 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 		return true;
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

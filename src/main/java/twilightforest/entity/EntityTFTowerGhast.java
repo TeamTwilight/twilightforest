@@ -22,7 +22,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class EntityTFTowerGhast extends EntityGhast {
@@ -383,8 +382,6 @@ public class EntityTFTowerGhast extends EntityGhast {
 	}
 	// End copy
 
-
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

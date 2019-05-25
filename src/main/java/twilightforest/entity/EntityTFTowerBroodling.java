@@ -5,8 +5,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-
 public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_broodling");
 
@@ -44,7 +42,6 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 		return true;
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

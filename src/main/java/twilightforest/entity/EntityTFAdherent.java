@@ -23,9 +23,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-
-
 public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITFCharger {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/adherent");
@@ -93,7 +90,6 @@ public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITF
 		dataManager.set(CHARGE_FLAG, flag);
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

@@ -23,7 +23,6 @@ import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
-
 public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hostile_wolf");
 
@@ -117,7 +116,6 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		return false;
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

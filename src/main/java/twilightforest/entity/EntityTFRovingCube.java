@@ -9,8 +9,6 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAICubeCenterOnSymbol;
 import twilightforest.entity.ai.EntityAICubeMoveToRedstoneSymbols;
 
-import javax.annotation.Nullable;
-
 public class EntityTFRovingCube extends EntityMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/roving_cube");
@@ -60,7 +58,6 @@ public class EntityTFRovingCube extends EntityMob {
 		}
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

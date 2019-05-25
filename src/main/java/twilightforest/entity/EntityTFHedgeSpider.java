@@ -11,8 +11,6 @@ import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.
  *
@@ -56,7 +54,6 @@ public class EntityTFHedgeSpider extends EntitySpider {
 				|| super.isValidLightLevel();
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

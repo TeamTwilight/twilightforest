@@ -14,8 +14,6 @@ import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-
 public class EntityTFSwarmSpider extends EntitySpider {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/swarm_spider");
 
@@ -154,7 +152,6 @@ public class EntityTFSwarmSpider extends EntitySpider {
 		return 16;
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

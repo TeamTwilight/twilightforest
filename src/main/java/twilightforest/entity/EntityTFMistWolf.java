@@ -10,8 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-
 public class EntityTFMistWolf extends EntityTFHostileWolf {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mist_wolf");
 
@@ -64,7 +62,6 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.6F;
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

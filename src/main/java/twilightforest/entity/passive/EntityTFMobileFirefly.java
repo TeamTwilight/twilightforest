@@ -15,8 +15,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
-
 public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	private BlockPos spawnPosition;
 
@@ -134,7 +132,6 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 		return (float) Math.sin(this.ticksExisted / 7.0) + 1F;
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

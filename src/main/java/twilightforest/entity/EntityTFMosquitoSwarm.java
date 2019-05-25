@@ -20,8 +20,6 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 
-import javax.annotation.Nullable;
-
 public class EntityTFMosquitoSwarm extends EntityMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mosquito_swarm");
@@ -97,7 +95,6 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 		return 1;
 	}
 
-	@Nullable
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;
