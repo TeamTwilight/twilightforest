@@ -72,14 +72,12 @@ public class EntityTFIceExploder extends EntityMob {
                 float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
                 TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
-
                 if (this.world.getBiome(this.getPosition()).getTemperature(this.getPosition()) > 1.0F || this.isBurning()) {
                     this.world.spawnParticle(EnumParticleTypes.CLOUD, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0.1F, 0);
                     this.world.spawnParticle(EnumParticleTypes.WATER_DROP, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
                 }
             }
         }
-
         if (this.world.getBiome(this.getPosition()).getTemperature(this.getPosition()) > 1.0F && this.ticksExisted % 20 == 0) {
             //BURN!!!
             this.attackEntityFrom(DamageSource.ON_FIRE, 1.0F);
