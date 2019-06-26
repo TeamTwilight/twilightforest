@@ -75,6 +75,7 @@ public class EntityTFIceShooter extends EntityMob implements IRangedAttackMob {
 
 		if (this.world.getBiome(this.getPosition()).getTemperature(this.getPosition()) > 1.0F && this.ticksExisted % 20 == 0)
 		{
+			//BURN!!!
 			this.attackEntityFrom(DamageSource.ON_FIRE, 1.0F);
 		}
 	}
