@@ -3,7 +3,10 @@ package twilightforest.client.model.entity;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.entity.boss.EntityTFMinoshroom;
 
 public class ModelTFMinoshroom extends ModelBiped {
 
@@ -143,6 +146,7 @@ public class ModelTFMinoshroom extends ModelBiped {
 	@Override
 	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
 		// copied from ModelBiped
+
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
@@ -200,5 +204,31 @@ public class ModelTFMinoshroom extends ModelBiped {
 		this.leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
+		float f = ageInTicks - (float) entity.ticksExisted;
+		float f1 = ((EntityTFMinoshroom) entity).getChargeAnimationScale(f);
+		f1 = f1 * f1;
+		float f2 = 1.0F - f1;
+		if (f1 > 0) {
+
+			if (((EntityLivingBase)entity).getPrimaryHand() == EnumHandSide.RIGHT)
+			{
+				this.bipedRightArm.rotateAngleX = f1 * -1.8F;
+				this.bipedLeftArm.rotateAngleX = 0.0F;
+				this.bipedRightArm.rotateAngleZ = -0.2F;
+			} else {
+				this.bipedRightArm.rotateAngleX = 0.0F;
+				this.bipedLeftArm.rotateAngleX = f1 * -1.8F;
+				this.bipedLeftArm.rotateAngleZ = 0.2F;
+			}
+			this.body.rotateAngleX = ((float) Math.PI / 2F) - f1 * (float) Math.PI * 0.2F;
+			this.leg3.rotationPointY = 12.0F + (-5.8F * f1);
+			this.leg3.rotationPointZ = -4.0F + (-5.8F * f1);
+			this.leg3.rotateAngleX -= f1 * (float) Math.PI * 0.3F;
+
+			this.leg4.rotationPointY = this.leg3.rotationPointY;
+			this.leg4.rotationPointZ = this.leg3.rotationPointZ;
+			this.leg4.rotateAngleX -= f1 * (float) Math.PI * 0.3F;
+			this.bipedBody.rotationPointY = -6F + -3.0F * f1;
+		}
 	}
 }
