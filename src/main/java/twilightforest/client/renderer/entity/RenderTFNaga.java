@@ -30,9 +30,9 @@ public class RenderTFNaga extends RenderLiving<EntityTFNaga> {
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTFNaga entity) {
-		if(entity.isDazed()){
+		if (entity.isDazed()) {
 			return textureLoc_dazed;
-		}else {
+		} else {
 			return textureLoc;
 		}
 	}
