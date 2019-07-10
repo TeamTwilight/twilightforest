@@ -37,20 +37,19 @@ import java.util.UUID;
 
 public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
-	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "Drinking speed penalty", -0.25D, 0)).setSaved(false);
+	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, 0)).setSaved(false);
 
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/block_goblin");
 	private static final float CHAIN_SPEED = 16F;
 	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_CHAINPOS = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
-	private static final DataParameter<Boolean> ISTHROW = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> IS_THROWING = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BOOLEAN);
 
 	private int recoilCounter;
 	private float chainAngle;
-	private float chainMoveLengh0;
 
-	private float chainMoveLengh;
+	private float chainMoveLength;
 
 	public final EntityTFSpikeBlock block = new EntityTFSpikeBlock(this);
 	public final EntityTFGoblinChain chain1 = new EntityTFGoblinChain(this);
@@ -81,7 +80,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 		super.entityInit();
 		dataManager.register(DATA_CHAINLENGTH, (byte) 0);
 		dataManager.register(DATA_CHAINPOS, (byte) 0);
-		dataManager.register(ISTHROW, false);
+		dataManager.register(IS_THROWING, false);
 	}
 
 	@Override
@@ -179,7 +178,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 			}
 		}
 
-		if (this.chainMoveLengh > 0) {
+		if (this.chainMoveLength > 0) {
 
 			Vec3d blockPos = this.getThrowPos();
 
@@ -192,8 +191,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 			double oz2 = sz2 - blockPos.z;
 
 			//When the thrown chainblock exceeds a certain distance, return to the owner
-			if (this.chainMoveLengh >= 6.0F) {
-				this.setThrow(false);
+			if (this.chainMoveLength >= 6.0F) {
+				this.setThrowing(false);
 				this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
 			}
 
@@ -219,8 +218,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 			double oy = sy - blockPos.y - (block.height / 3D);
 			double oz = sz - blockPos.z;
 
-			if (this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget()) && this.isEntityAlive() && this.chainMoveLengh == 0 && this.recoilCounter == 0 && this.rand.nextInt(70) == 0) {
-				this.setThrow(true);
+			if (this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget()) && this.isEntityAlive() && this.chainMoveLength == 0 && this.recoilCounter == 0 && this.rand.nextInt(70) == 0) {
+				this.setThrowing(true);
 				IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 				iattributeinstance.removeModifier(MODIFIER);
 				iattributeinstance.applyModifier(MODIFIER);
@@ -233,7 +232,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 		}
 
 		// collide things with the block
-		if (!world.isRemote && (this.isThrow() || this.isSwingingChain())) {
+		if (!world.isRemote && (this.isThrowing() || this.isSwingingChain())) {
 			this.applyBlockCollisions(this.block);
 		}
 		this.chainMove();
@@ -241,18 +240,17 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
 	private Vec3d getThrowPos() {
 		Vec3d vec3d = this.getLook(1.0F);
-		return new Vec3d(this.posX + vec3d.x * this.chainMoveLengh, this.posY + this.getEyeHeight(), this.posZ + vec3d.z * this.chainMoveLengh);
+		return new Vec3d(this.posX + vec3d.x * this.chainMoveLength, this.posY + this.getEyeHeight(), this.posZ + vec3d.z * this.chainMoveLength);
 	}
 
 	private void chainMove() {
-		this.chainMoveLengh0 = this.chainMoveLengh;
 
-		if (this.isThrow()) {
+		if (this.isThrowing()) {
 
-			this.chainMoveLengh = MathHelper.clamp(this.chainMoveLengh + 0.5F, 0.0F, 6.0F);
+			this.chainMoveLength = MathHelper.clamp(this.chainMoveLength + 0.5F, 0.0F, 6.0F);
 		} else {
 
-			this.chainMoveLengh = MathHelper.clamp(this.chainMoveLengh - 1.5F, 0.0F, 6.0F);
+			this.chainMoveLength = MathHelper.clamp(this.chainMoveLength - 1.5F, 0.0F, 6.0F);
 
 		}
 	}
@@ -281,8 +279,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 					collided.motionY += 0.4;
 					this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
 					this.recoilCounter = 40;
-					if (this.isThrow()) {
-						this.setThrow(false);
+					if (this.isThrowing()) {
+						this.setThrowing(false);
 						this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
 					}
 				}
@@ -291,12 +289,12 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 		}
 	}
 
-	public boolean isThrow() {
-		return this.dataManager.get(ISTHROW);
+	public boolean isThrowing() {
+		return this.dataManager.get(IS_THROWING);
 	}
 
-	public void setThrow(boolean isthrow) {
-		this.dataManager.set(ISTHROW, isthrow);
+	public void setThrowing(boolean isThrowing) {
+		this.dataManager.set(IS_THROWING, isThrowing);
 	}
 
 	/**
