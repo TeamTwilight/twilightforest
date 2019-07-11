@@ -14,7 +14,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
 
 import java.util.List;
 import java.util.UUID;
@@ -67,6 +67,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIAvoidEntity<>(this, EntityTNTPrimed.class, 2.0F, 0.8F, 1.5F));
+		this.tasks.addTask(4, new EntityAIThrowSpikeBlock(this, this.block));
 		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0F, false));
 		this.tasks.addTask(6, new EntityAIWander(this, 1.0F));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -191,9 +192,8 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 			double oz2 = sz2 - blockPos.z;
 
 			//When the thrown chainblock exceeds a certain distance, return to the owner
-			if (this.chainMoveLength >= 6.0F) {
+			if (this.chainMoveLength >= 6.0F || !this.isEntityAlive()) {
 				this.setThrowing(false);
-				this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
 			}
 
 			this.chain1.setPosition(sx2 - ox2 * 0.25, sy2 - oy2 * 0.25, sz2 - oz2 * 0.25);
@@ -217,13 +217,6 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 			double ox = sx - blockPos.x;
 			double oy = sy - blockPos.y - (block.height / 3D);
 			double oz = sz - blockPos.z;
-
-			if (this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget()) && this.isEntityAlive() && this.chainMoveLength == 0 && this.recoilCounter == 0 && this.rand.nextInt(70) == 0) {
-				this.setThrowing(true);
-				IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-				iattributeinstance.removeModifier(MODIFIER);
-				iattributeinstance.applyModifier(MODIFIER);
-			}
 
 			this.chain1.setPosition(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
 			this.chain2.setPosition(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
@@ -255,6 +248,10 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 		}
 	}
 
+	public float getChainMoveLength() {
+		return chainMoveLength;
+	}
+
 	/**
 	 * Check if the block is colliding with any nearby entities
 	 */
@@ -281,7 +278,6 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 					this.recoilCounter = 40;
 					if (this.isThrowing()) {
 						this.setThrowing(false);
-						this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(MODIFIER);
 					}
 				}
 
