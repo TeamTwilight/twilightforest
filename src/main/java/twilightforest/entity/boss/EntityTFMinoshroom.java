@@ -28,7 +28,7 @@ import twilightforest.world.TFWorld;
 public class EntityTFMinoshroom extends EntityTFMinotaur {
 	private static final DataParameter<Boolean> GROUND_ATTACK = EntityDataManager.<Boolean>createKey(EntityTFMinoshroom.class, DataSerializers.BOOLEAN);
 
-	private float clientSideChargeAnimation0;
+	private float prevClientSideChargeAnimation;
 	private float clientSideChargeAnimation;
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minoshroom");
@@ -70,7 +70,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	public void onUpdate() {
 		super.onUpdate();
 		if (this.world.isRemote) {
-			this.clientSideChargeAnimation0 = this.clientSideChargeAnimation;
+			this.prevClientSideChargeAnimation = this.clientSideChargeAnimation;
 			if (this.isGroundAttackCharge()) {
 				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation + 0.5F, 0.0F, 6.0F);
 			} else {
@@ -82,7 +82,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	@SideOnly(Side.CLIENT)
 	public float getChargeAnimationScale(float p_189795_1_)
 	{
-		return (this.clientSideChargeAnimation0 + (this.clientSideChargeAnimation - this.clientSideChargeAnimation0) * p_189795_1_) / 6.0F;
+		return (this.prevClientSideChargeAnimation + (this.clientSideChargeAnimation - this.prevClientSideChargeAnimation) * p_189795_1_) / 6.0F;
 	}
 
 	@Override
