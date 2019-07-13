@@ -35,6 +35,7 @@ import java.util.Collection;
 
 public class EntityTFSkeletonCreeper extends EntityMob
 {
+
 	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(EntityTFSkeletonCreeper.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> POWERED = EntityDataManager.<Boolean>createKey(EntityTFSkeletonCreeper.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> IGNITED = EntityDataManager.<Boolean>createKey(EntityTFSkeletonCreeper.class, DataSerializers.BOOLEAN);
@@ -107,9 +108,6 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		this.dataManager.register(IGNITED, Boolean.valueOf(false));
 	}
 
-	/**
-	 * (abstract) Protected helper method to write subclass entity data to NBT.
-	 */
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound)
 	{
@@ -125,9 +123,6 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		compound.setBoolean("ignited", this.hasIgnited());
 	}
 
-	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
-	 */
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound)
 	{
@@ -150,9 +145,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		}
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
+	// [VanillaCopy] These were referenced to creeper classes
 	@Override
 	public void onUpdate()
 	{
@@ -207,9 +200,6 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		return SoundEvents.ENTITY_SKELETON_DEATH;
 	}
 
-	/**
-	 * Called when the mob's health reaches 0.
-	 */
 	@Override
 	public void onDeath(DamageSource cause)
 	{
@@ -241,9 +231,6 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		return ((Boolean)this.dataManager.get(POWERED)).booleanValue();
 	}
 
-	/**
-	 * Params: (Float)Render tick. Returns the intensity of the creeper's flash when it is ignited.
-	 */
 	@SideOnly(Side.CLIENT)
 	public float getCreeperFlashIntensity(float p_70831_1_)
 	{
@@ -256,25 +243,16 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		return LootTableList.ENTITIES_CREEPER;
 	}
 
-	/**
-	 * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
-	 */
 	public int getCreeperState()
 	{
 		return ((Integer)this.dataManager.get(STATE)).intValue();
 	}
 
-	/**
-	 * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
-	 */
 	public void setCreeperState(int state)
 	{
 		this.dataManager.set(STATE, Integer.valueOf(state));
 	}
 
-	/**
-	 * Called when a lightning bolt hits the entity.
-	 */
 	@Override
 	public void onStruckByLightning(EntityLightningBolt lightningBolt)
 	{
@@ -303,9 +281,6 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		return super.processInteract(player, hand);
 	}
 
-	/**
-	 * Creates an explosion as determined by this creeper's power and explosion radius.
-	 */
 	private void explode()
 	{
 		this.playSound(SoundEvents.ENTITY_SKELETON_HURT, 2.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -315,6 +290,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 			boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this);
 			float f = this.getPowered() ? 1.8F : 0.8F;
 
+			//when powered, Bones will be scattered more
 			float boneAmount = this.getPowered() ? 2F : 1F;
 
 			this.dead = true;
@@ -327,7 +303,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 				double d2 = (rand.nextFloat() * 2) - 1.0F;
 				double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
 				arrow.shoot(d0 * 2, d1 + d3 * 0.20000000298023224D, d2 * 2, 1.0F, (float) (14 - this.world.getDifficulty().getId() * 4));
-
+				//spawn some bone,not sans bone
 				this.world.spawnEntity(arrow);
 			}
 
