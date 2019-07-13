@@ -33,8 +33,7 @@ import twilightforest.entity.ai.EntityAITFSkeletonCreeperSwell;
 import javax.annotation.Nullable;
 import java.util.Collection;
 
-public class EntityTFSkeletonCreeper extends EntityMob
-{
+public class EntityTFSkeletonCreeper extends EntityMob {
 
 	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(EntityTFSkeletonCreeper.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> POWERED = EntityDataManager.<Boolean>createKey(EntityTFSkeletonCreeper.class, DataSerializers.BOOLEAN);
@@ -44,22 +43,24 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	 * weird)
 	 */
 	private int lastActiveTime;
-	/** The amount of time since the creeper was close enough to the player to ignite */
+	/**
+	 * The amount of time since the creeper was close enough to the player to ignite
+	 */
 	private int timeSinceIgnited;
 	private int fuseTime = 30;
-	/** Explosion radius for this creeper. */
+	/**
+	 * Explosion radius for this creeper.
+	 */
 	private int explosionRadius = 3;
 	private int droppedSkulls;
 
-	public EntityTFSkeletonCreeper(World worldIn)
-	{
+	public EntityTFSkeletonCreeper(World worldIn) {
 		super(worldIn);
 		this.setSize(0.6F, 1.7F);
 	}
 
 	@Override
-	protected void initEntityAI()
-	{
+	protected void initEntityAI() {
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAITFSkeletonCreeperSwell(this));
 		this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 1.0D, 1.2D));
@@ -72,8 +73,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	}
 
 	@Override
-	protected void applyEntityAttributes()
-	{
+	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	}
@@ -82,26 +82,22 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	 * The maximum height from where the entity is alowed to jump (used in pathfinder)
 	 */
 	@Override
-	public int getMaxFallHeight()
-	{
-		return this.getAttackTarget() == null ? 3 : 3 + (int)(this.getHealth() - 1.0F);
+	public int getMaxFallHeight() {
+		return this.getAttackTarget() == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
 	}
 
 	@Override
-	public void fall(float distance, float damageMultiplier)
-	{
+	public void fall(float distance, float damageMultiplier) {
 		super.fall(distance, damageMultiplier);
-		this.timeSinceIgnited = (int)((float)this.timeSinceIgnited + distance * 1.5F);
+		this.timeSinceIgnited = (int) ((float) this.timeSinceIgnited + distance * 1.5F);
 
-		if (this.timeSinceIgnited > this.fuseTime - 5)
-		{
+		if (this.timeSinceIgnited > this.fuseTime - 5) {
 			this.timeSinceIgnited = this.fuseTime - 5;
 		}
 	}
 
 	@Override
-	protected void entityInit()
-	{
+	protected void entityInit() {
 		super.entityInit();
 		this.dataManager.register(STATE, Integer.valueOf(-1));
 		this.dataManager.register(POWERED, Boolean.valueOf(false));
@@ -109,71 +105,59 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound)
-	{
+	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 
-		if (((Boolean)this.dataManager.get(POWERED)).booleanValue())
-		{
+		if (((Boolean) this.dataManager.get(POWERED)).booleanValue()) {
 			compound.setBoolean("powered", true);
 		}
 
-		compound.setShort("Fuse", (short)this.fuseTime);
-		compound.setByte("ExplosionRadius", (byte)this.explosionRadius);
+		compound.setShort("Fuse", (short) this.fuseTime);
+		compound.setByte("ExplosionRadius", (byte) this.explosionRadius);
 		compound.setBoolean("ignited", this.hasIgnited());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound)
-	{
+	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		this.dataManager.set(POWERED, Boolean.valueOf(compound.getBoolean("powered")));
 
-		if (compound.hasKey("Fuse", 99))
-		{
+		if (compound.hasKey("Fuse", 99)) {
 			this.fuseTime = compound.getShort("Fuse");
 		}
 
-		if (compound.hasKey("ExplosionRadius", 99))
-		{
+		if (compound.hasKey("ExplosionRadius", 99)) {
 			this.explosionRadius = compound.getByte("ExplosionRadius");
 		}
 
-		if (compound.getBoolean("ignited"))
-		{
+		if (compound.getBoolean("ignited")) {
 			this.ignite();
 		}
 	}
 
 	// [VanillaCopy] These were referenced to creeper classes
 	@Override
-	public void onUpdate()
-	{
-		if (this.isEntityAlive())
-		{
+	public void onUpdate() {
+		if (this.isEntityAlive()) {
 			this.lastActiveTime = this.timeSinceIgnited;
 
-			if (this.hasIgnited())
-			{
+			if (this.hasIgnited()) {
 				this.setCreeperState(1);
 			}
 
 			int i = this.getCreeperState();
 
-			if (i > 0 && this.timeSinceIgnited == 0)
-			{
+			if (i > 0 && this.timeSinceIgnited == 0) {
 				this.playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1.0F, 0.5F);
 			}
 
 			this.timeSinceIgnited += i;
 
-			if (this.timeSinceIgnited < 0)
-			{
+			if (this.timeSinceIgnited < 0) {
 				this.timeSinceIgnited = 0;
 			}
 
-			if (this.timeSinceIgnited >= this.fuseTime)
-			{
+			if (this.timeSinceIgnited >= this.fuseTime) {
 				this.timeSinceIgnited = this.fuseTime;
 				this.explode();
 			}
@@ -189,26 +173,21 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-	{
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return SoundEvents.ENTITY_SKELETON_HURT;
 	}
 
 	@Override
-	protected SoundEvent getDeathSound()
-	{
+	protected SoundEvent getDeathSound() {
 		return SoundEvents.ENTITY_SKELETON_DEATH;
 	}
 
 	@Override
-	public void onDeath(DamageSource cause)
-	{
+	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
 
-		if (this.world.getGameRules().getBoolean("doMobLoot"))
-		{
-			if (cause.getTrueSource() instanceof EntitySkeleton)
-			{
+		if (this.world.getGameRules().getBoolean("doMobLoot")) {
+			if (cause.getTrueSource() instanceof EntitySkeleton) {
 				int i = Item.getIdFromItem(Items.RECORD_13);
 				int j = Item.getIdFromItem(Items.RECORD_WAIT);
 				int k = i + this.rand.nextInt(j - i + 1);
@@ -218,60 +197,50 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entityIn)
-	{
+	public boolean attackEntityAsMob(Entity entityIn) {
 		return true;
 	}
 
 	/**
 	 * Returns true if the creeper is powered by a lightning bolt.
 	 */
-	public boolean getPowered()
-	{
-		return ((Boolean)this.dataManager.get(POWERED)).booleanValue();
+	public boolean getPowered() {
+		return ((Boolean) this.dataManager.get(POWERED)).booleanValue();
 	}
 
 	@SideOnly(Side.CLIENT)
-	public float getCreeperFlashIntensity(float p_70831_1_)
-	{
-		return ((float)this.lastActiveTime + (float)(this.timeSinceIgnited - this.lastActiveTime) * p_70831_1_) / (float)(this.fuseTime - 2);
+	public float getCreeperFlashIntensity(float p_70831_1_) {
+		return ((float) this.lastActiveTime + (float) (this.timeSinceIgnited - this.lastActiveTime) * p_70831_1_) / (float) (this.fuseTime - 2);
 	}
 
 	@Nullable
-	protected ResourceLocation getLootTable()
-	{
+	protected ResourceLocation getLootTable() {
 		return LootTableList.ENTITIES_CREEPER;
 	}
 
-	public int getCreeperState()
-	{
-		return ((Integer)this.dataManager.get(STATE)).intValue();
+	public int getCreeperState() {
+		return ((Integer) this.dataManager.get(STATE)).intValue();
 	}
 
-	public void setCreeperState(int state)
-	{
+	public void setCreeperState(int state) {
 		this.dataManager.set(STATE, Integer.valueOf(state));
 	}
 
 	@Override
-	public void onStruckByLightning(EntityLightningBolt lightningBolt)
-	{
+	public void onStruckByLightning(EntityLightningBolt lightningBolt) {
 		super.onStruckByLightning(lightningBolt);
 		this.dataManager.set(POWERED, Boolean.valueOf(true));
 	}
 
 	@Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand)
-	{
+	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
 		ItemStack itemstack = player.getHeldItem(hand);
 
-		if (itemstack.getItem() == Items.FLINT_AND_STEEL)
-		{
+		if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
 			this.world.playSound(player, this.posX, this.posY, this.posZ, SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
 			player.swingArm(hand);
 
-			if (!this.world.isRemote)
-			{
+			if (!this.world.isRemote) {
 				this.ignite();
 				itemstack.damageItem(1, player);
 				return true;
@@ -281,12 +250,10 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		return super.processInteract(player, hand);
 	}
 
-	private void explode()
-	{
+	private void explode() {
 		this.playSound(SoundEvents.ENTITY_SKELETON_HURT, 2.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 
-		if (!this.world.isRemote)
-		{
+		if (!this.world.isRemote) {
 			boolean flag = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this);
 			float f = this.getPowered() ? 1.8F : 0.8F;
 
@@ -295,7 +262,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 
 			this.dead = true;
 
-			for (int i = 0; i< 10 * boneAmount; ++i) {
+			for (int i = 0; i < 10 * boneAmount; ++i) {
 				EntityTFBoneShard arrow = new EntityTFBoneShard(this.world, this);
 
 				double d0 = (rand.nextFloat() * 2) - 1.0F;
@@ -307,27 +274,24 @@ public class EntityTFSkeletonCreeper extends EntityMob
 				this.world.spawnEntity(arrow);
 			}
 
-			this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.explosionRadius * f, flag);
+			this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionRadius * f, flag);
 			this.setDead();
 			this.spawnLingeringCloud();
 		}
 	}
 
-	private void spawnLingeringCloud()
-	{
+	private void spawnLingeringCloud() {
 		Collection<PotionEffect> collection = this.getActivePotionEffects();
 
-		if (!collection.isEmpty())
-		{
+		if (!collection.isEmpty()) {
 			EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(this.world, this.posX, this.posY, this.posZ);
 			entityareaeffectcloud.setRadius(2.5F);
 			entityareaeffectcloud.setRadiusOnUse(-0.5F);
 			entityareaeffectcloud.setWaitTime(10);
 			entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
-			entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float)entityareaeffectcloud.getDuration());
+			entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float) entityareaeffectcloud.getDuration());
 
-			for (PotionEffect potioneffect : collection)
-			{
+			for (PotionEffect potioneffect : collection) {
 				entityareaeffectcloud.addEffect(new PotionEffect(potioneffect));
 			}
 
@@ -335,13 +299,11 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		}
 	}
 
-	public boolean hasIgnited()
-	{
-		return ((Boolean)this.dataManager.get(IGNITED)).booleanValue();
+	public boolean hasIgnited() {
+		return ((Boolean) this.dataManager.get(IGNITED)).booleanValue();
 	}
 
-	public void ignite()
-	{
+	public void ignite() {
 		this.dataManager.set(IGNITED, Boolean.valueOf(true));
 	}
 

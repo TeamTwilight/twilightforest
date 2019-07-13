@@ -6,26 +6,21 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class EntityTFBoneShard extends EntityArrow
-{
-	public EntityTFBoneShard(World worldIn)
-	{
+public class EntityTFBoneShard extends EntityArrow {
+	public EntityTFBoneShard(World worldIn) {
 		super(worldIn);
 	}
 
-	public EntityTFBoneShard(World worldIn, double x, double y, double z)
-	{
+	public EntityTFBoneShard(World worldIn, double x, double y, double z) {
 		super(worldIn, x, y, z);
 	}
 
-	public EntityTFBoneShard(World worldIn, EntityLivingBase shooter)
-	{
+	public EntityTFBoneShard(World worldIn, EntityLivingBase shooter) {
 		super(worldIn, shooter);
 	}
 
 
-	protected ItemStack getArrowStack()
-	{
+	protected ItemStack getArrowStack() {
 		return new ItemStack(Items.BONE);
 
 	}

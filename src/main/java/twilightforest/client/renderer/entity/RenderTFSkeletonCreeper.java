@@ -12,8 +12,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSkeletonCreeper;
 
 @SideOnly(Side.CLIENT)
-public class RenderTFSkeletonCreeper extends RenderLiving<EntityTFSkeletonCreeper>
-{
+public class RenderTFSkeletonCreeper extends RenderLiving<EntityTFSkeletonCreeper> {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("skeleton_creeper.png");
 
 	public RenderTFSkeletonCreeper(RenderManager manager, ModelBase modelbase, float shadowSize) {
@@ -23,8 +22,7 @@ public class RenderTFSkeletonCreeper extends RenderLiving<EntityTFSkeletonCreepe
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFSkeletonCreeper entitylivingbaseIn, float partialTickTime)
-	{
+	protected void preRenderCallback(EntityTFSkeletonCreeper entitylivingbaseIn, float partialTickTime) {
 		float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
 		float f1 = 1.0F + MathHelper.sin(f * 100.0F) * f * 0.01F;
 		f = MathHelper.clamp(f, 0.0F, 1.0F);
@@ -36,25 +34,20 @@ public class RenderTFSkeletonCreeper extends RenderLiving<EntityTFSkeletonCreepe
 	}
 
 	@Override
-	protected int getColorMultiplier(EntityTFSkeletonCreeper entitylivingbaseIn, float lightBrightness, float partialTickTime)
-	{
+	protected int getColorMultiplier(EntityTFSkeletonCreeper entitylivingbaseIn, float lightBrightness, float partialTickTime) {
 		float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
 
-		if ((int)(f * 10.0F) % 2 == 0)
-		{
+		if ((int) (f * 10.0F) % 2 == 0) {
 			return 0;
-		}
-		else
-		{
-			int i = (int)(f * 0.2F * 255.0F);
+		} else {
+			int i = (int) (f * 0.2F * 255.0F);
 			i = MathHelper.clamp(i, 0, 255);
 			return i << 24 | 822083583;
 		}
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFSkeletonCreeper entity)
-	{
+	protected ResourceLocation getEntityTexture(EntityTFSkeletonCreeper entity) {
 		return textureLoc;
 	}
 }
