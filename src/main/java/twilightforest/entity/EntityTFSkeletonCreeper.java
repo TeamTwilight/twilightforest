@@ -3,14 +3,7 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -62,6 +55,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		this.setSize(0.6F, 1.7F);
 	}
 
+	@Override
 	protected void initEntityAI()
 	{
 		this.tasks.addTask(1, new EntityAISwimming(this));
@@ -75,6 +69,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
 	}
 
+	@Override
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
@@ -84,11 +79,13 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	/**
 	 * The maximum height from where the entity is alowed to jump (used in pathfinder)
 	 */
+	@Override
 	public int getMaxFallHeight()
 	{
 		return this.getAttackTarget() == null ? 3 : 3 + (int)(this.getHealth() - 1.0F);
 	}
 
+	@Override
 	public void fall(float distance, float damageMultiplier)
 	{
 		super.fall(distance, damageMultiplier);
@@ -100,6 +97,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		}
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();
@@ -111,6 +109,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
+	@Override
 	public void writeEntityToNBT(NBTTagCompound compound)
 	{
 		super.writeEntityToNBT(compound);
@@ -128,6 +127,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	/**
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
+	@Override
 	public void readEntityFromNBT(NBTTagCompound compound)
 	{
 		super.readEntityFromNBT(compound);
@@ -152,6 +152,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	/**
 	 * Called to update the entity's position/logic.
 	 */
+	@Override
 	public void onUpdate()
 	{
 		if (this.isEntityAlive())
@@ -193,11 +194,13 @@ public class EntityTFSkeletonCreeper extends EntityMob
 		return SoundEvents.ENTITY_SKELETON_AMBIENT;
 	}
 
+	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn)
 	{
 		return SoundEvents.ENTITY_SKELETON_HURT;
 	}
 
+	@Override
 	protected SoundEvent getDeathSound()
 	{
 		return SoundEvents.ENTITY_SKELETON_DEATH;
@@ -206,6 +209,7 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	/**
 	 * Called when the mob's health reaches 0.
 	 */
+	@Override
 	public void onDeath(DamageSource cause)
 	{
 		super.onDeath(cause);
@@ -219,14 +223,10 @@ public class EntityTFSkeletonCreeper extends EntityMob
 				int k = i + this.rand.nextInt(j - i + 1);
 				this.dropItem(Item.getItemById(k), 1);
 			}
-			else if (cause.getTrueSource() instanceof EntityTFSkeletonCreeper && cause.getTrueSource() != this && ((EntityTFSkeletonCreeper)cause.getTrueSource()).getPowered() && ((EntityTFSkeletonCreeper)cause.getTrueSource()).ableToCauseSkullDrop())
-			{
-				((EntityTFSkeletonCreeper)cause.getTrueSource()).incrementDroppedSkulls();
-				this.entityDropItem(new ItemStack(Items.SKULL, 1, 4), 0.0F);
-			}
 		}
 	}
 
+	@Override
 	public boolean attackEntityAsMob(Entity entityIn)
 	{
 		return true;
@@ -274,12 +274,14 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	/**
 	 * Called when a lightning bolt hits the entity.
 	 */
+	@Override
 	public void onStruckByLightning(EntityLightningBolt lightningBolt)
 	{
 		super.onStruckByLightning(lightningBolt);
 		this.dataManager.set(POWERED, Boolean.valueOf(true));
 	}
 
+	@Override
 	protected boolean processInteract(EntityPlayer player, EnumHand hand)
 	{
 		ItemStack itemstack = player.getHeldItem(hand);
@@ -364,20 +366,5 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	public void ignite()
 	{
 		this.dataManager.set(IGNITED, Boolean.valueOf(true));
-	}
-
-	/**
-	 * Returns true if an entity is able to drop its skull due to being blown up by this creeper.
-	 *
-	 * Does not test if this creeper is charged; the caller must do that. However, does test the doMobLoot gamerule.
-	 */
-	public boolean ableToCauseSkullDrop()
-	{
-		return this.droppedSkulls < 1 && this.world.getGameRules().getBoolean("doMobLoot");
-	}
-
-	public void incrementDroppedSkulls()
-	{
-		++this.droppedSkulls;
 	}
 }

@@ -2,15 +2,7 @@ package twilightforest;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -153,6 +145,7 @@ public enum TFFeature {
 
 			this.addMonster(EntityZombie.class, 10, 4, 4)
 					.addMonster(EntitySkeleton.class, 10, 4, 4)
+					.addMonster(EntityTFSkeletonCreeper.class, 2, 4, 4)
 					.addMonster(EntityCreeper.class, 1, 4, 4)
 					.addMonster(EntityEnderman.class, 1, 1, 4)
 					.addMonster(EntityTFDeathTome.class, 10, 4, 4)

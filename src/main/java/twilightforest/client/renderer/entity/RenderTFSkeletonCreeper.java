@@ -19,10 +19,10 @@ public class RenderTFSkeletonCreeper extends RenderLiving<EntityTFSkeletonCreepe
 	public RenderTFSkeletonCreeper(RenderManager manager, ModelBase modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);
 		this.addLayer(new LayerSkeletonCreeperCharge(this));
+		this.addLayer(new LayerSkeletonCreeperTNT(this));
 	}
-	/**
-	 * Allows the render to do state modifications necessary before the model is rendered.
-	 */
+
+	@Override
 	protected void preRenderCallback(EntityTFSkeletonCreeper entitylivingbaseIn, float partialTickTime)
 	{
 		float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
@@ -35,9 +35,7 @@ public class RenderTFSkeletonCreeper extends RenderLiving<EntityTFSkeletonCreepe
 		GlStateManager.scale(f2, f3, f2);
 	}
 
-	/**
-	 * Gets an RGBA int color multiplier to apply.
-	 */
+	@Override
 	protected int getColorMultiplier(EntityTFSkeletonCreeper entitylivingbaseIn, float lightBrightness, float partialTickTime)
 	{
 		float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
@@ -54,9 +52,7 @@ public class RenderTFSkeletonCreeper extends RenderLiving<EntityTFSkeletonCreepe
 		}
 	}
 
-	/**
-	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-	 */
+	@Override
 	protected ResourceLocation getEntityTexture(EntityTFSkeletonCreeper entity)
 	{
 		return textureLoc;
