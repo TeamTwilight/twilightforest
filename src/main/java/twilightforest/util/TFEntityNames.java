@@ -43,6 +43,7 @@ public class TFEntityNames {
 	public static final ResourceLocation LICH_MINION = prefix("lich_minion");
 	public static final ResourceLocation LOYAL_ZOMBIE = prefix("loyal_zombie");
 	public static final ResourceLocation DEATH_TOME = prefix("death_tome");
+	public static final ResourceLocation SKELETON_CREEPER= prefix("skeleton_creeper");
 
 	// Swamp
 	public static final ResourceLocation MOSQUITO_SWARM = prefix("mosquito_swarm");
@@ -113,6 +114,7 @@ public class TFEntityNames {
 	public static final ResourceLocation SEEKER_ARROW = prefix("seeker_arrow");
 	public static final ResourceLocation ICE_ARROW = prefix("ice_arrow");
 	public static final ResourceLocation ICE_SNOWBALL = prefix("ice_snowball");
+	public static final ResourceLocation BONE_SHARD = prefix("bone_shard");
 
 	private static ResourceLocation prefix(String path) {
 		return new ResourceLocation(TwilightForestMod.ID, path);

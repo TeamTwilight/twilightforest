@@ -18,9 +18,34 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.boss.*;
+import twilightforest.entity.boss.EntityTFFallingIce;
+import twilightforest.entity.boss.EntityTFHydra;
+import twilightforest.entity.boss.EntityTFHydraHead;
+import twilightforest.entity.boss.EntityTFHydraMortar;
+import twilightforest.entity.boss.EntityTFIceBomb;
+import twilightforest.entity.boss.EntityTFIceCrystal;
+import twilightforest.entity.boss.EntityTFKnightPhantom;
+import twilightforest.entity.boss.EntityTFLich;
+import twilightforest.entity.boss.EntityTFLichBolt;
+import twilightforest.entity.boss.EntityTFLichBomb;
+import twilightforest.entity.boss.EntityTFLichMinion;
+import twilightforest.entity.boss.EntityTFMinoshroom;
+import twilightforest.entity.boss.EntityTFNaga;
+import twilightforest.entity.boss.EntityTFSnowQueen;
+import twilightforest.entity.boss.EntityTFThrownWep;
+import twilightforest.entity.boss.EntityTFUrGhast;
+import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
-import twilightforest.entity.passive.*;
+import twilightforest.entity.passive.EntityTFBighorn;
+import twilightforest.entity.passive.EntityTFBoar;
+import twilightforest.entity.passive.EntityTFBunny;
+import twilightforest.entity.passive.EntityTFDeer;
+import twilightforest.entity.passive.EntityTFMobileFirefly;
+import twilightforest.entity.passive.EntityTFPenguin;
+import twilightforest.entity.passive.EntityTFQuestRam;
+import twilightforest.entity.passive.EntityTFRaven;
+import twilightforest.entity.passive.EntityTFSquirrel;
+import twilightforest.entity.passive.EntityTFTinyBird;
 import twilightforest.util.TFEntityNames;
 
 import java.util.function.Function;
@@ -108,6 +133,7 @@ public class TFEntities {
 		helper.registerEntity(TFEntityNames.KOBOLD, EntityTFKobold.class, EntityTFKobold::new, 0x372096, 0x895d1b);
 		helper.registerEntity(TFEntityNames.MOSQUITO_SWARM, EntityTFMosquitoSwarm.class, EntityTFMosquitoSwarm::new, 0x080904, 0x2d2f21);
 		helper.registerEntity(TFEntityNames.DEATH_TOME, EntityTFDeathTome.class, EntityTFDeathTome::new, 0x774e22, 0xdbcdbe);
+		helper.registerEntity(TFEntityNames.SKELETON_CREEPER, EntityTFSkeletonCreeper.class, EntityTFSkeletonCreeper::new, 0x774e22, 0xdbcdbe);
 		helper.registerEntity(TFEntityNames.MINOTAUR, EntityTFMinotaur.class, EntityTFMinotaur::new, 0x3f3024, 0xaa7d66);
 		helper.registerEntity(TFEntityNames.MINOSHROOM, EntityTFMinoshroom.class, EntityTFMinoshroom::new, 0xa81012, 0xaa7d66);
 		helper.registerEntity(TFEntityNames.FIRE_BEETLE, EntityTFFireBeetle.class, EntityTFFireBeetle::new, 0x1d0b00, 0xcb6f25);
@@ -165,6 +191,7 @@ public class TFEntities {
 		helper.registerEntity(TFEntityNames.CHAIN_BLOCK, EntityTFChainBlock.class, EntityTFChainBlock::new, 80, 1, true);
 		helper.registerEntity(TFEntityNames.CUBE_OF_ANNIHILATION, EntityTFCubeOfAnnihilation.class, EntityTFCubeOfAnnihilation::new, 80, 1, true);
 		helper.registerEntity(TFEntityNames.SLIDER, EntityTFSlideBlock.class, EntityTFSlideBlock::new, 80, 1, true);
+		helper.registerEntity(TFEntityNames.BONE_SHARD, EntityTFBoneShard.class, EntityTFBoneShard::new);
 		helper.registerEntity(TFEntityNames.BOGGARD, EntityTFBoggard.class, EntityTFBoggard::new);
 	}
 }
