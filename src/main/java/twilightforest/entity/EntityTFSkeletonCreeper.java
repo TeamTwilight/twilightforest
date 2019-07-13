@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -366,5 +367,10 @@ public class EntityTFSkeletonCreeper extends EntityMob
 	public void ignite()
 	{
 		this.dataManager.set(IGNITED, Boolean.valueOf(true));
+	}
+
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		return EnumCreatureAttribute.UNDEAD;
 	}
 }
