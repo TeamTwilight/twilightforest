@@ -13,10 +13,10 @@ import twilightforest.entity.boss.EntityTFNaga;
 public class RenderTFNaga extends RenderLiving<EntityTFNaga> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");
-	private static final ResourceLocation textureLocDazed = TwilightForestMod.getModelTexture("nagahead_dazed.png");
 
 	public RenderTFNaga(RenderManager manager, ModelBase modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);
+		this.addLayer(new NagaEyelidsLayer(this));
 	}
 
 	@Override
@@ -30,10 +30,8 @@ public class RenderTFNaga extends RenderLiving<EntityTFNaga> {
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTFNaga entity) {
-		if (entity.isDazed()) {
-			return textureLocDazed;
-		} else {
-			return textureLoc;
-		}
+
+		return textureLoc;
+
 	}
 }
