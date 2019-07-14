@@ -10,8 +10,7 @@ public class EntityAITFSkeletonCreeperSwell extends EntityAIBase {
 	/** The creeper's attack target. This is used for the changing of the creeper's state. */
 	EntityLivingBase creeperAttackTarget;
 
-	public EntityAITFSkeletonCreeperSwell(EntityTFSkeletonCreeper entitycreeperIn)
-	{
+	public EntityAITFSkeletonCreeperSwell(EntityTFSkeletonCreeper entitycreeperIn) {
 		this.swellingCreeper = entitycreeperIn;
 		this.setMutexBits(1);
 	}
@@ -19,8 +18,7 @@ public class EntityAITFSkeletonCreeperSwell extends EntityAIBase {
 	/**
 	 * Returns whether the EntityAIBase should begin execution.
 	 */
-	public boolean shouldExecute()
-	{
+	public boolean shouldExecute() {
 		EntityLivingBase entitylivingbase = this.swellingCreeper.getAttackTarget();
 		return this.swellingCreeper.getCreeperState() > 0 || entitylivingbase != null && this.swellingCreeper.getDistanceSq(entitylivingbase) < 9.0D;
 	}
@@ -28,8 +26,7 @@ public class EntityAITFSkeletonCreeperSwell extends EntityAIBase {
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
-	public void startExecuting()
-	{
+	public void startExecuting() {
 		this.swellingCreeper.getNavigator().clearPath();
 		this.creeperAttackTarget = this.swellingCreeper.getAttackTarget();
 	}
@@ -37,16 +34,14 @@ public class EntityAITFSkeletonCreeperSwell extends EntityAIBase {
 	/**
 	 * Reset the task's internal state. Called when this task is interrupted by another one
 	 */
-	public void resetTask()
-	{
+	public void resetTask() {
 		this.creeperAttackTarget = null;
 	}
 
 	/**
 	 * Keep ticking a continuous task that has already been started
 	 */
-	public void updateTask()
-	{
+	public void updateTask() {
 		if (this.creeperAttackTarget == null)
 		{
 			this.swellingCreeper.setCreeperState(-1);
