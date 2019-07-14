@@ -26,6 +26,6 @@ public class NagaEyelidsLayer<T extends EntityTFNaga> implements LayerRenderer<T
 
 	@Override
 	public boolean shouldCombineTextures() {
-		return false;
+		return true;
 	}
 }
