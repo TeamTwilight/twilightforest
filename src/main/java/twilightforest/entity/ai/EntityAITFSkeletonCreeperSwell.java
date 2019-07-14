@@ -4,8 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import twilightforest.entity.EntityTFSkeletonCreeper;
 
-public class EntityAITFSkeletonCreeperSwell extends EntityAIBase
-{
+public class EntityAITFSkeletonCreeperSwell extends EntityAIBase {
 	/** The creeper that is swelling. */
 	EntityTFSkeletonCreeper swellingCreeper;
 	/** The creeper's attack target. This is used for the changing of the creeper's state. */
