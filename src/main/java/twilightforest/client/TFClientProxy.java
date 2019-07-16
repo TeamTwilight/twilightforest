@@ -33,6 +33,7 @@ import twilightforest.TFSounds;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
+import twilightforest.client.model.item.TileEntityTFChainRender;
 import twilightforest.client.particle.TFParticleFactory;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.*;
@@ -43,6 +44,7 @@ import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import twilightforest.entity.passive.*;
+import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
 import twilightforest.tileentity.critters.*;
 
@@ -190,6 +192,9 @@ public class TFClientProxy extends TFCommonProxy {
 		fieryArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFFieryArmor(1.0F));
 		fieryArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFFieryArmor(0.5F));
 		fieryArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFFieryArmor(0.5F));
+
+		TileEntityTFChainRender TESR = new TileEntityTFChainRender();
+		TFItems.block_and_chain.setTileEntityItemStackRenderer(TESR);
 
 		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 12000);
 
