@@ -10,7 +10,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFSpikeBlock;
 import twilightforest.item.TFItems;
 
-public class TileEntityTFChainRender extends TileEntityItemStackRenderer {
+public class TFChainBlockStackRender extends TileEntityItemStackRenderer {
 
 	private final ModelTFSpikeBlock spikeBlockModel = new ModelTFSpikeBlock();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
