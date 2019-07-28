@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
@@ -184,6 +185,15 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 			// mark the stronghold as defeated
 			TFWorld.markStructureConquered(world, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
 		}
+	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if(this.canBlockDamageSource(source)){
+			playSound(SoundEvents.ITEM_SHIELD_BLOCK,1.0F,0.8F + this.world.rand.nextFloat() * 0.4F);
+		}
+
+		return super.attackEntityFrom(source, amount);
 	}
 
 	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
