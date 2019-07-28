@@ -2,6 +2,8 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.item.ItemShield;
+import net.minecraft.util.EnumHand;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
 public class EntityAITFPhantomWatchAndAttack extends EntityAIBase {
@@ -32,6 +34,12 @@ public class EntityAITFPhantomWatchAndAttack extends EntityAIBase {
 						attackTime = 20;
 						boss.attackEntityAsMob(target);
 					}
+				}
+
+				if (this.boss.getHeldItemOffhand().getItem() instanceof ItemShield && boss.getCurrentFormation() != EntityTFKnightPhantom.Formation.ATTACK_PLAYER_ATTACK) {
+					this.boss.setActiveHand(EnumHand.OFF_HAND);
+				} else {
+					this.boss.resetActiveHand();
 				}
 			}
 		}
