@@ -23,8 +23,6 @@ import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
-import java.util.BitSet;
-
 // TODO: doc out all the vanilla copying
 public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
@@ -46,7 +44,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	public Chunk generateChunk(int x, int z) {
 		rand.setSeed(getSeed(x, z));
 
-		BitSet data = new BitSet(65536);
+		ChunkBitArray data = new ChunkBitArray();
 		setBlocksInChunk(x, z, data);
 		squishTerrain(data);
 
@@ -72,7 +70,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	protected void initPrimer(ChunkPrimer primer, BitSet data) {
+	protected void initPrimer(ChunkPrimer primer, ChunkBitArray data) {
 
 		IBlockState water = Blocks.WATER.getDefaultState();
 		IBlockState stone = Blocks.STONE.getDefaultState();

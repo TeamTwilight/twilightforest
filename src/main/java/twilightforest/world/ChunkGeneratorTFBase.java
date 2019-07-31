@@ -24,7 +24,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
 import javax.annotation.Nullable;
-import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
@@ -125,7 +124,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 	// note: ChunkPrimer changed to a BitSet marking 'solid' blocks
 	// this allows for some post-processing before populating the primer
-	protected final void setBlocksInChunk(int x, int z, BitSet data) {
+	protected final void setBlocksInChunk(int x, int z, ChunkBitArray data) {
 
 		byte seaLevel = 63;
 		this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
@@ -290,7 +289,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	/**
 	 * Crush the terrain to half the height
 	 */
-	protected final void squishTerrain(BitSet data) {
+	protected final void squishTerrain(ChunkBitArray data) {
 		int squishHeight = TFWorld.MAXHEIGHT / 2;
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
@@ -304,7 +303,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		}
 	}
 
-	protected abstract void initPrimer(ChunkPrimer primer, BitSet data);
+	protected abstract void initPrimer(ChunkPrimer primer, ChunkBitArray data);
 
 	// [VanillaCopy] Exact, ChunkGeneratorOverworld.replaceBiomeBlocks
 	public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn) {

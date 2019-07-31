@@ -16,8 +16,6 @@ import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 
-import java.util.BitSet;
-
 public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 	private final boolean generateHollowTrees = TFConfig.dimension.skylightOaks;
@@ -30,7 +28,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	public Chunk generateChunk(int x, int z) {
 		rand.setSeed(getSeed(x, z));
 
-		BitSet data = new BitSet(65536);
+		ChunkBitArray data = new ChunkBitArray();
 		setBlocksInChunk(x, z, data);
 		squishTerrain(data);
 
@@ -52,7 +50,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	protected void initPrimer(ChunkPrimer primer, BitSet data) {
+	protected void initPrimer(ChunkPrimer primer, ChunkBitArray data) {
 
 		IBlockState stone = Blocks.STONE.getDefaultState();
 
