@@ -716,11 +716,17 @@ public enum TFFeature {
 	 * that feature relative to the current chunk block coordinate system.
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, World world, @Nullable IntPair center) {
-		for (int rad = 1; rad <= maxSize; rad++) {
-			for (int x = -rad; x <= rad; x++) {
-				for (int z = -rad; z <= rad; z++) {
+		for (int ring = 1; ring <= maxSize; ring++) {
+			for (int x = -ring; x <= ring; x++) {
+				for (int z = -ring; z <= ring; z++) {
+					// Do not re-iterate values outside our ring
+					if (ring > 1 && (Math.abs(x) != ring || Math.abs(z) != ring)) {
+						continue;
+					}
+
 					TFFeature directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
-					if (directlyAt.size == rad) {
+
+					if (directlyAt.size == ring) {
 						if (center != null) {
 							center.x = (x << 4) + 8;
 							center.z = (z << 4) + 8;
@@ -730,6 +736,7 @@ public enum TFFeature {
 				}
 			}
 		}
+
 		return NOTHING;
 	}
 

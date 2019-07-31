@@ -147,6 +147,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 			}
 		}
 
+		IntPair nearCenter = new IntPair();
+		TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world, nearCenter);
+
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 
@@ -166,9 +169,6 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				thickness -= 4;
 
 				//int thickness = thicks[qz + (qz) * 5];
-
-				IntPair nearCenter = new IntPair();
-				TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world, nearCenter);
 
 				// make sure we're not too close to the tower
 				if (nearFeature == TFFeature.DARK_TOWER) {

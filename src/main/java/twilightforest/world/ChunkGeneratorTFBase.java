@@ -103,8 +103,12 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	}
 
 	protected final void generateFeatures(int x, int z, ChunkPrimer primer) {
-		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
-			generator.generate(world, x, z, primer);
+		TFFeature feature = TFFeature.getFeatureDirectlyAt(x, z, this.world);
+
+		MapGenTFMajorFeature gen = featureGenerators.get(feature);
+
+		if (gen != null) {
+			gen.generate(world, x, z, primer);
 		}
 	}
 
