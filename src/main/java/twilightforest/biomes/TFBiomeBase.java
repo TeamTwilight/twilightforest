@@ -143,9 +143,11 @@ public class TFBiomeBase extends Biome {
 				if (iblockstate2.getBlock() == Blocks.AIR) {
 					// j = -1; TF - commented out? todo 1.9
 				} else if (iblockstate2.getBlock() == Blocks.STONE) {
+					IBlockState finalState = STONE;
+
 					// TF - Replace stone
 					if (stoneReplacement != null) {
-						primer.setBlockState(i1, j1, l, stoneReplacement);
+						finalState = stoneReplacement;
 					}
 
 					if (j == -1) {
@@ -169,13 +171,17 @@ public class TFBiomeBase extends Biome {
 						j = k;
 
 						if (j1 >= i - 1) {
-							primer.setBlockState(i1, j1, l, iblockstate);
+							finalState = iblockstate;
 						} else if (j1 < i - 7 - k) {
 							iblockstate = AIR;
 							iblockstate1 = STONE;
-							primer.setBlockState(i1, j1, l, GRAVEL);
+							finalState = GRAVEL;
 						} else {
-							primer.setBlockState(i1, j1, l, iblockstate1);
+							finalState = iblockstate1;
+						}
+
+						if (finalState != iblockstate2) {
+							primer.setBlockState(i1, j1, l, finalState);
 						}
 					} else if (j > 0) {
 						--j;
