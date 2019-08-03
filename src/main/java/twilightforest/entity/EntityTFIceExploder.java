@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -62,6 +63,9 @@ public class EntityTFIceExploder extends EntityMob {
 
 	@Override
 	public void onLivingUpdate() {
+		if (!this.onGround && this.motionY < 0.0D) {
+			this.motionY *= 0.6D;
+		}
 		super.onLivingUpdate();
 		if (this.world.isRemote) {
 			// make snow particles
@@ -71,7 +75,15 @@ public class EntityTFIceExploder extends EntityMob {
 				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
 				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+				if (this.world.getBiome(this.getPosition()).getTemperature(this.getPosition()) > 1.0F || this.isBurning()) {
+					this.world.spawnParticle(EnumParticleTypes.CLOUD, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0.1F, 0);
+					this.world.spawnParticle(EnumParticleTypes.WATER_DROP, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+				}
 			}
+		}
+		if (this.world.getBiome(this.getPosition()).getTemperature(this.getPosition()) > 1.0F && this.ticksExisted % 20 == 0) {
+			//BURN!!!
+			this.attackEntityFrom(DamageSource.ON_FIRE, 1.0F);
 		}
 	}
 
@@ -201,5 +213,13 @@ public class EntityTFIceExploder extends EntityMob {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 8;
+	}
+
+	@Override
+	public void fall(float distance, float damageMultiplier) {
+	}
+
+	@Override
+	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
 	}
 }
