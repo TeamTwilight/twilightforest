@@ -2,7 +2,6 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -25,8 +24,8 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 	private double beamY;
 	private boolean isInPosition;
 
-	public EntityAITFHoverBeam(EntityTFSnowQueen snowQueen, Class<EntityPlayer> targetClass, int hoverTime, int dropTime) {
-		super(snowQueen, targetClass, 3F, 4F);
+	public EntityAITFHoverBeam(EntityTFSnowQueen snowQueen, int hoverTime, int dropTime) {
+		super(snowQueen, 3F, 4F);
 
 		this.setMutexBits(3);
 		this.maxHoverTime = hoverTime;
@@ -44,8 +43,6 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 		if (target == null) {
 			return false;
 		} else if (!target.isEntityAlive()) {
-			return false;
-		} else if (this.classTarget != null && !this.classTarget.isAssignableFrom(target.getClass())) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.BEAM) {
 			return false;

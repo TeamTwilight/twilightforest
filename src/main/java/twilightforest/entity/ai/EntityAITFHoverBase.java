@@ -10,7 +10,6 @@ import twilightforest.TwilightForestMod;
 
 public abstract class EntityAITFHoverBase<T extends EntityLiving> extends EntityAIBase {
 
-	protected final Class<? extends EntityLivingBase> classTarget;
 	protected final T attacker;
 
 	protected final float hoverHeight;
@@ -20,8 +19,7 @@ public abstract class EntityAITFHoverBase<T extends EntityLiving> extends Entity
 	protected double hoverPosY;
 	protected double hoverPosZ;
 
-	protected EntityAITFHoverBase(T snowQueen, Class<? extends EntityLivingBase> targetClass, float hoverHeight, float hoverRadius) {
-		this.classTarget = targetClass;
+	protected EntityAITFHoverBase(T snowQueen, float hoverHeight, float hoverRadius) {
 		this.attacker = snowQueen;
 		this.hoverHeight = hoverHeight;
 		this.hoverRadius = hoverRadius;

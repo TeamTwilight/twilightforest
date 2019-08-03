@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -81,6 +83,9 @@ public class EntityTFIceCrystal extends EntityMob {
 
 	@Override
 	public void onLivingUpdate() {
+		if (!this.onGround && this.motionY < 0.0D) {
+			this.motionY *= 0.6D;
+		}
 		super.onLivingUpdate();
 
 		if (!world.isRemote) {
@@ -89,5 +94,13 @@ public class EntityTFIceCrystal extends EntityMob {
 				this.setDead();
 			}
 		}
+	}
+
+	@Override
+	public void fall(float distance, float damageMultiplier) {
+	}
+
+	@Override
+	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
 	}
 }

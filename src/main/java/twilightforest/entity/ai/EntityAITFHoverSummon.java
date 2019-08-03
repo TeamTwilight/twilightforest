@@ -1,7 +1,6 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
@@ -14,8 +13,8 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 
 	private final int maxSeekTime;
 
-	public EntityAITFHoverSummon(EntityTFSnowQueen snowQueen, Class<EntityPlayer> targetClass, double speed) {
-		super(snowQueen, targetClass, 6F, 6F);
+	public EntityAITFHoverSummon(EntityTFSnowQueen snowQueen, double speed) {
+		super(snowQueen, 6F, 6F);
 
 		this.setMutexBits(3);
 		this.maxSeekTime = 80;
@@ -28,8 +27,6 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 		if (target == null) {
 			return false;
 		} else if (!target.isEntityAlive()) {
-			return false;
-		} else if (this.classTarget != null && !this.classTarget.isAssignableFrom(target.getClass())) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.SUMMON) {
 			return false;
@@ -54,7 +51,8 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 	}
 
 	@Override
-	public void resetTask() {}
+	public void resetTask() {
+	}
 
 	@Override
 	public void updateTask() {
