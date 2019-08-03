@@ -9,7 +9,6 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -24,7 +23,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
-public class EntityTFSnowGuardian extends EntityMob {
+public class EntityTFSnowGuardian extends EntityIceMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/snow_guardian");
 

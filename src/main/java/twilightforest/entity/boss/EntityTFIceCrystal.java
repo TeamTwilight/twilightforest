@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -9,17 +8,16 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityIceMob;
 
-public class EntityTFIceCrystal extends EntityMob {
+public class EntityTFIceCrystal extends EntityIceMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_crystal");
 
@@ -83,9 +81,6 @@ public class EntityTFIceCrystal extends EntityMob {
 
 	@Override
 	public void onLivingUpdate() {
-		if (!this.onGround && this.motionY < 0.0D) {
-			this.motionY *= 0.6D;
-		}
 		super.onLivingUpdate();
 
 		if (!world.isRemote) {
@@ -96,11 +91,4 @@ public class EntityTFIceCrystal extends EntityMob {
 		}
 	}
 
-	@Override
-	public void fall(float distance, float damageMultiplier) {
-	}
-
-	@Override
-	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
-	}
 }
