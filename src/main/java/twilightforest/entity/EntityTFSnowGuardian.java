@@ -23,7 +23,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
-public class EntityTFSnowGuardian extends EntityIceMob {
+public class EntityTFSnowGuardian extends EntityTFIceMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/snow_guardian");
 

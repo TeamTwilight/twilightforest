@@ -9,8 +9,8 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
-public abstract class EntityIceMob extends EntityMob {
-	public EntityIceMob(World worldIn) {
+public abstract class EntityTFIceMob extends EntityMob {
+	public EntityTFIceMob(World worldIn) {
 		super(worldIn);
 	}
 

@@ -25,7 +25,7 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
-public class EntityTFIceExploder extends EntityIceMob {
+public class EntityTFIceExploder extends EntityTFIceMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_exploder");
 	private static final float EXPLOSION_RADIUS = 1;

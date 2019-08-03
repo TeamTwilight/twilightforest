@@ -15,9 +15,9 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityIceMob;
+import twilightforest.entity.EntityTFIceMob;
 
-public class EntityTFIceCrystal extends EntityIceMob {
+public class EntityTFIceCrystal extends EntityTFIceMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_crystal");
 

@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFIceShooter extends EntityIceMob implements IRangedAttackMob {
+public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_shooter");
 
