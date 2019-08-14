@@ -15,6 +15,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	private int permamentShields;
 	private EntityLivingBase host;
 	private int timer = 0;
+	private boolean dirty;
 
 	@Override
 	public void setEntity(EntityLivingBase entity) {
@@ -25,6 +26,11 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	public void update() {
 		if (!host.world.isRemote && shieldsLeft() > 0 && timer-- <= 0 && (!(host instanceof EntityPlayer) || !((EntityPlayer) host).isCreative()))
 			breakShield();
+
+		if (dirty) {
+			sendUpdatePacket();
+			dirty = false;
+		}
 	}
 
 	@Override
@@ -53,7 +59,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 		}
 
 		host.world.playSound(null, host.getPosition(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0F, ((host.getRNG().nextFloat() - host.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
-		sendUpdatePacket();
+		deferUpdatePacket();
 	}
 
 	@Override
@@ -71,7 +77,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			permamentShields = Math.max(amount, 0);
 		}
 
-		sendUpdatePacket();
+		deferUpdatePacket();
 	}
 
 	@Override
@@ -84,7 +90,18 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			permamentShields += amount;
 		}
 
-		sendUpdatePacket();
+		deferUpdatePacket();
+	}
+
+	private void deferUpdatePacket() {
+		// FIX: https://github.com/TeamTwilight/twilightforest/issues/751
+		// We may not be added to the world yet, in which case we need to defer the update packet until the
+		// first tick of this entity (which can only occur if added the entity is a part of the world)
+		if (this.host.isAddedToWorld()) {
+			this.sendUpdatePacket();
+		} else {
+			this.dirty = true;
+		}
 	}
 
 	private void sendUpdatePacket() {
