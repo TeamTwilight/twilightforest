@@ -1,6 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:canopy_trapdoor",
+    "item": "twilightforest:sort_trapdoor",
     "data": 0,
     "count": 6
   },
@@ -11,7 +11,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "twilightforest:canopy_planks",
+      "item": "twilightforest:sort_planks",
       "data": 0
     }
   }
