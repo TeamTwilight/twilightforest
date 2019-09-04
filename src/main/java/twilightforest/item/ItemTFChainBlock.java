@@ -43,6 +43,14 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 				return getThrownUuid(stack) != null ? 1 : 0;
 			}
 		});
+
+		this.addPropertyOverride(TwilightForestMod.prefix("cannotthrow"), new IItemPropertyGetter() {
+			@SideOnly(Side.CLIENT)
+			@Override
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				return entityIn != null && !canThrow(entityIn) ? 1 : 0;
+			}
+		});
 	}
 
 	@Override
@@ -60,18 +68,29 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 		if (getThrownUuid(stack) != null)
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 
-		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
+		if(canThrow(player)) {
+			player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F));
 
-		if (!world.isRemote) {
-			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player, hand);
-			world.spawnEntity(launchedBlock);
-			setThrownEntity(stack, launchedBlock);
+			if (!world.isRemote) {
+				EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player, hand);
+				world.spawnEntity(launchedBlock);
+				setThrownEntity(stack, launchedBlock);
 
-			stack.damageItem(1, player);
+				stack.damageItem(1, player);
+			}
+
+			player.setActiveHand(hand);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 		}
+		return ActionResult.newResult(EnumActionResult.FAIL, stack);
+	}
 
-		player.setActiveHand(hand);
-		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+	private static boolean canThrow(EntityLivingBase livingbase){
+		if(livingbase.getHeldItem(EnumHand.OFF_HAND).isEmpty() || livingbase.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Nullable

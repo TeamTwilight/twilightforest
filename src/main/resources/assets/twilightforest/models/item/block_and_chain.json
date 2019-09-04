@@ -127,6 +127,19 @@
         "twilightforest:thrown": 1
       },
       "model": "twilightforest:item/block_and_chain_thrown"
+    },
+    {
+      "predicate": {
+        "twilightforest:cannotthrow": 1
+      },
+      "model": "twilightforest:item/block_and_chain_item"
+    },
+    {
+      "predicate": {
+        "twilightforest:cannotthrow": 1,
+        "twilightforest:thrown": 1
+      },
+      "model": "twilightforest:item/block_and_chain_thrown"
     }
   ]
 }
