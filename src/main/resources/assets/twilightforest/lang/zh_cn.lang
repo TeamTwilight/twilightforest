@@ -667,12 +667,12 @@ twilightforest.config.druid_hut_weight=德鲁伊小屋权重
 
 twilightforest.config.hollow_hill_stalactites=自定义矿山钟乳石生成
 twilightforest.config.hollow_hill_stalactites.tooltip=在这里你可以自定义矿山生成的矿物钟乳石类型。\n格式如下：“modid:block<:meta> [尺寸] [最大长度] [最低生成高度] [权重]”，其中各项参数为：\n尺寸 - 钟乳石柱的长度，以矿山高度（矿山内部地面到顶部）衡量。\n最大长度 - 钟乳石柱的最大长度，以方块数量衡量\n最低生成高度 - 最低允许的钟乳石生成位置距离矿山内部地面的距离，低于这个高度时不生成。\n权重 - 决定生成频率。\n\n例如：minecraft:iron_ore 0.7 8 1 24 会增加一次和默认的铁矿石柱一样的生成。
-twilightforest.config.large_hill=仅大矿山
-twilightforest.config.large_hill.tooltip=该方块只在大矿山中以钟乳石柱的形式生成。
-twilightforest.config.medium_hill=仅中矿山和大矿山
-twilightforest.config.medium_hill.tooltip=该方块只在中矿山和大矿山中以钟乳石柱的形式生成。
+twilightforest.config.large_hill=大矿山
+twilightforest.config.large_hill.tooltip=定义只在大矿山中以钟乳石柱的形式生成的方块。
+twilightforest.config.medium_hill=中矿山和大矿山
+twilightforest.config.medium_hill.tooltip=定义只在中矿山和大矿山中以钟乳石柱的形式生成的方块。
 twilightforest.config.small_hill=所有矿山
-twilightforest.config.small_hill.tooltip=该方块在所有尺寸的矿山中以钟乳石柱的形式生成。
+twilightforest.config.small_hill.tooltip=定义在所有尺寸的矿山中以钟乳石柱的形式生成的方块。
 twilightforest.config.stalactite_config_only=仅使用配置定义的生成
 twilightforest.config.stalactite_config_only.tooltip=启用后，默认的生成和其他 Mod 添加的生成都不会使用，只使用配置文件中定义的生成。
 
@@ -712,8 +712,8 @@ twilightforest.config.portal_lighting=建造传送门时引发闪电
 twilightforest.config.portal_lighting.tooltip=启用后，建造传送门的时候会有闪电击中传送门方块，同时令周围方块起火。为不苟言笑的人准备的选项。
 twilightforest.config.portal_return=是否生成双向传送门
 twilightforest.config.portal_return.tooltip=禁用后，返回的传送门需要额外的传送门建造物品。
-twilightforest.config.check_portal_destination=Pre-Check Portal Destination
-twilightforest.config.check_portal_destination.tooltip=Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination.\nNote that enabling this also reduces the rate at which portal formation checks are performed.
+twilightforest.config.check_portal_destination=传送门目的地预检查
+twilightforest.config.check_portal_destination.tooltip=决定生成传送门时是否应检查目的地是否安全。启用后，新传送门会在目的地不安全时拒绝生成，而不是重定向到一个别的安全目的地。\n注意，启用此选项后也会降低传送门生成检查频率。
 
 twilightforest.config.progression_default=默认进度规则
 twilightforest.config.progression_default.tooltip=设定强制进度的游戏规则的默认值。
