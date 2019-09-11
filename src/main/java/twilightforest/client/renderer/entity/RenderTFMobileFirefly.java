@@ -1,9 +1,10 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
@@ -12,19 +13,21 @@ import twilightforest.entity.passive.EntityTFMobileFirefly;
 
 import java.nio.FloatBuffer;
 
-public class RenderTFMobileFirefly extends Render<EntityTFMobileFirefly> {
+public class RenderTFMobileFirefly extends RenderLiving<EntityTFMobileFirefly> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly.png");
 	private final ModelTFTinyFirefly fireflyModel = new ModelTFTinyFirefly();
 
 	public RenderTFMobileFirefly(RenderManager manager) {
-		super(manager);
+		super(manager,new ModelTFTinyFirefly(),0.0F);
 	}
 
 	private void doRenderTinyFirefly(EntityTFMobileFirefly firefly, double x, double y, double z, float brightness, float size) {
 		GlStateManager.pushMatrix();
 
-		GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
+		Vec3d lookvec =firefly.getLook(1.0F);
+
+		GlStateManager.translate((float) x - (lookvec.x * 0.22F), (float) y + 0.15F, (float) z - (lookvec.z * 0.22F));
 
 		// undo rotations so we can draw a billboarded firefly
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
@@ -68,6 +71,7 @@ public class RenderTFMobileFirefly extends Render<EntityTFMobileFirefly> {
 
 	@Override
 	public void doRender(EntityTFMobileFirefly firefly, double x, double y, double z, float yaw, float partialTicks) {
+		super.doRender(firefly,x,y,z,yaw,partialTicks);
 		doRenderTinyFirefly(firefly, x, y, z, firefly.getGlowBrightness(), 1.0F);
 	}
 
