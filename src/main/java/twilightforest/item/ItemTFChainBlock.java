@@ -44,7 +44,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 			}
 		});
 
-		this.addPropertyOverride(TwilightForestMod.prefix("cannotthrow"), new IItemPropertyGetter() {
+		this.addPropertyOverride(TwilightForestMod.prefix("cannot_throw"), new IItemPropertyGetter() {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {

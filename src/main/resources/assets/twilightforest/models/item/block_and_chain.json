@@ -130,13 +130,13 @@
     },
     {
       "predicate": {
-        "twilightforest:cannotthrow": 1
+        "twilightforest:cannot_throw": 1
       },
       "model": "twilightforest:item/block_and_chain_item"
     },
     {
       "predicate": {
-        "twilightforest:cannotthrow": 1,
+        "twilightforest:cannot_throw": 1,
         "twilightforest:thrown": 1
       },
       "model": "twilightforest:item/block_and_chain_thrown"
