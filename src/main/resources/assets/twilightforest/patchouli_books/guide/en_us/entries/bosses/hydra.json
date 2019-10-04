@@ -8,7 +8,11 @@
     {
       "type": "entity",
       "entity": "twilightforest:hydra",
-      "text": "Hail hydra"
+      "text": "Hail Hydra"
+    },
+    {
+      "type": "text",
+      "text": "The great monster of the Fire Swamp, the Hydra has a tough hide and each head having its own mind and method of attacking. Ranging from fiery breaths, exploding mortars, and a devastating bite attack, along with the ability to regenerate heads, this thing will not stop at anything."
     }
   ]
 }

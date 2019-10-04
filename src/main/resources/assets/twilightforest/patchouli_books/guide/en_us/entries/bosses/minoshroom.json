@@ -8,7 +8,11 @@
     {
       "type": "entity",
       "entity": "twilightforest:minoshroom{HandItems:[{id:\"twilightforest:minotaur_axe\",Count:1}]}",
-      "text": "He just wanted to axe you a question"
+      "text": "He just wanted to axe you a question."
+    },
+    {
+      "type": "text",
+      "text": "This terrifying beast of the Labyrinth could destroy any uncaring adventurer quickly. Their weapon of choice, a Diamond Minotaur Axe, can tear down any defence, and their charging attack could catch anyone off guard in one fell swoop.$(br)Caution should be exercised while trying to slay the Minoshroom."
     }
   ]
 }

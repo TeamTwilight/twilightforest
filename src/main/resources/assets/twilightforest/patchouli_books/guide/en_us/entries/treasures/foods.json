@@ -9,25 +9,33 @@
       "type": "text",
       "text": "Food glorious food"
     }, {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Hydra Chop",
+      "item": "twilightforest:hydra_chop",
       "advancement": "twilightforest:alt/treasures/foods/hydra_chop",
-      "text": "things and stuff"
+      "text": "A filling meal with just a single Hydra Chop. Eating this potent meat fills your hunger greatly and helps in health regeneration. Fitting for those that have conquered such a mighty beast."
     }, {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Maze Wafer",
+      "item": "twilightforest:maze_wafer",
       "advancement": "twilightforest:alt/treasures/foods/maze_wafer",
-      "text": "things and stuff"
+      "text": "Quick little snacks found in mazes. Though barely able to grant some saturation, it is perfect for exploring twisted landmarks when food becomes scarce."
     }, {
       "type": "text",
+      "title": "Meef",
+      "item": "twilightforest:cooked_meef",
       "advancement": "twilightforest:alt/treasures/foods/meef",
-      "text": "things and stuff"
+      "text": "Beef from a Minotaur. It's not very much if eaten raw, but cook it up and it is a valuable food item, rivalling the likes of Cooked Chicken."
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/foods/vension",
       "text": "things and stuff"
     }, {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Meef Stroganoff",
+      "item": "twilightforest:meef_stroganoff",
       "advancement": "twilightforest:progress_labyrinth",
-      "text": "things and stuff"
+      "text": "Nutritious and hearty. Eating Meef Stroganoff empowers the adventurer and allows them to traverse into the Fire Swamp without fearing any heat-related issues. How kind of the Minoshroom, after all that effort?"
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/foods/experiment_115",

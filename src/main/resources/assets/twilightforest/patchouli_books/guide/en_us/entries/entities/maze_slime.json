@@ -8,7 +8,11 @@
     {
       "type": "entity",
       "entity": "twilightforest:maze_slime{Size:1}",
-      "text": "things and stuff"
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Strange Slimes found within the confines of the Labyrinth. They look and feel like any other Slime, but their slimy bodies resemble Mazestone Bricks. Though they appear to be nothing special, they seem to contain a special secret within them; a rare treasure, perhaps?"
     }
   ]
 }

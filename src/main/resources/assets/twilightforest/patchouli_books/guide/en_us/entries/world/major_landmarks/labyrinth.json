@@ -7,7 +7,17 @@
   "pages": [
     {
       "type": "text",
-      "text": "things and stuff"
+      "text": "Large, sprawling mazes that can be found beneath the Twilight Swamp biome. Locating one of these landmarks requires a good eye for terrain, as the entrance is hidden inside a hill the size of a Small Hollow Hill."
+    },
+    {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/minoshroom",
+      "text": "With some dedication and some navigation, an adventurer may come across the lair of the Minoshroom. Locked behind wooden fences and surrounded in fungus appears to be some chests with some loot, guarded by the beast of the Labyrinth."
+    },
+    {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/mazebreaker_pickaxe",
+      "text": "Hidden deep within the walls of the Labyrinth appears to be a small, rigged vault. Careful adventurers can gather some rare, valuable materials, and a coveted Mazebreaker. Such find is quite the reward, but care must be exercised."
     }
   ]
 }

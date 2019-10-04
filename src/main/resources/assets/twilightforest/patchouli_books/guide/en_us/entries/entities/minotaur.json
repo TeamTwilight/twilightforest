@@ -8,7 +8,16 @@
     {
       "type": "entity",
       "entity": "twilightforest:minotaur",
-      "text": "things and stuff"
+      "text": ""
+    },
+    {
+      "type": "text",
+      "text": "Humanoid beasts that roam the Labyrinth. These part-Cow, part-human beasts each have a Golden Axe as their choice of weapon, tearing defences down. Their charge attack happens quickly and swiftly, and in groups, they overwhelm any careful adventurer."
+    },
+    {
+      "type": "text",
+      "advancement": "twilightforest:alt/treasures/minotaur_axe_gold",
+      "text": "Beware the Minotaurs with the Golden Minotaur Axe. They may be rare, but their different choice of weapon is a deadly choice, with more damage to deal."
     }
   ]
 }
