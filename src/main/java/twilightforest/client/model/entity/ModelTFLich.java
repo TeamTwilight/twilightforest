@@ -104,10 +104,6 @@ public class ModelTFLich extends ModelBiped {
 		bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.167F) * 0.15F;
 		bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.167F) * 0.15F;
 
-		if(entity instanceof EntityTFLich&& ((EntityTFLich) entity).isChargeDagger()){
-			bipedRightArm.rotateAngleZ = -0.3F;
-			bipedLeftArm.rotateAngleX = 0.0F;
-		}
 
 		bipedHead.rotationPointY = -4.0F;
 		bipedHeadwear.rotationPointY = -4.0F;

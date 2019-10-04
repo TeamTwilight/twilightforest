@@ -1,12 +1,21 @@
 package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -36,7 +45,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
-import twilightforest.entity.ai.EntityAITFLichShootDagger;
 import twilightforest.enums.BossVariant;
 import twilightforest.world.TFWorld;
 
@@ -49,7 +57,6 @@ public class EntityTFLich extends EntityMob {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/lich");
 	private static final Set<Class<? extends Entity>> POPPABLE = ImmutableSet.of(EntitySkeleton.class, EntityZombie.class, EntityEnderman.class, EntitySpider.class, EntityCreeper.class, EntityTFSwarmSpider.class);
 
-	private static final DataParameter<Boolean> DATA_CHARGEDAGGER = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> DATA_ISCLONE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> DATA_SHIELDSTRENGTH = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_MINIONSLEFT = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
@@ -105,8 +112,7 @@ public class EntityTFLich extends EntityMob {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAITFLichShadows(this));
 		this.tasks.addTask(2, new EntityAITFLichMinions(this));
-		this.tasks.addTask(3, new EntityAITFLichShootDagger(this));
-		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true) {
+		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, true) {
 			@Override
 			public boolean shouldExecute() {
 				return getPhase() == 3 && super.shouldExecute();
@@ -126,7 +132,6 @@ public class EntityTFLich extends EntityMob {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		dataManager.register(DATA_CHARGEDAGGER, false);
 		dataManager.register(DATA_ISCLONE, false);
 		dataManager.register(DATA_SHIELDSTRENGTH, (byte) INITIAL_SHIELD_STRENGTH);
 		dataManager.register(DATA_MINIONSLEFT, (byte) INITIAL_MINIONS_TO_SUMMON);
@@ -532,14 +537,6 @@ public class EntityTFLich extends EntityMob {
 	public void setShadowClone(boolean shadowClone) {
 		bossInfo.setVisible(!shadowClone);
 		dataManager.set(DATA_ISCLONE, shadowClone);
-	}
-
-	public boolean isChargeDagger() {
-		return dataManager.get(DATA_CHARGEDAGGER);
-	}
-
-	public void setChargeDagger(boolean chargeDagger) {
-		dataManager.set(DATA_CHARGEDAGGER, chargeDagger);
 	}
 
 	public byte getShieldStrength() {
