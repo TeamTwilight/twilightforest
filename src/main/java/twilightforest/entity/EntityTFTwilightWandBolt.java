@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFTwilightWandBolt extends EntityTFThrowable {
+	private int tick;
 
 	@SuppressWarnings("unused")
 	public EntityTFTwilightWandBolt(World world) {
@@ -31,6 +32,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
+		++tick;
 		makeTrail();
 	}
 
@@ -68,6 +70,11 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
+		//Fix a bug where the ball released by the player hits the player
+		if(result.entityHit == this.thrower && this.tick < 4){
+			return;
+		}
+
 		if (!this.world.isRemote) {
 			if (result.entityHit instanceof EntityLivingBase) {
 				result.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);

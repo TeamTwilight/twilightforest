@@ -5,6 +5,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -39,11 +40,60 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable {
 		}
 	}
 
+	public boolean canBeCollidedWith()
+	{
+		return true;
+	}
+
+	public float getCollisionBorderSize()
+	{
+		return 0.8F;
+	}
+
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		super.attackEntityFrom(source, amount);
-		die();
-		return true;
+		if (this.isEntityInvulnerable(source))
+		{
+			return false;
+		}
+		else
+		{
+			this.markVelocityChanged();
+
+			if (source.getTrueSource() != null)
+			{
+				if(this.rand.nextInt(2) == 0){
+					this.markVelocityChanged();
+
+					if (source.getTrueSource() != null)
+					{
+						Vec3d vec3d = source.getTrueSource().getLookVec();
+
+						if (vec3d != null)
+						{
+							this.motionX = vec3d.x;
+							this.motionY = 0.1F + vec3d.y;
+							this.motionZ = vec3d.z;
+						}
+
+						if (source.getTrueSource() instanceof EntityLivingBase)
+						{
+							this.thrower = (EntityLivingBase)source.getTrueSource();
+						}
+
+						return true;
+					}
+				}else {
+					die();
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
