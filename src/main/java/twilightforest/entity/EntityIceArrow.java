@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
@@ -16,8 +15,8 @@ public class EntityIceArrow extends EntityTFArrow {
 		super(world);
 	}
 
-	public EntityIceArrow(World world, EntityPlayer player) {
-		super(world, player);
+	public EntityIceArrow(World world, EntityLivingBase shooter) {
+		super(world, shooter);
 	}
 
 	@Override

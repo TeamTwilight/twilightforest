@@ -49,9 +49,9 @@ public class BlockTFUnderBrick extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, 0));
-		list.add(new ItemStack(this, 1, 1));
-		list.add(new ItemStack(this, 1, 2));
+		for (UnderBrickVariant variant : UnderBrickVariant.values()) {
+			list.add(new ItemStack(this, 1, variant.ordinal()));
+		}
 	}
 
 	@Override

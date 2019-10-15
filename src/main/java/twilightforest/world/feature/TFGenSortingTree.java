@@ -1,5 +1,6 @@
 package twilightforest.world.feature;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,23 +13,20 @@ import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
-
 public class TFGenSortingTree extends TFGenerator {
+
 	protected IBlockState treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);
-	protected IBlockState branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-	protected IBlockState leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);
-	;
+	protected IBlockState branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+	protected IBlockState leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT).withProperty(BlockLeaves.CHECK_DECAY, false);
 	protected IBlockState rootState = TFBlocks.root.getDefaultState();
 
 	public TFGenSortingTree() {
 		this(false);
 	}
 
-
 	public TFGenSortingTree(boolean notify) {
 		super(notify);
 	}
-
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {

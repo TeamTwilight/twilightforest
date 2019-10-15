@@ -46,7 +46,7 @@ public class ItemTFTrophy extends ItemTF {
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
 		if (isInCreativeTab(tab)) {
 			for (BossVariant v : BossVariant.values()) {
-				if (v != BossVariant.ALPHA_YETI) {
+				if (v != BossVariant.ALPHA_YETI && v != BossVariant.FINAL_BOSS) {
 					list.add(new ItemStack(this, 1, v.ordinal()));
 				}
 			}

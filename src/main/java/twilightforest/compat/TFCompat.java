@@ -1,9 +1,12 @@
 package twilightforest.compat;
 
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,7 +22,7 @@ import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.compat.ie.ItemTFShader;
 import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.entity.boss.*;
-import twilightforest.enums.*;
+import twilightforest.enums.TowerWoodVariant;
 import twilightforest.item.RegisterItemEvent;
 
 import java.util.Locale;
@@ -30,37 +33,58 @@ public enum TFCompat {
     CHISEL("Chisel") {
         @Override
         public void init() {
-            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.spiral_bricks));
-            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.etched_nagastone));
-            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.nagastone_pillar));
-            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.etched_nagastone_mossy));
-            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.nagastone_pillar_mossy));
-            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.etched_nagastone_weathered));
-            addBlockToCarvingGroup("stonebrick", new ItemStack(TFBlocks.nagastone_pillar_weathered));
+            addBlockToCarvingGroup("stonebrick", TFBlocks.spiral_bricks);
 
-            for (MazestoneVariant variant : MazestoneVariant.values())
-                addBlockToCarvingGroup("mazestone", new ItemStack(TFBlocks.maze_stone, 1, variant.ordinal()));
+            addBlockToCarvingGroup("nagastone", TFBlocks.etched_nagastone);
+            addBlockToCarvingGroup("nagastone", TFBlocks.nagastone_pillar);
+            addBlockToCarvingGroup("nagastone", TFBlocks.etched_nagastone_mossy);
+            addBlockToCarvingGroup("nagastone", TFBlocks.nagastone_pillar_mossy);
+            addBlockToCarvingGroup("nagastone", TFBlocks.etched_nagastone_weathered);
+            addBlockToCarvingGroup("nagastone", TFBlocks.nagastone_pillar_weathered);
+            addVariantsToCarvingGroup("nagastone", TFBlocks.naga_stone);
 
-            for (UnderBrickVariant variant : UnderBrickVariant.values())
-                addBlockToCarvingGroup("underbrick", new ItemStack(TFBlocks.underbrick, 1, variant.ordinal()));
+            addVariantsToCarvingGroup("nagastonestairs", TFBlocks.nagastone_stairs);
+            addVariantsToCarvingGroup("nagastonestairs", TFBlocks.nagastone_stairs_mossy);
+            addVariantsToCarvingGroup("nagastonestairs", TFBlocks.nagastone_stairs_weathered);
 
-            for (TowerWoodVariant variant : TowerWoodVariant.values())
-                addBlockToCarvingGroup("towerwood", new ItemStack(TFBlocks.tower_wood, 1, variant.ordinal()));
+            addVariantsToCarvingGroup("mazestone", TFBlocks.maze_stone);
 
-            for (DeadrockVariant variant : DeadrockVariant.values())
-                addBlockToCarvingGroup("deadrock", new ItemStack(TFBlocks.deadrock, 1, variant.ordinal()));
+            addVariantsToCarvingGroup("underbrick", TFBlocks.underbrick);
 
-            for (CastleBrickVariant variant : CastleBrickVariant.values())
-                addBlockToCarvingGroup("castlebrick", new ItemStack(TFBlocks.castle_brick, 1, variant.ordinal()));
+            for (TowerWoodVariant variant : TowerWoodVariant.values()) {
+                if (variant != TowerWoodVariant.INFESTED) {
+                    addToCarvingGroup("towerwood", new ItemStack(TFBlocks.tower_wood, 1, variant.ordinal()));
+                }
+            }
 
-            for (int i = 0; i < 4; i++)
-                addBlockToCarvingGroup("castlebrick", new ItemStack(TFBlocks.castle_pillar, 1, i));
+            addVariantsToCarvingGroup("deadrock", TFBlocks.deadrock);
 
-            addBlockToCarvingGroup("castlebrickstairs", new ItemStack(TFBlocks.castle_stairs, 1, 0));
-            addBlockToCarvingGroup("castlebrickstairs", new ItemStack(TFBlocks.castle_stairs, 1, 8));
+            addVariantsToCarvingGroup("castlebrick", TFBlocks.castle_brick);
+            addVariantsToCarvingGroup("castlebrick", TFBlocks.castle_pillar);
+
+            addVariantsToCarvingGroup("castlebrickstairs", TFBlocks.castle_stairs);
+            addBlockToCarvingGroup("castlebrickstairs", TFBlocks.castle_stairs_brick);
+            addBlockToCarvingGroup("castlebrickstairs", TFBlocks.castle_stairs_cracked);
+            addBlockToCarvingGroup("castlebrickstairs", TFBlocks.castle_stairs_worn);
+            addBlockToCarvingGroup("castlebrickstairs", TFBlocks.castle_stairs_mossy);
+
+            addBlockToCarvingGroup("terrorcotta", TFBlocks.terrorcotta_circle);
+            addBlockToCarvingGroup("terrorcotta", TFBlocks.terrorcotta_diagonal);
         }
 
-        private void addBlockToCarvingGroup(String group, ItemStack stack) {
+        private void addVariantsToCarvingGroup(String group, Block block) {
+            NonNullList<ItemStack> variants = NonNullList.create();
+            block.getSubBlocks(CreativeTabs.SEARCH, variants);
+            for (ItemStack stack : variants) {
+                addToCarvingGroup(group, stack);
+            }
+        }
+
+        private void addBlockToCarvingGroup(String group, Block block) {
+            addToCarvingGroup(group, new ItemStack(block));
+        }
+
+        private void addToCarvingGroup(String group, ItemStack stack) {
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setString("group", group);
             nbt.setTag("stack", stack.serializeNBT());

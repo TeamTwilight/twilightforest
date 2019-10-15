@@ -6,14 +6,15 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIPanic;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -45,12 +46,13 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	@Override
 	protected void initEntityAI() {
-		this.setPathPriority(PathNodeType.WATER, -1.0F);
-		this.tasks.addTask(0, new EntityAITFBirdFly(this));
-		this.tasks.addTask(1, new EntityAITFTempt(this, 1.0F, true, SEEDS));
-		this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
-		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-		this.tasks.addTask(4, new EntityAILookIdle(this));
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
+		this.tasks.addTask(2, new EntityAITFBirdFly(this));
+		this.tasks.addTask(3, new EntityAITFTempt(this, 1.0F, true, SEEDS));
+		this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 1.0D));
+		this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
+		this.tasks.addTask(6, new EntityAILookIdle(this));
 	}
 
 	@Override
@@ -155,18 +157,10 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (this.isBirdLanded()) {
 			this.currentFlightTime = 0;
 
-			if (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(posX, posY - 1, posZ))) {
+			if (isSpooked() || isInWater() || world.containsAnyLiquid(getEntityBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(posX, posY - 1, posZ)))) {
 				this.setIsBirdLanded(false);
 				this.world.playEvent(1025, new BlockPos(this), 0);
 				this.motionY = 0.4;
-				//FMLLog.info("bird taking off because it is no longer on land");
-			} else {
-				if (isSpooked()) {
-					this.setIsBirdLanded(false);
-					this.world.playEvent(1025, new BlockPos(this), 0);
-					this.motionY = 0.4;
-					//FMLLog.info("bird taking off because it was spooked");
-				}
 			}
 		} else {
 			this.currentFlightTime++;
@@ -174,6 +168,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 			// [VanillaCopy] Modified version of last half of EntityBat.updateAITasks. Edits noted
 			if (this.spawnPosition != null && (!this.world.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1)) {
 				this.spawnPosition = null;
+			}
+
+			if (isInWater() || world.containsAnyLiquid(getEntityBoundingBox())) {
+				currentFlightTime = 0; // reset timer for MAX FLIGHT :v
+				motionY = 0.1F;
 			}
 
 			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.posX), (double) ((int) this.posY), (double) ((int) this.posZ)) < 4.0D) {
@@ -237,10 +236,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	protected void collideWithEntity(Entity entity) {
-	}
+	protected void collideWithEntity(Entity entity) {}
 
 	@Override
-	protected void collideWithNearbyEntities() {
-	}
+	protected void collideWithNearbyEntities() {}
 }

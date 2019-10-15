@@ -38,6 +38,7 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class ItemTFCrumbleHorn extends ItemTF {
+
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
@@ -103,8 +104,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		player.setActiveHand(hand);
 		player.playSound(SoundEvents.ENTITY_SHEEP_AMBIENT, 1.0F, 0.8F);
-		// TODO: return the correct value of SUCCESS if we get a fix for the in-hand animation issues
-		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -128,6 +128,11 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
+	}
+
+	@Override
+	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
+		return oldStack.getItem() == newStack.getItem();
 	}
 
 	@Override
@@ -158,6 +163,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	}
 
 	private boolean crumbleBlock(ItemStack stack, World world, EntityLivingBase living, BlockPos pos) {
+
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 

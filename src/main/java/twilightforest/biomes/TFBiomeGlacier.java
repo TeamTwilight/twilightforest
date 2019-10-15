@@ -79,9 +79,11 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.addPotionEffect(new PotionEffect(TFPotions.frosty, 100, 3));
 		}
-		// hint monster?
-		if (world.rand.nextInt(4) == 0) {
-			TFFeature.ICE_TOWER.trySpawnHintMonster(world, player);
-		}
+		trySpawnHintMonster(player, world);
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.ICE_TOWER;
 	}
 }

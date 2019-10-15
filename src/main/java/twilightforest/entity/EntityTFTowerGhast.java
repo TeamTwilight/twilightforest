@@ -11,12 +11,14 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
@@ -27,6 +29,8 @@ public class EntityTFTowerGhast extends EntityGhast {
 	private static final DataParameter<Byte> ATTACK_STATUS = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> ATTACK_TIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> ATTACK_PREVTIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_ghast");
 
 	private AIAttack attackAI;
 	protected float wanderFactor;
@@ -377,5 +381,10 @@ public class EntityTFTowerGhast extends EntityGhast {
 		return this.maximumHomeDistance != -1.0F;
 	}
 	// End copy
+
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 }
 

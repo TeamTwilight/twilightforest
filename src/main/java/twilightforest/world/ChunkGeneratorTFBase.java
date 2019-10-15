@@ -1,6 +1,7 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -12,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
@@ -24,8 +26,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
 import javax.annotation.Nullable;
-import java.util.BitSet;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +110,9 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 
 	protected final Chunk makeChunk(int x, int z, ChunkPrimer primer) {
 
-		Chunk chunk = new Chunk(world, primer, x, z);
+		Chunk chunk = new Chunk(world, x, z);
+
+		fillChunk(chunk, primer);
 
 		// load in biomes, to prevent striping?!
 		byte[] chunkBiomes = chunk.getBiomeArray();
@@ -123,9 +125,37 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		return chunk;
 	}
 
+	// [VanillaCopy] Extended Chunk constructor, material check replaced with block check
+	private void fillChunk(Chunk chunk, ChunkPrimer primer) {
+
+		int i = 256;
+		boolean flag = world.provider.hasSkyLight();
+		ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
+
+		for (int j = 0; j < 16; ++j) {
+			for (int k = 0; k < 16; ++k) {
+				for (int l = 0; l < 256; ++l) {
+
+					IBlockState iblockstate = primer.getBlockState(j, l, k);
+
+					if (iblockstate.getBlock() != Blocks.AIR) {
+
+						int i1 = l >> 4;
+
+						if (storageArrays[i1] == Chunk.NULL_BLOCK_STORAGE) {
+							storageArrays[i1] = new ExtendedBlockStorage(i1 << 4, flag);
+						}
+
+						storageArrays[i1].set(j, l & 15, k, iblockstate);
+					}
+				}
+			}
+		}
+	}
+
 	// note: ChunkPrimer changed to a BitSet marking 'solid' blocks
 	// this allows for some post-processing before populating the primer
-	protected final void setBlocksInChunk(int x, int z, BitSet data) {
+	protected final void setBlocksInChunk(int x, int z, ChunkBitArray data) {
 
 		byte seaLevel = 63;
 		this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
@@ -290,7 +320,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	/**
 	 * Crush the terrain to half the height
 	 */
-	protected final void squishTerrain(BitSet data) {
+	protected final void squishTerrain(ChunkBitArray data) {
 		int squishHeight = TFWorld.MAXHEIGHT / 2;
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
@@ -304,7 +334,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		}
 	}
 
-	protected abstract void initPrimer(ChunkPrimer primer, BitSet data);
+	protected abstract void initPrimer(ChunkPrimer primer, ChunkBitArray data);
 
 	// [VanillaCopy] Exact, ChunkGeneratorOverworld.replaceBiomeBlocks
 	public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn) {
@@ -377,22 +407,29 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	 * Raises up and hollows out the hollow hills.
 	 */
 	private void raiseHills(ChunkPrimer primer, TFFeature nearFeature, int hdiam, int x, int z, int dx, int dz, int hillHeight) {
+
+		int oldGround = -1;
 		int newGround = -1;
 		boolean foundGroundLevel = false;
 
 		// raise the hill
 		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT; y++) {
 			Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
-			if (currentTerrain != Blocks.STONE && !foundGroundLevel) {
+			if (currentTerrain != Blocks.STONE) {
 				// we found the top of the stone layer
+				oldGround = y;
 				newGround = y + hillHeight;
-
 				foundGroundLevel = true;
+				break;
 			}
-			if (foundGroundLevel && y <= newGround) {
+		}
+
+		if (foundGroundLevel) {
+			for (int y = oldGround; y <= newGround; y++) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
 			}
 		}
+
 		// add the hollow part. Also turn water into stone below that
 		int hollow = hillHeight - 4 - nearFeature.size;
 
@@ -432,78 +469,67 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	}
 
 	private void flattenTerrainForFeature(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
-		int oldGround;
-		int newGround;
-		float squishFactor = 0;
+
+		float squishFactor = 0f;
 		int mazeHeight = TFWorld.SEALEVEL + 1;
 		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		if (dx <= -FEATURE_BOUNDARY) {
 			squishFactor = (-dx - FEATURE_BOUNDARY) / 8.0f;
-		}
-
-		if (dx >= FEATURE_BOUNDARY) {
+		} else if (dx >= FEATURE_BOUNDARY) {
 			squishFactor = (dx - FEATURE_BOUNDARY) / 8.0f;
 		}
+
 		if (dz <= -FEATURE_BOUNDARY) {
 			squishFactor = Math.max(squishFactor, (-dz - FEATURE_BOUNDARY) / 8.0f);
-		}
-
-		if (dz >= FEATURE_BOUNDARY) {
+		} else if (dz >= FEATURE_BOUNDARY) {
 			squishFactor = Math.max(squishFactor, (dz - FEATURE_BOUNDARY) / 8.0f);
 		}
 
-		if (squishFactor > 0) {
+		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
-			newGround = -1;
-
 			for (int y = 0; y <= 127; y++) {
 				Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
 				// we're still in ground
 				if (currentTerrain != Blocks.STONE) {
-					if (newGround == -1) {
-						// we found the lowest chunk of earth
-						oldGround = y;
-						mazeHeight += ((oldGround - mazeHeight) * squishFactor);
-
-						newGround = oldGround;
-					}
+					// we found the lowest chunk of earth
+					mazeHeight += ((y - mazeHeight) * squishFactor);
+					break;
 				}
 			}
 		}
 
 		// sets the ground level to the maze height
-		for (int y = 0; y <= 127; y++) {
+		for (int y = 0; y < mazeHeight; y++) {
 			Block b = primer.getBlockState(x, y, z).getBlock();
-			if (y < mazeHeight && (b == Blocks.AIR || b == Blocks.WATER)) {
+			if (b == Blocks.AIR || b == Blocks.WATER) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
 			}
-			if (y >= mazeHeight && b != Blocks.WATER) {
+		}
+		for (int y = mazeHeight; y <= 127; y++) {
+			Block b = primer.getBlockState(x, y, z).getBlock();
+			if (b != Blocks.AIR && b != Blocks.WATER) {
 				primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
 			}
 		}
 	}
 
 	private void deformTerrainForYetiLair(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
-		int oldGround;
-		int newGround;
-		float squishFactor = 0;
+
+		float squishFactor = 0f;
 		int topHeight = TFWorld.SEALEVEL + 24;
 		int outerBoundary = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		// outer boundary
 		if (dx <= -outerBoundary) {
 			squishFactor = (-dx - outerBoundary) / 8.0f;
-		}
-
-		if (dx >= outerBoundary) {
+		} else if (dx >= outerBoundary) {
 			squishFactor = (dx - outerBoundary) / 8.0f;
 		}
+
 		if (dz <= -outerBoundary) {
 			squishFactor = Math.max(squishFactor, (-dz - outerBoundary) / 8.0f);
-		}
-
-		if (dz >= outerBoundary) {
+		} else if (dz >= outerBoundary) {
 			squishFactor = Math.max(squishFactor, (dz - outerBoundary) / 8.0f);
 		}
 
@@ -528,47 +554,37 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		// floor, also with slight slope
 		int hollowFloor = TFWorld.SEALEVEL - 1 + (offset / 6);
 
-		if (squishFactor > 0) {
+		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
-			newGround = -1;
-
 			for (int y = 0; y <= 127; y++) {
 				Block currentTerrain = primer.getBlockState(x, y, z).getBlock();
-				if (currentTerrain == Blocks.STONE) {
-					// we're still in ground
-					continue;
-				} else {
-					if (newGround == -1) {
-						// we found the lowest chunk of earth
-						oldGround = y;
-						topHeight += ((oldGround - topHeight) * squishFactor);
-
-						hollowFloor += ((oldGround - hollowFloor) * squishFactor);
-
-						newGround = oldGround;
-					}
+				if (currentTerrain != Blocks.STONE) {
+					// we found the lowest chunk of earth
+					topHeight += ((y - topHeight) * squishFactor);
+					hollowFloor += ((y - hollowFloor) * squishFactor);
+					break;
 				}
 			}
 		}
 
 		// carve the cave into the stone
-		for (int y = 0; y <= 127; y++) {
-			Block b = primer.getBlockState(x, y, z).getBlock();
 
-			// add stone
-			if (y < topHeight && (b == Blocks.AIR || b == Blocks.WATER)) {
+		// add stone
+		for (int y = 0; y < topHeight; y++) {
+			Block b = primer.getBlockState(x, y, z).getBlock();
+			if (b == Blocks.AIR || b == Blocks.WATER) {
 				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
 			}
+		}
 
-			// hollow out inside
-			if (y > hollowFloor && y < hollowCeiling) {
-				primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-			}
+		// hollow out inside
+		for (int y = hollowFloor + 1; y < hollowCeiling; ++y) {
+			primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
+		}
 
-			// ice floor
-			if (y == hollowFloor && y < hollowCeiling && y < TFWorld.SEALEVEL + 3) {
-				primer.setBlockState(x, y, z, Blocks.PACKED_ICE.getDefaultState());
-			}
+		// ice floor
+		if (hollowFloor < hollowCeiling && hollowFloor < TFWorld.SEALEVEL + 3) {
+			primer.setBlockState(x, hollowFloor, z, Blocks.PACKED_ICE.getDefaultState());
 		}
 	}
 
@@ -677,27 +693,16 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		// are the specified coordinates precisely in a feature?
 		TFFeature nearestFeature = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 
-		if (nearestFeature != TFFeature.NOTHING) {
-
-			MapGenTFMajorFeature featureGenerator = getFeatureGenerator(nearestFeature);
-
-			// if the feature is already conquered, no spawns
-			if (featureGenerator.isStructureConquered(pos)) {
-				return Collections.emptyList();
-			}
-
-			// check the precise coords.
-			int spawnListIndex = featureGenerator.getSpawnListIndexAt(pos);
-			if (spawnListIndex >= 0) {
-				return nearestFeature.getSpawnableList(creatureType, spawnListIndex);
-			}
+		List<SpawnListEntry> featureList = getFeatureGenerator(nearestFeature).getPossibleCreatures(creatureType, pos);
+		if (featureList != null) {
+			return featureList;
 		}
 
 		Biome biome = world.getBiome(pos);
 
-		if (pos.getY() < TFWorld.SEALEVEL && creatureType == EnumCreatureType.MONSTER && biome instanceof TFBiomeBase) {
+		if (pos.getY() < TFWorld.SEALEVEL && biome instanceof TFBiomeBase) {
 			// cave monsters!
-			return ((TFBiomeBase) biome).getUndergroundSpawnableList();
+			return ((TFBiomeBase) biome).getUndergroundSpawnableList(creatureType);
 		} else {
 			return biome.getSpawnableList(creatureType);
 		}
@@ -720,8 +725,8 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		return featureGenerators.getOrDefault(feature, nothingGenerator);
 	}
 
-	public void setStructureConquered(int mapX, int mapY, int mapZ, boolean flag) {
-		getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world)).setStructureConquered(mapX, mapY, mapZ, flag);
+	public void setStructureConquered(BlockPos pos, boolean flag) {
+		getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).setStructureConquered(pos, flag);
 	}
 
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {

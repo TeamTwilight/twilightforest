@@ -66,11 +66,9 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, 0));
-		list.add(new ItemStack(this, 1, 1));
-		list.add(new ItemStack(this, 1, 2));
-		list.add(new ItemStack(this, 1, 3));
-		list.add(new ItemStack(this, 1, 4));
+		for (TowerWoodVariant variant : TowerWoodVariant.values()) {
+			list.add(new ItemStack(this, 1, variant.ordinal()));
+		}
 	}
 
 	@Override

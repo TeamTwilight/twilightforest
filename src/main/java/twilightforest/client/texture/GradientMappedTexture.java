@@ -7,25 +7,25 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Function;
 
 import static net.minecraft.util.math.MathHelper.sqrt;
 
 public class GradientMappedTexture extends TextureAtlasSprite {
-
     private final ResourceLocation textureDependency;
 
-    private boolean shouldStretchMinimumMaximum;
+    private boolean shouldNormalize;
     private final GradientNode[] GRADIENT_MAP;
     private float minimumValue;
     private float maximumValue;
 
-    public GradientMappedTexture(ResourceLocation textureDependency, ResourceLocation spriteName, boolean shouldStretchMinimumMaximum, GradientNode[] gradient_map) {
+    public GradientMappedTexture(ResourceLocation textureDependency, ResourceLocation spriteName, boolean shouldNormalize, GradientNode[] gradient_map) {
         super(spriteName.toString());
         this.textureDependency = textureDependency;
         this.GRADIENT_MAP = gradient_map;
-        this.shouldStretchMinimumMaximum = shouldStretchMinimumMaximum;
+        this.shouldNormalize = shouldNormalize;
     }
 
     @Override
@@ -34,9 +34,15 @@ public class GradientMappedTexture extends TextureAtlasSprite {
     }
 
     @Override
+    public Collection<ResourceLocation> getDependencies() {
+        return ImmutableList.of(textureDependency);
+    }
+
+    @Override
     public boolean load(IResourceManager manager, ResourceLocation location, Function<ResourceLocation, TextureAtlasSprite> textureGetter) {
         final TextureAtlasSprite sprite = textureGetter.apply(textureDependency);
 
+        // Copy all coord data from texture we're mapping
         copyFrom(sprite);
         this.animationMetadata = sprite.animationMetadata;
 
@@ -45,18 +51,23 @@ public class GradientMappedTexture extends TextureAtlasSprite {
         int minimumValue = 255;
         int maximumValue = 0;
 
+        // Copy all textures from texture dependency
         for (int i = 0; i < sprite.getFrameCount(); i++) {
-            final int[][] textureFrom = sprite.getFrameTextureData(i).clone();
+            // getFrameTextureData() is oddly named; the param passed in is the frame index
+            // Returned is an array of mipmaps of each actual texture, from largest to smallest mips.
+            final int[][] textureFrom = sprite.getFrameTextureData(i);
             int [][] textureTo = new int[textureFrom.length][];
 
             for (int j = 0; j < textureFrom.length; j++) {
-                textureTo[j] = new int[textureFrom[j].length];
-                System.arraycopy(textureFrom[j], 0, textureTo[j], 0, textureFrom[j].length);
+                textureTo[j] = Arrays.copyOf(textureFrom[j], textureFrom[j].length);
             }
 
-            if (this.shouldStretchMinimumMaximum) {
+            // Graying out textures will usually produce float ranges that are only a fragment the 0.0 -> 1.0 range.
+            // Resulting grayscale texture will not fully capture the entire gradient map which are designed for
+            // the 0.0 -> 1.0 range. Test all animation frames for the darkest and lightest value.
+            if (this.shouldNormalize) {
                 for (int pixel : textureTo[0]) {
-                    if ((pixel >> 24 & 0xFF) == 0) continue;
+                    if ((pixel >> 24 & 0xFF) == 0) continue; // Fully transparent pixels should not be considered
 
                     minimumValue = Math.min(minimumValue, getPerceptualBrightness(pixel));
                     maximumValue = Math.max(maximumValue, getPerceptualBrightness(pixel));
@@ -66,7 +77,7 @@ public class GradientMappedTexture extends TextureAtlasSprite {
             this.framesTextureData.add(i, textureTo);
         }
 
-        if (shouldStretchMinimumMaximum) {
+        if (shouldNormalize) {
             if (minimumValue > maximumValue) {
                 this.minimumValue = maximumValue / 255f;
                 this.maximumValue = minimumValue / 255f;
@@ -75,20 +86,19 @@ public class GradientMappedTexture extends TextureAtlasSprite {
                 this.maximumValue = maximumValue / 255f;
             }
 
-            for (int i = 0; i < framesTextureData.size(); i++) {
-                int [][] texture = this.framesTextureData.get(i);
-
-                for (int j = 0; j < texture[0].length; j++) {
-                    texture[0][j] = getGradient(texture[0][j], GRADIENT_MAP, this.minimumValue, this.maximumValue);
+            // foreach iterates 'texture frames' in framesTextureData, l iterates each mipmap, j iterates each pixel
+            for (int[][] texture : framesTextureData) {
+                for (int l = 0; l < texture.length; l++) {
+                    for (int j = 0; j < texture[l].length; j++) {
+                        texture[l][j] = getGradient(texture[l][j], GRADIENT_MAP, this.minimumValue, this.maximumValue);
+                    }
                 }
             }
 
             TwilightForestMod.LOGGER.debug("Autogenerated {} from {} with min value {} and max value {}", this.getIconName(), this.textureDependency, this.minimumValue, this.maximumValue);
-
         } else {
-            for (int i = 0; i < framesTextureData.size(); i++) {
-                int [][] texture = this.framesTextureData.get(i);
-
+            // foreach iterates 'texture frames', l iterates each mipmap, j iterates each pixel
+            for (int[][] texture : framesTextureData) {
                 for (int l = 0; l < texture.length; l++) {
                     for (int j = 0; j < texture[l].length; j++) {
                         texture[l][j] = getGradient(texture[l][j], GRADIENT_MAP, 0.0f, 1.0f);
@@ -102,38 +112,25 @@ public class GradientMappedTexture extends TextureAtlasSprite {
         return false;
     }
 
-    @Override
-    public Collection<ResourceLocation> getDependencies() {
-        return ImmutableList.of(textureDependency);
-    }
-
-    // borrowed from Shadows of Physis
-    // Thanks TTFTCUTS! :)
-    private static int getPerceptualBrightness(int col) {
-        return getPerceptualBrightness(red(col) / 255.0, green(col) / 255.0, blue(col) / 255.0);
-    }
-
-    private static int getPerceptualBrightness(double r, double g, double b) {
-        return (int) (Math.sqrt(0.241 * r * r + 0.691 * g * g + 0.068 * b * b) * 255);
-    }
-
     public static int getGradient(int packedColor, GradientNode[] gradientMap, float minimumValue, float maximumValue) {
         int a = packedColor >> 24 & 0xFF;
 
-        if(a == 0) {
-            return packedColor;
+        if (a == 0) {
+            return packedColor; // Full alpha no color
         }
+
+        // Make a gray from the colors and use it as a gradient map coordinate
+        float gray = normalize(getPerceptualBrightness(packedColor) / 255.0F, minimumValue, maximumValue);
 
         int rTo = 0, gTo = 0, bTo = 0;
 
-        // average it
-        float gray = getBalancedValue(getPerceptualBrightness(packedColor) / 255.0F, minimumValue, maximumValue);
-
         if (gray <= gradientMap[0].node) {
+            // Coord gray matches or is located before first gradient transition
             rTo = red  (gradientMap[0].color);
             gTo = green(gradientMap[0].color);
             bTo = blue (gradientMap[0].color);
         } else if (gray >= gradientMap[gradientMap.length-1].node) {
+            // Coord gray matches or is located after last gradient transition
             int i = gradientMap[gradientMap.length-1].color;
 
             rTo = red  (i);
@@ -142,11 +139,12 @@ public class GradientMappedTexture extends TextureAtlasSprite {
         } else {
             for (int i = 0; i < gradientMap.length - 1; i++) {
                 if (gray == gradientMap[i].node) {
+                    // Coord gray matches a gradient node
                     rTo = red  (gradientMap[i].color);
                     gTo = green(gradientMap[i].color);
                     bTo = blue (gradientMap[i].color);
                 } else if (gray >= gradientMap[i].node && gray <= gradientMap[i+1].node) {
-                    return getColorFromBetweenNodes(getBalancedValue(gray, gradientMap[i].node, gradientMap[i+1].node), gradientMap[i].color, gradientMap[i+1].color, a);
+                    return interpolateColors(normalize(gray, gradientMap[i].node, gradientMap[i+1].node), gradientMap[i].color, gradientMap[i+1].color, a);
                 }
             }
         }
@@ -154,7 +152,7 @@ public class GradientMappedTexture extends TextureAtlasSprite {
         return getColorFromARGB(rTo, gTo, bTo, a);
     }
 
-    public static int getColorFromBetweenNodes(float placement, int color1, int color2, int alpha) {
+    public static int interpolateColors(float placement, int color1, int color2, int alpha) {
         int r1 = red  (color1);
         int g1 = green(color1);
         int b1 = blue (color1);
@@ -163,16 +161,19 @@ public class GradientMappedTexture extends TextureAtlasSprite {
         int b2 = blue (color2);
 
         return getColorFromARGB(
-                pickIntInBetween(placement, r1, r2),
-                pickIntInBetween(placement, g1, g2),
-                pickIntInBetween(placement, b1, b2), alpha);
+                parabolicInterpolation(placement, r1, r2),
+                parabolicInterpolation(placement, g1, g2),
+                parabolicInterpolation(placement, b1, b2), alpha);
     }
 
-    public static int pickIntInBetween(float placement, float v1, float v2) {
+    // Normally, a regular mathematical interpolation function would be linear, except these are colors.
+    // Colors being linearly interpolated would produce colors that appear a little more 'dull' than
+    // interpolating parabolically which makes the transition appear more vibrant.
+    public static int parabolicInterpolation(float placement, float v1, float v2) {
         return (int) sqrt(((v1 * v1) * (1.0f - placement)) + ((v2 * v2) * placement));
     }
 
-    public static float getBalancedValue(float valueIn, float minimumValue, float maximumValue) {
+    public static float normalize(float valueIn, float minimumValue, float maximumValue) {
         return (valueIn - minimumValue) / (maximumValue - minimumValue);
     }
 
@@ -190,5 +191,15 @@ public class GradientMappedTexture extends TextureAtlasSprite {
 
     static int getColorFromARGB(int r, int g, int b, int a) {
         return (((a << 8) + r << 8) + g << 8) + b;
+    }
+
+    // getPerceptualBrightness will produce an accurate gray value from the colors.
+    // Thanks TTFTCUTS! :)
+    private static int getPerceptualBrightness(int col) {
+        return getPerceptualBrightness(red(col) / 255.0, green(col) / 255.0, blue(col) / 255.0);
+    }
+
+    private static int getPerceptualBrightness(double r, double g, double b) {
+        return (int) (Math.sqrt(0.241 * r * r + 0.691 * g * g + 0.068 * b * b) * 255);
     }
 }

@@ -3,6 +3,7 @@ package twilightforest.biomes;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -19,17 +20,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenBirchTree;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFFeature;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.*;
+import twilightforest.util.PlayerHelper;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
@@ -43,6 +42,10 @@ public class TFBiomeBase extends Biome {
 	protected final WorldGenAbstractTree birchGen = new WorldGenBirchTree(false, false);
 
 	protected final List<SpawnListEntry> undergroundMonsterList = new ArrayList<>();
+
+	protected final ResourceLocation[] requiredAdvancements = getRequiredAdvancements();
+
+	public final TFFeature containedFeature = getContainedFeature();
 
 	public TFBiomeBase(BiomeProperties props) {
 		super(props);
@@ -144,11 +147,6 @@ public class TFBiomeBase extends Biome {
 				if (iblockstate2.getBlock() == Blocks.AIR) {
 					// j = -1; TF - commented out? todo 1.9
 				} else if (iblockstate2.getBlock() == Blocks.STONE) {
-					// TF - Replace stone
-					if (stoneReplacement != null) {
-						primer.setBlockState(i1, j1, l, stoneReplacement);
-					}
-
 					if (j == -1) {
 						if (k <= 0) {
 							iblockstate = AIR;
@@ -186,6 +184,9 @@ public class TFBiomeBase extends Biome {
 							j = rand.nextInt(4) + Math.max(0, j1 - 63);
 							iblockstate1 = iblockstate1.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND ? RED_SANDSTONE : SANDSTONE;
 						}
+					} else if (stoneReplacement != null) {
+						// TF - Replace stone
+						primer.setBlockState(i1, j1, l, stoneReplacement);
 					}
 				}
 			}
@@ -193,14 +194,8 @@ public class TFBiomeBase extends Biome {
 	}
 
 	private static boolean shouldGenerateBedrock(World world) {
-		IChunkProvider provider = world.getChunkProvider();
-		if (provider instanceof ChunkProviderServer) {
-			IChunkGenerator generator = ((ChunkProviderServer) provider).chunkGenerator;
-			if (generator instanceof ChunkGeneratorTFBase) {
-				return ((ChunkGeneratorTFBase) generator).shouldGenerateBedrock();
-			}
-		}
-		return true;
+		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
+		return generator == null || generator.shouldGenerateBedrock();
 	}
 
 	/**
@@ -212,15 +207,10 @@ public class TFBiomeBase extends Biome {
 	}
 
 	/**
-	 * Does the player have the achievement needed to be in this biome?
+	 * Does the player have the advancements needed to be in this biome?
 	 */
-	public boolean doesPlayerHaveRequiredAchievement(EntityPlayer player) {
-		for (ResourceLocation advancementLocation : getRequiredAdvancements()) {
-			if (!TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancementLocation)) {
-				return false;
-			}
-		}
-		return true;
+	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
 	}
 
 	protected ResourceLocation[] getRequiredAdvancements() {
@@ -232,10 +222,20 @@ public class TFBiomeBase extends Biome {
 	 */
 	public void enforceProgression(EntityPlayer player, World world) {}
 
+	protected void trySpawnHintMonster(EntityPlayer player, World world) {
+		if (world.rand.nextInt(4) == 0) {
+			containedFeature.trySpawnHintMonster(world, player);
+		}
+	}
+
+	protected TFFeature getContainedFeature() {
+		return TFFeature.NOTHING;
+	}
+
 	/**
 	 * Returns the list of underground creatures.
 	 */
-	public List<SpawnListEntry> getUndergroundSpawnableList() {
-		return this.undergroundMonsterList;
+	public List<SpawnListEntry> getUndergroundSpawnableList(EnumCreatureType type) {
+		return type == EnumCreatureType.MONSTER ? this.undergroundMonsterList : getSpawnableList(type);
 	}
 }

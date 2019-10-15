@@ -1,11 +1,11 @@
 package twilightforest.world.feature;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFWorld;
 
@@ -17,8 +17,8 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		super(notify);
 
 		this.treeState = TFBlocks.magic_log.getDefaultState();
-		this.branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magic_leaves.getDefaultState();
+		this.branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 	}
 
 	@Override

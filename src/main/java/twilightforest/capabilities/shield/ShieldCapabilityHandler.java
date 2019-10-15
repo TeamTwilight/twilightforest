@@ -12,9 +12,9 @@ import twilightforest.network.TFPacketHandler;
 public class ShieldCapabilityHandler implements IShieldCapability {
 
 	private int temporaryShields;
-	private int permamentShields;
+	private int permanentShields;
 	private EntityLivingBase host;
-	private int timer = 0;
+	private int timer;
 
 	@Override
 	public void setEntity(EntityLivingBase entity) {
@@ -29,7 +29,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	@Override
 	public int shieldsLeft() {
-		return temporaryShields + permamentShields;
+		return temporaryShields + permanentShields;
 	}
 
 	@Override
@@ -38,8 +38,8 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	}
 
 	@Override
-	public int permamentShieldsLeft() {
-		return permamentShields;
+	public int permanentShieldsLeft() {
+		return permanentShields;
 	}
 
 	@Override
@@ -47,9 +47,9 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 		// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
 		if (temporaryShields > 0) {
 			temporaryShields--;
-			timer = 240;
-		} else if (permamentShields > 0) {
-			permamentShields--;
+			resetTimer();
+		} else if (permanentShields > 0) {
+			permanentShields--;
 		}
 
 		host.world.playSound(null, host.getPosition(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0F, ((host.getRNG().nextFloat() - host.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -66,9 +66,9 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	public void setShields(int amount, boolean temp) {
 		if (temp) {
 			temporaryShields = Math.max(amount, 0);
-			timer = 240;
+			resetTimer();
 		} else {
-			permamentShields = Math.max(amount, 0);
+			permanentShields = Math.max(amount, 0);
 		}
 
 		sendUpdatePacket();
@@ -78,13 +78,23 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	public void addShields(int amount, boolean temp) {
 		if (temp) {
 			if (temporaryShields <= 0)
-				timer = 240; // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
-			temporaryShields += amount;
+				resetTimer(); // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
+			temporaryShields = Math.max(temporaryShields + amount, 0);
 		} else {
-			permamentShields += amount;
+			permanentShields = Math.max(permanentShields + amount, 0);
 		}
 
 		sendUpdatePacket();
+	}
+
+	void initShields(int temporary, int permanent) {
+		temporaryShields = Math.max(temporary, 0);
+		permanentShields = Math.max(permanent, 0);
+		resetTimer();
+	}
+
+	private void resetTimer() {
+		timer = 240;
 	}
 
 	private void sendUpdatePacket() {
@@ -93,10 +103,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			TFPacketHandler.CHANNEL.sendToAllTracking(message, host);
 			// sendToAllTracking doesn't send to your own client so we need to send that as well.
 			if (host instanceof EntityPlayerMP) {
-				EntityPlayerMP player = (EntityPlayerMP) host;
-				if (player.connection != null) {
-					TFPacketHandler.CHANNEL.sendTo(message, player);
-				}
+				TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) host);
 			}
 		}
 	}

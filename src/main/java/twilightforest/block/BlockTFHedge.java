@@ -122,19 +122,15 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		final double range = 4.0; // do we need to get this with a better method than hardcoding it?
+		// find players within range
+		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(8.0));
 
-		// find players within harvest range
-		List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(range));
-
-		// are they swinging?
 		for (EntityPlayer player : nearbyPlayers) {
+			// are they swinging?
 			if (player.isSwingInProgress) {
+				RayTraceResult ray = EntityUtil.rayTrace(player);
 				// are they pointing at this block?
-				RayTraceResult ray = EntityUtil.rayTrace(player, range);
-
-				if (ray != null && ray.getBlockPos() != null
-						&& world.getBlockState(ray.getBlockPos()).getBlock() == this) {
+				if (ray != null && ray.typeOfHit == RayTraceResult.Type.BLOCK && pos.equals(ray.getBlockPos())) {
 					// prick them!  prick them hard!
 					player.attackEntityFrom(DamageSource.CACTUS, damageDone);
 
@@ -146,7 +142,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	private boolean shouldDamage(Entity entity) {
-		return !(entity instanceof EntitySpider) && !(entity instanceof EntityItem) && !entity.doesEntityNotTriggerPressurePlate();
+		return !(entity instanceof EntitySpider || entity instanceof EntityItem || entity.doesEntityNotTriggerPressurePlate());
 	}
 
 	@Override

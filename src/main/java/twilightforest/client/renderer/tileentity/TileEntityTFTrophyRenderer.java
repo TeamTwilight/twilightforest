@@ -1,30 +1,23 @@
 package twilightforest.client.renderer.tileentity;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.item.BuiltInItemModel;
 import twilightforest.enums.BossVariant;
 import twilightforest.client.TFClientEvents;
 import twilightforest.client.model.entity.ModelTFHydraHead;
@@ -39,9 +32,6 @@ import twilightforest.client.model.entity.ModelTFTowerBoss;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
-import java.util.Collections;
-import java.util.List;
 
 public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEntityTFTrophy> {
 
@@ -90,60 +80,25 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		event.getModelRegistry().putObject(itemModelLocation, new BakedModel());
 	}
 
-	private class BakedModel implements IBakedModel {
+	private class BakedModel extends BuiltInItemModel {
 
-		private class Overrides extends ItemOverrideList {
-
-			Overrides() {
-				super(Collections.emptyList());
-			}
-
-			@Override
-			public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
-				TileEntityTFTrophyRenderer.this.stack = stack;
-				return BakedModel.this;
-			}
+		BakedModel() {
+			super("minecraft:blocks/soul_sand");
 		}
 
 		@Override
-		public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-			return Collections.emptyList();
+		protected void setItemStack(ItemStack stack) {
+			TileEntityTFTrophyRenderer.this.stack = stack;
 		}
 
 		@Override
-		public boolean isAmbientOcclusion() {
-			return true;
-		}
-
-		@Override
-		public boolean isGui3d() {
-			return true;
-		}
-
-		@Override
-		public boolean isBuiltInRenderer() {
-			return true;
-		}
-
-		@Override
-		public TextureAtlasSprite getParticleTexture() {
-			return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/soul_sand");
-		}
-
-		@Override
-		public ItemOverrideList getOverrides() {
-			return new Overrides();
-		}
-
-		@Override
-		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-			TileEntityTFTrophyRenderer.this.transform = cameraTransformType;
-			return Pair.of(this, null);
+		protected void setTransform(ItemCameraTransforms.TransformType transform) {
+			TileEntityTFTrophyRenderer.this.transform = transform;
 		}
 	}
 
-	private ItemStack stack;
-	private ItemCameraTransforms.TransformType transform;
+	private ItemStack stack = ItemStack.EMPTY;
+	private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
 
 	@Override
 	public void render(@Nullable TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
@@ -404,7 +359,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	private void renderQuestRamHead(float rotation, boolean onGround) {
 		if (transform == ItemCameraTransforms.TransformType.GUI)
 			GlStateManager.scale(0.55f, 0.55f, 0.55f);
-		else if (stack == null)
+		else if (stack.isEmpty())
 			GlStateManager.scale(0.65f, 0.65f, 0.65f);
 		else
 			GlStateManager.scale(0.5f, 0.5f, 0.5f);

@@ -1,6 +1,5 @@
 package twilightforest;
 
-import com.google.common.collect.Lists;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -29,7 +28,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
@@ -43,8 +42,8 @@ import twilightforest.structures.start.*;
 import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.util.IntPair;
+import twilightforest.util.PlayerHelper;
 import twilightforest.world.MapGenTFMajorFeature;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -585,7 +584,7 @@ public enum TFFeature {
 	 * @return The type of feature directly at the specified Chunk coordinates
 	 */
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
-		if (world.getBiomeProvider() instanceof TFBiomeProvider && isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
+		if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
 			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 		}
 		return NOTHING;
@@ -595,7 +594,6 @@ public enum TFFeature {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
-	@SuppressWarnings("ConstantConditions")
 	public static TFFeature generateFeature(int chunkX, int chunkZ, World world) {
 		// FIXME Remove block comment start-marker to enable debug
 		/*if (true) {
@@ -609,54 +607,12 @@ public enum TFFeature {
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
 
-		// glaciers have ice towers
-		if (biomeAt == TFBiomes.glacier) {
-			return ICE_TOWER;
-		}
-		// snow has yeti lair
-		if (biomeAt == TFBiomes.snowy_forest) {
-			return YETI_CAVE;
-		}
-
-		// lakes have quest islands
-		if (biomeAt == TFBiomes.tfLake) {
-			return QUEST_ISLAND;
-		}
-
-		// enchanted forests have groves
-		if (biomeAt == TFBiomes.enchantedForest) {
-			return QUEST_GROVE;
-		}
-
-		// fire swamp has hydra lair
-		if (biomeAt == TFBiomes.fireSwamp) {
-			return HYDRA_LAIR;
-		}
-		// swamp has labyrinth
-		if (biomeAt == TFBiomes.tfSwamp) {
-			return LABYRINTH;
-		}
-
-		// dark forests have their own things
-		if (biomeAt == TFBiomes.darkForest) {
-			return KNIGHT_STRONGHOLD;
-		}
-		if (biomeAt == TFBiomes.darkForestCenter) {
-			return DARK_TOWER;
-		}
-
-		// highlands center has castle
-		if (biomeAt == TFBiomes.highlandsCenter) {
-			return FINAL_CASTLE;
-		}
-		// highlands has trolls
-		if (biomeAt == TFBiomes.highlands) {
-			return TROLL_CAVE;
-		}
-
-		// deep mushrooms has mushroom tower
-		if (biomeAt == TFBiomes.deepMushrooms) {
-			return MUSHROOM_TOWER;
+		// does the biome have a feature?
+		if (biomeAt instanceof TFBiomeBase) {
+			TFFeature biomeFeature = ((TFBiomeBase) biomeAt).containedFeature;
+			if (biomeFeature != NOTHING) {
+				return biomeFeature;
+			}
 		}
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
@@ -716,10 +672,20 @@ public enum TFFeature {
 	 * that feature relative to the current chunk block coordinate system.
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, World world, @Nullable IntPair center) {
+
+		int diam = maxSize * 2 + 1;
+		TFFeature[] features = new TFFeature[diam * diam];
+
 		for (int rad = 1; rad <= maxSize; rad++) {
 			for (int x = -rad; x <= rad; x++) {
 				for (int z = -rad; z <= rad; z++) {
-					TFFeature directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
+
+					int idx = (x + maxSize) * diam + (z + maxSize);
+					TFFeature directlyAt = features[idx];
+					if (directlyAt == null) {
+						features[idx] = directlyAt = getFeatureDirectlyAt(x + cx, z + cz, world);
+					}
+
 					if (directlyAt.size == rad) {
 						if (center != null) {
 							center.x = (x << 4) + 8;
@@ -730,6 +696,7 @@ public enum TFFeature {
 				}
 			}
 		}
+
 		return NOTHING;
 	}
 
@@ -868,7 +835,7 @@ public enum TFFeature {
 			case WATER_CREATURE:
 				return this.waterCreatureList;
 			default:
-				return Lists.newArrayList();
+				return new ArrayList<>();
 		}
 	}
 
@@ -882,16 +849,11 @@ public enum TFFeature {
 		if (index >= 0 && index < this.spawnableMonsterLists.size()) {
 			return this.spawnableMonsterLists.get(index);
 		}
-		return Lists.newArrayList();
+		return new ArrayList<>();
 	}
 
 	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {
-		if (this.requiredAdvancements.length > 0)
-			for (ResourceLocation advancement : requiredAdvancements)
-				if (!TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancement))
-					return false;
-
-		return true; // no required achievement
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
 	}
 
 	/**

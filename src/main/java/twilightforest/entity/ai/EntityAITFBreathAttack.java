@@ -12,22 +12,22 @@ import twilightforest.entity.IBreathAttacker;
 
 import java.util.List;
 
-public class EntityAITFBreathAttack extends EntityAIBase {
+public class EntityAITFBreathAttack<T extends EntityLiving & IBreathAttacker> extends EntityAIBase {
 
-	private final EntityLiving entityHost;
+	private final T entityHost;
 	private EntityLivingBase attackTarget;
 
 	private double breathX;
 	private double breathY;
 	private double breathZ;
 
-	private int maxDuration;
-	private float attackChance;
-	private float breathRange;
+	private final int maxDuration;
+	private final float attackChance;
+	private final float breathRange;
 
 	private int durationLeft;
 
-	public EntityAITFBreathAttack(EntityLiving living, float speed, float range, int time, float chance) {
+	public EntityAITFBreathAttack(T living, float speed, float range, int time, float chance) {
 		this.entityHost = living;
 		this.breathRange = range;
 		this.maxDuration = time;
@@ -56,11 +56,8 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 	@Override
 	public void startExecuting() {
 		this.durationLeft = this.maxDuration;
-
 		// set breather flag
-		if (this.entityHost instanceof IBreathAttacker) {
-			((IBreathAttacker) entityHost).setBreathing(true);
-		}
+		this.entityHost.setBreathing(true);
 	}
 
 	/**
@@ -87,23 +84,18 @@ public class EntityAITFBreathAttack extends EntityAIBase {
 		if ((this.maxDuration - this.durationLeft) > 5) {
 			// anyhoo, deal damage
 			Entity target = getHeadLookTarget();
-
 			if (target != null) {
-				((IBreathAttacker) entityHost).doBreathAttack(target);
+				this.entityHost.doBreathAttack(target);
 			}
 		}
-
 	}
 
 	@Override
 	public void resetTask() {
 		this.durationLeft = 0;
 		this.attackTarget = null;
-
 		// set breather flag
-		if (this.entityHost instanceof IBreathAttacker) {
-			((IBreathAttacker) entityHost).setBreathing(false);
-		}
+		this.entityHost.setBreathing(false);
 	}
 
 	/**

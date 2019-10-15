@@ -1,5 +1,6 @@
 package twilightforest.biomes;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -70,7 +71,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		if (random.nextInt(5) == 0) {
 			return new WorldGenShrub(
 					Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK)
+					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, false)
 			);
 		} else if (random.nextInt(8) == 0) {
 			return this.birchGen;
@@ -116,11 +117,12 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0));
-
-			// hint monster?
-			if (world.rand.nextInt(4) == 0) {
-				TFFeature.KNIGHT_STRONGHOLD.trySpawnHintMonster(world, player);
-			}
+			trySpawnHintMonster(player, world);
 		}
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.KNIGHT_STRONGHOLD;
 	}
 }

@@ -27,12 +27,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.TFConfig;
+import twilightforest.block.TFBlocks;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ContainerTFUncrafting extends Container {
@@ -227,11 +228,9 @@ public class ContainerTFUncrafting extends Container {
 				// if the result has innate enchantments, add them on to our enchantment map
 				Map<Enchantment, Integer> resultInnateEnchantments = EnchantmentHelper.getEnchantments(result);
 
-				// check if the input enchantments can even go onto the result item
 				Map<Enchantment, Integer> inputEnchantments = EnchantmentHelper.getEnchantments(input);
-
-				final ItemStack finalResult = result; // Needed for Lambda
-				inputEnchantments.keySet().removeIf(enchantment -> !enchantment.canApply(finalResult));
+				// check if the input enchantments can even go onto the result item
+				inputEnchantments.keySet().removeIf(enchantment -> enchantment == null || !enchantment.canApply(result));
 
 				if (inputTags != null) {
 					// remove enchantments, copy tags, re-add filtered enchantments
@@ -241,13 +240,12 @@ public class ContainerTFUncrafting extends Container {
 				}
 
 				// finally, add any innate enchantments back onto the result
-				for (Enchantment ench : resultInnateEnchantments.keySet()) {
-					int level = resultInnateEnchantments.get(ench);
+				for (Map.Entry<Enchantment, Integer> entry : resultInnateEnchantments.entrySet()) {
 
-					if (EnchantmentHelper.getEnchantmentLevel(ench, result) > level) {
-						level = EnchantmentHelper.getEnchantmentLevel(ench, result);
-					}
+					Enchantment ench = entry.getKey();
+					int level = entry.getValue();
 
+					// only apply enchants that are better than what we already have
 					if (EnchantmentHelper.getEnchantmentLevel(ench, result) < level) {
 						result.addEnchantment(ench, level);
 					}
@@ -278,11 +276,11 @@ public class ContainerTFUncrafting extends Container {
 		TFItemStackUtils.clearInfoTag(stack, TAG_MARKER);
 	}
 
-	private boolean isIngredientProblematic(ItemStack ingredient) {
+	private static boolean isIngredientProblematic(ItemStack ingredient) {
 		return !ingredient.isEmpty() && ingredient.getItem().hasContainerItem(ingredient);
 	}
 
-	private ItemStack normalizeIngredient(ItemStack ingredient) {
+	private static ItemStack normalizeIngredient(ItemStack ingredient) {
 		if (!ingredient.isEmpty()) {
 			// OLD: fix weird recipe for diamond/ingot blocks
 			// Leaving this in, in case some modder does weird crap with an IRecipe
@@ -296,16 +294,13 @@ public class ContainerTFUncrafting extends Container {
 		return ingredient;
 	}
 
-	private IRecipe[] getRecipesFor(ItemStack inputStack) {
-		ArrayList<IRecipe> recipes = new ArrayList<>();
+	private static IRecipe[] getRecipesFor(ItemStack inputStack) {
+
+		List<IRecipe> recipes = new ArrayList<>();
 
 		if (!inputStack.isEmpty()) {
 			for (IRecipe recipe : CraftingManager.REGISTRY) {
-				if (
-						recipe.canFit(3, 3)
-								&& !recipe.getIngredients().isEmpty()
-								&& recipe.getRecipeOutput().getItem() == inputStack.getItem() && inputStack.getCount() >= recipe.getRecipeOutput().getCount()
-								&& (!recipe.getRecipeOutput().getHasSubtypes() || recipe.getRecipeOutput().getItemDamage() == inputStack.getItemDamage())) {
+				if (recipe.canFit(3, 3) && !recipe.getIngredients().isEmpty() && matches(inputStack, recipe.getRecipeOutput())) {
 					recipes.add(recipe);
 				}
 			}
@@ -314,19 +309,27 @@ public class ContainerTFUncrafting extends Container {
 		return recipes.toArray(new IRecipe[0]);
 	}
 
-	private IRecipe[] getRecipesFor(InventoryCrafting matrix, World world) {
-		ArrayList<IRecipe> recipes = new ArrayList<>();
+	private static boolean matches(ItemStack input, ItemStack output) {
+		return input.getItem() == output.getItem() && input.getCount() >= output.getCount()
+				&& (!output.getHasSubtypes() || input.getItemDamage() == output.getItemDamage());
+	}
 
-		for (IRecipe recipe : CraftingManager.REGISTRY)
-			if (recipe.matches(matrix, world))
+	private static IRecipe[] getRecipesFor(InventoryCrafting matrix, World world) {
+
+		List<IRecipe> recipes = new ArrayList<>();
+
+		for (IRecipe recipe : CraftingManager.REGISTRY) {
+			if (recipe.matches(matrix, world)) {
 				recipes.add(recipe);
+			}
+		}
 
 		return recipes.toArray(new IRecipe[0]);
 	}
 
 	private void chooseRecipe(InventoryCrafting inventory) {
 
-		IRecipe[] recipes = this.getRecipesFor(inventory, world);
+		IRecipe[] recipes = getRecipesFor(inventory, world);
 
 		if (recipes.length == 0) {
 			this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
@@ -347,7 +350,7 @@ public class ContainerTFUncrafting extends Container {
 	 * Checks if the result is a valid match for the input.  Currently only accepts armor or tools that are the same type as the input
 	 */
 	// TODO Should we also check the slot the armors can go into, in case they don't extend armor class..?
-	private boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
+	private static boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
 		if (inputStack.getItem() instanceof ItemPickaxe && resultStack.getItem() instanceof ItemPickaxe) {
 			return true;
 		}
@@ -429,12 +432,16 @@ public class ContainerTFUncrafting extends Container {
 		return cost;
 	}
 
-	public int countHighestEnchantmentCost(ItemStack itemStack) {
+	public static int countHighestEnchantmentCost(ItemStack stack) {
+
 		int count = 0;
 
-		for (Enchantment ench : ForgeRegistries.ENCHANTMENTS) {
-			int level = EnchantmentHelper.getEnchantmentLevel(ench, itemStack);
-			if (level > count) {
+		for (Map.Entry<Enchantment, Integer> entry : EnchantmentHelper.getEnchantments(stack).entrySet()) {
+
+			Enchantment ench = entry.getKey();
+			int level = entry.getValue();
+
+			if (ench != null && level > count) {
 				//count = ench.getMinEnchantability(level); OLD
 				count += getWeightModifier(ench) * level;
 			}
@@ -443,12 +450,16 @@ public class ContainerTFUncrafting extends Container {
 		return count;
 	}
 
-	private int countTotalEnchantmentCost(ItemStack itemStack) {
+	private static int countTotalEnchantmentCost(ItemStack stack) {
+
 		int count = 0;
 
-		for (Enchantment ench : ForgeRegistries.ENCHANTMENTS) {
-			int level = EnchantmentHelper.getEnchantmentLevel(ench, itemStack);
-			if (level > 0) {
+		for (Map.Entry<Enchantment, Integer> entry : EnchantmentHelper.getEnchantments(stack).entrySet()) {
+
+			Enchantment ench = entry.getKey();
+			int level = entry.getValue();
+
+			if (ench != null && level > 0) {
 				count += getWeightModifier(ench) * level;
 				count += 1;
 			}
@@ -457,7 +468,7 @@ public class ContainerTFUncrafting extends Container {
 		return count;
 	}
 
-	private int getWeightModifier(Enchantment ench) {
+	private static int getWeightModifier(Enchantment ench) {
 		switch (ench.getRarity().getWeight()) {
 			case 1:
 				return 8;
@@ -541,14 +552,14 @@ public class ContainerTFUncrafting extends Container {
 	/**
 	 * Should the specified item count for taking damage?
 	 */
-	private boolean isDamageableComponent(ItemStack itemStack) {
+	private static boolean isDamageableComponent(ItemStack itemStack) {
 		return !itemStack.isEmpty() && itemStack.getItem() != Items.STICK;
 	}
 
 	/**
 	 * Count how many items in an inventory can take damage
 	 */
-	private int countDamageableParts(IInventory matrix) {
+	private static int countDamageableParts(IInventory matrix) {
 		int count = 0;
 		for (int i = 0; i < matrix.getSizeInventory(); i++) {
 			if (isDamageableComponent(matrix.getStackInSlot(i))) {
@@ -653,16 +664,16 @@ public class ContainerTFUncrafting extends Container {
 		return stacks;
 	}
 
-	private int getRecipeWidth(IShapedRecipe recipe) {
+	private static int getRecipeWidth(IShapedRecipe recipe) {
 		return recipe.getRecipeWidth();
 	}
 
-	private int getRecipeHeight(IShapedRecipe recipe) {
+	private static int getRecipeHeight(IShapedRecipe recipe) {
 		return recipe.getRecipeHeight();
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+		return player.getDistanceSqToCenter(this.pos) <= 64.0D && this.world.getBlockState(this.pos).getBlock() == TFBlocks.uncrafting_table;
 	}
 }

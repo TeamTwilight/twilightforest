@@ -3,7 +3,6 @@ package twilightforest.world;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -16,13 +15,17 @@ import java.util.Random;
 
 //FIXME: AtomicBlom - Deobfuscate this crap
 public class TFGenRavine extends MapGenBase {
+
 	protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
 	private final float[] rs = new float[1024];
+
+	private Biome[] biomes;
 
 	//[VanillaCopy] Based on MapGenRavine.addTunnel, modified for the lowered chunk height of TF.
 	protected void addTunnel(long p_180707_1_, int p_180707_3_, int p_180707_4_, ChunkPrimer p_180707_5_, double p_180707_6_,
 							 double p_180707_8_, double p_180707_10_, float p_180707_12_, float p_180707_13_, float p_180707_14_,
 							 int p_180707_15_, int p_180707_16_, double p_180707_17_) {
+
 		Random random = new Random(p_180707_1_);
 		double d0 = (double) (p_180707_3_ * 16 + 8);
 		double d1 = (double) (p_180707_4_ * 16 + 8);
@@ -165,11 +168,13 @@ public class TFGenRavine extends MapGenBase {
 	//[VanillaCopy] Based on MapGenRavine.recursiveGenerate, modified for TF chunk decorations.
 	@Override
 	@SuppressWarnings("unused")
-	protected void recursiveGenerate(World worldIn, int chunkX, int chunkZ, int p_180701_4_, int p_180701_5_, ChunkPrimer chunkPrimerIn) {
+	protected void recursiveGenerate(World world, int chunkX, int chunkZ, int p_180701_4_, int p_180701_5_, ChunkPrimer primer) {
 		if (this.rand.nextInt(127) == 0) {
 			if (!TFFeature.getNearestFeature(p_180701_4_, p_180701_5_, world).areChunkDecorationsEnabled) {
 				return;
 			}
+
+			this.biomes = world.getBiomeProvider().getBiomes(this.biomes, chunkX << 4, chunkZ << 4, 16, 16);
 
 			double d0 = (double) (chunkX * 16 + this.rand.nextInt(16));
 			double d1 = (double) (this.rand.nextInt(this.rand.nextInt(40) + 8) + 20);
@@ -180,7 +185,7 @@ public class TFGenRavine extends MapGenBase {
 				float f = this.rand.nextFloat() * ((float) Math.PI * 2F);
 				float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
 				float f2 = (this.rand.nextFloat() * 2.0F + this.rand.nextFloat()) * 2.0F;
-				this.addTunnel(this.rand.nextLong(), p_180701_4_, p_180701_5_, chunkPrimerIn, d0, d1, d2, f2, f, f1, 0, 0, 3.0D);
+				this.addTunnel(this.rand.nextLong(), p_180701_4_, p_180701_5_, primer, d0, d1, d2, f2, f, f1, 0, 0, 3.0D);
 			}
 		}
 	}
@@ -213,18 +218,20 @@ public class TFGenRavine extends MapGenBase {
 	 * @param foundTop True if we've encountered the biome's top block. Ideally if we've broken the surface.
 	 */
 	protected void digBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop) {
-		Biome biome = world.getBiome(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
+
 		IBlockState state = data.getBlockState(x, y, z);
 		Block block = state.getBlock();
-		IBlockState top = biome.topBlock;
-		IBlockState filler = Blocks.DIRT.getDefaultState();
 
 		if (block == Blocks.STONE || block == TFBlocks.trollsteinn || block == Blocks.DIRT || block == Blocks.GRASS) {
 			data.setBlockState(x, y, z, AIR);
 
-			if (foundTop && data.getBlockState(x, y - 1, z).getBlock() == filler.getBlock()) {
-				data.setBlockState(x, y - 1, z, top.getBlock().getDefaultState());
+			if (foundTop && data.getBlockState(x, y - 1, z).getBlock() == Blocks.DIRT) {
+				data.setBlockState(x, y - 1, z, getBiome(x, z).topBlock);
 			}
 		}
+	}
+
+	private Biome getBiome(int x, int z) {
+		return this.biomes[x & 15 | (z & 15) << 4];
 	}
 }

@@ -17,25 +17,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
-import java.util.Random;
-
 public class BlockTFFirefly extends BlockTFCritter implements ModelRegisterCallback {
 
-	public static final Random rand = new Random();
-
 	protected BlockTFFirefly() {
-		this.setLightLevel(0.9375F);
-	}
-
-	@Override
-	public int tickRate(World world) {
-		return 50 + rand.nextInt(50);
-	}
-
-	@Override
-	@Deprecated
-	public int getLightValue(IBlockState state) {
-		return 15;
+		this.setLightLevel(1.0F);
 	}
 
 	@Override

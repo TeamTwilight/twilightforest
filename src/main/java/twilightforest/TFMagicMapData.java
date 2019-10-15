@@ -12,7 +12,6 @@ import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.world.TFBiomeProvider;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 public class TFMagicMapData extends MapData {
+
 	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
 
 	public TFMagicMapData(String name) {
@@ -58,12 +58,10 @@ public class TFMagicMapData extends MapData {
 			int worldX = (coord.getX() << this.scale - 1) + this.xCenter;
 			int worldZ = (coord.getY() << this.scale - 1) + this.zCenter;
 
-			if (world != null && world.getBiomeProvider() instanceof TFBiomeProvider) {
-				int trueId = TFFeature.getFeatureID(worldX, worldZ, world);
-				if (coord.featureId != trueId) {
-					toRemove.add(coord);
-					toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRotation()));
-				}
+			int trueId = TFFeature.getFeatureID(worldX, worldZ, world);
+			if (coord.featureId != trueId) {
+				toRemove.add(coord);
+				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRotation()));
 			}
 		}
 

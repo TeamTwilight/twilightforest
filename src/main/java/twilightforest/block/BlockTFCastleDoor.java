@@ -155,9 +155,9 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	private static boolean isBlockLocked(World world, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-			return generator.isStructureLocked(pos, world.getBlockState(pos).getValue(LOCK_INDEX));
+		if (!world.isRemote) {
+			ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
+			return generator != null && generator.isStructureLocked(pos, world.getBlockState(pos).getValue(LOCK_INDEX));
 		}
 		return false;
 	}

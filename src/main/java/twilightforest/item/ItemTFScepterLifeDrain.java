@@ -27,7 +27,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -40,12 +39,10 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
-	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		player.setActiveHand(hand);
-		// TODO: return the correct value of SUCCESS if we get a fix for the in-hand animation issues
-		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -223,10 +220,14 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		return 72000;
 	}
 
-	@Nonnull
 	@Override
 	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
+	}
+
+	@Override
+	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
+		return oldStack.getItem() == newStack.getItem();
 	}
 
 	@Override

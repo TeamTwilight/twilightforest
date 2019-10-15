@@ -93,7 +93,7 @@ public class GradientMappedTConTexture extends AbstractColoredTexture {
                     gTo = RenderUtil.green(gradientMap[i].color);
                     bTo = RenderUtil.blue (gradientMap[i].color);
                 } else if (gray >= gradientMap[i].node && gray <= gradientMap[i+1].node) {
-                    return GradientMappedTexture.getColorFromBetweenNodes(GradientMappedTexture.getBalancedValue(gray, gradientMap[i].node, gradientMap[i+1].node), gradientMap[i].color, gradientMap[i+1].color, a);
+                    return GradientMappedTexture.interpolateColors(GradientMappedTexture.normalize(gray, gradientMap[i].node, gradientMap[i+1].node), gradientMap[i].color, gradientMap[i+1].color, a);
                 }
             }
         }

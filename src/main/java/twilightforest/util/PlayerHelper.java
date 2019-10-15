@@ -2,12 +2,14 @@ package twilightforest.util;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.PlayerAdvancements;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
+import twilightforest.TwilightForestMod;
 
 public class PlayerHelper {
 	/**
-	 * Fullfills all remaining criteria of the given advancement
+	 * Fulfills all remaining criteria of the given advancement
 	 */
 	@Deprecated
 	public static void grantAdvancement(EntityPlayerMP player, ResourceLocation id) {
@@ -27,5 +29,14 @@ public class PlayerHelper {
 		if (advancement != null) {
 			advancements.grantCriterion(advancement, criterion);
 		}
+	}
+
+	public static boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player, ResourceLocation... requiredAdvancements) {
+		for (ResourceLocation advancementLocation : requiredAdvancements) {
+			if (!TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancementLocation)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

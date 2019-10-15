@@ -5,7 +5,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +15,6 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
-import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CommandTF extends CommandBase {
+
 	private static final List<String> aliases = ImmutableList.of("tffeature", "twilightforest", "tf");
 
 	@Override
@@ -81,24 +81,19 @@ public class CommandTF extends CommandBase {
 		// activate current feature
 		EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 
-		int dx = MathHelper.floor(player.posX);
-		int dy = MathHelper.floor(player.posY);
-		int dz = MathHelper.floor(player.posZ);
-
-		if (!(player.world.provider instanceof WorldProviderTwilightForest)) {
+		if (!TFWorld.isTwilightForest(player.world)) {
 			throw new CommandException("commands.tffeature.not_in_twilight_forest");
+		}
+
+		// are you in a structure?
+		ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(player.world);
+
+		BlockPos pos = new BlockPos(player);
+		if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
+			sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag));
+			chunkGenerator.setStructureConquered(pos, flag);
 		} else {
-			// are you in a structure?
-			ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(player.world);
-
-			final BlockPos pos = new BlockPos(dx, dy, dz);
-			if (chunkGenerator.isBlockInStructureBB(pos)) {
-				sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag));
-
-				chunkGenerator.setStructureConquered(dx, dy, dz, flag);
-			} else {
-				throw new CommandException("commands.tffeature.structure.required");
-			}
+			throw new CommandException("commands.tffeature.structure.required");
 		}
 	}
 
@@ -143,38 +138,32 @@ public class CommandTF extends CommandBase {
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 
-				int dx = MathHelper.floor(player.posX);
-				int dy = MathHelper.floor(player.posY);
-				int dz = MathHelper.floor(player.posZ);
-
-				if (!(player.world.provider instanceof WorldProviderTwilightForest)) {
+				if (!TFWorld.isTwilightForest(player.world)) {
 					throw new CommandException("commands.tffeature.not_in_twilight_forest");
-				} else {
-					// nearest feature
-					TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, player.world);
+				}
 
-					sender.sendMessage(new TextComponentTranslation("commands.tffeature.nearest", nearbyFeature.name));
+				BlockPos pos = new BlockPos(player);
 
-					// are you in a structure?
-					ChunkGeneratorTFBase chunkGenerator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(player.world);
+				// nearest feature
+				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), player.world);
+				sender.sendMessage(new TextComponentTranslation("commands.tffeature.nearest", nearbyFeature.name));
 
-					final BlockPos pos = new BlockPos(dx, dy, dz);
+				// are you in a structure?
+				ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(player.world);
+				if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
+					sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.inside"));
 
-					if (chunkGenerator.isBlockInStructureBB(pos)) {
-						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.inside"));
+					sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)));
+					// are you in a room?
 
-						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)));
-						// are you in a room?
-
-						// what is the spawn list
+					// what is the spawn list
 //						List<SpawnListEntry> spawnList = chunkGenerator.getPossibleCreatures(EnumCreatureType.monster, dx, dy, dz);
 //						sender.sendMessage(new TextComponentTranslation("Spawn list for the area is:"));
 //						for (SpawnListEntry entry : spawnList) {
 //							sender.sendMessage(new TextComponentTranslation(entry.toString()));
 //						}
-					} else {
-						sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.outside"));
-					}
+				} else {
+					sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.outside"));
 				}
 			}
 		},
@@ -200,23 +189,23 @@ public class CommandTF extends CommandBase {
 
 			@Override
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-				if (args.length != 2)
+				if (args.length != 2) {
 					throw new WrongUsageException("commands.tffeature.locate.usage");
-
-				if (!(getCommandSenderAsPlayer(sender).world.provider instanceof WorldProviderTwilightForest))
+				}
+				if (!TFWorld.isTwilightForest(getCommandSenderAsPlayer(sender).world)) {
 					throw new CommandException("commands.tffeature.not_in_twilight_forest");
-
+				}
 				String s = args[1];
 				BlockPos blockpos = sender.getEntityWorld().findNearestStructure(s, sender.getPosition(), false);
 
 				if (blockpos != null) {
 					sender.sendMessage(new TextComponentTranslation("commands.locate.success", s, blockpos.getX(), blockpos.getZ()));
+
 				} else {
 					blockpos = sender.getEntityWorld().findNearestStructure("twilightforest:" + s, sender.getPosition(), false);
-
-					if (blockpos != null)
+					if (blockpos != null) {
 						sender.sendMessage(new TextComponentTranslation("commands.locate.success", s, blockpos.getX(), blockpos.getZ()));
-					else throw new CommandException("commands.locate.failure", s);
+					} else throw new CommandException("commands.locate.failure", s);
 				}
 			}
 
@@ -239,20 +228,19 @@ public class CommandTF extends CommandBase {
 
 			@Override
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-				Entity entity = getEntity(server, sender, args[1]);
 
-				if (args.length >= 4 && entity.hasCapability(CapabilityList.SHIELDS, null)) {
+				if (args.length < 4) return;
+
+				EntityLivingBase entity = getEntity(server, sender, args[1], EntityLivingBase.class);
+				IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
+
+				if (cap != null) {
 					// If no boolean param is around, then default val is true
-					boolean temp = args.length < 5 || Boolean.valueOf(args[4]);
-
-					IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
-
-					if (cap != null) {
-						if ("set".equals(args[2].toLowerCase(Locale.ROOT))) {
-							cap.setShields(Integer.valueOf(args[3]), temp);
-						} else if ("add".equals(args[2].toLowerCase(Locale.ROOT))) {
-							cap.addShields(Integer.valueOf(args[3]), temp);
-						}
+					boolean temp = args.length < 5 || Boolean.parseBoolean(args[4]);
+					if ("set".equals(args[2].toLowerCase(Locale.ROOT))) {
+						cap.setShields(Integer.parseInt(args[3]), temp);
+					} else if ("add".equals(args[2].toLowerCase(Locale.ROOT))) {
+						cap.addShields(Integer.parseInt(args[3]), temp);
 					}
 				}
 			}

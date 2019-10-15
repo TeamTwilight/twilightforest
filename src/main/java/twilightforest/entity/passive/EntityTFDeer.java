@@ -2,15 +2,18 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
 /**
@@ -35,13 +38,29 @@ public class EntityTFDeer extends EntityCow {
 	}
 
 	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.5D, 1.8D));
+	}
+
+	@Override
 	public float getEyeHeight() {
 		return this.height * 0.7F;
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return null;
+		return TFSounds.DEER_IDLE;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.DEER_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.DEER_DEATH;
 	}
 
 	@Override

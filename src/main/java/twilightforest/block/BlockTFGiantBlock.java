@@ -27,32 +27,20 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		pos = roundCoords(pos);
-
-		for (int dx = 0; dx < 4; dx++) {
-			for (int dy = 0; dy < 4; dy++) {
-				for (int dz = 0; dz < 4; dz++) {
-					IBlockState state = world.getBlockState(pos.add(dx, dy, dz));
-					if (!state.getBlock().isReplaceable(world, pos.add(dx, dy, dz)))
-						return false;
-				}
+		for (BlockPos dPos : getVolume(pos)) {
+			IBlockState state = world.getBlockState(dPos);
+			if (!state.getBlock().isReplaceable(world, dPos)) {
+				return false;
 			}
 		}
-
 		return super.canPlaceBlockAt(world, pos);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
 		if (!world.isRemote) {
-			pos = roundCoords(pos);
-
-			for (int dx = 0; dx < 4; dx++) {
-				for (int dy = 0; dy < 4; dy++) {
-					for (int dz = 0; dz < 4; dz++) {
-						world.setBlockState(pos.add(dx, dy, dz), getDefaultState(), 2);
-					}
-				}
+			for (BlockPos dPos : getVolume(pos)) {
+				world.setBlockState(dPos, getDefaultState(), 2);
 			}
 		}
 	}
@@ -69,17 +57,10 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 		// this flag is maybe not totally perfect
 		this.isSelfDestructing = true;
 
-		BlockPos bPos = roundCoords(pos);
-
-		for (int dx = 0; dx < 4; dx++) {
-			for (int dy = 0; dy < 4; dy++) {
-				for (int dz = 0; dz < 4; dz++) {
-					BlockPos iterPos = bPos.add(dx, dy, dz);
-					if (!pos.equals(iterPos)) {
-						if (world.getBlockState(iterPos).getBlock() == this) {
-							world.destroyBlock(iterPos, false);
-						}
-					}
+		for (BlockPos iterPos : getVolume(pos)) {
+			if (!pos.equals(iterPos)) {
+				if (world.getBlockState(iterPos).getBlock() == this) {
+					world.destroyBlock(iterPos, false);
 				}
 			}
 		}
@@ -88,17 +69,11 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 	}
 
 	private boolean canBlockStay(World world, BlockPos pos) {
-		pos = roundCoords(pos);
-
-		for (int dx = 0; dx < 4; dx++) {
-			for (int dy = 0; dy < 4; dy++) {
-				for (int dz = 0; dz < 4; dz++) {
-					if (world.getBlockState(pos.add(dx, dy, dz)).getBlock() != this)
-						return false;
-				}
+		for (BlockPos dPos : getVolume(pos)) {
+			if (world.getBlockState(dPos).getBlock() != this) {
+				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -110,6 +85,13 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 
 	public static BlockPos roundCoords(BlockPos pos) {
 		return new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
+	}
+
+	public static Iterable<BlockPos> getVolume(BlockPos pos) {
+		return BlockPos.getAllInBox(
+				pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
+				pos.getX() |  0b11, pos.getY() |  0b11, pos.getZ() |  0b11
+		);
 	}
 
 	@SideOnly(Side.CLIENT)

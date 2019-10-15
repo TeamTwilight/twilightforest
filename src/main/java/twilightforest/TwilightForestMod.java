@@ -28,12 +28,13 @@ import twilightforest.structures.start.StructureStartNothing;
 import twilightforest.tileentity.*;
 import twilightforest.tileentity.spawner.*;
 import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.feature.TFGenCaveStalactite;
 
 @Mod( modid = TwilightForestMod.ID,
 		name = TwilightForestMod.NAME,
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12.2-0.3.2.18,);before:immersiveengineering@[0.12-83,);before:tconstruct;required-after:forge@[14.23.5.2787,);after:thaumcraft@[6.1.BETA21,)",
+		dependencies = "after:ctm@[MC1.12.2-0.3.2.18,);before:immersiveengineering@[0.12-83,);before:tconstruct;required-after:forge@[14.23.5.2813,);after:thaumcraft@[6.1.BETA21,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )
 public class TwilightForestMod {
@@ -131,17 +132,8 @@ public class TwilightForestMod {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
-		if (!DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
-			DimensionManager.registerDimension(TFConfig.dimension.dimensionID, dimType);
-		} else {
-			LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID. It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID);
-			DimensionManager.registerDimension(backupDimensionID, dimType);
-			TFConfig.dimension.dimensionID = backupDimensionID;
-		}
-		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
-			LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
-			TFConfig.originDimension = 0;
-		}
+		registerDimension();
+		checkOriginDimension();
 
 		if (compat) {
 			try {
@@ -154,6 +146,7 @@ public class TwilightForestMod {
 		}
 
 		TFConfig.build();
+		TFGenCaveStalactite.loadStalactites();
 	}
 
 	@EventHandler
@@ -166,7 +159,25 @@ public class TwilightForestMod {
 		event.registerServerCommand(new CommandTF());
 	}
 
-	private void registerTileEntities() {
+	private static void registerDimension() {
+		if (DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
+			LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID ({}). It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID, backupDimensionID);
+			TFConfig.dimension.dimensionID = backupDimensionID;
+		}
+		DimensionManager.registerDimension(TFConfig.dimension.dimensionID, dimType);
+	}
+
+	static void checkOriginDimension() {
+		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
+			LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
+			TFConfig.originDimension = 0;
+		} else if (TFConfig.originDimension == TFConfig.dimension.dimensionID) {
+			LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
+			TFConfig.originDimension = 0;
+		}
+	}
+
+	private static void registerTileEntities() {
 		proxy.registerCritterTileEntities();
 
 		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner          .class, prefix("naga_spawner"            ));
@@ -187,6 +198,7 @@ public class TwilightForestMod {
 		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace        .class, prefix("cinder_furnace"          ));
 		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner    .class, prefix("minoshroom_spawner"      ));
 		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, prefix("alpha_yeti_spawner"      ));
+		GameRegistry.registerTileEntity(TileEntityTFFinalBossSpawner     .class, prefix("final_boss_spawner"      ));
 	}
 
 	public static ResourceLocation prefix(String name) {

@@ -2,17 +2,16 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import twilightforest.TwilightForestMod;
 
 public class PacketEnforceProgressionStatus implements IMessage {
+
 	private boolean enforce;
 
-	public PacketEnforceProgressionStatus() {
-	}
+	public PacketEnforceProgressionStatus() {}
 
 	public PacketEnforceProgressionStatus(boolean enforce) {
 		this.enforce = enforce;
@@ -35,14 +34,10 @@ public class PacketEnforceProgressionStatus implements IMessage {
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					World world = Minecraft.getMinecraft().world;
-
-					world.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
+					Minecraft.getMinecraft().world.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
 				}
 			});
-
 			return null;
 		}
 	}
-
 }

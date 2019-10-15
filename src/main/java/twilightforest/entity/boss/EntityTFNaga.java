@@ -49,7 +49,6 @@ import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
@@ -838,19 +837,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
 		// mark the courtyard as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-			int dx = MathHelper.floor(this.posX);
-			int dy = MathHelper.floor(this.posY);
-			int dz = MathHelper.floor(this.posZ);
-
-			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-			if (nearbyFeature == TFFeature.NAGA_COURTYARD) {
-				generator.setStructureConquered(dx, dy, dz, true);
-			}
+		if (!world.isRemote) {
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.NAGA_COURTYARD);
 		}
-
 	}
 
 	@Override

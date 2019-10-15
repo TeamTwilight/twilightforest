@@ -1,5 +1,6 @@
 package twilightforest.world.feature;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -44,7 +45,7 @@ public class TFGenThorns extends TFGenerator {
 					if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
 						if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 							// leaf
-							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.twilight_leaves_3.getDefaultState());
+							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false));
 						} else {
 							// rose
 							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.thorn_rose.getDefaultState());
@@ -90,7 +91,7 @@ public class TFGenThorns extends TFGenerator {
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 
 			if (world.isAirBlock(nextPos)) {
-				this.setBlockAndNotifyAdequately(world, nextPos, TFBlocks.twilight_leaves_3.getDefaultState());
+				this.setBlockAndNotifyAdequately(world, nextPos, TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false));
 			}
 		}
 	}

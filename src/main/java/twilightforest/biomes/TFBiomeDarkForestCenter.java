@@ -2,6 +2,7 @@ package twilightforest.biomes;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
 public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
@@ -25,5 +26,11 @@ public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
 		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_knights") };
+	}
+
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.DARK_TOWER;
 	}
 }

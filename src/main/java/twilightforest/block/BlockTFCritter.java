@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import twilightforest.item.TFItems;
 
-import javax.annotation.Nonnull;
+import java.util.Random;
 
 public abstract class BlockTFCritter extends Block {
 
@@ -52,7 +52,6 @@ public abstract class BlockTFCritter extends Block {
 		return state.getValue(BlockDirectional.FACING).getIndex();
 	}
 
-	@Nonnull
 	@Override
 	@Deprecated
 	public IBlockState getStateFromMeta(int meta) {
@@ -104,9 +103,14 @@ public abstract class BlockTFCritter extends Block {
 	}
 
 	@Override
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+		return canPlaceAt(world, pos.offset(side.getOpposite()), side);
+	}
+
+	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		for (EnumFacing e : EnumFacing.VALUES) {
-			if (canPlaceAt(world, pos.offset(e))) {
+		for (EnumFacing side : EnumFacing.values()) {
+			if (canPlaceAt(world, pos.offset(side.getOpposite()), side)) {
 				return true;
 			}
 		}
@@ -118,7 +122,7 @@ public abstract class BlockTFCritter extends Block {
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		IBlockState state = getDefaultState();
 
-		if (canPlaceAt(world, pos.offset(sideHit.getOpposite()))) {
+		if (canPlaceAt(world, pos.offset(sideHit.getOpposite()), sideHit)) {
 			state = state.withProperty(BlockDirectional.FACING, sideHit);
 		}
 
@@ -127,12 +131,17 @@ public abstract class BlockTFCritter extends Block {
 
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		world.scheduleUpdate(pos, this, 1);
+	}
+
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		checkAndDrop(world, pos, state);
 	}
 
 	protected boolean checkAndDrop(World world, BlockPos pos, IBlockState state) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
+		if (!canPlaceAt(world, pos.offset(facing.getOpposite()), facing)) {
 			world.destroyBlock(pos, true);
 			return false;
 		}
@@ -141,12 +150,15 @@ public abstract class BlockTFCritter extends Block {
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockID, BlockPos fromPos) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		checkAndDrop(world, pos, state);
 	}
 
-	protected boolean canPlaceAt(World world, BlockPos pos) {
-		return world.isBlockNormalCube(pos, true) || world.getBlockState(pos).getMaterial() == Material.LEAVES || world.getBlockState(pos).getMaterial() == Material.CACTUS;
+	protected boolean canPlaceAt(IBlockAccess world, BlockPos pos, EnumFacing facing) {
+		IBlockState state = world.getBlockState(pos);
+		return state.getBlockFaceShape(world, pos, facing) == BlockFaceShape.SOLID
+				&& (!isExceptBlockForAttachWithPiston(state.getBlock())
+				|| state.getMaterial() == Material.LEAVES || state.getMaterial() == Material.CACTUS);
 	}
 
 	@Override

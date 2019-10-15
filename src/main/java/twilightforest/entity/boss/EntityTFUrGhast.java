@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -23,18 +24,17 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFBossSpawner;
-import twilightforest.enums.BossVariant;
-import twilightforest.loot.TFTreasure;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.enums.BossVariant;
+import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.loot.TFTreasure;
 import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	private List<BlockPos> trapLocations;
 	private int nextTantrumCry;
 
-	private float damageUntilNextPhase = 45; // how much damage can we take before we toggle tantrum mode
+	private float damageUntilNextPhase = 10; // how much damage can we take before we toggle tantrum mode
 	private boolean noTrapMode; // are there no traps nearby?  just float around
 	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 
@@ -235,10 +235,15 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
+	public void knockBack(Entity entityIn, float strength, double xRatio, double zRatio) {
+		// Don't take knockback
+	}
+
+	@Override
 	public boolean attackEntityFrom(DamageSource source, float damage) {
-		// in tantrum mode take only 1/4 damage
+		// in tantrum mode take only 1/10 damage
 		if (this.isInTantrum()) {
-			damage /= 4;
+			damage /= 10;
 		}
 
 		float oldHealth = getHealth();
@@ -277,7 +282,11 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			this.startTantrum();
 		}
 
-		this.damageUntilNextPhase = 48;
+		resetDamageUntilNextPhase();
+	}
+
+	public void resetDamageUntilNextPhase() {
+		damageUntilNextPhase = 18;
 	}
 
 	private void startTantrum() {
@@ -521,7 +530,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	public void setInTantrum(boolean inTantrum) {
 		dataManager.set(DATA_TANTRUM, inTantrum);
-		this.damageUntilNextPhase = 48;
+		resetDamageUntilNextPhase();
 	}
 
 	@Override
@@ -552,30 +561,17 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
-
 		if (this.deathTime == 20 && !world.isRemote) {
-			BlockPos chestCoords = this.findChestCoords();
-			TFTreasure.darktower_boss.generateChest(world, chestCoords, false);
+			TFTreasure.darktower_boss.generateChest(world, findChestCoords(), false);
 		}
 	}
 
 	@Override
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
-
 		// mark the tower as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-			BlockPos chestCoords = this.findChestCoords();
-			int dx = chestCoords.getX();
-			int dy = chestCoords.getY();
-			int dz = chestCoords.getZ();
-
-			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-			if (nearbyFeature == TFFeature.DARK_TOWER) {
-				generator.setStructureConquered(dx, dy, dz, true);
-			}
+		if (!world.isRemote) {
+			TFWorld.markStructureConquered(world, findChestCoords(), TFFeature.DARK_TOWER);
 		}
 	}
 

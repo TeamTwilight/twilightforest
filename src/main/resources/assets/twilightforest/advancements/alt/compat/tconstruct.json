@@ -1,4 +1,8 @@
 {
+  "conditions": [{
+    "type": "forge:mod_loaded",
+    "modid": "tconstruct"
+  }],
   "parent": "twilightforest:alt/root",
   "criteria": {
     "book"       : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "tconstruct:book"                  }]}},

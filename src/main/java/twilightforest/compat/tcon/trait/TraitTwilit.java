@@ -10,12 +10,13 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.entity.EntityProjectileBase;
 import slimeknights.tconstruct.library.traits.AbstractProjectileTrait;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class TraitTwilit extends AbstractProjectileTrait {
+
     private static final float bonus = 2.0f;
 
     public TraitTwilit() {
@@ -24,13 +25,13 @@ public class TraitTwilit extends AbstractProjectileTrait {
 
     @Override
     public void miningSpeed(ItemStack tool, PlayerEvent.BreakSpeed event) {
-        if (event.getEntity().getEntityWorld().provider instanceof WorldProviderTwilightForest)
+        if (TFWorld.isTwilightForest(event.getEntity().world))
             event.setNewSpeed(event.getNewSpeed() + bonus);
     }
 
     @Override
     public float damage(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, float newDamage, boolean isCritical) {
-        if (target.getEntityWorld().provider instanceof WorldProviderTwilightForest)
+        if (TFWorld.isTwilightForest(target.world))
             return super.damage(tool, player, target, damage, newDamage, isCritical);
         else
             return super.damage(tool, player, target, damage, newDamage + bonus, isCritical);
@@ -38,11 +39,11 @@ public class TraitTwilit extends AbstractProjectileTrait {
 
     @Override
     public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable EntityLivingBase shooter) {
-        if (!(projectileBase.getEntityWorld().provider instanceof WorldProviderTwilightForest)) return;
+        if (!TFWorld.isTwilightForest(projectileBase.world)) return;
 
-        projectileBase.motionX += (projectileBase.motionX * bonus);
-        projectileBase.motionY += (projectileBase.motionY * bonus);
-        projectileBase.motionZ += (projectileBase.motionZ * bonus);
+        projectileBase.motionX += (projectileBase.motionX * bonus * 0.1f);
+        projectileBase.motionY += (projectileBase.motionY * bonus * 0.1f);
+        projectileBase.motionZ += (projectileBase.motionZ * bonus * 0.1f);
     }
 
     @Override

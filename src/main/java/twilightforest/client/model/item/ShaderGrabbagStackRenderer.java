@@ -1,26 +1,19 @@
 package twilightforest.client.model.item;
 
-import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -28,72 +21,29 @@ import twilightforest.client.TFClientEvents;
 import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.ie.ItemTFShaderGrabbag;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import javax.vecmath.Matrix4f;
-import java.util.Collections;
-import java.util.List;
-
 public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<ShaderGrabbagStackRenderer.DummyTile> {
 
     public static class DummyTile extends TileEntity {}
 
-    @MethodsReturnNonnullByDefault
-    @ParametersAreNonnullByDefault
-    private class BakedModel implements IBakedModel {
+    private class BakedModel extends BuiltInItemModel {
 
-        private class Overrides extends ItemOverrideList {
-
-            Overrides() {
-                super(Collections.emptyList());
-            }
-
-            @Override
-            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
-                ShaderGrabbagStackRenderer.this.stack = stack;
-                return BakedModel.this;
-            }
+        BakedModel() {
+            super("minecraft:blocks/iron_block");
         }
 
         @Override
-        public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-            return Collections.emptyList();
+        protected void setItemStack(ItemStack stack) {
+            ShaderGrabbagStackRenderer.this.stack = stack;
         }
 
         @Override
-        public boolean isAmbientOcclusion() {
-            return true;
-        }
-
-        @Override
-        public boolean isGui3d() {
-            return true;
-        }
-
-        @Override
-        public boolean isBuiltInRenderer() {
-            return true;
-        }
-
-        @Override
-        public TextureAtlasSprite getParticleTexture() {
-            return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/iron_block");
-        }
-
-        @Override
-        public ItemOverrideList getOverrides() {
-            return new Overrides();
-        }
-
-        @Override
-        public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-            ShaderGrabbagStackRenderer.this.transform = cameraTransformType;
-            return Pair.of(this, null);
+        protected void setTransform(ItemCameraTransforms.TransformType transform) {
+            ShaderGrabbagStackRenderer.this.transform = transform;
         }
     }
 
-    private ItemStack stack;
-    private ItemCameraTransforms.TransformType transform;
+    private ItemStack stack = ItemStack.EMPTY;
+    private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
 
     private final ResourceLocation bg = new ResourceLocation(TwilightForestMod.ID, "textures/items/star_burst_mask.png");
 

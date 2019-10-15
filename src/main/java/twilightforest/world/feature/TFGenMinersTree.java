@@ -1,5 +1,6 @@
 package twilightforest.world.feature;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -12,19 +13,17 @@ import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
-
 public class TFGenMinersTree extends TFTreeGenerator {
 
 	public TFGenMinersTree() {
 		this(false);
 	}
 
-
 	public TFGenMinersTree(boolean notify) {
 		super(notify);
 		this.treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
-		this.branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
+		this.branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE).withProperty(BlockLeaves.CHECK_DECAY, false);
 		this.rootState = TFBlocks.root.getDefaultState();
 	}
 

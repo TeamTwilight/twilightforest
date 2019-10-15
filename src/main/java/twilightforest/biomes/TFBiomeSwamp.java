@@ -1,5 +1,6 @@
 package twilightforest.biomes;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -71,7 +72,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		if (random.nextInt(3) == 0) {
 			return new WorldGenShrub(
 					Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK)
+					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, false)
 			);
 		} else {
 			return SWAMP_FEATURE;
@@ -150,10 +151,12 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 			player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 100, hungerLevel));
 
-			// hint monster?
-			if (world.rand.nextInt(4) == 0) {
-				TFFeature.LABYRINTH.trySpawnHintMonster(world, player);
-			}
+			trySpawnHintMonster(player, world);
 		}
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.LABYRINTH;
 	}
 }

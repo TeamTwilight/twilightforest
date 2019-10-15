@@ -11,6 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
@@ -138,5 +139,10 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		for (BlockFlower.EnumFlowerType flowerType : Blocks.RED_FLOWER.getTypeProperty().getAllowedValues()) {
 			addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), flowerType), 10);
 		}
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.QUEST_GROVE;
 	}
 }

@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.feature.TFGenCaveStalactite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,8 +116,76 @@ public class TFConfig {
 			@Config.RangeInt(min = 0)
 			public int druidHutWeight = 10;
 		}
+
+		@Config.LangKey(config + "hollow_hill_stalactites")
+		@Config.Comment("Defines custom stalactites generated in hollow hills." +
+				"\nFormat is \"modid:block<:meta> size maxLength minHeight weight\", where the properties are:" +
+				"\nSize - the maximum length of the stalactite relative to the space between hill floor and ceiling," +
+				"\nMax length - maximum length of a stalactite in blocks," +
+				"\nMin height - minimum space between the hill floor and the stalactite to let it generate," +
+				"\nWeight - how often it generates." +
+				"\n\nFor example: \"minecraft:iron_ore 0.7 8 1 24\" would add a stalactite equal to the default iron ore stalactite.")
+		@Config.RequiresMcRestart
+		public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
+
+		public static class HollowHillStalactites {
+			@Config.LangKey(config + "large_hill")
+			@Config.RequiresMcRestart
+			@Config.Comment("Blocks generating as stalactites in large hills only")
+			public String[] largeHill = {};
+
+			@Config.LangKey(config + "medium_hill")
+			@Config.RequiresMcRestart
+			@Config.Comment("Blocks generating as stalactites in medium and large hills")
+			public String[] mediumHill = {};
+
+			@Config.LangKey(config + "small_hill")
+			@Config.RequiresMcRestart
+			@Config.Comment("Blocks generating as stalactites in all hills")
+			public String[] smallHill = {};
+
+			@Config.LangKey(config + "stalactite_config_only")
+			@Config.RequiresMcRestart
+			@Config.Comment("If true, default stalactites and stalactites defined by other mods will not be used.")
+			public boolean useConfigOnly = false;
+
+			public void load() {
+				registerHill(smallHill, 1);
+				registerHill(mediumHill, 2);
+				registerHill(largeHill, 3);
+			}
+
+			private void registerHill(String[] definitions, int tier) {
+				for (String definition : definitions) {
+					if (!parseStalactite(definition, tier)) {
+						TwilightForestMod.LOGGER.warn("Invalid hollow hill stalactite definition: {}", definition);
+					}
+				}
+			}
+
+			private boolean parseStalactite(String definition, int tier) {
+				String[] split = definition.split(" ");
+				if (split.length != 5) return false;
+
+				Optional<IBlockState> state = parseBlockState(split[0]);
+				if (!state.isPresent()) return false;
+
+				try {
+					TFGenCaveStalactite.addStalactite(tier, state.get(),
+							Float.parseFloat(split[1]),
+							Integer.parseInt(split[2]),
+							Integer.parseInt(split[3]),
+							Integer.parseInt(split[4])
+					);
+				} catch (NumberFormatException e) {
+					return false;
+				}
+				return true;
+			}
+		}
 	}
 
+	@Config.RequiresMcRestart
 	@Config.LangKey(config + "compat")
 	@Config.Comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
 	public static boolean doCompat = true;
@@ -333,6 +402,7 @@ public class TFConfig {
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
+			TwilightForestMod.checkOriginDimension();
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
 			if (!event.isWorldRunning()) {
 				WorldProviderTwilightForest.syncFromConfig();
@@ -413,13 +483,15 @@ public class TFConfig {
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
 		if (block == Blocks.AIR) return Optional.empty();
 
-		int meta = 0;
-		if (split.length > 2) {
-			try {
-				meta = Integer.parseInt(split[2]);
-			} catch (NumberFormatException e) {
-				return Optional.empty();
-			}
+		if (split.length == 2) {
+			return Optional.of(block.getDefaultState());
+		}
+
+		int meta;
+		try {
+			meta = Integer.parseInt(split[2]);
+		} catch (NumberFormatException e) {
+			return Optional.empty();
 		}
 		if (meta < 0 || meta > 15) return Optional.empty();
 

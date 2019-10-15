@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
@@ -25,6 +24,7 @@ import twilightforest.enums.WoodVariant;
 import twilightforest.util.IMapColorSupplier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.stream;
@@ -288,15 +288,15 @@ public class RegisterItemEvent {
 		}
 	}
 
+	public static List<ModelRegisterCallback> getItemModels() {
+		return Collections.unmodifiableList(ItemRegistryHelper.itemModels);
+	}
+
 	public static class ItemRegistryHelper {
 
+		static final List<ModelRegisterCallback> itemModels = new ArrayList<>();
+
 		private final IForgeRegistry<Item> registry;
-
-		private static List<ModelRegisterCallback> itemModels = new ArrayList<>();
-
-		static List<ModelRegisterCallback> getItemModels() {
-			return ImmutableList.copyOf(itemModels);
-		}
 
 		ItemRegistryHelper(IForgeRegistry<Item> registry) {
 			this.registry = registry;
@@ -313,7 +313,6 @@ public class RegisterItemEvent {
 				itemModels.add((ModelRegisterCallback) item);
 			}
 			registry.register(item);
-
 			return item;
 		}
 

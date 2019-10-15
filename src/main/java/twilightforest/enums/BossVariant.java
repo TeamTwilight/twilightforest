@@ -3,6 +3,7 @@ package twilightforest.enums;
 import net.minecraft.util.IStringSerializable;
 import twilightforest.tileentity.spawner.TileEntityTFAlphaYetiSpawner;
 import twilightforest.tileentity.spawner.TileEntityTFBossSpawner;
+import twilightforest.tileentity.spawner.TileEntityTFFinalBossSpawner;
 import twilightforest.tileentity.spawner.TileEntityTFHydraSpawner;
 import twilightforest.tileentity.spawner.TileEntityTFKnightPhantomsSpawner;
 import twilightforest.tileentity.spawner.TileEntityTFLichSpawner;
@@ -25,7 +26,8 @@ public enum BossVariant implements IStringSerializable {
 	SNOW_QUEEN    (TrophyType.GOLD    , TileEntityTFSnowQueenSpawner::new),
 	MINOSHROOM    (TrophyType.IRON    , TileEntityTFMinoshroomSpawner::new),
 	ALPHA_YETI    (TrophyType.IRON    , TileEntityTFAlphaYetiSpawner::new),
-	QUEST_RAM     (TrophyType.IRONWOOD, null);
+	QUEST_RAM     (TrophyType.IRONWOOD, null),
+	FINAL_BOSS    (TrophyType.GOLD    , TileEntityTFFinalBossSpawner::new);
 
 	private final Supplier<? extends TileEntityTFBossSpawner> factory;
 	private final TrophyType trophyType;

@@ -12,12 +12,12 @@ import twilightforest.biomes.TFBiomes;
 import twilightforest.structures.StructureTFComponentTemplate;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
-import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
 public abstract class StructureStartTFAbstract extends StructureStart {
+
     public StructureStartTFAbstract() {
         super();
     }
@@ -46,21 +46,19 @@ public abstract class StructureStartTFAbstract extends StructureStart {
      * Move the whole structure up or down
      */
     protected void moveToAvgGroundLevel(World world, int x, int z) {
-        if (world.getBiomeProvider() instanceof TFBiomeProvider) {
-            // determine the biome at the origin
-            Biome biomeAt = world.getBiome(new BlockPos(x, 0, z));
+        // determine the biome at the origin
+        Biome biomeAt = world.getBiome(new BlockPos(x, 0, z));
 
-            int offY = (int) ((biomeAt.getBaseHeight() + biomeAt.getHeightVariation()) * 8);
+        int offY = (int) ((biomeAt.getBaseHeight() + biomeAt.getHeightVariation()) * 8);
 
-            // dark forest doesn't seem to get the right value. Why is my calculation so bad?
-            if (biomeAt == TFBiomes.darkForest) offY += 4;
+        // dark forest doesn't seem to get the right value. Why is my calculation so bad?
+        if (biomeAt == TFBiomes.darkForest) offY += 4;
 
-            if (offY > 0) {
-                boundingBox.offset(0, offY, 0);
+        if (offY > 0) {
+            boundingBox.offset(0, offY, 0);
 
-                for (StructureComponent com : getComponents()) {
-                    com.getBoundingBox().offset(0, offY, 0);
-                }
+            for (StructureComponent com : getComponents()) {
+                com.getBoundingBox().offset(0, offY, 0);
             }
         }
     }

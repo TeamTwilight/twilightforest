@@ -17,50 +17,56 @@ import twilightforest.compat.tcon.trait.*;
 import twilightforest.item.TFItems;
 
 public class TConstruct {
-    public static Material nagascale    = new Material("nagascale"    , 0x32_5D_25);
-    public static Material steeleaf     = new Material("steeleaf"     , 0x52_87_3A);
-    public static Material fierymetal   = new Material("fierymetal"   , 0xFD_D4_5D);
-    public static Material knightmetal  = new Material("knightmetal"  , 0xC4_E6_AE);
-    public static Material ravenFeather = new Material("raven_feather", 0x47_4C_52);
+
+    public static final Material nagascale    = new Material("nagascale"    , 0x32_5D_25);
+    public static final Material steeleaf     = new Material("steeleaf"     , 0x52_87_3A);
+    public static final Material fierymetal   = new Material("fierymetal"   , 0xFD_D4_5D);
+    public static final Material knightmetal  = new Material("knightmetal"  , 0xC4_E6_AE);
+    public static final Material ravenFeather = new Material("raven_feather", 0x47_4C_52);
 
     public static final AbstractTrait twilit      = new TraitTwilit();
     public static final AbstractTrait precipitate = new TraitPrecipitate();
-    public static final AbstractTrait valiant     = new TraitStalwart();
+    public static final AbstractTrait stalwart    = new TraitStalwart();
     public static final AbstractTrait synergy     = new TraitSynergy();
     public static final AbstractTrait veiled      = new TraitVeiled();
 
     static void preInit() {
         TinkerRegistry.addMaterialStats(TConstruct.nagascale,
                 new HeadMaterialStats(460, 8.9f, 4.3f, HarvestLevels.IRON),
-                new BowMaterialStats(0.6f, 2f, 0),
-                new ArrowShaftMaterialStats(1.4f, 20));
+                new BowMaterialStats(0.6f, 2f, 0f),
+                new ArrowShaftMaterialStats(1.4f, 20)
+        );
         TinkerRegistry.integrate(TConstruct.nagascale).preInit();
 
         TinkerRegistry.addMaterialStats(TConstruct.steeleaf,
-                new HeadMaterialStats(180, 8f, 7f, HarvestLevels.DIAMOND),
+                new HeadMaterialStats(180, 7f, 6f, HarvestLevels.DIAMOND),
                 new HandleMaterialStats(0.8f, 100),
-                new ExtraMaterialStats(100),
-                new BowMaterialStats(1.4f, 1.8f, 4),
+                new ExtraMaterialStats(90),
+                new BowMaterialStats(1.2f, 1.5f, 2f),
                 new ArrowShaftMaterialStats(0.6f, 10),
-                new FletchingMaterialStats(1f, 0.8f));
+                new FletchingMaterialStats(1f, 0.8f)
+        );
         TinkerRegistry.integrate(new MaterialIntegration(TConstruct.steeleaf, null, "Steeleaf")).toolforge().preInit();
 
         TinkerRegistry.addMaterialStats(TConstruct.fierymetal,
-                new HeadMaterialStats(720, 8f, 7.6f, HarvestLevels.OBSIDIAN),
+                new HeadMaterialStats(720, 7.2f, 6.6f, HarvestLevels.OBSIDIAN),
                 new HandleMaterialStats(0.7f, 400),
                 new ExtraMaterialStats(200),
-                new BowMaterialStats(1f, 0.9f, 2),
-                new ArrowShaftMaterialStats(0.8f, 0));
+                new BowMaterialStats(1f, 0.9f, 4f),
+                new ArrowShaftMaterialStats(0.8f, 0)
+        );
         TinkerRegistry.integrate(new MaterialIntegration(TConstruct.fierymetal, RegisterBlockEvent.moltenFiery, "Fiery")).toolforge().preInit();
 
         TinkerRegistry.addMaterialStats(TConstruct.knightmetal,
-                new HeadMaterialStats(1200, 8f, 7f, HarvestLevels.COBALT),
-                new HandleMaterialStats(1.5f, 100),
-                new ExtraMaterialStats(550));
+                new HeadMaterialStats(900, 7f, 6f, HarvestLevels.COBALT),
+                new HandleMaterialStats(1.25f, 100),
+                new ExtraMaterialStats(400)
+        );
         TinkerRegistry.integrate(new MaterialIntegration(TConstruct.knightmetal, RegisterBlockEvent.moltenKnightmetal, "Knightmetal")).preInit();
 
         TinkerRegistry.addMaterialStats(TConstruct.ravenFeather,
-                new FletchingMaterialStats(0.95f, 1.15f));
+                new FletchingMaterialStats(0.95f, 1.15f)
+        );
         TinkerRegistry.integrate(TConstruct.ravenFeather).preInit();
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
@@ -100,7 +106,7 @@ public class TConstruct {
         TConstruct.knightmetal.addItem(TFItems.block_and_chain, 1, (Material.VALUE_Ingot * 7) + Material.VALUE_Block);
         TConstruct.knightmetal
                 .addTrait(TConstruct.twilit)
-                .addTrait(TConstruct.valiant)
+                .addTrait(TConstruct.stalwart)
                 .setCraftable(false).setCastable(true)
                 .setRepresentativeItem(TFItems.knightmetal_ingot);
 

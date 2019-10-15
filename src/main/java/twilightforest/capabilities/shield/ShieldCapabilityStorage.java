@@ -5,25 +5,24 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 
-import javax.annotation.Nullable;
-
 public class ShieldCapabilityStorage implements Capability.IStorage<IShieldCapability> {
 
-	@Nullable
 	@Override
-	public NBTBase writeNBT(Capability<IShieldCapability> capability, IShieldCapability instance, EnumFacing side) {
+	public NBTTagCompound writeNBT(Capability<IShieldCapability> capability, IShieldCapability instance, EnumFacing side) {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("tempshields", instance.temporaryShieldsLeft());
-		tag.setInteger("permshields", instance.permamentShieldsLeft());
+		tag.setInteger("permshields", instance.permanentShieldsLeft());
 		return tag;
 	}
 
 	@Override
 	public void readNBT(Capability<IShieldCapability> capability, IShieldCapability instance, EnumFacing side, NBTBase nbt) {
-		if (nbt instanceof NBTTagCompound) {
+		if (nbt instanceof NBTTagCompound && instance instanceof ShieldCapabilityHandler) {
 			NBTTagCompound tag = (NBTTagCompound) nbt;
-			instance.setShields(tag.getInteger("tempshields"), true);
-			instance.setShields(tag.getInteger("permshields"), false);
+			((ShieldCapabilityHandler) instance).initShields(
+					tag.getInteger("tempshields"),
+					tag.getInteger("permshields")
+			);
 		}
 	}
 }

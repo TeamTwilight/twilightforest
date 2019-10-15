@@ -1,12 +1,13 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
@@ -17,9 +18,11 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.ai.EntityAITFThrowRider;
@@ -40,8 +43,22 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0D, false));
-		this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
+		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0D, false) {
+			@Override
+			protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_) {
+				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
+				if (!getPassengers().isEmpty())
+					playSound(TFSounds.ALPHAYETI_GRAB, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+			}
+
+			@Override
+			public void resetTask() {
+				if (!getPassengers().isEmpty())
+					playSound(TFSounds.ALPHAYETI_THROW, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+				super.resetTask();
+			}
+		});
+		this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(3, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
@@ -176,6 +193,27 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 	@Override
 	protected boolean isValidLightLevel() {
 		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest || super.isValidLightLevel();
+	}
+
+	@Override
+	protected float getSoundPitch() {
+		return super.getSoundPitch() + 0.55F;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.ALPHAYETI_GROWL;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.ALPHAYETI_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.ALPHAYETI_DIE;
 	}
 
 	@Override

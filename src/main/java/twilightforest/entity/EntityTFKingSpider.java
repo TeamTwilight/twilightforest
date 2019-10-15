@@ -4,10 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 public class EntityTFKingSpider extends EntitySpider {
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/king_spider");
 
 	public EntityTFKingSpider(World world) {
 		super(world);
@@ -61,4 +64,8 @@ public class EntityTFKingSpider extends EntitySpider {
 		return (double) this.height * 0.75D;
 	}
 
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 }

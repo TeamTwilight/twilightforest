@@ -1297,7 +1297,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 					treeGen = new WorldGenTrees(false);
 					break;
 				case 1:
-					final IBlockState leaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE);
+					final IBlockState leaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, false);
 					final IBlockState wood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
 
 					// jungle tree

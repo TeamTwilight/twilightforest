@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFRiderSpearAttack;
 
 public class EntityTFGoblinKnightLower extends EntityMob {
+
 	private static final DataParameter<Boolean> ARMOR = EntityDataManager.createKey(EntityTFGoblinKnightLower.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, 0).setSaved(false);
 
@@ -41,7 +42,7 @@ public class EntityTFGoblinKnightLower extends EntityMob {
 		this.tasks.addTask(0, new EntityAITFRiderSpearAttack(this));
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
-		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));

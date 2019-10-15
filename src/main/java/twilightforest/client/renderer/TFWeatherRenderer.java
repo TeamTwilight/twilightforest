@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -16,7 +15,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.biomes.TFBiomeDarkForest;
 import twilightforest.biomes.TFBiomeFinalPlateau;
 import twilightforest.biomes.TFBiomeFireSwamp;
@@ -25,6 +23,7 @@ import twilightforest.biomes.TFBiomeHighlands;
 import twilightforest.biomes.TFBiomeSnow;
 import twilightforest.biomes.TFBiomeSwamp;
 import twilightforest.biomes.TFBiomeThornlands;
+import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
@@ -67,7 +66,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 		// do normal weather rendering
 		renderNormalWeather(partialTicks, mc);
 
-		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE) && !mc.player.isCreative() && !mc.player.isSpectator()) {
+		if (TFWorld.isProgressionEnforced(world) && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
 			renderLockedBiome(partialTicks, world, mc);
 
@@ -260,7 +259,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
 					// TF - check for our own biomes
-					if (biome instanceof TFBiomeBase && entity instanceof EntityPlayer && !((TFBiomeBase)biome).doesPlayerHaveRequiredAchievement((EntityPlayer)entity)) {
+					if (!TFWorld.isBiomeSafeFor(biome, entity)) {
 
 						int groundY = 0; // TF - extend through full height
 						int minY = y0 - range;
@@ -512,19 +511,15 @@ public class TFWeatherRenderer extends IRenderHandler {
 
 	private boolean isNearLockedBiome(World world, Entity viewEntity) {
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-		int range = 15;
+		final int range = 15;
 		int px = MathHelper.floor(viewEntity.posX);
 		int pz = MathHelper.floor(viewEntity.posZ);
 
 		for (int z = pz - range; z <= pz + range; ++z) {
 			for (int x = px - range; x <= px + range; ++x) {
 				Biome biome = world.getBiome(pos.setPos(x, 0, z));
-				if (biome instanceof TFBiomeBase && viewEntity instanceof EntityPlayer) {
-					TFBiomeBase tfBiome = (TFBiomeBase) biome;
-					EntityPlayer player = (EntityPlayer) viewEntity;
-					if (!tfBiome.doesPlayerHaveRequiredAchievement(player)) {
-						return true;
-					}
+				if (!TFWorld.isBiomeSafeFor(biome, viewEntity)) {
+					return true;
 				}
 			}
 		}
@@ -533,7 +528,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 	}
 
 	private boolean isNearLockedStructure(World world, Entity viewEntity) {
-		int range = 15;
+		final int range = 15;
 		int px = MathHelper.floor(viewEntity.posX);
 		int pz = MathHelper.floor(viewEntity.posZ);
 

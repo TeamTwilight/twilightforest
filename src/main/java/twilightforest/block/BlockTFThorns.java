@@ -199,7 +199,8 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@Override
 	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		for (int i = 0; i < (hasVariant() ? ThornVariant.values().length : 1); i++) {
+		int n = hasVariant() ? ThornVariant.values().length : 1;
+		for (int i = 0; i < n; i++) {
 			list.add(new ItemStack(this, 1, i));
 		}
 	}

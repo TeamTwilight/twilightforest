@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -155,7 +156,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	private void tryToPlaceLeaves(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		if (state.getBlock().isAir(state, world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
-			world.setBlockState(pos, TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockTFLeaves3.VARIANT, Leaves3Variant.BEANSTALK), 2);
+			world.setBlockState(pos, TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockTFLeaves3.VARIANT, Leaves3Variant.BEANSTALK).withProperty(BlockLeaves.CHECK_DECAY, false), 2);
 		}
 	}
 }

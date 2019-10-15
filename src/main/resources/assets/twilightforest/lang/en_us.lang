@@ -665,6 +665,17 @@ twilightforest.config.fallen_hollow_log_weight=Fallen Hollow Log weight
 twilightforest.config.fallen_small_log_weight=Fallen Small Log weight
 twilightforest.config.druid_hut_weight=Druid Hut weight
 
+twilightforest.config.hollow_hill_stalactites=Custom Hollow Hill Stalactites
+twilightforest.config.hollow_hill_stalactites.tooltip=Defines custom stalactites generated in hollow hills.\nFormat is \"modid:block<:meta> size maxLength minHeight weight\", where the properties are:\nSize - the maximum length of the stalactite relative to the space between hill floor and ceiling,\nMax length - maximum length of a stalactite in blocks,\nMin height - minimum space between the hill floor and the stalactite to let it generate,\nWeight - how often it generates.\n\nFor example: \"minecraft:iron_ore 0.7 8 1 24\" would add a stalactite equal to the default iron ore stalactite.
+twilightforest.config.large_hill=Large Hills
+twilightforest.config.large_hill.tooltip=Blocks generating as stalactites in large hills only.
+twilightforest.config.medium_hill=Medium and Large Hills
+twilightforest.config.medium_hill.tooltip=Blocks generating as stalactites in medium and large hills.
+twilightforest.config.small_hill=All Hills
+twilightforest.config.small_hill.tooltip=Blocks generating as stalactites in all hills.
+twilightforest.config.stalactite_config_only=Only Use the Stalactite Config
+twilightforest.config.stalactite_config_only.tooltip=If true, default stalactites and stalactites defined by other mods will not be used.
+
 twilightforest.config.compat=Compatibility
 twilightforest.config.compat.tooltip=Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.
 

@@ -19,7 +19,9 @@ import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
 public class Baubles {
+
     public static boolean consumeInventoryItem(EntityPlayer player, Predicate<ItemStack> matcher, int count) {
+
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
         boolean consumedSome = false;
 
@@ -27,9 +29,8 @@ public class Baubles {
         for (int i = 0; i < slots && count > 0; i++) {
             ItemStack stack = baubles.getStackInSlot(i);
             if (matcher.test(stack)) {
-                int consume = Math.min(count, stack.getCount());
-                stack.shrink(consume);
-                count -= consume;
+                ItemStack consumed = baubles.extractItem(i, count, false);
+                count -= consumed.getCount();
                 consumedSome = true;
             }
         }
@@ -37,44 +38,49 @@ public class Baubles {
         return consumedSome;
     }
 
-    public static void keepBaubles(EntityPlayer player, NonNullList<ItemStack> items) {
-        IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
+    public static NonNullList<ItemStack> keepBaubles(EntityPlayer player) {
 
-        if (baubles.getSlots() != items.size()) {
-            TwilightForestMod.LOGGER.warn("The list size doesn't equal amount of bauble slots, wtf did you do?");
-        } else {
-            for (int i = 0; i < baubles.getSlots() && i < items.size(); i++) {
-                items.set(i, baubles.getStackInSlot(i));
-                baubles.setStackInSlot(i, ItemStack.EMPTY);
-            }
+        IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
+        NonNullList<ItemStack> kept = NonNullList.withSize(baubles.getSlots(), ItemStack.EMPTY);
+
+        for (int i = 0; i < baubles.getSlots(); i++) {
+            kept.set(i, baubles.getStackInSlot(i).copy());
+            baubles.setStackInSlot(i, ItemStack.EMPTY);
         }
+
+        return kept;
     }
 
-    public static void respawnBaubles(EntityPlayer player, NonNullList<ItemStack> items) {
+    public static void returnBaubles(EntityPlayer player, NonNullList<ItemStack> items) {
+
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
 
-        if (items.size() == baubles.getSlots()) {
-            for (int i = 0; i < baubles.getSlots() && i < items.size(); i++) {
-                baubles.setStackInSlot(i, items.get(i));
-            }
-        } else {
+        if (items.size() != baubles.getSlots()) {
             TwilightForestMod.LOGGER.warn("The list size doesn't equal amount of bauble slots, wtf did you do?");
-            dropTableItems(player, items);
+            giveItems(player, items);
+            return;
         }
-    }
 
-    private static void dropTableItems(EntityPlayer player, @Nullable NonNullList<ItemStack> items) {
-        if (items != null) {
-            for (ItemStack itemStack : items) {
-                if (!itemStack.isEmpty()) {
-                    ItemHandlerHelper.giveItemToPlayer(player, itemStack);
+        NonNullList<ItemStack> displaced = NonNullList.create();
+
+        for (int i = 0; i < baubles.getSlots(); i++) {
+            ItemStack kept = items.get(i);
+            if (!kept.isEmpty()) {
+                ItemStack existing = baubles.getStackInSlot(i);
+                baubles.setStackInSlot(i, kept);
+                if (!existing.isEmpty()) {
+                    displaced.add(existing);
                 }
             }
         }
+
+        giveItems(player, displaced);
     }
 
-    public static int getSlotAmount(EntityPlayer player) {
-        return BaublesApi.getBaublesHandler(player).getSlots();
+    private static void giveItems(EntityPlayer player, NonNullList<ItemStack> items) {
+        for (ItemStack stack : items) {
+            ItemHandlerHelper.giveItemToPlayer(player, stack);
+        }
     }
 
     @SuppressWarnings("unchecked")

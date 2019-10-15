@@ -63,12 +63,10 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Deprecated
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
 		// why can't we just pass the side to this method?  This is annoying and failure-prone
-		RayTraceResult ray = EntityUtil.rayTrace(player, 6.0);
+		RayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
 		EnumFacing hitFace = ray != null ? ray.sideHit : null;
 		EnumFacing blockFace = state.getValue(BlockDirectional.FACING);
-
-		//System.out.printf("Determining relative hardness; facing = %d, meta = %d\n", facing, meta);
 
 		if (hitFace == blockFace) {
 			return player.getDigSpeed(Blocks.STONE.getDefaultState(), pos) / 1.5F / 100F;

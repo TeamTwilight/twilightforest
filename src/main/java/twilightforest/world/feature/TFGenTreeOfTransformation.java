@@ -1,5 +1,6 @@
 package twilightforest.world.feature;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -8,7 +9,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.enums.MagicWoodVariant;
 
 import java.util.Random;
-
 
 public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 
@@ -20,14 +20,13 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 		super(notify);
 
 		this.treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
-		this.branchState = treeState.withProperty(BlockTFMagicLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
+		this.branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS).withProperty(BlockLeaves.CHECK_DECAY, false);
 
 		this.minHeight = 11;
 		this.chanceAddFirstFive = Integer.MAX_VALUE;
 		this.chanceAddSecondFive = Integer.MAX_VALUE;
 	}
-
 
 	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {

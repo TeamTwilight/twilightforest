@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
@@ -22,6 +23,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -43,7 +45,6 @@ import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -51,8 +52,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EntityTFKnightPhantom extends EntityFlying implements IMob {
+
 	private static final DataParameter<Boolean> FLAG_CHARGING = EntityDataManager.createKey(EntityTFKnightPhantom.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, 0).setSaved(false);
+
 	private int number;
 	private int ticksProgress;
 	private Formation currentFormation;
@@ -173,7 +176,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 		super.onDeath(cause);
 
-		if (!world.isRemote && getNearbyKnights().size() <= 1) {
+		if (!world.isRemote && getNearbyKnights().isEmpty()) {
 
 			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this);
 
@@ -181,20 +184,17 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 			TFTreasure.stronghold_boss.generateChest(world, treasurePos, false);
 
 			// mark the stronghold as defeated
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-
-				int dx = treasurePos.getX();
-				int dy = treasurePos.getY();
-				int dz = treasurePos.getZ();
-
-				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-				if (nearbyFeature == TFFeature.KNIGHT_STRONGHOLD) {
-					generator.setStructureConquered(dx, dy, dz, true);
-				}
-			}
+			TFWorld.markStructureConquered(world, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
 		}
+	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if(this.canBlockDamageSource(source)){
+			playSound(SoundEvents.ITEM_SHIELD_BLOCK,1.0F,0.8F + this.world.rand.nextFloat() * 0.4F);
+		}
+
+		return super.attackEntityFrom(source, amount);
 	}
 
 	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
@@ -267,7 +267,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	public List<EntityTFKnightPhantom> getNearbyKnights() {
-		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 8.0D, 32.0D));
+		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 8.0D, 32.0D), EntitySelectors.IS_ALIVE);
 	}
 
 	private void updateMyNumber() {
@@ -359,33 +359,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	public int getMaxTicksForFormation() {
-		switch (currentFormation) {
-			default:
-			case HOVER:
-				return 90;
-			case LARGE_CLOCKWISE:
-				return 180;
-			case SMALL_CLOCKWISE:
-				return 90;
-			case LARGE_ANTICLOCKWISE:
-				return 180;
-			case SMALL_ANTICLOCKWISE:
-				return 90;
-			case CHARGE_PLUSX:
-				return 180;
-			case CHARGE_MINUSX:
-				return 180;
-			case CHARGE_PLUSZ:
-				return 180;
-			case CHARGE_MINUSZ:
-				return 180;
-			case ATTACK_PLAYER_START:
-				return 50;
-			case ATTACK_PLAYER_ATTACK:
-				return 50;
-			case WAITING_FOR_LEADER:
-				return 10;
-		}
+		return currentFormation.duration;
 	}
 
 	public boolean isSwordKnight() {
@@ -453,30 +427,35 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 	public enum Formation {
 
-		HOVER,
+		HOVER(90),
 
-		LARGE_CLOCKWISE,
+		LARGE_CLOCKWISE(180),
 
-		SMALL_CLOCKWISE,
+		SMALL_CLOCKWISE(90),
 
-		LARGE_ANTICLOCKWISE,
+		LARGE_ANTICLOCKWISE(180),
 
-		SMALL_ANTICLOCKWISE,
+		SMALL_ANTICLOCKWISE(90),
 
-		CHARGE_PLUSX,
+		CHARGE_PLUSX(180),
 
-		CHARGE_MINUSX,
+		CHARGE_MINUSX(180),
 
-		CHARGE_PLUSZ,
+		CHARGE_PLUSZ(180),
 
-		CHARGE_MINUSZ,
+		CHARGE_MINUSZ(180),
 
-		WAITING_FOR_LEADER,
+		WAITING_FOR_LEADER(10),
 
-		ATTACK_PLAYER_START,
+		ATTACK_PLAYER_START(50),
 
-		ATTACK_PLAYER_ATTACK
+		ATTACK_PLAYER_ATTACK(50);
 
+		final int duration;
+
+		Formation(int duration) {
+			this.duration = duration;
+		}
 	}
 
 	@Override

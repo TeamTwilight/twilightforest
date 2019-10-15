@@ -80,11 +80,12 @@ public class TFBiomeSnow extends TFBiomeBase {
 	public void enforceProgression(EntityPlayer player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.addPotionEffect(new PotionEffect(TFPotions.frosty, 100, 2));
-
-			// hint monster?
-			if (world.rand.nextInt(4) == 0) {
-				TFFeature.YETI_CAVE.trySpawnHintMonster(world, player);
-			}
+			trySpawnHintMonster(player, world);
 		}
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.YETI_CAVE;
 	}
 }

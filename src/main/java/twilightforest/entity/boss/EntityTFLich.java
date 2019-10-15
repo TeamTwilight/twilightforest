@@ -22,6 +22,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
@@ -36,7 +37,6 @@ import twilightforest.entity.EntityTFSwarmSpider;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
 import twilightforest.enums.BossVariant;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -596,21 +596,9 @@ public class EntityTFLich extends EntityMob {
 	@Override
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
-
 		// mark the tower as defeated
 		if (!world.isRemote && !this.isShadowClone()) {
-			int dx = MathHelper.floor(this.posX);
-			int dy = MathHelper.floor(this.posY);
-			int dz = MathHelper.floor(this.posZ);
-
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-				if (nearbyFeature == TFFeature.LICH_TOWER) {
-					generator.setStructureConquered(dx, dy, dz, true);
-				}
-			}
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.LICH_TOWER);
 		}
 	}
 

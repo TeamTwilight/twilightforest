@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
@@ -10,6 +11,7 @@ import twilightforest.entity.ai.EntityAICubeMoveToRedstoneSymbols;
 
 public class EntityTFRovingCube extends EntityMob {
 
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/roving_cube");
 	// data needed for cube AI
 
 	// last circle visited
@@ -54,5 +56,10 @@ public class EntityTFRovingCube extends EntityMob {
 				TwilightForestMod.proxy.spawnParticle(TFParticleType.ANNIHILATE, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 			}
 		}
+	}
+
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
 	}
 }

@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -27,6 +26,7 @@ import twilightforest.item.TFItems;
 import twilightforest.util.IMapColorSupplier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -174,14 +174,14 @@ public final class RegisterBlockEvent {
 	}
 
 	public static List<ModelRegisterCallback> getBlockModels() {
-		return ImmutableList.copyOf(BlockRegistryHelper.blockModels);
+		return Collections.unmodifiableList(BlockRegistryHelper.blockModels);
 	}
 
 	private static class BlockRegistryHelper {
 
-		private final IForgeRegistry<Block> registry;
+		static final List<ModelRegisterCallback> blockModels = new ArrayList<>();
 
-		private static List<ModelRegisterCallback> blockModels = new ArrayList<>();
+		private final IForgeRegistry<Block> registry;
 
 		BlockRegistryHelper(IForgeRegistry<Block> registry) {
 			this.registry = registry;
@@ -190,7 +190,6 @@ public final class RegisterBlockEvent {
 		<T extends Block> T register(String registryName, String translationKey, T block) {
 			block.setTranslationKey(TwilightForestMod.ID + "." + translationKey);
 			register(registryName, block);
-
 			return block;
 		}
 
@@ -199,11 +198,8 @@ public final class RegisterBlockEvent {
 			if (block instanceof ModelRegisterCallback) {
 				blockModels.add((ModelRegisterCallback) block);
 			}
-
 			block.setCreativeTab(TFItems.creativeTab);
-
 			registry.register(block);
-
 			return block;
 		}
 	}

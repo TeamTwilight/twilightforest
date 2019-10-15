@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
@@ -39,10 +40,9 @@ public class TFMaze {
 
 	public int type; // 1-3 = various sizes hollow hills
 
-	public IBlockState wallBlockState;
+	public StructureComponent.BlockSelector wallBlocks;
 
-	public IBlockState wallVar0State;
-	public float wallVarRarity;
+	public IBlockState wallBlockState;
 
 	public IBlockState headBlockState;
 
@@ -458,8 +458,9 @@ public class TFMaze {
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
 	private void putWallBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
-		if (wallVarRarity > 0 && rand.nextFloat() < this.wallVarRarity) {
-			component.setBlockState(world, wallVar0State, x, y, z, sbb);
+		if (wallBlocks != null) {
+			wallBlocks.selectBlocks(rand, x, y, z, true);
+			component.setBlockState(world, wallBlocks.getBlockState(), x, y, z, sbb);
 		} else {
 			component.setBlockState(world, wallBlockState, x, y, z, sbb);
 		}

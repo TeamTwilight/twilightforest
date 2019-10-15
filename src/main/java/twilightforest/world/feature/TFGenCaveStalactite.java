@@ -4,27 +4,25 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.IMCHandler;
+import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.TFWorld;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-
 
 public class TFGenCaveStalactite extends TFGenerator {
 
+	private static final List<StalactiteEntry> largeHillStalactites = new ArrayList<>();
+	private static final List<StalactiteEntry> mediumHillStalactites = new ArrayList<>();
+	private static final List<StalactiteEntry> smallHillStalactites = new ArrayList<>();
 
-	public static TFGenCaveStalactite diamond = new TFGenCaveStalactite(Blocks.DIAMOND_ORE, 0.5F, 4, 16);
-	public static TFGenCaveStalactite lapis = new TFGenCaveStalactite(Blocks.LAPIS_ORE, 0.8F, 8, 1);
-	public static TFGenCaveStalactite emerald = new TFGenCaveStalactite(Blocks.EMERALD_ORE, 0.5F, 3, 12);
-	public static TFGenCaveStalactite gold = new TFGenCaveStalactite(Blocks.GOLD_ORE, 0.6F, 6, 1);
-	public static TFGenCaveStalactite redstone = new TFGenCaveStalactite(Blocks.REDSTONE_ORE, 0.8F, 8, 1);
-	public static TFGenCaveStalactite iron = new TFGenCaveStalactite(Blocks.IRON_ORE, 0.7F, 8, 1);
-	public static TFGenCaveStalactite coal = new TFGenCaveStalactite(Blocks.COAL_ORE, 0.8F, 12, 1);
-	public static TFGenCaveStalactite glowstone = new TFGenCaveStalactite(Blocks.GLOWSTONE, 0.5F, 8, 1);
-
-
-	public IBlockState blockID;
+	public IBlockState blockState;
 	public boolean hang;
 	public float sizeFactor;
 	public int maxLength;
@@ -33,8 +31,12 @@ public class TFGenCaveStalactite extends TFGenerator {
 	/**
 	 * Initializes a stalactite builder.  Actually also makes stalagmites
 	 */
-	public TFGenCaveStalactite(Block blockType, float size, boolean down) {
-		this.blockID = blockType.getDefaultState();
+	public TFGenCaveStalactite(Block block, float size, boolean down) {
+		this(block.getDefaultState(), size, down);
+	}
+
+	public TFGenCaveStalactite(IBlockState blockState, float size, boolean down) {
+		this.blockState = blockState;
 		this.sizeFactor = size;
 		this.maxLength = -1;
 		this.minHeight = -1;
@@ -44,8 +46,8 @@ public class TFGenCaveStalactite extends TFGenerator {
 	/**
 	 * Initializes a stalactite builder
 	 */
-	public TFGenCaveStalactite(Block blockType, float size, int maxLength, int minHeight) {
-		this.blockID = blockType.getDefaultState();
+	public TFGenCaveStalactite(IBlockState blockState, float size, int maxLength, int minHeight) {
+		this.blockState = blockState;
 		this.sizeFactor = size;
 		this.maxLength = maxLength;
 		this.minHeight = minHeight;
@@ -63,33 +65,12 @@ public class TFGenCaveStalactite extends TFGenerator {
 	 */
 	public static TFGenCaveStalactite makeRandomOreStalactite(Random rand, int hillSize) {
 		if (hillSize >= 3 || (hillSize >= 2 && rand.nextInt(5) == 0)) {
-			int s3 = rand.nextInt(13);
-			if (s3 == 0 || s3 == 1) {
-				return diamond;
-			} else if (s3 == 2 || s3 == 3) {
-				return lapis;
-			} else if (s3 == 4) {
-				return emerald;
-			}
+			return WeightedRandom.getRandomItem(rand, largeHillStalactites).stalactite;
 		}
 		if (hillSize >= 2 || (hillSize >= 1 && rand.nextInt(5) == 0)) {
-			int s2 = rand.nextInt(6);
-			if (s2 == 0) {
-				return gold;
-			} else if (s2 == 1 || s2 == 2) {
-				return redstone;
-			}
+			return WeightedRandom.getRandomItem(rand, mediumHillStalactites).stalactite;
 		}
-
-		// fall through to size 1
-		int s1 = rand.nextInt(5);
-		if (s1 == 0 || s1 == 1) {
-			return iron;
-		} else if (s1 == 2 || s1 == 3) {
-			return coal;
-		} else {
-			return glowstone;
-		}
+		return WeightedRandom.getRandomItem(rand, smallHillStalactites).stalactite;
 	}
 
 	/**
@@ -186,7 +167,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 				}
 
 				for (int dy = 0; dy != (spikeLength * dir); dy += dir) {
-					setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz), blockID);
+					setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz), blockState);
 				}
 			}
 		}
@@ -194,4 +175,80 @@ public class TFGenCaveStalactite extends TFGenerator {
 		return true;
 	}
 
+	public static class StalactiteEntry extends WeightedRandom.Item {
+
+		final TFGenCaveStalactite stalactite;
+
+		StalactiteEntry(TFGenCaveStalactite stalactite, int itemWeight) {
+			super(itemWeight);
+			this.stalactite = stalactite;
+		}
+
+		public StalactiteEntry(IBlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
+			this(new TFGenCaveStalactite(blockState, size, maxLength, minHeight), itemWeight);
+		}
+	}
+
+	public static void addStalactite(int hillSize, IBlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
+		if (itemWeight > 0) {
+			addStalactite(hillSize, new StalactiteEntry(blockState, size, maxLength, minHeight, itemWeight));
+		}
+	}
+
+	private static void addStalactite(int hillSize, StalactiteEntry entry) {
+		if (hillSize <= 1)
+			smallHillStalactites.add(entry);
+		if (hillSize <= 2)
+			mediumHillStalactites.add(entry);
+		largeHillStalactites.add(entry);
+	}
+
+	/*
+	 * Current default weights are as follows:
+	 *
+	 * Large (total 195 = 13*15):
+	 * 2/13 diamond
+	 * 2/13 lapis
+	 * 1/13 emerald
+	 * 8/13 [medium pool]
+	 *
+	 * Medium (total 120 = 6*20):
+	 * 1/6 gold
+	 * 1/6 redstone
+	 * 3/6 [small pool]
+	 *
+	 * Small (total 60 = 5*12):
+	 * 2/5 iron
+	 * 2/5 coal
+	 * 1/5 glowstone
+	 */
+	private static void addDefaultStalactites() {
+		addStalactite(3, Blocks.DIAMOND_ORE.getDefaultState(), 0.5F, 4, 16, 30);
+		addStalactite(3, Blocks.LAPIS_ORE.getDefaultState(), 0.8F, 8, 1, 30);
+		addStalactite(3, Blocks.EMERALD_ORE.getDefaultState(), 0.5F, 3, 12, 15);
+
+		addStalactite(2, Blocks.GOLD_ORE.getDefaultState(), 0.6F, 6, 1, 20);
+		addStalactite(2, Blocks.REDSTONE_ORE.getDefaultState(), 0.8F, 8, 1, 40);
+
+		addStalactite(1, Blocks.IRON_ORE.getDefaultState(), 0.7F, 8, 1, 24);
+		addStalactite(1, Blocks.COAL_ORE.getDefaultState(), 0.8F, 12, 1, 24);
+		addStalactite(1, Blocks.GLOWSTONE.getDefaultState(), 0.5F, 8, 1, 12);
+	}
+
+	public static void loadStalactites() {
+		smallHillStalactites.clear();
+		mediumHillStalactites.clear();
+		largeHillStalactites.clear();
+
+		TFConfig.dimension.hollowHillStalactites.load();
+		if (TFConfig.dimension.hollowHillStalactites.useConfigOnly) {
+			if (smallHillStalactites.isEmpty()) {
+				TwilightForestMod.LOGGER.info("Not all hollow hills are populated with the config, adding fallback");
+				addStalactite(1, Blocks.STONE.getDefaultState(), 0.7F, 8, 1, 1);
+			}
+			return;
+		}
+		addDefaultStalactites();
+		IMCHandler.getStalactites().forEach(TFGenCaveStalactite::addStalactite);
+	}
 }

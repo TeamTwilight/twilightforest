@@ -1,4 +1,8 @@
 {
+  "conditions": [{
+    "type": "forge:mod_loaded",
+    "modid": "thaumcraft"
+  }],
   "parent": "twilightforest:alt/root",
   "criteria": {
     "thaumonomicon"  : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "thaumcraft:thaumonomicon" }]}},

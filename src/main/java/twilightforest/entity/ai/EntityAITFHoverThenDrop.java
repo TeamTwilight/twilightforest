@@ -1,13 +1,11 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
-public class EntityAITFHoverThenDrop extends EntityAITFHoverBase {
+public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQueen> {
 
 	private int hoverTimer;
 	private int dropTimer;
@@ -19,8 +17,8 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase {
 
 	private double dropY;
 
-	public EntityAITFHoverThenDrop(EntityTFSnowQueen snowQueen, Class<EntityPlayer> targetClass, int hoverTime, int dropTime) {
-		super(snowQueen, targetClass, 6F, 0F);
+	public EntityAITFHoverThenDrop(EntityTFSnowQueen snowQueen, int hoverTime, int dropTime) {
+		super(snowQueen, 6F, 0F);
 
 		this.setMutexBits(3);
 		this.maxHoverTime = hoverTime;
@@ -37,8 +35,6 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase {
 		if (target == null) {
 			return false;
 		} else if (!target.isEntityAlive()) {
-			return false;
-		} else if (this.classTarget != null && !this.classTarget.isAssignableFrom(target.getClass())) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.DROP) {
 			return false;

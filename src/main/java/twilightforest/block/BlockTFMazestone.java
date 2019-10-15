@@ -69,14 +69,9 @@ public class BlockTFMazestone extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, 0));
-		list.add(new ItemStack(this, 1, 1));
-		list.add(new ItemStack(this, 1, 2));
-		list.add(new ItemStack(this, 1, 3));
-		list.add(new ItemStack(this, 1, 4));
-		list.add(new ItemStack(this, 1, 5));
-		list.add(new ItemStack(this, 1, 6));
-		list.add(new ItemStack(this, 1, 7));
+		for (MazestoneVariant variant : MazestoneVariant.values()) {
+			list.add(new ItemStack(this, 1, variant.ordinal()));
+		}
 	}
 
 	@Override

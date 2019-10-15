@@ -10,7 +10,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +25,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -35,6 +36,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -47,8 +49,9 @@ import twilightforest.entity.ai.EntityAITFYetiTired;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
+
+import javax.annotation.Nullable;
 
 public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IHostileMount {
 
@@ -74,11 +77,25 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.0D, 40, 40, 40.0F){
 			@Override
 			public boolean shouldExecute() {
-				return getRNG().nextInt(50) > 0 && super.shouldExecute(); // Give us a chance to move to the next AI
+				return getRNG().nextInt(50) > 0 && getAttackTarget() != null && getDistanceSq(getAttackTarget()) >= 16D && super.shouldExecute(); // Give us a chance to move to the next AI
 			}
 		});
-		this.tasks.addTask(4, new EntityAITFThrowRider(this, 1.0D, false));
-		this.tasks.addTask(5, new EntityAIWander(this, 2.0F));
+		this.tasks.addTask(4, new EntityAITFThrowRider(this, 1.0D, false) {
+			@Override
+			protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_) {
+				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
+				if (!getPassengers().isEmpty())
+					playSound(TFSounds.ALPHAYETI_GRAB, 4F, 0.75F + getRNG().nextFloat() * 0.25F);
+			}
+
+			@Override
+			public void resetTask() {
+				if (!getPassengers().isEmpty())
+					playSound(TFSounds.ALPHAYETI_THROW, 4F, 0.75F + getRNG().nextFloat() * 0.25F);
+				super.resetTask();
+			}
+		});
+		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 2.0D));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
@@ -153,6 +170,13 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 	}
 
 	@Override
+	public void setAttackTarget(@Nullable EntityLivingBase entity) {
+		if (entity != null && entity != getAttackTarget())
+			playSound(TFSounds.ALPHAYETI_ALERT, 4F, 0.5F + getRNG().nextFloat() * 0.5F);
+		super.setAttackTarget(entity);
+	}
+
+	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
 		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
@@ -161,6 +185,32 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 
 		this.canRampage = true;
 		return super.attackEntityFrom(source, amount);
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.ALPHAYETI_GROWL;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.ALPHAYETI_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.ALPHAYETI_DIE;
+	}
+
+	@Override
+	protected float getSoundPitch() {
+		return 0.5F + getRNG().nextFloat() * 0.5F;
+	}
+
+	@Override
+	protected float getSoundVolume() {
+		return 4F;
 	}
 
 	@Override
@@ -339,21 +389,9 @@ public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IH
 	@Override
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
-
 		// mark the lair as defeated
 		if (!world.isRemote) {
-			int dx = MathHelper.floor(this.posX);
-			int dy = MathHelper.floor(this.posY);
-			int dz = MathHelper.floor(this.posZ);
-
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-				if (nearbyFeature == TFFeature.YETI_CAVE) {
-					generator.setStructureConquered(dx, dy, dz, true);
-				}
-			}
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.YETI_CAVE);
 		}
 	}
 

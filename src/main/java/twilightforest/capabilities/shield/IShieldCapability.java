@@ -16,7 +16,7 @@ public interface IShieldCapability {
 
 	int temporaryShieldsLeft();
 
-	int permamentShieldsLeft();
+	int permanentShieldsLeft();
 
 	void breakShield();
 

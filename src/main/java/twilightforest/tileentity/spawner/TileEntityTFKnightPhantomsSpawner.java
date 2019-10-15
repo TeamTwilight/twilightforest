@@ -3,8 +3,12 @@ package twilightforest.tileentity.spawner;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumDifficulty;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
+import twilightforest.item.TFItems;
 
 public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 
@@ -37,6 +41,10 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 
 			myCreature.setLocationAndAngles(rx, ry, rz, world.rand.nextFloat() * 360F, 0.0F);
 			myCreature.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(myCreature)), null);
+
+			if(i == 5 && world.getDifficulty() == EnumDifficulty.HARD){
+				myCreature.setItemStackToSlot(EntityEquipmentSlot.OFFHAND,new ItemStack(TFItems.knightmetal_shield));
+			}
 
 			// set creature's home to this
 			initializeCreature(myCreature);

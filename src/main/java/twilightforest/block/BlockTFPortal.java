@@ -32,6 +32,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -45,7 +46,9 @@ public class BlockTFPortal extends BlockBreakable {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F);
 	private static final AxisAlignedBB AABB_ITEM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.4F, 1.0F);
-	private static final int PORTAL_SIZE_LIMIT = 64;
+
+	private static final int MIN_PORTAL_SIZE =  4;
+	private static final int MAX_PORTAL_SIZE = 64;
 
 	public BlockTFPortal() {
 		super(Material.PORTAL, false);
@@ -86,7 +89,7 @@ public class BlockTFPortal extends BlockBreakable {
 	@Override
 	@Deprecated
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBB, List<AxisAlignedBB> blockBBs, @Nullable Entity entity, boolean isActualState) {
-		addCollisionBoxToList(pos, entityBB, blockBBs, entity != null && entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
+		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
 	}
 
 	@Override
@@ -105,17 +108,17 @@ public class BlockTFPortal extends BlockBreakable {
 
 		IBlockState state = world.getBlockState(pos);
 
-		if (state == Blocks.WATER.getDefaultState() || (state.getBlock() == this && state.getValue(DISALLOW_RETURN))) {
-			HashMap<BlockPos, Boolean> blocksChecked = new HashMap<>();
+		if (canFormPortal(state) && world.getBlockState(pos.down()).isFullCube()) {
+			Map<BlockPos, Boolean> blocksChecked = new HashMap<>();
 			blocksChecked.put(pos, true);
 
 			MutableInt size = new MutableInt(0);
 
-			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.intValue() > 3) {
+			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
 				if (TFConfig.checkPortalDestination) {
 					TFTeleporter teleporter = TFTeleporter.getTeleporterForDim(catalyst.getServer(), getDestination(catalyst));
-					boolean checkProgression = catalyst.world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
+					boolean checkProgression = TFWorld.isProgressionEnforced(catalyst.world);
 					if (!teleporter.isSafeAround(pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
@@ -141,6 +144,10 @@ public class BlockTFPortal extends BlockBreakable {
 		return false;
 	}
 
+	public boolean canFormPortal(IBlockState state) {
+		return state == Blocks.WATER.getDefaultState() || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
+	}
+
 	private static void causeLightning(World world, BlockPos pos, boolean fake) {
 		EntityLightningBolt bolt = new EntityLightningBolt(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, fake);
 		world.addWeatherEffect(bolt);
@@ -157,24 +164,27 @@ public class BlockTFPortal extends BlockBreakable {
 		}
 	}
 
-	private static boolean recursivelyValidatePortal(World world, BlockPos pos, HashMap<BlockPos, Boolean> blocksChecked, MutableInt waterLimit, IBlockState requiredBlockFor) {
+	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, IBlockState requiredState) {
+
+		if (portalSize.incrementAndGet() > MAX_PORTAL_SIZE) return false;
+
 		boolean isPoolProbablyEnclosed = true;
 
-		waterLimit.increment();
-		if (waterLimit.intValue() > PORTAL_SIZE_LIMIT) return false;
-
-		for (int i = 0; i < EnumFacing.HORIZONTALS.length && waterLimit.intValue() <= PORTAL_SIZE_LIMIT; i++) {
+		for (int i = 0; i < EnumFacing.HORIZONTALS.length && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
 			BlockPos positionCheck = pos.offset(EnumFacing.HORIZONTALS[i]);
 
 			if (!blocksChecked.containsKey(positionCheck)) {
 				IBlockState state = world.getBlockState(positionCheck);
 
-				if (state == requiredBlockFor && world.getBlockState(positionCheck.down()).isFullCube()) {
+				if (state == requiredState && world.getBlockState(positionCheck.down()).isFullCube()) {
 					blocksChecked.put(positionCheck, true);
+					if (isPoolProbablyEnclosed) {
+						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
+					}
 
-					isPoolProbablyEnclosed = isPoolProbablyEnclosed && recursivelyValidatePortal(world, positionCheck, blocksChecked, waterLimit, requiredBlockFor);
-				} else if ((isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up()))) || state.getBlock() == TFBlocks.uberous_soil) {
+				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up())) || state.getBlock() == TFBlocks.uberous_soil) {
 					blocksChecked.put(positionCheck, false);
+
 				} else return false;
 			}
 		}
@@ -184,7 +194,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 	private static boolean isNatureBlock(IBlockState state) {
 		Material mat = state.getMaterial();
-		return (mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES);
+		return mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES;
 	}
 
 	private static boolean isGrassOrDirt(IBlockState state) {

@@ -1,6 +1,7 @@
 package twilightforest.biomes;
 
 import net.minecraft.block.BlockDoublePlant;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,7 +32,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 		if (random.nextInt(5) == 0) {
 			return new WorldGenShrub(
 					TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.OAK),
-					TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.OAK)
+					TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.OAK).withProperty(BlockLeaves.CHECK_DECAY, false)
 			);
 		} else if (random.nextInt(10) == 0) {
 			return new WorldGenBigTree(false);

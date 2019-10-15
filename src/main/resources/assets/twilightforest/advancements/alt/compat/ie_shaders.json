@@ -1,4 +1,8 @@
 {
+  "conditions": [{
+    "type": "forge:mod_loaded",
+    "modid": "immersiveengineering"
+  }],
   "parent": "twilightforest:alt/root",
   "criteria": {
     "ie_shader"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader"     }]}},

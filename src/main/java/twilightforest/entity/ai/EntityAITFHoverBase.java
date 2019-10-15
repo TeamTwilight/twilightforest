@@ -1,28 +1,25 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.boss.EntityTFSnowQueen;
 
-public abstract class EntityAITFHoverBase extends EntityAIBase {
+public abstract class EntityAITFHoverBase<T extends EntityLiving> extends EntityAIBase {
 
-	protected final Class<? extends EntityLivingBase> classTarget;
-	protected final EntityTFSnowQueen attacker;
+	protected final T attacker;
 
-	private final float hoverHeight;
-	private final float hoverRadius;
+	protected final float hoverHeight;
+	protected final float hoverRadius;
 
 	protected double hoverPosX;
 	protected double hoverPosY;
 	protected double hoverPosZ;
 
-	protected EntityAITFHoverBase(EntityTFSnowQueen snowQueen, Class<? extends EntityLivingBase> targetClass, float hoverHeight, float hoverRadius) {
-		this.classTarget = targetClass;
+	protected EntityAITFHoverBase(T snowQueen, float hoverHeight, float hoverRadius) {
 		this.attacker = snowQueen;
 		this.hoverHeight = hoverHeight;
 		this.hoverRadius = hoverRadius;
@@ -40,7 +37,7 @@ public abstract class EntityAITFHoverBase extends EntityAIBase {
 	/**
 	 * Make a new spot to hover at!
 	 */
-	protected void makeNewHoverSpot(EntityLivingBase target){
+	protected void makeNewHoverSpot(EntityLivingBase target) {
 		double hx = 0, hy = 0, hz = 0;
 
 		boolean found = false;

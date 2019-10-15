@@ -193,6 +193,8 @@ public class TFItems {
 	public static final Item knightmetal_leggings;
 	@GameRegistry.ObjectHolder("knightmetal_boots")
 	public static final Item knightmetal_boots;
+	@GameRegistry.ObjectHolder("knightmetal_shield")
+	public static final Item knightmetal_shield;
 	@GameRegistry.ObjectHolder("knightmetal_sword")
 	public static final Item knightmetal_sword;
 	@GameRegistry.ObjectHolder("knightmetal_pickaxe")
@@ -364,6 +366,7 @@ public class TFItems {
 		knightmetal_chestplate = null;
 		knightmetal_leggings = null;
 		knightmetal_boots = null;
+		knightmetal_shield = null;
 		knightmetal_sword = null;
 		knightmetal_pickaxe = null;
 		knightmetal_axe = null;

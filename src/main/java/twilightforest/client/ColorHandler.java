@@ -1,4 +1,4 @@
-package twilightforest.block;
+package twilightforest.client;
 
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.*;
 import twilightforest.compat.TFCompat;
 import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.enums.Leaves3Variant;

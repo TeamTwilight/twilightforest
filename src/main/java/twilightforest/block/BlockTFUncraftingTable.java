@@ -5,7 +5,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.stats.StatList;
@@ -32,8 +31,7 @@ public class BlockTFUncraftingTable extends Block implements ModelRegisterCallba
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (world.isRemote)
-			return true;
+		if (world.isRemote) return true;
 
 		player.openGui(TwilightForestMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
 		player.addStat(StatList.CRAFTING_TABLE_INTERACTION);
@@ -43,15 +41,8 @@ public class BlockTFUncraftingTable extends Block implements ModelRegisterCallba
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		final ModelResourceLocation mrl = Loader.isModLoaded("ctm") ? new ModelResourceLocation(this.getRegistryName(), "ctm") : new ModelResourceLocation(this.getRegistryName(), "normal");
-
-		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return mrl;
-			}
-		});
-
+		ModelResourceLocation mrl = new ModelResourceLocation(this.getRegistryName(), Loader.isModLoaded("ctm") ? "ctm" : "normal");
+		ModelLoader.setCustomStateMapper(this, new SingleStateMapper(mrl));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, mrl);
 	}
 }

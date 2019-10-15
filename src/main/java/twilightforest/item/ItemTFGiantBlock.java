@@ -24,6 +24,7 @@ public class ItemTFGiantBlock extends ItemBlock {
 	// [VanillaCopy] super, but check every block in the box for permissions
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
 		IBlockState iblockstate = worldIn.getBlockState(pos);
 		Block block = iblockstate.getBlock();
 
@@ -33,19 +34,17 @@ public class ItemTFGiantBlock extends ItemBlock {
 
 		ItemStack itemstack = player.getHeldItem(hand);
 
-		if (itemstack.isEmpty())
+		if (itemstack.isEmpty()) {
 			return EnumActionResult.FAIL;
+		}
 
-		pos = BlockTFGiantBlock.roundCoords(pos);
-		for (int dx = 0; dx < 4; dx++) {
-			for (int dy = 0; dy < 4; dy++) {
-				for (int dz = 0; dz < 4; dz++) {
-					BlockPos iterPos = pos.add(dx, dy, dz);
-					if (!player.canPlayerEdit(iterPos, facing, itemstack) || !worldIn.mayPlace(this.block, iterPos, false, facing, null))
-						return EnumActionResult.FAIL;
-				}
+		for (BlockPos iterPos : BlockTFGiantBlock.getVolume(pos)) {
+			if (!player.canPlayerEdit(iterPos, facing, itemstack) || !worldIn.mayPlace(this.block, iterPos, false, facing, null)) {
+				return EnumActionResult.FAIL;
 			}
 		}
+
+		pos = BlockTFGiantBlock.roundCoords(pos);
 
 		int i = this.getMetadata(itemstack.getMetadata());
 		IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);

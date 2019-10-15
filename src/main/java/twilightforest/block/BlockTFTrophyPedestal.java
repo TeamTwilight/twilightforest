@@ -29,6 +29,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.client.ModelRegisterCallbackCTM;
 import twilightforest.item.TFItems;
+import twilightforest.world.TFWorld;
 
 @Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
 public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbackCTM, IInfusionStabiliser {
@@ -96,7 +97,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 		if (world.isRemote || !state.getValue(LATENT) || !isTrophyOnTop(world, pos)) return;
 
-		if (world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
+		if (TFWorld.isProgressionEnforced(world)) {
 			if (areNearbyPlayersEligible(world, pos)) {
 				doPedestalEffect(world, pos, state);
 			}

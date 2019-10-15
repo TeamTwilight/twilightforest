@@ -8,7 +8,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -27,8 +26,8 @@ public class EntitySeekerArrow extends EntityTFArrow {
 		super(world);
 	}
 
-	public EntitySeekerArrow(World world, EntityPlayer player) {
-		super(world, player);
+	public EntitySeekerArrow(World world, EntityLivingBase shooter) {
+		super(world, shooter);
 	}
 
 	@Override
@@ -45,8 +44,8 @@ public class EntitySeekerArrow extends EntityTFArrow {
 			}
 
 			if (world.isRemote && !inGround) {
-				for (int k = 0; k < 4; ++k) {
-					this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.motionX * (double) k / 4.0D, this.posY + this.motionY * (double) k / 4.0D, this.posZ + this.motionZ * (double) k / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+				for (int i = 0; i < 4; ++i) {
+					this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.motionX * (double) i / 4.0D, this.posY + this.motionY * (double) i / 4.0D, this.posZ + this.motionZ * (double) i / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
 				}
 			}
 
@@ -59,7 +58,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 				// vector lengths
 				double courseLen = courseVec.length();
 				double targetLen = targetVec.length();
-				double totalLen = MathHelper.sqrt(courseLen*courseLen + targetLen*targetLen);
+				double totalLen = Math.sqrt(courseLen*courseLen + targetLen*targetLen);
 
 				double dotProduct = courseVec.dotProduct(targetVec) / (courseLen * targetLen); // cosine similarity
 
@@ -86,11 +85,14 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	}
 
 	private void updateTarget() {
-		if (getTarget() != null && getTarget().isDead) {
-			setTarget(null);
+
+		Entity target = getTarget();
+
+		if (target != null && target.isDead) {
+			setTarget(target = null);
 		}
 
-		if (getTarget() == null) {
+		if (target == null) {
 			AxisAlignedBB positionBB = new AxisAlignedBB(posX, posY, posZ, posX, posY, posZ);
 			AxisAlignedBB targetBB = positionBB;
 
@@ -104,19 +106,25 @@ public class EntitySeekerArrow extends EntityTFArrow {
 			targetBB = targetBB.grow(0, seekDistance * 0.5, 0);
 
 			double closestDot = -1.0;
+			Entity closestTarget = null;
 
 			for (EntityLivingBase living : this.world.getEntitiesWithinAABB(EntityLivingBase.class, targetBB)) {
-				if (!(living instanceof EntityPlayer)) {
-					courseVec = getMotionVec().normalize();
-					Vec3d targetVec = getVectorToTarget(living).normalize();
 
-					double dot = courseVec.dotProduct(targetVec);
+				if (living instanceof EntityPlayer) continue;
 
-					if (dot > Math.max(closestDot, seekThreshold)) {
-						setTarget(living);
-						closestDot = dot;
-					}
+				Vec3d motionVec = getMotionVec().normalize();
+				Vec3d targetVec = getVectorToTarget(living).normalize();
+
+				double dot = motionVec.dotProduct(targetVec);
+
+				if (dot > Math.max(closestDot, seekThreshold)) {
+					closestDot = dot;
+					closestTarget = living;
 				}
+			}
+
+			if (closestTarget != null) {
+				setTarget(closestTarget);
 			}
 		}
 	}
@@ -139,6 +147,6 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	}
 
 	private boolean isThisArrowFlying() {
-		return MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ) > 1.0;
+		return !inGround && motionX * motionX + motionY * motionY + motionZ * motionZ > 1.0;
 	}
 }

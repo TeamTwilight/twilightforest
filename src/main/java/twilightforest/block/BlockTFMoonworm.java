@@ -24,20 +24,13 @@ import java.util.Random;
 
 public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCallback {
 
+	protected BlockTFMoonworm() {
+		this.setLightLevel(0.9375F);
+	}
+
 	@Override
 	public float getWidth() {
 		return 0.25F;
-	}
-
-	@Override
-	public int tickRate(World world) {
-		return 50;
-	}
-
-	@Override
-	@Deprecated
-	public int getLightValue(IBlockState state) {
-		return 14;
 	}
 
 	@Override
@@ -46,23 +39,9 @@ public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCall
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-		super.onBlockAdded(world, pos, state);
-		world.scheduleUpdate(pos, this, tickRate(world));
-	}
-
-	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		if (world.getLight(pos) < 12) {
-			// do another update to check that we got it right
-			world.scheduleUpdate(pos, this, tickRate(world));
-		}
-	}
-
-	@Override
 	protected boolean checkAndDrop(World world, BlockPos pos, IBlockState state) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		if (!canPlaceAt(world, pos.offset(facing.getOpposite()))) {
+		if (!canPlaceAt(world, pos.offset(facing.getOpposite()), facing)) {
 			world.destroyBlock(pos, false);
 			return false;
 		}

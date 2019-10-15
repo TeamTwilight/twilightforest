@@ -663,7 +663,7 @@ public class HydraHeadContainer {
 					mortar.setToBlasting();
 				}
 
-				headEntity.world.playEvent(1008, new BlockPos(headEntity), 0);
+				headEntity.world.playEvent(1016, new BlockPos(headEntity), 0);
 
 				headEntity.world.spawnEntity(mortar);
 			}

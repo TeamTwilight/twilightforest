@@ -2,18 +2,16 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
 import java.util.List;
 
-public class EntityAITFHoverBeam extends EntityAITFHoverBase {
+public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> {
 
 	private int hoverTimer;
 	private int beamTimer;
@@ -26,8 +24,8 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase {
 	private double beamY;
 	private boolean isInPosition;
 
-	public EntityAITFHoverBeam(EntityTFSnowQueen snowQueen, Class<EntityPlayer> targetClass, int hoverTime, int dropTime) {
-		super(snowQueen, targetClass, 3F, 4F);
+	public EntityAITFHoverBeam(EntityTFSnowQueen snowQueen, int hoverTime, int dropTime) {
+		super(snowQueen, 3F, 4F);
 
 		this.setMutexBits(3);
 		this.maxHoverTime = hoverTime;
@@ -45,8 +43,6 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase {
 		if (target == null) {
 			return false;
 		} else if (!target.isEntityAlive()) {
-			return false;
-		} else if (this.classTarget != null && !this.classTarget.isAssignableFrom(target.getClass())) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.BEAM) {
 			return false;

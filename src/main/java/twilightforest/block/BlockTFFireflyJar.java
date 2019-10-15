@@ -60,12 +60,6 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback, I
 	}
 
 	@Override
-	@Deprecated
-	public int getLightValue(IBlockState state) {
-		return 15;
-	}
-
-	@Override
 	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}

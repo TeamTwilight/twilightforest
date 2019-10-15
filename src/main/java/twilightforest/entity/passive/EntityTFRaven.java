@@ -4,10 +4,9 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -30,11 +29,10 @@ public class EntityTFRaven extends EntityTFTinyBird {
 
 	@Override
 	protected void initEntityAI() {
-		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
 		this.tasks.addTask(2, new EntityAITFTempt(this, 0.85F, true, SEEDS));
-		this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
+		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0F));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
 	}

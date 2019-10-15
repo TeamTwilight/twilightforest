@@ -1,6 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
+import twilightforest.TFSounds;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
 public class EntityAITFYetiTired extends EntityAIBase {
@@ -43,7 +44,8 @@ public class EntityAITFYetiTired extends EntityAIBase {
 
 	@Override
 	public void updateTask() {
-		this.tiredTimer++;
+		if(++this.tiredTimer % 10 == 0)
+			this.yeti.playSound(TFSounds.ALPHAYETI_PANT, 4F, 0.5F + yeti.getRNG().nextFloat() * 0.5F);
 	}
 
 }

@@ -80,7 +80,8 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 					ghast.motionZ = (ghast.posZ - this.pos.getZ() - 0.5) * -0.1;
 
 					if (rand.nextInt(10) == 0) {
-						ghast.attackEntityFrom(DamageSource.GENERIC, 3);
+						ghast.attackEntityFrom(DamageSource.GENERIC, 7);
+						((EntityTFUrGhast) ghast).resetDamageUntilNextPhase();
 					}
 
 				} else {

@@ -11,7 +11,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -47,7 +46,6 @@ import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import java.util.List;
@@ -88,11 +86,11 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAITFHoverSummon(this, EntityPlayer.class, 1.0D));
-		this.tasks.addTask(2, new EntityAITFHoverThenDrop(this, EntityPlayer.class, 80, 20));
-		this.tasks.addTask(3, new EntityAITFHoverBeam(this, EntityPlayer.class, 80, 100));
+		this.tasks.addTask(1, new EntityAITFHoverSummon(this, 1.0D));
+		this.tasks.addTask(2, new EntityAITFHoverThenDrop(this, 80, 20));
+		this.tasks.addTask(3, new EntityAITFHoverBeam(this, 80, 100));
 		this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
-		this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
@@ -262,18 +260,7 @@ public class EntityTFSnowQueen extends EntityMob implements IEntityMultiPart, IB
 		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote) {
-			int dx = MathHelper.floor(this.posX);
-			int dy = MathHelper.floor(this.posY);
-			int dz = MathHelper.floor(this.posZ);
-
-			if (TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-				ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-				TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-				if (nearbyFeature == TFFeature.ICE_TOWER) {
-					generator.setStructureConquered(dx, dy, dz, true);
-				}
-			}
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.ICE_TOWER);
 		}
 	}
 

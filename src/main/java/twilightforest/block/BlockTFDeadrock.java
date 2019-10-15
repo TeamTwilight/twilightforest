@@ -49,8 +49,8 @@ public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		for (int i = 0; i < VARIANT.getAllowedValues().size(); i++) {
-			list.add(new ItemStack(this, 1, i));
+		for (DeadrockVariant variant : DeadrockVariant.values()) {
+			list.add(new ItemStack(this, 1, variant.ordinal()));
 		}
 	}
 

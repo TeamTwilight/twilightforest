@@ -34,7 +34,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -717,19 +716,9 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	@Override
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
-
 		// mark the lair as defeated
-		if (!world.isRemote && TFWorld.getChunkGenerator(world) instanceof ChunkGeneratorTFBase) {
-			int dx = MathHelper.floor(this.posX);
-			int dy = MathHelper.floor(this.posY);
-			int dz = MathHelper.floor(this.posZ);
-
-			ChunkGeneratorTFBase generator = (ChunkGeneratorTFBase) TFWorld.getChunkGenerator(world);
-			TFFeature nearbyFeature = TFFeature.getFeatureAt(dx, dz, world);
-
-			if (nearbyFeature == TFFeature.HYDRA_LAIR) {
-				generator.setStructureConquered(dx, dy, dz, true);
-			}
+		if (!world.isRemote) {
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.HYDRA_LAIR);
 		}
 	}
 

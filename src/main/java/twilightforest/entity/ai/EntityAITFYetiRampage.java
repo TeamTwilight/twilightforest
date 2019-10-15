@@ -1,6 +1,10 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.math.Vec3d;
+import twilightforest.TFSounds;
+import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
 public class EntityAITFYetiRampage extends EntityAIBase {
@@ -38,6 +42,7 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 	public void startExecuting() {
 		this.currentDuration = this.tantrumDuration;
 		this.yeti.setRampaging(true);
+		this.yeti.playSound(TFSounds.ALPHAYETI_ROAR, 4F, 0.5F + yeti.getRNG().nextFloat() * 0.5F);
 	}
 
 
@@ -89,6 +94,13 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 			this.yeti.makeNearbyBlockFall();
 		}
 
+		if (currentDuration % 10 == 0) {
+			EntityTFIceBomb ice = new EntityTFIceBomb(yeti.world, yeti);
+			Vec3d vec = new Vec3d(0.5F + yeti.getRNG().nextFloat() * 0.5F, 0.5F + yeti.getRNG().nextFloat() * 0.3F, 0).rotateYaw(yeti.getRNG().nextFloat() * 360F);
+			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRNG().nextFloat() * 0.3F, 0);
+			yeti.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (yeti.getRNG().nextFloat() * 0.4F + 0.8F));
+			yeti.world.spawnEntity(ice);
+		}
 	}
 
 

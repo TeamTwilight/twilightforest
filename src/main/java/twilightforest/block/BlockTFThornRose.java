@@ -76,17 +76,15 @@ public class BlockTFThornRose extends Block implements ModelRegisterCallback {
 	}
 
 	private boolean canBlockStay(World world, BlockPos pos) {
-		boolean supported = false;
-
 		for (EnumFacing dir : EnumFacing.VALUES) {
 			BlockPos pos_ = pos.offset(dir);
 			IBlockState state = world.getBlockState(pos_);
 
 			if (state.getBlock().canSustainLeaves(state, world, pos_)) {
-				supported = true;
+				return true;
 			}
 		}
-		return supported;
+		return false;
 	}
 
 	@SideOnly(Side.CLIENT)

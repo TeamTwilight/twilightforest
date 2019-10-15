@@ -1,5 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -293,9 +294,14 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+
+		IBlockState bedrock = Blocks.BEDROCK.getDefaultState();
+		IBlockState stone = Blocks.STONE.getDefaultState();
+		IBlockState mazestone = TFBlocks.maze_stone.getDefaultState();
+
 		// level 2 maze surrounded by bedrock
 		if (level == 2) {
-			fillWithBlocks(world, sbb, 0, -1, 0, getDiameter() + 2, 6, getDiameter() + 2, Blocks.BEDROCK.getDefaultState(), AIR, false);
+			fillWithBlocks(world, sbb, 0, -1, 0, getDiameter() + 2, 6, getDiameter() + 2, bedrock, AIR, false);
 		}
 
 		// clear the area
@@ -303,16 +309,15 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 //		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, Blocks.STONE, false);
 //		fillWithBlocks(world, sbb, 0, 5, 0, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, Blocks.STONE, true);
 		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.dimension.skylightForest;
-		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.PLAIN), Blocks.STONE.getDefaultState(), onlyReplaceCeiling);
-		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), Blocks.STONE.getDefaultState(), false);
+		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.PLAIN), stone, onlyReplaceCeiling);
+		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), stone, false);
 
 		//
-		maze.headBlockState = TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
-		maze.wallBlockState = TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
-		maze.rootBlockState = TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
-		maze.pillarBlockState = TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
-		maze.wallVar0State = TFBlocks.maze_stone.getDefaultState().withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CRACKED);
-		maze.wallVarRarity = 0.2F;
+		maze.headBlockState = mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
+		maze.wallBlockState = mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
+		maze.rootBlockState = mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
+		maze.pillarBlockState = mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
+		maze.wallBlocks = new StructureTFMazeStones();
 		maze.torchRarity = 0.05F;
 		maze.tall = 2;
 		maze.head = 1;
@@ -322,7 +327,6 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		maze.copyToStructure(world, 1, 2, 1, this, sbb);
 
 		return true;
-
 	}
 
 	public int getMazeSize() {

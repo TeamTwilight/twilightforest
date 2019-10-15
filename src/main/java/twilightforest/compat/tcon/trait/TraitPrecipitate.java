@@ -30,7 +30,7 @@ public class TraitPrecipitate extends AbstractProjectileTrait {
     }
 
     private float getBonusPercentage(EntityLivingBase entity) {
-        if (entity == null) return 1.0f;
+        if (entity == null) return 0.1f;
         float maxHealth = entity.getMaxHealth();
         return (maxHealth - entity.getHealth()) / maxHealth;
     }

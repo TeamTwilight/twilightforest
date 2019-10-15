@@ -12,9 +12,13 @@ import twilightforest.TwilightForestMod;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class RegistryBiomeEvent {
+
+	public static final Type TWILIGHT = Type.getType("TWILIGHT");
+
 	@SuppressWarnings("OverlyCoupledMethod")
 	@SubscribeEvent
 	public static void onRegisterBiomes(Register<Biome> event) {
+
 		final BiomeRegistry biomes = new BiomeRegistry(event.getRegistry());
 
 		biomes.register(
@@ -26,7 +30,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(-1.8F)
 								.setHeightVariation(0.1F)
 				),
-				Type.OCEAN
+				TWILIGHT, Type.OCEAN
 		);
 
 		biomes.register(
@@ -34,7 +38,7 @@ public final class RegistryBiomeEvent {
 				new TFBiomeBase(
 						new BiomeProperties("Twilight Forest")
 				),
-				Type.FOREST
+				TWILIGHT, Type.FOREST
 		);
 
 		biomes.register(
@@ -47,7 +51,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.2F)
 								.setHeightVariation(0.2F)
 				),
-				Type.FOREST, Type.DENSE
+				TWILIGHT, Type.FOREST, Type.DENSE
 		);
 
 		biomes.register(
@@ -59,7 +63,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(3.5F)
 								.setHeightVariation(0.05F)
 				),
-				Type.FOREST, Type.MOUNTAIN, Type.CONIFEROUS
+				TWILIGHT, Type.FOREST, Type.MOUNTAIN, Type.CONIFEROUS
 		);
 
 		biomes.register(
@@ -69,7 +73,7 @@ public final class RegistryBiomeEvent {
 								.setTemperature(0.8F)
 								.setRainfall(0.8F)
 				),
-				Type.FOREST, Type.MUSHROOM
+				TWILIGHT, Type.FOREST, Type.MUSHROOM
 		);
 
 		biomes.register(
@@ -82,7 +86,7 @@ public final class RegistryBiomeEvent {
 								.setHeightVariation(0.125F)
 								.setWaterColor(0xE0FFAE)
 				),
-				Type.SWAMP, Type.WET
+				TWILIGHT, Type.SWAMP, Type.WET
 		);
 
 		biomes.register(
@@ -94,7 +98,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(-0.5F)
 								.setHeightVariation(0)
 				),
-				Type.RIVER
+				TWILIGHT, Type.RIVER
 		);
 
 		biomes.register(
@@ -106,7 +110,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.2F)
 								.setHeightVariation(0.2F)
 				),
-				Type.FOREST, Type.SNOWY, Type.COLD, Type.CONIFEROUS
+				TWILIGHT, Type.FOREST, Type.SNOWY, Type.COLD, Type.CONIFEROUS
 		);
 
 		biomes.register(
@@ -116,7 +120,7 @@ public final class RegistryBiomeEvent {
 								.setTemperature(0)
 								.setRainfall(0.1F)
 				),
-				Type.COLD, Type.SNOWY, Type.WASTELAND
+				TWILIGHT, Type.COLD, Type.SNOWY, Type.WASTELAND
 		);
 
 		biomes.register(
@@ -128,7 +132,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
-				Type.PLAINS, Type.SPARSE
+				TWILIGHT, Type.PLAINS, Type.SPARSE
 		);
 
 		biomes.register(
@@ -140,7 +144,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.2F)
 								.setHeightVariation(0.2F)
 				),
-				Type.FOREST, Type.SPARSE
+				TWILIGHT, Type.FOREST, Type.SPARSE
 		);
 
 		biomes.register(
@@ -152,7 +156,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
-				Type.FOREST, Type.LUSH
+				TWILIGHT, Type.FOREST, Type.LUSH
 		);
 
 		biomes.register(
@@ -164,7 +168,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
-				Type.FOREST, Type.MUSHROOM
+				TWILIGHT, Type.FOREST, Type.MUSHROOM
 		);
 
 		biomes.register(
@@ -176,7 +180,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
-				Type.FOREST, Type.DENSE, Type.SPOOKY
+				TWILIGHT, Type.FOREST, Type.DENSE, Type.SPOOKY
 		);
 
 		biomes.register(
@@ -184,7 +188,7 @@ public final class RegistryBiomeEvent {
 				new TFBiomeEnchantedForest(
 						new BiomeProperties("Enchanted Forest")
 				),
-				Type.FOREST, Type.MAGICAL
+				TWILIGHT, Type.FOREST, Type.MAGICAL
 		);
 
 		biomes.register(
@@ -197,7 +201,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.1F)
 								.setHeightVariation(0.2F)
 				),
-				Type.SWAMP, Type.WASTELAND, Type.HOT
+				TWILIGHT, Type.SWAMP, Type.WASTELAND, Type.HOT
 		);
 
 		biomes.register(
@@ -207,7 +211,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
-				Type.FOREST, Type.DENSE, Type.SPOOKY, Type.MAGICAL
+				TWILIGHT, Type.FOREST, Type.DENSE, Type.SPOOKY, Type.MAGICAL
 		);
 
 		biomes.register(
@@ -219,7 +223,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(10.5F)
 								.setHeightVariation(0.025F)
 				),
-				Type.MESA, Type.DEAD, Type.DRY, Type.WASTELAND
+				TWILIGHT, Type.MESA, Type.DEAD, Type.DRY, Type.WASTELAND
 		);
 
 		biomes.register(
@@ -231,7 +235,7 @@ public final class RegistryBiomeEvent {
 								.setBaseHeight(6)
 								.setHeightVariation(0.1F)
 				),
-				Type.HILLS, Type.DEAD, Type.DRY, Type.WASTELAND
+				TWILIGHT, Type.HILLS, Type.DEAD, Type.DRY, Type.WASTELAND
 		);
 	}
 
