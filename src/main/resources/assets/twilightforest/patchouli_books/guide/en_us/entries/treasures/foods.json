@@ -13,7 +13,7 @@
       "title": "Hydra Chop",
       "item": "twilightforest:hydra_chop",
       "advancement": "twilightforest:alt/treasures/foods/hydra_chop",
-      "text": "A filling meal with just a single Hydra Chop. Eating this potent meat fills your hunger greatly and helps in health regeneration. Fitting for those that have conquered such a mighty beast."
+      "text": "A filling meal with just a single Hydra Chop. Eating this potent meat greatly satiates hunger and provides temporary rapid healing. Fitting for those that have conquered such a mighty beast."
     }, {
       "type": "spotlight",
       "title": "Maze Wafer",
@@ -35,7 +35,7 @@
       "title": "Meef Stroganoff",
       "item": "twilightforest:meef_stroganoff",
       "advancement": "twilightforest:progress_labyrinth",
-      "text": "Nutritious and hearty. Eating Meef Stroganoff empowers the adventurer and allows them to traverse into the Fire Swamp without fearing any heat-related issues. How kind of the Minoshroom, after all that effort?"
+      "text": "Nutritious and hearty. Eating Meef Stroganoff not only empowers the adventurer but also allows them to enter the Fire Swamp safely without suffering from the heat. How kind of the Minoshroom after all that effort?"
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/foods/experiment_115",

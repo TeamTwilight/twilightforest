@@ -7,7 +7,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Finely forged weapons wielded by Minotaurs and the Minoshroom. At full force, they can be devastating."
+      "text": "Finely forged weapons wielded by Minotaurs and the Minoshroom. They feel like any old axe, but the design of these axes are strange. Though light to hold, these axes feel weighty while running with them."
     }, {
       "type": "spotlight",
       "title": "Golden Minotaur Axe",
@@ -19,7 +19,7 @@
       "title": "Diamond Minotaur Axe",
       "item": "twilightforest:minotaur_axe",
       "advancement": "twilightforest:alt/treasures/minotaur_axe_diamond",
-      "text": "The most finely forge weapon, adorned with the strength of Diamond. This weapon is the choice of the Minoshroom, fitting for a powerful beast."
+      "text": "A finely forged weapon adorned with the strength of Diamond. This powerful weapon is the choice of the Minoshroom, fitting for a great beast."
     }
   ]
 }
