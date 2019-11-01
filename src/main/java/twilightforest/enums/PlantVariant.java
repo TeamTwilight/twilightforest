@@ -5,20 +5,31 @@ import net.minecraft.util.IStringSerializable;
 import java.util.Locale;
 
 public enum PlantVariant implements IStringSerializable {
-	MOSSPATCH(false),
-	MAYAPPLE(false),
-	CLOVERPATCH(false),
+	MOSSPATCH(),
+	MAYAPPLE(),
+	CLOVERPATCH(),
 	FIDDLEHEAD(true),
-	MUSHGLOOM(false),
+	MUSHGLOOM(),
 	FORESTGRASS(true),
-	DEADBUSH(false),
-	TORCHBERRY(false),
-	ROOT_STRAND(false);
+	DEADBUSH(),
+	TORCHBERRY(),
+	ROOT_STRAND(),
+	FALLEN_LEAVES(true, true);
 
-	public final boolean isGrassColored;
+	public final boolean isColored;
+	public final boolean isLeaves;
 
-	PlantVariant(boolean isGrassColored) {
-		this.isGrassColored = isGrassColored;
+	PlantVariant() {
+		this(false);
+	}
+
+	PlantVariant(boolean isColored) {
+		this(isColored, false);
+	}
+
+	PlantVariant(boolean isColored, boolean isLeaves) {
+		this.isColored = isColored;
+		this.isLeaves = isLeaves;
 	}
 
 	@Override

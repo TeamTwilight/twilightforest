@@ -29,7 +29,8 @@ public class GenLayerTFBiomes extends GenLayer {
 			() -> TFBiomes.tfLake,
 			() -> TFBiomes.deepMushrooms,
 			() -> TFBiomes.enchantedForest,
-			() -> TFBiomes.clearing
+			() -> TFBiomes.clearing,
+			() -> TFBiomes.spookyForest
 	);
 
 	public GenLayerTFBiomes(long l, GenLayer genlayer) {

@@ -12,5 +12,6 @@ public enum TFParticleType {
 	ICE_BEAM,
 	ANNIHILATE,
 	HUGE_SMOKE,
-	FIREFLY
+	FIREFLY,
+	FALLEN_LEAF
 }

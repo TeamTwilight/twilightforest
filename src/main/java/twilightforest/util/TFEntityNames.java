@@ -35,6 +35,9 @@ public class TFEntityNames {
 
 	public static final ResourceLocation BOGGARD = prefix("boggard"); // <- ??
 
+	// Graveyard
+	public static final ResourceLocation RISING_ZOMBIE = prefix("rising_zombie");
+
 	// Courtyard
 	public static final ResourceLocation NAGA = prefix("naga");
 

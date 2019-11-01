@@ -227,7 +227,7 @@ public final class ColorHandler {
 					: variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()
 					: -1;
 		}, TFBlocks.twilight_leaves_3);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex != 0 ? 0xFFFFFF : state.getValue(BlockTFPlant.VARIANT).isGrassColored ? worldIn != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.twilight_plant);
+		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex != 0 ? 0xFFFFFF : state.getValue(BlockTFPlant.VARIANT).isColored ? worldIn != null && pos != null ? state.getValue(BlockTFPlant.VARIANT).isLeaves ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.twilight_plant);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> ColorizerGrass.getGrassColor(0.5D, 1.0D), TFBlocks.miniature_structure);
 		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;

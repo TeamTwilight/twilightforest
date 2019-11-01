@@ -8,9 +8,14 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,16 +34,17 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import twilightforest.enums.PlantVariant;
 import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.particle.TFParticleFactory;
+import twilightforest.client.particle.TFParticleType;
+import twilightforest.enums.PlantVariant;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFPlant extends BlockBush implements IShearable, ModelRegisterCallback
-{
+public class BlockTFPlant extends BlockBush implements IShearable, ModelRegisterCallback {
 	public static final IProperty<PlantVariant> VARIANT = PropertyEnum.create("variant", PlantVariant.class);
 
 	protected BlockTFPlant() {
@@ -99,6 +105,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 				case FORESTGRASS:
 				case DEADBUSH:
 					return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+				case FALLEN_LEAVES:
 				case MUSHGLOOM:
 				case MOSSPATCH:
 					return soil.isSideSolid(world, pos, EnumFacing.UP);
@@ -147,6 +154,8 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 					xConnect0 ? 1F : (15F - xOff0) / 16F, (1F + yOff0 + yOff1) / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F);
 		} else if (variant == PlantVariant.MAYAPPLE) {
 			return new AxisAlignedBB(4F / 16F, 0, 4F / 16F, 13F / 16F, 6F / 16F, 13F / 16F);
+		} else if (variant == PlantVariant.FALLEN_LEAVES) {
+			return new AxisAlignedBB(0F, 0F, 0F, 1F, 1F / 16F, 1F);
 		} else {
 			return FULL_BLOCK_AABB;
 		}
@@ -223,6 +232,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 			case TORCHBERRY:
 				ret.add(new ItemStack(TFItems.torchberries));
 				break;
+			case FALLEN_LEAVES:
 			case MOSSPATCH:
 			case MAYAPPLE:
 			case CLOVERPATCH:
@@ -294,8 +304,66 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 
 		if (state.getValue(VARIANT) == PlantVariant.MOSSPATCH && random.nextInt(10) == 0) {
 			world.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+		} else if (state.getValue(VARIANT) == PlantVariant.FALLEN_LEAVES && random.nextInt(50) == 0) {
+			float dist = 10F;
+			if (!world.canSeeSky(pos)) {
+				for (int y = 0; y <= dist; y++)
+					if (world.getBlockState(pos.up(y)).getMaterial() == Material.LEAVES) {
+						dist = y;
+						break;
+					}
+				if (dist > 10F)
+					return;
+			}
+			Particle leaf = TFParticleFactory.createParticle(TFParticleType.FALLEN_LEAF, world, pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			int color = Minecraft.getMinecraft().getBlockColors().colorMultiplier(Blocks.LEAVES.getDefaultState(), world, pos, 0);
+			leaf.setRBGColorF(
+
+					MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
+
+					MathHelper.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
+
+					MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F
+
+			);
+			Minecraft.getMinecraft().effectRenderer.addEffect(leaf);
 		}
 
+	}
+
+	@Override
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entityIn) {
+		super.onEntityCollision(world, pos, state, entityIn);
+		if (world.isRemote && state.getValue(VARIANT) == PlantVariant.FALLEN_LEAVES && entityIn instanceof EntityLivingBase && (entityIn.motionX != 0 || entityIn.motionZ != 0) && RANDOM.nextBoolean()) {
+			int color = Minecraft.getMinecraft().getBlockColors().colorMultiplier(Blocks.LEAVES.getDefaultState(), world, pos, 0);
+			Particle leaf = TFParticleFactory.createParticle(TFParticleType.FALLEN_LEAF,
+
+					world,
+
+					pos.getX() + world.rand.nextFloat(),
+
+					pos.getY(),
+
+					pos.getZ() + world.rand.nextFloat(),
+
+					(world.rand.nextFloat() * -0.5F) * entityIn.motionX,
+
+					world.rand.nextFloat() * 0.5F + 0.25F,
+
+					(world.rand.nextFloat() * -0.5F) * entityIn.motionZ
+
+			);
+			leaf.setRBGColorF(
+
+					MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
+
+					MathHelper.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
+
+					MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F
+
+			);
+			Minecraft.getMinecraft().effectRenderer.addEffect(leaf);
+		}
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -1,20 +1,13 @@
-#PARSE_ESCAPES
+﻿#PARSE_ESCAPES
 
 itemGroup.twilightForest=Twilight Forest
 
+# ADVANCEMENTS
 advancement.twilightforest.root.desc=Войдите в загадочные магические леса; Сумеречный лес.
 
-advancement.twilightforest.magic_map_focus=Написанное огнём
-advancement.twilightforest.magic_map_focus.desc=Сделайте магическое перо.
-
-advancement.twilightforest.twilight_hunter=Лесной убийца
-advancement.twilightforest.twilight_hunter.desc=Убейте существо в сумеречном лесу.
-advancement.twilightforest.kill_naga=Убийца наги
-advancement.twilightforest.kill_naga.desc=Убейте нагу впервые.
-advancement.twilightforest.kill_lich=Убить мёртвого.
-advancement.twilightforest.kill_lich.desc=Убейте лича в его башне.
-advancement.twilightforest.kill_hydra=Убийца гидры
-advancement.twilightforest.kill_hydra.desc=Убейте гидру в её логове.
+# General progression
+advancement.twilightforest.hedge=Любитель насекомых
+advancement.twilightforest.hedge.desc=Победить паука в лабиринте хеджа.
 
 advancement.twilightforest.hill1=Сапоги мои!
 advancement.twilightforest.hill1.desc=Убейте шахтёра в маленьком холме.
@@ -23,59 +16,76 @@ advancement.twilightforest.hill2.desc=Убейте шахтёра-подрывн
 advancement.twilightforest.hill3=Я вижу тебя насквозь
 advancement.twilightforest.hill3.desc=Встретьте и убейте призрака в большом холме.
 
-advancement.twilightforest.experiment_115=Таинственное мясо?
-advancement.twilightforest.experiment_115.desc=Это похоже на торт, хотя ...
-advancement.twilightforest.experiment_115_2=Делаем заметку: Огромный успех!
-advancement.twilightforest.experiment_115_2.desc=Это так вкусно и влажно!
-advancement.twilightforest.experiment_115_3=Питание 115 Ежедневно, 115 Лет, Навсегда
-advancement.twilightforest.experiment_115_3.desc=ест эксперимента сто пятнадцать весь день, навсегда, сто пятнадцать раз эксперимент сто пятнадцать, эксперимент сто пятнадцать точка ком, дабл-Ю дабл-Ю дабл-Ю точка эксперимента сто пятнадцать точка ком, сто пятнадцать лет, каждую минуту эксперимента сто пятнадцать точка ком, дабл-Ю дабл-Ю дабл-Ю точка сто-пятнадцать раз эксперимент сто пятнадцать точка ком
+advancement.twilightforest.quest_ram=Непревзойдённый
+advancement.twilightforest.quest_ram.desc=Дайте Квест раму то, что ему не хватает.
 
-advancement.twilightforest.glass_sword=Один чудо-удар
-advancement.twilightforest.glass_sword.desc=Надеюсь, вы хорошо это использовали.
-
-advancement.twilightforest.hydra_chop=Массивные отбивные
-advancement.twilightforest.hydra_chop.desc=Попробуйте на вкус мясо гидры.
-
-advancement.twilightforest.twilight_dining=Мы поужинаем в вечном закате
-advancement.twilightforest.twilight_dining.desc=Ешьте ВСЕ продукты исключительно в Сумеречном лесу.
-
-advancement.twilightforest.ghast_trap=Что-то странное в Деревянной башне
-advancement.twilightforest.ghast_trap.desc=Убейте мини гаста около ловушки гаста и активируйте ключ темного гаста из неба!
-
-advancement.twilightforest.arctic_dyed=Получилось модно
-advancement.twilightforest.arctic_dyed.desc=Покрасьте все четыре части арктической брони.
-
-advancement.twilightforest.naga_armors=Броня Наги
-advancement.twilightforest.naga_armors.desc=Сделайте броню из сердец наги.
-advancement.twilightforest.lich_scepters=Наши силы объединены!
-advancement.twilightforest.lich_scepters.desc=Приобрести все три скипетра власти.
-advancement.twilightforest.hedge=Любитель насекомых
-advancement.twilightforest.hedge.desc=Победить паука в лабиринте хеджа.
+# Map
+advancement.twilightforest.magic_map_focus=Написанное огнём
+advancement.twilightforest.magic_map_focus.desc=Сделайте магическое перо.
 advancement.twilightforest.magic_map=Далеко гляжу
 advancement.twilightforest.magic_map.desc=Создайте магическую карту.
 advancement.twilightforest.maze_map=Теперь, я найду выход
 advancement.twilightforest.maze_map.desc=Создайте карту лабиринта, получив фокус от лабиринта.
 advancement.twilightforest.ore_map=Почему бы и нет?
 advancement.twilightforest.ore_map.desc=Создайте карту лабиринта/руды.
-advancement.twilightforest.mazebreaker=Крушитель лабиринтов
-advancement.twilightforest.mazebreaker.desc=Найдите кирку лабиринта в секретном хранилище.
-advancement.twilightforest.fiery_set=Кровь и слёзы
-advancement.twilightforest.fiery_set.desc=Используйте огненный инструмент или оружие, неся хотя бы одну часть огненной брони.
-advancement.twilightforest.quest_ram=Непревзойдённый
-advancement.twilightforest.quest_ram.desc=Дайте Квест раму то, что ему не хватает.
 
+# Mainline beginning progression
+advancement.twilightforest.twilight_hunter=Лесной убийца
+advancement.twilightforest.twilight_hunter.desc=Убейте существо в сумеречном лесу.
+
+advancement.twilightforest.kill_naga=Убийца наги
+advancement.twilightforest.kill_naga.desc=Убейте нагу впервые.
+advancement.twilightforest.naga_armors=Броня Наги
+advancement.twilightforest.naga_armors.desc=Сделайте броню из сердец наги.
+
+advancement.twilightforest.kill_lich=Убить мёртвого.
+advancement.twilightforest.kill_lich.desc=Убейте лича в его башне.
+advancement.twilightforest.lich_scepters=Наши силы объединены!
+advancement.twilightforest.lich_scepters.desc=Приобрести все три скипетра власти.
+
+# Swamp Progression
 advancement.twilightforest.progress_labyrinth=Могучий строганов
 advancement.twilightforest.progress_labyrinth.desc=Мясо и мускусное блюдо приятно согревает вас, настолько, что вы чувствуете, что достаточно акклиматизированы, чтобы отправиться в Огненное болото.
+advancement.twilightforest.kill_hydra=Убийца гидры
+advancement.twilightforest.kill_hydra.desc=Убейте гидру в её логове.
+advancement.twilightforest.mazebreaker=Крушитель лабиринтов
+advancement.twilightforest.mazebreaker.desc=Найдите кирку лабиринта в секретном хранилище.
+advancement.twilightforest.hydra_chop=Массивные отбивные
+advancement.twilightforest.hydra_chop.desc=Попробуйте на вкус мясо гидры.
+
+# Dark Forest Progression
 advancement.twilightforest.progress_trophy_pedestal=Трофейный чемпион.
 advancement.twilightforest.progress_trophy_pedestal.desc=Заявите о своём титуле, поставив трофей на пьедестал в лесных руинах.
 advancement.twilightforest.progress_knights=Карминитовая акклиматизация
 advancement.twilightforest.progress_knights.desc=Успокойте беспокойные фантомы в Могиле Рыцаря, и устройства карминитовой башни повинуются вам.
+advancement.twilightforest.ghast_trap=Что-то странное в Деревянной башне
+advancement.twilightforest.ghast_trap.desc=Убейте мини гаста около ловушки гаста и активируйте ключ темного гаста из неба!
 advancement.twilightforest.progress_ur_ghast=Слёзы огня
 advancement.twilightforest.progress_ur_ghast.desc=Прикоснитесь к слёзам тёмного гаста, чтобы противостоять холоду снежного леса.
+
+advancement.twilightforest.experiment_115=Таинственное мясо?
+advancement.twilightforest.experiment_115.desc=Это похоже на торт, хотя ...
+advancement.twilightforest.experiment_115_2=Делаем заметку: Огромный успех!
+advancement.twilightforest.experiment_115_2.desc=Это так вкусно и влажно!
+
+# Snow Forest Progression
 advancement.twilightforest.progress_yeti=Тёплый мех
 advancement.twilightforest.progress_yeti.desc=Линия одежды с мехом альмо-йети сохранит вас от мороза.
 advancement.twilightforest.progress_glacier=Чистое небо
 advancement.twilightforest.progress_glacier.desc=Победите Снежную Королеву на вершине дворца Авроры, очистив кислотный дождь от высокогорья.
+advancement.twilightforest.arctic_dyed=Получилось модно
+advancement.twilightforest.arctic_dyed.desc=Покрасьте все четыре части арктической брони.
+
+# Mid-way Misc. Stuff
+advancement.twilightforest.glass_sword=Один чудо-удар
+advancement.twilightforest.glass_sword.desc=Надеюсь, вы хорошо это использовали.
+
+advancement.twilightforest.fiery_set=Кровь и слёзы
+advancement.twilightforest.fiery_set.desc=Используйте огненный инструмент или оружие, неся хотя бы одну часть огненной брони.
+
+# Highlands
+
+
 advancement.twilightforest.progress_troll=Я желаю больше огня
 advancement.twilightforest.progress_troll.desc=Найдите лампу печей в тролль-пещерах, и вы можете сжечь тернистые барьеры.
 advancement.twilightforest.progress_thorns=Мимо шипов
@@ -83,11 +93,34 @@ advancement.twilightforest.progress_thorns.desc=Пройдите мимо тер
 advancement.twilightforest.progress_castle=Этот замок классный
 advancement.twilightforest.progress_castle.desc=Что может быть ещё в этом замке?!?
 
-twilightforest.trophyPedestal.ineligible=Вы недостойны.
+# Collections
+advancement.twilightforest.twilight_dining=Мы поужинаем в вечном закате
+advancement.twilightforest.twilight_dining.desc=Ешьте ВСЕ продукты исключительно в Сумеречном лесу.
+advancement.twilightforest.experiment_115_3=Питание 115 Ежедневно, 115 Лет, Навсегда
+advancement.twilightforest.experiment_115_3.desc=ест эксперимента сто пятнадцать весь день, навсегда, сто пятнадцать раз эксперимент сто пятнадцать, эксперимент сто пятнадцать точка ком, дабл-Ю дабл-Ю дабл-Ю точка эксперимента сто пятнадцать точка ком, сто пятнадцать лет, каждую минуту эксперимента сто пятнадцать точка ком, дабл-Ю дабл-Ю дабл-Ю точка сто-пятнадцать раз эксперимент сто пятнадцать точка ком
+advancement.twilightforest.arborist=Маникальный дендролог
+
+
+twilightforest.twilight_portal.unsafe=Кажется, здесь небезопасно...
+twilightforest.trophy_pedestal.ineligible=Вы недостойны.
 twilightforest.ore_meter.range=Радиус: %s, Происхождение: [%s, %s]
 twilightforest.ore_meter.exposed=Выставлено: %s
 twilightforest.scepter_charges=%d зарядов осталось
 
+# Commands
+
+
+
+
+
+
+
+
+
+
+
+
+# Blocks
 tile.twilightforest.Log.0.name=Сумеречный дуб
 tile.twilightforest.Log.1.name=Сумеречная сосна
 tile.twilightforest.Log.2.name=Сумеречная берёза
@@ -98,6 +131,7 @@ tile.twilightforest.Leaves.2.name=Листва сумеречной берёзы
 tile.twilightforest.Leaves.3.name=Разноцветная листва
 tile.twilightforest.Firefly.name=Светлячок
 tile.twilightforest.Cicada.name=Цикада
+tile.twilightforest.Cicada.desc=Что, если запустить это в кого-то рейлганом?
 item.twilightforest.Portal.name=Портал в сумеречный лес
 tile.twilightforest.Portal.name=Портал в сумеречный лес
 tile.twilightforest.Mazestone.0.name=Камень лабиринта
@@ -143,6 +177,7 @@ tile.twilightforest.FireJet.7.name=Заключённый шумящий ого�
 tile.twilightforest.FireJet.8.name=Заключённый пылающий огонёк
 tile.twilightforest.Nagastone.0.name=Голова нагокамня
 tile.twilightforest.Nagastone.1.name=Нагакамень
+tile.twilightforest.Sapling.name=Сумеречный саженец
 tile.twilightforest.Sapling.0.name=Саженец сумеречного дуба
 tile.twilightforest.Sapling.1.name=Саженец сумеречной сосны
 tile.twilightforest.Sapling.2.name=Саженец сумеречной берёзы
@@ -166,11 +201,11 @@ tile.twilightforest.MagicLeaves.0.name=Листва дерева времени
 tile.twilightforest.MagicLeaves.1.name=Листва мудрого дерева
 tile.twilightforest.MagicLeaves.2.name=Листва шахтёра
 tile.twilightforest.MagicLeaves.3.name=Листва сортировки
-tile.twilightforest.TowerStone.0.name=Планки тёмной башни
-tile.twilightforest.TowerStone.1.name=Боковые планки тёмной башни
-tile.twilightforest.TowerStone.2.name=Треснутые планки тёмной башни
-tile.twilightforest.TowerStone.3.name=Замшелые планки тёмной башни
-tile.twilightforest.TowerStone.4.name=Инфицированные планки тёмной башни
+tile.twilightforest.TowerStone.0.name=Доски тёмной башни
+tile.twilightforest.TowerStone.1.name=Боковые доски тёмной башни
+tile.twilightforest.TowerStone.2.name=Треснутые доски тёмной башни
+tile.twilightforest.TowerStone.3.name=Замшелые доски тёмной башни
+tile.twilightforest.TowerStone.4.name=Инфицированные доски тёмной башни
 tile.twilightforest.TowerDevice.0.name=Восстанавливающийся блок
 tile.twilightforest.TowerDevice.1.name=Активный восстанавливающийся блок
 tile.twilightforest.TowerDevice.2.name=Исчезающий блок
@@ -201,7 +236,7 @@ tile.twilightforest.AuroraBrick.name=Блок Авроры
 tile.twilightforest.UnderBrick.0.name=Подземные кирпичи
 tile.twilightforest.UnderBrick.1.name=Замшелые подземные кирпичи
 tile.twilightforest.UnderBrick.2.name=Потресканные подземные кирпичи
-tile.twilightforest.UnderBrick.2.name=Половые подземные кирпичи
+tile.twilightforest.UnderBrick.3.name=Подземный пол
 tile.twilightforest.Thorns.brown.name=Шипы
 tile.twilightforest.Thorns.green.name=Зеленые шипы
 tile.twilightforest.BurntThorns.name=Истлевшие шипы
@@ -212,6 +247,7 @@ tile.twilightforest.Deadrock.surface.name=Влажный камень смерт
 tile.twilightforest.Deadrock.cracked.name=Потрескавшийся камень смерти
 tile.twilightforest.Deadrock.solid.name=Камень смерти
 tile.twilightforest.DarkLeaves.name=Листва тёмного дерева
+tile.twilightforest.AuroralizedGlass.name=Авроризованное стекло
 tile.twilightforest.AuroraPillar.name=Колонна Авроры
 tile.twilightforest.AuroraSlab.name=Плита Авроры
 tile.twilightforest.TrollSteinn.name=Тролльштейн
@@ -241,6 +277,10 @@ tile.twilightforest.CastleBrick.2.name=Потресканный кирпич з�
 tile.twilightforest.CastleBrick.3.name=Замковая крыша
 tile.twilightforest.CastleBrick.4.name=Замшелый кирпич замка
 tile.twilightforest.CastleBrick.5.name=Толстый кирпич замка
+tile.twilightforest.CastleStairsBrick.name=Ступени из кирпича замка
+tile.twilightforest.CastleStairsWorn.name=Ступени из изношенного кирпича замка
+tile.twilightforest.CastleStairsCracked.name=Ступени из потресканного кирпича замка
+tile.twilightforest.CastleStairsMossy.name=Ступени из замшелого кирпича замка
 tile.twilightforest.CastleDoor.0.name=Жёлтая дверь замка
 tile.twilightforest.CastleDoor.1.name=Фиолетовая дверь замка
 tile.twilightforest.CastleDoor.2.name=Розовая дверь замка
@@ -275,14 +315,98 @@ tile.twilightforest.NagastonePillar.name=Колонна из нагакамня
 tile.twilightforest.NagastoneStairs.0.name=Ступеньки из нагакамня (левая)
 tile.twilightforest.NagastoneStairs.8.name=Ступеньки из нагакамня (правая)
 tile.twilightforest.EtchedNagastoneMossy.name=Замшелый гравированный нагакамень
-tile.twilightforest.NagastonePillarMossy.name=Замшелый колонна из нагакамня
-tile.twilightforest.NagastoneStairsMossy.0.name=Замшелые ступеньки из накамня (левая)
-tile.twilightforest.NagastoneStairsMossy.8.name=Замшелые ступеньки из накамня (правая)
+tile.twilightforest.NagastonePillarMossy.name=Замшелая колонна из нагакамня
+tile.twilightforest.NagastoneStairsMossy.0.name=Замшелые ступеньки из нагакамня (левая)
+tile.twilightforest.NagastoneStairsMossy.8.name=Замшелые ступеньки из нагакамня (правая)
 tile.twilightforest.EtchedNagastoneWeathered.name=Разрушенный гравированный нагакамень
 tile.twilightforest.NagastonePillarWeathered.name=Разрушенный колонна из нагакамня
 tile.twilightforest.NagastoneStairsWeathered.0.name=Выветрившиеся ступеньки из нагакамня (левая)
 tile.twilightforest.NagastoneStairsWeathered.8.name=Выветрившиеся ступеньки из нагакамня (правая)
+tile.twilightforest.IronLadder.name=Железная лестница
+tile.twilightforest.TerrorCottaCircle.name=Терроркотта (круглая)
+tile.twilightforest.TerrorCottaDiagonal.name=Терроркотта (диагональная)
 
+tile.twilightforest.CanopyPlanks.name=Сосновые доски
+tile.twilightforest.CanopyStairs.name=Сосновые ступеньки
+tile.twilightforest.CanopySlab.name=Сосновая плитка
+tile.twilightforest.CanopyButton.name=Сосновая кнопка
+tile.twilightforest.CanopyFence.name=Сосновый забор
+tile.twilightforest.CanopyGate.name=Сосновая калитка
+tile.twilightforest.CanopyPlate.name=Сосновая нажимная плита
+tile.twilightforest.CanopyTrapDoor.name=Сосновый люк
+item.tile.twilightforest.CanopyDoor.name=Сосновая дверь
+
+tile.twilightforest.DarkPlanks.name=Тёмные доски
+tile.twilightforest.DarkStairs.name=Тёмные ступеньки
+tile.twilightforest.DarkSlab.name=Тёмная плита
+tile.twilightforest.DarkButton.name=Тёмная кнопка
+tile.twilightforest.DarkFence.name=Тёмный забор
+tile.twilightforest.DarkGate.name=Тёмная калитка
+tile.twilightforest.DarkPlate.name=Тёмная нажимная плита
+tile.twilightforest.DarkTrapDoor.name=Тёмный люк
+
+
+tile.twilightforest.MangrovePlanks.name=Доски из сумеречной берёзы
+tile.twilightforest.MangroveStairs.name=Ступеньки из сумеречной берёзы
+tile.twilightforest.MangroveSlab.name=Плита из сумеречной берёзы
+tile.twilightforest.MangroveButton.name=Кнопка из сумеречной берёзы
+tile.twilightforest.MangroveFence.name=Забор из сумеречной берёзы
+tile.twilightforest.MangroveGate.name=Калитка из сумеречной берёзы
+tile.twilightforest.MangrovePlate.name=Нажимная плита из сумеречной берёзы
+tile.twilightforest.MangroveTrapDoor.name=Люк из сумеречной берёзы
+
+
+tile.twilightforest.TwilightOakPlanks.name=Доски из сумеречного дуба
+tile.twilightforest.TwilightOakStairs.name=Ступеньки из сумеречного дуба
+tile.twilightforest.TwilightOakSlab.name=Плита из сумеречного дуба
+tile.twilightforest.TwilightOakButton.name=Кнопка из сумеречного дуба
+tile.twilightforest.TwilightOakFence.name=Забор из сумеречного дуба
+tile.twilightforest.TwilightOakGate.name=Калитка из сумеречного дуба
+tile.twilightforest.TwilightOakPlate.name=Нажимная плита из сумеречного дуба
+tile.twilightforest.TwilightOakTrapDoor.name=Люк из сумеречного дуба
+item.tile.twilightforest.TwilightOakDoor.name=Дверь из сумеречного дуба
+
+tile.twilightforest.TimePlanks.name=Доски из дерева времени
+tile.twilightforest.TimeStairs.name=Ступеньки из дерева времени
+tile.twilightforest.TimeSlab.name=Плита из дерева времени
+tile.twilightforest.TimeButton.name=Кнопка из дерева времени
+tile.twilightforest.TimeFence.name=Забор из дерева времени
+tile.twilightforest.TimeGate.name=Калитка из дерева времени
+tile.twilightforest.TimePlate.name=Нажимная плита из дерева времени
+tile.twilightforest.TimeTrapDoor.name=Люк из дерева времени
+item.tile.twilightforest.TimeDoor.name=Дверь из дерева времени
+
+tile.twilightforest.TransPlanks.name=Доски из загадочного дерева
+tile.twilightforest.TransStairs.name=Ступеньки из загадочного дерева
+tile.twilightforest.TransSlab.name=Плита из загадочного дерева
+tile.twilightforest.TransButton.name=Кнопка из загадочного дерева
+tile.twilightforest.TransFence.name=Забор из загадочного дерева
+tile.twilightforest.TransGate.name=Калитка из загадочного дерева
+tile.twilightforest.TransPlate.name=Нажимная плита из загадочного дерева
+tile.twilightforest.TransTrapDoor.name=Люк из загадочного дерева
+item.tile.twilightforest.TransDoor.name=Дверь из загадочного дерева
+
+tile.twilightforest.MinePlanks.name=Доски из дерева шахтёра
+tile.twilightforest.MineStairs.name=Ступеньки из дерева шахтёра
+tile.twilightforest.MineSlab.name=Плита из дерева шахтёра
+tile.twilightforest.MineButton.name=Кнопка из дерева шахтёра
+tile.twilightforest.MineFence.name=Забор из дерева шахтёра
+tile.twilightforest.MineGate.name=Калитка из дерева шахтёра
+tile.twilightforest.MinePlate.name=Нажимная плита из дерева шахтёра
+tile.twilightforest.MineTrapDoor.name=Люк из дерева шахтёра
+item.tile.twilightforest.MineDoor.name=Дверь из дерева шахтёра
+
+tile.twilightforest.SortPlanks.name=Доски из правильного дерева
+tile.twilightforest.SortStairs.name=Ступеньки из правильного дерева
+tile.twilightforest.SortSlab.name=Плита из правильного дерева
+tile.twilightforest.SortButton.name=Кнопка из правильного дерева
+tile.twilightforest.SortFence.name=Забор из правильного дерева
+tile.twilightforest.SortGate.name=Калитка из правильного дерева
+tile.twilightforest.SortPlate.name=Нажимная плита из правильного дерева
+tile.twilightforest.SortTrapDoor.name=Люк из правильного дерева
+item.tile.twilightforest.SortDoor.name=Дверь из правильного дерева
+
+# Structures
 structure.twilight_portal.name=Сумеречный портал
 structure.hedge_maze.name=Лабиринт из живой изгороди
 structure.hollow_hill.name=Полый холм
@@ -299,12 +423,14 @@ structure.aurora_palace.name=Дворец Авроры
 structure.troll_cave_and_cloud_castle.name=Пещера Тролля и Дом в облаках
 structure.final_castle.name=Финальный замок
 
+# Items
 item.twilightforest.nagaScale.name=Чешуя наги
 item.twilightforest.plateNaga.name=Нагрудник из чешуи наги
 item.twilightforest.legsNaga.name=Поножи из чешуи наги
 item.twilightforest.scepterTwilight.name=Сумеречный посох
 item.twilightforest.scepterLifeDrain.name=Посох поглощения жизни
 item.twilightforest.scepterZombie.name=Посох нежити
+item.twilightforest.scepterShield.name=Посох укрепления
 item.twilightforest.oreMeter.name=Определитель руд [WIP]
 item.twilightforest.magicMap.name=Магическая карта
 item.twilightforest.mazeMap.name=Карта лабиринта
@@ -346,7 +472,8 @@ item.twilightforest.steeleafShovel.name=Лопата из стальных ли�
 item.twilightforest.steeleafPick.name=Кирка из стальных листьев
 item.twilightforest.steeleafAxe.name=Топор из стальных листьев
 item.twilightforest.steeleafHoe.name=Мотыга из стальных листьев
-item.twilightforest.minotaurAxe.name=Топор минотавра
+item.twilightforest.minotaurAxe.name=Алмазный топор минотавра
+item.twilightforest.minotaurAxeGold.name=Золотой топор минотавра
 item.twilightforest.mazebreakerPick.name=Разрушитель лабиринтов
 item.twilightforest.transformPowder.name=Порошок трансформации
 item.twilightforest.meefRaw.name=Мясо минотавра
@@ -385,6 +512,7 @@ item.twilightforest.knightlyBoots.name=Рыцарские ботинки
 item.twilightforest.knightlySword.name=Рыцарский меч
 item.twilightforest.knightlyPick.name=Рыцарская кирка
 item.twilightforest.knightlyAxe.name=Рыцарский топор
+item.twilightforest.knightlyShield.name=Рыцарский щит
 item.twilightforest.phantomHelm.name=Шлем Фантома
 item.twilightforest.phantomPlate.name=Нагрудник Фантома
 item.twilightforest.lampOfCinders.name=Лампа огня
@@ -413,8 +541,12 @@ item.twilightforest.knightmetalRing.name=Петля королевского м�
 item.twilightforest.chainBlock.name=Блок цепей
 item.twilightforest.cubeTalisman.name=Талисман куба
 item.twilightforest.cubeOfAnnihilation.name=Куб аннигиляции
+item.twilightforest.moonDial.name=Лунный циферблат
+
+item.twilightforest.guide.name=Дневник путешественника
 
 item.twilightforest.minotaurAxe.tooltip=Дополнительный урон во время бега
+item.twilightforest.minotaurAxeGold.tooltip=Дополнительный урон во время бега
 item.twilightforest.knightlySword.tooltip=Дополнительный урон по бронированным целям
 item.twilightforest.knightlyPick.tooltip=Дополнительный урон по бронированным целям
 item.twilightforest.knightlyAxe.tooltip=Дополнительный урон по не бронированным целям
@@ -425,6 +557,8 @@ item.twilightforest.fieryHelm.tooltip=Поджигает атакующего
 item.twilightforest.fieryPlate.tooltip=Поджигает атакующего
 item.twilightforest.fieryLegs.tooltip=Поджигает атакующего
 item.twilightforest.fieryBoots.tooltip=Поджигает атакующего
+item.twilightforest.phantomHelm.tooltip=Не утрачивается при смерти
+item.twilightforest.phantomPlate.tooltip=Не утрачивается при смерти
 item.twilightforest.yetiHelm.tooltip=Охлаждает атакующего
 item.twilightforest.yetiPlate.tooltip=Охлаждает атакующего
 item.twilightforest.yetiLegs.tooltip=Охлаждает атакующего
@@ -432,6 +566,7 @@ item.twilightforest.yetiBoots.tooltip=Охлаждает атакующего
 
 item.twilightforest.arctic_armor.tooltip=Красится, как кожаная броня
 
+# Entities
 entity.twilightforest.wild_boar.name=Дикий кабан
 entity.twilightforest.bighorn_sheep.name=Снежный баран
 entity.twilightforest.deer.name=Дикий олень
@@ -493,6 +628,9 @@ entity.twilightforest.ice_crystal.name=Ледяной кристалл
 entity.twilightforest.apocalypse_cube.name=Куб апокалипсиса [NYI]
 entity.twilightforest.adherent.name=Приверженец [NYI]
 
+
+twilightforest.effect.frosted=Заморозка
+
 twilightforest.misc.wip0=Этот блок является незавершенной работой и может иметь ошибки или непреднамеренные эффекты, которые могут повредить ваш мир.
 twilightforest.misc.wip1=Используйте с осторожностью.
 twilightforest.misc.nyi=Этот блок имеет эффекты, которые еще не реализованы.
@@ -510,6 +648,34 @@ twilightforest.config.dimension_seed.tooltip=If set, this will override the norm
 twilightforest.config.spawn_in_tf=Dimension Seed
 twilightforest.config.spawn_in_tf.tooltip=If true, players spawning for the first time will spawn in the Twilight Forest.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 twilightforest.config.compat=Compatibility
 twilightforest.config.compat.tooltip=Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.
 
@@ -520,14 +686,19 @@ twilightforest.config.canopy_coverage.tooltip=Amount of canopy coverage. Lower n
 twilightforest.config.twilight_oaks=Twilight Oak Chance
 twilightforest.config.twilight_oaks.tooltip=Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.
 twilightforest.config.leaves_light_opacity=Twilight Leaves opacity
-twilightforest.config.leaves_light_opacity.tooltip="If leaves are not full cubes, this controls the opacity of leaves to control amount of light blocking.
-twilightforest.config.leaves_full_cube=Can Twilight Leaves be full blocks
-twilightforest.config.leaves_full_cube.tooltip=Setting this false makes leaves not full cubes. This results in not blocking light at all, making them the equivalent of glass in terms of blocking light. Decreases complexity in some lighting checks.
+
 twilightforest.config.glacier_packed_ice=Glaciers made of Packed Ice instead of Ice
 twilightforest.config.glacier_packed_ice.tooltip=Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.
 
+
+
 twilightforest.config.silent_cicadas=Silent Cicadas
 twilightforest.config.silent_cicadas.tooltip=Make cicadas silent for those having sound library problems, or otherwise finding them annoying.
+
+
+
+
+
 
 twilightforest.config.portals_in_other_dimensions=Portals in other dimensions
 twilightforest.config.portals_in_other_dimensions.tooltip=Allow portals to the Twilight Forest to be made outside of dimension 0. May be considered an exploit.
@@ -537,12 +708,15 @@ twilightforest.config.portals=Disable Twilight Portals
 twilightforest.config.portals.tooltip=Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.
 twilightforest.config.portal_creator=Portal Creation Item
 twilightforest.config.portal_creator.tooltip=Registry String ID of item used to create the Twilight Forest Portal.
-twilightforest.config.portal_creator_meta=Portal Creation Item's Meta
-twilightforest.config.portal_creator_meta.tooltip=Meta of item used to create the Twilight Forest Portal. -1 for any metadata.
 twilightforest.config.portal_lighting=Portal Creation Lightning Fire
 twilightforest.config.portal_lighting.tooltip=Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.
 twilightforest.config.portal_return=Should Portals generate as a two-way portal
 twilightforest.config.portal_return.tooltip=If false, the return portal will require the activation item.
+
+
+
+
+
 
 twilightforest.config.uncrafting=Disable Uncrafting in Uncrafting Table
 twilightforest.config.uncrafting.tooltip=Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.
@@ -552,6 +726,19 @@ twilightforest.config.antibuilder_blacklist.tooltip=Anti-Builder blacklist. (dom
 
 twilightforest.config.animate_trophyitem=Rotate Trophy Heads on Item model
 twilightforest.config.animate_trophyitem.tooltip=Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 twilightforest.config.loading_screen=Loading Screen
 twilightforest.config.loading_screen.tooltip=Client only: Controls for the Loading screen
@@ -570,43 +757,55 @@ twilightforest.config.loading_icon_tilting.tooltip=How far the loading icon wobb
 twilightforest.config.loading_icon_tilt_pushback=Icon Tilt Offset
 twilightforest.config.loading_icon_tilt_pushback.tooltip=Pushback value to re-center the wobble of loading icon.
 
+# Books
 twilightforest.book.lichtower.1=\u00A78[[Записная книжка исследователя, обглоданная монстрами]]\u00A70\n\nЯ начал изучать странную ауру, окружающую эту башню. Кирпичи башни защищены проклятием, сильнее, чем я видел раньше. Магия от проклятия
 twilightforest.book.lichtower.2=кипит в окрестностях.\n\nНа моей родине у меня было бы много возможностей справиться с этой магией, но здесь мои запасы ограничены. Мне придется исследовать...
 twilightforest.book.lichtower.3=\u00A78[[Много записей позже]]\u00A70\n\nПрорыв! В своих путешествиях я увидел огромного змеиного монстра в украшенном дворе. Рядом я подобрал изношенное, сброшенное, зеленое сердце.\n\nМагия в сердце, кажется, обладает
 twilightforest.book.lichtower.4=свойствами проклятия, которые мне нужны, но магия слишком тусклая. Мне может понадобиться приобрести более свежий экземпляр, непосредственно от существа.
+
 twilightforest.book.labyrinth.1=\u00A78[[Записная книжка проводника, написанная на водонепроницаемой бумаге]]\u00A70\n\nКомары в этом болоте неприятные, но странные. Подавляющее большинство из них, по-видимому, не имеют природного источника и не играют никакой роли в местной экологии. Я уже начал
 twilightforest.book.labyrinth.2=подозревать, что это какое-то магическое проклятие.\n\n\u00A78[[Следующая запись]]\u00A70\n\nТеперь, когда я столкнулся с заклинанием защиты на разрушенном лабиринте, я считаю, что мои подозрения подтверждены. И защита
 twilightforest.book.labyrinth.3=и москиты - это проклятие. Это проклятие, похоже, имеет другой источник, чем другие, с которыми я столкнулся. Мне придется исследовать дальше...\n\n\u00A78[[Следующая запись]]\u00A70\n\nПроклятие кажется
 twilightforest.book.labyrinth.4=слишком сильным для того, чтобы его можно было произвести в одиночку. Было бы полезно несколько мастеров, работающих в комбинации.\n\nЕсли один из волшебников перестанет вносить свой вклад, все проклятие над всем болотом упадет. Как ни странно,
 twilightforest.book.labyrinth.5=мои предсказания не показывают признаков близких живых волшебников. Я видел кое-что интересное в одной из близлежащих башен с навесной крышей, хотя ...
+
 twilightforest.book.hydralair.1=\u00A78[[Записная книжка исследователя, написанная на огнеупорной бумаге]]\u00A70\n\nОгонь является тривиальным препятствием для главного исследователя, такого как я. Я прошел через огненные моря и проплыл через океаны лавы. Горящий воздух здесь-интересная вариация,
 twilightforest.book.hydralair.2=но в конечном счете не помеха.\n\nЧто меня останавливает, так это то, что я столкнулся с другим заклинанием защиты, на этот раз окружающим могущественным существом, которое должно быть королем этого болота. Это не первое заклинание защиты, которое у меня есть
 twilightforest.book.hydralair.3=и я начинаю разгадывать тайны того, как они работают.\n\nЕсли это заклинание похоже на другие, оно будет поддерживаться мощным существом поблизости. Вокруг огненного болота находятся несколько влажных болот, а под этими
 twilightforest.book.hydralair.4=болотами - лабиринты, полные минотавров. Логичным выбором связать такое заклинание было бы какой-то мощный минотавр, который каким-то образом отличается от других, окружающих его...
+
 twilightforest.book.tfstronghold.1=\u00A78[[Блокнот исследователя, написанный на слегка светящейся бумаге]]\u00A70\n\nУсики тьмы, окружающие эту область, являются всего лишь проявлением защитного заклинания над всем темным лесом. Заклинание вызывает слепоту, что довольно неприятно. Я видел
 twilightforest.book.tfstronghold.2=несколько интересных вещей в этом районе и хотел бы продолжить изучение.\n\n\u00A78[[Следующая запись]]\u00A70\n\nЯ нашел развалины в темном лесу. Они принадлежат к крепости, типа обычно населенной рыцарями. Однако, вместо рыцарей,
 twilightforest.book.tfstronghold.3=эта крепость полна гоблинов. Они носят рыцарские доспехи, но их поведение более не рыцарское.\n\n\u00A78[[Следующая запись]]\u00A70\n\nГлубоко в руинах я нашел пьедестал. Пьедестал, похоже, относится к типу, который
-twilightforest.book.tfstronghold.4= рыцари ставят трофеи, чтобы доказать свою силу.\n\nУбийство могущественного существа, казалось бы, ослабило проклятие в темном лесу, и размещение трофея, связанного с существом на пьедестале, скорее всего, предоставит доступ к
+twilightforest.book.tfstronghold.4=рыцари ставят трофеи, чтобы доказать свою силу.\n\nУбийство могущественного существа, казалось бы, ослабило проклятие в темном лесу, и размещение трофея, связанного с существом на пьедестале, скорее всего, предоставит доступ к
 twilightforest.book.tfstronghold.5=главной части крепости.\n\nЕдинственное существо, которое я видел до сих пор, обладающего достаточной властью, - это многоглавый зверь в огневом болоте. Как досадно...
+
 twilightforest.book.darktower.1=\u00A78[[Блокнот исследователя, который, похоже, пережил взрыв]]\u00A70\n\nУ этой башни явно есть механизмы, которые не отвечают мне. Их магия почти жаждет признать мое прикосновение, но это невозможно. Это если устройства башни
 twilightforest.book.darktower.2=подавляются мощной группой существ поблизости.\n\n\u00A78[[Следующая запись]]\u00A70\n\nКажется, что магия исходит из глубины близлежащих крепостей. Он не может исходить от гоблинов, так как их магия очаровательна, но не сфокусирована. Там
 twilightforest.book.darktower.3=в крепостях еще должна быть какая-то сила.\n\n\u00A78[[Следующая запись]]\u00A70\n\nМой анализ показывает, что он исходит из нескольких источников, действующих как группа. Я вернусь в крепость после пополнения запасов...
+
 twilightforest.book.yeticave.1=\u00A78[[Записная книжка исследователя, покрытая морозом]]\u00A70\n\nМетель, окружающая эти заснеженные земли, не утихает. Это не обычный снегопад - это магическое явление. Мне придется провести эксперименты, чтобы найти
 twilightforest.book.yeticave.2=то, что способно вызвать такой эффект.\n\n\u00A78[[Следующая запись]]\u00A70\n\nВ центре темного леса, где листья краснеют, а трава отмирает, стоит деревянная башня. Вершины башни крепятся с
 twilightforest.book.yeticave.3=с структурами, действуя как антенны. Антенны не являются источником снегопада,а служат лишь для усиления силы проклятия, вызывающего его.\n\nМетель такой интенсивности должна быть вызвана мощным существом, скорее всего найденным
-twilightforest.book.yeticave.4=возле вершины темного леса возвышается башня. Остановите существо, и метель исчезнет.
+
 twilightforest.book.icetower.1=\u00A78[[Блокнот исследователя, застывший во льду]]\u00A70\n\nЯ преодолел одну метель, только чтобы столкнуться с этим ужасным ледяным бурей на вершине ледника. Мои исследования показали мне великолепие ледяного дворца, сияющего цветами полярного сияния. Все это
 twilightforest.book.icetower.2=кажется защищенным каким-то проклятием.\n\n\u00A78[[Следующая запись]]\u00A70\n\nЯ не новичок. Это проклятие питается силой существа поблизости. Причина проклятия, окружающего болото, была построена на силе лидера
 twilightforest.book.icetower.3=минотавров поблизости.\n\nВокруг этого ледника находятся массы йети. Возможно, у йети есть какой-то лидер...
-twilightforest.book.trollcave.1=\u00A78[[Ноутбук исследователя, поврежденный кислотой]]\u00A70\n\nКажется, нет никакого способа защитить себя от токсичного ливня, окружающего эту область. В своих коротких экскурсиях я также столкнулся с другим защитным заклинанием, подобным 
+
+twilightforest.book.trollcave.1=\u00A78[[Ноутбук исследователя, поврежденный кислотой]]\u00A70\n\nКажется, нет никакого способа защитить себя от токсичного ливня, окружающего эту область. В своих коротких экскурсиях я также столкнулся с другим защитным заклинанием, подобным
 twilightforest.book.trollcave.2=другим, которые я видел. Заклинание должно быть связано с ядовитым штормом. Дальнейшие исследования...\n\n\u00A78[[Следующая запись]]\u00A70\n\nТакая великая погодная магия должна быть результатом непревзойденного погодного
 twilightforest.book.trollcave.3=мага. Такой человек, скорее всего, спрячется в экстремальной обстановке, далеко.\n\nОсновываясь на моей логике, я ожидал найти такого человека где-то на леднике, возможно, в какой-то крепости...
+
 twilightforest.book.unknown.1=\u00A78[[Эта книга показывает признаки того, что были скопированы много раз]]\u00A70\n\nЯ не могу объяснить поле, окружающее эту структуру, но магия мощная. Если это проклятие подобно другим, тогда ответ на его разблокировку лежит в другом месте. Возможно, есть
 twilightforest.book.unknown.2=что-то, что я потерял, или какого-то монстра, которого я еще не победил. Мне придется вернуться. Я вернусь к этому месту позже, чтобы увидеть, изменилось ли что-то.
+
+# Fluid
 
 fluid.fierymetal=Расплавленное пламя
 fluid.knightmetal=Расплавленный королевский металл
 fluid.fiery_essence=Огненная эссенция
+
+# TCon
 
 material.nagascale.name=Сердце наги
 material.steeleaf.name=Магический лист
@@ -626,3 +825,31 @@ modifier.stalwart.name=Крепкий
 modifier.stalwart.desc=§oХрабрый и смелый.§r\nУдар по существу может заставить Вас чувствовать себя ободренным.
 modifier.veiled.name=Замаскированный
 modifier.veiled.desc=§oКак привидение!§r\nСнаряд будет невидим.
+
+# Immersive Engineering
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Missing in original
+tile.twilightforest.StonePillar.name=Лесная каменная колонна
+tile.twilightforest.StonePillarThin.name=Лесная тонкая каменная колонна

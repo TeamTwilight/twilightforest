@@ -1,0 +1,17 @@
+{
+  "parent": "block/thin_block",
+  "textures": {
+	"particle": "blocks/leaves_spruce",
+	"texture": "blocks/leaves_spruce"
+  },
+  "elements": [
+	{
+	  "from": [ 0, 0, 0 ],
+	  "to": [ 16, 0.2, 16 ],
+	  "faces": {
+		"up": { "uv": [ 0, 0, 16, 16 ], "texture": "#texture", "tintindex": 0 },
+		"down": { "uv": [ 0, 0, 16, 16 ], "texture": "#texture", "tintindex": 0 }
+	  }
+	}
+  ]
+}

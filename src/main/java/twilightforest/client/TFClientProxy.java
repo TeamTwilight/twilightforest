@@ -128,6 +128,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHarbingerCube.class, RenderTFHarbingerCube::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFAdherent.class, m -> new RenderTFAdherent(m, new ModelTFAdherent(), 0.625F, "adherent.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFRovingCube.class, RenderTFRovingCube::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFRisingZombie.class, m -> new RenderTFBiped<>(m, new ModelTFRisingZombie(), 0.5F, "textures/entity/zombie/zombie.png"));
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFCastleGuardian.class, m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
 

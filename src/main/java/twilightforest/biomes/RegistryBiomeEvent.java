@@ -237,6 +237,19 @@ public final class RegistryBiomeEvent {
 				),
 				TWILIGHT, Type.HILLS, Type.DEAD, Type.DRY, Type.WASTELAND
 		);
+
+		biomes.register(
+				"spooky_forest",
+				new TFBiomeSpookyForest(
+						new BiomeProperties("Spooky Forest")
+								.setTemperature(0.5F)
+								.setRainfall(1)
+								.setBaseHeight(0.125F)
+								.setHeightVariation(0.05F)
+								.setWaterColor(0XFA9111)
+				),
+				TWILIGHT, Type.FOREST, Type.DEAD, Type.DENSE, Type.SPOOKY
+		);
 	}
 
 	private static class BiomeRegistry {

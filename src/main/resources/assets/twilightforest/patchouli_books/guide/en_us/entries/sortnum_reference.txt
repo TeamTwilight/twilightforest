@@ -113,6 +113,7 @@ minotaur.json
 
 5030
 mazebreaker_pickaxe.json
+minotaur_axes.json
 
 5040
 minoshroom.json
@@ -130,6 +131,9 @@ hydra_lair.json
 
 5110
 hydra.json
+
+5120
+fiery_blood_tears.json
 
 
 

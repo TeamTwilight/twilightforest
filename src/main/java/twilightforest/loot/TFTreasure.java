@@ -46,6 +46,7 @@ public class TFTreasure {
 	public static final TFTreasure aurora_boss = new TFTreasure("aurora_boss");
 	public static final TFTreasure troll_garden = new TFTreasure("troll_garden");
 	public static final TFTreasure troll_vault = new TFTreasure("troll_vault");
+	public static final TFTreasure graveyard = new TFTreasure("graveyard");
 
 	public static void init() {
 		// Preload all entity tables

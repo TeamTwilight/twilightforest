@@ -46,6 +46,8 @@ public class TFBiomes {
 	public static final Biome highlandsCenter;
 	@ObjectHolder("thornlands")
 	public static final Biome thornlands;
+	@ObjectHolder("spooky_forest")
+	public static final Biome spookyForest;
 
 	//Much as I hate doing this, it tricks IntelliJ into thinking they're not null
 	static {
@@ -68,6 +70,6 @@ public class TFBiomes {
 		darkForestCenter = null;
 		highlandsCenter = null;
 		thornlands = null;
-
+		spookyForest = null;
 	}
 }

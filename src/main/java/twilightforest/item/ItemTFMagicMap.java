@@ -4,6 +4,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
@@ -187,6 +188,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 		putBiomeColor(TFBiomes.mushrooms, new MapColorBrightness(MapColor.ADOBE, 0));
 		putBiomeColor(TFBiomes.deepMushrooms, new MapColorBrightness(MapColor.PINK, 0));
 		putBiomeColor(TFBiomes.enchantedForest, new MapColorBrightness(MapColor.LIME, 2));
+		putBiomeColor(TFBiomes.spookyForest, new MapColorBrightness(MapColor.PURPLE, 0));
 	}
 
 	private static void putBiomeColor(Biome biome, MapColorBrightness color) {

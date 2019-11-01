@@ -1,0 +1,25 @@
+{
+  "name": "Minotaur Axes",
+  "icon": "twilightforest:minotaur_axe",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/minotaur_axes",
+  "sortnum": 5030,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Finely forged weapons wielded by Minotaurs and the Minoshroom. They feel like any old axe, but the design of these axes are strange. Though light to hold, these axes feel weighty while running with them."
+    }, {
+      "type": "spotlight",
+      "title": "Golden Minotaur Axe",
+      "item": "twilightforest:minotaur_axe_gold",
+      "advancement": "twilightforest:alt/treasures/minotaur_axe_gold",
+      "text": "Sharp, powerful, but incredibly frail. Only the most worthy of Minotaurs have these weapons."
+    }, {
+      "type": "spotlight",
+      "title": "Diamond Minotaur Axe",
+      "item": "twilightforest:minotaur_axe",
+      "advancement": "twilightforest:alt/treasures/minotaur_axe_diamond",
+      "text": "A finely forged weapon adorned with the strength of Diamond. This powerful weapon is the choice of the Minoshroom, fitting for a great beast."
+    }
+  ]
+}

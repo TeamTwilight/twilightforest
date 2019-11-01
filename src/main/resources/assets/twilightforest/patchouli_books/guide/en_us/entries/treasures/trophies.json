@@ -25,13 +25,17 @@
       "advancement": "twilightforest:progress_lich",
       "text": "things and stuff"
     }, {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Minoshroom Trophy",
+      "item": "twilightforest:trophy:6",
       "advancement": "twilightforest:progress_labyrinth",
-      "text": "things and stuff"
+      "text": "The trophy of the Minoshroom, bestowed to those who have bested the beast of the Labyrinth. Though iron-plated, it is still worth the well-fought battle of the brawn, or brain versus brawn, however the Minoshroom was slain."
     }, {
-      "type": "text",
+      "type": "spotlight",
+      "title": "Hydra Trophy",
+      "item": "twilightforest:trophy:2",
       "advancement": "twilightforest:progress_hydra",
-      "text": "things and stuff"
+      "text": "A trophy depicting one of the many heads of the Hydra. Though slaying a head only creates more, this reward from a heated battle is proof that a beast with regenerating heads can be slain. Seems like the mouth opens when there's no solid surface beneath the Trophy."
     }, {
       "type": "text",
       "advancement": "twilightforest:progress_knights",

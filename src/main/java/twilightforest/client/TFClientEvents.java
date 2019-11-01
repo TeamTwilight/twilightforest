@@ -44,6 +44,7 @@ public class TFClientEvents {
 		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_3"));
 		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
 		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/firefly"));
+		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/fallen_leaf"));
 
 		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenFieryStill                                        ));
 		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenFieryFlow                                         ));

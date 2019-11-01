@@ -5,15 +5,16 @@
     "transform": "forge:default-item"
   },
   "variants": {
-    "inventory_mosspatch":   [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/moss"                                                    }}],
-    "inventory_mayapple":    [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/mayapple"                                                      }}],
-    "inventory_cloverpatch": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/clover"                                                  }}],
-    "inventory_fiddlehead":  [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/fiddlehead"                                                    }}],
-    "inventory_mushgloom":   [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/mushgloom", "layer1": "twilightforest:blocks/mushgloom_head"   }}],
-    "inventory_forestgrass": [{ "model": "builtin/generated", "textures": { "layer0": "minecraft:blocks/tallgrass"                                                          }}],
-    "inventory_deadbush":    [{ "model": "builtin/generated", "textures": { "layer0": "minecraft:blocks/deadbush"                                                           }}],
-    "inventory_torchberry":  [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/torchberry", "layer1": "twilightforest:blocks/torchberry_glow" }}],
-    "inventory_root_strand": [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/rootstrand"                                                    }}],
+    "inventory_mosspatch":     [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/moss"                                                    }}],
+    "inventory_mayapple":      [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/mayapple"                                                      }}],
+    "inventory_cloverpatch":   [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/clover"                                                  }}],
+    "inventory_fiddlehead":    [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/fiddlehead"                                                    }}],
+    "inventory_mushgloom":     [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/mushgloom", "layer1": "twilightforest:blocks/mushgloom_head"   }}],
+    "inventory_forestgrass":   [{ "model": "builtin/generated", "textures": { "layer0": "minecraft:blocks/tallgrass"                                                          }}],
+    "inventory_deadbush":      [{ "model": "builtin/generated", "textures": { "layer0": "minecraft:blocks/deadbush"                                                           }}],
+    "inventory_torchberry":    [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/torchberry", "layer1": "twilightforest:blocks/torchberry_glow" }}],
+    "inventory_root_strand":   [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/rootstrand"                                                    }}],
+	"inventory_fallen_leaves": [{ "model": "builtin/generated", "textures": { "layer0": "blocks/leaves_spruce"                                         				          }}],
     "variant=mosspatch": [
       { "model": "twilightforest:mosspatch" }
     ],
@@ -62,6 +63,9 @@
       "transform": {
         "translation": [ 0, 0.0625, 0 ]
       }
-    }]
+    }],
+	"variant=fallen_leaves": [
+	  { "model": "twilightforest:fallenleaves" }
+	]
   }
 }

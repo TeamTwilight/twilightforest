@@ -21,7 +21,7 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 	private static final int LAMPPOST_CHANCE = 4;
 
 	private final WorldGenerator tfGenHangingLamps = new TFGenHangingLamps();
-	private final WorldGenerator tfGenLampposts = new TFGenLampposts();
+	private final WorldGenerator tfGenLampposts = new TFGenLampposts(TFBlocks.firefly_jar.getDefaultState());
 	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
 	public TFBiomeFireflyForest(BiomeProperties props) {

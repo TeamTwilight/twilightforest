@@ -44,6 +44,10 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 
 	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {
+		return generate(world, random, pos, true);
+	}
+
+	public boolean generate(World world, Random random, BlockPos pos, boolean hasLeaves) {
 		// determine a height
 		int treeHeight = minHeight;
 		if (random.nextInt(chanceAddFirstFive) == 0) {
@@ -77,9 +81,10 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		}
 
 		// add the actual leaves
-		for (BlockPos leafPos : leaves) {
-			makeLeafBlob(world, leafPos);
-		}
+		if (hasLeaves)
+			for (BlockPos leafPos : leaves) {
+				makeLeafBlob(world, leafPos);
+			}
 
 		// root bulb
 		if (TFGenerator.hasAirAround(world, pos.down())) {

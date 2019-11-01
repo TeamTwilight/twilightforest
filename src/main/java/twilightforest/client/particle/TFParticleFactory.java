@@ -37,6 +37,7 @@ public class TFParticleFactory {
 				-> new ParticleSmokeScale(world, x, y, z, vx, vy, vz, 4.0F + world.rand.nextFloat())
 		);
 		factories.put(TFParticleType.FIREFLY, ParticleFirefly::new);
+		factories.put(TFParticleType.FALLEN_LEAF, ParticleLeaf::new);
 	}
 
 	@Nullable
