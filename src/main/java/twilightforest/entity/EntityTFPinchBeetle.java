@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -13,6 +14,9 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -26,16 +30,42 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/pinch_beetle");
 
+	private static final DataParameter<Boolean> DATA_CONFUSE = EntityDataManager.createKey(EntityTFPinchBeetle.class, DataSerializers.BOOLEAN);
+
 	public EntityTFPinchBeetle(World world) {
 		super(world);
 		setSize(1.2F, 1.1F);
 	}
 
 	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(DATA_CONFUSE, false);
+	}
+
+	public boolean isConfuse() {
+		return dataManager.get(DATA_CONFUSE);
+	}
+
+	protected void setConfuse(boolean confuze) {
+		dataManager.set(DATA_CONFUSE, confuze);
+	}
+
+	@Override
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F, false));
-		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
+		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F, false) {
+			@Override
+			public boolean shouldExecute() {
+				return !isConfuse() && super.shouldExecute();
+			}
+		});
+		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false) {
+			@Override
+			public boolean shouldExecute() {
+				return !isConfuse() && super.shouldExecute();
+			}
+		});
 		this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -92,8 +122,27 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 	}
 
 	@Override
+	protected void updateAITasks() {
+		if (this.isConfuse() && this.rand.nextInt(120) == 0) {
+			this.setConfuse(false);
+		}
+
+
+		super.updateAITasks();
+	}
+
+	@Override
 	public boolean attackEntityAsMob(Entity entity) {
-		if (this.getPassengers().isEmpty() && !entity.isRiding()) {
+
+		if (!this.getPassengers().isEmpty() && this.getPassengers().get(0) == entity && entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isActiveItemStackBlocking()) {
+			//When Pinched,you cannot guard
+			if (entity instanceof EntityPlayer) {
+				((EntityPlayer) entity).disableShield(true);
+			}
+		} else if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isActiveItemStackBlocking()) {
+			//when guard success,pinchBeetle is confused
+			this.setConfuse(true);
+		} else if (this.getPassengers().isEmpty() && !entity.isRiding()) {
 			entity.startRiding(this);
 		}
 

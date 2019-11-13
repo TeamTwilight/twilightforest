@@ -88,7 +88,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMinoshroom.class, m -> new RenderTFMinoshroom(m, new ModelTFMinoshroom(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFFireBeetle.class, m -> new RenderTFGenericLiving<>(m, new ModelTFFireBeetle(), 0.8F, "firebeetle.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlimeBeetle.class, m -> new RenderTFSlimeBeetle(m, new ModelTFSlimeBeetle(), 0.6F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFPinchBeetle.class, m -> new RenderTFGenericLiving<>(m, new ModelTFPinchBeetle(), 0.6F, "pinchbeetle.png"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFPinchBeetle.class, m -> new RenderTFPinchBeetle(m, new ModelTFPinchBeetle(), 0.6F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMistWolf.class, RenderTFMistWolf::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMobileFirefly.class, RenderTFMobileFirefly::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMiniGhast.class, m -> new RenderTFGhast<>(m, new ModelTFGhast(), 0.625F));
