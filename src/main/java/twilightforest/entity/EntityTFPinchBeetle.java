@@ -18,6 +18,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -107,6 +108,12 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 			}
 		} else {
 			this.setSize(1.2F, 1.1F);
+
+		}
+
+		if(this.isConfuse()){
+			Vec3d pos = new Vec3d(this.posX, this.posY + 1.0D, this.posZ).add(new Vec3d(0.9D, 0, 0).rotateYaw((float) Math.toRadians(this.getRNG().nextInt(360))));
+			this.world.spawnParticle(EnumParticleTypes.CRIT, pos.x, pos.y, pos.z, 0, 0, 0);
 
 		}
 
