@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -10,14 +11,18 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityFlyHelper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -34,6 +39,7 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 
 	public EntityTFDeathTome(World world) {
 		super(world);
+		this.moveHelper = new EntityFlyHelper(this);
 	}
 
 	@Override
@@ -50,18 +56,33 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.45D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
 	}
 
 	@Override
+	protected PathNavigate createNavigator(World worldIn) {
+		PathNavigateFlying pathnavigateflying = new PathNavigateFlying(this, worldIn);
+		pathnavigateflying.setCanOpenDoors(false);
+		pathnavigateflying.setCanFloat(true);
+		pathnavigateflying.setCanEnterDoors(true);
+		return pathnavigateflying;
+	}
+
+	@Override
 	public void onLivingUpdate() {
+		if (!this.onGround && this.motionY < 0.0D) {
+			this.motionY *= 0.6D;
+		}
+
 		super.onLivingUpdate();
 
 		for (int i = 0; i < 1; ++i) {
 			this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
-					0, 0.5, 0);
+				0, 0.5, 0);
 		}
 	}
 
@@ -74,9 +95,9 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 		if (super.attackEntityFrom(src, damage)) {
 			if (!world.isRemote) {
 				LootContext ctx = new LootContext.Builder((WorldServer) world)
-						.withDamageSource(src)
-						.withLootedEntity(this)
-						.build();
+					.withDamageSource(src)
+					.withLootedEntity(this)
+					.build();
 
 				for (ItemStack stack : world.getLootTableManager().getLootTableFromLocation(HURT_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
 					entityDropItem(stack, 1.0F);
@@ -121,5 +142,14 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
+	public void setSwingingArms(boolean swingingArms) {
+	} // todo 1.12
+
+	@Override
+	public void fall(float distance, float damageMultiplier) {
+	}
+
+	@Override
+	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
+	}
 }
