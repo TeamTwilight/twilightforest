@@ -1,6 +1,6 @@
 package twilightforest.capabilities.shield;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
@@ -8,7 +8,7 @@ public interface IShieldCapability {
 
 	ResourceLocation ID = TwilightForestMod.prefix("cap_shield");
 
-	void setEntity(EntityLivingBase entity);
+	void setEntity(LivingEntity entity);
 
 	void update();
 

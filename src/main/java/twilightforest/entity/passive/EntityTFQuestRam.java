@@ -44,14 +44,14 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
-		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL), false));
+	protected void registerGoals() {
+		this.tasks.addTask(0, new SwimGoal(this));
+		this.tasks.addTask(1, new PanicGoal(this, 1.38F));
+		this.tasks.addTask(2, new TemptGoal(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL), false));
 		this.tasks.addTask(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.WOOL)));
 		this.tasks.addTask(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL)));
-		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
+		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
+		this.tasks.addTask(6, new LookRandomlyGoal(this));
 	}
 
 	@Override

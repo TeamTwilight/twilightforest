@@ -1,57 +1,57 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import twilightforest.entity.EntityTFBlockGoblin;
 
 
-public class ModelTFBlockGoblin extends ModelBiped {
-	public ModelRenderer helmet;
+public class ModelTFBlockGoblin<T extends EntityTFBlockGoblin> extends BipedModel<T> {
+	public RendererModel helmet;
 
-	ModelRenderer block;
-	ModelRenderer[] spikes = new ModelRenderer[27];
+	RendererModel block;
+	RendererModel[] spikes = new RendererModel[27];
 
 	public ModelTFBlockGoblin() {
-		bipedHead = new ModelRenderer(this, 0, 0);
+		bipedHead = new RendererModel(this, 0, 0);
 		bipedHead.addBox(0F, 0F, 0F, 0, 0, 0, 0F);
 		bipedHead.setRotationPoint(0F, 11F, 0F);
 
-		bipedHeadwear = new ModelRenderer(this, 0, 0);
+		bipedHeadwear = new RendererModel(this, 0, 0);
 		bipedHeadwear.addBox(0F, 0F, 0F, 0, 0, 0, 0.5F);
 		bipedHeadwear.setRotationPoint(0F, 11F, 0F);
 
-		this.helmet = new ModelRenderer(this, 24, 0);
+		this.helmet = new RendererModel(this, 24, 0);
 		this.helmet.addBox(-2.5F, -9.0F, -2.5F, 5, 9, 5);
 		this.helmet.rotateAngleY = 45F / (180F / (float) Math.PI);
 
 		this.bipedHeadwear.addChild(helmet);
 
-		bipedBody = new ModelRenderer(this, 0, 21);
+		bipedBody = new RendererModel(this, 0, 21);
 		bipedBody.addBox(-3.5F, 0F, -2F, 7, 7, 4, 0F);
 		bipedBody.setRotationPoint(0F, 11F, 0F);
 
-		bipedRightArm = new ModelRenderer(this, 52, 0);
+		bipedRightArm = new RendererModel(this, 52, 0);
 		bipedRightArm.addBox(-3F, -1F, -2F, 3, 12, 3, 0F);
 		bipedRightArm.setRotationPoint(-3.5F, 12F, 0F);
 
-		bipedLeftArm = new ModelRenderer(this, 52, 0);
+		bipedLeftArm = new RendererModel(this, 52, 0);
 		bipedLeftArm.addBox(0F, -1F, -1.5F, 3, 12, 3, 0F);
 		bipedLeftArm.setRotationPoint(3.5F, 12F, 0F);
 
-		bipedRightLeg = new ModelRenderer(this, 0, 12);
+		bipedRightLeg = new RendererModel(this, 0, 12);
 		bipedRightLeg.addBox(-1.5F, 0F, -1.5F, 3, 6, 3, 0F);
 		bipedRightLeg.setRotationPoint(-2F, 18F, 0F);
 
-		bipedLeftLeg = new ModelRenderer(this, 0, 12);
+		bipedLeftLeg = new RendererModel(this, 0, 12);
 		bipedLeftLeg.addBox(-1.5F, 0F, -1.5F, 3, 6, 3, 0F);
 		bipedLeftLeg.setRotationPoint(2F, 18F, 0F);
 
-		block = new ModelRenderer(this, 32, 16);
+		block = new RendererModel(this, 32, 16);
 		block.addBox(-4F, -8F, -4F, 8, 8, 8, 0F);
 		block.setRotationPoint(6F, 0F, 0F);
 
 		for (int i = 0; i < spikes.length; i++) {
-			spikes[i] = new ModelRenderer(this, 56, 16);
+			spikes[i] = new RendererModel(this, 56, 16);
 			spikes[i].addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
 			block.addChild(spikes[i]);
 		}
@@ -162,15 +162,15 @@ public class ModelTFBlockGoblin extends ModelBiped {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
 		//block.render(scale);
 	}
 
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
-		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
 		bipedHead.rotationPointY = 11.0F;
 		bipedHeadwear.rotationPointY = 11.0F;

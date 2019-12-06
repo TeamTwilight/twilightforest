@@ -1,27 +1,27 @@
 package twilightforest.capabilities.shield;
 
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
 public class ShieldCapabilityStorage implements Capability.IStorage<IShieldCapability> {
 
 	@Override
-	public NBTTagCompound writeNBT(Capability<IShieldCapability> capability, IShieldCapability instance, EnumFacing side) {
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setInteger("tempshields", instance.temporaryShieldsLeft());
-		tag.setInteger("permshields", instance.permanentShieldsLeft());
+	public CompoundNBT writeNBT(Capability<IShieldCapability> capability, IShieldCapability instance, Direction side) {
+		CompoundNBT tag = new CompoundNBT();
+		tag.putInt("tempshields", instance.temporaryShieldsLeft());
+		tag.putInt("permshields", instance.permanentShieldsLeft());
 		return tag;
 	}
 
 	@Override
-	public void readNBT(Capability<IShieldCapability> capability, IShieldCapability instance, EnumFacing side, NBTBase nbt) {
-		if (nbt instanceof NBTTagCompound && instance instanceof ShieldCapabilityHandler) {
-			NBTTagCompound tag = (NBTTagCompound) nbt;
+	public void readNBT(Capability<IShieldCapability> capability, IShieldCapability instance, Direction side, INBT nbt) {
+		if (nbt instanceof CompoundNBT && instance instanceof ShieldCapabilityHandler) {
+			CompoundNBT tag = (CompoundNBT) nbt;
 			((ShieldCapabilityHandler) instance).initShields(
-					tag.getInteger("tempshields"),
-					tag.getInteger("permshields")
+					tag.getInt("tempshields"),
+					tag.getInt("permshields")
 			);
 		}
 	}

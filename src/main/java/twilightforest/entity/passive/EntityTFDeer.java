@@ -1,14 +1,15 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Pose;
+import net.minecraft.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +24,7 @@ import twilightforest.TwilightForestMod;
  *
  * @author Ben
  */
-public class EntityTFDeer extends EntityCow {
+public class EntityTFDeer extends CowEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/deer");
 
@@ -38,14 +39,14 @@ public class EntityTFDeer extends EntityCow {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		super.initEntityAI();
-		tasks.addTask(4, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 1.5D, 1.8D));
+	protected void registerGoals() {
+		super.registerGoals();
+		goalSelector.addGoal(4, new AvoidEntityGoal<>(this, PlayerEntity.class, 16.0F, 1.5D, 1.8D));
 	}
 
 	@Override
-	public float getEyeHeight() {
-		return this.height * 0.7F;
+	public float getEyeHeight(Pose pose) {
+		return this.getHeight() * 0.7F;
 	}
 
 	@Override
@@ -63,12 +64,12 @@ public class EntityTFDeer extends EntityCow {
 		return TFSounds.DEER_DEATH;
 	}
 
-	@Override
-	protected void playStepSound(BlockPos pos, Block block) {
-	}
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {
+    }
 
-	@Override
-	public boolean processInteract(EntityPlayer entityplayer, EnumHand hand) {
+    @Override
+	public boolean processInteract(PlayerEntity entityplayer, Hand hand) {
 		ItemStack itemstack = entityplayer.getHeldItem(hand);
 		if (itemstack.getItem() == Items.BUCKET) {
 			// specifically do not respond to this
@@ -78,13 +79,14 @@ public class EntityTFDeer extends EntityCow {
 		}
 	}
 
+	//TODO: Move to loot table
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
 	}
 
 	@Override
-	public EntityCow createChild(EntityAgeable entityanimal) {
+	public CowEntity createChild(AgeableEntity entityanimal) {
 		return new EntityTFDeer(world);
 	}
 }

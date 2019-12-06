@@ -3,12 +3,12 @@ package twilightforest.entity.passive;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.AvoidEntityGoal;
+import net.minecraft.entity.ai.LookRandomlyGoal;
+import net.minecraft.entity.ai.PanicGoal;
+import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -33,15 +33,15 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
+	protected void registerGoals() {
+		this.tasks.addTask(0, new SwimGoal(this));
+		this.tasks.addTask(1, new PanicGoal(this, 1.38F));
 		this.tasks.addTask(2, new EntityAITFTempt(this, 1.0F, true, SEEDS));
-		this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.4F));
-		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0F));
-		this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.25F));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-		this.tasks.addTask(8, new EntityAILookIdle(this));
+		this.tasks.addTask(3, new AvoidEntityGoal<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.4F));
+		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
+		this.tasks.addTask(6, new WaterAvoidingRandomWalkingGoal(this, 1.25F));
+		this.tasks.addTask(7, new LookAtGoal(this, EntityPlayer.class, 6F));
+		this.tasks.addTask(8, new LookRandomlyGoal(this));
 	}
 
 	@Override

@@ -5,127 +5,127 @@
 // - ZeuX
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.entity.EntityTFFireBeetle;
 
-public class ModelTFFireBeetle extends ModelBase {
+public class ModelTFFireBeetle<T extends EntityTFFireBeetle> extends EntityModel<T> {
 	//fields
-	ModelRenderer thorax;
-	ModelRenderer head;
-	ModelRenderer connector2;
-	ModelRenderer RearEnd;
-	ModelRenderer Leg6;
-	ModelRenderer Leg4;
-	ModelRenderer Leg2;
-	ModelRenderer Leg5;
-	ModelRenderer Leg3;
-	ModelRenderer Leg1;
-	ModelRenderer connector1;
-	ModelRenderer jaw1a;
-	ModelRenderer jaw1b;
-	ModelRenderer jaw2a;
-	ModelRenderer jaw2b;
-	ModelRenderer antenna1;
-	ModelRenderer antenna2;
-	ModelRenderer eye1;
-	ModelRenderer eye2;
+	RendererModel thorax;
+	RendererModel head;
+	RendererModel connector2;
+	RendererModel RearEnd;
+	RendererModel Leg6;
+	RendererModel Leg4;
+	RendererModel Leg2;
+	RendererModel Leg5;
+	RendererModel Leg3;
+	RendererModel Leg1;
+	RendererModel connector1;
+	RendererModel jaw1a;
+	RendererModel jaw1b;
+	RendererModel jaw2a;
+	RendererModel jaw2b;
+	RendererModel antenna1;
+	RendererModel antenna2;
+	RendererModel eye1;
+	RendererModel eye2;
 
 	public ModelTFFireBeetle() {
 		textureWidth = 64;
 		textureHeight = 32;
 
-		thorax = new ModelRenderer(this, 0, 22);
+		thorax = new RendererModel(this, 0, 22);
 		thorax.addBox(-4.5F, -4F, 0F, 9, 8, 2);
 		thorax.setRotationPoint(0F, 18F, -4.5F);
 
-		connector1 = new ModelRenderer(this, 0, 12);
+		connector1 = new RendererModel(this, 0, 12);
 		connector1.addBox(-3F, -3F, 0F, 6, 6, 1);
 		connector1.setRotationPoint(0F, 18F, -3F);
 
-		connector2 = new ModelRenderer(this, 0, 12);
+		connector2 = new RendererModel(this, 0, 12);
 		connector2.addBox(-3F, -3F, -1F, 6, 6, 1);
 		connector2.setRotationPoint(0F, 18F, -4F);
 
-		RearEnd = new ModelRenderer(this, 22, 9);
+		RearEnd = new RendererModel(this, 22, 9);
 		RearEnd.addBox(-6F, -9F, -4F, 12, 14, 9);
 		RearEnd.setRotationPoint(0F, 18F, 7F);
 		setRotation(RearEnd, 1.570796F, 0F, 0F);
 
-		Leg6 = new ModelRenderer(this, 40, 0);
+		Leg6 = new RendererModel(this, 40, 0);
 		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
 		Leg6.setRotationPoint(4F, 21F, -4F);
 		setRotation(Leg6, 0F, 0.2792527F, 0.3490659F);
 
-		Leg5 = new ModelRenderer(this, 40, 0);
+		Leg5 = new RendererModel(this, 40, 0);
 		Leg5.mirror = true;
 		Leg5.addBox(-9F, -1F, -1F, 10, 2, 2);
 		Leg5.setRotationPoint(-4F, 21F, -4F);
 		setRotation(Leg5, 0F, -0.2792527F, -0.3490659F);
 
-		Leg4 = new ModelRenderer(this, 40, 0);
+		Leg4 = new RendererModel(this, 40, 0);
 		Leg4.addBox(-1F, -1F, -1F, 10, 2, 2);
 		Leg4.setRotationPoint(4F, 21F, -1F);
 		setRotation(Leg4, 0F, -0.2792527F, 0.3490659F);
 
-		Leg2 = new ModelRenderer(this, 40, 0);
+		Leg2 = new RendererModel(this, 40, 0);
 		Leg2.addBox(-1F, -1F, -1F, 10, 2, 2);
 		Leg2.setRotationPoint(4F, 21F, 4F);
 		setRotation(Leg2, 0F, -0.6981317F, 0.3490659F);
 
-		Leg3 = new ModelRenderer(this, 40, 0);
+		Leg3 = new RendererModel(this, 40, 0);
 		Leg3.mirror = true;
 		Leg3.addBox(-9F, -1F, -1F, 10, 2, 2);
 		Leg3.setRotationPoint(-4F, 21F, -1F);
 		setRotation(Leg3, 0F, 0.2792527F, -0.3490659F);
 
-		Leg1 = new ModelRenderer(this, 40, 0);
+		Leg1 = new RendererModel(this, 40, 0);
 		Leg1.mirror = true;
 		Leg1.addBox(-9F, -1F, -1F, 10, 2, 2);
 		Leg1.setRotationPoint(-4F, 21F, 4F);
 		Leg1.setTextureSize(64, 32);
 		setRotation(Leg1, 0F, 0.6981317F, -0.3490659F);
 
-		head = new ModelRenderer(this, 0, 0);
+		head = new RendererModel(this, 0, 0);
 		head.addBox(-4F, -4F, -6F, 8, 6, 6);
 		head.setRotationPoint(0F, 19F, -5F);
 
-		jaw1a = new ModelRenderer(this, 0, 0);
+		jaw1a = new RendererModel(this, 0, 0);
 		jaw1a.addBox(0F, 0F, -2F, 1, 1, 2);
 		jaw1a.setRotationPoint(-3F, 0F, -6F);
 		setRotation(jaw1a, 0.3490659F, 0F, 0F);
 
-		jaw1b = new ModelRenderer(this, 0, 0);
+		jaw1b = new RendererModel(this, 0, 0);
 		jaw1b.addBox(0F, 0F, 0F, 1, 1, 2);
 		jaw1b.setRotationPoint(0F, 0F, -2F);
 		setRotation(jaw1b, 0F, 1.570796F, 0F);
 
-		jaw2a = new ModelRenderer(this, 0, 0);
+		jaw2a = new RendererModel(this, 0, 0);
 		jaw2a.addBox(-1F, 0F, -2F, 1, 1, 2);
 		jaw2a.setRotationPoint(3F, 0F, -6F);
 		setRotation(jaw2a, 0.3490659F, 0F, 0F);
 
-		jaw2b = new ModelRenderer(this, 0, 0);
+		jaw2b = new RendererModel(this, 0, 0);
 		jaw2b.addBox(0F, 0F, -2F, 1, 1, 2);
 		jaw2b.setRotationPoint(0F, 0F, -2F);
 		setRotation(jaw2b, 0F, 1.570796F, 0F);
 
-		antenna1 = new ModelRenderer(this, 42, 4);
+		antenna1 = new RendererModel(this, 42, 4);
 		antenna1.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
 		antenna1.setRotationPoint(1F, -3F, -5F);
 		setRotation(antenna1, 0F, 1.047198F, -0.296706F);
 
-		antenna2 = new ModelRenderer(this, 42, 4);
+		antenna2 = new RendererModel(this, 42, 4);
 		antenna2.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
 		antenna2.setRotationPoint(-1F, -3F, -5F);
 		setRotation(antenna2, 0F, 2.094395F, 0.296706F);
 
-		eye1 = new ModelRenderer(this, 15, 12);
+		eye1 = new RendererModel(this, 15, 12);
 		eye1.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 		eye1.setRotationPoint(-3F, -2F, -5F);
 
-		eye2 = new ModelRenderer(this, 15, 12);
+		eye2 = new RendererModel(this, 15, 12);
 		eye2.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 		eye2.setRotationPoint(3F, -2F, -5F);
 
@@ -142,9 +142,9 @@ public class ModelTFFireBeetle extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		thorax.render(scale);
 		head.render(scale);
 		connector2.render(scale);
@@ -158,7 +158,7 @@ public class ModelTFFireBeetle extends ModelBase {
 		connector1.render(scale);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(RendererModel model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -170,7 +170,7 @@ public class ModelTFFireBeetle extends ModelBase {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 

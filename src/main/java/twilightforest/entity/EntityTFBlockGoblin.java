@@ -1,30 +1,18 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -35,7 +23,7 @@ import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
 import java.util.List;
 import java.util.UUID;
 
-public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
+public class EntityTFBlockGoblin extends MobEntity implements IEntityMultiPart {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, 0)).setSaved(false);
 
@@ -64,41 +52,41 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIAvoidEntity<>(this, EntityTNTPrimed.class, 2.0F, 0.8F, 1.5F));
-		this.tasks.addTask(4, new EntityAIThrowSpikeBlock(this, this.block));
-		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0F, false));
-		this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(7, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, TNTEntity.class, 2.0F, 0.8F, 1.5F));
+		this.goalSelector.addGoal(4, new EntityAIThrowSpikeBlock(this, this.block));
+		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0F, false));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_CHAINLENGTH, (byte) 0);
 		dataManager.register(DATA_CHAINPOS, (byte) 0);
 		dataManager.register(IS_THROWING, false);
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(11.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(11.0D);
 	}
 
-	@Override
-	public float getEyeHeight() {
-		return this.height * 0.78F;
-	}
+    @Override
+    public float getEyeHeight(Pose pose) {
+        return this.getHeight() * 0.78F;
+    }
 
-	@Override
+    @Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.REDCAP_AMBIENT;
 	}
@@ -148,13 +136,13 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
-		swingArm(EnumHand.MAIN_HAND);
+		swingArm(Hand.MAIN_HAND);
 		return false;
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		block.onUpdate();
 		chain1.onUpdate();
 		chain2.onUpdate();
@@ -184,7 +172,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 			Vec3d blockPos = this.getThrowPos();
 
 			double sx2 = this.posX;
-			double sy2 = this.posY + this.height - 0.1;
+			double sy2 = this.posY + this.getHeight() - 0.1;
 			double sz2 = this.posZ;
 
 			double ox2 = sx2 - blockPos.x;
@@ -192,7 +180,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 			double oz2 = sz2 - blockPos.z;
 
 			//When the thrown chainblock exceeds a certain distance, return to the owner
-			if (this.chainMoveLength >= 6.0F || !this.isEntityAlive()) {
+			if (this.chainMoveLength >= 6.0F || !this.isAlive()) {
 				this.setThrowing(false);
 			}
 
@@ -256,7 +244,7 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	 * Check if the block is colliding with any nearby entities
 	 */
 	protected void applyBlockCollisions(Entity collider) {
-		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getEntityBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(collider, collider.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
 		for (Entity entity : list) {
 			if (entity.canBePushed()) {
@@ -271,10 +259,10 @@ public class EntityTFBlockGoblin extends EntityMob implements IEntityMultiPart {
 	protected void applyBlockCollision(Entity collider, Entity collided) {
 		if (collided != this) {
 			collided.applyEntityCollision(collider);
-			if (collided instanceof EntityLivingBase) {
+			if (collided instanceof LivingEntity) {
 				if (super.attackEntityAsMob(collided)) {
-					collided.motionY += 0.4;
-					this.playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
+					collided.getMotion().add(0, 0.4, 0);
+					this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 					this.recoilCounter = 40;
 					if (this.isThrowing()) {
 						this.setThrowing(false);

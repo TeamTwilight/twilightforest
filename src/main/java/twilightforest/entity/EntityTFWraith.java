@@ -37,7 +37,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	@Override
-	protected void initEntityAI() {
+	protected void registerGoals() {
 		this.tasks.addTask(4, new AIAttack(this));
 		this.tasks.addTask(5, new AIFlyTowardsTarget(this));
 		this.tasks.addTask(6, new AIRandomFly(this));
@@ -71,7 +71,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 		}
 	}
 
-	// Similar to EntityAIAttackMelee but simpler (no pathfinding)
+	// Similar to MeleeAttackGoal but simpler (no pathfinding)
 	static class AIAttack extends EntityAIBase {
 		private final EntityTFWraith taskOwner;
 		private int attackTick = 20;

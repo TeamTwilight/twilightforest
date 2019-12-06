@@ -1,7 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackRanged;
+import net.minecraft.entity.ai.RangedAttackGoal;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -26,9 +26,9 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		super.initEntityAI();
-		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.25D, 20, 10.0F) {
+	protected void registerGoals() {
+		super.registerGoals();
+		this.tasks.addTask(4, new RangedAttackGoal(this, 1.25D, 20, 10.0F) {
 			@Override
 			public void startExecuting() {
 				super.startExecuting();

@@ -3,14 +3,14 @@ package twilightforest.entity.passive;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFollowParent;
-import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.LookRandomlyGoal;
 import net.minecraft.entity.ai.EntityAIMate;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAITempt;
+import net.minecraft.entity.ai.PanicGoal;
+import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.TemptGoal;
 import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityAIWatchClosest2;
+import net.minecraft.entity.ai.LookAtGoal;
+import net.minecraft.entity.ai.LookAtGoal2;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -29,16 +29,16 @@ public class EntityTFPenguin extends EntityTFBird {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(1, new EntityAIPanic(this, 1.75F));
+	protected void registerGoals() {
+		tasks.addTask(0, new SwimGoal(this));
+		tasks.addTask(1, new PanicGoal(this, 1.75F));
 		tasks.addTask(2, new EntityAIMate(this, 1.0F));
-		tasks.addTask(3, new EntityAITempt(this, 0.75F, Items.FISH, false));
+		tasks.addTask(3, new TemptGoal(this, 0.75F, Items.FISH, false));
 		tasks.addTask(4, new EntityAIFollowParent(this, 1.15F));
 		tasks.addTask(5, new EntityAIWander(this, 1.0F));
-		tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-		tasks.addTask(7, new EntityAIWatchClosest2(this, twilightforest.entity.passive.EntityTFPenguin.class, 5F, 0.02F));
-		tasks.addTask(8, new EntityAILookIdle(this));
+		tasks.addTask(6, new LookAtGoal(this, EntityPlayer.class, 6F));
+		tasks.addTask(7, new LookAtGoal2(this, twilightforest.entity.passive.EntityTFPenguin.class, 5F, 0.02F));
+		tasks.addTask(8, new LookRandomlyGoal(this));
 	}
 
 	@Override

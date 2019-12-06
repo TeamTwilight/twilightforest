@@ -1,17 +1,16 @@
 package twilightforest.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.opengl.GLContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class FogHandler {
 
 	private static final float[] spoopColors = new float[3];
@@ -55,14 +54,14 @@ public class FogHandler {
 				spoopFog += shift;
 			spoopFog = MathHelper.clamp(spoopFog, 0F, 1F);
 
-			GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
+			GlStateManager.fogMode(GlStateManager.FogMode.LINEAR);
 
 			if (event.getFogMode() == -1) {
-				GlStateManager.setFogStart(0.0F);
-				GlStateManager.setFogEnd(f);
+				GlStateManager.fogStart(0.0F);
+				GlStateManager.fogEnd(f);
 			} else {
-				GlStateManager.setFogStart(f * 0.75F);
-				GlStateManager.setFogEnd(f);
+				GlStateManager.fogStart(f * 0.75F);
+				GlStateManager.fogEnd(f);
 			}
 
 			if (GLContext.getCapabilities().GL_NV_fog_distance) {
@@ -72,7 +71,7 @@ public class FogHandler {
 	}
 
 	private static boolean isSpooky() {
-		return Minecraft.getMinecraft().world != null && Minecraft.getMinecraft().player != null && Minecraft.getMinecraft().world.getBiome(Minecraft.getMinecraft().player.getPosition()) == TFBiomes.spookyForest;
+		return Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && Minecraft.getInstance().world.getBiome(Minecraft.getInstance().player.getPosition()) == TFBiomes.spookyForest;
 	}
 
 }

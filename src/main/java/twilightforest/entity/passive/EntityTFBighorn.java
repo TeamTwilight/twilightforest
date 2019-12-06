@@ -1,11 +1,14 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.item.DyeColor;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
@@ -15,14 +18,14 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
 
-public class EntityTFBighorn extends EntitySheep {
+public class EntityTFBighorn extends SheepEntity {
 
 	public static final ResourceLocation SHEARED_LOOT_TABLE = TwilightForestMod.prefix("entities/bighorn_sheep/sheared");
-	public static final Map<EnumDyeColor, ResourceLocation> COLORED_LOOT_TABLES;
+	public static final Map<DyeColor, ResourceLocation> COLORED_LOOT_TABLES;
 
 	static {
-		Map<EnumDyeColor, ResourceLocation> map = new EnumMap<>(EnumDyeColor.class);
-		for (EnumDyeColor color : EnumDyeColor.values()) {
+		Map<DyeColor, ResourceLocation> map = new EnumMap<>(DyeColor.class);
+		for (DyeColor color : DyeColor.values()) {
 			map.put(color, TwilightForestMod.prefix("entities/bighorn_sheep/" + color.getName()));
 		}
 		COLORED_LOOT_TABLES = Collections.unmodifiableMap(map);
@@ -43,21 +46,22 @@ public class EntityTFBighorn extends EntitySheep {
 		return this.getSheared() ? SHEARED_LOOT_TABLE : COLORED_LOOT_TABLES.get(this.getFleeceColor());
 	}
 
-	private static EnumDyeColor getRandomFleeceColor(Random random) {
+	private static DyeColor getRandomFleeceColor(Random random) {
 		return random.nextBoolean()
-				? EnumDyeColor.BROWN
-				: EnumDyeColor.byMetadata(random.nextInt(16));
+				? DyeColor.BROWN
+				: DyeColor.byId(random.nextInt(16));
 	}
 
-	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-		livingdata = super.onInitialSpawn(difficulty, livingdata);
-		this.setFleeceColor(getRandomFleeceColor(this.world.rand));
-		return livingdata;
-	}
+    @Nullable
+    @Override
+    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
+        livingdata = super.onInitialSpawn(worldIn, difficulty, reason, livingdata, dataTag);
+        this.setFleeceColor(getRandomFleeceColor(this.world.rand));
+        return livingdata;
+    }
 
-	@Override
-	public EntitySheep createChild(EntityAgeable ageable) {
+    @Override
+	public SheepEntity createChild(AgeableEntity ageable) {
 		EntityTFBighorn otherParent = (EntityTFBighorn) ageable;
 		EntityTFBighorn babySheep = new EntityTFBighorn(world);
 		babySheep.setFleeceColor(getDyeColorMixFromParents(this, otherParent));

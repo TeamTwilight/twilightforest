@@ -3,7 +3,7 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.MeleeAttackGoal;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.PacketThrowPlayer;
 
-public class EntityAITFThrowRider extends EntityAIAttackMelee {
+public class EntityAITFThrowRider extends MeleeAttackGoal {
 
 	private int throwTimer;
 	private int timeout;

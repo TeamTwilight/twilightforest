@@ -44,8 +44,8 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		super.initEntityAI();
+	protected void registerGoals() {
+		super.registerGoals();
 		this.tasks.addTask(1, new EntityAITFGroundAttack(this));
 	}
 

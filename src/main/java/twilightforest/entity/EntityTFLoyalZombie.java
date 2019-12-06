@@ -6,16 +6,16 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.MeleeAttackGoal;
 import net.minecraft.entity.ai.EntityAIFollowOwner;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.HurtByTargetGoal;
+import net.minecraft.entity.ai.LookRandomlyGoal;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityMob;
@@ -38,17 +38,17 @@ public class EntityTFLoyalZombie extends EntityTameable {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
+	protected void registerGoals() {
+		this.tasks.addTask(1, new SwimGoal(this));
+		this.tasks.addTask(4, new MeleeAttackGoal(this, 1.0D, true));
 		this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(9, new EntityAILookIdle(this));
+		this.tasks.addTask(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.tasks.addTask(9, new LookAtGoal(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(9, new LookRandomlyGoal(this));
 		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
 		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityMob.class, true));
+		this.targetTasks.addTask(3, new HurtByTargetGoal(this, true));
+		this.targetTasks.addTask(4, new NearestAttackableTargetGoal<>(this, EntityMob.class, true));
 	}
 
 	@Override

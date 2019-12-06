@@ -1,24 +1,21 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockOldLeaf;
-import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemDye;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjectile {
 
@@ -26,13 +23,13 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 		super(world);
 	}
 
-	public EntityTFNatureBolt(World world, EntityLivingBase thrower) {
+	public EntityTFNatureBolt(World world, LivingEntity thrower) {
 		super(world, thrower);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		makeTrail();
 	}
 
@@ -46,17 +43,17 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.HAPPY_VILLAGER, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			int stateId = Block.getStateId(Blocks.LEAVES.getDefaultState());
+			int stateId = Block.getStateId(Blocks.OAK_LEAVES.getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, stateId);
+				this.world.addParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, stateId);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -69,21 +66,21 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 			if (ray.getBlockPos() != null) {
 				Material materialHit = world.getBlockState(ray.getBlockPos()).getMaterial();
 
-				if (materialHit == Material.GRASS) {
+				if (materialHit == Material.ORGANIC) {
 					ItemStack dummy = new ItemStack(Items.DYE, 1, 15);
-					if (ItemDye.applyBonemeal(dummy, world, ray.getBlockPos())) {
+					if (BoneMealItem.applyBonemeal(dummy, world, ray.getBlockPos())) {
 						world.playEvent(2005, ray.getBlockPos(), 0);
 					}
 				} else if (materialHit.isSolid() && canReplaceBlock(world, ray.getBlockPos())) {
-					world.setBlockState(ray.getBlockPos(), Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH));
+					world.setBlockState(ray.getBlockPos(), Blocks.BIRCH_LEAVES.getDefaultState());
 				}
 			}
 
-			if (ray.entityHit instanceof EntityLivingBase && (thrower == null || (ray.entityHit != thrower && ray.entityHit != thrower.getRidingEntity()))) {
+			if (ray.hitInfo instanceof LivingEntity && (thrower == null || (ray.entityHit != thrower && ray.entityHit != thrower.getRidingEntity()))) {
 				if (ray.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
-						&& world.getDifficulty() != EnumDifficulty.PEACEFUL) {
-					int poisonTime = world.getDifficulty() == EnumDifficulty.HARD ? 7 : 3;
-					((EntityLivingBase) ray.entityHit).addPotionEffect(new PotionEffect(MobEffects.POISON, poisonTime * 20, 0));
+						&& world.getDifficulty() != Difficulty.PEACEFUL) {
+					int poisonTime = world.getDifficulty() == Difficulty.HARD ? 7 : 3;
+					((LivingEntity) ray.entityHit).addPotionEffect(new EffectInstance(Effects.POISON, poisonTime * 20, 0));
 				}
 			}
 

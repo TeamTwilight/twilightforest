@@ -19,7 +19,7 @@ public class EntityTFRisingZombie extends EntityZombie {
 	}
 
 	@Override
-	protected void initEntityAI() {
+	protected void registerGoals() {
 		// NO-OP
 	}
 

@@ -1,33 +1,33 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 
 
-public class ModelTFCicada extends ModelBase {
+public class ModelTFCicada extends EntityModel {
 	public ModelTFCicada() {
-		legs = new ModelRenderer(this, 0, 21);
+		legs = new RendererModel(this, 0, 21);
 		legs.addBox(-4F, 7.9F, -5F, 8, 1, 9, 0F);
 		//legs.setRotationPoint(0F, 16F, 0F);
 
-		fatbody = new ModelRenderer(this, 0, 11);
+		fatbody = new RendererModel(this, 0, 11);
 		fatbody.addBox(-2F, 6F, -4F, 4, 2, 6, 0F);
 		//fatbody.setRotationPoint(0F, 16F, 0F);
 
-		skinnybody = new ModelRenderer(this, 0, 0);
+		skinnybody = new RendererModel(this, 0, 0);
 		skinnybody.addBox(-1F, 7F, -5F, 2, 1, 8, 0F);
 		//skinnybody.setRotationPoint(0F, 16F, 0F);
 
 
-		eye1 = new ModelRenderer(this, 20, 15);
+		eye1 = new RendererModel(this, 20, 15);
 		eye1.addBox(1F, 5F, 2F, 2, 2, 2, 0F);
 		//eye1.setRotationPoint(0F, 16F, 0F);
 
-		eye2 = new ModelRenderer(this, 20, 15);
+		eye2 = new RendererModel(this, 20, 15);
 		eye2.addBox(-3F, 5F, 2F, 2, 2, 2, 0F);
 		//eye2.setRotationPoint(0F, 16F, 0F);
 
-		wings = new ModelRenderer(this, 20, 0);
+		wings = new RendererModel(this, 20, 0);
 		wings.addBox(-4F, 5F, -7F, 8, 1, 8, 0F);
 		//wings.setRotationPoint(0F, 16F, 0F);
 	}
@@ -49,11 +49,11 @@ public class ModelTFCicada extends ModelBase {
 	}
 
 	//fields
-	public ModelRenderer legs;
-	public ModelRenderer fatbody;
-	public ModelRenderer skinnybody;
-	public ModelRenderer eye1;
-	public ModelRenderer eye2;
-	public ModelRenderer wings;
+	public RendererModel legs;
+	public RendererModel fatbody;
+	public RendererModel skinnybody;
+	public RendererModel eye1;
+	public RendererModel eye2;
+	public RendererModel wings;
 
 }

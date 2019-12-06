@@ -1,11 +1,11 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.LookRandomlyGoal;
+import net.minecraft.entity.ai.PanicGoal;
+import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -28,13 +28,13 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
+	protected void registerGoals() {
+		this.tasks.addTask(0, new SwimGoal(this));
+		this.tasks.addTask(1, new PanicGoal(this, 1.5F));
 		this.tasks.addTask(2, new EntityAITFTempt(this, 0.85F, true, SEEDS));
-		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0F));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-		this.tasks.addTask(7, new EntityAILookIdle(this));
+		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
+		this.tasks.addTask(6, new LookAtGoal(this, EntityPlayer.class, 6F));
+		this.tasks.addTask(7, new LookRandomlyGoal(this));
 	}
 
 	@Override

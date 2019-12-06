@@ -2,7 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,9 +45,9 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		super.initEntityAI();
-		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	protected void registerGoals() {
+		super.registerGoals();
+		this.targetTasks.addTask(4, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
 	}
 
 	@Override

@@ -9,9 +9,9 @@ import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.HurtByTargetGoal;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.SwimGoal;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -128,8 +128,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(1, new EntityAISwimming(this));
+	protected void registerGoals() {
+		this.tasks.addTask(1, new SwimGoal(this));
 		this.tasks.addTask(2, new AIAttack(this));
 		this.tasks.addTask(3, new AISmash(this));
 		this.tasks.addTask(4, movementAI = new AIMovementPattern(this));
@@ -145,13 +145,13 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				return RandomPositionGenerator.findRandomTarget(this.entity, 30, 7);
 			}
 		});
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
+		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, false));
 
 		this.moveHelper = new NagaMoveHelper(this);
 	}
 
-	// Similar to EntityAIAttackMelee but simpler (no pathfinding)
+	// Similar to MeleeAttackGoal but simpler (no pathfinding)
 	static class AIAttack extends EntityAIBase {
 
 		private final EntityTFNaga taskOwner;

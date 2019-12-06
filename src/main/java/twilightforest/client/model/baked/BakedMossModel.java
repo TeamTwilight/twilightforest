@@ -1,9 +1,13 @@
 package twilightforest.client.model.baked;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
 import org.lwjgl.util.vector.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -11,14 +15,15 @@ import twilightforest.TwilightForestMod;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BakedMossModel implements IBakedModel {
     private static final FaceBakery bakery = new FaceBakery();
     private static final String spriteString = TwilightForestMod.ID + ":blocks/mosspatch";
-    private static final TextureAtlasSprite mossTex = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(spriteString);
+    private static final TextureAtlasSprite mossTex = Minecraft.getInstance().getTextureMap().getAtlasSprite(spriteString);
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
         List<BakedQuad> quads  = new ArrayList<>();
 
         List<BakedQuad> ups    = new ArrayList<>();
@@ -37,11 +42,11 @@ public class BakedMossModel implements IBakedModel {
         //mainTop.setTexture(mossTex);
 
         // Main piece
-        BakedQuad mainUp    = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, EnumFacing.UP   , quads, ups   );
-        BakedQuad mainNorth = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, EnumFacing.NORTH, quads, norths);
-        BakedQuad mainSouth = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, EnumFacing.SOUTH, quads, souths);
-        BakedQuad mainWest  = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, EnumFacing.WEST , quads, wests );
-        BakedQuad mainEast  = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, EnumFacing.EAST , quads, easts );
+        BakedQuad mainUp    = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, Direction.UP   , quads, ups   );
+        BakedQuad mainNorth = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, Direction.NORTH, quads, norths);
+        BakedQuad mainSouth = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, Direction.SOUTH, quads, souths);
+        BakedQuad mainWest  = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, Direction.WEST , quads, wests );
+        BakedQuad mainEast  = makeMossQuad(8 - xMin, 8 - zMin, 8 + xMax, 8 + zMax, Direction.EAST , quads, easts );
 
         int num4  = (int) (rand >>  7 &  0b1L);
         int num5  = (int) (rand >>  9 & 0b11L) + 1;
@@ -62,7 +67,7 @@ public class BakedMossModel implements IBakedModel {
         return null;
     }
 
-    private static BakedQuad makeMossQuad(int xMin, int zMin, int xMax, int zMax, EnumFacing facing, List<BakedQuad> generalQuads, List<BakedQuad> faceQuads) {
+    private static BakedQuad makeMossQuad(int xMin, int zMin, int xMax, int zMax, Direction facing, List<BakedQuad> generalQuads, List<BakedQuad> faceQuads) {
         BakedQuad toReturn = bakery.makeBakedQuad(
                 new Vector3f(xMin, 0.0f, zMin),
                 new Vector3f(xMax, 1.0f, zMax),

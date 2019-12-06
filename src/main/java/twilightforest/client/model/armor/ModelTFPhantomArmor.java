@@ -1,12 +1,10 @@
 package twilightforest.client.model.armor;
 
-
-import net.minecraft.inventory.EntityEquipmentSlot;
-import twilightforest.client.model.armor.ModelTFKnightlyArmor;
+import net.minecraft.inventory.EquipmentSlotType;
 
 public class ModelTFPhantomArmor extends ModelTFKnightlyArmor {
 
-	public ModelTFPhantomArmor(EntityEquipmentSlot part, float expand) {
+	public ModelTFPhantomArmor(EquipmentSlotType part, float expand) {
 		super(expand);
 
 		this.righthorn1.rotateAngleY = -25F / (180F / (float) Math.PI);

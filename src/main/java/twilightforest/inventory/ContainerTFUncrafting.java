@@ -2,32 +2,22 @@ package twilightforest.inventory;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftResultInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemSpade;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.ByteNBT;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.TFConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.TFItemStackUtils;
@@ -43,56 +33,56 @@ public class ContainerTFUncrafting extends Container {
 	// Inaccessible grid, for uncrafting logic
 	private final InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
 	// Accessible grid, for actual crafting
-	public final InventoryCrafting assemblyMatrix = new InventoryCrafting(this, 3, 3);
+	public final CraftingInventory assemblyMatrix = new CraftingInventory(this, 3, 3);
 	// Inaccessible grid, for recrafting logic
-	private final InventoryCrafting combineMatrix = new InventoryCrafting(this, 3, 3);
+	private final CraftingInventory combineMatrix = new CraftingInventory(this, 3, 3);
 
 	// Input slot for uncrafting
 	public final IInventory tinkerInput = new InventoryTFGoblinInput(this);
 	// Crafting Output
-	private final InventoryCraftResult tinkerResult = new InventoryCraftResult();
+	private final CraftResultInventory tinkerResult = new CraftResultInventory();
 
 	// Other Data, to kick the player from GUI if they stray too far from table
 	private final World world;
 	private final BlockPos pos;
-	private final EntityPlayer player;
+	private final PlayerEntity player;
 
 	// Conflict resolution
 	public int unrecipeInCycle = 0;
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 
-	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
+	public ContainerTFUncrafting(PlayerInventory inventory, World world, int x, int y, int z) {
 
 		this.world = world;
 		this.pos = new BlockPos(x, y, z);
 		this.player = inventory.player;
 
-		this.addSlotToContainer(new Slot(this.tinkerInput, 0, 13, 35));
-		this.addSlotToContainer(new SlotTFGoblinCraftResult(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, this.tinkerResult, 0, 147, 35));
+		this.addSlot(new Slot(this.tinkerInput, 0, 13, 35));
+		this.addSlot(new SlotTFGoblinCraftResult(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, this.tinkerResult, 0, 147, 35));
 
 		int invX;
 		int invY;
 
 		for (invX = 0; invX < 3; ++invX) {
 			for (invY = 0; invY < 3; ++invY) {
-				this.addSlotToContainer(new SlotTFGoblinUncrafting(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, invY + invX * 3, 300000 + invY * 18, 17 + invX * 18));
+				this.addSlot(new SlotTFGoblinUncrafting(inventory.player, this.tinkerInput, this.uncraftingMatrix, this.assemblyMatrix, invY + invX * 3, 300000 + invY * 18, 17 + invX * 18));
 			}
 		}
 		for (invX = 0; invX < 3; ++invX) {
 			for (invY = 0; invY < 3; ++invY) {
-				this.addSlotToContainer(new SlotTFGoblinAssembly(inventory.player, this.tinkerInput, this.assemblyMatrix, this.uncraftingMatrix, invY + invX * 3, 62 + invY * 18, 17 + invX * 18));
+				this.addSlot(new SlotTFGoblinAssembly(inventory.player, this.tinkerInput, this.assemblyMatrix, this.uncraftingMatrix, invY + invX * 3, 62 + invY * 18, 17 + invX * 18));
 			}
 		}
 
 		for (invX = 0; invX < 3; ++invX) {
 			for (invY = 0; invY < 9; ++invY) {
-				this.addSlotToContainer(new Slot(inventory, invY + invX * 9 + 9, 8 + invY * 18, 84 + invX * 18));
+				this.addSlot(new Slot(inventory, invY + invX * 9 + 9, 8 + invY * 18, 84 + invX * 18));
 			}
 		}
 
 		for (invX = 0; invX < 9; ++invX) {
-			this.addSlotToContainer(new Slot(inventory, invX, 8 + invX * 18, 142));
+			this.addSlot(new Slot(inventory, invX, 8 + invX * 18, 142));
 		}
 
 		this.onCraftMatrixChanged(this.assemblyMatrix);
@@ -143,7 +133,7 @@ public class ContainerTFUncrafting extends Container {
 				}
 
 				// mark the appropriate number of damaged components
-				if (inputStack.isItemDamaged()) {
+				if (inputStack.isDamaged()) {
 					int damagedParts = countDamagedParts(inputStack);
 
 					for (int i = 0; i < 9 && damagedParts > 0; i++) {
@@ -220,9 +210,9 @@ public class ContainerTFUncrafting extends Container {
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
 				// copy the tag compound
 				// or should we only copy enchantments?
-				NBTTagCompound inputTags = null;
-				if (input.getTagCompound() != null) {
-					inputTags = input.getTagCompound().copy();
+				CompoundNBT inputTags = null;
+				if (input.getTag() != null) {
+					inputTags = input.getTag().copy();
 				}
 
 				// if the result has innate enchantments, add them on to our enchantment map
@@ -234,8 +224,8 @@ public class ContainerTFUncrafting extends Container {
 
 				if (inputTags != null) {
 					// remove enchantments, copy tags, re-add filtered enchantments
-					inputTags.removeTag("ench");
-					result.setTagCompound(inputTags);
+					inputTags.remove("ench");
+					result.setTag(inputTags);
 					EnchantmentHelper.setEnchantments(inputEnchantments, result);
 				}
 
@@ -264,11 +254,11 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	public static void markStack(ItemStack stack) {
-		stack.setTagInfo(TAG_MARKER, new NBTTagByte((byte) 1));
+		stack.setTagInfo(TAG_MARKER, new ByteNBT((byte) 1));
 	}
 
 	public static boolean isMarked(ItemStack stack) {
-		NBTTagCompound stackTag = stack.getTagCompound();
+		CompoundNBT stackTag = stack.getTag();
 		return stackTag != null && stackTag.getBoolean(TAG_MARKER);
 	}
 
@@ -284,11 +274,12 @@ public class ContainerTFUncrafting extends Container {
 		if (!ingredient.isEmpty()) {
 			// OLD: fix weird recipe for diamond/ingot blocks
 			// Leaving this in, in case some modder does weird crap with an IRecipe
+            //TODO: Hi, some modder here. OreDictionary is dead
 			if (ingredient.getCount() > 1) {
 				ingredient.setCount(1);
 			}
-			if (ingredient.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-				ingredient.setItemDamage(0);
+			if (ingredient.getDamage() == OreDictionary.WILDCARD_VALUE) {
+				ingredient.setDamage(0);
 			}
 		}
 		return ingredient;
@@ -311,10 +302,10 @@ public class ContainerTFUncrafting extends Container {
 
 	private static boolean matches(ItemStack input, ItemStack output) {
 		return input.getItem() == output.getItem() && input.getCount() >= output.getCount()
-				&& (!output.getHasSubtypes() || input.getItemDamage() == output.getItemDamage());
+				&& (!output.getHasSubtypes() || input.getDamage() == output.getDamage());
 	}
 
-	private static IRecipe[] getRecipesFor(InventoryCrafting matrix, World world) {
+	private static IRecipe[] getRecipesFor(CraftingInventory matrix, World world) {
 
 		List<IRecipe> recipes = new ArrayList<>();
 
@@ -327,7 +318,7 @@ public class ContainerTFUncrafting extends Container {
 		return recipes.toArray(new IRecipe[0]);
 	}
 
-	private void chooseRecipe(InventoryCrafting inventory) {
+	private void chooseRecipe(CraftingInventory inventory) {
 
 		IRecipe[] recipes = getRecipesFor(inventory, world);
 
@@ -338,7 +329,7 @@ public class ContainerTFUncrafting extends Container {
 
 		IRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
-		if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((EntityPlayerMP) this.player).getRecipeBook().isUnlocked(recipe))) {
+		if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((ServerPlayerEntity) this.player).getRecipeBook().isUnlocked(recipe))) {
 			this.tinkerResult.setRecipeUsed(recipe);
 			this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(inventory));
 		} else {
@@ -351,28 +342,28 @@ public class ContainerTFUncrafting extends Container {
 	 */
 	// TODO Should we also check the slot the armors can go into, in case they don't extend armor class..?
 	private static boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
-		if (inputStack.getItem() instanceof ItemPickaxe && resultStack.getItem() instanceof ItemPickaxe) {
+		if (inputStack.getItem() instanceof PickaxeItem && resultStack.getItem() instanceof PickaxeItem) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof ItemAxe && resultStack.getItem() instanceof ItemAxe) {
+		if (inputStack.getItem() instanceof AxeItem && resultStack.getItem() instanceof AxeItem) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof ItemSpade && resultStack.getItem() instanceof ItemSpade) {
+		if (inputStack.getItem() instanceof ShovelItem && resultStack.getItem() instanceof ShovelItem) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof ItemHoe && resultStack.getItem() instanceof ItemHoe) {
+		if (inputStack.getItem() instanceof HoeItem && resultStack.getItem() instanceof HoeItem) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof ItemSword && resultStack.getItem() instanceof ItemSword) {
+		if (inputStack.getItem() instanceof SwordItem && resultStack.getItem() instanceof SwordItem) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof ItemBow && resultStack.getItem() instanceof ItemBow) {
+		if (inputStack.getItem() instanceof BowItem && resultStack.getItem() instanceof BowItem) {
 			return true;
 		}
 
-		if (inputStack.getItem() instanceof ItemArmor && resultStack.getItem() instanceof ItemArmor) {
-			ItemArmor inputArmor = (ItemArmor) inputStack.getItem();
-			ItemArmor resultArmor = (ItemArmor) resultStack.getItem();
+		if (inputStack.getItem() instanceof ArmorItem && resultStack.getItem() instanceof ArmorItem) {
+			ArmorItem inputArmor = (ArmorItem) inputStack.getItem();
+			ArmorItem resultArmor = (ArmorItem) resultStack.getItem();
 
 			return inputArmor.armorType == resultArmor.armorType;
 		}
@@ -404,7 +395,7 @@ public class ContainerTFUncrafting extends Container {
 		ItemStack input = tinkerInput.getStackInSlot(0);
 		ItemStack output = tinkerResult.getStackInSlot(0);
 
-		if (input.isEmpty() || !input.isItemEnchanted() || output.isEmpty()) {
+		if (input.isEmpty() || !input.isEnchanted() || output.isEmpty()) {
 			return 0;
 		}
 
@@ -488,8 +479,8 @@ public class ContainerTFUncrafting extends Container {
 		}
 	}
 
-	@Override
-	public ItemStack slotClick(int slotNum, int mouseButton, ClickType clickType, EntityPlayer player) {
+    @Override
+	public ItemStack slotClick(int slotNum, int mouseButton, ClickType clickType, PlayerEntity player) {
 
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.assemblyMatrix
@@ -503,7 +494,7 @@ public class ContainerTFUncrafting extends Container {
 
 		// if the player is trying to take the result item and they don't have the XP to pay for it, reject them
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.tinkerResult
-				&& calculateRecraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
+				&& calculateRecraftingCost() > player.experienceLevel && !player.abilities.isCreativeMode) {
 
 			return ItemStack.EMPTY;
 		}
@@ -511,7 +502,7 @@ public class ContainerTFUncrafting extends Container {
 		if (slotNum > 0 && this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix) {
 
 			// similarly, reject uncrafting if they can't do that either
-			if (calculateUncraftingCost() > player.experienceLevel && !player.capabilities.isCreativeMode) {
+			if (calculateUncraftingCost() > player.experienceLevel && !player.abilities.isCreativeMode) {
 				return ItemStack.EMPTY;
 			}
 
@@ -539,7 +530,7 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	// todo 1.12 evaluate if this logic needs to be moved elsewhere (method removed in 1.12)
-	protected void retrySlotClick(int slotNum, int mouseButton, boolean par3, EntityPlayer player) {
+	protected void retrySlotClick(int slotNum, int mouseButton, boolean par3, PlayerEntity player) {
 		// if they are taking something out of the uncrafting matrix, bump the slot number back to the assembly matrix
 		// otherwise we lose the stuff in the uncrafting matrix when we shift-click to take multiple things
 		if (this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix) {
@@ -575,7 +566,7 @@ public class ContainerTFUncrafting extends Container {
 	 */
 	private int countDamagedParts(ItemStack input) {
 		int totalMax4 = Math.max(4, countDamageableParts(this.uncraftingMatrix));
-		float damage = (float) input.getItemDamage() / (float) input.getMaxDamage();
+		float damage = (float) input.getDamage() / (float) input.getMaxDamage();
 		return (int) Math.ceil(totalMax4 * damage);
 	}
 
@@ -583,7 +574,7 @@ public class ContainerTFUncrafting extends Container {
 	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
 	 */
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int slotNum) {
+	public ItemStack transferStackInSlot(PlayerEntity player, int slotNum) {
 
 		Slot transferSlot = this.inventorySlots.get(slotNum);
 
@@ -643,7 +634,7 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer player) {
+	public void onContainerClosed(PlayerEntity player) {
 		super.onContainerClosed(player);
 
 		if (!player.world.isRemote) {
@@ -673,7 +664,7 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(PlayerEntity player) {
 		return player.getDistanceSqToCenter(this.pos) <= 64.0D && this.world.getBlockState(this.pos).getBlock() == TFBlocks.uncrafting_table;
 	}
 }

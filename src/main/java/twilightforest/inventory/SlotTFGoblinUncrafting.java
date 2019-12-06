@@ -1,21 +1,21 @@
 package twilightforest.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 
 public class SlotTFGoblinUncrafting extends Slot {
 
-	protected final EntityPlayer player;
+	protected final PlayerEntity player;
 	protected final IInventory inputSlot;
 	protected final InventoryTFGoblinUncrafting uncraftingMatrix;
 	protected final IInventory assemblyMatrix;
 
-	public SlotTFGoblinUncrafting(EntityPlayer player, IInventory inputSlot, InventoryTFGoblinUncrafting uncraftingMatrix, IInventory assemblyMatrix, int slotNum, int x, int y) {
+	public SlotTFGoblinUncrafting(PlayerEntity player, IInventory inputSlot, InventoryTFGoblinUncrafting uncraftingMatrix, IInventory assemblyMatrix, int slotNum, int x, int y) {
 		super(uncraftingMatrix, slotNum, x, y);
 		this.player = player;
 		this.inputSlot = inputSlot;
@@ -36,7 +36,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 	 * Return whether this slot's stack can be taken from this slot.
 	 */
 	@Override
-	public boolean canTakeStack(EntityPlayer player) {
+	public boolean canTakeStack(PlayerEntity player) {
 		// if there is anything in the assembly matrix, then you cannot have these items
 		if (!this.assemblyMatrix.isEmpty()) {
 			return false;
@@ -53,7 +53,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 		}
 
 		// if you don't have enough XP, no
-		if (this.uncraftingMatrix.uncraftingCost > player.experienceLevel && !player.capabilities.isCreativeMode) {
+		if (this.uncraftingMatrix.uncraftingCost > player.experienceLevel && !player.abilities.isCreativeMode) {
 			return false;
 		}
 
@@ -64,7 +64,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 	 * Called when the player picks up an item from an inventory slot
 	 */
 	@Override
-	public ItemStack onTake(EntityPlayer player, ItemStack stack) {
+	public ItemStack onTake(PlayerEntity player, ItemStack stack) {
 		// charge the player for this
 		if (this.uncraftingMatrix.uncraftingCost > 0) {
 			this.player.addExperienceLevel(-this.uncraftingMatrix.uncraftingCost);
@@ -90,7 +90,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean isEnabled() {
 		return false;
 	}

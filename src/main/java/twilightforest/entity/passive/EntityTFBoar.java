@@ -1,12 +1,12 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFBoar extends EntityPig {
+public class EntityTFBoar extends PigEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/boar");
 
@@ -26,7 +26,7 @@ public class EntityTFBoar extends EntityPig {
 	}
 
 	@Override
-	public EntityPig createChild(EntityAgeable entityanimal) {
+	public PigEntity createChild(AgeableEntity entityanimal) {
 		return new EntityTFBoar(world);
 	}
 

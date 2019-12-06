@@ -1,25 +1,26 @@
 package twilightforest.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.chat.NarratorChatListener;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
 import java.util.Random;
 
-@SideOnly(Side.CLIENT)
-public class GuiTwilightForestLoading extends GuiScreen {
+@OnlyIn(Dist.CLIENT)
+public class GuiTwilightForestLoading extends Screen {
 
 	private boolean isEntering;
 	private boolean contentNeedsAssignment = false;
@@ -32,7 +33,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	private static final float backgroundScale = 32.0F;
 
 	GuiTwilightForestLoading() {
-
+	    super(NarratorChatListener.EMPTY);
 	}
 
 	void setEntering(boolean isEntering) {
@@ -48,13 +49,13 @@ public class GuiTwilightForestLoading extends GuiScreen {
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) {}
 
-	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
-	}
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    @Override
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		if (this.contentNeedsAssignment) {
 			this.assignContent();
 			this.contentNeedsAssignment = false;
@@ -78,17 +79,17 @@ public class GuiTwilightForestLoading extends GuiScreen {
 
 		drawBouncingWobblyItem(partialTicks, resolution.getScaledWidth(), resolution.getScaledHeight());
 
-		String loadTitle = I18n.translateToLocal(TwilightForestMod.ID + ".loading.title." + (isEntering ? "enter" : "leave"));
+		String loadTitle = I18n.format(TwilightForestMod.ID + ".loading.title." + (isEntering ? "enter" : "leave"));
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(
+		GlStateManager.translatef(
 				(resolution.getScaledWidth() / 2f) - (fontRenderer.getStringWidth(loadTitle) / 4f),
 				(resolution.getScaledHeight() / 3f),
 				0f
 		);
-		GlStateManager.translate(-(fontRenderer.getStringWidth(loadTitle) / 4f), 0f, 0f);
+		GlStateManager.translatef(-(fontRenderer.getStringWidth(loadTitle) / 4f), 0f, 0f);
 		fontRenderer.drawStringWithShadow(loadTitle, 0, 0, 0xEEEEEE); //eeeeeeeeeeeeeeeeee
 		GlStateManager.popMatrix();
-		GlStateManager.color(1F, 1F, 1F, 1F);
+		GlStateManager.color4f(1F, 1F, 1F, 1F);
 	}
 
 	private void assignContent() {
@@ -110,23 +111,23 @@ public class GuiTwilightForestLoading extends GuiScreen {
 		GlStateManager.pushMatrix();
 
 		// Shove it!
-		GlStateManager.translate(width - ((width / 30f) * TFConfig.loadingScreen.scale), height - (height / 10f), 0f); // Bottom right Corner
+		GlStateManager.translatef(width - ((width / 30f) * TFConfig.loadingScreen.scale), height - (height / 10f), 0f); // Bottom right Corner
 
 		if (TFConfig.loadingScreen.enable) {
 			// Wobble it!
-			GlStateManager.rotate(MathHelper.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0f, 0f, 1f);
+			GlStateManager.rotatef(MathHelper.sin(sineTicker / TFConfig.loadingScreen.tiltRange) * TFConfig.loadingScreen.tiltConstant, 0f, 0f, 1f);
 
 			// Bounce it!
-			GlStateManager.scale(((MathHelper.sin(((sineTicker2 + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2F), ((MathHelper.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2F), 1F);
+			GlStateManager.scalef(((MathHelper.sin(((sineTicker2 + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2F), ((MathHelper.sin(((sineTicker + 180F) / TFConfig.loadingScreen.tiltRange) * 2F) / TFConfig.loadingScreen.scaleDeviation) + 2F) * (TFConfig.loadingScreen.scale / 2F), 1F);
 		}
 
 		// Shift it!
-		GlStateManager.translate(-8f, -16.5f, 0f);
+		GlStateManager.translatef(-8f, -16.5f, 0f);
 
 		RenderHelper.enableGUIStandardItemLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
 		// Draw it!
-		mc.getRenderItem().renderItemAndEffectIntoGUI(item, 0, 0);
+		minecraft.getItemRenderer().renderItemAndEffectIntoGUI(item, 0, 0);
 		RenderHelper.disableStandardItemLighting();
 
 		// Pop it!
@@ -147,7 +148,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 			void postRenderBackground(float width, float height) {
 				Tessellator tessellator = Tessellator.getInstance();
 				BufferBuilder buffer = tessellator.getBuffer();
-				Minecraft.getMinecraft().getTextureManager().bindTexture(mazestoneDecor);
+				Minecraft.getInstance().getTextureManager().bindTexture(mazestoneDecor);
 
 				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 				buffer.pos(0, 24F, 0F)
@@ -219,11 +220,11 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				GlStateManager.disableFog();
 				Tessellator tessellator = Tessellator.getInstance();
 				BufferBuilder buffer = tessellator.getBuffer();
-				GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
+				GlStateManager.color4f(0.9F, 0.9F, 0.9F, 1.0F);
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 					for (float y = backgroundScale + headerDepthHeight; y < footerDepthHeight + backgroundScale; y += backgroundScale) {
-						Minecraft.getMinecraft().getTextureManager().bindTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
+						Minecraft.getInstance().getTextureManager().bindTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
 						buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 						buffer.pos(x - backgroundScale, y, 0)
 								.tex(0, 1)
@@ -250,7 +251,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 			void postRenderBackground(float width, float height) {
 				Tessellator tessellator = Tessellator.getInstance();
 				BufferBuilder buffer = tessellator.getBuffer();
-				Minecraft.getMinecraft().getTextureManager().bindTexture(towerwoodEncased);
+				Minecraft.getInstance().getTextureManager().bindTexture(towerwoodEncased);
 
 				final float textureHeaderXMin = stretch * offset;
 				final float textureHeaderXMax = ((width / backgroundScale) * stretch) + offset;
@@ -383,7 +384,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				int b = color & 255;
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
-					Minecraft.getMinecraft().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
+					Minecraft.getInstance().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 					buffer.pos(x - backgroundScale, backgroundScale + (backgroundScale / 2), 0)
 							.tex(0, 1)
@@ -405,7 +406,7 @@ public class GuiTwilightForestLoading extends GuiScreen {
 				}
 
 				for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
-					Minecraft.getMinecraft().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
+					Minecraft.getInstance().getTextureManager().bindTexture(this.magic[random.nextInt(this.magic.length)]);
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 					buffer.pos(x - backgroundScale, height - (backgroundScale / 2), 0)
 							.tex(0, 1)
@@ -443,11 +444,11 @@ public class GuiTwilightForestLoading extends GuiScreen {
 			GlStateManager.disableFog();
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder buffer = tessellator.getBuffer();
-			GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
+			GlStateManager.color4f(0.9F, 0.9F, 0.9F, 1.0F);
 
 			for (float x = backgroundScale; x < width + backgroundScale; x += backgroundScale) {
 				for (float y = backgroundScale; y < height + backgroundScale; y += backgroundScale) {
-					Minecraft.getMinecraft().getTextureManager().bindTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
+					Minecraft.getInstance().getTextureManager().bindTexture(this.getBackgroundMaterials()[random.nextInt(this.getBackgroundMaterials().length)]);
 					buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 					buffer.pos(x - backgroundScale, y, 0)
 							.tex(0, 1)

@@ -5,14 +5,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackRanged;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.RangedAttackGoal;
+import net.minecraft.entity.ai.AvoidEntityGoal;
+import net.minecraft.entity.ai.HurtByTargetGoal;
+import net.minecraft.entity.ai.LookRandomlyGoal;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -35,15 +35,15 @@ public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 3.0F, 1.25F, 2.0F));
-		this.tasks.addTask(3, new EntityAIAttackRanged(this, 1, 30, 10));
-		this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(8, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	protected void registerGoals() {
+		this.tasks.addTask(0, new SwimGoal(this));
+		this.tasks.addTask(2, new AvoidEntityGoal<>(this, EntityPlayer.class, 3.0F, 1.25F, 2.0F));
+		this.tasks.addTask(3, new RangedAttackGoal(this, 1, 30, 10));
+		this.tasks.addTask(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.tasks.addTask(7, new LookAtGoal(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(8, new LookRandomlyGoal(this));
+		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
 	}
 
 	@Override

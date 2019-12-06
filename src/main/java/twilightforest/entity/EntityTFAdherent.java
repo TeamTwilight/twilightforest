@@ -1,29 +1,21 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackRanged;
-import net.minecraft.entity.ai.EntityAIFleeSun;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIRestrictSun;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITFCharger {
+public class EntityTFAdherent extends MobEntity implements IRangedAttackMob, ITFCharger {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/adherent");
 
@@ -35,33 +27,33 @@ public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITF
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIRestrictSun(this));
-		this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.0D, 60, 10.0F));
-		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(2, new RestrictSunGoal(this));
+		this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
+		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.0D, 60, 10.0F));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(CHARGE_FLAG, false);
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
+	public void attackEntityWithRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
@@ -73,7 +65,7 @@ public class EntityTFAdherent extends EntityMob implements IRangedAttackMob, ITF
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
 		natureBolt.shoot(d1, d2 + (double) f, d3, 0.6F, 10 - this.world.getDifficulty().getId() * 4);
 
-		this.world.spawnEntity(natureBolt);
+		this.world.addEntity(natureBolt);
 
 	}
 

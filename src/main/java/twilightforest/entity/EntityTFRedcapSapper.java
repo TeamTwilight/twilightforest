@@ -27,8 +27,8 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		super.initEntityAI();
+	protected void registerGoals() {
+		super.registerGoals();
 		this.tasks.addTask(4, new EntityAITFRedcapPlantTNT(this));
 	}
 

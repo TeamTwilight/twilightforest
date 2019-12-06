@@ -1,59 +1,54 @@
 package twilightforest.client;
 
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.LivingEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.RegisterBlockEvent;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.client.texture.GradientMappedTexture;
 import twilightforest.client.texture.GradientNode;
-import twilightforest.client.texture.MoltenFieryTexture;
-import twilightforest.compat.TFCompat;
-import twilightforest.compat.ie.IEShaderRegister;
 import twilightforest.world.TFWorld;
 
-@SideOnly(Side.CLIENT)
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void texStitch(TextureStitchEvent.Pre evt) {
 		TextureMap map = evt.getMap();
 
-		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_0"));
+		//TODO: These are handled by Particles now
+		/*map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_0"));
 		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_1"));
 		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_2"));
 		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_3"));
 		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
 		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/firefly"));
-		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/fallen_leaf"));
+		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/fallen_leaf"));*/
 
-		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenFieryStill                                        ));
+        //TODO: Removed until Tinkers' Construct is available
+		/*map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenFieryStill                                        ));
 		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenFieryFlow                                         ));
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenKnightmetalStill, true, KNIGHTMETAL_GRADIENT_MAP  ));
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenKnightmetalFlow , true, KNIGHTMETAL_GRADIENT_MAP  ));
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_still" ), RegisterBlockEvent.essenceFieryStill     , true, FIERY_ESSENCE_GRADIENT_MAP));
-		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));*/
 
-		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
+		//TODO: Removed until Immersive Engineering is available
+		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_grip" ), IEShaderRegister.PROCESSED_REVOLVER_GRIP_LAYER, true, EASY_GRAYSCALING_MAP ));
 			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_0"    ), IEShaderRegister.PROCESSED_REVOLVER_LAYER     , true, EASY_GRAYSCALING_MAP ));
 			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "items/shaders/chemthrower_0"     ), IEShaderRegister.PROCESSED_CHEMTHROW_LAYER    , true, EASY_GRAYSCALING_MAP ));
@@ -74,7 +69,7 @@ public class TFClientEvents {
 					));
 				}
 			}
-		}
+		}*/
 	}
 
 	public static final GradientNode[] KNIGHTMETAL_GRADIENT_MAP = {
@@ -103,7 +98,7 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static boolean preOverlay(RenderGameOverlayEvent.Pre event) {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
-			if (TFEventListener.isRidingUnfriendly(Minecraft.getMinecraft().player)) {
+			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
 				event.setCanceled(true);
 				return false;
 			}
@@ -113,7 +108,7 @@ public class TFClientEvents {
 
 	//FIXME shove onto an external player layer, like armor
 	//@SubscribeEvent
-	//public static void renderLivingPre(RenderLivingEvent.Pre<EntityLivingBase> event) {
+	//public static void renderLivingPre(RenderLivingEvent.Pre<LivingEntity> event) {
 	//	// Shields
 	//	if (event.getEntity().hasCapability(CapabilityList.SHIELDS, null)) {
 	//		ShaderManager.useShader(ShaderManager.shieldShader, ShaderManager.TIME);
@@ -124,7 +119,7 @@ public class TFClientEvents {
 	 * Render various effects such as an iced entity
 	 */
 	@SubscribeEvent
-	public static void renderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
+	public static void renderLivingPost(RenderLivingEvent.Post<LivingEntity, EntityModel<LivingEntity>> event) {
 		for (RenderEffect effect : RenderEffect.VALUES) {
 			if (effect.shouldRender(event.getEntity(), false)) {
 				effect.render(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), event.getPartialRenderTick(), false);
@@ -140,16 +135,16 @@ public class TFClientEvents {
 
 		if (!TFConfig.firstPersonEffects) return;
 
-		GameSettings settings = Minecraft.getMinecraft().gameSettings;
+		GameSettings settings = Minecraft.getInstance().gameSettings;
 		if (settings.thirdPersonView != 0 || settings.hideGUI) return;
 
-		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-		if (entity instanceof EntityLivingBase) {
-			Render<? extends Entity> renderer = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(entity);
+		Entity entity = Minecraft.getInstance().getRenderViewEntity();
+		if (entity instanceof LivingEntity) {
+			Render<? extends Entity> renderer = Minecraft.getInstance().getRenderManager().getEntityRenderObject(entity);
 			if (renderer instanceof RenderLivingBase<?>) {
 				for (RenderEffect effect : RenderEffect.VALUES) {
-					if (effect.shouldRender((EntityLivingBase) entity, true)) {
-						effect.render((EntityLivingBase) entity, (RenderLivingBase<? extends EntityLivingBase>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks(), true);
+					if (effect.shouldRender((LivingEntity) entity, true)) {
+						effect.render((LivingEntity) entity, (RenderLivingBase<? extends LivingEntity>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks(), true);
 					}
 				}
 			}
@@ -162,7 +157,7 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void renderTick(TickEvent.RenderTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
-			Minecraft minecraft = Minecraft.getMinecraft();
+			Minecraft minecraft = Minecraft.getInstance();
 
 			boolean fancyGraphics = minecraft.gameSettings.fancyGraphics;
 			TFBlocks.twilight_leaves.setGraphicsLevel(fancyGraphics);
@@ -190,7 +185,7 @@ public class TFClientEvents {
 		if (event.phase != TickEvent.Phase.END) return;
 		time++;
 
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 		float partial = mc.getRenderPartialTicks();
 
 		rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
@@ -201,8 +196,8 @@ public class TFClientEvents {
 
 		BugModelAnimationHelper.animate();
 
-		if (!mc.isGamePaused() && mc.world != null && mc.world.provider.getWeatherRenderer() instanceof TFWeatherRenderer) {
-			((TFWeatherRenderer) mc.world.provider.getWeatherRenderer()).tick();
+		if (!mc.isGamePaused() && mc.world != null && mc.world.dimension.getWeatherRenderer() instanceof TFWeatherRenderer) {
+			((TFWeatherRenderer) mc.world.dimension.getWeatherRenderer()).tick();
 		}
 	}
 

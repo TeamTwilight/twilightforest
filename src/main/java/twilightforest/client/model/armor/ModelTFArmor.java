@@ -1,10 +1,11 @@
 package twilightforest.client.model.armor;
 
-import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 
-public class ModelTFArmor extends ModelBiped {
+public class ModelTFArmor extends BipedModel {
 
 	public ModelTFArmor(float modelSize) {
 		super(modelSize, 0.0F, 64, 32);
@@ -14,8 +15,8 @@ public class ModelTFArmor extends ModelBiped {
 	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
 		// [VanillaCopy] ModelArmorStandArmor
 		// this prevents helmets from always facing south, and the armor "breathing" on the stand
-		if (entityIn instanceof EntityArmorStand) {
-			EntityArmorStand entityarmorstand = (EntityArmorStand) entityIn;
+		if (entityIn instanceof ArmorStandEntity) {
+			ArmorStandEntity entityarmorstand = (ArmorStandEntity) entityIn;
 			this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
 			this.bipedHead.rotateAngleY = 0.017453292F * entityarmorstand.getHeadRotation().getY();
 			this.bipedHead.rotateAngleZ = 0.017453292F * entityarmorstand.getHeadRotation().getZ();
@@ -38,7 +39,7 @@ public class ModelTFArmor extends ModelBiped {
 			this.bipedRightLeg.rotateAngleZ = 0.017453292F * entityarmorstand.getRightLegRotation().getZ();
 			this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
 			copyModelAngles(this.bipedHead, this.bipedHeadwear);
-		} else super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+		} else super.setRotationAngles((LivingEntity) entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 		// TF - Defer to super otherwise
 	}
 

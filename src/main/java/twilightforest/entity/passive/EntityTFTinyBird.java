@@ -5,11 +5,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.LookRandomlyGoal;
+import net.minecraft.entity.ai.PanicGoal;
+import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -45,14 +45,14 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
+	protected void registerGoals() {
+		this.tasks.addTask(0, new SwimGoal(this));
+		this.tasks.addTask(1, new PanicGoal(this, 1.5F));
 		this.tasks.addTask(2, new EntityAITFBirdFly(this));
 		this.tasks.addTask(3, new EntityAITFTempt(this, 1.0F, true, SEEDS));
-		this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
+		this.tasks.addTask(4, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.tasks.addTask(5, new LookAtGoal(this, EntityPlayer.class, 6F));
+		this.tasks.addTask(6, new LookRandomlyGoal(this));
 	}
 
 	@Override

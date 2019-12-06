@@ -1,21 +1,19 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
@@ -26,20 +24,20 @@ import twilightforest.util.WorldUtil;
 import java.util.List;
 
 
-public class EntityTFCubeOfAnnihilation extends EntityThrowable {
+public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 	private boolean hasHitObstacle = false;
 
 	public EntityTFCubeOfAnnihilation(World world) {
 		super(world);
 		this.setSize(1F, 1F);
-		this.isImmuneToFire = true;
+		this.isImmuneToFire();
 	}
 
-	public EntityTFCubeOfAnnihilation(World world, EntityLivingBase thrower) {
+	public EntityTFCubeOfAnnihilation(World world, LivingEntity thrower) {
 		super(world, thrower);
 		this.setSize(1F, 1F);
-		this.isImmuneToFire = true;
+		this.isImmuneToFire();
 		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
@@ -54,19 +52,19 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 			return;
 
 		// only hit living things
-		if (ray.entityHit instanceof EntityLivingBase && ray.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
+		if (ray.entityHit instanceof LivingEntity && ray.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
 			this.ticksExisted += 60;
 		}
 
 		if (ray.getBlockPos() != null && !this.world.isAirBlock(ray.getBlockPos())) {
-			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
+			this.affectBlocksInAABB(this.getBoundingBox().grow(0.2F, 0.2F, 0.2F));
 		}
 	}
 
 	private DamageSource getDamageSource() {
-		EntityLivingBase thrower = this.getThrower();
-		if (thrower instanceof EntityPlayer) {
-			return DamageSource.causePlayerDamage((EntityPlayer) thrower);
+		LivingEntity thrower = this.getThrower();
+		if (thrower instanceof PlayerEntity) {
+			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
 		} else if (thrower != null) {
 			return DamageSource.causeMobDamage(thrower);
 		} else {
@@ -76,10 +74,10 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 
 	private void affectBlocksInAABB(AxisAlignedBB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			IBlockState state = world.getBlockState(pos);
+			BlockState state = world.getBlockState(pos);
 			if (!state.getBlock().isAir(state, world, pos)) {
 				if (canAnnihilate(pos, state)) {
-					this.world.setBlockToAir(pos);
+					this.world.removeBlock(pos, false);
 					this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
 					this.sendAnnihilateBlockPacket(world, pos);
 				} else {
@@ -89,10 +87,10 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 		}
 	}
 
-	private boolean canAnnihilate(BlockPos pos, IBlockState state) {
+	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		if (block == TFBlocks.deadrock || block == TFBlocks.castle_brick || (block == TFBlocks.castle_rune_brick && state.getValue(BlockTFCastleMagic.COLOR) != EnumDyeColor.PURPLE) || block == TFBlocks.force_field || block == TFBlocks.thorns) {
+		if (block == TFBlocks.deadrock || block == TFBlocks.castle_brick || (block == TFBlocks.castle_rune_brick && state.get(BlockTFCastleMagic.COLOR) != DyeColor.PURPLE) || block == TFBlocks.force_field || block == TFBlocks.thorns) {
 			return true;
 		}
 
@@ -110,8 +108,8 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		if (!this.world.isRemote) {
 			if (this.getThrower() == null) {
@@ -124,7 +122,7 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
-				List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
+				List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().offset(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
 
 				if (list.contains(this.getThrower())) {
 					this.setDead();
@@ -158,24 +156,24 @@ public class EntityTFCubeOfAnnihilation extends EntityThrowable {
 			}
 
 			// demolish some blocks
-			this.affectBlocksInAABB(this.getEntityBoundingBox().grow(0.2F, 0.2F, 0.2F));
+			this.affectBlocksInAABB(this.getBoundingBox().grow(0.2F, 0.2F, 0.2F));
 		}
 	}
 
 	@Override
 	public void setDead() {
 		super.setDead();
-		EntityLivingBase thrower = this.getThrower();
+		LivingEntity thrower = this.getThrower();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation) {
 			thrower.resetActiveHand();
 		}
 	}
 
 	private boolean isReturning() {
-		if (this.hasHitObstacle || this.getThrower() == null || !(this.getThrower() instanceof EntityPlayer)) {
+		if (this.hasHitObstacle || this.getThrower() == null || !(this.getThrower() instanceof PlayerEntity)) {
 			return true;
 		} else {
-			EntityPlayer player = (EntityPlayer) this.getThrower();
+			PlayerEntity player = (PlayerEntity) this.getThrower();
 			return !player.isHandActive();
 		}
 	}

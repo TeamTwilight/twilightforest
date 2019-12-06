@@ -1,10 +1,10 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelQuadruped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.QuadrupedModel;
+import twilightforest.entity.EntityTFHarbingerCube;
 
-public class ModelTFApocalypseCube extends ModelQuadruped {
+public class ModelTFApocalypseCube<T extends EntityTFHarbingerCube> extends QuadrupedModel<T> {
 
 	public ModelTFApocalypseCube() {
 		this(0.0F);
@@ -16,27 +16,27 @@ public class ModelTFApocalypseCube extends ModelQuadruped {
 		this.textureWidth = 128;
 		this.textureHeight = 64;
 
-		this.head = new ModelRenderer(this, 0, 0);
+		this.headModel = new RendererModel(this, 0, 0);
 
-		body = new ModelRenderer(this, 0, 0);
+		body = new RendererModel(this, 0, 0);
 		body.addBox(-16F, -16F, -16F, 32, 32, 32);
 		body.setRotationPoint(0F, 0F, -2F);
 
-		leg1 = new ModelRenderer(this, 0, 0);
-		leg1.addBox(-4F, 0F, -4F, 8, 8, 8);
-		leg1.setRotationPoint(-6F, 16F, 9F);
+        legBackRight = new RendererModel(this, 0, 0);
+        legBackRight.addBox(-4F, 0F, -4F, 8, 8, 8);
+        legBackRight.setRotationPoint(-6F, 16F, 9F);
 
-		leg2 = new ModelRenderer(this, 0, 0);
-		leg2.addBox(-4F, 0F, -4F, 8, 8, 8);
-		leg2.setRotationPoint(6F, 16F, 9F);
+        legBackLeft = new RendererModel(this, 0, 0);
+        legBackLeft.addBox(-4F, 0F, -4F, 8, 8, 8);
+        legBackLeft.setRotationPoint(6F, 16F, 9F);
 
-		leg3 = new ModelRenderer(this, 0, 0);
-		leg3.addBox(-4F, 0F, -4F, 8, 8, 8);
-		leg3.setRotationPoint(-9F, 16F, -14F);
+        legFrontRight = new RendererModel(this, 0, 0);
+        legFrontRight.addBox(-4F, 0F, -4F, 8, 8, 8);
+        legFrontRight.setRotationPoint(-9F, 16F, -14F);
 
-		leg4 = new ModelRenderer(this, 0, 0);
-		leg4.addBox(-4F, 0F, -4F, 8, 8, 8);
-		leg4.setRotationPoint(9F, 16F, -14F);
+        legFrontLeft = new RendererModel(this, 0, 0);
+        legFrontLeft.addBox(-4F, 0F, -4F, 8, 8, 8);
+        legFrontLeft.setRotationPoint(9F, 16F, -14F);
 
 
 		this.childYOffset = 4.0F;
@@ -48,8 +48,8 @@ public class ModelTFApocalypseCube extends ModelQuadruped {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
-		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
 		this.body.rotateAngleX = 0F;
 	}

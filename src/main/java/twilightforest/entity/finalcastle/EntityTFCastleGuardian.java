@@ -14,10 +14,10 @@ public class EntityTFCastleGuardian extends EntityCreature { // Not exactly livi
     }
 
     @Override
-    protected void initEntityAI() {
-        //this.tasks.addTask(0, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 10.0F, 0.5F, 0.5F));
-        //this.tasks.addTask(1, new EntityAIWanderAvoidWater(this, 0.5, 0.5f));
-        //this.tasks.addTask(2, new EntityAILookIdle(this));
+    protected void registerGoals() {
+        //this.tasks.addTask(0, new AvoidEntityGoal<>(this, EntityPlayer.class, 10.0F, 0.5F, 0.5F));
+        //this.tasks.addTask(1, new WaterAvoidingRandomWalkingGoal(this, 0.5, 0.5f));
+        //this.tasks.addTask(2, new LookRandomlyGoal(this));
     }
 
     @Override

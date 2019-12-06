@@ -6,21 +6,21 @@
 
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.entity.passive.EntityTFBunny;
 
 
-public class ModelTFBunny extends ModelBase {
+public class ModelTFBunny<T extends EntityTFBunny> extends EntityModel<T> {
 	//fields
-	ModelRenderer tail;
-	ModelRenderer body;
-	ModelRenderer leg1;
-	ModelRenderer leg2;
-	ModelRenderer leg3;
-	ModelRenderer leg4;
-	ModelRenderer head;
+	RendererModel tail;
+	RendererModel body;
+	RendererModel leg1;
+	RendererModel leg2;
+	RendererModel leg3;
+	RendererModel leg4;
+	RendererModel head;
 
 	public ModelTFBunny() {
 		textureWidth = 32;
@@ -29,43 +29,43 @@ public class ModelTFBunny extends ModelBase {
 		setTextureOffset("head.ear2", 16, 0);
 		setTextureOffset("head.ear1", 16, 0);
 
-		tail = new ModelRenderer(this, 0, 18);
+		tail = new RendererModel(this, 0, 18);
 		tail.addBox(-1F, -1F, 0F, 2, 2, 2);
 		tail.setRotationPoint(0F, 20F, 3F);
 		tail.setTextureSize(32, 32);
 		tail.mirror = true;
 		setRotation(tail, 0F, 0F, 0F);
-		body = new ModelRenderer(this, 0, 8);
+		body = new RendererModel(this, 0, 8);
 		body.addBox(-2F, -1F, -2F, 4, 3, 5);
 		body.setRotationPoint(0F, 21F, 0F);
 		body.setTextureSize(32, 32);
 		body.mirror = true;
 		setRotation(body, 0F, 0F, 0F);
-		leg1 = new ModelRenderer(this, 0, 16);
+		leg1 = new RendererModel(this, 0, 16);
 		leg1.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg1.setRotationPoint(-2F, 23F, 2F);
 		leg1.setTextureSize(32, 32);
 		leg1.mirror = true;
 		setRotation(leg1, 0F, 0F, 0F);
-		leg2 = new ModelRenderer(this, 0, 16);
+		leg2 = new RendererModel(this, 0, 16);
 		leg2.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg2.setRotationPoint(1F, 23F, 2F);
 		leg2.setTextureSize(32, 32);
 		leg2.mirror = true;
 		setRotation(leg2, 0F, 0F, 0F);
-		leg3 = new ModelRenderer(this, 0, 16);
+		leg3 = new RendererModel(this, 0, 16);
 		leg3.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg3.setRotationPoint(-2F, 23F, -2F);
 		leg3.setTextureSize(32, 32);
 		leg3.mirror = true;
 		setRotation(leg3, 0F, 0F, 0F);
-		leg4 = new ModelRenderer(this, 0, 16);
+		leg4 = new RendererModel(this, 0, 16);
 		leg4.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg4.setRotationPoint(1F, 23F, -2F);
 		leg4.setTextureSize(32, 32);
 		leg4.mirror = true;
 		setRotation(leg4, 0F, 0F, 0F);
-		head = new ModelRenderer(this, "head");
+		head = new RendererModel(this, "head");
 		head.setRotationPoint(0F, 22F, -1F);
 		setRotation(head, 0F, 0F, 0F);
 		head.mirror = true;
@@ -75,9 +75,9 @@ public class ModelTFBunny extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		tail.render(scale);
 		body.render(scale);
 		leg1.render(scale);
@@ -87,7 +87,7 @@ public class ModelTFBunny extends ModelBase {
 		head.render(scale);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(RendererModel model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -97,7 +97,7 @@ public class ModelTFBunny extends ModelBase {
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

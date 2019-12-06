@@ -1,13 +1,12 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -32,7 +31,7 @@ public class EntityTFCharmEffect extends Entity {
 		this.setSize(0.25F, 0.25F);
 	}
 
-	public EntityTFCharmEffect(World world, EntityLivingBase owner, Item item) {
+	public EntityTFCharmEffect(World world, LivingEntity owner, Item item) {
 		this(world);
 
 		this.setOwner(owner);
@@ -48,13 +47,13 @@ public class EntityTFCharmEffect extends Entity {
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		this.lastTickPosX = this.posX;
 		this.lastTickPosY = this.posY;
 		this.lastTickPosZ = this.posZ;
-		super.onUpdate();
+		super.tick();
 
-		//[VanillaCopy] Beginning of EntityLivingBase.onLivingUpdate
+		//[VanillaCopy] Beginning of LivingEntity.onLivingUpdate
 		if (this.newPosRotationIncrements > 0) {
 			double d0 = this.posX + (this.interpTargetX - this.posX) / (double) this.newPosRotationIncrements;
 			double d1 = this.posY + (this.interpTargetY - this.posY) / (double) this.newPosRotationIncrements;
@@ -67,7 +66,7 @@ public class EntityTFCharmEffect extends Entity {
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 		}
 
-		EntityLivingBase orbiting = getOwner();
+		LivingEntity orbiting = getOwner();
 
 		if (orbiting != null) {
 			this.setLocationAndAngles(orbiting.posX, orbiting.posY + orbiting.getEyeHeight(), orbiting.posZ, orbiting.rotationYaw, orbiting.rotationPitch);
@@ -87,7 +86,7 @@ public class EntityTFCharmEffect extends Entity {
 				double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
 				double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
 
-				world.spawnParticle(EnumParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
+				world.addParticle(EnumParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
 			}
 		}
 
@@ -108,20 +107,20 @@ public class EntityTFCharmEffect extends Entity {
 	}
 
 	@Override
-	protected void entityInit() {
+	protected void registerData() {
 		dataManager.register(DATA_ITEMID, -1);
 		dataManager.register(DATA_OWNER, -1);
 	}
 
-	public void setOwner(EntityLivingBase owner) {
+	public void setOwner(LivingEntity owner) {
 		dataManager.set(DATA_OWNER, owner.getEntityId());
 	}
 
 	@Nullable
-	public EntityLivingBase getOwner() {
+	public LivingEntity getOwner() {
 		Entity e = this.world.getEntityByID(dataManager.get(DATA_OWNER));
-		if (e instanceof EntityLivingBase)
-			return (EntityLivingBase) e;
+		if (e instanceof LivingEntity)
+			return (LivingEntity) e;
 		else return null;
 	}
 
@@ -134,9 +133,9 @@ public class EntityTFCharmEffect extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound cmp) {}
+	protected void readAdditional(CompoundNBT cmp) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound cmp) {}
+	protected void writeAdditional(CompoundNBT cmp) {}
 
 }

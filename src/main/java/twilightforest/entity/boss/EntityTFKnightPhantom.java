@@ -93,7 +93,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	@Override
-	protected void initEntityAI() {
+	protected void registerGoals() {
 		tasks.addTask(0, new EntityAITFPhantomWatchAndAttack(this));
 		tasks.addTask(1, new EntityAITFPhantomUpdateFormationAndMove(this));
 		tasks.addTask(2, new EntityAIPhantomAttackStart(this));

@@ -1,25 +1,27 @@
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.model.ModelBook;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.model.BookModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelTFDeathTome extends ModelBook {
-	private ModelRenderer everything;
+public class ModelTFDeathTome extends BookModel {
+	private RendererModel everything;
 
-	private ModelRenderer book;
-	private ModelRenderer loosePage1;
-	private ModelRenderer loosePage2;
-	private ModelRenderer loosePage3;
-	private ModelRenderer loosePage4;
+	private RendererModel book;
+	private RendererModel loosePage1;
+	private RendererModel loosePage2;
+	private RendererModel loosePage3;
+	private RendererModel loosePage4;
 
 	public ModelTFDeathTome() {
-		everything = (new ModelRenderer(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
+		everything = (new RendererModel(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
 
-		book = (new ModelRenderer(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
+		book = (new RendererModel(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
 
 		book.addChild(coverRight);
 		book.addChild(coverLeft);
@@ -29,10 +31,10 @@ public class ModelTFDeathTome extends ModelBook {
 		book.addChild(flippingPageRight);
 		book.addChild(flippingPageLeft);
 
-		loosePage1 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, -8F, 5, 8, 0);
-		loosePage2 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 9F, 5, 8, 0);
-		loosePage3 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 11F, 5, 8, 0);
-		loosePage4 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 7F, 5, 8, 0);
+		loosePage1 = (new RendererModel(this)).setTextureOffset(24, 10).addBox(0F, -4F, -8F, 5, 8, 0);
+		loosePage2 = (new RendererModel(this)).setTextureOffset(24, 10).addBox(0F, -4F, 9F, 5, 8, 0);
+		loosePage3 = (new RendererModel(this)).setTextureOffset(24, 10).addBox(0F, -4F, 11F, 5, 8, 0);
+		loosePage4 = (new RendererModel(this)).setTextureOffset(24, 10).addBox(0F, -4F, 7F, 5, 8, 0);
 
 		everything.addChild(book);
 		everything.addChild(loosePage1);

@@ -1,11 +1,11 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.world.World;
 
-public abstract class EntityTFThrowable extends EntityThrowable implements ITFProjectile {
+public abstract class EntityTFThrowable extends ThrowableEntity implements ITFProjectile {
 
 	public EntityTFThrowable(World worldIn) {
 		super(worldIn);
@@ -15,14 +15,14 @@ public abstract class EntityTFThrowable extends EntityThrowable implements ITFPr
 		super(worldIn, x, y, z);
 	}
 
-	public EntityTFThrowable(World worldIn, EntityLivingBase throwerIn) {
+	public EntityTFThrowable(World worldIn, LivingEntity throwerIn) {
 		super(worldIn, throwerIn);
 	}
 
 	@Override
 	public void setThrower(Entity entity) {
-		if (entity instanceof EntityLivingBase) {
-			this.thrower = (EntityLivingBase) entity;
+		if (entity instanceof LivingEntity) {
+			this.thrower = (LivingEntity) entity;
 		}
 	}
 }

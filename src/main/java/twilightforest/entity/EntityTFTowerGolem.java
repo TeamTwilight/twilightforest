@@ -5,12 +5,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.MeleeAttackGoal;
+import net.minecraft.entity.ai.HurtByTargetGoal;
+import net.minecraft.entity.ai.LookRandomlyGoal;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -38,13 +38,13 @@ public class EntityTFTowerGolem extends EntityMob {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
-		this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0D, 0.0F));
-		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-		this.tasks.addTask(3, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	protected void registerGoals() {
+		this.tasks.addTask(1, new MeleeAttackGoal(this, 1.0D, false));
+		this.tasks.addTask(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F));
+		this.tasks.addTask(3, new LookAtGoal(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(3, new LookRandomlyGoal(this));
+		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
 	}
 
 	@Override

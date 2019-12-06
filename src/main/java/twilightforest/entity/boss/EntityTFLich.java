@@ -2,10 +2,10 @@ package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.MeleeAttackGoal;
+import net.minecraft.entity.ai.HurtByTargetGoal;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.SwimGoal;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -99,11 +99,11 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
+	protected void registerGoals() {
+		this.tasks.addTask(0, new SwimGoal(this));
 		this.tasks.addTask(1, new EntityAITFLichShadows(this));
 		this.tasks.addTask(2, new EntityAITFLichMinions(this));
-		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, true) {
+		this.tasks.addTask(3, new MeleeAttackGoal(this, 1.0D, true) {
 			@Override
 			public boolean shouldExecute() {
 				return getPhase() == 3 && super.shouldExecute();
@@ -116,8 +116,8 @@ public class EntityTFLich extends EntityMob {
 			}
 		});
 
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
+		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, false));
 	}
 
 	@Override

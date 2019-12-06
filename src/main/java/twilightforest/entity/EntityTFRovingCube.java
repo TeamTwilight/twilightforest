@@ -30,7 +30,7 @@ public class EntityTFRovingCube extends EntityMob {
 	}
 
 	@Override
-	protected void initEntityAI() {
+	protected void registerGoals() {
 		this.tasks.addTask(0, new EntityAICubeMoveToRedstoneSymbols(this, 1.0D));
 		this.tasks.addTask(1, new EntityAICubeCenterOnSymbol(this, 1.0D));
 	}

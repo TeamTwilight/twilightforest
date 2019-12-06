@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -20,7 +20,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 {
 	private final EntityLiving entityLiving;
 	private final Predicate<Entity> predicate;
-	private final EntityAINearestAttackableTarget.Sorter sorter;
+	private final NearestAttackableTargetGoal.Sorter sorter;
 	private EntityLivingBase entityTarget;
 
 	/**
@@ -52,7 +52,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 			}
 		};
 
-		this.sorter = new EntityAINearestAttackableTarget.Sorter(entityLivingIn);
+		this.sorter = new NearestAttackableTargetGoal.Sorter(entityLivingIn);
 	}
 
 	/**

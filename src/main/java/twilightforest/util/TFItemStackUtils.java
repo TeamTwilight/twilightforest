@@ -1,20 +1,17 @@
 package twilightforest.util;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import twilightforest.compat.Baubles;
-import twilightforest.compat.TFCompat;
 
 import java.util.function.Predicate;
 
 public class TFItemStackUtils {
 
-	public static boolean consumeInventoryItem(EntityLivingBase living, Predicate<ItemStack> matcher, int count) {
+	public static boolean consumeInventoryItem(LivingEntity living, Predicate<ItemStack> matcher, int count) {
 
 		IItemHandler inv = living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		if (inv == null) return false;
@@ -30,9 +27,10 @@ public class TFItemStackUtils {
 			}
 		}
 
-		if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
+		//TODO: Baubles is dead (I think)
+		/*if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
 			consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
-		}
+		}*/
 
 		return consumedSome;
 	}
@@ -44,24 +42,24 @@ public class TFItemStackUtils {
 		int size = stack.getMaxStackSize();
 
 		while (!stack.isEmpty()) {
-			result.add(stack.splitStack(size));
+			result.add(stack.split(size));
 		}
 
 		return result;
 	}
 
-	public static boolean hasToolMaterial(ItemStack stack, Item.ToolMaterial material) {
+	public static boolean hasToolMaterial(ItemStack stack, IItemTier material) {
 
 		Item item = stack.getItem();
 
 		// see TileEntityFurnace.getItemBurnTime
-		if (item instanceof ItemTool && material.toString().equals(((ItemTool)item).getToolMaterialName())) {
+		if (item instanceof ToolItem && material.toString().equals(((ToolItem)item).getToolMaterialName())) {
 			return true;
 		}
-		if (item instanceof ItemSword && material.toString().equals(((ItemSword)item).getToolMaterialName())) {
+		if (item instanceof SwordItem && material.toString().equals(((SwordItem)item).getToolMaterialName())) {
 			return true;
 		}
-		if (item instanceof ItemHoe && material.toString().equals(((ItemHoe)item).getMaterialName())) {
+		if (item instanceof HoeItem && material.toString().equals(((HoeItem)item).getMaterialName())) {
 			return true;
 		}
 
@@ -69,11 +67,11 @@ public class TFItemStackUtils {
 	}
 
 	public static void clearInfoTag(ItemStack stack, String key) {
-		NBTTagCompound nbt = stack.getTagCompound();
+		CompoundNBT nbt = stack.getTag();
 		if (nbt != null) {
-			nbt.removeTag(key);
+			nbt.remove(key);
 			if (nbt.isEmpty()) {
-				stack.setTagCompound(null);
+				stack.setTag(null);
 			}
 		}
 	}

@@ -53,7 +53,7 @@ public class EntityTFTowerGhast extends EntityGhast {
 	}
 
 	@Override
-	protected void initEntityAI() {
+	protected void registerGoals() {
 		this.tasks.addTask(5, new AIHomedFly(this));
 		if (!(this instanceof EntityTFUrGhast)) this.tasks.addTask(5, new AIRandomFly(this));
 		this.tasks.addTask(7, new EntityGhast.AILookAround(this));

@@ -1,11 +1,11 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFBlockGoblin;
 import twilightforest.entity.EntityTFSpikeBlock;
 
-public class EntityAIThrowSpikeBlock extends EntityAIBase {
+public class EntityAIThrowSpikeBlock extends Goal {
 
 	protected EntityTFBlockGoblin attacker;
 	protected EntityTFSpikeBlock spikeBlock;
@@ -18,11 +18,11 @@ public class EntityAIThrowSpikeBlock extends EntityAIBase {
 
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 		if (target == null || this.attacker.getDistanceSq(target) > 42) {
 			return false;
 		} else {
-			return this.attacker.isEntityAlive() && this.attacker.canEntityBeSeen(target) && this.attacker.world.rand.nextInt(56) == 0;
+			return this.attacker.isAlive() && this.attacker.canEntityBeSeen(target) && this.attacker.world.rand.nextInt(56) == 0;
 		}
 	}
 

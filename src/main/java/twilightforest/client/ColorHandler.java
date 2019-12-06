@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.init.Blocks;
@@ -7,7 +8,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.FoliageColors;
+import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.BiomeColorHelper;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -25,7 +29,7 @@ import twilightforest.item.TFItems;
 
 import java.awt.Color;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Side.CLIENT)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public final class ColorHandler {
 
 	@SubscribeEvent
@@ -33,8 +37,8 @@ public final class ColorHandler {
 
 		BlockColors blockColors = event.getBlockColors();
 
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(2, 128.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.aurora_block);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(2, 128.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.aurora_block);
+		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
 			int normalColor = blockColors.colorMultiplier(TFBlocks.aurora_block.getDefaultState(), worldIn, pos, tintIndex);
@@ -47,11 +51,11 @@ public final class ColorHandler {
 
 			return Color.HSBtoRGB(hsb[0], hsb[1] * 0.5F, Math.min(hsb[2] + 0.4F, 0.9F));
 		}, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.double_aurora_slab, TFBlocks.auroralized_glass);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
 			if (worldIn == null || pos == null) {
-				return ColorizerFoliage.getFoliageColorBasic();
+				return FoliageColors.getDefault();
 			}
 
 			int red = 0;
@@ -60,7 +64,7 @@ public final class ColorHandler {
 
 			for (int dz = -1; dz <= 1; ++dz) {
 				for (int dx = -1; dx <= 1; ++dx) {
-					int i2 = worldIn.getBiome(pos.add(dx, 0, dz)).getFoliageColorAtPos(pos.add(dx, 0, dz));
+					int i2 = worldIn.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos.add(dx, 0, dz));
 					red += (i2 & 16711680) >> 16;
 					grn += (i2 & 65280) >> 8;
 					blu += i2 & 255;
@@ -69,9 +73,9 @@ public final class ColorHandler {
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 		}, TFBlocks.dark_leaves, TFBlocks.giant_leaves);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : state.getValue(BlockTFFireJet.VARIANT).hasGrassColor ? blockColors.colorMultiplier(Blocks.GRASS.getDefaultState(), worldIn, pos, tintIndex) : 0xFFFFFF, TFBlocks.fire_jet);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? 2129968 : 7455580, TFBlocks.huge_lilypad);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : state.getValue(BlockTFFireJet.VARIANT).hasGrassColor ? blockColors.colorMultiplier(Blocks.GRASS.getDefaultState(), worldIn, pos, tintIndex) : 0xFFFFFF, TFBlocks.fire_jet);
+		blockColors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? 2129968 : 7455580, TFBlocks.huge_lilypad);
+		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
 			if (worldIn == null || pos == null) {
@@ -89,7 +93,7 @@ public final class ColorHandler {
 				}
 			} else {
 				int red = -1, green = -1, blue = -1;
-				MagicWoodVariant leafType = state.getValue(BlockTFMagicLog.VARIANT);
+				MagicWoodVariant leafType = state.get(BlockTFMagicLog.VARIANT);
 
 				if (leafType == MagicWoodVariant.TIME) {
 					int fade = pos.getX() * 16 + pos.getY() * 16 + pos.getZ() * 16;
@@ -148,17 +152,17 @@ public final class ColorHandler {
 				return red << 16 | green << 8 | blue;
 			}
 		}, TFBlocks.magic_leaves);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (worldIn == null || pos == null || state.getValue(BlockTFTowerWood.VARIANT) == TowerWoodVariant.ENCASED) {
+			if (worldIn == null || pos == null || state.get(BlockTFTowerWood.VARIANT) == TowerWoodVariant.ENCASED) {
 				return -1;
 			} else {
 				float f = BlockTFAuroraBrick.rippleFractialNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
 				return Color.HSBtoRGB(0.1f, 1f - f, (f + 2f) / 3f);
 			}
 		}, TFBlocks.tower_wood);
-		blockColors.registerBlockColorHandler((state, world, pos, tintIndex) -> {
+		blockColors.register((state, world, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
 			if (world == null || pos == null) {
@@ -221,15 +225,15 @@ public final class ColorHandler {
 				}
 			}
 		}, TFBlocks.twilight_leaves);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			Leaves3Variant variant = state.getValue(BlockTFLeaves3.VARIANT);
-			return variant == Leaves3Variant.THORN ? ColorizerFoliage.getFoliageColorPine()
-					: variant == Leaves3Variant.BEANSTALK ? ColorizerFoliage.getFoliageColorBirch()
+			return variant == Leaves3Variant.THORN ? FoliageColors.getSpruce()
+					: variant == Leaves3Variant.BEANSTALK ? FoliageColors.getSpruce()
 					: -1;
 		}, TFBlocks.twilight_leaves_3);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> tintIndex != 0 ? 0xFFFFFF : state.getValue(BlockTFPlant.VARIANT).isColored ? worldIn != null && pos != null ? state.getValue(BlockTFPlant.VARIANT).isLeaves ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.twilight_plant);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> ColorizerGrass.getGrassColor(0.5D, 1.0D), TFBlocks.miniature_structure);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex != 0 ? 0xFFFFFF : state.getValue(BlockTFPlant.VARIANT).isColored ? worldIn != null && pos != null ? state.getValue(BlockTFPlant.VARIANT).isLeaves ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : BiomeColorHelper.getGrassColorAtPos(worldIn, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D) : 0xFFFFFF, TFBlocks.twilight_plant);
+		blockColors.register((state, worldIn, pos, tintIndex) -> GrassColors.get(0.5D, 1.0D), TFBlocks.miniature_structure);
+		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
 			switch (state.getValue(BlockTFCastleMagic.COLOR)) {
@@ -242,11 +246,11 @@ public final class ColorHandler {
 				case PURPLE:
 					return 0x4B0082;
 				default:
-					TwilightForestMod.LOGGER.warn("Magic happened. Got {} for Castle Rune", state.getValue(BlockTFCastleMagic.COLOR).getName());
+					TwilightForestMod.LOGGER.warn("Magic happened. Got {} for Castle Rune", state.get(BlockTFCastleMagic.COLOR).getName());
 					return state.getValue(BlockTFCastleMagic.COLOR).getColorValue();
 			}
 		}, TFBlocks.castle_rune_brick);
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
 			switch (state.getValue(BlockTFCastleDoor.LOCK_INDEX)) {
@@ -263,7 +267,7 @@ public final class ColorHandler {
 			}
 		}, TFBlocks.castle_door, TFBlocks.castle_door_vanished);
 
-		blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
 			switch (state.getValue(BlockTFForceField.COLOR)) {
@@ -278,8 +282,8 @@ public final class ColorHandler {
 				case BLUE:
 					return 0x0DDEFF;
 				default:
-					TwilightForestMod.LOGGER.warn("Magic happened. Got {} for Forcefield", state.getValue(BlockTFForceField.COLOR).getName());
-					return state.getValue(BlockTFForceField.COLOR).getColorValue();
+					TwilightForestMod.LOGGER.warn("Magic happened. Got {} for Forcefield", state.get(BlockTFForceField.COLOR).getName());
+					return state.get(BlockTFForceField.COLOR).getColorValue();
 			}
 		}, TFBlocks.force_field);
 	}
@@ -290,19 +294,20 @@ public final class ColorHandler {
 		BlockColors blockColors = event.getBlockColors();
 
 		// Atomic: This is one place where getStateFromMeta is still commonly used
-		itemColors.registerItemColorHandler((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
+		itemColors.register((stack, tintIndex) -> blockColors.colorMultiplier(((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata()), null, null, tintIndex),
 				TFBlocks.aurora_block, TFBlocks.aurora_pillar, TFBlocks.aurora_slab, TFBlocks.auroralized_glass, TFBlocks.dark_leaves, TFBlocks.giant_leaves, TFBlocks.fire_jet, TFBlocks.magic_leaves, TFBlocks.twilight_leaves, TFBlocks.twilight_leaves_3, TFBlocks.twilight_plant, TFBlocks.castle_rune_brick, TFBlocks.castle_door, TFBlocks.miniature_structure, TFBlocks.force_field, TFBlocks.huge_lilypad);
 		// Honestly I'd say it makes sense in this context. -Drullkus
+        // Androsa: 1.14 is here, it's time to delet
 
-		itemColors.registerItemColorHandler((stack, tintIndex) ->
+		itemColors.register((stack, tintIndex) ->
 				stack.getItem() instanceof ItemTFArcticArmor
 						? ((ItemTFArcticArmor) stack.getItem()).getColor(stack, tintIndex)
 						: 0xFFFFFF,
 				TFItems.arctic_helmet, TFItems.arctic_chestplate, TFItems.arctic_leggings, TFItems.arctic_boots);
 
-		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
-			itemColors.registerItemColorHandler(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
-			itemColors.registerItemColorHandler((stack, tintIndex) -> {
+		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
+			itemColors.register(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
+			itemColors.register((stack, tintIndex) -> {
 				int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).color);
 
 				float d = tintIndex + 1;
@@ -311,7 +316,7 @@ public final class ColorHandler {
 						| (int) ((c >> 8 & 0xFF) / d) << 8
 						| (int) ((c & 0xFF) / d);
 			}, twilightforest.compat.ie.ItemTFShaderGrabbag.shader_bag);
-		}
+		}*/
 	}
 
 	private ColorHandler() {}

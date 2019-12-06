@@ -1,11 +1,10 @@
 package twilightforest.capabilities.shield;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraft.util.SoundEvents;
 import twilightforest.network.PacketUpdateShield;
 import twilightforest.network.TFPacketHandler;
 
@@ -13,17 +12,17 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	private int temporaryShields;
 	private int permanentShields;
-	private EntityLivingBase host;
+	private LivingEntity host;
 	private int timer;
 
 	@Override
-	public void setEntity(EntityLivingBase entity) {
+	public void setEntity(LivingEntity entity) {
 		host = entity;
 	}
 
 	@Override
 	public void update() {
-		if (!host.world.isRemote && shieldsLeft() > 0 && timer-- <= 0 && (!(host instanceof EntityPlayer) || !((EntityPlayer) host).isCreative()))
+		if (!host.world.isRemote && shieldsLeft() > 0 && timer-- <= 0 && (!(host instanceof PlayerEntity) || !((PlayerEntity) host).isCreative()))
 			breakShield();
 	}
 
@@ -102,8 +101,8 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			IMessage message = new PacketUpdateShield(host, this);
 			TFPacketHandler.CHANNEL.sendToAllTracking(message, host);
 			// sendToAllTracking doesn't send to your own client so we need to send that as well.
-			if (host instanceof EntityPlayerMP) {
-				TFPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) host);
+			if (host instanceof ServerPlayerEntity) {
+				TFPacketHandler.CHANNEL.sendTo(message, (ServerPlayerEntity) host);
 			}
 		}
 	}

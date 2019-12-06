@@ -2,11 +2,11 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.ai.MeleeAttackGoal;
+import net.minecraft.entity.ai.HurtByTargetGoal;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
@@ -36,14 +36,14 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
+	protected void registerGoals() {
+		this.tasks.addTask(0, new SwimGoal(this));
 		this.tasks.addTask(2, new EntityAITFBreathAttack<>(this, 1.0F, 5F, 30, 0.1F));
-		this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0F, false));
-		this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
+		this.tasks.addTask(3, new MeleeAttackGoal(this, 1.0F, false));
+		this.tasks.addTask(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
 	}
 
 	@Override

@@ -85,8 +85,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		super.initEntityAI();
+	protected void registerGoals() {
+		super.registerGoals();
 		trapLocations = new ArrayList<BlockPos>();
 		this.tasks.taskEntries.removeIf(e -> e.action instanceof EntityTFTowerGhast.AIHomedFly);
 		this.tasks.addTask(5, new AIWaypointFly(this));

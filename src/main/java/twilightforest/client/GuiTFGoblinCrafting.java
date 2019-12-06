@@ -1,15 +1,14 @@
 package twilightforest.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -21,11 +20,11 @@ import twilightforest.network.TFPacketHandler;
 
 import java.io.IOException;
 
-public class GuiTFGoblinCrafting extends GuiContainer {
+public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
 
-	public GuiTFGoblinCrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
+	public GuiTFGoblinCrafting(PlayerInventory inventory, World world, int x, int y, int z) {
 		super(new ContainerTFUncrafting(inventory, world, x, y, z));
 	}
 
@@ -35,37 +34,37 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 
 		int id = 0;
 
-		this.buttonList.add(new CycleButton(++id, guiLeft + 40, guiTop + 22, true, false));
-		this.buttonList.add(new CycleButton(++id, guiLeft + 40, guiTop + 55, false, false));
+		this.buttons.add(new CycleButton(++id, guiLeft + 40, guiTop + 22, true, false));
+		this.buttons.add(new CycleButton(++id, guiLeft + 40, guiTop + 55, false, false));
 
 		//this.buttonList.add(new ModeButton(++id, guiLeft + 7, guiTop + 57));
 
-		this.buttonList.add(new CycleButtonMini(++id, guiLeft + 27, guiTop + 56, true));
-		this.buttonList.add(new CycleButtonMini(++id, guiLeft + 27, guiTop + 63, false));
+		this.buttons.add(new CycleButtonMini(++id, guiLeft + 27, guiTop + 56, true));
+		this.buttons.add(new CycleButtonMini(++id, guiLeft + 27, guiTop + 63, false));
 
 		//this.buttonList.add(new RefreshButton(++id, guiLeft + 26, guiTop + 57));
 
-		this.buttonList.add(new CycleButton(++id, guiLeft + 121, guiTop + 22, true, true));
-		this.buttonList.add(new CycleButton(++id, guiLeft + 121, guiTop + 55, false, true));
+		this.buttons.add(new CycleButton(++id, guiLeft + 121, guiTop + 22, true, true));
+		this.buttons.add(new CycleButton(++id, guiLeft + 121, guiTop + 55, false, true));
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		drawDefaultBackground();
-		super.drawScreen(mouseX, mouseY, partialTicks);
+		super.render(mouseX, mouseY, partialTicks);
 		renderHoveredToolTip(mouseX, mouseY);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		this.fontRenderer.drawString(I18n.format(TFBlocks.uncrafting_table.getTranslationKey() + ".name"), 8, 6, 4210752);
-		this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		this.font.drawString(I18n.format(TFBlocks.uncrafting_table.getTranslationKey() + ".name"), 8, 6, 4210752);
+		this.font.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		GlStateManager.color(1, 1, 1, 1);
-		this.mc.getTextureManager().bindTexture(textureLoc);
+		GlStateManager.color4f(1, 1, 1, 1);
+		this.minecraft.getTextureManager().bindTexture(textureLoc);
 		int frameX = (this.width - this.xSize) / 2;
 		int frameY = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(frameX, frameY, 0, 0, this.xSize, this.ySize);
@@ -75,7 +74,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		// show uncrafting ingredients as background
 		RenderHelper.enableGUIStandardItemLighting();
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(guiLeft, guiTop, 0);
+		GlStateManager.translatef(guiLeft, guiTop, 0);
 
 		for (int i = 0; i < 9; i++) {
 			Slot uncrafting = tfContainer.getSlot(2 + i);
@@ -88,12 +87,12 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		GlStateManager.popMatrix();
 
 		// show the costs if there are any
-		FontRenderer fontRendererObj = this.mc.fontRenderer;
+		FontRenderer fontRendererObj = this.minecraft.fontRenderer;
 		RenderHelper.disableStandardItemLighting();
 
 		int costVal = tfContainer.getUncraftingCost();
 		if (costVal > 0) {
-			if (this.mc.player.experienceLevel < costVal && !this.mc.player.capabilities.isCreativeMode) {
+			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.isCreativeMode) {
 				int color = 0xA00000;
 				String cost = "" + costVal;
 				fontRendererObj.drawStringWithShadow(cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
@@ -106,7 +105,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 
 		costVal = tfContainer.getRecraftingCost();
 		if (costVal > 0) {
-			if (this.mc.player.experienceLevel < costVal && !this.mc.player.capabilities.isCreativeMode) {
+			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.isCreativeMode) {
 				int color = 0xA00000;
 				String cost = "" + costVal;
 				fontRendererObj.drawStringWithShadow(cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
@@ -125,10 +124,10 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		int screenY = appearSlot.yPos;
 		ItemStack itemStackToRender = backgroundSlot.getStack();
 		this.zLevel = 50.0F;
-		itemRender.zLevel = 50.0F;
+		itemRenderer.zLevel = 50.0F;
 
-		itemRender.renderItemIntoGUI(itemStackToRender, screenX, screenY);
-		itemRender.renderItemOverlayIntoGUI(this.fontRenderer, itemStackToRender, screenX, screenY, "");
+        itemRenderer.renderItemIntoGUI(itemStackToRender, screenX, screenY);
+        itemRenderer.renderItemOverlayIntoGUI(this.font, itemStackToRender, screenX, screenY, "");
 
 		boolean itemBroken = ContainerTFUncrafting.isMarked(itemStackToRender);
 
@@ -139,12 +138,12 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		GlStateManager.enableLighting();
 		GlStateManager.enableDepth();
 
-		itemRender.zLevel = 0.0F;
+        itemRenderer.zLevel = 0.0F;
 		this.zLevel = 0.0F;
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
+	protected void actionPerformed(Button button) throws IOException {
 		super.actionPerformed(button);
 
 		if (this.inventorySlots instanceof ContainerTFUncrafting) {
@@ -200,7 +199,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		}
 	}
 
-	private static class CycleButton extends GuiButton {
+	private static class CycleButton extends Button {
 		private final boolean up;
 		private final boolean constructive;
 
@@ -211,16 +210,16 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		}
 
 		@Override
-		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+		public void renderButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
-				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-				this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
 				int textureX = 176;
 				int textureY = 0;
 
-				if (this.hovered) textureX += this.width;
+				if (this.isHovered) textureX += this.width;
 
 				// what's up
 				if (!this.up) textureY += this.height;
@@ -251,7 +250,7 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 //		}
 //	}
 
-	private class CycleButtonMini extends GuiButton {
+	private class CycleButtonMini extends Button {
 		private final boolean up;
 
 		CycleButtonMini(int buttonId, int x, int y, boolean up) {
@@ -263,13 +262,13 @@ public class GuiTFGoblinCrafting extends GuiContainer {
 		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
-				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-				this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
 				int textureX = 176;
 				int textureY = 41;
 
-				if (this.hovered) textureX += this.width;
+				if (this.isHovered) textureX += this.width;
 
 				// what's up
 				if (!this.up) textureY += this.height;

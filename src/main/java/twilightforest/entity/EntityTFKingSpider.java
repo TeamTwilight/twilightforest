@@ -18,8 +18,8 @@ public class EntityTFKingSpider extends EntitySpider {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		super.initEntityAI();
+	protected void registerGoals() {
+		super.registerGoals();
 		//this.tasks.addTask(1, new EntityAITFChargeAttack(this, 0.4F));
 	}
 

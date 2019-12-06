@@ -5,16 +5,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIAttackRanged;
-import net.minecraft.entity.ai.EntityAIFleeSun;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIRestrictSun;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.MeleeAttackGoal;
+import net.minecraft.entity.ai.RangedAttackGoal;
+import net.minecraft.entity.ai.FleeSunGoal;
+import net.minecraft.entity.ai.HurtByTargetGoal;
+import net.minecraft.entity.ai.LookRandomlyGoal;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.RestrictSunGoal;
+import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,8 +40,8 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 	private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, 0).setSaved(false);
 
-	private EntityAIAttackRanged aiArrowAttack;
-	private EntityAIAttackMelee aiAttackOnCollide;
+	private RangedAttackGoal aiArrowAttack;
+	private MeleeAttackGoal aiAttackOnCollide;
 
 	public EntityTFTroll(World world) {
 		super(world);
@@ -49,18 +49,18 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void initEntityAI() {
-		aiArrowAttack = new EntityAIAttackRanged(this, 1.0D, 20, 60, 15.0F);
-		aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false);
+	public void registerGoals() {
+		aiArrowAttack = new RangedAttackGoal(this, 1.0D, 20, 60, 15.0F);
+		aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false);
 
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIRestrictSun(this));
-		this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+		this.tasks.addTask(1, new SwimGoal(this));
+		this.tasks.addTask(2, new RestrictSunGoal(this));
+		this.tasks.addTask(3, new FleeSunGoal(this, 1.0D));
+		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.tasks.addTask(6, new LookAtGoal(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(6, new LookRandomlyGoal(this));
+		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
 
 		if (world != null && !world.isRemote) {
 			this.setCombatTask();

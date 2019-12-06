@@ -1,15 +1,15 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.passive.IAnimals;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFBunny extends EntityCreature implements IAnimals {
+public class EntityTFBunny extends CreatureEntity implements IAnimals {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/bunny");
 	private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
@@ -33,44 +33,43 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIPanic(this, 2.0F));
-		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.CARROT, true));
-		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.GOLDEN_CARROT, true));
-		this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Item.getItemFromBlock(Blocks.YELLOW_FLOWER), true));
-		this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.33F));
-		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.8F));
-		this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0F));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-		this.tasks.addTask(8, new EntityAILookIdle(this));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0F));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.fromItems(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION), true));
+		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, PlayerEntity.class, 2.0F, 0.8F, 1.33F));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8F));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6F));
+		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_TYPE, (byte) 0);
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setInteger("BunnyType", this.getBunnyType());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putInt("BunnyType", this.getBunnyType());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
-		this.setBunnyType(compound.getInteger("BunnyType"));
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+		this.setBunnyType(compound.getInt("BunnyType"));
 	}
 
+	//TODO: Remove for loot table
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
@@ -85,8 +84,8 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 	}
 
 	@Override
-	public float getEyeHeight() {
-		return this.height * 0.5F;
+	public float getEyeHeight(Pose pose) {
+		return this.getHeight() * 0.5F;
 	}
 
 	@Override
@@ -109,11 +108,11 @@ public class EntityTFBunny extends EntityCreature implements IAnimals {
 		if (underMaterial == Material.WOOD) {
 			return -1.0F;
 		}
-		if (underMaterial == Material.GRASS) {
+		if (underMaterial == Material.ORGANIC) {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.world.getLightBrightness(pos) - 0.5F;
+		return this.world.getLight(pos) - 0.5F;
 	}
 
 }

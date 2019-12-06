@@ -3,8 +3,8 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.MeleeAttackGoal;
+import net.minecraft.entity.ai.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,15 +44,15 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-	protected void initEntityAI() {
-		super.initEntityAI();
+	protected void registerGoals() {
+		super.registerGoals();
 
 		// Remove default spider melee task
-		this.tasks.taskEntries.removeIf(t -> t.action instanceof EntityAIAttackMelee);
+		this.tasks.taskEntries.removeIf(t -> t.action instanceof MeleeAttackGoal);
 
 		// Replace with one that doesn't become docile in light
 		// [VanillaCopy] based on EntitySpider.AISpiderAttack
-		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1, true) {
+		this.tasks.addTask(4, new MeleeAttackGoal(this, 1, true) {
 			@Override
 			protected double getAttackReachSqr(EntityLivingBase attackTarget) {
 				return 4.0F + attackTarget.width;
@@ -60,9 +60,9 @@ public class EntityTFSwarmSpider extends EntitySpider {
 		});
 
 		// Remove default spider target player task
-		this.targetTasks.taskEntries.removeIf(t -> t.priority == 2 && t.action instanceof EntityAINearestAttackableTarget);
+		this.targetTasks.taskEntries.removeIf(t -> t.priority == 2 && t.action instanceof NearestAttackableTargetGoal);
 		// Replace with one that doesn't care about light
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
 	}
 
 	@Override
