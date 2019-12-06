@@ -1,23 +1,23 @@
 package twilightforest.advancements;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.NBTPredicate;
+import net.minecraft.advancements.criterion.NBTPredicate;
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.BlockStateContainer;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
+import java.util.Optional;
 
 public class BlockPredicate {
     public static final BlockPredicate ANY = new BlockPredicate(ImmutableSet.of(), Blocks.AIR, NBTPredicate.ANY) {
@@ -39,22 +39,22 @@ public class BlockPredicate {
 
         JsonObject json = element.getAsJsonObject();
 
-        Block block = Block.REGISTRY.getObject(new ResourceLocation(JsonUtils.getString(json, "block")));
+        Block block = Block.REGISTRY.getObject(new ResourceLocation(JSONUtils.getString(json, "block")));
         BlockStateContainer container = block.getBlockState();
         HashSet<PropertyPredicate<?>> properties = new HashSet<>();
 
         if (json.has("properties")) {
-            for (JsonElement propertyRawGroup : JsonUtils.getJsonArray(json, "properties")) {
+            for (JsonElement propertyRawGroup : JSONUtils.getJsonArray(json, "properties")) {
                 JsonObject propertyGroup = propertyRawGroup.getAsJsonObject();
 
-                IProperty<?> propertyKey = container.getProperty(JsonUtils.getString(propertyGroup, "property"));
+                IProperty<?> propertyKey = container.getProperty(JSONUtils.getString(propertyGroup, "property"));
 
                 if (propertyKey != null)
                     createPropertyPredicateAndAddToSet(
                             properties,
                             propertyKey,
-                            JsonUtils.getString(propertyGroup, "value"),
-                            JsonUtils.getString(propertyGroup, "comparator")
+                            JSONUtils.getString(propertyGroup, "value"),
+                            JSONUtils.getString(propertyGroup, "comparator")
                     );
             }
         }
@@ -90,7 +90,7 @@ public class BlockPredicate {
         return te != null && nbtPredicate.test(te.serializeNBT());
     }
 
-    private boolean test(IBlockState state) {
+    private boolean test(BlockState state) {
         if (block != state.getBlock()) return false; // Not same block
 
         for (PropertyPredicate propertyPredicate : propertyPredicates)
@@ -111,8 +111,8 @@ public class BlockPredicate {
             this.comparisonType = comparisonType;
         }
 
-        private boolean test(IBlockState state) {
-            return state.getPropertyKeys().contains(property) && comparisonType.test(value, state.getValue(property));
+        private boolean test(BlockState state) {
+            return state.getProperties().contains(property) && comparisonType.test(value, state.get(property));
         }
 
         private enum ComparisonType {

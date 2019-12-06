@@ -7,11 +7,10 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import java.util.Map;
 import java.util.Set;
-
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.critereon.AbstractCriterionInstance;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
@@ -52,14 +51,14 @@ public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.In
         return new MakePortalTrigger.Instance();
     }
 
-    public void trigger(EntityPlayerMP player) {
+    public void trigger(ServerPlayerEntity player) {
         MakePortalTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
         if (listeners != null) {
             listeners.trigger();
         }
     }
 
-    public static class Instance extends AbstractCriterionInstance {
+    public static class Instance extends CriterionInstance {
 
         public Instance() {
             super(MakePortalTrigger.ID);

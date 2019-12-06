@@ -6,9 +6,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.critereon.AbstractCriterionInstance;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -57,14 +57,14 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
 		return new Instance(from, to);
 	}
 
-	public void trigger(EntityPlayerMP player, ItemStack from, ItemStack to) {
+	public void trigger(ServerPlayerEntity player, ItemStack from, ItemStack to) {
 		Listeners listeners = this.listeners.get(player.getAdvancements());
 		if (listeners != null) {
 			listeners.trigger(from, to);
 		}
 	}
 
-	public static class Instance extends AbstractCriterionInstance {
+	public static class Instance extends CriterionInstance {
 
 		private final ItemPredicate from;
 		private final ItemPredicate to;

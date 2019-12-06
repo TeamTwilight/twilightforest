@@ -6,9 +6,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.critereon.AbstractCriterionInstance;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -62,14 +62,14 @@ public class ItemUseTrigger implements ICriterionTrigger<ItemUseTrigger.Instance
         return new ItemUseTrigger.Instance(item, block);
     }
 
-    public void trigger(EntityPlayerMP player, ItemStack item, World world, BlockPos pos) {
+    public void trigger(ServerPlayerEntity player, ItemStack item, World world, BlockPos pos) {
         ItemUseTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
         if (listeners != null) {
             listeners.trigger(item, world, pos);
         }
     }
 
-    public static class Instance extends AbstractCriterionInstance {
+    public static class Instance extends CriterionInstance {
 
         private final ItemPredicate item;
         private final BlockPredicate block;

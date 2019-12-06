@@ -7,8 +7,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.critereon.AbstractCriterionInstance;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
@@ -52,14 +52,14 @@ public class ActivateGhastTrapTrigger implements ICriterionTrigger<ActivateGhast
         return new ActivateGhastTrapTrigger.Instance();
     }
 
-    public void trigger(EntityPlayerMP player) {
+    public void trigger(ServerPlayerEntity player) {
         ActivateGhastTrapTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
         if (listeners != null) {
             listeners.trigger();
         }
     }
 
-    public static class Instance extends AbstractCriterionInstance {
+    public static class Instance extends CriterionInstance {
 
         public Instance() {
             super(ActivateGhastTrapTrigger.ID);

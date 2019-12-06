@@ -6,9 +6,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.advancements.critereon.AbstractCriterionInstance;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
@@ -51,18 +51,18 @@ public class StructureClearedTrigger implements ICriterionTrigger<StructureClear
 
 	@Override
 	public StructureClearedTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
-		String structureName = JsonUtils.getString(json, "structure");
+		String structureName = JSONUtils.getString(json, "structure");
 		return new StructureClearedTrigger.Instance(structureName);
 	}
 
-	public void trigger(EntityPlayerMP player, String structureName) {
+	public void trigger(ServerPlayerEntity player, String structureName) {
 		StructureClearedTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
 		if (listeners != null) {
 			listeners.trigger(structureName);
 		}
 	}
 
-	public static class Instance extends AbstractCriterionInstance {
+	public static class Instance extends CriterionInstance {
 
 		private final String structureName;
 
