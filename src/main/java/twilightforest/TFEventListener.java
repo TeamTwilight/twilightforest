@@ -724,7 +724,7 @@ public class TFEventListener {
 	public static void onAdvancementGet(AdvancementEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
 		if (player instanceof EntityPlayerMP) {
-			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player);
+			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((EntityPlayerMP) player, event.getAdvancement());
 		}
 	}
 
