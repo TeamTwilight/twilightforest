@@ -1,16 +1,13 @@
 package twilightforest.biomes;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
@@ -29,6 +26,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 	public TFBiomeThornlands(BiomeProperties props) {
 		super(props);
 
+        //TODO: Move to SurfaceBuilderConfig
 		this.topBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SURFACE);
 		this.fillerBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.CRACKED);
 
@@ -41,6 +39,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		this.decorator.generateFalls = false;
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
 		// add thorns!
@@ -55,6 +54,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 
 	private final Predicate<Block> otherGround = block -> block == Blocks.SANDSTONE || block == Blocks.SAND || block == Blocks.CLAY || block == TFBlocks.deadrock;
 
+    //TODO: Move to SurfaceBuilder
 	@Override
 	public IBlockState getStoneReplacementState() {
 		return TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SOLID);
@@ -66,7 +66,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 	}
 
 	@Override
-	public void enforceProgression(EntityPlayer player, World world) {
+	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 5 == 0) {
 			player.attackEntityFrom(DamageSource.MAGIC, 1.0F);
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);

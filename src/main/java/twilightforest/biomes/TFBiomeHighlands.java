@@ -1,27 +1,14 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBlockBlob;
-import net.minecraft.world.gen.feature.WorldGenMegaPineTree;
-import net.minecraft.world.gen.feature.WorldGenTaiga1;
-import net.minecraft.world.gen.feature.WorldGenTaiga2;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFPlant;
@@ -44,7 +31,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	private final WorldGenerator genTrollRoots = new TFGenTrollRoots();
 	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
-	public TFBiomeHighlands(BiomeProperties props) {
+	public TFBiomeHighlands(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().hasCanopy = false;
@@ -54,12 +41,13 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		this.decorator.generateFalls = false;
 
 		undergroundMonsterList.clear();
-		undergroundMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntityCreeper.class, 1, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntitySlime.class, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 1, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.SLIME, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityTFTroll.class, 10, 4, 4));
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(4) == 0) {
@@ -75,6 +63,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		return random.nextInt(5) > 0
@@ -82,6 +71,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 				: new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 	}
 
+    //TODO: Move to SurfaceBuilderConfig?
 	@Override
 	public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
 		this.topBlock = Blocks.GRASS.getDefaultState();
@@ -96,6 +86,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
 
@@ -148,7 +139,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 	}
 
 	@Override
-	public void enforceProgression(EntityPlayer player, World world) {
+	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 5 == 0) {
 			player.attackEntityFrom(DamageSource.MAGIC, 0.5F);
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);

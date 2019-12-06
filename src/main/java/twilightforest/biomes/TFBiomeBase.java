@@ -1,30 +1,13 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBigTree;
-import net.minecraft.world.gen.feature.WorldGenBirchTree;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.passive.*;
@@ -39,6 +22,7 @@ import java.util.Random;
 
 public class TFBiomeBase extends Biome {
 
+    //TODO: Move to feature decoration
 	protected final WorldGenAbstractTree birchGen = new WorldGenBirchTree(false, false);
 
 	protected final List<SpawnListEntry> undergroundMonsterList = new ArrayList<>();
@@ -47,7 +31,7 @@ public class TFBiomeBase extends Biome {
 
 	public final TFFeature containedFeature = getContainedFeature();
 
-	public TFBiomeBase(BiomeProperties props) {
+	public TFBiomeBase(Builder props) {
 		super(props);
 
 		// remove normal monster spawns
@@ -58,25 +42,25 @@ public class TFBiomeBase extends Biome {
 		spawnableCreatureList.clear();
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFBighorn.class, 12, 4, 4));
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFBoar.class, 10, 4, 4));
-		spawnableCreatureList.add(new SpawnListEntry(EntityChicken.class, 10, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityType.CHICKEN, 10, 4, 4));
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFDeer.class, 15, 4, 5));
-		spawnableCreatureList.add(new SpawnListEntry(EntityWolf.class, 5, 4, 4));
+		spawnableCreatureList.add(new SpawnListEntry(EntityType.WOLF, 5, 4, 4));
 
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFTinyBird.class, 15, 4, 8));
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFSquirrel.class, 10, 2, 4));
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFBunny.class, 10, 4, 5));
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFRaven.class, 10, 1, 2));
 
-		undergroundMonsterList.add(new SpawnListEntry(EntitySpider.class, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntityZombie.class, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntityCreeper.class, 1, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntitySlime.class, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntityEnderman.class, 1, 1, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.SPIDER, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 1, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.SLIME, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.ENDERMAN, 1, 1, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityTFKobold.class, 10, 4, 8));
 
 		spawnableCaveCreatureList.clear();
-		spawnableCaveCreatureList.add(new SpawnListEntry(EntityBat.class, 10, 8, 8));
+		spawnableCaveCreatureList.add(new SpawnListEntry(EntityType.BAT, 10, 8, 8));
 		spawnableCaveCreatureList.add(new SpawnListEntry(EntityTFMobileFirefly.class, 10, 8, 8));
 
 		getTFBiomeDecorator().setTreesPerChunk(10);
@@ -89,15 +73,18 @@ public class TFBiomeBase extends Biome {
 		return 0.12F;
 	}
 
+	//TODO: YEET
 	@Override
 	public TFBiomeDecorator createBiomeDecorator() {
 		return new TFBiomeDecorator();
 	}
 
+	//TODO: YEET
 	protected TFBiomeDecorator getTFBiomeDecorator() {
 		return (TFBiomeDecorator) this.decorator;
 	}
 
+	//TODO: Move to decoration
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(5) == 0) {
@@ -109,6 +96,7 @@ public class TFBiomeBase extends Biome {
 		}
 	}
 
+	//TODO: Move to decoration
 	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		if (random.nextInt(4) == 0) {
@@ -118,11 +106,13 @@ public class TFBiomeBase extends Biome {
 		}
 	}
 
+	//TODO: Not needed after SurfaceBuilder
 	@Override
 	public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
 		this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);
 	}
 
+	//TODO: Move to SurfaceBuilder
 	// Copy of super's generateBiomeTerrain, relevant edits noted.
 	protected void genTwilightBiomeTerrain(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
 		int i = TFWorld.SEALEVEL; // TF - set sea level to 31
@@ -193,6 +183,7 @@ public class TFBiomeBase extends Biome {
 		}
 	}
 
+	//TODO: Move to SurfaceBuilder
 	private static boolean shouldGenerateBedrock(World world) {
 		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
 		return generator == null || generator.shouldGenerateBedrock();
@@ -201,6 +192,7 @@ public class TFBiomeBase extends Biome {
 	/**
 	 * Return a block if you want it to replace stone in the terrain generation
 	 */
+	//TODO: Move to SurfaceBuilder
 	@Nullable
 	public IBlockState getStoneReplacementState() {
 		return null;
@@ -209,7 +201,7 @@ public class TFBiomeBase extends Biome {
 	/**
 	 * Does the player have the advancements needed to be in this biome?
 	 */
-	public boolean doesPlayerHaveRequiredAdvancements(EntityPlayer player) {
+	public boolean doesPlayerHaveRequiredAdvancements(PlayerEntity player) {
 		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
 	}
 
@@ -220,9 +212,9 @@ public class TFBiomeBase extends Biome {
 	/**
 	 * Do something bad to a player in the wrong biome.
 	 */
-	public void enforceProgression(EntityPlayer player, World world) {}
+	public void enforceProgression(PlayerEntity player, World world) {}
 
-	protected void trySpawnHintMonster(EntityPlayer player, World world) {
+	protected void trySpawnHintMonster(PlayerEntity player, World world) {
 		if (world.rand.nextInt(4) == 0) {
 			containedFeature.trySpawnHintMonster(world, player);
 		}
@@ -235,7 +227,7 @@ public class TFBiomeBase extends Biome {
 	/**
 	 * Returns the list of underground creatures.
 	 */
-	public List<SpawnListEntry> getUndergroundSpawnableList(EnumCreatureType type) {
-		return type == EnumCreatureType.MONSTER ? this.undergroundMonsterList : getSpawnableList(type);
+	public List<SpawnListEntry> getUndergroundSpawnableList(EntityClassification type) {
+		return type == EntityClassification.MONSTER ? this.undergroundMonsterList : getSpawns(type);
 	}
 }

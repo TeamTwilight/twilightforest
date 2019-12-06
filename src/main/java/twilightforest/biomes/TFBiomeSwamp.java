@@ -1,27 +1,15 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockOldLeaf;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.FoliageColors;
+import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenShrub;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFPlant;
@@ -48,7 +36,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	private final WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
 	private final WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
 
-	public TFBiomeSwamp(BiomeProperties props) {
+	public TFBiomeSwamp(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().setDeadBushPerChunk(1);
@@ -63,10 +51,11 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		getTFBiomeDecorator().mangrovesPerChunk = 3;
 
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFMosquitoSwarm.class, 10, 1, 1));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityCreeper.class, 10, 4, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityZombie.class, 10, 4, 4));
+		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
+		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(3) == 0) {
@@ -79,6 +68,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		if (random.nextInt(4) == 0) {
@@ -90,6 +80,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random random, BlockPos pos) {
 		super.decorate(world, random, pos);
@@ -115,17 +106,17 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColorAtPos(BlockPos pos) {
+	public int getGrassColor(BlockPos pos) {
 		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerGrass.getGrassColor(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
+		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
+		return ((GrassColors.get(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
 	@Override
-	public int getFoliageColorAtPos(BlockPos pos) {
+	public int getFoliageColor(BlockPos pos) {
 		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerFoliage.getFoliageColor(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
+		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
+		return ((FoliageColors.get(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
 	@Override
@@ -143,13 +134,13 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public void enforceProgression(EntityPlayer player, World world) {
+	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
-			PotionEffect currentHunger = player.getActivePotionEffect(MobEffects.HUNGER);
+			EffectInstance currentHunger = player.getActivePotionEffect(Effects.HUNGER);
 
 			int hungerLevel = currentHunger != null ? currentHunger.getAmplifier() + 1 : 1;
 
-			player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 100, hungerLevel));
+			player.addPotionEffect(new EffectInstance(Effects.HUNGER, 100, hungerLevel));
 
 			trySpawnHintMonster(player, world);
 		}

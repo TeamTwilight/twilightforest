@@ -1,14 +1,10 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
-import net.minecraft.world.gen.feature.WorldGenerator;
-
 import java.util.Random;
 
 public class TFBiomeClearing extends TFBiomeBase {
 
-	public TFBiomeClearing(BiomeProperties props) {
+	public TFBiomeClearing(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().hasCanopy = false;
@@ -18,6 +14,7 @@ public class TFBiomeClearing extends TFBiomeBase {
 		getTFBiomeDecorator().setGrassPerChunk(10);
 	}
 
+	//TODO: Move to feature decoration
 	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);

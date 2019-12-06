@@ -1,15 +1,10 @@
 package twilightforest.biomes;
 
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenPumpkin;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSkeletonDruid;
@@ -34,7 +29,7 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 	private final WorldGenerator graveyardGen = new TFGenGraveyard();
 	private final WorldGenerator worldGenPumpkin = new WorldGenPumpkin();
 
-	public TFBiomeSpookyForest(BiomeProperties props) {
+	public TFBiomeSpookyForest(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().setFlowersPerChunk(1);
@@ -42,13 +37,14 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(2);
 		getTFBiomeDecorator().hasCanopy = false;
 
-		spawnableCreatureList.add(new SpawnListEntry(EntityBat.class, 20, 8, 8));
+		spawnableCreatureList.add(new SpawnListEntry(EntityType.BAT, 20, 8, 8));
 
-		spawnableMonsterList.add(new SpawnListEntry(EntitySpider.class, 50, 1, 4));
-		spawnableMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 20, 1, 4));
+		spawnableMonsterList.add(new SpawnListEntry(EntityType.SPIDER, 50, 1, 4));
+		spawnableMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 20, 1, 4));
 		spawnableMonsterList.add(new SpawnListEntry(EntityTFSkeletonDruid.class, 5, 1, 1));
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
 		super.decorate(world, rand, pos);
@@ -123,14 +119,14 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public int getGrassColorAtPos(BlockPos pos) {
+	@OnlyIn(Dist.CLIENT)
+	public int getGrassColor(BlockPos pos) {
 		return 0xC45123;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public int getFoliageColorAtPos(BlockPos pos) {
+	@OnlyIn(Dist.CLIENT)
+	public int getFoliageColor(BlockPos pos) {
 		return 0xFF8501;
 	}
 }

@@ -1,14 +1,10 @@
 package twilightforest.biomes;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenTaiga1;
-import net.minecraft.world.gen.feature.WorldGenTaiga2;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.EntityTFPenguin;
@@ -23,7 +19,7 @@ import java.util.Random;
  */
 public class TFBiomeGlacier extends TFBiomeBase {
 
-	public TFBiomeGlacier(BiomeProperties props) {
+	public TFBiomeGlacier(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().setTreesPerChunk(1);
@@ -34,6 +30,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFPenguin.class, 10, 4, 4));
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(3) == 0) {
@@ -56,6 +53,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		return false;
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random random, BlockPos pos) {
 		super.decorate(world, random, pos);
@@ -75,9 +73,9 @@ public class TFBiomeGlacier extends TFBiomeBase {
 	}
 
 	@Override
-	public void enforceProgression(EntityPlayer player, World world) {
+	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
-			player.addPotionEffect(new PotionEffect(TFPotions.frosty, 100, 3));
+			player.addPotionEffect(new EffectInstance(TFPotions.frosty, 100, 3));
 		}
 		trySpawnHintMonster(player, world);
 	}

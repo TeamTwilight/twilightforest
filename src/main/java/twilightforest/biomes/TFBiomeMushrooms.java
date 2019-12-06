@@ -2,7 +2,7 @@ package twilightforest.biomes;
 
 public class TFBiomeMushrooms extends TFBiomeBase {
 
-	public TFBiomeMushrooms(BiomeProperties props) {
+	public TFBiomeMushrooms(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().setTreesPerChunk(8);

@@ -1,11 +1,10 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
@@ -19,9 +18,10 @@ import java.util.Random;
 
 public class TFBiomeFinalPlateau extends TFBiomeBase {
 
-	public TFBiomeFinalPlateau(BiomeProperties props) {
+	public TFBiomeFinalPlateau(Builder props) {
 		super(props);
 
+		//TODO: Move to SurfaceBuilderConfig
 		this.topBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SURFACE);
 		this.fillerBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.CRACKED);
 
@@ -35,6 +35,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 		spawnableCreatureList.add(new SpawnListEntry(EntityTFRaven.class, 10, 4, 4));
 	}
 
+	//TODO: Move to SurfaceBuilder
 	@Override
 	public IBlockState getStoneReplacementState() {
 		return TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SOLID);
@@ -49,7 +50,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 	}
 
 	@Override
-	public void enforceProgression(EntityPlayer player, World world) {
+	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 5 == 0) {
 			player.attackEntityFrom(DamageSource.MAGIC, 1.5F);
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);

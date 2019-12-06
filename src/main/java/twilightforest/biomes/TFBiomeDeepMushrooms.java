@@ -4,7 +4,7 @@ import twilightforest.TFFeature;
 
 public class TFBiomeDeepMushrooms extends TFBiomeBase {
 
-	public TFBiomeDeepMushrooms(BiomeProperties props) {
+	public TFBiomeDeepMushrooms(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().setTreesPerChunk(1);

@@ -1,16 +1,8 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBigTree;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
@@ -27,7 +19,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 
 	private final Random colorRNG;
 
-	public TFBiomeEnchantedForest(BiomeProperties props) {
+	public TFBiomeEnchantedForest(Builder props) {
 		super(props);
 		colorRNG = new Random();
 
@@ -36,13 +28,13 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColorAtPos(BlockPos pos) {
-		return (super.getGrassColorAtPos(pos) & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
+	public int getGrassColor(BlockPos pos) {
+		return (super.getGrassColor(pos) & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
 	}
 
 	@Override
-	public int getFoliageColorAtPos(BlockPos pos) {
-		return (super.getFoliageColorAtPos(pos) & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
+	public int getFoliageColor(BlockPos pos) {
+		return (super.getFoliageColor(pos) & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
 	}
 
 	/**
@@ -72,6 +64,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		return color;
 	}
 
+	//TODO: Move to feature decorator
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(15) == 0) {
@@ -87,6 +80,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		if (random.nextInt(3) > 0) {
@@ -98,6 +92,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
 
@@ -123,6 +118,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		super.decorate(world, rand, pos);
 	}
 
+    //TODO: Move to feature decorator
 	//VanillaCopy from BiomeForest.pickRandomFlower, removed conditional
 	@Override
 	public BlockFlower.EnumFlowerType pickRandomFlower(Random rand, BlockPos pos) {
@@ -131,6 +127,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		return blockflower$enumflowertype == BlockFlower.EnumFlowerType.BLUE_ORCHID ? BlockFlower.EnumFlowerType.POPPY : blockflower$enumflowertype;
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void addDefaultFlowers() {
 		for (BlockFlower.EnumFlowerType flowerType : Blocks.YELLOW_FLOWER.getTypeProperty().getAllowedValues()) {

@@ -1,13 +1,7 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockTallGrass;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBigTree;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
@@ -19,7 +13,7 @@ import java.util.Random;
 
 public class TFBiomeOakSavanna extends TFBiomeBase {
 
-	public TFBiomeOakSavanna(BiomeProperties props) {
+	public TFBiomeOakSavanna(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().canopyTreeGen = new TFGenCanopyOak();
@@ -31,6 +25,7 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 		this.decorator.grassPerChunk = 20;
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(10) == 0) {
@@ -40,6 +35,7 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		if (random.nextInt(10) == 0) {
@@ -51,6 +47,7 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random random, BlockPos pos) {
 

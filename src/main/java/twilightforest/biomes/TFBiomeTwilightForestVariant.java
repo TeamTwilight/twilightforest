@@ -1,11 +1,7 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockTallGrass;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.*;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFPlant;
@@ -19,7 +15,7 @@ import java.util.Random;
 
 public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 
-	public TFBiomeTwilightForestVariant(BiomeProperties props) {
+	public TFBiomeTwilightForestVariant(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().setTreesPerChunk(25);
@@ -27,6 +23,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 		getTFBiomeDecorator().setFlowersPerChunk(8);
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(5) == 0) {
@@ -41,6 +38,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenerator getRandomWorldGenForGrass(Random random) {
 		if (random.nextInt(4) != 0) {
@@ -52,6 +50,7 @@ public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random random, BlockPos pos) {
 

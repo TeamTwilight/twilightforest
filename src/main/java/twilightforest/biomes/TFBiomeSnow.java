@@ -1,13 +1,9 @@
 package twilightforest.biomes;
 
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenTaiga1;
-import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFWinterWolf;
@@ -28,7 +24,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	private final Random monsterRNG = new Random(53439L);
 
-	public TFBiomeSnow(BiomeProperties props) {
+	public TFBiomeSnow(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().setTreesPerChunk(7);
@@ -41,6 +37,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFWinterWolf.class, 5, 1, 4));
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(3) == 0) {
@@ -77,9 +74,9 @@ public class TFBiomeSnow extends TFBiomeBase {
 	}
 
 	@Override
-	public void enforceProgression(EntityPlayer player, World world) {
+	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
-			player.addPotionEffect(new PotionEffect(TFPotions.frosty, 100, 2));
+			player.addPotionEffect(new EffectInstance(TFPotions.frosty, 100, 2));
 			trySpawnHintMonster(player, world);
 		}
 	}

@@ -1,11 +1,7 @@
 package twilightforest.biomes;
 
-import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeForest;
-import net.minecraft.world.gen.feature.WorldGenPumpkin;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
@@ -24,7 +20,7 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 	private final WorldGenerator tfGenLampposts = new TFGenLampposts(TFBlocks.firefly_jar.getDefaultState());
 	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
-	public TFBiomeFireflyForest(BiomeProperties props) {
+	public TFBiomeFireflyForest(Builder props) {
 		super(props);
 
 		this.decorator.flowersPerChunk = 4;
@@ -33,6 +29,7 @@ public class TFBiomeFireflyForest extends TFBiomeBase {
 		this.getTFBiomeDecorator().setTreesPerChunk(2);
 	}
 
+	//TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
 		int flowerCycles = rand.nextInt(3) - 1;

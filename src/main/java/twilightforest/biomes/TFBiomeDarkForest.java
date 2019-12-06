@@ -1,26 +1,15 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockOldLeaf;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.FoliageColors;
+import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenShrub;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKingSpider;
@@ -38,7 +27,7 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 
 	private final Random monsterRNG = new Random(53439L);
 
-	public TFBiomeDarkForest(BiomeProperties props) {
+	public TFBiomeDarkForest(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().canopyPerChunk = 5.5F;
@@ -49,23 +38,25 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		getTFBiomeDecorator().setMushroomsPerChunk(2);
 		getTFBiomeDecorator().setDeadBushPerChunk(10);
 
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 1, 1, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityZombie.class, 5, 1, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 5, 1, 4));
+		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.ENDERMAN, 1, 1, 4));
+		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.ZOMBIE, 5, 1, 4));
+		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 5, 1, 4));
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFMistWolf.class, 10, 1, 4));
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFSkeletonDruid.class, 10, 1, 4));
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFKingSpider.class, 10, 1, 4));
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFKobold.class, 10, 4, 8));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityWitch.class, 1, 1, 1));
+		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.WITCH, 1, 1, 1));
 
 		this.decorator.generateFalls = false;
 	}
 
+	//TODO: Move to feature decoration
 	@Override
 	public TFBiomeDecorator createBiomeDecorator() {
 		return new TFDarkForestBiomeDecorator();
 	}
 
+    //TODO: Move to feature decoration
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(5) == 0) {
@@ -81,19 +72,20 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColorAtPos(BlockPos pos) {
+	public int getGrassColor(BlockPos pos) {
 		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerGrass.getGrassColor(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
+		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
+		return ((GrassColors.get(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
 	}
 
 	@Override
-	public int getFoliageColorAtPos(BlockPos pos) {
+	public int getFoliageColor(BlockPos pos) {
 		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
-		double humidity = (double) MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
-		return ((ColorizerFoliage.getFoliageColor(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
+		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
+		return ((FoliageColors.get(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
 	}
 
+	//TODO: idk, remove?
 	@Override
 	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
 		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
@@ -114,9 +106,9 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	}
 
 	@Override
-	public void enforceProgression(EntityPlayer player, World world) {
+	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
-			player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0));
+			player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 			trySpawnHintMonster(player, world);
 		}
 	}

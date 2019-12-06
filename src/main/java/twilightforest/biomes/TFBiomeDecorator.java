@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+//TODO: BiomeDecorator no longer exists. Turn into default decoration class akin to DefaultBiomeFeatures?
 public class TFBiomeDecorator extends BiomeDecorator {
 
 	WorldGenerator canopyTreeGen = new TFGenCanopyTree();

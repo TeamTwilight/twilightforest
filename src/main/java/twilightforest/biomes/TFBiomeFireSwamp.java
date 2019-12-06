@@ -1,19 +1,11 @@
 package twilightforest.biomes;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockOldLeaf;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenShrub;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.FireJetVariant;
@@ -25,7 +17,7 @@ import java.util.Random;
 
 public class TFBiomeFireSwamp extends TFBiomeBase {
 
-	public TFBiomeFireSwamp(BiomeProperties props) {
+	public TFBiomeFireSwamp(Builder props) {
 		super(props);
 
 		getTFBiomeDecorator().setDeadBushPerChunk(2);
@@ -40,6 +32,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		getTFBiomeDecorator().mangrovesPerChunk = 3;
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(3) == 0) {
@@ -52,6 +45,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		}
 	}
 
+    //TODO: Move to feature decorator
 	@Override
 	public void decorate(World world, Random rand, BlockPos pos) {
 		super.decorate(world, rand, pos);
@@ -87,14 +81,14 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public int getGrassColorAtPos(BlockPos pos) {
+	@OnlyIn(Dist.CLIENT)
+	public int getGrassColor(BlockPos pos) {
 		return 0x572e23;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public int getFoliageColorAtPos(BlockPos pos) {
+	@OnlyIn(Dist.CLIENT)
+	public int getFoliageColor(BlockPos pos) {
 		return 0x64260f;
 	}
 
@@ -104,7 +98,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public void enforceProgression(EntityPlayer player, World world) {
+	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
 			player.setFire(8);
 		}

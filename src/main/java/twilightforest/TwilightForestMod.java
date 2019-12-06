@@ -1,20 +1,13 @@
 package twilightforest;
 
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
@@ -30,13 +23,13 @@ import twilightforest.tileentity.spawner.*;
 import twilightforest.world.WorldProviderTwilightForest;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
-@Mod( modid = TwilightForestMod.ID,
-		name = TwilightForestMod.NAME,
+/*@Mod( name = TwilightForestMod.NAME,
 		version = TwilightForestMod.VERSION,
 		acceptedMinecraftVersions = "[1.12.2]",
 		dependencies = "after:ctm@[MC1.12.2-0.3.2.18,);before:immersiveengineering@[0.12-83,);before:tconstruct;required-after:forge@[14.23.5.2813,);after:thaumcraft@[6.1.BETA21,)",
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
-)
+)*/
+@Mod(TwilightForestMod.ID)
 public class TwilightForestMod {
 
 	public static final String ID = "twilightforest";
@@ -55,16 +48,12 @@ public class TwilightForestMod {
 	public static final int GUI_ID_FURNACE = 2;
 
 	public static DimensionType dimType;
-	public static int backupDimensionID = -777;
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	private static final EnumRarity rarity = EnumHelper.addRarity("TWILIGHT", TextFormatting.DARK_GREEN, "Twilight");
+	private static final Rarity rarity = Rarity.create("TWILIGHT", TextFormatting.DARK_GREEN);
 
 	private static boolean compat = true;
-
-	@Instance(ID)
-	public static TwilightForestMod instance;
 
 	@SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
 	public static TFCommonProxy proxy;
