@@ -10,20 +10,19 @@ configFile.withReader {
 // For those who want the bleeding edge
 buildscript {
     repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'maven'
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'maven-publish'
+apply plugin: 'eclipse'
 
 ///////////////////////////////////////////////////
 // IDE Settings
@@ -40,24 +39,56 @@ idea {
 version = (hasProperty("CIRevision") ? CIRevision : config.mod_version)
 group = config.group_name
 archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    version = config.minecraft_version + "-" + config.forge_version // grab latest forge
-    runDir = "run"
+    mappings channel: "snapshot", version: config.mcp_mappings
+    //version = config.minecraft_version + "-" + config.forge_version // grab latest forge
+    //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    accessTransformer = file('src/main/resources/META-INF/tf_at.cfg')
 
-    mappings = config.mcp_mappings
-    makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    //replace '@mod_version@', version
+    //replace '@mod_id@', config.mod_id
+    //replace '@ci_build@', hasProperty("CIRevision") ? 'true' : 'false'
 
-    replace '@mod_version@', version
-    replace '@mod_id@', config.mod_id
-    replace '@ci_build@', hasProperty("CIRevision") ? 'true' : 'false'
+    //replaceIn 'TwilightForestMod.java'
+    //replace '@VERSION@', project.version
 
-    replaceIn 'TwilightForestMod.java'
-    replace '@VERSION@', project.version
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                twilightforest {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                twilightforest {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
-
+/*
 processResources {
     //replaceIn 'assets/twilightforest/patchouli_books/guide/book.json'
     //replace '@EDITION@', project.version
@@ -68,8 +99,8 @@ processResources {
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-        //include '**/*.properties'
+        //include '.info'
+        //include '.properties'
         include 'assets/twilightforest/patchouli_books/guide/book.json'
 
         // replace version and mcversion
@@ -89,7 +120,7 @@ processResources {
         exclude 'mcmod.info'
         exclude 'assets/twilightforest/patchouli_books/guide/book.json'
     }
-}
+}*/
 
 compileJava {
     options.encoding = 'UTF-8'
@@ -97,9 +128,6 @@ compileJava {
 
 jar {
     classifier = 'universal'
-    manifest {
-        attributes 'FMLAT': 'tf_at.cfg'
-    }
 }
 
 repositories {
@@ -107,7 +135,7 @@ repositories {
         name 'progwm\'s Maven' // JEI + Mantle + TCon
         url 'https://dvs1.progwml6.com/files/maven'
     }
-    maven {
+    /*maven {
         name 'tterrag\'s Maven' // CTM
         url 'https://maven.tterrag.com/'
     }
@@ -122,14 +150,14 @@ repositories {
     maven {
         name 'Curseforge Maven' // Baubles + Thaumcraft
         url 'https://minecraft.curseforge.com/api/maven/'
-    }
+    }*/
 }
 
 dependencies {
     // progwml6
-    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
+    /*deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
     deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"
 
     // tterrag
@@ -145,7 +173,9 @@ dependencies {
 
     // curseforge
     deobfCompile "baubles:Baubles:${minecraft_sub_version}:${baubles_version}"
-    deobfCompile "thaumcraft:Thaumcraft:${minecraft_version}:${thaumcraft_version}"
+    deobfCompile "thaumcraft:Thaumcraft:${minecraft_version}:${thaumcraft_version}"*/
+
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }
 
 task createPom {
