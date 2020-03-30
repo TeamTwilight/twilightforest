@@ -31,7 +31,7 @@ public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
-		this.goalSelector.addGoal(2, new EntityAITFTempt(this, 1.0F, true, SEEDS));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, true, SEEDS));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, PlayerEntity.class, 2.0F, 0.8F, 1.4F));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.25F));
