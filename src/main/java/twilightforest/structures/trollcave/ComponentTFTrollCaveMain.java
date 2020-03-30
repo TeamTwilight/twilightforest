@@ -22,6 +22,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
+import twilightforest.world.feature.TFGenCaveStalactite;
+import twilightforest.world.feature.TFGenMyceliumBlob;
 
 import java.util.List;
 import java.util.Random;

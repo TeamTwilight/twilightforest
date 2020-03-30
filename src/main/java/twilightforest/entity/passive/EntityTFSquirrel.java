@@ -1,11 +1,9 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -14,7 +12,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
+import javax.annotation.Nullable;
+
+// TODO: See Bunny
+public class EntityTFSquirrel extends AnimalEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/squirrel");
 	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
@@ -88,5 +89,11 @@ public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return false;
+	}
+
+	@Nullable
+	@Override
+	public AgeableEntity createChild(AgeableEntity ageableEntity) {
+		return null;
 	}
 }
