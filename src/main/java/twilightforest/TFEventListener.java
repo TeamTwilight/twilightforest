@@ -9,18 +9,18 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.potion.Effects;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
@@ -61,11 +61,7 @@ import twilightforest.entity.ITFProjectile;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
-import twilightforest.network.PacketAreaProtection;
-import twilightforest.network.PacketEnforceProgressionStatus;
-import twilightforest.network.PacketSetSkylightEnabled;
-import twilightforest.network.PacketUpdateShield;
-import twilightforest.network.TFPacketHandler;
+import twilightforest.network.*;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
@@ -99,7 +95,7 @@ public class TFEventListener {
 		PlayerEntity player = event.getPlayer();
 
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-        //TODO: Can this be an Ingredient?
+		//TODO: Can this be an Ingredient?
 		if (itemStack.getItem() == Item.getItemFromBlock(Blocks.OAK_PLANKS) && itemStack.getCount() == 64 && doesCraftMatrixHaveGiantLog(event.getInventory())) {
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
 			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
@@ -266,7 +262,7 @@ public class TFEventListener {
 		dropStoredItems(player);
 
 		// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
-		boolean tier3 =          TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_3.get(), 1);
+		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_3.get(), 1);
 		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_2.get(), 1);
 		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_1.get(), 1);
 
@@ -661,17 +657,17 @@ public class TFEventListener {
 		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PacketSetSkylightEnabled(skylightEnabled));
 	}
 
+	// TODO: This previously used the network-connection connected events
+	// TODO: which no longer seem to be present.
 	@SubscribeEvent
-	public static void onClientConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
-		INetHandlerPlayServer handler = event.getHandler();
-		if (handler instanceof NetHandlerPlayServer) {
-			ServerPlayerEntity player = ((NetHandlerPlayServer) handler).player;
-			sendSkylightEnabled(player, WorldProviderTwilightForest.isSkylightEnabled(TFWorld.getDimensionData(player.world)));
-		}
+	public static void onClientConnect(PlayerEvent.PlayerLoggedInEvent event) {
+		// This event is only ever fired on the server side
+		ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+		sendSkylightEnabled(player, WorldProviderTwilightForest.isSkylightEnabled(TFWorld.getDimensionData(player.world)));
 	}
 
 	@SubscribeEvent
-	public static void onServerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+	public static void onServerDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
 		WorldProviderTwilightForest.syncFromConfig();
 	}
 
@@ -735,7 +731,7 @@ public class TFEventListener {
 
 	// Parrying
 
- 	private static boolean globalParry = !Loader.isModLoaded("parry");
+	private static boolean globalParry = !Loader.isModLoaded("parry");
 
 	@SubscribeEvent
 	public static void arrowParry(ProjectileImpactEvent.Arrow event) {
@@ -743,7 +739,7 @@ public class TFEventListener {
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
 				(TFConfig.shieldInteractions.parryNonTwilightAttacks
-				|| projectile instanceof ITFProjectile)) {
+						|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;
 
@@ -752,7 +748,9 @@ public class TFEventListener {
 
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 					@Override
-					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
+					public Vec3d getDamageLocation() {
+						return projectile.getPositionVector();
+					}
 				}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksArrow) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
@@ -772,7 +770,7 @@ public class TFEventListener {
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
 				(TFConfig.shieldInteractions.parryNonTwilightAttacks
-				|| projectile instanceof ITFProjectile)) {
+						|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;
 
@@ -781,7 +779,9 @@ public class TFEventListener {
 
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") { /*TODO AT*/
 					@Override
-					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
+					public Vec3d getDamageLocation() {
+						return projectile.getPositionVector();
+					}
 				}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksFireball) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
@@ -807,7 +807,7 @@ public class TFEventListener {
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
 				(TFConfig.shieldInteractions.parryNonTwilightAttacks
-				|| projectile instanceof ITFProjectile)) {
+						|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;
 
@@ -816,7 +816,9 @@ public class TFEventListener {
 
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 					@Override
-					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
+					public Vec3d getDamageLocation() {
+						return projectile.getPositionVector();
+					}
 				}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksThrowable) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
