@@ -24,6 +24,8 @@ public class TFNearestPlayerGoal extends NearestAttackableTargetGoal<PlayerEntit
 		super(entityLivingIn, PlayerEntity.class, false);
 	}
 
+	// TODO: Currently the predicate is based off the entity's follow range
+
 	/**
 	 * VanillaCopy super, but change bounding box y expansion from 4 to full range
 	 */
