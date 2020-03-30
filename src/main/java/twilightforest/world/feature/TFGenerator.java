@@ -3,11 +3,8 @@ package twilightforest.world.feature;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
@@ -231,7 +228,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 				if (world.isBlockLoaded(pos_)) {
 					// is there grass, dirt or stone below?
 					Material m = world.getBlockState(pos_.down()).getMaterial();
-					if (m != Material.GROUND && m != Material.GRASS && m != Material.ROCK) {
+					if (m != Material.EARTH && m != Material.ORGANIC && m != Material.ROCK) {
 						flag = false;
 					}
 
