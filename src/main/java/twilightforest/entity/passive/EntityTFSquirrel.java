@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
 

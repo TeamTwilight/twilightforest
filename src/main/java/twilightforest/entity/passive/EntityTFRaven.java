@@ -11,7 +11,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFRaven extends EntityTFTinyBird {
 
