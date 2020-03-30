@@ -1,6 +1,6 @@
 package twilightforest.compat.tcon.trait;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -21,7 +21,7 @@ public class TraitPrecipitate extends AbstractProjectileTrait {
     }
 
     @Override
-    public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable EntityLivingBase shooter) {
+    public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable LivingEntity shooter) {
         float bonus = getBonusPercentage(shooter);
 
         projectileBase.motionX += (projectileBase.motionX * bonus);
@@ -29,7 +29,7 @@ public class TraitPrecipitate extends AbstractProjectileTrait {
         projectileBase.motionZ += (projectileBase.motionZ * bonus);
     }
 
-    private float getBonusPercentage(EntityLivingBase entity) {
+    private float getBonusPercentage(LivingEntity entity) {
         if (entity == null) return 0.1f;
         float maxHealth = entity.getMaxHealth();
         return (maxHealth - entity.getHealth()) / maxHealth;

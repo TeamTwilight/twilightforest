@@ -1,6 +1,6 @@
 package twilightforest.compat.tcon.trait;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
@@ -13,7 +13,7 @@ public class TraitStalwart extends AbstractTrait {
     }
 
     @Override
-    public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
+    public void onHit(ItemStack tool, LivingEntity player, LivingEntity target, float damage, boolean isCritical) {
         if (isCritical || random.nextInt(10) == 0)
             player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 200));
     }

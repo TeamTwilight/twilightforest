@@ -1,8 +1,10 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -39,7 +41,7 @@ public class RenderTFMistWolf extends WolfRenderer {
 	/**
 	 * Queries whether should render the specified pass or not.
 	 */
-	protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3) {
+	protected int shouldRenderPass(LivingEntity par1EntityLiving, int par2, float par3) {
 //        GL11.glFogf(GL11.GL_FOG_START, 1.0f);	
 //        GL11.glFogf(GL11.GL_FOG_END, 5.0f);
 

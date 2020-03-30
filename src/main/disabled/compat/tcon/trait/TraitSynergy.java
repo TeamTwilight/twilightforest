@@ -1,7 +1,7 @@
 package twilightforest.compat.tcon.trait;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -45,7 +45,7 @@ public class TraitSynergy extends AbstractTrait {
                 }
             }
 
-            ToolHelper.healTool(tool, averageInt(healPower * REPAIR_DAMPENER), (EntityLivingBase) entity);
+            ToolHelper.healTool(tool, averageInt(healPower * REPAIR_DAMPENER), (LivingEntity) entity);
         }
     }
 

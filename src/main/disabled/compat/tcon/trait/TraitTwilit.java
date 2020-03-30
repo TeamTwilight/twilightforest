@@ -1,7 +1,7 @@
 package twilightforest.compat.tcon.trait;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TextFormatting;
@@ -30,7 +30,7 @@ public class TraitTwilit extends AbstractProjectileTrait {
     }
 
     @Override
-    public float damage(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, float newDamage, boolean isCritical) {
+    public float damage(ItemStack tool, LivingEntity player, LivingEntity target, float damage, float newDamage, boolean isCritical) {
         if (TFWorld.isTwilightForest(target.world))
             return super.damage(tool, player, target, damage, newDamage, isCritical);
         else
@@ -38,7 +38,7 @@ public class TraitTwilit extends AbstractProjectileTrait {
     }
 
     @Override
-    public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable EntityLivingBase shooter) {
+    public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable LivingEntity shooter) {
         if (!TFWorld.isTwilightForest(projectileBase.world)) return;
 
         projectileBase.motionX += (projectileBase.motionX * bonus * 0.1f);

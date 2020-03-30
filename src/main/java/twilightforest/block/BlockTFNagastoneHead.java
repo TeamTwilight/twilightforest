@@ -42,7 +42,7 @@ public class BlockTFNagastoneHead extends HorizontalBlock {
 //	@Nonnull
 //	@Override
 //	@Deprecated
-//	public BlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Direction facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
+//	public BlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Direction facing, float hitX, float hitY, float hitZ, int meta, @Nonnull LivingEntity placer) {
 //		return meta == 0
 //				? this.getDefaultState().with(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
 //				: this.getDefaultState();

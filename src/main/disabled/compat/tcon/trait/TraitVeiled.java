@@ -1,6 +1,6 @@
 package twilightforest.compat.tcon.trait;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import slimeknights.tconstruct.library.entity.EntityProjectileBase;
@@ -14,7 +14,7 @@ public class TraitVeiled extends AbstractProjectileTrait {
     }
 
     @Override
-    public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable EntityLivingBase shooter) {
+    public void onLaunch(EntityProjectileBase projectileBase, World world, @Nullable LivingEntity shooter) {
         projectileBase.setInvisible(true);
     }
 }
