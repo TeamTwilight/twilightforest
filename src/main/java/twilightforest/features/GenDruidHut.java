@@ -256,17 +256,18 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
         public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
             //if (!shouldPlaceBlock()) return null;
 
-            BlockState state = blockInfo.blockState;
+            BlockState state = blockInfo.state;
             Block block = state.getBlock();
 
             if (block == Blocks.COBBLESTONE)
                 return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
 
             if (block == Blocks.COBBLESTONE_WALL)
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), null);
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE_WALL.getDefaultState(), null);
 
-            if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+            if (block == Blocks.STONE_BRICKS) { // TODO: By default it's not chiseled stone as that's a different block
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+			}
 
             //TODO: Do we need this section
             BlockPlanks.EnumType type = StructureWoodVariant.getTypeFromBlockState(state);

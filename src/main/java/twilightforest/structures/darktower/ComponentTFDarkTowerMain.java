@@ -949,7 +949,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	private void decorateForge(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 //		StructureTFDecorator forgeDeco = new StructureTFDecorator();
 //		forgeDeco = Blocks.COBBLESTONE;
-//		forgeDeco.pillarID = Blocks.STONEBRICK;
+//		forgeDeco.pillarID = Blocks.STONE_BRICKS;
 //		forgeDeco.stairID = Blocks.STAIRCOMPACTCOBBLESTONE;
 		StructureTFDecorator forgeDeco = this.deco;
 
