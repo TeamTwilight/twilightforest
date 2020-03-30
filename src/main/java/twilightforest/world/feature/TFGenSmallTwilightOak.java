@@ -1,6 +1,6 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,7 +17,7 @@ public class TFGenSmallTwilightOak extends WorldGenTrees implements IBlockSettab
 	public TFGenSmallTwilightOak(boolean notify, int minHeight) {
 		this(notify, minHeight,
 				TFBlocks.twilight_log.getDefaultState(),
-				TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false)
+				TFBlocks.twilight_leaves.getDefaultState().with(LeavesBlock.CHECK_DECAY, false)
 		);
 	}
 

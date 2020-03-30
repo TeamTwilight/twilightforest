@@ -21,7 +21,7 @@ public class TFGenSortingTree<T extends TFTreeFeatureConfig> extends Feature<T> 
 
 //	protected BlockState treeState = TFBlocks.magic_log.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);
 //	protected BlockState branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//	protected BlockState leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT).with(BlockLeaves.CHECK_DECAY, false);
+//	protected BlockState leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT).with(LeavesBlock.CHECK_DECAY, false);
 //	protected BlockState rootState = TFBlocks.root.getDefaultState();
 
 //	public TFGenSortingTree() {

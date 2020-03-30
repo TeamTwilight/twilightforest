@@ -21,7 +21,7 @@ import java.util.function.Function;
 public class TFGenFallenHollowLog<T extends NoFeatureConfig> extends Feature<T> {
 
 	final BlockState mossPatch = TFBlocks.moss_patch.get().getDefaultState();
-	final BlockState oakLeaves = TFBlocks.oak_leaves.get().getDefaultState()/*.with(BlockLeaves.CHECK_DECAY, false)*/;
+	final BlockState oakLeaves = TFBlocks.oak_leaves.get().getDefaultState()/*.with(LeavesBlock.CHECK_DECAY, false)*/;
 	final BlockState oakLogWithZAxis = TFBlocks.oak_log.get().getDefaultState().with(LogBlock.AXIS, Direction.Axis.Z);
 	final BlockState oakLogWithXAxis = TFBlocks.oak_log.get().getDefaultState().with(LogBlock.AXIS, Direction.Axis.X);
 	final BlockState dirt = Blocks.DIRT.getDefaultState();

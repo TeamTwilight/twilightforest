@@ -152,19 +152,19 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 				default:
 					// oak tree
 					BlockState oakWood = Blocks.OAK_LOG.getDefaultState();
-					BlockState oakLeaves = Blocks.OAK_LEAVES.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+					BlockState oakLeaves = Blocks.OAK_LEAVES.getDefaultState().with(LeavesBlock.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, oakWood, oakLeaves, false);
 					break;
 				case 1:
 					// jungle tree
 					BlockState jungleWood = Blocks.JUNGLE_LOG.getDefaultState();
-					BlockState jungleLeaves = Blocks.JUNGLE_LEAVES.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+					BlockState jungleLeaves = Blocks.JUNGLE_LEAVES.getDefaultState().with(LeavesBlock.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, jungleWood, jungleLeaves, false);
 					break;
 				case 2:
 					// birch
 					BlockState birchWood = Blocks.BIRCH_LOG.getDefaultState();
-					BlockState birchLeaves = Blocks.BIRCH_LEAVES.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+					BlockState birchLeaves = Blocks.BIRCH_LEAVES.getDefaultState().with(LeavesBlock.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, birchWood, birchLeaves, false);
 					break;
 				case 3:

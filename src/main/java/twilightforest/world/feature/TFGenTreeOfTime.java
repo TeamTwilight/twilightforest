@@ -29,7 +29,7 @@ public class TFGenTreeOfTime<T extends TFTreeFeatureConfig> extends TFGenHollowT
 //
 //		this.treeState = TFBlocks.magic_log.getDefaultState();
 //		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(LeavesBlock.CHECK_DECAY, false);
 //	}
 
 	@Override

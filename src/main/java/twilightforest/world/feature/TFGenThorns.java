@@ -53,7 +53,7 @@ public class TFGenThorns<T extends NoFeatureConfig> extends Feature<T> {
 					if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
 						if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 							// leaf
-							this.setBlockState(world, dPos.offset(dir), TFBlocks.thorn_leaves.get().getDefaultState()/*.with(BlockLeaves.CHECK_DECAY, false)*/);
+							this.setBlockState(world, dPos.offset(dir), TFBlocks.thorn_leaves.get().getDefaultState()/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 						} else {
 							// rose
 							this.setBlockState(world, dPos.offset(dir), TFBlocks.thorn_rose.get().getDefaultState());
@@ -99,7 +99,7 @@ public class TFGenThorns<T extends NoFeatureConfig> extends Feature<T> {
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 
 			if (world.isAirBlock(nextPos)) {
-				this.setBlockState(world, nextPos, TFBlocks.thorn_leaves.get().getDefaultState()/*.with(BlockLeaves.CHECK_DECAY, false)*/);
+				this.setBlockState(world, nextPos, TFBlocks.thorn_leaves.get().getDefaultState()/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 			}
 		}
 	}

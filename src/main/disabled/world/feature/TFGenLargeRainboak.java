@@ -2,7 +2,7 @@ package twilightforest.world.feature;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -222,7 +222,7 @@ public class TFGenLargeRainboak<T extends TFTreeFeatureConfig> extends TFTreeGen
 
 		for (int var5 = par2 + this.leafDistanceLimit; var4 < var5; ++var4) {
 			float var6 = this.leafSize(var4 - par2);
-			this.genTreeLayer(par1, var4, par3, var6, (byte) 1, TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK).with(BlockLeaves.CHECK_DECAY, false));
+			this.genTreeLayer(par1, var4, par3, var6, (byte) 1, TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK).with(LeavesBlock.CHECK_DECAY, false));
 		}
 	}
 

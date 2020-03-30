@@ -28,7 +28,7 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 
 //	protected BlockState treeState = TFBlocks.oak_log.get().getDefaultState();
 //	protected BlockState branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Twilight Oak Wood
-//	protected BlockState leafState = TFBlocks.oak_leaves.get().getDefaultState()/*.with(BlockLeaves.CHECK_DECAY, false)*/;
+//	protected BlockState leafState = TFBlocks.oak_leaves.get().getDefaultState()/*.with(LeavesBlock.CHECK_DECAY, false)*/;
 //	protected BlockState rootState = TFBlocks.root.get().getDefaultState();
 //
 //	protected IPlantable source = TFBlocks.oak_sapling.get();

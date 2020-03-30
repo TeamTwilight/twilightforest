@@ -31,7 +31,7 @@ public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGene
 //
 //		treeState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
 //		branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.MANGROVE).with(BlockLeaves.CHECK_DECAY, false);
+//		leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.MANGROVE).with(LeavesBlock.CHECK_DECAY, false);
 //		rootState = TFBlocks.root.getDefaultState();
 //	}
 

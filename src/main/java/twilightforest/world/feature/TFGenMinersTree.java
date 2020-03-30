@@ -26,7 +26,7 @@ public class TFGenMinersTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 //		super(notify);
 //		this.treeState = TFBlocks.magic_log.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
 //		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE).with(BlockLeaves.CHECK_DECAY, false);
+//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE).with(LeavesBlock.CHECK_DECAY, false);
 //		this.rootState = TFBlocks.root.getDefaultState();
 //	}
 

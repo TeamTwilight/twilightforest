@@ -22,7 +22,7 @@ public class TFGenTreeOfTransformation<T extends TFTreeFeatureConfig> extends TF
 //
 //		this.treeState = TFBlocks.magic_log.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
 //		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS).with(BlockLeaves.CHECK_DECAY, false);
+//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS).with(LeavesBlock.CHECK_DECAY, false);
 //
 //		this.minHeight = 11;
 //		this.chanceAddFirstFive = Integer.MAX_VALUE;
