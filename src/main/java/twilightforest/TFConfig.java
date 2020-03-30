@@ -10,7 +10,9 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ForgeRegistries;
+import twilightforest.world.WorldProviderTwilightForest;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
 import java.util.ArrayList;
@@ -476,7 +478,7 @@ public class TFConfig {
 	private static final String config = TwilightForestMod.ID + ".config.";
 
 	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+	public static void onConfigChanged(ModConfig.Reloading event) {
 		if (event.getModID().equals(TwilightForestMod.ID)) {
 			TwilightForestMod.checkOriginDimension();
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
