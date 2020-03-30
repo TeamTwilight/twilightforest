@@ -24,7 +24,6 @@ import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBirdFly;
-import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFTinyBird extends EntityTFBird {
 
