@@ -20,7 +20,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
+import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
 import java.util.EnumSet;
@@ -59,7 +59,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 		if (!(this instanceof EntityTFUrGhast)) this.goalSelector.addGoal(5, new AIRandomFly(this));
 		this.goalSelector.addGoal(7, new GhastEntity.LookAroundGoal(this));
 		this.goalSelector.addGoal(7, attackAI = new AIAttack(this));
-		this.targetSelector.addGoal(1, new EntityAITFFindEntityNearestPlayer(this));
+		this.targetSelector.addGoal(1, new TFNearestPlayerGoal(this));
 	}
 
 	// [VanillaCopy] from EntityGhast but we use wanderFactor instead, we also stop moving when we have a target

@@ -39,7 +39,7 @@ import twilightforest.enums.BossVariant;
 import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.ai.EntityAIPhantomAttackStart;
 import twilightforest.entity.ai.EntityAIPhantomThrowWeapon;
-import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
+import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
@@ -96,7 +96,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		goalSelector.addGoal(2, new EntityAIPhantomAttackStart(this));
 		goalSelector.addGoal(3, new EntityAIPhantomThrowWeapon(this));
 
-		targetSelector.addGoal(0, new EntityAITFFindEntityNearestPlayer(this));
+		targetSelector.addGoal(0, new TFNearestPlayerGoal(this));
 	}
 
 	@Override

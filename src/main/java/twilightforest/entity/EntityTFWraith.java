@@ -23,7 +23,7 @@ import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
+import twilightforest.entity.ai.TFNearestPlayerGoal;
 
 import java.util.EnumSet;
 import java.util.Random;
@@ -44,7 +44,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		this.goalSelector.addGoal(5, new AIFlyTowardsTarget(this));
 		this.goalSelector.addGoal(6, new AIRandomFly(this));
 		this.goalSelector.addGoal(7, new AILookAround(this));
-		this.targetSelector.addGoal(1, new EntityAITFFindEntityNearestPlayer(this));
+		this.targetSelector.addGoal(1, new TFNearestPlayerGoal(this));
 	}
 
 	static class AIFlyTowardsTarget extends Goal {
