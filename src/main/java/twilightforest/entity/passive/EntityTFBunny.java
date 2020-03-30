@@ -2,11 +2,9 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -19,9 +17,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFBunny extends CreatureEntity implements IAnimals {
+import javax.annotation.Nullable;
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/bunny");
+// TODO: I feel like using the properly classes could be usueful
+public class EntityTFBunny extends AnimalEntity {
+
+	// Loot tables aren't done like this any more.
 	private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
 
 	public EntityTFBunny(EntityType<? extends EntityTFBunny> type, World world) {
@@ -49,6 +50,12 @@ public class EntityTFBunny extends CreatureEntity implements IAnimals {
 		super.registerAttributes();
 		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
 		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+	}
+
+	@Nullable
+	@Override
+	public AgeableEntity createChild(AgeableEntity ageableEntity) {
+		return null;
 	}
 
 	@Override
