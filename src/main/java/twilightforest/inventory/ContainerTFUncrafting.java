@@ -112,7 +112,7 @@ public class ContainerTFUncrafting extends Container {
 
 			int size = recipes.length;
 
-			if (size > 0) {
+			if (size > 0 || !isItemBlacklisted(inputStack)) {
 
 				IRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				ItemStack[] recipeItems = getIngredients(recipe);
@@ -169,6 +169,7 @@ public class ContainerTFUncrafting extends Container {
 				this.uncraftingMatrix.recraftingCost = 0;
 
 			} else {
+				//either we didn't have a recipe or a modpack maker disabled it
 				this.uncraftingMatrix.numberOfInputItems = 0;
 				this.uncraftingMatrix.uncraftingCost = 0;
 			}
@@ -278,6 +279,11 @@ public class ContainerTFUncrafting extends Container {
 
 	private static boolean isIngredientProblematic(ItemStack ingredient) {
 		return !ingredient.isEmpty() && ingredient.getItem().hasContainerItem(ingredient);
+	}
+	
+	private static boolean isItemblacklisted(ItemStack ingredient) {
+		//todo: add logic from Config to check if it's part of a supplied blacklist
+		return false;
 	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
