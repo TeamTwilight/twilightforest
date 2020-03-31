@@ -20,6 +20,7 @@ public class IMCHandler {
 	private static final ImmutableSet.Builder<IBlockState> BLACKLIST_BUILDER = ImmutableSet.builder();
 	private static final ImmutableList.Builder<IBlockState> ORE_BLOCKS_BUILDER = ImmutableList.builder();
 	private static final ImmutableList.Builder<ItemStack> LOADING_ICONS_BUILDER = ImmutableList.builder();
+	private static final ImmutableList.Builder<ItemStack> UNCRAFTING_BLACKLIST_BUILDER = ImmutableList.builder();
 	private static final ImmutableMultimap.Builder<IBlockState, IBlockState> CRUMBLE_BLOCKS_BUILDER = ImmutableMultimap.builder();
 	private static final ImmutableMultimap.Builder<Integer, TFGenCaveStalactite.StalactiteEntry> STALACTITE_BUILDER = ImmutableMultimap.builder();
 
@@ -131,6 +132,10 @@ public class IMCHandler {
 
 	public static ImmutableList<ItemStack> getLoadingIconStacks() {
 		return LOADING_ICONS_BUILDER.build();
+	}
+	
+	public static ImmutableList<ItemStack> getItemBlacklist() {
+		return UNCRAFTING_BLACKLIST_BUILDER.build();
 	}
 
 	public static ImmutableMultimap<IBlockState, IBlockState> getCrumblingBlocks() {
