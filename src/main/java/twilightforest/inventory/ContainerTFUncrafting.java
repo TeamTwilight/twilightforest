@@ -281,7 +281,7 @@ public class ContainerTFUncrafting extends Container {
 		return !ingredient.isEmpty() && ingredient.getItem().hasContainerItem(ingredient);
 	}
 	
-	private static boolean isItemblacklisted(ItemStack ingredient) {
+	private static boolean isItemBlacklisted(ItemStack ingredient) {
 		//todo: add logic from Config to check if it's part of a supplied blacklist
 		return false;
 	}
