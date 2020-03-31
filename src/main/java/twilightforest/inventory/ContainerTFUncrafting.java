@@ -112,7 +112,7 @@ public class ContainerTFUncrafting extends Container {
 
 			int size = recipes.length;
 
-			if (size > 0 || !isItemBlacklisted(inputStack)) {
+			if (size > 0 && !isItemBlacklisted(inputStack)) {
 
 				IRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				ItemStack[] recipeItems = getIngredients(recipe);
