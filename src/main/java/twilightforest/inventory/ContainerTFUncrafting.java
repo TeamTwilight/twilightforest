@@ -36,6 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.ImmutableList;
+
 public class ContainerTFUncrafting extends Container {
 
 	private static final String TAG_MARKER = "TwilightForestMarker";
@@ -61,6 +66,9 @@ public class ContainerTFUncrafting extends Container {
 	public int unrecipeInCycle = 0;
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
+	
+	//Debug the blacklist
+	private static final Logger LOGGER = LogManager.getLogger("TFdump");
 
 	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
 
@@ -282,7 +290,10 @@ public class ContainerTFUncrafting extends Container {
 	}
 	
 	private static boolean isItemBlacklisted(ItemStack ingredient) {
-		//todo: add logic from Config to check if it's part of a supplied blacklist
+		//todo: my logic does not work, but you can see what I'm trying to do
+		//It needs to be able to ignore metadata and potentially stack count
+		LOGGER.debug(ingredient.toString());
+		ImmutableList<ItemStack> blacklist = TFConfig.getItemBlacklist();
 		return false;
 	}
 
