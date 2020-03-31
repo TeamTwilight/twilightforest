@@ -251,6 +251,10 @@ public class TFConfig {
 	@Config.LangKey(config + "portal_creator")
 	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.")
 	public static String[] portalCreationItems = {"minecraft:diamond"};
+	
+	@Config.LangKey(config+"item_blacklist")
+	@Config.Comment("Registry String IDs of items that should not be allowed to be uncrafted. (experimental)")
+	public static String[] itemBlacklist = { };
 
 	@Config.LangKey(config + "check_portal_destination")
 	@Config.Comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
