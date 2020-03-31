@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -254,7 +257,7 @@ public class TFConfig {
 	
 	@Config.LangKey(config+"item_blacklist")
 	@Config.Comment("Registry String IDs of items that should not be allowed to be uncrafted. (experimental)")
-	public static String[] itemBlacklist = { };
+	public static String[] uncraftingBlacklist = { };
 
 	@Config.LangKey(config + "check_portal_destination")
 	@Config.Comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
@@ -402,6 +405,28 @@ public class TFConfig {
 			loadingScreenIcons = iconList.build();
 		}
 	}
+	
+	@Config.Ignore
+	private static ImmutableList<ItemStack> itemBlacklist;
+	
+	public static ImmutableList<ItemStack> getItemBlacklist() {
+		return itemBlacklist;
+	}
+	
+	public static void loadItemBlackList() {
+		ImmutableList.Builder<ItemStack> blacklist = ImmutableList.builder();
+		
+		blacklist.addAll(IMCHandler.getItemBlacklist());
+		
+		for (String s : uncraftingBlacklist) {
+			parseItemStack(s, 0).ifPresent(blacklist::add);
+		}
+
+		itemBlacklist = blacklist.build();
+		Logger LOGGER = LogManager.getLogger("TFdump");
+		LOGGER.debug(itemBlacklist.toString());
+	}
+
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
@@ -418,6 +443,7 @@ public class TFConfig {
 	public static void build() {
 		loadAntiBuilderBlacklist();
 		buildPortalIngredient();
+		loadItemBlackList();
 		loadingScreen.loadLoadingScreenIcons();
 	}
 
