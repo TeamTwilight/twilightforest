@@ -23,9 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -423,8 +420,6 @@ public class TFConfig {
 		}
 
 		itemBlacklist = blacklist.build();
-		Logger LOGGER = LogManager.getLogger("TFdump");
-		LOGGER.debug(itemBlacklist.toString());
 	}
 
 
