@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
+
 public class ContainerTFUncrafting extends Container {
 
 	private static final String TAG_MARKER = "TwilightForestMarker";
@@ -61,7 +63,7 @@ public class ContainerTFUncrafting extends Container {
 	public int unrecipeInCycle = 0;
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
-
+	
 	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
 
 		this.world = world;
@@ -112,7 +114,7 @@ public class ContainerTFUncrafting extends Container {
 
 			int size = recipes.length;
 
-			if (size > 0) {
+			if (size > 0 && !isItemBlacklisted(inputStack)) {
 
 				IRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				ItemStack[] recipeItems = getIngredients(recipe);
@@ -169,6 +171,7 @@ public class ContainerTFUncrafting extends Container {
 				this.uncraftingMatrix.recraftingCost = 0;
 
 			} else {
+				//either we didn't have a recipe or a modpack maker disabled it
 				this.uncraftingMatrix.numberOfInputItems = 0;
 				this.uncraftingMatrix.uncraftingCost = 0;
 			}
@@ -279,7 +282,20 @@ public class ContainerTFUncrafting extends Container {
 	private static boolean isIngredientProblematic(ItemStack ingredient) {
 		return !ingredient.isEmpty() && ingredient.getItem().hasContainerItem(ingredient);
 	}
-
+	
+	private static boolean isItemBlacklisted(ItemStack ingredient) {
+		ImmutableList<ItemStack> blacklist = TFConfig.getItemBlacklist();
+		for(ItemStack count : blacklist ) {
+			if(count.getItem() == ingredient.getItem()) {
+				if(count.isItemStackDamageable())
+					return true;
+				else if(count.getItemDamage() == ingredient.getItemDamage())
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
 		if (!ingredient.isEmpty()) {
 			// OLD: fix weird recipe for diamond/ingot blocks
