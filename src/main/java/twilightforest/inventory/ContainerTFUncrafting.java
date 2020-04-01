@@ -36,9 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.common.collect.ImmutableList;
 
 public class ContainerTFUncrafting extends Container {
@@ -67,9 +64,6 @@ public class ContainerTFUncrafting extends Container {
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 	
-	//Debug the blacklist
-	private static final Logger LOGGER = LogManager.getLogger("TFdump");
-
 	public ContainerTFUncrafting(InventoryPlayer inventory, World world, int x, int y, int z) {
 
 		this.world = world;
@@ -290,13 +284,14 @@ public class ContainerTFUncrafting extends Container {
 	}
 	
 	private static boolean isItemBlacklisted(ItemStack ingredient) {
-		//todo: my logic does not work, but you can see what I'm trying to do
-		//It needs to be able to ignore metadata and potentially stack count
-		LOGGER.debug(ingredient.toString());
 		ImmutableList<ItemStack> blacklist = TFConfig.getItemBlacklist();
+		for(ItemStack count : blacklist ) {
+			if(count.getItem() == ingredient.getItem())
+				return true;
+		}
 		return false;
 	}
-
+	
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
 		if (!ingredient.isEmpty()) {
 			// OLD: fix weird recipe for diamond/ingot blocks
