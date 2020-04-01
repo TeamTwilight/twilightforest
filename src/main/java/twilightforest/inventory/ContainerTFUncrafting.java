@@ -286,8 +286,12 @@ public class ContainerTFUncrafting extends Container {
 	private static boolean isItemBlacklisted(ItemStack ingredient) {
 		ImmutableList<ItemStack> blacklist = TFConfig.getItemBlacklist();
 		for(ItemStack count : blacklist ) {
-			if(count.getItem() == ingredient.getItem())
-				return true;
+			if(count.getItem() == ingredient.getItem()) {
+				if(count.isItemStackDamageable())
+					return true;
+				else if(count.getItemDamage() == ingredient.getItemDamage())
+					return true;
+			}
 		}
 		return false;
 	}
