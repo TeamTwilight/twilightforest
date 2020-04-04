@@ -54,28 +54,6 @@ public class TFCommonProxy {
 		return false;
 	}
 
-	//TODO: Move to TileEntityType?
-	public TileEntityTFCicada getNewCicadaTE() {
-		return new TileEntityTFCicada();
-	}
-
-	//TODO: Move to TileEntityType?
-	public TileEntityTFFirefly getNewFireflyTE() {
-		return new TileEntityTFFirefly();
-	}
-
-	//TODO: Move to TileEntityType?
-	public TileEntityTFMoonworm getNewMoonwormTE() {
-		return new TileEntityTFMoonworm();
-	}
-
-	//TODO: Move to TileEntityType
-	public void registerCritterTileEntities() {
-		GameRegistry.registerTileEntity(TileEntityTFFirefly.class,  prefix("firefly" ));
-		GameRegistry.registerTileEntity(TileEntityTFCicada.class,   prefix("cicada"  ));
-		GameRegistry.registerTileEntity(TileEntityTFMoonworm.class, prefix("moonworm"));
-	}
-
 	protected static ResourceLocation prefix(String name) {
 		return new ResourceLocation(TwilightForestMod.ID, name);
 	}
