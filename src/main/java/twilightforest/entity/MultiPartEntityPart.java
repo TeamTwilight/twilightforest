@@ -11,7 +11,6 @@ import net.minecraft.util.DamageSource;
 public class MultiPartEntityPart<T extends Entity & IEntityMultiPart> extends Entity {
   public final T parent;
   public final String partName;
-  private final EntitySize size;
 
   public MultiPartEntityPart(T parent, String partName, float width, float height) {
     super(parent.getType(), parent.world);
@@ -49,4 +48,21 @@ public class MultiPartEntityPart<T extends Entity & IEntityMultiPart> extends En
   public EntitySize getSize(Pose p_213305_1_) {
     return size;
   }
+
+	public void setWidth(float width) {
+		setWidthAndHeight(width, size.height);
+	}
+
+	public void setHeight(float height) {
+		setWidthAndHeight(size.width, height);
+	}
+
+	public void setWidthAndHeight(float value) {
+		setWidthAndHeight(value, value);
+	}
+
+	public void setWidthAndHeight(float width, float height) {
+		size = EntitySize.flexible(width, height);
+		recalculateSize();
+	}
 }

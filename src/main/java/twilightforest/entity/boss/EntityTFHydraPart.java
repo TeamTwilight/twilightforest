@@ -1,6 +1,9 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -8,6 +11,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.entity.TFEntities;
 
 public class EntityTFHydraPart extends MobEntity {
 
@@ -15,15 +19,16 @@ public class EntityTFHydraPart extends MobEntity {
 
 	public EntityTFHydra hydra;
 
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, World world) {
-		super(type, world);
+	public EntityTFHydraPart(EntityTFHydra parent, World world, float width, float height) {
+		super(TFEntities.hydra.get(), world);
 		isImmuneToFire();
-		size = type.getSize();
+		this.hydra = parent;
+		this.size = EntitySize.flexible(width, height);
+		this.recalculateSize();
 	}
 
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, EntityTFHydra hydra, String name) {
-		this(type, hydra.world);
-		this.hydra = hydra;
+	public EntityTFHydraPart(EntityTFHydra hydra, String name, float width, float height) {
+		this(hydra, hydra.world, width, height);
 		setPartName(name);
 		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
 	}

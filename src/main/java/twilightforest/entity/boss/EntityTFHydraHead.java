@@ -5,20 +5,21 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
+import twilightforest.entity.TFEntities;
 
 public class EntityTFHydraHead extends EntityTFHydraPart {
 
 	private static final DataParameter<Float> DATA_MOUTH_POSITION = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.FLOAT);
 	private static final DataParameter<Byte> DATA_STATE = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.BYTE);
 
-	public EntityTFHydraHead(EntityType<? extends EntityTFHydraHead> type, World world) {
-		super(type, world);
+	public EntityTFHydraHead(EntityTFHydra hydra, World world, float width, float height) {
+		super(hydra, world, width, height);
 		// the necks draw with the head, so we just draw the head at all times, sorry
 		this.ignoreFrustumCheck = true;
 	}
 
-	public EntityTFHydraHead(EntityType<? extends EntityTFHydraHead> type, EntityTFHydra hydra, String name) {
-		super(type, hydra, name);
+	public EntityTFHydraHead(EntityTFHydra hydra, String name, float width, float height) {
+		super(hydra, name, width, height);
 	}
 
 	@Override
