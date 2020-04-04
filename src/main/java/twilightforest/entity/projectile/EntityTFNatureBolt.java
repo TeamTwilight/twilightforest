@@ -10,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -62,10 +63,8 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			int stateId = Block.getStateId(Blocks.OAK_LEAVES.getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				// TODO: Pretty sure that this is needed to be modified
-				this.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.OAK_LEAVES.getDefaultState()), false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
