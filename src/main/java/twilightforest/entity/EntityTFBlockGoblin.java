@@ -144,9 +144,9 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	public void tick() {
 		super.tick();
 		block.tick();
-		chain1.onUpdate();
-		chain2.onUpdate();
-		chain3.onUpdate();
+		chain1.tick();
+		chain2.tick();
+		chain3.tick();
 
 		if (recoilCounter > 0) {
 			recoilCounter--;

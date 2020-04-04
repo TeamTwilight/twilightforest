@@ -30,8 +30,8 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		++this.ticksExisted;
 

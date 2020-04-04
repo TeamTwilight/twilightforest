@@ -34,7 +34,7 @@ public class ParticleIceBeam extends SpriteTexturedParticle {
 
 		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4)); TODO: put into particle json
 
-		//this.onUpdate(); TODO: ???
+		//this.tick(); TODO: ???
 	}
 
 	@Override

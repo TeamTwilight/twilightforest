@@ -41,7 +41,7 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 
 		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/fallen_leaf"); TODO: put into particle json
 
-		//this.onUpdate(); TODO: ???
+		//this.tick(); TODO: ???
 	}
 
 	@Override

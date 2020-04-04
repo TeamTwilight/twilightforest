@@ -6,6 +6,7 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;

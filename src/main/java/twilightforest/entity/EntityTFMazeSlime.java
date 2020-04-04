@@ -62,7 +62,7 @@ public class EntityTFMazeSlime extends SlimeEntity {
 
 	@Override
 	protected boolean spawnCustomParticles() {
-		// [VanillaCopy] from super onUpdate with own particles
+		// [VanillaCopy] from super tick with own particles
 		int i = getSlimeSize();
 		for (int j = 0; j < i * 8; ++j) {
 			float f = this.rand.nextFloat() * ((float) Math.PI * 2F);

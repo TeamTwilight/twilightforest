@@ -45,7 +45,7 @@ minecraft {
     mappings channel: "snapshot", version: config.mcp_mappings
     //version = config.minecraft_version + "-" + config.forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    accessTransformer = file('src/main/resources/META-INF/tf_at.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     //replace '@mod_version@', version
     //replace '@mod_id@', config.mod_id

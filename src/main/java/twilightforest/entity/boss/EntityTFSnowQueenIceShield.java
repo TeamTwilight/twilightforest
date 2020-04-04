@@ -17,8 +17,8 @@ public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		this.ticksExisted++;
 

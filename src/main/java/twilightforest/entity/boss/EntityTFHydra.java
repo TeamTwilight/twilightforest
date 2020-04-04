@@ -28,9 +28,12 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.IEntityMultiPart;
+import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -59,10 +62,10 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	public final int numHeads = 7;
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[numHeads];
 
-	public final MultiPartEntityPart body = new MultiPartEntityPart(this, "body", 4F, 4F);
-	private final MultiPartEntityPart leftLeg = new MultiPartEntityPart(this, "leg", 2F, 3F);
-	private final MultiPartEntityPart rightLeg = new MultiPartEntityPart(this, "leg", 2F, 3F);
-	private final MultiPartEntityPart tail = new MultiPartEntityPart(this, "tail", 4F, 4F);
+	public final MultiPartEntityPart body = new MultiPartEntityPart<>(this, "body", 4F, 4F);
+	private final MultiPartEntityPart leftLeg = new MultiPartEntityPart<>(this, "leg", 2F, 3F);
+	private final MultiPartEntityPart rightLeg = new MultiPartEntityPart<>(this, "leg", 2F, 3F);
+	private final MultiPartEntityPart tail = new MultiPartEntityPart<>(this, "tail", 4F, 4F);
 	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
 
 	private int ticksSinceDamaged = 0;
@@ -184,7 +187,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 
 		// update all heads (maybe we should change to only active ones
 		for (int i = 0; i < numHeads; i++) {
-			hc[i].onUpdate();
+			hc[i].tick();
 		}
 
 		if (this.hurtTime > 0) {

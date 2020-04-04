@@ -315,14 +315,14 @@ public class HydraHeadContainer {
 	/**
 	 * Called once per tick as part of the hydra entity update loop.
 	 */
-	public void onUpdate() {
+	public void tick() {
 
 		// neck updates
-		necka.onUpdate();
-		neckb.onUpdate();
-		neckc.onUpdate();
-		neckd.onUpdate();
-		necke.onUpdate();
+		necka.tick();
+		neckb.tick();
+		neckc.tick();
+		neckd.tick();
+		necke.tick();
 
 		// check if the head is here
 		if (headEntity == null) {
@@ -334,7 +334,7 @@ public class HydraHeadContainer {
 
 		if (headEntity != null) {
 			// make sure this is set up
-			headEntity.width = headEntity.height = this.isActive() ? 4.0F : 1.0F;
+			headEntity.setWidthAndHeight(this.isActive() ? 4.0F : 1.0F);
 
 			// only actually do these things on the server
 			if (!hydra.world.isRemote) {

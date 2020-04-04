@@ -67,7 +67,7 @@ public class ParticleGhastTrap extends SpriteTexturedParticle {
 //    /**
 //     * Called to update the entity's position/logic.
 //     */
-//    public void onUpdate()
+//    public void tick()
 //    {
 //        this.prevPosX = this.posX;
 //        this.prevPosY = this.posY;

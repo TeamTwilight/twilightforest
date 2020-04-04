@@ -184,11 +184,11 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 		super.tick();
 
 		if (world.isRemote) {
-			chain1.onUpdate();
-			chain2.onUpdate();
-			chain3.onUpdate();
-			chain4.onUpdate();
-			chain5.onUpdate();
+			chain1.tick();
+			chain2.tick();
+			chain3.tick();
+			chain4.tick();
+			chain5.tick();
 
 			// set chain positions
 			if (this.getThrower() != null) {

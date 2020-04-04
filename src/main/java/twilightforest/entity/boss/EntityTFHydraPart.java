@@ -18,14 +18,14 @@ public class EntityTFHydraPart extends MobEntity {
 	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, World world) {
 		super(type, world);
 		isImmuneToFire();
+		size = type.getSize();
 	}
 
 	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, EntityTFHydra hydra, String name) {
-		super(type, hydra.world);
+		this(type, hydra.world);
 		this.hydra = hydra;
 		setPartName(name);
 		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
-		isImmuneToFire();
 	}
 
 	@Override
@@ -129,5 +129,22 @@ public class EntityTFHydraPart extends MobEntity {
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return hydra == null;
+	}
+
+	public void setWidth(float width) {
+		setWidthAndHeight(width, size.height);
+	}
+
+	public void setHeight(float height) {
+		setWidthAndHeight(size.width, height);
+	}
+
+	public void setWidthAndHeight(float value) {
+		setWidthAndHeight(value, value);
+	}
+
+	public void setWidthAndHeight(float width, float height) {
+		size = EntitySize.flexible(width, height);
+		recalculateSize();
 	}
 }

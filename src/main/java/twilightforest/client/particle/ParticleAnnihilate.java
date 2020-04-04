@@ -33,7 +33,7 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 
 		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/annihilate_particle"); TODO: Put into particle json
 
-		//this.onUpdate(); TODO: ???
+		//this.tick(); TODO: ???
 	}
 
 	@Override
