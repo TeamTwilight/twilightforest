@@ -100,11 +100,10 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		dataManager.register(MOVE_DIRECTION, Direction.DOWN);
 	}
 
-	// TODO: Still don't know what this is now
-/*	@Override
-	protected boolean canTriggerWalking() {
+	@Override
+	public boolean bypassesSteppingEffects() {
 		return false;
-	}*/
+	}
 
 	@Override
 	public boolean canBeCollidedWith() {

@@ -53,7 +53,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 	}
 
 	@Override
-	protected boolean canTriggerWalking() {
+	public boolean bypassesSteppingEffects() {
 		return false;
 	}
 

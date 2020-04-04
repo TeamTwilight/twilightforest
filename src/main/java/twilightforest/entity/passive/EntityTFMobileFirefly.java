@@ -99,11 +99,10 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 		// End copy
 	}
 
-	// TODO: Can't actually find what this is now
-/*	@Override
-	protected boolean canTriggerWalking() {
+	@Override
+	public boolean bypassesSteppingEffects() {
 		return false;
-	}*/
+	}
 
 	@Override
 	public boolean handleFallDamage(float dist, float mult) {

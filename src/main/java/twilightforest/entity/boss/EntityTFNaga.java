@@ -445,11 +445,10 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		}
 	}
 
-	// TODO: I don't know what this is now
-/*	@Override
-	public boolean canTriggerWalking() {
+	@Override
+	public boolean bypassesSteppingEffects() {
 		return false;
-	}*/
+	}
 
 	@Override
 	public boolean isInLava() {

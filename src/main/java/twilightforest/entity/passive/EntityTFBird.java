@@ -75,11 +75,10 @@ public abstract class EntityTFBird extends AnimalEntity {
 		return false;
 	}
 
-	//TODO: Doesn't exist?
-//	@Override
-//	protected boolean canTriggerWalking() {
-//		return false;
-//	}
+	@Override
+	public boolean bypassesSteppingEffects() {
+		return false;
+	}
 
 	@Override
 	public ResourceLocation getLootTable() {
