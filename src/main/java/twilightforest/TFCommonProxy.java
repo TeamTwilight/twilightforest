@@ -19,8 +19,6 @@ import twilightforest.tileentity.critters.*;
 
 public class TFCommonProxy {
 
-	public void preInit() {}
-
 	public void init() {}
 
 	//TODO: YEET
