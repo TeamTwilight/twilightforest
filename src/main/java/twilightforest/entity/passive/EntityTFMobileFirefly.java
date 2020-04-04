@@ -138,7 +138,6 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 		return (float) Math.sin(this.ticksExisted / 7.0) + 1F;
 	}
 
-	// TODO: I'm unsure if this is sufficient?
 	@Override
 	public float getBrightness() {
 		return getGlowBrightness();
