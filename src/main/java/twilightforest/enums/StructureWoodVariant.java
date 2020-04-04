@@ -93,7 +93,6 @@ public enum StructureWoodVariant implements IStringSerializable {
 		return getVariantFromBlock(block);
 	}
 
-	// Redone to make more sense with the above
 	@Nullable
 	public static StructureWoodVariant getVariantFromBlock(Block block) {
 		for (StructureWoodVariant var : values()) {
