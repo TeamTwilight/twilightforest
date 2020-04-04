@@ -26,6 +26,11 @@ public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAs
 	}
 
 	@Override
+	protected void registerData() {
+		// TODO: Is this needed?
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		makeTrail();

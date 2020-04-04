@@ -5,8 +5,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -25,6 +28,11 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	public EntityTFMoonwormShot(EntityType<? extends EntityTFMoonwormShot> type, World world, LivingEntity thrower) {
 		super(type, world, thrower);
 		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
+	}
+
+	@Override
+	protected void registerData() {
+		// TODO: Is this needed?
 	}
 
 	@Override
@@ -73,7 +81,9 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 		if (id == 3) {
 			int stateId = Block.getStateId(TFBlocks.moonworm.get().getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.BLOCK_CRACK, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D, stateId);
+				// TODO: Don't think this is enough
+				// state ID needs to be retained somehow
+				this.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -88,7 +98,9 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 				BlockPos pos = ((BlockRayTraceResult)ray).getPos().offset(((BlockRayTraceResult) ray).getFace());
 				BlockState currentState = world.getBlockState(pos);
 
-				if (currentState.getBlock().isReplaceable(world, pos)) {
+				// TODO: PlayerEntity is nullable but in a protected constructor
+				BlockItemUseContext context = new BlockItemUseContext(new ItemUseContext(null, Hand.MAIN_HAND, (BlockRayTraceResult)ray));
+				if (currentState.isReplaceable(context)) {
 					world.setBlockState(pos, TFBlocks.moonworm.get().getDefaultState().with(DirectionalBlock.FACING, ((BlockRayTraceResult) ray).getFace()));
 					// todo sound
 				}

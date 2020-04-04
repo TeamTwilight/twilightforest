@@ -34,6 +34,11 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	}
 
 	@Override
+	protected void registerData() {
+		// TODO: Needed?
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		makeTrail();
@@ -59,7 +64,8 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 		if (id == 3) {
 			int stateId = Block.getStateId(Blocks.OAK_LEAVES.getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.BLOCK_CRACK, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, stateId);
+				// TODO: Pretty sure that this is needed to be modified
+				this.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -70,7 +76,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	protected void onImpact(RayTraceResult ray) {
 		if (!this.world.isRemote) {
 			if (ray instanceof BlockRayTraceResult) {
-				BlockPos blockPosHit = ((BlockRayTraceResult)ray).getPos();
+				BlockPos blockPosHit = ((BlockRayTraceResult) ray).getPos();
 				if (blockPosHit != null) {
 					Material materialHit = world.getBlockState(blockPosHit).getMaterial();
 
@@ -86,7 +92,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 			}
 
 			if (ray instanceof EntityRayTraceResult) {
-				Entity entityHit = ((EntityRayTraceResult)ray).getEntity();
+				Entity entityHit = ((EntityRayTraceResult) ray).getEntity();
 				if (ray.hitInfo instanceof LivingEntity && (owner == null || (entityHit != owner && entityHit != owner.getRidingEntity()))) {
 					if (entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
 							&& world.getDifficulty() != Difficulty.PEACEFUL) {

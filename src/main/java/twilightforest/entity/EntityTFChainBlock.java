@@ -246,6 +246,11 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	}
 
 	@Override
+	protected void registerData() {
+		// TODO: What does this do?
+	}
+
+	@Override
 	public void remove() {
 		super.remove();
 		LivingEntity thrower = this.getThrower();

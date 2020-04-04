@@ -1,6 +1,5 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -23,7 +22,8 @@ public abstract class EntityTFArrow extends AbstractArrowEntity implements ITFPr
 		return new ItemStack(Items.ARROW);
 	}
 
-	@Override
+	// TODO: These are replaced by the getShooter/setShooter
+/*	@Override
 	public Entity getThrower() {
 		return this.shootingEntity;
 	}
@@ -31,5 +31,5 @@ public abstract class EntityTFArrow extends AbstractArrowEntity implements ITFPr
 	@Override
 	public void setThrower(Entity entity) {
 		this.shootingEntity = entity;
-	}
+	}*/
 }

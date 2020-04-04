@@ -28,6 +28,11 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 	}
 
 	@Override
+	protected void registerData() {
+		// TODO: Needed?
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		makeTrail();
@@ -53,7 +58,8 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 		if (id == 3) {
 			int itemId = Item.getIdFromItem(Items.PAPER);
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.ITEM_CRACK, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
+				// TODO: As per other damage particles
+				this.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
