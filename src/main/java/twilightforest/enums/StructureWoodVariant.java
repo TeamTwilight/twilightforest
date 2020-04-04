@@ -11,8 +11,12 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum StructureWoodVariant implements IStringSerializable {
 
@@ -32,40 +36,29 @@ public enum StructureWoodVariant implements IStringSerializable {
     MINE         ( TFBlocks.mine_planks        , TFBlocks.mine_stairs        , TFBlocks.mine_slab         , TFBlocks.mine_button        , TFBlocks.mine_fence        , TFBlocks.mine_gate          , TFBlocks.mine_plate             ),
     SORT         ( TFBlocks.sort_planks        , TFBlocks.sort_stairs        , TFBlocks.sort_slab         , TFBlocks.sort_button        , TFBlocks.sort_fence        , TFBlocks.sort_gate          , TFBlocks.sort_plate             );
 
-    StructureWoodVariant(
-            Block planks,
-            Block stairs,
-            Block slab  ,
-            Block button,
-            Block fence ,
-            Block gate  ,
-            Block plate
-    ) {
-        this.planks     = planks;
-        this.stairs     = stairs;
-        this.slab       = slab  ;
-        this.button     = button;
-        this.fence      = fence ;
-        this.gate       = gate  ;
-        this.plate      = plate ;
+    private final List<Block> blocks;
+
+    StructureWoodVariant(Block ... blocks) {
+        this.planks     = blocks[0]; //;planks;
+        this.stairs     = blocks[1]; // stairs;
+        this.slab       = blocks[2]; // slab  ;
+        this.button     = blocks[3]; // button;
+        this.fence      = blocks[4]; // fence ;
+        this.gate       = blocks[5]; // gate  ;
+        this.plate      = blocks[6]; // plate ;
+        this.blocks     = Arrays.asList(blocks);
     }
 
-    StructureWoodVariant(
-            Supplier<Block> planks,
-            Supplier<Block> stairs,
-            Supplier<Block> slab  ,
-            Supplier<Block> button,
-            Supplier<Block> fence ,
-            Supplier<Block> gate  ,
-            Supplier<Block> plate
-    ) {
-        this.planks     = planks.get();
-        this.stairs     = stairs.get();
-        this.slab       = slab.get()  ;
-        this.button     = button.get();
-        this.fence      = fence.get() ;
-        this.gate       = gate.get()  ;
-        this.plate      = plate.get() ;
+    @SafeVarargs
+    StructureWoodVariant(Supplier<Block> ... blocks) {
+        this.planks     = blocks[0].get(); //;planks;
+        this.stairs     = blocks[1].get(); // stairs;
+        this.slab       = blocks[2].get(); // slab  ;
+        this.button     = blocks[3].get(); // button;
+        this.fence      = blocks[4].get(); // fence ;
+        this.gate       = blocks[5].get(); // gate  ;
+        this.plate      = blocks[6].get(); // plate ;
+        this.blocks     = Stream.of(blocks).map(Supplier::get).collect(Collectors.toList());
     }
 
     @Override
@@ -81,76 +74,35 @@ public enum StructureWoodVariant implements IStringSerializable {
     private final Block gate      ;
     private final Block plate     ;
 
-    //TODO: Probably don't need this
     @Nullable
-    public static BlockPlanks.EnumType getTypeFromBlockState(BlockState stateIn) {
-        Block block = stateIn.getBlock();
+    public static StructureWoodVariant getVariantFromBlockState (BlockState state) {
+        Block block = state.getBlock();
+        return getVariantFromBlock(block);
+    }
 
-        if (!"minecraft".equals(block.getRegistryName().getNamespace())) return null;
-
-        switch (getWoodShapeFromBlock(block)) {
-            case BLOCK:
-                if (stateIn.getBlock() instanceof BlockPlanks)
-                    return stateIn.getValue(BlockPlanks.VARIANT);
-                else
-                    return null;
-            case SLAB:
-            case DOUBLESLAB:
-                if (stateIn.getBlock() instanceof BlockWoodSlab)
-                    return stateIn.getValue(BlockPlanks.VARIANT);
-                else
-                    return null;
-            case STAIRS:
-                if (block == Blocks.OAK_STAIRS )
-                    return BlockPlanks.EnumType.OAK;
-                else if (block == Blocks.SPRUCE_STAIRS )
-                    return BlockPlanks.EnumType.SPRUCE;
-                else if (block == Blocks.BIRCH_STAIRS )
-                    return BlockPlanks.EnumType.BIRCH;
-                else if (block == Blocks.JUNGLE_STAIRS )
-                    return BlockPlanks.EnumType.JUNGLE;
-                else if (block == Blocks.ACACIA_STAIRS )
-                    return BlockPlanks.EnumType.ACACIA;
-                else if (block == Blocks.DARK_OAK_STAIRS )
-                    return BlockPlanks.EnumType.DARK_OAK;
-                else
-                    return null;
-            case FENCE:
-                if (block == Blocks.OAK_FENCE )
-                    return BlockPlanks.EnumType.OAK;
-                else if (block == Blocks.SPRUCE_FENCE )
-                    return BlockPlanks.EnumType.SPRUCE;
-                else if (block == Blocks.BIRCH_FENCE )
-                    return BlockPlanks.EnumType.BIRCH;
-                else if (block == Blocks.JUNGLE_FENCE )
-                    return BlockPlanks.EnumType.JUNGLE;
-                else if (block == Blocks.ACACIA_FENCE )
-                    return BlockPlanks.EnumType.ACACIA;
-                else if (block == Blocks.DARK_OAK_FENCE )
-                    return BlockPlanks.EnumType.DARK_OAK;
-                else
-                    return null;
-            case GATE:
-                if (block == Blocks.OAK_FENCE_GATE )
-                    return BlockPlanks.EnumType.OAK;
-                else if (block == Blocks.SPRUCE_FENCE_GATE )
-                    return BlockPlanks.EnumType.SPRUCE;
-                else if (block == Blocks.BIRCH_FENCE_GATE )
-                    return BlockPlanks.EnumType.BIRCH;
-                else if (block == Blocks.JUNGLE_FENCE_GATE )
-                    return BlockPlanks.EnumType.JUNGLE;
-                else if (block == Blocks.ACACIA_FENCE_GATE )
-                    return BlockPlanks.EnumType.ACACIA;
-                else if (block == Blocks.DARK_OAK_FENCE_GATE )
-                    return BlockPlanks.EnumType.DARK_OAK;
-                else
-                    return null;
-            case BUTTON:
-            case PLATE:
-                return BlockPlanks.EnumType.OAK;
-            default:
-                return null;
+    // Redone to make more sense with the above
+    @Nullable
+    public static StructureWoodVariant getVariantFromBlock(Block block) {
+        for (StructureWoodVariant var : values()) {
+            if (var.blocks.contains(block)) {
+                return var;
+            }
         }
+
+        return null;
+    }
+
+    public static boolean isPlanks (BlockState stateIn) {
+        return isPlanks(stateIn.getBlock());
+    }
+
+    public static boolean isPlanks (Block block) {
+        StructureWoodVariant var = getVariantFromBlock(block);
+        if (var == null) {
+            return false;
+        }
+
+        return var.planks == block;
     }
 
     public static BlockState modifyBlockWithType(BlockState stateIn, StructureWoodVariant target) {
@@ -162,7 +114,7 @@ public enum StructureWoodVariant implements IStringSerializable {
 
         if (blockRegName == null) return stateIn;
 
-        if ("minecraft".equals(blockRegName.getNamespace()) && block instanceof BlockPlanks) {
+        if (isPlanks(stateIn)) {
             shape = WoodShapes.BLOCK;
         }
 
@@ -204,8 +156,9 @@ public enum StructureWoodVariant implements IStringSerializable {
     }
 
     public static WoodShapes getWoodShapeFromBlock(Block b) {
-        if (b instanceof BlockTF || b instanceof BlockPlanks)
+        if (isPlanks(b)) {
             return WoodShapes.BLOCK;
+        }
         if (b instanceof StairsBlock  ) return WoodShapes.STAIRS;
         if (b instanceof SlabBlock) {
             if (b.getDefaultState().get(SlabBlock.TYPE) == SlabType.DOUBLE) return WoodShapes.DOUBLESLAB;
