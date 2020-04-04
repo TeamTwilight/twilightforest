@@ -46,11 +46,7 @@ public class EntityAITFFindLoose extends Goal {
 				}
 			}
 
-			if (this.temptingItem == null) {
-				return false;
-			} else {
-				return true;
-			}
+			return this.temptingItem != null;
 		}
 	}
 
