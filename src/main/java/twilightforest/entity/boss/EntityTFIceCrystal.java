@@ -26,9 +26,6 @@ public class EntityTFIceCrystal extends EntityTFIceMob {
 
 	public EntityTFIceCrystal(EntityType<? extends EntityTFIceCrystal> type, World world) {
 		super(type, world);
-
-		// TODO: ???
-		//this.setCurrentItemOrArmor(0, new ItemStack(TFItems.iceSword));
 	}
 
 	@Override
