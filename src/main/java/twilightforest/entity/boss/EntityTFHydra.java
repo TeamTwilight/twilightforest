@@ -728,7 +728,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	}
 
 	@Override
-	public boolean canDespawn(double IDontKnowWhatThisIs) {
+	public boolean canDespawn(double distance) {
 		return false;
 	}
 
