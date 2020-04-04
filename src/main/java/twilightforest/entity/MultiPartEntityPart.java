@@ -6,7 +6,6 @@ import net.minecraft.entity.Pose;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class MultiPartEntityPart<T extends Entity & IEntityMultiPart> extends Entity {
 	public final T parent;
@@ -49,7 +48,8 @@ public class MultiPartEntityPart<T extends Entity & IEntityMultiPart> extends En
 
 	@Override
 	public IPacket<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		// TODO: Per EnderDragonPartEntity this throws an unsupported exception
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
