@@ -44,6 +44,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -680,7 +681,7 @@ public class TFEventListener {
 
 		if (!world.isRemote() && !world.getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
 			TwilightForestMod.LOGGER.info("Loaded a world with the {} game rule not defined. Defining it.", TwilightForestMod.ENFORCED_PROGRESSION_RULE);
-			world.getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(TFConfig.progressionRuleDefault), GameRules.ValueType.BOOLEAN_VALUE);
+			world.getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(TFConfig.COMMON_CONFIG.progressionRuleDefault), GameRules.ValueType.BOOLEAN_VALUE);
 		}
 	}
 
@@ -731,14 +732,14 @@ public class TFEventListener {
 
 	// Parrying
 
-	private static boolean globalParry = !Loader.isModLoaded("parry");
+	private static boolean globalParry = !ModList.get().isLoaded("parry");
 
 	@SubscribeEvent
 	public static void arrowParry(ProjectileImpactEvent.Arrow event) {
 		final AbstractArrowEntity projectile = event.getArrow();
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
-				(TFConfig.shieldInteractions.parryNonTwilightAttacks
+				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;
@@ -769,7 +770,7 @@ public class TFEventListener {
 		final DamagingProjectileEntity projectile = event.getFireball();
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
-				(TFConfig.shieldInteractions.parryNonTwilightAttacks
+				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;
@@ -777,7 +778,7 @@ public class TFEventListener {
 			if (event.getEntity() != null && entity instanceof LivingEntity) {
 				LivingEntity entityBlocking = (LivingEntity) entity;
 
-				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") { /*TODO AT*/
+				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 					@Override
 					public Vec3d getDamageLocation() {
 						return projectile.getPositionVector();
@@ -806,7 +807,7 @@ public class TFEventListener {
 		final ThrowableEntity projectile = event.getThrowable();
 
 		if (!projectile.getEntityWorld().isRemote && globalParry &&
-				(TFConfig.shieldInteractions.parryNonTwilightAttacks
+				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
 			Entity entity = event.getRayTraceResult().entityHit;

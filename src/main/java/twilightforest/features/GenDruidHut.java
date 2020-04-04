@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
@@ -69,12 +70,12 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 
 		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.add(dx, 0, dz));
 
-		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
+		if (!offsetToAverageGroundLevel(world.getWorld(), startPos, transformedSize)) {
 			return false;
 		}
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-		template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
+		template.addBlocksToWorld(world, placementPos/*, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt())*/, placementsettings, 20);
 
 		Map<BlockPos, String> data = template.getDataBlocks(placementPos, placementsettings);
 
@@ -172,7 +173,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
         return isAreaClear(world, startPos.up(maxY - baseY + 1), startPos.add(size));
     }
 
-    private static boolean isAreaClear(IBlockAccess world, BlockPos min, BlockPos max) {
+    private static boolean isAreaClear(IWorld world, BlockPos min, BlockPos max) {
         for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
             if (!world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
                 return false;
@@ -183,7 +184,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 
     private static boolean isBlockOk(BlockState state) {
         Material material = state.getMaterial();
-        return material == Material.ROCK || material == Material.GROUND || material == Material.GRASS || material == Material.SAND;
+        return material == Material.ROCK || material == Material.EARTH || material == Material.ORGANIC || material == Material.SAND;
     }
 
     private static boolean isBlockNotOk(BlockState state) {
@@ -251,38 +252,38 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
             this.BIRCH_SWIZZLE  = StructureWoodVariant.values()[ Math.floorMod(birchSwizzle , limit) ];
         }
 
-        @Nullable
-        @Override
-        public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
-            //if (!shouldPlaceBlock()) return null;
+		@Nullable
+		@Override
+		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
+			//if (!shouldPlaceBlock()) return null;
 
-            BlockState state = blockInfo.state;
-            Block block = state.getBlock();
+			BlockState state = blockInfo.state;
+			Block block = state.getBlock();
 
-            if (block == Blocks.COBBLESTONE)
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
+			if (block == Blocks.COBBLESTONE)
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
 
-            if (block == Blocks.COBBLESTONE_WALL)
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE_WALL.getDefaultState(), null);
+			if (block == Blocks.COBBLESTONE_WALL)
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE_WALL.getDefaultState(), null);
 
-            if (block == Blocks.STONE_BRICKS) { // TODO: By default it's not chiseled stone as that's a different block
+			if (block == Blocks.STONE_BRICKS) { // TODO: By default it's not chiseled stone as that's a different block
 				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
 			}
 
-            //TODO: Do we need this section
-            BlockPlanks.EnumType type = StructureWoodVariant.getTypeFromBlockState(state);
-            if (type != null) {
-                switch (type) {
-                    case OAK:
-                        return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, OAK_SWIZZLE   ), null);
-                    case SPRUCE:
-                        return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, SPRUCE_SWIZZLE), null);
-                    case BIRCH:
-                        return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, BIRCH_SWIZZLE ), null);
-                }
-            }
+			//TODO: Do we need this section
+			BlockPlanks.EnumType type = StructureWoodVariant.getTypeFromBlockState(state);
+			if (type != null) {
+				switch (type) {
+					case OAK:
+						return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, OAK_SWIZZLE   ), null);
+					case SPRUCE:
+						return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, SPRUCE_SWIZZLE), null);
+					case BIRCH:
+						return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, BIRCH_SWIZZLE ), null);
+				}
+			}
 
-            return blockInfo;
-        }
+			return blockInfo;
+		}
     }
 }

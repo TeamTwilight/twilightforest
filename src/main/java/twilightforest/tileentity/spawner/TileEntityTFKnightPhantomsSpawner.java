@@ -1,7 +1,5 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;

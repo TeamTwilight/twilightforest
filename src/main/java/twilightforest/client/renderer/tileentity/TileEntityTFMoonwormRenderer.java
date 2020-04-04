@@ -1,26 +1,34 @@
 package twilightforest.client.renderer.tileentity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFMoonworm;
+import twilightforest.tileentity.critters.TileEntityTFMoonworm;
 import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
-public class TileEntityTFMoonwormRenderer extends TileEntityRenderer<TileEntityTFMoonwormTicking> {
+public class TileEntityTFMoonwormRenderer<T extends TileEntityTFMoonworm> extends TileEntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final ModelTFMoonworm moonwormModel = new ModelTFMoonworm();
 
+	public TileEntityTFMoonwormRenderer(TileEntityRendererDispatcher dispatch) {
+		super(dispatch);
+	}
+
 	@Override
-	public void render(TileEntityTFMoonwormTicking te, double x, double y, double z, float partialTicks, int destroyStage) {
-		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentRotation;
+	public void render(T te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay) {
+		int yaw = te != null ? ((TileEntityTFMoonwormTicking) te).currentYaw : BugModelAnimationHelper.currentRotation;
 		if (te == null) partialTicks = Minecraft.getInstance().getRenderPartialTicks();
 
-		GlStateManager.pushMatrix();
+		stack.push();
 		Direction facing = Direction.byIndex(te != null ? te.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
@@ -38,20 +46,20 @@ public class TileEntityTFMoonwormRenderer extends TileEntityRenderer<TileEntityT
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		GlStateManager.translated(x + 0.5F, y + 0.5F, z + 0.5F);
-		GlStateManager.rotatef(rotX, 1F, 0F, 0F);
-		GlStateManager.rotatef(rotZ, 0F, 0F, 1F);
-		GlStateManager.rotatef(yaw, 0F, 1F, 0F);
+		stack.translate(x + 0.5F, y + 0.5F, z + 0.5F);
+		RenderSystem.rotatef(rotX, 1F, 0F, 0F);
+		RenderSystem.rotatef(rotZ, 0F, 0F, 1F);
+		RenderSystem.rotatef(yaw, 0F, 1F, 0F);
 
 		this.bindTexture(textureLoc);
 
-		GlStateManager.scalef(1f, -1f, -1f);
+		stack.scale(1f, -1f, -1f);
 
-		moonwormModel.setLivingAnimations(te, partialTicks);
+		moonwormModel.setLivingAnimations((TileEntityTFMoonwormTicking) te, partialTicks);
 
 		// render the firefly body
 		moonwormModel.render(0.0625f);
 
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 }

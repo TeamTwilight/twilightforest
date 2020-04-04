@@ -86,7 +86,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 
 	@Override
 	public boolean isUsableByPlayer(PlayerEntity player) {
-		return !TFConfig.disableUncrafting;
+		return !TFConfig.COMMON_CONFIG.disableUncrafting.get();
 	}
 
 	@Override

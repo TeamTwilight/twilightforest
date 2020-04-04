@@ -27,7 +27,7 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 
 	@Override
 	protected boolean spawnAnother() {
-		EntityTFSwarmSpider another = new EntityTFTowerBroodling(world, false);
+		EntityTFSwarmSpider another = new EntityTFTowerBroodling(TFEntities.tower_broodling.get(), world, false);
 
 		double sx = getX() + (rand.nextBoolean() ? 0.9 : -0.9);
 		double sy = getY();

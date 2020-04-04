@@ -30,14 +30,14 @@ public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRender
 		// size up
 		stack.scale(1.25F, 1.25F, 1.25F);
 
-		this.renderDroppedItem(stack, entity.getItem(), yaw, spin);
+		this.renderDroppedItem(stack, buffer, entity.getItem(), yaw, spin);
 
 		RenderSystem.disableRescaleNormal();
 		stack.pop();
 	}
 
 	// todo recheck transformations
-	private void renderDroppedItem(MatrixStack matrix, ItemStack stack, float rotation, float spin) {
+	private void renderDroppedItem(MatrixStack matrix, IRenderTypeBuffer buffer, ItemStack stack, float rotation, float spin) {
 		matrix.push();
 
 		float f9 = 0.5F;
@@ -52,7 +52,7 @@ public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRender
 		matrix.translate(-f9, -f10, -(f12 + f11));
 		matrix.translate(0f, 0f, f12 + f11);
 
-		Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
+		Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND, matrix, buffer);
 
 		matrix.pop();
 	}

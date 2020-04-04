@@ -203,8 +203,8 @@ public class TFWeatherRenderer implements IRenderHandler {
 			}
 
 			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
-			GlStateManager.enableCull();
-			GlStateManager.disableBlend();
+			RenderSystem.enableCull();
+			RenderSystem.disableBlend();
 			RenderSystem.alphaFunc(516, 0.1F);
 			mc.gameRenderer.disableLightmap();
 		}
@@ -395,8 +395,8 @@ public class TFWeatherRenderer implements IRenderHandler {
 			}
 
 			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
-			GlStateManager.enableCull();
-			GlStateManager.disableBlend();
+			RenderSystem.enableCull();
+			RenderSystem.disableBlend();
 			RenderSystem.alphaFunc(516, 0.1F);
 			mc.gameRenderer.disableLightmap();
 		}
@@ -503,8 +503,8 @@ public class TFWeatherRenderer implements IRenderHandler {
 			}
 
 			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
-			GlStateManager.enableCull();
-			GlStateManager.disableBlend();
+			RenderSystem.enableCull();
+			RenderSystem.disableBlend();
 			RenderSystem.alphaFunc(516, 0.1F);
 			mc.gameRenderer.disableLightmap();
 		}

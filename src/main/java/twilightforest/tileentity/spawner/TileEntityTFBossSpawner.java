@@ -5,7 +5,6 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Difficulty;
 
 public abstract class TileEntityTFBossSpawner<T extends MobEntity> extends TileEntity implements ITickableTileEntity {

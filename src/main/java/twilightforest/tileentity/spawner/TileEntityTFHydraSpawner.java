@@ -1,10 +1,8 @@
 package twilightforest.tileentity.spawner;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.EntityTFHydra;
-import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.tileentity.TFTileEntities;
 
 public class TileEntityTFHydraSpawner extends TileEntityTFBossSpawner<EntityTFHydra> {

@@ -44,9 +44,7 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickableTileE
 				}
 				world.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + world.rand.nextFloat() * 0.2F, 0.9F + world.rand.nextFloat() * 0.15F);
 			}
-
 		}
-
 	}
 
 	@Override

@@ -143,7 +143,6 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, counter / 100F, counter / 100F, false);
 			}
 		}
-
 	}
 
 
@@ -231,5 +230,4 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 			world.setBlockState(pos, state, 3);
 		}
 	}
-
 }

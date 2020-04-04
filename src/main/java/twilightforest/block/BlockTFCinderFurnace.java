@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class BlockTFCinderFurnace extends Block {
 
-	private static final BooleanProperty LIT = BooleanProperty.create("lit");
+	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 	private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
 	BlockTFCinderFurnace() {
@@ -81,23 +81,6 @@ public class BlockTFCinderFurnace extends Block {
 			((FurnaceTileEntity) world.getTileEntity(pos)).setCustomName(stack.getDisplayName());
 		}
 	}
-
-	//TODO: Likely not needed?
-//	public static void setState(boolean active, World worldIn, BlockPos pos) {
-//		BlockState iblockstate = worldIn.getBlockState(pos);
-//		TileEntity tileentity = worldIn.getTileEntity(pos);
-//
-//		if (active) {
-//			worldIn.setBlockState(pos, TFBlocks.cinder_furnace_lit.getDefaultState().with(FACING, iblockstate.get(FACING)), 3);
-//		} else {
-//			worldIn.setBlockState(pos, TFBlocks.cinder_furnace.getDefaultState().with(FACING, iblockstate.get(FACING)), 3);
-//		}
-//
-//		if (tileentity != null) {
-//			tileentity.validate();
-//			worldIn.setTileEntity(pos, tileentity);
-//		}
-//	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override

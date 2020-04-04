@@ -86,6 +86,7 @@ public class TFBiomes {
 							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
 							.temperature(0)
 							.downfall(0.1F)
+							.precipitation(Biome.RainType.SNOW)
 			));
 	public static final RegistryObject<Biome> clearing = BIOMES.register("twilight_clearing", () ->
 			new TFBiomeClearing(

@@ -43,6 +43,7 @@ import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -491,8 +492,9 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		return this.maximumHomeDistance;
 	}
 
-	public void detachHome() {
+	public boolean detachHome() {
 		this.maximumHomeDistance = -1.0F;
+		return false;
 	}
 
 	public boolean hasHome() {

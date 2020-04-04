@@ -6,6 +6,7 @@ import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.TFEntities;
 
 public class EntityTFBoar extends PigEntity {
 
@@ -16,7 +17,7 @@ public class EntityTFBoar extends PigEntity {
 	}
 
 	public EntityTFBoar(World world, double x, double y, double z) {
-		this(world);
+		this(TFEntities.wild_boar.get(), world);
 		this.setPosition(x, y, z);
 	}
 
@@ -27,7 +28,6 @@ public class EntityTFBoar extends PigEntity {
 
 	@Override
 	public PigEntity createChild(AgeableEntity entityanimal) {
-		return new EntityTFBoar(world);
+		return new EntityTFBoar(TFEntities.wild_boar.get(), world);
 	}
-
 }

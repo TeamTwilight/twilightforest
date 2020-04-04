@@ -1,6 +1,5 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.EntityTFLich;

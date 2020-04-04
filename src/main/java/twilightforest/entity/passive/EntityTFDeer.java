@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.TFEntities;
 
 /**
  * Deer are like quiet, non-milkable cows!
@@ -34,7 +35,7 @@ public class EntityTFDeer extends CowEntity {
 	}
 
 	public EntityTFDeer(World world, double x, double y, double z) {
-		this(world);
+		this(TFEntities.deer.get(), world);
 		this.setPosition(x, y, z);
 	}
 
@@ -87,6 +88,6 @@ public class EntityTFDeer extends CowEntity {
 
 	@Override
 	public CowEntity createChild(AgeableEntity entityanimal) {
-		return new EntityTFDeer(world);
+		return new EntityTFDeer(TFEntities.deer.get(), world);
 	}
 }

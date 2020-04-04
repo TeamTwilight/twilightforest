@@ -12,10 +12,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
@@ -77,10 +75,10 @@ public class EntityTFBunny extends AnimalEntity {
 	}
 
 	//TODO: Remove for loot table
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
-	}
+//	@Override
+//	public ResourceLocation getLootTable() {
+//		return LOOT_TABLE;
+//	}
 
 	public int getBunnyType() {
 		return dataManager.get(DATA_TYPE);

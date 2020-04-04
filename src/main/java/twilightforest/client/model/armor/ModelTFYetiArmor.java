@@ -1,5 +1,9 @@
 package twilightforest.client.model.armor;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -80,6 +84,11 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 
 	}
 
+	@Override
+	protected Iterable<ModelRenderer> getBodyParts() {
+		return Iterables.concat(super.getBodyParts(), ImmutableList.of(bipedLegBody));
+	}
+
 	private void addPairHorns(float height, float zangle) {
 		ModelRenderer horn1a;
 		ModelRenderer horn1b;
@@ -123,7 +132,7 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		switch (slot) {
 			case HEAD:
 				this.bipedHead.showModel = true;
@@ -176,7 +185,7 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 			default:
 				break;
 		}
-		super.render((LivingEntity) entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		this.bipedLegBody.render(scale);
+		super.render(stack, builder, light, overlay, red, green, blue, scale);
+		//this.bipedLegBody.render(scale);
 	}
 }

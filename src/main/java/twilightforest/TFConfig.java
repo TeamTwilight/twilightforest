@@ -464,7 +464,7 @@ public class TFConfig {
 
 				iconList.addAll(IMCHandler.getLoadingIconStacks());
 
-				for (String s : loadingIconStacks) {
+				for (String s : loadingIconStacks.get()) {
 					parseItemStack(s).ifPresent(iconList::add);
 				}
 
@@ -478,7 +478,7 @@ public class TFConfig {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ModConfig.Reloading event) {
-		if (event.getModID().equals(TwilightForestMod.ID)) {
+		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
 			TwilightForestMod.checkOriginDimension();
 			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
 			if (!event.isWorldRunning()) {
@@ -490,7 +490,7 @@ public class TFConfig {
 
 	public static void build() {
 		buildPortalIngredient();
-		loadingScreen.loadLoadingScreenIcons();
+		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();
 	}
 
 	public static Ingredient portalIngredient;
@@ -499,7 +499,7 @@ public class TFConfig {
 
 		List<ItemStack> stacks = new ArrayList<>();
 
-		for (String s : portalCreationItems) {
+		for (String s : COMMON_CONFIG.portalCreationItems.get()) {
 			parseItemStack(s).ifPresent(stacks::add);
 		}
 

@@ -33,19 +33,6 @@ public class TFBiomeGlacier extends TFBiomeBase {
 	}
 
 	@Override
-	public boolean getEnableSnow() {
-		return true;
-	}
-
-	/**
-	 * Required for actual snow?
-	 */
-	@Override
-	public boolean canRain() {
-		return false;
-	}
-
-	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
 		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_yeti") };
 	}

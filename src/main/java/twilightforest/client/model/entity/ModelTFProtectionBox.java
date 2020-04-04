@@ -1,15 +1,13 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import twilightforest.entity.EntityTFProtectionBox;
 
-public class ModelTFProtectionBox extends EntityModel {
-
-	@Override
-	public void setLivingAnimations(Entity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-	}
+public class ModelTFProtectionBox<T extends EntityTFProtectionBox> extends SegmentedModel<T> {
 
 	public ModelRenderer box;
 	private int lastPixelsX;
@@ -25,8 +23,12 @@ public class ModelTFProtectionBox extends EntityModel {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(this.box);
+	}
 
+	@Override
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		EntityTFProtectionBox boxEntity = (EntityTFProtectionBox) entity;
 
 		int pixelsX = boxEntity.sizeX * 16 + 2;
@@ -37,7 +39,17 @@ public class ModelTFProtectionBox extends EntityModel {
 			resizeBoxElement(pixelsX, pixelsY, pixelsZ);
 		}
 
-		box.render(scale);
+		super.render(stack, builder, light, overlay, red, green, blue, scale);
+	}
+
+	@Override
+	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+
+	}
+
+	@Override
+	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+
 	}
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {

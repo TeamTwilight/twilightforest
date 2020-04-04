@@ -65,6 +65,7 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	@Override
+	@Deprecated
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return state.get(DISALLOW_RETURN) ? AABB : VoxelShapes.empty();
 	}

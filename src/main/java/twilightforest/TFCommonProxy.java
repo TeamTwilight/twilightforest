@@ -18,7 +18,6 @@ import twilightforest.tileentity.TileEntityTFCinderFurnace;
 import twilightforest.tileentity.critters.*;
 
 public class TFCommonProxy {
-
 	public void init() {}
 
 	//TODO: YEET
@@ -50,9 +49,5 @@ public class TFCommonProxy {
 			return adv != null && ((ServerPlayerEntity) player).getAdvancements().getProgress(adv).isDone();
 		}
 		return false;
-	}
-
-	protected static ResourceLocation prefix(String name) {
-		return new ResourceLocation(TwilightForestMod.ID, name);
 	}
 }

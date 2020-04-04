@@ -169,7 +169,6 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		return super.attackEntityFrom(source, amount);
 	}
 
-	//TODO: AT renderBrokenItemStack
 	private void breakArmor() {
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));

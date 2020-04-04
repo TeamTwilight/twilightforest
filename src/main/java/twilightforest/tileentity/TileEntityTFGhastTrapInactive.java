@@ -92,5 +92,4 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 	public boolean isCharged() {
 		return dyingGhasts.size() >= 3;
 	}
-
 }

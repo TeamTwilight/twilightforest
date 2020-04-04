@@ -46,6 +46,7 @@ import twilightforest.entity.ai.EntityAITFYetiTired;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 
@@ -364,13 +365,15 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	}
 
 	@Override
-	public void fall(float distance, float multiplier) {
-		super.fall(distance, multiplier);
+	public boolean handleFallDamage(float distance, float multiplier) {
+		super.handleFallDamage(distance, multiplier);
 
 		if (!this.world.isRemote && isRampaging()) {
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			hitNearbyEntities();
 		}
+
+		//TODO: Return value?
 	}
 
 	private void hitNearbyEntities() {

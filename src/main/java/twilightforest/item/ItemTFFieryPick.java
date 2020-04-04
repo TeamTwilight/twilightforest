@@ -3,8 +3,11 @@ package twilightforest.item;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.FurnaceRecipe;
+import net.minecraft.item.crafting.AbstractCookingRecipe;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -41,7 +44,8 @@ public class ItemTFFieryPick extends PickaxeItem {
 
 			//TODO 1.14: Furnace recipes are now handled differently. Verify
 			for (ItemStack input : event.getDrops()) {
-				ItemStack result = FurnaceRecipe.instance().getSmeltingResult(input);
+				IRecipe<?> irecipe = event.getWorld().getWorld().getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(input), event.getWorld().getWorld()).orElse(null);
+				ItemStack result = irecipe.getRecipeOutput();
 				if (!result.isEmpty()) {
 
 					int combinedCount = input.getCount() * result.getCount();
@@ -51,7 +55,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 
 					// [VanillaCopy] SlotFurnaceOutput.onCrafting
 					int i = combinedCount;
-					float f = FurnaceRecipes.instance().getSmeltingExperience(result);
+					float f = ((AbstractCookingRecipe) irecipe).getExperience();
 
 					if (f == 0.0F) {
 						i = 0;

@@ -52,7 +52,7 @@ public abstract class EntityTFBird extends AnimalEntity {
 		this.flapSpeed = (float) (this.flapSpeed * 0.9D);
 
 		// don't fall as fast
-		if (!this.onGround && this.motionY < 0.0D) {
+		if (!this.onGround && this.getMotion().getY() < 0.0D) {
 			this.motionY *= 0.6D;
 		}
 
@@ -71,13 +71,15 @@ public abstract class EntityTFBird extends AnimalEntity {
 	}
 
 	@Override
-	public void fall(float dist, float damageMultiplier) {
-	}
-
-	@Override
-	protected boolean canTriggerWalking() {
+	public boolean handleFallDamage(float dist, float damageMultiplier) {
 		return false;
 	}
+
+	//TODO: Doesn't exist?
+//	@Override
+//	protected boolean canTriggerWalking() {
+//		return false;
+//	}
 
 	@Override
 	public ResourceLocation getLootTable() {

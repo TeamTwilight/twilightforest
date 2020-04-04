@@ -1,24 +1,32 @@
 package twilightforest.client.renderer.tileentity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFCicada;
+import twilightforest.tileentity.critters.TileEntityTFCicada;
 import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
-public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFCicadaTicking> {
+public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends TileEntityRenderer<T> {
 
 	private final ModelTFCicada cicadaModel = new ModelTFCicada();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
 
-	@Override
-	public void render(TileEntityTFCicadaTicking te, double x, double y, double z, float partialTicks, int destroyStage) {
-		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
+	public TileEntityTFCicadaRenderer(TileEntityRendererDispatcher dispatch) {
+		super(dispatch);
+	}
 
-		GlStateManager.pushMatrix();
+	@Override
+	public void render(T te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay) {
+		int yaw = te != null ? ((TileEntityTFCicadaTicking) te).currentYaw : BugModelAnimationHelper.currentYaw;
+
+		stack.push();
 		Direction facing = Direction.byIndex(te != null ? te.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
@@ -36,17 +44,17 @@ public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFC
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		RenderSystem.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-		GlStateManager.rotatef(rotX, 1F, 0F, 0F);
-		GlStateManager.rotatef(rotZ, 0F, 0F, 1F);
-		GlStateManager.rotatef(yaw, 0F, 1F, 0F);
+		stack.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+		RenderSystem.rotatef(rotX, 1F, 0F, 0F);
+		RenderSystem.rotatef(rotZ, 0F, 0F, 1F);
+		RenderSystem.rotatef(yaw, 0F, 1F, 0F);
 
 		this.bindTexture(textureLoc);
-		GlStateManager.pushMatrix();
-		GlStateManager.scalef(1f, -1f, -1f);
+		stack.push();
+		stack.scale(-1f, -1f, -1f);
 		cicadaModel.render(0.0625f);
-		GlStateManager.popMatrix();
+		stack.pop();
 		RenderSystem.color4f(1, 1, 1, 1);
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 }

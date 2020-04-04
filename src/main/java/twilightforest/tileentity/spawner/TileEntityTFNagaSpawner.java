@@ -1,6 +1,5 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.EntityType;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.EntityTFNaga;
 import twilightforest.tileentity.TFTileEntities;

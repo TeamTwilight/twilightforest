@@ -117,6 +117,6 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 		this.world.addEntity(projectile);
 	}
 
-	@Override
-	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
+//	@Override
+//	public void setSwingingArms(boolean swingingArms) {} // todo 1.12. Actually, this is gone as of porting to 1.15
 }

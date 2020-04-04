@@ -1,7 +1,5 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.text.StringTextComponent;
 import twilightforest.entity.EntityTFKobold;

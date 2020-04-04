@@ -10,6 +10,7 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import twilightforest.block.TFBlocks;
+import twilightforest.world.TFWorld;
 
 import java.util.Random;
 import java.util.function.Function;

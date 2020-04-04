@@ -1,5 +1,9 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SkeletonModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFSkeletonDruid;
@@ -25,9 +29,7 @@ public class ModelTFSkeletonDruid<T extends EntityTFSkeletonDruid> extends Skele
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-
-		dress.render(scale);
+	protected Iterable<ModelRenderer> getBodyParts() {
+		return Iterables.concat(super.getBodyParts(), ImmutableList.of(this.dress));
 	}
 }

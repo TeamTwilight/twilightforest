@@ -48,7 +48,7 @@ public class SlotTFGoblinUncrafting extends Slot {
 		}
 
 		// if uncrafting is disabled, no!
-		if (TFConfig.disableUncrafting) {
+		if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
 			return false;
 		}
 

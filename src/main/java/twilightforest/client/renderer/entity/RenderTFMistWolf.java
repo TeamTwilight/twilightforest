@@ -1,7 +1,9 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.entity.LivingEntity;
@@ -19,15 +21,16 @@ public class RenderTFMistWolf extends WolfRenderer {
 		this.shadowSize = 1.0F;
 	}
 
+	//TODO: Yes, I know, I shoved everything from preRenderCallback into here. Might want to check this
 	@Override
-	protected void preRenderCallback(WolfEntity entity, float partialTicks) {
+	protected void scale(WolfEntity entity, MatrixStack stack, float partialTicks) {
 		float wolfScale = 1.9F;
-		GlStateManager.scalef(wolfScale, wolfScale, wolfScale);
+		stack.scale(wolfScale, wolfScale, wolfScale);
 
-		GlStateManager.enableBlend();
-		GlStateManager.disableAlpha();
+		RenderSystem.enableBlend();
+		RenderSystem.disableAlphaTest();
 		//GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		//GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
 
 		float misty = entity.getBrightness() * 3F + 0.25F;
@@ -41,13 +44,13 @@ public class RenderTFMistWolf extends WolfRenderer {
 	/**
 	 * Queries whether should render the specified pass or not.
 	 */
-	protected int shouldRenderPass(LivingEntity par1EntityLiving, int par2, float par3) {
-//        GL11.glFogf(GL11.GL_FOG_START, 1.0f);	
-//        GL11.glFogf(GL11.GL_FOG_END, 5.0f);
-
-
-		return -1;
-	}
+//	protected int shouldRenderPass(LivingEntity par1EntityLiving, int par2, float par3) {
+////        GL11.glFogf(GL11.GL_FOG_START, 1.0f);
+////        GL11.glFogf(GL11.GL_FOG_END, 5.0f);
+//
+//
+//		return -1;
+//	}
 
 	@Override
 	public ResourceLocation getEntityTexture(WolfEntity entity) {

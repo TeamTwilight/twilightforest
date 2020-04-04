@@ -39,6 +39,7 @@ import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
 import twilightforest.enums.BossVariant;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -446,7 +447,7 @@ public class EntityTFLich extends MonsterEntity {
 			double ty = targetEntity.getY();
 			double tz = targetEntity.getZ() + rand.nextGaussian() * 16D;
 
-			boolean destClear = attemptTeleport(tx, ty, tz);
+			boolean destClear = attemptTeleport(tx, ty, tz, true);
 			boolean canSeeTargetAtDest = canEntityBeSeen(targetEntity); // Don't use senses cache because we're in a temporary position
 			setPositionAndUpdate(origX, origY, origZ);
 

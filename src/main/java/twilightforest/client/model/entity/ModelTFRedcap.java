@@ -1,5 +1,7 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFRedcap;
@@ -62,11 +64,8 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-
-		goblinRightEar.render(scale);
-		goblinLeftEar.render(scale);
+	protected Iterable<ModelRenderer> getBodyParts() {
+		return Iterables.concat(super.getBodyParts(), ImmutableList.of(goblinRightEar, goblinLeftEar));
 	}
 
 	ModelRenderer goblinRightEar;

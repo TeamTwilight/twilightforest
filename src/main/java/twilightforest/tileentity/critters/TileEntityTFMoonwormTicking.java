@@ -1,6 +1,5 @@
 package twilightforest.tileentity.critters;
 
-
 import net.minecraft.tileentity.ITickableTileEntity;
 
 public class TileEntityTFMoonwormTicking extends TileEntityTFMoonworm implements ITickableTileEntity {
@@ -42,5 +41,4 @@ public class TileEntityTFMoonwormTicking extends TileEntityTFMoonworm implements
 			}
 		}
 	}
-
 }

@@ -17,6 +17,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
+import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;

@@ -114,6 +114,4 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickableTil
 	private PlayerEntity findClosestValidPlayer() {
 		return world.getClosestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, false);
 	}
-
-
 }

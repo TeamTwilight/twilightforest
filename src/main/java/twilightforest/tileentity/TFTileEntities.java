@@ -1,13 +1,19 @@
 package twilightforest.tileentity;
 
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.boss.EntityTFYetiAlpha;
+import twilightforest.client.renderer.tileentity.TileEntityTFCicadaRenderer;
+import twilightforest.client.renderer.tileentity.TileEntityTFFireflyRenderer;
+import twilightforest.client.renderer.tileentity.TileEntityTFMoonwormRenderer;
+import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
 import twilightforest.tileentity.critters.*;
 import twilightforest.tileentity.spawner.*;
 
@@ -61,4 +67,16 @@ public class TFTileEntities {
 			TileEntityType.Builder.create(FMLEnvironment.dist.isClient() ? TileEntityTFFireflyTicking::new : TileEntityTFFirefly::new, TFBlocks.firefly.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFMoonworm>> MOONWORM = TILE_ENTITIES.register("moonworm", () ->
 			TileEntityType.Builder.create(FMLEnvironment.dist.isClient() ? TileEntityTFMoonwormTicking::new : TileEntityTFMoonworm::new, TFBlocks.moonworm.get()).build(null));
+
+	@OnlyIn(Dist.CLIENT)
+	public static void registerTileEntityRenders() {
+		// tile entities
+		ClientRegistry.bindTileEntityRenderer(FIREFLY.get(), TileEntityTFFireflyRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(CICADA.get(), TileEntityTFCicadaRenderer::new);
+//		ClientRegistry.bindTileEntityRenderer(TileEntityTFNagaSpawner.class, new TileEntityMobSpawnerRenderer());
+//		ClientRegistry.bindTileEntityRenderer(TileEntityTFLichSpawner.class, new TileEntityMobSpawnerRenderer());
+//		ClientRegistry.bindTileEntityRenderer(TileEntityTFHydraSpawner.class, new TileEntityMobSpawnerRenderer());
+		ClientRegistry.bindTileEntityRenderer(MOONWORM.get(), TileEntityTFMoonwormRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TileEntityTFTrophyRenderer::new);
+	}
 }

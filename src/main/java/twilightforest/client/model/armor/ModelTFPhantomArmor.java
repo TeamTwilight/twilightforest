@@ -19,5 +19,4 @@ public class ModelTFPhantomArmor extends ModelTFKnightlyArmor {
 		this.lefthorn2.rotateAngleY = 15F / (180F / (float) Math.PI);
 		this.lefthorn2.rotateAngleZ = -45F / (180F / (float) Math.PI);
 	}
-
 }

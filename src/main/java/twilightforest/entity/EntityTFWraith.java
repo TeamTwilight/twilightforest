@@ -191,10 +191,11 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
 	}
 
-	@Override
-	public boolean canTriggerWalking() {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	public boolean canTriggerWalking() {
+//		return false;
+//	}
 
 	// [VanillaCopy] EntityMob.attackEntityAsMob. This whole inheritance hierarchy makes me sad.
 	@Override

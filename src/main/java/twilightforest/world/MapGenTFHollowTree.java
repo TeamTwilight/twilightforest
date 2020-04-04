@@ -1,13 +1,18 @@
 package twilightforest.world;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeManager;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 
@@ -16,9 +21,11 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class MapGenTFHollowTree extends Structure {
+public class MapGenTFHollowTree<T extends NoFeatureConfig> extends Structure<T> {
 
 	//public static final int SPAWN_CHANCE = 48;
 
@@ -35,35 +42,43 @@ public class MapGenTFHollowTree extends Structure {
 			() -> TFBiomes.fireSwamp
 	);
 
+	public MapGenTFHollowTree(Function<Dynamic<?>, ? extends T> config) {
+		super(config);
+	}
+
 	@Override
 	public String getStructureName() {
-		return "TFHollowTree";
+		return TwilightForestMod.ID + ":TFHollowTree";
+	}
+
+	@Override
+	public int getSize() {
+		return 3; //idk, most structures use this. Might be bigger.
 	}
 
 	@Nullable
 	@Override
-	public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
+	public BlockPos findNearest(World worldIn, ChunkGenerator generator, BlockPos pos, int p_211405_4_, boolean findUnexplored) {
 		this.world = worldIn;
 		return findNearestStructurePosBySpacing(worldIn, this, pos, 20, 11, 10387313, true, 100, findUnexplored);
 	}
 
 	@Override
-	protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
-		return rand.nextInt(TFConfig.performance.twilightOakChance) == 0
+	public boolean shouldStartAt(BiomeManager manager, ChunkGenerator generator, Random rand, int chunkX, int chunkZ, Biome biome) {
+		return rand.nextInt(TFConfig.COMMON_CONFIG.PERFORMANCE.twilightOakChance.get()) == 0
 				&& TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled
-				&& this.world.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 0, getCurrentSpawnBiomes());
+				&& generator.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 0, getCurrentSpawnBiomes());
 	}
 
-	@Nonnull
 	@Override
-	protected StructureStart getStructureStart(int chunkX, int chunkZ) {
-		return new StructureTFHollowTreeStart(world, rand, chunkX, chunkZ);
+	public IStartFactory getStartFactory() {
+		return StructureTFHollowTreeStart::new;
 	}
 
 	private static List<Biome> getCurrentSpawnBiomes() {
 		List<Biome> biomes = new ArrayList<>(oakSpawnBiomes.size());
-		for (Supplier<Biome> biomeSupplier : oakSpawnBiomes) {
-			biomes.add(biomeSupplier.get());
+		for (Supplier<Supplier<Biome>> biomeSupplier : oakSpawnBiomes) {
+			biomes.add(biomeSupplier.get().get());
 		}
 		return biomes;
 	}

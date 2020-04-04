@@ -175,6 +175,7 @@ public class TwilightForestMod {
 		ItemTFArcticArmor.initArmorModel();
 		ItemTFFieryArmor.initArmorModel();
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
 	}
 
 	public void startServer(FMLServerStartingEvent event) {

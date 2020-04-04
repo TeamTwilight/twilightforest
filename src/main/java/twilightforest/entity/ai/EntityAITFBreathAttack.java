@@ -65,7 +65,7 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 	 */
 	@Override
 	public boolean shouldContinueExecuting() {
-		return this.durationLeft > 0 && !this.entityHost.isDead && !this.attackTarget.isDead
+		return this.durationLeft > 0 && this.entityHost.isAlive() && this.attackTarget.isAlive()
 				&& this.entityHost.getDistance(attackTarget) <= this.breathRange
 				&& this.entityHost.getEntitySenses().canSee(attackTarget);
 	}

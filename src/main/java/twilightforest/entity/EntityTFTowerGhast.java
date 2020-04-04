@@ -297,9 +297,10 @@ public class EntityTFTowerGhast extends GhastEntity {
 		double d4 = getAttackTarget().getZ() - (this.getZ() + vec3d.z * 4.0D);
 		FireballEntity entitylargefireball = new FireballEntity(world, this, d2, d3, d4);
 		entitylargefireball.explosionPower = this.getFireballStrength();
-		entitylargefireball.getX() = this.getX() + vec3d.x * 4.0D;
-		entitylargefireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + 0.5D;
-		entitylargefireball.getZ() = this.getZ() + vec3d.z * 4.0D;
+//		entitylargefireball.getX() = this.getX() + vec3d.x * 4.0D;
+//		entitylargefireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + 0.5D;
+//		entitylargefireball.getZ() = this.getZ() + vec3d.z * 4.0D;
+		entitylargefireball.setPos(this.getX() + vec3d.x * 4.0D, this.getY() + (double) (this.getHeight() / 2.0F) + 0.5D, this.getZ() + vec3d.z * 4.0D);
 		world.addEntity(entitylargefireball);
 
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
@@ -374,8 +375,9 @@ public class EntityTFTowerGhast extends GhastEntity {
 		return this.maximumHomeDistance;
 	}
 
-	public void detachHome() {
+	public boolean detachHome() {
 		this.maximumHomeDistance = -1.0F;
+		return false;
 	}
 
 	public boolean hasHome() {

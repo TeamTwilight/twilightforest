@@ -18,7 +18,7 @@ import twilightforest.biomes.TFBiomes;
 
 public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
-	private final boolean generateHollowTrees = TFConfig.dimension.skylightOaks;
+	private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
 
 	public ChunkGeneratorTwilightVoid(World world, long seed, boolean enableFeatures) {
 		super(world, seed, enableFeatures, false);
@@ -58,7 +58,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 			for (int z = 0; z < 16; z++) {
 
 				Biome biome = biomesForGeneration[x & 15 | (z & 15) << 4];
-				if (biome != TFBiomes.highlandsCenter) continue;
+				if (biome != TFBiomes.highlandsCenter.get()) continue;
 
 				for (int y = 0; y < 256; y++) {
 					if (data.get(getIndex(x, y, z))) {
@@ -127,11 +127,11 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 		if (dist > radius) return;
 
 		Biome biome = biomesForGeneration[x & 15 | (z & 15) << 4];
-		if (biome != TFBiomes.highlands) return;
+		if (biome != TFBiomes.highlands.get()) return;
 
 		for (int y = 0; y < 60; y++) {
-			if (primer.getBlockState(x, y, z).getBlock() != Blocks.STONE) {
-				primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
+			if (primer.getBlockState(new BlockPos(x, y, z)).getBlock() != Blocks.STONE) {
+				primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
 			}
 		}
 	}

@@ -6,11 +6,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.WorldProviderSurface;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.dimension.OverworldDimension;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,7 +28,7 @@ import javax.annotation.Nullable;
 /**
  * @author Ben
  */
-public class WorldProviderTwilightForest extends WorldProviderSurface {
+public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Should we be extending OverworldDimension?
 
 	private static final String SEED_KEY = "CustomSeed";
 	private static final String SKYLIGHT_KEY = "HasSkylight";
@@ -37,7 +38,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	private long seed;
 
 	public static void syncFromConfig() {
-		skylightEnabled = TFConfig.performance.enableSkylight;
+		skylightEnabled = TFConfig.COMMON_CONFIG.PERFORMANCE.enableSkylight.get();
 	}
 
 	public static void setSkylightEnabled(boolean enabled) {
@@ -48,11 +49,12 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return data.contains(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : skylightEnabled;
 	}
 
-	public WorldProviderTwilightForest() {
-		setDimension(TFConfig.dimension.dimensionID);
+	public WorldProviderTwilightForest(World world, DimensionType type) {
+		super(world, type);
 	}
 
 	/* TODO Breaking change. Uncomment for 1.13.
+	// TODO: Actually, we don't control this anymore
 	Reason for adding ID is if we want multiple TF worlds for servers in future.
 
 	@Override
@@ -114,8 +116,8 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
-	public IChunkGenerator createChunkGenerator() {
-		return TFConfig.dimension.skylightForest
+	public ChunkGenerator<? extends GenerationSettings> createChunkGenerator() {
+		return TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get()
 				? new ChunkGeneratorTwilightVoid(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled())
 				: new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
 	}
@@ -179,11 +181,12 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		}
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public float getStarBrightness(float partialTicks) {
-		return 1.0F;
-	}
+	//TODO: Move to Sky Renderer
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public float getStarBrightness(float partialTicks) {
+//		return 1.0F;
+//	}
 
 	@Override
 	public double getHorizon() {
@@ -208,7 +211,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	private long loadSeed() {
-		String seed = TFConfig.dimension.twilightForestSeed;
+		String seed = TFConfig.COMMON_CONFIG.DIMENSION.twilightForestSeed.get();
 		if (seed != null && !seed.isEmpty()) {
 			try {
 				return Long.parseLong(seed);
@@ -249,6 +252,6 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	// no OnlyIn
 	@Override
 	public float getCloudHeight() {
-		return TFConfig.dimension.skylightForest ? -1F : 161F;
+		return TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get() ? -1F : 161F;
 	}
 }
