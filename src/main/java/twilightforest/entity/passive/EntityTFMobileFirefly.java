@@ -65,7 +65,8 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	public void tick() {
 		super.tick();
 
-		this.motionY *= 0.6000000238418579D;
+		Vec3d motion = getMotion();
+		this.setMotion(motion.x, motion.y * 0.6000000238418579D, motion.z);
 	}
 
 	@Override
@@ -77,7 +78,8 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 			this.spawnPosition = null;
 		}
 
-		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ())) < 4.0D) {
+		// TODO: True adds 0.5
+		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ()), false) < 4.0D) {
 			this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - 2, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
 		}
 
@@ -99,10 +101,11 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 		// End copy
 	}
 
-	@Override
+	// TODO: Can't actually find what this is now
+/*	@Override
 	protected boolean canTriggerWalking() {
 		return false;
-	}
+	}*/
 
 	@Override
 	public boolean handleFallDamage(float dist, float mult) {
@@ -119,7 +122,8 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	}
 
 	// [VanillaCopy] EntityBat.getCanSpawnHere. Edits noted.
-	@Override
+	// TODO: These are now moved to spawn predicates
+/*	@Override
 	public boolean getCanSpawnHere() {
 		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
 
@@ -127,16 +131,23 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 				&& !this.rand.nextBoolean()
 				&& this.world.getLightFromNeighbors(blockpos) <= this.rand.nextInt(4)
 				&& super.getCanSpawnHere();
-	}
+	}*/
 
-	@Override
+	// TODO: I think this needs to go into the entity renderer
+/*	@Override
 	@OnlyIn(Dist.CLIENT)
 	public int getBrightnessForRender() {
 		return 15728880;
-	}
+	}*/
 
 	public float getGlowBrightness() {
 		return (float) Math.sin(this.ticksExisted / 7.0) + 1F;
+	}
+
+	// TODO: I'm unsure if this is sufficient?
+	@Override
+	public float getBrightness() {
+		return getGlowBrightness();
 	}
 
 	@Override

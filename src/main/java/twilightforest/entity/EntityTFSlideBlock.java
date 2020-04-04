@@ -101,10 +101,11 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		dataManager.register(MOVE_DIRECTION, Direction.DOWN);
 	}
 
-	@Override
+	// TODO: Still don't know what this is now
+/*	@Override
 	protected boolean canTriggerWalking() {
 		return false;
-	}
+	}*/
 
 	@Override
 	public boolean canBeCollidedWith() {
@@ -158,10 +159,8 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 				}
 
 				if (this.collided) {
-//					this.motionX *= 0.699999988079071D;
-//					this.motionZ *= 0.699999988079071D;
-//					this.motionY *= 0.699999988079071D;
-					this.getMotion().mul(0.699999988079071D, 0.699999988079071D, 0.699999988079071D);
+					// TODO: mul just returns a new Vec3d, it doesn't actually motify the speed
+					this.setMotion(this.getMotion().mul(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
 
 					this.remove();
 

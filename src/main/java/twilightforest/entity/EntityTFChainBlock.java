@@ -162,7 +162,8 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			BlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, this) < 7F
+			// TODO: The "explosion" parameter can't actually be null
+			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, this, null) < 7F
 					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
 				if (getThrower() instanceof PlayerEntity) {
@@ -278,7 +279,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	public void readSpawnData(PacketBuffer additionalData) {
 		Entity e = world.getEntityByID(additionalData.readInt());
 		if (e instanceof LivingEntity) {
-			thrower = (LivingEntity) e;
+			owner = (LivingEntity) e;
 		}
 		hand = additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
 	}

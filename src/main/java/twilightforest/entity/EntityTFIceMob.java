@@ -6,6 +6,7 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.client.particle.TFParticleType;
 
@@ -17,7 +18,8 @@ public abstract class EntityTFIceMob extends MonsterEntity {
 	@Override
 	public void livingTick() {
 		if (!this.onGround && this.getMotion().getY() < 0.0D) {
-			this.motionY *= 0.6D;
+			Vec3d motion = getMotion();
+			this.setMotion(motion.x, motion.y * 0.6D, motion.z);
 		}
 		super.livingTick();
 		if (this.world.isRemote) {
