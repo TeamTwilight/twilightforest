@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -79,11 +80,8 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			int stateId = Block.getStateId(TFBlocks.moonworm.get().getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				// TODO: Don't think this is enough
-				// state ID needs to be retained somehow
-				this.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, TFBlocks.moonworm.get().getDefaultState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
