@@ -856,6 +856,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		return attackEntityFrom(src, damage);
 	}
 
+	@Override
 	public Entity[] getParts() {
 		return bodySegments;
 	}

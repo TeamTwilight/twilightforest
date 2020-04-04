@@ -665,6 +665,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
+	@Override
 	public Entity[] getParts() {
 		return partArray;
 	}

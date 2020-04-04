@@ -350,10 +350,12 @@ public class EntityTFTowerGhast extends GhastEntity {
 	private BlockPos homePosition = BlockPos.ZERO;
 	private float maximumHomeDistance = -1.0F;
 
+	@Override
 	public boolean isWithinHomeDistanceCurrentPosition() {
 		return this.isWithinHomeDistanceFromPosition(new BlockPos(this));
 	}
 
+	@Override
 	public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
 		// TF - restrict valid y levels
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
@@ -362,19 +364,23 @@ public class EntityTFTowerGhast extends GhastEntity {
 				: pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distanceSq(pos) < (double) (this.maximumHomeDistance * this.maximumHomeDistance);
 	}
 
+	@Override
 	public void setHomePosAndDistance(BlockPos pos, int distance) {
 		this.homePosition = pos;
 		this.maximumHomeDistance = (float) distance;
 	}
 
+	@Override
 	public BlockPos getHomePosition() {
 		return this.homePosition;
 	}
 
+	@Override
 	public float getMaximumHomeDistance() {
 		return this.maximumHomeDistance;
 	}
 
+	@Override
 	public boolean detachHome() {
 		this.maximumHomeDistance = -1.0F;
 		return false;

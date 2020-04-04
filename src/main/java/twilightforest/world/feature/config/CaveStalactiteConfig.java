@@ -22,6 +22,7 @@ public class CaveStalactiteConfig implements IFeatureConfig {
 		this.hang = hang;
 	}
 
+	@Override
 	public <T> Dynamic<T> serialize(DynamicOps<T> dynOps) {
 		return new Dynamic<>(dynOps, dynOps.createMap(ImmutableMap.of(
 				dynOps.createString("state"), BlockState.serialize(dynOps, this.blockState).getValue(),

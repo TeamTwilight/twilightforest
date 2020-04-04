@@ -97,6 +97,7 @@ public class TFTreeFeatureConfig extends BaseTreeFeatureConfig {
 			this.rootsProvider = roots;
 		}
 
+		@Override
 		public TFTreeFeatureConfig.Builder baseHeight(int height) {
 			this.baseHeight = height;
 			return this;

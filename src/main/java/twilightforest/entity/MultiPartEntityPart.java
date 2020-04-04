@@ -20,31 +20,39 @@ public class MultiPartEntityPart<T extends Entity & IEntityMultiPart> extends En
     this.recalculateSize();
   }
 
+  @Override
   protected void registerData() {
   }
 
+  @Override
   protected void readAdditional(CompoundNBT tag) {
   }
 
+  @Override
   protected void writeAdditional(CompoundNBT tag) {
   }
 
+  @Override
   public boolean canBeCollidedWith() {
     return true;
   }
 
+  @Override
   public boolean attackEntityFrom(DamageSource source, float amount) {
     return !this.isInvulnerableTo(source) && parent.attackEntityFromPart(this, source, amount);
   }
 
+  @Override
   public boolean isEntityEqual(Entity entity) {
     return this == entity || parent == entity;
   }
 
+  @Override
   public IPacket<?> createSpawnPacket() {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public EntitySize getSize(Pose p_213305_1_) {
     return size;
   }

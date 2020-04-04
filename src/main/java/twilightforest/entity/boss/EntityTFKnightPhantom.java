@@ -470,28 +470,34 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	private BlockPos homePosition = BlockPos.ZERO;
 	private float maximumHomeDistance = -1.0F;
 
+	@Override
 	public boolean isWithinHomeDistanceCurrentPosition() {
 		return this.isWithinHomeDistanceFromPosition(new BlockPos(this));
 	}
 
+	@Override
 	public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
 		return this.maximumHomeDistance == -1.0F ? true : this.homePosition.distanceSq(pos) < (double) (this.maximumHomeDistance * this.maximumHomeDistance);
 	}
 
+	@Override
 	public void setHomePosAndDistance(BlockPos pos, int distance) {
 		// set the chargePos here as well so we dont go off flying in some direction when we first spawn
 		homePosition = chargePos = pos;
 		this.maximumHomeDistance = (float) distance;
 	}
 
+	@Override
 	public BlockPos getHomePosition() {
 		return this.homePosition;
 	}
 
+	@Override
 	public float getMaximumHomeDistance() {
 		return this.maximumHomeDistance;
 	}
 
+	@Override
 	public boolean detachHome() {
 		this.maximumHomeDistance = -1.0F;
 		return false;

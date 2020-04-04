@@ -178,6 +178,7 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 	}
 
 	// [VanillaCopy] of superclass ver, changes noted
+	@Override
 	protected boolean canSmelt(IRecipe<?> recipe) {
 		if (this.items.get(0).isEmpty()) {
 			return false;
