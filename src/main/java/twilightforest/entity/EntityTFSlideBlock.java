@@ -25,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.TFSounds;
 
 import javax.annotation.Nonnull;
@@ -245,8 +246,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 	@Override
 	public IPacket<?> createSpawnPacket() {
-		// TODO: This needs to be done
-		return null;
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	public BlockState getBlockState() {
