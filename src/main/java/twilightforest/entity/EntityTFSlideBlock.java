@@ -158,7 +158,6 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 				}
 
 				if (this.collided) {
-					// TODO: mul just returns a new Vec3d, it doesn't actually motify the speed
 					this.setMotion(this.getMotion().mul(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
 
 					this.remove();

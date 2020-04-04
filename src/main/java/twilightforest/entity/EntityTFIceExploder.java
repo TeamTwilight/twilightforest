@@ -81,7 +81,6 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 		if (this.deathTime == 60) // delay until 3 seconds
 		{
 			if (!world.isRemote) {
-				// TODO: I think this is correct
 				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(world, this);
 				this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing ? Explosion.Mode.BREAK : Explosion.Mode.DESTROY);
 

@@ -247,7 +247,6 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 
 	@Override
 	protected void registerData() {
-		// TODO: What does this do?
 	}
 
 	@Override
