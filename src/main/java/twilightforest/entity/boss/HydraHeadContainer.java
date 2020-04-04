@@ -1,22 +1,19 @@
 package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.DamageSource;
+import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.*;
 import net.minecraft.world.Difficulty;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
@@ -409,8 +406,7 @@ public class HydraHeadContainer {
 			double vx = part.getRNG().nextGaussian() * 0.02D;
 			double vy = part.getRNG().nextGaussian() * 0.02D;
 			double vz = part.getRNG().nextGaussian() * 0.02D;
-			ParticleTypes particle = large && part.getRNG().nextInt(5) == 0 ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
-			part.world.addParticle(particle, part.getX() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), part.getY() + part.getRNG().nextFloat() * part.getHeight(), part.getZ() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), vx, vy, vz);
+			part.world.addParticle((part.getRNG().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getX() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), part.getY() + part.getRNG().nextFloat() * part.getHeight(), part.getZ() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), vx, vy, vz);
 		}
 	}
 
@@ -526,7 +522,7 @@ public class HydraHeadContainer {
 
 		if (headEntity.getState() == State.FLAME_BEGINNING) {
 			headEntity.world.addParticle(ParticleTypes.FLAME, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
-			headEntity.world.addParticle(ParticleTypes.SMOKE_NORMAL, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.SMOKE, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.FLAMING) {
@@ -674,7 +670,7 @@ public class HydraHeadContainer {
 			List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getBoundingBox().grow(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
-				if (nearby instanceof LivingEntity && !(nearby instanceof EntityTFHydraPart) && !(nearby instanceof EntityTFHydra) && !(nearby instanceof MultiPartEntityPart)) {
+				if (nearby instanceof LivingEntity && !(nearby instanceof EntityTFHydraPart) && !(nearby instanceof EntityTFHydra)) {
 					// bite it!
 					nearby.attackEntityFrom(DamageSource.causeMobDamage(hydra), BITE_DAMAGE);
 				}
@@ -705,14 +701,15 @@ public class HydraHeadContainer {
 	}
 
 	// TODO this seems copied from somewhere?
+	@SuppressWarnings("ConstantConditions")
 	@Nullable
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
 		Vec3d srcVec = new Vec3d(headEntity.getX(), headEntity.getY() + 1.0, headEntity.getZ());
 		Vec3d lookVec = headEntity.getLook(1.0F);
-		RayTraceResult raytrace = headEntity.world.rayTraceBlocks(srcVec, srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range));
-		BlockPos hitpos = raytrace != null ? raytrace.getBlockPos() : null;
+		BlockRayTraceResult raytrace = headEntity.world.rayTraceBlocks(new RayTraceContext(srcVec, srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, headEntity));
+		BlockPos hitpos = raytrace != null ? raytrace.getPos() : null;
 		double rx = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getX() - hitpos.getX()));
 		double ry = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getY() - hitpos.getY()));
 		double rz = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getZ() - hitpos.getZ()));
