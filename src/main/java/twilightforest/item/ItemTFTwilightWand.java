@@ -13,7 +13,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.EntityTFTwilightWandBolt;
+import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;

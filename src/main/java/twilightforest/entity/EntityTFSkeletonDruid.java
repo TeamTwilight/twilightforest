@@ -17,6 +17,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.projectile.EntityTFNatureBolt;
 
 //TODO: Extend AbstractSkeletonEntity?
 public class EntityTFSkeletonDruid extends SkeletonEntity {

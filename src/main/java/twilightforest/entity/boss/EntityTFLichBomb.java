@@ -10,7 +10,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import twilightforest.entity.EntityTFThrowable;
+import twilightforest.entity.projectile.EntityTFThrowable;
 
 public class EntityTFLichBomb extends EntityTFThrowable implements IRendersAsItem {
 

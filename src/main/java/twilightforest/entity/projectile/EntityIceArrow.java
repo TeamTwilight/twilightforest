@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

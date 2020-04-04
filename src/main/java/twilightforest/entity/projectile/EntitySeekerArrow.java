@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

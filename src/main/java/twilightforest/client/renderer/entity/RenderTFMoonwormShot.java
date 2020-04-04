@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFMoonworm;
-import twilightforest.entity.EntityTFMoonwormShot;
+import twilightforest.entity.projectile.EntityTFMoonwormShot;
 
 public class RenderTFMoonwormShot<T extends EntityTFMoonwormShot> extends EntityRenderer<T> {
 

@@ -15,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.projectile.EntityTFIceSnowball;
 
 public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackMob {
 

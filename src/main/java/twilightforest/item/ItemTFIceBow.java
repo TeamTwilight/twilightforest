@@ -5,7 +5,7 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import twilightforest.entity.EntityIceArrow;
+import twilightforest.entity.projectile.EntityIceArrow;
 
 public class ItemTFIceBow extends ItemTFBowBase {
 

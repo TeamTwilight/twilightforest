@@ -57,7 +57,7 @@ import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.IHostileMount;
-import twilightforest.entity.ITFProjectile;
+import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;

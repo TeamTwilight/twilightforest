@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.EntityTFThrowable;
+import twilightforest.entity.projectile.EntityTFThrowable;
 
 public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsItem {
 

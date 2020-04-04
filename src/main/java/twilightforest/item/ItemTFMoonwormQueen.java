@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.EntityTFMoonwormShot;
+import twilightforest.entity.projectile.EntityTFMoonwormShot;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nonnull;

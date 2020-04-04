@@ -53,6 +53,7 @@ import twilightforest.entity.passive.EntityTFQuestRam;
 import twilightforest.entity.passive.EntityTFRaven;
 import twilightforest.entity.passive.EntityTFSquirrel;
 import twilightforest.entity.passive.EntityTFTinyBird;
+import twilightforest.entity.projectile.*;
 import twilightforest.util.TFEntityNames;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)

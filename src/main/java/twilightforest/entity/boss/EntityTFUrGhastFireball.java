@@ -9,7 +9,7 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.entity.ITFProjectile;
+import twilightforest.entity.projectile.ITFProjectile;
 
 public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjectile {
 

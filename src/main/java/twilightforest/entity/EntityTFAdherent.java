@@ -15,6 +15,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.projectile.EntityTFNatureBolt;
 
 public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob, ITFCharger {
 

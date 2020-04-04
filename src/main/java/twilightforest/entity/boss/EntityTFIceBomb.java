@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import twilightforest.entity.EntityTFThrowable;
+import twilightforest.entity.projectile.EntityTFThrowable;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.potions.TFPotions;
 

@@ -13,7 +13,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.EntityTFThrowable;
+import twilightforest.entity.projectile.EntityTFThrowable;
 
 public class EntityTFThrownWep extends EntityTFThrowable {
 

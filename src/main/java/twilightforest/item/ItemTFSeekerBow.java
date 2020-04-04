@@ -2,7 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import twilightforest.entity.EntitySeekerArrow;
+import twilightforest.entity.projectile.EntitySeekerArrow;
 
 public class ItemTFSeekerBow extends ItemTFBowBase {
 

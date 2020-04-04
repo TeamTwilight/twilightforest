@@ -19,6 +19,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.projectile.EntityTFTomeBolt;
 
 import javax.annotation.Nullable;
 
