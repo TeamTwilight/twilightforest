@@ -1,27 +1,22 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.IntArrayNBT;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.IntArrayNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -31,6 +26,7 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -39,10 +35,13 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.IEntityMultiPart;
+import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -134,9 +133,9 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				EntityTFNaga.this.goNormal();
 				super.startExecuting();
 			}
+
 			@Override
-			protected Vec3d getPosition()
-			{
+			protected Vec3d getPosition() {
 				return RandomPositionGenerator.findRandomTarget(this.creature, 30, 7);
 			}
 		});
@@ -446,10 +445,11 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		}
 	}
 
-	@Override
+	// TODO: I don't know what this is now
+/*	@Override
 	public boolean canTriggerWalking() {
 		return false;
-	}
+	}*/
 
 	@Override
 	public boolean isInLava() {
@@ -463,9 +463,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				double d = rand.nextGaussian() * 0.02D;
 				double d1 = rand.nextGaussian() * 0.02D;
 				double d2 = rand.nextGaussian() * 0.02D;
-				ParticleTypes explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_HUGE : ParticleTypes.EXPLOSION_NORMAL;
-
-				world.addParticle(explosionType, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+				world.addParticle((rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 			}
 		}
 
@@ -481,8 +479,13 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		super.tick();
 
 		// update bodySegments parts
-		for (EntityTFNagaSegment segment : bodySegments) {
-			this.world.updateEntityWithOptionalForce(segment, true);
+		if (this.world instanceof ServerWorld) {
+			ServerWorld serverWorld = (ServerWorld) this.world;
+			for (EntityTFNagaSegment segment : bodySegments) {
+				if (segment.isAddedToWorld()) {
+					serverWorld.chunkCheck(segment);
+				}
+			}
 		}
 
 		moveSegments();
@@ -513,7 +516,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 		if (!isWithinHomeDistanceCurrentPosition()) {
 			setAttackTarget(null);
-			getNavigator().setPath(getNavigator().getPathToPos(getHomePosition()), 1.0F);
+			getNavigator().setPath(getNavigator().getPathToPos(getHomePosition(), 0), 1.0F);
 		}
 
 		// BOSS BAR!
@@ -530,7 +533,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		public void tick() {
 			// TF - slither!
 			MovementState currentState = ((EntityTFNaga) mob).movementAI.movementState;
-			if(currentState == MovementState.DAZE) {
+			if (currentState == MovementState.DAZE) {
 				this.mob.moveStrafing = 0F;
 			} else if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
 				this.mob.moveStrafing = MathHelper.cos(this.mob.ticksExisted * 0.3F) * 0.6F;
@@ -670,10 +673,9 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	@Override
 	public boolean attackEntityAsMob(Entity toAttack) {
 		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof LivingEntity && ((LivingEntity) toAttack).isActiveItemStackBlocking()) {
-			toAttack.addVelocity(motionX * 1.25D, 0.5D, motionZ * 1.25D);
-			motionX *= -1.5D;
-			motionY += 0.5D;
-			motionZ *= -1.5D;
+			Vec3d motion = this.getMotion();
+			toAttack.addVelocity(motion.x * 1.25D, 0.5D, motion.z * 1.25D);
+			this.setMotion(motion.x * -1.5D, motion.y + 0.5D, motion.z * -1.5D);
 			if (toAttack instanceof ServerPlayerEntity)
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) toAttack), new PacketThrowPlayer((float) toAttack.getMotion().getX(), (float) toAttack.getMotion().getY(), (float) toAttack.getMotion().getZ()));
 			attackEntityFrom(DamageSource.GENERIC, 4F);
@@ -703,7 +705,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (hasHome()) {
+			if (getHomePosition() != BlockPos.ZERO) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
 			}
 			remove();
@@ -715,10 +717,17 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	@Override
 	public void remove() {
 		super.remove();
-		for (EntityTFNagaSegment seg : bodySegments) {
-			// must use this instead of setDead
-			// since multiparts are not added to the world tick list which is what checks isDead
-			this.world.removeEntityDangerously(seg);
+		if (this.world instanceof ServerWorld) {
+			ServerWorld world = (ServerWorld) this.world;
+			for (EntityTFNagaSegment seg : bodySegments) {
+				// must use this instead of setDead
+				// since multiparts are not added to the world tick list which is what checks isDead
+				// TODO: Is this code sufficient?
+				seg.remove();
+				// TODO: TODO: TODO: Can definitely cause a crash
+				world.removeEntity(seg);
+				// this.world.removeEntityDangerously(seg);
+			}
 		}
 	}
 
@@ -748,7 +757,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				double d0 = this.rand.nextGaussian() * 0.02D;
 				double d1 = this.rand.nextGaussian() * 0.02D;
 				double d2 = this.rand.nextGaussian() * 0.02D;
-				this.world.addParticle(ParticleTypes.EXPLOSION_NORMAL,
+				this.world.addParticle(ParticleTypes.EXPLOSION,
 						segment.getX() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d0 * 10.0D,
 						segment.getY() + (double) (this.rand.nextFloat() * segment.getHeight()) - d1 * 10.0D,
 						segment.getZ() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d2 * 10.0D,
@@ -804,7 +813,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 	@Override
 	public void writeAdditional(CompoundNBT compound) {
-		if (hasHome()) {
+		if (getHomePosition() != BlockPos.ZERO) {
 			BlockPos home = this.getHomePosition();
 			compound.put("Home", new IntArrayNBT(new int[]{home.getX(), home.getY(), home.getZ()}));
 		}
@@ -847,7 +856,6 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		return attackEntityFrom(src, damage);
 	}
 
-	@Override
 	public Entity[] getParts() {
 		return bodySegments;
 	}

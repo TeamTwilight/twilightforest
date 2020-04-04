@@ -8,6 +8,8 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import twilightforest.entity.MultiPartEntityPart;
+
 import java.util.List;
 
 public class EntityTFNagaSegment extends MultiPartEntityPart {

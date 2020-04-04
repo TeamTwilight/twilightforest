@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFIceMob;
+import twilightforest.entity.TFEntities;
 
 public class EntityTFIceCrystal extends EntityTFIceMob {
 
@@ -19,9 +20,14 @@ public class EntityTFIceCrystal extends EntityTFIceMob {
 	private int crystalAge;
 	private int maxCrystalAge = -1;
 
+	public EntityTFIceCrystal(World worldIn) {
+		super(TFEntities.ice_crystal.get(), worldIn);
+	}
+
 	public EntityTFIceCrystal(EntityType<? extends EntityTFIceCrystal> type, World world) {
 		super(type, world);
 
+		// TODO: ???
 		//this.setCurrentItemOrArmor(0, new ItemStack(TFItems.iceSword));
 	}
 

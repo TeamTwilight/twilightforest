@@ -35,11 +35,14 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
+import twilightforest.entity.IEntityMultiPart;
+import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.WorldUtil;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -224,9 +227,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				double d = rand.nextGaussian() * 0.02D;
 				double d1 = rand.nextGaussian() * 0.02D;
 				double d2 = rand.nextGaussian() * 0.02D;
-				ParticleTypes explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_HUGE : ParticleTypes.EXPLOSION_NORMAL;
-
-				world.addParticle(explosionType, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+				world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 			}
 		}
 	}
@@ -239,7 +240,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (hasHome()) {
+			if (getHomePosition() != BlockPos.ZERO) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
 			}
 			remove();
@@ -274,7 +275,8 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		if (collided != this) {
 			collided.applyEntityCollision(collider);
 			if (collided instanceof LivingEntity && super.attackEntityAsMob(collided)) {
-				collided.motionY += 0.4;
+				Vec3d motion = collided.getMotion();
+				collided.setMotion(motion.x, motion.y + 0.4, motion.z);
 				this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 			}
 		}
@@ -409,7 +411,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 			double attemptX;
 			double attemptY;
 			double attemptZ;
-			if (hasHome()) {
+			if (getHomePosition() != BlockPos.ZERO) {
 				BlockPos home = getHomePosition();
 				attemptX = home.getX() + rand.nextGaussian() * 7D;
 				attemptY = home.getY() + rand.nextGaussian() * 2D;
@@ -419,7 +421,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				attemptY = targetedEntity.getY() + rand.nextGaussian() * 8D;
 				attemptZ = targetedEntity.getZ() + rand.nextGaussian() * 16D;
 			}
-			if (minion.attemptTeleport(attemptX, attemptY, attemptZ)) {
+			if (minion.attemptTeleport(attemptX, attemptY, attemptZ, true)) {
 				break;
 			}
 		}
