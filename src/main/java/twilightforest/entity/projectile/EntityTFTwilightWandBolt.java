@@ -64,7 +64,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private static ItemStack particleItem = new ItemStack(Items.ENDER_PEARL);
+	private final static ItemStack particleItem = new ItemStack(Items.ENDER_PEARL);
 
 	@OnlyIn(Dist.CLIENT)
 	@Override

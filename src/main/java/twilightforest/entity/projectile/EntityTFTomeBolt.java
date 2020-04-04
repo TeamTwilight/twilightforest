@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -53,13 +54,14 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 	}
 
 	@OnlyIn(Dist.CLIENT)
+	private final static ItemStack particleItem = new ItemStack(Items.PAPER);
+
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			int itemId = Item.getIdFromItem(Items.PAPER);
 			for (int i = 0; i < 8; ++i) {
-				// TODO: As per other damage particles
-				this.world.addParticle(ParticleTypes.DAMAGE_INDICATOR, false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, particleItem), false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
