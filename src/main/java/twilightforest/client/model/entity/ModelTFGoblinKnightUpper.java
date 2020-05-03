@@ -128,19 +128,11 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 	 */
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		this.shield.showModel = entity.hasShield();
 		super.render(stack, builder, light, overlay, red, green, blue, scale);
 
-		if (entity.hasArmor()) {
-			this.renderBreastplate(stack, builder, light, overlay, red, green, blue, scale);
-		}
-	}
+        this.breastplate.render(stack, builder, light, overlay, red, green, blue, scale);
 
-	/**
-	 * Renders the breastplate, if we're wearing armor
-	 */
-	public void renderBreastplate(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		this.breastplate.render(stack, builder, light, overlay, red, green, blue, scale);
+
 	}
 
 	/**
@@ -195,7 +187,7 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 
 		// during swing move arm forward
 		if (entity.heavySpearTimer > 0) {
-			bipedRightArm.rotateAngleX -= this.getArmRotationDuringSwing(60 - entity.heavySpearTimer + scaleFactor) / (180F / (float) Math.PI);
+            bipedRightArm.rotateAngleX -= this.getArmRotationDuringSwing(60 - entity.heavySpearTimer) / (180F / (float) Math.PI);
 		}
 
 		this.bipedRightArm.rotateAngleY = 0.0F;
@@ -211,6 +203,9 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 
 		// fix shield so that it's always perpendicular to the floor
 		this.shield.rotateAngleX = (float) (Math.PI * 2 - this.bipedLeftArm.rotateAngleX);
+
+        this.breastplate.showModel = entity.hasArmor();
+        this.shield.showModel = entity.hasShield();
 	}
 
 	/**

@@ -132,7 +132,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (hasHome()) {
+            if (detachHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM));
 			}
 			remove();

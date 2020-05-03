@@ -3,6 +3,7 @@ package twilightforest;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.GameRules;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,7 +59,7 @@ public class TwilightForestMod {
 	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR  = ID + ":textures/armor/";
 
-	public static final String ENFORCED_PROGRESSION_RULE = "tfEnforcedProgression";
+    public static final GameRules.RuleKey<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.BooleanValue.create(true));
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 

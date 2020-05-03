@@ -1,10 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -65,14 +62,9 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 	@Override
 	public void livingTick() {
 		if (!this.getPassengers().isEmpty()) {
-			this.setSize(1.9F, 2.0F);
-
 			if (this.getPassengers().get(0).isSneaking()) {
 				this.getPassengers().get(0).setSneaking(false);
 			}
-		} else {
-			this.setSize(1.2F, 1.1F);
-
 		}
 
 		super.livingTick();
@@ -137,4 +129,14 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;
 	}
+
+    @Override
+    public EntitySize getSize(Pose p_213305_1_) {
+
+        if (!this.getPassengers().isEmpty()) {
+            return EntitySize.flexible(1.9F, 2.0F);
+        } else {
+            return super.getSize(p_213305_1_);
+        }
+    }
 }

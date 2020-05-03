@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.entity.model.SilverfishModel;
 import net.minecraft.entity.Entity;
@@ -14,6 +13,7 @@ import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.spawner.WorldEntitySpawner;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -26,34 +26,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
 import twilightforest.client.renderer.entity.*;
-import twilightforest.entity.boss.EntityTFFallingIce;
-import twilightforest.entity.boss.EntityTFHydra;
-import twilightforest.entity.boss.EntityTFHydraHead;
-import twilightforest.entity.boss.EntityTFHydraMortar;
-import twilightforest.entity.boss.EntityTFIceBomb;
-import twilightforest.entity.boss.EntityTFIceCrystal;
-import twilightforest.entity.boss.EntityTFKnightPhantom;
-import twilightforest.entity.boss.EntityTFLich;
-import twilightforest.entity.boss.EntityTFLichBolt;
-import twilightforest.entity.boss.EntityTFLichBomb;
-import twilightforest.entity.boss.EntityTFLichMinion;
-import twilightforest.entity.boss.EntityTFMinoshroom;
-import twilightforest.entity.boss.EntityTFNaga;
-import twilightforest.entity.boss.EntityTFSnowQueen;
-import twilightforest.entity.boss.EntityTFThrownWep;
-import twilightforest.entity.boss.EntityTFUrGhast;
-import twilightforest.entity.boss.EntityTFYetiAlpha;
+import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
-import twilightforest.entity.passive.EntityTFBighorn;
-import twilightforest.entity.passive.EntityTFBoar;
-import twilightforest.entity.passive.EntityTFBunny;
-import twilightforest.entity.passive.EntityTFDeer;
-import twilightforest.entity.passive.EntityTFMobileFirefly;
-import twilightforest.entity.passive.EntityTFPenguin;
-import twilightforest.entity.passive.EntityTFQuestRam;
-import twilightforest.entity.passive.EntityTFRaven;
-import twilightforest.entity.passive.EntityTFSquirrel;
-import twilightforest.entity.passive.EntityTFTinyBird;
+import twilightforest.entity.passive.*;
 import twilightforest.entity.projectile.*;
 import twilightforest.util.TFEntityNames;
 
@@ -277,6 +252,9 @@ public class TFEntities {
 				helper.registerEntity(TFEntityNames.SLIDER, EntityTFSlideBlock.class, EntityTFSlideBlock::new, 80, 1, true);
 				helper.registerEntity(TFEntityNames.BOGGARD, EntityTFBoggard.class, EntityTFBoggard::new);
 				helper.registerEntity(TFEntityNames.RISING_ZOMBIE, EntityTFRisingZombie.class, EntityTFRisingZombie::new);*/
+
+		// this place is now spawn placement registry
+		EntitySpawnPlacementRegistry.register(TFEntities.yeti.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFYeti::yetiSnowyForestSpawnHandler);
 	}
 
 	@OnlyIn(Dist.CLIENT)
