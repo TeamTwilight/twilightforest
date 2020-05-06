@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.effect.LightningBoltEntity;
@@ -14,8 +15,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -351,7 +352,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			minion.setLocationAndAngles(sx, sy, sz, this.world.rand.nextFloat() * 360.0F, 0.0F);
 			minion.makeBossMinion();
 
-			if (minion.getCanSpawnHere()) {
+			if (minion.canSpawn(world, SpawnReason.MOB_SUMMONED)) {
 				this.world.addEntity(minion);
 				minion.spawnExplosionParticle();
 			}

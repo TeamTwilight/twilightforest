@@ -69,17 +69,8 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		super.render(stack, builder, light, overlay, red, green, blue, scale);
-
-		if (entity.hasArmor()) {
-			this.renderTunic(stack, builder, light, overlay, red, green, blue, scale);
-		}
-	}
-
-	/**
-	 * Renders the tunic, if we're wearing armor
-	 */
-	public void renderTunic(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		this.tunic.render(stack, builder, light, overlay, red, green, blue, scale);
+
 	}
 
 	/**
@@ -125,5 +116,9 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
+
+
+        this.tunic.showModel = entity.hasArmor();
+
 	}
 }
