@@ -4,7 +4,10 @@ import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.projectile.ITFProjectile;
@@ -28,11 +31,22 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 				}
 
 				boolean flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
-				this.world.newExplosion(null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag);
+                this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
 				this.remove();
 			}
 		}
 	}
+
+    @Override
+    public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
+        Vec3d vec3d = (new Vec3d(p_70186_1_, p_70186_3_, p_70186_5_)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_, this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_, this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_).scale((double) p_70186_7_);
+        this.setMotion(vec3d);
+        float f = MathHelper.sqrt(horizontalMag(vec3d));
+        this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, p_70186_5_) * (double) (180F / (float) Math.PI));
+        this.rotationPitch = (float) (MathHelper.atan2(vec3d.y, (double) f) * (double) (180F / (float) Math.PI));
+        this.prevRotationYaw = this.rotationYaw;
+        this.prevRotationPitch = this.rotationPitch;
+    }
 
 	//TODO: Are these used at all?
 //	@Override

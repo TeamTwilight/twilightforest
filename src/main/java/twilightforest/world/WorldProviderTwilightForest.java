@@ -1,6 +1,7 @@
 package twilightforest.world;
 
 import net.minecraft.client.audio.MusicTicker;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -9,10 +10,10 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.OverworldDimension;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
-import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.common.util.Constants;
 import twilightforest.TFConfig;
 import twilightforest.client.TFClientProxy;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -46,6 +47,14 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 
 	public WorldProviderTwilightForest(World world, DimensionType type) {
 		super(world, type);
+		CompoundNBT data = TFWorld.getDimensionData(world);
+		seed = data.contains(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
+
+		float f = this.hasSkyLight() ? 0.0F : 0.1F;
+		for (int i = 0; i <= 15; ++i) {
+			float f1 = 1.0F - (float) i / 15.0F;
+			this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
+		}
 	}
 
 	/* TODO Breaking change. Uncomment for 1.13.
@@ -94,33 +103,17 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 	}
 
 	@Override
-	public void init() {
-		CompoundNBT data = TFWorld.getDimensionData(world);
-		seed = data.contains(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
-		//hasSkyLight = isSkylightEnabled(data);
-		biomeProvider = new TFBiomeProvider(world);
-	}
-
-	@Override
 	public boolean hasSkyLight() {
 		CompoundNBT data = TFWorld.getDimensionData(world);
 		return isSkylightEnabled(data);
 	}
 
-	@Override
-	protected void generateLightBrightnessTable() {
-		float f = this.hasSkyLight() ? 0.0F : 0.1F;
-		for (int i = 0; i <= 15; ++i) {
-			float f1 = 1.0F - (float)i / 15.0F;
-			this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
-		}
-	}
 
 	@Override
 	public ChunkGenerator<? extends GenerationSettings> createChunkGenerator() {
 		return TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get()
-				? new ChunkGeneratorTwilightVoid(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled())
-				: new ChunkGeneratorTwilightForest(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
+				? new ChunkGeneratorTwilightVoid(world, new TFBiomeProvider(new TFBiomeProviderSettings(world.getWorldInfo())), new TFWorld())
+				: new ChunkGeneratorTwilightForest(world, new TFBiomeProvider(new TFBiomeProviderSettings(world.getWorldInfo())), new TFWorld());
 	}
 
 	/**
@@ -174,13 +167,18 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 //	}
 
 	@Override
-	public void getLightmapColors(float partialTicks, float sunBrightness, float skyLight, float blockLight, float[] colors) {
+	public void getLightmapColors(float partialTicks, float sunBrightness, float skyLight, float blockLight, Vector3f colors) {
 		final float r = 64f / 255f, g = 85f / 255f, b = 72f / 255f;
+		float colors0 = blockLight;
+		float colors1 = blockLight;
+		float colors2 = blockLight;
+
 		if (!hasSkyLight) {
-			colors[0] = r + blockLight * (1.0f - r);
-			colors[1] = g + blockLight * (1.0f - g);
-			colors[2] = b + blockLight * (1.0f - b);
+			colors0 = r + blockLight * (1.0f - r);
+			colors1 = g + blockLight * (1.0f - g);
+			colors2 = b + blockLight * (1.0f - b);
 		}
+		colors.set(colors0, colors1, colors2);
 	}
 
 	//TODO: Move to Sky Renderer
@@ -190,8 +188,9 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 //		return 1.0F;
 //	}
 
+
 	@Override
-	public double getHorizon() {
+	public int getHeight() {
 		return TFWorld.SEALEVEL;
 	}
 

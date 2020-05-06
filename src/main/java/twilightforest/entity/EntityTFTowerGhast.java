@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.monster.GhastEntity;
@@ -10,13 +11,15 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -244,7 +247,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 
 		if (this.rand.nextBoolean()) {
-			this.world.addParticle(ParticleTypes.REDSTONE, this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
+			this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
 		}
 
 		super.livingTick();
@@ -309,14 +312,20 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 	}
 
-	@Override
-	public boolean getCanSpawnHere() {
-		return this.world.checkNoEntityCollision(this)
-				&& this.world.getCollisionBoxes(this, getBoundingBox()).isEmpty()
-				&& !this.world.containsAnyLiquid(getBoundingBox())
-				&& this.world.getDifficulty() != Difficulty.PEACEFUL
-				&& this.isValidLightLevel();
+	public static boolean ghastSpawnHandler(EntityType<? extends EntityTFTowerGhast> entityType, IWorld world, SpawnReason p_223324_2_, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entityType, world, p_223324_2_, pos, random);
 	}
+
+	public static boolean isValidLightLevel(IWorld world, BlockPos blockPos, Random p_223323_2_) {
+		int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
+		return i <= p_223323_2_.nextInt(8);
+	}
+
+	public boolean isNotColliding(IWorldReader p_205019_1_) {
+		return p_205019_1_.intersectsEntities(this) && !p_205019_1_.containsAnyLiquid(this.getBoundingBox());
+	}
+
+
 
 	/**
 	 * Checks to make sure the light is not too bright where the mob is spawning

@@ -2,8 +2,8 @@ package twilightforest.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.Util;
@@ -168,13 +168,13 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 
 		fillChunk(chunk, primer);
 
-		// load in biomes, to prevent striping?!
+		/*// load in biomes, to prevent striping?!
 		byte[] chunkBiomes = chunk.getBiomeArray();
 		for (int i = 0; i < chunkBiomes.length; ++i) {
 			chunkBiomes[i] = (byte) Biome.getIdForBiome(this.biomesForGeneration[i]);
 		}
 
-		chunk.generateSkylightMap();
+		chunk.generateSkylightMap();*/
 
 		return chunk;
 	}
@@ -586,9 +586,10 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 	@Nullable
 	@Override
 	public BlockPos findNearestStructure(World world, String structureName, BlockPos position, int range, boolean findUnexplored) {
-		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
+        //TODO: we need to readd this next time
+		/*if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
 			return hollowTreeGenerator.findNearest(world, this, position, range, findUnexplored);
-		}
+		}*/
 		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
 		if (feature != TFFeature.NOTHING) {
 			return TFFeature.findNearestFeaturePosBySpacing(world, feature, position, 20, 11, 10387313, true, 100, findUnexplored);

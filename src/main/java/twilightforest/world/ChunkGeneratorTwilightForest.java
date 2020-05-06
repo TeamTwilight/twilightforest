@@ -4,59 +4,56 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
 import twilightforest.TFConfig;
-import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
-import twilightforest.block.TFBlocks;
-import twilightforest.util.IntPair;
 
 // TODO: doc out all the vanilla copying
 public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
-	private final NoiseGeneratorOctaves noiseGen4;
-	//private final NoiseGeneratorOctaves scaleNoise;
-	//private final NoiseGeneratorOctaves forestNoise;
+    private final OctavesNoiseGenerator noiseGen4;
+    //private final OctavesNoiseGenerator scaleNoise;
+    //private final OctavesNoiseGenerator forestNoise;
 
 //	private final TFGenCaves caveGenerator = new TFGenCaves();
 //	private final TFGenRavine ravineGenerator = new TFGenRavine();
 
 	public ChunkGeneratorTwilightForest(IWorld world, BiomeProvider seed, TFWorld settings) {
 		super(world, seed, settings, true);
-		this.noiseGen4 = new NoiseGeneratorOctaves(rand, 4);
-		//this.scaleNoise = new NoiseGeneratorOctaves(rand, 10);
-		//this.forestNoise = new NoiseGeneratorOctaves(rand, 8);
+        this.noiseGen4 = new OctavesNoiseGenerator(this.randomSeed, 4, 0);
+        //this.scaleNoise = new OctavesNoiseGenerator(rand, 10);
+        //this.forestNoise = new OctavesNoiseGenerator(rand, 8);
 	}
 
 	@Override
 	public void decorate(WorldGenRegion region) {
+        super.decorate(region);
 		int x = region.getMainChunkX();
 		int z = region.getMainChunkZ();
 
-		randomSeed.setSeed(getSeed(x, z));
+        randomSeed.setSeed(getSeed());
 
 		ChunkBitArray data = new ChunkBitArray();
-		func_222529_a(x, z, data);
+        //func_222529_a(x, z, data);
 		squishTerrain(data);
 
 		ChunkPrimer primer = new DirectChunkPrimer();
 		initPrimer(primer, data);
 
 		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
-		addDarkForestCanopy2(x, z, primer);
+        //addDarkForestCanopy2(x, z, primer); TODO: Should be moved to Biome Decorator or...?
 
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
-		this.biomesForGeneration = world.getDimension().getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
+        //this.biomesForGeneration = world.getDimension().getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		addGlaciers(x, z, primer, biomesForGeneration);
+        //addGlaciers(x, z, primer, biomesForGeneration);
 		deformTerrainForFeature(x, z, primer);
-		replaceBiomeBlocks(x, z, primer, biomesForGeneration);
+        //replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
 //		caveGenerator.generate(world, x, z, primer); TODO: Handled in Biome carvers
 //		ravineGenerator.generate(world, x, z, primer); TODO: Handled in Biome carvers
@@ -66,7 +63,6 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		makeChunk(x, z, primer);
 	}
 
-	@Override
 	protected void initPrimer(ChunkPrimer primer, ChunkBitArray data) {
 
 		//TODO: Handled in TFWorld now
@@ -126,7 +122,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	/**
 	 * Adds dark forest canopy.  This version uses the "unzoomed" array of biomes used in land generation to determine how many of the nearby blocks are dark forest
 	 */
-	private void addDarkForestCanopy2(int chunkX, int chunkZ, ChunkPrimer primer) {
+	/*private void addDarkForestCanopy2(int chunkX, int chunkZ, ChunkPrimer primer) {
 
 		int[] thicks = new int[5 * 5];
 		boolean biomeFound = false;
@@ -223,7 +219,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				}
 			}
 		}
-	}
+	}*/
 
 //	@Override
 //	public void decorate(WorldGenRegion region) {

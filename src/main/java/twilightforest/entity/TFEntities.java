@@ -255,6 +255,7 @@ public class TFEntities {
 
 		// this place is now spawn placement registry
 		EntitySpawnPlacementRegistry.register(TFEntities.yeti.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFYeti::yetiSnowyForestSpawnHandler);
+		EntitySpawnPlacementRegistry.register(TFEntities.tower_ghast.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFTowerGhast::ghastSpawnHandler);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -309,7 +310,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(maze_slime.get(), m -> new RenderTFMazeSlime(m, 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(yeti.get(), m -> new RenderTFYeti<>(m, new ModelTFYeti<>(), 0.625F, "yeti2.png"));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityTFProtectionBox.class, RenderTFProtectionBox::new);
-		RenderingRegistry.registerEntityRenderingHandler(yeti_alpha.get(), m -> new RenderTFYeti<>(m, new ModelTFYetiAlpha(), 1.75F, "yetialpha.png"));
+		RenderingRegistry.registerEntityRenderingHandler(yeti_alpha.get(), m -> new RenderTFYeti<>(m, new ModelTFYetiAlpha<>(), 1.75F, "yetialpha.png"));
 		RenderingRegistry.registerEntityRenderingHandler(winter_wolf.get(), RenderTFWinterWolf::new);
 		RenderingRegistry.registerEntityRenderingHandler(snow_guardian.get(), m -> new RenderTFSnowGuardian<>(m, new ModelTFSnowGuardian<>()));
 		RenderingRegistry.registerEntityRenderingHandler(stable_ice_core.get(), m -> new RenderTFIceShooter<>(m, new ModelTFIceShooter<>()));

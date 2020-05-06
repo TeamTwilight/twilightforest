@@ -200,8 +200,6 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
             int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
             return i <= p_223323_2_.nextInt(8) || world.getBiome(blockPos) == TFBiomes.snowy_forest.get();
         }
-
-
     }
 
     @Override

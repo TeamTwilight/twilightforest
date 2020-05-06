@@ -1,5 +1,6 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -108,16 +109,10 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 		horn2a.addChild(horn2b);
 	}
 
-	/**
-	 * Sets the models various rotation angles then renders the model.
-	 */
-	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-		this.bipedBody.render(scale);
-		this.bipedRightLeg.render(scale);
-		this.bipedLeftLeg.render(scale);
+	@Override
+    protected Iterable<ModelRenderer> getBodyParts() {
+        return ImmutableList.of(this.bipedBody, this.bipedRightLeg, this.bipedLeftLeg);
 	}
 
 	/**

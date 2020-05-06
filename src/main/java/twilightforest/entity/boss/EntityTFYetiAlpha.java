@@ -1,26 +1,26 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -331,7 +331,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (hasHome()) {
+            if (detachHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
 			}
 			remove();
@@ -363,7 +363,6 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 
 	@Override
 	public boolean handleFallDamage(float distance, float multiplier) {
-		super.handleFallDamage(distance, multiplier);
 
 		if (!this.world.isRemote && isRampaging()) {
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -371,12 +370,13 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		}
 
 		//TODO: Return value?
+        return super.handleFallDamage(distance, multiplier);
 	}
 
 	private void hitNearbyEntities() {
 		for (LivingEntity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(5, 0, 5))) {
 			if (entity != this && entity.attackEntityFrom(DamageSource.causeMobDamage(this), 5F)) {
-				entity.motionY += 0.4;
+                entity.setMotion(entity.getMotion().add(0.0F, 0.4, 0.0F));
 			}
 		}
 	}
@@ -412,7 +412,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	public void writeAdditional(CompoundNBT compound) {
 		BlockPos home = this.getHomePosition();
 		compound.put("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
-		compound.putBoolean("HasHome", this.hasHome());
+        compound.putBoolean("HasHome", this.detachHome());
 		super.writeAdditional(compound);
 	}
 
