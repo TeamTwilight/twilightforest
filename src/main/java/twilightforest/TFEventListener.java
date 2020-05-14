@@ -32,7 +32,6 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -66,7 +65,11 @@ import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
-import twilightforest.network.*;
+import twilightforest.network.PacketAreaProtection;
+import twilightforest.network.PacketEnforceProgressionStatus;
+import twilightforest.network.PacketSetSkylightEnabled;
+import twilightforest.network.PacketUpdateShield;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
@@ -633,7 +636,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-            if (event.getTo() == TFDimensions.tf_dimType) {
+			if (event.getTo() == TFDimensions.tf_dimType) {
 				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFWorld.isProgressionEnforced(event.getPlayer().world));
 			}
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
@@ -683,16 +686,16 @@ public class TFEventListener {
 	public static void worldLoaded(WorldEvent.Load event) {
 		World world = event.getWorld().getWorld();
 
-        if (!world.isRemote() && world.getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE) != null) {
+		if (!world.isRemote() && world.getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE) != null) {
 			TwilightForestMod.LOGGER.info("Loaded a world with the {} game rule not defined. Defining it.", TwilightForestMod.ENFORCED_PROGRESSION_RULE);
-            //world.getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(TFConfig.COMMON_CONFIG.progressionRuleDefault), GameRules.ValueType.BOOLEAN_VALUE);
+			//world.getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(TFConfig.COMMON_CONFIG.progressionRuleDefault), GameRules.ValueType.BOOLEAN_VALUE);
 		}
 	}
 
 	/**
 	 * Check if someone's changing the progression game rule
 	 */
-    //TODO gamerule register was changed, so doesn't need this
+	//TODO gamerule register was changed, so doesn't need this
 	/*@SubscribeEvent
 	public static void gameRuleChanged(GameRuleChangeEvent event) {
 		if (event.getRuleName().equals(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
@@ -747,26 +750,26 @@ public class TFEventListener {
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
-            if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
-                Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
+			if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
+				Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
 
-                if (event.getEntity() != null && entity instanceof LivingEntity) {
-                    LivingEntity entityBlocking = (LivingEntity) entity;
+				if (event.getEntity() != null && entity instanceof LivingEntity) {
+					LivingEntity entityBlocking = (LivingEntity) entity;
 
-                    if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
-                        @Override
-                        public Vec3d getDamageLocation() {
-                            return projectile.getPositionVector();
-                        }
-                    }) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksArrow.get()) {
-                        Vec3d playerVec3 = entityBlocking.getLookVec();
+					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+						@Override
+						public Vec3d getDamageLocation() {
+							return projectile.getPositionVector();
+						}
+					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksArrow.get()) {
+						Vec3d playerVec3 = entityBlocking.getLookVec();
 
-                        projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
+						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
-                        projectile.shootingEntity = entityBlocking.getUniqueID();
+						projectile.shootingEntity = entityBlocking.getUniqueID();
 
-                        event.setCanceled(true);
-                    }
+						event.setCanceled(true);
+					}
 				}
 			}
 		}
@@ -780,32 +783,32 @@ public class TFEventListener {
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
-            if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
-                Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
+			if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
+				Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
 
-                if (event.getEntity() != null && entity instanceof LivingEntity) {
-                    LivingEntity entityBlocking = (LivingEntity) entity;
+				if (event.getEntity() != null && entity instanceof LivingEntity) {
+					LivingEntity entityBlocking = (LivingEntity) entity;
 
-                    if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
-                        @Override
-                        public Vec3d getDamageLocation() {
-                            return projectile.getPositionVector();
-                        }
-                    }) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksFireball.get()) {
-                        Vec3d playerVec3 = entityBlocking.getLookVec();
+					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+						@Override
+						public Vec3d getDamageLocation() {
+							return projectile.getPositionVector();
+						}
+					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksFireball.get()) {
+						Vec3d playerVec3 = entityBlocking.getLookVec();
 
 //					projectile.motionX = playerVec3.x;
 //					projectile.motionY = playerVec3.y;
 //					projectile.motionZ = playerVec3.z;
-                        projectile.setMotion(new Vec3d(playerVec3.x, playerVec3.y, playerVec3.z));
-                        projectile.accelerationX = projectile.getMotion().getX() * 0.1D;
-                        projectile.accelerationY = projectile.getMotion().getY() * 0.1D;
-                        projectile.accelerationZ = projectile.getMotion().getZ() * 0.1D;
+						projectile.setMotion(new Vec3d(playerVec3.x, playerVec3.y, playerVec3.z));
+						projectile.accelerationX = projectile.getMotion().getX() * 0.1D;
+						projectile.accelerationY = projectile.getMotion().getY() * 0.1D;
+						projectile.accelerationZ = projectile.getMotion().getZ() * 0.1D;
 
-                        projectile.shootingEntity = entityBlocking;
+						projectile.shootingEntity = entityBlocking;
 
-                        event.setCanceled(true);
-                    }
+						event.setCanceled(true);
+					}
 				}
 			}
 		}
@@ -819,27 +822,27 @@ public class TFEventListener {
 				(TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get()
 						|| projectile instanceof ITFProjectile)) {
 
-            if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
-                Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
+			if (event.getRayTraceResult() instanceof EntityRayTraceResult) {
+				Entity entity = ((EntityRayTraceResult) event.getRayTraceResult()).getEntity();
 
 
-                if (event.getEntity() != null && entity instanceof LivingEntity) {
-                    LivingEntity entityBlocking = (LivingEntity) entity;
+				if (event.getEntity() != null && entity instanceof LivingEntity) {
+					LivingEntity entityBlocking = (LivingEntity) entity;
 
-                    if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
-                        @Override
-                        public Vec3d getDamageLocation() {
-                            return projectile.getPositionVector();
-                        }
-                    }) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksThrowable.get()) {
-                        Vec3d playerVec3 = entityBlocking.getLookVec();
+					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+						@Override
+						public Vec3d getDamageLocation() {
+							return projectile.getPositionVector();
+						}
+					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksThrowable.get()) {
+						Vec3d playerVec3 = entityBlocking.getLookVec();
 
-                        projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
+						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
-                        projectile.owner = entityBlocking;
+						projectile.owner = entityBlocking;
 
-                        event.setCanceled(true);
-                    }
+						event.setCanceled(true);
+					}
 				}
 			}
 		}

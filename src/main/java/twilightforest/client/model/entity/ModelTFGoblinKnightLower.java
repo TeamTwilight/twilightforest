@@ -70,7 +70,6 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		super.render(stack, builder, light, overlay, red, green, blue, scale);
 		this.tunic.render(stack, builder, light, overlay, red, green, blue, scale);
-
 	}
 
 	/**
@@ -117,8 +116,6 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 
-
-        this.tunic.showModel = entity.hasArmor();
-
+		this.tunic.showModel = entity.hasArmor();
 	}
 }

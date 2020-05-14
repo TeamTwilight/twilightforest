@@ -22,17 +22,17 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 //		rand.setSeed(getSeed(x, z));
 
 		ChunkBitArray data = new ChunkBitArray();
-        //func_222529_a(x, z, data);
+		//func_222529_a(x, z, data);
 		squishTerrain(data);
 
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
-        //this.biomesForGeneration = getBiomeProvider().getBiomesInArea(biomesForGeneration, x * 16, z * 16, 16, 16);
+		//this.biomesForGeneration = getBiomeProvider().getBiomesInArea(biomesForGeneration, x * 16, z * 16, 16, 16);
 
 		ChunkPrimer primer = new DirectChunkPrimer();
-        //initPrimer(primer, data); TODO : Should be do SurfaceBuilder
+		//initPrimer(primer, data); TODO : Should be do SurfaceBuilder
 
 		deformTerrainForFeature(x, z, primer);
-        //replaceBiomeBlocks(x, z, primer, biomesForGeneration);
+		//replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
 //		generateFeatures(x, z, primer); TODO: Should move to biome decorator
 //		if (generateHollowTrees) { TODO: Should be done via biome decorator
@@ -114,7 +114,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 ////		BlockFalling.fallInstantly = false;
 //	}
 
-    //TODO : Should be move to biome decorator
+	//TODO : Should be move to biome decorator
 	/*@Override
 	protected void deformTerrainForTrollCaves(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 

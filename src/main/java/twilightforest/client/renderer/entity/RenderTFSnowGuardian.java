@@ -3,7 +3,6 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
-import net.minecraft.client.renderer.entity.model.ZombieModel;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.model.entity.ModelTFSnowGuardian;
 import twilightforest.entity.EntityTFSnowGuardian;
@@ -12,7 +11,7 @@ public class RenderTFSnowGuardian<T extends EntityTFSnowGuardian, M extends Mode
 
 	public RenderTFSnowGuardian(EntityRendererManager manager, M model) {
 		super(manager, model, 0.25F, "textures/entity/zombie/zombie.png");
-        this.addLayer(new BipedArmorLayer<>(this, new ModelTFSnowGuardian<>(), new ModelTFSnowGuardian<>()));
+		this.addLayer(new BipedArmorLayer<>(this, new ModelTFSnowGuardian<>(), new ModelTFSnowGuardian<>()));
 	}
 
 	@Override

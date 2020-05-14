@@ -111,8 +111,8 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 
 
 	@Override
-    protected Iterable<ModelRenderer> getBodyParts() {
-        return ImmutableList.of(this.bipedBody, this.bipedRightLeg, this.bipedLeftLeg);
+	protected Iterable<ModelRenderer> getBodyParts() {
+		return ImmutableList.of(this.bipedBody, this.bipedRightLeg, this.bipedLeftLeg);
 	}
 
 	/**

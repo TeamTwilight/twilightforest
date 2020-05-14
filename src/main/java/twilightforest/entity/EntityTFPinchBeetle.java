@@ -1,7 +1,11 @@
 package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Pose;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -130,13 +134,13 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 		return LOOT_TABLE;
 	}
 
-    @Override
-    public EntitySize getSize(Pose p_213305_1_) {
+	@Override
+	public EntitySize getSize(Pose p_213305_1_) {
 
-        if (!this.getPassengers().isEmpty()) {
-            return EntitySize.flexible(1.9F, 2.0F);
-        } else {
-            return super.getSize(p_213305_1_);
-        }
-    }
+		if (!this.getPassengers().isEmpty()) {
+			return EntitySize.flexible(1.9F, 2.0F);
+		} else {
+			return super.getSize(p_213305_1_);
+		}
+	}
 }

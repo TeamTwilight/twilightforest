@@ -70,7 +70,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		this.goalSelector.addGoal(1, new EntityAITFYetiTired(this, 100));
 		this.goalSelector.addGoal(2, new EntityAIStayNearHome(this, 2.0F));
 		this.goalSelector.addGoal(3, new EntityAITFYetiRampage(this, 10, 180));
-		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.0D, 40, 40, 40.0F){
+		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.0D, 40, 40, 40.0F) {
 			@Override
 			public boolean shouldExecute() {
 				return getRNG().nextInt(50) > 0 && getAttackTarget() != null && getDistanceSq(getAttackTarget()) >= 16D && super.shouldExecute(); // Give us a chance to move to the next AI
@@ -331,7 +331,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-            if (detachHome()) {
+			if (detachHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
 			}
 			remove();
@@ -370,13 +370,13 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		}
 
 		//TODO: Return value?
-        return super.handleFallDamage(distance, multiplier);
+		return super.handleFallDamage(distance, multiplier);
 	}
 
 	private void hitNearbyEntities() {
 		for (LivingEntity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(5, 0, 5))) {
 			if (entity != this && entity.attackEntityFrom(DamageSource.causeMobDamage(this), 5F)) {
-                entity.setMotion(entity.getMotion().add(0.0F, 0.4, 0.0F));
+				entity.setMotion(entity.getMotion().add(0.0F, 0.4, 0.0F));
 			}
 		}
 	}
@@ -412,7 +412,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	public void writeAdditional(CompoundNBT compound) {
 		BlockPos home = this.getHomePosition();
 		compound.put("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
-        compound.putBoolean("HasHome", this.detachHome());
+		compound.putBoolean("HasHome", this.detachHome());
 		super.writeAdditional(compound);
 	}
 

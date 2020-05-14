@@ -23,30 +23,30 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 	protected void onImpact(RayTraceResult result) {
 		// TF - don't collide with other fireballs
 		if (result instanceof EntityRayTraceResult) {
-			if (!this.world.isRemote && !(((EntityRayTraceResult)result).getEntity() instanceof DamagingProjectileEntity)) {
-				if (((EntityRayTraceResult)result).getEntity() != null) {
+			if (!this.world.isRemote && !(((EntityRayTraceResult) result).getEntity() instanceof DamagingProjectileEntity)) {
+				if (((EntityRayTraceResult) result).getEntity() != null) {
 					// TF - up damage by 10
-					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16.0F);
-					this.applyEnchantments(this.shootingEntity, ((EntityRayTraceResult)result).getEntity());
+					((EntityRayTraceResult) result).getEntity().attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16.0F);
+					this.applyEnchantments(this.shootingEntity, ((EntityRayTraceResult) result).getEntity());
 				}
 
 				boolean flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
-                this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
+				this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
 				this.remove();
 			}
 		}
 	}
 
-    @Override
-    public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
-        Vec3d vec3d = (new Vec3d(p_70186_1_, p_70186_3_, p_70186_5_)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_, this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_, this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_).scale((double) p_70186_7_);
-        this.setMotion(vec3d);
-        float f = MathHelper.sqrt(horizontalMag(vec3d));
-        this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, p_70186_5_) * (double) (180F / (float) Math.PI));
-        this.rotationPitch = (float) (MathHelper.atan2(vec3d.y, (double) f) * (double) (180F / (float) Math.PI));
-        this.prevRotationYaw = this.rotationYaw;
-        this.prevRotationPitch = this.rotationPitch;
-    }
+	@Override
+	public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
+		Vec3d vec3d = (new Vec3d(p_70186_1_, p_70186_3_, p_70186_5_)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_, this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_, this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_).scale((double) p_70186_7_);
+		this.setMotion(vec3d);
+		float f = MathHelper.sqrt(horizontalMag(vec3d));
+		this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, p_70186_5_) * (double) (180F / (float) Math.PI));
+		this.rotationPitch = (float) (MathHelper.atan2(vec3d.y, (double) f) * (double) (180F / (float) Math.PI));
+		this.prevRotationYaw = this.rotationYaw;
+		this.prevRotationPitch = this.rotationPitch;
+	}
 
 	//TODO: Are these used at all?
 //	@Override

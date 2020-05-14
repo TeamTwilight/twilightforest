@@ -1,8 +1,8 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
@@ -146,7 +146,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 		super.tick();
 		// while we are flying, try to level out somewhat
 		if (!this.isBirdLanded()) {
-            this.setMotion(this.getMotion().mul(1.0F, 0.6000000238418579D, 1.0F));
+			this.setMotion(this.getMotion().mul(1.0F, 0.6000000238418579D, 1.0F));
 		}
 	}
 
@@ -160,7 +160,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 			if (isSpooked() || isInWater() || world.containsAnyLiquid(getBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(getX(), getY() - 1, getZ())))) {
 				this.setIsBirdLanded(false);
 				this.world.playEvent(1025, new BlockPos(this), 0);
-                this.setMotion(this.getMotion().getX(), 0.4F, this.getMotion().getZ());
+				this.setMotion(this.getMotion().getX(), 0.4F, this.getMotion().getZ());
 			}
 		} else {
 			this.currentFlightTime++;
@@ -172,7 +172,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 			if (isInWater() || world.containsAnyLiquid(getBoundingBox())) {
 				currentFlightTime = 0; // reset timer for MAX FLIGHT :v
-                this.setMotion(this.getMotion().getX(), 0.1F, this.getMotion().getZ());
+				this.setMotion(this.getMotion().getX(), 0.1F, this.getMotion().getZ());
 			}
 
 			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq(new Vec3i(((int) this.getX()), ((int) this.getY()), ((int) this.getZ()))) < 4.0D) {
@@ -204,7 +204,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 			{
 				// this.setIsBatHanging(true); TF - land the bird
 				setIsBirdLanded(true);
-                this.setMotion(this.getMotion().getX(), 0.0F, this.getMotion().getZ());
+				this.setMotion(this.getMotion().getX(), 0.0F, this.getMotion().getZ());
 			}
 			// End copy
 		}
@@ -212,17 +212,17 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	public boolean isSpooked() {
 		if (this.hurtTime > 0) return true;
-        PlayerEntity closestPlayer = this.world.getClosestPlayer(this, 4.0D);
+		PlayerEntity closestPlayer = this.world.getClosestPlayer(this, 4.0D);
 		return closestPlayer != null
-                && !SEEDS.test(closestPlayer.getHeldItemMainhand())
-                && !SEEDS.test(closestPlayer.getHeldItemOffhand());
+				&& !SEEDS.test(closestPlayer.getHeldItemMainhand())
+				&& !SEEDS.test(closestPlayer.getHeldItemOffhand());
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		return !block.isAir(state, world, pos)
-                && (block.isIn(BlockTags.LEAVES) || state.isSideSolidFullSquare(world, pos, Direction.UP));
+				&& (block.isIn(BlockTags.LEAVES) || state.isSideSolidFullSquare(world, pos, Direction.UP));
 	}
 
 	@Override
@@ -241,8 +241,10 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	protected void collideWithEntity(Entity entity) {}
+	protected void collideWithEntity(Entity entity) {
+	}
 
 	@Override
-	protected void collideWithNearbyEntities() {}
+	protected void collideWithNearbyEntities() {
+	}
 }

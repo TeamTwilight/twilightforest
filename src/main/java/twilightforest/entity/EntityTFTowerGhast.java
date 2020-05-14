@@ -325,8 +325,6 @@ public class EntityTFTowerGhast extends GhastEntity {
 		return p_205019_1_.intersectsEntities(this) && !p_205019_1_.containsAnyLiquid(this.getBoundingBox());
 	}
 
-
-
 	/**
 	 * Checks to make sure the light is not too bright where the mob is spawning
 	 */

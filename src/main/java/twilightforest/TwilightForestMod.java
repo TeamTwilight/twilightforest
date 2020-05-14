@@ -30,12 +30,7 @@ import twilightforest.command.TFCommand;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
-import twilightforest.item.ItemTFArcticArmor;
-import twilightforest.item.ItemTFFieryArmor;
-import twilightforest.item.ItemTFKnightlyArmor;
-import twilightforest.item.ItemTFPhantomArmor;
-import twilightforest.item.ItemTFYetiArmor;
-import twilightforest.item.TFItems;
+import twilightforest.item.*;
 import twilightforest.item.recipe.TFRecipes;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
@@ -53,13 +48,13 @@ public class TwilightForestMod {
 	// TODO: might be a good idea to find proper spots for all of these? also remove redundants
 	public static final String ID = "twilightforest";
 
-	private static final String MODEL_DIR  = "textures/model/";
-	private static final String GUI_DIR    = "textures/gui/";
+	private static final String MODEL_DIR = "textures/model/";
+	private static final String GUI_DIR = "textures/gui/";
 	private static final String ENVIRO_DIR = "textures/environment/";
 	// odd one out, as armor textures are a stringy mess at present
-	public static final String ARMOR_DIR  = ID + ":textures/armor/";
+	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
-    public static final GameRules.RuleKey<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.BooleanValue.create(true));
+	public static final GameRules.RuleKey<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.BooleanValue.create(true));
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
