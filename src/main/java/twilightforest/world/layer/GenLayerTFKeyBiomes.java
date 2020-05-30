@@ -89,33 +89,33 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 			// determine which of the 4
 			if (((dx + x) & 4) == 0) {
 				if (((dz + z) & 4) == 0) {
-					return getKeyBiomeFor(dx + x, dz + z, 0);
+					return getKeyBiomeFor(random, dx + x, dz + z, 0);
 				} else {
-					return getKeyBiomeFor(dx + x, dz + z, 1);
+					return getKeyBiomeFor(random, dx + x, dz + z, 1);
 				}
 			} else {
 				if (((dz + z) & 4) == 0) {
-					return getKeyBiomeFor(dx + x, dz + z, 2);
+					return getKeyBiomeFor(random, dx + x, dz + z, 2);
 				} else {
-					return getKeyBiomeFor(dx + x, dz + z, 3);
+					return getKeyBiomeFor(random, dx + x, dz + z, 3);
 				}
 			}
 
 		} else {
-			return src[dx + dz * width];
+			return dx + dz * z;
 		}
 	}
 
 	/**
 	 * Determine which map "region" the specified points are in.  Assign the 0-3 of the index to the key biomes based on that region.
 	 */
-	private int getKeyBiomeFor(int mapX, int mapZ, int index) {
+	private int getKeyBiomeFor(IExtendedNoiseRandom<?> random, int mapX, int mapZ, int index) {
 
 		int regionX = (mapX + 4) >> 3;
 		int regionZ = (mapZ + 4) >> 3;
 
-		this.initChunkSeed(regionX, regionZ);
-		int offset = this.nextInt(4);
+		//this.initChunkSeed(regionX, regionZ);
+		int offset = random.random(4);
 
 		// do we need to shuffle this better?
 		// the current version just "rotates" the 4 key biomes

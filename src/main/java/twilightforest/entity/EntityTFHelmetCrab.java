@@ -9,16 +9,12 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 
 public class EntityTFHelmetCrab extends MonsterEntity {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/helmet_crab");
 
 	public EntityTFHelmetCrab(EntityType<? extends EntityTFHelmetCrab> type, World world) {
 		super(type, world);
@@ -63,11 +59,6 @@ public class EntityTFHelmetCrab extends MonsterEntity {
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
 		this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

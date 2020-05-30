@@ -24,12 +24,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemTFArcticArmor extends ItemTFArmor implements IDyeableArmorItem {
+public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 
 	private static final Map<EquipmentSlotType, BipedModel> arcticArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
-	public ItemTFArcticArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
-		super(armorMaterial, armorType, rarity, props);
+	public ItemTFArcticArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
+		super(armorMaterial, armorType, props);
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
@@ -20,7 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMinotaur;
@@ -30,7 +28,6 @@ import twilightforest.item.TFItems;
 import twilightforest.world.TFWorld;
 
 public class EntityTFMinoshroom extends EntityTFMinotaur {
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minoshroom");
 	private static final DataParameter<Boolean> GROUND_ATTACK = EntityDataManager.createKey(EntityTFMinoshroom.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> GROUND_CHARGE = EntityDataManager.createKey(EntityTFMinoshroom.class, DataSerializers.VARINT);
 	private float prevClientSideChargeAnimation;
@@ -120,12 +117,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	}
 
 	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
-	}
-
-	@Override
-	public boolean canDespawn(double p_213397_1_) {
+	public boolean canDespawn(double distance) {
 		return false;
 	}
 

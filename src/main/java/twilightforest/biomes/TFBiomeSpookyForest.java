@@ -9,12 +9,11 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 
 	public TFBiomeSpookyForest(Builder props) {
 		super(props);
+	}
 
-		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.BAT, 20, 8, 8));
-
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SPIDER, 50, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SKELETON, 20, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid.get(), 5, 1, 1));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -36,6 +35,17 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 		TFBiomeDecorator.addLamppost(this, Blocks.JACK_O_LANTERN.getDefaultState(), 2);
 		TFBiomeDecorator.addFallenLeaves(this);
 		TFBiomeDecorator.addGraveyards(this);
+	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.BAT, 20, 8, 8));
+
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SPIDER, 50, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SKELETON, 20, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid.get(), 5, 1, 1));
 	}
 
 	@Override

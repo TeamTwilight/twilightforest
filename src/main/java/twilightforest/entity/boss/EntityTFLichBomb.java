@@ -9,6 +9,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import twilightforest.entity.projectile.EntityTFThrowable;
 
@@ -72,7 +73,7 @@ public class EntityTFLichBomb extends EntityTFThrowable implements IRendersAsIte
 
 	private void explode() {
 		if (!this.world.isRemote) {
-			this.world.newExplosion(this, this.getX(), this.getY(), this.getZ(), 2F, false, false);
+			this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), 2F, false, Explosion.Mode.NONE);
 			this.remove();
 		}
 	}

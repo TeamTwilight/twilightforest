@@ -13,14 +13,12 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 import twilightforest.item.TFItems;
@@ -29,7 +27,6 @@ import javax.annotation.Nullable;
 
 public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minotaur");
 	private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityTFMinotaur.class, DataSerializers.BOOLEAN);
 
 	public EntityTFMinotaur(EntityType<? extends EntityTFMinotaur> type, World world) {
@@ -138,11 +135,6 @@ public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 	@Override
 	protected float getSoundPitch() {
 		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 0.7F;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 }

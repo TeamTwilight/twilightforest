@@ -11,12 +11,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
@@ -28,7 +26,6 @@ public class TFConfig {
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.
-					translation(config + "dimension").
 					comment("Settings that are not reversible without consequences.").
 					push("Dimension Settings");
 			{
@@ -52,9 +49,7 @@ public class TFConfig {
 						comment("If true, giant Twilight Oaks will also spawn in void worlds").
 						define("skylightOaks", true);
 				builder.
-						translation(config + "world_gen_weights").
 						comment("Weights for various small features").
-						worldRestart().
 						push("World-Gen Weights");
 				{
 					DIMENSION.worldGenWeights.stoneCircleWeight = builder.
@@ -99,7 +94,6 @@ public class TFConfig {
 							defineInRange("druidHutWeight", 10, 0, Integer.MAX_VALUE);
 				}
 				builder.pop().
-						translation(config + "hollow_hill_stalactites").
 						comment("Defines custom stalactites generated in hollow hills." +
 
 								"\nFormat is \"modid:block size maxLength minHeight weight\", where the properties are:" +
@@ -113,24 +107,23 @@ public class TFConfig {
 								"\nWeight - how often it generates." +
 
 								"\n\nFor example: \"minecraft:iron_ore 0.7 8 1 24\" would add a stalactite equal to the default iron ore stalactite.").
-						worldRestart().
 						push("Custom Hollow Hill Stalactites");
 				{
 					DIMENSION.hollowHillStalactites.largeHill = builder.
 							translation(config + "large_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in large hills only").
-							define("largeHill", new String[0]);
+							define("largeHill", Collections.emptyList());
 					DIMENSION.hollowHillStalactites.mediumHill = builder.
 							translation(config + "medium_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in medium and large hills").
-							define("mediumHill", new String[0]);
+							define("mediumHill", Collections.emptyList());
 					DIMENSION.hollowHillStalactites.smallHill = builder.
 							translation(config + "small_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in all hills").
-							define("mediumHill", new String[0]);
+							define("mediumHill", Collections.emptyList());
 					DIMENSION.hollowHillStalactites.useConfigOnly = builder.
 							translation(config + "stalactite_config_only").
 							worldRestart().
@@ -142,11 +135,9 @@ public class TFConfig {
 			builder.pop();
 			doCompat = builder.
 					worldRestart().
-					translation(config + "compat").
 					comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.").
 					define("doCompat", true);
 			builder.
-					translation(config + "performance").
 					comment("Lets you sacrifice various things to improve world performance.").
 					push("Performance Tweaks");
 			{
@@ -194,7 +185,7 @@ public class TFConfig {
 			portalCreationItems = builder.
 					translation(config + "portal_creator").
 					comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
-					define("portalCreationItems", new String[]{"minecraft:diamond"});
+					define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
 			checkPortalDestination = builder.
 					translation(config + "check_portal_destination").
 					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
@@ -219,7 +210,6 @@ public class TFConfig {
 					comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
 					define("disableUncrafting", false);
 			builder.
-					translation(config + "shield_parry").
 					comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
 					push("Shield Parrying");
 			{
@@ -276,9 +266,9 @@ public class TFConfig {
 
 			public class HollowHillStalactites {
 
-				public ForgeConfigSpec.ConfigValue<String[]> largeHill;
-				public ForgeConfigSpec.ConfigValue<String[]> mediumHill;
-				public ForgeConfigSpec.ConfigValue<String[]> smallHill;
+				public ForgeConfigSpec.ConfigValue<List<? extends String>> largeHill;
+				public ForgeConfigSpec.ConfigValue<List<? extends String>> mediumHill;
+				public ForgeConfigSpec.ConfigValue<List<? extends String>> smallHill;
 				public ForgeConfigSpec.BooleanValue useConfigOnly;
 
 				public void load() {
@@ -287,7 +277,7 @@ public class TFConfig {
 					registerHill(largeHill.get(), 3);
 				}
 
-				private void registerHill(String[] definitions, int tier) {
+				private void registerHill(List<? extends String> definitions, int tier) {
 					for (String definition : definitions) {
 						if (!parseStalactite(definition, tier)) {
 							TwilightForestMod.LOGGER.warn("Invalid hollow hill stalactite definition: {}", definition);
@@ -336,7 +326,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
 		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
 		public ForgeConfigSpec.BooleanValue disablePortalCreation;
-		public ForgeConfigSpec.ConfigValue<String[]> portalCreationItems;
+		public ForgeConfigSpec.ConfigValue<List<? extends String>> portalCreationItems;
 		public ForgeConfigSpec.BooleanValue checkPortalDestination;
 		public ForgeConfigSpec.BooleanValue portalLightning;
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
@@ -372,7 +362,6 @@ public class TFConfig {
 					comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.").
 					define("rotateTrophyHeadsGui", true);
 			builder.
-					translation(config + "loading_screen").
 					comment("Client only: Controls for the Loading screen").
 					push("Loading Screen");
 			{
@@ -407,7 +396,7 @@ public class TFConfig {
 				LOADING_SCREEN.loadingIconStacks = builder.
 						translation(config + "loading_icon_stacks").
 						comment("List of items to be used for the wobbling Loading Icon. (domain:item).").
-						define("loadingIconStacks", new String[]{
+						defineList("loadingIconStacks", Arrays.asList(
 								"twilightforest:experiment_115",
 								"twilightforest:magic_map",
 								"twilightforest:charm_of_life_2",
@@ -432,7 +421,7 @@ public class TFConfig {
 								"twilightforest:twilight_sapling:8",
 								"twilightforest:twilight_sapling:9",
 								"twilightforest:borer_essence"
-						});
+						), s -> s instanceof String && ResourceLocation.tryCreate((String) s) != null);
 			}
 			builder.pop();
 		}
@@ -452,7 +441,7 @@ public class TFConfig {
 			public ForgeConfigSpec.DoubleValue scaleDeviation;
 			public ForgeConfigSpec.DoubleValue tiltRange;
 			public ForgeConfigSpec.DoubleValue tiltConstant;
-			public ForgeConfigSpec.ConfigValue<String[]> loadingIconStacks;
+			public ForgeConfigSpec.ConfigValue<List<? extends String>> loadingIconStacks;
 
 			private ImmutableList<ItemStack> loadingScreenIcons;
 
@@ -480,11 +469,11 @@ public class TFConfig {
 	@SubscribeEvent
 	public static void onConfigChanged(ModConfig.Reloading event) {
 		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
-			TwilightForestMod.checkOriginDimension();
-			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
-			if (!event.isWorldRunning()) {
-				WorldProviderTwilightForest.syncFromConfig();
-			}
+			TFDimensions.checkOriginDimension();
+//			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
+//			if (!event.isWorldRunning()) {
+//				WorldProviderTwilightForest.syncFromConfig();
+//			}
 			build();
 		}
 	}

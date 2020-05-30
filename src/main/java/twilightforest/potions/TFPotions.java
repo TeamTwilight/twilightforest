@@ -11,5 +11,5 @@ public class TFPotions {
 
 	public static final DeferredRegister<Effect> POTIONS = new DeferredRegister<>(ForgeRegistries.POTIONS, TwilightForestMod.ID);
 
-	public static final RegistryObject<Effect> frosty = POTIONS.register("frosted", () -> new PotionFrosted(EffectType.HARMFUL, 0x56CBFD));
+	public static final RegistryObject<Effect> frosty = POTIONS.register("frosted",() -> new PotionFrosted(EffectType.HARMFUL, 0x56CBFD));
 }

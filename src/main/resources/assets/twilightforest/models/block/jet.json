@@ -1,9 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "top": "twilightforest:blocks/firejet_top",
-    "side": "twilightforest:blocks/firejet_side",
-    "bottom": "blocks/grass_top"
+    "top": "twilightforest:block/firejet_top",
+    "side": "twilightforest:block/firejet_side",
+    "bottom": "block/grass_top"
   },
   "elements": [
     {

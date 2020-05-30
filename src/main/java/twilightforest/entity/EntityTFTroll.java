@@ -16,19 +16,16 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.util.WorldUtil;
 
 public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/troll");
 	private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, AttributeModifier.Operation.ADDITION).setSaved(false);
 
@@ -161,11 +158,6 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 				world.playEvent(2001, pos, Block.getStateId(TFBlocks.trollsteinn.get().getDefaultState()));
 			}
 		}
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

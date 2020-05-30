@@ -31,7 +31,7 @@ public class ParticleSnowWarning extends ParticleSnow {
 
 		@Override
 		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			ParticleAnnihilate particle = new ParticleAnnihilate(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+			ParticleSnowWarning particle = new ParticleSnowWarning(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 1);
 			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;
 		}

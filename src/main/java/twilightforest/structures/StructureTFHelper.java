@@ -37,9 +37,18 @@ public class StructureTFHelper {
         else return randomMushroom(i-4);
     }
 
-    //TODO: Flatten
     public static BlockState randomSapling(int i) {
-        return Blocks.SAPLING.getDefaultState().with(BlockSapling.TYPE, BlockPlanks.EnumType.values()[i]);
+        switch (i) {
+			case 0:
+			default:
+				return Blocks.OAK_SAPLING.getDefaultState();
+			case 1:
+				return Blocks.SPRUCE_SAPLING.getDefaultState();
+			case 2:
+				return Blocks.BIRCH_SAPLING.getDefaultState();
+			case 3:
+				return Blocks.JUNGLE_SAPLING.getDefaultState();
+        }
     }
 
     public static BlockState randomMushroom(int i) {

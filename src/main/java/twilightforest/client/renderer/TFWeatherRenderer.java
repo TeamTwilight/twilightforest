@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -14,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeDarkForest;
@@ -120,7 +121,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
 					if (biome.getPrecipitation() != Biome.RainType.NONE) {
-						int j2 = world.getPrecipitationHeight(blockpos$mutableblockpos).getY();
+						int j2 = world.getHeight(Heightmap.Type.MOTION_BLOCKING, blockpos$mutableblockpos).getY();
 						int k2 = j - i1;
 						int l2 = j + i1;
 
@@ -141,9 +142,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 						if (k2 != l2) {
 							this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
 							blockpos$mutableblockpos.setPos(l1, k2, k1);
-							float f2 = biome.getTemperature(blockpos$mutableblockpos);
+							float f2 = biome.getTemperatureCached(blockpos$mutableblockpos);
 
-							if (((ServerWorld)world).getChunkProvider().getChunkGenerator().getBiomeProvider().getTemperatureAtHeight(f2, j2) >= 0.15F) {
+							if (f2 >= 0.15F) {
 								if (j1 != 0) {
 									if (j1 >= 0) {
 										tessellator.draw();
@@ -160,7 +161,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 								float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
 								float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
-								int j3 = world.getCombinedLight(blockpos$mutableblockpos, 0);
+								int j3 = WorldRenderer.getLightmapCoordinates(world, blockpos$mutableblockpos);
 								int k3 = j3 >> 16 & 65535;
 								int l3 = j3 & 65535;
 								bufferbuilder.vertex((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).texture(0.0F, (float) k2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).light(k3, l3).endVertex();
@@ -186,7 +187,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 								float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) i1;
 								float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
-								int i4 = (world.getCombinedLight(blockpos$mutableblockpos, 0) * 3 + 15728880) / 4;
+								int i4 = (WorldRenderer.getLightmapCoordinates(world, blockpos$mutableblockpos) * 3 + 15728880) / 4;
 								int j4 = i4 >> 16 & 65535;
 								int k4 = i4 & 65535;
 								bufferbuilder.vertex((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).texture(0.0F + d9, (float) k2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).light(j4, k4).endVertex();
@@ -310,7 +311,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 									float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) range;
 									float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * 1.0F;
 									blockpos$mutableblockpos.setPos(x, y, z);
-									int j3 = world.getCombinedLight(blockpos$mutableblockpos, 0);
+									int j3 = WorldRenderer.getLightmapCoordinates(world, blockpos$mutableblockpos);
 									int k3 = j3 >> 16 & 65535;
 									int l3 = j3 & 65535;
 									bufferbuilder.vertex((double) x - rx + 0.5D, (double) maxY, (double) z - ry + 0.5D).texture(0.0F, (float) minY * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).light(k3, l3).endVertex();
@@ -377,7 +378,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 									float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) range;
 									float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * 1.0F;
 									blockpos$mutableblockpos.setPos(x, y, z);
-									int j3 = world.getCombinedLight(blockpos$mutableblockpos, 0);
+									int j3 = WorldRenderer.getLightmapCoordinates(world, blockpos$mutableblockpos);
 									int k3 = j3 >> 16 & 65535;
 									int l3 = j3 & 65535;
 									bufferbuilder.vertex((double) x - rx + 0.5D, (double) maxY, (double) z - ry + 0.5D).texture(0.0F, (float) minY * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).light(k3, l3).endVertex();
@@ -503,7 +504,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 				tessellator.draw();
 			}
 
-			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
+//			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
 			RenderSystem.alphaFunc(516, 0.1F);

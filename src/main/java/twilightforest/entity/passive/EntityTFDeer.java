@@ -11,12 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
 /**
@@ -27,8 +25,6 @@ import twilightforest.entity.TFEntities;
  * @author Ben
  */
 public class EntityTFDeer extends CowEntity {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/deer");
 
 	public EntityTFDeer(EntityType<? extends EntityTFDeer> type, World world) {
 		super(type, world);
@@ -78,12 +74,6 @@ public class EntityTFDeer extends CowEntity {
 		} else {
 			return super.processInteract(entityplayer, hand);
 		}
-	}
-
-	//TODO: Move to loot table
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

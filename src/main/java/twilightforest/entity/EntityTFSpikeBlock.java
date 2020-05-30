@@ -1,7 +1,10 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.Pose;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -10,8 +13,12 @@ public class EntityTFSpikeBlock extends Entity {
 	private EntityTFBlockGoblin goblin;
 
 	public EntityTFSpikeBlock(World world) {
-		super(world);
-		setSize(0.75F, 0.75F);
+		super(TFEntities.blockchain_goblin.get(), world);
+	}
+
+	@Override
+	public EntitySize getSize(Pose pos) {
+		return EntitySize.flexible(0.75F, 0.75F);
 	}
 
 	public EntityTFSpikeBlock(EntityTFBlockGoblin goblin) {
@@ -57,6 +64,11 @@ public class EntityTFSpikeBlock extends Entity {
 	@Override
 	public boolean isEntityEqual(Entity entity) {
 		return this == entity || this.goblin == entity;
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

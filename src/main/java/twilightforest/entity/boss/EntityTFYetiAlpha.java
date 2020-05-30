@@ -18,7 +18,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -33,7 +32,6 @@ import net.minecraft.world.server.ServerBossInfo;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
@@ -52,7 +50,6 @@ import javax.annotation.Nullable;
 
 public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob, IHostileMount {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/yeti_alpha");
 	private static final DataParameter<Byte> RAMPAGE_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> TIRED_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
 	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
@@ -210,11 +207,6 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	}
 
 	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
-	}
-
-	@Override
 	public void updatePassenger(Entity passenger) {
 		Vec3d riderPos = this.getRiderPosition();
 		passenger.setPosition(riderPos.x, riderPos.y, riderPos.z);
@@ -302,7 +294,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState());
 		world.playEvent(2001, pos, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
 
-		EntityTFFallingIce ice = new EntityTFFallingIce(TFEntities.falling_ice.get(), world, pos.getX(), pos.getY() - 3, pos.getZ());
+		EntityTFFallingIce ice = new EntityTFFallingIce(world, pos.getX(), pos.getY() - 3, pos.getZ());
 		world.addEntity(ice);
 	}
 
@@ -331,7 +323,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (detachHome()) {
+			if (!detachHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
 			}
 			remove();

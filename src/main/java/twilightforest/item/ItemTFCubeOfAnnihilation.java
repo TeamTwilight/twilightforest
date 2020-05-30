@@ -3,10 +3,7 @@ package twilightforest.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.UseAction;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -22,12 +19,12 @@ import twilightforest.entity.TFEntities;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class ItemTFCubeOfAnnihilation extends ItemTF {
+public class ItemTFCubeOfAnnihilation extends Item {
 
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 
-	protected ItemTFCubeOfAnnihilation(Rarity rarity, Properties props) {
-		super(rarity, props.maxStackSize(1));
+	protected ItemTFCubeOfAnnihilation(Properties props) {
+		super(props);
 		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
 			@OnlyIn(Dist.CLIENT)
 			@Override

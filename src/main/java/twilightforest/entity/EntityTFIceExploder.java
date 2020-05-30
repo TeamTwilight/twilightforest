@@ -11,20 +11,17 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.ColorUtil;
 
 public class EntityTFIceExploder extends EntityTFIceMob {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_exploder");
 	private static final float EXPLOSION_RADIUS = 1;
 
 	public EntityTFIceExploder(EntityType<? extends EntityTFIceExploder> type, World world) {
@@ -47,11 +44,6 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 		super.registerAttributes();
 		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
 		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override
@@ -119,37 +111,32 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		// check if we should even explode this
-		// TODO: This requires an actual explosion instead of NULL
-		if (block.getExplosionResistance(state, world, pos, this, null) < 8F && state.getBlockHardness(world, pos) >= 0) {
+		if (block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0) {
 			// todo improve for blocks where state is known? or perhaps if a propertycolor is present
 			int blockColor = state.getMaterialColor(world, pos).colorValue;
 
 			// do appropriate transformation
-			//TODO: 1.13 squished all this. Find out best method of approach
-			// TODO: Best hting to do is to create a map of the result from getClosestDyeColor with stained glass and terracotta
-			// TODO: and then just replace against those
 			if (this.shouldTransformGlass(state, pos)) {
-				this.world.setBlockState(pos, Blocks.STAINED_GLASS.getDefaultState().with(BlockStainedGlass.COLOR, getClosestDyeColor(blockColor)));
+				this.world.setBlockState(pos, ColorUtil.STAINED_GLASS.getColor(getClosestDyeColor(blockColor)));
 			} else if (this.shouldTransformClay(state, pos)) {
-				this.world.setBlockState(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState().with(BlockColored.COLOR, getClosestDyeColor(blockColor)));
+				this.world.setBlockState(pos, ColorUtil.TERRACOTTA.getColor(getClosestDyeColor(blockColor)));
 			}
 		}
 	}
 
 	private boolean shouldTransformClay(BlockState state, BlockPos pos) {
-		return state.getBlock().isNormalCube(state, this.world, pos);
+		return state.isNormalCube(this.world, pos);
 	}
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
-		return state.getBlock() != Blocks.AIR && this.isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getMaterial() == Material.LEAVES || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.aurora_block.get());
+		return state.getBlock() != Blocks.AIR && isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getMaterial() == Material.LEAVES || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.aurora_block.get());
 	}
 
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {
-		return VoxelShapes.fullCube().equals(state.getShape(world, pos));
+		return Block.isOpaque(state.getShape(world, pos));
 	}
 
-	private DyeColor getClosestDyeColor(int blockColor) {
+	private static DyeColor getClosestDyeColor(int blockColor) {
 		int red = (blockColor >> 16) & 255;
 		int green = (blockColor >> 8) & 255;
 		int blue = blockColor & 255;

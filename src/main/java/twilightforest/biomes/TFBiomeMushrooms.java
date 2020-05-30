@@ -4,6 +4,11 @@ public class TFBiomeMushrooms extends TFBiomeBase {
 
 	public TFBiomeMushrooms(Builder props) {
 		super(props);
+	}
+
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);

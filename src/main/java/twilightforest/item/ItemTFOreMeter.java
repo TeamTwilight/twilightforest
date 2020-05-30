@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -19,7 +20,7 @@ import javax.annotation.Nonnull;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-public class ItemTFOreMeter extends ItemTF {
+public class ItemTFOreMeter extends Item {
 
 	protected ItemTFOreMeter(Properties props) {
 		super(props);

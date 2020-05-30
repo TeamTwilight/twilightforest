@@ -12,6 +12,11 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	public TFBiomeEnchantedForest(Builder props) {
 		super(props);
 		colorRNG = new Random();
+	}
+
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -31,13 +36,14 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
-		return (super.getGrassColorAt(p_225528_1_, p_225528_3_) & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
+	public int getGrassColorAt(double x, double z) {
+		return (super.getGrassColorAt(x, z) & 0xFFFF00) + getEnchantedColor((int) x, (int) z); //TODO
 	}
 
 	@Override
 	public int getFoliageColor() {
-		return (super.getFoliageColor() & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
+		//return (super.getFoliageColor() & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
+		return 0xFFFF00; //FIXME: Placeholder
 	}
 
 	/**
@@ -68,17 +74,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	}
 
 //	@Override
-//	public void addDefaultFlowers() {
-//		for (BlockFlower.EnumFlowerType flowerType : Blocks.YELLOW_FLOWER.getTypeProperty().getAllowedValues()) {
-//			addFlower(Blocks.YELLOW_FLOWER.getDefaultState().with(Blocks.YELLOW_FLOWER.getTypeProperty(), flowerType), 10);
-//		}
-//		for (BlockFlower.EnumFlowerType flowerType : Blocks.RED_FLOWER.getTypeProperty().getAllowedValues()) {
-//			addFlower(Blocks.RED_FLOWER.getDefaultState().with(Blocks.RED_FLOWER.getTypeProperty(), flowerType), 10);
-//		}
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.QUEST_GROVE;
 //	}
-
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.QUEST_GROVE;
-	}
 }

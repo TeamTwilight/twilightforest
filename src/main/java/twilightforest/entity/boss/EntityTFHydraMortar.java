@@ -120,7 +120,8 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
 		boolean flag = ForgeEventFactory.getMobGriefingEvent(world, this);
-		this.world.newExplosion(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, flag);
+		Explosion.Mode flag1 = flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE;
+		this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, flag1);
 
 		DamageSource src = new IndirectEntityDamageSource("onFire", this, getThrower()).setFireDamage().setProjectile();
 

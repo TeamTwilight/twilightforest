@@ -1,9 +1,6 @@
 package twilightforest.tileentity;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.SkullTileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class TileEntityTFTrophy extends SkullTileEntity {
 
@@ -15,8 +12,8 @@ public class TileEntityTFTrophy extends SkullTileEntity {
 		this.ticksExisted++;
 	}
 
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState) {
-		return oldState.getBlock() != newState.getBlock();
-	}
+//	@Override
+//	public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState) {
+//		return oldState.getBlock() != newState.getBlock();
+//	}
 }

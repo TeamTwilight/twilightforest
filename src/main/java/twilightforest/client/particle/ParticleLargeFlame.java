@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ParticleLargeFlame extends SpriteTexturedParticle {
 
-	private float flameScale;
+	private final float flameScale;
 
 	public ParticleLargeFlame(World world, double x, double y, double z, double vx, double vy, double vz) {
 		super(world, x, y, z, vx, vy, vz);
@@ -22,8 +22,7 @@ public class ParticleLargeFlame extends SpriteTexturedParticle {
 		this.flameScale = this.particleScale;
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
 		this.maxAge = (int) (8.0D / (Math.random() * 0.8D + 0.2D)) + 4;
-		//this.noClip = true;
-		//this.setParticleTextureIndex(48); TODO: basically copy the flame particle json?
+		this.canCollide = false;
 	}
 
 	@Override
@@ -32,20 +31,10 @@ public class ParticleLargeFlame extends SpriteTexturedParticle {
 	}
 
 	@Override
-	public void buildGeometry(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
-		float var8 = ((float) this.age + partialTicks) / (float) this.maxAge;
-		this.particleScale = this.flameScale * (1.0F - var8 * var8 * 0.5F);
-		super.buildGeometry(buffer, entity, partialTicks);
+	public float getScale(float partialTicks) {
+		float relativeAge = ((float) this.age + partialTicks) / (float) this.maxAge;
+		return this.flameScale * (1.0F - relativeAge * relativeAge * 0.5F);
 	}
-
-//	@Override
-//	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
-//							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-//
-//		float var8 = ((float) this.age + partialTicks) / (float) this.maxAge;
-//		this.particleScale = this.flameScale * (1.0F - var8 * var8 * 0.5F);
-//		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
-//	}
 
 	@Override
 	public int getBrightnessForRender(float partialTicks) {

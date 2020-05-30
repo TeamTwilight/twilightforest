@@ -14,8 +14,6 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class TFBiomeDarkForest extends TFBiomeBase {
@@ -26,15 +24,11 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 
 	public TFBiomeDarkForest(Builder props) {
 		super(props);
+	}
 
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ENDERMAN, 1, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 5, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SKELETON, 5, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mist_wolf.get(), 10, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid.get(), 10, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.king_spider.get(), 10, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.kobold.get(), 10, 4, 8));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.WITCH, 1, 1, 1));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addOres(this);
 		TFBiomeDecorator.addClayDisks(this, 1);
@@ -53,6 +47,20 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	}
 
 	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ENDERMAN, 1, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 5, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SKELETON, 5, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mist_wolf.get(), 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid.get(), 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.king_spider.get(), 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.kobold.get(), 10, 4, 8));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.WITCH, 1, 1, 1));
+	}
+
+	@Override
 	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
 		double temperature = (double) MathHelper.clamp(this.getDefaultTemperature(), 0.0F, 1.0F);
 		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
@@ -66,14 +74,15 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		return ((FoliageColors.get(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
 	}
 
-	@Override
-	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
-		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (creatureType == EntityClassification.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
-		}
-		return super.getSpawns(creatureType);
-	}
+	//TODO: Figure this out
+//	@Override
+//	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
+//		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+//		if (creatureType == EntityClassification.MONSTER) {
+//			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
+//		}
+//		return super.getSpawns(creatureType);
+//	}
 
 	@Override
 	public boolean isHighHumidity() {
@@ -93,8 +102,8 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.KNIGHT_STRONGHOLD;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.KNIGHT_STRONGHOLD;
+//	}
 }

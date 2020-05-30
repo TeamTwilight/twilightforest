@@ -1,8 +1,8 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "twilightforest:blocks/knightmetal_block",
-    "all":      "twilightforest:blocks/knightmetal_block"
+    "particle": "twilightforest:block/knightmetal_block",
+    "all":      "twilightforest:block/knightmetal_block"
   },
   "elements": [
     {

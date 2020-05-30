@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemTFKnightlyPick extends PickaxeItem {
 
 	protected ItemTFKnightlyPick(IItemTier material, Properties props) {
-		super(material, 1, -2.8F, props.group(TFItems.creativeTab));
+		super(material, 1, -2.8F, props);
 	}
 
 	@Override

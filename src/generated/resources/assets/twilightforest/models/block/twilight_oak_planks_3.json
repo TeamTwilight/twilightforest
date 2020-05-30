@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "twilightforest:block/wood/planks_twilight_oak_3"
+  }
+}

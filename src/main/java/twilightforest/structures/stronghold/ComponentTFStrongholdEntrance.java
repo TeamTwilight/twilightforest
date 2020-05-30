@@ -24,8 +24,8 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		super(TFStrongholdPieces.TFSEnter, nbt);
 	}
 
-	//TODO: Parameters "world" and "rand" are unused. Remove?
-	public ComponentTFStrongholdEntrance(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+	//TODO: Parameter "rand" is unused. Remove?
+	public ComponentTFStrongholdEntrance(TFFeature feature, Random rand, int i, int x, int y, int z) {
 		super(TFStrongholdPieces.TFSEnter, feature, i, Direction.SOUTH, x, y - 10, z);
 
 		this.deco = new StructureTFDecoratorStronghold();

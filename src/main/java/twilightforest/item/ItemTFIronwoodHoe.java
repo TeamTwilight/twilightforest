@@ -6,6 +6,6 @@ import net.minecraft.item.HoeItem;
 public class ItemTFIronwoodHoe extends HoeItem {
 
 	public ItemTFIronwoodHoe(IItemTier material, Properties props) {
-		super(material, material.getAttackDamage() + 1.0F, props.group(TFItems.creativeTab));
+		super(material, material.getAttackDamage() + 1.0F, props);
 	}
 }

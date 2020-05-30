@@ -1,4 +1,5 @@
 {
+  "type": "entity",
   "pools": [
     {
       "name": "diamond",
@@ -48,10 +49,7 @@
       "entries": [
         {
           "type": "item",
-          "name": "twilightforest:trophy",
-          "functions": [
-            { "function": "set_data", "data": 8 }
-          ]
+          "name": "twilightforest:quest_ram_trophy"
         }
       ]
     }, {

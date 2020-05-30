@@ -6,6 +6,11 @@ public class TFBiomeDeepMushrooms extends TFBiomeBase {
 
 	public TFBiomeDeepMushrooms(Builder props) {
 		super(props);
+	}
+
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -24,8 +29,8 @@ public class TFBiomeDeepMushrooms extends TFBiomeBase {
 		TFBiomeDecorator.addMushroomsCommon(this);
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.MUSHROOM_TOWER;
-	}
+	//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.MUSHROOM_TOWER;
+//	}
 }

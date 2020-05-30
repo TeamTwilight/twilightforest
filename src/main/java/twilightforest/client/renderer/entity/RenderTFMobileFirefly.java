@@ -23,15 +23,15 @@ public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends Enti
 		super(manager);
 	}
 
-	private void doRenderTinyFirefly(T firefly, MatrixStack matrix, double x, double y, double z, float brightness, float size) {
+	private void doRenderTinyFirefly(T firefly, MatrixStack matrix, float brightness, float size) {
 		matrix.push();
 
-		matrix.translate(x, y + 0.5D, z);
+//		matrix.translate(x, y + 0.5D, z);
 
 		// undo rotations so we can draw a billboarded firefly
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
 
-		RenderSystem.getFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
+//		RenderSystem.getFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -46,7 +46,7 @@ public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends Enti
 
 		GL11.glLoadMatrixf(modelview);
 
-		bindEntityTexture(firefly);
+//		bindEntityTexture(firefly);
 
 		RenderSystem.colorMask(true, true, true, true);
 
@@ -59,7 +59,7 @@ public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends Enti
 
 //		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, brightness);
-		fireflyModel.glow1.render(0.0625f * size);
+//		fireflyModel.glow1.render(0.0625f * size);
 		RenderSystem.disableBlend();
 		RenderSystem.enableLighting();
 
@@ -69,7 +69,7 @@ public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends Enti
 
 	@Override
 	public void render(T firefly, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
-		doRenderTinyFirefly(firefly, stack, x, y, z, firefly.getGlowBrightness(), 1.0F);
+		doRenderTinyFirefly(firefly, stack, firefly.getGlowBrightness(), 1.0F);
 	}
 
 	@Override

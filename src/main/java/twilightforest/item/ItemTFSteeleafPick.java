@@ -7,7 +7,7 @@ import net.minecraft.util.NonNullList;
 public class ItemTFSteeleafPick extends PickaxeItem {
 
 	protected ItemTFSteeleafPick(IItemTier material, Properties props) {
-		super(material, 1, -2.8F, props.group(TFItems.creativeTab));
+		super(material, 1, -2.8F, props);
 	}
 
 	@Override

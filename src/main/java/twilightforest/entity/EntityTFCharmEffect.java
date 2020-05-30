@@ -5,7 +5,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -14,12 +16,20 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@OnlyIn(
+				value = Dist.CLIENT,
+				_interface = IRendersAsItem.class
+)
 public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 	private static final DataParameter<Integer> DATA_OWNER = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> DATA_ITEMID = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
+	private static final DataParameter<ItemStack> DATA_ITEMID = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.ITEMSTACK);
 	private static final double DISTANCE = 1.75;
 	private double interpTargetX;
 	private double interpTargetY;
@@ -43,10 +53,10 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 		Vec3d look = new Vec3d(DISTANCE, 0, 0);
 
 		this.setLocationAndAngles(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.rotationYaw, owner.rotationPitch);
-		this.getX() += look.x * DISTANCE;
+		double x = getX() + look.x * DISTANCE;
 		//this.getY() += look.y * DISTANCE;
-		this.getZ() += look.z * DISTANCE;
-		this.setPosition(this.getX(), this.getY(), this.getZ());
+		double z = getZ() + look.z * DISTANCE;
+		this.setPosition(x, this.getY(), z);
 	}
 
 	@Override
@@ -76,14 +86,15 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 
 			float rotation = this.ticksExisted / 5.0F + offset;
 			Vec3d look = new Vec3d(DISTANCE, 0, 0).rotateYaw(rotation);
-			this.getX() += look.x;
+			//this.getX() += look.x;
 //        	this.getY() += Math.sin(this.ticksExisted / 3.0F + offset);
-			this.getZ() += look.z;
+			//this.getZ() += look.z;
+			this.getPosition().add(look.x, 0.0D, look.z);
 
 			this.setPosition(this.getX(), this.getY(), this.getZ());
 		}
 
-		if (this.getItemID() > -1) {
+		if (!this.getItemID().isEmpty()) {
 			for (int i = 0; i < 3; i++) {
 				double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 				double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
@@ -109,9 +120,15 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 		this.newPosRotationIncrements = posRotationIncrements;
 	}
 
+	@Nonnull
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+
 	@Override
 	protected void registerData() {
-		dataManager.register(DATA_ITEMID, -1);
+		dataManager.register(DATA_ITEMID, ItemStack.EMPTY);
 		dataManager.register(DATA_OWNER, -1);
 	}
 
@@ -127,12 +144,12 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 		else return null;
 	}
 
-	public int getItemID() {
+	public ItemStack getItemID() {
 		return dataManager.get(DATA_ITEMID);
 	}
 
 	public void setItemID(Item item) {
-		dataManager.set(DATA_ITEMID, Item.getIdFromItem(item));
+		dataManager.set(DATA_ITEMID, new ItemStack(item));
 	}
 
 	@Override
@@ -140,4 +157,10 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 
 	@Override
 	protected void writeAdditional(CompoundNBT cmp) {}
+
+	@Nonnull
+	@Override
+	public ItemStack getItem() {
+		return getItemID();
+	}
 }

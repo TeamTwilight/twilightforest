@@ -55,7 +55,7 @@ public enum StructureWoodVariant implements IStringSerializable {
 
 	StructureWoodVariant(
 			Supplier<Block> planks,
-			Supplier<Block> stairs,
+			Supplier<StairsBlock> stairs,
 			Supplier<Block> slab,
 			Supplier<Block> button,
 			Supplier<Block> fence,

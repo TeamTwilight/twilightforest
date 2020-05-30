@@ -1,8 +1,8 @@
 {
   "textures": {
-    "particle": "twilightforest:blocks/mosspatch",
-    "texture":  "twilightforest:blocks/patch/moss_0",
-    "ctm":      "twilightforest:blocks/patch/moss_0_ctm"
+    "particle": "twilightforest:block/mosspatch",
+    "texture":  "twilightforest:block/patch/moss_0",
+    "ctm":      "twilightforest:block/patch/moss_0_ctm"
   },
   "elements":[
   {"from":[0,0,0],"to":[1,1,1],"faces":{
@@ -1544,10 +1544,10 @@
   }}],
   "ctm_version_": 1,
   "ctm_overrides": {
-    "0": { "type": "ctm"         , "layer": "CUTOUT", "textures": [ "twilightforest:blocks/patch/moss_0_ctm" ] },
-    "1": { "type": "ctm_tf_north", "layer": "CUTOUT", "textures": [ "twilightforest:blocks/patch/moss_0_ctm" ] },
-    "2": { "type": "ctm_tf_south", "layer": "CUTOUT", "textures": [ "twilightforest:blocks/patch/moss_0_ctm" ] },
-    "3": { "type": "ctm_tf_west" , "layer": "CUTOUT", "textures": [ "twilightforest:blocks/patch/moss_0_ctm" ] },
-    "4": { "type": "ctm_tf_east" , "layer": "CUTOUT", "textures": [ "twilightforest:blocks/patch/moss_0_ctm" ] }
+    "0": { "type": "ctm"         , "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] },
+    "1": { "type": "ctm_tf_north", "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] },
+    "2": { "type": "ctm_tf_south", "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] },
+    "3": { "type": "ctm_tf_west" , "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] },
+    "4": { "type": "ctm_tf_east" , "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] }
   }
 }

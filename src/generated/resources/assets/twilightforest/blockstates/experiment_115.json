@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "omnomnom=0,regenerate=false": {
+      "model": "twilightforest:block/experiment115_8_8"
+    },
+    "omnomnom=1,regenerate=false": {
+      "model": "twilightforest:block/experiment115_7_8"
+    },
+    "omnomnom=2,regenerate=false": {
+      "model": "twilightforest:block/experiment115_6_8"
+    },
+    "omnomnom=3,regenerate=false": {
+      "model": "twilightforest:block/experiment115_5_8"
+    },
+    "omnomnom=4,regenerate=false": {
+      "model": "twilightforest:block/experiment115_4_8"
+    },
+    "omnomnom=5,regenerate=false": {
+      "model": "twilightforest:block/experiment115_3_8"
+    },
+    "omnomnom=6,regenerate=false": {
+      "model": "twilightforest:block/experiment115_2_8"
+    },
+    "omnomnom=7,regenerate=false": {
+      "model": "twilightforest:block/experiment115_1_8"
+    },
+    "omnomnom=0,regenerate=true": {
+      "model": "twilightforest:block/experiment115_8_8_regenerating"
+    },
+    "omnomnom=1,regenerate=true": {
+      "model": "twilightforest:block/experiment115_7_8_regenerating"
+    },
+    "omnomnom=2,regenerate=true": {
+      "model": "twilightforest:block/experiment115_6_8_regenerating"
+    },
+    "omnomnom=3,regenerate=true": {
+      "model": "twilightforest:block/experiment115_5_8_regenerating"
+    },
+    "omnomnom=4,regenerate=true": {
+      "model": "twilightforest:block/experiment115_4_8_regenerating"
+    },
+    "omnomnom=5,regenerate=true": {
+      "model": "twilightforest:block/experiment115_3_8_regenerating"
+    },
+    "omnomnom=6,regenerate=true": {
+      "model": "twilightforest:block/experiment115_2_8_regenerating"
+    },
+    "omnomnom=7,regenerate=true": {
+      "model": "twilightforest:block/experiment115_1_8_regenerating"
+    }
+  }
+}

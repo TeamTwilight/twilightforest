@@ -10,10 +10,9 @@
       },
       {
         "type": "item",
-        "name": "minecraft:coal",
+        "name": "minecraft:charcoal",
         "functions": [
-          { "function": "set_count", "count": { "min": 1, "max": 12 } },
-          { "function": "set_data", "data": 1}
+          { "function": "set_count", "count": { "min": 1, "max": 12 } }
         ]
       },
       {

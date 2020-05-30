@@ -59,7 +59,7 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing {
 		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		// sky light
-		nullifySkyLightForBoundingBox(world);
+//		nullifySkyLightForBoundingBox(world);
 
 		// openings
 		makeOpenings(world, sbb);

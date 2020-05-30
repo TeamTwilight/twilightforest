@@ -35,7 +35,7 @@ public class TFGenTreeOfTransformation<T extends TFTreeFeatureConfig> extends TF
 
 	@Override
 	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
-		if (super.generate(world, random, pos, trunk, leaves, mbb, config)) {
+		if (super.generate(world, random, pos, trunk, leaves, branch, root, mbb, config)) {
 			// heart of transformation
 			world.setBlockState(pos.up(3), TFBlocks.transformation_log_core.get().getDefaultState(), 3);
 			return true;

@@ -2,14 +2,14 @@ package twilightforest.world;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Util;
 import net.minecraft.world.biome.Biome;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Based on {@link net.minecraft.world.biome.BiomeCache}.
+ * Based on {net.minecraft.world.biome.BiomeCache}.
  * This version allows specifying the grid size, and uses the alternate biome
  * layer used in world generation. Used for magic maps, and supports a centred
  * grid for this purpose.
@@ -38,7 +38,7 @@ public class TFBiomeCache {
 		Entry(int x, int z) {
 			this.x = x;
 			this.z = z;
-			provider.getBiomesForGeneration(biomes, fromGrid(x), fromGrid(z), gridSize, gridSize, false);
+//			provider.getBiomesForGeneration(biomes, fromGrid(x), fromGrid(z), gridSize, gridSize, false);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class TFBiomeCache {
 			this.entries.add(entry);
 		}
 
-		entry.lastAccessTime = MinecraftServer.getCurrentTimeMillis();
+		entry.lastAccessTime = Util.milliTime();
 		return entry;
 	}
 
@@ -67,7 +67,7 @@ public class TFBiomeCache {
 
 	public void cleanup() {
 
-		long currentTime = MinecraftServer.getCurrentTimeMillis();
+		long currentTime = Util.milliTime();
 		long timeSinceCleanup = currentTime - this.lastCleanupTime;
 
 		if (timeSinceCleanup > 7500L || timeSinceCleanup < 0L) {

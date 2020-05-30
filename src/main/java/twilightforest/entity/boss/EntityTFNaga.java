@@ -32,7 +32,6 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.IEntityMultiPart;
@@ -47,8 +46,6 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/naga");
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -557,11 +554,6 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.NAGA_HURT;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	private void crumbleBelowTarget(int range) {

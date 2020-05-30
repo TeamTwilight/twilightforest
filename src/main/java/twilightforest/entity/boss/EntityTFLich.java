@@ -151,9 +151,9 @@ public class EntityTFLich extends MonsterEntity {
 		this.bossInfo.removePlayer(player);
 	}
 
-	@Override
-	public void setInWeb() {
-	}
+//	@Override
+//	public void setInWeb() {
+//	}
 
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
@@ -163,7 +163,7 @@ public class EntityTFLich extends MonsterEntity {
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL && !isShadowClone()) {
-			if (hasHome()) {
+			if (!detachHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
 			}
 			remove();
@@ -359,9 +359,9 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	private void popNearbyMob() {
-		List<LivingEntity> nearbyMobs = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
+		List<MobEntity> nearbyMobs = world.getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
 
-		for (LivingEntity mob : nearbyMobs) {
+		for (MobEntity mob : nearbyMobs) {
 			if (getEntitySenses().canSee(mob)) {
 				mob.spawnExplosionParticle();
 				mob.remove();

@@ -35,10 +35,8 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 
 	public final PlantVariant plantVariant;
 
-	protected BlockTFPlant(PlantVariant plant) {
-		super(Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).tickRandomly().doesNotBlockMovement().nonOpaque());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
-
+	protected BlockTFPlant(PlantVariant plant, Block.Properties props) {
+		super(props);
 		plantVariant = plant;
 	}
 
@@ -123,18 +121,6 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 			return VoxelShapes.create(new AxisAlignedBB(0F, 0F, 0F, 1F, 1F / 16F, 1F));
 		} else {
 			return VoxelShapes.fullCube();
-		}
-	}
-
-	@Override
-	public int getLightValue(BlockState state) {
-		switch (plantVariant) {
-			case MUSHGLOOM:
-				return 3;
-			case TORCHBERRY:
-				return 8;
-			default:
-				return 0;
 		}
 	}
 

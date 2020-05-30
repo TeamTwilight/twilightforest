@@ -10,17 +10,14 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFlockToSameKind;
 import twilightforest.entity.ai.EntityAITFPanicOnFlockDeath;
 
 public class EntityTFKobold extends MonsterEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/kobold");
 	private static final DataParameter<Boolean> PANICKED = EntityDataManager.createKey(EntityTFKobold.class, DataSerializers.BOOLEAN);
 
 	public EntityTFKobold(EntityType<? extends EntityTFKobold> type, World world) {
@@ -68,11 +65,6 @@ public class EntityTFKobold extends MonsterEntity {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.KOBOLD_DEATH;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	public boolean isPanicked() {

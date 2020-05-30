@@ -23,8 +23,7 @@
       },
       {
         "type": "item",
-        "name": "twilightforest:twilight_sapling",
-        "functions": [{ "function": "set_data", "data": 4 }]
+        "name": "twilightforest:hollow_oak_sapling"
       }
     ]
   }]

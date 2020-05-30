@@ -2,11 +2,10 @@ package twilightforest.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -19,18 +18,18 @@ import twilightforest.entity.TFEntities;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTFTwilightWand extends ItemTF {
+public class ItemTFTwilightWand extends Item {
 
-	protected ItemTFTwilightWand(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(99).group(TFItems.creativeTab));
+	protected ItemTFTwilightWand(Properties props) {
+		super(props);
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage()) {
-			return new ActionResult<>(ActionResultType.FAIL, player.getHeldItem(hand));
+		if (stack.getDamage() == stack.getMaxDamage() - 1) {
+			return ActionResult.fail(player.getHeldItem(hand));
 		} else {
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
@@ -39,7 +38,7 @@ public class ItemTFTwilightWand extends ItemTF {
 				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			}
 
-			return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+			return ActionResult.success(player.getHeldItem(hand));
 		}
 	}
 

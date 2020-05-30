@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.material.Material;
@@ -16,8 +17,8 @@ import javax.annotation.Nullable;
 
 public class BlockTFMoonworm extends BlockTFCritter {
 
-	protected BlockTFMoonworm() {
-		super(Properties.create(Material.MISCELLANEOUS).lightValue(14));
+	protected BlockTFMoonworm(Block.Properties props) {
+		super(props);
 	}
 
 	@Override

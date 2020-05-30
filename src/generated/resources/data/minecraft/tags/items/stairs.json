@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:castle_stairs_brick",
+    "twilightforest:castle_stairs_worn",
+    "twilightforest:castle_stairs_cracked",
+    "twilightforest:castle_stairs_mossy",
+    "twilightforest:castle_stairs_encased",
+    "twilightforest:castle_stairs_bold",
+    "twilightforest:twilight_oak_stairs",
+    "twilightforest:canopy_stairs",
+    "twilightforest:mangrove_stairs",
+    "twilightforest:dark_stairs",
+    "twilightforest:time_stairs",
+    "twilightforest:trans_stairs",
+    "twilightforest:mine_stairs",
+    "twilightforest:sort_stairs"
+  ]
+}

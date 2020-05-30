@@ -8,15 +8,14 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameterSets;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFTomeBolt;
@@ -25,7 +24,6 @@ import javax.annotation.Nullable;
 
 public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome");
 	public static final ResourceLocation HURT_LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome_hurt");
 
 	public EntityTFDeathTome(EntityType<? extends EntityTFDeathTome> type, World world) {
@@ -69,25 +67,14 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 
 		if (super.attackEntityFrom(src, damage)) {
 			if (!world.isRemote) {
-				LootContext ctx = new LootContext.Builder((ServerWorld) world)
-						.withDamageSource(src)
-						.withLootedEntity(this)
-						.build();
+				LootContext ctx = getLootContextBuilder(true, src).build(LootParameterSets.ENTITY);
 
-				for (ItemStack stack : world.getLootTableManager().getLootTableFromLocation(HURT_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
-					entityDropItem(stack, 1.0F);
-				}
+				world.getServer().getLootTableManager().getLootTableFromLocation(HURT_LOOT_TABLE).generate(ctx, s -> entityDropItem(s, 1.0F));
 			}
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	//TODO: Move to loot table
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Nullable

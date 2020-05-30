@@ -30,10 +30,6 @@ public class ParticleSnow extends SpriteTexturedParticle {
 		this.maxAge = (int) (6.0D / (Math.random() * 0.8D + 0.6D));
 		this.maxAge = (int) ((float) this.maxAge * scale);
 		this.canCollide = true;
-
-		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4)); TODO: move to particle json
-
-		//this.tick(); TODO: ???
 	}
 
 	@Override

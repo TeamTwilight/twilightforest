@@ -5,8 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -27,40 +25,40 @@ public class TFSkyRenderer implements IRenderHandler {
 	private VertexBuffer starVBO;
 
 	public TFSkyRenderer() {
-		vboEnabled = OpenGlHelper.useVbo();
+		//vboEnabled = OpenGlHelper.useVbo();
 		generateStars();
 	}
 
 	// [VanillaCopy] RenderGlobal.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
-	@SuppressWarnings("unused")
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc) {
 
 		// [VanillaCopy] Excerpt from RenderGlobal.loadRenderers as we don't get a callback
-		boolean flag = this.vboEnabled;
-		this.vboEnabled = OpenGlHelper.useVbo();
-		if (flag != this.vboEnabled) {
-			generateStars();
-		}
+		generateStars();
+//		boolean flag = this.vboEnabled;
+//		this.vboEnabled = OpenGlHelper.useVbo();
+//		if (flag != this.vboEnabled) {
+//			generateStars();
+//		}
 
 		WorldRenderer rg = mc.worldRenderer;
-		int pass = GameRenderer.anaglyphEnable ? GameRenderer.anaglyphField : 2;
+		//int pass = GameRenderer.anaglyphEnable ? GameRenderer.anaglyphField : 2;
 
 		RenderSystem.disableTexture();
-		Vec3d vec3d = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
+		Vec3d vec3d = world.func_228318_a_(mc.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
 		float f = (float) vec3d.x;
 		float f1 = (float) vec3d.y;
 		float f2 = (float) vec3d.z;
 
-		if (pass != 2) {
-			float f3 = (f * 30.0F + f1 * 59.0F + f2 * 11.0F) / 100.0F;
-			float f4 = (f * 30.0F + f1 * 70.0F) / 100.0F;
-			float f5 = (f * 30.0F + f2 * 70.0F) / 100.0F;
-			f = f3;
-			f1 = f4;
-			f2 = f5;
-		}
+//		if (pass != 2) {
+//			float f3 = (f * 30.0F + f1 * 59.0F + f2 * 11.0F) / 100.0F;
+//			float f4 = (f * 30.0F + f1 * 70.0F) / 100.0F;
+//			float f5 = (f * 30.0F + f2 * 70.0F) / 100.0F;
+//			f = f3;
+//			f1 = f4;
+//			f2 = f5;
+//		}
 
 		RenderSystem.color3f(f, f1, f2);
 		Tessellator tessellator = Tessellator.getInstance();
@@ -69,16 +67,17 @@ public class TFSkyRenderer implements IRenderHandler {
 		RenderSystem.enableFog();
 		RenderSystem.color3f(f, f1, f2);
 
-		if (this.vboEnabled) {
-			rg.skyVBO.bindBuffer();
-			RenderSystem.glEnableClientState(32884);
-			RenderSystem.glVertexPointer(3, 5126, 12, 0);
-			rg.skyVBO.drawArrays(7);
-			rg.skyVBO.unbindBuffer();
-			RenderSystem.glDisableClientState(32884);
-		} else {
-			RenderSystem.callList(rg.glSkyList);
-		}
+		//TODO
+//		if (this.vboEnabled) {
+//			rg.skyVBO.bindBuffer();
+//			RenderSystem.glEnableClientState(32884);
+//			RenderSystem.glVertexPointer(3, 5126, 12, 0);
+//			rg.skyVBO.drawArrays(7);
+//			rg.skyVBO.unbindBuffer();
+//			RenderSystem.glDisableClientState(32884);
+//		} else {
+//			RenderSystem.callList(rg.glSkyList);
+//		}
 
 		RenderSystem.disableFog();
 		RenderSystem.disableAlphaTest();
@@ -108,16 +107,17 @@ public class TFSkyRenderer implements IRenderHandler {
 		if (f15 > 0.0F) {
 			RenderSystem.color4f(f15, f15, f15, f15);
 
-			if (this.vboEnabled) {
-				this.starVBO.bindBuffer();
-				RenderSystem.glEnableClientState(32884);
-				RenderSystem.glVertexPointer(3, 5126, 12, 0);
-				this.starVBO.drawArrays(7);
-				this.starVBO.unbindBuffer();
-				RenderSystem.glDisableClientState(32884);
-			} else {
-				RenderSystem.callList(this.starGLCallList);
-			}
+			//TODO
+//			if (this.vboEnabled) {
+//				this.starVBO.bindBuffer();
+//				RenderSystem.glEnableClientState(32884);
+//				RenderSystem.glVertexPointer(3, 5126, 12, 0);
+//				this.starVBO.drawArrays(7);
+//				this.starVBO.unbindBuffer();
+//				RenderSystem.glDisableClientState(32884);
+//			} else {
+//				RenderSystem.callList(this.starGLCallList);
+//			}
 		}
 
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -127,22 +127,23 @@ public class TFSkyRenderer implements IRenderHandler {
 		RenderSystem.popMatrix();
 		RenderSystem.disableTexture();
 		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
-		double d0 = mc.player.getPositionEyes(partialTicks).y - world.getSeaLevel();
+		double d0 = mc.player.getEyePosition(partialTicks).y - world.getSeaLevel();
 
 		if (d0 < 0.0D) {
 			RenderSystem.pushMatrix();
 			RenderSystem.translatef(0.0F, 12.0F, 0.0F);
 
-			if (this.vboEnabled) {
-				rg.sky2VBO.bindBuffer();
-				RenderSystem.glEnableClientState(32884);
-				RenderSystem.glVertexPointer(3, 5126, 12, 0);
-				rg.sky2VBO.drawArrays(7);
-				rg.sky2VBO.unbindBuffer();
-				RenderSystem.glDisableClientState(32884);
-			} else {
-				RenderSystem.callList(rg.glSkyList2);
-			}
+			//TODO
+//			if (this.vboEnabled) {
+//				rg.sky2VBO.bindBuffer();
+//				RenderSystem.glEnableClientState(32884);
+//				RenderSystem.glVertexPointer(3, 5126, 12, 0);
+//				rg.sky2VBO.drawArrays(7);
+//				rg.sky2VBO.unbindBuffer();
+//				RenderSystem.glDisableClientState(32884);
+//			} else {
+//				RenderSystem.callList(rg.glSkyList2);
+//			}
 
 			RenderSystem.popMatrix();
 			float f18 = 1.0F;
@@ -180,7 +181,7 @@ public class TFSkyRenderer implements IRenderHandler {
 
 		RenderSystem.pushMatrix();
 		RenderSystem.translatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
-		RenderSystem.callList(rg.glSkyList2);
+		//RenderSystem.callList(rg.glSkyList2);
 		RenderSystem.popMatrix();
 		RenderSystem.enableTexture();
 		RenderSystem.depthMask(true);
@@ -196,7 +197,7 @@ public class TFSkyRenderer implements IRenderHandler {
 		}
 
 		if (this.starGLCallList >= 0) {
-			GLAllocation.deleteDisplayLists(this.starGLCallList);
+			//GLAllocation.deleteDisplayLists(this.starGLCallList);
 			this.starGLCallList = -1;
 		}
 
@@ -206,15 +207,15 @@ public class TFSkyRenderer implements IRenderHandler {
 			this.renderStars(bufferbuilder);
 			bufferbuilder.finishDrawing();
 			bufferbuilder.reset();
-			this.starVBO.bufferData(bufferbuilder.getByteBuffer());
+			//this.starVBO.bufferData(bufferbuilder.getByteBuffer());
 
 		} else {
-			this.starGLCallList = GLAllocation.generateDisplayLists(1);
+			//this.starGLCallList = GLAllocation.generateDisplayLists(1);
 			RenderSystem.pushMatrix();
-			RenderSystem.glNewList(this.starGLCallList, 4864);
+			//RenderSystem.glNewList(this.starGLCallList, 4864);
 			this.renderStars(bufferbuilder);
 			tessellator.draw();
-			RenderSystem.glEndList();
+			//RenderSystem.glEndList();
 			RenderSystem.popMatrix();
 		}
 	}

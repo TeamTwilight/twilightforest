@@ -1,26 +1,34 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Food;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 
-public class ItemTFExperiment115 extends ItemTFFood {
+import javax.annotation.Nullable;
 
-	public ItemTFExperiment115(Food food, Properties props) {
-		super(food, props);
+import static twilightforest.TwilightForestMod.prefix;
+
+public class ItemTFExperiment115 extends BlockItem {
+	public static final ResourceLocation THINK = prefix("think");
+	public static final ResourceLocation FULL = prefix("full");
+
+	public ItemTFExperiment115(Block block, Properties props) {
+		super(block, props);
+		addPropertyOverride(THINK, (stack, world, entity) -> stack.hasTag() && stack.getTag().contains("think") ? 1 : 0);
+		addPropertyOverride(FULL, (stack, world, entity) -> stack.hasTag() && stack.getTag().contains("full") ? 1 : 0);
 	}
 
 	@Override

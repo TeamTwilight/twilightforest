@@ -7,6 +7,7 @@ import net.minecraft.block.ChestBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
@@ -24,6 +25,8 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
@@ -194,20 +197,29 @@ public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 						world.addEntity(wraith);
 					}
 				}
-				grave.getValue().getDataBlocks(placement, placementsettings).forEach((p, s) -> {
-					if ("spawner".equals(s))
-						if (random.nextInt(4) == 0) {
-							if (world.setBlockState(p, Blocks.SPAWNER.getDefaultState(), flags)) {
-								MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(p);
-								if (ms != null)
-									ms.getSpawnerBaseLogic().setEntityType(TFEntities.rising_zombie.get());
-							}
-						} else
-							world.removeBlock(p);
-				});
 			}
 
 		return true;
+	}
+
+	public static class Piece extends TemplateStructurePiece {
+
+		public Piece(IStructurePieceType p_i51339_1_, CompoundNBT p_i51339_2_) {
+			super(p_i51339_1_, p_i51339_2_);
+		}
+
+		@Override
+		protected void handleDataMarker(String s, BlockPos p, IWorld world, Random random, MutableBoundingBox mbb) {
+			if ("spawner".equals(s))
+				if (random.nextInt(4) == 0) {
+					if (world.setBlockState(p, Blocks.SPAWNER.getDefaultState(), 3)) {
+						MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(p);
+						if (ms != null)
+							ms.getSpawnerBaseLogic().setEntityType(TFEntities.rising_zombie.get());
+					}
+				} else
+					world.removeBlock(p, false);
+		}
 	}
 
 	private enum GraveType {

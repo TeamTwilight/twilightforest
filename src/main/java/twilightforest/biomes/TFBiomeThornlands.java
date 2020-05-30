@@ -19,8 +19,11 @@ public class TFBiomeThornlands extends TFBiomeBase {
 
 	public TFBiomeThornlands(Builder props) {
 		super(props);
+	}
 
-		getSpawns(EntityClassification.CREATURE).clear();
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addClayDisks(this, 1);
 		TFBiomeDecorator.addLakes(this);
@@ -29,6 +32,13 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		TFBiomeDecorator.addFlowers(this, 2);
 		TFBiomeDecorator.addDeadBushes(this, 4);
 		TFBiomeDecorator.addMushrooms(this);
+	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		getSpawns(EntityClassification.CREATURE).clear();
 	}
 
 	private final Predicate<Block> otherGround = block -> block == Blocks.SANDSTONE || block == Blocks.SAND || block == Blocks.CLAY || block == TFBlocks.deadrock.get() || block == TFBlocks.deadrock_cracked.get() || block == TFBlocks.deadrock_weathered.get();

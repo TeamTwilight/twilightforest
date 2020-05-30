@@ -33,8 +33,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		super(TFHollowTreePieces.TFHTTr, nbt);
 	}
 
-	//TODO: Parameter "world" is unused. Remove?
-	public ComponentTFHollowTreeTrunk(World world, Random rand, int index, int x, int y, int z) {
+	public ComponentTFHollowTreeTrunk(Random rand, int index, int x, int y, int z) {
 		super(TFHollowTreePieces.TFHTTr, TFFeature.NOTHING, index);
 
 		height = rand.nextInt(64) + 32;

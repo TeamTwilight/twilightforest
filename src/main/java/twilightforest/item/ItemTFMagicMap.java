@@ -5,29 +5,34 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.MapData;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.network.NetworkDirection;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.network.PacketMagicMap;
+import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+// [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 public class ItemTFMagicMap extends FilledMapItem {
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	protected ItemTFMagicMap(Properties props) {
-		super(props.maxStackSize(1));
+		super(props);
 	}
 
 	private static class MapColorBrightness {
@@ -45,50 +50,39 @@ public class ItemTFMagicMap extends FilledMapItem {
 		}
 	}
 
-	// [VanillaCopy] super with own id
-	public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
-		// TF - own item and string id TODO: unique id may not be used in 1.14
-		//ItemStack itemstack = new ItemStack(TFItems.magic_map, 1, world.getUniqueDataId(ItemTFMagicMap.STR_ID));
+	public static ItemStack setupNewMap(World world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
 		ItemStack itemstack = new ItemStack(TFItems.magic_map.get());
-		String s = ItemTFMagicMap.STR_ID + "_" + world.getNextMapId();
-		MapData mapdata = new TFMagicMapData(s);
-		world.registerMapData(mapdata);
-		itemstack.getOrCreateTag().putString("map", s);
-		mapdata.scale = scale;
-		mapdata.calculateMapCenter(worldX, worldZ, mapdata.scale);
-		mapdata.dimension = world.dimension.getType();
-		mapdata.trackingPosition = trackingPosition;
-		mapdata.unlimitedTracking = unlimitedTracking;
-		mapdata.markDirty();
+		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension.getType());
 		return itemstack;
 	}
 
-	// [VanillaCopy] super, with own string ID and class, narrowed types
 	@Nullable
-	@OnlyIn(Dist.CLIENT)
-	public static TFMagicMapData loadMapData(int mapId, World worldIn) {
-		String s = STR_ID + "_" + mapId;
-		return (TFMagicMapData) worldIn.loadData(TFMagicMapData.class, s);
+	public static TFMagicMapData getData(ItemStack stack, World world) {
+		return TFMagicMapData.getMagicMapData(world, getMapName(getMapId(stack)));
 	}
 
-	// [VanillaCopy] super, with own string ID and class
+	@Nullable
 	@Override
-	public TFMagicMapData getMapData(ItemStack stack, World worldIn) {
-		String s = STR_ID + "_" + stack.getMetadata();
-		TFMagicMapData mapdata = (TFMagicMapData) worldIn.loadData(TFMagicMapData.class, s);
-
-		if (mapdata == null && !worldIn.isRemote) {
-			stack.setDamage(worldIn.getUniqueDataId(STR_ID));
-			s = STR_ID + "_" + stack.getMetadata();
-			mapdata = new TFMagicMapData(s);
-			mapdata.scale = 3;
-			mapdata.calculateMapCenter((double) worldIn.getWorldInfo().getSpawnX(), (double) worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
-			mapdata.dimension = worldIn.dimension.getType();
-			mapdata.markDirty();
-			worldIn.setData(s, mapdata);
+	protected TFMagicMapData getCustomMapData(ItemStack stack, World world) {
+		TFMagicMapData mapdata = getData(stack, world);
+		if (mapdata == null && !world.isRemote) {
+			mapdata = ItemTFMagicMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 3, false, false, world.dimension.getType());
 		}
 
 		return mapdata;
+	}
+
+	private static TFMagicMapData createMapData(ItemStack stack, World world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, DimensionType dimension) {
+		int i = world.getNextMapId();
+		TFMagicMapData mapdata = new TFMagicMapData(getMapName(i));
+		mapdata.func_212440_a(x, z, scale, trackingPosition, unlimitedTracking, dimension);
+		TFMagicMapData.registerMagicMapData(world, mapdata); // call our own register method
+		stack.getOrCreateTag().putInt("map", i);
+		return mapdata;
+	}
+
+	public static String getMapName(int id) {
+		return STR_ID + "_" + id;
 	}
 
 	@Override
@@ -105,7 +99,8 @@ public class ItemTFMagicMap extends FilledMapItem {
 			// use the generation map, which is larger scale than the other biome map
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-			Biome[] biomes = world.getBiomeProvider().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
+//			Biome[] biomes = world.getBiomeAccess().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
+			Biome[] biomes = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
 
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
@@ -199,16 +194,15 @@ public class ItemTFMagicMap extends FilledMapItem {
 		// disable zooming
 	}
 
-	//TODO: How to packet?
-//	@Override
-//	@Nullable
-//	public IPacket<?> getUpdatePacket(ItemStack stack, World world, PlayerEntity player) {
-//		IPacket<?> p = super.getUpdatePacket(stack, world, player);
-//		if (p instanceof SPacketMaps) {
-//			TFMagicMapData mapdata = getMapData(stack, world);
-//			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMagicMap(stack.getItemDamage(), mapdata, (SPacketMaps) p));
-//		} else {
-//			return p;
-//		}
-//	}
+	@Override
+	@Nullable
+	public IPacket<?> getUpdatePacket(ItemStack stack, World world, PlayerEntity player) {
+		IPacket<?> p = super.getUpdatePacket(stack, world, player);
+		if (p instanceof SMapDataPacket) {
+			TFMagicMapData mapdata = getCustomMapData(stack, world);
+			return TFPacketHandler.CHANNEL.toVanillaPacket(new PacketMagicMap(mapdata, (SMapDataPacket) p), NetworkDirection.PLAY_TO_CLIENT);
+		} else {
+			return p;
+		}
+	}
 }

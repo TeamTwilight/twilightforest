@@ -6,16 +6,12 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
 public class EntityTFBoggard extends MonsterEntity {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/boggard");
 
 	public EntityTFBoggard(EntityType<? extends EntityTFBoggard> type, World world) {
 		super(type, world);
@@ -55,10 +51,5 @@ public class EntityTFBoggard extends MonsterEntity {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.REDCAP_AMBIENT;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

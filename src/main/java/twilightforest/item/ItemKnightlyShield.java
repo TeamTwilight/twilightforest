@@ -17,7 +17,7 @@ import java.util.List;
 public class ItemKnightlyShield extends ShieldItem {
 
     public ItemKnightlyShield(Properties props) {
-    	super(props.maxDamage(1024).group(TFItems.creativeTab));
+    	super(props);
     }
 
     @Override

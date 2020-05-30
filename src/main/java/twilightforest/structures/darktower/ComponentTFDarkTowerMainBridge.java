@@ -26,7 +26,7 @@ public class ComponentTFDarkTowerMainBridge extends ComponentTFDarkTowerBridge {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 19, direction);
 
-		ComponentTFDarkTowerMain wing = new ComponentTFDarkTowerMain(getFeatureType(), null, rand, index, dx[0], dx[1], dx[2], direction);
+		ComponentTFDarkTowerMain wing = new ComponentTFDarkTowerMain(getFeatureType(), rand, index, dx[0], dx[1], dx[2], direction);
 
 		list.add(wing);
 		wing.buildComponent(this, list, rand);

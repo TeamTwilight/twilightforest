@@ -14,7 +14,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -22,14 +21,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
 
 import java.util.List;
 
 public class EntityTFGoblinKnightUpper extends MonsterEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/goblin_knight");
 	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
 	private static final DataParameter<Byte> DATA_EQUIP = EntityDataManager.createKey(EntityTFGoblinKnightUpper.class, DataSerializers.BYTE);
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, AttributeModifier.Operation.ADDITION).setSaved(false);
@@ -300,10 +297,5 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		if (!world.isRemote && this.shieldHits >= 3) {
 			this.breakShield();
 		}
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

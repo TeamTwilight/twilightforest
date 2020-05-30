@@ -1,5 +1,0 @@
-{
-  "forge_marker": 1,
-  "defaults": { "model": "twilightforest:jar" },
-  "variants": { "normal": [{}] }
-}

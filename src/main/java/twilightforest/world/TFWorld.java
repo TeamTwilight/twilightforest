@@ -13,7 +13,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.server.ServerWorld;
-import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeBase;
@@ -67,7 +66,7 @@ public class TFWorld extends GenerationSettings {
 	public static void markStructureConquered(World world, BlockPos pos, TFFeature feature) {
 		ChunkGeneratorTFBase generator = getChunkGenerator(world);
 		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world) == feature) {
-			generator.setStructureConquered(pos, true);
+			//generator.setStructureConquered(pos, true);
 		}
 	}
 

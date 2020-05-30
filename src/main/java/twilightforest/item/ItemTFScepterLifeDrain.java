@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -10,17 +11,14 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -30,17 +28,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
-public class ItemTFScepterLifeDrain extends ItemTF {
+public class ItemTFScepterLifeDrain extends Item {
 
-	protected ItemTFScepterLifeDrain(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(99));
+	protected ItemTFScepterLifeDrain(Properties props) {
+		super(props);
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		player.setActiveHand(hand);
-		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.success(player.getHeldItem(hand));
 	}
 
 	@Override
@@ -83,19 +82,18 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 
 		for (Entity possibleEntity : possibleList) {
 
-
 			if (possibleEntity.canBeCollidedWith()) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
 				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
-				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+				Optional<Vec3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
 						pointedEntity = possibleEntity;
 						hitDist = 0.0D;
 					}
-				} else if (interceptPos != null) {
-					double possibleDist = srcVec.distanceTo(interceptPos.hitVec);
+				} else if (interceptPos.isPresent()) {
+					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
 						pointedEntity = possibleEntity;
@@ -106,7 +104,6 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		}
 		return pointedEntity;
 	}
-
 
 	@Override
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
@@ -132,8 +129,8 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 						// make it explode
 
 						makeRedMagicTrail(world, living.getX(), living.getY() + living.getEyeHeight(), living.getZ(), target.getX(), target.getY() + target.getEyeHeight(), target.getZ());
-						if (target instanceof LivingEntity) {
-							((LivingEntity) target).spawnExplosionParticle();
+						if (target instanceof MobEntity) {
+							((MobEntity) target).spawnExplosionParticle();
 						}
 						target.playSound(SoundEvents.ENTITY_GENERIC_BIG_FALL, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						animateTargetShatter(world, (LivingEntity) target);

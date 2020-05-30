@@ -1,11 +1,20 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.NetworkHooks;
+import twilightforest.network.PacketAreaProtection;
+import twilightforest.network.TFPacketHandler;
+
+import javax.annotation.Nullable;
 
 public class EntityTFProtectionBox extends Entity {
 
@@ -17,8 +26,13 @@ public class EntityTFProtectionBox extends Entity {
 
 	private final MutableBoundingBox sbb;
 
+	public EntityTFProtectionBox(EntityType<?> type, World world) {
+		super(type, world);
+		throw new IllegalStateException("only here to satisfy registry, should never be used!");
+	}
+
 	public EntityTFProtectionBox(World world, MutableBoundingBox sbb) {
-		super(world);
+		super(TFEntities.protection_box.get(), world);
 
 		this.sbb = new MutableBoundingBox(sbb);
 
@@ -28,7 +42,7 @@ public class EntityTFProtectionBox extends Entity {
 		sizeY = sbb.getYSize();
 		sizeZ = sbb.getZSize();
 
-		this.setSize(Math.max(sizeX, sizeZ), sizeY);
+		this.size = EntitySize.fixed(Math.max(sizeX, sizeZ), sizeY);
 	}
 
 	@Override
@@ -69,5 +83,10 @@ public class EntityTFProtectionBox extends Entity {
 	@Override
 	public boolean canRenderOnFire() {
 		return false;
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		throw new IllegalStateException("should never be spawned on server");
 	}
 }

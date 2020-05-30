@@ -1,9 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "twilightforest:blocks/ironwood_pattern",
-    "all": "twilightforest:blocks/ironwood_pattern",
-    "over": "twilightforest:blocks/ironwood_block"
+    "particle": "twilightforest:block/ironwood_pattern",
+    "all": "twilightforest:block/ironwood_pattern",
+    "over": "twilightforest:block/ironwood_block"
   },
   "elements": [
     {

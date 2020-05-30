@@ -10,18 +10,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFNatureBolt;
 
 public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob, ITFCharger {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/adherent");
-
-	private static final DataParameter<Boolean> CHARGE_FLAG = EntityDataManager.createKey(EntityTFAdherent.class, DataSerializers.BOOLEAN);
+ 	private static final DataParameter<Boolean> CHARGE_FLAG = EntityDataManager.createKey(EntityTFAdherent.class, DataSerializers.BOOLEAN);
 
 	public EntityTFAdherent(EntityType<? extends EntityTFAdherent> type, World world) {
 		super(type, world);
@@ -78,10 +74,5 @@ public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob,
 	@Override
 	public void setCharging(boolean flag) {
 		dataManager.set(CHARGE_FLAG, flag);
-	}
-
-	@Override
-	protected ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

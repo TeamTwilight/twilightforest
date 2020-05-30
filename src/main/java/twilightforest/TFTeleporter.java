@@ -6,13 +6,13 @@ import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
@@ -42,14 +42,14 @@ public class TFTeleporter extends Teleporter {
 	public static TFTeleporter getTeleporterForDim(MinecraftServer server, DimensionType dim) {
 		ServerWorld ws = server.getWorld(dim);
 
-		for (Teleporter t : ws.customTeleporters) {
-			if (t instanceof TFTeleporter) {
-				return (TFTeleporter) t;
-			}
-		}
+//		for (Teleporter t : ws.customTeleporters) {
+//			if (t instanceof TFTeleporter) {
+//				return (TFTeleporter) t;
+//			}
+//		}
 
 		TFTeleporter tp = new TFTeleporter(ws);
-		ws.customTeleporters.add(tp);
+		//ws.customTeleporters.add(tp);
 		return tp;
 	}
 
@@ -71,15 +71,15 @@ public class TFTeleporter extends Teleporter {
 		Vec3d vec3d = entity.getLastPortalVec();
 		Direction direction = entity.getTeleportDirection();
 		//TODO: Need to use ours.
-		BlockPattern.PortalInfo blockpattern$portalinfo = this.placeInExistingPortal(entity, new BlockPos(entity), entity.getMotion(), direction, vec3d.x, vec3d.y, entity instanceof PlayerEntity);
-		if (blockpattern$portalinfo == null) {
+		boolean flag = this.placeInExistingPortal(entity, new BlockPos(entity), entity.getMotion(), direction, vec3d.x, vec3d.y, entity instanceof PlayerEntity);
+		if (flag) {
 			return false;
 		} else {
-			Vec3d vec3d1 = blockpattern$portalinfo.pos;
-			Vec3d vec3d2 = blockpattern$portalinfo.motion;
-			entity.setMotion(vec3d2);
-			entity.rotationYaw = facing + (float)blockpattern$portalinfo.rotation;
-			entity.positAfterTeleport(vec3d1.x, vec3d1.y, vec3d1.z);
+//			Vec3d vec3d1 = flag.pos;
+//			Vec3d vec3d2 = flag.motion;
+//			entity.setMotion(vec3d2);
+//			entity.rotationYaw = facing + (float)flag.rotation;
+//			entity.positAfterTeleport(vec3d1.x, vec3d1.y, vec3d1.z);
 			return true;
 		}
 	}
@@ -158,9 +158,9 @@ public class TFTeleporter extends Teleporter {
 		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
 		if (generator != null) {
 			if (!world.isBlockLoaded(pos)) {
-				generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4); //TODO: Can we even do this?
+				//generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4); //TODO: Can we even do this?
 			}
-			return !generator.isBlockInFullStructure(pos.getX(), pos.getZ());
+			//return !generator.isBlockInFullStructure(pos.getX(), pos.getZ());
 		}
 		return true;
 	}
@@ -170,14 +170,14 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	// [VanillaCopy] copy of super, edits noted
-	public BlockPattern.PortalInfo placeInExistingPortal(Entity entity, BlockPos pos, Vec3d motion, Direction direction, double x, double y, boolean isPlayer) {
+	public boolean placeInExistingPortal(Entity entity, BlockPos pos, Vec3d motion, Direction direction, double x, double y, boolean isPlayer) {
 		int i = 200; // TF - scan radius up to 200, and also un-inline this variable back into below
 		boolean flag = true;
 		BlockPos blockpos = BlockPos.ZERO;
 		ColumnPos columnPos = new ColumnPos(pos);
 
 		if (!isPlayer && this.columnMap.containsKey(columnPos)) {
-			return null;
+			return false;
 		} else {
 			TFTeleporter.PortalPosition portalPosition = this.destinationCoordinateCache.get(columnPos);
 			if (portalPosition != null) {
@@ -232,9 +232,9 @@ public class TFTeleporter extends Teleporter {
 						}
 
 						// TF - mark unwatched chunks for unload
-						if (!this.world.getPlayerChunkMap().contains(chunkPos.x, chunkPos.z)) {
-							this.world.getChunkProvider().queueUnload(chunk);
-						}
+//						if (!this.world.getPlayerChunkMap().contains(chunkPos.x, chunkPos.z)) {
+//							this.world.getChunkProvider().queueUnload(chunk);
+//						}
 					}
 				}
 			}
@@ -243,7 +243,7 @@ public class TFTeleporter extends Teleporter {
 		if (blockpos == null) {
 			long factor = world.getGameTime() + 300L;
 			this.columnMap.put(columnPos, factor);
-			return null;
+			return false;
 		} else {
 			if (flag) {
 				this.destinationCoordinateCache.put(columnPos, new TFTeleporter.PortalPosition(blockpos, this.world.getGameTime()));
@@ -365,7 +365,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private double getYFactor() {
-		return world.dimension.getDimension() == TFConfig.COMMON_CONFIG.originDimension.get() ? 2.0 : 0.5;
+		return world.dimension.getType() == DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())) ? 2.0 : 0.5;
 	}
 
 	@Nullable
@@ -448,7 +448,7 @@ public class TFTeleporter extends Teleporter {
 
 	private void cachePortalCoords(Entity entity, BlockPos pos) {
 		int x = MathHelper.floor(entity.getX()), z = MathHelper.floor(entity.getZ());
-		destinationCoordinateCache.put(ChunkPos.asLong(x, z), new PortalPosition(pos, world.getGameTime()));
+		destinationCoordinateCache.put(new ColumnPos(x, z), new PortalPosition(pos, world.getGameTime()));
 	}
 
 	private BlockPos makePortalAt(World world, BlockPos pos) {

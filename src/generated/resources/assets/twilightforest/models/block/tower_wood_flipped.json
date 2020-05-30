@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/tinted_cube_all_flipped_v",
+  "textures": {
+    "all": "twilightforest:block/tower_wood"
+  }
+}

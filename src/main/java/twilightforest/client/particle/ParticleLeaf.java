@@ -14,7 +14,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ParticleLeaf extends SpriteTexturedParticle {
 
 	private final Vec3d target;
-	private float rot;
 
 	public ParticleLeaf(World world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, vx, vy, vz, 1.0F);
@@ -36,10 +35,6 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 		this.maxAge = 160 + ((int) (rand.nextFloat() * 30F));
 		this.maxAge = (int) ((float) this.maxAge * scale);
 		this.canCollide = true;
-
-		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/fallen_leaf"); TODO: put into particle json
-
-		//this.tick(); TODO: ???
 	}
 
 	@Override
@@ -66,7 +61,6 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 			this.motionX *= 0.699999988079071D;
 			this.motionZ *= 0.699999988079071D;
 		} else {
-			rot += 5F;
 			if (motionX == 0)
 				motionX += (rand.nextBoolean() ? 1 : -1) * 0.001F;
 			if (motionZ == 0)
@@ -83,12 +77,6 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 		particleAlpha = Math.min(MathHelper.clamp(age, 0, 20) / 20F, MathHelper.clamp(maxAge - age, 0, 20) / 20F);
 		super.buildGeometry(buffer, entity, partialTicks);
 	}
-
-//	@Override
-//	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-//		particleAlpha = Math.min(MathHelper.clamp(age, 0, 20) / 20F, MathHelper.clamp(maxAge - age, 0, 20) / 20F);
-//		super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ + MathHelper.cos((float) Math.toRadians((rot + partialTicks) % 360F)), rotationYZ, rotationXY, rotationXZ);
-//	}
 
 	@Override
 	public int getBrightnessForRender(float partialTicks) {

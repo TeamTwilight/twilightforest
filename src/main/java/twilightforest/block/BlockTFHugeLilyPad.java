@@ -39,6 +39,7 @@ public class BlockTFHugeLilyPad extends BushBlock {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(FACING, PIECE);
 	}
 

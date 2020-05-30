@@ -7,7 +7,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -38,28 +37,28 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 				World world = entity.world;
 
 				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
-					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+//					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 					stack.push();
 					RenderSystem.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
 					BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-					if (this.renderOutlines) {
-						RenderSystem.enableColorMaterial();
-						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
-					}
+//					if (this.renderOutlines) {
+//						RenderSystem.enableColorMaterial();
+//						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+//					}
 
 					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
-					stack.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
+//					stack.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(BlockPos.ZERO));
+//					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(BlockPos.ZERO));
 					tessellator.draw();
 
-					if (this.renderOutlines) {
-						GlStateManager.disableOutlineMode();
-						RenderSystem.disableColorMaterial();
-					}
+//					if (this.renderOutlines) {
+//						GlStateManager.disableOutlineMode();
+//						RenderSystem.disableColorMaterial();
+//					}
 
 					RenderSystem.enableLighting();
 					stack.pop();

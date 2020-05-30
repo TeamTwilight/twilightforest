@@ -14,9 +14,8 @@ import javax.annotation.Nullable;
 
 public class BlockTFAntibuilder extends Block {
 
-	public BlockTFAntibuilder() {
-		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD).lightValue(10).noDrops());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFAntibuilder(Properties props) {
+		super(props);
 	}
 
 	@Override

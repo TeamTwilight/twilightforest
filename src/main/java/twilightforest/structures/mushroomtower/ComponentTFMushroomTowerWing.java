@@ -347,7 +347,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		makeFloorsForTower(worldIn, decoRNG, sbb);
 
 		// nullify sky light
-		this.nullifySkyLightForBoundingBox(worldIn);
+//		this.nullifySkyLightForBoundingBox(worldIn);
 
 		// openings
 		makeOpenings(worldIn, sbb);

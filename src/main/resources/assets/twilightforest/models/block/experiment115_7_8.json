@@ -1,5 +1,13 @@
 {
     "parent": "block/block",
+    "textures": {
+        "particle": "#bottom",
+        "bottom": "twilightforest:block/experiment115/experiment115_bottom",
+        "inside": "twilightforest:block/experiment115/experiment115_inner",
+        "top": "twilightforest:block/experiment115/experiment115_top",
+        "top_2": "twilightforest:block/experiment115/experiment115_top",
+        "side": "twilightforest:block/experiment115/experiment115_side"
+    },
     "elements": [
         {   "from": [ 1, 0, 1 ],
             "to": [ 8, 8, 15 ],

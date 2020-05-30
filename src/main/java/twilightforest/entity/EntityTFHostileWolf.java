@@ -3,29 +3,29 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.LightType;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntityTFHostileWolf extends WolfEntity implements IMob {
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hostile_wolf");
 
 	public EntityTFHostileWolf(EntityType<? extends EntityTFHostileWolf> type, World world) {
 		super(type, world);
@@ -59,36 +59,14 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		}
 	}
 
-	//TODO: Move to factory
-	@Override
-	public boolean getCanSpawnHere() {
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFHostileWolf> type, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		// are we near a hedge maze?
-		int chunkX = MathHelper.floor(getX()) >> 4;
-		int chunkZ = MathHelper.floor(getZ()) >> 4;
-		return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE || isValidLightLevel())
-				&& world.checkNoEntityCollision(this)
+		int chunkX = MathHelper.floor(pos.getX()) >> 4;
+		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
+		return (TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random));
+				/*&& world.checkNoEntityCollision(this)
 				&& world.getCollisionBoxes(this, getBoundingBox()).size() == 0
-				&& !world.containsAnyLiquid(getBoundingBox());
-	}
-
-	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
-	protected boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
-
-		if (this.world.getLightLevel(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
-			return false;
-		} else {
-			int i = this.world.getLightFromNeighbors(blockpos);
-
-			if (this.world.isThundering()) {
-				int j = this.world.getSkylightSubtracted();
-				this.world.setSkylightSubtracted(10);
-				i = this.world.getLightFromNeighbors(blockpos);
-				this.world.setSkylightSubtracted(j);
-			}
-
-			return i <= this.rand.nextInt(8);
-		}
+				&& !world.containsAnyLiquid(getBoundingBox());*/
 	}
 
 	@Override
@@ -116,10 +94,5 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	@Override
 	public boolean processInteract(PlayerEntity player, Hand hand) {
 		return false;
-	}
-
-	@Override
-	protected ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

@@ -11,10 +11,6 @@ public class ParticleIceBeam extends SpriteTexturedParticle {
 
 	float initialParticleScale;
 
-	public ParticleIceBeam(World world, double x, double y, double z, double vx, double vy, double vz) {
-		this(world, x, y, z, vx, vy, vz, 1.0F);
-	}
-
 	public ParticleIceBeam(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
@@ -27,14 +23,8 @@ public class ParticleIceBeam extends SpriteTexturedParticle {
 		this.particleScale *= 0.75F;
 		this.particleScale *= scale;
 		this.initialParticleScale = this.particleScale;
-//        this.maxAge = (int)(6.0D / (Math.random() * 0.8D + 0.6D));
-//        this.maxAge = (int)((float)this.maxAge * scale);
 		this.maxAge = 50;
 		this.canCollide = true;
-
-		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4)); TODO: put into particle json
-
-		//this.tick(); TODO: ???
 	}
 
 	@Override

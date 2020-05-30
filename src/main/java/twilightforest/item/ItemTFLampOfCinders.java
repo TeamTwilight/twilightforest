@@ -6,11 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.*;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.UseAction;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -22,11 +19,11 @@ import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
 
-public class ItemTFLampOfCinders extends ItemTF {
+public class ItemTFLampOfCinders extends Item {
 	private static final int FIRING_TIME = 12;
 
-	ItemTFLampOfCinders(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(1024).group(TFItems.creativeTab));
+	ItemTFLampOfCinders(Properties props) {
+		super(props);
 	}
 
 	@Nonnull

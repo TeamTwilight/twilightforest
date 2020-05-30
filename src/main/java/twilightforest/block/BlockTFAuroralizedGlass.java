@@ -5,9 +5,8 @@ import net.minecraft.block.material.Material;
 
 public class BlockTFAuroralizedGlass extends AbstractGlassBlock {
 
-    public BlockTFAuroralizedGlass() {
-        super(Properties.create(Material.ICE));
-        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+    public BlockTFAuroralizedGlass(Properties props) {
+        super(props);
     }
 
     //TODO: Move to client

@@ -7,10 +7,12 @@ import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -37,7 +39,7 @@ public abstract class BuiltInItemModel implements IBakedModel {
 	private final ItemOverrideList overrides = new Overrides();
 
 	protected BuiltInItemModel(String particleTextureName) {
-		this.particleTexture = Minecraft.getInstance().getTextureMap().getAtlasSprite(particleTextureName);
+		this.particleTexture = Minecraft.getInstance().getSpriteAtlas(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(particleTextureName));
 	}
 
 	@Override

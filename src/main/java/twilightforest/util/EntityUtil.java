@@ -4,9 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -28,24 +26,20 @@ public class EntityUtil {
 	}
 
 	/**
-	 * [VanillaCopy] Exact copy of Entity.rayTrace
-	 * TODO: update it?
+	 * [VanillaCopy] Entity.pick
 	 */
-	@Nullable
-	public static RayTraceResult rayTrace(Entity entity, double range) {
+	public static BlockRayTraceResult rayTrace(Entity entity, double range) {
 		Vec3d position = entity.getEyePosition(1.0F);
 		Vec3d look = entity.getLook(1.0F);
 		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
-		return entity.world.rayTraceBlocks(position, dest);
+		return entity.world.rayTraceBlocks(new RayTraceContext(position, dest, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
 	}
 
-	@Nullable
-	public static RayTraceResult rayTrace(PlayerEntity player) {
+	public static BlockRayTraceResult rayTrace(PlayerEntity player) {
 		return rayTrace(player, null);
 	}
 
-	@Nullable
-	public static RayTraceResult rayTrace(PlayerEntity player, @Nullable DoubleUnaryOperator modifier) {
+	public static BlockRayTraceResult rayTrace(PlayerEntity player, @Nullable DoubleUnaryOperator modifier) {
 		double range = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}

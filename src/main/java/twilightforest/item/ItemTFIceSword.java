@@ -12,7 +12,7 @@ import twilightforest.util.ParticleHelper;
 public class ItemTFIceSword extends SwordItem {
 
 	public ItemTFIceSword(IItemTier toolMaterial, Properties props) {
-		super(toolMaterial, 3, -2.4F, props.group(TFItems.creativeTab));
+		super(toolMaterial, 3, -2.4F, props);
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class ItemTFIceSword extends SwordItem {
 		if (result && !target.world.isRemote) {
 			target.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, 2));
 			//TODO: Move to regular particle spawner?
-			ParticleHelper.spawnParticles(target, TFParticleType.SNOW, 20);
+			ParticleHelper.spawnParticles(target, TFParticleType.SNOW.get());
 		}
 
 		return result;

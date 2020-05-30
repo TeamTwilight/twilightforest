@@ -101,6 +101,7 @@ public class TFEntityNames {
 	public static final ResourceLocation FALLING_ICE = prefix("falling_ice");
 	public static final ResourceLocation CHAIN_BLOCK = prefix("chain_block");
 	public static final ResourceLocation CUBE_OF_ANNIHILATION = prefix("cube_of_annihilation");
+	public static final ResourceLocation PROTECTION_BOX = prefix("protection_box");
 
 	// Projectiles
 	public static final ResourceLocation NATURE_BOLT = prefix("nature_bolt");

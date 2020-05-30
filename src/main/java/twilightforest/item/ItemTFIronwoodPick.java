@@ -7,7 +7,7 @@ import net.minecraft.util.NonNullList;
 public class ItemTFIronwoodPick extends PickaxeItem {
 
 	protected ItemTFIronwoodPick(IItemTier material, Properties props) {
-		super(material, 1, -2.8F, props.group(TFItems.creativeTab));
+		super(material, 1, -2.8F, props);
 	}
 
 	@Override

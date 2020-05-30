@@ -10,18 +10,15 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
 public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/fire_beetle");
 	private static final DataParameter<Boolean> BREATHING = EntityDataManager.createKey(EntityTFFireBeetle.class, DataSerializers.BOOLEAN);
 	private static final int BREATH_DURATION = 10;
 	private static final int BREATH_DAMAGE = 2;
@@ -70,11 +67,6 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
 		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

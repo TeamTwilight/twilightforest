@@ -6,6 +6,7 @@ import net.minecraft.block.pattern.BlockMatcher;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.IItemPropertyGetter;
@@ -30,12 +31,12 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ItemTFOreMagnet extends ItemTF {
+public class ItemTFOreMagnet extends Item {
 
 	private static final float WIGGLE = 10F;
 
 	protected ItemTFOreMagnet(Properties props) {
-		super(props.maxDamage(12));
+		super(props);
 		// [VanillaCopy] ItemBow with our item
 		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
 			@Override

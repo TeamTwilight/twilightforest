@@ -1,9 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "all":      "twilightforest:blocks/stone_spiral_large",
-    "border":   "blocks/stonebrick_carved",
-    "particle": "blocks/stonebrick_carved"
+    "all":      "twilightforest:block/stone_spiral_large",
+    "border":   "block/stonebrick_carved",
+    "particle": "block/stonebrick_carved"
   },
   "elements": [
     {

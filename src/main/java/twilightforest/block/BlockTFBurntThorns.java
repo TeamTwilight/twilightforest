@@ -18,9 +18,8 @@ import javax.annotation.Nullable;
 
 public class BlockTFBurntThorns extends BlockTFThorns {
 
-	protected BlockTFBurntThorns() {
-		super(Properties.create(Material.WOOD, MaterialColor.STONE).hardnessAndResistance(0.01F, 0.0F).sound(SoundType.SAND));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFBurntThorns(Properties props) {
+		super(props);
 	}
 
 	@Nullable
@@ -43,11 +42,6 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 		world.removeBlock(pos, false);
 		return true;
 	}
-
-//	@Override
-//	public boolean canSustainLeaves(BlockState state, IBlockAccess world, BlockPos pos) {
-//		return false;
-//	}
 
 	@Override
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moving) {}

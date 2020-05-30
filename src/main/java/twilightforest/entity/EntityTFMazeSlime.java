@@ -3,22 +3,23 @@ package twilightforest.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.LightType;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+
+import java.util.Random;
 
 public class EntityTFMazeSlime extends SlimeEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/maze_slime");
 	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.MULTIPLY_BASE).setSaved(false);
 
 	public EntityTFMazeSlime(EntityType<? extends EntityTFMazeSlime> type, World world) {
@@ -37,12 +38,8 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		this.experienceValue += 3;
 	}
 
-	//TODO: This goes into a factory
-	@Override
-	public boolean getCanSpawnHere() {
-		return this.world.getDifficulty() != Difficulty.PEACEFUL && this.world.checkNoEntityCollision(getBoundingBox())
-				&& this.world.getCollisionBoxes(this, getBoundingBox()).isEmpty()
-				&& !this.world.containsAnyLiquid(getBoundingBox()) && this.isValidLightLevel();
+	public static boolean getCanSpawnHere(EntityType<EntityTFMazeSlime> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entity, world, reason, pos, random) && MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 
 	@Override
@@ -56,10 +53,10 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		return true;
 	}
 
-	@Override
-	protected int getAttackStrength() {
-		return super.getAttackStrength() + 3;
-	}
+//	@Override
+//	protected int getAttackStrength() {
+//		return super.getAttackStrength() + 3;
+//	}
 
 	@Override
 	protected boolean spawnCustomParticles() {
@@ -80,35 +77,9 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		return true;
 	}
 
-	// [VanillaCopy] exact copy from EntityMob.isValidLightLevel
-	private boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
-
-		if (this.world.getLightLevel(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
-			return false;
-		} else {
-			int i = this.world.getLightFromNeighbors(blockpos);
-
-			if (this.world.isThundering()) {
-				int j = this.world.getSkylightSubtracted();
-				this.world.setSkylightSubtracted(10);
-				i = this.world.getLightFromNeighbors(blockpos);
-				this.world.setSkylightSubtracted(j);
-			}
-
-			return i <= this.rand.nextInt(8);
-		}
-	}
-
 	@Override
 	protected float getSoundVolume() {
 		// OH MY GOD, SHUT UP
 		return 0.1F * this.getSlimeSize();
 	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
-	}
-
 }

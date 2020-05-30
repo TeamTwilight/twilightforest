@@ -25,12 +25,12 @@ import twilightforest.entity.TFEntities;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ItemTFMoonwormQueen extends ItemTF {
+public class ItemTFMoonwormQueen extends Item {
 
 	private static final int FIRING_TIME = 12;
 
-	protected ItemTFMoonwormQueen(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(256));
+	protected ItemTFMoonwormQueen(Properties props) {
+		super(props);
 		addPropertyOverride(TwilightForestMod.prefix("alt"), new IItemPropertyGetter() {
 			@OnlyIn(Dist.CLIENT)
 			@Override

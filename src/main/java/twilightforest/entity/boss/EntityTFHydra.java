@@ -11,7 +11,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +24,6 @@ import net.minecraft.world.server.ServerBossInfo;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.IEntityMultiPart;
@@ -42,8 +40,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hydra");
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;
@@ -718,12 +714,6 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		if (!world.isRemote) {
 			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.HYDRA_LAIR);
 		}
-	}
-
-	//TODO: Move to loot table
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

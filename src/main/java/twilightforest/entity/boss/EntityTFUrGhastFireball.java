@@ -38,11 +38,14 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 	}
 
 	@Override
-	public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
-		Vec3d vec3d = (new Vec3d(p_70186_1_, p_70186_3_, p_70186_5_)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_, this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_, this.rand.nextGaussian() * (double) 0.0075F * (double) p_70186_8_).scale((double) p_70186_7_);
+	public void shoot(double x, double y, double z, float scale, float dist) {
+		Vec3d vec3d = (new Vec3d(x, y, z))
+				.normalize()
+				.add(this.rand.nextGaussian() * (double) 0.0075F * (double) dist, this.rand.nextGaussian() * (double) 0.0075F * (double) dist, this.rand.nextGaussian() * (double) 0.0075F * (double) dist)
+				.scale((double) scale);
 		this.setMotion(vec3d);
 		float f = MathHelper.sqrt(horizontalMag(vec3d));
-		this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, p_70186_5_) * (double) (180F / (float) Math.PI));
+		this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, z) * (double) (180F / (float) Math.PI));
 		this.rotationPitch = (float) (MathHelper.atan2(vec3d.y, (double) f) * (double) (180F / (float) Math.PI));
 		this.prevRotationYaw = this.rotationYaw;
 		this.prevRotationPitch = this.rotationPitch;

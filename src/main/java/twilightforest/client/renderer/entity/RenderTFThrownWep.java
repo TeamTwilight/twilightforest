@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.entity.boss.EntityTFThrownWep;
@@ -30,14 +31,14 @@ public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRender
 		// size up
 		stack.scale(1.25F, 1.25F, 1.25F);
 
-		this.renderDroppedItem(stack, buffer, entity.getItem(), yaw, spin);
+		this.renderDroppedItem(stack, buffer, light, entity.getItem(), yaw, spin);
 
 		RenderSystem.disableRescaleNormal();
 		stack.pop();
 	}
 
 	// todo recheck transformations
-	private void renderDroppedItem(MatrixStack matrix, IRenderTypeBuffer buffer, ItemStack stack, float rotation, float spin) {
+	private void renderDroppedItem(MatrixStack matrix, IRenderTypeBuffer buffer, int light, ItemStack stack, float rotation, float spin) {
 		matrix.push();
 
 		float f9 = 0.5F;
@@ -52,7 +53,7 @@ public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRender
 		matrix.translate(-f9, -f10, -(f12 + f11));
 		matrix.translate(0f, 0f, f12 + f11);
 
-		Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND, matrix, buffer);
+		Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND, light, OverlayTexture.DEFAULT_UV, matrix, buffer);
 
 		matrix.pop();
 	}

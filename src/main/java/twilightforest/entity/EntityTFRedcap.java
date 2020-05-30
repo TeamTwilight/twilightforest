@@ -14,21 +14,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFRedcapLightTNT;
 import twilightforest.entity.ai.EntityAITFRedcapShy;
 
 import javax.annotation.Nullable;
 
 public class EntityTFRedcap extends MonsterEntity {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/redcap");
 
 	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
 	public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
@@ -77,11 +73,6 @@ public class EntityTFRedcap extends MonsterEntity {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.REDCAP_DEATH;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	public boolean isShy() {

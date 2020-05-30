@@ -17,8 +17,10 @@ import java.util.Locale;
 
 public class ShieldCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {
-        return Commands.literal("shield").then(Commands.argument("target", EntityArgument.entity())
-                .then(Commands.literal("set")
+        return Commands.literal("shield")
+                .requires(cs -> cs.hasPermissionLevel(2))
+                .then(Commands.argument("target", EntityArgument.entity())
+                    .then(Commands.literal("set")
                         .then(Commands.argument("amount", IntegerArgumentType.integer())
                                 .executes(ctx -> set(EntityArgument.getEntity(ctx, "target"), IntegerArgumentType.getInteger(ctx, "amount"), true))
                                 .then(Commands.argument("temp", BoolArgumentType.bool())

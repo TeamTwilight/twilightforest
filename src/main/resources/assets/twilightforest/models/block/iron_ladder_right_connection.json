@@ -1,7 +1,7 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "particle": "twilightforest:blocks/ladder_iron"
+    "particle": "twilightforest:block/ladder_iron"
   },
   "elements": [
     {

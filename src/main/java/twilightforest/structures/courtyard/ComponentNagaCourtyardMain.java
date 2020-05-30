@@ -28,8 +28,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 		super(NagaCourtyardPieces.TFNCMn, nbt);
 	}
 
-	//TODO: Parameter "world" is unused. Remove?
-	public ComponentNagaCourtyardMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+	public ComponentNagaCourtyardMain(TFFeature feature, Random rand, int i, int x, int y, int z) {
 		super(NagaCourtyardPieces.TFNCMn, feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS);
 
 		this.setCoordBaseMode(Direction.NORTH);

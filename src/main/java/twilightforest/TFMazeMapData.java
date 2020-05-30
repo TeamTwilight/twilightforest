@@ -4,10 +4,18 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.MapData;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 public class TFMazeMapData extends MapData {
+	private static final Map<World, Map<String, TFMazeMapData>> CLIENT_DATA = new WeakHashMap<>();
 
 	public int yCenter;
 
@@ -28,16 +36,34 @@ public class TFMazeMapData extends MapData {
 		return ret;
 	}
 
-	public void calculateMapCenter(World world, double x, double y, double z, int mapScale) {
+	public void calculateMapCenter(World world, int x, int y, int z, int mapScale) {
 		super.calculateMapCenter(x, z, mapScale);
-		this.yCenter = MathHelper.floor(y);
+		this.yCenter = y;
 
 		// when we are in a labyrinth, snap to the LABYRINTH
-		if (TFWorld.isTwilightForest(world) && TFFeature.getFeatureForRegion(MathHelper.floor(x) >> 4, MathHelper.floor(z) >> 4, world) == TFFeature.LABYRINTH) {
-			BlockPos mc = TFFeature.getNearestCenterXYZ(MathHelper.floor(x) >> 4, MathHelper.floor(z) >> 4, world);
+		if (TFWorld.isTwilightForest(world) && TFFeature.getFeatureForRegion(x >> 4, z >> 4, world) == TFFeature.LABYRINTH) {
+			BlockPos mc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
 			this.xCenter = mc.getX();
 			this.zCenter = mc.getZ();
-			this.yCenter = MathHelper.floor(y);
+		}
+	}
+
+	// [VanillaCopy] Adapted from World.getMapData
+	@Nullable
+	public static TFMazeMapData getMazeMapData(World world, String name) {
+		if (world.isRemote) {
+			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
+		} else {
+			return world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData().get(() -> new TFMazeMapData(name), name);
+		}
+	}
+
+	// [VanillaCopy] Adapted from World.registerMapData
+	public static void registerMazeMapData(World world, TFMazeMapData data) {
+		if (world.isRemote) {
+			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getName(), data);
+		} else {
+			world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData().set(data);
 		}
 	}
 }

@@ -25,12 +25,12 @@ public class BlockTFEncasedFireJet extends Block {
 
 	protected BlockTFEncasedFireJet() {
 		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(STATE, FireJetVariant.IDLE));
 	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(STATE);
 	}
 

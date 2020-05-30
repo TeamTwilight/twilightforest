@@ -1,4 +1,5 @@
 {
+  "type": "entity",
   "pools": [
     {
       "name": "scales",
@@ -13,8 +14,7 @@
       "rolls": 1,
       "entries": [{
         "type": "item",
-        "name": "twilightforest:trophy",
-        "functions": [{ "function": "set_data", "data": 0 }]
+        "name": "twilightforest:naga_trophy"
       }]
     }, {
       "name": "shader",

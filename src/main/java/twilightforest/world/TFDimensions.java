@@ -4,6 +4,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.provider.BiomeProviderType;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGeneratorType;
@@ -24,13 +25,17 @@ import java.util.function.BiFunction;
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
 
+	public static final DeferredRegister<BiomeProviderType<?, ?>> BIOME_PROVIDER_TYPES = new DeferredRegister<>(ForgeRegistries.BIOME_PROVIDER_TYPES, TwilightForestMod.ID);
 	public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATOR_TYPES = new DeferredRegister<>(ForgeRegistries.CHUNK_GENERATOR_TYPES, TwilightForestMod.ID);
 	public static final DeferredRegister<ModDimension> MOD_DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, TwilightForestMod.ID);
+
+	public static final RegistryObject<BiomeProviderType<TFBiomeProviderSettings, TFBiomeProvider>> TF_BIOME_PROVIDER = BIOME_PROVIDER_TYPES.register(
+			"tf_biome_provider", () -> new BiomeProviderType<>(TFBiomeProvider::new, TFBiomeProviderSettings::new));
 
 	public static final RegistryObject<ChunkGeneratorType<TFWorld, ChunkGeneratorTwilightForest>> TF_CHUNK_GEN = CHUNK_GENERATOR_TYPES.register(
 			"tf_chunk_gen", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightForest::new, true, TFWorld::new));
 	public static final RegistryObject<ChunkGeneratorType<TFWorld, ChunkGeneratorTwilightVoid>> SKYLIGHT_GEN = CHUNK_GENERATOR_TYPES.register(
-			"tf_chunk_gen", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightVoid::new, true, TFWorld::new));
+			"tf_chunk_gen_void", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightVoid::new, true, TFWorld::new));
 
 	public static final RegistryObject<ModDimension> TWILIGHT_FOREST = MOD_DIMENSIONS.register("twilight_forest", () -> new ModDimension() {
 		@Override
@@ -50,17 +55,10 @@ public class TFDimensions {
 		if (DimensionType.byName(dimRL) == null) {
 			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", originDim.get());
 			originDim.set("minecraft:overworld");
-		} else if (dimRL == tfDim) {
+		} else if (dimRL.equals(tfDim)) {
 			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", originDim.get());
 			originDim.set("minecraft:overworld");
 		}
-//		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
-//			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
-//			TFConfig.originDimension = 0;
-//		} else if (TFConfig.originDimension == TFConfig.dimension.dimensionID) {
-//			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
-//			TFConfig.originDimension = 0;
-//		}
 	}
 
 	@SubscribeEvent

@@ -33,9 +33,9 @@
   },
   "ambientocclusion": false,
   "textures": {
-    "particle": "twilightforest:blocks/fiery_block",
-    "all": "twilightforest:blocks/fiery_block_inner",
-    "over": "twilightforest:blocks/fiery_pattern"
+    "particle": "twilightforest:block/fiery_block",
+    "all": "twilightforest:block/fiery_block_inner",
+    "over": "twilightforest:block/fiery_pattern"
   },
   "elements": [
     {
@@ -84,7 +84,7 @@
     "0": {
       "type": "ctm",
       "layer": "CUTOUT",
-      "textures": [ "twilightforest:blocks/fiery_block_inner_ctm" ],
+      "textures": [ "twilightforest:block/fiery_block_inner_ctm" ],
       "extra": {
         "light": 15,
         "connect_inside": true

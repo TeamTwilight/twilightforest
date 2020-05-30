@@ -7,17 +7,14 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
 // TODO: See Bunny
 public class EntityTFSquirrel extends AnimalEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/squirrel");
 	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public EntityTFSquirrel(EntityType<? extends EntityTFSquirrel> type, World world) {
@@ -52,11 +49,6 @@ public class EntityTFSquirrel extends AnimalEntity {
 	@Override
 	public boolean handleFallDamage(float distance, float multiplier) {
 		return false;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

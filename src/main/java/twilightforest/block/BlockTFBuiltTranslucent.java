@@ -1,9 +1,11 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -19,6 +21,12 @@ public class BlockTFBuiltTranslucent extends BlockTFTowerTranslucent {
 	public BlockTFBuiltTranslucent() {
 		super(Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL).noDrops());
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
+	}
+
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> container) {
+		super.fillStateContainer(container);
+		container.add(ACTIVE);
 	}
 
 	@Override

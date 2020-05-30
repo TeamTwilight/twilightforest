@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public class ItemTFMazebreakerPick extends PickaxeItem {
 	protected ItemTFMazebreakerPick(IItemTier material, Properties props) {
-		super(material, 1, -2.8F, props.group(TFItems.creativeTab));
+		super(material, 1, -2.8F, props);
 	}
 
 	@Override
@@ -28,11 +28,5 @@ public class ItemTFMazebreakerPick extends PickaxeItem {
 	public float getDestroySpeed(@Nonnull ItemStack stack, BlockState state) {
 		float destroySpeed = super.getDestroySpeed(stack, state);
 		return state.getBlock() instanceof BlockTFMazestone ? destroySpeed * 16F : destroySpeed;
-	}
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return Rarity.RARE;
 	}
 }

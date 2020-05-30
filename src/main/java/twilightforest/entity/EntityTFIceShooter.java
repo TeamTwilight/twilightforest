@@ -8,18 +8,14 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFIceSnowball;
 
 public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackMob {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_shooter");
 
 	public EntityTFIceShooter(EntityType<? extends EntityTFIceShooter> type, World world) {
 		super(type, world);
@@ -46,11 +42,6 @@ public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackM
 	@Override
 	public float getEyeHeight(Pose pose) {
 		return this.getHeight() * 0.6F;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

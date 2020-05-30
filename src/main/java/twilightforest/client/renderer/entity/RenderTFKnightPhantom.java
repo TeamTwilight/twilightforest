@@ -17,7 +17,7 @@ public class RenderTFKnightPhantom<T extends EntityTFKnightPhantom, M extends Mo
 	public RenderTFKnightPhantom(EntityRendererManager manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new HeldItemLayer<>(this));
-		this.addLayer(new BipedArmorLayer<>(this));
+		this.addLayer(new BipedArmorLayer<>(this, new ModelTFKnightPhantom2<>(), new ModelTFKnightPhantom2<>()));
 	}
 
 	@Override

@@ -1,0 +1,6 @@
+{
+  "parent": "block/pressure_plate_up",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_mangrove_2"
+  }
+}

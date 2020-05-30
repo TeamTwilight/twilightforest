@@ -19,6 +19,7 @@ public abstract class BlockTFDirectionalRotatedPillar extends RotatedPillarBlock
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(REVERSED);
 	}
 

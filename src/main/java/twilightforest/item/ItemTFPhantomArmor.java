@@ -8,10 +8,7 @@ import net.minecraft.enchantment.VanishingCurseEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -26,12 +23,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemTFPhantomArmor extends ItemTFArmor {
+public class ItemTFPhantomArmor extends ArmorItem {
 
 	private static final Map<EquipmentSlotType, BipedModel> phantomArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
-	public ItemTFPhantomArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
-		super(armorMaterial, armorType, rarity, props);
+	public ItemTFPhantomArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
+		super(armorMaterial, armorType, props);
 	}
 
 	@Override

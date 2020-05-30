@@ -32,15 +32,15 @@
     }
   },
   "textures": {
-    "particle":   "blocks/dirt",
-    "dirt":       "blocks/dirt",
-    "grass":      "blocks/grass_top",
-    "grass_side": "blocks/grass_side_overlay",
-    "stone":      "blocks/stone",
-    "brick":      "blocks/stonebrick",
-    "moss_brick": "blocks/stonebrick_mossy",
-    "slab_side":  "blocks/stone_slab_top",
-    "slab_top":   "blocks/stone_slab_top"
+    "particle":   "block/dirt",
+    "dirt":       "block/dirt",
+    "grass":      "block/grass_block_top",
+    "grass_side": "block/grass_block_side_overlay",
+    "stone":      "block/stone",
+    "brick":      "block/stone_bricks",
+    "moss_brick": "block/mossy_stone_bricks",
+    "slab_side":  "block/smooth_stone_slab_side",
+    "slab_top":   "block/smooth_stone"
   },
   "elements": [ {
     "from": [  1, 2,  1 ],

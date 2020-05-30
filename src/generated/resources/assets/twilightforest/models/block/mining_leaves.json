@@ -1,0 +1,6 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "twilightforest:block/mining_leaves"
+  }
+}

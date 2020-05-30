@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Direction;
 import net.minecraft.particles.ParticleTypes;
@@ -50,13 +51,14 @@ public class BlockTFPortal extends BreakableBlock {
 	private static final int MIN_PORTAL_SIZE =  4;
 	private static final int MAX_PORTAL_SIZE = 64;
 
-	public BlockTFPortal() {
-		super(Properties.create(Material.PORTAL).hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).doesNotBlockMovement().nonOpaque().noDrops());
+	public BlockTFPortal(Block.Properties props) {
+		super(props);
 		this.setDefaultState(this.stateContainer.getBaseState().with(DISALLOW_RETURN, false));
 	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(DISALLOW_RETURN);
 	}
 
@@ -144,8 +146,8 @@ public class BlockTFPortal extends BreakableBlock {
 
 		boolean isPoolProbablyEnclosed = true;
 
-		for (int i = 0; i < Direction.Plane.HORIZONTAL.ordinal() && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
-			BlockPos positionCheck = pos.offset(Direction.HORIZONTALS[i]);
+		for (int i = 0; i < Direction.Plane.values().length && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
+			BlockPos positionCheck = pos.offset(Direction.byHorizontalIndex(i));
 
 			if (!blocksChecked.containsKey(positionCheck)) {
 				BlockState state = world.getBlockState(positionCheck);
@@ -211,7 +213,7 @@ public class BlockTFPortal extends BreakableBlock {
 
 	private static DimensionType getDestination(Entity entity) {
 		return entity.dimension != TFDimensions.tf_dimType
-				? TFDimensions.tf_dimType : TFConfig.originDimension;
+				? TFDimensions.tf_dimType : DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
@@ -238,7 +240,7 @@ public class BlockTFPortal extends BreakableBlock {
 		if (destination == TFDimensions.tf_dimType && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			playerMP.setSpawnPoint(new BlockPos(playerMP), true, TFDimensions.tf_dimType);
+			playerMP.setSpawnPoint(new BlockPos(playerMP), true, false, TFDimensions.tf_dimType);
 		}
 	}
 

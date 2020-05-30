@@ -275,7 +275,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		// sky light
-		nullifySkyLightForBoundingBox(world);
+//		nullifySkyLightForBoundingBox(world);
 
 		if (this.size > 9) {
 			// half floors, always starting at y = 4
@@ -1117,7 +1117,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	@Override
 	protected void makeDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		// nullify sky light
-		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
+//		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
 		final BlockState inactiveVanish = TFBlocks.vanishing_block.get().getDefaultState();
 
@@ -1137,7 +1137,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 */
 	protected void makeReappearingDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		// nullify sky light
-		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
+//		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
 		final BlockState inactiveReappearing = TFBlocks.reappearing_block.get().getDefaultState();
 
@@ -1157,7 +1157,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 */
 	protected void makeLockedDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		// nullify sky light
-		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
+//		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
 		// clear the door
 		final BlockState lockedVanish = TFBlocks.locked_vanishing_block.get().getDefaultState();

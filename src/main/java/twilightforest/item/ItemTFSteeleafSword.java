@@ -7,7 +7,7 @@ import net.minecraft.util.NonNullList;
 public class ItemTFSteeleafSword extends SwordItem {
 
 	public ItemTFSteeleafSword(IItemTier material, Properties props) {
-		super(material, 3, -2.4F, props.group(TFItems.creativeTab));
+		super(material, 3, -2.4F, props);
 	}
 
 	@Override

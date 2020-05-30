@@ -5,33 +5,23 @@
     "entries": [
       {
         "type": "item",
-        "name": "twilightforest:twilight_sapling",
-        "entryName": "hollow",
-        "functions": [{ "function": "set_data", "data": 4 }]
+        "name": "twilightforest:hollow_oak_sapling"
       },
       {
         "type": "item",
-        "name": "twilightforest:twilight_sapling",
-        "entryName": "time",
-        "functions": [{ "function": "set_data", "data": 5 }]
+        "name": "twilightforest:time_sapling"
       },
       {
         "type": "item",
-        "name": "twilightforest:twilight_sapling",
-        "entryName": "trans",
-        "functions": [{ "function": "set_data", "data": 6 }]
+        "name": "twilightforest:transformation_sapling"
       },
       {
         "type": "item",
-        "name": "twilightforest:twilight_sapling",
-        "entryName": "mining",
-        "functions": [{ "function": "set_data", "data": 7 }]
+        "name": "twilightforest:mining_sapling"
       },
       {
         "type": "item",
-        "name": "twilightforest:twilight_sapling",
-        "entryName": "sorting",
-        "functions": [{ "function": "set_data", "data": 8 }]
+        "name": "twilightforest:sorting_sapling"
       }
     ]
   }]

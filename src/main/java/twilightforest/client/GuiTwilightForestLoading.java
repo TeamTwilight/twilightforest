@@ -48,8 +48,8 @@ public class GuiTwilightForestLoading extends Screen {
 		this.assignContent();
 	}
 
-	@Override
-	protected void keyTyped(char typedChar, int keyCode) {}
+//	@Override
+//	protected void keyTyped(char typedChar, int keyCode) {}
 
     @Override
     public boolean isPauseScreen() {
@@ -126,11 +126,8 @@ public class GuiTwilightForestLoading extends Screen {
 		// Shift it!
 		RenderSystem.translatef(-8f, -16.5f, 0f);
 
-		RenderHelper.enable(); //TODO: Correct?
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
 		// Draw it!
 		minecraft.getItemRenderer().renderItemAndEffectIntoGUI(item, 0, 0);
-		RenderHelper.disableStandardItemLighting();
 
 		// Pop it!
 		RenderSystem.popMatrix();
@@ -195,19 +192,18 @@ public class GuiTwilightForestLoading extends Screen {
 			}
 		},
 		STRONGHOLD(
-				TwilightForestMod.prefix("textures/blocks/knightbrick.png"),
-				TwilightForestMod.prefix("textures/blocks/knightbrick_mossy.png"),
-				TwilightForestMod.prefix("textures/blocks/knightbrick_cracked.png")
+				TwilightForestMod.prefix("textures/blocks/underbrick.png"),
+				TwilightForestMod.prefix("textures/blocks/underbrick_mossy.png"),
+				TwilightForestMod.prefix("textures/blocks/underbrick_cracked.png")
 		),
 		DARKTOWER(
-				TwilightForestMod.prefix("textures/blocks/towerwood_planks.png"),
-				TwilightForestMod.prefix("textures/blocks/towerwood_planks.png"),
-				TwilightForestMod.prefix("textures/blocks/towerwood_mossy.png"),
-				TwilightForestMod.prefix("textures/blocks/towerwood_cracked.png"),
-				//TwilightForestMod.prefix("textures/blocks/towerwood_infested.png"  ),
-				TwilightForestMod.prefix("textures/blocks/towerwood_alt.png")
+				TwilightForestMod.prefix("textures/blocks/tower_wood.png"),
+				TwilightForestMod.prefix("textures/blocks/tower_wood.png"),
+				TwilightForestMod.prefix("textures/blocks/tower_wood_mossy.png"),
+				TwilightForestMod.prefix("textures/blocks/tower_wood_cracked.png"),
+				TwilightForestMod.prefix("textures/blocks/tower_wood_cracked_alt.png")
 		) {
-			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/blocks/towerwood_encased.png");
+			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/blocks/tower_wood_encased.png");
 
 			private final float stretch = 0.985F;
 			private final float offset = 0.4F;
@@ -350,14 +346,14 @@ public class GuiTwilightForestLoading extends Screen {
 			}
 		},
 		FINALCASTLE(
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				//TwilightForestMod.prefix("textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
-				TwilightForestMod.prefix("textures/blocks/castleblock_cracked.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_faded.png")
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				//TwilightForestMod.prefix("textures/blocks/castle_brick_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
+				TwilightForestMod.prefix("textures/blocks/castle_brick_cracked.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick_worn.png")
 		) {
 			private final ResourceLocation[] magic = new ResourceLocation[]{
 					TwilightForestMod.prefix("textures/blocks/castleblock_magic_0.png"),

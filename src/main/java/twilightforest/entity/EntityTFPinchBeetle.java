@@ -10,18 +10,14 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
 public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/pinch_beetle");
 
 	public EntityTFPinchBeetle(EntityType<? extends EntityTFPinchBeetle> type, World world) {
 		super(type, world);
@@ -128,10 +124,14 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 		return true;
 	}
 
-	//TODO: Move to loot table
 	@Override
-	protected ResourceLocation getLootTable() {
-		return LOOT_TABLE;
+	public EntitySize getSize(Pose pose) {
+
+		if (!this.getPassengers().isEmpty()) {
+			return EntitySize.flexible(1.9F, 2.0F);
+		} else {
+			return super.getSize(pose);
+		}
 	}
 
 	@Override

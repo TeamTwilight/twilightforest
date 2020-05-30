@@ -28,7 +28,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		super(TFFinalCastlePieces.TFFCMain, nbt);
 	}
 
-	public ComponentTFFinalCastleMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+	public ComponentTFFinalCastleMain(TFFeature feature, Random rand, int i, int x, int y, int z) {
 		super(TFFinalCastlePieces.TFFCMain, feature, i);
 		this.setCoordBaseMode(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
@@ -38,7 +38,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
 
-		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4, world);
+		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
 
 		int cx = (x >> 8) << 8;
 		int cz = (z >> 8) << 8;

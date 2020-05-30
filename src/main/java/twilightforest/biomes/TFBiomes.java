@@ -12,10 +12,15 @@ import twilightforest.world.surfacebuilders.TFSurfaceBuilders;
 public class TFBiomes {
 	public static final DeferredRegister<Biome> BIOMES = new DeferredRegister<>(ForgeRegistries.BIOMES, TwilightForestMod.ID);
 
+	// todo 1.15 values marked "pick" are placeholders and need to be decided
 	public static final RegistryObject<Biome> tfLake = BIOMES.register("twilight_lake", () ->
 			new TFBiomeTwilightLake(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.OCEAN)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 							.temperature(0.66F)
 							.downfall(1)
 							.depth(-1.8F)
@@ -24,12 +29,23 @@ public class TFBiomes {
 	public static final RegistryObject<Biome> twilightForest = BIOMES.register("twilight_forest", () ->
 			new TFBiomeBase(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
+							.depth(0.1F)
+							.scale(0.2F)
+							.temperature(0.5F)
+							.downfall(0.5F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> denseTwilightForest = BIOMES.register("dense_twilight_forest", () ->
 			new TFBiomeTwilightForestVariant(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
+							.waterFogColor(0x050533) // todo 1.15 pick
 							.waterColor(0x005522)
 							.temperature(0.7F)
 							.downfall(0.8F)
@@ -39,150 +55,223 @@ public class TFBiomes {
 	public static final RegistryObject<Biome> highlands = BIOMES.register("twilight_highlands", () ->
 			new TFBiomeHighlands(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.HIGHLANDS.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.HIGHLANDS, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.MESA)
 							.temperature(0.4F)
 							.downfall(0.7F)
 							.depth(3.5F)
 							.scale(0.05F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> mushrooms = BIOMES.register("mushroom_forest", () ->
 			new TFBiomeMushrooms(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
+							.depth(0.1F)
+							.scale(0.2F)
 							.temperature(0.8F)
 							.downfall(0.8F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> tfSwamp = BIOMES.register("twilight_swamp", () ->
 			new TFBiomeSwamp(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.SWAMP)
 							.temperature(0.8F)
 							.downfall(0.9F)
 							.depth(-0.125F)
 							.scale(0.125F)
 							.waterColor(0xE0FFAE)
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> stream = BIOMES.register("twilight_stream", () ->
 			new TFBiomeStream(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.RIVER)
 							.temperature(0.5F)
 							.downfall(0.1F)
 							.depth(-0.5F)
 							.scale(0)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> snowy_forest = BIOMES.register("snowy_forest", () ->
 			new TFBiomeSnow(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.category(Biome.Category.FOREST)
 							.temperature(0.09F)
 							.downfall(0.9F)
 							.depth(0.2F)
 							.scale(0.2F)
 							.precipitation(Biome.RainType.SNOW)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> glacier = BIOMES.register("twilight_glacier", () ->
 			new TFBiomeGlacier(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.category(Biome.Category.ICY)
 							.temperature(0)
 							.downfall(0.1F)
 							.precipitation(Biome.RainType.SNOW)
+							.depth(0.1F)
+							.scale(0.2F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> clearing = BIOMES.register("twilight_clearing", () ->
 			new TFBiomeClearing(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.PLAINS)
 							.temperature(0.8F)
 							.downfall(0.4F)
 							.depth(0.125F)
 							.scale(0.05F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> oakSavanna = BIOMES.register("oak_savannah", () ->
 			new TFBiomeOakSavanna(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.SAVANNA)
 							.temperature(0.9F)
 							.downfall(0)
 							.depth(0.2F)
 							.scale(0.2F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> fireflyForest = BIOMES.register("firefly_forest", () ->
 			new TFBiomeFireflyForest(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
 							.temperature(0.5F)
 							.downfall(1)
 							.depth(0.125F)
 							.scale(0.05F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> deepMushrooms = BIOMES.register("deep_mushroom_forest", () ->
 			new TFBiomeDeepMushrooms(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
 							.temperature(0.8F)
 							.downfall(1)
 							.depth(0.125F)
 							.scale(0.05F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> darkForest = BIOMES.register("dark_forest", () ->
 			new TFBiomeDarkForest(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
 							.temperature(0.7F)
 							.downfall(0.8F)
 							.depth(0.125F)
 							.scale(0.05F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> enchantedForest = BIOMES.register("enchanted_forest", () ->
 			new TFBiomeEnchantedForest(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
+							.depth(0.1F)
+							.scale(0.2F)
+							.temperature(0.5F)
+							.downfall(0.5F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> fireSwamp = BIOMES.register("fire_swamp", () ->
 			new TFBiomeFireSwamp(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.SWAMP)
 							.temperature(1)
 							.downfall(0.4F)
 							.waterColor(0x6C2C2C)
 							.depth(0.1F)
 							.scale(0.2F)
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> darkForestCenter = BIOMES.register("dark_forest_center", () ->
 			new TFBiomeDarkForestCenter(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
 							.depth(0.125F)
 							.scale(0.05F)
+							.temperature(0.5F)
+							.downfall(0.5F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> highlandsCenter = BIOMES.register("highlands_center", () ->
 			new TFBiomeFinalPlateau(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.PLATEAU.get(), TFSurfaceBuilders.FINAL_PLATEAU)
+							.surfaceBuilder(TFSurfaceBuilders.PLATEAU, TFSurfaceBuilders.FINAL_PLATEAU.getValue())
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.MESA)
 							.temperature(0.3F)
 							.downfall(0.2F)
 							.depth(10.5F)
 							.scale(0.025F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> thornlands = BIOMES.register("thornlands", () ->
 			new TFBiomeThornlands(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.PLATEAU.get(), TFSurfaceBuilders.FINAL_PLATEAU)
+							.surfaceBuilder(TFSurfaceBuilders.PLATEAU, TFSurfaceBuilders.FINAL_PLATEAU.getValue())
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.NONE)
 							.temperature(0.3F)
 							.downfall(0.2F)
 							.depth(6)
 							.scale(0.1F)
+							.waterColor(0x3F76E4) // todo 1.15 pick
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> spookyForest = BIOMES.register("spooky_forest", () ->
 			new TFBiomeSpookyForest(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF.get(), SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
+							.precipitation(Biome.RainType.RAIN)
+							.category(Biome.Category.FOREST)
 							.temperature(0.5F)
 							.downfall(1)
 							.depth(0.125F)
 							.scale(0.05F)
 							.waterColor(0XFA9111)
+							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 
 	public static final BiomeDictionary.Type TWILIGHT = BiomeDictionary.Type.getType("TWILIGHT");
@@ -208,5 +297,14 @@ public class TFBiomes {
 		BiomeDictionary.addTypes(highlandsCenter.get(), TWILIGHT, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
 		BiomeDictionary.addTypes(thornlands.get(), TWILIGHT, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
 		BiomeDictionary.addTypes(spookyForest.get(), TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
+	}
+
+	public static void addBiomeFeatures() {
+		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+			if (biome instanceof TFBiomeBase) {
+				((TFBiomeBase)biome).addSpawns();
+				((TFBiomeBase)biome).addFeatures();
+			}
+		}
 	}
 }

@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import twilightforest.TwilightForestMod;

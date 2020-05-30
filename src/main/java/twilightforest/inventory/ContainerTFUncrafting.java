@@ -15,12 +15,10 @@ import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import twilightforest.TFConfig;
-import twilightforest.block.TFBlocks;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
@@ -44,7 +42,7 @@ public class ContainerTFUncrafting extends Container {
 	private final CraftResultInventory tinkerResult = new CraftResultInventory();
 
 	// Other Data, to kick the player from GUI if they stray too far from table
-	private final IWorldPosCallable world;
+	private final World world;
 	private final PlayerEntity player;
 
 	// Conflict resolution
@@ -53,10 +51,10 @@ public class ContainerTFUncrafting extends Container {
 	public int recipeInCycle = 0;
 
 	public ContainerTFUncrafting(int id, PlayerInventory inventory) {
-		this(id, inventory, IWorldPosCallable.DUMMY);
+		this(id, inventory, inventory.player.world);
 	}
 
-	public ContainerTFUncrafting(int id, PlayerInventory inventory, IWorldPosCallable world) {
+	public ContainerTFUncrafting(int id, PlayerInventory inventory, World world) {
 		super(TFContainers.UNCRAFTING.get(), id);
 
 		this.world = world;
@@ -102,7 +100,7 @@ public class ContainerTFUncrafting extends Container {
 
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getStackInSlot(0);
-			IRecipe[] recipes = getRecipesFor(inputStack);
+			IRecipe[] recipes = getRecipesFor(inputStack, world);
 
 			int size = recipes.length;
 
@@ -282,19 +280,19 @@ public class ContainerTFUncrafting extends Container {
 			if (ingredient.getCount() > 1) {
 				ingredient.setCount(1);
 			}
-			if (ingredient.getDamage() == OreDictionary.WILDCARD_VALUE) {
-				ingredient.setDamage(0);
-			}
+//			if (ingredient.getDamage() == OreDictionary.WILDCARD_VALUE) {
+//				ingredient.setDamage(0);
+//			}
 		}
 		return ingredient;
 	}
 
-	private static IRecipe[] getRecipesFor(ItemStack inputStack) {
+	private static IRecipe[] getRecipesFor(ItemStack inputStack, World world) {
 
 		List<IRecipe> recipes = new ArrayList<>();
 
 		if (!inputStack.isEmpty()) {
-			for (IRecipe recipe : CraftingManager.REGISTRY) {
+			for (IRecipe recipe : world.getRecipeManager().getRecipes()) {
 				if (recipe.canFit(3, 3) && !recipe.getIngredients().isEmpty() && matches(inputStack, recipe.getRecipeOutput())) {
 					recipes.add(recipe);
 				}
@@ -305,15 +303,14 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	private static boolean matches(ItemStack input, ItemStack output) {
-		return input.getItem() == output.getItem() && input.getCount() >= output.getCount()
-				&& (!output.getHasSubtypes() || input.getDamage() == output.getDamage());
+		return input.getItem() == output.getItem() && input.getCount() >= output.getCount();
 	}
 
 	private static IRecipe[] getRecipesFor(CraftingInventory matrix, World world) {
 
 		List<IRecipe> recipes = new ArrayList<>();
 
-		for (IRecipe recipe : CraftingManager.REGISTRY) {
+		for (IRecipe recipe : world.getRecipeManager().getRecipes()) {
 			if (recipe.matches(matrix, world)) {
 				recipes.add(recipe);
 			}
@@ -647,7 +644,7 @@ public class ContainerTFUncrafting extends Container {
 		}
 	}
 
-	private ItemStack[] getIngredients(IRecipe recipe) {
+	private ItemStack[] getIngredients(IRecipe<?> recipe) {
 		// todo 1.12 recheck
 		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
@@ -669,6 +666,7 @@ public class ContainerTFUncrafting extends Container {
 
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
-		return isWithinUsableDistance(world, player, TFBlocks.uncrafting_table.get());
+//		return isWithinUsableDistance(world, player, TFBlocks.uncrafting_table.get());
+		return true;
 	}
 }

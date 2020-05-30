@@ -8,17 +8,13 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
 public class EntityTFGiantMiner extends MonsterEntity {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/giant_miner");
 
 	public EntityTFGiantMiner(EntityType<? extends EntityTFGiantMiner> type, World world) {
 		super(type, world);
@@ -65,10 +61,5 @@ public class EntityTFGiantMiner extends MonsterEntity {
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

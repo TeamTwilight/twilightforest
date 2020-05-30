@@ -57,22 +57,22 @@ public class FogHandler {
 
 			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
 
-			if (event.getFogMode() == -1) {
-				RenderSystem.fogStart(0.0F);
-				RenderSystem.fogEnd(f);
-			} else {
-				RenderSystem.fogStart(f * 0.75F);
-				RenderSystem.fogEnd(f);
-			}
-
-			if (GLContext.getCapabilities().GL_NV_fog_distance) {
-				GlStateManager.glFogi(0x855a, 0x855b);
-			}
+			//FIXME
+//			if (event.getFogMode() == -1) {
+//				RenderSystem.fogStart(0.0F);
+//				RenderSystem.fogEnd(f);
+//			} else {
+//				RenderSystem.fogStart(f * 0.75F);
+//				RenderSystem.fogEnd(f);
+//			}
+//
+//			if (GLContext.getCapabilities().GL_NV_fog_distance) {
+//				RenderSystem.fogi(0x855a, 0x855b);
+//			}
 		}
 	}
 
 	private static boolean isSpooky() {
 		return Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && Minecraft.getInstance().world.getBiome(Minecraft.getInstance().player.getPosition()) == TFBiomes.spookyForest.get();
 	}
-
 }

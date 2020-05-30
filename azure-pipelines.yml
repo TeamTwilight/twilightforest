@@ -1,0 +1,92 @@
+# Gradle
+# Build your Java project and run tests with Gradle using a Gradle wrapper script.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+pool:
+  vmImage: 'Ubuntu-latest'
+
+variables:
+  revision: $[counter('release-number', 0)]
+
+steps:
+- powershell: |
+    (Get-Content ./gradle.properties).Split([Environment]::NewLine) | % {
+        $kvp = $_.Split('=')
+        if ($kvp.Count -gt 1) {
+            $key = $kvp[0] -replace "\.", "_";
+            $value = $kvp[1];
+            Write-Host "##vso[task.setvariable variable=javaprops_$key]$value"
+        }
+    }
+
+- powershell: |
+    $var = (gci env:*).GetEnumerator() | Sort-Object Name
+    $out = ""
+    Foreach ($v in $var) {$out = $out + "`t{0,-28} = {1,-28}`n" -f $v.Name, $v.Value}
+
+    $fileName = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/variables.md"
+    write-output "dump variables on $fileName"
+
+    set-content $fileName $out
+
+    write-output "##vso[task.addattachment type=Distributedtask.Core.Summary;name=Environment Variables;]$fileName"
+  displayName: Dump Variables
+  condition: eq(variables['system.debug'], 'true')
+
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'build'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: './build/libs/'
+    contents: 'twilightforest-*-universal.jar'
+    targetFolder: $(build.artifactStagingDirectory)/release
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    tasks: 'clean'
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    options: '-PCIRevision=$(javaprops_mod_version).$(revision)-beta -PCIType=BETA'
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'build'
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: './build/libs/'
+    contents: 'twilightforest-*-beta-universal.jar'
+    targetFolder: $(build.artifactStagingDirectory)/beta
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts to VSTS'
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))

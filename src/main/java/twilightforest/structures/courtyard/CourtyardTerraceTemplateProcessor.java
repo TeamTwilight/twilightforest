@@ -73,8 +73,8 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
         Block block = state.getBlock();
 
         if (state == Blocks.STONE_BRICKS.getDefaultState())
-        	//TODO: We can't randomise variant. Flatten
-            return random.nextBoolean() ? (shouldMakeNewBlockInfo ? new Template.BlockInfo(blockInfo.pos, state, blockInfo.tileentityData) : blockInfo) : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+            return random.nextBoolean() ? (shouldMakeNewBlockInfo ? new Template.BlockInfo(blockInfo.pos, state, null) : blockInfo) :
+                    new Template.BlockInfo(pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
 
         if (state == Blocks.SMOOTH_STONE_SLAB.getDefaultState())
             return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.COBBLESTONE_SLAB.getDefaultState(), null);

@@ -68,7 +68,7 @@ public class TFGenMinersTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 
 		// place minewood core
 		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState());
-		world.scheduleUpdate(pos.up(), TFBlocks.mining_log_core.get(), TFBlocks.mining_log_core.get().tickRate(world));
+//		world.scheduleUpdate(pos.up(), TFBlocks.mining_log_core.get(), TFBlocks.mining_log_core.get().tickRate(world));
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.down())) {

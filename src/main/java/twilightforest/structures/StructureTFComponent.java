@@ -3,6 +3,7 @@ package twilightforest.structures;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -12,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.util.WoolUtil;
+import twilightforest.util.ColorUtil;
 
 public abstract class StructureTFComponent extends StructurePiece {
 
@@ -50,10 +51,11 @@ public abstract class StructureTFComponent extends StructurePiece {
 
 		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
 			int i = rotation.ordinal() * 4;
-			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i    , this.getBoundingBox().minZ), WoolUtil.getStateById(i));
-			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 1, this.getBoundingBox().minZ), WoolUtil.getStateById(1 + i));
-			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i + 2, this.getBoundingBox().maxZ), WoolUtil.getStateById(2 + i));
-			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 3, this.getBoundingBox().maxZ), WoolUtil.getStateById(3 + i));
+			DyeColor[] colors = DyeColor.values();
+			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i    , this.getBoundingBox().minZ), ColorUtil.WOOL.getColor(colors[i]));
+			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 1, this.getBoundingBox().minZ), ColorUtil.WOOL.getColor(colors[1 + i]));
+			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i + 2, this.getBoundingBox().maxZ), ColorUtil.WOOL.getColor(colors[2 + i]));
+			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 3, this.getBoundingBox().maxZ), ColorUtil.WOOL.getColor(colors[3 + i]));
 		}
 	}
 

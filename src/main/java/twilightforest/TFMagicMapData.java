@@ -7,18 +7,19 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class TFMagicMapData extends MapData {
+	private static final Map<World, Map<String, TFMagicMapData>> CLIENT_DATA = new WeakHashMap<>();
 
 	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
 
@@ -106,6 +107,25 @@ public class TFMagicMapData extends MapData {
 		this.zCenter = roundZ * mapSize;
 	}
 
+	// [VanillaCopy] Adapted from World.getMapData
+	@Nullable
+	public static TFMagicMapData getMagicMapData(World world, String name) {
+		if (world.isRemote) {
+			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
+		} else {
+			return world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData().get(() -> new TFMagicMapData(name), name);
+		}
+	}
+
+	// [VanillaCopy] Adapted from World.registerMapData
+	public static void registerMagicMapData(World world, TFMagicMapData data) {
+		if (world.isRemote) {
+			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getName(), data);
+		} else {
+			world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData().set(data);
+		}
+	}
+
 	public static class TFMapDecoration extends MapDecoration {
 
 		private static final ResourceLocation MAP_ICONS = TwilightForestMod.prefix("textures/gui/mapicons.png");
@@ -113,13 +133,14 @@ public class TFMagicMapData extends MapData {
 		final int featureId;
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
-			super(Type.TARGET_X, xIn, yIn, rotationIn);
+			super(Type.TARGET_X, xIn, yIn, rotationIn, new TranslationTextComponent("map.magic.text")); //TODO: Shush for now
 			this.featureId = featureId;
 		}
 
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public boolean render(int idx) {
+			/* todo 1.15 forge needs to pass in the ms and buffers
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
 				Minecraft.getInstance().textureManager.bindTexture(MAP_ICONS);
 				RenderSystem.pushMatrix();
@@ -141,6 +162,7 @@ public class TFMagicMapData extends MapData {
 				tessellator.draw();
 				RenderSystem.popMatrix();
 			}
+			 */
 			return true;
 		}
 

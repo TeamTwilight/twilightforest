@@ -17,9 +17,11 @@ public class TFBiomeGlacier extends TFBiomeBase {
 
 	public TFBiomeGlacier(Builder props) {
 		super(props);
+	}
 
-		getSpawns(EntityClassification.CREATURE).clear();
-		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.penguin.get(), 10, 4, 4));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -30,6 +32,14 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		TFBiomeDecorator.addPenguins(this);
 		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.GLACIER_TREES_CONFIG, 1);
 		TFBiomeDecorator.addMushrooms(this);
+	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		getSpawns(EntityClassification.CREATURE).clear();
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.penguin.get(), 10, 4, 4));
 	}
 
 	@Override
@@ -45,8 +55,8 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		trySpawnHintMonster(player, world);
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.ICE_TOWER;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.ICE_TOWER;
+//	}
 }

@@ -14,8 +14,6 @@ import twilightforest.TwilightForestMod;
 
 public class EntityTFRaven extends EntityTFTinyBird {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/raven");
-
 	public EntityTFRaven(EntityType<? extends EntityTFRaven> type, World world) {
 		super(type, world);
 
@@ -53,11 +51,6 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.RAVEN_SQUAWK;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

@@ -1,0 +1,60 @@
+{
+  "variants": {
+    "type=top": [
+      {
+        "model": "twilightforest:block/mangrove_slab",
+        "x": 180,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mangrove_slab_1",
+        "x": 180,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mangrove_slab_2",
+        "x": 180,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mangrove_slab_3",
+        "x": 180,
+        "uvlock": true
+      }
+    ],
+    "type=bottom": [
+      {
+        "model": "twilightforest:block/mangrove_slab",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mangrove_slab_1",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mangrove_slab_2"
+      },
+      {
+        "model": "twilightforest:block/mangrove_slab_3"
+      }
+    ],
+    "type=double": [
+      {
+        "model": "twilightforest:block/mangrove_planks",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mangrove_planks_1",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mangrove_planks_2"
+      },
+      {
+        "model": "twilightforest:block/mangrove_planks_3"
+      }
+    ]
+  }
+}

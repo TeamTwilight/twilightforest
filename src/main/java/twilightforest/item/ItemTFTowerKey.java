@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ActionResultType;
@@ -9,9 +10,9 @@ import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
 
-public class ItemTFTowerKey extends ItemTF {
-	ItemTFTowerKey(Rarity rarity, Properties props) {
-		super(rarity, props);
+public class ItemTFTowerKey extends Item {
+	ItemTFTowerKey(Properties props) {
+		super(props);
 	}
 
 	@Nonnull

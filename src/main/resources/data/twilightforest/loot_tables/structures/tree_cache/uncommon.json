@@ -10,38 +10,30 @@
       },
       {
         "type": "item",
-        "entryName": "oak",
-        "name": "twilightforest:twilight_sapling",
+        "name": "twilightforest:oak_sapling",
         "functions": [
-          { "function": "set_count", "count": { "min": 1, "max": 4 } },
-          { "function": "set_data", "data": 0 }
+          { "function": "set_count", "count": { "min": 1, "max": 4 } }
         ]
       },
       {
         "type": "item",
-        "entryName": "canopy",
-        "name": "twilightforest:twilight_sapling",
+        "name": "twilightforest:canopy_sapling",
         "functions": [
-          { "function": "set_count", "count": { "min": 1, "max": 4 } },
-          { "function": "set_data", "data": 1 }
+          { "function": "set_count", "count": { "min": 1, "max": 4 } }
         ]
       },
       {
         "type": "item",
-        "entryName": "mangrove",
-        "name": "twilightforest:twilight_sapling",
+        "name": "twilightforest:mangrove_sapling",
         "functions": [
-          { "function": "set_count", "count": { "min": 1, "max": 4 } },
-          { "function": "set_data", "data": 2 }
+          { "function": "set_count", "count": { "min": 1, "max": 4 } }
         ]
       },
       {
         "type": "item",
-        "entryName": "dark",
-        "name": "twilightforest:twilight_sapling",
+        "name": "twilightforest:dark_sapling",
         "functions": [
-          { "function": "set_count", "count": { "min": 1, "max": 4 } },
-          { "function": "set_data", "data": 3 }
+          { "function": "set_count", "count": { "min": 1, "max": 4 } }
         ]
       }
     ]

@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -17,8 +18,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.inventory.ContainerTFUncrafting;
 import twilightforest.network.PacketUncraftingGui;
 import twilightforest.network.TFPacketHandler;
-
-import java.io.IOException;
 
 public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> {
 
@@ -36,20 +35,42 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 	protected void init() {
 		super.init();
 
-		int id = 0;
+		this.buttons.add(new CycleButton(guiLeft + 40, guiTop + 22, true, button -> {
+			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(0));
+			container.unrecipeInCycle++;
+			container.onCraftMatrixChanged(container.tinkerInput);
+		}));
+		this.buttons.add(new CycleButton(guiLeft + 40, guiTop + 55, false, button -> {
+			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(1));
+			container.unrecipeInCycle--;
+			container.onCraftMatrixChanged(container.tinkerInput);
+		}));
 
-		this.buttons.add(new CycleButton(++id, guiLeft + 40, guiTop + 22, true, false));
-		this.buttons.add(new CycleButton(++id, guiLeft + 40, guiTop + 55, false, false));
+		//this.buttonList.add(new ModeButton(uiLeft + 7, guiTop + 57));
 
-		//this.buttonList.add(new ModeButton(++id, guiLeft + 7, guiTop + 57));
+		this.buttons.add(new CycleButtonMini(guiLeft + 27, guiTop + 56, true, button -> {
+			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(2));
+			container.ingredientsInCycle++;
+			container.onCraftMatrixChanged(container.tinkerInput);
+		}));
+		this.buttons.add(new CycleButtonMini(guiLeft + 27, guiTop + 63, false, button -> {
+			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(3));
+			container.ingredientsInCycle--;
+			container.onCraftMatrixChanged(container.tinkerInput);
+		}));
 
-		this.buttons.add(new CycleButtonMini(++id, guiLeft + 27, guiTop + 56, true));
-		this.buttons.add(new CycleButtonMini(++id, guiLeft + 27, guiTop + 63, false));
+		//this.buttonList.add(new RefreshButton(uiLeft + 26, guiTop + 57));
 
-		//this.buttonList.add(new RefreshButton(++id, guiLeft + 26, guiTop + 57));
-
-		this.buttons.add(new CycleButton(++id, guiLeft + 121, guiTop + 22, true, true));
-		this.buttons.add(new CycleButton(++id, guiLeft + 121, guiTop + 55, false, true));
+		this.buttons.add(new CycleButton(guiLeft + 121, guiTop + 22, true, button -> {
+			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(4));
+			container.unrecipeInCycle++;
+			container.onCraftMatrixChanged(container.assemblyMatrix);
+		}));
+		this.buttons.add(new CycleButton(guiLeft + 121, guiTop + 55, false, button -> {
+			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(5));
+			container.unrecipeInCycle--;
+			container.onCraftMatrixChanged(container.assemblyMatrix);
+		}));
 	}
 
 	@Override
@@ -73,10 +94,9 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		int frameY = (this.height - this.ySize) / 2;
 		this.blit(frameX, frameY, 0, 0, this.xSize, this.ySize);
 
-		ContainerTFUncrafting tfContainer = (ContainerTFUncrafting) this.inventorySlots;
+		ContainerTFUncrafting tfContainer = this.container;
 
 		// show uncrafting ingredients as background
-		RenderHelper.enableGUIStandardItemLighting();
 		RenderSystem.pushMatrix();
 		RenderSystem.translatef(guiLeft, guiTop, 0);
 
@@ -127,7 +147,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		int screenX = appearSlot.xPos;
 		int screenY = appearSlot.yPos;
 		ItemStack itemStackToRender = backgroundSlot.getStack();
-		this.zLevel = 50.0F;
+//		this.zLevel = 50.0F;
 		itemRenderer.zLevel = 50.0F;
 
         itemRenderer.renderItemIntoGUI(itemStackToRender, screenX, screenY);
@@ -138,85 +158,26 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		// draw 50% gray rectangle over the item
 		RenderSystem.disableLighting();
 		RenderSystem.disableDepthTest();
-		Gui.drawRect(screenX, screenY, screenX + 16, screenY + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
+		AbstractGui.fill(screenX, screenY, screenX + 16, screenY + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
 		RenderSystem.enableLighting();
 		RenderSystem.enableDepthTest();
 
         itemRenderer.zLevel = 0.0F;
-		this.zLevel = 0.0F;
-	}
-
-	@Override
-	protected void actionPerformed(Button button) throws IOException {
-		super.actionPerformed(button);
-
-		if (this.inventorySlots instanceof ContainerTFUncrafting) {
-			ContainerTFUncrafting uncrafting = (ContainerTFUncrafting) this.inventorySlots;
-
-			if (button instanceof CycleButton) {
-				CycleButton cycleButton = (CycleButton) button;
-
-				if (cycleButton.constructive) {
-					TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(cycleButton.up ? 4 : 5));
-
-					if (((CycleButton) button).up) {
-						uncrafting.recipeInCycle++;
-					} else {
-						uncrafting.recipeInCycle--;
-					}
-
-					uncrafting.onCraftMatrixChanged(uncrafting.assemblyMatrix);
-				} else {
-					TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(cycleButton.up ? 0 : 1));
-
-					if (((CycleButton) button).up) {
-						uncrafting.unrecipeInCycle++;
-					} else {
-						uncrafting.unrecipeInCycle--;
-					}
-
-					uncrafting.onCraftMatrixChanged(uncrafting.tinkerInput);
-				}
-			}
-
-			//if (button instanceof ModeButton) {
-			//	TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(2));
-
-			//	uncrafting.ingredientMode = !uncrafting.ingredientMode;
-			//}
-
-			if (button instanceof CycleButtonMini) {
-				TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(((CycleButtonMini) button).up ? 2 : 3));
-
-				if (((CycleButtonMini) button).up) {
-					uncrafting.ingredientsInCycle++;
-				} else {
-					uncrafting.ingredientsInCycle--;
-				}
-
-				uncrafting.onCraftMatrixChanged(uncrafting.tinkerInput);
-			}
-
-			this.buttons.clear();
-			this.init();
-			this.updateScreen();
-		}
+//		this.zLevel = 0.0F;
 	}
 
 	private static class CycleButton extends Button {
 		private final boolean up;
-		private final boolean constructive;
 
-		CycleButton(int buttonId, int x, int y, boolean up, boolean constructive) {
-			super(buttonId, x, y, 14, 9, "");
+		CycleButton(int x, int y, boolean up, IPressable onClick) {
+			super(x, y, 14, 9, "", onClick);
 			this.up = up;
-			this.constructive = constructive;
 		}
 
 		@Override
-		public void renderButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+		public void renderButton(int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
-				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
+				Minecraft.getInstance().getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
@@ -228,7 +189,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				this.drawTexturedModalRect(this.x, this.y, textureX, textureY, this.width, this.height);
+				this.blit(this.x, this.y, textureX, textureY, this.width, this.height);
 			}
 		}
 	}
@@ -254,18 +215,18 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 //		}
 //	}
 
-	private class CycleButtonMini extends Button {
+	private static class CycleButtonMini extends Button {
 		private final boolean up;
 
-		CycleButtonMini(int buttonId, int x, int y, boolean up) {
-			super(buttonId, x, y, 8, 6, "");
+		CycleButtonMini(int x, int y, boolean up, IPressable onClick) {
+			super(x, y, 8, 6, "", onClick);
 			this.up = up;
 		}
 
 		@Override
-		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+		public void renderButton(int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
-				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
+				Minecraft.getInstance().getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
@@ -277,8 +238,13 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				this.drawTexturedModalRect(this.x, this.y, textureX, textureY, this.width, this.height);
+				this.blit(this.x, this.y, textureX, textureY, this.width, this.height);
 			}
+		}
+
+		@Override
+		public void onPress() {
+			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(this.up ? 2 : 3));
 		}
 	}
 

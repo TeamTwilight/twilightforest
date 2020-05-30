@@ -1,5 +1,6 @@
 package twilightforest.world;
 
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -28,10 +29,10 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		//this.biomesForGeneration = getBiomeProvider().getBiomesInArea(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		ChunkPrimer primer = new DirectChunkPrimer();
+		ChunkPrimer primer = new DirectChunkPrimer(new ChunkPos(x, z));
 		//initPrimer(primer, data); TODO : Should be do SurfaceBuilder
 
-		deformTerrainForFeature(x, z, primer);
+		deformTerrainForFeature(x, z, region);
 		//replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
 //		generateFeatures(x, z, primer); TODO: Should move to biome decorator
@@ -114,7 +115,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 ////		BlockFalling.fallInstantly = false;
 //	}
 
-	//TODO : Should be move to biome decorator
+	//TODO : Should be move to biome decorator, or WorldCarver?
 	/*@Override
 	protected void deformTerrainForTrollCaves(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 

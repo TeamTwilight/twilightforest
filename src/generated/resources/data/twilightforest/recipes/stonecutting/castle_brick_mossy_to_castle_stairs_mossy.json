@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "twilightforest:castle_brick_mossy"
+  },
+  "result": "twilightforest:castle_stairs_mossy",
+  "count": 1
+}

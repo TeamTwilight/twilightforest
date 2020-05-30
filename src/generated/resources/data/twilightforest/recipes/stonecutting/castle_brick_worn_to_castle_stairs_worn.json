@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "twilightforest:castle_brick_worn"
+  },
+  "result": "twilightforest:castle_stairs_worn",
+  "count": 1
+}

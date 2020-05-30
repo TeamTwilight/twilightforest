@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,9 +16,8 @@ import java.util.Random;
 
 public class BlockTFMagicLeaves extends LeavesBlock {
 
-	protected BlockTFMagicLeaves() {
-		super(Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFMagicLeaves(Block.Properties props) {
+		super(props);
 	}
 
 	@Override

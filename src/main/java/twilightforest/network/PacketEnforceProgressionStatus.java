@@ -29,7 +29,7 @@ public class PacketEnforceProgressionStatus {
 			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					Minecraft.getInstance().world.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
+					Minecraft.getInstance().world.getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null);
 				}
 			});
 			return true;

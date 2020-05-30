@@ -10,9 +10,8 @@ import net.minecraft.world.IBlockReader;
 
 public class BlockTFDarkLeaves extends Block {
 
-	protected BlockTFDarkLeaves() {
-		super(Properties.create(Material.LEAVES).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.PLANT));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFDarkLeaves(Properties props) {
+		super(props);
 	}
 
 //	@Override

@@ -11,21 +11,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 
 public class EntityTFSnowGuardian extends EntityTFIceMob {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/snow_guardian");
 
 	public EntityTFSnowGuardian(EntityType<? extends EntityTFSnowGuardian> type, World world) {
 		super(type, world);
@@ -142,11 +138,6 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 						return TFItems.arctic_helmet.get();
 				}
 		}
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Nullable

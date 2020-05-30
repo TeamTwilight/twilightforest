@@ -18,7 +18,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
 
 import java.util.List;
@@ -28,7 +27,6 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION)).setSaved(false);
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/block_goblin");
 	private static final float CHAIN_SPEED = 16F;
 	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_CHAINPOS = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
@@ -98,11 +96,6 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.REDCAP_AMBIENT;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	/**

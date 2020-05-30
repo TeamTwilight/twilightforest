@@ -6,8 +6,7 @@
       "entries": [
         {
           "type": "item",
-          "name": "twilightforest:trophy",
-          "functions": [{ "function": "set_data", "data": 4 }]
+          "name": "twilightforest:knight_phantom_trophy"
         }
       ]
     }

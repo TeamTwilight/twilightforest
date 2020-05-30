@@ -3,10 +3,11 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -17,11 +18,14 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFOreMagnet;
+import twilightforest.network.PacketChangeBiome;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;
@@ -34,11 +38,16 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	protected BlockTFMagicLogSpecial(MaterialColor topColor, MaterialColor sideColor, MagicWoodVariant variant) {
-		super(topColor, Properties.create(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD).tickRandomly());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		super(topColor, Properties.create(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD).lightValue(15));
 
 		magicWoodVariant = variant;
 		setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
+	}
+
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> container) {
+		super.fillStateContainer(container);
+		container.add(ACTIVE);
 	}
 
 	@Override
@@ -46,31 +55,10 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 		return 20;
 	}
 
-	//TODO: Move to loot table
-//	@Override
-//	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
-//		world.scheduleUpdate(pos, this, this.tickRate(world));
-//	}
-
-//	@Override
-//	public Item getItemDropped(BlockState state, Random random, int fortune) {
-//		return Item.getItemFromBlock(TFBlocks.magic_log);
-//	}
-//
-//	@Override
-//	public int damageDropped(BlockState state) {
-//		return state.get(VARIANT).ordinal();
-//	}
-//
-//	@Override
-//	protected boolean canSilkHarvest() {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
-//	}
+	@Override
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
+		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
+	}
 
 	@Override
 	@Deprecated
@@ -94,7 +82,7 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 				break;
 		}
 
-		//world.scheduleUpdate(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
 	}
 
 	@Override
@@ -102,7 +90,7 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!state.get(ACTIVE)) {
 			world.setBlockState(pos, state.with(ACTIVE, true));
-			//world.scheduleUpdate(pos, this, this.tickRate(world));
+			world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
 			return ActionResultType.SUCCESS;
 		} else if (state.get(ACTIVE)) {
 			world.setBlockState(pos, state.with(ACTIVE, false));
@@ -124,22 +112,20 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, 16);
 
 			BlockState state = world.getBlockState(dPos);
-			Block block = state.getBlock();
 
-			if (block != Blocks.AIR && block.ticksRandomly(state)) {
-				//block.updateTick(world, dPos, state, rand);
+			if (state.ticksRandomly()) {
+				state.scheduledTick((ServerWorld) world, dPos, rand);
 			}
 
 			TileEntity te = world.getTileEntity(dPos);
-			if (te instanceof ITickable && !te.isRemoved()) {
-				((ITickable) te).tick();
+			if (te instanceof ITickableTileEntity && !te.isRemoved()) {
+				((ITickableTileEntity) te).tick();
 			}
 		}
 	}
 
 	/**
 	 * The tree of transformation transforms the biome in the area near it into the enchanted forest biome.
-	 * <p>
 	 * TODO: also change entities
 	 */
 	private void doTreeOfTransformationEffect(World world, BlockPos pos, Random rand) {
@@ -154,11 +140,11 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 			Biome biomeAt = world.getBiome(dPos);
 			if (biomeAt == targetBiome) continue;
 
-			IChunk chunkAt = world.getChunk(dPos);
-			//chunkAt.getBiomes()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte) Biome.getIdForBiome(targetBiome); TODO: How to get ID of biome
+			Chunk chunkAt = world.getChunk(dPos.getX() >> 4, dPos.getZ() >> 4);
+			// todo 1.15 reflect/AT into BiomeManager.data
 
 			if (world instanceof ServerWorld) {
-				//sendChangedBiome(world, dPos, targetBiome);
+				sendChangedBiome(chunkAt, dPos, targetBiome);
 			}
 			break;
 		}
@@ -167,21 +153,16 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 	/**
 	 * Send a tiny update packet to the client to inform it of the changed biome
 	 */
-//	private void sendChangedBiome(World world, BlockPos pos, Biome biome) {
-//		IMessage message = new PacketChangeBiome(pos, biome);
-//		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 128);
-//		TFPacketHandler.CHANNEL.sendToAllTracking(message, targetPoint);
-//	}
+	private void sendChangedBiome(Chunk chunk, BlockPos pos, Biome biome) {
+		PacketChangeBiome message = new PacketChangeBiome(pos, biome);
+		TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), message);
+	}
 
 	/**
 	 * The miner's tree generates the ore magnet effect randomly every second
 	 */
 	private void doMinersTreeEffect(World world, BlockPos pos, Random rand) {
-
 		BlockPos dPos = WorldUtil.randomOffset(rand, pos, 32);
-
-		//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.5F);
-
 		int moved = ItemTFOreMagnet.doMagnet(world, pos, dPos);
 
 		if (moved > 0) {
@@ -204,7 +185,6 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 
 			Block block = world.getBlockState(iterPos).getBlock();
 			if (block instanceof ChestBlock) {
-				//chestInventory = ((ChestBlock) block).getContainer(world, iterPos, true);
 				chestInventory = ChestBlock.getInventory((ChestBlock) block, block.getDefaultState(), world, iterPos, true);
 			}
 
@@ -232,8 +212,6 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 			}
 		}
 
-		//TwilightForestMod.LOGGER.info("Found " + chests.size() + " non-empty chests, containing " + itemCount + " items");
-
 		// find a random item in one of the chests
 		ItemStack beingSorted = ItemStack.EMPTY;
 		int sortedChestNum = -1;
@@ -258,8 +236,6 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 				}
 			}
 		}
-
-		//TwilightForestMod.LOGGER.info("Decided to sort item " + beingSorted);
 
 		if (beingSorted.isEmpty()) return;
 
@@ -299,8 +275,6 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 
 				// add new item
 				moveChest.setInventorySlotContents(moveSlot, beingSorted);
-
-				//TwilightForestMod.LOGGER.info("Moved sorted item " + beingSorted + " to chest " + matchChestNum + ", slot " + moveSlot);
 			}
 		}
 
@@ -353,11 +327,5 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 		}
 
 		return -1;
-	}
-
-	@Override
-	@Deprecated
-	public int getLightValue(BlockState state) {
-		return 15;
 	}
 }

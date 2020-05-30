@@ -16,7 +16,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -24,12 +23,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBirdFly;
 
 public class EntityTFTinyBird extends EntityTFBird {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tiny_bird");
 	private static final DataParameter<Byte> DATA_BIRDTYPE = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> DATA_BIRDFLAGS = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
 
@@ -86,11 +83,6 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	public void setBirdType(int type) {
 		dataManager.set(DATA_BIRDTYPE, (byte) type);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

@@ -74,12 +74,6 @@ public class EntityTFBunny extends AnimalEntity {
 		this.setBunnyType(compound.getInt("BunnyType"));
 	}
 
-	//TODO: Remove for loot table
-//	@Override
-//	public ResourceLocation getLootTable() {
-//		return LOOT_TABLE;
-//	}
-
 	public int getBunnyType() {
 		return dataManager.get(DATA_TYPE);
 	}

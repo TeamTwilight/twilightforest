@@ -15,8 +15,8 @@ public class ConquerCommand {
     private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.tffeature.structure.required"));
 
     public static LiteralArgumentBuilder<CommandSource> register() {
-        LiteralArgumentBuilder<CommandSource> conquer = Commands.literal("conquer").executes(ctx -> changeStructureActivity(ctx.getSource(), true));
-        LiteralArgumentBuilder<CommandSource> reactivate = Commands.literal("reactivate").executes(ctx -> changeStructureActivity(ctx.getSource(), false));
+        LiteralArgumentBuilder<CommandSource> conquer = Commands.literal("conquer").requires(cs -> cs.hasPermissionLevel(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
+        LiteralArgumentBuilder<CommandSource> reactivate = Commands.literal("reactivate").requires(cs -> cs.hasPermissionLevel(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), false));
         return conquer.then(reactivate);
     }
 
@@ -29,9 +29,9 @@ public class ConquerCommand {
         ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(source.getWorld());
 
         BlockPos pos = new BlockPos(source.getPos());
-        if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
-            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag), true);
-            chunkGenerator.setStructureConquered(pos, flag);
+        if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
+            //source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag), true);
+            //chunkGenerator.setStructureConquered(pos, flag);
             return Command.SINGLE_SUCCESS;
         } else {
             throw NOT_IN_STRUCTURE.create();

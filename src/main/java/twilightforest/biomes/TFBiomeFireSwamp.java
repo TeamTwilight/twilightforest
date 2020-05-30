@@ -10,6 +10,11 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 
 	public TFBiomeFireSwamp(Builder props) {
 		super(props);
+	}
+
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -54,8 +59,8 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		trySpawnHintMonster(player, world);
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.HYDRA_LAIR;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.HYDRA_LAIR;
+//	}
 }

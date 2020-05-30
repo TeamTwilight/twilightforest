@@ -173,11 +173,11 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 		float colors1 = blockLight;
 		float colors2 = blockLight;
 
-		if (!hasSkyLight) {
-			colors0 = r + blockLight * (1.0f - r);
-			colors1 = g + blockLight * (1.0f - g);
-			colors2 = b + blockLight * (1.0f - b);
-		}
+//		if (!hasSkyLight) {
+//			colors0 = r + blockLight * (1.0f - r);
+//			colors1 = g + blockLight * (1.0f - g);
+//			colors2 = b + blockLight * (1.0f - b);
+//		}
 		colors.set(colors0, colors1, colors2);
 	}
 

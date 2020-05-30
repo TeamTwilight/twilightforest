@@ -6,8 +6,11 @@ public class TFBiomeStream extends TFBiomeBase {
 
 	public TFBiomeStream(Builder props) {
 		super(props);
+	}
 
-		getSpawns(EntityClassification.CREATURE).clear();
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -20,5 +23,10 @@ public class TFBiomeStream extends TFBiomeBase {
 		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.NORMAL_TREES_CONFIG, 10);
 		TFBiomeDecorator.addReeds(this, 1);
 		TFBiomeDecorator.addWaterlilies(this, 2);
+	}
+
+	@Override
+	public void addSpawns() {
+		getSpawns(EntityClassification.CREATURE).clear();
 	}
 }

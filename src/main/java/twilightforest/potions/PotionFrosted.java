@@ -10,8 +10,6 @@ public class PotionFrosted extends Effect {
 
 	public static final UUID MODIFIER_UUID = UUID.fromString("CE9DBC2A-EE3F-43F5-9DF7-F7F1EE4915A9");
 
-	//private static final ResourceLocation sprite = TwilightForestMod.prefix("textures/gui/frosty.png"); TODO: For asset reference. Delete once moved
-
 	public PotionFrosted(EffectType typeIn, int liquidColorIn) {
 		super(typeIn, liquidColorIn);
 

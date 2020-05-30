@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/tower_wood_cracked"
+      },
+      {
+        "model": "twilightforest:block/tower_wood_cracked_flipped"
+      },
+      {
+        "model": "twilightforest:block/tower_wood_cracked_alt"
+      },
+      {
+        "model": "twilightforest:block/tower_wood_cracked_alt_flipped"
+      }
+    ]
+  }
+}

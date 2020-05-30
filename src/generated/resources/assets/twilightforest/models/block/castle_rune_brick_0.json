@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/util/cube_all_2_layer",
+  "textures": {
+    "all": "twilightforest:block/castle_brick",
+    "all2": "twilightforest:block/castleblock_magic_0"
+  }
+}

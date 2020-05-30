@@ -2,17 +2,18 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.IBreathAttacker;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
-public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> extends Goal {
+public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> extends Goal {
 
 	private final T entityHost;
 	private LivingEntity attackTarget;
@@ -37,7 +38,7 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 
 	@Override
 	public boolean shouldExecute() {
-		this.attackTarget = this.entityHost.getAttackTarget();
+		this.attackTarget = this.entityHost.getRevengeTarget();
 
 		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
 			return false;
@@ -116,7 +117,7 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
 				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
-				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+				Optional<Vec3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -124,7 +125,7 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos != null) {
-					double possibleDist = srcVec.distanceTo(interceptPos.hitVec);
+					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
 						pointedEntity = possibleEntity;

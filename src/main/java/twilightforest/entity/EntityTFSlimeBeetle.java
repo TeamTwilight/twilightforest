@@ -13,17 +13,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFSlimeProjectile;
 
 public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackMob {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/slime_beetle");
 
 	public EntityTFSlimeBeetle(EntityType<? extends EntityTFSlimeBeetle> type, World world) {
 		super(type, world);
@@ -72,11 +68,6 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 	@Override
 	public CreatureAttribute getCreatureAttribute() {
 		return CreatureAttribute.ARTHROPOD;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

@@ -6,10 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -24,12 +21,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemTFYetiArmor extends ItemTFArmor {
+public class ItemTFYetiArmor extends ArmorItem {
 
 	private static final Map<EquipmentSlotType, BipedModel> yetiArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
-	public ItemTFYetiArmor(IArmorMaterial material, EquipmentSlotType slot, Rarity rarity, Properties props) {
-		super(material, slot, rarity, props);
+	public ItemTFYetiArmor(IArmorMaterial material, EquipmentSlotType slot, Properties props) {
+		super(material, slot, props);
 	}
 
 	@Override

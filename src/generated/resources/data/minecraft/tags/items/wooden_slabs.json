@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:twilight_oak_slab",
+    "twilightforest:canopy_slab",
+    "twilightforest:mangrove_slab",
+    "twilightforest:dark_slab",
+    "twilightforest:time_slab",
+    "twilightforest:trans_slab",
+    "twilightforest:mine_slab",
+    "twilightforest:sort_slab"
+  ]
+}

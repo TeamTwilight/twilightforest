@@ -4,13 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
 public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> {
 
@@ -156,7 +156,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.attacker) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
 				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
-				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+				Optional<Vec3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -164,7 +164,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos != null) {
-					double possibleDist = srcVec.distanceTo(interceptPos.hitVec);
+					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
 						attacker.doBreathAttack(possibleEntity);

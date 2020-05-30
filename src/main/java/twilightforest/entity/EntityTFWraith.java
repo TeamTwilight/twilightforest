@@ -1,36 +1,29 @@
 package twilightforest.entity;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.FlyingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.LightType;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.TFNearestPlayerGoal;
 
 import java.util.EnumSet;
 import java.util.Random;
 
 public class EntityTFWraith extends FlyingEntity implements IMob {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/wraith");
 
 	public EntityTFWraith(EntityType<? extends EntityTFWraith> type, World world) {
 		super(type, world);
@@ -284,33 +277,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		return TFSounds.WRAITH;
 	}
 
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
-	}
-
-	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
-	protected boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
-
-		if (this.world.getLightLevel(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
-			return false;
-		} else {
-			int i = this.world.getLightFromNeighbors(blockpos);
-
-			if (this.world.isThundering()) {
-				int j = this.world.getSkylightSubtracted();
-				this.world.setSkylightSubtracted(10);
-				i = this.world.getLightFromNeighbors(blockpos);
-				this.world.setSkylightSubtracted(j);
-			}
-
-			return i <= this.rand.nextInt(8);
-		}
-	}
-
-	@Override
-	public boolean getCanSpawnHere() {
-		return this.world.getDifficulty() != Difficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFWraith> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
 	}
 }

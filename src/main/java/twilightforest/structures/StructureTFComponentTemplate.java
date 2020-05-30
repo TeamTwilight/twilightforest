@@ -73,7 +73,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         super.readAdditional(tagCompound);
 		this.templatePosition = new BlockPos(tagCompound.getInt("TPX"), tagCompound.getInt("TPY"), tagCompound.getInt("TPZ"));
 		this.placeSettings.setRotation(this.rotation);
-		setup(manager, FMLCommonHandler.instance().getMinecraftServerInstance());
+//		setup(manager, FMLCommonHandler.instance().getMinecraftServerInstance());
 	}
 
     protected final void setModifiedTemplatePositionFromRotation() {

@@ -14,7 +14,7 @@ import twilightforest.world.TFWorld;
 
 public class InfoCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {
-        return Commands.literal("info").executes(InfoCommand::run);
+        return Commands.literal("info").requires(cs -> cs.hasPermissionLevel(2)).executes(InfoCommand::run);
     }
 
     private static int run(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
@@ -32,10 +32,10 @@ public class InfoCommand {
 
         // are you in a structure?
         ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(source.getWorld());
-        if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
+        if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
             source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.inside"), false);
 
-            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)), false);
+//            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)), false); TODO: Sorry...I got rid of the Chunk Generator's things
             // are you in a room?
 
             // what is the spawn list

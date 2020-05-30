@@ -10,7 +10,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
@@ -30,9 +29,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
 import javax.annotation.Nullable;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 // TODO: doc out all the vanilla copying
 public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> {
@@ -49,8 +46,8 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 	private final OctavesNoiseGenerator depthNoise;
 	private final boolean isAmplified;
 	private boolean shouldGenerateBedrock = true;
-	protected final Map<TFFeature, MapGenTFMajorFeature> featureGenerators = new EnumMap<>(TFFeature.class);
-	protected final MapGenTFMajorFeature nothingGenerator = new MapGenTFMajorFeature();
+//	protected final Map<TFFeature, MapGenTFMajorFeature> featureGenerators = new EnumMap<>(TFFeature.class);
+//	protected final MapGenTFMajorFeature nothingGenerator = new MapGenTFMajorFeature();
 
 	public ChunkGeneratorTFBase(IWorld world, BiomeProvider provider, TFWorld settings, boolean shouldGenerateBedrock) {
 		this(world, provider, settings);
@@ -219,10 +216,10 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		// are the specified coordinates precisely in a feature?
 		TFFeature nearestFeature = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld());
 
-		List<SpawnListEntry> featureList = getFeatureGenerator(nearestFeature).getPossibleCreatures(creatureType, pos);
-		if (featureList != null) {
-			return featureList;
-		}
+//		List<SpawnListEntry> featureList = getFeatureGenerator(nearestFeature).getPossibleCreatures(creatureType, pos);
+//		if (featureList != null) {
+//			return featureList;
+//		}
 
 		Biome biome = world.getBiome(pos);
 
@@ -234,9 +231,9 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		}
 	}
 
-	protected final MapGenTFMajorFeature getFeatureGenerator(TFFeature feature) {
-		return featureGenerators.getOrDefault(feature, nothingGenerator);
-	}
+//	protected final MapGenTFMajorFeature getFeatureGenerator(TFFeature feature) {
+//		return featureGenerators.getOrDefault(feature, nothingGenerator);
+//	}
 
 	@Override
 	public int getGroundHeight() {
@@ -264,7 +261,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		}
 	}
 
-	protected final void deformTerrainForFeature(int cx, int cz, ChunkPrimer primer) {
+	protected final void deformTerrainForFeature(int cx, int cz, WorldGenRegion primer) {
 
 		IntPair nearCenter = new IntPair();
 		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, world.getWorld(), nearCenter);
@@ -316,10 +313,10 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		// done!
 	}
 
-	protected void deformTerrainForTrollCaves(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {}
+	protected void deformTerrainForTrollCaves(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {}
 
 	//TODO: Parameter "nearFeature" is unused. Remove?
-	private void deformTerrainForTrollCloud2(ChunkPrimer primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
+	private void deformTerrainForTrollCloud2(WorldGenRegion primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
 			for (int bz = 0; bz < 4; bz++) {
 				int dx = (bx * 4) - hx - 2;
@@ -378,14 +375,14 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 
 						if (dist < 7 || cv < 0.05F) {
 
-							primer.setBlockState(new BlockPos(lx, y, lz), TFBlocks.wispy_cloud.get().getDefaultState(), false);
+							primer.setBlockState(new BlockPos(lx, y, lz), TFBlocks.wispy_cloud.get().getDefaultState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(new BlockPos(lx, y - d, lz), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
+								primer.setBlockState(new BlockPos(lx, y - d, lz), TFBlocks.fluffy_cloud.get().getDefaultState(), 3);
 							}
-							primer.setBlockState(new BlockPos(lx, y - depth, lz), TFBlocks.wispy_cloud.get().getDefaultState(), false);
+							primer.setBlockState(new BlockPos(lx, y - depth, lz), TFBlocks.wispy_cloud.get().getDefaultState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(new BlockPos(lx, y - d, lz), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
+								primer.setBlockState(new BlockPos(lx, y - d, lz), TFBlocks.fluffy_cloud.get().getDefaultState(), 3);
 							}
 						}
 					}
@@ -397,7 +394,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 	/**
 	 * Raises up and hollows out the hollow hills.
 	 */
-	private void raiseHills(ChunkPrimer primer, TFFeature nearFeature, int hdiam, int x, int z, int dx, int dz, int hillHeight) {
+	private void raiseHills(WorldGenRegion primer, TFFeature nearFeature, int hdiam, int x, int z, int dx, int dz, int hillHeight) {
 
 		int oldGround = -1;
 		int newGround = -1;
@@ -417,7 +414,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 
 		if (foundGroundLevel) {
 			for (int y = oldGround; y <= newGround; y++) {
-				primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
+				primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), 3);
 			}
 		}
 
@@ -449,17 +446,17 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 			// put a base on hills that go over open space or water
 			for (int y = 0; y < TFWorld.SEALEVEL; y++) {
 				if (primer.getBlockState(new BlockPos(x, y, z)).getBlock() != Blocks.STONE) {
-					primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
+					primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), 3);
 				}
 			}
 		}
 
 		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
-			primer.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), false);
+			primer.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), 3);
 		}
 	}
 
-	private void flattenTerrainForFeature(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
+	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
 		int mazeHeight = TFWorld.SEALEVEL + 1;
@@ -494,18 +491,18 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		for (int y = 0; y < mazeHeight; y++) {
 			Block b = primer.getBlockState(new BlockPos(x, y, z)).getBlock();
 			if (b == Blocks.AIR || b == Blocks.WATER) {
-				primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
+				primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), 3);
 			}
 		}
 		for (int y = mazeHeight; y <= 127; y++) {
 			Block b = primer.getBlockState(new BlockPos(x, y, z)).getBlock();
 			if (b != Blocks.AIR && b != Blocks.WATER) {
-				primer.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), false);
+				primer.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), 3);
 			}
 		}
 	}
 
-	private void deformTerrainForYetiLair(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
+	private void deformTerrainForYetiLair(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
 		int topHeight = TFWorld.SEALEVEL + 24;
@@ -564,18 +561,18 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		for (int y = 0; y < topHeight; y++) {
 			Block b = primer.getBlockState(new BlockPos(x, y, z)).getBlock();
 			if (b == Blocks.AIR || b == Blocks.WATER) {
-				primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
+				primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), 3);
 			}
 		}
 
 		// hollow out inside
 		for (int y = hollowFloor + 1; y < hollowCeiling; ++y) {
-			primer.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), false);
+			primer.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), 3);
 		}
 
 		// ice floor
 		if (hollowFloor < hollowCeiling && hollowFloor < TFWorld.SEALEVEL + 3) {
-			primer.setBlockState(new BlockPos(x, hollowFloor, z), Blocks.PACKED_ICE.getDefaultState(), false);
+			primer.setBlockState(new BlockPos(x, hollowFloor, z), Blocks.PACKED_ICE.getDefaultState(), 3);
 		}
 	}
 
@@ -597,38 +594,38 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		return null;
 	}
 
-	public void setStructureConquered(BlockPos pos, boolean flag) {
-		getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).setStructureConquered(pos, flag);
-	}
-
-	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureLocked(pos, lockIndex);
-	}
-
-	//TODO: Verify replaced method
-	public boolean isBlockInStructureBB(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isPositionInStructure(world, pos);
-	}
-
-	@Nullable
-	public MutableBoundingBox getSBBAt(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).getSBBAt(pos);
-	}
-
-	public boolean isBlockProtected(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isBlockProtectedAt(pos);
-	}
-
-	public boolean isStructureConquered(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureConquered(pos);
-	}
-
-	public boolean isBlockInFullStructure(int x, int z) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(x, z, world.getWorld())).isBlockInFullStructure(x, z);
-	}
-
-	@Nullable
-	public MutableBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world.getWorld())).getFullSBBNear(mapX, mapZ, range);
-	}
+//	public void setStructureConquered(BlockPos pos, boolean flag) {
+//		getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).setStructureConquered(pos, flag);
+//	}
+//
+//	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
+//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureLocked(pos, lockIndex);
+//	}
+//
+//	//TODO: Verify replaced method
+//	public boolean isBlockInStructureBB(BlockPos pos) {
+//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isPositionInStructure(world, pos);
+//	}
+//
+//	@Nullable
+//	public MutableBoundingBox getSBBAt(BlockPos pos) {
+//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).getSBBAt(pos);
+//	}
+//
+//	public boolean isBlockProtected(BlockPos pos) {
+//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isBlockProtectedAt(pos);
+//	}
+//
+//	public boolean isStructureConquered(BlockPos pos) {
+//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureConquered(pos);
+//	}
+//
+//	public boolean isBlockInFullStructure(int x, int z) {
+//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(x, z, world.getWorld())).isBlockInFullStructure(x, z);
+//	}
+//
+//	@Nullable
+//	public MutableBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
+//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world.getWorld())).getFullSBBNear(mapX, mapZ, range);
+//	}
 }

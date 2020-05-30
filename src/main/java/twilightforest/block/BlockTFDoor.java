@@ -7,24 +7,7 @@ import net.minecraft.block.material.Material;
 
 public class BlockTFDoor extends DoorBlock {
 
-    protected BlockTFDoor(MaterialColor mapColor) {
-        super(Properties.create(Material.WOOD, mapColor).hardnessAndResistance(3.0F).sound(SoundType.WOOD));
+    protected BlockTFDoor(Properties props) {
+        super(props);
     }
-
-//    @Override
-//    public Item getItemDropped(BlockState state, Random rand, int fortune) {
-//        return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? Items.AIR : this.getItem();
-//    }
-//
-//    @Override
-//    public ItemStack getItem(World worldIn, BlockPos pos, BlockState state) {
-//        return new ItemStack(this.getItem());
-//    }
-//
-//    private Item getItem() {
-//        if (item == null) {
-//            item = Item.REGISTRY.getObject(itemLocation);
-//        }
-//        return item;
-//    }
 }

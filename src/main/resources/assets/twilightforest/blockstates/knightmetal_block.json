@@ -1,5 +1,0 @@
-{
-  "forge_marker": 1,
-  "defaults": { "model": "twilightforest:knightmetal_block" },
-  "variants": { "normal": [{}] }
-}

@@ -52,12 +52,11 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		super(TFDarkTowerPieces.TFDTMai, nbt);
 	}
 
-	public ComponentTFDarkTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
-		this(feature, world, rand, index, x + 10, y, z + 10, Direction.NORTH);
+	public ComponentTFDarkTowerMain(TFFeature feature, Random rand, int index, int x, int y, int z) {
+		this(feature, rand, index, x + 10, y, z + 10, Direction.NORTH);
 	}
 
-	//TODO: Parameter "world" is unused. Remove?
-	public ComponentTFDarkTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, Direction rotation) {
+	public ComponentTFDarkTowerMain(TFFeature feature, Random rand, int index, int x, int y, int z, Direction rotation) {
 		super(TFDarkTowerPieces.TFDTMai, feature, index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
 
 		// check to make sure we can build the whole tower
@@ -272,7 +271,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 
 		// nullify sky light
-		this.nullifySkyLightForBoundingBox(world);
+//		this.nullifySkyLightForBoundingBox(world);
 
 		// how many total floors do we have?
 		int totalFloors = this.height / 5;
@@ -1176,10 +1175,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
-	//TODO: Flatten
+	//TODO: Each flower has their own block. Flatten
 	private void placeRandomPlant(World world, Random decoRNG, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		int potMeta = decoRNG.nextInt(15); // this seems to be the only way to set the flower pre-placement
-		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState().with(FlowerPotBlock.LEGACY_DATA, potMeta);
+		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState()/*.with(FlowerPotBlock.LEGACY_DATA, potMeta)*/;
 		setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
 	}
 

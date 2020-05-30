@@ -12,7 +12,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -22,7 +21,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
@@ -34,8 +32,6 @@ public class EntityTFTowerGhast extends GhastEntity {
 	private static final DataParameter<Byte> ATTACK_STATUS = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> ATTACK_TIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> ATTACK_PREVTIMER = EntityDataManager.createKey(EntityTFTowerGhast.class, DataSerializers.BYTE);
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_ghast");
 
 	private AIAttack attackAI;
 	protected float wanderFactor;
@@ -312,24 +308,12 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 	}
 
-	public static boolean ghastSpawnHandler(EntityType<? extends EntityTFTowerGhast> entityType, IWorld world, SpawnReason p_223324_2_, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entityType, world, p_223324_2_, pos, random);
+	public static boolean ghastSpawnHandler(EntityType<? extends EntityTFTowerGhast> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entityType, world, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(IWorld world, BlockPos blockPos, Random p_223323_2_) {
-		int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
-		return i <= p_223323_2_.nextInt(8);
-	}
-
-	public boolean isNotColliding(IWorldReader p_205019_1_) {
-		return p_205019_1_.intersectsEntities(this) && !p_205019_1_.containsAnyLiquid(this.getBoundingBox());
-	}
-
-	/**
-	 * Checks to make sure the light is not too bright where the mob is spawning
-	 */
-	protected boolean isValidLightLevel() {
-		return true;
+	public boolean isNotColliding(IWorldReader world) {
+		return world.intersectsEntities(this) && !world.containsAnyLiquid(this.getBoundingBox());
 	}
 
 	private void findHome() {
@@ -343,7 +327,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 				this.detachHome();
 				this.idleTime += 5;
 			} else {
-				BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
+				BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ);
 				this.setHomePosAndDistance(cc.up(128), 64);
 			}
 		}
@@ -397,10 +381,5 @@ public class EntityTFTowerGhast extends GhastEntity {
 		return this.maximumHomeDistance != -1.0F;
 	}
 	// End copy
-
-	@Override
-	protected ResourceLocation getLootTable() {
-		return LOOT_TABLE;
-	}
 }
 

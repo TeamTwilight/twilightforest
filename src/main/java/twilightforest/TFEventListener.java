@@ -436,7 +436,8 @@ public class TFEventListener {
 		PlayerInventory keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
 			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {}", player.getName());
-			keepInventory.player = player;
+			//TODO: Field is final
+//			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
 		//TODO: Baubles is dead
@@ -493,27 +494,28 @@ public class TFEventListener {
 			// check nearby blocks for same block or same drop
 
 			// pre-check for cobble!
-			Item cobbleItem = Item.getItemFromBlock(Blocks.COBBLESTONE);
-			boolean allCobble = state.getBlock().getItemDropped(state, world.rand, 0) == cobbleItem;
-
-			if (allCobble) {
-				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
-					if (dPos.equals(pos)) continue;
-					BlockState stateThere = world.getBlockState(dPos);
-					if (stateThere.getBlock().getItemDropped(stateThere, world.rand, 0) != cobbleItem) {
-						allCobble = false;
-						break;
-					}
-				}
-			}
-
-			if (allCobble && !player.abilities.isCreativeMode) {
-				shouldMakeGiantCobble = true;
-				amountOfCobbleToReplace = 64;
-			} else {
-				shouldMakeGiantCobble = false;
-				amountOfCobbleToReplace = 0;
-			}
+			//TODO: How to figure this out
+//			Item cobbleItem = Item.getItemFromBlock(Blocks.COBBLESTONE);
+//			boolean allCobble = state.getBlock().getItemDropped(state, world.rand, 0) == cobbleItem;
+//
+//			if (allCobble) {
+//				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
+//					if (dPos.equals(pos)) continue;
+//					BlockState stateThere = world.getBlockState(dPos);
+//					if (stateThere.getBlock().getItemDropped(stateThere, world.rand, 0) != cobbleItem) {
+//						allCobble = false;
+//						break;
+//					}
+//				}
+//			}
+//
+//			if (allCobble && !player.abilities.isCreativeMode) {
+//				shouldMakeGiantCobble = true;
+//				amountOfCobbleToReplace = 64;
+//			} else {
+//				shouldMakeGiantCobble = false;
+//				amountOfCobbleToReplace = 0;
+//			}
 
 			// break all nearby blocks
 			if (player instanceof ServerPlayerEntity) {
@@ -574,14 +576,15 @@ public class TFEventListener {
 
 		ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(world);
 
-		if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
+		if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
 			// what feature is nearby?  is it one the player has not unlocked?
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
 
-			if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkGenerator.isBlockProtected(pos)) {
+			if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
 
 				// send protection packet
-				sendAreaProtectionPacket(world, pos, chunkGenerator.getSBBAt(pos));
+				MutableBoundingBox bb = new MutableBoundingBox(pos, pos.add(16, 16, 16)); // todo 1.15 get from structure
+				sendAreaProtectionPacket(world, pos, bb);
 
 				// send a hint monster?
 				nearbyFeature.trySpawnHintMonster(world, player, pos);

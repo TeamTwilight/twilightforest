@@ -16,7 +16,7 @@ import twilightforest.TFFeature;
 
 public class CenterCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {
-        return Commands.literal("center").executes(CenterCommand::run);
+        return Commands.literal("center").requires(cs -> cs.hasPermissionLevel(2)).executes(CenterCommand::run);
     }
 
     private static int run(CommandContext<CommandSource> ctx) {
@@ -24,7 +24,7 @@ public class CenterCommand {
         int dx = MathHelper.floor(source.getPos().getX());
         int dz = MathHelper.floor(source.getPos().getZ());
 
-        BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, source.getWorld());
+        BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4);
 
         boolean fc = TFFeature.isInFeatureChunk(source.getWorld(), dx, dz);
         source.sendFeedback(new TranslationTextComponent("commands.tffeature.center", cc), false);

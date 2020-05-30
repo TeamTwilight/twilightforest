@@ -9,6 +9,5 @@ public class BlockTFMagicLog extends LogBlock {
 
 	protected BlockTFMagicLog(MaterialColor topColor, MaterialColor sideColor) {
 		super(topColor, Properties.create(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 }

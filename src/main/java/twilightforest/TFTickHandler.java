@@ -5,12 +5,14 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,7 +44,7 @@ public class TFTickHandler {
 		if (!world.isRemote && !TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.ticksExisted % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
 			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
-				if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOppedPlayers().getPermissionLevel(player.getGameProfile()) != 0) {
+				if (world.getServer().getPermissionLevel(player.getGameProfile()) != 0) {
 					// reduce range to 4.0 when the option is on
 					checkForPortalCreation(player, world, 4.0F);
 				}
@@ -94,34 +96,33 @@ public class TFTickHandler {
 		int px = MathHelper.floor(player.getX());
 		int pz = MathHelper.floor(player.getZ());
 
-		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
-		if (fullSBB != null) {
-
-			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
-
-			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), world);
-
-			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
-				sendAllClearPacket(world, player);
-				return false;
-			} else {
-				sendStructureProtectionPacket(world, player, fullSBB);
-				return true;
-			}
-		}
+//		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
+//		if (fullSBB != null) {
+//
+//			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
+//
+//			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), world);
+//
+//			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
+//				sendAllClearPacket(world, player);
+//				return false;
+//			} else {
+//				sendStructureProtectionPacket(world, player, fullSBB);
+//				return true;
+//			}
+//		}
 		return false;
 	}
 
 	private static void checkForPortalCreation(PlayerEntity player, World world, float rangeToCheck) {
-		//TODO: Make these checks a Dimension, not an int
-		if (world.dimension.getDimension() == TFConfig.originDimension
+		if (world.dimension.getType() == DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
 				|| world.dimension.getType() == TFDimensions.tf_dimType
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));
 
 			for (ItemEntity entityItem : itemList) {
-				if (TFConfig.portalIngredient.apply(entityItem.getItem())) {
+				if (TFConfig.portalIngredient.test(entityItem.getItem())) {
 					BlockPos pos = entityItem.getPosition();
 					BlockState state = world.getBlockState(pos);
 					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {

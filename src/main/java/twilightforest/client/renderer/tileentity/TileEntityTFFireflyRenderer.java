@@ -3,7 +3,11 @@ package twilightforest.client.renderer.tileentity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
@@ -30,7 +34,7 @@ public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends 
 		float glow = te != null ? ((TileEntityTFFireflyTicking) te).glowIntensity : BugModelAnimationHelper.glowIntensity;
 
 		stack.push();
-		Direction facing = Direction.byIndex(te != null ? te.getBlockMetadata() : 0);
+		Direction facing = te != null ? te.getBlockState().get(DirectionalBlock.FACING) : Direction.NORTH;
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;
@@ -52,7 +56,8 @@ public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends 
 		RenderSystem.rotatef(rotZ, 0F, 0F, 1F);
 		RenderSystem.rotatef(yaw, 0F, 1F, 0F);
 
-		this.bindTexture(textureLoc);
+		//this.bindTexture(textureLoc);
+		IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutout(textureLoc));
 		stack.push();
 		stack.scale(1f, -1f, -1f);
 
@@ -60,7 +65,7 @@ public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends 
 
 		// render the firefly body
 		RenderSystem.disableBlend();
-		fireflyModel.render(0.0625f);
+		fireflyModel.render(stack, builder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 0.0625f);
 
 //      GL11.glEnable(3042 /*GL_BLEND*/);
 //      GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
@@ -73,7 +78,7 @@ public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends 
 		RenderSystem.disableLighting();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, glow);
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		fireflyModel.glow.render(0.0625f);
+		fireflyModel.glow.render(stack, builder, Float.floatToIntBits(glow), OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 0.0625f);
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderSystem.disableBlend();
 		RenderSystem.enableAlphaTest();

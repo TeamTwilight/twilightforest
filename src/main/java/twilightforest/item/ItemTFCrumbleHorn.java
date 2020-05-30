@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.Rarity;
@@ -29,7 +30,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-public class ItemTFCrumbleHorn extends ItemTF {
+public class ItemTFCrumbleHorn extends Item {
 
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
@@ -37,8 +38,8 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	private final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = new ArrayList<>();
 	private final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
 
-	ItemTFCrumbleHorn(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(1024));
+	ItemTFCrumbleHorn(Properties props) {
+		super(props);
 		this.addCrumbleTransforms();
 	}
 

@@ -32,8 +32,9 @@ public class RenderTFSnowQueen<T extends EntityTFSnowQueen, M extends ModelTFSno
 	public void render(T queen, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		super.render(queen, yaw, partialTicks, stack, buffer, light);
 
-		for (int i = 0; i < queen.iceArray.length; i++) {
-			renderManager.renderEntityStatic(queen.iceArray[i], partialTicks, false);
-		}
+		//FIXME
+//		for (int i = 0; i < queen.iceArray.length; i++) {
+//			renderManager.renderEntityStatic(queen.iceArray[i], partialTicks, false);
+//		}
 	}
 }

@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
@@ -26,15 +27,20 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.loot.LootParameters;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class EntityTFQuestRam extends AnimalEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/quest_ram");
 	public static final ResourceLocation REWARD_LOOT_TABLE = TwilightForestMod.prefix("entities/questing_ram_rewards");
 	private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.BOOLEAN);
@@ -51,14 +57,15 @@ public class EntityTFQuestRam extends AnimalEntity {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
 		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL), false));
-		this.goalSelector.addGoal(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.WOOL)));
-		this.goalSelector.addGoal(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL)));
+		this.goalSelector.addGoal(3, new EntityAITFEatLoose(this, Ingredient.fromTag(ItemTags.WOOL)));
+		this.goalSelector.addGoal(4, new EntityAITFFindLoose(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL)));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
 	}
 
+	@Nullable
 	@Override
-	public AnimalEntity createChild(AgeableEntity entityanimal) {
+	public AnimalEntity createChild(@Nonnull AgeableEntity mate) {
 		return null;
 	}
 
@@ -66,7 +73,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 	protected void registerAttributes() {
 		super.registerAttributes();
 		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23);
 	}
 
 	@Override
@@ -74,16 +81,6 @@ public class EntityTFQuestRam extends AnimalEntity {
 		super.registerData();
 		dataManager.register(DATA_COLOR, 0);
 		dataManager.register(DATA_REWARDED, false);
-	}
-
-	@Override
-	protected boolean canDespawn() {
-		return false;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override
@@ -101,7 +98,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 				this.detachHome();
 			} else {
 				// set our home position to the center of the quest grove
-				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.getX()), MathHelper.floor(this.getZ()), world);
+				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.getX()), MathHelper.floor(this.getZ()));
 				this.setHomePosAndDistance(cc, 13);
 			}
 
@@ -115,14 +112,10 @@ public class EntityTFQuestRam extends AnimalEntity {
 		super.updateAITasks();
 	}
 
-	/**
-	 * Pay out!
-	 */
 	private void rewardQuest() {
-		LootContext ctx = new LootContext.Builder((ServerWorld) world).withLootedEntity(this).build();
-		for (ItemStack s : world.getLootTableManager().getLootTableFromLocation(REWARD_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
-			entityDropItem(s, 1.0F);
-		}
+		// todo flesh the context out more
+		LootContext ctx = new LootContext.Builder((ServerWorld) world).withParameter(LootParameters.THIS_ENTITY, this).build(LootParameterSets.EMPTY);
+		world.getServer().getLootTableManager().getLootTableFromLocation(REWARD_LOOT_TABLE).generate(ctx, s -> entityDropItem(s, 1.0F));
 
 		for (ServerPlayerEntity player : this.world.getEntitiesWithinAABB(ServerPlayerEntity.class, getBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
@@ -130,13 +123,10 @@ public class EntityTFQuestRam extends AnimalEntity {
 	}
 
 	@Override
-	public boolean processInteract(PlayerEntity player, Hand hand) {
+	public boolean processInteract(PlayerEntity player, @Nonnull Hand hand) {
 		ItemStack currentItem = player.getHeldItem(hand);
 
-		if (!currentItem.isEmpty() && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(DyeColor.byMetadata(currentItem.getItemDamage()))) {
-			this.setColorPresent(DyeColor.byMetadata(currentItem.getItemDamage()));
-			this.animateAddColor(DyeColor.byMetadata(currentItem.getItemDamage()), 50);
-
+		if (tryAccept(currentItem)) {
 			if (!player.abilities.isCreativeMode) {
 				currentItem.shrink(1);
 			}
@@ -156,6 +146,35 @@ public class EntityTFQuestRam extends AnimalEntity {
 		}
 	}
 
+	public boolean tryAccept(ItemStack stack) {
+		if (stack.getItem().isIn(ItemTags.WOOL)) {
+			DyeColor color = guessColor(stack);
+			if (color != null && !isColorPresent(color)) {
+				setColorPresent(color);
+				animateAddColor(color, 50);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Nullable
+	public static DyeColor guessColor(ItemStack stack) {
+		List<Item> wools = ImmutableList.of(
+						Blocks.WHITE_WOOL.asItem(), Blocks.ORANGE_WOOL.asItem(), Blocks.MAGENTA_WOOL.asItem(), Blocks.LIGHT_BLUE_WOOL.asItem(),
+						Blocks.YELLOW_WOOL.asItem(), Blocks.LIME_WOOL.asItem(), Blocks.PINK_WOOL.asItem(), Blocks.GRAY_WOOL.asItem(),
+						Blocks.LIGHT_GRAY_WOOL.asItem(), Blocks.CYAN_WOOL.asItem(), Blocks.PURPLE_WOOL.asItem(), Blocks.BLUE_WOOL.asItem(),
+						Blocks.BROWN_WOOL.asItem(), Blocks.GREEN_WOOL.asItem(), Blocks.RED_WOOL.asItem(), Blocks.BLACK_WOOL.asItem()
+		);
+		int i = wools.indexOf(stack.getItem());
+		if (i < 0) {
+			// todo 1.15 potentially do some guessing based on registry name for modded wools
+			return null;
+		} else {
+			return DyeColor.byId(i);
+		}
+	}
+
 	@Override
 	public void writeAdditional(CompoundNBT compound) {
 		super.writeAdditional(compound);
@@ -170,20 +189,20 @@ public class EntityTFQuestRam extends AnimalEntity {
 		this.setRewarded(compound.getBoolean("Rewarded"));
 	}
 
-	public int getColorFlags() {
+	private int getColorFlags() {
 		return dataManager.get(DATA_COLOR);
 	}
 
-	public void setColorFlags(int flags) {
+	private void setColorFlags(int flags) {
 		dataManager.set(DATA_COLOR, flags);
 	}
 
 	public boolean isColorPresent(DyeColor color) {
-		return (getColorFlags() & (1 << color.getMetadata())) > 0;
+		return (getColorFlags() & (1 << color.getId())) > 0;
 	}
 
 	public void setColorPresent(DyeColor color) {
-		setColorFlags(getColorFlags() | (1 << color.getMetadata()));
+		setColorFlags(getColorFlags() | (1 << color.getId()));
 	}
 
 	public boolean getRewarded() {
@@ -194,7 +213,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 		dataManager.set(DATA_REWARDED, rewarded);
 	}
 
-	public void animateAddColor(DyeColor color, int iterations) {
+	private void animateAddColor(DyeColor color, int iterations) {
 		float[] colorVal = color.getColorComponentValues();
 		int red = (int) (colorVal[0] * 255F);
 		int green = (int) (colorVal[1] * 255F);

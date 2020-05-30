@@ -13,10 +13,8 @@ public class BlockTFAuroraBrick extends Block {
 
 	public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 15);
 
-	public BlockTFAuroraBrick() {
-		super(Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F));
-
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFAuroraBrick(Properties props) {
+		super(props);
 	}
 
 	private static float getFractalNoise(int iteration, float size, BlockPos pos) {
@@ -44,6 +42,7 @@ public class BlockTFAuroraBrick extends Block {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(VARIANT);
 	}
 
@@ -84,8 +83,8 @@ public class BlockTFAuroraBrick extends Block {
 				138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180};
 
 		// To remove the need for index wrapping, double the permutation table length
-		private static short perm[] = new short[512];
-		private static short permMod12[] = new short[512];
+		private static final short[] perm = new short[512];
+		private static final short[] permMod12 = new short[512];
 
 		static {
 			for (int i = 0; i < 512; i++) {

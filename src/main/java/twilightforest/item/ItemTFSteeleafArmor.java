@@ -3,17 +3,14 @@ package twilightforest.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
 
-public class ItemTFSteeleafArmor extends ItemTFArmor {
+public class ItemTFSteeleafArmor extends ArmorItem {
 
-	public ItemTFSteeleafArmor(IArmorMaterial material, EquipmentSlotType slot, Rarity rarity, Properties props) {
-		super(material, slot, rarity, props);
+	public ItemTFSteeleafArmor(IArmorMaterial material, EquipmentSlotType slot, Properties props) {
+		super(material, slot, props);
 	}
 
 	@Override

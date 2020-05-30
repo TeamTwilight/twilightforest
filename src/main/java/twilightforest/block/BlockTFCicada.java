@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Items;
@@ -12,8 +13,8 @@ import javax.annotation.Nullable;
 
 public class BlockTFCicada extends BlockTFCritter {
 
-	protected BlockTFCicada() {
-		super(Properties.create(Material.MISCELLANEOUS));
+	protected BlockTFCicada(Block.Properties props) {
+		super(props);
 	}
 
 	@Nullable

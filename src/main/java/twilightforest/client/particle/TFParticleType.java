@@ -32,14 +32,13 @@ public class TFParticleType {
 	public static final RegistryObject<BasicParticleType> FIREFLY = PARTICLE_TYPES.register("firefly", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new BasicParticleType(false));
 
-	//TODO: Some particles don't like this event. Check which ones don't like this
 	@SubscribeEvent
 	public static void registerFactories(ParticleFactoryRegisterEvent event) {
 		ParticleManager particles = Minecraft.getInstance().particles;
 
 		particles.registerFactory(TFParticleType.LARGE_FLAME.get(), ParticleLargeFlame.Factory::new);
 		particles.registerFactory(TFParticleType.LEAF_RUNE.get(), ParticleLeafRune.Factory::new);
-		particles.registerFactory(TFParticleType.BOSS_TEAR.get(), ParticleGhastTear.Factory::new);
+		particles.registerFactory(TFParticleType.BOSS_TEAR.get(), new ParticleGhastTear.Factory());
 		particles.registerFactory(TFParticleType.GHAST_TRAP.get(), ParticleGhastTrap.Factory::new);
 		particles.registerFactory(TFParticleType.PROTECTION.get(), ParticleProtection.Factory::new); //probably not a good idea, but worth a shot
 		particles.registerFactory(TFParticleType.SNOW.get(), ParticleSnow.Factory::new);

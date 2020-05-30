@@ -1,14 +1,13 @@
 package twilightforest.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapItemRenderer;
+import net.minecraft.item.FilledMapItem;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TFMazeMapData;
-import twilightforest.item.ItemTFMazeMap;
 
 import java.io.IOException;
 import java.util.function.Supplier;
@@ -47,28 +46,24 @@ public class PacketMazeMap {
 			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-
-					MapItemRenderer mapItemRenderer = Minecraft.getInstance().entityRenderer.getMapItemRenderer();
-					MapData mapData = ItemTFMazeMap.loadMapData(message.inner.getMapId(), Minecraft.getInstance().world);
-
-					// Adapted from NetHandlerPlayClient#handleMaps
-					if (mapData == null) {
-
-						String s = ItemTFMazeMap.STR_ID + "_" + message.inner.getMapId();
-						mapData = new TFMazeMapData(s);
-
-						if (mapItemRenderer.getMapInstanceIfExists(s) != null) {
-							MapData mapData1 = mapItemRenderer.getData(mapItemRenderer.getMapInstanceIfExists(s));
-							if (mapData1 != null) {
-								mapData = mapData1;
+					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
+					MapItemRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapItemRenderer();
+					String s = FilledMapItem.getMapName(message.inner.getMapId());
+					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(Minecraft.getInstance().world, s);
+					if (mapdata == null) {
+						mapdata = new TFMazeMapData(s);
+						if (mapitemrenderer.getMapInstanceIfExists(s) != null) {
+							MapData mapdata1 = mapitemrenderer.getData(mapitemrenderer.getMapInstanceIfExists(s));
+							if (mapdata1 instanceof TFMazeMapData) {
+								mapdata = (TFMazeMapData) mapdata1;
 							}
 						}
 
-						Minecraft.getInstance().world.setData(s, mapData);
+						TFMazeMapData.registerMazeMapData(Minecraft.getInstance().world, mapdata);
 					}
 
-					message.inner.setMapdataTo(mapData);
-					mapItemRenderer.updateMapTexture(mapData);
+					message.inner.setMapdataTo(mapdata);
+					mapitemrenderer.updateMapTexture(mapdata);
 				}
 			});
 			return true;

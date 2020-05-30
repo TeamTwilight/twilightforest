@@ -2,7 +2,9 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.DamageSource;
@@ -17,6 +19,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	private final EntityTFNaga naga;
 	private final int segment;
 	private int deathCounter;
+	private EntitySize entitySize;
 
 	public EntityTFNagaSegment(EntityTFNaga myNaga, int segNum) {
 		super(myNaga, "segment"+segNum, 0, 0);
@@ -87,12 +90,14 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	}
 
 	public void deactivate() {
-		setSize(0, 0);
+		//setSize(0, 0);
+		this.entitySize = EntitySize.flexible(0.0F, 0.0F);
 		setInvisible(true);
 	}
 
 	public void activate() {
-		setSize(1.8F, 1.8F);
+		//setSize(1.8F, 1.8F);
+		this.entitySize = EntitySize.flexible(1.8F, 1.8F);
 		setInvisible(false);
 	}
 
@@ -112,5 +117,10 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	@Override
 	public boolean isNonBoss() {
 		return false;
+	}
+
+	@Override
+	public EntitySize getSize(Pose pose) {
+		return entitySize;
 	}
 }

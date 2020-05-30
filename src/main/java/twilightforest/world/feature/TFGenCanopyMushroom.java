@@ -101,11 +101,11 @@ public class TFGenCanopyMushroom<T extends NoFeatureConfig> extends Feature<T> {
 		if (world.isAreaLoaded(dest, 5)) {
 			if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
 				// branch
-				FeatureUtil.drawBresehnam(world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
-				FeatureUtil.drawBresehnam(world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
+				drawBresehnam(world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
+				drawBresehnam(world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
 			} else {
 				// trunk
-				FeatureUtil.drawBresehnam(world, src, dest.down(), treeState);
+				drawBresehnam(world, src, dest.down(), treeState);
 			}
 
 			if (trunk) {
@@ -185,6 +185,15 @@ public class TFGenCanopyMushroom<T extends NoFeatureConfig> extends Feature<T> {
 	private void setIfEmpty(World world, BlockPos pos, BlockState state) {
 		if (world.isAirBlock(pos)) {
 			world.setBlockState(pos, state);
+		}
+	}
+
+	/**
+	 * Copied over from FeatureUtil, as this is the only place this will ever be used for now
+	 */
+	public static void drawBresehnam(World world, BlockPos from, BlockPos to, BlockState state) {
+		for (BlockPos pixel : FeatureUtil.getBresehnamArrays(from, to)) {
+			world.setBlockState(pixel, state);
 		}
 	}
 }

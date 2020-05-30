@@ -9,21 +9,27 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.FilledMapItem;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.fml.network.NetworkDirection;
 import twilightforest.TFMazeMapData;
+import twilightforest.network.PacketMazeMap;
+import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nullable;
 
+// [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 public class ItemTFMazeMap extends FilledMapItem {
 
 	public static final String STR_ID = "mazemap";
@@ -32,51 +38,46 @@ public class ItemTFMazeMap extends FilledMapItem {
 	protected final boolean mapOres;
 
 	protected ItemTFMazeMap(boolean mapOres, Properties props) {
-		super(props.maxStackSize(1));
+		super(props);
 		this.mapOres = mapOres;
 	}
 
-	// [VanillaCopy] super with own item and id, and y parameter, also whether we have an ore map or not
-	public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, double worldY, boolean mapOres) {
-		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map : TFItems.maze_map, 1, world.getUniqueDataId(STR_ID));
-		String s = STR_ID + "_" + itemstack.getMetadata();
-		TFMazeMapData mapdata = new TFMazeMapData(s);
-		world.setData(s, mapdata);
-		mapdata.scale = scale;
-		mapdata.calculateMapCenter(world, worldX, worldY, worldZ, scale); // TF custom method here
-		mapdata.dimension = world.dimension.getType();
-		mapdata.trackingPosition = trackingPosition;
-		mapdata.unlimitedTracking = unlimitedTracking;
-		mapdata.markDirty();
+	// [VanillaCopy] super with own item and methods, plus y and mapOres
+	public static ItemStack setupNewMap(World world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
+		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map.get() : TFItems.maze_map.get());
+		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension.getType(), worldY);
 		return itemstack;
 	}
 
-	// [VanillaCopy] super, with own string ID and class, narrowed types
 	@Nullable
-	@OnlyIn(Dist.CLIENT)
-	public static TFMazeMapData loadMapData(int mapId, World world) {
-		String s = STR_ID + "_" + mapId;
-		return (TFMazeMapData) world.loadData(TFMazeMapData.class, s);
+	public static TFMazeMapData getData(ItemStack stack, World world) {
+		return TFMazeMapData.getMazeMapData(world, getMapName(getMapId(stack)));
 	}
 
-	// [VanillaCopy] super, with own string ID and class
+	@Nullable
 	@Override
-	public TFMazeMapData getMapData(ItemStack stack, World worldIn) {
-		String s = STR_ID + "_" + stack.getMetadata();
-		TFMazeMapData mapdata = (TFMazeMapData) worldIn.loadData(TFMazeMapData.class, s);
-
-		if (mapdata == null && !worldIn.isRemote) {
-			stack.setDamage(worldIn.getUniqueDataId(STR_ID));
-			s = STR_ID + "_" + stack.getMetadata();
-			mapdata = new TFMazeMapData(s);
-			mapdata.scale = 0; // TF - fix scale at 0
-			mapdata.calculateMapCenter((double) worldIn.getWorldInfo().getSpawnX(), (double) worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
-			mapdata.dimension = worldIn.dimension.getType();
-			mapdata.markDirty();
-			worldIn.setData(s, mapdata);
+	protected TFMazeMapData getCustomMapData(ItemStack stack, World world) {
+		TFMazeMapData mapdata = getData(stack, world);
+		if (mapdata == null && !world.isRemote) {
+			mapdata = ItemTFMazeMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 0, false, false, world.dimension.getType(), world.getWorldInfo().getSpawnY());
 		}
 
 		return mapdata;
+	}
+
+	// [VanillaCopy] super with own item and id, and y parameter
+	private static TFMazeMapData createMapData(ItemStack stack, World world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, DimensionType dimension, int y) {
+		int i = world.getNextMapId();
+		TFMazeMapData mapdata = new TFMazeMapData(getMapName(i));
+		mapdata.func_212440_a(x, z, scale, trackingPosition, unlimitedTracking, dimension);
+		mapdata.calculateMapCenter(world, x, y, z, scale); // call our own map center calculation
+		TFMazeMapData.registerMazeMapData(world, mapdata); // call our own register method
+		stack.getOrCreateTag().putInt("map", i);
+		return mapdata;
+	}
+
+	public static String getMapName(int id) {
+		return STR_ID + "_" + id;
 	}
 
 	// [VanillaCopy] of superclass, with sane variable names and noted changes
@@ -112,7 +113,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
 							Multiset<MaterialColor> multiset = HashMultiset.<MaterialColor>create();
-							Chunk chunk = world.getChunk(new BlockPos(worldX, 0, worldZ));
+							Chunk chunk = world.getChunkAt(new BlockPos(worldX, 0, worldZ));
 
 							int brightness = 1;
 							if (!chunk.isEmpty()) {
@@ -175,9 +176,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 											multiset.add(MaterialColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MaterialColor.EMERALD, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getRegistryName().getPath().contains("ore")) { // TODO: improve this 0.o
-											//TODO: Well, we could use a tag for Ores
-											// any other ore, catchall
+										} else if (state.getBlock() != Blocks.AIR && state.isIn(Tags.Blocks.ORES)) {
 											multiset.add(MaterialColor.PINK, 1000);
 										}
 									}
@@ -239,24 +238,26 @@ public class ItemTFMazeMap extends FilledMapItem {
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean isSelected) {
 		if (!worldIn.isRemote) {
-			TFMazeMapData mapdata = this.getMapData(stack, worldIn);
+			TFMazeMapData mapdata = this.getCustomMapData(stack, worldIn);
 
-			if (entityIn instanceof PlayerEntity) {
-				PlayerEntity entityplayer = (PlayerEntity) entityIn;
-				mapdata.updateVisiblePlayers(entityplayer, stack);
+			if (mapdata != null) {
+				if (entityIn instanceof PlayerEntity) {
+					PlayerEntity entityplayer = (PlayerEntity) entityIn;
+					mapdata.updateVisiblePlayers(entityplayer, stack);
 
-				// TF - if player is far away vertically, show a dot
-				int yProximity = MathHelper.floor(entityplayer.getY() - mapdata.yCenter);
-				if (yProximity < -YSEARCH || yProximity > YSEARCH) {
-					MapDecoration decoration = mapdata.mapDecorations.get(entityplayer.getName());
-					if (decoration != null) {
-						mapdata.mapDecorations.put(entityplayer.getName(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.getX(), decoration.getY(), decoration.getRotation()));
+					// TF - if player is far away vertically, show a dot
+					int yProximity = MathHelper.floor(entityplayer.getY() - mapdata.yCenter);
+					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
+						MapDecoration decoration = mapdata.mapDecorations.get(entityplayer.getName().getString());
+						if (decoration != null) {
+							mapdata.mapDecorations.put(entityplayer.getName().getString(), new MapDecoration(MapDecoration.Type.PLAYER_OFF_MAP, decoration.getX(), decoration.getY(), decoration.getRotation(), null));
+						}
 					}
 				}
-			}
 
-			if (isSelected || entityIn instanceof PlayerEntity && ((PlayerEntity) entityIn).getHeldItemOffhand() == stack) {
-				this.updateMapData(worldIn, entityIn, mapdata);
+				if (!mapdata.locked && (isSelected || entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).getHeldItemOffhand() == stack)) {
+					this.updateMapData(worldIn, entityIn, mapdata);
+				}
 			}
 		}
 	}
@@ -267,19 +268,13 @@ public class ItemTFMazeMap extends FilledMapItem {
 	}
 
 	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return mapOres ? Rarity.UNCOMMON : Rarity.COMMON;
+	@Nullable
+	public IPacket<?> getUpdatePacket(ItemStack stack, World worldIn, PlayerEntity player) {
+		IPacket<?> p = super.getUpdatePacket(stack, worldIn, player);
+		if (p instanceof SMapDataPacket) {
+			return TFPacketHandler.CHANNEL.toVanillaPacket(new PacketMazeMap((SMapDataPacket) p), NetworkDirection.PLAY_TO_CLIENT);
+		} else {
+			return p;
+		}
 	}
-
-	//TODO: How to packet?
-//	@Override
-//	@Nullable
-//	public IPacket<?> getUpdatePacket(ItemStack stack, World worldIn, PlayerEntity player) {
-//		IPacket<?> p = super.getUpdatePacket(stack, worldIn, player);
-//		if (p instanceof SPacketMaps) {
-//			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMazeMap((SPacketMaps) p));
-//		} else {
-//			return p;
-//		}
-//	}
 }

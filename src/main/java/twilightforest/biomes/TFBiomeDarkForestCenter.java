@@ -11,15 +11,15 @@ public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 	}
 
 	@Override
-	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
-		double d0 = INFO_NOISE.getValue(pos.getX() * 0.0225D, pos.getZ() * 0.0225D); //TODO: Check
+	public int getGrassColorAt(double x, double z) {
+		double d0 = INFO_NOISE.noiseAt(x * 0.0225D, z * 0.0225D, false); //TODO: Check
 		return d0 < -0.2D ? 0x667540 : 0x554114;
 	}
 
 	@Override
 	public int getFoliageColor() {
-		double d0 = INFO_NOISE.getValue(pos.getX() * 0.0225D, pos.getZ() * 0.0225D); //TODO: Check
-		return d0 < -0.1D ? 0xf9821e : 0xe94e14;
+//		double d0 = INFO_NOISE.getValue(pos.getX() * 0.0225D, pos.getZ() * 0.0225D); //TODO: Wut?
+		return /*d0 < -0.1D ? 0xf9821e :*/ 0xe94e14;
 	}
 
 	@Override
@@ -27,8 +27,8 @@ public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_knights") };
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.DARK_TOWER;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.DARK_TOWER;
+//	}
 }

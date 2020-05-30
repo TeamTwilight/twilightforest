@@ -13,10 +13,6 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 	private int lifeTime;
 	private int halfLife;
 
-	public ParticleFirefly(World world, double x, double y, double z, double f, double f1, double f2) {
-		this(world, x, y, z, 1.0F, f, f1, f2);
-	}
-
 	public ParticleFirefly(World world, double x, double y, double z, float f, double f1, double f2, double f3) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		motionX *= 2.10000000149011612D;
@@ -31,13 +27,11 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 		maxAge *= f;
 		halfLife = lifeTime / 2;
 		canCollide = true;
-
-		//sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/firefly"); TODO: put into particle json
 	}
 
 	@Override
 	public IParticleRenderType getRenderType() {
-		return IParticleRenderType.PARTICLE_SHEET_OPAQUE; //TODO: There's a LIT and TRANSLUCENT option, too
+		return IParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 
 	@Override
@@ -45,14 +39,6 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 		particleAlpha = getGlowBrightness();
 		super.buildGeometry(buffer, entity, partialTicks);
 	}
-
-//	@Override
-//	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
-//							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-//
-//		particleAlpha = getGlowBrightness();
-//		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
-//	}
 
 	@Override
 	public void tick() {

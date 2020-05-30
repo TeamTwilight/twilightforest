@@ -15,12 +15,11 @@ public class TFBiomeHighlands extends TFBiomeBase {
 
 	public TFBiomeHighlands(Builder props) {
 		super(props);
+	}
 
-		undergroundMonsterList.clear();
-		undergroundMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 1, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntityType.SLIME, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(TFEntities.troll.get(), 10, 4, 4));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -38,6 +37,17 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		TFBiomeDecorator.addFlowers(this, 2);
 		TFBiomeDecorator.addMushgloom(this, 1);
 		TFBiomeDecorator.addMushrooms(this);
+	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		undergroundMonsterList.clear();
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 1, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(EntityType.SLIME, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(TFEntities.troll.get(), 10, 4, 4));
 	}
 
 	@Override
@@ -59,8 +69,8 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.TROLL_CAVE;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.TROLL_CAVE;
+//	}
 }

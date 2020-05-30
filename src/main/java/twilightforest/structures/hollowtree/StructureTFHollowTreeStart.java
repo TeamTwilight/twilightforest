@@ -26,7 +26,7 @@ public class StructureTFHollowTreeStart extends StructureStart {
 		int z = (chunkZ << 4) + 8;
 		int y = TFWorld.SEALEVEL + 1;
 
-		StructureTFComponent trunk = new ComponentTFHollowTreeTrunk(world, rand, 0, x, y, z);
+		StructureTFComponent trunk = new ComponentTFHollowTreeTrunk(rand, 0, x, y, z);
 		components.add(trunk);
 		trunk.buildComponent(trunk, components, rand);
 		recalculateStructureSize();

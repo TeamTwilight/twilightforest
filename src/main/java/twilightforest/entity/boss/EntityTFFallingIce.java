@@ -12,7 +12,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.client.particle.TFParticleType;
 
@@ -23,22 +22,14 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 	private static final int HANG_TIME = 100;
 
 	public EntityTFFallingIce(EntityType<? extends EntityTFFallingIce> type, World world) {
-		this(type, world, 0, 0, 0); // set falling tile on client to prevent crash
+		super(type, world); // set falling tile on client to prevent crash
 	}
 
-	public EntityTFFallingIce(EntityType<? extends EntityTFFallingIce> type, World world, int x, int y, int z) {
-		super(type, world);
+	public EntityTFFallingIce(World world, int x, int y, int z) {
+		super(world, x, y, z, Blocks.PACKED_ICE.getDefaultState());
 		this.fallHurtAmount = 10.0F;
 		this.fallHurtMax = 30;
 		this.setHurtEntities(true);
-		this.fallTile = Blocks.PACKED_ICE.getDefaultState(); // TODO: AT, or put into super
-		this.preventEntitySpawning = true;
-		this.setPosition(x, y + (double)((1.0F - this.getHeight()) / 2.0F), z);
-		this.setMotion(Vec3d.ZERO);
-		this.prevPosX = x;
-		this.prevPosY = y;
-		this.prevPosZ = z;
-		this.setOrigin(new BlockPos(this));
 	}
 
 	@Override

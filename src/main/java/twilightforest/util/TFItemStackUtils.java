@@ -13,19 +13,19 @@ public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(LivingEntity living, Predicate<ItemStack> matcher, int count) {
 
-		IItemHandler inv = living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		if (inv == null) return false;
+//		IItemHandler inv = living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+//		if (inv == null) return false;
 
 		boolean consumedSome = false;
 
-		for (int i = 0; i < inv.getSlots() && count > 0; i++) {
-			ItemStack stack = inv.getStackInSlot(i);
-			if (matcher.test(stack)) {
-				ItemStack consumed = inv.extractItem(i, count, false);
-				count -= consumed.getCount();
-				consumedSome = true;
-			}
-		}
+//		for (int i = 0; i < inv.getSlots() && count > 0; i++) {
+//			ItemStack stack = inv.getStackInSlot(i);
+//			if (matcher.test(stack)) {
+//				ItemStack consumed = inv.extractItem(i, count, false);
+//				count -= consumed.getCount();
+//				consumedSome = true;
+//			}
+//		}
 
 		//TODO: Baubles is dead (I think)
 		/*if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {

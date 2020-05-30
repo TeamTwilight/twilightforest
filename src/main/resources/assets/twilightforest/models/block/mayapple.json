@@ -1,8 +1,8 @@
 {
 	"textures": {
-    "particle": "twilightforest:blocks/cloverpatch",
-    "stem": "twilightforest:blocks/mayapple_side",
-    "leaf": "twilightforest:blocks/mayapple"
+    "particle": "twilightforest:block/cloverpatch",
+    "stem": "twilightforest:block/mayapple_side",
+    "leaf": "twilightforest:block/mayapple"
   },
 	"elements": [
 		{

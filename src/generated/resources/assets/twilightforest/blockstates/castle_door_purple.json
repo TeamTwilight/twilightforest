@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "twilightforest:block/castle_door_overlay"
+      }
+    },
+    {
+      "when": {
+        "vanish": "false"
+      },
+      "apply": {
+        "model": "twilightforest:block/castle_door_purple"
+      }
+    }
+  ]
+}

@@ -1,24 +1,22 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.LightType;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
+
+import java.util.Random;
 
 public class EntityTFMiniGhast extends EntityTFTowerGhast {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mini_ghast");
 	private boolean isMinion = false;
 
 	public EntityTFMiniGhast(EntityType<? extends EntityTFMiniGhast> type, World world) {
@@ -61,29 +59,9 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		}
 	}
 
-	@Override
-	protected boolean isValidLightLevel() {
-		if (isMinion) {
-			return true;
-		}
-
-		// [VanillaCopy] EntityMob.isValidLightLevel
-		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
-
-		if (this.world.getLightLevel(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
-			return false;
-		} else {
-			int i = this.world.getLightFromNeighbors(blockpos);
-
-			if (this.world.isThundering()) {
-				int j = this.world.getSkylightSubtracted();
-				this.world.setSkylightSubtracted(10);
-				i = this.world.getLightFromNeighbors(blockpos);
-				this.world.setSkylightSubtracted(j);
-			}
-
-			return i <= this.rand.nextInt(8);
-		}
+	//This does not factor into whether the entity is a Minion or not. However, since it is spawned via MOB_SUMMONED, it will always spawn if that is the SpawnReason
+	public static boolean canSpawnHere(EntityType<EntityTFMiniGhast> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == SpawnReason.MOB_SUMMONED || MonsterEntity.isValidLightLevel(world, pos, random)) && canSpawnOn(entity, world, reason, pos, random);
 	}
 
 	public void makeBossMinion() {
@@ -92,11 +70,6 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 
 		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6);
 		this.setHealth(6);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	public boolean isMinion() {

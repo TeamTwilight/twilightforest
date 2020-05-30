@@ -22,17 +22,9 @@ public class BlockTFFireflyJar extends Block /*implements IInfusionStabiliser*/ 
 
 	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F));
 
-	protected BlockTFFireflyJar() {
-		super(Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 0.0F).sound(SoundType.WOOD).lightValue(15).nonOpaque());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFFireflyJar(Block.Properties props) {
+		super(props);
 	}
-
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 
 	@Override
 	@Deprecated

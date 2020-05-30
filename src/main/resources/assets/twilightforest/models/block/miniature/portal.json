@@ -32,13 +32,13 @@
     }
   },
   "textures": {
-    "particle":   "blocks/dirt",
-    "portal":     "blocks/portal",
-    "dirt":       "blocks/dirt",
-    "grass":      "blocks/grass_top",
-    "grass_side": "blocks/grass_side_overlay",
-    "stone":      "blocks/stone",
-    "plant":      "blocks/flower_rose"
+    "particle":   "block/dirt",
+    "portal":     "block/nether_portal",
+    "dirt":       "block/dirt",
+    "grass":      "block/grass_block_top",
+    "grass_side": "block/grass_block_side_overlay",
+    "stone":      "block/stone",
+    "plant":      "block/poppy"
   },
   "elements": [ {
     "from": [  4, 0,  4 ],

@@ -22,12 +22,11 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 		super(TFMushroomTowerPieces.TFMTMai, nbt);
 	}
 
-	public ComponentTFMushroomTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
-		this(feature, world, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, Direction.NORTH);
+	public ComponentTFMushroomTowerMain(TFFeature feature, Random rand, int index, int x, int y, int z) {
+		this(feature, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, Direction.NORTH);
 	}
 
-	//TODO: Parameter "world" is unused. Remove?
-	public ComponentTFMushroomTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, Direction rotation) {
+	public ComponentTFMushroomTowerMain(TFFeature feature, Random rand, int index, int x, int y, int z, Direction rotation) {
 		super(TFMushroomTowerPieces.TFMTMai, feature, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
 
 //		// check to make sure we can build the whole tower

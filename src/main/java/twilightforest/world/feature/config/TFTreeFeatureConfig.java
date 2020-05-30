@@ -88,7 +88,7 @@ public class TFTreeFeatureConfig extends BaseTreeFeatureConfig {
 		private int baseHeight;
 		private int chanceFirstFive;
 		private int chanceSecondFive;
-		private boolean hasLeaves;
+		private boolean hasLeaves = false;
 		private boolean checkWater;
 
 		public Builder(BlockStateProvider trunk, BlockStateProvider leaves, BlockStateProvider branch, BlockStateProvider roots) {
@@ -113,8 +113,8 @@ public class TFTreeFeatureConfig extends BaseTreeFeatureConfig {
 			return this;
 		}
 
-		public TFTreeFeatureConfig.Builder hasLeaves(boolean gen) {
-			this.hasLeaves = gen;
+		public TFTreeFeatureConfig.Builder hasLeaves() {
+			this.hasLeaves = true;
 			return this;
 		}
 

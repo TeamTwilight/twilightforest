@@ -87,7 +87,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 		}
 
 		// nullify sky light
-		nullifySkyLightForBoundingBox(world.getWorld());
+//		nullifySkyLightForBoundingBox(world.getWorld());
 
 		// clear inside
 		fillWithAir(world, sbb, 0, 1, 1, size - 1, height - 2, size - 2);

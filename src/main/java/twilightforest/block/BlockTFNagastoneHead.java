@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 
 public class BlockTFNagastoneHead extends HorizontalBlock {
@@ -10,7 +11,13 @@ public class BlockTFNagastoneHead extends HorizontalBlock {
 		super(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 
-		this.setDefaultState(stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH));
+		this.setDefaultState(getDefaultState().with(HORIZONTAL_FACING, Direction.NORTH));
+	}
+
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> container) {
+		super.fillStateContainer(container);
+		container.add(HORIZONTAL_FACING);
 	}
 
 	//We don't tick
@@ -83,26 +90,5 @@ public class BlockTFNagastoneHead extends HorizontalBlock {
 //
 //		// if result matches state in world, no need to add more effort
 //		if (stateIn != stateOut) world.setBlockState(pos, stateOut);
-//	}
-
-	//This is potentially a part of HorizonalBlock now
-//	@Override
-//	public BlockState withRotation(BlockState state, Rotation rotation) {
-//		return state.with(VARIANT, NagastoneVariant.rotate(state.getValue(VARIANT), rotation));
-//	}
-//
-//	@Override
-//	public BlockState withMirror(BlockState state, Mirror mirror) {
-//		return state.with(VARIANT, NagastoneVariant.mirror(state.getValue(VARIANT), mirror));
-//	}
-
-//	@Override
-//	protected boolean canSilkHarvest() {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
 //	}
 }

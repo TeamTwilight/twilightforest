@@ -11,10 +11,6 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 
 	float initialParticleScale;
 
-	public ParticleAnnihilate(World world, double x, double y, double z, double vx, double vy, double vz) {
-		this(world, x, y, z, vx, vy, vz, 1.0F);
-	}
-
 	public ParticleAnnihilate(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
@@ -30,10 +26,6 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 		this.maxAge = (int) (60.0D / (Math.random() * 0.8D + 0.6D));
 		this.maxAge = (int) ((float) this.maxAge * scale);
 		this.canCollide = true;
-
-		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/annihilate_particle"); TODO: Put into particle json
-
-		//this.tick(); TODO: ???
 	}
 
 	@Override

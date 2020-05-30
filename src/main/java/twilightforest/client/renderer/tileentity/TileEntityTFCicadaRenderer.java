@@ -3,6 +3,7 @@ package twilightforest.client.renderer.tileentity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -30,7 +31,7 @@ public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends Ti
 
 		stack.push();
 		//TODO: que?
-		Direction facing = Direction.byIndex(te != null ? te.getBlockMetadata() : 0);
+		Direction facing = te != null ? te.getBlockState().get(DirectionalBlock.FACING) : Direction.NORTH;
 
 		float rotX = 90.0F;
 		float rotZ = 0.0F;

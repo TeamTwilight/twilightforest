@@ -6,11 +6,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.SkullTileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -19,33 +18,30 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTrophy;
-import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Locale;
+import java.util.function.Supplier;
 
-//TODO 1.14: Rework this class out of metadata
-public class ItemTFTrophy extends ItemTF {
+public class ItemTFTrophy extends Item {
 
-	public ItemTFTrophy(Properties props) {
+	private final BossVariant bossVariant;
+	private final BlockTFTrophy bossTrophy;
+
+	public ItemTFTrophy(Properties props, Supplier<? extends BlockTFTrophy> trophy, BossVariant variant) {
 		super(props);
+		bossTrophy = trophy.get();
+		bossVariant = variant;
 	}
 
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		return new TranslationTextComponent(this.getTranslationKey(stack), I18n.translateToLocal("entity.twilightforest." + BossVariant.values()[stack.getMetadata() % BossVariant.values().length].getName().toLowerCase(Locale.ROOT) + ".name"));
-	}
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return TwilightForestMod.getRarity();
+		return new TranslationTextComponent(this.getTranslationKey(stack), new TranslationTextComponent("entity.twilightforest." + bossVariant.getName().toLowerCase(Locale.ROOT) + ".name"));
 	}
 
 	// [VanillaCopy] ItemSkull, with own block and no player heads
-	//TODO: needs flattening, and possible rewriting
 	@Nonnull
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
@@ -65,7 +61,7 @@ public class ItemTFTrophy extends ItemTF {
 			boolean flag = iblockstate.getMaterial().isReplaceable();
 
 			if (!flag) {
-				if (!worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.isSideSolid(pos, facing, true)) {
+				if (!worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.getBlockState(pos).isSideSolidFullSquare(worldIn, pos, facing)) {
 					return ActionResultType.FAIL;
 				}
 
@@ -74,26 +70,27 @@ public class ItemTFTrophy extends ItemTF {
 
 			ItemStack itemstack = playerIn.getHeldItem(context.getHand());
 
-			if (playerIn.canPlayerEdit(pos, facing, itemstack) && TFBlocks.trophy.canPlaceBlockAt(worldIn, pos)) {
+			if (playerIn.canPlayerEdit(pos, facing, itemstack) && bossTrophy.getDefaultState().isValidPosition(worldIn, pos)) {
 				if (worldIn.isRemote) {
 					return ActionResultType.SUCCESS;
 				} else {
-					worldIn.setBlockState(pos, TFBlocks.trophy.getDefaultState().with(BlockTFTrophy.FACING, facing), 11);
 					int i = 0;
 
 					if (facing == Direction.UP) {
 						i = MathHelper.floor((double) (playerIn.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
 					}
 
-					TileEntity tileentity = worldIn.getTileEntity(pos);
+					worldIn.setBlockState(pos, bossTrophy.getDefaultState().with(BlockTFTrophy.ROTATION, i), 11);
 
-					if (tileentity instanceof SkullTileEntity) {
-						SkullTileEntity tileentityskull = (SkullTileEntity) tileentity;
-
-						tileentityskull.setType(itemstack.getMetadata());
-
-						tileentityskull.setSkullRotation(i);
-					}
+//					TileEntity tileentity = worldIn.getTileEntity(pos);
+//
+//					if (tileentity instanceof SkullTileEntity) {
+//						SkullTileEntity tileentityskull = (SkullTileEntity) tileentity;
+//
+//						tileentityskull.setType(itemstack.getMetadata());
+//
+//						tileentityskull.setSkullRotation(i);
+//					}
 
 					if (playerIn instanceof ServerPlayerEntity) {
 						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) playerIn, pos, itemstack);
@@ -106,13 +103,6 @@ public class ItemTFTrophy extends ItemTF {
 				return ActionResultType.FAIL;
 			}
 		}
-	}
-
-	@Nonnull
-	@Override
-	public String getTranslationKey(ItemStack stack) {
-		//int meta = MathHelper.clamp(stack.getItemDamage(), 0, BossVariant.values().length);
-		return "item.twilightforest.tf_trophy.name"; //super.getUnlocalizedName() + "." + BossVariant.values()[meta].getName();
 	}
 
 	@Override

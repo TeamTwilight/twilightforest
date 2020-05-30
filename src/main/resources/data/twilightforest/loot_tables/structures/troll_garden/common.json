@@ -35,10 +35,9 @@
       },
       {
         "type": "item",
-        "name": "minecraft:dye",
+        "name": "minecraft:bone_meal",
         "functions": [
-          { "function": "set_count", "count": { "min": 1, "max": 12 } },
-          { "function": "set_data", "data": 15 }
+          { "function": "set_count", "count": { "min": 1, "max": 12 } }
         ]
       }
     ]

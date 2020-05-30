@@ -7,7 +7,7 @@ import net.minecraft.util.NonNullList;
 public class ItemTFIronwoodShovel extends ShovelItem {
 
 	public ItemTFIronwoodShovel(IItemTier toolMaterial, Properties props) {
-		super(toolMaterial, 1.5F, -3.0F, props.group(TFItems.creativeTab));
+		super(toolMaterial, 1.5F, -3.0F, props);
 	}
 
 	@Override

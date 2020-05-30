@@ -18,9 +18,8 @@ import twilightforest.item.ItemTFMazebreakerPick;
  */
 public class BlockTFMazestone extends Block {
 
-	public BlockTFMazestone() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 5.0F).sound(SoundType.STONE));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFMazestone(Block.Properties props) {
+		super(props);
 	}
 
 	@Override
@@ -30,7 +29,7 @@ public class BlockTFMazestone extends Block {
 
 		// damage the player's pickaxe
 		if (!world.isRemote && !stack.isEmpty() && stack.getItem().isDamageable() && !(stack.getItem() instanceof ItemTFMazebreakerPick)) {
-			stack.damageItem(16, player, (user) -> user.sendBreakAnimation(player.getActiveHand()));
+			stack.damageItem(16, player, (user) -> user.sendBreakAnimation(Hand.MAIN_HAND));
 		}
 	}
 }

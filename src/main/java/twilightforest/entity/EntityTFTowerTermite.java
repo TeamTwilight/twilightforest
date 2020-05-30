@@ -11,12 +11,10 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
 import java.util.EnumSet;
@@ -24,7 +22,6 @@ import java.util.Random;
 
 public class EntityTFTowerTermite extends MonsterEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_termite");
 	private AISummonSilverfish summonSilverfish;
 
 	public EntityTFTowerTermite(EntityType<? extends EntityTFTowerTermite> type, World world) {
@@ -89,12 +86,6 @@ public class EntityTFTowerTermite extends MonsterEntity {
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
 		this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
-	}
-
-	//TODO: Move to loot table
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

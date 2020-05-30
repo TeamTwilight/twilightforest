@@ -21,7 +21,6 @@ public class ParticleGhastTear extends SpriteTexturedParticle {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getParticleIcon(item);
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-		//this.particleGravity = Blocks.SNOW.blockParticleGravity * 2F; TODO: Find what this is supposed to be
 		this.particleScale = 16.0F;
 
 		this.maxAge = 20 + rand.nextInt(40);
@@ -30,19 +29,7 @@ public class ParticleGhastTear extends SpriteTexturedParticle {
 
 	@Override
 	public IParticleRenderType getRenderType() {
-		return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
-	}
-
-	public ParticleGhastTear(World world, double x, double y, double z, double vx, double vy, double vz, Item item) {
-		this(world, x, y, z, item);
-		this.motionX *= 0.10000000149011612D;
-		this.motionY *= 0.10000000149011612D;
-		this.motionZ *= 0.10000000149011612D;
-		this.motionX += vx;
-		this.motionY += vy;
-		this.motionZ += vz;
-
-		//TwilightForestMod.LOGGER.info("creating tear particle {}, isremote {}", this, world.isRemote);
+		return IParticleRenderType.TERRAIN_SHEET;
 	}
 
 	@Override
@@ -56,8 +43,6 @@ public class ParticleGhastTear extends SpriteTexturedParticle {
 				double gaussY = rand.nextGaussian() * 0.2D;
 				double gaussZ = rand.nextGaussian() * 0.1D;
 
-				//TwilightForestMod.LOGGER.info("tear impact {}, isremote {}", this, world.isRemote);
-
 				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, itemID), this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ);
 				world.addParticle(ParticleTypes.EXPLOSION, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 
@@ -69,17 +54,9 @@ public class ParticleGhastTear extends SpriteTexturedParticle {
 
 	@OnlyIn(Dist.CLIENT)
 	public static class Factory implements IParticleFactory<BasicParticleType> {
-		private final IAnimatedSprite spriteSet;
-
-		public Factory(IAnimatedSprite sprite) {
-			this.spriteSet = sprite;
-		}
-
 		@Override
 		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			ParticleGhastTear particle = new ParticleGhastTear(worldIn, x, y, z, Items.GHAST_TEAR);
-			particle.selectSpriteRandomly(this.spriteSet);
-			return particle;
+			return new ParticleGhastTear(worldIn, x, y, z, Items.GHAST_TEAR);
 		}
 	}
 }

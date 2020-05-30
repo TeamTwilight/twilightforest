@@ -63,6 +63,7 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
+            property 'fml.earlyprogresswindow', 'false'
 
             mods {
                 twilightforest {
@@ -86,8 +87,27 @@ minecraft {
                 }
             }
         }
+
+        data {
+            properties 'fml.earlyprogresswindow': 'false'
+            workingDirectory project.file('run')
+            mods {
+                twilightforest {
+                    source sourceSets.main
+                }
+            }
+            args '--mod', 'twilightforest', '--all',
+                    '--existing', '"' + file('src/main/resources/') + '"',
+                    '--existing', '"' + file('src/generated/resources/') + '"',
+                    '--output', '"' + file('src/generated/resources/') + '"'
+        }
     }
 }
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 /*
 processResources {
     //replaceIn 'assets/twilightforest/patchouli_books/guide/book.json'
@@ -178,7 +198,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }
 
-task createPom {
+/*task createPom {
     doLast {
         pom {
             project {
@@ -199,4 +219,4 @@ task createPom {
     }
 }
 
-build.dependsOn createPom
+build.dependsOn createPom*/

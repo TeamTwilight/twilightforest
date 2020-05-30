@@ -2,7 +2,6 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.TFFeature;
-import twilightforest.structures.start.StructureStartDarkTower;
 
 public class TFDarkTowerPieces {
 

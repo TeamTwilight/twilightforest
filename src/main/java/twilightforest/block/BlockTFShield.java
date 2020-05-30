@@ -17,21 +17,20 @@ import javax.annotation.Nullable;
 
 public class BlockTFShield extends DirectionalBlock {
 
-	public BlockTFShield() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFShield(Block.Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.DOWN));
 	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(FACING);
 	}
 
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		//return getDefaultState().with(FACING, Direction.getDirectionFromEntityLiving(pos, placer));
 		return getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite());
 	}
 
@@ -39,9 +38,9 @@ public class BlockTFShield extends DirectionalBlock {
 	@Deprecated
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
 		// why can't we just pass the side to this method?  This is annoying and failure-prone
-		RayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
+		BlockRayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
-		Direction hitFace = ray != null ? ((BlockRayTraceResult) ray).getFace() : null;
+		Direction hitFace = ray.getFace();
 		Direction blockFace = state.get(DirectionalBlock.FACING);
 
 		if (hitFace == blockFace) {

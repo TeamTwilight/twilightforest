@@ -14,8 +14,6 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class TFBiomeSwamp extends TFBiomeBase {
@@ -26,10 +24,11 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 	public TFBiomeSwamp(Builder props) {
 		super(props);
+	}
 
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mosquito_swarm.get(), 10, 1, 1));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -54,6 +53,15 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mosquito_swarm.get(), 10, 1, 1));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
+	}
+
+	@Override
 	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
 		double temperature = (double) MathHelper.clamp(this.getDefaultTemperature(), 0.0F, 1.0F);
 		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
@@ -67,14 +75,15 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		return ((FoliageColors.get(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
-	@Override
-	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
-		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (creatureType == EntityClassification.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
-		}
-		return super.getSpawns(creatureType);
-	}
+	//TODO: Figure this out
+//	@Override
+//	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
+//		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+//		if (creatureType == EntityClassification.MONSTER) {
+//			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
+//		}
+//		return super.getSpawns(creatureType);
+//	}
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
@@ -94,8 +103,8 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.LABYRINTH;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.LABYRINTH;
+//	}
 }

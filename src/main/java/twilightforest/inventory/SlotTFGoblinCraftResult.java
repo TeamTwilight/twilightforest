@@ -26,9 +26,9 @@ public class SlotTFGoblinCraftResult extends CraftingResultSlot {
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
 		boolean combined = true;
 
-		if (ItemStack.areItemStacksEqual(CraftingManager.findMatchingResult(this.assemblyMatrix, this.player.world), stack)) {
-			combined = false;
-		}
+//		if (ItemStack.areItemStacksEqual(CraftingManager.findMatchingResult(this.assemblyMatrix, this.player.world), stack)) {
+//			combined = false;
+//		}
 
 		if (combined) {
 			// charge the player before the stacks empty

@@ -364,7 +364,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		// sky light
-		nullifySkyLightForBoundingBox(world);
+//		nullifySkyLightForBoundingBox(world);
 
 		// marker blocks
 //        setBlockState(world, Blocks.WOOL, this.coordBaseMode, size / 2, 2, size / 2, sbb);

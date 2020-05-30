@@ -34,15 +34,6 @@ public class TFClientEvents {
 	public static void texStitch(TextureStitchEvent.Pre evt) {
 		AtlasTexture map = evt.getMap();
 
-		//TODO: These are handled by Particles now
-		/*map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_0"));
-		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_1"));
-		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_2"));
-		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_3"));
-		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/annihilate_particle"));
-		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/firefly"));
-		map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/fallen_leaf"));*/
-
         //TODO: Removed until Tinkers' Construct is available
 		/*map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenFieryStill                                        ));
 		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenFieryFlow                                         ));
@@ -126,18 +117,6 @@ public class TFClientEvents {
 	//}
 
 	/**
-	 * Render various effects such as an iced entity
-	 */
-	@SubscribeEvent
-	public static void renderLivingPost(RenderLivingEvent.Post<LivingEntity, EntityModel<LivingEntity>> event) {
-		for (RenderEffect effect : RenderEffect.VALUES) {
-			if (effect.shouldRender(event.getEntity(), false)) {
-				effect.render(event.getEntity(), event.getRenderer().getEntityModel(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getPartialRenderTick(), false);
-			}
-		}
-	}
-
-	/**
 	 * Render effects in first-person perspective
 	 */
 	@SubscribeEvent
@@ -168,12 +147,6 @@ public class TFClientEvents {
 	public static void renderTick(TickEvent.RenderTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
 			Minecraft minecraft = Minecraft.getInstance();
-
-			//TODO: Don't think we control this anymore
-//			boolean fancyGraphics = minecraft.gameSettings.fancyGraphics;
-//			TFBlocks.twilight_leaves.setGraphicsLevel(fancyGraphics);
-//			TFBlocks.twilight_leaves_3.setGraphicsLevel(fancyGraphics);
-//			TFBlocks.magic_leaves.setGraphicsLevel(fancyGraphics);
 
 			// only fire if we're in the twilight forest
 			if (minecraft.world != null && TFWorld.isTwilightForest(minecraft.world)) {

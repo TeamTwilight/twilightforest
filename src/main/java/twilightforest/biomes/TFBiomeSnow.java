@@ -10,8 +10,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.potions.TFPotions;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -25,9 +23,11 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	public TFBiomeSnow(Builder props) {
 		super(props);
+	}
 
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.yeti.get(), 20, 4, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.winter_wolf.get(), 5, 1, 4));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -43,13 +43,22 @@ public class TFBiomeSnow extends TFBiomeBase {
 	}
 
 	@Override
-	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
-		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (creatureType == EntityClassification.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
-		}
-		return super.getSpawns(creatureType);
+	public void addSpawns() {
+		super.addSpawns();
+
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.yeti.get(), 20, 4, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.winter_wolf.get(), 5, 1, 4));
 	}
+
+	//TODO: Figure this out
+//	@Override
+//	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
+//		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+//		if (creatureType == EntityClassification.MONSTER) {
+//			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
+//		}
+//		return super.getSpawns(creatureType);
+//	}
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {
@@ -64,8 +73,8 @@ public class TFBiomeSnow extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.YETI_CAVE;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.YETI_CAVE;
+//	}
 }

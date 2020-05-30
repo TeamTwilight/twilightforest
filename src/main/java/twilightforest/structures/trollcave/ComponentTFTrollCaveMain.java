@@ -51,8 +51,8 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		super(type, feature, index);
 	}
 
-	//TODO: Parameters "world" and "rand" are unused. Remove?
-	public ComponentTFTrollCaveMain(IStructurePieceType type, TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+	//TODO: Parameter "rand" is unused. Remove?
+	public ComponentTFTrollCaveMain(IStructurePieceType type, TFFeature feature, Random rand, int i, int x, int y, int z) {
 		super(type, feature, i);
 		this.setCoordBaseMode(Direction.SOUTH);
 

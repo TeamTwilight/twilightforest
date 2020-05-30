@@ -11,7 +11,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class TFCommand {
     public static final SimpleCommandExceptionType NOT_IN_TF = new SimpleCommandExceptionType(new TranslationTextComponent("commands.tffeature.not_in_twilight_forest"));
 
-    // todo 1.15 none of these are permission checked (add requires(ctx -> ctx.hasPermissionLevel()))
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
         LiteralArgumentBuilder<CommandSource> builder = Commands.literal("twilightforest")
                 .then(CenterCommand.register())

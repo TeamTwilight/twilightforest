@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "twilightforest:castle_pillar_bold"
+  },
+  "result": "twilightforest:castle_stairs_bold",
+  "count": 1
+}

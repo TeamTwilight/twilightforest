@@ -34,6 +34,7 @@ public class BlockTFSpiralBrick extends Block {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(AXIS_FACING, DIAGONAL);
 	}
 

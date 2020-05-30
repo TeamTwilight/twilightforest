@@ -25,37 +25,41 @@ public class ModelTFRisingZombie<T extends EntityTFRisingZombie> extends ZombieM
 				stack.push();
 				stack.scale(0.5F, 0.5F, 0.5F);
 				stack.translate(0.0F, 24.0F * scale, 0.0F);
-				this.bipedBody.render(scale);
-				this.bipedRightArm.render(scale);
-				this.bipedLeftArm.render(scale);
-				this.bipedHeadwear.render(scale);
+				this.bipedBody.render(stack, builder, light, overlay, red, green, blue, scale);
+				this.bipedRightArm.render(stack, builder, light, overlay, red, green, blue, scale);
+				this.bipedLeftArm.render(stack, builder, light, overlay, red, green, blue, scale);
+				this.bipedHeadwear.render(stack, builder, light, overlay, red, green, blue, scale);
 			}
 			stack.pop();
-			this.bipedRightLeg.render(scale);
-			this.bipedLeftLeg.render(scale);
+			this.bipedRightLeg.render(stack, builder, light, overlay, red, green, blue, scale);
+			this.bipedLeftLeg.render(stack, builder, light, overlay, red, green, blue, scale);
 		} else {
 			if (this.isSneaking) {
 				stack.translate(0.0F, 0.2F, 0.0F);
 			}
 
+			/* todo 1.15 ageInTicks/the entity only provided to setAngles now, rework this entire render and move this transform there
 			stack.translate(0F, (80F - Math.min(80F, ageInTicks)) / 80F, 0F);
 			stack.translate(0F, (40F - Math.min(40F, Math.max(0F, ageInTicks - 80F))) / 40F, 0F);
+				 */
 			stack.push();
 			{
 				final float yOff = 1F;
 				stack.translate(0, yOff, 0);
+				/* todo 1.15 ageInTicks/the entity only provided to setAngles now, rework this entire render and move this transform there
 				RenderSystem.rotatef(-120F * (80F - Math.min(80F, ageInTicks)) / 80F, 1F, 0F, 0F);
 				RenderSystem.rotatef(30F * (40F - Math.min(40F, Math.max(0F, ageInTicks - 80F))) / 40F, 1F, 0F, 0F);
+				 */
 				stack.translate(0, -yOff, 0);
 				this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-				this.bipedBody.render(scale);
-				this.bipedRightArm.render(scale);
-				this.bipedLeftArm.render(scale);
-				this.bipedHeadwear.render(scale);
+				this.bipedBody.render(stack, builder, light, overlay, red, green, blue, scale);
+				this.bipedRightArm.render(stack, builder, light, overlay, red, green, blue, scale);
+				this.bipedLeftArm.render(stack, builder, light, overlay, red, green, blue, scale);
+				this.bipedHeadwear.render(stack, builder, light, overlay, red, green, blue, scale);
 			}
 			stack.pop();
-			this.bipedRightLeg.render(scale);
-			this.bipedLeftLeg.render(scale);
+			this.bipedRightLeg.render(stack, builder, light, overlay, red, green, blue, scale);
+			this.bipedLeftLeg.render(stack, builder, light, overlay, red, green, blue, scale);
 		}
 
 		stack.pop();

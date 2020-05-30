@@ -35,8 +35,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		super(TFLichTowerPieces.TFLTMai, nbt);
 	}
 
-	//TODO: Parameter "world" is unused. Remove?
-	public ComponentTFTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
+	public ComponentTFTowerMain(TFFeature feature, Random rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
 		super(TFLichTowerPieces.TFLTMai, feature, index, x, y, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}
@@ -177,7 +176,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 
 		// nullify sky light
-		nullifySkyLightForBoundingBox(world);
+//		nullifySkyLightForBoundingBox(world);
 
 		// fix highestOpening parameter so we don't get a ginormous lich room
 		if ((height - highestOpening) > 15) {

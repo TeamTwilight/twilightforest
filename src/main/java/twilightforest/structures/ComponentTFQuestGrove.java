@@ -20,7 +20,7 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFQuestRam;
-import twilightforest.util.WoolUtil;
+import twilightforest.util.ColorUtil;
 
 import java.util.Random;
 
@@ -37,8 +37,8 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		super(TFFeature.TFQuest1, nbt);
 	}
 
-	//TODO: Parameters "world", "rand" is unused. Remove?
-	public ComponentTFQuestGrove(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+	//TODO: Parameter "rand" is unused. Remove?
+	public ComponentTFQuestGrove(TFFeature feature, Random rand, int i, int x, int y, int z) {
 		super(TFFeature.TFQuest1, feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);
@@ -96,7 +96,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 				// add 4 random wool blocks
 				for (int i = 0; i < 4; i++) {
-					ted.setInventorySlotContents(i, new ItemStack(WoolUtil.getRandomBlock(rand), 1));
+					ted.setInventorySlotContents(i, new ItemStack(ColorUtil.WOOL.getRandomColor(rand), 1));
 				}
 			}
 		}

@@ -9,14 +9,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
 public class EntityTFPenguin extends EntityTFBird {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/penguin");
 
 	public EntityTFPenguin(EntityType<? extends EntityTFPenguin> type, World world) {
 		super(type, world);
@@ -50,10 +46,5 @@ public class EntityTFPenguin extends EntityTFBird {
 		super.registerAttributes();
 		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
 		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

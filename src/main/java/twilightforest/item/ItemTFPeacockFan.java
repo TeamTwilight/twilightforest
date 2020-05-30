@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
@@ -24,9 +25,9 @@ import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
 
-public class ItemTFPeacockFan extends ItemTF {
-	ItemTFPeacockFan(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(1024));
+public class ItemTFPeacockFan extends Item {
+	ItemTFPeacockFan(Properties props) {
+		super(props);
 	}
 
 	@Nonnull

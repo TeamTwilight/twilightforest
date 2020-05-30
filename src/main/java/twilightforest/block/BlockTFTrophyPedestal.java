@@ -44,6 +44,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(FACING, LATENT);
 	}
 

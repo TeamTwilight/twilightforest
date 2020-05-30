@@ -1,5 +1,7 @@
 package twilightforest;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -16,6 +18,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
@@ -25,13 +29,16 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
+import twilightforest.client.LoadingScreenListener;
+import twilightforest.client.RenderLayerRegistration;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.client.renderer.entity.LayerIce;
+import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.command.TFCommand;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.*;
-import twilightforest.item.recipe.TFRecipes;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
@@ -39,7 +46,6 @@ import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.world.surfacebuilders.TFSurfaceBuilders;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -82,15 +88,16 @@ public class TwilightForestMod {
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
-		TFBiomes.BIOMES.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
+		TFBiomes.BIOMES.register(modbus);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
-		TFSurfaceBuilders.SURFACE_BUILDERS.register(modbus);
 		TFBiomeFeatures.FEATURES.register(modbus);
-		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
+		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
+		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
+		TFDimensions.MOD_DIMENSIONS.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +
@@ -101,16 +108,6 @@ public class TwilightForestMod {
 		// TODO: move these to proper spots
 		// WorldProviderTwilightForest.syncFromConfig();
 
-		// sounds on client, and whatever else needs to be registered pre-load
-
-		CapabilityList.registerCapabilities();
-
-		// just call this so that we register structure IDs correctly
-		TFFeature.init(); // TODO: move?
-		LOGGER.debug("There are {} entries in TFFeature enum. Maximum structure size is {}", TFFeature.getCount(), TFFeature.getMaxSize());
-
-		// MapGenStructureIO.registerStructure(StructureStartNothing.class,                  				 "TFNothing"); // TODO: move, (also wtf is the giant whitespace)
-		// TFHollowTreePieces.registerPieces(); TODO: structures are now a real registry
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
@@ -126,11 +123,14 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
-	public void init(FMLCommonSetupEvent evt) {
+	public static void init(FMLCommonSetupEvent evt) {
+		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		TFTreasure.init();
+		TFFeature.init();
 		TFBiomes.addBiomeTypes();
+		TFBiomes.addBiomeFeatures();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
@@ -159,19 +159,33 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
-	public void clientSetup(FMLClientSetupEvent evt) {
+	public static void clientSetup(FMLClientSetupEvent evt) {
 		ItemTFKnightlyArmor.initArmorModel();
 		ItemTFPhantomArmor.initArmorModel();
 		ItemTFYetiArmor.initArmorModel();
 		ItemTFArcticArmor.initArmorModel();
 		ItemTFFieryArmor.initArmorModel();
+		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> RenderLayerRegistration::init);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);
 	}
 
-	public void startServer(FMLServerStartingEvent event) {
-		TFCommand.register(event.getCommandDispatcher());
+	@SubscribeEvent
+	public static void loadComplete(FMLLoadCompleteEvent evt) {
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+			Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
+				if (r instanceof LivingRenderer) {
+					((LivingRenderer) r).addLayer(new LayerShields((LivingRenderer) r));
+					((LivingRenderer) r).addLayer(new LayerIce((LivingRenderer) r));
+				}
+			});
+		});
+	}
+
+	public void startServer(FMLServerAboutToStartEvent event) {
+		TFCommand.register(event.getServer().getCommandManager().getDispatcher());
 	}
 
 	public static ResourceLocation prefix(String name) {

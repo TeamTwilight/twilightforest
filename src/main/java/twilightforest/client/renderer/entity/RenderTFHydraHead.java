@@ -30,21 +30,22 @@ public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHyd
 				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}
 
-			if (headCon.shouldRenderNeck(0)) {
-				renderManager.renderEntityStatic(headCon.necka, partialTicks, false);
-			}
-			if (headCon.shouldRenderNeck(1)) {
-				renderManager.renderEntityStatic(headCon.neckb, partialTicks, false);
-			}
-			if (headCon.shouldRenderNeck(2)) {
-				renderManager.renderEntityStatic(headCon.neckc, partialTicks, false);
-			}
-			if (headCon.shouldRenderNeck(3)) {
-				renderManager.renderEntityStatic(headCon.neckd, partialTicks, false);
-			}
-			if (headCon.shouldRenderNeck(4)) {
-				renderManager.renderEntityStatic(headCon.necke, partialTicks, false);
-			}
+			//TODO: Idk what I should do about this
+//			if (headCon.shouldRenderNeck(0)) {
+//				renderManager.renderEntityStatic(headCon.necka, partialTicks, false);
+//			}
+//			if (headCon.shouldRenderNeck(1)) {
+//				renderManager.renderEntityStatic(headCon.neckb, partialTicks, false);
+//			}
+//			if (headCon.shouldRenderNeck(2)) {
+//				renderManager.renderEntityStatic(headCon.neckc, partialTicks, false);
+//			}
+//			if (headCon.shouldRenderNeck(3)) {
+//				renderManager.renderEntityStatic(headCon.neckd, partialTicks, false);
+//			}
+//			if (headCon.shouldRenderNeck(4)) {
+//				renderManager.renderEntityStatic(headCon.necke, partialTicks, false);
+//			}
 		} else {
 			super.render(entity, yaw, partialTicks, stack, buffer, light);
 		}

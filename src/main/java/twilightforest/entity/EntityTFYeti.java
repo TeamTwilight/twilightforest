@@ -14,7 +14,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -23,7 +22,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 
@@ -32,7 +30,6 @@ import java.util.Random;
 
 public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/yeti");
 	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION).setSaved(false);
 
@@ -188,17 +185,16 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 		}
 	}
 
-	public static boolean normalYetiSpawnHandler(EntityType<? extends MonsterEntity> p_223325_0_, IWorld p_223325_1_, SpawnReason p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_) {
-		return p_223325_1_.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(p_223325_1_, p_223325_3_, p_223325_4_) && canSpawnOn(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
+	public static boolean normalYetiSpawnHandler(EntityType<? extends MonsterEntity> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
 	}
 
-
-	public static boolean isValidLightLevel(IWorld world, BlockPos blockPos, Random p_223323_2_) {
-		if (world.getLightLevel(LightType.SKY, blockPos) > p_223323_2_.nextInt(32)) {
+	public static boolean isValidLightLevel(IWorld world, BlockPos blockPos, Random random) {
+		if (world.getLightLevel(LightType.SKY, blockPos) > random.nextInt(32)) {
 			return world.getBiome(blockPos) == TFBiomes.snowy_forest.get();
 		} else {
 			int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
-			return i <= p_223323_2_.nextInt(8) || world.getBiome(blockPos) == TFBiomes.snowy_forest.get();
+			return i <= random.nextInt(8) || world.getBiome(blockPos) == TFBiomes.snowy_forest.get();
 		}
 	}
 
@@ -221,10 +217,5 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	@Override
 	protected SoundEvent getDeathSound() {
 		return TFSounds.ALPHAYETI_DIE;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

@@ -1,40 +1,28 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.EnchantmentTableParticle;
-import net.minecraft.client.particle.IAnimatedSprite;
-import net.minecraft.client.particle.IParticleFactory;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.*;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ParticleLeafRune extends EnchantmentTableParticle {
+public class ParticleLeafRune extends SpriteTexturedParticle {
 
 	public ParticleLeafRune(World world, double x, double y, double z, double velX, double velY, double velZ) {
 		super(world, x, y, z, velX, velY, velZ);
+		// super applies jittering, reset it
+		this.motionX = velX;
+		this.motionY = velY;
+		this.motionZ = velZ;
 
-		this.particleScale = this.rand.nextFloat() + 1F;
-		this.maxAge += 10;
-		this.particleGravity = 0.003F + rand.nextFloat() * 0.006F;
-
-
-		this.canCollide = true;
+		this.particleScale = this.rand.nextFloat() * 0.5F;
+		this.maxAge = (int)(Math.random() * 10.0D) + 40;
+		this.particleGravity = 0.3F + rand.nextFloat() * 0.6F;
 	}
 
 	@Override
-	public void tick() {
-		this.prevPosX = this.posX;
-		this.prevPosY = this.posY;
-		this.prevPosZ = this.posZ;
-
-		this.move(this.motionX, this.motionY, this.motionZ);
-		this.motionY -= (double) this.particleGravity;
-
-
-		if (this.age++ >= this.maxAge) {
-			this.setExpired();
-		}
+	public IParticleRenderType getRenderType() {
+		return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 
 	@OnlyIn(Dist.CLIENT)

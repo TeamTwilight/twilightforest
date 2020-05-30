@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tags.BlockTags;
@@ -17,7 +18,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nonnull;
 
-public class ItemTFMagicBeans extends ItemTF {
+public class ItemTFMagicBeans extends Item {
 
 	protected ItemTFMagicBeans(Properties props) {
 		super(props);
@@ -151,7 +152,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	 */
 	private boolean tryToPlaceStalk(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.getBlock().isAir(state, world, pos) || state.getMaterial().isReplaceable() || state.getBlock().canBeReplacedByLeaves(state, world, pos) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().canSustainLeaves(state, world, pos)) {
+		if (state.getBlock().isAir(state, world, pos) || state.getMaterial().isReplaceable() || state.getBlock().canBeReplacedByLeaves(state, world, pos) || BlockTags.LEAVES.contains(state.getBlock()) /*|| state.getBlock().canSustainLeaves(state, world, pos)*/) {
 			world.setBlockState(pos, TFBlocks.huge_stalk.get().getDefaultState());
 			return true;
 		} else {

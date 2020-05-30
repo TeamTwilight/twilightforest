@@ -33,7 +33,7 @@ public class ItemTFChainBlock extends ToolItem {
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	protected ItemTFChainBlock(Properties props) {
-		super(6, -3.0F, TwilightItemTier.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE), props.maxDamage(99).group(TFItems.creativeTab));
+		super(6, -3.0F, TwilightItemTier.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE), props);
 
 		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
 			@OnlyIn(Dist.CLIENT)

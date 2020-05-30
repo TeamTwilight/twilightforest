@@ -1,0 +1,6 @@
+{
+  "parent": "block/fence_side",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_canopy_0"
+  }
+}

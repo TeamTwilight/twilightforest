@@ -4,16 +4,12 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFRedcapPlantTNT;
 import twilightforest.item.TFItems;
 
 public class EntityTFRedcapSapper extends EntityTFRedcap {
-
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/redcap_sapper");
 
 	public EntityTFRedcapSapper(EntityType<? extends EntityTFRedcapSapper> type, World world) {
 		super(type, world);
@@ -38,10 +34,5 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 		super.registerAttributes();
 		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
 		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

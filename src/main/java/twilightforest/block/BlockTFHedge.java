@@ -36,10 +36,9 @@ public class BlockTFHedge extends Block {
 
 	private final int damageDone;
 
-	protected BlockTFHedge() {
-		super(Properties.create(Material.CACTUS).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.PLANT));
+	protected BlockTFHedge(Block.Properties props) {
+		super(props);
 		this.damageDone = 3;
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	//TODO: Removed. Check this
@@ -104,9 +103,9 @@ public class BlockTFHedge extends Block {
 		for (PlayerEntity player : nearbyPlayers) {
 			// are they swinging?
 			if (player.isSwingInProgress) {
-				RayTraceResult ray = EntityUtil.rayTrace(player);
+				BlockRayTraceResult ray = EntityUtil.rayTrace(player);
 				// are they pointing at this block?
-				if (ray != null && ray.getType() == RayTraceResult.Type.BLOCK && pos.equals(((BlockRayTraceResult) ray).getPos())) {
+				if (ray.getType() == RayTraceResult.Type.BLOCK && pos.equals(ray.getPos())) {
 					// prick them!  prick them hard!
 					player.attackEntityFrom(DamageSource.CACTUS, damageDone);
 

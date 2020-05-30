@@ -1,0 +1,6 @@
+{
+  "parent": "block/button",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_twilight_oak_3"
+  }
+}

@@ -2,7 +2,6 @@ package twilightforest.structures;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
@@ -15,7 +14,6 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.Heightmap;
@@ -221,8 +219,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * Tries to delay notifying tripwire blocks of placement so they won't
 	 * scan unloaded chunks looking for connections.
 	 *
-	 * See {@link net.minecraftforge.common.ForgeHooks#onPlaceItemIntoWorld(ItemStack, EntityPlayer, World, BlockPos, Direction, float, float, float, Hand)}
-	 * for block snapshot handling code.
 	 */
 	protected void placeTripwire(World world, int x, int y, int z, int size, Direction facing, MutableBoundingBox sbb) {
 
@@ -527,31 +523,31 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	/**
 	 * Nullify all the sky light in this component bounding box
 	 */
-	public void nullifySkyLightForBoundingBox(World world) {
-		this.nullifySkyLight(world, boundingBox.minX - 1, boundingBox.minY - 1, boundingBox.minZ - 1, boundingBox.maxX + 1, boundingBox.maxY + 1, boundingBox.maxZ + 1);
-	}
+//	public void nullifySkyLightForBoundingBox(World world) {
+//		this.nullifySkyLight(world, boundingBox.minX - 1, boundingBox.minY - 1, boundingBox.minZ - 1, boundingBox.maxX + 1, boundingBox.maxY + 1, boundingBox.maxZ + 1);
+//	}
 
 	/**
 	 * Nullify all the sky light at the specified positions, using local coordinates
 	 */
-	protected void nullifySkyLightAtCurrentPosition(World world, int sx, int sy, int sz, int dx, int dy, int dz) {
-		// resolve all variables to their actual in-world positions
-		nullifySkyLight(world, getXWithOffset(sx, sz), getYWithOffset(sy), getZWithOffset(sx, sz), getXWithOffset(dx, dz), getYWithOffset(dy), getZWithOffset(dx, dz));
-	}
+//	protected void nullifySkyLightAtCurrentPosition(World world, int sx, int sy, int sz, int dx, int dy, int dz) {
+//		// resolve all variables to their actual in-world positions
+//		nullifySkyLight(world, getXWithOffset(sx, sz), getYWithOffset(sy), getZWithOffset(sx, sz), getXWithOffset(dx, dz), getYWithOffset(dy), getZWithOffset(dx, dz));
+//	}
 
 	/**
 	 * Nullify all the sky light at the specified positions, using world coordinates
 	 */
 	//TODO: Probably can't set light anymore
-	protected void nullifySkyLight(IWorld world, int sx, int sy, int sz, int dx, int dy, int dz) {
-		for (int x = sx; x <= dx; x++) {
-			for (int z = sz; z <= dz; z++) {
-				for (int y = sy; y <= dy; y++) {
-					world.setLightFor(LightType.SKY, new BlockPos(x, y, z), 0);
-				}
-			}
-		}
-	}
+//	protected void nullifySkyLight(IWorld world, int sx, int sy, int sz, int dx, int dy, int dz) {
+//		for (int x = sx; x <= dx; x++) {
+//			for (int z = sz; z <= dz; z++) {
+//				for (int y = sy; y <= dy; y++) {
+//					world.setLightFor(LightType.SKY, new BlockPos(x, y, z), 0);
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the

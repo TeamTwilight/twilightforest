@@ -2,7 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Food;
+import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -10,10 +10,10 @@ import twilightforest.advancements.TFAdvancements;
 
 import javax.annotation.Nonnull;
 
-public class ItemTFHydraChops extends ItemTFFood {
+public class ItemTFHydraChops extends Item {
 
-	public ItemTFHydraChops(Food food, Properties props) {
-		super(food, props);
+	public ItemTFHydraChops(Properties props) {
+		super(props);
 	}
 
 	@Override
@@ -24,13 +24,5 @@ public class ItemTFHydraChops extends ItemTFFood {
 		}
 		// then normal effects
 		return super.onItemUseFinish(itemStack, world, living);
-	}
-
-	private static final Rarity RARITY = Rarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
 	}
 }

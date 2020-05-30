@@ -20,7 +20,6 @@ import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.function.LongFunction;
 
@@ -141,18 +140,18 @@ public class TFBiomeProvider extends BiomeProvider {
 //		return getBiomesForGeneration(biomes, x, z, width, height, true);
 //	}
 
-	public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height, boolean useCache) {
-		// for grid-centred magic maps, get from map cache
-		if (useCache && mapCache.isGridAligned(x, z, width, height)) {
-			Biome[] cached = mapCache.getBiomes(x, z);
-			return Arrays.copyOf(cached, cached.length);
-		}
-		return super.getBiomesForGeneration(biomes, x, z, width, height);
-	}
+//	public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height, boolean useCache) {
+//		// for grid-centred magic maps, get from map cache
+//		if (useCache && mapCache.isGridAligned(x, z, width, height)) {
+//			Biome[] cached = mapCache.getBiomes(x, z);
+//			return Arrays.copyOf(cached, cached.length);
+//		}
+//		return super.getBiomesForGeneration(biomes, x, z, width, height);
+//	}
 
-	@Override
-	public void cleanupCache() {
-		mapCache.cleanup();
-		super.cleanupCache();
-	}
+//	@Override
+//	public void cleanupCache() {
+//		mapCache.cleanup();
+//		super.cleanupCache();
+//	}
 }

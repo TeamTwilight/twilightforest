@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -12,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-public class ItemTFMoonDial extends ItemTF {
+public class ItemTFMoonDial extends Item {
     public ItemTFMoonDial(Properties props) {
         super(props);
         this.addPropertyOverride(new ResourceLocation("phase"), new IItemPropertyGetter() {

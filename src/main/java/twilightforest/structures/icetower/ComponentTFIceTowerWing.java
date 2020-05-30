@@ -222,7 +222,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		}
 
 		// nullify sky light
-		this.nullifySkyLightForBoundingBox(world);
+//		this.nullifySkyLightForBoundingBox(world);
 
 		// make floors
 		makeFloorsForTower(world, decoRNG, sbb);
@@ -236,10 +236,10 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Nullify all the sky light in this component bounding box
 	 */
-	@Override
-	public void nullifySkyLightForBoundingBox(World world) {
-		this.nullifySkyLight(world, boundingBox.minX + 1, boundingBox.minY + 1, boundingBox.minZ + 1, boundingBox.maxX - 1, boundingBox.maxY - 1, boundingBox.maxZ - 1);
-	}
+//	@Override
+//	public void nullifySkyLightForBoundingBox(World world) {
+//		this.nullifySkyLight(world, boundingBox.minX + 1, boundingBox.minY + 1, boundingBox.minZ + 1, boundingBox.maxX - 1, boundingBox.maxY - 1, boundingBox.maxZ - 1);
+//	}
 
 	protected void makeFloorsForTower(World world, Random decoRNG, MutableBoundingBox sbb) {
 		int floors = this.height / 10;

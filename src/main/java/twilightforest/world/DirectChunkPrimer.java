@@ -3,6 +3,8 @@ package twilightforest.world;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.palette.UpgradeData;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 /**
@@ -14,6 +16,10 @@ public class DirectChunkPrimer extends ChunkPrimer {
 
 	private final BlockState[] states = new BlockState[65536];
 
+	public DirectChunkPrimer(ChunkPos pos) {
+		super(pos, UpgradeData.EMPTY);
+	}
+
 	@Override
 	public BlockState getBlockState(BlockPos pos) {
 		BlockState state = states[getBlockIndex(pos)];
@@ -21,8 +27,9 @@ public class DirectChunkPrimer extends ChunkPrimer {
 	}
 
 	@Override
-	public void setBlockState(BlockPos pos, BlockState state, boolean isMoving) {
+	public BlockState setBlockState(BlockPos pos, BlockState state, boolean isMoving) {
 		states[getBlockIndex(pos)] = state;
+		return state;
 	}
 
 	private static int getBlockIndex(BlockPos pos) {

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
@@ -11,7 +12,10 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
 import twilightforest.TFConfig;
+import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.block.TFBlocks;
+import twilightforest.util.IntPair;
 
 // TODO: doc out all the vanilla copying
 public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
@@ -19,9 +23,6 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	private final OctavesNoiseGenerator noiseGen4;
 	//private final OctavesNoiseGenerator scaleNoise;
 	//private final OctavesNoiseGenerator forestNoise;
-
-//	private final TFGenCaves caveGenerator = new TFGenCaves();
-//	private final TFGenRavine ravineGenerator = new TFGenRavine();
 
 	public ChunkGeneratorTwilightForest(IWorld world, BiomeProvider seed, TFWorld settings) {
 		super(world, seed, settings, true);
@@ -42,28 +43,26 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		//func_222529_a(x, z, data);
 		squishTerrain(data);
 
-		ChunkPrimer primer = new DirectChunkPrimer();
-		initPrimer(primer, data);
+		ChunkPrimer primer = new DirectChunkPrimer(new ChunkPos(x, z));
+		initPrimer(region, data);
 
 		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
-		//addDarkForestCanopy2(x, z, primer); TODO: Should be moved to Biome Decorator or...?
+		addDarkForestCanopy2(x, z, region);
 
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		//this.biomesForGeneration = world.getDimension().getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		//addGlaciers(x, z, primer, biomesForGeneration);
-		deformTerrainForFeature(x, z, primer);
+		addGlaciers(x, z, region, this.biomeProvider.getBiomeForNoiseGen(x, getSeaLevel(), z));
+		deformTerrainForFeature(x, z, region);
 		//replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
-//		caveGenerator.generate(world, x, z, primer); TODO: Handled in Biome carvers
-//		ravineGenerator.generate(world, x, z, primer); TODO: Handled in Biome carvers
 //		generateFeatures(x, z, primer); TODO: Should be moved to Biome Decorator
 //		hollowTreeGenerator.generate(world, x, z, primer); TODO: Should be handled via Biome Decorator
 
 		makeChunk(x, z, primer);
 	}
 
-	protected void initPrimer(ChunkPrimer primer, ChunkBitArray data) {
+	protected void initPrimer(WorldGenRegion primer, ChunkBitArray data) {
 
 		//TODO: Handled in TFWorld now
 //		BlockState water = Blocks.WATER.getDefaultState();
@@ -74,9 +73,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				for (int y = 0; y < 256; y++) {
 					boolean solid = data.get(getIndex(x, y, z));
 					if (y < TFWorld.SEALEVEL && !solid) {
-						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultBlock(), false);
+						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultBlock(), 3);
 					} else if (solid) {
-						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultFluid(), false);
+						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultFluid(), 3);
 					}
 				}
 			}
@@ -84,7 +83,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	}
 
 	//TODO: Parameters "chunkX" and "chunkZ" are unused. Remove?
-	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] biomes) {
+	private void addGlaciers(int chunkX, int chunkZ, WorldGenRegion primer, Biome biome) {
 
 		BlockState glacierBase = Blocks.GRAVEL.getDefaultState();
 		BlockState glacierMain = TFConfig.COMMON_CONFIG.PERFORMANCE.glacierPackedIce.get() ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
@@ -93,7 +92,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 
-				Biome biome = biomes[x & 15 | (z & 15) << 4];
+				//Biome biome = biomes[x & 15 | (z & 15) << 4];
 				if (biome != TFBiomes.glacier.get()) continue;
 
 				// find the (current) top block
@@ -102,7 +101,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 					Block currentBlock = primer.getBlockState(new BlockPos(x, y, z)).getBlock();
 					if (currentBlock == Blocks.STONE) {
 						gBase = y + 1;
-						primer.setBlockState(new BlockPos(x, y, z), glacierBase, false);
+						primer.setBlockState(new BlockPos(x, y, z), glacierBase, 3);
 						break;
 					}
 				}
@@ -112,9 +111,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				int gTop = Math.min(gBase + gHeight, 127);
 
 				for (int y = gBase; y < gTop; y++) {
-					primer.setBlockState(new BlockPos(x, y, z), glacierMain, false);
+					primer.setBlockState(new BlockPos(x, y, z), glacierMain, 3);
 				}
-				primer.setBlockState(new BlockPos(x, gTop, z), glacierTop, false);
+				primer.setBlockState(new BlockPos(x, gTop, z), glacierTop, 3);
 			}
 		}
 	}
@@ -122,8 +121,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	/**
 	 * Adds dark forest canopy.  This version uses the "unzoomed" array of biomes used in land generation to determine how many of the nearby blocks are dark forest
 	 */
-	/*private void addDarkForestCanopy2(int chunkX, int chunkZ, ChunkPrimer primer) {
-
+	private void addDarkForestCanopy2(int chunkX, int chunkZ, WorldGenRegion primer) {
 		int[] thicks = new int[5 * 5];
 		boolean biomeFound = false;
 
@@ -132,7 +130,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
-						Biome biome = biomesForGeneration[x + bx + 2 + (z + bz + 2) * (10)];
+						Biome biome = getBiomeProvider().getBiomeForNoiseGen(chunkX, getSeaLevel(), chunkZ);
 
 						if (biome == TFBiomes.darkForest.get() || biome == TFBiomes.darkForestCenter.get()) {
 							thicks[x + z * 5]++;
@@ -146,10 +144,10 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		if (!biomeFound) return;
 
 		IntPair nearCenter = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world, nearCenter);
+		TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld(), nearCenter);
 
 		double d = 0.03125D;
-		depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
+		//depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
 
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
@@ -203,23 +201,23 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 					if (topLevel != -1) {
 						// just use the same noise generator as the terrain uses for stones
-						int noise = Math.min(3, (int) (depthBuffer[z & 15 | (x & 15) << 4] / 1.25f));
+						//int noise = Math.min(3, (int) (depthBuffer[z & 15 | (x & 15) << 4] / 1.25f));
 
 						// manipulate top and bottom
 						int treeBottom = topLevel + 12 - (int) (thickness * 0.5F);
 						int treeTop = treeBottom + (int) (thickness * 1.5F);
 
-						treeBottom -= noise;
+						//treeBottom -= noise;
 
 						BlockState darkLeaves = TFBlocks.dark_leaves.get().getDefaultState();
 						for (int y = treeBottom; y < treeTop; y++) {
-							primer.setBlockState(new BlockPos(x, y, z), darkLeaves, false);
+							primer.setBlockState(new BlockPos(x, y, z), darkLeaves, 3);
 						}
 					}
 				}
 			}
 		}
-	}*/
+	}
 
 //	@Override
 //	public void decorate(WorldGenRegion region) {

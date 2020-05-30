@@ -1,14 +1,13 @@
 package twilightforest.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraftforge.fml.network.NetworkEvent;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFProtectionBox;
 
@@ -50,7 +49,7 @@ public class PacketAreaProtection {
 				public void run() {
 
 					World world = Minecraft.getInstance().world;
-					addProtectionBox(world, message.sbb);
+					addProtectionBox((ClientWorld) world, message.sbb);
 
 					for (int i = 0; i < 20; i++) {
 
@@ -69,9 +68,9 @@ public class PacketAreaProtection {
 			return true;
 		}
 
-		static void addProtectionBox(World world, MutableBoundingBox sbb) {
+		static void addProtectionBox(ClientWorld world, MutableBoundingBox sbb) {
 
-			for (Entity entity : world.weatherEffects) {
+			for (Entity entity : world.globalEntities) {
 				if (entity instanceof EntityTFProtectionBox) {
 					EntityTFProtectionBox protectionBox = (EntityTFProtectionBox) entity;
 					if (protectionBox.matches(sbb)) {
@@ -81,7 +80,7 @@ public class PacketAreaProtection {
 				}
 			}
 
-			world.addWeatherEffect(new EntityTFProtectionBox(world, sbb));
+			world.globalEntities.add(new EntityTFProtectionBox(world, sbb));
 		}
 	}
 }

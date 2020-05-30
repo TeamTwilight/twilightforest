@@ -31,7 +31,7 @@ import java.util.List;
 public class ItemTFFieryPick extends PickaxeItem {
 
 	protected ItemTFFieryPick(IItemTier toolMaterial, Properties props) {
-		super(toolMaterial, 1, -2.8F, props.group(TFItems.creativeTab));
+		super(toolMaterial, 1, -2.8F, props);
 	}
 
 	@SubscribeEvent
@@ -50,7 +50,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 
 					int combinedCount = input.getCount() * result.getCount();
 
-					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount, result.getItemDamage())));
+					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount/*, result.getItemDamage()*/)));
 					removeThese.add(input);
 
 					// [VanillaCopy] SlotFurnaceOutput.onCrafting
@@ -75,8 +75,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld().getWorld(), event.getHarvester().getX(), event.getHarvester().getY() + 0.5D, event.getHarvester().getZ(), k));
 					}
 
-					//TODO: Move to regular particle spawner?
-					ParticleHelper.spawnParticles(event.getWorld(), event.getPos(), ParticleTypes.FLAME, 5, 0.02);
+					ParticleHelper.spawnParticles(event.getWorld().getWorld(), event.getPos(), ParticleTypes.FLAME);
 				}
 			}
 
@@ -90,20 +89,11 @@ public class ItemTFFieryPick extends PickaxeItem {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
-			//TODO: Move to regular particle spawner?
-			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME, 20, 0.02);
+			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME);
 			target.setFire(15);
 		}
 
 		return result;
-	}
-
-	private static final Rarity RARITY = Rarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
 	}
 
 	@Override

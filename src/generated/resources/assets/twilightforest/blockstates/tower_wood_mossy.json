@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/tower_wood_mossy"
+      },
+      {
+        "model": "twilightforest:block/tower_wood_mossy_flipped"
+      }
+    ]
+  }
+}

@@ -26,9 +26,9 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
 		if (entityLiving instanceof PlayerEntity) {
-			PlayerEntity entityplayer = (PlayerEntity) entityLiving;
+			PlayerEntity entityplayer = (PlayerEntity)entityLiving;
 			boolean flag = entityplayer.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-			ItemStack itemstack = this.findAmmo(entityplayer);
+			ItemStack itemstack = entityplayer.findAmmo(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
 			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
@@ -40,26 +40,24 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 				}
 
 				float f = getArrowVelocity(i);
-
-				if ((double) f >= 0.1D) {
-					boolean flag1 = entityplayer.abilities.isCreativeMode || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
-
+				if (!((double)f < 0.1D)) {
+					boolean flag1 = entityplayer.abilities.isCreativeMode || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
 					if (!worldIn.isRemote) {
-						ArrowItem itemarrow = (ArrowItem) (itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
-						AbstractArrowEntity entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
+						ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
+						AbstractArrowEntity entityarrow = arrowitem.createArrow(worldIn, itemstack, entityplayer);
 						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation
-						ArrowEntity entityarrow1 = new EntityTippedArrow(worldIn, entityLiving);
+						ArrowEntity entityarrow1 = new ArrowEntity(worldIn, entityLiving);
 						entityarrow1.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
-						entityarrow1.motionY += 0.007499999832361937D * 20F;
-						entityarrow1.getY() += 0.025F;
+						entityarrow1.getMotion().add(0.0D, 0.007499999832361937D * 20F, 0.0D);
+						entityarrow1.getPosition().add(0.0D, 0.025F, 0.0D);
 						entityarrow1.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
-						ArrowEntity entityarrow2 = new EntityTippedArrow(worldIn, entityLiving);
+						ArrowEntity entityarrow2 = new ArrowEntity(worldIn, entityLiving);
 						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
-						entityarrow2.motionY -= 0.007499999832361937D * 20F;
-						entityarrow2.getY() -= 0.025F;
+						entityarrow2.getMotion().subtract(0.0D, 0.007499999832361937D * 20F, 0.0D);
+						entityarrow2.getPosition().add(0.0D, 0.025F, 0.0D).getY();
 						entityarrow2.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						if (f == 1.0F) {
@@ -71,9 +69,9 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
 
 						if (j > 0) {
-							entityarrow.setDamage(entityarrow.getDamage() + (double) j * 0.5D + 0.5D);
-							entityarrow1.setDamage(entityarrow.getDamage() + (double) j * 0.5D + 0.5D);
-							entityarrow2.setDamage(entityarrow.getDamage() + (double) j * 0.5D + 0.5D);
+							entityarrow.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
+							entityarrow1.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
+							entityarrow2.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
 						}
 
 						int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
@@ -90,10 +88,10 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 							entityarrow2.setFire(100);
 						}
 
-						stack.damageItem(1, entityplayer, (user) -> user.sendBreakAnimation(entityLiving.getActiveHand()));
+						stack.damageItem(1, entityplayer, (user) -> user.sendBreakAnimation(entityplayer.getActiveHand()));
 
 						if (flag1 || entityplayer.abilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
-							entityarrow.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
+							entityarrow.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
 						}
 
 						worldIn.addEntity(entityarrow);
@@ -101,11 +99,9 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						worldIn.addEntity(entityarrow2);
 					}
 
-					worldIn.playSound((PlayerEntity) null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-
+					worldIn.playSound((PlayerEntity)null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 					if (!flag1 && !entityplayer.abilities.isCreativeMode) {
 						itemstack.shrink(1);
-
 						if (itemstack.isEmpty()) {
 							entityplayer.inventory.deleteStack(itemstack);
 						}

@@ -23,11 +23,9 @@ import java.util.List;
 public class ItemTFMinotaurAxe extends AxeItem {
 
 	private static final int BONUS_CHARGING_DAMAGE = 7;
-	private final Rarity RARITY;
 
-	protected ItemTFMinotaurAxe(IItemTier material, Rarity rarity, Properties props) {
-		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f, props.group(TFItems.creativeTab));
-		this.RARITY = rarity;
+	protected ItemTFMinotaurAxe(IItemTier material, Properties props) {
+		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f, props);
 	}
 
 	@SubscribeEvent
@@ -58,11 +56,5 @@ public class ItemTFMinotaurAxe extends AxeItem {
 	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
-	}
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
 	}
 }

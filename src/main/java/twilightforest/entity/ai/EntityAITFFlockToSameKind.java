@@ -1,6 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
 
@@ -12,12 +13,12 @@ public class EntityAITFFlockToSameKind extends Goal {
 	/**
 	 * The child that is following its parent.
 	 */
-	private LivingEntity flockCreature;
+	private MobEntity flockCreature;
 	private Vec3d flockPosition;
 	double speed;
 	private int moveTimer;
 
-	public EntityAITFFlockToSameKind(LivingEntity living, double speed) {
+	public EntityAITFFlockToSameKind(MobEntity living, double speed) {
 		this.flockCreature = living;
 		this.speed = speed;
 	}

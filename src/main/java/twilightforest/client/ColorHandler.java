@@ -19,7 +19,7 @@ import twilightforest.item.TFItems;
 
 import java.awt.Color;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ColorHandler {
 
 	@SubscribeEvent
@@ -358,7 +358,6 @@ public final class ColorHandler {
 		ItemColors itemColors = event.getItemColors();
 		BlockColors blockColors = event.getBlockColors();
 
-		// Atomic: This is one place where getStateFromMeta is still commonly used
 		itemColors.register((stack, tintIndex) -> blockColors.getColor(((BlockItem)stack.getItem()).getBlock().getDefaultState(), null, null, tintIndex),
 				TFBlocks.aurora_block.get(), TFBlocks.aurora_pillar.get(), TFBlocks.aurora_slab.get(), TFBlocks.auroralized_glass.get(), TFBlocks.dark_leaves.get(), TFBlocks.giant_leaves.get(), TFBlocks.smoker.get(), TFBlocks.fire_jet.get(),
 				TFBlocks.time_leaves.get(), TFBlocks.transformation_leaves.get(), TFBlocks.mining_leaves.get(), TFBlocks.sorting_leaves.get(), TFBlocks.oak_leaves.get(), TFBlocks.canopy_leaves.get(), TFBlocks.mangrove_leaves.get(), TFBlocks.rainboak_leaves.get(), TFBlocks.thorn_leaves.get(), TFBlocks.beanstalk_leaves.get(),
@@ -366,8 +365,6 @@ public final class ColorHandler {
 				TFBlocks.castle_door_yellow.get(), TFBlocks.castle_door_blue.get(), TFBlocks.castle_door_pink.get(), TFBlocks.castle_door_purple.get(), TFBlocks.force_field_pink.get(), TFBlocks.force_field_blue.get(), TFBlocks.force_field_green.get(), TFBlocks.force_field_orange.get(), TFBlocks.force_field_purple.get(), TFBlocks.huge_lilypad.get(),
 				TFBlocks.twilight_portal_miniature_structure.get(), TFBlocks.hedge_maze_miniature_structure.get(), TFBlocks.hollow_hill_miniature_structure.get(), TFBlocks.quest_grove_miniature_structure.get(), TFBlocks.mushroom_tower_miniature_structure.get(), TFBlocks.naga_courtyard_miniature_structure.get(), TFBlocks.lich_tower_miniature_structure.get(), TFBlocks.minotaur_labyrinth_miniature_structure.get(),
 				TFBlocks.hydra_lair_miniature_structure.get(), TFBlocks.goblin_stronghold_miniature_structure.get(), TFBlocks.dark_tower_miniature_structure.get(), TFBlocks.yeti_cave_miniature_structure.get(), TFBlocks.aurora_palace_miniature_structure.get(), TFBlocks.troll_cave_cottage_miniature_structure.get(), TFBlocks.final_castle_miniature_structure.get());
-		// Honestly I'd say it makes sense in this context. -Drullkus
-        // Androsa: 1.14 is here, it's time to delet
 
 		itemColors.register((stack, tintIndex) ->
 				stack.getItem() instanceof ItemTFArcticArmor

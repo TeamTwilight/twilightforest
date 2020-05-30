@@ -20,10 +20,8 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
-import twilightforest.structures.start.*;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.MapGenTFMajorFeature;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -46,10 +44,10 @@ public enum TFFeature {
 					.addMonster(TFEntities.kobold.get(), 10, 4, 8);
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	MEDIUM_HILL ( 2, "medium_hollow_hill", true ) {
 		{
@@ -67,10 +65,10 @@ public enum TFFeature {
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	LARGE_HILL ( 3, "large_hollow_hill", true ) {
 		{
@@ -89,30 +87,30 @@ public enum TFFeature {
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
 		{
 			this.enableTerrainAlterations();
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartHedgeMaze(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartHedgeMaze(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	NAGA_COURTYARD ( 3, "naga_courtyard", true ) {
 		{
 			this.enableTerrainAlterations();
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartCourtyard(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartCourtyard(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	LICH_TOWER ( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
 		{
@@ -134,10 +132,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.of("Notes on a Pointy Tower"));
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartLichTower(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartLichTower(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
@@ -156,10 +154,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.of("Notes on Auroral Fortification"));
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartAuroraPalace(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartAuroraPalace(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	QUEST_ISLAND ( 1, "quest_island", false ) { { this.disableStructure(); } },
 	QUEST_GROVE  ( 1, "quest_grove" , true  ) {
@@ -167,10 +165,10 @@ public enum TFFeature {
 			this.enableTerrainAlterations();
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartQuestGrove(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartQuestGrove(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	DRUID_GROVE    ( 1, "druid_grove"   , false ) { { this.disableStructure(); } },
 	FLOATING_RUINS ( 3, "floating_ruins", false ) { { this.disableStructure(); } },
@@ -189,10 +187,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.of("Notes on the Fire Swamp"));
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartHydraLair(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartHydraLair(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	LABYRINTH ( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {
 		{
@@ -218,10 +216,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.of("Notes on a Swampy Labyrinth"));
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartLabyrinth(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartLabyrinth(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
@@ -249,10 +247,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.of("Notes on a Wooden Tower"));
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartDarkTower(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartDarkTower(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", true, TwilightForestMod.prefix("progress_trophy_pedestal") ) {
 		{
@@ -278,10 +276,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.of("Notes on a Stronghold"));
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartKnightStronghold(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartKnightStronghold(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	WORLD_TREE ( 3, "world_tree", false ) { { this.disableStructure(); } },
 	YETI_CAVE  ( 2, "yeti_lairs", true , TwilightForestMod.prefix("progress_lich") ) {
@@ -301,10 +299,10 @@ public enum TFFeature {
 			book.setTagInfo("title" , StringNBT.of("Notes on an Icy Cave"));
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartYetiCave(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartYetiCave(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	// TODO split cloud giants from this
 	TROLL_CAVE ( 4, "troll_lairs", true, TwilightForestMod.prefix("progress_merge") ) {
@@ -330,10 +328,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.of("Notes on the Highlands"));
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
@@ -353,17 +351,17 @@ public enum TFFeature {
 					.addMonster(3, EntityType.BLAZE, 10, 1, 1);
 		}
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartFinalCastle(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartFinalCastle(world, this, rand, chunkX, chunkZ);
+//		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
 
-		@Override
-		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-			return new StructureStartMushroomTower(world, this, rand, chunkX, chunkZ);
-		}
+//		@Override
+//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//			return new StructureStartMushroomTower(world, this, rand, chunkX, chunkZ);
+//		}
 	};
 
 	//IStructurePieceTypes that can be referred to
@@ -427,10 +425,10 @@ public enum TFFeature {
 		return maxSize;
 	}
 
-	@Nullable
-	public MapGenTFMajorFeature createFeatureGenerator() {
-		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
-	}
+//	@Nullable
+//	public MapGenTFMajorFeature createFeatureGenerator() {
+//		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
+//	}
 
 	/**
 	 * doesn't require modid
@@ -469,7 +467,7 @@ public enum TFFeature {
 	public static boolean isInFeatureChunk(World world, int mapX, int mapZ) {
 		int chunkX = mapX >> 4;
 		int chunkZ = mapZ >> 4;
-		BlockPos cc = getNearestCenterXYZ(chunkX, chunkZ, world);
+		BlockPos cc = getNearestCenterXYZ(chunkX, chunkZ);
 
 		return chunkX == (cc.getX() >> 4) && chunkZ == (cc.getZ() >> 4);
 	}
@@ -563,12 +561,13 @@ public enum TFFeature {
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
 
 		// does the biome have a feature?
-		if (biomeAt instanceof TFBiomeBase) {
-			TFFeature biomeFeature = ((TFBiomeBase) biomeAt).containedFeature;
-			if (biomeFeature != NOTHING) {
-				return biomeFeature;
-			}
-		}
+		//TODO: Collaterally blocked out due to null registry objects
+//		if (biomeAt instanceof TFBiomeBase) {
+//			TFFeature biomeFeature = ((TFBiomeBase) biomeAt).containedFeature;
+//			if (biomeFeature != NOTHING) {
+//				return biomeFeature;
+//			}
+//		}
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
 		int regionOffsetZ = Math.abs((chunkZ + 64 >> 4) % 8);
@@ -684,7 +683,8 @@ public enum TFFeature {
 
 						int l1 = j1 / p_191069_3_;
 						int i2 = k1 / p_191069_3_;
-						Random random1 = worldIn.setRandomSeed(l1, i2, p_191069_5_);
+//						Random random1 = worldIn.setRandomSeed(l1, i2, p_191069_5_);
+						Random random1 = new Random();
 						l1 = l1 * p_191069_3_;
 						i2 = i2 * p_191069_3_;
 
@@ -696,7 +696,7 @@ public enum TFFeature {
 							i2 = i2 + random1.nextInt(p_191069_3_ - p_191069_4_);
 						}
 
-						MapGenBase.setupChunkSeed(worldIn.getSeed(), random, l1, i2);
+						//MapGenBase.setupChunkSeed(worldIn.getSeed(), random, l1, i2);
 						random.nextInt();
 
 						// Check changed for TFFeature
@@ -744,7 +744,7 @@ public enum TFFeature {
 	 * <p>
 	 * Maybe in the future we'll have to actually search for a feature chunk nearby, but for now this will work.
 	 */
-	public static BlockPos getNearestCenterXYZ(int cx, int cz, World world) {
+	public static BlockPos getNearestCenterXYZ(int cx, int cz) {
 		// generate random number for the whole biome area
 		int regionX = (cx + 8) >> 4;
 		int regionZ = (cz + 8) >> 4;
@@ -892,9 +892,9 @@ public enum TFFeature {
 		book.setTagInfo("title", StringNBT.of("Notes on the Unexplained"));
 	}
 
-	public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-		return new StructureStartNothing(world, rand, chunkX, chunkZ);
-	}
+//	public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
+//		return new StructureStartNothing(world, rand, chunkX, chunkZ);
+//	}
 
 	private static void addTranslatedPages(ListNBT bookPages, String translationKey, int pageCount) {
 		for (int i = 1; i <= pageCount; i++) {

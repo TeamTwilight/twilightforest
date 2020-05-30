@@ -1,11 +1,9 @@
 package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
@@ -20,6 +18,7 @@ import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class holds the state data for a single hydra head
@@ -722,8 +721,7 @@ public class HydraHeadContainer {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != headEntity && possibleEntity != necka && possibleEntity != neckb && possibleEntity != neckc) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
 				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
-				// TODO: AxisAlignedBB no longer has calculateIntercept
-				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+				Optional<Vec3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -731,7 +729,7 @@ public class HydraHeadContainer {
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos != null) {
-					double possibleDist = srcVec.distanceTo(interceptPos.hitVec);
+					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
 						pointedEntity = possibleEntity;

@@ -36,8 +36,8 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
-	//TODO: Parameters "world" and "rand" are unused. Remove?
-	public ComponentTFHollowHill(IStructurePieceType type, TFFeature feature, World world, Random rand, int i, int size, int x, int y, int z) {
+	//TODO: Parameter "rand" is unused. Remove?
+	public ComponentTFHollowHill(IStructurePieceType type, TFFeature feature, Random rand, int i, int size, int x, int y, int z) {
 		super(type, feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);

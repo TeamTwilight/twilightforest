@@ -32,7 +32,6 @@ public class BlockTFCinderFurnace extends Block {
 
 	BlockTFCinderFurnace() {
 		super(Properties.create(Material.WOOD).hardnessAndResistance(7.0F).lightValue(15));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
 	}
 
@@ -43,6 +42,7 @@ public class BlockTFCinderFurnace extends Block {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(LIT, FACING);
 	}
 

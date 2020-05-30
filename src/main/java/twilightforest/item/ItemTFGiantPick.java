@@ -23,7 +23,7 @@ import java.util.List;
 public class ItemTFGiantPick extends PickaxeItem {
 
 	protected ItemTFGiantPick(IItemTier material, Properties props) {
-		super(material, 8 + (int)material.getAttackDamage(), -3.5F, props.group(TFItems.creativeTab));
+		super(material, 8 + (int)material.getAttackDamage(), -3.5F, props);
 	}
 
 	@Override

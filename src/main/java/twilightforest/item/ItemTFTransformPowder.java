@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -22,14 +23,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ItemTFTransformPowder extends ItemTF {
+public class ItemTFTransformPowder extends Item {
 
 	private final Map<EntityType<?>, EntityType<?>> transformMap = new HashMap<>();
 
 	protected ItemTFTransformPowder(Properties props) {
 		super(props);
-		//this.maxStackSize = 64; TODO: Is this needed?
+	}
 
+	public void initTransformations() {
 		addTwoWayTransformation(TFEntities.minotaur.get(),       EntityType.ZOMBIE_PIGMAN);
 		addTwoWayTransformation(TFEntities.deer.get(),           EntityType.COW);
 		addTwoWayTransformation(TFEntities.bighorn_sheep.get(),  EntityType.SHEEP);

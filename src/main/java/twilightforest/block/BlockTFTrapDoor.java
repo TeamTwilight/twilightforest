@@ -17,10 +17,4 @@ public class BlockTFTrapDoor extends TrapDoorBlock {
     protected BlockTFTrapDoor(MaterialColor mapColor) {
         super(Properties.create(Material.WOOD, mapColor).hardnessAndResistance(3.0F).sound(SoundType.WOOD));
     }
-
-    @Nullable
-    @Override
-    public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, @Nullable MobEntity entity) {
-        return PathNodeType.TRAPDOOR;
-    }
 }
