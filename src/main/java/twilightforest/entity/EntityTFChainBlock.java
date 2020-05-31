@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -14,6 +15,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
@@ -286,5 +288,11 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			owner = (LivingEntity) e;
 		}
 		hand = additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
+	}
+
+
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

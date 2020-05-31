@@ -133,14 +133,4 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 			return super.getSize(pose);
 		}
 	}
-
-	@Override
-	public EntitySize getSize(Pose p_213305_1_) {
-
-		if (!this.getPassengers().isEmpty()) {
-			return EntitySize.flexible(1.9F, 2.0F);
-		} else {
-			return super.getSize(p_213305_1_);
-		}
-	}
 }
