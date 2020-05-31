@@ -18,18 +18,6 @@ import java.util.function.Function;
 
 public class TFGenMinersTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
-//	public TFGenMinersTree() {
-//		this(false);
-//	}
-//
-//	public TFGenMinersTree(boolean notify) {
-//		super(notify);
-//		this.treeState = TFBlocks.magic_log.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
-//		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE).with(LeavesBlock.CHECK_DECAY, false);
-//		this.rootState = TFBlocks.root.getDefaultState();
-//	}
-
 	public TFGenMinersTree(Function<Dynamic<?>, T> config) {
 		super(config);
 	}
@@ -68,7 +56,7 @@ public class TFGenMinersTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 
 		// place minewood core
 		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState());
-//		world.scheduleUpdate(pos.up(), TFBlocks.mining_log_core.get(), TFBlocks.mining_log_core.get().tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos.up(), TFBlocks.mining_log_core.get(), TFBlocks.mining_log_core.get().tickRate(world));
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.down())) {
@@ -78,11 +66,11 @@ public class TFGenMinersTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 		}
 
 		// roots!
-		int numRoots = 3 + rand.nextInt(2);
+		/*int numRoots = 3 + rand.nextInt(2);
 		double offset = rand.nextDouble();
 		for (int b = 0; b < numRoots; b++) {
 			buildRoot(world, rand, pos, root, offset, b, mbb, config);
-		}
+		}*/
 
 		return true;
 	}

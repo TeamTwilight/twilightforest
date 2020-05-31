@@ -4,9 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
-import net.minecraft.block.BlockState;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProviderType;
@@ -15,7 +13,6 @@ import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Follows similar structure to HugeTreeFeatureConfig
@@ -88,8 +85,8 @@ public class TFTreeFeatureConfig extends BaseTreeFeatureConfig {
 		private int baseHeight;
 		private int chanceFirstFive;
 		private int chanceSecondFive;
-		private boolean hasLeaves = false;
-		private boolean checkWater;
+		private boolean hasLeaves = true;
+		private boolean checkWater = false;
 
 		public Builder(BlockStateProvider trunk, BlockStateProvider leaves, BlockStateProvider branch, BlockStateProvider roots) {
 			super(trunk, leaves);
@@ -113,13 +110,13 @@ public class TFTreeFeatureConfig extends BaseTreeFeatureConfig {
 			return this;
 		}
 
-		public TFTreeFeatureConfig.Builder hasLeaves() {
-			this.hasLeaves = true;
+		public TFTreeFeatureConfig.Builder noLeaves() {
+			this.hasLeaves = false;
 			return this;
 		}
 
-		public TFTreeFeatureConfig.Builder checksWater(boolean check) {
-			this.checkWater = check;
+		public TFTreeFeatureConfig.Builder checksWater() {
+			this.checkWater = true;
 			return this;
 		}
 

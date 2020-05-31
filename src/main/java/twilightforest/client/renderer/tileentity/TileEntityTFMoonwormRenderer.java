@@ -1,24 +1,25 @@
 package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFMoonworm;
-import twilightforest.tileentity.critters.TileEntityTFMoonworm;
 import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
-public class TileEntityTFMoonwormRenderer<T extends TileEntityTFMoonworm> extends TileEntityRenderer<T> {
+import javax.annotation.Nullable;
+
+public class TileEntityTFMoonwormRenderer extends TileEntityRenderer<TileEntityTFMoonwormTicking> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final ModelTFMoonworm moonwormModel = new ModelTFMoonworm();
@@ -28,11 +29,11 @@ public class TileEntityTFMoonwormRenderer<T extends TileEntityTFMoonworm> extend
 	}
 
 	@Override
-	public void render(T te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay) {
-		int yaw = te != null ? ((TileEntityTFMoonwormTicking) te).currentYaw : BugModelAnimationHelper.currentRotation;
+	public void render(@Nullable TileEntityTFMoonwormTicking te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light, int overlay) {
+		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentRotation;
 		if (te == null) partialTicks = Minecraft.getInstance().getRenderPartialTicks();
 
-		stack.push();
+		ms.push();
 		Direction facing = te != null ? te.getBlockState().get(DirectionalBlock.FACING) : Direction.NORTH;
 
 		float rotX = 90.0F;
@@ -50,21 +51,16 @@ public class TileEntityTFMoonwormRenderer<T extends TileEntityTFMoonworm> extend
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		//stack.translate(x + 0.5F, y + 0.5F, z + 0.5F);
-		RenderSystem.rotatef(rotX, 1F, 0F, 0F);
-		RenderSystem.rotatef(rotZ, 0F, 0F, 1F);
-		RenderSystem.rotatef(yaw, 0F, 1F, 0F);
+		ms.translate(0.5, 0.5, 0.5);
+		ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rotX));
+		ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotZ));
+		ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw));
+		ms.scale(1f, -1f, -1f);
 
-		//this.bindTexture(textureLoc);
-		IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutout(textureLoc));
+		IVertexBuilder builder = buffer.getBuffer(moonwormModel.getLayer(textureLoc));
+		moonwormModel.setAngles((TileEntityTFMoonwormTicking) te, partialTicks);
+		moonwormModel.render(ms, builder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
-		stack.scale(1f, -1f, -1f);
-
-		moonwormModel.setLivingAnimations((TileEntityTFMoonwormTicking) te, partialTicks);
-
-		// render the firefly body
-		moonwormModel.render(stack, builder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 0.0625f);
-
-		stack.pop();
+		ms.pop();
 	}
 }

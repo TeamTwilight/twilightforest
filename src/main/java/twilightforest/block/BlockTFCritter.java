@@ -1,11 +1,9 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.DirectionalBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -15,6 +13,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -23,8 +22,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 //TODO: Evaluate placement logic. I feel like something drastic happened
-public abstract class BlockTFCritter extends Block {
-
+public abstract class BlockTFCritter extends DirectionalBlock {
 	private final float WIDTH = getWidth();
 
 	private final VoxelShape DOWN_BB  = VoxelShapes.create(new AxisAlignedBB(0.5F -WIDTH, 1.0F -WIDTH * 2.0F, 0.2F, 0.5F +WIDTH, 1.0F, 0.8F));
@@ -36,7 +34,7 @@ public abstract class BlockTFCritter extends Block {
 
 	protected BlockTFCritter(Properties props) {
 		super(props);
-		this.setDefaultState(stateContainer.getBaseState().with(DirectionalBlock.FACING, Direction.UP));
+		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
 	}
 
 	public float getWidth() {
@@ -46,13 +44,13 @@ public abstract class BlockTFCritter extends Block {
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		super.fillStateContainer(builder);
-		builder.add(DirectionalBlock.FACING);
+		builder.add(FACING);
 	}
 
 	@Override
 	@Deprecated
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(DirectionalBlock.FACING)) {
+		switch (state.get(FACING)) {
 			case DOWN:
 				return DOWN_BB;
 			case UP:
@@ -69,76 +67,41 @@ public abstract class BlockTFCritter extends Block {
 		}
 	}
 
-//	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//		return BlockFaceShape.UNDEFINED;
-//	}
-
-//	@Override
-//	public boolean canPlaceBlockOnSide(World world, BlockPos pos, Direction side) {
-//		return canPlaceAt(world, pos.offset(side.getOpposite()), side);
-//	}
-//
-//	@Override
-//	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-//		for (Direction side : Direction.values()) {
-//			if (canPlaceAt(world, pos.offset(side.getOpposite()), side)) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockState state = getDefaultState();
+		Direction clicked = context.getFace();
+		BlockState state = getDefaultState().with(FACING, clicked);
 
-		//note: sideHit is Direction
-		if (canPlaceAt(context.getWorld(), context.getPos().offset(context.getNearestLookingDirection().getOpposite()), context.getNearestLookingDirection())) {
-			state = state.with(DirectionalBlock.FACING, context.getNearestLookingDirection());
+		if (isValidPosition(state, context.getWorld(), context.getPos())) {
+			return state;
 		}
 
-		return state;
-	}
+		for (Direction dir : context.getNearestLookingDirections()) {
+			state = getDefaultState().with(FACING, dir.getOpposite());
+			if (isValidPosition(state, context.getWorld(), context.getPos())) {
+				return state;
+			}
+		}
 
-//	@Override
-//	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
-//		world.scheduleUpdate(pos, this, 1);
-//	}
+		return null;
+	}
 
 	@Override
-	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		checkAndDrop(world, pos, state);
+	public BlockState updatePostPlacement(BlockState state, Direction direction, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+		if (!isValidPosition(state, world, pos)) {
+			return Blocks.AIR.getDefaultState();
+		} else {
+			return super.updatePostPlacement(state, direction, neighborState, world, pos, neighborPos);
+		}
 	}
 
-	protected boolean checkAndDrop(World world, BlockPos pos, BlockState state) {
+	@Override
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		Direction facing = state.get(DirectionalBlock.FACING);
-		if (!canPlaceAt(world, pos.offset(facing.getOpposite()), facing)) {
-			world.destroyBlock(pos, true);
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		checkAndDrop(world, pos, state);
-	}
-
-//	protected boolean canPlaceAt(World world, BlockPos pos, Direction facing) {
-//		BlockState state = world.getBlockState(pos);
-//		return state.getBlockFaceShape(world, pos, facing) == BlockFaceShape.SOLID
-//				&& (!isExceptBlockForAttachWithPiston(state.getBlock())
-//				|| state.getMaterial() == Material.LEAVES || state.getMaterial() == Material.CACTUS);
-//	}
-
-	public static boolean canPlaceAt(IWorldReader world, BlockPos pos, Direction facing) {
-		BlockPos blockpos = pos.offset(facing);
-		return world.getBlockState(blockpos).isSideSolidFullSquare(world, blockpos, facing.getOpposite());
+		BlockPos restingPos = pos.offset(facing.getOpposite());
+		BlockState restingOn = world.getBlockState(restingPos);
+		return restingOn.isSideSolidFullSquare(world, restingPos, facing);
 	}
 
 	@Override

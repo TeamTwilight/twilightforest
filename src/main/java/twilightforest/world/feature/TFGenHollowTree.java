@@ -252,7 +252,6 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 							this.setRootsBlockState(world, random, dPos, root, mbb, config);
 						}
 					}
-
 				}
 			}
 		}

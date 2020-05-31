@@ -66,11 +66,11 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Abs
 	 */
 	protected abstract boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, MutableBoundingBox mbb, T config);
 
-	public boolean setBranchBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+	public boolean setBranchBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (!isAirOrLeaves(world, pos) && !isTallPlants(world, pos) && !isWater(world, pos)) {
 			return false;
 		} else {
-			this.setBlockState(world, pos, config.trunkProvider.getBlockState(random, pos), mbb);
+			this.setBlockState(world, pos, config.branchProvider.getBlockState(random, pos), mbb);
 			branchpos.add(pos.toImmutable());
 			return true;
 		}

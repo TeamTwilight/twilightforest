@@ -1,12 +1,14 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 
-public class ModelTFCicada extends SegmentedModel {
+public class ModelTFCicada extends Model {
 	public ModelTFCicada() {
+		super(RenderType::getEntityCutoutNoCull);
 		legs = new ModelRenderer(this, 0, 21);
 		legs.addCuboid(-4F, 7.9F, -5F, 8, 1, 9, 0F);
 		//legs.setRotationPoint(0F, 16F, 0F);
@@ -33,33 +35,16 @@ public class ModelTFCicada extends SegmentedModel {
 		//wings.setRotationPoint(0F, 16F, 0F);
 	}
 
-//	public void render(float f5) {
-////		super.render(f, f1, f2, f3, f4, f5);
-////		setRotationAngles(f, f1, f2, f3, f4, f5);
-//	}
-
 	@Override
-	public Iterable<ModelRenderer> getParts() {
-		return ImmutableList.of(
-				legs,
-				fatbody,
-				skinnybody,
-				eye1,
-				eye2,
-				wings
-		);
+	public void render(MatrixStack ms, IVertexBuilder buffer, int light, int overlay, float r, float g, float b, float a) {
+		legs.render(ms, buffer, light, overlay, r, g, b, a);
+		fatbody.render(ms, buffer, light, overlay, r, g, b, a);
+		skinnybody.render(ms, buffer, light, overlay, r, g, b, a);
+		eye1.render(ms, buffer, light, overlay, r, g, b, a);
+		eye2.render(ms, buffer, light, overlay, r, g, b, a);
+		wings.render(ms, buffer, light, overlay, r, g, b, a);
 	}
 
-//	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-////		super.setRotationAngles(f, f1, f2, f3, f4, f5);
-//	}
-
-	@Override
-	public void setAngles(Entity entity, float v, float v1, float v2, float v3, float v4) {
-
-	}
-
-	//fields
 	public ModelRenderer legs;
 	public ModelRenderer fatbody;
 	public ModelRenderer skinnybody;

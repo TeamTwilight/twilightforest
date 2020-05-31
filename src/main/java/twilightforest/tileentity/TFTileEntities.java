@@ -60,12 +60,12 @@ public class TFTileEntities {
 	public static final RegistryObject<TileEntityType<TileEntityTFTowerBossSpawner>> TOWER_BOSS_SPAWNER     = TILE_ENTITIES.register("tower_boss_spawner", () ->
 			TileEntityType.Builder.create(TileEntityTFTowerBossSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 
-	public static final RegistryObject<TileEntityType<TileEntityTFCicada>> CICADA     = TILE_ENTITIES.register("cicada", () ->
-			TileEntityType.Builder.create(FMLEnvironment.dist.isClient() ? TileEntityTFCicadaTicking::new : TileEntityTFCicada::new, TFBlocks.cicada.get()).build(null));
-	public static final RegistryObject<TileEntityType<TileEntityTFFirefly>> FIREFLY   = TILE_ENTITIES.register("firefly", () ->
-			TileEntityType.Builder.create(FMLEnvironment.dist.isClient() ? TileEntityTFFireflyTicking::new : TileEntityTFFirefly::new, TFBlocks.firefly.get()).build(null));
-	public static final RegistryObject<TileEntityType<TileEntityTFMoonworm>> MOONWORM = TILE_ENTITIES.register("moonworm", () ->
-			TileEntityType.Builder.create(FMLEnvironment.dist.isClient() ? TileEntityTFMoonwormTicking::new : TileEntityTFMoonworm::new, TFBlocks.moonworm.get()).build(null));
+	public static final RegistryObject<TileEntityType<TileEntityTFCicadaTicking>> CICADA     = TILE_ENTITIES.register("cicada", () ->
+			TileEntityType.Builder.create(TileEntityTFCicadaTicking::new, TFBlocks.cicada.get()).build(null));
+	public static final RegistryObject<TileEntityType<TileEntityTFFireflyTicking>> FIREFLY   = TILE_ENTITIES.register("firefly", () ->
+			TileEntityType.Builder.create(TileEntityTFFireflyTicking::new, TFBlocks.firefly.get()).build(null));
+	public static final RegistryObject<TileEntityType<TileEntityTFMoonwormTicking>> MOONWORM = TILE_ENTITIES.register("moonworm", () ->
+			TileEntityType.Builder.create(TileEntityTFMoonwormTicking::new, TFBlocks.moonworm.get()).build(null));
 
 	@OnlyIn(Dist.CLIENT)
 	public static void registerTileEntityRenders() {

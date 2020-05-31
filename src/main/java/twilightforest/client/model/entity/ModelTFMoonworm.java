@@ -6,91 +6,75 @@
 
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
 import javax.annotation.Nullable;
 
-public class ModelTFMoonworm extends SegmentedModel {
-	//fields
-	ModelRenderer Shape1;
-	ModelRenderer Shape2;
-	ModelRenderer Shape3;
+public class ModelTFMoonworm extends Model {
+	ModelRenderer shape1;
+	ModelRenderer shape2;
+	ModelRenderer shape3;
 	ModelRenderer head;
 
 	public ModelTFMoonworm() {
+		super(RenderType::getEntityCutoutNoCull);
 		textureWidth = 32;
 		textureHeight = 32;
 
-		Shape1 = new ModelRenderer(this, 0, 4);
-		Shape1.addCuboid(-1F, -1F, -1F, 4, 2, 2);
-		Shape1.setRotationPoint(-1F, 7F, 3F);
+		shape1 = new ModelRenderer(this, 0, 4);
+		shape1.addCuboid(-1F, -1F, -1F, 4, 2, 2);
+		shape1.setRotationPoint(-1F, 7F, 3F);
 
-		Shape2 = new ModelRenderer(this, 0, 8);
-		Shape2.addCuboid(-1F, -1F, -1F, 2, 2, 4);
-		Shape2.setRotationPoint(3F, 7F, 0F);
+		shape2 = new ModelRenderer(this, 0, 8);
+		shape2.addCuboid(-1F, -1F, -1F, 2, 2, 4);
+		shape2.setRotationPoint(3F, 7F, 0F);
 
-		Shape3 = new ModelRenderer(this, 0, 14);
-		Shape3.addCuboid(-1F, -1F, -1F, 2, 2, 2);
-		Shape3.setRotationPoint(2F, 7F, -2F);
+		shape3 = new ModelRenderer(this, 0, 14);
+		shape3.addCuboid(-1F, -1F, -1F, 2, 2, 2);
+		shape3.setRotationPoint(2F, 7F, -2F);
 
 		head = new ModelRenderer(this, 0, 0);
 		head.addCuboid(-1F, -1F, -1F, 2, 2, 2);
 		head.setRotationPoint(-3F, 7F, 2F);
 	}
 
-//	@Override
-//	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
-
-	@Override
-	public Iterable<ModelRenderer> getParts() {
-		return ImmutableList.of(
-				Shape1,
-				Shape2,
-				Shape3,
-				head
-		);
-	}
-
-//	@Override
-//	public void setRotationAngles(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-//		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-//	}
-
-	@Override
-	public void setAngles(Entity entity, float v, float v1, float v2, float v3, float v4) {	}
-
-	public void setLivingAnimations(@Nullable TileEntityTFMoonwormTicking moonworm, float partialTime) {
-
+	public void setAngles(@Nullable TileEntityTFMoonwormTicking moonworm, float partialTime) {
 		head.rotationPointY = 7F;
-		Shape1.rotationPointY = 7F;
-		Shape2.rotationPointY = 7F;
-		Shape3.rotationPointY = 7F;
+		shape1.rotationPointY = 7F;
+		shape2.rotationPointY = 7F;
+		shape3.rotationPointY = 7F;
 
 		if (moonworm != null && moonworm.yawDelay == 0) {
 			float time = (moonworm.desiredYaw - moonworm.currentYaw) - partialTime;
 
 			// moving
 			head.rotationPointY += Math.min(0, MathHelper.sin(time / 2));
-			Shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
-			Shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
-			Shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
+			shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
+			shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
+			shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
 		} else if (moonworm == null && BugModelAnimationHelper.yawWriggleDelay == 0) {
 			float time = (BugModelAnimationHelper.desiredRotation - BugModelAnimationHelper.currentRotation) - partialTime;
 
 			// moving
 			head.rotationPointY += Math.min(0, MathHelper.sin(time / 2));
-			Shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
-			Shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
-			Shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
+			shape1.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 1));
+			shape2.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 2));
+			shape3.rotationPointY += Math.min(0, MathHelper.sin(time / 2 + 3));
 		}
+	}
+
+	@Override
+	public void render(MatrixStack ms, IVertexBuilder buffer, int light, int overlay, float r, float g, float b, float a) {
+		shape1.render(ms, buffer, light, overlay, r, g, b, a);
+		shape2.render(ms, buffer, light, overlay, r, g, b, a);
+		shape3.render(ms, buffer, light, overlay, r, g, b, a);
+		head.render(ms, buffer, light, overlay, r, g, b, a);
 	}
 }

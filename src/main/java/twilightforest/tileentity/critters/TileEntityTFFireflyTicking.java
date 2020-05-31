@@ -1,9 +1,11 @@
 package twilightforest.tileentity.critters;
 
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.tileentity.TFTileEntities;
 
-public class TileEntityTFFireflyTicking extends TileEntityTFFirefly implements ITickableTileEntity {
+public class TileEntityTFFireflyTicking extends TileEntity implements ITickableTileEntity {
 
 	private int yawDelay;
 	public int currentYaw;
@@ -12,6 +14,10 @@ public class TileEntityTFFireflyTicking extends TileEntityTFFirefly implements I
 	public float glowIntensity;
 	private boolean glowing;
 	private int glowDelay;
+
+	public TileEntityTFFireflyTicking() {
+		super(TFTileEntities.FIREFLY.get());
+	}
 
 	@Override
 	public void tick() {

@@ -25,13 +25,6 @@ public class ModelTFFirefly extends SegmentedModel {
 
 	}
 
-//	public void render(float f5) {
-//		//super.render(f, f1, f2, f3, f4, f5);
-//		//setRotationAngles(f, f1, f2, f3, f4, f5);
-//
-////		glow.render(f5);
-//	}
-
 	@Override
 	public Iterable<ModelRenderer> getParts() {
 		return ImmutableList.of(

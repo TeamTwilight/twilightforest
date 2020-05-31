@@ -36,6 +36,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 		tintedAndFlipped(TFBlocks.tower_wood_mossy.get());
 		tintedAndFlipped(TFBlocks.tower_wood_infested.get());
 
+		builtinEntity(TFBlocks.firefly.get(), "minecraft:block/slime_block");
+		builtinEntity(TFBlocks.moonworm.get(), "minecraft:block/slime_block");
+		builtinEntity(TFBlocks.cicada.get(), "minecraft:block/slime_block");
+
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
 		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
 		getMultipartBuilder(TFBlocks.twilight_portal.get())
@@ -219,6 +223,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 			}
 		}
 		getVariantBuilder(b).partialState().setModels(builder.build());
+	}
+
+	private void builtinEntity(Block b, String particle) {
+		simpleBlock(b, models().getBuilder(b.getRegistryName().getPath())
+						.parent(new ModelFile.UncheckedModelFile("builtin/entity"))
+						.texture("particle", particle));
 	}
 
 	private void simpleBlockExisting(Block b) {

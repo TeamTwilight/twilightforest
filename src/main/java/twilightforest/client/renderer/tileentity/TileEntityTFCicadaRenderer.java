@@ -1,11 +1,10 @@
 package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
@@ -13,10 +12,11 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFCicada;
-import twilightforest.tileentity.critters.TileEntityTFCicada;
 import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
-public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends TileEntityRenderer<T> {
+import javax.annotation.Nullable;
+
+public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFCicadaTicking> {
 
 	private final ModelTFCicada cicadaModel = new ModelTFCicada();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
@@ -26,11 +26,10 @@ public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends Ti
 	}
 
 	@Override
-	public void render(T te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay) {
-		int yaw = te != null ? ((TileEntityTFCicadaTicking) te).currentYaw : BugModelAnimationHelper.currentYaw;
+	public void render(@Nullable TileEntityTFCicadaTicking te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light, int overlay) {
+		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
 
-		stack.push();
-		//TODO: que?
+		ms.push();
 		Direction facing = te != null ? te.getBlockState().get(DirectionalBlock.FACING) : Direction.NORTH;
 
 		float rotX = 90.0F;
@@ -48,18 +47,16 @@ public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends Ti
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		//stack.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-		RenderSystem.rotatef(rotX, 1F, 0F, 0F);
-		RenderSystem.rotatef(rotZ, 0F, 0F, 1F);
-		RenderSystem.rotatef(yaw, 0F, 1F, 0F);
+		ms.translate(0.5, 0.5, 0.5);
+		ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rotX));
+		ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotZ));
+		ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw));
 
-		//this.bindTexture(textureLoc);
-		stack.push();
-		stack.scale(-1f, -1f, -1f);
-		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntitySolid(textureLoc));
-		cicadaModel.render(stack, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625f);
-		stack.pop();
-		RenderSystem.color4f(1, 1, 1, 1);
-		stack.pop();
+		ms.push();
+		ms.scale(-1f, -1f, -1f);
+		IVertexBuilder vertex = buffers.getBuffer(cicadaModel.getLayer(textureLoc));
+		cicadaModel.render(ms, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+		ms.pop();
+		ms.pop();
 	}
 }

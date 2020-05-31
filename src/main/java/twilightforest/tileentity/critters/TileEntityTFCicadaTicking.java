@@ -2,11 +2,13 @@ package twilightforest.tileentity.critters;
 
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
+import twilightforest.tileentity.TFTileEntities;
 
-public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITickableTileEntity {
+public class TileEntityTFCicadaTicking extends TileEntity implements ITickableTileEntity {
 	private int yawDelay;
 	public int currentYaw;
 	private int desiredYaw;
@@ -14,6 +16,10 @@ public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITi
 	private int singDuration;
 	private boolean singing;
 	private int singDelay;
+
+	public TileEntityTFCicadaTicking() {
+		super(TFTileEntities.CICADA.get());
+	}
 
 	@Override
 	public void tick() {

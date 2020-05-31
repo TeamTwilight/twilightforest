@@ -2,12 +2,11 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
-import twilightforest.tileentity.critters.TileEntityTFFirefly;
+import twilightforest.tileentity.TFTileEntities;
 
 import javax.annotation.Nullable;
 
@@ -20,8 +19,7 @@ public class BlockTFFirefly extends BlockTFCritter {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		//TODO: Return differently per side?
-		return new TileEntityTFFirefly();
+		return TFTileEntities.FIREFLY.get().create();
 	}
 
 	@Override
