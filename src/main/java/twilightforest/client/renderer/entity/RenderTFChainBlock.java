@@ -2,13 +2,18 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFGoblinChain;
@@ -33,52 +38,58 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 		double y = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosY, chainBlock.getY());
 		double z = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosZ, chainBlock.getZ());
 
-		double chain1InX = (chainBlock.chain1.getX() - chainBlock.getX());
-		double chain1InY = (chainBlock.chain1.getY() - chainBlock.getY());
-		double chain1InZ = (chainBlock.chain1.getZ() - chainBlock.getZ());
-
-		double chain2InX = (chainBlock.chain2.getX() - chainBlock.getX());
-		double chain2InY = (chainBlock.chain2.getY() - chainBlock.getY());
-		double chain2InZ = (chainBlock.chain2.getZ() - chainBlock.getZ());
-
-		double chain3InX = (chainBlock.chain1.getX() - chainBlock.getX());
-		double chain3InY = (chainBlock.chain1.getY() - chainBlock.getY());
-		double chain3InZ = (chainBlock.chain1.getZ() - chainBlock.getZ());
-
 		stack.push();
-		stack.scale(-1.0F, -1.0F, 1.0F);
-
 		IVertexBuilder ivertexbuilder = buffer.getBuffer(this.model.getLayer(textureLoc));
 
-		stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(((float) y)));
-		stack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(((float) y)));
-		stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(((float) x + (float) z) * 11F));
-		stack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(yaw));
+		float pitch = chainBlock.prevRotationPitch + (chainBlock.rotationPitch - chainBlock.prevRotationPitch) * partialTicks;
+		stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180 - MathHelper.wrapDegrees(yaw)));
+		stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch));
 
+		stack.scale(-1.0F, -1.0F, 1.0F);
 		this.model.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
 
-		renderChain(chainBlock, yaw, partialTicks, stack, buffer, light, chain1InX, chain1InY, chain1InZ);
-		renderChain(chainBlock, yaw, partialTicks, stack, buffer, light, chain2InX, chain2InY, chain2InZ);
-		renderChain(chainBlock, yaw, partialTicks, stack, buffer, light, chain3InX, chain3InY, chain3InZ);
+
+		renderChain(chainBlock, chainBlock.chain1, yaw, partialTicks, stack, buffer, light);
+		renderChain(chainBlock, chainBlock.chain2, yaw, partialTicks, stack, buffer, light);
+		renderChain(chainBlock, chainBlock.chain3, yaw, partialTicks, stack, buffer, light);
+		renderChain(chainBlock, chainBlock.chain4, yaw, partialTicks, stack, buffer, light);
+		renderChain(chainBlock, chainBlock.chain5, yaw, partialTicks, stack, buffer, light);
 	}
 
-	private void renderChain(T chainBlock, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light, double chainInX, double chainInY, double chainInZ) {
-		double x = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosX, chainBlock.getX());
-		double y = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosY, chainBlock.getY());
-		double z = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosZ, chainBlock.getZ());
+	private void renderChain(T chainBlock, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		if (chain != null) {
+			double x = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosX, chainBlock.getX());
+			double y = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosY, chainBlock.getY());
+			double z = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosZ, chainBlock.getZ());
 
-		stack.push();
-		IVertexBuilder ivertexbuilder = buffer.getBuffer(this.chainModel.getLayer(textureLoc));
+			double chainInX = (chain.getX() - chainBlock.getX());
+			double chainInY = (chain.getY() - chainBlock.getY());
+			double chainInZ = (chain.getZ() - chainBlock.getZ());
 
-		stack.translate(chainInX, chainInY, chainInZ);
-		stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(((float) y)));
-		stack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(((float) y)));
-		stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(((float) x + (float) z) * 11F));
-		stack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(yaw));
+			stack.push();
+			IVertexBuilder ivertexbuilder = buffer.getBuffer(this.chainModel.getLayer(textureLoc));
 
-		this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.pop();
+			stack.translate(chainInX, chainInY, chainInZ);
+			float pitch = chain.prevRotationPitch + (chain.rotationPitch - chain.prevRotationPitch) * partialTicks;
+			stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180 - MathHelper.wrapDegrees(yaw)));
+			stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch));
+
+			stack.scale(-1.0F, -1.0F, 1.0F);
+			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+			stack.pop();
+			if (this.renderManager.isDebugBoundingBox() && !chain.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
+				stack.push();
+				stack.translate(chainInX, chainInY, chainInZ);
+				this.renderMultiBoundingBox(stack, buffer.getBuffer(RenderType.getLines()), chain, 0.25F, 1.0F, 0.0F);
+				stack.pop();
+			}
+		}
+	}
+
+	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float p_229094_4_, float p_229094_5_, float p_229094_6_) {
+		AxisAlignedBB axisalignedbb = entity.getBoundingBox().offset(-entity.getX(), -entity.getY(), -entity.getZ());
+		WorldRenderer.drawBox(stack, builder, axisalignedbb, p_229094_4_, p_229094_5_, p_229094_6_, 1.0F);
 	}
 
 	@Override
