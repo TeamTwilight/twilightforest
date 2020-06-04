@@ -13,7 +13,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -235,6 +238,11 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 			if (entity.canBePushed()) {
 				applyBlockCollision(collider, entity);
 			}
+		}
+
+		if (this.isThrowing() && collider.isEntityInsideOpaqueBlock()) {
+			this.setThrowing(false);
+			collider.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.65F, 0.75F);
 		}
 	}
 
