@@ -38,9 +38,6 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 	public void render(T goblin, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		super.render(goblin, yaw, partialTicks, stack, buffer, light);
 
-		double x = MathHelper.lerp((double) partialTicks, goblin.lastTickPosX, goblin.getX());
-		double y = MathHelper.lerp((double) partialTicks, goblin.lastTickPosY, goblin.getY());
-		double z = MathHelper.lerp((double) partialTicks, goblin.lastTickPosZ, goblin.getZ());
 		stack.push();
 
 		double blockInX = (goblin.block.getX() - goblin.getX());
@@ -58,6 +55,7 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 		this.model.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
 
+		// [VanillaCopy] From EntityRendererManager
 		//when you allowed debugBoundingBox, you can see Hitbox
 		if (this.renderManager.isDebugBoundingBox() && !goblin.block.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
 			stack.push();
@@ -73,10 +71,6 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 
 	private void renderChain(T goblin, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (chain != null) {
-			double x = MathHelper.lerp((double) partialTicks, goblin.lastTickPosX, goblin.getX());
-			double y = MathHelper.lerp((double) partialTicks, goblin.lastTickPosY, goblin.getY());
-			double z = MathHelper.lerp((double) partialTicks, goblin.lastTickPosZ, goblin.getZ());
-
 			double chainInX = (chain.getX() - goblin.getX());
 			double chainInY = (chain.getY() - goblin.getY());
 			double chainInZ = (chain.getZ() - goblin.getZ());
@@ -93,6 +87,8 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.pop();
 
+			// [VanillaCopy] From EntityRendererManager
+			//when you allowed debugBoundingBox, you can see Hitbox
 			if (this.renderManager.isDebugBoundingBox() && !chain.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
 				stack.push();
 				stack.translate(chainInX, chainInY, chainInZ);
@@ -102,9 +98,9 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 		}
 	}
 
-	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float p_229094_4_, float p_229094_5_, float p_229094_6_) {
+	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float red, float grean, float blue) {
 		AxisAlignedBB axisalignedbb = entity.getBoundingBox().offset(-entity.getX(), -entity.getY(), -entity.getZ());
-		WorldRenderer.drawBox(stack, builder, axisalignedbb, p_229094_4_, p_229094_5_, p_229094_6_, 1.0F);
+		WorldRenderer.drawBox(stack, builder, axisalignedbb, red, grean, blue, 1.0F);
 	}
 
 	@Override

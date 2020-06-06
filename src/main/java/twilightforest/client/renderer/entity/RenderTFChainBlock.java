@@ -34,10 +34,6 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 	public void render(T chainBlock, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		super.render(chainBlock, yaw, partialTicks, stack, buffer, light);
 
-		double x = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosX, chainBlock.getX());
-		double y = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosY, chainBlock.getY());
-		double z = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosZ, chainBlock.getZ());
-
 		stack.push();
 		IVertexBuilder ivertexbuilder = buffer.getBuffer(this.model.getLayer(textureLoc));
 
@@ -59,10 +55,6 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 
 	private void renderChain(T chainBlock, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (chain != null) {
-			double x = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosX, chainBlock.getX());
-			double y = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosY, chainBlock.getY());
-			double z = MathHelper.lerp((double) partialTicks, chainBlock.lastTickPosZ, chainBlock.getZ());
-
 			double chainInX = (chain.getX() - chainBlock.getX());
 			double chainInY = (chain.getY() - chainBlock.getY());
 			double chainInZ = (chain.getZ() - chainBlock.getZ());
@@ -78,6 +70,9 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 			stack.scale(-1.0F, -1.0F, 1.0F);
 			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.pop();
+
+			// [VanillaCopy] From EntityRendererManager
+			//when you allowed debugBoundingBox, you can see Hitbox
 			if (this.renderManager.isDebugBoundingBox() && !chain.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
 				stack.push();
 				stack.translate(chainInX, chainInY, chainInZ);
@@ -87,9 +82,9 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 		}
 	}
 
-	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float p_229094_4_, float p_229094_5_, float p_229094_6_) {
+	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float red, float grean, float blue) {
 		AxisAlignedBB axisalignedbb = entity.getBoundingBox().offset(-entity.getX(), -entity.getY(), -entity.getZ());
-		WorldRenderer.drawBox(stack, builder, axisalignedbb, p_229094_4_, p_229094_5_, p_229094_6_, 1.0F);
+		WorldRenderer.drawBox(stack, builder, axisalignedbb, red, grean, blue, 1.0F);
 	}
 
 	@Override

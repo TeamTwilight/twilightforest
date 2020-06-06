@@ -15,7 +15,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFNaga;
@@ -50,17 +49,13 @@ public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> exte
 	@Override
 	protected void scale(T entity, MatrixStack stack, float p_225620_3_) {
 		super.scale(entity, stack, p_225620_3_);
-		//small size fix
+		//make size adjustment
 		stack.translate(0.0F, 1.75F, 0.0F);
 		stack.scale(2.0F, 2.0F, 2.0F);
 	}
 
 	private void renderSegment(T entity, Entity segment, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (segment != null) {
-			double x = MathHelper.lerp((double) partialTicks, entity.lastTickPosX, entity.getX());
-			double y = MathHelper.lerp((double) partialTicks, entity.lastTickPosY, entity.getY());
-			double z = MathHelper.lerp((double) partialTicks, entity.lastTickPosZ, entity.getZ());
-
 			double segmentInX = (segment.getX() - entity.getX());
 			double segmentInY = (segment.getY() - entity.getY());
 			double segmentInZ = (segment.getZ() - entity.getZ());
@@ -77,8 +72,6 @@ public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> exte
 			}
 			float yaw2 = entity.prevRotationYaw + yawDiff * partialTicks;
 
-			//GlStateManager.rotate(, 0.0F, 1.0F, 0.0F);
-			//GlStateManager.rotate(entity.rotationPitch, 1.0F, 0.0F, 0.0F);
 			stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw2));
 			stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(entity.rotationPitch));
 
@@ -86,6 +79,9 @@ public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> exte
 			stack.scale(2.0F, 2.0F, 2.0F);
 			this.segmentModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.pop();
+
+			// [VanillaCopy] From EntityRendererManager
+			//when you allowed debugBoundingBox, you can see Hitbox
 			if (this.renderManager.isDebugBoundingBox() && !segment.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
 				stack.push();
 				stack.translate(segmentInX, segmentInY, segmentInZ);
