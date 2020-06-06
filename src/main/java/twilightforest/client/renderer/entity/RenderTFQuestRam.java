@@ -5,9 +5,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.IEntityRenderer;
-import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
@@ -16,9 +16,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFQuestRam;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
-public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuestRam<T>> extends LivingRenderer<T, M> {
+public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuestRam<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation textureLoc      = TwilightForestMod.getModelTexture("questram.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
 	public RenderTFQuestRam(EntityRendererManager manager, M model) {

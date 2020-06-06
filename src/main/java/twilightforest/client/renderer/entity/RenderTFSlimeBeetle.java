@@ -4,9 +4,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.IEntityRenderer;
-import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.util.ResourceLocation;
@@ -14,7 +14,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFSlimeBeetle;
 import twilightforest.entity.EntityTFSlimeBeetle;
 
-public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelTFSlimeBeetle<T>> extends LivingRenderer<T, M> {
+public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelTFSlimeBeetle<T>> extends MobRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("slimebeetle.png");
 

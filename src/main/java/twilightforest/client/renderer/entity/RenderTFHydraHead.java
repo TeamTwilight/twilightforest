@@ -2,8 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFHydraHead;
@@ -11,7 +11,7 @@ import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHydraHead<T>> extends LivingRenderer<T, M> {
+public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHydraHead<T>> extends MobRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 

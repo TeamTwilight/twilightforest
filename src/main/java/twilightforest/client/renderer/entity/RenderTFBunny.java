@@ -1,13 +1,13 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFBunny;
 import twilightforest.entity.passive.EntityTFBunny;
 
-public class RenderTFBunny<T extends EntityTFBunny, M extends ModelTFBunny<T>> extends LivingRenderer<T, M> {
+public class RenderTFBunny<T extends EntityTFBunny, M extends ModelTFBunny<T>> extends MobRenderer<T, M> {
 
 	private final ResourceLocation textureLocDutch = TwilightForestMod.getModelTexture("bunnydutch.png");
 	private final ResourceLocation textureLocWhite = TwilightForestMod.getModelTexture("bunnywhite.png");

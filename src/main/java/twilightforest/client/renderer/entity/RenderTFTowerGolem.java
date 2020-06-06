@@ -2,14 +2,14 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFTowerGolem;
 import twilightforest.entity.EntityTFTowerGolem;
 
-public class RenderTFTowerGolem<T extends EntityTFTowerGolem, M extends ModelTFTowerGolem<T>> extends LivingRenderer<T, M> {
+public class RenderTFTowerGolem<T extends EntityTFTowerGolem, M extends ModelTFTowerGolem<T>> extends MobRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("carminitegolem.png");
 
