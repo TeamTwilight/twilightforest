@@ -7,8 +7,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.MultiPartEntityPart;
 
@@ -97,7 +97,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 
 	public void activate() {
 		//setSize(1.8F, 1.8F);
-		this.entitySize = EntitySize.flexible(1.8F, 1.8F);
+		this.size = EntitySize.flexible(1.8F, 1.8F);
 		setInvisible(false);
 	}
 
@@ -121,6 +121,6 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 
 	@Override
 	public EntitySize getSize(Pose pose) {
-		return entitySize;
+		return size;
 	}
 }

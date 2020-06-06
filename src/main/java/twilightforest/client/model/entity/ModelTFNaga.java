@@ -30,7 +30,7 @@ public class ModelTFNaga<T extends Entity> extends SegmentedModel<T> {
 
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		super.render(stack, builder, light, overlay, red, green, blue, scale);
+
 		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
 		if (entity instanceof EntityTFNaga) {
