@@ -45,7 +45,6 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 		this.model.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
 
-
 		renderChain(chainBlock, chainBlock.chain1, yaw, partialTicks, stack, buffer, light);
 		renderChain(chainBlock, chainBlock.chain2, yaw, partialTicks, stack, buffer, light);
 		renderChain(chainBlock, chainBlock.chain3, yaw, partialTicks, stack, buffer, light);
@@ -71,7 +70,6 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.pop();
 
-			// [VanillaCopy] From EntityRendererManager
 			//when you allowed debugBoundingBox, you can see Hitbox
 			if (this.renderManager.isDebugBoundingBox() && !chain.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
 				stack.push();

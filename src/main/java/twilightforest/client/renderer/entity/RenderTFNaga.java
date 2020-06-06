@@ -80,7 +80,6 @@ public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> exte
 			this.segmentModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.pop();
 
-			// [VanillaCopy] From EntityRendererManager
 			//when you allowed debugBoundingBox, you can see Hitbox
 			if (this.renderManager.isDebugBoundingBox() && !segment.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
 				stack.push();

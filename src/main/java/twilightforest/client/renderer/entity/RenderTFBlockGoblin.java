@@ -54,8 +54,7 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		this.model.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
-
-		// [VanillaCopy] From EntityRendererManager
+		
 		//when you allowed debugBoundingBox, you can see Hitbox
 		if (this.renderManager.isDebugBoundingBox() && !goblin.block.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
 			stack.push();
@@ -87,7 +86,6 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.pop();
 
-			// [VanillaCopy] From EntityRendererManager
 			//when you allowed debugBoundingBox, you can see Hitbox
 			if (this.renderManager.isDebugBoundingBox() && !chain.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
 				stack.push();
@@ -116,6 +114,7 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 	}
 
 	private Vec3d getPosition(Entity p_177110_1_, double p_177110_2_, float p_177110_4_) {
+		// [VanillaCopy] From GuardianRenderer
 		double d0 = MathHelper.lerp((double) p_177110_4_, p_177110_1_.lastTickPosX, p_177110_1_.getX());
 		double d1 = MathHelper.lerp((double) p_177110_4_, p_177110_1_.lastTickPosY, p_177110_1_.getY()) + p_177110_2_;
 		double d2 = MathHelper.lerp((double) p_177110_4_, p_177110_1_.lastTickPosZ, p_177110_1_.getZ());
