@@ -105,13 +105,14 @@ public class ModelTFTinyBird<T extends EntityTFTinyBird> extends AgeableModel<T>
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		if (isChild) {
 			float f = 2.0F;
-			stack.push();
-			stack.translate(0.0F, 5F * scale, 0.75F * scale);
+			//head is aleady Include BodyParts,I think this is unnecessary
+			/*stack.push();
+			stack.translate(0.0F, 0.1F * scale, 0.75F * scale);
 			this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-			stack.pop();
+			stack.pop();*/
 			stack.push();
 			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
-			stack.translate(0.0F, 24F * scale, 0.0F);
+			stack.translate(0.0F, 1.5F * scale, 0.0F);
 			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 			stack.pop();
 		} else {
