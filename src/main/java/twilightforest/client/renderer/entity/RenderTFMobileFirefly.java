@@ -1,79 +1,75 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFTinyFirefly;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 
-import java.nio.FloatBuffer;
-
 public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends EntityRenderer<T> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
-	private final ModelTFTinyFirefly fireflyModel = new ModelTFTinyFirefly();
+    private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
+    private final ModelTFTinyFirefly fireflyModel = new ModelTFTinyFirefly();
 
-	public RenderTFMobileFirefly(EntityRendererManager manager) {
-		super(manager);
-	}
+    public RenderTFMobileFirefly(EntityRendererManager manager) {
+        super(manager);
+    }
 
-	private void doRenderTinyFirefly(T firefly, MatrixStack matrix, float brightness, float size) {
-		matrix.push();
+    public void buildGeometry(T firefly, MatrixStack stack, IVertexBuilder buffer, ActiveRenderInfo info, float p_225606_3_, int light) {
 
-//		matrix.translate(x, y + 0.5D, z);
+        stack.push();
+        float f = firefly.getWidth();
+        stack.scale(f, f, f);
+        float f1 = 0.5F;
+        float f2 = 0.0F;
+        float f3 = firefly.getHeight();
+        float f4 = 0.0F;
+        stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-info.getYaw()));
+        stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(info.getPitch()));
+        stack.translate(0.0D, 0.0D, (double) (-0.3F + (float) ((int) f3) * 0.02F));
+        float f5 = 0.0F;
 
-		// undo rotations so we can draw a billboarded firefly
-		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
+        float f6 = 30F / 64F;//minU
+        float f7 = 0F;//minV
+        float f8 = 40F / 64F;//maxU
+        float f9 = 10F / 32F;//maxV
+        MatrixStack.Entry matrixstack$entry = stack.peek();
 
-//		RenderSystem.getFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				int index = i * 4 + j;
-				if (i == j) {
-					modelview.put(index, 1.0f);
-				} else {
-					modelview.put(index, 0.0f);
-				}
-			}
-		}
-
-		GL11.glLoadMatrixf(modelview);
-
-//		bindEntityTexture(firefly);
-
-		RenderSystem.colorMask(true, true, true, true);
-
-		// render the firefly glow
-		RenderSystem.enableBlend();
-		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		RenderSystem.enableAlphaTest();
-		RenderSystem.disableLighting();
+        fireflyVertex(firefly, matrixstack$entry, buffer, f1 - 0.0F, 0.0F - f4, f5, f8, f9);
+        fireflyVertex(firefly, matrixstack$entry, buffer, -f1 - 0.0F, 0.0F - f4, f5, f6, f9);
+        fireflyVertex(firefly, matrixstack$entry, buffer, -f1 - 0.0F, 1.0F - f4, f5, f6, f7);
+        fireflyVertex(firefly, matrixstack$entry, buffer, f1 - 0.0F, 1.0F - f4, f5, f8, f7);
 
 
-//		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, brightness);
-//		fireflyModel.glow1.render(0.0625f * size);
-		RenderSystem.disableBlend();
-		RenderSystem.enableLighting();
+        stack.pop();
+    }
 
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		matrix.pop();
-	}
+    private static void fireflyVertex(EntityTFMobileFirefly firefly, MatrixStack.Entry p_229090_0_, IVertexBuilder p_229090_1_, float p_229090_2_, float p_229090_3_, float p_229090_4_, float p_229090_5_, float p_229090_6_) {
+        float light = firefly.getGlowBrightness();
+        p_229090_1_.vertex(p_229090_0_.getModel(), p_229090_2_, p_229090_3_, p_229090_4_).color(1F, 1F, 1F, light).texture(p_229090_5_, p_229090_6_).overlay(OverlayTexture.DEFAULT_UV).light((int) 240).normal(p_229090_0_.getNormal(), 0.0F, 1.0F, 0.0F).endVertex();
+    }
 
-	@Override
-	public void render(T firefly, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
-		doRenderTinyFirefly(firefly, stack, firefly.getGlowBrightness(), 1.0F);
-	}
+    @Override
+    public void render(T firefly, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+        stack.push();
 
-	@Override
-	public ResourceLocation getEntityTexture(T entity) {
-		return textureLoc;
-	}
+
+        IVertexBuilder ivertexbuilder = buffer.getBuffer(RenderType.getEntityTranslucent(this.getEntityTexture(firefly)));
+        this.buildGeometry(firefly, stack, ivertexbuilder, Minecraft.getInstance().getRenderManager().info, Minecraft.getInstance().getRenderPartialTicks(), light);
+        stack.pop();
+    }
+
+    @Override
+    public ResourceLocation getEntityTexture(T entity) {
+        return textureLoc;
+    }
 }
