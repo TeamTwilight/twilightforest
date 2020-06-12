@@ -44,7 +44,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		squishTerrain(data);
 
 		ChunkPrimer primer = new DirectChunkPrimer(new ChunkPos(x, z));
-		initPrimer(region, data);
+		//initPrimer(region, data); aleady has SeaMaking
 
 		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
 		addDarkForestCanopy2(x, z, region);
@@ -53,7 +53,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		//this.biomesForGeneration = world.getDimension().getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
 
 		addGlaciers(region, this.biomeProvider.getBiomeForNoiseGen(x, getSeaLevel(), z));
-		deformTerrainForFeature(x, z, region);
+		//deformTerrainForFeature(x, z, region); TODO: Better DeformTerrain
 		//replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
 //		generateFeatures(x, z, primer); TODO: Should be moved to Biome Decorator

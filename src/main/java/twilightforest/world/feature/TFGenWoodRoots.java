@@ -40,31 +40,23 @@ public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
 		// tilt between 0.6 and 0.9
 		float tilt = 0.6F + rand.nextFloat() * 0.3F;
 
-		return drawRoot(world.getWorld(), rand, pos, length, rand.nextFloat(), tilt);
-	}
+		float angle = rand.nextFloat();
 
-	private boolean drawRoot(World world, Random rand, BlockPos pos, float length, float angle, float tilt) {
-		// put origin at where we start
-		return this.drawRoot(world, rand, pos, pos, length, angle, tilt);
-	}
-
-	private boolean drawRoot(World world, Random rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt) {
-		// generate a direction and a length
 		BlockPos dest = FeatureUtil.translate(pos, length, angle, tilt);
 
 		// restrict x and z to within 7
 		int limit = 6;
-		if (oPos.getX() + limit < dest.getX()) {
-			dest = new BlockPos(oPos.getX() + limit, dest.getY(), dest.getZ());
+		if (pos.getX() + limit < dest.getX()) {
+			dest = new BlockPos(pos.getX() + limit, dest.getY(), dest.getZ());
 		}
-		if (oPos.getX() - limit > dest.getX()) {
-			dest = new BlockPos(oPos.getX() - limit, dest.getY(), dest.getZ());
+		if (pos.getX() - limit > dest.getX()) {
+			dest = new BlockPos(pos.getX() - limit, dest.getY(), dest.getZ());
 		}
-		if (oPos.getZ() + limit < dest.getZ()) {
-			dest = new BlockPos(dest.getX(), dest.getY(), oPos.getZ() + limit);
+		if (pos.getZ() + limit < dest.getZ()) {
+			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + limit);
 		}
-		if (oPos.getZ() - limit > dest.getZ()) {
-			dest = new BlockPos(dest.getX(), dest.getY(), oPos.getZ() - limit);
+		if (pos.getZ() - limit > dest.getZ()) {
+			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() - limit);
 		}
 
 		// end must be in stone
@@ -79,7 +71,7 @@ public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
 		}
 
 
-		// if we are long enough, make either another root or an oreball
+		/*// if we are long enough, make either another root or an oreball
 		if (length > 8) {
 			if (rand.nextInt(3) > 0) {
 				// length > 8, usually split off into another root half as long
@@ -88,7 +80,7 @@ public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
 				float nextTilt = 0.6F + rand.nextFloat() * 0.3F;
 				drawRoot(world, rand, oPos, nextSrc, length / 2.0F, nextAngle, nextTilt);
 			}
-		}
+		}*/
 
 		if (length > 6) {
 			if (rand.nextInt(4) == 0) {
@@ -113,9 +105,9 @@ public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
-	protected void placeRootBlock(World world, BlockPos pos, BlockState state) {
+	protected void placeRootBlock(IWorld world, BlockPos pos, BlockState state) {
 		if (TFTreeGenerator.canRootGrowIn(world, pos)) {
-			world.setBlockState(pos, state);
+			world.setBlockState(pos, state, 2);
 		}
 	}
 }
