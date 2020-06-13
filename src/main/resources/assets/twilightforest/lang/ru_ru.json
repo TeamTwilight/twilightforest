@@ -182,7 +182,7 @@
   "block.twilightforest.canopy_sapling": "Саженец сумеречной сосны",
   "block.twilightforest.mangrove_sapling": "Саженец сумеречной берёзы",
   "block.twilightforest.darkwood_sapling": "Саженец тёмного дерева",
-  "Robust Twilight Oak Sapling": "Саженец большого сумеречного дуба",
+  "block.twilightforest.robust_oak_sapling": "Саженец большого сумеречного дуба",
   "block.twilightforest.time_sapling": "Саженец дерева времени",
   "block.twilightforest.transformation_sapling": "Саженец дерева преобразования",
   "block.twilightforest.mining_sapling": "Саженец дерева шахтёра",
