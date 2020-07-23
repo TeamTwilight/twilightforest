@@ -27,6 +27,7 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -36,6 +37,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.IEntityMultiPart;
 import twilightforest.entity.MultiPartEntityPart;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
@@ -68,7 +70,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super(type, world);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
-			this.iceArray[i] = new EntityTFSnowQueenIceShield(this);
+			this.iceArray[i] = new EntityTFSnowQueenIceShield(world,this);
 		}
 
 		this.setCurrentPhase(Phase.SUMMON);
@@ -220,6 +222,15 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				double d1 = rand.nextGaussian() * 0.02D;
 				double d2 = rand.nextGaussian() * 0.02D;
 				world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION, (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+			}
+		}
+
+		if (this.world instanceof ServerWorld && isAlive()) {
+			ServerWorld serverWorld = (ServerWorld) this.world;
+			for (Entity segment : iceArray) {
+				if (!segment.isAddedToWorld()) {
+					serverWorld.addEntity(segment);
+				}
 			}
 		}
 	}

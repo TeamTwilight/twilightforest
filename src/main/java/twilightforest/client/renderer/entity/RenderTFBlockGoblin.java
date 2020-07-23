@@ -28,7 +28,6 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 
 	private final Model model = new ModelTFSpikeBlock();
-	private final Model chainModel = new ModelTFGoblinChain();
 
 	public RenderTFBlockGoblin(EntityRendererManager manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
@@ -63,37 +62,6 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 			stack.pop();
 		}
 
-		renderChain(goblin, goblin.chain1, yaw, partialTicks, stack, buffer, light);
-		renderChain(goblin, goblin.chain2, yaw, partialTicks, stack, buffer, light);
-		renderChain(goblin, goblin.chain3, yaw, partialTicks, stack, buffer, light);
-	}
-
-	private void renderChain(T goblin, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
-		if (chain != null) {
-			double chainInX = (chain.getPosX() - goblin.getPosX());
-			double chainInY = (chain.getPosY() - goblin.getPosY());
-			double chainInZ = (chain.getPosZ() - goblin.getPosZ());
-
-			stack.push();
-			IVertexBuilder ivertexbuilder = buffer.getBuffer(this.chainModel.getRenderType(textureLoc));
-
-			stack.translate(chainInX, chainInY, chainInZ);
-			float pitch = chain.prevRotationPitch + (chain.rotationPitch - chain.prevRotationPitch) * partialTicks;
-			stack.rotate(Vector3f.YP.rotationDegrees(180 - MathHelper.wrapDegrees(yaw)));
-			stack.rotate(Vector3f.XP.rotationDegrees(pitch));
-
-			stack.scale(-1.0F, -1.0F, 1.0F);
-			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-			stack.pop();
-
-			//when you allowed debugBoundingBox, you can see Hitbox
-			if (this.renderManager.isDebugBoundingBox() && !chain.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
-				stack.push();
-				stack.translate(chainInX, chainInY, chainInZ);
-				this.renderMultiBoundingBox(stack, buffer.getBuffer(RenderType.getLines()), chain, 0.25F, 1.0F, 0.0F);
-				stack.pop();
-			}
-		}
 	}
 
 	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float red, float grean, float blue) {

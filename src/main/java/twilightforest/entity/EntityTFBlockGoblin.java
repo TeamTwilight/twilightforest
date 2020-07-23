@@ -42,14 +42,20 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	private float chainMoveLength;
 
 	public final EntityTFSpikeBlock block = new EntityTFSpikeBlock(this);
-	public final EntityTFGoblinChain chain1 = new EntityTFGoblinChain(this);
-	public final EntityTFGoblinChain chain2 = new EntityTFGoblinChain(this);
-	public final EntityTFGoblinChain chain3 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain1;
+	public final EntityTFGoblinChain chain2;
+	public final EntityTFGoblinChain chain3;
 
-	private final Entity[] partsArray = new Entity[]{block, chain1, chain2, chain3};
+	private Entity[] partsArray;
 
 	public EntityTFBlockGoblin(EntityType<? extends EntityTFBlockGoblin> type, World world) {
 		super(type, world);
+
+		chain1 = new EntityTFGoblinChain(world, this);
+		chain2 = new EntityTFGoblinChain(world, this);
+		chain3 = new EntityTFGoblinChain(world, this);
+
+		partsArray = new Entity[]{block, chain1, chain2, chain3};
 	}
 
 	@Override

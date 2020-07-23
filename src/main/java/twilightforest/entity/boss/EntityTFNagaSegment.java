@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -10,23 +11,23 @@ import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import twilightforest.entity.MultiPartEntityPart;
 
 import java.util.List;
 
 public class EntityTFNagaSegment extends MultiPartEntityPart {
 
-	private final EntityTFNaga naga;
-	private final int segment;
+	private EntityTFNaga naga;
+	private int segment;
 	private int deathCounter;
 	private EntitySize entitySize;
 
-	public EntityTFNagaSegment(EntityTFNaga myNaga, int segNum) {
-		super(myNaga, "segment"+segNum, 0, 0);
-		this.naga = myNaga;
-		this.segment = segNum;
+	public EntityTFNagaSegment(EntityType<? extends EntityTFNagaSegment> type, World world) {
+		super(type, world);
 		this.stepHeight = 2;
 		deactivate();
+		this.ignoreFrustumCheck = true;
 	}
 
 	@Override
@@ -71,6 +72,11 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 				this.collideWithEntity(entity);
 			}
 		}
+	}
+
+	@Override
+	public boolean canRemove() {
+		return super.canRemove();
 	}
 
 	private void collideWithEntity(Entity entity) {

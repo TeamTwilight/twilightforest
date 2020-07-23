@@ -26,7 +26,7 @@ public class RenderTFSpikeBlock<T extends Entity, M extends EntityModel<T>> exte
 
 	@Override
 	public void render(T goblin, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
-		super.render(goblin, yaw, partialTicks, stack, buffer, light);
+
 		stack.push();
 		stack.scale(-1.0F, -1.0F, 1.0F);
 
@@ -36,6 +36,7 @@ public class RenderTFSpikeBlock<T extends Entity, M extends EntityModel<T>> exte
 
 		this.model.render(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
+		super.render(goblin, yaw, partialTicks, stack, buffer, light);
 	}
 
 	@Override

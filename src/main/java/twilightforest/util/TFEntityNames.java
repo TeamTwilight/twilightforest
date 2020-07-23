@@ -42,6 +42,7 @@ public class TFEntityNames {
 
 	// Courtyard
 	public static final ResourceLocation NAGA = prefix("naga");
+	public static final ResourceLocation NAGA_SEGMENT = prefix("naga_segment");
 
 	// Lich Tower
 	public static final ResourceLocation LICH = prefix("lich");
@@ -83,6 +84,7 @@ public class TFEntityNames {
 	public static final ResourceLocation STABLE_ICE_CORE = prefix("stable_ice_core");
 	public static final ResourceLocation UNSTABLE_ICE_CORE = prefix("unstable_ice_core");
 	public static final ResourceLocation SNOW_QUEEN = prefix("snow_queen");
+	public static final ResourceLocation SNOW_QUEEN_ICE_SHIELD = prefix("snow_queen_ice_shield");
 	public static final ResourceLocation ICE_CRYSTAL = prefix("ice_crystal");
 
 	// Highlands
@@ -99,11 +101,13 @@ public class TFEntityNames {
 
 	// Technical
 	public static final ResourceLocation HYDRA_HEAD = prefix("hydra_head");
+	public static final ResourceLocation HYDRA_PART = prefix("hydra_part");
 	public static final ResourceLocation CHARM_EFFECT = prefix("charm_effect");
 	public static final ResourceLocation FALLING_ICE = prefix("falling_ice");
 	public static final ResourceLocation CHAIN_BLOCK = prefix("chain_block");
 	public static final ResourceLocation CUBE_OF_ANNIHILATION = prefix("cube_of_annihilation");
 	public static final ResourceLocation PROTECTION_BOX = prefix("protection_box");
+	public static final ResourceLocation GOBLIN_CHAIN = prefix("goblin_chain");
 
 	// Projectiles
 	public static final ResourceLocation NATURE_BOLT = prefix("nature_bolt");

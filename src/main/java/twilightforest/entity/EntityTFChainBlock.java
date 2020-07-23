@@ -32,21 +32,34 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	private double velY;
 	private double velZ;
 
-	public final EntityTFGoblinChain chain1 = new EntityTFGoblinChain(this);
-	public final EntityTFGoblinChain chain2 = new EntityTFGoblinChain(this);
-	public final EntityTFGoblinChain chain3 = new EntityTFGoblinChain(this);
-	public final EntityTFGoblinChain chain4 = new EntityTFGoblinChain(this);
-	public final EntityTFGoblinChain chain5 = new EntityTFGoblinChain(this);
-	private final Entity[] partsArray = { chain1, chain2, chain3, chain4, chain5 };
+	public final EntityTFGoblinChain chain1;
+	public final EntityTFGoblinChain chain2;
+	public final EntityTFGoblinChain chain3;
+	public final EntityTFGoblinChain chain4;
+	public final EntityTFGoblinChain chain5;
+	private Entity[] partsArray;
 
 	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world) {
 		super(type, world);
+
+		chain1 = new EntityTFGoblinChain(world, this);
+		chain2 = new EntityTFGoblinChain(world, this);
+		chain3 = new EntityTFGoblinChain(world, this);
+		chain4 = new EntityTFGoblinChain(world, this);
+		chain5 = new EntityTFGoblinChain(world, this);
+		partsArray =  new Entity[]{ chain1, chain2, chain3, chain4, chain5 };
 	}
 
 	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world, LivingEntity thrower, Hand hand) {
 		super(type, thrower, world);
 		this.isReturning = false;
 		this.hand = hand;
+		chain1 = new EntityTFGoblinChain(world, this);
+		chain2 = new EntityTFGoblinChain(world, this);
+		chain3 = new EntityTFGoblinChain(world, this);
+		chain4 = new EntityTFGoblinChain(world, this);
+		chain5 = new EntityTFGoblinChain(world, this);
+		partsArray =  new Entity[]{ chain1, chain2, chain3, chain4, chain5 };
 		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 

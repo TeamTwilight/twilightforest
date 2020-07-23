@@ -1,11 +1,18 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.world.World;
 
 public class EntityTFGoblinChain extends MultiPartEntityPart {
-	public EntityTFGoblinChain(Entity owner) {
-		super(owner, "chain", 0.1F, 0.1F);
+	public EntityTFGoblinChain(EntityType<? extends EntityTFGoblinChain> type, World world) {
+		super(type, world);
 	}
+
+	public EntityTFGoblinChain(World world, Entity entity) {
+		super(TFEntities.goblin_chain, world, entity);
+	}
+
 
 	@Override
 	public void tick() {

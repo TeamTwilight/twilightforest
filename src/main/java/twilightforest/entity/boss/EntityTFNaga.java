@@ -38,6 +38,7 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.IEntityMultiPart;
 import twilightforest.entity.MultiPartEntityPart;
+import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
 import twilightforest.network.TFPacketHandler;
@@ -77,7 +78,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		this.ignoreFrustumCheck = true;
 
 		for (int i = 0; i < bodySegments.length; i++) {
-			bodySegments[i] = new EntityTFNagaSegment(this, i);
+			bodySegments[i] = TFEntities.naga_segment.create(world);
 		}
 
 		this.goNormal();
@@ -476,14 +477,24 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		super.tick();
 
 		// update bodySegments parts
-		if (this.world instanceof ServerWorld) {
+		if (this.world instanceof ServerWorld && isAlive()) {
 			ServerWorld serverWorld = (ServerWorld) this.world;
 			for (EntityTFNagaSegment segment : bodySegments) {
-				if (segment.isAddedToWorld()) {
-					serverWorld.chunkCheck(segment);
+				if (!segment.isAddedToWorld()) {
+					segment.setParentUUID(this.getUniqueID());
+					segment.setParentId(this.getEntityId());
+					serverWorld.addEntity(segment);
 				}
+
 			}
 		}
+
+		//update bodySegments tick
+
+		for (EntityTFNagaSegment segment : bodySegments) {
+			segment.tick();
+		}
+
 
 		moveSegments();
 	}
@@ -716,8 +727,6 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				// since multiparts are not added to the world tick list which is what checks isDead
 				// TODO: Is this code sufficient?
 				seg.remove();
-				// TODO: TODO: TODO: Can definitely cause a crash
-				world.removeEntity(seg);
 				// this.world.removeEntityDangerously(seg);
 			}
 		}
