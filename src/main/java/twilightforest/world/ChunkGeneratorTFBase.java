@@ -134,8 +134,8 @@ public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 //		this.isAmplified = world.getWorldInfo().getGenerator() == WorldType.AMPLIFIED;
 	}
 
-//	@Override
-	public void spawnMobs(WorldGenRegion region) {
+	@Override
+	public void func_230354_a_(WorldGenRegion region) {
 		int i = region.getMainChunkX();
 		int j = region.getMainChunkZ();
 		Biome biome = region.getBiome((new ChunkPos(i, j)).asBlockPos());
