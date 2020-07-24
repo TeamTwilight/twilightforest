@@ -30,12 +30,12 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world) {
 		super(type, world);
-		this.func_230279_az_();
+		this.isImmuneToFire();
 	}
 
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world, LivingEntity thrower) {
 		super(type, thrower, world);
-		this.func_230279_az_();
+		this.isImmuneToFire();
 		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 

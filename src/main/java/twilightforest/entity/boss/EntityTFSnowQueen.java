@@ -75,7 +75,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 		this.setCurrentPhase(Phase.SUMMON);
 
-		this.func_230279_az_();
+		this.isImmuneToFire();
 		this.experienceValue = 317;
 	}
 

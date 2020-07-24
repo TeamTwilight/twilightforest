@@ -53,7 +53,7 @@ public class EntityAITFChargeAttack extends Goal {
 			double distance = this.charger.getDistanceSq(this.chargeTarget);
 			if (distance < MIN_RANGE_SQ || distance > MAX_RANGE_SQ) {
 				return false;
-			} else if (!this.charger.func_233570_aj_()) {
+			} else if (!this.charger.isOnGround()) {
 				return false;
 			} else {
 				Vector3d chargePos = findChargePoint(charger, chargeTarget, 2.1);

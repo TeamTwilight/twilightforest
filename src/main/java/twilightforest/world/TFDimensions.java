@@ -1,20 +1,11 @@
 package twilightforest.world;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.NoiseSettings;
-import net.minecraft.world.gen.settings.ScalingSettings;
-import net.minecraft.world.gen.settings.SlideSettings;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
-
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
@@ -53,8 +44,8 @@ public class TFDimensions {
 //	}
 
 	public static void init() {
-		Registry.register(Registry.field_239689_aA_, TwilightForestMod.prefix("twilight_forest"), TFBiomeProvider.tfBiomeProviderCodec);
-		Registry.register(Registry.field_239690_aB_, TwilightForestMod.prefix("twilight_forest"), ChunkGeneratorTwilightForest.codecTFChunk);
-		Registry.register(Registry.field_239690_aB_, TwilightForestMod.prefix("skylight_forest"), ChunkGeneratorTwilightVoid.codecVoidChunk);
+		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("twilight_forest"), TFBiomeProvider.tfBiomeProviderCodec);
+		Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("twilight_forest"), ChunkGeneratorTwilightForest.codecTFChunk);
+		Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("skylight_forest"), ChunkGeneratorTwilightVoid.codecVoidChunk);
 	}
 }

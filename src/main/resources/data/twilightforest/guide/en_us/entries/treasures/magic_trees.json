@@ -1,6 +1,6 @@
 {
   "name": "Magical Trees",
-  "icon": "twilightforest:twilight_sapling:4",
+  "icon": "twilightforest:time_sapling",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/magic_trees",
   "sortnum": 2100,

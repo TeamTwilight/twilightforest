@@ -4,8 +4,8 @@
     "rolls": 1,
     "entries": [
       {
-        "type": "tag",
-        "name": "minecraft:planks",
+        "type": "item",
+        "name": "minecraft:oak_planks",
         "functions": [
           { "function": "set_count", "count": { "min": 1, "max": 4 } }
         ]

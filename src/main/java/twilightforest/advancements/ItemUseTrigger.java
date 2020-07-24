@@ -58,7 +58,7 @@ public class ItemUseTrigger implements ICriterionTrigger<ItemUseTrigger.Instance
 
     @Override
     public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
-		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.func_234587_a_(json, "player", condition);
+		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
 		ItemPredicate item = ItemPredicate.deserialize(json.get("item"));
 		BlockPredicate block = BlockPredicate.deserialize(json.get("block"));
 		return new ItemUseTrigger.Instance(player, item, block);

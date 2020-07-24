@@ -2,9 +2,7 @@
   "display": {
     "icon": {
       "item": "twilightforest:experiment_115",
-      "nbt": {
-        "full": 1
-      }
+      "nbt": "{Full:1}"
     },
     "title": {
       "translate": "advancement.twilightforest.experiment_115_2"

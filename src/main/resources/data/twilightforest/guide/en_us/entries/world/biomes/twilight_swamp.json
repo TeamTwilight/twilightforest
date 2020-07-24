@@ -1,6 +1,6 @@
 {
   "name": "Swamp",
-  "icon": "twilightforest:twilight_sapling:2",
+  "icon": "twilightforest:canopy_sapling",
   "category": "biomes",
   "advancement": "twilightforest:alt/biomes/twilight_swamp",
   "sortnum": 5000,

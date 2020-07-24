@@ -5,7 +5,7 @@
     "entries": [
       {
         "type": "item",
-        "name": "minecraft:web",
+        "name": "minecraft:cobweb",
         "functions": [{ "function": "set_count", "count": { "min": 1, "max": 4 } }]
       },
       {

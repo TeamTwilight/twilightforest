@@ -18,7 +18,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 	public static final Codec<ChunkGeneratorTwilightVoid> codecVoidChunk = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					BiomeProvider.field_235202_a_.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
+					BiomeProvider.PROVIDER_CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
 					Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
 					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter((obj) -> obj.dimensionSettings))
 					.apply(instance, instance.stable(ChunkGeneratorTwilightVoid::new)));
@@ -83,7 +83,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	public int func_222529_a(int i, int i1, Heightmap.Type type) {
+	public int getHeight(int i, int i1, Heightmap.Type type) {
 		return 0;
 	}
 

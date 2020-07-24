@@ -15,11 +15,11 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 
 	GenLayerTFBiomeStabilize() { }
 
-	public int func_215721_a(int x) {
+	public int getOffsetX(int x) {
 		return x & 3;
 	}
 
-	public int func_215722_b(int z) {
+	public int getOffsetZ(int z) {
 		return z & 3;
 	}
 
@@ -63,9 +63,9 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 //	}
 
 	@Override
-	public int func_215728_a(IExtendedNoiseRandom<?> iExtendedNoiseRandom, IArea iArea, int dx, int dz) {
-		int offX = func_215721_a(dx);
-		int offZ = func_215722_b(dz);
+	public int apply(IExtendedNoiseRandom<?> iExtendedNoiseRandom, IArea iArea, int dx, int dz) {
+		int offX = getOffsetX(dx);
+		int offZ = getOffsetZ(dz);
 		int centerX = ((dx + offX + 1) & 0xFFFFFFFC) - offX;
 		int centerZ = ((dz + offZ + 1) & 0xFFFFFFFC) - offZ;
 

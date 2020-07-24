@@ -142,8 +142,8 @@ public class EntityTFTowerGhast extends GhastEntity {
 			double d2 = this.parentEntity.getPosZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 
-			if (this.parentEntity.getDistanceSq(Vector3d.func_237492_c_(this.parentEntity.getHomePosition())) > 256.0D) {
-				Vector3d vecToHome = Vector3d.func_237492_c_(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVec()).normalize();
+			if (this.parentEntity.getDistanceSq(Vector3d.copy(this.parentEntity.getHomePosition())) > 256.0D) {
+				Vector3d vecToHome = Vector3d.copy(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVec()).normalize();
 
 				double targetX = this.parentEntity.getPosX() + vecToHome.x * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 				double targetY = this.parentEntity.getPosY() + vecToHome.y * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);

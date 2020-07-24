@@ -88,7 +88,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !target.func_230279_az_()) {
+		if (result && !target.isImmuneToFire()) {
 			if (!target.world.isRemote) {
 				target.setFire(15);
 			} else {

@@ -100,15 +100,15 @@ public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 	}
 
 	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, DimensionSettings settings) {
-		super(provider, settings.func_236108_a_());
+		super(provider, settings.getStructures());
 		this.seed = seed;
 		this.dimensionSettings = settings;
-		NoiseSettings noisesettings = settings.func_236113_b_();
+		NoiseSettings noisesettings = settings.getNoise();
 		this.field_236085_x_ = noisesettings.func_236169_a_();
 		this.verticalNoiseGranularity = noisesettings.func_236175_f_() * 4;
 		this.horizontalNoiseGranularity = noisesettings.func_236174_e_() * 4;
-		this.defaultBlock = settings.func_236115_c_();
-		this.defaultFluid = settings.func_236116_d_();
+		this.defaultBlock = settings.getDefaultBlock();
+		this.defaultFluid = settings.getDefaultFluid();
 		this.noiseSizeX = 16 / this.horizontalNoiseGranularity;
 		this.noiseSizeY = noisesettings.func_236169_a_() / this.verticalNoiseGranularity;
 		this.noiseSizeZ = 16 / this.horizontalNoiseGranularity;
@@ -153,7 +153,7 @@ public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 		int i = -10;
 		int j = 3;*/
 //		this.func_222546_a(noiseY, noiseX, noiseZ, d0, d1, d2, d3, j, i);
-		NoiseSettings noisesettings = this.dimensionSettings.func_236113_b_();
+		NoiseSettings noisesettings = this.dimensionSettings.getNoise();
 		double d0;
 		double d1;
 		if (this.field_236083_v_ != null) {

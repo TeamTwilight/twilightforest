@@ -100,7 +100,7 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEnt
 						new AxisAlignedBB(pos.add(-2, 0, -2), pos.add(2, 4, 2)));
 				// fire!
 				for (Entity entity : entitiesInRange) {
-					if (!entity.func_230279_az_()) {
+					if (!entity.isImmuneToFire()) {
 						entity.attackEntityFrom(DamageSource.IN_FIRE, 2);
 						entity.setFire(15);
 					}

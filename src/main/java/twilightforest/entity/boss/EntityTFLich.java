@@ -73,7 +73,7 @@ public class EntityTFLich extends MonsterEntity {
 
 		setShadowClone(false);
 		this.masterLich = null;
-		this.func_230279_az_();
+		this.isImmuneToFire();
 		this.experienceValue = 217;
 	}
 
