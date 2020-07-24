@@ -25,7 +25,7 @@ public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
     public void tick() {
         super.tick();
 
-        this.ticksExisted++;
+        ++this.ticksExisted;
 
         lastTickPosX = getPosX();
         lastTickPosY = getPosY();
@@ -39,5 +39,10 @@ public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
         }
         for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) {
         }
+    }
+
+    @Override
+    public boolean canRemove() {
+        return super.canRemove();
     }
 }

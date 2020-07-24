@@ -46,7 +46,7 @@ public class MultiPartEntityPart extends Entity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.ticksExisted % 40 == 0 && canRemove()) {
+		if (canRemove()) {
 			this.remove();
 		}
 	}
