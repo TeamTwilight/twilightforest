@@ -14,9 +14,6 @@ public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
         super(type, world);
         this.ignoreFrustumCheck = true;
     }
-    public EntityTFSnowQueenIceShield(World world, Entity entity) {
-        super(TFEntities.snow_queen_ice_shield, world, entity);
-    }
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {

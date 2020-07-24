@@ -181,6 +181,16 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 					hc[i].headEntity.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 					hc[i].setHeadPosition();
 					world.addEntity(hc[i].headEntity);
+
+					world.addEntity(hc[i].necka);
+					hc[i].setNeckPosition();
+					world.addEntity(hc[i].neckb);
+					hc[i].setNeckPosition();
+					world.addEntity(hc[i].neckc);
+					hc[i].setNeckPosition();
+					world.addEntity(hc[i].neckd);
+					hc[i].setNeckPosition();
+					world.addEntity(hc[i].necke);
 				}
 
 				setSpawnHeads(false);

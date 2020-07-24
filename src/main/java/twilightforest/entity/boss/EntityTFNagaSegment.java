@@ -32,7 +32,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource src, float damage) {
-		return super.attackEntityFrom(src, damage * 2F / 3F);
+		return !isInvisible() && super.attackEntityFrom(src, damage * 2F / 3F);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 
 	@Override
 	public boolean canRemove() {
-		return super.canRemove();
+		return this.deathCounter <= -1 || super.canRemove();
 	}
 
 	private void collideWithEntity(Entity entity) {

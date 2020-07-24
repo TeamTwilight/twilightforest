@@ -569,7 +569,7 @@ public class HydraHeadContainer {
 		}
 	}
 
-	private void setNeckPosition() {
+	protected void setNeckPosition() {
 		// set neck positions
 		Vector3d vector = null;
 		float neckRotation = 0;
@@ -729,7 +729,7 @@ public class HydraHeadContainer {
 						pointedEntity = possibleEntity;
 						hitDist = 0.0D;
 					}
-				} else if (interceptPos != null) {
+				} else if (interceptPos.isPresent()) {
 					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {

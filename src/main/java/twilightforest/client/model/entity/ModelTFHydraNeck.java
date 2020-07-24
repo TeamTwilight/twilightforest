@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.boss.EntityTFHydraNeck;
 
-public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends SegmentedModel<T> {
+public class ModelTFHydraNeck extends SegmentedModel<EntityTFHydraNeck> {
 
 	ModelRenderer neck;
 
@@ -31,7 +31,7 @@ public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends SegmentedMode
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFHydraNeck entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		neck.rotateAngleY = netHeadYaw / 57.29578F;
 		neck.rotateAngleX = headPitch / 57.29578F;
 	}

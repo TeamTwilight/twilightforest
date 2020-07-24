@@ -127,6 +127,7 @@ public class TFEntities {
 	public static final EntityType<EntityTFNagaSegment> naga_segment = build(TFEntityNames.NAGA_SEGMENT, makeCastedBuilder(EntityTFNagaSegment.class, EntityTFNagaSegment::new, EntityClassification.MONSTER).size(1.8F, 1.8F).setTrackingRange(150).setShouldReceiveVelocityUpdates(false).setUpdateInterval(2));
 	public static final EntityType<EntityTFSnowQueenIceShield> snow_queen_ice_shield = build(TFEntityNames.SNOW_QUEEN_ICE_SHIELD, makeCastedBuilder(EntityTFSnowQueenIceShield.class, EntityTFSnowQueenIceShield::new, EntityClassification.MONSTER).size(0.75F, 0.75F).setTrackingRange(150).setShouldReceiveVelocityUpdates(false));
 	public static final EntityType<EntityTFHydraHead> hydra_head = build(TFEntityNames.HYDRA_HEAD, makeCastedBuilder(EntityTFHydraHead.class, EntityTFHydraHead::new, EntityClassification.MONSTER).size(3F, 3F).setTrackingRange(150).setShouldReceiveVelocityUpdates(false));
+	public static final EntityType<EntityTFHydraNeck> hydra_neck = build(TFEntityNames.HYDRA_NECK, makeCastedBuilder(EntityTFHydraNeck.class, EntityTFHydraNeck::new, EntityClassification.MONSTER).size(2F, 2F).setTrackingRange(150).setShouldReceiveVelocityUpdates(false));
 	public static final EntityType<EntityTFHydraSmallPart> hydra_part = build(TFEntityNames.HYDRA_PART, makeCastedBuilder(EntityTFHydraSmallPart.class, EntityTFHydraSmallPart::new, EntityClassification.MONSTER).size(3F, 3F).setTrackingRange(150).setShouldReceiveVelocityUpdates(false).setUpdateInterval(2));
 	public static final EntityType<EntityTFGoblinChain> goblin_chain = build(TFEntityNames.GOBLIN_CHAIN, makeCastedBuilder(EntityTFGoblinChain.class, EntityTFGoblinChain::new, EntityClassification.MISC).size(0.75F, 0.75F).setTrackingRange(120).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1));
 
@@ -375,6 +376,7 @@ public class TFEntities {
 		GlobalEntityTypeAttributes.put(castle_guardian, MobEntity.func_233666_p_().func_233813_a_());
 
 		GlobalEntityTypeAttributes.put(hydra_head, EntityTFHydraPart.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(hydra_neck, EntityTFHydraPart.registerAttributes().func_233813_a_());
 		GlobalEntityTypeAttributes.put(boggard, EntityTFBoggard.registerAttributes().func_233813_a_());
 		GlobalEntityTypeAttributes.put(rising_zombie, ZombieEntity.func_234342_eQ_().func_233813_a_());
 	}
@@ -470,6 +472,7 @@ public class TFEntities {
 
 		// I guess the hydra gets its own section
 		RenderingRegistry.registerEntityRenderingHandler(hydra_head, m -> new RenderTFHydraHead(m, new ModelTFHydraHead(), 1.0F));
-		RenderingRegistry.registerEntityRenderingHandler(hydra_part, RenderTFNothing::new);
+		RenderingRegistry.registerEntityRenderingHandler(hydra_neck, m -> new RenderTFHydraNeck(m, new ModelTFHydraNeck(), 1.0F));
+		RenderingRegistry.registerEntityRenderingHandler(hydra_part, RenderNoop<EntityTFHydraSmallPart>::new);
 	}
 }

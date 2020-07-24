@@ -22,16 +22,16 @@ public class EntityTFHydraPart extends MobEntity {
 		super(type, world);
 	}
 
-	public EntityTFHydraPart(EntityTFHydra parent, World world, float width, float height) {
-		super(TFEntities.hydra, world);
+	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type,EntityTFHydra parent, World world, float width, float height) {
+		super(type, world);
 		func_230279_az_();
 		this.hydra = parent;
 		this.size = EntitySize.flexible(width, height);
 		this.recalculateSize();
 	}
 
-	public EntityTFHydraPart(EntityTFHydra hydra, String name, float width, float height) {
-		this(hydra, hydra.world, width, height);
+	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type,EntityTFHydra hydra, String name, float width, float height) {
+		this(type, hydra, hydra.world, width, height);
 		setPartName(name);
 		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
 	}

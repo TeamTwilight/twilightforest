@@ -101,6 +101,7 @@ public class TFEntityNames {
 
 	// Technical
 	public static final ResourceLocation HYDRA_HEAD = prefix("hydra_head");
+	public static final ResourceLocation HYDRA_NECK = prefix("hydra_neck");
 	public static final ResourceLocation HYDRA_PART = prefix("hydra_part");
 	public static final ResourceLocation CHARM_EFFECT = prefix("charm_effect");
 	public static final ResourceLocation FALLING_ICE = prefix("falling_ice");

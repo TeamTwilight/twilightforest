@@ -59,7 +59,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	public enum Phase {SUMMON, DROP, BEAM}
 
-	public final Entity[] iceArray = new Entity[7];
+	public final EntityTFSnowQueenIceShield[] iceArray = new EntityTFSnowQueenIceShield[7];
 
 	private int summonsRemaining = 0;
 	private int successfulDrops;
@@ -70,7 +70,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super(type, world);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
-			this.iceArray[i] = new EntityTFSnowQueenIceShield(world,this);
+			this.iceArray[i] = TFEntities.snow_queen_ice_shield.create(world);
 		}
 
 		this.setCurrentPhase(Phase.SUMMON);
@@ -193,6 +193,17 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	public void tick() {
 		super.tick();
 
+		if (this.world instanceof ServerWorld && isAlive()) {
+			ServerWorld serverWorld = (ServerWorld) this.world;
+			for (EntityTFSnowQueenIceShield segment : iceArray) {
+				if (!segment.isAddedToWorld()) {
+					segment.setParentUUID(this.getUniqueID());
+					segment.setParentId(this.getEntityId());
+					serverWorld.addEntity(segment);
+				}
+			}
+		}
+
 		for (int i = 0; i < this.iceArray.length; i++) {
 
 			this.iceArray[i].tick();
@@ -222,15 +233,6 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				double d1 = rand.nextGaussian() * 0.02D;
 				double d2 = rand.nextGaussian() * 0.02D;
 				world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION, (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
-			}
-		}
-
-		if (this.world instanceof ServerWorld && isAlive()) {
-			ServerWorld serverWorld = (ServerWorld) this.world;
-			for (Entity segment : iceArray) {
-				if (!segment.isAddedToWorld()) {
-					serverWorld.addEntity(segment);
-				}
 			}
 		}
 	}
