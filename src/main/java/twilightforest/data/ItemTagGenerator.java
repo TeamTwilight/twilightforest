@@ -14,19 +14,19 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	@Override
 	protected void registerTags() {
-		this.func_240521_a_(Tags.Blocks.FENCES_WOODEN, Tags.Items.FENCES_WOODEN);
-		this.func_240521_a_(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
-		this.func_240521_a_(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
-		this.func_240521_a_(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
-		this.func_240521_a_(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
-		this.func_240521_a_(BlockTags.SLABS, ItemTags.SLABS);
-		this.func_240521_a_(BlockTags.STAIRS, ItemTags.STAIRS);
-		this.func_240521_a_(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
-		this.func_240521_a_(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
-		this.func_240521_a_(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
-		this.func_240521_a_(BlockTags.LEAVES, ItemTags.LEAVES);
-		this.func_240521_a_(BlockTags.LOGS, ItemTags.LOGS);
-		this.func_240521_a_(BlockTags.PLANKS, ItemTags.PLANKS);
-		this.func_240521_a_(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
+		this.copy(Tags.Blocks.FENCES_WOODEN, Tags.Items.FENCES_WOODEN);
+		this.copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
+		this.copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
+		this.copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
+		this.copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
+		this.copy(BlockTags.SLABS, ItemTags.SLABS);
+		this.copy(BlockTags.STAIRS, ItemTags.STAIRS);
+		this.copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
+		this.copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
+		this.copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
+		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
+		this.copy(BlockTags.LOGS, ItemTags.LOGS);
+		this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
+		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 	}
 }

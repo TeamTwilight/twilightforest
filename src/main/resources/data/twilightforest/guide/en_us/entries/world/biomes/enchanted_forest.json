@@ -1,6 +1,6 @@
 {
   "name": "Enchanted Forest",
-  "icon": "twilightforest:twilight_sapling:9",
+  "icon": "twilightforest:rainboak_sapling",
   "category": "biomes",
   "advancement": "twilightforest:alt/biomes/enchanted_forest",
   "sortnum": 2200,

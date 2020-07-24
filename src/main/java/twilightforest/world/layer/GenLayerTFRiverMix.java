@@ -62,8 +62,8 @@ public enum GenLayerTFRiverMix implements IAreaTransformer2, IDimOffset0Transfor
 
 	@Override
 	public int apply(INoiseRandom iNoiseRandom, IArea area1, IArea area2, int val1, int val2) {
-		int biomeInputs = area1.getValue(this.func_215721_a(val1), this.func_215722_b(val2));
-		int riverInputs = area2.getValue(this.func_215721_a(val1), this.func_215722_b(val2));
+		int biomeInputs = area1.getValue(this.getOffsetX(val1), this.getOffsetZ(val2));
+		int riverInputs = area2.getValue(this.getOffsetX(val1), this.getOffsetZ(val2));
 
 		int stream = Registry.BIOME.getId(TFBiomes.stream.get());
 

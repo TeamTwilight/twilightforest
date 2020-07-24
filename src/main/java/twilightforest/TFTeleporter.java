@@ -367,7 +367,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private double getYFactor() {
-		return world.func_234922_V_() == DimensionType.field_235999_c_/*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/ ? 2.0 : 0.5; //TODO
+		return world.func_234922_V_() == DimensionType.OVERWORLD/*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/ ? 2.0 : 0.5; //TODO
 	}
 
 	@Nullable

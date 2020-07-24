@@ -27,12 +27,12 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 //	}
 
 	@Override
-	public int func_215721_a(int x) {
+	public int getOffsetX(int x) {
 		return x | 3;
 	}
 
 	@Override
-	public int func_215722_b(int z) {
+	public int getOffsetZ(int z) {
 		return z | 3;
 	}
 
@@ -76,9 +76,9 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 
 	//TODO: This logic is butchered to hell and back
 	@Override
-	public int func_215728_a(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
-		int dx = func_215721_a(x);
-		int dz = func_215722_b(z);
+	public int apply(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
+		int dx = getOffsetX(x);
+		int dz = getOffsetZ(z);
 		// get offsets
 		//initChunkSeed(((dx + x) | 3), ((dz + z) | 3));
 

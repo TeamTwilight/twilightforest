@@ -53,7 +53,7 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
 
 	@Override
 	public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
-		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.func_234587_a_(json, "player", condition);
+		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
 		ResourceLocation advancementId = new ResourceLocation(JSONUtils.getString(json, "advancement"));
 		return new HasAdvancementTrigger.Instance(player, advancementId);
 	}

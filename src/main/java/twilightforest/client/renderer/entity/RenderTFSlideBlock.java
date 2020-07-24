@@ -53,7 +53,7 @@ public class RenderTFSlideBlock extends EntityRenderer<EntityTFSlideBlock> {
 					BlockPos blockpos = new BlockPos(entity.getPosX(), entity.getBoundingBox().maxY, entity.getPosZ());
 
 					// spin
-					if (iblockstate.func_235904_r_().contains(RotatedPillarBlock.AXIS)) {
+					if (iblockstate.getProperties().contains(RotatedPillarBlock.AXIS)) {
 						Direction.Axis axis = iblockstate.get(RotatedPillarBlock.AXIS);
 						float angle = (entity.ticksExisted + partialTicks) * 60F;
 //						double dy = y + 0.5;

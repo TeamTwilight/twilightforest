@@ -27,7 +27,7 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 
 	public EntityTFFireBeetle(EntityType<? extends EntityTFFireBeetle> type, World world) {
 		super(type, world);
-		this.func_230279_az_();
+		this.isImmuneToFire();
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (!target.func_230279_az_() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE)) {
+		if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE)) {
 			target.setFire(BREATH_DURATION);
 		}
 	}

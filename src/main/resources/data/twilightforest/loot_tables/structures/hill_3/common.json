@@ -15,7 +15,7 @@
       },
       {
         "type": "item",
-        "name": "minecraft:fish",
+        "name": "minecraft:cod",
         "functions": [{ "function": "set_count", "count": { "min": 1, "max": 4 } }]
       },
       {

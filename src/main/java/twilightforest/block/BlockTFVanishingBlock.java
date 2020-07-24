@@ -51,7 +51,7 @@ public class BlockTFVanishingBlock extends Block {
 	}
 
 	private boolean isVanished(BlockState state) {
-		return state.func_235901_b_(VANISHED) && state.get(VANISHED); //has?
+		return state.hasProperty(VANISHED) && state.get(VANISHED);
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class BlockTFVanishingBlock extends Block {
 			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		} else {
 			if (state.get(ACTIVE)) {
-				if (state.func_235901_b_(VANISHED)) {
+				if (state.hasProperty(VANISHED)) {
 					world.setBlockState(pos, state.with(ACTIVE, false).with(VANISHED, true));
 					world.getPendingBlockTicks().scheduleTick(pos, this, 80);
 				} else {

@@ -684,7 +684,7 @@ public class HydraHeadContainer {
 				if (target instanceof EntityTFHydraPart || target instanceof MultiPartEntityPart) {
 					// stop hurting yourself!
 					this.endCurrentAction();
-				} else if (!target.func_230279_az_() && target.attackEntityFrom(DamageSource.IN_FIRE, FLAME_DAMAGE)) {
+				} else if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, FLAME_DAMAGE)) {
 					target.setFire(FLAME_BURN_FACTOR);
 				}
 			}

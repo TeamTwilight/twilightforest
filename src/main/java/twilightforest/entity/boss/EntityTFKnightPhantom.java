@@ -66,7 +66,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	public EntityTFKnightPhantom(EntityType<? extends EntityTFKnightPhantom> type, World world) {
 		super(type, world);
 		noClip = true;
-		func_230279_az_();
+		isImmuneToFire();
 		currentFormation = Formation.HOVER;
 		experienceValue = 93;
 		moveController = new NoClipMoveHelper(this);

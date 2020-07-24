@@ -19,7 +19,7 @@
           "A": "AIR",
           "0": "minecraft:water",
           "W": "minecraft:water",
-          "F": "minecraft:red_flower",
+          "F": "minecraft:poppy",
           "G": "minecraft:grass",
           "D": "minecraft:dirt"
         },
@@ -49,7 +49,7 @@
           "A": "AIR",
           "0": "AIR",
           "W": "twilightforest:twilight_portal",
-          "F": "minecraft:red_flower",
+          "F": "minecraft:poppy",
           "G": "minecraft:grass",
           "D": "minecraft:dirt"
         },

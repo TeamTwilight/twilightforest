@@ -113,7 +113,7 @@ public class BlockPredicate {
         }
 
         private boolean test(BlockState state) {
-            return state.func_235904_r_().contains(property) && comparisonType.test(value, state.get(property));
+            return state.getProperties().contains(property) && comparisonType.test(value, state.get(property));
         }
 
         private enum ComparisonType {

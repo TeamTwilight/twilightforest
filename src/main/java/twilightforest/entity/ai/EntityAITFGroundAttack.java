@@ -38,7 +38,7 @@ public class EntityAITFGroundAttack extends Goal {
 			double distance = this.attacker.getDistanceSq(this.attackTarget);
 			if (distance < MIN_RANGE_SQ || distance > MAX_RANGE_SQ) {
 				return false;
-			} else if (!this.attacker.func_233570_aj_()) {
+			} else if (!this.attacker.isOnGround()) {
 				return false;
 			} else {
 
@@ -93,7 +93,7 @@ public class EntityAITFGroundAttack extends Goal {
 				}
 
 				if (entity instanceof LivingEntity) {
-					if (entity.func_233570_aj_()) {
+					if (entity.isOnGround()) {
 						entity.addVelocity(0, 0.23, 0);
 
 						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 0.5F));

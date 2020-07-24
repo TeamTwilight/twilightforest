@@ -52,7 +52,7 @@ public class StructureClearedTrigger implements ICriterionTrigger<StructureClear
 
 	@Override
 	public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
-		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.func_234587_a_(json, "player", condition);
+		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
 		String structureName = JSONUtils.getString(json, "structure");
 		return new StructureClearedTrigger.Instance(player, structureName);
 	}

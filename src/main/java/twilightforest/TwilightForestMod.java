@@ -42,6 +42,7 @@ import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.*;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
+import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
@@ -127,6 +128,7 @@ public class TwilightForestMod {
 	public static void registerSerializers(RegistryEvent.Register<IRecipeSerializer<?>> evt) {
 		//How do I add a condition serializer as fast as possible? An event that fires really early
 		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
+		TFTreasure.init();
 	}
 
 	@SubscribeEvent

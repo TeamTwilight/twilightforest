@@ -40,16 +40,24 @@ public class TFTreasure {
 	public static final TFTreasure troll_vault = new TFTreasure("troll_vault");
 	public static final TFTreasure graveyard = new TFTreasure("graveyard");
 
-	public static final LootFunctionType ENCHANT = registerFunction("enchant", new LootFunctionType(new LootFunctionEnchant.Serializer()));
-	public static final LootFunctionType ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootFunctionType(new LootFunctionModItemSwap.Serializer()));
+	public static LootFunctionType ENCHANT;
+	public static LootFunctionType ITEM_OR_DEFAULT;
 
-	public static final LootConditionType IS_MINION = registerCondition("is_minion", new LootConditionType(new LootConditionIsMinion.Serializer()));
-	public static final LootConditionType MOD_EXISTS = registerCondition("mod_exists", new LootConditionType(new LootConditionModExists.Serializer()));
+	public static LootConditionType IS_MINION;
+	public static LootConditionType MOD_EXISTS;
 
 	private final ResourceLocation lootTable;
 
 	private TFTreasure(String path) {
 		lootTable = TwilightForestMod.prefix(String.format("structures/%s/%s", path, path));
+	}
+
+	public static void init() {
+		ENCHANT = registerFunction("enchant", new LootFunctionType(new LootFunctionEnchant.Serializer()));
+		ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootFunctionType(new LootFunctionModItemSwap.Serializer()));
+
+		IS_MINION = registerCondition("is_minion", new LootConditionType(new LootConditionIsMinion.Serializer()));
+		MOD_EXISTS = registerCondition("mod_exists", new LootConditionType(new LootConditionModExists.Serializer()));
 	}
 
 	public void generateChest(World world, BlockPos pos, boolean trapped) {
@@ -67,10 +75,10 @@ public class TFTreasure {
 	}
 
 	private static LootFunctionType registerFunction(String name, LootFunctionType function) {
-		return Registry.register(Registry.field_239694_aZ_, TwilightForestMod.prefix(name), function); //ILootFunction registry
+		return Registry.register(Registry.LOOT_FUNCTION_TYPE, TwilightForestMod.prefix(name), function); //ILootFunction registry
 	}
 
 	private static LootConditionType registerCondition(String name, LootConditionType condition) {
-		return Registry.register(Registry.field_239704_ba_, TwilightForestMod.prefix(name), condition); //ILootCondition registry
+		return Registry.register(Registry.LOOT_CONDITION_TYPE, TwilightForestMod.prefix(name), condition); //ILootCondition registry
 	}
 }

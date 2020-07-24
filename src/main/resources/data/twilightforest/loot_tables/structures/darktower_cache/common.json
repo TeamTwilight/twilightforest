@@ -27,8 +27,7 @@
       },
       {
         "type": "item",
-        "name": "minecraft:wool",
-        "functions": [{ "function": "set_data", "data": 14 }]
+        "name": "minecraft:red_wool"
       },
       {
         "type": "item",

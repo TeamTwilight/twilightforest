@@ -71,7 +71,7 @@ public class EntityAITFYetiRampage extends Goal {
 			this.yeti.getLookController().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, (float) this.yeti.getVerticalFaceSpeed());
 		}
 
-		if (this.yeti.func_233570_aj_()) {
+		if (this.yeti.isOnGround()) {
 //			this.yeti.motionX = 0;
 //			this.yeti.motionZ = 0;
 //			this.yeti.motionY = 0.4F;

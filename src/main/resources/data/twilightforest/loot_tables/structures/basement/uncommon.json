@@ -30,7 +30,7 @@
       },
       {
         "type": "item",
-        "name": "minecraft:cooked_fish",
+        "name": "minecraft:cooked_cod",
         "functions": [{ "function": "set_count", "count": { "min": 1, "max": 8 } }]
       }
     ]

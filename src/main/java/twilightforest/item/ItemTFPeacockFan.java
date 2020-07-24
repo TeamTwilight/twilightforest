@@ -33,7 +33,7 @@ public class ItemTFPeacockFan extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 
 		if (!world.isRemote) {
-			if (!player.func_233570_aj_()) {
+			if (!player.isOnGround()) {
 				player.addPotionEffect(new EffectInstance(Effects.JUMP_BOOST, 45, 0));
 			} else {
 				int fanned = doFan(world, player);
@@ -45,7 +45,7 @@ public class ItemTFPeacockFan extends Item {
 		} else {
 			// jump if the player is in the air
 			//TODO: only one extra jump per jump
-			if (!player.func_233570_aj_() && !player.isPotionActive(Effects.JUMP_BOOST)) {
+			if (!player.isOnGround() && !player.isPotionActive(Effects.JUMP_BOOST)) {
 				player.setMotion(new Vector3d(
 						player.getMotion().getX() * 3F,
 						1.5F,

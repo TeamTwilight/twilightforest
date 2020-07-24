@@ -31,6 +31,10 @@ public class LootConditionIsMinion implements ILootCondition {
 		return context.get(LootParameters.THIS_ENTITY) instanceof EntityTFMiniGhast && ((EntityTFMiniGhast) context.get(LootParameters.THIS_ENTITY)).isMinion() == !inverse;
 	}
 
+	public static IBuilder builder(boolean inverse) {
+		return () -> new LootConditionIsMinion(inverse);
+	}
+
 	public static class Serializer implements ILootSerializer<LootConditionIsMinion> {
 
 		@Override

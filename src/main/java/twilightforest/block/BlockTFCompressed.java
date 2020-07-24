@@ -44,7 +44,7 @@ public class BlockTFCompressed extends Block {
 
 	@Override
 	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
-		if ((!entityIn.func_230279_az_())
+		if ((!entityIn.isImmuneToFire())
 				&& entityIn instanceof LivingEntity
 				&& (!EnchantmentHelper.hasFrostWalker((LivingEntity) entityIn))
 				&& this == TFBlocks.fiery_block.get()) {

@@ -16,7 +16,6 @@ import net.minecraft.util.math.shapes.VoxelShapePart;
 import net.minecraft.world.*;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.feature.structure.StructureManager;
@@ -104,7 +103,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 				mutable.func_239622_a_(logBP, direction);
 				if (!logPos.contains(mutable)) {
 					BlockState blockstate = world.getBlockState(mutable);
-					if (blockstate.func_235901_b_(BlockStateProperties.DISTANCE_1_7)) {
+					if (blockstate.hasProperty(BlockStateProperties.DISTANCE_1_7)) {
 						list.get(0).add(mutable.toImmutable());
 						TreeFeature.func_236408_b_(world, mutable, blockstate.with(BlockStateProperties.DISTANCE_1_7, 1));
 						if (mbb.isVecInside(mutable)) {
@@ -128,7 +127,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 					mutable.func_239622_a_(blockpos2, direction1);
 					if (!set.contains(mutable) && !set1.contains(mutable)) {
 						BlockState blockstate1 = world.getBlockState(mutable);
-						if (blockstate1.func_235901_b_(BlockStateProperties.DISTANCE_1_7)) {
+						if (blockstate1.hasProperty(BlockStateProperties.DISTANCE_1_7)) {
 							int k = blockstate1.get(BlockStateProperties.DISTANCE_1_7);
 							if (k > l + 1) {
 								BlockState blockstate2 = blockstate1.with(BlockStateProperties.DISTANCE_1_7, l + 1);
@@ -155,7 +154,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 
 	//AbstractTrunkPlancer.func_236911_a_ copy
 	protected boolean setLogBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		if (TreeFeature.func_236404_a_(world, pos)) {
+		if (TreeFeature.isReplaceableAt(world, pos)) {
 			this.setBlockState(world, pos, config.trunkProvider.getBlockState(random, pos), mbb);
 			logPos.add(pos.toImmutable());
 			return true;
@@ -166,7 +165,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 
 	//We aren't actually using this, but it is here just in case
 	protected boolean setLeavesBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> leavesPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		if (TreeFeature.func_236404_a_(world, pos)) {
+		if (TreeFeature.isReplaceableAt(world, pos)) {
 			this.setBlockState(world, pos, config.leavesProvider.getBlockState(random, pos), mbb);
 			leavesPos.add(pos.toImmutable());
 			return true;
@@ -176,7 +175,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	}
 
 	public boolean setBranchBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		if (TreeFeature.func_236404_a_(world, pos)) {
+		if (TreeFeature.isReplaceableAt(world, pos)) {
 			this.setBlockState(world, pos, config.branchProvider.getBlockState(random, pos), mbb);
 			branchpos.add(pos.toImmutable());
 			return true;

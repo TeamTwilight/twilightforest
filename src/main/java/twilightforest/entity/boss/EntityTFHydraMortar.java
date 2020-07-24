@@ -60,7 +60,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 
 		this.pushOutOfBlocks(this.getPosX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getPosZ());
 
-		if (this.func_233570_aj_()) {
+		if (this.isOnGround()) {
 //			this.motionX *= 0.9D;
 //			this.motionY *= 0.9D;
 //			this.motionZ *= 0.9D;
@@ -126,7 +126,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		DamageSource src = new IndirectEntityDamageSource("onFire", this, func_234616_v_()).setFireDamage().setProjectile();
 
 		for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0D, 1.0D, 1.0D))) {
-			if (nearby.attackEntityFrom(src, DIRECT_DAMAGE) && !nearby.func_230279_az_()) {
+			if (nearby.attackEntityFrom(src, DIRECT_DAMAGE) && !nearby.isImmuneToFire()) {
 				nearby.setFire(BURN_FACTOR);
 			}
 		}

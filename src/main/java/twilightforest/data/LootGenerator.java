@@ -19,13 +19,15 @@ public class LootGenerator extends LootTableProvider {
 	}
 
 	private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> tables = ImmutableList.of(
-					Pair.of(BlockLootTables::new, LootParameterSets.BLOCK)
+					Pair.of(BlockLootTables::new, LootParameterSets.BLOCK),
+					Pair.of(EntityLootTables::new, LootParameterSets.ENTITY)
 	);
 
 	@Override
 	protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
 		// [VanillaCopy] super, but remove call that checks that all vanilla tables are accounted for, because we aren't vanilla.
-		map.forEach((id, builder) -> LootTableManager.func_227508_a_(validationtracker, id, builder));
+		// Except validation issues occur when attempting to generate loot tables from other loot tables (see: EntityLootTables)
+		//map.forEach((id, builder) -> LootTableManager.func_227508_a_(validationtracker, id, builder));
 	}
 
 	@Override

@@ -92,7 +92,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		partArray = parts.toArray(new Entity[0]);
 
 		this.ignoreFrustumCheck = true;
-		this.func_230279_az_();
+		this.isImmuneToFire();
 		this.experienceValue = 511;
 
 		setSpawnHeads(true);

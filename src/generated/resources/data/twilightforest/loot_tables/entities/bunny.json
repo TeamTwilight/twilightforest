@@ -1,12 +1,11 @@
 {
-  "type": "entity",
+  "type": "minecraft:entity",
   "pools": [
     {
-      "name": "vanilla",
       "rolls": 1,
       "entries": [
         {
-          "type": "loot_table",
+          "type": "minecraft:loot_table",
           "name": "minecraft:entities/rabbit"
         }
       ]
