@@ -33,7 +33,6 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 
 	public EntityTFHostileWolf(EntityType<? extends EntityTFHostileWolf> type, World world) {
 		super(type, world);
-		func_241359_a_((ServerWorld) world, true);
 		setCollarColor(DyeColor.BLACK);
 		//setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
 	}
@@ -54,6 +53,14 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		super.tick();
 		if (!world.isRemote && world.getDifficulty() == Difficulty.PEACEFUL) {
 			remove();
+		}
+	}
+
+	public void livingTick() {
+		super.livingTick();
+
+		if (!this.world.isRemote) {
+			this.func_241359_a_((ServerWorld)this.world, true);
 		}
 	}
 
