@@ -489,13 +489,6 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			}
 		}
 
-		//update bodySegments tick
-
-		for (EntityTFNagaSegment segment : bodySegments) {
-			segment.tick();
-		}
-
-
 		moveSegments();
 	}
 

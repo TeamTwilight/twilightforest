@@ -205,9 +205,6 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		}
 
 		for (int i = 0; i < this.iceArray.length; i++) {
-
-			this.iceArray[i].tick();
-
 			if (i < this.iceArray.length - 1) {
 				// set block position
 				Vector3d blockPos = this.getIceShieldPosition(i);
