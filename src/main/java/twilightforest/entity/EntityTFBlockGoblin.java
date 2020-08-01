@@ -190,24 +190,26 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
 			this.block.setPosition(sx2 - ox2 * 1.0, sy2 - oy2 * 1.0, sz2 - oz2 * 1.0);
 		} else {
+			//when alive,Holding BlockChain
+			if (isAlive()) {
+				// set block position
+				Vector3d blockPos = this.getChainPosition();
+				this.block.setPosition(blockPos.x, blockPos.y, blockPos.z);
+				this.block.rotationYaw = getChainAngle();
 
-			// set block position
-			Vector3d blockPos = this.getChainPosition();
-			this.block.setPosition(blockPos.x, blockPos.y, blockPos.z);
-			this.block.rotationYaw = getChainAngle();
+				// interpolate chain position
+				double sx = this.getPosX();
+				double sy = this.getPosY() + this.getHeight() - 0.1;
+				double sz = this.getPosZ();
 
-			// interpolate chain position
-			double sx = this.getPosX();
-			double sy = this.getPosY() + this.getHeight() - 0.1;
-			double sz = this.getPosZ();
+				double ox = sx - blockPos.x;
+				double oy = sy - blockPos.y - (block.getHeight() / 3D);
+				double oz = sz - blockPos.z;
 
-			double ox = sx - blockPos.x;
-			double oy = sy - blockPos.y - (block.getHeight() / 3D);
-			double oz = sz - blockPos.z;
-
-			this.chain1.setPosition(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
-			this.chain2.setPosition(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
-			this.chain3.setPosition(sx - ox * 0.6, sy - oy * 0.6, sz - oz * 0.6);
+				this.chain1.setPosition(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
+				this.chain2.setPosition(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
+				this.chain3.setPosition(sx - ox * 0.6, sy - oy * 0.6, sz - oz * 0.6);
+			}
 		}
 
 		// collide things with the block
