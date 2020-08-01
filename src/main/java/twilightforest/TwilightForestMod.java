@@ -141,7 +141,6 @@ public class TwilightForestMod {
 		TFBiomes.addBiomeFeatures();
 		TFDimensions.init();
 		TFEntities.addEntityAttributes();
-		TFItems.addItemModelProperties();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
@@ -169,6 +168,8 @@ public class TwilightForestMod {
 
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent evt) {
+		TFItems.addItemModelProperties();
+
 		ItemTFKnightlyArmor.initArmorModel();
 		ItemTFPhantomArmor.initArmorModel();
 		ItemTFYetiArmor.initArmorModel();
