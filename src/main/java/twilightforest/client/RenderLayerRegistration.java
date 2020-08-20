@@ -81,6 +81,13 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.built_block.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.antibuilt_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.reappearing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.locked_vanishing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.vanishing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.carminite_builder.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.antibuilder.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.carminite_reactor.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.ghast_trap.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.reactor_debris.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_pink.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_blue.get(), translucent);
