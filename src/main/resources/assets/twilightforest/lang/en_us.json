@@ -294,7 +294,7 @@
   "block.twilightforest.twilight_portal_miniature_structure": "Miniature Twilight Portal [NYI]",
   "block.twilightforest.naga_courtyard_miniature_structure": "Miniature Naga Courtyard [NYI]",
   "block.twilightforest.lich_tower_miniature_structure": "Miniature Lich Tower [NYI]",
-  "block.twilightforest.stone_twist": "Spiral Stone Bricks",
+  "block.twilightforest.stone_twist": "Stone Twist",
   "block.twilightforest.lapis_block": "Block Of Lapis [NYI]",
   "block.twilightforest.etched_nagastone": "Etched Nagastone",
   "block.twilightforest.nagastone_pillar": "Nagastone Pillar",
@@ -411,7 +411,6 @@
   "structure.final_castle": "Final Castle",
 
   // Items
-  "item.twilightforest.boarkchop": "Boarkchop",
   "item.twilightforest.naga_scale": "Naga Scale",
   "item.twilightforest.naga_chestplate": "Naga Scale Tunic",
   "item.twilightforest.naga_leggings": "Naga Scale Leggings",
