@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelCreeper;
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
 import net.minecraft.client.particle.Particle;
@@ -36,7 +37,10 @@ import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
 import twilightforest.client.particle.TFParticleFactory;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.*;
-import twilightforest.client.renderer.tileentity.*;
+import twilightforest.client.renderer.tileentity.TileEntityTFCicadaRenderer;
+import twilightforest.client.renderer.tileentity.TileEntityTFFireflyRenderer;
+import twilightforest.client.renderer.tileentity.TileEntityTFMoonwormRenderer;
+import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
 import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.*;
@@ -84,6 +88,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFBoggard.class, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.625F, "kobold.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMosquitoSwarm.class, m -> new RenderTFGenericLiving<>(m, new ModelTFMosquitoSwarm(), 0.0F, "mosquitoswarm.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFDeathTome.class, m -> new RenderTFGenericLiving<>(m, new ModelTFDeathTome(), 0.3F, "textures/entity/enchanting_table_book.png"));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFSkeletonCreeper.class, m -> new RenderTFSkeletonCreeper(m, new ModelCreeper(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMinotaur.class, m -> new RenderTFBiped<>(m, new ModelTFMinotaur(), 0.625F, "minotaur.png"));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMinoshroom.class, m -> new RenderTFMinoshroom(m, new ModelTFMinoshroom(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFFireBeetle.class, m -> new RenderTFGenericLiving<>(m, new ModelTFFireBeetle(), 0.8F, "firebeetle.png"));
@@ -149,6 +154,7 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlideBlock.class, RenderTFSlideBlock::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySeekerArrow.class, RenderDefaultArrow::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityIceArrow.class, RenderDefaultArrow::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFBoneShard.class, RenderBoneShard::new);
 
 		// I guess the hydra gets its own section
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraHead.class, m -> new RenderTFHydraHead(m, new ModelTFHydraHead(), 1.0F));
