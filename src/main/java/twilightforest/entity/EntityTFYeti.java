@@ -20,10 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 
 import javax.annotation.Nullable;
@@ -46,13 +44,13 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 			protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_GRAB, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+					playSound(TFSounds.YETI_GRAB, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
 			}
 
 			@Override
 			public void resetTask() {
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_THROW, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+					playSound(TFSounds.YETI_THROW, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
 				super.resetTask();
 			}
 		});
@@ -208,16 +206,16 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ALPHAYETI_GROWL;
+		return TFSounds.YETI_GROWL;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.ALPHAYETI_HURT;
+		return TFSounds.YETI_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ALPHAYETI_DIE;
+		return TFSounds.YETI_DIE;
 	}
 }

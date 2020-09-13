@@ -12,12 +12,12 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.entity.projectile.EntityTFSlimeProjectile;
 
 public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackMob {
@@ -47,17 +47,17 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_SPIDER_HURT;
+		return TFSounds.SLIME_BEETLE_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_SPIDER_DEATH;
+		return TFSounds.SLIME_BEETLE_DEATH;
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
+		playSound(TFSounds.SLIME_BEETLE_STEP, 0.15F, 1.0F);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		ThrowableEntity projectile = new EntityTFSlimeProjectile(TFEntities.slime_blob, this.world, this);
-		playSound(SoundEvents.ENTITY_SLIME_SQUISH_SMALL, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+		playSound(TFSounds.SLIME_BEETLE_SQUISH_SMALL, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		double tx = target.getPosX() - this.getPosX();
 		double ty = target.getPosY() + target.getEyeHeight() - 1.100000023841858D - projectile.getPosY();
 		double tz = target.getPosZ() - this.getPosZ();

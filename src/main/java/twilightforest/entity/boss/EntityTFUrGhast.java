@@ -17,6 +17,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -28,6 +29,7 @@ import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.BlockTFGhastTrap;
@@ -197,6 +199,21 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			super.checkDespawn();
 		}
 	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+	      return TFSounds.URGHAST_AMBIENT;
+	   }
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return TFSounds.URGHAST_HURT;
+	   }
+
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.URGHAST_DEATH;
+	   }
 
 	@Override
 	public void livingTick() {

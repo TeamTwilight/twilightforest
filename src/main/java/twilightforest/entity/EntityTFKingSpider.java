@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -8,10 +9,14 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 
 import javax.annotation.Nullable;
 
@@ -39,6 +44,26 @@ public class EntityTFKingSpider extends SpiderEntity {
 //	public float getRenderSizeModifier() {
 //		return 2.0F;
 //	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+	      return TFSounds.KING_SPIDER_AMBIENT;
+	   }
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return TFSounds.KING_SPIDER_HURT;
+	   }
+
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.KING_SPIDER_DEATH;
+	   }
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState blockIn) {
+	      this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
+	   }
 
 	@Override
 	public boolean isOnLadder() {

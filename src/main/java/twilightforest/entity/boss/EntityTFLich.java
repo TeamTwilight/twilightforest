@@ -33,6 +33,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -331,7 +332,7 @@ public class EntityTFLich extends MonsterEntity {
 		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (getPosY() + getHeight() / 2.0F);
 		double tz = getAttackTarget().getPosZ() - sz;
 
-		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
 		EntityTFLichBolt projectile = new EntityTFLichBolt(TFEntities.lich_bolt, world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
@@ -350,7 +351,7 @@ public class EntityTFLich extends MonsterEntity {
 		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (getPosY() + getHeight() / 2.0F);
 		double tz = getAttackTarget().getPosZ() - sz;
 
-		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
 		EntityTFLichBomb projectile = new EntityTFLichBomb(TFEntities.lich_bomb, world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
@@ -473,8 +474,8 @@ public class EntityTFLich extends MonsterEntity {
 		setPositionAndUpdate(destX, destY, destZ);
 
 		makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.world.playSound(null, srcX, srcY, srcZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
-		this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
+		this.world.playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
+		this.playSound(TFSounds.LICH_TELEPORT, 1.0F, 1.0F);
 
 		// sometimes we need to do this
 		this.isJumping = false;
@@ -559,17 +560,17 @@ public class EntityTFLich extends MonsterEntity {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ENTITY_BLAZE_AMBIENT;
+		return TFSounds.LICH_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_BLAZE_HURT;
+		return TFSounds.LICH_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_BLAZE_DEATH;
+		return TFSounds.LICH_DEATH;
 	}
 
 	@Override

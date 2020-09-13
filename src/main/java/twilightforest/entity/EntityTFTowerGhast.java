@@ -13,6 +13,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.RedstoneParticleData;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -23,6 +25,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
@@ -62,6 +65,18 @@ public class EntityTFTowerGhast extends GhastEntity {
 		this.goalSelector.addGoal(7, attackAI = new AIAttack(this));
 		this.targetSelector.addGoal(1, new TFNearestPlayerGoal(this));
 	}
+	
+	protected SoundEvent getAmbientSound() {
+	      return TFSounds.GHASTGUARD_AMBIENT;
+	   }
+
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return TFSounds.GHASTGUARD_HURT;
+	   }
+
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.GHASTGUARD_DEATH;
+	   }
 
 	// [VanillaCopy] from EntityGhast but we use wanderFactor instead, we also stop moving when we have a target
 	public static class AIRandomFly extends Goal {

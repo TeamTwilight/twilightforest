@@ -115,17 +115,17 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_AMBIENT;
+		return TFSounds.SNOW_QUEEN_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_HURT;
+		return TFSounds.SNOW_QUEEN_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_DEATH;
+		return TFSounds.SNOW_QUEEN_DEATH;
 	}
 
 	@Override

@@ -8,18 +8,17 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.DyeColor;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
@@ -98,9 +97,19 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 			world.addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
 		}
 	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.WINTER_WOLF_IDLE;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.WINTER_WOLF_HURT;
+	}
 
 	private void playBreathSound() {
-		playSound(SoundEvents.ENTITY_GHAST_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
+		playSound(TFSounds.WINTER_WOLF_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
 	}
 
 	@Override

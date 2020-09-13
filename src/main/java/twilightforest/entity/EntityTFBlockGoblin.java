@@ -94,17 +94,17 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
     @Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.REDCAP_AMBIENT;
+		return TFSounds.BLOCKCHAIN_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.REDCAP_HURT;
+		return TFSounds.BLOCKCHAIN_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.REDCAP_AMBIENT;
+		return TFSounds.BLOCKCHAIN_DEATH;
 	}
 
 	/**

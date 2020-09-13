@@ -10,12 +10,14 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -48,6 +50,26 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		return MonsterEntity.func_234295_eP_()
 				.createMutableAttribute(Attributes.MAX_HEALTH)/*.applyModifier(DOUBLE_HEALTH) TODO: Move to initial spawn?*/;
 	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_HURT_SMALL : TFSounds.MAZE_SLIME_HURT;
+	   }
+
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_DEATH_SMALL : TFSounds.MAZE_SLIME_DEATH;
+	   }
+
+	@Override
+	protected SoundEvent getSquishSound() {
+	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_SQUISH_SMALL : TFSounds.MAZE_SLIME_SQUISH;
+	   }
+	
+	@Override
+	protected SoundEvent getJumpSound() {
+	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_SQUISH_SMALL : TFSounds.MAZE_SLIME_SQUISH;
+	   }
 
 	@Override
 	protected boolean canDamagePlayer() {

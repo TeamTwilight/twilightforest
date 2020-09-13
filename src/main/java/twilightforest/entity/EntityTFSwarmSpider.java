@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -9,14 +10,16 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 
 import java.util.Random;
 
@@ -68,6 +71,26 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 //	public float getRenderSizeModifier() {
 //		return 0.5F;
 //	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+	      return TFSounds.SWARM_SPIDER_AMBIENT;
+	   }
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return TFSounds.SWARM_SPIDER_HURT;
+	   }
+
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.SWARM_SPIDER_DEATH;
+	   }
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState blockIn) {
+	      this.playSound(TFSounds.SWARM_SPIDER_STEP, 0.15F, 1.0F);
+	   }
 
 	@Override
 	public float getEyeHeight(Pose pose) {

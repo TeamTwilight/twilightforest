@@ -9,12 +9,14 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 
 import java.util.Random;
 
@@ -42,6 +44,18 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	public float getEyeHeight(Pose pose) {
 		return 1.2F;
 	}
+	
+	protected SoundEvent getAmbientSound() {
+	      return TFSounds.GHASTLING_AMBIENT;
+	   }
+
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return TFSounds.GHASTLING_HURT;
+	   }
+
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.GHASTLING_DEATH;
+	   }
 
 	// Loosely based on EntityEnderman.shouldAttackPlayer
 	@Override

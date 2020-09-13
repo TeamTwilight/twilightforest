@@ -98,7 +98,7 @@ public class BlockTFTrophy extends SkullBlock /*implements IInfusionStabiliser*/
 					sound = SoundEvents.ENTITY_GHAST_AMBIENT;
 					break;
 				case SNOW_QUEEN:
-					sound = TFSounds.ICE_AMBIENT;
+					sound = TFSounds.SNOW_QUEEN_AMBIENT;
 					break;
 				case KNIGHT_PHANTOM:
 					sound = TFSounds.WRAITH;

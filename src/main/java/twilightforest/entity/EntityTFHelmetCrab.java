@@ -11,9 +11,9 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 
 public class EntityTFHelmetCrab extends MonsterEntity {
 
@@ -48,17 +48,17 @@ public class EntityTFHelmetCrab extends MonsterEntity {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_SPIDER_HURT;
+		return TFSounds.HELMET_CRAB_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_SPIDER_DEATH;
+		return TFSounds.HELMET_CRAB_DEATH;
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
+		this.playSound(TFSounds.HELMET_CRAB_STEP, 0.15F, 1.0F);
 	}
 
 	@Override
