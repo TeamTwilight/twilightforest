@@ -131,6 +131,14 @@ public class TFBlocks {
 	public static final RegistryObject<BlockTFTrophy> snow_queen_trophy     = BLOCKS.register("snow_queen_trophy", () -> new BlockTFTrophy(BossVariant.SNOW_QUEEN));
 	public static final RegistryObject<BlockTFTrophy> minoshroom_trophy     = BLOCKS.register("minoshroom_trophy", () -> new BlockTFTrophy(BossVariant.MINOSHROOM));
 	public static final RegistryObject<BlockTFTrophy> quest_ram_trophy      = BLOCKS.register("quest_ram_trophy", () -> new BlockTFTrophy(BossVariant.QUEST_RAM));
+	public static final RegistryObject<BlockTFTrophyWall> naga_wall_trophy           = BLOCKS.register("naga_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.NAGA));
+	public static final RegistryObject<BlockTFTrophyWall> lich_wall_trophy           = BLOCKS.register("lich_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.LICH));
+	public static final RegistryObject<BlockTFTrophyWall> hydra_wall_trophy          = BLOCKS.register("hydra_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.HYDRA));
+	public static final RegistryObject<BlockTFTrophyWall> ur_ghast_wall_trophy       = BLOCKS.register("ur_ghast_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.UR_GHAST));
+	public static final RegistryObject<BlockTFTrophyWall> knight_phantom_wall_trophy = BLOCKS.register("knight_phantom_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.KNIGHT_PHANTOM));
+	public static final RegistryObject<BlockTFTrophyWall> snow_queen_wall_trophy     = BLOCKS.register("snow_queen_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.SNOW_QUEEN));
+	public static final RegistryObject<BlockTFTrophyWall> minoshroom_wall_trophy     = BLOCKS.register("minoshroom_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.MINOSHROOM));
+	public static final RegistryObject<BlockTFTrophyWall> quest_ram_wall_trophy      = BLOCKS.register("quest_ram_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.QUEST_RAM));
 	public static final RegistryObject<Block> stronghold_shield           = BLOCKS.register("stronghold_shield", () -> new BlockTFShield(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops()));
 	public static final RegistryObject<Block> trophy_pedestal             = BLOCKS.register("trophy_pedestal", () -> new BlockTFTrophyPedestal(Block.Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 2000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> aurora_block                = BLOCKS.register("aurora_block", () -> new BlockTFAuroraBrick(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
