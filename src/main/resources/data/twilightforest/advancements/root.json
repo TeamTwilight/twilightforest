@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.root.desc"
     },
-    "background": "twilightforest:textures/blocks/mazestone_large_brick.png",
+    "background": "twilightforest:textures/block/mazestone_large_brick.png",
     "announce_to_chat": false
   },
   "criteria": {

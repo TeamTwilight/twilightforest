@@ -22,8 +22,8 @@ public class TreeRootsDecorator extends TreeDecorator {
                     Codec.intRange(0, 16).fieldOf("base_strand_count").forGetter(o -> o.strands),
                     Codec.intRange(0, 16).fieldOf("additional_random_strands").forGetter(o -> o.addExtraStrands),
                     Codec.intRange(0, 32).fieldOf("root_length").forGetter(o -> o.length),
-                    BlockStateProvider.field_236796_a_.optionalFieldOf("air_roots_provider").forGetter(o -> Optional.ofNullable(o.surfaceBlock)),
-                    BlockStateProvider.field_236796_a_.fieldOf("ground_roots_provider").forGetter(o -> o.rootBlock)
+                    BlockStateProvider.CODEC.optionalFieldOf("air_roots_provider").forGetter(o -> Optional.ofNullable(o.surfaceBlock)),
+                    BlockStateProvider.CODEC.fieldOf("ground_roots_provider").forGetter(o -> o.rootBlock)
             ).apply(instance, TreeRootsDecorator::new)
     );
 

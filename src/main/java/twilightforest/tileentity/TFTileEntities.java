@@ -65,6 +65,9 @@ public class TFTileEntities {
 	public static final RegistryObject<TileEntityType<TileEntityTFMoonwormTicking>> MOONWORM = TILE_ENTITIES.register("moonworm", () ->
 			TileEntityType.Builder.create(TileEntityTFMoonwormTicking::new, TFBlocks.moonworm.get()).build(null));
 
+	public static final RegistryObject<TileEntityType<TileEntityKeepsakeCasket>> KEEPSAKE_CASKET          = TILE_ENTITIES.register("keepsake_casket", () ->
+			TileEntityType.Builder.create(TileEntityKeepsakeCasket::new, TFBlocks.keepsake_casket.get()).build(null));
+
 	@OnlyIn(Dist.CLIENT)
 	public static void registerTileEntityRenders() {
 		// tile entities

@@ -174,8 +174,10 @@ repositories {
 
 dependencies {
     // progwml6
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+//    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+//    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.2:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:${jei_version}")
 
     /*deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
     deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"

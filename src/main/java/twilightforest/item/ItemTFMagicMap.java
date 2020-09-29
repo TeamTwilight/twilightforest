@@ -157,7 +157,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 		if (BIOME_COLORS.isEmpty()) {
 			setupBiomeColors();
 		}
-		MapColorBrightness color = BIOME_COLORS.get(WorldGenRegistries.field_243657_i.getKey(biome));
+		MapColorBrightness color = BIOME_COLORS.get(WorldGenRegistries.BIOME.getKey(biome));
 		if (color != null) {
 			return color;
 		} else {
@@ -196,7 +196,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 			setupBiomeColors();
 		}
 
-		MapColorBrightness c = BIOME_COLORS.get(WorldGenRegistries.field_243657_i.getKey(biome));
+		MapColorBrightness c = BIOME_COLORS.get(WorldGenRegistries.BIOME.getKey(biome));
 
 		return c != null ? getMapColor(c) : 0xFF000000;
 	}

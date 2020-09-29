@@ -21,7 +21,7 @@ public class TrunkSideDecorator extends TreeDecorator {
             instance -> instance.group(
                     Codec.intRange(0, 64).fieldOf("placement_count").forGetter(o -> o.count),
                     Codec.floatRange(0f, 1f).fieldOf("probability_of_placement").forGetter(o -> o.probability),
-                    BlockStateProvider.field_236796_a_.fieldOf("deco_provider").forGetter(o -> o.decoration)
+                    BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.decoration)
             ).apply(instance, TrunkSideDecorator::new)
     );
 
@@ -50,7 +50,7 @@ public class TrunkSideDecorator extends TreeDecorator {
             Rotation rot = Rotation.randomRotation(random);
             BlockPos pos = trunkBlocks.get(random.nextInt(blockCount)).offset(rot.rotate(Direction.NORTH));
 
-            if (Feature.func_236297_b_(world, pos)) // Checks if block is air
+            if (Feature.isAirAt(world, pos)) // Checks if block is air
                 func_227423_a_(world, pos, decoration.getBlockState(random, pos).rotate(rot), decorations, mutableBoundingBox);
         }
     }

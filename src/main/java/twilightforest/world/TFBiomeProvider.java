@@ -103,7 +103,7 @@ public class TFBiomeProvider extends BiomeProvider {
 
 	@Override
 	public Biome getNoiseBiome(int x, int y, int z) {
-		return WorldGenRegistries.field_243657_i.getByValue(0); // TODO This is absolutely terrible and needs -actual- bandaiding desperately
+		return WorldGenRegistries.BIOME.getByValue(0); // TODO This is absolutely terrible and needs -actual- bandaiding desperately
 	}
 
 	@Override

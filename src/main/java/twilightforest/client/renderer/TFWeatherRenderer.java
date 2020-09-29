@@ -1,13 +1,12 @@
 package twilightforest.client.renderer;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.settings.GraphicsFanciness;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -17,16 +16,8 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeDarkForest;
-import twilightforest.biomes.TFBiomeFinalPlateau;
-import twilightforest.biomes.TFBiomeFireSwamp;
-import twilightforest.biomes.TFBiomeGlacier;
-import twilightforest.biomes.TFBiomeHighlands;
-import twilightforest.biomes.TFBiomeSnow;
-import twilightforest.biomes.TFBiomeSwamp;
-import twilightforest.biomes.TFBiomeThornlands;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
@@ -34,7 +25,7 @@ import java.util.Random;
 /**
  * Copypasta of EntityRenderer.renderRainSnow() hacked to include progression environmental effects
  */
-public class TFWeatherRenderer implements IRenderHandler {
+public class TFWeatherRenderer implements IWeatherRenderHandler {
 
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
@@ -43,8 +34,6 @@ public class TFWeatherRenderer implements IRenderHandler {
 
 	private final float[] rainxs = new float[1024];
 	private final float[] rainys = new float[1024];
-
-	private final Random random = new Random();
 
 	private int rendererUpdateCount;
 	private MutableBoundingBox protectedBox;
@@ -65,51 +54,50 @@ public class TFWeatherRenderer implements IRenderHandler {
 		++this.rendererUpdateCount;
 	}
 
+	//Helpful tip: x, y, and z relate to the looking entity's position.
 	@Override
-	public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc) {
+	public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
 		// do normal weather rendering
-		renderNormalWeather(partialTicks, mc);
+		renderNormalWeather(partialTicks, mc, lightmap, xIn, yIn, zIn);
 
 		if (TFGenerationSettings.isProgressionEnforced(world) && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
-			renderLockedBiome(partialTicks, world, mc);
+			renderLockedBiome(partialTicks, world, mc, lightmap, xIn, yIn, zIn);
 
 			// locked structures
-			renderLockedStructure(partialTicks, world, mc);
+			renderLockedStructure(partialTicks, mc, lightmap, xIn, yIn, zIn);
 		}
 	}
 
 	// [VanillaCopy] exact of EntityRenderer.renderRainSnow
-	private void renderNormalWeather(float partialTicks, Minecraft mc) {
+	private void renderNormalWeather(float partialTicks, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
 		float f = mc.world.getRainStrength(partialTicks);
 
 		if (f > 0.0F) {
-			mc.gameRenderer.getLightTexture().enableLightmap();
-			Entity entity = mc.getRenderViewEntity();
+			lightmap.enableLightmap();
+//			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
-			int i = MathHelper.floor(entity.getPosX());
-			int j = MathHelper.floor(entity.getPosY());
-			int k = MathHelper.floor(entity.getPosZ());
+			int i = MathHelper.floor(xIn);
+			int j = MathHelper.floor(yIn);
+			int k = MathHelper.floor(zIn);
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
+			RenderSystem.enableAlphaTest();
 			RenderSystem.disableCull();
 			RenderSystem.normal3f(0.0F, 1.0F, 0.0F);
 			RenderSystem.enableBlend();
-			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-			RenderSystem.alphaFunc(516, 0.1F);
-			double d0 = entity.lastTickPosX + (entity.getPosX() - entity.lastTickPosX) * (double) partialTicks;
-			double d1 = entity.lastTickPosY + (entity.getPosY() - entity.lastTickPosY) * (double) partialTicks;
-			double d2 = entity.lastTickPosZ + (entity.getPosZ() - entity.lastTickPosZ) * (double) partialTicks;
-			int l = MathHelper.floor(d1);
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.defaultAlphaFunc();
+			RenderSystem.enableDepthTest();
 			int i1 = 5;
 
-			if (mc.gameSettings.fancyGraphics) {
+			if (Minecraft.isFancyGraphicsEnabled()) {
 				i1 = 10;
 			}
 
+			RenderSystem.depthMask(Minecraft.isFabulousGraphicsEnabled());
 			int j1 = -1;
 			float f1 = (float) this.rendererUpdateCount + partialTicks;
-			//bufferbuilder.setTranslation(-d0, -d1, -d2);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
 
@@ -136,12 +124,12 @@ public class TFWeatherRenderer implements IRenderHandler {
 
 						int i3 = j2;
 
-						if (j2 < l) {
-							i3 = l;
+						if (j2 < j) {
+							i3 = j;
 						}
 
 						if (k2 != l2) {
-							this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
+							Random random = new Random((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
 							blockpos$mutableblockpos.setPos(l1, k2, k1);
 							float f2 = biome.getTemperature(blockpos$mutableblockpos);
 
@@ -156,19 +144,17 @@ public class TFWeatherRenderer implements IRenderHandler {
 									bufferbuilder.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 								}
 
-								float d5 = -((float) (this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + partialTicks) / 32.0F * (3.0F + this.random.nextFloat());
-								double d6 = (double) ((float) l1 + 0.5F) - entity.getPosX();
-								double d7 = (double) ((float) k1 + 0.5F) - entity.getPosZ();
+								float d5 = -((float) (this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
+								double d6 = (double) ((float) l1 + 0.5F) - xIn;
+								double d7 = (double) ((float) k1 + 0.5F) - zIn;
 								float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
 								float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
 								int j3 = WorldRenderer.getCombinedLight(world, blockpos$mutableblockpos);
-								int k3 = j3 >> 16 & 65535;
-								int l3 = j3 & 65535;
-								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0F, (float) k2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
-								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0F, (float) k2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
-								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) k2, (double) k1 + d4 + 0.5D).tex(1.0F, (float) l2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
-								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) k2, (double) k1 - d4 + 0.5D).tex(0.0F, (float) l2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
+								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0F, (float) k2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(j3).endVertex();
+								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0F, (float) k2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(j3).endVertex();
+								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) k2, (double) k1 + d4 + 0.5D).tex(1.0F, (float) l2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(j3).endVertex();
+								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) k2, (double) k1 - d4 + 0.5D).tex(0.0F, (float) l2 * 0.25F + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(j3).endVertex();
 							} else {
 								if (j1 != 1) {
 									if (j1 >= 0) {
@@ -181,20 +167,22 @@ public class TFWeatherRenderer implements IRenderHandler {
 								}
 
 								float d8 = (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
-								float d9 = this.random.nextFloat() + f1 * 0.01F * ((float) this.random.nextGaussian());
-								float d10 = this.random.nextFloat() + (f1 * (float) this.random.nextGaussian()) * 0.001F;
-								double d11 = (double) ((float) l1 + 0.5F) - entity.getPosX();
-								double d12 = (double) ((float) k1 + 0.5F) - entity.getPosZ();
+								float d9 = random.nextFloat() + f1 * 0.01F * ((float) random.nextGaussian());
+								float d10 = random.nextFloat() + (f1 * (float) random.nextGaussian()) * 0.001F;
+								double d11 = (double) ((float) l1 + 0.5F) - xIn;
+								double d12 = (double) ((float) k1 + 0.5F) - zIn;
 								float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) i1;
 								float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
-								int i4 = (WorldRenderer.getCombinedLight(world, blockpos$mutableblockpos) * 3 + 15728880) / 4;
+								int i4 = WorldRenderer.getCombinedLight(world, blockpos$mutableblockpos);
 								int j4 = i4 >> 16 & 65535;
-								int k4 = i4 & 65535;
-								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0F + d9, (float) k2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
-								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0F + d9, (float) k2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
-								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) k2, (double) k1 + d4 + 0.5D).tex(1.0F + d9, (float) l2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
-								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) k2, (double) k1 - d4 + 0.5D).tex(0.0F + d9, (float) l2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
+								int k4 = (i4 & 65535) * 3;
+								int l4 = (j4 * 3 + 240) / 4;
+								int l5 = (k4 * 3 + 240) / 4;
+								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0F + d9, (float) k2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(l5, l4).endVertex();
+								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0F + d9, (float) k2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(l5, l4).endVertex();
+								bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) k2, (double) k1 + d4 + 0.5D).tex(1.0F + d9, (float) l2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(l5, l4).endVertex();
+								bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) k2, (double) k1 - d4 + 0.5D).tex(0.0F + d9, (float) l2 * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(l5, l4).endVertex();
 							}
 						}
 					}
@@ -205,26 +193,26 @@ public class TFWeatherRenderer implements IRenderHandler {
 				tessellator.draw();
 			}
 
-			//bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
-			RenderSystem.alphaFunc(516, 0.1F);
-			mc.gameRenderer.getLightTexture().disableLightmap();
+			RenderSystem.defaultAlphaFunc();
+			RenderSystem.disableAlphaTest();
+			lightmap.disableLightmap();
 		}
 	}
 
 	// [VanillaCopy] inside of EntityRenderer.renderRainSnow, edits noted
-	private void renderLockedBiome(float partialTicks, ClientWorld wc, Minecraft mc) {
+	private void renderLockedBiome(float partialTicks, ClientWorld wc, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
 		// check nearby for locked biome
 		if (isNearLockedBiome(wc, mc.getRenderViewEntity())) {
 
-			mc.gameRenderer.getLightTexture().enableLightmap();
+			lightmap.enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
 
-			int x0 = MathHelper.floor(entity.getPosX());
-			int y0 = MathHelper.floor(entity.getPosY());
-			int z0 = MathHelper.floor(entity.getPosZ());
+			int x0 = MathHelper.floor(xIn);
+			int y0 = MathHelper.floor(yIn);
+			int z0 = MathHelper.floor(zIn);
 
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
@@ -232,19 +220,17 @@ public class TFWeatherRenderer implements IRenderHandler {
 			RenderSystem.disableCull();
 			RenderSystem.normal3f(0.0F, 1.0F, 0.0F);
 			RenderSystem.enableBlend();
-			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-			RenderSystem.alphaFunc(516, 0.1F);
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.defaultAlphaFunc();
+			RenderSystem.enableDepthTest();
 
-			double dx = entity.lastTickPosX + (entity.getPosX() - entity.lastTickPosX) * (double) partialTicks;
-			double dy = entity.lastTickPosY + (entity.getPosY() - entity.lastTickPosY) * (double) partialTicks;
-			double dz = entity.lastTickPosZ + (entity.getPosZ() - entity.lastTickPosZ) * (double) partialTicks;
-
-			int y1 = MathHelper.floor(dy);
 			int range = 5;
 
-			if (mc.gameSettings.fancyGraphics) {
+			if (Minecraft.isFancyGraphicsEnabled()) {
 				range = 10;
 			}
+
+			RenderSystem.depthMask(Minecraft.isFabulousGraphicsEnabled());
 
 			RenderType currentType = null;
 			float combinedTicks = (float) this.rendererUpdateCount + partialTicks;
@@ -279,13 +265,13 @@ public class TFWeatherRenderer implements IRenderHandler {
 
 						int y = groundY;
 
-						if (groundY < y1) {
-							y = y1;
+						if (groundY < y0) {
+							y = y0;
 						}
 
 						if (minY != maxY) {
 
-							this.random.setSeed((long) (x * x * 3121 + x * 45238971 ^ z * z * 418711 + z * 13761));
+							Random random = new Random((long) (x * x * 3121 + x * 45238971 ^ z * z * 418711 + z * 13761));
 
 							// TF - replace temperature check with biome check
 							RenderType nextType = getRenderType(biome);
@@ -306,9 +292,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 							// TF - replicate for each render type with own changes
 							switch (currentType) {
 								case BLIZZARD: {
-									float d5 = -((this.rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + partialTicks) / 32.0F * (3.0F + this.random.nextFloat());
-									double d6 = (double) ((float) x + 0.5F) - entity.getPosX();
-									double d7 = (double) ((float) z + 0.5F) - entity.getPosZ();
+									float d5 = -((this.rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
+									double d6 = (double) ((float) x + 0.5F) - xIn;
+									double d7 = (double) ((float) z + 0.5F) - zIn;
 									float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) range;
 									float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * 1.0F;
 									blockpos$mutableblockpos.setPos(x, y, z);
@@ -322,10 +308,10 @@ public class TFWeatherRenderer implements IRenderHandler {
 								} break;
 								case MOSQUITO: {
 									float d8 = 0; // TF - no wiggle
-									float d9 = this.random.nextFloat() + combinedTicks * 0.01F * (float) this.random.nextGaussian();
-									float d10 = this.random.nextFloat() + (combinedTicks * (float) this.random.nextGaussian()) * 0.001F;
-									double d11 = (double) ((float) x + 0.5F) - entity.getPosX();
-									double d12 = (double) ((float) z + 0.5F) - entity.getPosZ();
+									float d9 = random.nextFloat() + combinedTicks * 0.01F * (float) random.nextGaussian();
+									float d10 = random.nextFloat() + (combinedTicks * (float) random.nextGaussian()) * 0.001F;
+									double d11 = (double) ((float) x + 0.5F) - xIn;
+									double d12 = (double) ((float) z + 0.5F) - zIn;
 									float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) range;
 									float r = random.nextFloat() * 0.3F; // TF - random color
 									float g = random.nextFloat() * 0.3F;
@@ -341,10 +327,10 @@ public class TFWeatherRenderer implements IRenderHandler {
 								} break;
 								case ASHES: {
 									float d8 = -((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F;
-									float d9 = this.random.nextFloat() + combinedTicks * 0.01F * (float) this.random.nextGaussian();
-									float d10 = this.random.nextFloat() + (combinedTicks * (float) this.random.nextGaussian()) * 0.001F;
-									double d11 = (double) ((float) x + 0.5F) - entity.getPosX();
-									double d12 = (double) ((float) z + 0.5F) - entity.getPosZ();
+									float d9 = random.nextFloat() + combinedTicks * 0.01F * (float) random.nextGaussian();
+									float d10 = random.nextFloat() + (combinedTicks * (float) random.nextGaussian()) * 0.001F;
+									double d11 = (double) ((float) x + 0.5F) - xIn;
+									double d12 = (double) ((float) z + 0.5F) - zIn;
 									float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) range;
 									float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * 1.0F;
 									int i4 = 15 << 20 | 15 << 4; // TF - fullbright
@@ -359,9 +345,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 								case DARK_STREAM: {
 									float d8 = -((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F;
 									float d9 = 0; // TF - no u wiggle
-									float d10 = this.random.nextFloat() + (combinedTicks * (float) this.random.nextGaussian()) * 0.001F;
-									double d11 = (double) ((float) x + 0.5F) - entity.getPosX();
-									double d12 = (double) ((float) z + 0.5F) - entity.getPosZ();
+									float d10 = random.nextFloat() + (combinedTicks * (float) random.nextGaussian()) * 0.001F;
+									double d11 = (double) ((float) x + 0.5F) - xIn;
+									double d12 = (double) ((float) z + 0.5F) - zIn;
 									float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) range;
 									float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * random.nextFloat(); // TF - random alpha multiplier
 									int i4 = 15 << 20 | 15 << 4; // TF - fullbright
@@ -373,9 +359,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 									bufferbuilder.pos((double) x - rx + 0.5D, (double) minY, (double) z - ry + 0.5D).tex(0.0F + d9, (float) maxY * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
 								} break;
 								case BIG_RAIN: {
-									float d5 = -((this.rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + partialTicks) / 32.0F * (3.0F + this.random.nextFloat());
-									double d6 = (double) ((float) x + 0.5F) - entity.getPosX();
-									double d7 = (double) ((float) z + 0.5F) - entity.getPosZ();
+									float d5 = -((this.rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
+									double d6 = (double) ((float) x + 0.5F) - xIn;
+									double d7 = (double) ((float) z + 0.5F) - zIn;
 									float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) range;
 									float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * 1.0F;
 									blockpos$mutableblockpos.setPos(x, y, z);
@@ -397,44 +383,38 @@ public class TFWeatherRenderer implements IRenderHandler {
 				tessellator.draw();
 			}
 
-			//bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
-			RenderSystem.alphaFunc(516, 0.1F);
-			mc.gameRenderer.getLightTexture().disableLightmap();
+			RenderSystem.defaultAlphaFunc();
+			RenderSystem.disableAlphaTest();
+			lightmap.disableLightmap();
 		}
 	}
 
 	// [VanillaCopy] inside of EntityRenderer.renderRainSnow, edits noted
-	private void renderLockedStructure(float partialTicks, ClientWorld wc, Minecraft mc) {
+	private void renderLockedStructure(float partialTicks, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
 		// draw locked structure thing
-		if (isNearLockedStructure(wc, mc.getRenderViewEntity())) {
-			mc.gameRenderer.getLightTexture().enableLightmap();
-			Entity entity = mc.getRenderViewEntity();
-			//World world = mc.world;
-			int i = MathHelper.floor(entity.getPosX());
-			int j = MathHelper.floor(entity.getPosY());
-			int k = MathHelper.floor(entity.getPosZ());
+		if (isNearLockedStructure(xIn, zIn)) {
+			lightmap.enableLightmap();
+			int i = MathHelper.floor(xIn);
+			int j = MathHelper.floor(yIn);
+			int k = MathHelper.floor(zIn);
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
 			RenderSystem.disableCull();
 			RenderSystem.normal3f(0.0F, 1.0F, 0.0F);
 			RenderSystem.enableBlend();
-			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-			RenderSystem.alphaFunc(516, 0.1F);
-			double d0 = entity.lastTickPosX + (entity.getPosX() - entity.lastTickPosX) * (double) partialTicks;
-			double d1 = entity.lastTickPosY + (entity.getPosY() - entity.lastTickPosY) * (double) partialTicks;
-			double d2 = entity.lastTickPosZ + (entity.getPosZ() - entity.lastTickPosZ) * (double) partialTicks;
-			int l = MathHelper.floor(d1);
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.defaultAlphaFunc();
+			RenderSystem.enableDepthTest();
 			int i1 = 5;
 
-			if (mc.gameSettings.field_238330_f_ == GraphicsFanciness.FANCY) {
+			if (Minecraft.isFancyGraphicsEnabled()) {
 				i1 = 10;
 			}
 
+			RenderSystem.depthMask(Minecraft.isFabulousGraphicsEnabled());
 			int j1 = -1;
-			float f1 = (float) this.rendererUpdateCount + partialTicks;
-			//bufferbuilder.setTranslation(-d0, -d1, -d2);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
 
@@ -468,7 +448,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 						}
 
 						if (k2 != l2) {
-							this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
+							Random random = new Random((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
 							blockpos$mutableblockpos.setPos(l1, k2, k1);
 
 							// TF - unwrap temperature check for snow, only one branch. Use our own texture
@@ -482,9 +462,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 								bufferbuilder.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 							}
 
-							float d5 = -((this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + partialTicks) / 32.0F * (3.0F + this.random.nextFloat());
-							double d6 = (double) ((float) l1 + 0.5F) - entity.getPosX();
-							double d7 = (double) ((float) k1 + 0.5F) - entity.getPosZ();
+							float d5 = -((this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
+							double d6 = (double) ((float) l1 + 0.5F) - xIn;
+							double d7 = (double) ((float) k1 + 0.5F) - zIn;
 							float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
 							// TF - "f" was rain strength for alpha
 							float f = random.nextFloat();
@@ -505,11 +485,11 @@ public class TFWeatherRenderer implements IRenderHandler {
 				tessellator.draw();
 			}
 
-//			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
-			RenderSystem.alphaFunc(516, 0.1F);
-			mc.gameRenderer.getLightTexture().disableLightmap();
+			RenderSystem.defaultAlphaFunc();
+			RenderSystem.disableAlphaTest();
+			lightmap.disableLightmap();
 		}
 	}
 
@@ -531,10 +511,10 @@ public class TFWeatherRenderer implements IRenderHandler {
 		return false;
 	}
 
-	private boolean isNearLockedStructure(World world, Entity viewEntity) {
+	private boolean isNearLockedStructure(double xIn, double zIn) {
 		final int range = 15;
-		int px = MathHelper.floor(viewEntity.getPosX());
-		int pz = MathHelper.floor(viewEntity.getPosZ());
+		int px = MathHelper.floor(xIn);
+		int pz = MathHelper.floor(zIn);
 
 		if (this.protectedBox != null && this.protectedBox.intersectsWith(px - range, pz - range, px + range, pz + range)) {
 			return true;
@@ -548,8 +528,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 	}
 
 	// TODO: move to biome
+	// or just anywhere, really
 	private RenderType getRenderType(Biome biome) {
-		if (biome instanceof TFBiomeSnow || biome instanceof TFBiomeGlacier) {
+		/*if (biome instanceof TFBiomeSnow || biome instanceof TFBiomeGlacier) {
 			return RenderType.BLIZZARD;
 		} else if (biome instanceof TFBiomeSwamp) {
 			return RenderType.MOSQUITO;
@@ -559,7 +540,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 			return random.nextInt(2) == 0 ? RenderType.DARK_STREAM : null;
 		} else if (biome instanceof TFBiomeHighlands || biome instanceof TFBiomeThornlands || biome instanceof TFBiomeFinalPlateau) {
 			return RenderType.BIG_RAIN;
-		}
+		}*/
 		return null;
 	}
 

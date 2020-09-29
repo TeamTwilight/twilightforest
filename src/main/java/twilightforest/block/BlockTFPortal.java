@@ -221,7 +221,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		return !entity.getEntityWorld().getDimensionKey().func_240901_a_().equals(TFDimensions.twilightForest.func_240901_a_())
+		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation())
 				? TFDimensions.twilightForest : World.OVERWORLD /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
 	}
 

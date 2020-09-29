@@ -504,7 +504,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void fieryConversions(Consumer<IFinishedRecipe> consumer) {
-		SmithingRecipeBuilder.func_240502_a_(Ingredient.fromItems(Items.IRON_INGOT), Ingredient.fromTag(ItemTagGenerator.FIERY_VIAL), TFItems.fiery_ingot.get()).func_240503_a_("has_item", hasItem(TFItems.fiery_ingot.get())).func_240505_a_(consumer, TwilightForestMod.prefix("material/fiery_iron_ingot"));
+		SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(Items.IRON_INGOT), Ingredient.fromTag(ItemTagGenerator.FIERY_VIAL), TFItems.fiery_ingot.get()).addCriterion("has_item", hasItem(TFItems.fiery_ingot.get())).build(consumer, TwilightForestMod.prefix("material/fiery_iron_ingot"));
 
 		ShapelessRecipeBuilder.shapelessRecipe(TFItems.fiery_helmet.get())
 				.addIngredient(Ingredient.fromItems(Items.IRON_HELMET))

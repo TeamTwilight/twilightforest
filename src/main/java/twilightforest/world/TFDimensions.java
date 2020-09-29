@@ -9,8 +9,8 @@ import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
-	public static final RegistryKey<DimensionType> twilightForestType = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, TwilightForestMod.prefix(TwilightForestMod.ID));
-	public static final RegistryKey<World> twilightForest = RegistryKey.func_240903_a_(Registry.WORLD_KEY, TwilightForestMod.prefix(TwilightForestMod.ID)); // Yes, this floor is floor
+	public static final RegistryKey<DimensionType> twilightForestType = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, TwilightForestMod.prefix(TwilightForestMod.ID));
+	public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, TwilightForestMod.prefix(TwilightForestMod.ID)); // Yes, this floor is floor
 
 	public static void init() {
 		//Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("biome_distributor"), TFBiomeDistributor.tfBiomeProviderCodec);

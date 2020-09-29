@@ -37,7 +37,7 @@ public class LootFunctionEnchant extends LootFunction {
 	}
 
 	@Override
-	public LootFunctionType func_230425_b_() {
+	public LootFunctionType getFunctionType() {
 		return TFTreasure.ENCHANT;
 	}
 
@@ -84,7 +84,7 @@ public class LootFunctionEnchant extends LootFunction {
 	public static class Serializer extends LootFunction.Serializer<LootFunctionEnchant> {
 
 		@Override
-		public void func_230424_a_(JsonObject object, LootFunctionEnchant function, JsonSerializationContext ctx) {
+		public void serialize(JsonObject object, LootFunctionEnchant function, JsonSerializationContext ctx) {
 			if (!function.enchantments.isEmpty()) {
 				JsonObject obj = new JsonObject();
 

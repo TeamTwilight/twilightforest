@@ -25,7 +25,7 @@ public class LootFunctionModItemSwap extends LootFunction {
     }
 
     @Override
-    public LootFunctionType func_230425_b_() {
+    public LootFunctionType getFunctionType() {
         return TFTreasure.ITEM_OR_DEFAULT;
     }
 
@@ -41,7 +41,7 @@ public class LootFunctionModItemSwap extends LootFunction {
     public static class Serializer extends LootFunction.Serializer<LootFunctionModItemSwap> {
 
 		@Override
-		public void func_230424_a_(JsonObject object, LootFunctionModItemSwap function, JsonSerializationContext serializationContext) {
+		public void serialize(JsonObject object, LootFunctionModItemSwap function, JsonSerializationContext serializationContext) {
 			if (function.success)
 				object.addProperty("item", function.item.getRegistryName().toString());
 			else

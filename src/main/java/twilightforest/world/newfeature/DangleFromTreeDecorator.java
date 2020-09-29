@@ -24,8 +24,8 @@ public class DangleFromTreeDecorator extends TreeDecorator {
                     Codec.intRange(1, 24).fieldOf("minimum_length").forGetter(o -> o.minimumLength),
                     Codec.intRange(1, 24).fieldOf("base_length").forGetter(o -> o.length),
                     Codec.intRange(0, 16).fieldOf("random_add_length").orElse(0).forGetter(o -> o.randomAddLength),
-                    BlockStateProvider.field_236796_a_.fieldOf("rope_provider").forGetter(o -> o.rope),
-                    BlockStateProvider.field_236796_a_.fieldOf("baggage_provider").forGetter(o -> o.baggage)
+                    BlockStateProvider.CODEC.fieldOf("rope_provider").forGetter(o -> o.rope),
+                    BlockStateProvider.CODEC.fieldOf("baggage_provider").forGetter(o -> o.baggage)
             ).apply(instance, DangleFromTreeDecorator::new)
     );
     private final int count;

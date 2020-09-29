@@ -44,7 +44,7 @@ public class ItemTFExperiment115 extends BlockItem {
 		if (!state.isReplaceable(blockitemusecontext)) pos = pos.offset(facing);
 		ItemStack itemstack = player.getHeldItem(context.getHand());
 
-		if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && world.func_226663_a_(e115, pos, ISelectionContext.dummy())) {
+		if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && world.placedBlockCollides(e115, pos, ISelectionContext.dummy())) {
 			if (world.setBlockState(pos, e115, 11)) {
 				TFBlocks.experiment_115.get().onBlockPlacedBy(world, pos, e115, player, itemstack);
 				SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);

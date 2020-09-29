@@ -90,7 +90,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 			int viewerZ = MathHelper.floor(viewer.getPosZ() - (double) centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
-			if (world.func_230315_m_().func_236037_d_()) {
+			if (world.getDimensionType().getHasCeiling()) {
 				viewRadiusPixels /= 2;
 			}
 
@@ -120,7 +120,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 								int numLiquid = 0;
 								double d1 = 0.0D;
 
-								if (world.func_230315_m_().func_236037_d_()) {
+								if (world.getDimensionType().getHasCeiling()) {
 									int l3 = worldX + worldZ * 231871;
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 

@@ -21,15 +21,15 @@ public final class BiomeGenerator extends BiomeDataHelper {
     @Override
     protected Map<ResourceLocation, Biome> generateBiomes() {
         final ImmutableMap.Builder<ResourceLocation, Biome> biomes = ImmutableMap.builder();
-        // defaultBiomeBuilder() returns a Biome.Builder and Biome.Builder#func_242455_a() builds it
+        // defaultBiomeBuilder() returns a Biome.Builder and Biome.Builder#build() builds it
 
         BiomeGenerationSettings.Builder defaultBiomeGenerationSettings = defaultGenSettingBuilder();
 
-        defaultBiomeGenerationSettings.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DEFAULT_TWILIGHT_TREES);
+        defaultBiomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DEFAULT_TWILIGHT_TREES);
 
         biomes.put(TwilightForestMod.prefix("forest"),
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopy(defaultGenSettingBuilder()))
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("dense_forest"),
@@ -37,7 +37,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .temperature(0.7F)
                         .downfall(0.8F)
                         .depth(0.2F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("firefly_forest"),
@@ -45,7 +45,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(1)
                         .depth(0.125F)
                         .scale(0.05F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("clearing"),
@@ -55,7 +55,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(0.4F)
                         .depth(0.125F)
                         .scale(0.05F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("oak_savannah"),
@@ -64,14 +64,14 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .temperature(0.9F)
                         .downfall(0)
                         .depth(0.2F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("mushroom_forest"),
                 biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder(), 0.2f))
                         .temperature(0.8F)
                         .downfall(0.8F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("dense_mushroom_forest"),
@@ -80,7 +80,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(1)
                         .depth(0.125F)
                         .scale(0.05F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("spooky_forest"),
@@ -88,12 +88,12 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(1)
                         .depth(0.125F)
                         .scale(0.05F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("enchanted_forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE.func_242728_a())))
-                        .func_242455_a()
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE.func_242728_a())))
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("stream"),
@@ -101,7 +101,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .category(Biome.Category.RIVER)
                         .depth(-0.7F)
                         .scale(0)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("lake"),
@@ -111,10 +111,10 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(1)
                         .depth(-1.8F)
                         .scale(0.1F)
-                        .func_242455_a()
+                        .build()
         );
 
-        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.MANGROVE_TREE.func_242728_a()));
+        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.MANGROVE_TREE.func_242728_a()));
 
         biomes.put(TwilightForestMod.prefix("swamp"),
                 biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder)
@@ -123,7 +123,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(0.9F)
                         .depth(-0.125F)
                         .scale(0.125F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("fire_swamp"),
@@ -131,10 +131,10 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .category(Biome.Category.SWAMP)
                         .temperature(1)
                         .downfall(0.4F)
-                        .func_242455_a()
+                        .build()
         );
 
-        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE.func_242728_a()));
+        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE.func_242728_a()));
 
         biomes.put(TwilightForestMod.prefix("dark_forest"),
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), darkForestGenerationBuilder)
@@ -142,23 +142,23 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(0.8F)
                         .depth(0.125F)
                         .scale(0.05F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("dark_forest_center"),
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), darkForestGenerationBuilder)
                         .depth(0.125F)
                         .scale(0.05F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("snowy_forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), DefaultBiomeFeatures::func_243690_D))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), DefaultBiomeFeatures::withMountainEdgeTrees))
                         .temperature(0.09F)
                         .downfall(0.9F)
                         .depth(0.2F)
                         .precipitation(Biome.RainType.SNOW)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("glacier"),
@@ -167,7 +167,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .temperature(0)
                         .downfall(0.1F)
                         .precipitation(Biome.RainType.SNOW)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("highlands"),
@@ -177,7 +177,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(0.7F)
                         .depth(3.5F)
                         .scale(0.05F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("thornlands"),
@@ -187,7 +187,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(0.2F)
                         .depth(6)
                         .scale(0.1F)
-                        .func_242455_a()
+                        .build()
         );
 
         biomes.put(TwilightForestMod.prefix("final_plateau"),
@@ -197,7 +197,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .downfall(0.2F)
                         .depth(10.5F)
                         .scale(0.025F)
-                        .func_242455_a()
+                        .build()
         );
 
         return biomes.build();

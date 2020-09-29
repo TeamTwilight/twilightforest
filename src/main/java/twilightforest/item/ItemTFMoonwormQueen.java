@@ -20,6 +20,7 @@ import twilightforest.entity.projectile.EntityTFMoonwormShot;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ItemTFMoonwormQueen extends Item {
 
@@ -33,10 +34,10 @@ public class ItemTFMoonwormQueen extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (stack.getDamage() >= stack.getMaxDamage() - 1) {
-			return new ActionResult<>(ActionResultType.FAIL, stack);
+			return ActionResult.resultFail(stack);
 		} else {
 			player.setActiveHand(hand);
-			return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+			return ActionResult.resultSuccess(player.getHeldItem(hand));
 		}
 	}
 
@@ -55,7 +56,7 @@ public class ItemTFMoonwormQueen extends Item {
 
 		ItemStack itemstack = player.getHeldItem(context.getHand());
 
-		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.func_226663_a_(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
+		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.placedBlockCollides(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
 			BlockState iblockstate1 = TFBlocks.moonworm.get().getStateForPlacement(blockItemUseContext);
 
 			if (placeMoonwormAt(itemstack, player, worldIn, pos, iblockstate1)) {
@@ -73,8 +74,8 @@ public class ItemTFMoonwormQueen extends Item {
 	}
 
 	//	[VanillaCopy] ItemBlock.placeBlockAt
-	private boolean placeMoonwormAt(ItemStack stack, PlayerEntity player, World world, BlockPos pos, BlockState state) {
-		if (!world.setBlockState(pos, state, 11)) return false;
+	private boolean placeMoonwormAt(ItemStack stack, PlayerEntity player, World world, BlockPos pos, @Nullable BlockState state) {
+		if (state == null || !world.setBlockState(pos, state, 11)) return false;
 
 		BlockState real = world.getBlockState(pos);
 		if (real.getBlock() == TFBlocks.moonworm.get()) {

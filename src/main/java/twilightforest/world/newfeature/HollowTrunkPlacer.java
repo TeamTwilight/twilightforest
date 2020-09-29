@@ -23,7 +23,7 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
                     Codec.floatRange(1, 16).fieldOf("outside_radius").forGetter(o -> o.outerRadius),
                     Codec.intRange(0, 8).fieldOf("random_add_radius").forGetter(o -> o.randomAddRadius),
                     BranchesConfiguration.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfiguration),
-                    BlockStateProvider.field_236796_a_.fieldOf("eastside_ladder").forGetter(o -> o.ladder)
+                    BlockStateProvider.CODEC.fieldOf("eastside_ladder").forGetter(o -> o.ladder)
             )).apply(instance, HollowTrunkPlacer::new)
     );
 

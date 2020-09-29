@@ -143,7 +143,6 @@
   "block.twilightforest.firefly": "Firefly",
   "block.twilightforest.cicada": "Cicada",
   "block.twilightforest.cicada.desc": "What if this could be launched at someone with a Railgun...?",
-  "item.twilightforest.portal": "Twilight Forest Portal",
   "block.twilightforest.portal": "Twilight Forest Portal",
   "block.twilightforest.maze_stone": "Mazestone",
   "block.twilightforest.maze_stone_brick": "Mazestone Brick",
@@ -312,6 +311,7 @@
   "block.twilightforest.terrorcotta_circle": "Terrorcotta (Circular)",
   "block.twilightforest.terrorcotta_diagonal": "Terrorcotta (Diagonal)",
   "block.twilightforest.experiment_115": "Experiment 115",
+  "block.twilightforest.keepsake_casket": "Keepsake Casket",
 
   "block.twilightforest.canopy_planks": "Canopy Planks",
   "block.twilightforest.canopy_stairs": "Canopy Stairs",

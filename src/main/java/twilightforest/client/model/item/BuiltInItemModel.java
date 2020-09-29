@@ -30,7 +30,7 @@ public abstract class BuiltInItemModel implements IBakedModel {
 
 		@Nullable
 		@Override
-		public IBakedModel func_239290_a_(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
+		public IBakedModel getOverrideModel(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
 			setItemStack(stack);
 			return BuiltInItemModel.this;
 		}
@@ -69,7 +69,7 @@ public abstract class BuiltInItemModel implements IBakedModel {
 	}
 
 	@Override
-	public boolean func_230044_c_() {
+	public boolean isSideLit() {
 		return true; //FIXME
 	}
 

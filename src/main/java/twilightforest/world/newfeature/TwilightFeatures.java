@@ -27,10 +27,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class TwilightFeatures {
     public static final TrunkPlacerType<BranchingTrunkPlacer> TRUNK_BRANCHING = registerTrunk(TwilightForestMod.prefix("branching_trunk_placer"), BranchingTrunkPlacer.CODEC);
@@ -316,27 +313,27 @@ public final class TwilightFeatures {
     }
 
     public static final class ConfiguredFeatures {
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TWILIGHT_OAK = registerWorldFeature(TwilightForestMod.prefix("twilight_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.TWILIGHT_OAK));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE = registerWorldFeature(TwilightForestMod.prefix("canopy_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.CANOPY_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE_FIREFLY = registerWorldFeature(TwilightForestMod.prefix("canopy_tree_firefly"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.CANOPY_TREE_FIREFLY));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE_DEAD = registerWorldFeature(TwilightForestMod.prefix("canopy_tree_dead"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.CANOPY_TREE_DEAD));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MANGROVE_TREE = registerWorldFeature(TwilightForestMod.prefix("mangrove_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MANGROVE_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> DARKWOOD_TREE = registerWorldFeature(TwilightForestMod.prefix("darkwood_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.DARKWOOD_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TWILIGHT_OAK = registerWorldFeature(TwilightForestMod.prefix("twilight_oak"), Feature.TREE.withConfiguration(TreeConfigurations.TWILIGHT_OAK));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE = registerWorldFeature(TwilightForestMod.prefix("canopy_tree"), Feature.TREE.withConfiguration(TreeConfigurations.CANOPY_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE_FIREFLY = registerWorldFeature(TwilightForestMod.prefix("canopy_tree_firefly"), Feature.TREE.withConfiguration(TreeConfigurations.CANOPY_TREE_FIREFLY));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE_DEAD = registerWorldFeature(TwilightForestMod.prefix("canopy_tree_dead"), Feature.TREE.withConfiguration(TreeConfigurations.CANOPY_TREE_DEAD));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MANGROVE_TREE = registerWorldFeature(TwilightForestMod.prefix("mangrove_tree"), Feature.TREE.withConfiguration(TreeConfigurations.MANGROVE_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> DARKWOOD_TREE = registerWorldFeature(TwilightForestMod.prefix("darkwood_tree"), Feature.TREE.withConfiguration(TreeConfigurations.DARKWOOD_TREE));
         public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> TIME_TREE = registerWorldFeature(TwilightForestMod.prefix("time_tree"), TFBiomeFeatures.TREE_OF_TIME.get().withConfiguration(TreeConfigurations.TIME_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TRANSFORM_TREE = registerWorldFeature(TwilightForestMod.prefix("transform_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.TRANSFORM_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TRANSFORM_TREE = registerWorldFeature(TwilightForestMod.prefix("transform_tree"), Feature.TREE.withConfiguration(TreeConfigurations.TRANSFORM_TREE));
         public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> MINING_TREE = registerWorldFeature(TwilightForestMod.prefix("mining_tree"), TFBiomeFeatures.MINERS_TREE.get().withConfiguration(TreeConfigurations.MINING_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> SORT_TREE = registerWorldFeature(TwilightForestMod.prefix("sort_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.SORT_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> SORT_TREE = registerWorldFeature(TwilightForestMod.prefix("sort_tree"), Feature.TREE.withConfiguration(TreeConfigurations.SORT_TREE));
         public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> DENSE_OAK_TREE = registerWorldFeature(TwilightForestMod.prefix("dense_oak_tree"), TFBiomeFeatures.CANOPY_OAK.get().withConfiguration(TreeConfigurations.DENSE_OAK));
         public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> HOLLOW_TREE = registerWorldFeature(TwilightForestMod.prefix("hollow_tree"), TFBiomeFeatures.HOLLOW_TREE.get().withConfiguration(TreeConfigurations.HOLLOW_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> RAINBOAK_TREE = registerWorldFeature(TwilightForestMod.prefix("rainbow_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.RAINBOAK_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_BROWN = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_brown"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_BROWN));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_RED = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_red"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_RED));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> RAINBOAK_TREE = registerWorldFeature(TwilightForestMod.prefix("rainbow_oak"), Feature.TREE.withConfiguration(TreeConfigurations.RAINBOAK_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_BROWN = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_brown"), Feature.TREE.withConfiguration(TreeConfigurations.MUSHROOM_BROWN));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_RED = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_red"), Feature.TREE.withConfiguration(TreeConfigurations.MUSHROOM_RED));
 
         private static final List<ConfiguredFeature<? extends IFeatureConfig, ? extends Feature<?>>> trees = ImmutableList.of(TWILIGHT_OAK, CANOPY_TREE, MANGROVE_TREE, DARKWOOD_TREE, /*FIXME DENSE_OAK_TREE,*/ HOLLOW_TREE);
         public static final ConfiguredFeature<?, ?> DEFAULT_TWILIGHT_TREES = registerWorldFeature(TwilightForestMod.prefix("placeholder_tree_filler"),
                 Feature.RANDOM_SELECTOR
                         .withConfiguration(new MultipleRandomFeatureConfig(trees.stream().map(configuredFeature -> configuredFeature.withChance(1f / (trees.size() + 0.5f))).collect(ImmutableList.toImmutableList()), RAINBOAK_TREE))
-                        .withPlacement(Features.Placements.field_244001_l)
+                        .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
                         .withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(1, 0.5f, 1)))
         );
     }
@@ -356,7 +353,7 @@ public final class TwilightFeatures {
     }
 
     protected static <FC extends IFeatureConfig, F extends Feature<FC>> ConfiguredFeature<FC, F> registerWorldFeature(ResourceLocation rl, ConfiguredFeature<FC, F> feature) {
-        return Registry.register(WorldGenRegistries.field_243653_e, rl, feature);
+        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, rl, feature);
     }
 
     private static <C extends IFeatureConfig, F extends Feature<C>> F registerFeatureCodec(String key, F value) {

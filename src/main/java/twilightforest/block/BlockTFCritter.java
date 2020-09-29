@@ -89,6 +89,7 @@ public abstract class BlockTFCritter extends DirectionalBlock {
 	}
 
 	@Override
+	@Deprecated
 	public BlockState updatePostPlacement(BlockState state, Direction direction, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
 		if (!isValidPosition(state, world, pos)) {
 			return Blocks.AIR.getDefaultState();
@@ -98,6 +99,7 @@ public abstract class BlockTFCritter extends DirectionalBlock {
 	}
 
 	@Override
+	@Deprecated
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		Direction facing = state.get(DirectionalBlock.FACING);
 		BlockPos restingPos = pos.offset(facing.getOpposite());

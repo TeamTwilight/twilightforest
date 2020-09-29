@@ -34,12 +34,12 @@ public class LootConditionModExists implements ILootCondition {
     public static class Serializer implements ILootSerializer<LootConditionModExists> {
 
 		@Override
-		public void func_230424_a_(JsonObject json, LootConditionModExists value, JsonSerializationContext context) {
+		public void serialize(JsonObject json, LootConditionModExists value, JsonSerializationContext context) {
 			json.addProperty("mod_id", value.modID);
 		}
 
 		@Override
-		public LootConditionModExists func_230423_a_(JsonObject json, JsonDeserializationContext context) {
+		public LootConditionModExists deserialize(JsonObject json, JsonDeserializationContext context) {
 			return new LootConditionModExists(JSONUtils.getString(json, "mod_id"));
 		}
 	}

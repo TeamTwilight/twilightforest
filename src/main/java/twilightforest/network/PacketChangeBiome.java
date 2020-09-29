@@ -18,7 +18,7 @@ public class PacketChangeBiome {
 
 	public PacketChangeBiome(BlockPos pos, Biome biome) {
 		this.pos = pos;
-		this.biomeId = WorldGenRegistries.field_243657_i.getId(biome);
+		this.biomeId = WorldGenRegistries.BIOME.getId(biome);
 	}
 
 	public PacketChangeBiome(PacketBuffer buf) {

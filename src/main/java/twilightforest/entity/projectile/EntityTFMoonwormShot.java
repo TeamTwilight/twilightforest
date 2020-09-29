@@ -1,16 +1,14 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.DirectionalPlaceContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -87,12 +85,12 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	protected void onImpact(RayTraceResult ray) {
 		if (!world.isRemote) {
 			if (ray instanceof BlockRayTraceResult) {
-
-				BlockPos pos = ((BlockRayTraceResult)ray).getPos().offset(((BlockRayTraceResult) ray).getFace());
+				BlockRayTraceResult blockray = (BlockRayTraceResult) ray;
+				BlockPos pos = blockray.getPos().offset(blockray.getFace());
 				BlockState currentState = world.getBlockState(pos);
 
 				// TODO: PlayerEntity is nullable but in a protected constructor
-				BlockItemUseContext context = new BlockItemUseContext(new ItemUseContext(null, Hand.MAIN_HAND, (BlockRayTraceResult)ray));
+				DirectionalPlaceContext context = new DirectionalPlaceContext(world, pos, blockray.getFace(), ItemStack.EMPTY, blockray.getFace().getOpposite());
 				if (currentState.isReplaceable(context)) {
 					world.setBlockState(pos, TFBlocks.moonworm.get().getDefaultState().with(DirectionalBlock.FACING, ((BlockRayTraceResult) ray).getFace()));
 					// todo sound

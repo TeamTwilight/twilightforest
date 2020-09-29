@@ -157,7 +157,7 @@ public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 		double d0;
 		double d1;
 		if (this.field_236083_v_ != null) {
-			d0 = (double)(EndBiomeProvider.func_235317_a_(this.field_236083_v_, noiseX, noiseZ) - 8.0F);
+			d0 = (double)(EndBiomeProvider.getRandomNoise(this.field_236083_v_, noiseX, noiseZ) - 8.0F);
 			if (d0 > 0.0D) {
 				d1 = 0.25D;
 			} else {

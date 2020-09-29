@@ -3,6 +3,10 @@ package twilightforest.client;
 import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.client.ISkyRenderHandler;
+import net.minecraftforge.client.IWeatherRenderHandler;
+import twilightforest.client.renderer.TFSkyRenderer;
+import twilightforest.client.renderer.TFWeatherRenderer;
 
 import javax.annotation.Nullable;
 
@@ -18,7 +22,8 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
     @Override
     public float[] func_230492_a_(float daycycle, float partialTicks) { // Fog color
         // TODO Vanilla copy, I just name a few stuff. Decide if we want to keep and cook our own thing, or we ditch it
-        float f1 = MathHelper.cos(daycycle * ((float)Math.PI * 2F)) - 0.0F;
+        // Likely that we will need to ditch this. It only controls the colour of the fog based on celestial angle
+        /*float f1 = MathHelper.cos(daycycle * ((float)Math.PI * 2F)) - 0.0F;
         if (f1 >= -0.4F && f1 <= 0.4F) {
             float f3 = f1 / 0.4F * 0.5F + 0.5F;
             float interpolateFromWhite = 1.0F - (1.0F - MathHelper.sin(f3 * (float)Math.PI)) * 0.99F;
@@ -30,12 +35,13 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
             return this.fourBeanDip;
         } else {
             return null;
-        }
+        }*/
+        return null;
     }
 
     @Override
-    public Vector3d func_230494_a_(Vector3d biomeColor, float daylight) {
-        return biomeColor.mul(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
+    public Vector3d func_230494_a_(Vector3d biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
+        return /*biomeFogColor;*/biomeFogColor.mul(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
     }
 
     @Override
@@ -52,5 +58,17 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
 
         // FIXME Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
         return biome == TFBiomes.darkForest.get() || biome == TFBiomes.darkForestCenter.get();*/
+    }
+
+    @Nullable
+    @Override
+    public ISkyRenderHandler getSkyRenderHandler() {
+        return new TFSkyRenderer();
+    }
+
+    @Nullable
+    @Override
+    public IWeatherRenderHandler getWeatherRenderHandler() {
+        return new TFWeatherRenderer();
     }
 }

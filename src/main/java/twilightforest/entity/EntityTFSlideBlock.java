@@ -17,7 +17,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.vector.Vector3d;
@@ -156,7 +155,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 					this.remove();
 
-					if (this.world.func_226663_a_(myState, pos, ISelectionContext.dummy())) {
+					if (this.world.placedBlockCollides(myState, pos, ISelectionContext.dummy())) {
 						world.setBlockState(pos, myState);
 					} else {
 						// TODO: This and the below item might not be correctly reflecting the state

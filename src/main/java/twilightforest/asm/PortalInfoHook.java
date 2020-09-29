@@ -23,6 +23,6 @@ public class PortalInfoHook {
 	}
 
 	private static boolean checkDim(World world) {
-		return world.getDimensionKey().func_240901_a_().equals(TFDimensions.twilightForest.func_240901_a_());
+		return world.getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation());
 	}
 }

@@ -1,17 +1,20 @@
 package twilightforest.util;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import twilightforest.TwilightForestMod;
 
 import java.util.function.Predicate;
 
 public class TFItemStackUtils {
-
-	public static boolean consumeInventoryItem(LivingEntity living, Predicate<ItemStack> matcher, int count) {
+	@Deprecated
+	public static boolean consumeInventoryItem(LivingEntity living, final Predicate<ItemStack> matcher, final int count) {
+		TwilightForestMod.LOGGER.warn("consumeInventoryItem accessed! Forge requires the player to be alive before we can access this cap. This cap is most likely being accessed for an Afterdeath Charm!");
 
 		return living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inv -> {
 			int innerCount = count;
@@ -33,6 +36,23 @@ public class TFItemStackUtils {
 
 			return consumedSome;
 		}).orElse(false);
+	}
+
+	public static boolean consumeInventoryItem(final PlayerEntity player, final Item item) {
+		return consumeInventoryItem(player.inventory.armorInventory, item) || consumeInventoryItem(player.inventory.mainInventory, item) || consumeInventoryItem(player.inventory.offHandInventory, item);
+	}
+
+	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item) {
+		for (int i = 0; i < stacks.size(); i++) {
+			ItemStack stack = stacks.get(i);
+			if (stack.getItem() == item) {
+				stack.grow(-1);
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static NonNullList<ItemStack> splitToSize(ItemStack stack) {

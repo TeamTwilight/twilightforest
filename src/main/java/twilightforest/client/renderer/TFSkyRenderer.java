@@ -4,27 +4,24 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.client.IRenderHandler;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.SkyRenderHandler;
+import net.minecraftforge.client.ISkyRenderHandler;
 
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
-public class TFSkyRenderer implements SkyRenderHandler {
+public class TFSkyRenderer implements ISkyRenderHandler {
 
-	private boolean vboEnabled;
-	private int starGLCallList;
 	private VertexBuffer starVBO;
+	private final VertexFormat vertexBufferFormat = DefaultVertexFormats.POSITION;
 
 	public TFSkyRenderer() {
 		//vboEnabled = OpenGlHelper.useVbo();
@@ -37,7 +34,8 @@ public class TFSkyRenderer implements SkyRenderHandler {
 	public void render(int ticks, float partialTicks, MatrixStack ms, ClientWorld world, Minecraft mc) {
 
 		// [VanillaCopy] Excerpt from RenderGlobal.loadRenderers as we don't get a callback
-		generateStars();
+		//TODO: Since loadRenderers doesn't appear to exist, might remove this block
+//		generateStars();
 //		boolean flag = this.vboEnabled;
 //		this.vboEnabled = OpenGlHelper.useVbo();
 //		if (flag != this.vboEnabled) {
@@ -45,7 +43,6 @@ public class TFSkyRenderer implements SkyRenderHandler {
 //		}
 
 		WorldRenderer rg = mc.worldRenderer;
-		//int pass = GameRenderer.anaglyphEnable ? GameRenderer.anaglyphField : 2;
 
 		RenderSystem.disableTexture();
 		Vector3d vec3d = world.getSkyColor(mc.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
@@ -53,39 +50,25 @@ public class TFSkyRenderer implements SkyRenderHandler {
 		float f1 = (float) vec3d.y;
 		float f2 = (float) vec3d.z;
 
-//		if (pass != 2) {
-//			float f3 = (f * 30.0F + f1 * 59.0F + f2 * 11.0F) / 100.0F;
-//			float f4 = (f * 30.0F + f1 * 70.0F) / 100.0F;
-//			float f5 = (f * 30.0F + f2 * 70.0F) / 100.0F;
-//			f = f3;
-//			f1 = f4;
-//			f2 = f5;
-//		}
-
-		RenderSystem.color3f(f, f1, f2);
+		FogRenderer.applyFog();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		RenderSystem.color3f(f, f1, f2);
 		RenderSystem.depthMask(false);
 		RenderSystem.enableFog();
 		RenderSystem.color3f(f, f1, f2);
 
-		//TODO
-//		if (this.vboEnabled) {
-//			rg.skyVBO.bindBuffer();
-//			RenderSystem.glEnableClientState(32884);
-//			RenderSystem.glVertexPointer(3, 5126, 12, 0);
-//			rg.skyVBO.drawArrays(7);
-//			rg.skyVBO.unbindBuffer();
-//			RenderSystem.glDisableClientState(32884);
-//		} else {
-//			RenderSystem.callList(rg.glSkyList);
-//		}
+		rg.skyVBO.bindBuffer();
+		this.vertexBufferFormat.setupBufferState(0L);
+		rg.skyVBO.draw(ms.getLast().getMatrix(), 7);
+		VertexBuffer.unbindBuffer();
+		this.vertexBufferFormat.clearBufferState();
 
 		RenderSystem.disableFog();
 		RenderSystem.disableAlphaTest();
 		RenderSystem.enableBlend();
-		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		RenderHelper.disableStandardItemLighting();
+		RenderSystem.defaultBlendFunc();
+//		RenderHelper.disableStandardItemLighting();
 		/* TF - snip out sunrise/sunset since that doesn't happen here
          * float[] afloat = ...
          * if (afloat != null) ...
@@ -96,8 +79,8 @@ public class TFSkyRenderer implements SkyRenderHandler {
 		ms.push();
 		float f16 = 1.0F - world.getRainStrength(partialTicks);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, f16);
-		RenderSystem.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-		RenderSystem.rotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+		ms.rotate(Vector3f.YP.rotationDegrees(-90.0F));
+		ms.rotate(Vector3f.XP.rotationDegrees(world.func_242415_f(partialTicks) * 360.0F));
         /* TF - snip out sun/moon
          * float f17 = 30.0F;
          * ...
@@ -109,17 +92,11 @@ public class TFSkyRenderer implements SkyRenderHandler {
 		if (f15 > 0.0F) {
 			RenderSystem.color4f(f15, f15, f15, f15);
 
-			//TODO
-//			if (this.vboEnabled) {
-//				this.starVBO.bindBuffer();
-//				RenderSystem.glEnableClientState(32884);
-//				RenderSystem.glVertexPointer(3, 5126, 12, 0);
-//				this.starVBO.drawArrays(7);
-//				this.starVBO.unbindBuffer();
-//				RenderSystem.glDisableClientState(32884);
-//			} else {
-//				RenderSystem.callList(this.starGLCallList);
-//			}
+			this.starVBO.bindBuffer();
+			this.vertexBufferFormat.setupBufferState(0L);
+			this.starVBO.draw(ms.getLast().getMatrix(), 7);
+			VertexBuffer.unbindBuffer();
+			this.vertexBufferFormat.clearBufferState();
 		}
 
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -129,28 +106,22 @@ public class TFSkyRenderer implements SkyRenderHandler {
 		ms.pop();
 		RenderSystem.disableTexture();
 		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
-		double d0 = mc.player.getEyePosition(partialTicks).y - world.getSeaLevel();
+		double d0 = mc.player.getEyePosition(partialTicks).y - world.getWorldInfo().getVoidFogHeight();
 
 		if (d0 < 0.0D) {
 			ms.push();
-			RenderSystem.translatef(0.0F, 12.0F, 0.0F);
+			ms.translate(0.0F, 12.0F, 0.0F);
 
-			//TODO
-//			if (this.vboEnabled) {
-//				rg.sky2VBO.bindBuffer();
-//				RenderSystem.glEnableClientState(32884);
-//				RenderSystem.glVertexPointer(3, 5126, 12, 0);
-//				rg.sky2VBO.drawArrays(7);
-//				rg.sky2VBO.unbindBuffer();
-//				RenderSystem.glDisableClientState(32884);
-//			} else {
-//				RenderSystem.callList(rg.glSkyList2);
-//			}
+			rg.sky2VBO.bindBuffer();
+			this.vertexBufferFormat.setupBufferState(0L);
+			rg.sky2VBO.draw(ms.getLast().getMatrix(), 7);
+			VertexBuffer.unbindBuffer();
+			this.vertexBufferFormat.clearBufferState();
 
-			RenderSystem.popMatrix();
-			float f18 = 1.0F;
+			ms.pop();
+//			float f18 = 1.0F;
 			float f19 = -((float) (d0 + 65.0D));
-			float f20 = -1.0F;
+//			float f20 = -1.0F;
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
 			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
@@ -175,18 +146,19 @@ public class TFSkyRenderer implements SkyRenderHandler {
 			tessellator.draw();
 		}
 
-		if (world.dimension.isSkyColored()) {
+		if (world.func_239132_a_().func_239216_b_()) {
 			RenderSystem.color3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
 		} else {
 			RenderSystem.color3f(f, f1, f2);
 		}
 
 		ms.push();
-		RenderSystem.translatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
+		ms.translate(0.0F, -((float) (d0 - 16.0D)), 0.0F);
 		//RenderSystem.callList(rg.glSkyList2);
 		ms.pop();
 		RenderSystem.enableTexture();
 		RenderSystem.depthMask(true);
+		RenderSystem.disableFog();
 	}
 
 	// [VanillaCopy] RenderGlobal.generateStars
@@ -198,28 +170,11 @@ public class TFSkyRenderer implements SkyRenderHandler {
 			this.starVBO.close();
 		}
 
-		if (this.starGLCallList >= 0) {
-			//GLAllocation.deleteDisplayLists(this.starGLCallList);
-			this.starGLCallList = -1;
-		}
-
-		if (this.vboEnabled) {
-			// TF - inlined RenderGlobal field that's only used once here
-			this.starVBO = new VertexBuffer(DefaultVertexFormats.POSITION);
-			this.renderStars(bufferbuilder);
-			bufferbuilder.finishDrawing();
-			bufferbuilder.reset();
-			//this.starVBO.bufferData(bufferbuilder.getByteBuffer());
-
-		} else {
-			//this.starGLCallList = GLAllocation.generateDisplayLists(1);
-			RenderSystem.pushMatrix();
-			//RenderSystem.glNewList(this.starGLCallList, 4864);
-			this.renderStars(bufferbuilder);
-			tessellator.draw();
-			//RenderSystem.glEndList();
-			RenderSystem.popMatrix();
-		}
+		// TF - inlined RenderGlobal field that's only used once here
+		this.starVBO = new VertexBuffer(DefaultVertexFormats.POSITION);
+		this.renderStars(bufferbuilder);
+		bufferbuilder.finishDrawing();
+		this.starVBO.upload(bufferbuilder);
 	}
 
 	// [VanillaCopy] of RenderGlobal.renderStars but with double the number of them

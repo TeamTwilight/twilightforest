@@ -38,12 +38,12 @@ public class LootConditionIsMinion implements ILootCondition {
 	public static class Serializer implements ILootSerializer<LootConditionIsMinion> {
 
 		@Override
-		public void func_230424_a_(JsonObject json, LootConditionIsMinion value, JsonSerializationContext context) {
+		public void serialize(JsonObject json, LootConditionIsMinion value, JsonSerializationContext context) {
 			json.addProperty("inverse", value.inverse);
 		}
 
 		@Override
-		public LootConditionIsMinion func_230423_a_(JsonObject json, JsonDeserializationContext context) {
+		public LootConditionIsMinion deserialize(JsonObject json, JsonDeserializationContext context) {
 			return new LootConditionIsMinion(JSONUtils.getBoolean(json, "inverse", false));
 		}
 	}
