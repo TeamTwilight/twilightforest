@@ -27,8 +27,5 @@
         "advancement": "twilightforest:progress_lich"
       }
     }
-  },
-  "rewards": {
-    "function": "twilightforest:give_3_shields"
   }
 }

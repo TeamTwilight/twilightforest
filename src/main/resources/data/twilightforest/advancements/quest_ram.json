@@ -21,6 +21,5 @@
   },
   "rewards": {
     "experience": 100,
-    "function": "twilightforest:give_3_shields"
   }
 }

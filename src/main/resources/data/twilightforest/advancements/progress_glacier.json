@@ -45,8 +45,5 @@
   "requirements": [
     [ "queen", "trophy" ],
     [ "previous_progression" ]
-  ],
-  "rewards": {
-    "function": "twilightforest:give_3_shields"
-  }
+  ]
 }
