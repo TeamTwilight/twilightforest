@@ -54,8 +54,5 @@
   "requirements": [
     [ "hydra", "trophy", "blood" ],
     [ "stroganoff" ]
-  ],
-  "rewards": {
-    "function": "twilightforest:give_3_shields"
-  }
+  ]
 }

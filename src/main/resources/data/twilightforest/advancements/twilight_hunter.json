@@ -34,17 +34,6 @@
         }
       }
     },
-    "boggard": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": {
-          "type": "twilightforest:boggard",
-          "location": {
-            "dimension": "twilight_forest"
-          }
-        }
-      }
-    },
     "death_tome": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -437,7 +426,6 @@
     [
       "adherent",
       "blockchain_goblin",
-      "boggard",
       "death_tome",
       "fire_beetle",
       "hedge_spider",
