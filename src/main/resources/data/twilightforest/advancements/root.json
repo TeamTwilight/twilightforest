@@ -4,7 +4,7 @@
       "item": "twilightforest:twilight_portal_miniature_structure"
     },
     "title": {
-      "translate": "itemGroup.twilightForest"
+      "translate": "itemGroup.twilightforest"
     },
     "description": {
       "translate": "advancement.twilightforest.root.desc"
