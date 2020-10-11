@@ -131,4 +131,8 @@ public class ModelTFSpikeBlock extends ModelBase {
 		block.render(scale);
 	}
 
+	public void render(float scale) {
+		block.render(scale);
+	}
+
 }
