@@ -186,10 +186,6 @@ public class TFConfig {
 					translation(config + "portals").
 					comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.").
 					define("disablePortalCreation", false);
-			//portalCreationItems = builder.
-			//		translation(config + "portal_creator").
-			//		comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
-			//		define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
 			checkPortalDestination = builder.
 					translation(config + "check_portal_destination").
 					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
@@ -479,26 +475,10 @@ public class TFConfig {
 	}
 
 	public static void build() {
-		buildPortalIngredient();
 		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();
 	}
 
 	public static Ingredient portalIngredient;
-
-	private static void buildPortalIngredient() {
-
-		List<ItemStack> stacks = new ArrayList<>();
-
-		for (String s : COMMON_CONFIG.portalCreationItems.get()) {
-			parseItemStack(s).ifPresent(stacks::add);
-		}
-
-		if (stacks.isEmpty()) {
-			stacks.add(new ItemStack(Items.DIAMOND));
-		}
-
-		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
-	}
 
 	private static Optional<ItemStack> parseItemStack(String string) {
 		ResourceLocation id = ResourceLocation.tryCreate(string);
