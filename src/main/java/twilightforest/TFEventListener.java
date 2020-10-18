@@ -710,11 +710,12 @@ public class TFEventListener {
 
 		// getBoolean returns false, if false or didn't exist
 		boolean shouldBanishPlayer = TFConfig.dimension.newPlayersSpawnInTF && !playerData.getBoolean(NBT_TAG_TWILIGHT);
+		boolean shouldSpawnReturnPortal = TFConfig.dimension.newPlayersSpawnReturnPortal;
 
 		playerData.setBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
 		tagCompound.setTag(EntityPlayer.PERSISTED_NBT_TAG, playerData); // commit
 
-		if (shouldBanishPlayer) BlockTFPortal.attemptSendPlayer(player, true); // See ya hate to be ya
+		if (shouldBanishPlayer)	BlockTFPortal.attemptSendPlayer(player, true, shouldSpawnReturnPortal); // See ya hate to be ya
 	}
 
 	// Advancement Trigger
