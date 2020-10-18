@@ -38,7 +38,7 @@
   "advancement.twilightforest.naga_armors.desc": "合成娜迦胸甲和娜迦护腿。",
 
   "advancement.twilightforest.kill_lich": "亡者之遗",
-  "advancement.twilightforest.kill_lich.desc": "击杀塔顶的%s并取得他的权杖，这权杖可以驱散沼泽的毒蚊群、解除黑森林的失明诅咒以及对抗冰雪森林的严寒。",
+  "advancement.twilightforest.kill_lich.desc": "击杀塔顶的%s并取得他的权杖，这权杖可以驱散沼泽的毒蚊群、解除黑暗森林的失明诅咒以及对抗冰雪森林的严寒。",
   "advancement.twilightforest.lich_scepters": "众杖合力！",
   "advancement.twilightforest.lich_scepters.desc": "取得所有四种力量的权杖。",
 
@@ -52,9 +52,9 @@
   "advancement.twilightforest.hydra_chop": "快看！九头蛇的肉！",
   "advancement.twilightforest.hydra_chop.desc": "在你的胃空空如也的时候从暴走的%s上砍下来几块肉。",
 
-  "_comment": "黑森林进度",
+  "_comment": "黑暗森林进度",
   "advancement.twilightforest.progress_trophy_pedestal": "受奖冠军",
-  "advancement.twilightforest.progress_trophy_pedestal.desc": "将奖杯放置于黑森林遗迹中的奖杯基座上，并获得你的头衔。",
+  "advancement.twilightforest.progress_trophy_pedestal.desc": "将奖杯放置于黑暗森林遗迹中的奖杯基座上，并获得你的头衔。",
   "advancement.twilightforest.progress_knights": "号令砷铅铁机关",
   "advancement.twilightforest.progress_knights.desc": "令骑士之墓的幻影安息，之后你将能控制高塔中的砷铅铁机关。",
   "advancement.twilightforest.ghast_trap": "高塔里的奇怪装置",
@@ -822,8 +822,8 @@
   "twilightforest.book.hydralair.3": "这当然不是我第一次遇到保护符咒，我渐渐开始解开这符咒背后的谜团了。\n\n如果我的猜测——这些符咒的工作方式高度相似——是成立的，那么这附近就能找到维持符咒法力的强大怪物。火焰沼泽周围是若干湿地，这些湿地则掩埋了一个充斥着牛头人（也有管叫米诺陶的）的迷宫。",
   "twilightforest.book.hydralair.4": "唯一符合逻辑的推测是，这群牛头人里有一种不同寻常的特殊品种，与普通牛头人相比更为强力，但外貌上有所不同……",
 
-  "twilightforest.book.tfstronghold.1": "§8[[探险家笔记，其纸张微微发光]]§0\n\n笼罩在黑森林上的保护符咒以黑暗触手的形式呈现。这个符咒会造成任何闯入的人失明，对探险家来说可谓是令人抓狂。",
-  "twilightforest.book.tfstronghold.2": "不过我有我预定的计划要完成。\n\n§8[[下一篇]]§0我在黑森林中发现了废墟。这是一种要塞的废墟，而这种要塞的主人通常来说是骑士。",
+  "twilightforest.book.tfstronghold.1": "§8[[探险家笔记，其纸张微微发光]]§0\n\n笼罩在黑暗森林上的保护符咒以黑暗触手的形式呈现。这个符咒会造成任何闯入的人失明，对探险家来说可谓是令人抓狂。",
+  "twilightforest.book.tfstronghold.2": "不过我有我预定的计划要完成。\n\n§8[[下一篇]]§0我在黑暗森林中发现了废墟。这是一种要塞的废墟，而这种要塞的主人通常来说是骑士。",
   "twilightforest.book.tfstronghold.3": "然而，这个要塞废墟是个例外：迎接我的是成群的哥布林。它们身着骑士盔甲，但是它们的行为暗示了它们并非骑士。§8[[下一篇]]§0\n\n废墟深处有个基座。看样子是骑士们用来放奖杯的基座——这是力量的象征。",
   "twilightforest.book.tfstronghold.4": "若能拿到某种强力法杖，我便可以削弱这保护森林的魔咒，而将某座奖杯放在这基座上",
   "twilightforest.book.tfstronghold.5": "便可打开通往要塞的门。",
