@@ -17,10 +17,11 @@ import twilightforest.features.TwilightFeatures;
 
 public class TreeCorePlacer extends TreeDecorator {
 
-	public static final Codec<TreeCorePlacer> CODEC = RecordCodecBuilder.create(instance -> instance
-			.group(Codec.intRange(0, 20).fieldOf("core_position").forGetter(o -> o.corePos),
-					BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.core))
-			.apply(instance, TreeCorePlacer::new));
+	public static final Codec<TreeCorePlacer> CODEC = RecordCodecBuilder.create(
+	        instance -> instance.group(
+	                Codec.intRange(0, 20).fieldOf("core_position").forGetter(o -> o.corePos),
+	                BlockStateProvider.CODEC.fieldOf("deco_provider").forGetter(o -> o.core)
+	        ).apply(instance, TreeCorePlacer::new));
 
 	private final int corePos;
 	private final BlockStateProvider core;

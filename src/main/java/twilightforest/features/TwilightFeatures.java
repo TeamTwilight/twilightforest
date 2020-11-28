@@ -249,7 +249,7 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.MINING_WOOD),
                 new SimpleBlockStateProvider(BlockStates.ROOTS)
         )
-        		.setSapling(TFBlocks.mining_sapling.get())
+                .setSapling(TFBlocks.mining_sapling.get())
                 .build();
 
         public static final BaseTreeFeatureConfig SORT_TREE = new BaseTreeFeatureConfig.Builder(
