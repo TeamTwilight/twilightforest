@@ -34,8 +34,8 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		// 9 block high trunk
-		for (int dy = 0; dy < 10; dy++) {
-			setBranchBlockState(world, rand, pos.up(dy), branch, mbb, config);
+		for (int dy = 0; dy <= 9; dy++) {
+			setLogBlockState(world, rand, pos.up(dy), trunk, mbb, config);
 		}
 
 		// branches with leaf blocks
@@ -63,11 +63,11 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		// roots!
-		/*int numRoots = 3 + rand.nextInt(2);
+		int numRoots = 3 + rand.nextInt(2);
 		double offset = rand.nextDouble();
 		for (int b = 0; b < numRoots; b++) {
 			buildRoot(world, rand, pos, root, offset, b, mbb, config);
-		}*/
+		}
 
 		return true;
 	}

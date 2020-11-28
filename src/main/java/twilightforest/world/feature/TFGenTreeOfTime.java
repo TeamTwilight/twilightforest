@@ -6,8 +6,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.IWorldGenerationReader;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -60,7 +59,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, mbb, config);
 
 		// add clock block
-		world.setBlockState(pos.add(-1, 2, 0), TFBlocks.time_log_core.get().getDefaultState(), 3);
+		world.setBlockState(pos.add(-1, 2, 0), TFBlocks.time_log_core.get().getDefaultState().with(BlockTFMagicLog.AXIS, Direction.Axis.Y), 3);
 
 		return true;
 	}

@@ -1,10 +1,13 @@
 package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
+
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.IWorldGenerationReader;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -37,7 +40,7 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (super.generate(world, random, pos, trunk, leaves, branch, root, mbb, config)) {
 			// heart of transformation
-			world.setBlockState(pos.up(3), TFBlocks.transformation_log_core.get().getDefaultState(), 3);
+			world.setBlockState(pos.up(3), TFBlocks.transformation_log_core.get().getDefaultState().with(BlockTFMagicLog.AXIS, Direction.Axis.Y), 3);
 			return true;
 		} else {
 			return false;

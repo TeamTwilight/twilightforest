@@ -26,6 +26,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFirefly;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.features.treeplacers.*;
 import twilightforest.world.feature.TFBiomeFeatures;
@@ -46,6 +47,7 @@ public final class TwilightFeatures {
 
     public static final FoliagePlacerType<LeafSpheroidFoliagePlacer> FOLIAGE_SPHEROID = registerFoliage(TwilightForestMod.prefix("spheroid_foliage_placer"), LeafSpheroidFoliagePlacer.CODEC);
 
+    public static final TreeDecoratorType<TreeCorePlacer> CORE_PLACER = registerTreeFeature(TwilightForestMod.prefix("core_placer"), TreeCorePlacer.CODEC);
     public static final TreeDecoratorType<TrunkSideDecorator> TRUNKSIDE_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("trunkside_decorator"), TrunkSideDecorator.CODEC);
     public static final TreeDecoratorType<TreeRootsDecorator> TREE_ROOTS = registerTreeFeature(TwilightForestMod.prefix("tree_roots"), TreeRootsDecorator.CODEC);
     public static final TreeDecoratorType<DangleFromTreeDecorator> DANGLING_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("dangle_from_tree_decorator"), DangleFromTreeDecorator.CODEC);
@@ -234,10 +236,11 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.TRANSFORM_LOG),
                 new SimpleBlockStateProvider(BlockStates.TRANSFORM_LEAVES),
                 new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, -0.25f),
-                new BranchingTrunkPlacer(20, 5, 5, 7, new BranchesConfiguration(3, 1, 10, 1, 0.3, 0.2), false),
+                new BranchingTrunkPlacer(6, 5, 5, 7, new BranchesConfiguration(3, 1, 10, 1, 0.3, 0.2), false),
                 new TwoLayerFeature(20, 0, canopyDistancing)
         )
                 .setIgnoreVines()
+                .setDecorators(ImmutableList.of(new TreeCorePlacer(3, new SimpleBlockStateProvider(TFBlocks.transformation_log_core.get().getDefaultState().with(BlockTFMagicLog.AXIS, Direction.Axis.Y)))))
                 .build();
 
         public static final TFTreeFeatureConfig MINING_TREE = new TFTreeFeatureConfig.Builder(
@@ -246,7 +249,7 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.MINING_WOOD),
                 new SimpleBlockStateProvider(BlockStates.ROOTS)
         )
-                .setSapling(TFBlocks.mining_sapling.get())
+        		.setSapling(TFBlocks.mining_sapling.get())
                 .build();
 
         public static final BaseTreeFeatureConfig SORT_TREE = new BaseTreeFeatureConfig.Builder(
@@ -256,7 +259,8 @@ public final class TwilightFeatures {
                 new StraightTrunkPlacer(3, 0, 0),
                 new TwoLayerFeature(1, 0, 1)
         )
-                .setIgnoreVines()
+        		.setIgnoreVines()
+        		.setDecorators(ImmutableList.of(new TreeCorePlacer(1, new SimpleBlockStateProvider(TFBlocks.sorting_log_core.get().getDefaultState().with(BlockTFMagicLog.AXIS, Direction.Axis.Y)))))
                 .build();
 
         public static final TFTreeFeatureConfig DENSE_OAK = new TFTreeFeatureConfig.Builder(
