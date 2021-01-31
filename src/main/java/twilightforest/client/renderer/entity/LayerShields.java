@@ -52,7 +52,7 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
 			stack.push();
 
 			// shift to the torso
-			stack.translate(-0.5, 0, -0.5);
+			stack.translate(-0.5, 0.5, -0.5);
 
 			// invert Y
 			stack.scale(1, -1, 1);

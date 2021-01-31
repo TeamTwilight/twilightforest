@@ -87,9 +87,9 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 	   }
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return 0.3F;
-	}
+	protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+	      return 0.3F;
+	   }
 
 	@Override
 	public void tick() {
