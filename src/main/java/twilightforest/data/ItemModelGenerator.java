@@ -13,6 +13,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFExperiment115;
+import twilightforest.item.ItemTFTrophy;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -28,6 +29,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 				getBuilder(i.getRegistryName().getPath())
 								.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
 			}
+			if (i instanceof ItemTFTrophy && i.getRegistryName().getNamespace().equals(TwilightForestMod.ID)) {
+				getBuilder(i.getRegistryName().getPath())
+				.parent(getExistingFile(new ResourceLocation("item/template_skull")));
+}
 		}
 		toBlock(TFBlocks.tower_wood.get());
 		toBlock(TFBlocks.tower_wood_encased.get());
@@ -220,7 +225,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.dark_gate.get());
 		toBlock(TFBlocks.dark_plate.get());
 		toBlockModel(TFBlocks.dark_trapdoor.get(), "dark_trapdoor_bottom");
-
+		generated(TFBlocks.hollow_oak_sapling.getId().getPath(), prefix("block/" + TFBlocks.hollow_oak_sapling.getId().getPath()));
+		
 		toBlock(TFBlocks.time_log.get());
 		toBlock(TFBlocks.time_wood.get());
 		toBlock(TFBlocks.time_log_core.get());

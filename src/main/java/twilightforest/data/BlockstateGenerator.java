@@ -96,7 +96,24 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 		simpleBlock(TFBlocks.fake_gold.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
 		simpleBlock(TFBlocks.fake_diamond.get(), models().getExistingFile(new ResourceLocation("block/diamond_block")));
-
+		
+		simpleBlock(TFBlocks.naga_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.lich_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.minoshroom_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.hydra_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.snow_queen_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.knight_phantom_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.ur_ghast_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.quest_ram_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.naga_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+        simpleBlock(TFBlocks.lich_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+        simpleBlock(TFBlocks.minoshroom_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+        simpleBlock(TFBlocks.hydra_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+        simpleBlock(TFBlocks.snow_queen_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+        simpleBlock(TFBlocks.knight_phantom_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+        simpleBlock(TFBlocks.ur_ghast_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+        simpleBlock(TFBlocks.quest_ram_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+        
 		ModelFile shieldModel = models().cubeTop(TFBlocks.stronghold_shield.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
 		getVariantBuilder(TFBlocks.stronghold_shield.get())
 						.forAllStates(state -> {
@@ -119,6 +136,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.thorn_rose.get(), models().cross(TFBlocks.thorn_rose.getId().getPath(), blockTexture(TFBlocks.thorn_rose.get())));
 		simpleBlock(TFBlocks.thorn_leaves.get(), models().getExistingFile(new ResourceLocation("block/oak_leaves")));
 		simpleBlock(TFBlocks.beanstalk_leaves.get(), models().getExistingFile(new ResourceLocation("block/spruce_leaves")));
+		simpleBlock(TFBlocks.hollow_oak_sapling.get(), models().cross(TFBlocks.hollow_oak_sapling.getId().getPath(), blockTexture(TFBlocks.hollow_oak_sapling.get())));
 		ModelFile deadrock = models().cubeAll(TFBlocks.deadrock.getId().getPath(), blockTexture(TFBlocks.deadrock.get()));
 		ModelFile deadrockMirrored = models().withExistingParent(TFBlocks.deadrock.getId().getPath() + "_mirrored", prefix("block/util/cube_mirrored_all"))
 						.texture("all", blockTexture(TFBlocks.deadrock.get()));
