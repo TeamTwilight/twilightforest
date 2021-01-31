@@ -224,9 +224,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		} else {
 			if (this.isInTantrum()) {
 				world.addParticle(TFParticleType.BOSS_TEAR.get(),
-						this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
-						this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D,
-						this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
+						this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth() * 0.75D,
+						this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() * 0.5D,
+						this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth() * 0.75D,
 						0, 0, 0
 				);
 			}

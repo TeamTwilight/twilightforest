@@ -21,7 +21,7 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 		particleRed = 0.9F;
 		particleGreen = 1.0F;
 		particleBlue = 0.0F;
-		particleScale = 0.2f + (rand.nextFloat() * 0.6f);
+		particleScale = 0.2f + (rand.nextFloat() * 0.1f);
 		maxAge = 10 + rand.nextInt(21);
 		halfLife = maxAge / 2;
 		canCollide = true;

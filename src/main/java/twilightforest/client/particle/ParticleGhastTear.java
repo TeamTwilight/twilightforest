@@ -22,7 +22,8 @@ public class ParticleGhastTear extends SpriteTexturedParticle {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getParticleIcon(item);
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-		this.particleScale = 16.0F;
+		this.particleScale = 2.0F;
+		this.particleGravity = 0.6F;
 
 		this.maxAge = 20 + rand.nextInt(40);
 		this.canCollide = true;
