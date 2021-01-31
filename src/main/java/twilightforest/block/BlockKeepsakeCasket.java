@@ -32,7 +32,8 @@ public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingE
         super(Block.Properties.create(Material.IRON, MaterialColor.BLACK).setRequiresTool().hardnessAndResistance(50.0F, 1200.0F).sound(SoundType.NETHERITE));
     }
 
-    public BlockRenderType getRenderType(BlockState state) {
+    @Override
+	public BlockRenderType getRenderType(BlockState state) {
         return state.get(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.OBSIDIAN ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
     }
 
@@ -80,15 +81,18 @@ public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingE
         }
     }
 
-    public PushReaction getPushReaction(BlockState state) {
+    @Override
+	public PushReaction getPushReaction(BlockState state) {
         return PushReaction.BLOCK;
     }
 
-    public boolean hasComparatorInputOverride(BlockState state) {
+    @Override
+	public boolean hasComparatorInputOverride(BlockState state) {
         return true;
     }
 
-    public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+    @Override
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
         return Container.calcRedstone(worldIn.getTileEntity(pos));
     }
 

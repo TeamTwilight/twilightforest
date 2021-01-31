@@ -212,7 +212,7 @@ public class ModelTFMinoshroom extends BipedModel<EntityTFMinoshroom> {
 		this.leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
-		float f = ageInTicks - (float) entity.ticksExisted;
+		float f = ageInTicks - entity.ticksExisted;
 		float f1 = entity.getChargeAnimationScale(f);
 		f1 = f1 * f1;
 		float f2 = 1.0F - f1;

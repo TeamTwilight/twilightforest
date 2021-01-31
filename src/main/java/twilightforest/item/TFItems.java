@@ -226,7 +226,7 @@ public class TFItems {
 				return 0.0F;
 			} else {
 				ItemStack itemstack = entity.getActiveItemStack();
-				return !itemstack.isEmpty() ? (float) (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
+				return !itemstack.isEmpty() ? (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
 			}
 		});
 		ItemModelsProperties.registerProperty(ore_magnet.get(), new ResourceLocation("pulling"), (stack, world, entity) ->

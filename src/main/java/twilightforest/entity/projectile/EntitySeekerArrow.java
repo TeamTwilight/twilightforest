@@ -47,7 +47,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 
 			if (world.isRemote && !inGround) {
 				for (int i = 0; i < 4; ++i) {
-					this.world.addParticle(ParticleTypes.WITCH, this.getPosX() + this.getMotion().getX() * (double) i / 4.0D, this.getPosY() + this.getMotion().getY() * (double) i / 4.0D, this.getPosZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
+					this.world.addParticle(ParticleTypes.WITCH, this.getPosX() + this.getMotion().getX() * i / 4.0D, this.getPosY() + this.getMotion().getY() * i / 4.0D, this.getPosZ() + this.getMotion().getZ() * i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
 				}
 			}
 
@@ -138,7 +138,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	}
 
 	private Vector3d getVectorToTarget(Entity target) {
-		return new Vector3d(target.getPosX() - this.getPosX(), (target.getPosY() + (double) target.getEyeHeight()) - this.getPosY(), target.getPosZ() - this.getPosZ());
+		return new Vector3d(target.getPosX() - this.getPosX(), (target.getPosY() + target.getEyeHeight()) - this.getPosY(), target.getPosZ() - this.getPosZ());
 	}
 
 	@Nullable

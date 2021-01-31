@@ -228,9 +228,9 @@ public class EntityTFLich extends MonsterEntity {
 
 		if (this.getPhase() == 3)
 			world.addParticle(ParticleTypes.ANGRY_VILLAGER,
-				this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
-				this.getPosY() + 1.0D + (double) (this.rand.nextFloat() * this.getHeight()),
-				this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
+				this.getPosX() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(),
+				this.getPosY() + 1.0D + this.rand.nextFloat() * this.getHeight(),
+				this.getPosZ() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(),
 				this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D);
 
 		if (!world.isRemote) {
@@ -329,7 +329,7 @@ public class EntityTFLich extends MonsterEntity {
 		double sz = getPosZ() + (MathHelper.sin(bodyFacingAngle) * 0.65);
 
 		double tx = getAttackTarget().getPosX() - sx;
-		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (getPosY() + getHeight() / 2.0F);
+		double ty = (getAttackTarget().getBoundingBox().minY + getAttackTarget().getHeight() / 2.0F) - (getPosY() + getHeight() / 2.0F);
 		double tz = getAttackTarget().getPosZ() - sz;
 
 		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
@@ -348,7 +348,7 @@ public class EntityTFLich extends MonsterEntity {
 		double sz = getPosZ() + (MathHelper.sin(bodyFacingAngle) * 0.65);
 
 		double tx = getAttackTarget().getPosX() - sx;
-		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (getPosY() + getHeight() / 2.0F);
+		double ty = (getAttackTarget().getBoundingBox().minY + getAttackTarget().getHeight() / 2.0F) - (getPosY() + getHeight() / 2.0F);
 		double tz = getAttackTarget().getPosZ() - sz;
 
 		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);

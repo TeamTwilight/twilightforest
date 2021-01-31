@@ -3,7 +3,6 @@ package twilightforest.network;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;

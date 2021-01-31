@@ -3,7 +3,6 @@ package twilightforest.tileentity;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;

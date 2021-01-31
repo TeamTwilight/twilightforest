@@ -10,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,7 +21,6 @@ import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.ChunkGeneratorTFBase;
-import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.List;

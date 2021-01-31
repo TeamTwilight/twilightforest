@@ -164,7 +164,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			double d0 = rand.nextGaussian() * 0.02D;
 			double d1 = rand.nextGaussian() * 0.02D;
 			double d2 = rand.nextGaussian() * 0.02D;
-			world.addParticle(ParticleTypes.EXPLOSION, getPosX() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), getPosY() + (double) (rand.nextFloat() * getHeight()), getPosZ() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), d0, d1, d2);
+			world.addParticle(ParticleTypes.EXPLOSION, getPosX() + rand.nextFloat() * getWidth() * 2.0F - getWidth(), getPosY() + rand.nextFloat() * getHeight(), getPosZ() + rand.nextFloat() * getWidth() * 2.0F - getWidth(), d0, d1, d2);
 		}
 	}
 
@@ -178,7 +178,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this.getPosition());
 
 			// make treasure for killing the last knight
-			TFTreasure.stronghold_boss.generateChest((ServerWorld)world, treasurePos, false);
+			TFTreasure.stronghold_boss.generateChest(world, treasurePos, false);
 
 			// mark the stronghold as defeated
 			TFGenerationSettings.markStructureConquered(world, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
@@ -209,7 +209,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).applyKnockback((float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				((LivingEntity) entityIn).applyKnockback(i * 0.5F, MathHelper.sin(this.rotationYaw * 0.017453292F), (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
 				setMotion(new Vector3d(
 						getMotion().getX() * 0.6D,
 						getMotion().getY(),
@@ -228,7 +228,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
 				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof AxeItem && itemstack1.getItem() == Items.SHIELD) {
-					float f1 = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+					float f1 = 0.25F + EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
 					if (this.rand.nextFloat() < f1) {
 						entityplayer.getCooldownTracker().setCooldown(Items.SHIELD, 100);
@@ -255,9 +255,9 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		float distance = 0.2F;
 		setMotion(new Vector3d(getMotion().getX() / 2.0D, getMotion().getY() / 2.0D, getMotion().getZ() / 2.0D));
 		setMotion(new Vector3d(
-				getMotion().getX() - xRatio / (double) f * (double) distance,
-				getMotion().getY() + (double) distance,
-				getMotion().getZ() - zRatio / (double) f * (double) distance));
+				getMotion().getX() - xRatio / f * distance,
+				getMotion().getY() + distance,
+				getMotion().getZ() - zRatio / f * distance));
 
 		if (this.getMotion().getY() > 0.4000000059604645D) {
 			setMotion(getMotion().getX(), 0.4000000059604645D, getMotion().getZ());
@@ -472,14 +472,14 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 	@Override
 	public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
-		return this.maximumHomeDistance == -1.0F ? true : this.homePosition.distanceSq(pos) < (double) (this.maximumHomeDistance * this.maximumHomeDistance);
+		return this.maximumHomeDistance == -1.0F ? true : this.homePosition.distanceSq(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
 	}
 
 	@Override
 	public void setHomePosAndDistance(BlockPos pos, int distance) {
 		// set the chargePos here as well so we dont go off flying in some direction when we first spawn
 		homePosition = chargePos = pos;
-		this.maximumHomeDistance = (float) distance;
+		this.maximumHomeDistance = distance;
 	}
 
 	@Override

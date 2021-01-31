@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 

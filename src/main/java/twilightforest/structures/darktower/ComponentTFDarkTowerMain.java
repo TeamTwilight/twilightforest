@@ -16,14 +16,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -874,32 +870,32 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		// short piston plunger 1
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 17, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, false), 13, y + 1, 17, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.SOUTH), 14, y + 2, 17, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.SOUTH), 14, y + 2, 17, rotation, sbb);
 		setBlockStateRotated(world, redstone, 14, y + 2, 16, rotation, sbb);
 
 		// short piston plunger 2
 		setBlockStateRotated(world, deco.accentState, 17, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, false), 17, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.EAST), 17, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.EAST), 17, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, redstone, 16, y + 2, 14, rotation, sbb);
 
 		// long piston plunger 1
 		setBlockStateRotated(world, redstone, 14, y + 2, 11, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 11, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, true), 13, y + 1, 11, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.NORTH), 14, y + 2, 10, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH), 14, y + 2, 10, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 9, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, false), 13, y + 1, 9, rotation, sbb);
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(PistonBlock.FACING, Direction.NORTH), 14, y + 2, 9, rotation, sbb);
+		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH), 14, y + 2, 9, rotation, sbb);
 
 		// long piston plunger 2
 		setBlockStateRotated(world, redstone, 11, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 11, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, true), 11, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.WEST), 10, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.WEST), 10, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 9, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, false), 9, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(PistonBlock.FACING, Direction.WEST), 9, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.WEST), 9, y + 2, 14, rotation, sbb);
 	}
 
 	//TODO: Parameter "forgeDeco" is unused. Remove?
@@ -1001,7 +997,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	private void makeFurnacePillar(ISeedReader world, StructureTFDecorator forgeDeco, Random rand, int x, int y, int z, Direction direction, Rotation rotation, MutableBoundingBox sbb) {
 
 		this.setBlockStateRotated(world, getStairState(deco.stairState, direction, rotation, true), x, y + 2, z, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().with(FurnaceBlock.FACING, direction), x, y + 3, z, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.FACING, direction), x, y + 3, z, rotation, sbb);
 
 		// randomly put some charcoal in the furnace burn slot
 		int amount = rand.nextBoolean() ? rand.nextInt(5) + 4 : 0;

@@ -82,12 +82,12 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		for (int j = 0; j < i * 8; ++j) {
 			float f = this.rand.nextFloat() * ((float) Math.PI * 2F);
 			float f1 = this.rand.nextFloat() * 0.5F + 0.5F;
-			float f2 = MathHelper.sin(f) * (float) i * 0.5F * f1;
-			float f3 = MathHelper.cos(f) * (float) i * 0.5F * f1;
+			float f2 = MathHelper.sin(f) * i * 0.5F * f1;
+			float f3 = MathHelper.cos(f) * i * 0.5F * f1;
 			World world = this.world;
 			// ParticleTypes ParticleTypes = this.getParticleType();
-			double d0 = this.getPosX() + (double) f2;
-			double d1 = this.getPosZ() + (double) f3;
+			double d0 = this.getPosX() + f2;
+			double d1 = this.getPosZ() + f3;
 			BlockState state = TFBlocks.maze_stone_brick.get().getDefaultState();
 			world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
 		}

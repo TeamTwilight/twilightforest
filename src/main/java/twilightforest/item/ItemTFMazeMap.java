@@ -87,8 +87,8 @@ public class ItemTFMazeMap extends FilledMapItem {
 			int blocksPerPixel = 1 << data.scale;
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
-			int viewerX = MathHelper.floor(viewer.getPosX() - (double) centerX) / blocksPerPixel + 64;
-			int viewerZ = MathHelper.floor(viewer.getPosZ() - (double) centerZ) / blocksPerPixel + 64;
+			int viewerX = MathHelper.floor(viewer.getPosX() - centerX) / blocksPerPixel + 64;
+			int viewerZ = MathHelper.floor(viewer.getPosZ() - centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
 			if (world.getDimensionType().getHasCeiling()) {
@@ -195,7 +195,7 @@ public class ItemTFMazeMap extends FilledMapItem {
                                     brightness = 0;
                                 }*/
 
-								MaterialColor mapcolor = (MaterialColor) Iterables.getFirst(Multisets.<MaterialColor>copyHighestCountFirst(multiset), MaterialColor.AIR);
+								MaterialColor mapcolor = Iterables.getFirst(Multisets.<MaterialColor>copyHighestCountFirst(multiset), MaterialColor.AIR);
 
                                 /*if (mapcolor == MaterialColor.WATER)
                                 {

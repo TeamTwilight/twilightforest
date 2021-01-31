@@ -1,7 +1,6 @@
 package twilightforest.client;
 
 import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.client.ISkyRenderHandler;
 import net.minecraftforge.client.IWeatherRenderHandler;

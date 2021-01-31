@@ -5,7 +5,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.client.particle.TFParticleType;

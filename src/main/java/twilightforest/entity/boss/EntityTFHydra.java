@@ -355,7 +355,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 				}
 			}
 
-			if (numTicksToChaseTarget-- <= 0 || !getAttackTarget().isAlive() || getAttackTarget().getDistanceSq(this) > (double) (f * f)) {
+			if (numTicksToChaseTarget-- <= 0 || !getAttackTarget().isAlive() || getAttackTarget().getDistanceSq(this) > f * f) {
 				setAttackTarget(null);
 			}
 		} else {

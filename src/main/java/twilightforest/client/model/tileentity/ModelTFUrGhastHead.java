@@ -22,7 +22,7 @@ public class ModelTFUrGhastHead extends ModelTFGenericHead {
 		byte yOffset = -16;
 		this.body = new ModelRenderer(this, 0, 0);
 		this.body.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16);
-		this.body.rotationPointY += (float) (24 + yOffset);
+		this.body.rotationPointY += 24 + yOffset;
 		Random rand = new Random(1660L);
 
 		for (int i = 0; i < this.tentacles.length; ++i) {
@@ -40,27 +40,27 @@ public class ModelTFUrGhastHead extends ModelTFGenericHead {
 		if (num == 0) {
 			this.tentacles[num].rotationPointX = 4.5F;
 			this.tentacles[num].rotationPointZ = 4.5F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		}
 		if (num == 1) {
 			this.tentacles[num].rotationPointX = -4.5F;
 			this.tentacles[num].rotationPointZ = 4.5F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		}
 		if (num == 2) {
 			this.tentacles[num].rotationPointX = 0F;
 			this.tentacles[num].rotationPointZ = 0F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		}
 		if (num == 3) {
 			this.tentacles[num].rotationPointX = 5.5F;
 			this.tentacles[num].rotationPointZ = -4.5F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		}
 		if (num == 4) {
 			this.tentacles[num].rotationPointX = -5.5F;
 			this.tentacles[num].rotationPointZ = -4.5F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		} else if (num == 5) {
 			this.tentacles[num].rotationPointX = -7.5F;
 			this.tentacles[num].rotationPointY = 3.5F;

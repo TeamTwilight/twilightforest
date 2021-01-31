@@ -3,7 +3,6 @@ package twilightforest.world.layer;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
@@ -11,7 +10,6 @@ import twilightforest.biomes.TFBiomes;
 import twilightforest.world.TFBiomeProvider;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * Applies the twilight forest biomes to the map

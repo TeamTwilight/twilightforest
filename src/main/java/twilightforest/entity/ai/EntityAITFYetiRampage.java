@@ -68,7 +68,7 @@ public class EntityAITFYetiRampage extends Goal {
 //		this.yeti.world.playAuxSFX(2004, rx, ry, rz, 0);
 
 		if (this.yeti.getAttackTarget() != null) {
-			this.yeti.getLookController().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, (float) this.yeti.getVerticalFaceSpeed());
+			this.yeti.getLookController().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, this.yeti.getVerticalFaceSpeed());
 		}
 
 		if (this.yeti.isOnGround()) {

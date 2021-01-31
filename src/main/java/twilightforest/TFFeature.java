@@ -719,7 +719,7 @@ public enum TFFeature {
 						random.nextInt();
 
 						// Check changed for TFFeature
-						if (getFeatureAt(l1 << 4, i2 << 4, (ServerWorld) worldIn.getWorld()) == feature) {
+						if (getFeatureAt(l1 << 4, i2 << 4, worldIn.getWorld()) == feature) {
 							if (!findUnexplored || !worldIn.chunkExists(l1, i2)) {
 								return new BlockPos((l1 << 4) + 8, 64, (i2 << 4) + 8);
 							}
@@ -746,7 +746,7 @@ public enum TFFeature {
 		int featureX = Math.round(chunkX / 16F) * 16;
 		int featureZ = Math.round(chunkZ / 16F) * 16;
 
-		return generateFeature(featureX, featureZ, (ServerWorld) world.getWorld());
+		return generateFeature(featureX, featureZ, world.getWorld());
 	}
 
 	/**
@@ -768,7 +768,7 @@ public enum TFFeature {
 		int regionX = (cx + 8) >> 4;
 		int regionZ = (cz + 8) >> 4;
 
-		long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
+		long seed = regionX * 3129871 ^ regionZ * 116129781L;
 		seed = seed * seed * 42317861L + seed * 7L;
 
 		int num0 = (int) (seed >> 12 & 3L);

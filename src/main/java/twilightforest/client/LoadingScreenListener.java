@@ -12,8 +12,6 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
-import twilightforest.world.TFDimensions;
 
 @OnlyIn(Dist.CLIENT)
 public class LoadingScreenListener {

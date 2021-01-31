@@ -7,8 +7,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 
-import javax.annotation.Nonnull;
-
 public class RenderTFCastleGuardian extends LivingRenderer<EntityTFCastleGuardian, ModelTFCastleGuardian> {
 
 	private final ResourceLocation textureLoc;

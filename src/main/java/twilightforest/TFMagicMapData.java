@@ -1,17 +1,10 @@
 package twilightforest;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.MapItemRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -158,19 +151,19 @@ public class TFMagicMapData extends MapData {
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
 				RenderContext.stack.push();
 				RenderContext.stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-				RenderContext.stack.rotate(Vector3f.ZP.rotationDegrees((float)(getRotation() * 360) / 16.0F));
+				RenderContext.stack.rotate(Vector3f.ZP.rotationDegrees(getRotation() * 360 / 16.0F));
 				RenderContext.stack.scale(4.0F, 4.0F, 3.0F);
 				RenderContext.stack.translate(-0.125D, 0.125D, 0.0D);
-				float f1 = (float) (featureId % 8) / 8.0F;
-				float f2 = (float) (featureId / 8) / 8.0F;
-				float f3 = (float) (featureId % 8 + 1) / 8.0F;
-				float f4 = (float) (featureId / 8 + 1) / 8.0F;
+				float f1 = featureId % 8 / 8.0F;
+				float f2 = featureId / 8 / 8.0F;
+				float f3 = (featureId % 8 + 1) / 8.0F;
+				float f4 = (featureId / 8 + 1) / 8.0F;
 				Matrix4f matrix4f1 = RenderContext.stack.getLast().getMatrix();
 				IVertexBuilder ivertexbuilder1 = RenderContext.buffer.getBuffer(RenderContext.MAP_ICONS);
-				ivertexbuilder1.pos(matrix4f1, -1.0F, 1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f1, f2).lightmap(RenderContext.light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, 1.0F, 1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f3, f2).lightmap(RenderContext.light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, 1.0F, -1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f3, f4).lightmap(RenderContext.light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, -1.0F, -1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f1, f4).lightmap(RenderContext.light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, -1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).tex(f1, f2).lightmap(RenderContext.light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, 1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).tex(f3, f2).lightmap(RenderContext.light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, 1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).tex(f3, f4).lightmap(RenderContext.light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, -1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).tex(f1, f4).lightmap(RenderContext.light).endVertex();
 				RenderContext.stack.pop();
 			}
 			return true;

@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;

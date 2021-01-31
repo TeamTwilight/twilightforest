@@ -2,15 +2,14 @@ package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
@@ -43,7 +42,7 @@ public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 		putLeaves(world, rand, pos.up(3), false, config);
 
 		// sorting engine
-		world.setBlockState(pos.up(), TFBlocks.sorting_log_core.get().getDefaultState().with(BlockTFMagicLog.AXIS, Direction.Axis.Y), 3);
+		world.setBlockState(pos.up(), TFBlocks.sorting_log_core.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
 
 		return true;
 	}

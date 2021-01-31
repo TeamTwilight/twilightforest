@@ -3,6 +3,7 @@ package twilightforest.structures.courtyard;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
@@ -39,9 +40,9 @@ public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcesso
 			Block block = state.getBlock();
 
 			if (block == TFBlocks.nagastone_stairs_left.get())
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE), null);
 			if (block == TFBlocks.nagastone_stairs_right.get())
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE), null);
 
 			return blockInfo;
 		}

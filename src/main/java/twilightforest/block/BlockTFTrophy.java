@@ -31,6 +31,7 @@ public class BlockTFTrophy extends BlockTFAbstractTrophy {
 		setDefaultState(stateContainer.getBaseState().with(BlockTFTrophy.ROTATION, 0));
 	}
 
+	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		if (((BlockTFAbstractTrophy) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
 			return GHAST_SHAPE;
@@ -38,22 +39,27 @@ public class BlockTFTrophy extends BlockTFAbstractTrophy {
 			return SHAPE;
 	}
 
+	@Override
 	public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return VoxelShapes.empty();
 	}
 
+	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(ROTATION, Integer.valueOf(MathHelper.floor((double) (context.getPlacementYaw() * 16.0F / 360.0F) + 0.5D) & 15));
+		return this.getDefaultState().with(ROTATION, Integer.valueOf(MathHelper.floor(context.getPlacementYaw() * 16.0F / 360.0F + 0.5D) & 15));
 	}
 
+	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(ROTATION, Integer.valueOf(rot.rotate(state.get(ROTATION), 16)));
 	}
 
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.with(ROTATION, Integer.valueOf(mirrorIn.mirrorRotation(state.get(ROTATION), 16)));
 	}
 
+	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(ROTATION);
 	}

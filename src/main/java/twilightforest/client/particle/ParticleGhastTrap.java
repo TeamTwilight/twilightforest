@@ -4,7 +4,6 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -47,7 +46,7 @@ public class ParticleGhastTrap extends SpriteTexturedParticle {
 
 	@Override
 	public float getScale(float partialTicks) {
-		float f6 = ((float) this.age + partialTicks) / (float) this.maxAge * 32.0F;
+		float f6 = (this.age + partialTicks) / this.maxAge * 32.0F;
 		f6 = MathHelper.clamp(f6, 0f, 1f);
 
 		return this.reddustParticleScale * f6;
@@ -63,9 +62,9 @@ public class ParticleGhastTrap extends SpriteTexturedParticle {
 //        float antiProportion = 1.0F - proportion;
 //        antiProportion *= antiProportion;
 //        antiProportion *= antiProportion;
-		this.posX = this.originX + this.motionX * (double) proportion;
-		this.posY = this.originY + this.motionY * (double) proportion;// - (double)(antiProportion * 1.2F);
-		this.posZ = this.originZ + this.motionZ * (double) proportion;
+		this.posX = this.originX + this.motionX * proportion;
+		this.posY = this.originY + this.motionY * proportion;// - (double)(antiProportion * 1.2F);
+		this.posZ = this.originZ + this.motionZ * proportion;
 
 		if (this.age++ >= this.maxAge) {
 			this.setExpired();

@@ -4,8 +4,6 @@ import net.minecraft.block.trees.Tree;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import twilightforest.features.TwilightFeatures;
-import twilightforest.world.feature.config.TFTreeFeatureConfig;
-
 import java.util.Random;
 
 public class SortingTree extends Tree {

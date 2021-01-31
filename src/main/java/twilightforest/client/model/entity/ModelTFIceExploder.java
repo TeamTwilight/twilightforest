@@ -84,9 +84,9 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 			this.spikes[i].rotateAngleY += i * 2.5f;
 			this.spikes[i].rotateAngleZ += i * 3;
 
-			this.spikes[i].rotationPointX = MathHelper.cos((entity.ticksExisted + partialTicks) / (float) i) * 3F;
-			this.spikes[i].rotationPointY = 5F + MathHelper.sin((entity.ticksExisted + partialTicks) / (float) i) * 3F;
-			this.spikes[i].rotationPointZ = MathHelper.sin((entity.ticksExisted + partialTicks) / (float) i) * 3F;
+			this.spikes[i].rotationPointX = MathHelper.cos((entity.ticksExisted + partialTicks) / i) * 3F;
+			this.spikes[i].rotationPointY = 5F + MathHelper.sin((entity.ticksExisted + partialTicks) / i) * 3F;
+			this.spikes[i].rotationPointZ = MathHelper.sin((entity.ticksExisted + partialTicks) / i) * 3F;
 
 			this.spikes[i].childModels.get(0).rotationPointY = 10 + MathHelper.sin((i + entity.ticksExisted + partialTicks) / i) * 3F;
 		}

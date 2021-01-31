@@ -5,8 +5,6 @@ import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 
 public class ModelTFYetiArmor extends ModelTFArmor {

@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
@@ -138,14 +139,14 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 				final Rotation add = dir.add(rotation).add(this.rotation);
 				BlockState thorns = TFBlocks.green_thorns.get().getDefaultState()
 						.with(
-								BlockTFThorns.AXIS,
+								RotatedPillarBlock.AXIS,
 								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? Direction.Axis.X : Direction.Axis.Z
 						);
 				if (i > 0) {
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y, z + (dz * i), rotation, sbb);
 				}
 				// go up that far
-				this.setBlockStateRotated(world, thorns.with(BlockTFThorns.AXIS, Direction.Axis.Y), destX, y + i, destZ, rotation, sbb);
+				this.setBlockStateRotated(world, thorns.with(RotatedPillarBlock.AXIS, Direction.Axis.Y), destX, y + i, destZ, rotation, sbb);
 				// go back half that far
 				if (i > (dist / 2)) {
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y + dist - 1, z + (dz * i), rotation, sbb);

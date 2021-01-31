@@ -25,12 +25,7 @@ import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeProvider {
@@ -143,6 +138,7 @@ public class TFBiomeProvider extends BiomeProvider {
 		}
  		System.out.println("breakpoint");*/
 		return new Layer(areaFactory) {
+			@Override
 			public Biome func_242936_a(Registry<Biome> p_242936_1_, int p_242936_2_, int p_242936_3_) {
 				int i = this.field_215742_b.getValue(p_242936_2_, p_242936_3_);
 				Biome biome = registry.getByValue(i);

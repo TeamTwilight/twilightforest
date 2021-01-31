@@ -2,6 +2,7 @@ package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -52,7 +53,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		putBranchWithLeaves(world, rand, pos.add(0, 6, -5), leaves, branch, false, mbb, config);
 
 		// place minewood core
-		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState().with(BlockTFMagicLog.AXIS, Direction.Axis.Y), 3);
+		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
 		world.getPendingBlockTicks().scheduleTick(pos.up(), TFBlocks.mining_log_core.get(), 20);
 
 		// root bulb

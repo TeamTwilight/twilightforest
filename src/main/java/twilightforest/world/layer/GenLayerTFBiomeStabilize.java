@@ -15,10 +15,12 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 
 	GenLayerTFBiomeStabilize() { }
 
+	@Override
 	public int getOffsetX(int x) {
 		return x & 3;
 	}
 
+	@Override
 	public int getOffsetZ(int z) {
 		return z & 3;
 	}

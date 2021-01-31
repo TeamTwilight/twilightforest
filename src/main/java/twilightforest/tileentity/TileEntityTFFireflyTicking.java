@@ -3,7 +3,6 @@ package twilightforest.tileentity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.tileentity.TFTileEntities;
 
 public class TileEntityTFFireflyTicking extends TileEntity implements ITickableTileEntity {
 

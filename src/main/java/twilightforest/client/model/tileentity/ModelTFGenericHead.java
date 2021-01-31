@@ -26,6 +26,7 @@ public abstract class ModelTFGenericHead extends Model {
 		this.head.rotateAngleX = x * ((float) Math.PI / 180F);
 	}
 
+	@Override
 	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		this.head.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}

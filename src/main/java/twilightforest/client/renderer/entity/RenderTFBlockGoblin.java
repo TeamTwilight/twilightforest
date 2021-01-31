@@ -19,7 +19,6 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFBlockGoblin;
-import twilightforest.client.model.entity.ModelTFGoblinChain;
 import twilightforest.client.model.entity.ModelTFSpikeBlock;
 import twilightforest.entity.EntityTFBlockGoblin;
 
@@ -75,17 +74,17 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 			return true;
 		} else {
 
-			Vector3d vec3d = this.getPosition(entity.block, (double) entity.block.getHeight() * 0.5D, 1.0F);
-			Vector3d vec3d1 = this.getPosition(entity.block, (double) entity.block.getEyeHeight(), 1.0F);
+			Vector3d vec3d = this.getPosition(entity.block, entity.block.getHeight() * 0.5D, 1.0F);
+			Vector3d vec3d1 = this.getPosition(entity.block, entity.block.getEyeHeight(), 1.0F);
 			return clippingHelper.isBoundingBoxInFrustum(new AxisAlignedBB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z));
 		}
 	}
 
 	private Vector3d getPosition(Entity entity, double p_177110_2_, float p_177110_4_) {
 		// [VanillaCopy] From GuardianRenderer
-		double d0 = MathHelper.lerp((double) p_177110_4_, entity.lastTickPosX, entity.getPosX());
-		double d1 = MathHelper.lerp((double) p_177110_4_, entity.lastTickPosY, entity.getPosY()) + p_177110_2_;
-		double d2 = MathHelper.lerp((double) p_177110_4_, entity.lastTickPosZ, entity.getPosZ());
+		double d0 = MathHelper.lerp(p_177110_4_, entity.lastTickPosX, entity.getPosX());
+		double d1 = MathHelper.lerp(p_177110_4_, entity.lastTickPosY, entity.getPosY()) + p_177110_2_;
+		double d2 = MathHelper.lerp(p_177110_4_, entity.lastTickPosZ, entity.getPosZ());
 		return new Vector3d(d0, d1, d2);
 	}
 

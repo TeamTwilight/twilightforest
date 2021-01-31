@@ -70,12 +70,12 @@ public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttack
 		EntityTFIceSnowball snowball = TFEntities.ice_snowball.create(this.world);
 
 		// [VanillaCopy] Adapted from EntitySnowman
-		double d0 = target.getPosY() + (double) target.getEyeHeight() - 1.4;
+		double d0 = target.getPosY() + target.getEyeHeight() - 1.4;
 		double d1 = target.getPosX() - this.getPosX();
 		double d2 = d0 - snowball.getPosY();
 		double d3 = target.getPosZ() - this.getPosZ();
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
-		snowball.shoot(d1, d2 + (double) f, d3, 1.6F, 0.0F);
+		snowball.shoot(d1, d2 + f, d3, 1.6F, 0.0F);
 
 		this.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.world.addEntity(snowball);

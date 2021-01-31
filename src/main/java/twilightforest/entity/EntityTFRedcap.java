@@ -18,7 +18,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFRedcapLightTNT;

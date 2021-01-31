@@ -45,14 +45,17 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		return 1.2F;
 	}
 	
+	@Override
 	protected SoundEvent getAmbientSound() {
 	      return TFSounds.GHASTLING_AMBIENT;
 	   }
 
+	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 	      return TFSounds.GHASTLING_HURT;
 	   }
 
+	@Override
 	protected SoundEvent getDeathSound() {
 	      return TFSounds.GHASTLING_DEATH;
 	   }
@@ -67,7 +70,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 			return living.canEntityBeSeen(this);
 		} else {
 			Vector3d vec3d = living.getLook(1.0F).normalize();
-			Vector3d vec3d1 = new Vector3d(this.getPosX() - living.getPosX(), this.getBoundingBox().minY + (double) this.getEyeHeight() - (living.getPosY() + (double) living.getEyeHeight()), this.getPosZ() - living.getPosZ());
+			Vector3d vec3d1 = new Vector3d(this.getPosX() - living.getPosX(), this.getBoundingBox().minY + this.getEyeHeight() - (living.getPosY() + living.getEyeHeight()), this.getPosZ() - living.getPosZ());
 			double d0 = vec3d1.length();
 			vec3d1 = vec3d1.normalize();
 			double d1 = vec3d.dotProduct(vec3d1);

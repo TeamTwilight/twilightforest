@@ -1,7 +1,6 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;

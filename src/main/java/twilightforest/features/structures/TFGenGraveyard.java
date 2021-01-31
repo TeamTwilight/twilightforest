@@ -22,7 +22,6 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
@@ -41,7 +40,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("landscape/graveyard/graveyard");

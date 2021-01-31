@@ -2,7 +2,6 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.model.entity.ModelNoop;
 import twilightforest.entity.EntityTFSnowGuardian;

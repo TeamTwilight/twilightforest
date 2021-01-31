@@ -66,14 +66,17 @@ public class EntityTFTowerGhast extends GhastEntity {
 		this.targetSelector.addGoal(1, new TFNearestPlayerGoal(this));
 	}
 	
+	@Override
 	protected SoundEvent getAmbientSound() {
 	      return TFSounds.GHASTGUARD_AMBIENT;
 	   }
 
+	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 	      return TFSounds.GHASTGUARD_HURT;
 	   }
 
+	@Override
 	protected SoundEvent getDeathSound() {
 	      return TFSounds.GHASTGUARD_DEATH;
 	   }
@@ -109,9 +112,9 @@ public class EntityTFTowerGhast extends GhastEntity {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getPosX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d1 = this.parentEntity.getPosY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d2 = this.parentEntity.getPosZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d0 = this.parentEntity.getPosX() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			double d1 = this.parentEntity.getPosY() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			double d2 = this.parentEntity.getPosZ() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 		}
 	}
@@ -152,17 +155,17 @@ public class EntityTFTowerGhast extends GhastEntity {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getPosX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d1 = this.parentEntity.getPosY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d2 = this.parentEntity.getPosZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d0 = this.parentEntity.getPosX() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			double d1 = this.parentEntity.getPosY() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+			double d2 = this.parentEntity.getPosZ() + (random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 
 			if (this.parentEntity.getDistanceSq(Vector3d.copy(this.parentEntity.getHomePosition())) > 256.0D) {
 				Vector3d vecToHome = Vector3d.copy(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVec()).normalize();
 
-				double targetX = this.parentEntity.getPosX() + vecToHome.x * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-				double targetY = this.parentEntity.getPosY() + vecToHome.y * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-				double targetZ = this.parentEntity.getPosZ() + vecToHome.z * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetX = this.parentEntity.getPosX() + vecToHome.x * parentEntity.wanderFactor + (this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+				double targetY = this.parentEntity.getPosY() + vecToHome.y * parentEntity.wanderFactor + (this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
+				double targetZ = this.parentEntity.getPosZ() + vecToHome.z * parentEntity.wanderFactor + (this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor;
 
 				this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
 			} else {
@@ -259,7 +262,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 
 		if (this.rand.nextBoolean()) {
-			this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
+			this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.getPosY() + this.rand.nextDouble() * this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), 0, 0, 0);
 		}
 
 		super.livingTick();
@@ -308,14 +311,14 @@ public class EntityTFTowerGhast extends GhastEntity {
 	protected void spitFireball() {
 		Vector3d vec3d = this.getLook(1.0F);
 		double d2 = getAttackTarget().getPosX() - (this.getPosX() + vec3d.x * 4.0D);
-		double d3 = getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F) - (0.5D + this.getPosY() + (double) (this.getHeight() / 2.0F));
+		double d3 = getAttackTarget().getBoundingBox().minY + getAttackTarget().getHeight() / 2.0F - (0.5D + this.getPosY() + this.getHeight() / 2.0F);
 		double d4 = getAttackTarget().getPosZ() - (this.getPosZ() + vec3d.z * 4.0D);
 		FireballEntity entitylargefireball = new FireballEntity(world, this, d2, d3, d4);
 		entitylargefireball.explosionPower = this.getFireballStrength();
 //		entitylargefireball.getPosX() = this.getPosX() + vec3d.x * 4.0D;
 //		entitylargefireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + 0.5D;
 //		entitylargefireball.getPosZ() = this.getPosZ() + vec3d.z * 4.0D;
-		entitylargefireball.setPosition(this.getPosX() + vec3d.x * 4.0D, this.getPosY() + (double) (this.getHeight() / 2.0F) + 0.5D, this.getPosZ() + vec3d.z * 4.0D);
+		entitylargefireball.setPosition(this.getPosX() + vec3d.x * 4.0D, this.getPosY() + this.getHeight() / 2.0F + 0.5D, this.getPosZ() + vec3d.z * 4.0D);
 		world.addEntity(entitylargefireball);
 
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
@@ -328,6 +331,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entityType, world, reason, pos, random);
 	}
 
+	@Override
 	public boolean isNotColliding(IWorldReader world) {
 		return world.checkNoEntityCollision(this) && !world.containsAnyLiquid(this.getBoundingBox()); //TODO: Verify
 	}
@@ -368,13 +372,13 @@ public class EntityTFTowerGhast extends GhastEntity {
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
 		return this.maximumHomeDistance == -1.0F
 				? true
-				: pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distanceSq(pos) < (double) (this.maximumHomeDistance * this.maximumHomeDistance);
+				: pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distanceSq(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
 	}
 
 	@Override
 	public void setHomePosAndDistance(BlockPos pos, int distance) {
 		this.homePosition = pos;
-		this.maximumHomeDistance = (float) distance;
+		this.maximumHomeDistance = distance;
 	}
 
 	@Override

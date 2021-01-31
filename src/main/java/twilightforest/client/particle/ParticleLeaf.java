@@ -4,10 +4,8 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -34,7 +32,7 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 		this.particleScale *= 0.75F * (rand.nextBoolean() ? -1F : 1F);
 		this.particleScale *= scale;
 		this.maxAge = 160 + ((int) (rand.nextFloat() * 30F));
-		this.maxAge = (int) ((float) this.maxAge * scale);
+		this.maxAge = (int) (this.maxAge * scale);
 		this.canCollide = true;
 	}
 

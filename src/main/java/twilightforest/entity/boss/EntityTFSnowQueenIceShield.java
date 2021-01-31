@@ -1,12 +1,10 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import twilightforest.entity.MultiPartEntityPart;
-import twilightforest.entity.TFEntities;
 
 public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
 

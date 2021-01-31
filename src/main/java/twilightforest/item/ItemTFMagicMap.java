@@ -94,8 +94,8 @@ public class ItemTFMagicMap extends FilledMapItem {
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
-			int viewerX = MathHelper.floor(viewer.getPosX() - (double) centerX) / blocksPerPixel + 64;
-			int viewerZ = MathHelper.floor(viewer.getPosZ() - (double) centerZ) / blocksPerPixel + 64;
+			int viewerX = MathHelper.floor(viewer.getPosX() - centerX) / blocksPerPixel + 64;
+			int viewerZ = MathHelper.floor(viewer.getPosZ() - centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 512 / blocksPerPixel;
 
 			// use the generation map, which is larger scale than the other biome map

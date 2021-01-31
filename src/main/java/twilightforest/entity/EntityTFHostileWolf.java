@@ -53,6 +53,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		}
 	}
 
+	@Override
 	public void livingTick() {
 		super.livingTick();
 

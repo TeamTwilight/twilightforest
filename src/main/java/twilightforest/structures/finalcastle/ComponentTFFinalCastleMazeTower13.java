@@ -243,7 +243,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		TwilightForestMod.LOGGER.debug("Our coord mode is {}, and direction is {}, so our door is going to be at {} and the new tower will appear at {}", this.getCoordBaseMode(), facing, opening, tc);
 
 		// find start
-		StructurePiece start = (StructurePiece) list.get(0);
+		StructurePiece start = list.get(0);
 
 		int centerX = ((start.getBoundingBox().minX + 128) >> 8) << 8;
 		int centerZ = ((start.getBoundingBox().minZ + 128) >> 8) << 8;

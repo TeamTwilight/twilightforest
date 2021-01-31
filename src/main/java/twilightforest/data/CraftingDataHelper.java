@@ -49,7 +49,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
 		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return NBTIngredient.fromStacks(stack);
+		return Ingredient.fromStacks(stack);
 	}
 
 	protected final Ingredient multipleIngredients(Ingredient... ingredientArray) {
@@ -67,7 +67,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
 		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return CompoundIngredient.merge(ingredientList);
+		return Ingredient.merge(ingredientList);
 	}
 
 	protected final void castleBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, IItemProvider... ingredients) {

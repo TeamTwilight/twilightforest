@@ -1,7 +1,6 @@
 package twilightforest.world;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;

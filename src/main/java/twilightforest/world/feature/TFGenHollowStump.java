@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 

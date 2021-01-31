@@ -80,7 +80,7 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 				for (Entity entity : list) {
 					if (!(entity instanceof EntityTFYetiAlpha)) {
-						entity.attackEntityFrom(damagesource, (float) Math.min(MathHelper.floor((float) i * this.fallHurtAmount), this.fallHurtMax));
+						entity.attackEntityFrom(damagesource, Math.min(MathHelper.floor(i * this.fallHurtAmount), this.fallHurtMax));
 					}
 				}
 			}

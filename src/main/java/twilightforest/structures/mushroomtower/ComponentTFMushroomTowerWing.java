@@ -138,7 +138,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (isOutOfRange((StructurePiece) list.get(0), dx[0], dx[1], dx[2], RANGE)) {
+		if (isOutOfRange(list.get(0), dx[0], dx[1], dx[2], RANGE)) {
 			return false;
 		}
 
@@ -158,7 +158,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			}
 
 			list.add(wing);
-			wing.buildComponent((StructurePiece) list.get(0), list, rand);
+			wing.buildComponent(list.get(0), list, rand);
 			addOpening(x, y, z, rotation);
 
 			return true;

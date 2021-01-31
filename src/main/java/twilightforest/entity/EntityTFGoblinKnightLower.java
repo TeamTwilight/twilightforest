@@ -18,7 +18,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFRiderSpearAttack;
 

@@ -1,7 +1,6 @@
 package twilightforest.structures;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;

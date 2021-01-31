@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -55,7 +54,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 			} else {
 
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (blockData == null && world.isAreaLoaded(this.pos, this.RADIUS)) {
+				if (blockData == null && world.isAreaLoaded(this.pos, TileEntityTFAntibuilder.RADIUS)) {
 					captureBlockData();
 					this.slowScan = true;
 				}
@@ -268,6 +267,6 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 	}
 
 	private boolean anyPlayerInRange() {
-		return this.world.isPlayerWithin(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.PLAYER_RANGE);
+		return this.world.isPlayerWithin(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, TileEntityTFAntibuilder.PLAYER_RANGE);
 	}
 }

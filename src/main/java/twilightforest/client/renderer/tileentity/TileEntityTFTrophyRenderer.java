@@ -96,13 +96,14 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	private ItemStack stack = ItemStack.EMPTY;
 	private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
 
+	@Override
 	public void render(TileEntityTFTrophy tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		float f = tileEntityIn.getAnimationProgress(partialTicks);
 		BlockState blockstate = tileEntityIn.getBlockState();
 		boolean flag = blockstate.getBlock() instanceof BlockTFTrophyWall;
 		IVertexBuilder vertex = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(textureLocKnightPhantomArmor));
 		Direction direction = flag ? blockstate.get(BlockTFTrophyWall.FACING) : null;
-		float f1 = 22.5F * (float) (flag ? (2 + direction.getHorizontalIndex()) * 4 : blockstate.get(BlockTFTrophy.ROTATION));
+		float f1 = 22.5F * (flag ? (2 + direction.getHorizontalIndex()) * 4 : blockstate.get(BlockTFTrophy.ROTATION));
 		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.HYDRA && flag) {
 			hydraHead.jaw.setRotationPoint(0F, 15F, -19F);
 			hydraHead.openMouthForTrophy(0.5F);
@@ -124,7 +125,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
 		} else {
 			float f = 0.25F;
-			matrixStackIn.translate((double) (0.5F - (float) directionIn.getXOffset() * 0.25F), 0.25D, (double) (0.5F - (float) directionIn.getZOffset() * 0.25F));
+			matrixStackIn.translate(0.5F - directionIn.getXOffset() * 0.25F, 0.25D, 0.5F - directionIn.getZOffset() * 0.25F);
 		}
 		matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
 		switch (variant) {

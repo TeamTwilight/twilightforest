@@ -150,7 +150,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (isOutOfRange((StructurePiece) list.get(0), dx[0], dx[1], dx[2], RANGE)) {
+		if (isOutOfRange(list.get(0), dx[0], dx[1], dx[2], RANGE)) {
 			return false;
 		}
 

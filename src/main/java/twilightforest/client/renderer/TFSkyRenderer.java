@@ -201,8 +201,8 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 
 				for (int j = 0; j < 4; ++j) {
 					double d17 = 0.0D;
-					double d18 = (double) ((j & 2) - 1) * d3;
-					double d19 = (double) ((j + 1 & 2) - 1) * d3;
+					double d18 = ((j & 2) - 1) * d3;
+					double d19 = ((j + 1 & 2) - 1) * d3;
 					double d20 = 0.0D;
 					double d21 = d18 * d16 - d19 * d15;
 					double d22 = d19 * d16 + d18 * d15;

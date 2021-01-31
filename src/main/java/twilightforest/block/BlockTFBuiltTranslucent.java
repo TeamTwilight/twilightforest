@@ -8,7 +8,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;

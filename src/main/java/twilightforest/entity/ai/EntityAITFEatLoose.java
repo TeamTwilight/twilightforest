@@ -3,7 +3,6 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.crafting.Ingredient;
 import twilightforest.entity.passive.EntityTFQuestRam;
 

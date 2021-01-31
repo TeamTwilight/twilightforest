@@ -752,9 +752,9 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				double d1 = this.rand.nextGaussian() * 0.02D;
 				double d2 = this.rand.nextGaussian() * 0.02D;
 				this.world.addParticle(ParticleTypes.EXPLOSION,
-						segment.getPosX() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d0 * 10.0D,
-						segment.getPosY() + (double) (this.rand.nextFloat() * segment.getHeight()) - d1 * 10.0D,
-						segment.getPosZ() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d2 * 10.0D,
+						segment.getPosX() + this.rand.nextFloat() * segment.getWidth() * 2.0F - segment.getWidth() - d0 * 10.0D,
+						segment.getPosY() + this.rand.nextFloat() * segment.getHeight() - d1 * 10.0D,
+						segment.getPosZ() + this.rand.nextFloat() * segment.getWidth() * 2.0F - segment.getWidth() - d2 * 10.0D,
 						d0, d1, d2);
 			}
 		}
@@ -774,7 +774,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
 
 
-			double straightenForce = 0.05D + (1.0 / (float) (i + 1)) * 0.5D;
+			double straightenForce = 0.05D + (1.0 / (i + 1)) * 0.5D;
 
 			double idealX = -MathHelper.sin(angle) * straightenForce;
 			double idealZ = MathHelper.cos(angle) * straightenForce;
@@ -794,7 +794,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 			bodySegments[i].setPosition(destX, destY, destZ);
 
-			double distance = (double) MathHelper.sqrt(diff.x * diff.x + diff.z * diff.z);
+			double distance = MathHelper.sqrt(diff.x * diff.x + diff.z * diff.z);
 
 			if (i == 0) {
 				// tilt segment next to head up towards head

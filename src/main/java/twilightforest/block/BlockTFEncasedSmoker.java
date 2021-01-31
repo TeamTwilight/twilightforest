@@ -1,19 +1,12 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import twilightforest.tileentity.TileEntityTFSmoker;
-
-import javax.annotation.Nullable;
 
 public class BlockTFEncasedSmoker extends BlockTFSmoker {
 

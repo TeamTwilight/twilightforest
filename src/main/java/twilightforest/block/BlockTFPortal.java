@@ -1,14 +1,12 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -34,7 +32,6 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
-import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.TFTeleporter;
 
@@ -260,16 +257,16 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 		if (stateIn.get(DISALLOW_RETURN) && random < 80) return;
 
 		if (random == 0) {
-			worldIn.playSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
+			worldIn.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
 		}
 
 		for (int i = 0; i < 4; ++i) {
-			double xPos = (double) ((float) pos.getX() + rand.nextFloat());
+			double xPos = pos.getX() + rand.nextFloat();
 			double yPos = pos.getY()+1D;
-			double zPos = (double) ((float) pos.getZ() + rand.nextFloat());
-			double xSpeed = ((double) rand.nextFloat() - 0.5D) * 0.5D;
+			double zPos = pos.getZ() + rand.nextFloat();
+			double xSpeed = (rand.nextFloat() - 0.5D) * 0.5D;
 			double ySpeed = rand.nextFloat();
-			double zSpeed = ((double) rand.nextFloat() - 0.5D) * 0.5D;
+			double zSpeed = (rand.nextFloat() - 0.5D) * 0.5D;
 			//int j = rand.nextInt(2) * 2 - 1;
 
 			//if (worldIn.getBlockState(pos.west()).getBlock() != this && worldIn.getBlockState(pos.east()).getBlock() != this) {

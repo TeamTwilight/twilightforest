@@ -93,13 +93,13 @@ public class EntityTFTowerGolem extends MonsterEntity {
 			BlockState iblockstate = this.world.getBlockState(new BlockPos(i, j, k));
 
 			if (iblockstate.getMaterial() != Material.AIR) {
-				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, iblockstate), this.getPosX() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), this.getBoundingBox().minY + 0.1D, this.getPosZ() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), 4.0D * ((double) this.rand.nextFloat() - 0.5D), 0.5D, ((double) this.rand.nextFloat() - 0.5D) * 4.0D);
+				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, iblockstate), this.getPosX() + (this.rand.nextFloat() - 0.5D) * this.getWidth(), this.getBoundingBox().minY + 0.1D, this.getPosZ() + (this.rand.nextFloat() - 0.5D) * this.getWidth(), 4.0D * (this.rand.nextFloat() - 0.5D), 0.5D, (this.rand.nextFloat() - 0.5D) * 4.0D);
 			}
 		}
 		// End copy
 
 		if (this.rand.nextBoolean()) {
-			this.world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, 1.0F), this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
+			this.world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, 1.0F), this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.getPosY() + this.rand.nextDouble() * this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), 0, 0, 0);
 		}
 	}
 

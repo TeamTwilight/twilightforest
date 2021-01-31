@@ -11,7 +11,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

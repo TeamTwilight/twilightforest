@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.PigModel;
-import net.minecraft.client.renderer.entity.model.QuadrupedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFBoar;
 

@@ -10,7 +10,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.entity.TFEntities;
 
 public class EntityTFHydraPart extends MobEntity {
 

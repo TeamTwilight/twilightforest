@@ -59,7 +59,7 @@ public class RenderTFKobold extends RenderTFBiped<EntityTFKobold, ModelTFKobold>
 				ms.rotate(Vector3f.XP.rotationDegrees(-90.0F));
 				ms.rotate(Vector3f.YP.rotationDegrees(180.0F));
 				boolean flag = handSide == HandSide.LEFT;
-				ms.translate((double)((float)(flag ? -1 : 1) / 16.0F), 0.125D, -0.625D);
+				ms.translate((flag ? -1 : 1) / 16.0F, 0.125D, -0.625D);
 				Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entity, stack, transform, flag, ms, buffers, light);
 				ms.pop();
 			}

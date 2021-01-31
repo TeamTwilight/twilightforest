@@ -116,7 +116,7 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
 				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {

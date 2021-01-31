@@ -3,7 +3,6 @@ package twilightforest.client.particle;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,7 +28,7 @@ public class ParticleSnow extends SpriteTexturedParticle {
 		this.particleScale *= scale;
 		this.initialParticleScale = this.particleScale;
 		this.maxAge = (int) (6.0D / (Math.random() * 0.8D + 0.6D));
-		this.maxAge = (int) ((float) this.maxAge * scale);
+		this.maxAge = (int) (this.maxAge * scale);
 		this.canCollide = true;
 	}
 

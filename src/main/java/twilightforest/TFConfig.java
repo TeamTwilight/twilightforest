@@ -3,8 +3,6 @@ package twilightforest;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

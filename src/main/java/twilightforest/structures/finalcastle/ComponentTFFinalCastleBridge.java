@@ -57,7 +57,7 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponentOld {
 		// supports
 		int l3 = length / 3;
 		for (int i = 0; i < l3; i++) {
-			int sl = l3 - (int) (MathHelper.cos((float) (l3 - i) / (float) l3 * 1.6F) * (float) l3); // this could be better, maybe?
+			int sl = l3 - (int) (MathHelper.cos((float) (l3 - i) / (float) l3 * 1.6F) * l3); // this could be better, maybe?
 			fillWithRandomizedBlocks(world, sbb, i, -sl, 0, i, 0, 0, false, rand, deco.randomBlocks);
 			fillWithRandomizedBlocks(world, sbb, i, -sl, 6, i, 0, 6, false, rand, deco.randomBlocks);
 			fillWithRandomizedBlocks(world, sbb, length - i, -sl, 0, length - i, 0, 0, false, rand, deco.randomBlocks);

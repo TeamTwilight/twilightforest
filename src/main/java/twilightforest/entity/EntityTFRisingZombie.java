@@ -12,7 +12,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;

@@ -19,7 +19,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.enums.MagicWoodVariant;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.network.PacketChangeBiome;
 import twilightforest.network.TFPacketHandler;
@@ -59,7 +58,7 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
 		if (world.isRemote || !state.get(ACTIVE)) return;
 
 		switch (this.magicWoodVariant) {

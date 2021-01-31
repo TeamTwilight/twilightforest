@@ -2,8 +2,6 @@ package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
@@ -16,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
 
@@ -83,35 +80,35 @@ public class BlockTFTrollSteinn extends Block {
 		int threshhold = LIGHT_THRESHHOLD;
 
 		for (Direction side : Direction.values()) {
-			double rx = (double) ((float) pos.getX() + random.nextFloat());
-			double ry = (double) ((float) pos.getY() + random.nextFloat());
-			double rz = (double) ((float) pos.getZ() + random.nextFloat());
+			double rx = pos.getX() + random.nextFloat();
+			double ry = pos.getY() + random.nextFloat();
+			double rz = pos.getZ() + random.nextFloat();
 
 			if (side == Direction.DOWN && !world.getBlockState(pos.down()).isOpaqueCube(world, pos) && world.getLight(pos.down()) <= threshhold) {
-				ry = (double)pos.getY() - 0.0625D;
+				ry = pos.getY() - 0.0625D;
 			}
 
 			if (side == Direction.UP && !world.getBlockState(pos.up()).isOpaqueCube(world, pos) && world.getLight(pos.up()) <= threshhold) {
-				ry = (double)pos.getY() + 0.0625D + 1.0D;
+				ry = pos.getY() + 0.0625D + 1.0D;
 			}
 
 			if (side == Direction.NORTH && !world.getBlockState(pos.north()).isOpaqueCube(world, pos) && world.getLight(pos.north()) <= threshhold) {
-				rz = (double)pos.getZ() - 0.0625D;
+				rz = pos.getZ() - 0.0625D;
 			}
 
 			if (side == Direction.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube(world, pos) && world.getLight(pos.south()) <= threshhold) {
-				rz = (double)pos.getZ() + 0.0625D + 1.0D;
+				rz = pos.getZ() + 0.0625D + 1.0D;
 			}
 
 			if (side == Direction.WEST && !world.getBlockState(pos.west()).isOpaqueCube(world, pos) && world.getLight(pos.west()) <= threshhold) {
-				rx = (double)pos.getX() - 0.0625D;
+				rx = pos.getX() - 0.0625D;
 			}
 
 			if (side == Direction.EAST && !world.getBlockState(pos.east()).isOpaqueCube(world, pos) && world.getLight(pos.east()) <= threshhold) {
-				rx = (double)pos.getX() + 0.0625D + 1.0D;
+				rx = pos.getX() + 0.0625D + 1.0D;
 			}
 
-			if (rx < (double) pos.getX() || rx > (double) (pos.getX() + 1) || ry < 0.0D || ry > (double) (pos.getY() + 1) || rz < (double) pos.getZ() || rz > (double) (pos.getZ() + 1)) {
+			if (rx < pos.getX() || rx > pos.getX() + 1 || ry < 0.0D || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
 				world.addParticle(RedstoneParticleData.REDSTONE_DUST, rx, ry, rz, 0.25D, -1.0D, 0.5D);
 			}
 		}

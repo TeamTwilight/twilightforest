@@ -28,6 +28,7 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 		this.variant = variant;
 	}
 	
+	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit) {
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
@@ -87,6 +88,7 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 		return this.variant;
 	}
 
+	@Override
 	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
 		return false;
 	}

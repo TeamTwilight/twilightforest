@@ -82,13 +82,13 @@ public class BlockstateGenerator extends BlockStateProvider {
 			}
 
 			ironLadder.part().modelFile(ironLadderLeft).rotationY(rotY).addModel()
-							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.LEFT, false).end();
+							.condition(LadderBlock.FACING, d).condition(BlockTFLadderBars.LEFT, false).end();
 			ironLadder.part().modelFile(ironLadderLeftConnected).rotationY(rotY).addModel()
-							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.LEFT, true).end();
+							.condition(LadderBlock.FACING, d).condition(BlockTFLadderBars.LEFT, true).end();
 			ironLadder.part().modelFile(ironLadderRight).rotationY(rotY).addModel()
-							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, false).end();
+							.condition(LadderBlock.FACING, d).condition(BlockTFLadderBars.RIGHT, false).end();
 			ironLadder.part().modelFile(ironLadderRightConnected).rotationY(rotY).addModel()
-							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
+							.condition(LadderBlock.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
 
 		//terrorcotta();
@@ -358,7 +358,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile reversed = models().cubeColumn(b.getRegistryName().getPath() + "_reversed", alt, end);
 		getVariantBuilder(b).forAllStates(state -> {
 			int rotX = 0, rotY = 0;
-			switch (state.get(BlockTFNagastonePillar.AXIS)) {
+			switch (state.get(RotatedPillarBlock.AXIS)) {
 			default:
 			case X:
 				rotX = rotY = 270;
@@ -369,7 +369,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 				rotX = 270;
 				break;
 			}
-			ModelFile m = state.get(BlockTFNagastonePillar.REVERSED) ? reversed : model;
+			ModelFile m = state.get(BlockTFDirectionalRotatedPillar.REVERSED) ? reversed : model;
 			return ConfiguredModel.builder().rotationX(rotX).rotationY(rotY).modelFile(m).build();
 		});
 	}
@@ -394,17 +394,17 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("particle", "#down");
 
 		getVariantBuilder(b).partialState()
-						.with(BlockTFNagastoneEtched.FACING, Direction.DOWN).setModels(new ConfiguredModel(down));
+						.with(DirectionalBlock.FACING, Direction.DOWN).setModels(new ConfiguredModel(down));
 		getVariantBuilder(b).partialState()
-						.with(BlockTFNagastoneEtched.FACING, Direction.UP).setModels(new ConfiguredModel(up));
+						.with(DirectionalBlock.FACING, Direction.UP).setModels(new ConfiguredModel(up));
 		getVariantBuilder(b).partialState()
-						.with(BlockTFNagastoneEtched.FACING, Direction.NORTH).setModels(new ConfiguredModel(north));
+						.with(DirectionalBlock.FACING, Direction.NORTH).setModels(new ConfiguredModel(north));
 		getVariantBuilder(b).partialState()
-						.with(BlockTFNagastoneEtched.FACING, Direction.SOUTH).setModels(new ConfiguredModel(south));
+						.with(DirectionalBlock.FACING, Direction.SOUTH).setModels(new ConfiguredModel(south));
 		getVariantBuilder(b).partialState()
-						.with(BlockTFNagastoneEtched.FACING, Direction.WEST).setModels(new ConfiguredModel(west));
+						.with(DirectionalBlock.FACING, Direction.WEST).setModels(new ConfiguredModel(west));
 		getVariantBuilder(b).partialState()
-						.with(BlockTFNagastoneEtched.FACING, Direction.EAST).setModels(new ConfiguredModel(east));
+						.with(DirectionalBlock.FACING, Direction.EAST).setModels(new ConfiguredModel(east));
 	}
 
 	private void registerSmokersAndJets() {
@@ -531,7 +531,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile on = models().cubeColumn(b.getRegistryName().getPath() + "_on", prefix("block/" + b.getRegistryName().getPath() + "_on"), topTex);
 		getVariantBuilder(b).forAllStates(s -> {
 			ModelFile f = s.get(BlockTFMagicLogSpecial.ACTIVE) ? on : off;
-			Direction.Axis axis = s.get(BlockTFMagicLogSpecial.AXIS);
+			Direction.Axis axis = s.get(RotatedPillarBlock.AXIS);
 			int rotX = axis == Direction.Axis.X || axis == Direction.Axis.Z ? 90 : 0;
 			int rotY = axis == Direction.Axis.X ? 90 : 0;
 			return ConfiguredModel.builder()
@@ -705,19 +705,19 @@ public class BlockstateGenerator extends BlockStateProvider {
 			}
 			return ConfiguredModel.builder()
 							.weight(10).modelFile(model0)
-							.rotationY((int) state.get(FenceGateBlock.HORIZONTAL_FACING).getHorizontalAngle())
+							.rotationY((int) state.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle())
 							.uvLock(true).nextModel()
 
 							.weight(10).modelFile(model1)
-							.rotationY((int) state.get(FenceGateBlock.HORIZONTAL_FACING).getHorizontalAngle())
+							.rotationY((int) state.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle())
 							.uvLock(true).nextModel()
 
 							.weight(1).modelFile(model2)
-							.rotationY((int) state.get(FenceGateBlock.HORIZONTAL_FACING).getHorizontalAngle())
+							.rotationY((int) state.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle())
 							.uvLock(true).nextModel()
 
 							.weight(1).modelFile(model3)
-							.rotationY((int) state.get(FenceGateBlock.HORIZONTAL_FACING).getHorizontalAngle())
+							.rotationY((int) state.get(HorizontalBlock.HORIZONTAL_FACING).getHorizontalAngle())
 							.uvLock(true)
 							.build();
 		}, FenceGateBlock.POWERED);
@@ -797,7 +797,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 			ModelFile model2 = state.get(AbstractButtonBlock.POWERED) ? pressed2 : unpressed2;
 			ModelFile model3 = state.get(AbstractButtonBlock.POWERED) ? pressed3 : unpressed3;
 			int rotX = 0;
-			switch (state.get(AbstractButtonBlock.FACE)) {
+			switch (state.get(HorizontalFaceBlock.FACE)) {
 			case WALL:
 				rotX = 90;
 				break;
@@ -809,22 +809,22 @@ public class BlockstateGenerator extends BlockStateProvider {
 				break;
 			}
 			int rotY = 0;
-			if (state.get(AbstractButtonBlock.FACE) == AttachFace.CEILING)  {
-				switch (state.get(AbstractButtonBlock.HORIZONTAL_FACING)) {
+			if (state.get(HorizontalFaceBlock.FACE) == AttachFace.CEILING)  {
+				switch (state.get(HorizontalBlock.HORIZONTAL_FACING)) {
 				case NORTH: rotY = 180; break;
 				case SOUTH: rotY = 0; break;
 				case WEST: rotY = 90; break;
 				case EAST: rotY = 270; break;
 				}
 			} else {
-				switch (state.get(AbstractButtonBlock.HORIZONTAL_FACING)) {
+				switch (state.get(HorizontalBlock.HORIZONTAL_FACING)) {
 				case NORTH: rotY = 0; break;
 				case SOUTH: rotY = 180; break;
 				case WEST: rotY = 270; break;
 				case EAST: rotY = 90; break;
 				}
 			}
-			boolean uvlock = state.get(AbstractButtonBlock.FACE) == AttachFace.WALL;
+			boolean uvlock = state.get(HorizontalFaceBlock.FACE) == AttachFace.WALL;
 
 			return ConfiguredModel.builder()
 							.weight(10).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model0).nextModel()
@@ -969,10 +969,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("all", prefix("block/towerdev_reappearing_trace_on"));
 		getVariantBuilder(TFBlocks.reappearing_block.get()).forAllStates(s -> {
 			ModelFile model;
-			if (s.get(BlockReappearing.VANISHED)) {
-				model = s.get(BlockReappearing.ACTIVE) ? reappearVanishedActive : reappearVanished;
+			if (s.get(BlockTFVanishingBlock.VANISHED)) {
+				model = s.get(BlockTFVanishingBlock.ACTIVE) ? reappearVanishedActive : reappearVanished;
 			} else {
-				model = s.get(BlockReappearing.ACTIVE) ? reappearActive : reappear;
+				model = s.get(BlockTFVanishingBlock.ACTIVE) ? reappearActive : reappear;
 			}
 			return ConfiguredModel.builder().modelFile(model).build();
 		});
@@ -986,9 +986,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_on_1"))
 						.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_on_2"));
 		getVariantBuilder(TFBlocks.vanishing_block.get()).partialState()
-						.with(BlockTFLockedVanishing.ACTIVE, false).setModels(new ConfiguredModel(vanish));
+						.with(BlockTFVanishingBlock.ACTIVE, false).setModels(new ConfiguredModel(vanish));
 		getVariantBuilder(TFBlocks.vanishing_block.get()).partialState()
-						.with(BlockTFLockedVanishing.ACTIVE, true).setModels(new ConfiguredModel(vanishActive));
+						.with(BlockTFVanishingBlock.ACTIVE, true).setModels(new ConfiguredModel(vanishActive));
 
 		ModelFile vanishLocked = models().withExistingParent(TFBlocks.locked_vanishing_block.getId().getPath(), cube3)
 						.texture("all", prefix("block/towerdev_lock_on"))
@@ -1145,9 +1145,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("side", prefix("block/green_thorns_side"))
 						.texture("end", prefix("block/green_thorns_top"));
 		getMultipartBuilder(TFBlocks.green_thorns.get())
-						.part().modelFile(green).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Y).end()
-						.part().modelFile(green).rotationX(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Z).end()
-						.part().modelFile(green).rotationX(90).rotationY(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.X).end()
+						.part().modelFile(green).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
+						.part().modelFile(green).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
+						.part().modelFile(green).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
 						.part().modelFile(greenTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
 						.part().modelFile(greenBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(greenTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
@@ -1165,9 +1165,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("side", prefix("block/brown_thorns_side"))
 						.texture("end", prefix("block/brown_thorns_top"));
 		getMultipartBuilder(TFBlocks.brown_thorns.get())
-						.part().modelFile(brown).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Y).end()
-						.part().modelFile(brown).rotationX(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Z).end()
-						.part().modelFile(brown).rotationX(90).rotationY(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.X).end()
+						.part().modelFile(brown).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
+						.part().modelFile(brown).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
+						.part().modelFile(brown).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
 						.part().modelFile(brownTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
 						.part().modelFile(brownBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(brownTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
@@ -1185,9 +1185,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("side", prefix("block/burnt_thorns_side"))
 						.texture("end", prefix("block/burnt_thorns_top"));
 		getMultipartBuilder(TFBlocks.burnt_thorns.get())
-						.part().modelFile(burnt).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Y).end()
-						.part().modelFile(burnt).rotationX(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Z).end()
-						.part().modelFile(burnt).rotationX(90).rotationY(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.X).end()
+						.part().modelFile(burnt).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Y).end()
+						.part().modelFile(burnt).rotationX(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.Z).end()
+						.part().modelFile(burnt).rotationX(90).rotationY(90).addModel().condition(RotatedPillarBlock.AXIS, Direction.Axis.X).end()
 						.part().modelFile(burntTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
 						.part().modelFile(burntBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(burntTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()

@@ -16,7 +16,6 @@ import net.minecraft.world.biome.provider.EndBiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.ChunkSection;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.INoiseGenerator;
 import net.minecraft.world.gen.ImprovedNoiseGenerator;
@@ -25,7 +24,6 @@ import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.minecraft.world.gen.PerlinNoiseGenerator;
 import net.minecraft.world.gen.SimplexNoiseGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.NoiseSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.WorldEntitySpawner;
@@ -53,7 +51,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 	protected static final float[] field_236081_j_ = Util.make(new float[25], (afloat) -> {
 		for(int i = -2; i <= 2; ++i) {
 			for(int j = -2; j <= 2; ++j) {
-				float f = 10.0F / MathHelper.sqrt((float)(i * i + j * j) + 0.2F);
+				float f = 10.0F / MathHelper.sqrt(i * i + j * j + 0.2F);
 				afloat[i + 2 + (j + 2) * 5] = f;
 			}
 		}
@@ -62,7 +60,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 	private static double func_222554_b(int p_222554_0_, int p_222554_1_, int p_222554_2_) {
 		double d0 = p_222554_0_ * p_222554_0_ + p_222554_2_ * p_222554_2_;
-		double d1 = (double)p_222554_1_ + 0.5D;
+		double d1 = p_222554_1_ + 0.5D;
 		double d2 = d1 * d1;
 		double d3 = Math.pow(Math.E, -(d2 / 16.0D + d0 / 16.0D));
 		double d4 = -d1 * MathHelper.fastInvSqrt(d2 / 2.0D + d0 / 2.0D) / 2.0D;
@@ -159,7 +157,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		double d0;
 		double d1;
 		if (this.field_236083_v_ != null) {
-			d0 = (double)(EndBiomeProvider.getRandomNoise(this.field_236083_v_, noiseX, noiseZ) - 8.0F);
+			d0 = EndBiomeProvider.getRandomNoise(this.field_236083_v_, noiseX, noiseZ) - 8.0F;
 			if (d0 > 0.0D) {
 				d1 = 0.25D;
 			} else {
@@ -198,8 +196,8 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 			float f10 = f1 / f2;
 			float f11 = f / f2;
-			double d16 = (double)(f10 * 0.5F - 0.125F);
-			double d18 = (double)(f11 * 0.9F + 0.1F);
+			double d16 = f10 * 0.5F - 0.125F;
+			double d18 = f11 * 0.9F + 0.1F;
 			d0 = d16 * 0.265625D;
 			d1 = 96.0D / d18;
 		}
@@ -208,19 +206,19 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		double d13 = 684.412D * noisesettings.func_236171_b_().func_236153_b_();
 		double d14 = d12 / noisesettings.func_236171_b_().func_236154_c_();
 		double d15 = d13 / noisesettings.func_236171_b_().func_236155_d_();
-		double d17 = (double)noisesettings.func_236172_c_().func_236186_a_();
-		double d19 = (double)noisesettings.func_236172_c_().func_236188_b_();
-		double d20 = (double)noisesettings.func_236172_c_().func_236189_c_();
-		double d21 = (double)noisesettings.func_236173_d_().func_236186_a_();
-		double d2 = (double)noisesettings.func_236173_d_().func_236188_b_();
-		double d3 = (double)noisesettings.func_236173_d_().func_236189_c_();
+		double d17 = noisesettings.func_236172_c_().func_236186_a_();
+		double d19 = noisesettings.func_236172_c_().func_236188_b_();
+		double d20 = noisesettings.func_236172_c_().func_236189_c_();
+		double d21 = noisesettings.func_236173_d_().func_236186_a_();
+		double d2 = noisesettings.func_236173_d_().func_236188_b_();
+		double d3 = noisesettings.func_236173_d_().func_236189_c_();
 		double d4 = noisesettings.func_236179_j_() ? this.func_236095_c_(noiseX, noiseZ) : 0.0D;
 		double d5 = noisesettings.func_236176_g_();
 		double d6 = noisesettings.func_236177_h_();
 
 		for(int i1 = 0; i1 <= this.noiseSizeY; ++i1) {
 			double d7 = this.func_222552_a(noiseX, i1, noiseZ, d12, d13, d14, d15);
-			double d8 = 1.0D - (double)i1 * 2.0D / (double)this.noiseSizeY + d4;
+			double d8 = 1.0D - i1 * 2.0D / this.noiseSizeY + d4;
 			double d9 = d8 * d5 + d6;
 			double d10 = (d9 + d0) * d1;
 			if (d10 > 0.0D) {
@@ -230,12 +228,12 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 			}
 
 			if (d19 > 0.0D) {
-				double d11 = ((double)(this.noiseSizeY - i1) - d20) / d19;
+				double d11 = (this.noiseSizeY - i1 - d20) / d19;
 				d7 = MathHelper.clampedLerp(d17, d7, d11);
 			}
 
 			if (d2 > 0.0D) {
-				double d22 = ((double)i1 - d3) / d2;
+				double d22 = (i1 - d3) / d2;
 				d7 = MathHelper.clampedLerp(d21, d7, d22);
 			}
 
@@ -251,24 +249,24 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		double d3 = 1.0D;
 
 		for(int i = 0; i < 16; ++i) {
-			double d4 = OctavesNoiseGenerator.maintainPrecision((double)p_222552_1_ * p_222552_4_ * d3);
-			double d5 = OctavesNoiseGenerator.maintainPrecision((double)p_222552_2_ * p_222552_6_ * d3);
-			double d6 = OctavesNoiseGenerator.maintainPrecision((double)p_222552_3_ * p_222552_4_ * d3);
+			double d4 = OctavesNoiseGenerator.maintainPrecision(p_222552_1_ * p_222552_4_ * d3);
+			double d5 = OctavesNoiseGenerator.maintainPrecision(p_222552_2_ * p_222552_6_ * d3);
+			double d6 = OctavesNoiseGenerator.maintainPrecision(p_222552_3_ * p_222552_4_ * d3);
 			double d7 = p_222552_6_ * d3;
 			ImprovedNoiseGenerator improvednoisegenerator = this.field_222568_o.getOctave(i);
 			if (improvednoisegenerator != null) {
-				d0 += improvednoisegenerator.func_215456_a(d4, d5, d6, d7, (double)p_222552_2_ * d7) / d3;
+				d0 += improvednoisegenerator.func_215456_a(d4, d5, d6, d7, p_222552_2_ * d7) / d3;
 			}
 
 			ImprovedNoiseGenerator improvednoisegenerator1 = this.field_222569_p.getOctave(i);
 			if (improvednoisegenerator1 != null) {
-				d1 += improvednoisegenerator1.func_215456_a(d4, d5, d6, d7, (double)p_222552_2_ * d7) / d3;
+				d1 += improvednoisegenerator1.func_215456_a(d4, d5, d6, d7, p_222552_2_ * d7) / d3;
 			}
 
 			if (i < 8) {
 				ImprovedNoiseGenerator improvednoisegenerator2 = this.field_222570_q.getOctave(i);
 				if (improvednoisegenerator2 != null) {
-					d2 += improvednoisegenerator2.func_215456_a(OctavesNoiseGenerator.maintainPrecision((double)p_222552_1_ * p_222552_8_ * d3), OctavesNoiseGenerator.maintainPrecision((double)p_222552_2_ * p_222552_10_ * d3), OctavesNoiseGenerator.maintainPrecision((double)p_222552_3_ * p_222552_8_ * d3), p_222552_10_ * d3, (double)p_222552_2_ * p_222552_10_ * d3) / d3;
+					d2 += improvednoisegenerator2.func_215456_a(OctavesNoiseGenerator.maintainPrecision(p_222552_1_ * p_222552_8_ * d3), OctavesNoiseGenerator.maintainPrecision(p_222552_2_ * p_222552_10_ * d3), OctavesNoiseGenerator.maintainPrecision(p_222552_3_ * p_222552_8_ * d3), p_222552_10_ * d3, p_222552_2_ * p_222552_10_ * d3) / d3;
 				}
 			}
 
@@ -279,7 +277,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 	}
 
 	private double func_236095_c_(int p_236095_1_, int p_236095_2_) {
-		double d0 = this.field_236082_u_.getValue((double)(p_236095_1_ * 200), 10.0D, (double)(p_236095_2_ * 200), 1.0D, 0.0D, true);
+		double d0 = this.field_236082_u_.getValue(p_236095_1_ * 200, 10.0D, p_236095_2_ * 200, 1.0D, 0.0D, true);
 		double d1;
 		if (d0 < 0.0D) {
 			d1 = -d0 * 0.3D;
@@ -293,7 +291,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 //	@Override
 	protected double func_222545_a(double depth, double noise, int y) {
-		double d1 = ((double)y - (8.5D + depth * 8.5D / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / noise;
+		double d1 = (y - (8.5D + depth * 8.5D / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / noise;
 		if (d1 < 0.0D) {
 			d1 *= 4.0D;
 		}
@@ -535,7 +533,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 				int regionX = (cx + 8) >> 4;
 				int regionZ = (cz + 8) >> 4;
 
-				long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
+				long seed = regionX * 3129871 ^ regionZ * 116129781L;
 				seed = seed * seed * 42317861L + seed * 7L;
 
 				int num0 = (int) (seed >> 12 & 3L);

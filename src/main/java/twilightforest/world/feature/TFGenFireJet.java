@@ -8,8 +8,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-
 import java.util.Random;
 
 public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {

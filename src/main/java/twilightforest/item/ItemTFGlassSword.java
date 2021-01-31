@@ -9,8 +9,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 
-import javax.annotation.Nonnull;
-
 public class ItemTFGlassSword extends SwordItem {
 
 	public ItemTFGlassSword(IItemTier toolMaterial, Properties props) {

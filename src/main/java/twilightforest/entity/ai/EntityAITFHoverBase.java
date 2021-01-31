@@ -73,6 +73,6 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 	 * Can the specified entity see the specified location?
 	 */
 	protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-		return entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + (double) entity.getEyeHeight(), entity.getPosZ()), new Vector3d(dx, dy, dz), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)) == null;
+		return entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), new Vector3d(dx, dy, dz), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)) == null;
 	}
 }

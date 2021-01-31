@@ -84,7 +84,7 @@ public class ItemTFScepterLifeDrain extends Item {
 
 			if (possibleEntity.canBeCollidedWith()) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
 				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
@@ -133,7 +133,7 @@ public class ItemTFScepterLifeDrain extends Item {
 							((MobEntity) target).spawnExplosionParticle();
 						}
 						target.playSound(SoundEvents.ENTITY_GENERIC_BIG_FALL, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-						animateTargetShatter(world, (LivingEntity) target);
+						animateTargetShatter(world, target);
 						if (!world.isRemote) {
 							target.remove();
 							target.onDeath(DamageSource.causeIndirectMagicDamage(living, living));

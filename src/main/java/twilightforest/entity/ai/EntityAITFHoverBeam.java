@@ -117,7 +117,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 
 		double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
-		distanceDesired = (double) MathHelper.sqrt(distanceDesired);
+		distanceDesired = MathHelper.sqrt(distanceDesired);
 
 		if (distanceDesired > 0.5) {
 
@@ -155,7 +155,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.attacker) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
 				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {

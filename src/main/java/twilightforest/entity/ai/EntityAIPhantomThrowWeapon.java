@@ -43,7 +43,7 @@ public class EntityAIPhantomThrowWeapon extends Goal {
 		double sz = boss.getPosZ() + (MathHelper.sin(bodyFacingAngle) * 1);
 
 		double tx = targetedEntity.getPosX() - sx;
-		double ty = (targetedEntity.getBoundingBox().minY + (double) (targetedEntity.getHeight() / 2.0F)) - (boss.getPosY() + boss.getHeight() / 2.0F);
+		double ty = (targetedEntity.getBoundingBox().minY + targetedEntity.getHeight() / 2.0F) - (boss.getPosY() + boss.getHeight() / 2.0F);
 		double tz = targetedEntity.getPosZ() - sz;
 
 		boss.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, (boss.getRNG().nextFloat() - boss.getRNG().nextFloat()) * 0.2F + 0.4F);

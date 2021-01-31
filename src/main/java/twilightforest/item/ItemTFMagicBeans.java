@@ -16,8 +16,6 @@ import net.minecraft.world.World;
 import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFDimensions;
-
 import javax.annotation.Nonnull;
 
 public class ItemTFMagicBeans extends Item {

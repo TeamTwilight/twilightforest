@@ -1,23 +1,6 @@
 package twilightforest.client;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.MusicTicker;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.multiplayer.ClientAdvancementManager;
-import net.minecraft.command.CommandException;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TFCommonProxy;
-import twilightforest.TFSounds;
-import twilightforest.client.renderer.tileentity.*;
-import twilightforest.tileentity.TileEntityTFTrophy;
 
 public class TFClientProxy extends TFCommonProxy {
 

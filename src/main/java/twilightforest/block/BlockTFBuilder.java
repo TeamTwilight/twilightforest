@@ -112,38 +112,38 @@ public class BlockTFBuilder extends Block {
 		double d0 = 0.0625D;
 
 		for (int i = 0; i < 6; ++i) {
-			double d1 = (double) ((float) pos.getX() + random.nextFloat());
-			double d2 = (double) ((float) pos.getY() + random.nextFloat());
-			double d3 = (double) ((float) pos.getZ() + random.nextFloat());
+			double d1 = pos.getX() + random.nextFloat();
+			double d2 = pos.getY() + random.nextFloat();
+			double d3 = pos.getZ() + random.nextFloat();
 
 			if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube(worldIn, pos)) {
-				d2 = (double) pos.getY() + d0 + 1.0D;
+				d2 = pos.getY() + d0 + 1.0D;
 			}
 
 			if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube(worldIn, pos)) {
-				d2 = (double) pos.getY() - d0;
+				d2 = pos.getY() - d0;
 			}
 
 			if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube(worldIn, pos)) {
-				d3 = (double) pos.getZ() + d0 + 1.0D;
+				d3 = pos.getZ() + d0 + 1.0D;
 			}
 
 			if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube(worldIn, pos)) {
-				d3 = (double) pos.getZ() - d0;
+				d3 = pos.getZ() - d0;
 			}
 
 			if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube(worldIn, pos)) {
-				d1 = (double) pos.getX() + d0 + 1.0D;
+				d1 = pos.getX() + d0 + 1.0D;
 			}
 
 			if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube(worldIn, pos)) {
-				d1 = (double) pos.getX() - d0;
+				d1 = pos.getX() - d0;
 			}
 
 			float f1 = 1.0F * 0.6F + 0.4F;
 			float f2 = Math.max(0.0F, 1.0F * 1.0F * 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 1.0F * 1.0F * 0.6F - 0.7F);
-			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
+			if (d1 < pos.getX() || d1 > pos.getX() + 1 || d2 < 0.0D || d2 > pos.getY() + 1 || d3 < pos.getZ() || d3 > pos.getZ() + 1) {
 				worldIn.addParticle(new RedstoneParticleData(f1, f2, f3, 1.0F), d1, d2, d3, 0.0D, 0.0D, 0.0D);
 			}
 		}

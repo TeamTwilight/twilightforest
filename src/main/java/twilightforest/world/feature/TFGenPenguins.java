@@ -7,7 +7,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFPenguin;
 

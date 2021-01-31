@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
@@ -626,8 +625,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 //				}
 //				break;
 //		}
-		return initialState.with(LeverBlock.HORIZONTAL_FACING, direction)
-				.with(LeverBlock.FACE, face)
+		return initialState.with(HorizontalBlock.HORIZONTAL_FACING, direction)
+				.with(HorizontalFaceBlock.FACE, face)
 				.with(LeverBlock.POWERED, isPowered);
 	}
 

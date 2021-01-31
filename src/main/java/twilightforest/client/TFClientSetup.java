@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.resources.*;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,7 +12,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.loading.FMLPaths;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.LayerIce;
 import twilightforest.client.renderer.entity.LayerShields;
@@ -26,10 +24,6 @@ import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.ItemTFYetiArmor;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
-import twilightforest.world.TFDimensions;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFClientSetup {

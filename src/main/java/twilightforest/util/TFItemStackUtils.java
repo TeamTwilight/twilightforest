@@ -6,7 +6,6 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import twilightforest.TwilightForestMod;
 
 import java.util.function.Predicate;

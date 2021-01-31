@@ -10,8 +10,6 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.feature.TFBiomeFeatures;
-
 import java.util.Random;
 
 /**

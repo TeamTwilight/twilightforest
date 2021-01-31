@@ -135,8 +135,8 @@ public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends SegmentedMo
 		int var6 = entity.getAttackTimer();
 
 		if (var6 > 0) {
-			this.rightarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float) var6 - partialTicks, 10.0F);
-			this.leftarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float) var6 - partialTicks, 10.0F);
+			this.rightarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a(var6 - partialTicks, 10.0F);
+			this.leftarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a(var6 - partialTicks, 10.0F);
 		} else {
 			this.rightarm.rotateAngleX = (-0.2F + 1.5F * this.func_78172_a(limbSwing, 25.0F)) * limbSwingAmount;
 			this.leftarm.rotateAngleX = (-0.2F - 1.5F * this.func_78172_a(limbSwing, 25.0F)) * limbSwingAmount;

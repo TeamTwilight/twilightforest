@@ -32,7 +32,7 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 				}
 
 				boolean flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.func_234616_v_());
-				this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
+				this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), this.explosionPower, flag, flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
 				this.remove();
 			}
 		}
@@ -42,12 +42,12 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 	public void shoot(double x, double y, double z, float scale, float dist) {
 		Vector3d vec3d = (new Vector3d(x, y, z))
 				.normalize()
-				.add(this.rand.nextGaussian() * (double) 0.0075F * (double) dist, this.rand.nextGaussian() * (double) 0.0075F * (double) dist, this.rand.nextGaussian() * (double) 0.0075F * (double) dist)
-				.scale((double) scale);
+				.add(this.rand.nextGaussian() * 0.0075F * dist, this.rand.nextGaussian() * 0.0075F * dist, this.rand.nextGaussian() * 0.0075F * dist)
+				.scale(scale);
 		this.setMotion(vec3d);
 		float f = MathHelper.sqrt(horizontalMag(vec3d));
-		this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, z) * (double) (180F / (float) Math.PI));
-		this.rotationPitch = (float) (MathHelper.atan2(vec3d.y, (double) f) * (double) (180F / (float) Math.PI));
+		this.rotationYaw = (float) (MathHelper.atan2(vec3d.x, z) * (180F / (float) Math.PI));
+		this.rotationPitch = (float) (MathHelper.atan2(vec3d.y, f) * (180F / (float) Math.PI));
 		this.prevRotationYaw = this.rotationYaw;
 		this.prevRotationPitch = this.rotationPitch;
 	}

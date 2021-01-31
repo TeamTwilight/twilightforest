@@ -171,9 +171,6 @@
   "entity.boar.death": { "subtitle": "subtitles.entity.boar.death", "sounds": [ "mob/pig/death" ] },
   "entity.boar.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/pig/step1", "mob/pig/step2", "mob/pig/step3", "mob/pig/step4",  "mob/pig/step5" ] },
 
-
-
-  "entity.": { "subtitle": "subtitles.entity.", "sounds": [ "", "" ] },
   "random.slider": { "subtitle": "subtitles.random.slider", "sounds": [ "twilightforest:random/creakgo2" ] },
   "music.bg": { "sounds": [
 	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },

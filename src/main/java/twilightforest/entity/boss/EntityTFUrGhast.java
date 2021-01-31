@@ -224,9 +224,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		} else {
 			if (this.isInTantrum()) {
 				world.addParticle(TFParticleType.BOSS_TEAR.get(),
-						this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth() * 0.75D,
-						this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() * 0.5D,
-						this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth() * 0.75D,
+						this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.75D,
+						this.getPosY() + this.rand.nextDouble() * this.getHeight() * 0.5D,
+						this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.75D,
 						0, 0, 0
 				);
 			}
@@ -455,7 +455,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	protected void spitFireball() {
 		double offsetX = this.getAttackTarget().getPosX() - this.getPosX();
-		double offsetY = this.getAttackTarget().getBoundingBox().minY + (double) (this.getAttackTarget().getHeight() / 2.0F) - (this.getPosY() + (double) (this.getHeight() / 2.0F));
+		double offsetY = this.getAttackTarget().getBoundingBox().minY + this.getAttackTarget().getHeight() / 2.0F - (this.getPosY() + this.getHeight() / 2.0F);
 		double offsetZ = this.getAttackTarget().getPosZ() - this.getPosZ();
 
 		EntityTFUrGhastFireball entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX, offsetY, offsetZ);
@@ -464,7 +464,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		Vector3d lookVec = this.getLook(1.0F);
 		entityFireball.setPosition(
 				this.getPosX() + lookVec.x * shotSpawnDistance,
-				this.getPosY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
+				this.getPosY() + this.getHeight() / 2.0F + lookVec.y * shotSpawnDistance,
 				this.getPosZ() + lookVec.z * shotSpawnDistance
 		);
 		this.world.addEntity(entityFireball);
@@ -474,7 +474,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			entityFireball.explosionPower = 1;
 			entityFireball.setPosition(
 					this.getPosX() + lookVec.x * shotSpawnDistance,
-					this.getPosY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
+					this.getPosY() + this.getHeight() / 2.0F + lookVec.y * shotSpawnDistance,
 					this.getPosZ() + lookVec.z * shotSpawnDistance
 			);
 			this.world.addEntity(entityFireball);
@@ -588,7 +588,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
 		if (this.deathTime == 20 && !world.isRemote) {
-			TFTreasure.darktower_boss.generateChest((ServerWorld)world, findChestCoords(), false);
+			TFTreasure.darktower_boss.generateChest(world, findChestCoords(), false);
 		}
 	}
 

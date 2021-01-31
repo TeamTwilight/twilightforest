@@ -82,7 +82,7 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 		Optional<RegistryKey<Biome>> key = world.func_242406_i(pos);
 		if (Objects.equals(key, Optional.of(TFBiomes.tfSwamp))) {
 			// no light level check
-			return world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.canSpawnOn(type, world, reason, pos, rand);
+			return world.getDifficulty() != Difficulty.PEACEFUL && MobEntity.canSpawnOn(type, world, reason, pos, rand);
 		} else {
 			return MonsterEntity.canMonsterSpawn(type, world, reason, pos, rand);
 		}

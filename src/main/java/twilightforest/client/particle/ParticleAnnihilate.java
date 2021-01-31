@@ -24,7 +24,7 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 		this.particleScale *= scale;
 		this.initialParticleScale = this.particleScale;
 		this.maxAge = (int) (60.0D / (Math.random() * 0.8D + 0.6D));
-		this.maxAge = (int) ((float) this.maxAge * scale);
+		this.maxAge = (int) (this.maxAge * scale);
 		this.canCollide = true;
 	}
 

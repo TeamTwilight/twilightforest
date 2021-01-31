@@ -4,7 +4,6 @@ import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -85,14 +84,14 @@ public class FeatureUtil {
 				for (int y = 1; y <= yRadius; y++) {
 					float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
-					if (xzSquare + ((((float) y - verticalBias) * ((float) y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
+					if (xzSquare + (((y - verticalBias) * (y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
 						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
 						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
 					}
 
-					if (xzSquare + ((((float) y + verticalBias) * ((float) y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
+					if (xzSquare + (((y + verticalBias) * (y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
 						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);

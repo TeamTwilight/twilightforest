@@ -10,8 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import twilightforest.enums.NagastoneVariant;
 
-import javax.annotation.Nullable;
-
 public class BlockTFNagastone extends Block {
 
 	public static final EnumProperty<NagastoneVariant> VARIANT = EnumProperty.create("variant", NagastoneVariant.class);

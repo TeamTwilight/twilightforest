@@ -5,7 +5,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;

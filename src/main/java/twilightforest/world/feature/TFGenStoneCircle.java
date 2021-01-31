@@ -8,7 +8,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;

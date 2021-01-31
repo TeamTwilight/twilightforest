@@ -4,16 +4,11 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.shield.IShieldCapability;
-
-import java.util.Locale;
 
 public class ShieldCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {

@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 

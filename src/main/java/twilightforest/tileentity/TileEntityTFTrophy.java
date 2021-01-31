@@ -5,7 +5,6 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
 public class TileEntityTFTrophy extends TileEntity implements ITickableTileEntity {
@@ -28,6 +27,6 @@ public class TileEntityTFTrophy extends TileEntity implements ITickableTileEntit
 
 	@OnlyIn(Dist.CLIENT)
 	public float getAnimationProgress(float time) {
-		return this.animated ? (float) this.animatedTicks + time : (float) this.animatedTicks;
+		return this.animated ? this.animatedTicks + time : (float) this.animatedTicks;
 	}
 }

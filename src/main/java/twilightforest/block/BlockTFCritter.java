@@ -3,7 +3,6 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -16,11 +15,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public abstract class BlockTFCritter extends DirectionalBlock {
 	private final float WIDTH = getWidth();

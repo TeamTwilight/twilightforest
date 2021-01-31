@@ -85,6 +85,6 @@ public class EntityTFKingSpider extends SpiderEntity {
 
 	@Override
 	public double getMountedYOffset() {
-		return (double) this.getHeight() * 0.75D;
+		return this.getHeight() * 0.75D;
 	}
 }

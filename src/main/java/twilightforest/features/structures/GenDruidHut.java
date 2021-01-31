@@ -21,7 +21,6 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;

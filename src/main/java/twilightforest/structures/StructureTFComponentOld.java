@@ -14,7 +14,6 @@ import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.Heightmap;
@@ -630,7 +629,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 				return null;
 			}
 
-			structurecomponent = (StructurePiece) iterator.next();
+			structurecomponent = iterator.next();
 		}
 		while (structurecomponent == exclude || structurecomponent.getBoundingBox() == null || !structurecomponent.getBoundingBox().intersectsWith(toCheck));
 
