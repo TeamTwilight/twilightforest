@@ -1425,7 +1425,16 @@
       }
     ]
   ],
-  "starts": [],
+  "starts": [
+    {
+      "config": {},
+      "type": "twilightforest:courtyard"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:courtyard"
+    }
+  ],
   "spawners": {
     "monster": [
       {

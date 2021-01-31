@@ -106,12 +106,6 @@ public class EntityTFTinyBird extends EntityTFBird {
 		return this.getHeight() * 0.7F;
 	}
 
-	//TODO: Move to Renderer?
-//	@Override
-//	public float getRenderSizeModifier() {
-//		return 0.3F;
-//	}
-
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return false;

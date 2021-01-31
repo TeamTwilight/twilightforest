@@ -65,12 +65,6 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		// Replace with one that doesn't care about light
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
-
-	//TODO: Move to renderer?
-//	@Override
-//	public float getRenderSizeModifier() {
-//		return 0.5F;
-//	}
 	
 	@Override
 	protected SoundEvent getAmbientSound() {

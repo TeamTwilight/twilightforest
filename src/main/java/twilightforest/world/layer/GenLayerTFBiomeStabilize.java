@@ -63,11 +63,11 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 //	}
 
 	@Override
-	public int apply(IExtendedNoiseRandom<?> iExtendedNoiseRandom, IArea iArea, int dx, int dz) {
-		int offX = getOffsetX(dx);
-		int offZ = getOffsetZ(dz);
-		int centerX = ((dx + offX + 1) & 0xFFFFFFFC) - offX;
-		int centerZ = ((dz + offZ + 1) & 0xFFFFFFFC) - offZ;
+	public int apply(IExtendedNoiseRandom<?> iExtendedNoiseRandom, IArea iArea, int x, int z) {
+		int offX = getOffsetX(x << 4);
+		int offZ = getOffsetZ(z << 4);
+		int centerX = ((x + offX + 1) & -4) - offX;
+		int centerZ = ((z + offZ + 1) & -4) - offZ;
 
 //            	if (dx == centerX && dz == centerZ)
 //            	{
@@ -75,12 +75,12 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 ////            		output[dx + dz * width] = BiomeLibrary.glacier.biomeID;
 //            	}
 //            	else
-		if (dx <= centerX + 1 && dx >= centerX - 1 && dz <= centerZ + 1 && dz >= centerZ - 1) {
-			return iArea.getValue(centerX + 1, centerZ + 1);
+		if (x <= centerX + 1 && x >= centerX - 1 && z <= centerZ + 1 && z >= centerZ - 1) {
+			return iArea.getValue(centerX, centerZ);
 //            		output[dx + dz * width] = Biome.desert.biomeID;
 //            		output[dx + dz * width] = input[dx + 1 + (dz + 1) * nwidth];
 		} else {
-			return iArea.getValue(dx, dz);
+			return iArea.getValue(x, z);
 		}
 	}
 }

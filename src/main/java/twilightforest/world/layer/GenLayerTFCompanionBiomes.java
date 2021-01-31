@@ -1,27 +1,34 @@
 package twilightforest.world.layer;
 
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.world.TFBiomeProvider;
 
 public enum GenLayerTFCompanionBiomes implements ICastleTransformer {
 	INSTANCE;
 
 	GenLayerTFCompanionBiomes() { }
 
+	private Registry<Biome> registry;
+
+	public GenLayerTFCompanionBiomes setup(Registry<Biome> registry) {
+		this.registry = registry;
+		return this;
+	}
 
 	@Override
 	public int apply(INoiseRandom noise, int up, int left, int down, int right, int center) {
-		// FIXME oh god
-		int fireSwamp        = 0;//Registry.BIOME.getId(TFBiomes.fireSwamp.get());
-		int swamp            = 0;//Registry.BIOME.getId(TFBiomes.tfSwamp.get());
-		int glacier          = 0;//Registry.BIOME.getId(TFBiomes.glacier.get());
-		int snowyForest      = 0;//Registry.BIOME.getId(TFBiomes.snowy_forest.get());
-		int darkForestCenter = 0;//Registry.BIOME.getId(TFBiomes.darkForestCenter.get());
-		int darkForest       = 0;//Registry.BIOME.getId(TFBiomes.darkForest.get());
-		int highlandsCenter  = 0;//Registry.BIOME.getId(TFBiomes.highlandsCenter.get());
-		int highlands        = 0;//Registry.BIOME.getId(TFBiomes.highlands.get());
+		int fireSwamp        = TFBiomeProvider.getBiomeId(TFBiomes.fireSwamp, registry);
+		int swamp            = TFBiomeProvider.getBiomeId(TFBiomes.tfSwamp, registry);
+		int glacier          = TFBiomeProvider.getBiomeId(TFBiomes.glacier, registry);
+		int snowyForest      = TFBiomeProvider.getBiomeId(TFBiomes.snowy_forest, registry);
+		int darkForestCenter = TFBiomeProvider.getBiomeId(TFBiomes.darkForestCenter, registry);
+		int darkForest       = TFBiomeProvider.getBiomeId(TFBiomes.darkForest, registry);
+		int highlandsCenter  = TFBiomeProvider.getBiomeId(TFBiomes.finalPlateau, registry);
+		int highlands        = TFBiomeProvider.getBiomeId(TFBiomes.highlands, registry);
 
 		if (isKey(fireSwamp, center, right, left, up, down)) {
 			return swamp;

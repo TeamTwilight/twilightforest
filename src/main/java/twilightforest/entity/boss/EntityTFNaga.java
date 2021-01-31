@@ -78,7 +78,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		this.ignoreFrustumCheck = true;
 
 		for (int i = 0; i < bodySegments.length; i++) {
-			bodySegments[i] = TFEntities.naga_segment.create(world);
+			bodySegments[i] = TFEntities.naga_segment.create(world).init(this);
 		}
 
 		this.goNormal();

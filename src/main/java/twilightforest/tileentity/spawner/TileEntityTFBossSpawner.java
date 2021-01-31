@@ -7,6 +7,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.server.ServerWorld;
 
 public abstract class TileEntityTFBossSpawner<T extends MobEntity> extends TileEntity implements ITickableTileEntity {
 
@@ -39,7 +40,7 @@ public abstract class TileEntityTFBossSpawner<T extends MobEntity> extends TileE
 			world.addParticle(ParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		} else {
 			if (world.getDifficulty() != Difficulty.PEACEFUL) {
-				if (spawnMyBoss()) {
+				if (spawnMyBoss((ServerWorld)world)) {
 					world.destroyBlock(pos, false);
 					spawnedBoss = true;
 				}
@@ -47,15 +48,12 @@ public abstract class TileEntityTFBossSpawner<T extends MobEntity> extends TileE
 		}
 	}
 
-	protected boolean spawnMyBoss() {
-		if (!(world instanceof IServerWorld))
-			return false; // FIXME Dirty fix! Make a better fix! Check out how Vanilla Mob Spawners handle this!
-
+	protected boolean spawnMyBoss(IServerWorld world) {
 		// create creature
 		T myCreature = makeMyCreature();
 
-		myCreature.moveToBlockPosAndAngles(pos, world.rand.nextFloat() * 360F, 0.0F);
-		myCreature.onInitialSpawn((IServerWorld) world, world.getDifficultyForLocation(pos), SpawnReason.SPAWNER, null, null);
+		myCreature.moveToBlockPosAndAngles(pos, world.getWorld().rand.nextFloat() * 360F, 0.0F);
+		myCreature.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.SPAWNER, null, null);
 
 		// set creature's home to this
 		initializeCreature(myCreature);

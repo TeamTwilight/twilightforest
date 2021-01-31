@@ -58,7 +58,6 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 //		return TFGenHollowTree.canGrowInto(blockType);
 //	}
 
-	//TODO: Check the logic here
 	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, MutableBoundingBox mbb, T config) {
 		Set<BlockPos> branchSet = Sets.newHashSet();
 		Set<BlockPos> rootSet = Sets.newHashSet();

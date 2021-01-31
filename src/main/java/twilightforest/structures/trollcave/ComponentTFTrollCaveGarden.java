@@ -8,7 +8,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.structure.StructureManager;
@@ -25,8 +24,8 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 	private ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), FeatureSpread.func_242252_a(5), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
 	private ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.DIRT.getDefaultState(), FeatureSpread.func_242252_a(5), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
-	//private ConfiguredFeature<?,?> bigRedMushroomGen = Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_RED_MUSHROOM);
-	//private ConfiguredFeature<?,?> bigBrownMushroomGen = Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_BROWN_MUSHROOM);
+	private ConfiguredFeature<?,?> bigRedMushroomGen = Features.HUGE_RED_MUSHROOM;
+	private ConfiguredFeature<?,?> bigBrownMushroomGen = Features.HUGE_BROWN_MUSHROOM;
 	private ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
 	public ComponentTFTrollCaveGarden(TemplateManager manager, CompoundNBT nbt) {
@@ -91,7 +90,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		// mushrooms!
 		for (int i = 0; i < 64; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			//FIXME generate(world, manager, generator, rand.nextBoolean() ? bigBrownMushroomGen : bigRedMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+			generate(world, manager, generator, rand.nextBoolean() ? bigBrownMushroomGen : bigRedMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
 		}
 
 		// stone stalactites!

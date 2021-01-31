@@ -50,6 +50,12 @@ public class EntityTFCastleGuardian extends CreatureEntity { // Not exactly livi
         return this.getBoundingBox();
     }*/
 
+    // To go with the fix me above. I think this is the solution?
+    @Override
+    public boolean func_241845_aY() {
+        return true;
+    }
+
     @Override
     public boolean canBeCollidedWith() {
         return true;

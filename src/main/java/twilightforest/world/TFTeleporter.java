@@ -42,7 +42,8 @@ public class TFTeleporter implements ITeleporter {
 	private static final Object2LongMap<ColumnPos> columnMap = new Object2LongOpenHashMap<>();
 
 	@Nullable
-	public static PortalInfo reposition(Entity entity, ServerWorld dest) {
+	@Override
+	public PortalInfo getPortalInfo(Entity entity, ServerWorld dest, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
 		PortalInfo pos;
 		if ((pos = placeInExistingPortal(dest, entity, entity.getPosition(), entity instanceof PlayerEntity)) == null) {
 			pos = moveToSafeCoords(dest, entity);
@@ -494,13 +495,6 @@ public class TFTeleporter implements ITeleporter {
 	public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
 		entity.fallDistance = 0;
 		return repositionEntity.apply(false);
-	}
-
-	@Override
-	public boolean isVanilla() {
-		// Broken by https://github.com/MinecraftForge/MinecraftForge/pull/7296 apparently
-		// TODO Remove when https://github.com/MinecraftForge/MinecraftForge/pull/7317 gets merged
-		return true;
 	}
 
 	static class PortalPosition {

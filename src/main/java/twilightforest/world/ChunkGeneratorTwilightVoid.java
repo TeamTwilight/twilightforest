@@ -14,6 +14,8 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
+import java.util.function.Supplier;
+
 public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 	public static final Codec<ChunkGeneratorTwilightVoid> codecVoidChunk = null; /* FIXME RecordCodecBuilder.create((instance) ->
@@ -27,10 +29,10 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	private final long seed;
 	protected final DimensionSettings dimensionSettings;
 
-	public ChunkGeneratorTwilightVoid(BiomeProvider provider, long seed, DimensionSettings settings) {
+	public ChunkGeneratorTwilightVoid(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
 		super(provider, seed, settings, false);
 		this.seed = seed;
-		this.dimensionSettings = settings;
+		this.dimensionSettings = settings.get();
 	}
 
 	@Override

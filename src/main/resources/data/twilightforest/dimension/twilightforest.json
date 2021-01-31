@@ -50,50 +50,7 @@
 			"default_fluid": { "Name": "minecraft:water", "Properties": { "level": "0" }}
 		},
 		"biome_source": {
-			"type": "minecraft:checkerboard",
-			"scale": 2,
-			"biomes": [
-				"twilightforest:forest",
-				"twilightforest:forest",
-				"twilightforest:dense_forest",
-				"twilightforest:dense_forest",
-				"twilightforest:firefly_forest",
-				"twilightforest:firefly_forest",
-				"twilightforest:clearing",
-				"twilightforest:clearing",
-				"twilightforest:oak_savannah",
-				"twilightforest:oak_savannah",
-				"twilightforest:mushroom_forest",
-				"twilightforest:mushroom_forest",
-				"twilightforest:dense_mushroom_forest",
-				"twilightforest:dense_mushroom_forest",
-				"twilightforest:spooky_forest",
-				"twilightforest:spooky_forest",
-				"twilightforest:enchanted_forest",
-				"twilightforest:enchanted_forest",
-				"twilightforest:stream",
-				"twilightforest:stream",
-				"twilightforest:lake",
-				"twilightforest:lake",
-				"twilightforest:swamp",
-				"twilightforest:swamp",
-				"twilightforest:fire_swamp",
-				"twilightforest:fire_swamp",
-				"twilightforest:dark_forest",
-				"twilightforest:dark_forest",
-				"twilightforest:dark_forest_center",
-				"twilightforest:dark_forest_center",
-				"twilightforest:snowy_forest",
-				"twilightforest:snowy_forest",
-				"twilightforest:glacier",
-				"twilightforest:glacier",
-				"twilightforest:highlands",
-				"twilightforest:highlands",
-				"twilightforest:thornlands",
-				"twilightforest:thornlands",
-				"twilightforest:final_plateau",
-				"twilightforest:final_plateau"
-			]
+			"type": "twilightforest:grid"
 		}
 	}
 }

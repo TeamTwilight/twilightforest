@@ -989,7 +989,7 @@
   "player_spawn_friendly": false,
   "forge:registry_name": "twilightforest:glacier",
   "precipitation": "snow",
-  "temperature": 0.0,
+  "temperature": 0.8,
   "downfall": 0.1,
   "category": "icy",
   "depth": 0.1,

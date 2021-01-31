@@ -8,12 +8,10 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
 public class ComponentNagaCourtyardWallPadder extends ComponentNagaCourtyardWallAbstract {
-    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardWallPadder(TemplateManager manager, CompoundNBT nbt) {
-        super(NagaCourtyardPieces.TFNCWP, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding"), new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding_decayed"));
+        super(manager, NagaCourtyardPieces.TFNCWP, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding"), new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding_decayed"));
     }
 
-    @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardWallPadder(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(NagaCourtyardPieces.TFNCWP, feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding"), new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_padding_decayed"));
     }

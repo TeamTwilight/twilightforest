@@ -55,12 +55,6 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 		arcticArmorModel.put(EquipmentSlotType.FEET, new ModelTFArcticArmor(0.55F));
 	}
 
-	//TODO 1.14: No substitute?
-//	@Override
-//	public boolean hasOverlay(ItemStack stack) {
-//		return getColor(stack) != 0xFFFFFF;
-//	}
-
 	@Override
 	public boolean hasColor(ItemStack stack) {
 		CompoundNBT CompoundNBT = stack.getTag();

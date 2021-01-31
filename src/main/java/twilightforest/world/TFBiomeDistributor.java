@@ -10,10 +10,8 @@ import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.world.layer.*;
 
-import java.util.List;
 import java.util.function.LongFunction;
 
 public class TFBiomeDistributor extends BiomeProvider {
@@ -69,7 +67,7 @@ public class TFBiomeDistributor extends BiomeProvider {
 
         long iterativeSeed = 1000L;
 
-        IAreaFactory<LazyArea> biomes = new GenLayerTFBiomes().apply(seed.apply(1L));
+        IAreaFactory<LazyArea> biomes = GenLayerTFBiomes.INSTANCE.apply(seed.apply(1L));
         biomes = GenLayerTFMedian.INSTANCE.apply(seed.apply(iterativeSeed++), biomes);
         biomes = GenLayerTFMedian.INSTANCE.apply(seed.apply(iterativeSeed++), biomes);
 

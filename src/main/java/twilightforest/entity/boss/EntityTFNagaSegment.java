@@ -30,6 +30,11 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 		this.ignoreFrustumCheck = true;
 	}
 
+	EntityTFNagaSegment init(EntityTFNaga parent) {
+		naga = parent;
+		return this;
+	}
+
 	@Override
 	public boolean attackEntityFrom(DamageSource src, float damage) {
 		return !isInvisible() && super.attackEntityFrom(src, damage * 2F / 3F);

@@ -22,7 +22,6 @@ import net.minecraft.world.server.ServerWorld;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-//TODO: Evaluate placement logic. I feel like something drastic happened
 public abstract class BlockTFCritter extends DirectionalBlock {
 	private final float WIDTH = getWidth();
 

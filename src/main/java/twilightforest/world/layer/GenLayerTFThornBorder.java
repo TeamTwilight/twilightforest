@@ -1,24 +1,33 @@
 package twilightforest.world.layer;
 
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.world.TFBiomeProvider;
 
 public enum GenLayerTFThornBorder implements IThornsTransformer {
 	INSTANCE;
 
+	private Registry<Biome> registry;
+
 	GenLayerTFThornBorder() { }
+
+	public GenLayerTFThornBorder setup(Registry<Biome> registry) {
+		this.registry = registry;
+		return this;
+	}
 
 	@Override
 	public int apply(INoiseRandom noise, int up, int left, int down, int right, int center, int nw, int sw, int se, int ne) {
-		/*int highlandsCenter = Registry.BIOME.getId(TFBiomes.highlandsCenter.get());
-		int thornlands      = Registry.BIOME.getId(TFBiomes.thornlands.get());
+		int highlandsCenter = TFBiomeProvider.getBiomeId(TFBiomes.finalPlateau, registry);
+		int thornlands      = TFBiomeProvider.getBiomeId(TFBiomes.thornlands, registry);
 
 		if (onBorder(highlandsCenter, center, right, left, up, down)) {
 			return thornlands;
 		} else if (onBorder(highlandsCenter, center, ne, nw, se, sw)) {
 			return thornlands;
-		} else*/ {
+		} else {
 			return center;
 		}
 	}

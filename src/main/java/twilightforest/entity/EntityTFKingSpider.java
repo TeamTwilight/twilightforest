@@ -38,12 +38,6 @@ public class EntityTFKingSpider extends SpiderEntity {
 				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35D)
 				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D);
 	}
-
-	//TODO: Moved to renderer?
-//	@Override
-//	public float getRenderSizeModifier() {
-//		return 2.0F;
-//	}
 	
 	@Override
 	protected SoundEvent getAmbientSound() {

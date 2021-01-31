@@ -9,15 +9,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
+import twilightforest.features.TwilightFeatures;
 
 import java.util.List;
 import java.util.Random;
@@ -145,7 +145,6 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	}
 
 	private void spawnATree(ISeedReader world, StructureManager manager, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
-		/* FIXME
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
@@ -158,30 +157,30 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 				case 0:
 				default:
 					// oak tree
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG); //TODO: minHeight
+					treeGen = Features.OAK;
 					break;
 				case 1:
 					// jungle tree
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: minHeight
+					treeGen = Features.JUNGLE_TREE;
 					break;
 				case 2:
 					// birch
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG); //TODO: minHeight
+					treeGen = Features.BIRCH;
 					break;
 				case 3:
-					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.OAK_TREE); //TODO: minHeight
+					treeGen = TwilightFeatures.ConfiguredFeatures.TWILIGHT_OAK;
 					break;
 				case 4:
-					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.RAINBOAK_TREE);
+					treeGen = TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE;
 					break;
 			}
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.func_236265_a_(world, manager, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.getRandom(), pos)) {
+				if (treeGen.generate(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.getRandom(), pos)) {
 					break;
 				}
 			}
-		}*/
+		}
 	}
 
 	private void placeBalconyPillar(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {

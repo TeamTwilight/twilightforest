@@ -30,26 +30,29 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFConfig;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
 public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
-	public static final Codec<ChunkGeneratorTwilightForest> codecTFChunk = null; /* FIXME RecordCodecBuilder.create((instance) ->
+	public static final Codec<ChunkGeneratorTwilightForest> codecTFChunk = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					BiomeProvider.PROVIDER_CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
-					Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
-					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter((obj) -> obj.dimensionSettings))
-					.apply(instance, instance.stable(ChunkGeneratorTwilightForest::new))); */
+					BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
+					Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
+					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter(ChunkGeneratorTwilightForest::getDimensionSettings))
+					.apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
 
-	public ChunkGeneratorTwilightForest(BiomeProvider provider, long seed, DimensionSettings settings) {
+	private long seed;
+
+	public ChunkGeneratorTwilightForest(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
 		super(provider, seed, settings, true);
+		this.seed = seed;
 	}
 
 	@Override
@@ -59,7 +62,11 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 	@Override
 	public ChunkGenerator func_230349_a_(long l) {
-		return new ChunkGeneratorTwilightForest(this.biomeProvider.getBiomeProvider(l), l, this.dimensionSettings);
+		return new ChunkGeneratorTwilightForest(this.biomeProvider.getBiomeProvider(l), l, () -> this.dimensionSettings);
+	}
+
+	private Supplier<DimensionSettings> getDimensionSettings() {
+		return () -> this.dimensionSettings;
 	}
 
 	@Override

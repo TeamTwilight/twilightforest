@@ -205,13 +205,6 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 		}
 	}
 
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.TRANSLUCENT;
-//	}
-
 	@Override
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		if (state == this.getDefaultState()) {

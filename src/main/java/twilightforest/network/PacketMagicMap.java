@@ -57,7 +57,7 @@ public class PacketMagicMap {
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
 					MapItemRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapItemRenderer();
-					String s = FilledMapItem.getMapName(message.inner.getMapId());
+					String s = ItemTFMagicMap.getMapName(message.inner.getMapId());
 					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(Minecraft.getInstance().world, s);
 					if (mapdata == null) {
 						mapdata = new TFMagicMapData(s);

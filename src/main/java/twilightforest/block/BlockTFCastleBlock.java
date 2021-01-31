@@ -36,11 +36,4 @@ public class BlockTFCastleBlock extends Block {
 
 		super.harvestBlock(world, player, pos, state, te, stack);
 	}
-
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

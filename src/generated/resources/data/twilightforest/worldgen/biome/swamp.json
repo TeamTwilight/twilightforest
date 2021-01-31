@@ -7,6 +7,8 @@
       "offset": 2.0
     },
     "sky_color": 2105930,
+    "foliage_color": 4809015,
+    "grass_color": 6056270,
     "fog_color": 12648408,
     "water_color": 14745518,
     "water_fog_color": 329011
@@ -1108,6 +1110,6 @@
   "temperature": 0.8,
   "downfall": 0.9,
   "category": "swamp",
-  "depth": -0.125,
-  "scale": 0.125
+  "depth": -0.25,
+  "scale": 0.25
 }

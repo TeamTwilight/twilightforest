@@ -94,10 +94,4 @@ public class SlotTFGoblinUncrafting extends Slot {
 	public boolean isEnabled() {
 		return false;
 	}
-
-	//TODO: Doesn't exist?
-//	@Override
-//	public boolean isHere(IInventory inv, int slotIn) {
-//		return false;
-//	}
 }

@@ -44,7 +44,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		super(config);
 	}
 
-	// FIXME See if we can move this over to purely-datadriven @Override // Loosely based on WorldGenFossils
+	@Override // Loosely based on WorldGenFossils FIXME See if we can move this over to purely-datadriven
 	public boolean generate(ISeedReader world,  ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();

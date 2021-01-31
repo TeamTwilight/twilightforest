@@ -20,6 +20,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.INoiseGenerator;
 import net.minecraft.world.gen.ImprovedNoiseGenerator;
+import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.minecraft.world.gen.PerlinNoiseGenerator;
 import net.minecraft.world.gen.SimplexNoiseGenerator;
@@ -32,11 +33,12 @@ import twilightforest.TFFeature;
 import twilightforest.util.IntPair;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 // TODO: doc out all the vanilla copying
 // Actually, figure out how to get this back up again
-public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
+public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 	protected static final float[] field_222561_h = Util.make(new float[13824], (p_236094_0_) -> {
 		for(int i = 0; i < 24; ++i) {
@@ -93,22 +95,22 @@ public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 //	protected final Map<TFFeature, MapGenTFMajorFeature> featureGenerators = new EnumMap<>(TFFeature.class);
 //	protected final MapGenTFMajorFeature nothingGenerator = new MapGenTFMajorFeature();
 
-	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, DimensionSettings settings, boolean shouldGenerateBedrock) {
+	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings, boolean shouldGenerateBedrock) {
 		this(provider, seed, settings);
 
 		this.shouldGenerateBedrock = shouldGenerateBedrock;
 	}
 
-	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, DimensionSettings settings) {
-		super(provider, settings.getStructures());
+	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
+		super(provider, seed, settings);
 		this.seed = seed;
-		this.dimensionSettings = settings;
-		NoiseSettings noisesettings = settings.getNoise();
+		this.dimensionSettings = settings.get();
+		NoiseSettings noisesettings = dimensionSettings.getNoise();
 		this.field_236085_x_ = noisesettings.func_236169_a_();
 		this.verticalNoiseGranularity = noisesettings.func_236175_f_() * 4;
 		this.horizontalNoiseGranularity = noisesettings.func_236174_e_() * 4;
-		this.defaultBlock = settings.getDefaultBlock();
-		this.defaultFluid = settings.getDefaultFluid();
+		this.defaultBlock = dimensionSettings.getDefaultBlock();
+		this.defaultFluid = dimensionSettings.getDefaultFluid();
 		this.noiseSizeX = 16 / this.horizontalNoiseGranularity;
 		this.noiseSizeY = noisesettings.func_236169_a_() / this.verticalNoiseGranularity;
 		this.noiseSizeZ = 16 / this.horizontalNoiseGranularity;

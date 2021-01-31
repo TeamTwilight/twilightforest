@@ -13,6 +13,8 @@
       "probability": 0.2
     },
     "sky_color": 2105930,
+    "foliage_color": 6563343,
+    "grass_color": 5713443,
     "fog_color": 12648408,
     "water_color": 7089196,
     "water_fog_color": 329011

@@ -14,8 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
 import twilightforest.enums.BossVariant;
 import twilightforest.tileentity.TileEntityTFTrophy;
@@ -85,13 +83,11 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 	      return new TileEntityTFTrophy();
 	   }
 
-	   @OnlyIn(Dist.CLIENT)
-	   public BossVariant getVariant() {
-	      return this.variant;
-	   }
+	public BossVariant getVariant() {
+		return this.variant;
+	}
 
-	   public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-	      return false;
-	   }
-
+	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+		return false;
+	}
 }

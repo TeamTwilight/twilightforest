@@ -23,11 +23,13 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     protected BlockPos templatePosition = BlockPos.ZERO;
     protected BlockPos rotatedPosition;
     protected Template TEMPLATE;
+    public Runnable LAZY_TEMPLATE_LOADER;
 
-    public StructureTFComponentTemplate(IStructurePieceType piece, CompoundNBT nbt) {
+    public StructureTFComponentTemplate(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt) {
         super(piece, nbt);
         this.rotation = Rotation.NONE;
         this.mirror = Mirror.NONE;
+		LAZY_TEMPLATE_LOADER = () -> setup(manager);
     }
 
     public StructureTFComponentTemplate(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
@@ -51,13 +53,13 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
     }
 
-    public final void setup(TemplateManager templateManager, MinecraftServer server) {
-        loadTemplates(templateManager, server);
+    public final void setup(TemplateManager templateManager) {
+        loadTemplates(templateManager);
         setModifiedTemplatePositionFromRotation();
         setBoundingBoxFromTemplate(rotatedPosition);
     }
 
-    protected abstract void loadTemplates(TemplateManager templateManager, MinecraftServer server);
+    protected abstract void loadTemplates(TemplateManager templateManager);
 
     //TODO: See super
 //    @Override

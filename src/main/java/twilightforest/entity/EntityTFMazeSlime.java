@@ -30,12 +30,6 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		super(type, world);
 	}
 
-	//TODO: Do we need this?
-//	@Override
-//	protected SlimeEntity createInstance() {
-//		return new EntityTFMazeSlime(this.world);
-//	}
-
 	@Override
 	public void setSlimeSize(int size, boolean resetHealth) {
 		super.setSlimeSize(size, resetHealth);

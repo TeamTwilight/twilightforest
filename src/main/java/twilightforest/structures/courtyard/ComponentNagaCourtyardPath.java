@@ -22,18 +22,16 @@ public class ComponentNagaCourtyardPath extends StructureTFComponentTemplate {
 
     private static final ResourceLocation PATH = new ResourceLocation(TwilightForestMod.ID, "courtyard/pathway");
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardPath(TemplateManager manager, CompoundNBT nbt) {
-        super(NagaCourtyardPieces.TFNCPa, nbt);
+        super(manager, NagaCourtyardPieces.TFNCPa, nbt);
     }
 
-    @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardPath(TFFeature feature, int i, int x, int y, int z) {
         super(NagaCourtyardPieces.TFNCPa, feature, i, x, y, z, Rotation.NONE);
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
+    protected void loadTemplates(TemplateManager templateManager) {
         TEMPLATE = templateManager.getTemplate(PATH);
     }
 

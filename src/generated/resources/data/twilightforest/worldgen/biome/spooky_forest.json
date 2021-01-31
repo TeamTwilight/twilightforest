@@ -7,6 +7,8 @@
       "offset": 2.0
     },
     "sky_color": 2105930,
+    "foliage_color": 16745729,
+    "grass_color": 12865827,
     "fog_color": 12648408,
     "water_color": 16421137,
     "water_fog_color": 329011
@@ -1425,7 +1427,16 @@
       }
     ]
   ],
-  "starts": [],
+  "starts": [
+    {
+      "config": {},
+      "type": "twilightforest:courtyard"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:courtyard"
+    }
+  ],
   "spawners": {
     "monster": [
       {

@@ -28,11 +28,6 @@ public class TFConfig {
 					comment("Settings that are not reversible without consequences.").
 					push("Dimension Settings");
 			{
-				DIMENSION.twilightForestSeed = builder.
-						translation(config + "dimension_seed").
-						worldRestart().
-						comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.").
-						define("twilightForestSeed", "");
 				DIMENSION.newPlayersSpawnInTF = builder.
 						translation(config + "spawn_in_tf").
 						comment("If true, players spawning for the first time will spawn in the Twilight Forest.").
@@ -244,7 +239,6 @@ public class TFConfig {
 
 		public static class Dimension {
 
-			public ForgeConfigSpec.ConfigValue<String> twilightForestSeed;
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;

@@ -5,6 +5,7 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -88,6 +89,8 @@ public class TwilightForestMod {
 		//TFBiomes.BIOMES.register(modbus);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
+		modbus.addGenericListener(Structure.class, TFStructures::register);
+		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);

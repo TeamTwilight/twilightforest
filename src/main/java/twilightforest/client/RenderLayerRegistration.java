@@ -86,5 +86,6 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_green.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_purple.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_orange.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.boss_spawner.get(), cutout);
 	}
 }

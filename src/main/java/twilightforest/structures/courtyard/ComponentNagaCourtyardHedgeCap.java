@@ -9,9 +9,8 @@ import twilightforest.TwilightForestMod;
 
 public class ComponentNagaCourtyardHedgeCap extends ComponentNagaCourtyardHedgeAbstract {
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardHedgeCap(TemplateManager manager, CompoundNBT nbt) {
-        super(NagaCourtyardPieces.TFNCCp, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_big"));
+        super(manager, NagaCourtyardPieces.TFNCCp, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_end_big"));
     }
 
     @SuppressWarnings("WeakerAccess")

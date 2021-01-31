@@ -8,8 +8,8 @@
     },
     "sky_color": 2105930,
     "fog_color": 12648408,
-    "water_color": 12648408,
-    "water_fog_color": 4159204
+    "water_color": 4159204,
+    "water_fog_color": 329011
   },
   "surface_builder": {
     "config": {
@@ -1475,7 +1475,12 @@
       }
     ]
   ],
-  "starts": [],
+  "starts": [
+    {
+      "config": {},
+      "type": "twilightforest:courtyard"
+    }
+  ],
   "spawners": {
     "monster": [
       {

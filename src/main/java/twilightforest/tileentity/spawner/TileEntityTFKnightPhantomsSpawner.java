@@ -29,10 +29,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner<E
 	}
 
 	@Override
-	protected boolean spawnMyBoss() {
-		if (!(world instanceof IServerWorld))
-			return false;
-
+	protected boolean spawnMyBoss(IServerWorld world) {
 		for (int i = spawned; i < COUNT; i++) {
 			// create creature
 			EntityTFKnightPhantom myCreature = makeMyCreature();
@@ -44,8 +41,8 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner<E
 			double ry = pos.getY();
 			double rz = pos.getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
 
-			myCreature.setLocationAndAngles(rx, ry, rz, world.rand.nextFloat() * 360F, 0.0F);
-			myCreature.onInitialSpawn((IServerWorld) world, world.getDifficultyForLocation(new BlockPos(myCreature.getPosition())), SpawnReason.SPAWNER, null, null);
+			myCreature.setLocationAndAngles(rx, ry, rz, world.getWorld().rand.nextFloat() * 360F, 0.0F);
+			myCreature.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(myCreature.getPosition())), SpawnReason.SPAWNER, null, null);
 
 			if(i == 5 && world.getDifficulty() == Difficulty.HARD){
 				myCreature.setItemStackToSlot(EquipmentSlotType.OFFHAND,new ItemStack(TFItems.knightmetal_shield.get()));

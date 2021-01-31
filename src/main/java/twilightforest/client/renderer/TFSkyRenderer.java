@@ -24,7 +24,6 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 	private final VertexFormat vertexBufferFormat = DefaultVertexFormats.POSITION;
 
 	public TFSkyRenderer() {
-		//vboEnabled = OpenGlHelper.useVbo();
 		generateStars();
 	}
 
@@ -32,15 +31,6 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void render(int ticks, float partialTicks, MatrixStack ms, ClientWorld world, Minecraft mc) {
-		// [VanillaCopy] Excerpt from RenderGlobal.loadRenderers as we don't get a callback
-		//TODO: Since loadRenderers doesn't appear to exist, might remove this block
-//		generateStars();
-//		boolean flag = this.vboEnabled;
-//		this.vboEnabled = OpenGlHelper.useVbo();
-//		if (flag != this.vboEnabled) {
-//			generateStars();
-//		}
-
 		WorldRenderer rg = mc.worldRenderer;
 
 		RenderSystem.disableTexture();
@@ -105,7 +95,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		ms.pop();
 		RenderSystem.disableTexture();
 		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
-		/** world.getWorldInfo().getVoidFogHeight() -> 27, because the sea level for TF is lower */
+		/** world.getWorldInfo().getVoidFogHeight() -> 27, because the sea level for TF is lower TODO: Keep an eye on Forge PR #7528*/
 		double d0 = mc.player.getEyePosition(partialTicks).y - 30;
 
 		if (d0 < 0.0D) {

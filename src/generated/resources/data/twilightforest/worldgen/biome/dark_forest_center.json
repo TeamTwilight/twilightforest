@@ -7,6 +7,8 @@
       "offset": 2.0
     },
     "sky_color": 2105930,
+    "foliage_color": 16351774,
+    "grass_color": 6714688,
     "fog_color": 12648408,
     "water_color": 4159204,
     "water_fog_color": 329011

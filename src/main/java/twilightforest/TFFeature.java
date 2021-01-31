@@ -1,6 +1,5 @@
 package twilightforest;
 
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.util.IntPair;
@@ -364,6 +364,20 @@ public enum TFFeature {
 //		}
 	};
 
+	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new HashMap<ResourceLocation, TFFeature>(){{
+		put(TFBiomes.darkForest.getLocation(), KNIGHT_STRONGHOLD);
+		put(TFBiomes.darkForestCenter.getLocation(), DARK_TOWER);
+		put(TFBiomes.deepMushrooms.getLocation(), MUSHROOM_TOWER);
+		put(TFBiomes.enchantedForest.getLocation(), QUEST_GROVE);
+		put(TFBiomes.finalPlateau.getLocation(), FINAL_CASTLE);
+		put(TFBiomes.fireSwamp.getLocation(), HYDRA_LAIR);
+		put(TFBiomes.glacier.getLocation(), ICE_TOWER);
+		put(TFBiomes.highlands.getLocation(), TROLL_CAVE);
+		put(TFBiomes.snowy_forest.getLocation(), YETI_CAVE);
+		put(TFBiomes.tfSwamp.getLocation(), LABYRINTH);
+		put(TFBiomes.tfLake.getLocation(), QUEST_ISLAND);
+	}};
+
 	//IStructurePieceTypes that can be referred to
 	//TODO: StructureStarts do not have their own piece. These are just here for reference's sake
 //	public static final IStructurePieceType TFHillS = registerPiece("TFHillS", StructureStartHollowHill::new);
@@ -550,26 +564,29 @@ public enum TFFeature {
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
 	public static TFFeature generateFeature(int chunkX, int chunkZ, ServerWorld world) {
-		// FIXME Remove block comment start-marker to enable debug
-		/*if (true) {
-			return NAGA_COURTYARD;
-		}//*/
-
 		// set the chunkX and chunkZ to the center of the biome
 		chunkX = Math.round(chunkX / 16F) * 16;
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
+		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed());
+	}
+
+	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
+		// FIXME Remove block comment start-marker to enable debug
+		/*if (true) {
+			return NAGA_COURTYARD;
+		}//*/
+
+		// set the chunkX and chunkZ to the center of the biome in case they arent already
+		chunkX = Math.round(chunkX / 16F) * 16;
+		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
-		//TODO: Collaterally blocked out due to null registry objects
-//		if (biomeAt instanceof TFBiomeBase) {
-//			TFFeature biomeFeature = ((TFBiomeBase) biomeAt).containedFeature;
-//			if (biomeFeature != NOTHING) {
-//				return biomeFeature;
-//			}
-//		}
+		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
+		if(biomeFeature != null)
+			return biomeFeature;
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
 		int regionOffsetZ = Math.abs((chunkZ + 64 >> 4) % 8);
@@ -586,7 +603,7 @@ public enum TFFeature {
 
 		// get random value
 		// okay, well that takes care of most special cases
-		switch (new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121).nextInt(16)) {
+		switch (new Random(seed + chunkX * 25117 + chunkZ * 151121).nextInt(16)) {
 			default:
 			case 0:
 			case 1:

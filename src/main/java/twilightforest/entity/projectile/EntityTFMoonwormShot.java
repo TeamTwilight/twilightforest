@@ -89,7 +89,6 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 				BlockPos pos = blockray.getPos().offset(blockray.getFace());
 				BlockState currentState = world.getBlockState(pos);
 
-				// TODO: PlayerEntity is nullable but in a protected constructor
 				DirectionalPlaceContext context = new DirectionalPlaceContext(world, pos, blockray.getFace(), ItemStack.EMPTY, blockray.getFace().getOpposite());
 				if (currentState.isReplaceable(context)) {
 					world.setBlockState(pos, TFBlocks.moonworm.get().getDefaultState().with(DirectionalBlock.FACING, ((BlockRayTraceResult) ray).getFace()));

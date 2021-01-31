@@ -96,7 +96,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(TFEntities.goblin_knight_upper, this.world);
 		upper.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
-		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag); //TODO: verify
+		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag);
 		this.world.addEntity(upper);
 		upper.startRiding(this);
 

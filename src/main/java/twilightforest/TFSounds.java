@@ -1,10 +1,13 @@
 package twilightforest;
 
+import net.minecraft.entity.passive.ParrotEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import twilightforest.entity.TFEntities;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class TFSounds {
@@ -361,45 +364,44 @@ public final class TFSounds {
 				MUSIC
 		);
 
-		//registerParrotSounds();
+		registerParrotSounds();
 	}
 
-	//TODO: Registering Parrot sounds are private, again
-	/*private static void registerParrotSounds() {
+	private static void registerParrotSounds() {
 
-		ParrotEntity.registerMimicSound(EntityTFKobold.class, KOBOLD_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFRedcap.class, REDCAP_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFRedcapSapper.class, REDCAP_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFBlockGoblin.class, REDCAP_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFBoggard.class, REDCAP_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFWraith.class, WRAITH_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFMosquitoSwarm.class, MOSQUITO_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFIceExploder.class, ICE_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFIceShooter.class, ICE_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFSnowGuardian.class, ICE_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFLoyalZombie.class, SoundEvents.E_PARROT_IM_ZOMBIE);
-		ParrotEntity.registerMimicSound(EntityTFMinotaur.class, MINOTAUR_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFKingSpider.class, SoundEvents.E_PARROT_IM_SPIDER);
-		ParrotEntity.registerMimicSound(EntityTFHedgeSpider.class, SoundEvents.E_PARROT_IM_SPIDER);
-		ParrotEntity.registerMimicSound(EntityTFSwarmSpider.class, SoundEvents.E_PARROT_IM_SPIDER);
-		ParrotEntity.registerMimicSound(EntityTFTowerBroodling.class, SoundEvents.E_PARROT_IM_SPIDER);
-		ParrotEntity.registerMimicSound(EntityTFHostileWolf.class, MISTWOLF_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFWinterWolf.class, MISTWOLF_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFSkeletonDruid.class, SoundEvents.E_PARROT_IM_SKELETON);
-		ParrotEntity.registerMimicSound(EntityTFTowerGhast.class, SoundEvents.E_PARROT_IM_GHAST);
-		ParrotEntity.registerMimicSound(EntityTFMiniGhast.class, SoundEvents.E_PARROT_IM_GHAST);
-		ParrotEntity.registerMimicSound(EntityTFTowerTermite.class, SoundEvents.E_PARROT_IM_SILVERFISH);
-		ParrotEntity.registerMimicSound(EntityTFDeathTome.class, TOME_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.kobold, KOBOLD_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.redcap, REDCAP_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.redcap_sapper, REDCAP_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.blockchain_goblin, REDCAP_PARROT);
+//		ParrotEntity.IMITATION_SOUND_EVENTS.put(EntityTFBoggard.class, REDCAP_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.wraith, WRAITH_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.mosquito_swarm, MOSQUITO_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.unstable_ice_core, ICE_CORE_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.stable_ice_core, ICE_CORE_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.snow_guardian, ICE_CORE_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.loyal_zombie, SoundEvents.ENTITY_PARROT_IMITATE_ZOMBIE);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.minotaur, MINOTAUR_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.king_spider, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.hedge_spider, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.swarm_spider, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.tower_broodling, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.mist_wolf, MISTWOLF_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.winter_wolf, MISTWOLF_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.skeleton_druid, SoundEvents.ENTITY_PARROT_IMITATE_SKELETON);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.tower_ghast, SoundEvents.ENTITY_PARROT_IMITATE_GHAST);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.mini_ghast, SoundEvents.ENTITY_PARROT_IMITATE_GHAST);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.tower_termite, SoundEvents.ENTITY_PARROT_IMITATE_SILVERFISH);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.death_tome, TOME_PARROT);
 
-		ParrotEntity.registerMimicSound(EntityTFHydra.class, HYDRA_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFKnightPhantom.class, WRAITH_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFLich.class, SoundEvents.E_PARROT_IM_BLAZE);
-		ParrotEntity.registerMimicSound(EntityTFMinoshroom.class, MINOTAUR_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFNaga.class, NAGA_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFSnowQueen.class, ICE_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFUrGhast.class, SoundEvents.E_PARROT_IM_GHAST);
-		ParrotEntity.registerMimicSound(EntityTFYetiAlpha.class, ALPHAYETI_PARROT);
-	}*/
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.hydra, HYDRA_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.knight_phantom, WRAITH_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.lich, SoundEvents.ENTITY_PARROT_IMITATE_BLAZE);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.minoshroom, MINOTAUR_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.naga, NAGA_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.snow_queen, ICE_CORE_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.ur_ghast, SoundEvents.ENTITY_PARROT_IMITATE_GHAST);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.yeti_alpha, ALPHAYETI_PARROT);
+	}
 
 	private TFSounds() {}
 

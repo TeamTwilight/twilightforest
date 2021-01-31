@@ -1,3 +1,4 @@
 {
-  "portalinfo": "META-INF/asm/portalinfo.js"
+  "seed": "META-INF/asm/seed.js",
+  "maprendercontext": "META-INF/asm/maprendercontext.js"
 }
