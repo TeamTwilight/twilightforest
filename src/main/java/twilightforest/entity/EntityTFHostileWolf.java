@@ -88,6 +88,11 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return TFSounds.HOSTILE_WOLF_HURT;
 	}
+	
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.HOSTILE_WOLF_DEATH;
+	}
 
 	@Override
 	public boolean isBreedingItem(ItemStack stack) {

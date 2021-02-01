@@ -11,7 +11,6 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -279,7 +278,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 			if (collided instanceof LivingEntity && super.attackEntityAsMob(collided)) {
 				Vector3d motion = collided.getMotion();
 				collided.setMotion(motion.x, motion.y + 0.4, motion.z);
-				this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+				this.playSound(TFSounds.SNOW_QUEEN_ATTACK, 1.0F, 1.0F);
 			}
 		}
 	}

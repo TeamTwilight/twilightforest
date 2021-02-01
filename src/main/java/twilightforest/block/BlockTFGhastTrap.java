@@ -12,6 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.tileentity.*;
 
@@ -47,7 +48,7 @@ public class BlockTFGhastTrap extends Block {
 			}
 
 			world.setBlockState(pos, state.with(ACTIVE, true));
-			world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.JET_START, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			world.addBlockEvent(pos, this, ACTIVATE_EVENT, 0);
 		}
 	}

@@ -11,7 +11,6 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
@@ -77,7 +76,7 @@ public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttack
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
 		snowball.shoot(d1, d2 + f, d3, 1.6F, 0.0F);
 
-		this.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+		this.playSound(TFSounds.ICE_CORE_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.world.addEntity(snowball);
 	}
 }

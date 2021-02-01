@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -28,6 +29,8 @@ import twilightforest.entity.ai.EntityAITFBreathAttack;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker {
 
@@ -104,6 +107,13 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 	}
 	
 	@Override
+	public void setAttackTarget(@Nullable LivingEntity entity) {
+		if (entity != null && entity != getAttackTarget())
+			playSound(TFSounds.WINTER_WOLF_TARGET, 4F, getSoundPitch());
+		super.setAttackTarget(entity);
+	}
+	
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.WINTER_WOLF_IDLE;
 	}
@@ -115,6 +125,11 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 
 	private void playBreathSound() {
 		playSound(TFSounds.WINTER_WOLF_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.WINTER_WOLF_DEATH;
 	}
 
 	@Override

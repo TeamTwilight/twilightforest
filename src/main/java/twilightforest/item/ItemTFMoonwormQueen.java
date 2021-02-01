@@ -7,7 +7,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -15,6 +14,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
 import twilightforest.entity.TFEntities;
@@ -98,7 +98,7 @@ public class ItemTFMoonwormQueen extends Item {
 			if (fired) {
 				stack.damageItem(2, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 
-				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.BLOCK_SLIME_BLOCK_HIT, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
+				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.MOONWORM_SQUISH, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
 			}
 		}
 

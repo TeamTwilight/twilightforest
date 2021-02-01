@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -19,6 +18,8 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.commons.lang3.tuple.Pair;
+
+import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.WorldUtil;
@@ -78,7 +79,7 @@ public class ItemTFCrumbleHorn extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		player.setActiveHand(hand);
-		player.playSound(SoundEvents.ENTITY_SHEEP_AMBIENT, 1.0F, 0.8F);
+		player.playSound(TFSounds.QUEST_RAM_AMBIENT, 1.0F, 0.8F);
 		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
@@ -91,7 +92,7 @@ public class ItemTFCrumbleHorn extends Item {
 				stack.damageItem(crumbled, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 			}
 
-			living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.ENTITY_SHEEP_AMBIENT, living.getSoundCategory(), 1.0F, 0.8F);
+			living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.QUEST_RAM_AMBIENT, living.getSoundCategory(), 1.0F, 0.8F);
 		}
 	}
 

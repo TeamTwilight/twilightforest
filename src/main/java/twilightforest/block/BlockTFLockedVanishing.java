@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
 
 public class BlockTFLockedVanishing extends BlockTFVanishingBlock {
@@ -47,7 +48,7 @@ public class BlockTFLockedVanishing extends BlockTFVanishingBlock {
 			if (!world.isRemote) {
 				stack.shrink(1);
 				world.setBlockState(pos, state.with(LOCKED, false));
-				world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+				world.playSound(null, pos, TFSounds.UNLOCK_VANISHING_BLOCK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			}
 			return ActionResultType.SUCCESS;
 		}

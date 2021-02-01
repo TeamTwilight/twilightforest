@@ -6,7 +6,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
@@ -559,7 +558,7 @@ public class HydraHeadContainer {
 	private void playSounds() {
 		if (headEntity.getState() == State.FLAMING && headEntity.ticksExisted % 5 == 0) {
 			// fire breathing!
-			headEntity.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F + headEntity.getRNG().nextFloat(), headEntity.getRNG().nextFloat() * 0.7F + 0.3F);
+			headEntity.playSound(TFSounds.HYDRA_SHOOT, 0.5F + headEntity.getRNG().nextFloat(), headEntity.getRNG().nextFloat() * 0.7F + 0.3F);
 		}
 		if (headEntity.getState() == State.ROAR_RAWR) {
 			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.getRNG().nextFloat() * 0.3F + 0.7F);

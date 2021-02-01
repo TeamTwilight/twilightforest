@@ -3,12 +3,12 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IServerWorld;
+import twilightforest.TFSounds;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.entity.boss.EntityTFLichMinion;
 import twilightforest.item.TFItems;
@@ -100,7 +100,7 @@ public class EntityAITFLichMinions extends Goal {
 			minion.setAttackTarget(targetedEntity);
 
 			minion.spawnExplosionParticle();
-			minion.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, ((lich.getRNG().nextFloat() - lich.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			minion.playSound(TFSounds.MINION_SUMMON, 1.0F, ((lich.getRNG().nextFloat() - lich.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
 			// make sparkles leading to it
 			lich.makeBlackMagicTrail(lich.getPosX(), lich.getPosY() + lich.getEyeHeight(), lich.getPosZ(), minionSpot.x, minionSpot.y + minion.getHeight() / 2.0, minionSpot.z);

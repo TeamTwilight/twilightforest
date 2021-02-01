@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +18,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
+import twilightforest.TFSounds;
 import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.ChunkGeneratorTFBase;
@@ -82,7 +82,7 @@ public class BlockTFCastleDoor extends Block {
 		if (state.get(VANISHED) || state.get(ACTIVE)) return ActionResultType.FAIL;
 
 		if (isBlockLocked(world, pos)) {
-			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1.0F, 0.3F);
+			world.playSound(null, pos, TFSounds.DOOR_ACTIVATED, SoundCategory.BLOCKS, 1.0F, 0.3F);
 			return ActionResultType.PASS;
 		} else {
 			changeToActiveBlock(world, pos, state);
@@ -145,11 +145,11 @@ public class BlockTFCastleDoor extends Block {
 	}
 
 	private static void playVanishSound(World world, BlockPos pos) {
-		world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.75F);
+		world.playSound(null, pos, TFSounds.DOOR_VANISH, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.75F);
 	}
 
 	private static void playReappearSound(World world, BlockPos pos) {
-		world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.25F);
+		world.playSound(null, pos, TFSounds.DOOR_REAPPEAR, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.25F);
 	}
 
 	/**

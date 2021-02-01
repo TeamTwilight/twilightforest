@@ -41,8 +41,8 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return 1.2F;
+	protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+		return 0.5F;
 	}
 	
 	@Override

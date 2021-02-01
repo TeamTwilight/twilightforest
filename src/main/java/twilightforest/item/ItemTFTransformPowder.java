@@ -3,7 +3,6 @@ package twilightforest.item;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
@@ -14,7 +13,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
-
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
@@ -91,7 +90,7 @@ public class ItemTFTransformPowder extends Item {
 			((MobEntity) target).spawnExplosionParticle();
 			((MobEntity) target).spawnExplosionParticle();
 		}
-		target.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+		target.playSound(TFSounds.POWDER_USE, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 
 		return ActionResultType.SUCCESS;
 	}

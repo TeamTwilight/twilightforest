@@ -28,7 +28,6 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -299,7 +298,7 @@ public class TFEventListener {
 			effect2.offset = (float) Math.PI;
 			player.world.addEntity(effect2);
 
-			player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ITEM_TOTEM_USE, player.getSoundCategory(), 1, 1);
+			player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), TFSounds.CHARM_LIFE, player.getSoundCategory(), 1, 1);
 
 			return true;
 		}
@@ -452,7 +451,7 @@ public class TFEventListener {
 				effect2.offset = (float) Math.PI;
 				player.world.addEntity(effect2);
 
-				player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, player.getSoundCategory(), 1.5F, 1.0F);
+				player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), TFSounds.CHARM_KEEP, player.getSoundCategory(), 1.5F, 1.0F);
 			}
 		}
 

@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.tileentity.*;
 
@@ -44,7 +45,7 @@ public class BlockTFBuilder extends Block {
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
 		if (!world.isRemote && state.get(STATE) == TowerDeviceVariant.BUILDER_INACTIVE && world.isBlockPowered(pos)) {
 			world.setBlockState(pos, state.with(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
-			world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.BUILDER_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 
@@ -59,13 +60,13 @@ public class BlockTFBuilder extends Block {
 
 		if (variant == TowerDeviceVariant.BUILDER_INACTIVE && world.isBlockPowered(pos)) {
 			world.setBlockState(pos, state.with(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
-			world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.BUILDER_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			world.getPendingBlockTicks().scheduleTick(pos, this, 4);
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && !world.isBlockPowered(pos)) {
 			world.setBlockState(pos, state.with(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
-			world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.BUILDER_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			world.getPendingBlockTicks().scheduleTick(pos, this, 4);
 		}
 
@@ -157,7 +158,7 @@ public class BlockTFBuilder extends Block {
 
 		if (state.getBlock() == TFBlocks.built_block.get() && !state.get(BlockTFBuiltTranslucent.ACTIVE)) {
 			world.setBlockState(pos, state.with(BlockTFBuiltTranslucent.ACTIVE, true));
-			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), /*state.getBlock().tickRate(world)*/ 15); //TODO: Potentially incorrect, but we aren't allowed block tick rates
 		}
 	}

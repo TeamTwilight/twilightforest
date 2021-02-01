@@ -11,7 +11,6 @@ import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -56,7 +55,7 @@ public class EntityTFKingSpider extends SpiderEntity {
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-	      this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
+	      this.playSound(TFSounds.KING_SPIDER_STEP, 0.15F, 1.0F);
 	   }
 
 	@Override

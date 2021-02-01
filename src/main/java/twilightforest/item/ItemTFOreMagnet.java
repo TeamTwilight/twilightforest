@@ -6,7 +6,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -18,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
+import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 
@@ -74,7 +74,7 @@ public class ItemTFOreMagnet extends Item {
 
 			if (moved > 0) {
 				stack.damageItem(moved, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
-				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
+				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.MAGNET_GRAB, living.getSoundCategory(), 1.0F, 1.0F);
 			}
 		}
 	}

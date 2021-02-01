@@ -17,7 +17,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -248,7 +247,7 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
 		if (this.isThrowing() && collider.isEntityInsideOpaqueBlock()) {
 			this.setThrowing(false);
-			collider.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.65F, 0.75F);
+			collider.playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.65F, 0.75F);
 		}
 	}
 
@@ -261,7 +260,7 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 			if (collided instanceof LivingEntity) {
 				if (super.attackEntityAsMob(collided)) {
 					collided.addVelocity(0, 0.4, 0);
-					this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+					this.playSound(TFSounds.BLOCKCHAIN_HIT, 1.0F, 1.0F);
 					this.recoilCounter = 40;
 					if (this.isThrowing()) {
 						this.setThrowing(false);

@@ -15,13 +15,12 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -69,7 +68,7 @@ public class BlockTFVanishingBlock extends Block {
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!isVanished(state) && !state.get(ACTIVE)) {
 			if (areBlocksLocked(world, pos)) {
-				world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 1.0F, 0.3F);
+				world.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK, SoundCategory.BLOCKS, 1.0F, 0.3F);
 			} else {
 				activate(world, pos);
 			}
@@ -143,7 +142,7 @@ public class BlockTFVanishingBlock extends Block {
 				world.setBlockState(pos, state.with(ACTIVE, true));
 				world.getPendingBlockTicks().scheduleTick(pos, this, 15);
 			}
-			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.REAPPEAR_BLOCK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		} else {
 			if (state.get(ACTIVE)) {
 				if (state.hasProperty(VANISHED)) {
@@ -153,7 +152,7 @@ public class BlockTFVanishingBlock extends Block {
 					world.removeBlock(pos, false);
 				}
 
-				world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
+				world.playSound(null, pos, TFSounds.VANISHING_BLOCK, SoundCategory.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
 					activate(world, pos.offset(e));

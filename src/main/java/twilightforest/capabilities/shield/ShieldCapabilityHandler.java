@@ -3,7 +3,7 @@ package twilightforest.capabilities.shield;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import twilightforest.TFSounds;
 
 public class ShieldCapabilityHandler implements IShieldCapability {
 
@@ -48,14 +48,14 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			permanentShields--;
 		}
 
-		host.world.playSound(null, host.getPosition(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0F, ((host.getRNG().nextFloat() - host.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+		host.world.playSound(null, host.getPosition(), TFSounds.SHIELD_BREAK, SoundCategory.PLAYERS, 1.0F, ((host.getRNG().nextFloat() - host.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		sendUpdatePacket();
 	}
 
 	@Override
 	public void replenishShields() {
 		setShields(5, true);
-		host.world.playSound(null, host.getPosition(), SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.PLAYERS, 1.0F, (host.getRNG().nextFloat() - host.getRNG().nextFloat()) * 0.2F + 1.0F);
+		host.world.playSound(null, host.getPosition(), TFSounds.SHIELD_ADD, SoundCategory.PLAYERS, 1.0F, (host.getRNG().nextFloat() - host.getRNG().nextFloat()) * 0.2F + 1.0F);
 	}
 
 	@Override

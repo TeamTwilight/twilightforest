@@ -11,12 +11,12 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
@@ -101,7 +101,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 
 			if (blockRay.getPos() != null && !this.world.isAirBlock(blockRay.getPos())) {
 				if (!this.isReturning) {
-					playSound(SoundEvents.BLOCK_ANVIL_LAND, 0.125f, this.rand.nextFloat());
+					playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.125f, this.rand.nextFloat());
 				}
 
 				if (this.blocksSmashed < MAX_SMASH) {

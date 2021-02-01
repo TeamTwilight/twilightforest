@@ -4,9 +4,9 @@ import net.minecraft.block.*;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 
 public class BlockTFEncasedSmoker extends BlockTFSmoker {
 
@@ -32,12 +32,12 @@ public class BlockTFEncasedSmoker extends BlockTFSmoker {
 
 		if (!state.get(ACTIVE) && powered) {
 			world.setBlockState(pos, state.with(ACTIVE, true), 3);
-			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.SMOKER_START, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 
 		if (state.get(ACTIVE) && !powered) {
 			world.setBlockState(pos, state.with(ACTIVE, false), 3);
-			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.SMOKER_START, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 

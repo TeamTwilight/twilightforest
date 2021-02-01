@@ -20,7 +20,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -310,7 +309,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 			double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
 			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.world.getDifficulty().getId() * 4);
 
-			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			this.world.addEntity(ice);
 		}
 	}
@@ -357,7 +356,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	public boolean onLivingFall(float distance, float multiplier) {
 
 		if (!this.world.isRemote && isRampaging()) {
-			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			hitNearbyEntities();
 		}
 

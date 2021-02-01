@@ -1,5 +1,7 @@
 package twilightforest.entity;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -8,7 +10,10 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.item.DyeColor;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 
 public class EntityTFMistWolf extends EntityTFHostileWolf {
 
@@ -52,6 +57,28 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 		} else {
 			return false;
 		}
+	}
+	
+	@Override
+	public void setAttackTarget(@Nullable LivingEntity entity) {
+		if (entity != null && entity != getAttackTarget())
+			playSound(TFSounds.MISTWOLF_TARGET, 4F, getSoundPitch());
+		super.setAttackTarget(entity);
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.MISTWOLF_IDLE;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.MISTWOLF_HURT;
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.MISTWOLF_DEATH;
 	}
 
 	@Override

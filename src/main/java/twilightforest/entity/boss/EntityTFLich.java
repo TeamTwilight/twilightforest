@@ -12,7 +12,6 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Items;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -257,7 +256,7 @@ public class EntityTFLich extends MonsterEntity {
 		}
 
 		if (isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
-			playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			playSound(TFSounds.LICH_CLONE_HURT, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 			return false;
 		}
 
@@ -272,10 +271,10 @@ public class EntityTFLich extends MonsterEntity {
 				// reduce shield for magic damage greater than 1 heart
 				if (getShieldStrength() > 0) {
 					setShieldStrength(getShieldStrength() - 1);
-					playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+					playSound(TFSounds.SHIELD_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				}
 			} else {
-				playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				playSound(TFSounds.SHIELD_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				if (src.getTrueSource() instanceof LivingEntity) {
 					setRevengeTarget((LivingEntity) src.getTrueSource());
 				}
