@@ -114,7 +114,7 @@ public class BlockTFCastleDoor extends Block {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(VANISHED)) {
 			if (state.get(ACTIVE)) {
 				world.setBlockState(pos, state.with(VANISHED, false).with(ACTIVE, false));

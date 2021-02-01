@@ -130,7 +130,7 @@ public class BlockTFVanishingBlock extends Block {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (world.isRemote) {
 			return;
 		}

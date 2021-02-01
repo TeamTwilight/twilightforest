@@ -88,5 +88,12 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_purple.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_orange.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.boss_spawner.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.reappearing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.locked_vanishing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.vanishing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.carminite_builder.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.antibuilder.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.carminite_reactor.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.ghast_trap.get(), cutout);
 	}
 }
