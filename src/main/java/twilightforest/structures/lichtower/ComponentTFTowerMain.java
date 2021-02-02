@@ -460,6 +460,9 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
+			if(wCoords == null)
+				continue;
+
 			// offset to see where the fence should be
 			BlockPos.Mutable tCoords = new BlockPos.Mutable(wCoords.getX(), wCoords.getY(), wCoords.getZ());
 

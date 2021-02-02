@@ -17,7 +17,7 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
-import twilightforest.features.TwilightFeatures;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.List;
 import java.util.Random;
@@ -168,10 +168,10 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 					treeGen = Features.BIRCH;
 					break;
 				case 3:
-					treeGen = TwilightFeatures.ConfiguredFeatures.TWILIGHT_OAK;
+					treeGen = ConfiguredFeatures.TWILIGHT_OAK;
 					break;
 				case 4:
-					treeGen = TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE;
+					treeGen = ConfiguredFeatures.RAINBOAK_TREE;
 					break;
 			}
 

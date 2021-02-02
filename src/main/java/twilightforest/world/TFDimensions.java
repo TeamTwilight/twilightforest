@@ -21,7 +21,7 @@ public class TFDimensions {
 		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("grid"), TFBiomeProvider.tfBiomeProviderCodec);
 
 		// For now use minecraft:noise until we need to terraform for features
-		//Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("featured_noise"), ChunkGeneratorTwilightForest.codecTFChunk);
+		Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("featured_noise"), ChunkGeneratorTwilightForest.codecTFChunk);
 		// TODO Do we even need this? Or can we fold it into the featured_noise because its elasticity to handle skyworld generation
 		//Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("sky_noise"), ChunkGeneratorTwilightVoid.codecVoidChunk);
 	}

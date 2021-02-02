@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package twilightforest.features.treeplacers;
+package twilightforest.worldgen;
 
 import mcp.MethodsReturnNonnullByDefault;
 

@@ -1,4 +1,4 @@
-package twilightforest.features.structures;
+package twilightforest.worldgen.structures;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;

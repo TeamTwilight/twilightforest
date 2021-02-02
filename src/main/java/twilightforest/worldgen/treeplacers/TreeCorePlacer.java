@@ -1,4 +1,4 @@
-package twilightforest.features.treeplacers;
+package twilightforest.worldgen.treeplacers;
 
 import java.util.List;
 import java.util.Random;
@@ -13,7 +13,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
-import twilightforest.features.TwilightFeatures;
+import twilightforest.worldgen.TwilightFeatures;
 
 public class TreeCorePlacer extends TreeDecorator {
 

@@ -3,14 +3,15 @@ package twilightforest.world.feature.tree;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import twilightforest.features.TwilightFeatures;
+import twilightforest.worldgen.ConfiguredFeatures;
+
 import java.util.Random;
 
 public class CanopyTree extends Tree {
 
 	@Override
 	public ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random rand, boolean largeHive) {
-		return TwilightFeatures.ConfiguredFeatures.CANOPY_TREE;
+		return ConfiguredFeatures.CANOPY_TREE;
 	}
 
 }

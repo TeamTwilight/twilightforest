@@ -15,7 +15,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
-import twilightforest.structures.start.StructureCourtyard;
+import twilightforest.structures.lichtower.TFLichTowerPieces;
+import twilightforest.structures.start.TFStructure;
 import twilightforest.world.TFDimensions;
 
 import java.util.HashMap;
@@ -25,13 +26,30 @@ public class TFStructures {
 
 	private static final Map<Structure<?>, StructureSeparationSettings> SEPARATION_SETTINGS = new HashMap<>();
 
-	public static final Structure<NoFeatureConfig> NAGA_COURTYARD = new StructureCourtyard(NoFeatureConfig.field_236558_a_);
+	public static final Structure<NoFeatureConfig> HEDGE_MAZE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HEDGE_MAZE);
+	public static final StructureFeature<?, ?> CONFIGURED_HEDGE_MAZE = HEDGE_MAZE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> HALLOW_HILL_SMALL = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.SMALL_HILL);
+	public static final StructureFeature<?, ?> CONFIGURED_HALLOW_HILL_SMALL = HALLOW_HILL_SMALL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> HALLOW_HILL_MEDIUM = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.MEDIUM_HILL);
+	public static final StructureFeature<?, ?> CONFIGURED_HALLOW_HILL_MEDIUM = HALLOW_HILL_MEDIUM.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> HALLOW_HILL_LARGE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LARGE_HILL);
+	public static final StructureFeature<?, ?> CONFIGURED_HALLOW_HILL_LARGE = HALLOW_HILL_LARGE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> NAGA_COURTYARD = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.NAGA_COURTYARD, true);
 	public static final StructureFeature<?, ?> CONFIGURED_NAGA_COURTYARD = NAGA_COURTYARD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> LICH_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LICH_TOWER, true);
+	public static final StructureFeature<?, ?> CONFIGURED_LICH_TOWER = LICH_TOWER.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
+		TFFeature.init();
 		new NagaCourtyardPieces();
-		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, StructureCourtyard.NAME, 1, 2);
+		new TFLichTowerPieces();
+		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedgemaze"), 1, 2);
+		register(event, HALLOW_HILL_SMALL, CONFIGURED_HALLOW_HILL_SMALL, TwilightForestMod.prefix("hallowhillsmall"), 1, 2);
+		register(event, HALLOW_HILL_MEDIUM, CONFIGURED_HALLOW_HILL_MEDIUM, TwilightForestMod.prefix("hallowhillmedium"), 1, 2);
+		register(event, HALLOW_HILL_LARGE, CONFIGURED_HALLOW_HILL_LARGE, TwilightForestMod.prefix("hallowhilllarge"), 1, 2);
+		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, TwilightForestMod.prefix("courtyard"), 1, 2);
+		register(event, LICH_TOWER, CONFIGURED_LICH_TOWER, TwilightForestMod.prefix("lichtower"), 1, 2);
 	}
 
 	private static void register(RegistryEvent.Register<Structure<?>> event, Structure<?> structure, StructureFeature<?, ?> config, ResourceLocation name, int min, int max) {

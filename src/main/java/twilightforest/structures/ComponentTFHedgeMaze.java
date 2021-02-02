@@ -60,7 +60,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		// grass underneath
 		for (int fx = 0; fx <= DIAMETER; fx++) {
 			for (int fz = 0; fz <= DIAMETER; fz++) {
-				setBlockState(world, Blocks.GRASS.getDefaultState(), fx, FLOOR_LEVEL - 1, fz, sbb);
+				setBlockState(world, Blocks.GRASS_BLOCK.getDefaultState(), fx, FLOOR_LEVEL - 1, fz, sbb);
 			}
 		}
 

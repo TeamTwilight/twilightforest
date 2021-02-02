@@ -2,8 +2,7 @@
 	// https://minecraft.gamepedia.com/Custom_dimension#Dimension_syntax
 	"type": "twilightforest:twilightforest",
 	"generator": {
-		"type": "minecraft:noise",
-		"seed": 0,
+		"type": "twilightforest:featured_noise",
 		"settings": {
 			"bedrock_roof_position": -1,
 			"bedrock_floor_position": 0,

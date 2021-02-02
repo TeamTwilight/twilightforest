@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
@@ -22,9 +23,10 @@ import net.minecraft.world.gen.feature.MultipleRandomFeatureConfig;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
+import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
 import twilightforest.world.feature.TFBiomeFeatures;
-import twilightforest.features.TwilightFeatures;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -47,20 +49,30 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         return biome;
     }
 
+    public static BiomeGenerationSettings.Builder defaultStructures(BiomeGenerationSettings.Builder biome) {
+    	return biome.
+				withStructure(TFStructures.CONFIGURED_HEDGE_MAZE).
+				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_SMALL).
+				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_MEDIUM).
+				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_LARGE).
+				withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD).
+				withStructure(TFStructures.CONFIGURED_LICH_TOWER);
+	}
+
     //Canopies, trees, and anything resembling a forest thing
     public static BiomeGenerationSettings.Builder addCanopy(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREE.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
 
         return biome;
     }
     public static BiomeGenerationSettings.Builder addCanopyFirefly(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE_FIREFLY.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREE_FIREFLY.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
 
         return biome;
     }
 
     public static BiomeGenerationSettings.Builder addCanopyDead(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE_DEAD.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREE_DEAD.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
 
         return biome;
     }
@@ -72,9 +84,9 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         biome.withFeature(
                 GenerationStage.Decoration.VEGETAL_DECORATION,
                 Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(
-                        TwilightFeatures.ConfiguredFeatures.MUSHROOM_BROWN.withChance(mushroomChance * 0.75f),
-                        TwilightFeatures.ConfiguredFeatures.MUSHROOM_RED.withChance(mushroomChance * 0.25f)
-                ), TwilightFeatures.ConfiguredFeatures.CANOPY_TREE))
+                        ConfiguredFeatures.MUSHROOM_BROWN.withChance(mushroomChance * 0.75f),
+                        ConfiguredFeatures.MUSHROOM_RED.withChance(mushroomChance * 0.25f)
+                ), ConfiguredFeatures.CANOPY_TREE))
                         .withPlacement(Features.Placements.BAMBOO_PLACEMENT) //TODO?
                         .square()
                         .func_242731_b(8)
@@ -179,6 +191,8 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         final Path outputPath = this.generator.getOutputFolder();
 
         final StringJoiner biomeTable = new StringJoiner(",\n");
+
+
 
         for (Map.Entry<RegistryKey<Biome>, Biome> biomeKeyPair : generateBiomes().entrySet()) {
             final Path filePath = makePath(outputPath, biomeKeyPair.getKey().getLocation());

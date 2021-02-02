@@ -10,9 +10,11 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
@@ -37,8 +39,8 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	public ComponentTFHollowHill(IStructurePieceType type, TFFeature feature, Random rand, int i, int size, int x, int y, int z) {
-		super(type, feature, i);
+	public ComponentTFHollowHill(IStructurePieceType piece, TFFeature feature, Random rand, int i, int size, int x, int y, int z) {
+		super(piece, feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);
 
@@ -60,8 +62,9 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.hillSize = tagCompound.getInt("hillSize");
-		this.radius = ((hillSize * 2 + 1) * 8) - 6;
+		// FIXME: nbt is never written to
+//		this.hillSize = tagCompound.getInt("hillSize");
+//		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 	}
 
 	/**
@@ -72,6 +75,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 //		int area = (int)(Math.PI * radius * radius);
 //		int sn = area / 16; // number of stalactites (there will actually be around twice this number)
 		int[] sna = {0, 128, 256, 512};
+
 		int sn = sna[hillSize]; // number of stalactites mga = {0, 3, 9, 18}
 		int[] mga = {0, 1, 4, 9};
 		int mg = mga[hillSize]; // number of monster generators mga = {0, 3, 9, 18} (reduced due to "natural" spawning)
@@ -152,7 +156,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 			// make the actual stalactite
 			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).generate(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).generate(world, ((ServerChunkProvider)world.getChunkProvider()).getChunkGenerator(), stalRNG, pos);
 		}
 	}
 
@@ -175,7 +179,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			}
 
 			// make the actual stalactite
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).generate(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).generate(world, ((ServerChunkProvider)world.getChunkProvider()).getChunkGenerator(), stalRNG, pos);
 		}
 	}
 

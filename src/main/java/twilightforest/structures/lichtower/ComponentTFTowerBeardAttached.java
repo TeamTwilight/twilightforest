@@ -31,7 +31,7 @@ public class ComponentTFTowerBeardAttached extends ComponentTFTowerBeard {
 	 */
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		return makeAttachedBeard(world.getWorld(), rand, sbb);
+		return makeAttachedBeard(world, rand, sbb);
 	}
 
 	private boolean makeAttachedBeard(ISeedReader world, Random rand, MutableBoundingBox sbb) {

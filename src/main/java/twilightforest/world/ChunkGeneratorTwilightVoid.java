@@ -67,7 +67,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 		ChunkPrimer primer = new DirectChunkPrimer(new ChunkPos(x, z));
 		//initPrimer(primer, data); TODO : Should be do SurfaceBuilder
 
-		deformTerrainForFeature(x, z, region);
+		//deformTerrainForFeature(x, z, region);
 		//replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
 //		generateFeatures(x, z, primer); TODO: Should move to biome decorator

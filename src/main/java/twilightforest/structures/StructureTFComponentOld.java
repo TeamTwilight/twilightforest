@@ -184,7 +184,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world.getWorld(), pos, trapped);
+			treasureType.generateChest(world, pos, trapped);
 		}
 	}
 

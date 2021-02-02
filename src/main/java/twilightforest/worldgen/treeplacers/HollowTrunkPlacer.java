@@ -1,4 +1,4 @@
-package twilightforest.features.treeplacers;
+package twilightforest.worldgen.treeplacers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -11,7 +11,7 @@ import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import twilightforest.util.FeatureUtil;
-import twilightforest.features.TwilightFeatures;
+import twilightforest.worldgen.TwilightFeatures;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +23,21 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
             func_236915_a_(instance).and(instance.group(
                     Codec.floatRange(1, 16).fieldOf("outside_radius").forGetter(o -> o.outerRadius),
                     Codec.intRange(0, 8).fieldOf("random_add_radius").forGetter(o -> o.randomAddRadius),
-                    BranchesConfiguration.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfiguration),
+                    BranchesConfig.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfig),
                     BlockStateProvider.CODEC.fieldOf("eastside_ladder").forGetter(o -> o.ladder)
             )).apply(instance, HollowTrunkPlacer::new)
     );
 
     private final float outerRadius;
     private final int randomAddRadius;
-    private final BranchesConfiguration branchesConfiguration;
+    private final BranchesConfig branchesConfig;
     private final BlockStateProvider ladder;
 
-    public HollowTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, float outerRadius, int randomAddRadius, BranchesConfiguration branchesConfiguration, BlockStateProvider ladder) {
+    public HollowTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, float outerRadius, int randomAddRadius, BranchesConfig branchesConfig, BlockStateProvider ladder) {
         super(baseHeight, randomHeightA, randomHeightB);
         this.outerRadius = outerRadius;
         this.randomAddRadius = randomAddRadius;
-        this.branchesConfiguration = branchesConfiguration;
+        this.branchesConfig = branchesConfig;
         this.ladder = ladder;
     }
 

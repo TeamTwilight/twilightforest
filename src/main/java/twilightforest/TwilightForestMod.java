@@ -41,7 +41,7 @@ import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.features.TwilightFeatures;
+import twilightforest.worldgen.TwilightFeatures;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -128,7 +128,6 @@ public class TwilightForestMod {
 		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
-		TFFeature.init();
 		TFBiomes.addBiomeTypes();
 		TFDimensions.init();
 		TFEntities.addEntityAttributes();

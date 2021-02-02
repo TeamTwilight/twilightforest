@@ -1,4 +1,4 @@
-package twilightforest.features.treeplacers;
+package twilightforest.worldgen.treeplacers;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
@@ -11,7 +11,7 @@ import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import twilightforest.util.FeatureUtil;
-import twilightforest.features.TwilightFeatures;
+import twilightforest.worldgen.TwilightFeatures;
 
 import java.util.List;
 import java.util.Random;
@@ -21,19 +21,19 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
     public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
             func_236915_a_(instance).and(instance.group(
                     Codec.intRange(0, 24).fieldOf("branch_start_offset_down").forGetter(o -> o.branchDownwardOffset),
-                    BranchesConfiguration.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfiguration),
+                    BranchesConfig.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfig),
                     Codec.BOOL.fieldOf("perpendicular_branches").forGetter(o -> o.perpendicularBranches)
             )).apply(instance, BranchingTrunkPlacer::new)
     );
 
     private final int branchDownwardOffset;
-    private final BranchesConfiguration branchesConfiguration;
+    private final BranchesConfig branchesConfig;
     private final boolean perpendicularBranches;
 
-    public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branchDownwardOffset, BranchesConfiguration branchesConfiguration, boolean perpendicularBranches) {
+    public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branchDownwardOffset, BranchesConfig branchesConfig, boolean perpendicularBranches) {
         super(baseHeight, randomHeightA, randomHeightB);
         this.branchDownwardOffset = branchDownwardOffset;
-        this.branchesConfiguration = branchesConfiguration;
+        this.branchesConfig = branchesConfig;
         this.perpendicularBranches = perpendicularBranches;
     }
 
@@ -55,10 +55,10 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
 
         leafBlocks.add(new FoliagePlacer.Foliage(startPos.up(height), 0, false));
 
-        int numBranches = branchesConfiguration.branchCount + random.nextInt(branchesConfiguration.randomAddBranches + 1);
+        int numBranches = branchesConfig.branchCount + random.nextInt(branchesConfig.randomAddBranches + 1);
         float offset = random.nextFloat();
         for (int b = 0; b < numBranches; b++) {
-            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - branchDownwardOffset + b, branchesConfiguration.length, branchesConfiguration.spacingYaw * b + offset, branchesConfiguration.downwardsPitch, random, mutableBoundingBox, baseTreeFeatureConfig, perpendicularBranches);
+            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - branchDownwardOffset + b, branchesConfig.length, branchesConfig.spacingYaw * b + offset, branchesConfig.downwardsPitch, random, mutableBoundingBox, baseTreeFeatureConfig, perpendicularBranches);
         }
 
         return leafBlocks;

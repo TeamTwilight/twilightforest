@@ -1428,7 +1428,27 @@
   "starts": [
     {
       "config": {},
+      "type": "twilightforest:hedgemaze"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:hallowhillsmall"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:hallowhillmedium"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:hallowhilllarge"
+    },
+    {
+      "config": {},
       "type": "twilightforest:courtyard"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:lichtower"
     }
   ],
   "spawners": {
