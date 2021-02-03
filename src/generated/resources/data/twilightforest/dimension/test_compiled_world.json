@@ -1,20 +1,5 @@
 {
-  "type": {
-    "logical_height": 256,
-    "infiniburn": "minecraft:infiniburn_overworld",
-    "effects": "twilightforest:renderer",
-    "ambient_light": 0.0,
-    "bed_works": true,
-    "respawn_anchor_works": true,
-    "has_raids": false,
-    "ultrawarm": false,
-    "natural": true,
-    "coordinate_scale": 0.125,
-    "piglin_safe": false,
-    "fixed_time": 13000,
-    "has_skylight": true,
-    "has_ceiling": false
-  },
+  "type": "twilightforest:forest_type",
   "generator": {
     "biome_source": {
       "biomes": [
@@ -43,49 +28,7 @@
       "type": "minecraft:checkerboard"
     },
     "seed": 0,
-    "settings": {
-      "bedrock_roof_position": -1,
-      "bedrock_floor_position": 0,
-      "sea_level": 31,
-      "disable_mob_generation": false,
-      "structures": {
-        "structures": {}
-      },
-      "noise": {
-        "random_density_offset": true,
-        "density_factor": 1.0,
-        "density_offset": -0.46875,
-        "simplex_surface_noise": false,
-        "bottom_slide": {
-          "target": -30,
-          "size": 0,
-          "offset": 0
-        },
-        "size_horizontal": 1,
-        "size_vertical": 2,
-        "height": 128,
-        "sampling": {
-          "xz_scale": 0.9999999814507745,
-          "y_scale": 0.9999999814507745,
-          "xz_factor": 80.0,
-          "y_factor": 160.0
-        },
-        "top_slide": {
-          "target": -10,
-          "size": 3,
-          "offset": 0
-        }
-      },
-      "default_block": {
-        "Name": "minecraft:stone"
-      },
-      "default_fluid": {
-        "Properties": {
-          "level": "0"
-        },
-        "Name": "minecraft:water"
-      }
-    },
+    "settings": "twilightforest:forest_noise",
     "type": "minecraft:noise"
   }
 }

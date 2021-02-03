@@ -2,19 +2,21 @@ package twilightforest.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.util.registry.WorldGenSettingsExport;
 import net.minecraft.world.Dimension;
 import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.io.BufferedWriter;
@@ -26,19 +28,34 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsExport<Format> implements IDataProvider {
     protected static final Logger LOGGER = LogManager.getLogger();
     protected static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     protected final DataGenerator generator;
     private final Function<Format, String> fileContentWriter;
+    protected final DynamicRegistries dynamicRegistries;
 
     private DirectoryCache directoryCache;
 
-    public WorldDataCompilerAndOps(DataGenerator generator, DynamicOps<Format> ops, Function<Format, String> fileContentWriter) {
+    public WorldDataCompilerAndOps(DataGenerator generator, DynamicOps<Format> ops, Function<Format, String> fileContentWriter, DynamicRegistries dynamicRegistries) {
         super(ops, null);
         this.generator = generator;
         this.fileContentWriter = fileContentWriter;
+        this.dynamicRegistries = dynamicRegistries;
+    }
+
+    protected <Resource> Resource getOrCreateInRegistry(Registry<Resource> registry, RegistryKey<Resource> registryKey, Supplier<Resource> resourceCreator) {
+        Resource resourceSaved = getFromVanillaRegistryIllegally(registry, registryKey);
+
+        if (resourceSaved == null) {
+            //SimpleRegistry<Resource> simpleRegistry = new SimpleRegistry<>(registryKey, Lifecycle.experimental());
+
+            resourceSaved = Registry.register(registry, registryKey.getLocation(), resourceCreator.get());
+        }
+
+        return resourceSaved;
     }
 
     @Override
@@ -50,17 +67,17 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
 
     protected abstract Map<ResourceLocation, Dimension> getDimensions();
 
-    protected HashSet<Object> objectsSerialized = new HashSet<>();
+    private final HashSet<Object> objectsSerializationCache = new HashSet<>();
 
     @SuppressWarnings("SameParameterValue")
     private <Resource> void serialize(Path root, DirectoryCache directoryCache, DynamicOps<Format> ops, RegistryKey<? extends Registry<Resource>> resourceType, ResourceLocation resourceLocation, Resource resource, Encoder<Resource> encoder) {
-        if (objectsSerialized.contains(resource)) {
+        if (objectsSerializationCache.contains(resource)) {
             LOGGER.debug("Avoiding duplicate serialization with " + resourceLocation);
 
             return;
         }
 
-        objectsSerialized.add(resource);
+        objectsSerializationCache.add(resource);
 
         Optional<Format> output = ops.withEncoder(encoder).apply(resource).resultOrPartial(error -> LOGGER.error("Object not serialized within recursive serialization: " + error));
 
@@ -95,7 +112,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
 
     @SuppressWarnings({"unchecked", "rawtypes", "SameParameterValue"})
     @Nullable
-    private static <T> T getFromVanillaRegistryIllegally(Registry registry, RegistryKey<T> key) {
+    protected static <T> T getFromVanillaRegistryIllegally(Registry registry, RegistryKey<T> key) {
         return (T) registry.getValueForKey(key);
     }
 
@@ -118,22 +135,49 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
 
     @Override
     protected <Resource> DataResult<Format> encode(Resource resource, Format dynamic, RegistryKey<? extends Registry<Resource>> registryKey, Codec<Resource> codec) {
-        LOGGER.info(registryKey.toString());
+        Optional<ResourceLocation> instanceKey = Optional.empty();
 
-        Registry<Resource> registry = getFromVanillaRegistryIllegally(Registry.REGISTRY, registryKey);
+        // Check "Local" Registry
+        try {
+            Registry<Resource> dynRegistry = dynamicRegistries.getRegistry(registryKey);
 
-        Optional<ResourceLocation> instanceKey = registry != null ? registry.getOptionalKey(resource).map(RegistryKey::getLocation) : Optional.empty();
+            instanceKey = dynRegistry != null ? dynRegistry.getOptionalKey(resource).map(RegistryKey::getLocation) : Optional.empty();
+        } catch (Throwable t) {
+            // Registry not supported, skip
+        }
 
+        // Check Vanilla Worldgen Registries
+        if (!instanceKey.isPresent()) {
+            Registry<Resource> registry = getFromVanillaRegistryIllegally(WorldGenRegistries.ROOT_REGISTRIES, registryKey);
+
+            if (registry != null) {
+                instanceKey = registry.getOptionalKey(resource).map(RegistryKey::getLocation);
+            }
+        }
+
+        // Check Global Vanilla Registries
+        if (!instanceKey.isPresent()) {
+            Registry<Resource> registry = getFromVanillaRegistryIllegally(Registry.REGISTRY, registryKey);
+
+            if (registry != null) {
+                instanceKey = registry.getOptionalKey(resource).map(RegistryKey::getLocation);
+            }
+        }
+
+        // Check Forge Registries
         if (!instanceKey.isPresent()) {
             instanceKey = getFromForgeRegistryIllegally(registryKey, resource);
         }
 
+        // Four freaking registry locations to check... Let's see if we won a prize
         if (instanceKey.isPresent()) {
-            serialize(generator.getOutputFolder(), directoryCache, this, registryKey, instanceKey.get(), resource, codec);
+            if (TwilightForestMod.ID.equals(instanceKey.get().getNamespace())) // This avoids generating anything that belongs to Minecraft
+                serialize(generator.getOutputFolder(), directoryCache, this, registryKey, instanceKey.get(), resource, codec);
 
             return ResourceLocation.CODEC.encode(instanceKey.get(), this.ops, dynamic);
         }
 
+        // AND we turned out empty-handed. Inline the object begrudgingly instead.
         return codec.encode(resource, this, dynamic);
     }
 

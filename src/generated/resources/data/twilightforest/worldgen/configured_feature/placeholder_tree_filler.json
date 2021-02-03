@@ -1,0 +1,59 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "features": [
+              {
+                "feature": "twilightforest:twilight_oak",
+                "chance": 0.18181819
+              },
+              {
+                "feature": "twilightforest:canopy_tree",
+                "chance": 0.18181819
+              },
+              {
+                "feature": "twilightforest:mangrove_tree",
+                "chance": 0.18181819
+              },
+              {
+                "feature": "twilightforest:darkwood_tree",
+                "chance": 0.18181819
+              },
+              {
+                "feature": "twilightforest:hollow_tree",
+                "chance": 0.18181819
+              }
+            ],
+            "default": "twilightforest:rainbow_oak"
+          },
+          "type": "minecraft:random_selector"
+        },
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {},
+              "type": "minecraft:heightmap"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 1,
+        "extra_chance": 0.5,
+        "extra_count": 1
+      },
+      "type": "minecraft:count_extra"
+    }
+  },
+  "type": "minecraft:decorated"
+}
