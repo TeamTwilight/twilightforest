@@ -10,11 +10,13 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.util.registry.WorldGenSettingsExport;
 import net.minecraft.world.Dimension;
 import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.io.BufferedWriter;
@@ -133,21 +135,28 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
 
     @Override
     protected <Resource> DataResult<Format> encode(Resource resource, Format dynamic, RegistryKey<? extends Registry<Resource>> registryKey, Codec<Resource> codec) {
-        LOGGER.info(registryKey.toString());
+        Optional<ResourceLocation> instanceKey = Optional.empty();
 
         // Check "Local" Registry
-        Registry<Resource> dynRegistry = null;
-
         try {
-            dynRegistry = dynamicRegistries.getRegistry(registryKey);
+            Registry<Resource> dynRegistry = dynamicRegistries.getRegistry(registryKey);
+
+            instanceKey = dynRegistry != null ? dynRegistry.getOptionalKey(resource).map(RegistryKey::getLocation) : Optional.empty();
         } catch (Throwable t) {
             // Registry not supported, skip
         }
 
-        Optional<ResourceLocation> instanceKey = dynRegistry != null ? dynRegistry.getOptionalKey(resource).map(RegistryKey::getLocation) : Optional.empty();
-
+        // Check Vanilla Worldgen Registries
         if (!instanceKey.isPresent()) {
-            // Check Global Vanilla Registries
+            Registry<Resource> registry = getFromVanillaRegistryIllegally(WorldGenRegistries.ROOT_REGISTRIES, registryKey);
+
+            if (registry != null) {
+                instanceKey = registry.getOptionalKey(resource).map(RegistryKey::getLocation);
+            }
+        }
+
+        // Check Global Vanilla Registries
+        if (!instanceKey.isPresent()) {
             Registry<Resource> registry = getFromVanillaRegistryIllegally(Registry.REGISTRY, registryKey);
 
             if (registry != null) {
@@ -155,16 +164,20 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
             }
         }
 
+        // Check Forge Registries
         if (!instanceKey.isPresent()) {
             instanceKey = getFromForgeRegistryIllegally(registryKey, resource);
         }
 
+        // Four freaking registry locations to check... Let's see if we won a prize
         if (instanceKey.isPresent()) {
-            serialize(generator.getOutputFolder(), directoryCache, this, registryKey, instanceKey.get(), resource, codec);
+            if (TwilightForestMod.ID.equals(instanceKey.get().getNamespace())) // This avoids generating anything that belongs to Minecraft
+                serialize(generator.getOutputFolder(), directoryCache, this, registryKey, instanceKey.get(), resource, codec);
 
             return ResourceLocation.CODEC.encode(instanceKey.get(), this.ops, dynamic);
         }
 
+        // AND we turned out empty-handed. Inline the object begrudgingly instead.
         return codec.encode(resource, this, dynamic);
     }
 
