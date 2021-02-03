@@ -36,43 +36,7 @@
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
       "minecraft:disk_clay",
-      {
-        "config": {
-          "feature": {
-            "config": {
-              "feature": {
-                "config": {
-                  "feature": {
-                    "config": {},
-                    "type": "twilightforest:wood_roots"
-                  },
-                  "decorator": {
-                    "config": {
-                      "bottom_offset": 0,
-                      "top_offset": 0,
-                      "maximum": 30
-                    },
-                    "type": "minecraft:range"
-                  }
-                },
-                "type": "minecraft:decorated"
-              },
-              "decorator": {
-                "config": {},
-                "type": "minecraft:square"
-              }
-            },
-            "type": "minecraft:decorated"
-          },
-          "decorator": {
-            "config": {
-              "count": 20
-            },
-            "type": "minecraft:count"
-          }
-        },
-        "type": "minecraft:decorated"
-      }
+      "twilightforest:ore/wood_roots_spread"
     ],
     [],
     [
@@ -85,51 +49,7 @@
       "minecraft:mushroom_field_vegetation",
       "minecraft:brown_mushroom_taiga",
       "minecraft:red_mushroom_taiga",
-      {
-        "config": {
-          "feature": {
-            "config": {
-              "feature": {
-                "config": {
-                  "feature": {
-                    "config": {
-                      "features": [
-                        {
-                          "feature": "twilightforest:canopy_mushroom_brown",
-                          "chance": 0.15
-                        },
-                        {
-                          "feature": "twilightforest:canopy_mushroom_red",
-                          "chance": 0.05
-                        }
-                      ],
-                      "default": "twilightforest:canopy_tree"
-                    },
-                    "type": "minecraft:random_selector"
-                  },
-                  "decorator": {
-                    "config": {},
-                    "type": "minecraft:heightmap_world_surface"
-                  }
-                },
-                "type": "minecraft:decorated"
-              },
-              "decorator": {
-                "config": {},
-                "type": "minecraft:square"
-              }
-            },
-            "type": "minecraft:decorated"
-          },
-          "decorator": {
-            "config": {
-              "count": 8
-            },
-            "type": "minecraft:count"
-          }
-        },
-        "type": "minecraft:decorated"
-      }
+      "twilightforest:mushroom/canopy_mushrooms_sparse"
     ]
   ],
   "starts": [

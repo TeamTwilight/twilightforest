@@ -11,6 +11,6 @@ public class MangroveTree extends Tree {
 
 	@Override
 	public ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random rand, boolean largeHive) {
-		return ConfiguredFeatures.MANGROVE_TREE;
+		return ConfiguredFeatures.MANGROVE_TREE_BASE;
 	}
 }

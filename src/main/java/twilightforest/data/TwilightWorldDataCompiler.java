@@ -46,7 +46,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 
 	private Dimension makeTwilightForest() {
 		Optional<DimensionType> twilightType = makeDimensionType(
-				OptionalLong.of(13000L),
+				OptionalLong.of(13000L), // TODO Kill the celestial bodies
 				true,
 				false,
 				false,
@@ -60,8 +60,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				256,
 				FuzzedBiomeMagnifier.INSTANCE,
 				new ResourceLocation("infiniburn_overworld"),
-				new ResourceLocation(TwilightForestMod.ID, "renderer"),
-				0f
+				new ResourceLocation(TwilightForestMod.ID, "renderer"), // DimensionRenderInfo
+				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0
 		);
 
 		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.DIMENSION_TYPE_KEY), RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), twilightType::get);

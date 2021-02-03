@@ -10,6 +10,6 @@ public class TimeTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return ConfiguredFeatures.TIME_TREE;
+		return ConfiguredFeatures.TIME_TREE_BASE;
 	}
 }

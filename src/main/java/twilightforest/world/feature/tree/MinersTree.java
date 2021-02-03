@@ -10,6 +10,6 @@ public class MinersTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return ConfiguredFeatures.MINING_TREE;
+		return ConfiguredFeatures.MINING_TREE_BASE;
 	}
 }

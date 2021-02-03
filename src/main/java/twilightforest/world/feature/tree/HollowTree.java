@@ -10,6 +10,6 @@ public class HollowTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return ConfiguredFeatures.HOLLOW_TREE;
+		return ConfiguredFeatures.HOLLOW_TREE_BASE;
 	}
 }

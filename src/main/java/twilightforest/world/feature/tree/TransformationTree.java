@@ -11,6 +11,6 @@ public class TransformationTree extends Tree {
 
 	@Override
 	public ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random rand, boolean largeHive) {
-		return ConfiguredFeatures.TRANSFORM_TREE;
+		return ConfiguredFeatures.TRANSFORM_TREE_BASE;
 	}
 }

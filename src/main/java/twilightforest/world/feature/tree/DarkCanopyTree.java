@@ -11,6 +11,6 @@ public class DarkCanopyTree extends Tree {
 
 	@Override
 	public ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random rand, boolean largeHive) {
-		return ConfiguredFeatures.DARKWOOD_TREE;
+		return ConfiguredFeatures.DARKWOOD_TREE_BASE;
 	}
 }

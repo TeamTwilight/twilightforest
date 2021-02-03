@@ -11,7 +11,7 @@ public class CanopyTree extends Tree {
 
 	@Override
 	public ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random rand, boolean largeHive) {
-		return ConfiguredFeatures.CANOPY_TREE;
+		return ConfiguredFeatures.CANOPY_TREE_BASE;
 	}
 
 }

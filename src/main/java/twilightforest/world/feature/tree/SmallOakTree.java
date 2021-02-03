@@ -13,6 +13,6 @@ public class SmallOakTree extends Tree {
 	@Nullable
 	@Override
 	protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
-		return ConfiguredFeatures.TWILIGHT_OAK;
+		return ConfiguredFeatures.TWILIGHT_OAK_BASE;
 	}
 }

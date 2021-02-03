@@ -13,6 +13,6 @@ public class RainboakTree extends Tree {
 	@Nullable
 	@Override
 	protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
-		return ConfiguredFeatures.RAINBOAK_TREE;
+		return ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
 	}
 }

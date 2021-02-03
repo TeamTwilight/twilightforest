@@ -11,6 +11,6 @@ public class SortingTree extends Tree {
 
 	@Override
 	public ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random rand, boolean largeHive) {
-		return ConfiguredFeatures.SORT_TREE;
+		return ConfiguredFeatures.SORT_TREE_BASE;
 	}
 }

@@ -36,43 +36,7 @@
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
       "minecraft:disk_clay",
-      {
-        "config": {
-          "feature": {
-            "config": {
-              "feature": {
-                "config": {
-                  "feature": {
-                    "config": {},
-                    "type": "twilightforest:wood_roots"
-                  },
-                  "decorator": {
-                    "config": {
-                      "bottom_offset": 0,
-                      "top_offset": 0,
-                      "maximum": 30
-                    },
-                    "type": "minecraft:range"
-                  }
-                },
-                "type": "minecraft:decorated"
-              },
-              "decorator": {
-                "config": {},
-                "type": "minecraft:square"
-              }
-            },
-            "type": "minecraft:decorated"
-          },
-          "decorator": {
-            "config": {
-              "count": 20
-            },
-            "type": "minecraft:count"
-          }
-        },
-        "type": "minecraft:decorated"
-      }
+      "twilightforest:ore/wood_roots_spread"
     ],
     [],
     [

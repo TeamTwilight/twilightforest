@@ -18,6 +18,8 @@ public final class BiomeMaker extends BiomeHelper {
 		final ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes = ImmutableMap.builder();
 
 		commonBiomes(biomes);
+		mushroomBiomes(biomes);
+		rareBiomes(biomes);
 		swampBiomes(biomes);
 		darkForestBiomes(biomes);
 		snowRegionBiomes(biomes);
@@ -69,25 +71,29 @@ public final class BiomeMaker extends BiomeHelper {
 						.scale(0.2F)
 						.build()
 		);
+	}
 
+	private static void mushroomBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(TFBiomes.mushrooms,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultStructures(defaultGenSettingBuilder()), 0.2f))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultStructures(defaultGenSettingBuilder()), false))
 						.temperature(0.8F)
 						.downfall(0.8F)
 						.build()
 		);
 
 		biomes.put(TFBiomes.deepMushrooms,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultStructures(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_MUSHROOM_TOWER)), 0.9f))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultStructures(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_MUSHROOM_TOWER)), true))
 						.temperature(0.8F)
 						.downfall(1)
 						.depth(0.125F)
 						.scale(0.05F)
 						.build()
 		);
+	}
 
+	private static void rareBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(TFBiomes.spookyForest,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0xC45123).withFoliageColor(0xFF8501).setWaterColor(0xFA9111), defaultMobSpawning(), modify(withWildcardTrees(defaultGenSettingBuilder()), BiomeHelper::defaultStructures))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0xC45123).withFoliageColor(0xFF8501).setWaterColor(0xFA9111), defaultMobSpawning(), modify(addCanopyDead(defaultGenSettingBuilder()), BiomeHelper::defaultStructures))
 						.temperature(0.5F)
 						.downfall(1)
 						.depth(0.125F)
@@ -97,7 +103,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(TFBiomes.enchantedForest, // FIXME: colors
 				biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x00FFFF).withGrassColor(0x00FFFF), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c
-						.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RAINBOAK_TREE.square())
+						.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RAINBOW_OAK_TREE_BASE.square())
 						.withStructure(TFStructures.CONFIGURED_QUEST_GROVE)))
 						.build()
 		);
@@ -124,11 +130,10 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void swampBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		Supplier<BiomeGenerationSettings.Builder> swampGenerationBuilder = () -> modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREE.square()));
+		Supplier<BiomeGenerationSettings.Builder> swampGenerationBuilder = () -> modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREE_BASE.square()));
 
 		biomes.put(TFBiomes.tfSwamp,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder.get()
-						.withStructure(TFStructures.CONFIGURED_LABYRINTH))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder.get().withStructure(TFStructures.CONFIGURED_LABYRINTH))
 						.category(Biome.Category.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
@@ -138,8 +143,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(TFBiomes.fireSwamp,
-				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder.get()
-						.withStructure(TFStructures.CONFIGURED_HYDRA_LAIR))
+				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder.get().withStructure(TFStructures.CONFIGURED_HYDRA_LAIR))
 						.category(Biome.Category.SWAMP)
 						.temperature(1)
 						.downfall(0.4F)
@@ -150,11 +154,10 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void darkForestBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		Supplier<BiomeGenerationSettings.Builder> darkForestGenerationBuilder = () -> modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREE.square()));
+		Supplier<BiomeGenerationSettings.Builder> darkForestGenerationBuilder = () -> modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREE_BASE.square()));
 
 		biomes.put(TFBiomes.darkForest,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGenerationBuilder.get()
-						.withStructure(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGenerationBuilder.get().withStructure(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD))
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.125F)

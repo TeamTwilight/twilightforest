@@ -43,6 +43,8 @@ import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
 import twilightforest.worldgen.TwilightFeatures;
 
+import java.util.Locale;
+
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TwilightForestMod {
@@ -161,7 +163,7 @@ public class TwilightForestMod {
 	}
 
 	public static ResourceLocation prefix(String name) {
-		return new ResourceLocation(ID, name);
+		return new ResourceLocation(ID, name.toLowerCase(Locale.ROOT));
 	}
 
 	public static ResourceLocation getModelTexture(String name) {

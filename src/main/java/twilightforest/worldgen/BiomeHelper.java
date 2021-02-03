@@ -1,28 +1,20 @@
 package twilightforest.worldgen;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.Features;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.MultipleRandomFeatureConfig;
-import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
-import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
-import twilightforest.world.feature.TFBiomeFeatures;
 
 import java.util.function.Consumer;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class BiomeHelper {
     public static BiomeGenerationSettings.Builder withWoodRoots(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFBiomeFeatures.WOOD_ROOTS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).range(30).square().func_242731_b(20));
+        biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ConfiguredFeatures.WOOD_ROOTS_SPREAD);
 
         return biome;
     }
@@ -39,36 +31,27 @@ public abstract class BiomeHelper {
 
     //Canopies, trees, and anything resembling a forest thing
     public static BiomeGenerationSettings.Builder addCanopy(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREE.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREES);
 
         return biome;
     }
     public static BiomeGenerationSettings.Builder addCanopyFirefly(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREE_FIREFLY.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREES);
 
         return biome;
     }
 
     public static BiomeGenerationSettings.Builder addCanopyDead(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREE_DEAD.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEAD_CANOPY_TREES);
 
         return biome;
     }
 
-    public static BiomeGenerationSettings.Builder addMushroomCanopy(BiomeGenerationSettings.Builder biome, float mushroomChance) {
+    public static BiomeGenerationSettings.Builder addMushroomCanopy(BiomeGenerationSettings.Builder biome, boolean dense) {
         DefaultBiomeFeatures.withNormalMushroomGeneration(biome); // Add small mushrooms
         DefaultBiomeFeatures.withMushroomBiomeVegetation(biome); // Add large mushrooms
 
-        biome.withFeature(
-                GenerationStage.Decoration.VEGETAL_DECORATION,
-                Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(
-                        ConfiguredFeatures.MUSHROOM_BROWN.withChance(mushroomChance * 0.75f),
-                        ConfiguredFeatures.MUSHROOM_RED.withChance(mushroomChance * 0.25f)
-                ), ConfiguredFeatures.CANOPY_TREE))
-                        .withPlacement(Features.Placements.BAMBOO_PLACEMENT) //TODO?
-                        .square()
-                        .func_242731_b(8)
-        );
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, dense ? ConfiguredFeatures.CANOPY_MUSHROOMS_DENSE : ConfiguredFeatures.CANOPY_MUSHROOMS_SPARSE);
 
         return biome;
     }
