@@ -46,16 +46,7 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      {
-        "config": {
-          "feature": "twilightforest:tree/base/mangrove_tree",
-          "decorator": {
-            "config": {},
-            "type": "minecraft:square"
-          }
-        },
-        "type": "minecraft:decorated"
-      }
+      "twilightforest:tree/mangrove_trees"
     ]
   ],
   "starts": [

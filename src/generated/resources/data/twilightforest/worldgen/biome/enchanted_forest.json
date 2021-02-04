@@ -46,16 +46,7 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      {
-        "config": {
-          "feature": "twilightforest:tree/base/rainbow_oak",
-          "decorator": {
-            "config": {},
-            "type": "minecraft:square"
-          }
-        },
-        "type": "minecraft:decorated"
-      }
+      "twilightforest:tree/rainbow_oak_trees"
     ]
   ],
   "starts": [

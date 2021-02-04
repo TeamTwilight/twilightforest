@@ -1,6 +1,6 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/firefly_canopy_tree",
+    "feature": "twilightforest:tree/base/mangrove_tree",
     "decorator": {
       "config": {
         "outer": {

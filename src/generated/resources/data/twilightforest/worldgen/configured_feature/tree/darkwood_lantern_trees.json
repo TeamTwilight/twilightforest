@@ -1,6 +1,6 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/firefly_canopy_tree",
+    "feature": "twilightforest:tree/base/darkwood_lantern_tree",
     "decorator": {
       "config": {
         "outer": {

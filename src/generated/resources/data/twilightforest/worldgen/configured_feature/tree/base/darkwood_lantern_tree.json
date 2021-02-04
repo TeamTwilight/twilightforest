@@ -52,6 +52,34 @@
         "random_add_attempts": 32,
         "minimum_required_length": 1,
         "type": "twilightforest:dangle_from_tree_decorator"
+      },
+      {
+        "base_length": 4,
+        "random_add_length": 2,
+        "rope_provider": {
+          "state": {
+            "Properties": {
+              "waterlogged": "false",
+              "axis": "y"
+            },
+            "Name": "minecraft:chain"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "baggage_provider": {
+          "state": {
+            "Properties": {
+              "waterlogged": "false",
+              "hanging": "true"
+            },
+            "Name": "minecraft:lantern"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "attempts_minimum": 0,
+        "random_add_attempts": 1,
+        "minimum_required_length": 2,
+        "type": "twilightforest:dangle_from_tree_decorator"
       }
     ],
     "trunk_provider": {

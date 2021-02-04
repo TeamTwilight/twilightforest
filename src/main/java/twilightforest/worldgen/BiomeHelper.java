@@ -19,39 +19,63 @@ public abstract class BiomeHelper {
         return biome;
     }
 
-    public static BiomeGenerationSettings.Builder defaultStructures(BiomeGenerationSettings.Builder biome) {
+    public static BiomeGenerationSettings.Builder addDefaultStructures(BiomeGenerationSettings.Builder biome) {
     	return biome.
 				withStructure(TFStructures.CONFIGURED_HEDGE_MAZE).
-				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_SMALL).
-				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_MEDIUM).
-				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_LARGE).
+				withStructure(TFStructures.CONFIGURED_HOLLOW_HILL_SMALL).
+				withStructure(TFStructures.CONFIGURED_HOLLOW_HILL_MEDIUM).
+				withStructure(TFStructures.CONFIGURED_HOLLOW_HILL_LARGE).
 				withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD).
 				withStructure(TFStructures.CONFIGURED_LICH_TOWER);
 	}
 
     //Canopies, trees, and anything resembling a forest thing
-    public static BiomeGenerationSettings.Builder addCanopy(BiomeGenerationSettings.Builder biome) {
+    public static BiomeGenerationSettings.Builder addCanopyTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREES);
 
         return biome;
     }
-    public static BiomeGenerationSettings.Builder addCanopyFirefly(BiomeGenerationSettings.Builder biome) {
+    public static BiomeGenerationSettings.Builder addFireflyCanopyTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREES);
 
         return biome;
     }
 
-    public static BiomeGenerationSettings.Builder addCanopyDead(BiomeGenerationSettings.Builder biome) {
+    public static BiomeGenerationSettings.Builder addDeadCanopyTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEAD_CANOPY_TREES);
 
         return biome;
     }
 
-    public static BiomeGenerationSettings.Builder addMushroomCanopy(BiomeGenerationSettings.Builder biome, boolean dense) {
+    public static BiomeGenerationSettings.Builder addCanopyMushrooms(BiomeGenerationSettings.Builder biome, boolean dense) {
         DefaultBiomeFeatures.withNormalMushroomGeneration(biome); // Add small mushrooms
         DefaultBiomeFeatures.withMushroomBiomeVegetation(biome); // Add large mushrooms
 
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, dense ? ConfiguredFeatures.CANOPY_MUSHROOMS_DENSE : ConfiguredFeatures.CANOPY_MUSHROOMS_SPARSE);
+
+        return biome;
+    }
+
+    public static BiomeGenerationSettings.Builder addRainbowOaks(BiomeGenerationSettings.Builder biome) {
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RAINBOW_OAK_TREES);
+
+        return biome;
+    }
+
+    public static BiomeGenerationSettings.Builder addMangroveTrees(BiomeGenerationSettings.Builder biome) {
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREES);
+
+        return biome;
+    }
+
+    public static BiomeGenerationSettings.Builder addDarkwoodTrees(BiomeGenerationSettings.Builder biome) {
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREES);
+
+        return biome;
+    }
+
+    public static BiomeGenerationSettings.Builder addDarkwoodLanternTrees(BiomeGenerationSettings.Builder biome) {
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_LANTERN_TREES);
 
         return biome;
     }
@@ -61,14 +85,15 @@ public abstract class BiomeHelper {
         return builder;
     }
 
-    protected static BiomeGenerationSettings.Builder modify(BiomeGenerationSettings.Builder builder, Consumer<BiomeGenerationSettings.Builder> consumer) {
+    // Only use if a Builder modification function does not return the builder
+    public static BiomeGenerationSettings.Builder modify(BiomeGenerationSettings.Builder builder, Consumer<BiomeGenerationSettings.Builder> consumer) {
         consumer.accept(builder);
         return builder;
     }
 
     // Defaults
 
-    protected static BiomeAmbience.Builder defaultAmbientBuilder() {
+    public static BiomeAmbience.Builder defaultAmbientBuilder() {
         return new BiomeAmbience.Builder()
                 .setFogColor(0xC0FFD8) // TODO Change based on Biome. Not previously done before
                 .setWaterColor(0x3F76E4)
@@ -77,11 +102,11 @@ public abstract class BiomeHelper {
                 .setMoodSound(MoodSoundAmbience.DEFAULT_CAVE); // We should probably change it
     }
 
-    protected static BiomeGenerationSettings.Builder withWildcardTrees(BiomeGenerationSettings.Builder builder) {
+    public static BiomeGenerationSettings.Builder addWildcardTrees(BiomeGenerationSettings.Builder builder) {
         return builder.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEFAULT_TWILIGHT_TREES);
     }
 
-    protected static BiomeGenerationSettings.Builder defaultGenSettingBuilder() {
+    public static BiomeGenerationSettings.Builder defaultGenSettingBuilder() {
         BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
                 .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j); // GRASS_DIRT_GRAVEL_CONFIG
 
@@ -100,7 +125,7 @@ public abstract class BiomeHelper {
         return biome;
     }
 
-    protected static MobSpawnInfo.Builder defaultMobSpawning() {
+    public static MobSpawnInfo.Builder defaultMobSpawning() {
         MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
 
         spawnInfo.withCreatureSpawnProbability(0.1f);
@@ -130,11 +155,11 @@ public abstract class BiomeHelper {
         return spawnInfo;
     }
 
-    protected static Biome.Builder biomeWithDefaults() {
+    public static Biome.Builder biomeWithDefaults() {
         return biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder());
     }
 
-    protected static Biome.Builder biomeWithDefaults(BiomeAmbience.Builder biomeAmbience, MobSpawnInfo.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
+    public static Biome.Builder biomeWithDefaults(BiomeAmbience.Builder biomeAmbience, MobSpawnInfo.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
         return new Biome.Builder()
                 .precipitation(Biome.RainType.RAIN)
                 .category(Biome.Category.FOREST)

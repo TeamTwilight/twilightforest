@@ -39,8 +39,8 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 		setBlockState(world, deco.accentState, size / 2, 1, size / 2 - 1, sbb);
 		setBlockState(world, deco.accentState, size / 2, 1, size / 2 + 1, sbb);
 
-		makeARing(world.getWorld(), 6, sbb);
-		makeARing(world.getWorld(), 8, sbb);
+		makeARing(world, 6, sbb);
+		makeARing(world, 8, sbb);
 
 		return true;
 	}

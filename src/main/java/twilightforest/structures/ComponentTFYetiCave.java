@@ -26,7 +26,7 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 	}
 
 	public ComponentTFYetiCave(TFFeature feature, Random rand, int i, int x, int y, int z) {
-		super(TFFeature.TFYeti, feature, rand, i, 2, x, y + 2, z);
+		super(TFFeature.TFYeti, feature, rand, i, 2, x, y, z);
 	}
 
 	/**

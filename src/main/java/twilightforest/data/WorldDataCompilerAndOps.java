@@ -79,7 +79,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
 
         objectsSerializationCache.add(resource);
 
-        Optional<Format> output = ops.withEncoder(encoder).apply(resource).resultOrPartial(error -> LOGGER.error("Object not serialized within recursive serialization: " + error));
+        Optional<Format> output = ops.withEncoder(encoder).apply(resource).resultOrPartial(error -> LOGGER.error("Object [" + resourceType.getRegistryName() + "] " + resourceLocation + " not serialized within recursive serialization: " + error));
 
         if (output.isPresent()) {
             try {

@@ -43,8 +43,7 @@
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
-      "minecraft:spring_lava",
-      "twilightforest:tree/placeholder_filler_trees"
+      "minecraft:spring_lava"
     ]
   ],
   "starts": [],

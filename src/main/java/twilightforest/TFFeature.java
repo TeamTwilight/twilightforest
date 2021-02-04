@@ -19,11 +19,11 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
+import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
@@ -232,7 +232,7 @@ public enum TFFeature {
 			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	},
-	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
+	DARK_TOWER ( true, 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
 			this.addMonster(TFEntities.tower_golem, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -258,10 +258,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on a Wooden Tower"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartDarkTower(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFDarkTowerMain(this, rand, 0, x, y, z);
+		}
 	},
 	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", true, TwilightForestMod.prefix("progress_trophy_pedestal") ) {
 		{
@@ -315,10 +315,10 @@ public enum TFFeature {
 			book.setTagInfo("title" , StringNBT.valueOf("Notes on an Icy Cave"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartYetiCave(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFYetiCave(this, rand, 0, x, y, z);
+		}
 	},
 	// TODO split cloud giants from this
 	TROLL_CAVE ( 4, "troll_lairs", true, TwilightForestMod.prefix("progress_merge") ) {
@@ -401,6 +401,7 @@ public enum TFFeature {
 	public static final IStructurePieceType TFHydra = registerPiece("TFHydra", ComponentTFHydraLair::new);
 	public static final IStructurePieceType TFYeti = registerPiece("TFYeti", ComponentTFYetiCave::new);
 
+	public final boolean useSurfaceHeight;
 	public final int size;
 	public final String name;
 	private final boolean shouldHaveFeatureGenerator;
@@ -422,6 +423,11 @@ public enum TFFeature {
 	private static final int maxSize = Arrays.stream(VALUES).mapToInt(v -> v.size).max().orElse(0);
 
 	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
+		this(false, size, name, featureGenerator, requiredAdvancements);
+	}
+
+	TFFeature(boolean useSurfaceHeight, int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
+		this.useSurfaceHeight = useSurfaceHeight;
 		this.size = size;
 		this.name = name;
 		this.areChunkDecorationsEnabled = false;

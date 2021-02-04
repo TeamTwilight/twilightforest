@@ -224,7 +224,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 					&& blockID != TFBlocks.stronghold_shield.get()
 					&& blockID != TFBlocks.trophy_pedestal.get()
 					&& blockID != TFBlocks.boss_spawner.get()
-					&& (blockState.getMaterial() == Material.ORGANIC || blockState.getMaterial() == Material.EARTH || blockState.getMaterial() == Material.ROCK);
+					&& (blockState.getMaterial() == Material.ORGANIC || blockState.getMaterial() == Material.EARTH || blockState.getMaterial() == Material.ROCK || blockState.getMaterial() == Material.WATER);
 		}
 	}
 

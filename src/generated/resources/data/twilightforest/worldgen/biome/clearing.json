@@ -48,9 +48,9 @@
   ],
   "starts": [
     "twilightforest:configured_hedgemaze",
-    "twilightforest:configured_hallowhillsmall",
-    "twilightforest:configured_hallowhillmedium",
-    "twilightforest:configured_hallowhilllarge",
+    "twilightforest:configured_hollowhillsmall",
+    "twilightforest:configured_hollowhillmedium",
+    "twilightforest:configured_hollowhilllarge",
     "twilightforest:configured_courtyard",
     "twilightforest:configured_lichtower"
   ],

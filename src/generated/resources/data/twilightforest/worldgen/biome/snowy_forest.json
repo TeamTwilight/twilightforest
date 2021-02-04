@@ -47,7 +47,9 @@
       "minecraft:trees_mountain_edge"
     ]
   ],
-  "starts": [],
+  "starts": [
+    "twilightforest:configured_yeticave"
+  ],
   "spawners": {
     "monster": [
       {
