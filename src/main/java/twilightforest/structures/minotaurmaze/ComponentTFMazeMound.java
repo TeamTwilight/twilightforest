@@ -80,7 +80,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 
 				// leave a hole in the middle
 				if (!(cx <= 2 && cx >= -1 && cz <= 2 && cz >= -1) && ((!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) || hheight > 6)) {
-					this.setBlockState(world, Blocks.GRASS.getDefaultState(), x, hheight, z, sbb);
+					this.setBlockState(world, Blocks.GRASS_BLOCK.getDefaultState(), x, hheight, z, sbb);
 
 					// only fill to the bottom when we're not in the entrances
 					if (!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) {
