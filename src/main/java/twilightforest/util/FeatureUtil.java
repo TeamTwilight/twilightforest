@@ -192,7 +192,7 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	public static void drawBresenhamBranch(TFTreeGenerator generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	public static void drawBresenhamBranch(TFTreeGenerator<? extends TFTreeFeatureConfig> generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		for (BlockPos pixel : getBresenhamArrays(from, to)) {
 			generator.setBranchBlockState(world, random, pixel, state, mbb, config);
 			//world.setBlockState(pixel, state);

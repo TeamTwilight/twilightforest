@@ -22,7 +22,7 @@ public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
     }
 
 	@Override
-	protected IStructureProcessorType getType() {
+	protected IStructureProcessorType<?> getType() {
 		return TFStructureProcessors.MOSSY_COBBLE;
 	}
 

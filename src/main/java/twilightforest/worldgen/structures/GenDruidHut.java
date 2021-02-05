@@ -253,7 +253,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
         }
 
 		@Override
-		protected IStructureProcessorType getType() {
+		protected IStructureProcessorType<?> getType() {
 			return TFStructureProcessors.HUT;
 		}
 

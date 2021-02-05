@@ -415,8 +415,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				case 2:
 					if (y + this.boundingBox.minY > 64) {
 						decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
-						break;
 					}
+					break;
 				case 3:
 					decorateForge(world, decoRNG, sbb, rotation, y);
 					break;
@@ -441,8 +441,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				case 5:
 					if (y + this.boundingBox.minY > 64) {
 						decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
-						break;
 					}
+					break;
 				case 6:
 					decorateLounge(world, generator, decoRNG, sbb, rotation, y);
 					break;

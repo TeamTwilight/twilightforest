@@ -451,8 +451,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 					case 0:
 						if (this.size < 11) {
 							decorateReappearingFloor(world, rand, sbb, rotation, y);
-							break;
 						}
+						break;
 					case 1:
 						decorateSpawner(world, rand, sbb, rotation, y);
 						break;

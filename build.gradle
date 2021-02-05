@@ -41,6 +41,8 @@ group = config.group_name
 archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
+
 minecraft {
     mappings channel: "snapshot", version: config.mcp_mappings
     //version = config.minecraft_version + "-" + config.forge_version // grab latest forge

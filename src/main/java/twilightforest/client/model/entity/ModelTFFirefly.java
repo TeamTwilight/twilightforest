@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelTFFirefly extends SegmentedModel {
+public class ModelTFFirefly extends SegmentedModel<Entity> {
 	public ModelTFFirefly() {
 		legs = new ModelRenderer(this, 0, 21);
 		legs.addBox(-4F, 7.9F, -5F, 8, 1, 10, 0F);

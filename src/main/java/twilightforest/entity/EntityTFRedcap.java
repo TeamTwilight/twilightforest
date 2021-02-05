@@ -43,7 +43,9 @@ public class EntityTFRedcap extends MonsterEntity {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F));
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        AvoidEntityGoal avoidGoal = new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F);
+		this.goalSelector.addGoal(1, avoidGoal);
 		this.goalSelector.addGoal(2, new EntityAITFRedcapShy(this, 1.0F));
 		this.goalSelector.addGoal(3, new EntityAITFRedcapLightTNT(this, 1.0F)); // light TNT
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));

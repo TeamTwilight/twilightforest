@@ -246,7 +246,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		}
 
 		@Override
-		protected IStructureProcessorType getType() {
+		protected IStructureProcessorType<?> getType() {
 			return TFStructureProcessors.WEB;
 		}
 

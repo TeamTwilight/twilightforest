@@ -26,7 +26,7 @@ public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcesso
     }
 
 	@Override
-	protected IStructureProcessorType getType() {
+	protected IStructureProcessorType<?> getType() {
 		return TFStructureProcessors.COURTYARD_STAIRS;
 	}
 

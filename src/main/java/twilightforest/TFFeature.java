@@ -380,6 +380,7 @@ public enum TFFeature {
 		}
 	};
 
+    @SuppressWarnings("serial")
 	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new HashMap<ResourceLocation, TFFeature>(){{
 		put(TFBiomes.darkForest.getLocation(), KNIGHT_STRONGHOLD);
 		put(TFBiomes.darkForestCenter.getLocation(), DARK_TOWER);

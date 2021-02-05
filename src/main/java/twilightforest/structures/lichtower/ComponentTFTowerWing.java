@@ -835,23 +835,23 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			default:
 				if (!isLadderPos(2, 1, ladderUpDir, ladderDownDir)) {
 					placeTreasureAtCurrentPosition(world, 2, top - 2, 1, TFTreasure.tower_library, sbb);
-					break;
 				}
+				break;
 			case 1:
 				if (!isLadderPos(size - 2, 2, ladderUpDir, ladderDownDir)) {
 					placeTreasureAtCurrentPosition(world, size - 2, top - 2, 2, TFTreasure.tower_library, sbb);
-					break;
 				}
+				break;
 			case 2:
 				if (!isLadderPos(size - 3, size - 2, ladderUpDir, ladderDownDir)) {
 					placeTreasureAtCurrentPosition(world, size - 3, top - 2, size - 2, TFTreasure.tower_library, sbb);
-					break;
 				}
+				break;
 			case 3:
 				if (!isLadderPos(1, size - 3, ladderUpDir, ladderDownDir)) {
 					placeTreasureAtCurrentPosition(world, 1, top - 2, size - 3, TFTreasure.tower_library, sbb);
-					break;
 				}
+				break;
 		}
 	}
 

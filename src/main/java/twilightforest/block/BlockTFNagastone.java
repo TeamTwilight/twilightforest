@@ -29,6 +29,7 @@ public class BlockTFNagastone extends Block {
 		return getVariant(ctx.getWorld(), ctx.getPos());
 	}
 
+	@SuppressWarnings("fallthrough")
 	private BlockState getVariant(IWorld world, BlockPos pos) {
 		int connectionCount = 0;
 		BlockState stateOut;

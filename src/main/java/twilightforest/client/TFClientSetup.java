@@ -2,7 +2,9 @@ package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.world.DimensionRenderInfo;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.resources.*;
 import net.minecraft.util.ResourceLocation;
@@ -125,9 +127,13 @@ public class TFClientSetup {
     public static void loadComplete(FMLLoadCompleteEvent evt) {
         Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
             if (r instanceof LivingRenderer) {
-                ((LivingRenderer) r).addLayer(new LayerShields((LivingRenderer) r));
-                ((LivingRenderer) r).addLayer(new LayerIce((LivingRenderer) r));
+                attachRenderLayers((LivingRenderer<?, ?>) r);
             }
         });
+    }
+
+    private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingRenderer<T, M> renderer) {
+        renderer.addLayer(new LayerShields<>(renderer));
+        renderer.addLayer(new LayerIce<>(renderer));
     }
 }

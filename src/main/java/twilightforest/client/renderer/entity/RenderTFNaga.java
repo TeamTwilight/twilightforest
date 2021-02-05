@@ -18,7 +18,7 @@ public class RenderTFNaga<M extends ModelTFNaga<EntityTFNaga>> extends MobRender
 
 	public RenderTFNaga(EntityRendererManager manager, M modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);
-		this.addLayer(new NagaEyelidsLayer(this));
+		this.addLayer(new NagaEyelidsLayer<>(this));
 	}
 
 	@Override

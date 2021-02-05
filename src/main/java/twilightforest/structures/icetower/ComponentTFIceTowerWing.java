@@ -293,6 +293,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * @param ladderDownDir
 	 */
 	@Override
+	@SuppressWarnings("fallthrough")
 	protected void decorateFloor(ISeedReader world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		boolean hasTreasure = (this.treasureFloor == floor);
 

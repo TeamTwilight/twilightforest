@@ -146,10 +146,10 @@ public class HydraHeadContainer {
 		necke = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "e", 2F, 2F);
 
 		// state positions, where is each state positioned?
-		stateNeckLength = new Map[this.hydra.numHeads];
-		stateXRotations = new Map[this.hydra.numHeads];
-		stateYRotations = new Map[this.hydra.numHeads];
-		stateMouthOpen = new Map[this.hydra.numHeads];
+		stateNeckLength = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		stateXRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		stateYRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		stateMouthOpen = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
 
 		for (int i = 0; i < this.hydra.numHeads; i++) {
 			stateNeckLength[i] = new EnumMap<>(State.class);

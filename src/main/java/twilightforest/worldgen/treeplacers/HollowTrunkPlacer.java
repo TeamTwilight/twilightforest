@@ -55,7 +55,7 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
         final float outerRadiusSquared = outerRadius * outerRadius;
         final float hollowRadiusSquared = hollowRadius * hollowRadius;
 
-        ArrayList<FoliagePlacer.Foliage> leaves = new ArrayList();
+        ArrayList<FoliagePlacer.Foliage> leaves = new ArrayList<>();
 
         buildTrunk(world, random, height, pos, trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig, outerRadius, outerRadiusSquared, hollowRadiusSquared);
 

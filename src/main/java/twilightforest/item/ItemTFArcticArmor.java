@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 
-	private static final Map<EquipmentSlotType, BipedModel> arcticArmorModel = new EnumMap<>(EquipmentSlotType.class);
+	private static final Map<EquipmentSlotType, BipedModel<?>> arcticArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
 	public ItemTFArcticArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
 		super(armorMaterial, armorType, props);
@@ -43,8 +43,9 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel oldM) {
-		return arcticArmorModel.get(armorSlot);
+    @SuppressWarnings("unchecked")
+	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A oldM) {
+		return (A) arcticArmorModel.get(armorSlot);
 	}
 
 	@OnlyIn(Dist.CLIENT)

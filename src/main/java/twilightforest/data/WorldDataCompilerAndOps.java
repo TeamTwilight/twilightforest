@@ -116,18 +116,19 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
         return (T) registry.getValueForKey(key);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static <Resource> Optional<ResourceLocation> getFromForgeRegistryIllegally(RegistryKey<? extends Registry<Resource>> registryKey, Resource resource) {
         if (resource instanceof IForgeRegistryEntry) {
-            IForgeRegistryEntry<Resource> entry = (IForgeRegistryEntry) resource;
+            IForgeRegistryEntry<Resource> entry = (IForgeRegistryEntry<Resource>) resource;
             ResourceLocation location = entry.getRegistryName();
 
             if (location != null) {
                 return Optional.of(location);
             }
 
+            // This is safe because we've tested IForgeRegistry, but the type-checker is too stupid to recognize it as such
             IForgeRegistry forgeRegistry = RegistryManager.ACTIVE.getRegistry(registryKey.getLocation());
-
-            return Optional.ofNullable(forgeRegistry.getKey(entry));
+            return Optional.ofNullable(forgeRegistry.getKey((IForgeRegistryEntry) resource));
         }
 
         return Optional.empty();

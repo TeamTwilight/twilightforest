@@ -157,7 +157,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions", "fallthrough"})
     private void processInnerWallsAndFloor(StructurePiece structureComponent, List<StructurePiece> list, Random random, final int offset, final Rotation[] rotations) {
         for (int x = 0; x < widthInCellCount - 1; x++) {
             for (int y = 0; y < heightInCellCount - 1; y++) {
