@@ -98,9 +98,9 @@ public class BlockTFExperiment115 extends Block {
             int i = state.get(BITES_TAKEN);
 
             if (i < 7) {
-              world.setBlockState(pos, state.with(BITES_TAKEN, i + 1), 3);
+            	world.setBlockState(pos, state.with(BITES_TAKEN, Integer.valueOf(i + 1)), 3);
             } else {
-              world.removeBlock(pos, false);
+            	world.removeBlock(pos, false);
             }
 
             if (player instanceof ServerPlayerEntity)
