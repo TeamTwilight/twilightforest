@@ -29,6 +29,10 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	public ComponentTFTrollCaveConnect(TemplateManager manager, CompoundNBT nbt) {
 		super(TFTrollCavePieces.TFTCCon, nbt);
+		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
+		this.openingTowards[1] = nbt.getBoolean("openingTowards1");
+		this.openingTowards[2] = nbt.getBoolean("openingTowards2");
+		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
 	}
 
 	public ComponentTFTrollCaveConnect(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
@@ -36,28 +40,17 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
-
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
-//		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
-//		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
-//		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
-//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
 		// too lazy to do this as a loop
-		this.openingTowards[0] = tagCompound.getBoolean("openingTowards0");
-		this.openingTowards[1] = tagCompound.getBoolean("openingTowards1");
-		this.openingTowards[2] = tagCompound.getBoolean("openingTowards2");
-		this.openingTowards[3] = tagCompound.getBoolean("openingTowards3");
+		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
+		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
+		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
+		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
 	}
 
 	@Override
@@ -96,12 +89,12 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, manager, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, manager, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 8; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, manager, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, manager, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
 		}
 
 		// possible treasure

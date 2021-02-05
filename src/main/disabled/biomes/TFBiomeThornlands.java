@@ -1,4 +1,4 @@
-package twilightforest.biomes;
+package twilightforest.worldgen.biomes;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;

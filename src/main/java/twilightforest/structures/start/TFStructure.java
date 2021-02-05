@@ -17,6 +17,7 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentTemplate;
 import twilightforest.world.TFGenerationSettings;
@@ -48,6 +49,23 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 		return template ? TemplateStart::new : Start::new;
 	}
 
+	private StructureStart<C> createStructureStart(int p_236387_1_, int p_236387_2_, MutableBoundingBox p_236387_3_, int refCount, long seed) {
+		return this.getStartFactory().create(this, p_236387_1_, p_236387_2_, p_236387_3_, refCount, seed);
+	}
+
+	@Override
+	public StructureStart<?> func_242785_a(DynamicRegistries dynamicRegistries, ChunkGenerator generator, BiomeProvider provider, TemplateManager templateManager, long seed, ChunkPos pos, Biome biome, int refCount, SharedSeedRandom rand, StructureSeparationSettings settings, C config) {
+		if (this.func_230363_a_(generator, provider, seed, rand, pos.x, pos.z, biome, pos, config)) {
+			StructureStart<C> structurestart = this.createStructureStart(pos.x, pos.z, MutableBoundingBox.getNewBoundingBox(), refCount, seed);
+			structurestart.func_230364_a_(dynamicRegistries, generator, templateManager, pos.x, pos.z, biome, config);
+			if (structurestart.isValid()) {
+				return structurestart;
+			}
+		}
+
+		return StructureStart.DUMMY;
+	}
+
 	@Override
 	protected boolean func_230363_a_(ChunkGenerator generator, BiomeProvider provider, long seed, SharedSeedRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos structurePos, C config) {
 		return TFFeature.isInFeatureChunk(chunkX << 4, chunkZ << 4) && TFFeature.generateFeature(chunkX, chunkZ, biome, seed) == feature;
@@ -63,7 +81,7 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 		public void func_230364_a_(DynamicRegistries p_230364_1_, ChunkGenerator p_230364_2_, TemplateManager p_230364_3_, int p_230364_4_, int p_230364_5_, Biome p_230364_6_, C p_230364_7_) {
 			int x = (p_230364_4_ << 4);
 			int z = (p_230364_5_ << 4);
-			int y = feature.useSurfaceHeight ? p_230364_2_.getHeight(p_230364_4_, p_230364_5_, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES) : TFGenerationSettings.SEALEVEL + 1;
+			int y = TFGenerationSettings.SEALEVEL + 1;
 			StructurePiece start = feature.provideStructureStart(rand, x, y, z);
 			if(start == null)
 				return;

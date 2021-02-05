@@ -17,6 +17,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 
 	public ComponentTFIceTowerMain(TemplateManager manager, CompoundNBT nbt) {
 		super(TFIceTowerPieces.TFITMai, nbt);
+		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
 
 	public ComponentTFIceTowerMain(TFFeature feature, Random rand, int index, int x, int y, int z) {
@@ -37,24 +38,10 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		super(TFIceTowerPieces.TFITMai, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("hasBossWing", this.hasBossWing);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.hasBossWing = tagCompound.getBoolean("hasBossWing");
+		tagCompound.putBoolean("hasBossWing", this.hasBossWing);
 	}
 
 	@Override

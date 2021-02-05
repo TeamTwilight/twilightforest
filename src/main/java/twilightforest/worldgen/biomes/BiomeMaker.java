@@ -1,4 +1,4 @@
-package twilightforest.worldgen;
+package twilightforest.worldgen.biomes;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.util.RegistryKey;
@@ -6,7 +6,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.biome.MobSpawnInfo;
 import twilightforest.TFStructures;
-import twilightforest.biomes.TFBiomes;
 
 import java.util.Map;
 
@@ -26,12 +25,12 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void commonBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		biomes.put(TFBiomes.twilightForest,
+		biomes.put(BiomeKeys.FOREST,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyTrees(addDefaultStructures(defaultGenSettingBuilder())))
 						.build()
 		);
 
-		biomes.put(TFBiomes.denseTwilightForest,
+		biomes.put(BiomeKeys.DENSE_FOREST,
 				biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning(), addCanopyTrees(addCanopyTrees(addDefaultStructures(defaultGenSettingBuilder()))))
 						.temperature(0.7F)
 						.downfall(0.8F)
@@ -40,7 +39,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.fireflyForest,
+		biomes.put(BiomeKeys.FIREFLY_FOREST,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addFireflyCanopyTrees(addDefaultStructures(defaultGenSettingBuilder())))
 						.temperature(0.5F)
 						.downfall(1)
@@ -49,7 +48,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.clearing,
+		biomes.put(BiomeKeys.CLEARING,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addDefaultStructures(defaultGenSettingBuilder()))
 						.category(Biome.Category.PLAINS)
 						.temperature(0.8F)
@@ -59,7 +58,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.oakSavanna,
+		biomes.put(BiomeKeys.OAK_SAVANNAH,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addWildcardTrees(addDefaultStructures(defaultGenSettingBuilder())))
 						.category(Biome.Category.SAVANNA)
 						.temperature(0.9F)
@@ -71,14 +70,14 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void mushroomBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		biomes.put(TFBiomes.mushrooms,
+		biomes.put(BiomeKeys.MUSHROOM_FOREST,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyMushrooms(addDefaultStructures(defaultGenSettingBuilder()), false))
 						.temperature(0.8F)
 						.downfall(0.8F)
 						.build()
 		);
 
-		biomes.put(TFBiomes.deepMushrooms,
+		biomes.put(BiomeKeys.DENSE_MUSHROOM_FOREST,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyMushrooms(addDefaultStructures(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_MUSHROOM_TOWER)), true))
 						.temperature(0.8F)
 						.downfall(1)
@@ -89,7 +88,7 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void rareBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		biomes.put(TFBiomes.spookyForest,
+		biomes.put(BiomeKeys.SPOOKY_FOREST,
 				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0xC45123).withFoliageColor(0xFF8501).setWaterColor(0xFA9111), defaultMobSpawning(), addDeadCanopyTrees(addDefaultStructures(defaultGenSettingBuilder())))
 						.temperature(0.5F)
 						.downfall(1)
@@ -98,12 +97,12 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.enchantedForest, // FIXME: colors
+		biomes.put(BiomeKeys.ENCHANTED_FOREST, // FIXME: colors
 				biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x00FFFF).withGrassColor(0x00FFFF), defaultMobSpawning(), addRainbowOaks(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_QUEST_GROVE)))
 						.build()
 		);
 
-		biomes.put(TFBiomes.stream,
+		biomes.put(BiomeKeys.STREAM,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder())
 						.category(Biome.Category.RIVER)
 						.temperature(0.5F)
@@ -113,7 +112,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.tfLake,
+		biomes.put(BiomeKeys.LAKE,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder())
 						.category(Biome.Category.OCEAN)
 						.temperature(0.66F)
@@ -125,7 +124,7 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void swampBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		biomes.put(TFBiomes.tfSwamp,
+		biomes.put(BiomeKeys.SWAMP,
 				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), addMangroveTrees(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_LABYRINTH))
 						.category(Biome.Category.SWAMP)
 						.temperature(0.8F)
@@ -135,7 +134,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.fireSwamp,
+		biomes.put(BiomeKeys.FIRE_SWAMP,
 				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), addMangroveTrees(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_HYDRA_LAIR))
 						.category(Biome.Category.SWAMP)
 						.temperature(1)
@@ -147,7 +146,7 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void darkForestBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		biomes.put(TFBiomes.darkForest,
+		biomes.put(BiomeKeys.DARK_FOREST,
 				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), addDarkwoodLanternTrees(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD))
 						.temperature(0.7F)
 						.downfall(0.8F)
@@ -156,7 +155,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.darkForestCenter, // FIXME: colors
+		biomes.put(BiomeKeys.DARK_FOREST_CENTER, // FIXME: colors
 				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), defaultMobSpawning(), addDarkwoodTrees(defaultGenSettingBuilder())
 						.withStructure(TFStructures.CONFIGURED_DARK_TOWER))
 						.depth(0.125F)
@@ -166,7 +165,7 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void snowRegionBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		biomes.put(TFBiomes.snowy_forest,
+		biomes.put(BiomeKeys.SNOWY_FOREST,
 				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), DefaultBiomeFeatures::withMountainEdgeTrees).withStructure(TFStructures.CONFIGURED_YETI_CAVE))
 
 						.temperature(0.09F)
@@ -177,8 +176,8 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.glacier,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder())
+		biomes.put(BiomeKeys.GLACIER,
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_AURORA_PALACE))
 						.category(Biome.Category.ICY)
 						.temperature(0.8F)
 						.downfall(0.1F)
@@ -188,8 +187,8 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void highlandsBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		biomes.put(TFBiomes.highlands,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addWildcardTrees(defaultGenSettingBuilder()))
+		biomes.put(BiomeKeys.HIGHLANDS,
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addWildcardTrees(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_TROLL_CAVE)))
 						.category(Biome.Category.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)
@@ -198,7 +197,7 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.thornlands,
+		biomes.put(BiomeKeys.THORNLANDS,
 				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder())
 						.category(Biome.Category.NONE)
 						.temperature(0.3F)
@@ -208,8 +207,8 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(TFBiomes.finalPlateau,
-				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder())
+		biomes.put(BiomeKeys.FINAL_PLATEAU,
+				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_FINAL_CASTLE))
 						.category(Biome.Category.MESA)
 						.temperature(0.3F)
 						.downfall(0.2F)

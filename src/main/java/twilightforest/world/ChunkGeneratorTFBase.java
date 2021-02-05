@@ -334,7 +334,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		hollowCeiling = Math.min(hollowCeiling, TFGenerationSettings.SEALEVEL + 16);
 
 		// floor, also with slight slope
-		int hollowFloor = TFGenerationSettings.SEALEVEL - 1 + (offset / 6);
+		int hollowFloor = TFGenerationSettings.SEALEVEL - 4 + (offset / 6);
 
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height

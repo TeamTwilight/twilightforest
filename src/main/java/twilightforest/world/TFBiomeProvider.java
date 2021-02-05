@@ -16,7 +16,7 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.layer.GenLayerTFBiomeStabilize;
 import twilightforest.world.layer.GenLayerTFBiomes;
 import twilightforest.world.layer.GenLayerTFCompanionBiomes;
@@ -26,42 +26,50 @@ import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeProvider {
-	public static final Codec<TFBiomeProvider> tfBiomeProviderCodec = RecordCodecBuilder.create((instance) ->
-			instance.group(Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
-					RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(provider -> provider.registry))
-					.apply(instance, instance.stable(TFBiomeProvider::new)));
+	public static final Codec<TFBiomeProvider> tfBiomeProviderCodec = RecordCodecBuilder.create((instance) -> instance.group(
+			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
+			RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(provider -> provider.registry)
+	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
 	private final Registry<Biome> registry;
 	private final Layer genBiomes;
 	private final long seed;
 	private static final List<RegistryKey<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
-			TFBiomes.tfLake,
-			TFBiomes.twilightForest,
-			TFBiomes.denseTwilightForest,
-			TFBiomes.highlands,
-			TFBiomes.mushrooms,
-			TFBiomes.tfSwamp,
-			TFBiomes.stream,
-			TFBiomes.snowy_forest,
-			TFBiomes.glacier,
-			TFBiomes.clearing,
-			TFBiomes.oakSavanna,
-			TFBiomes.fireflyForest,
-			TFBiomes.deepMushrooms,
-			TFBiomes.darkForest,
-			TFBiomes.enchantedForest,
-			TFBiomes.fireSwamp,
-			TFBiomes.darkForestCenter,
-			TFBiomes.finalPlateau,
-			TFBiomes.thornlands,
-			TFBiomes.spookyForest
+			BiomeKeys.LAKE,
+			BiomeKeys.FOREST,
+			BiomeKeys.DENSE_FOREST,
+			BiomeKeys.HIGHLANDS,
+			BiomeKeys.MUSHROOM_FOREST,
+			BiomeKeys.SWAMP,
+			BiomeKeys.STREAM,
+			BiomeKeys.SNOWY_FOREST,
+			BiomeKeys.GLACIER,
+			BiomeKeys.CLEARING,
+			BiomeKeys.OAK_SAVANNAH,
+			BiomeKeys.FIREFLY_FOREST,
+			BiomeKeys.DENSE_MUSHROOM_FOREST,
+			BiomeKeys.DARK_FOREST,
+			BiomeKeys.ENCHANTED_FOREST,
+			BiomeKeys.FIRE_SWAMP,
+			BiomeKeys.DARK_FOREST_CENTER,
+			BiomeKeys.FINAL_PLATEAU,
+			BiomeKeys.THORNLANDS,
+			BiomeKeys.SPOOKY_FOREST
 	);
 
-	public TFBiomeProvider(long seed, Registry<Biome> reg) {
-		super(BIOMES.stream().map(key -> () -> reg.getValueForKey(key)));
+	public TFBiomeProvider(long seed, Registry<Biome> registryIn) {
+		super(BIOMES
+				.stream()
+				.map(RegistryKey::getLocation)
+				.map(registryIn::getOptional)
+				.filter(Optional::isPresent)
+				.map(opt -> opt::get)
+		);
+
 		this.seed = seed;
 		//getBiomesToSpawnIn().clear();
 		//getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());
@@ -70,8 +78,8 @@ public class TFBiomeProvider extends BiomeProvider {
 		//getBiomesToSpawnIn().add(TFBiomes.tfSwamp.get());
 		//getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
 
-		registry = reg;
-		genBiomes = makeLayers(seed, reg);
+		registry = registryIn;
+		genBiomes = makeLayers(seed, registryIn);
 	}
 
 	public static int getBiomeId(RegistryKey<Biome> biome, Registry<Biome> registry) {

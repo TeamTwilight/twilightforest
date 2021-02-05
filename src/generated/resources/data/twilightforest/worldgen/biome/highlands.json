@@ -47,7 +47,9 @@
       "twilightforest:tree/placeholder_filler_trees"
     ]
   ],
-  "starts": [],
+  "starts": [
+    "twilightforest:configured_trollcave"
+  ],
   "spawners": {
     "monster": [
       {

@@ -26,8 +26,8 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
 
     public StructureTFComponentTemplate(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt) {
         super(piece, nbt);
-        this.rotation = Rotation.NONE;
-        this.mirror = Mirror.NONE;
+        this.templatePosition = new BlockPos(nbt.getInt("TPX"), nbt.getInt("TPY"), nbt.getInt("TPZ"));
+        this.placeSettings.setRotation(this.rotation);
 		LAZY_TEMPLATE_LOADER = () -> setup(manager);
     }
 
@@ -60,21 +60,12 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
 
     protected abstract void loadTemplates(TemplateManager templateManager);
 
-    //TODO: See super
-//    @Override
-//    protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//        super.writeStructureToNBT(tagCompound);
-//        tagCompound.putInt("TPX", this.templatePosition.getX());
-//        tagCompound.putInt("TPY", this.templatePosition.getY());
-//        tagCompound.putInt("TPZ", this.templatePosition.getZ());
-//    }
-
     @Override
     protected void readAdditional(CompoundNBT tagCompound) {
         super.readAdditional(tagCompound);
-		this.templatePosition = new BlockPos(tagCompound.getInt("TPX"), tagCompound.getInt("TPY"), tagCompound.getInt("TPZ"));
-		this.placeSettings.setRotation(this.rotation);
-//		setup(manager, FMLCommonHandler.instance().getMinecraftServerInstance());
+        tagCompound.putInt("TPX", this.templatePosition.getX());
+        tagCompound.putInt("TPY", this.templatePosition.getY());
+        tagCompound.putInt("TPZ", this.templatePosition.getZ());
 	}
 
     protected final void setModifiedTemplatePositionFromRotation() {

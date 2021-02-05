@@ -34,7 +34,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 
 		this.setCoordBaseMode(Direction.NORTH);
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getCoordBaseMode());
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getCoordBaseMode());
 	}
 
 	@Override

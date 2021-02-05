@@ -1,4 +1,4 @@
-package twilightforest.worldgen;
+package twilightforest.worldgen.biomes;
 
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -8,6 +8,7 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.function.Consumer;
 

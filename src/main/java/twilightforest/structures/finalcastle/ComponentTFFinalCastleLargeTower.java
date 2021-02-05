@@ -30,7 +30,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 		this.setCoordBaseMode(rotation);
 		this.size = 13;
 		this.height = 61;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, Direction.SOUTH);
 
 	}
 

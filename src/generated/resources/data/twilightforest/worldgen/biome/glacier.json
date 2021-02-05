@@ -46,7 +46,9 @@
       "minecraft:spring_lava"
     ]
   ],
-  "starts": [],
+  "starts": [
+    "twilightforest:configured_aurorapalace"
+  ],
   "spawners": {
     "monster": [
       {

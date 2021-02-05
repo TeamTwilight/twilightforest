@@ -6,7 +6,7 @@ import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer2;
 import net.minecraft.world.gen.layer.traits.IDimOffset0Transformer;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.TFBiomeProvider;
 
 public enum GenLayerTFRiverMix implements IAreaTransformer2, IDimOffset0Transformer {
@@ -62,7 +62,7 @@ public enum GenLayerTFRiverMix implements IAreaTransformer2, IDimOffset0Transfor
 		int biomeInputs = area1.getValue(this.getOffsetX(val1), this.getOffsetZ(val2));
 		int riverInputs = area2.getValue(this.getOffsetX(val1), this.getOffsetZ(val2));
 
-		int stream = TFBiomeProvider.getBiomeId(TFBiomes.stream, registry);
+		int stream = TFBiomeProvider.getBiomeId(BiomeKeys.STREAM, registry);
 
 		if (riverInputs == stream) {
 			return riverInputs;

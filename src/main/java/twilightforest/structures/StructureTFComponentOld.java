@@ -76,25 +76,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		}
 	}
 
-	public static MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable Direction dir) {
-		switch (dir) {
-			default:
-				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
-
-			case SOUTH: // '\0'
-				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
-
-			case WEST: // '\001'
-				return new MutableBoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
-
-			case NORTH: // '\002'
-				return new MutableBoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
-
-			case EAST: // '\003'
-				return new MutableBoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
-		}
-	}
-
 	/**
 	 * Fixed a bug with direction 1 and -z values, but I'm not sure if it'll break other things
 	 */

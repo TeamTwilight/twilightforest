@@ -31,7 +31,7 @@ public class ComponentTFCloudTree extends StructureTFComponentOld {
 		y = (y >> 2) << 2;
 		z = (z >> 2) << 2;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH);
 
 		// spawn list!
 		this.spawnListIndex = 1;

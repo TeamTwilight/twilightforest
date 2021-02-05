@@ -15,7 +15,7 @@ import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
@@ -76,7 +76,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Biome biome = primer.getBiome(getPos(primer).asBlockPos().add(x, 0, z));
-				if (!TFBiomes.glacier.getLocation().equals(biome.getRegistryName())) continue;
+				if (!BiomeKeys.GLACIER.getLocation().equals(biome.getRegistryName())) continue;
 
 				// find the (current) top block
 				int gBase = -1;
@@ -114,7 +114,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
 						Biome biome = primer.getBiome(getPos(primer).asBlockPos().add(x + bx + 2, 0, z + bz + 2));
-						if (TFBiomes.darkForest.getLocation().equals(biome.getRegistryName()) || TFBiomes.darkForestCenter.getLocation().equals(biome.getRegistryName())) {
+						if (BiomeKeys.DARK_FOREST.getLocation().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.getLocation().equals(biome.getRegistryName())) {
 							thicks[x + z * 5]++;
 							biomeFound = true;
 						}

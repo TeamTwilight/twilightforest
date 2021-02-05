@@ -16,7 +16,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import twilightforest.TFSounds;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -80,7 +80,7 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 
 	public static boolean canSpawn(EntityType<? extends MonsterEntity> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
 		Optional<RegistryKey<Biome>> key = world.func_242406_i(pos);
-		if (Objects.equals(key, Optional.of(TFBiomes.tfSwamp))) {
+		if (Objects.equals(key, Optional.of(BiomeKeys.SWAMP))) {
 			// no light level check
 			return world.getDifficulty() != Difficulty.PEACEFUL && MobEntity.canSpawnOn(type, world, reason, pos, rand);
 		} else {

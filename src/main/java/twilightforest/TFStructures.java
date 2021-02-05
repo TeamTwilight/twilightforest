@@ -16,11 +16,14 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.structures.darktower.TFDarkTowerPieces;
+import twilightforest.structures.finalcastle.TFFinalCastlePieces;
+import twilightforest.structures.icetower.TFIceTowerPieces;
 import twilightforest.structures.lichtower.TFLichTowerPieces;
 import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
 import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
 import twilightforest.structures.start.TFStructure;
 import twilightforest.structures.stronghold.TFStrongholdPieces;
+import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.world.TFDimensions;
 
 import java.util.HashMap;
@@ -69,6 +72,15 @@ public class TFStructures {
 	public static final Structure<NoFeatureConfig> YETI_CAVE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.YETI_CAVE);
 	public static final StructureFeature<?, ?> CONFIGURED_YETI_CAVE = YETI_CAVE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
+	public static final Structure<NoFeatureConfig> AURORA_PALACE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.ICE_TOWER);
+	public static final StructureFeature<?, ?> CONFIGURED_AURORA_PALACE = AURORA_PALACE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+
+	public static final Structure<NoFeatureConfig> TROLL_CAVE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.TROLL_CAVE);
+	public static final StructureFeature<?, ?> CONFIGURED_TROLL_CAVE = TROLL_CAVE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+
+	public static final Structure<NoFeatureConfig> FINAL_CASTLE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.FINAL_CASTLE);
+	public static final StructureFeature<?, ?> CONFIGURED_FINAL_CASTLE = FINAL_CASTLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
 		TFFeature.init();
@@ -78,6 +90,9 @@ public class TFStructures {
 		new TFMinotaurMazePieces();
 		new TFStrongholdPieces();
 		new TFDarkTowerPieces();
+		new TFIceTowerPieces();
+		new TFTrollCavePieces();
+		new TFFinalCastlePieces();
 		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedgemaze"), 1, 2);
 		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("questgrove"), 1, 2);
 		register(event, MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TwilightForestMod.prefix("mushroomtower"), 1, 2);
@@ -91,6 +106,9 @@ public class TFStructures {
 		register(event, KNIGHT_STRONGHOLD, CONFIGURED_KNIGHT_STRONGHOLD, TwilightForestMod.prefix("knightstronghold"), 1, 2);
 		register(event, DARK_TOWER, CONFIGURED_DARK_TOWER, TwilightForestMod.prefix("darktower"), 1, 2);
 		register(event, YETI_CAVE, CONFIGURED_YETI_CAVE, TwilightForestMod.prefix("yeticave"), 1, 2);
+		register(event, AURORA_PALACE, CONFIGURED_AURORA_PALACE, TwilightForestMod.prefix("aurorapalace"), 1, 2);
+		register(event, TROLL_CAVE, CONFIGURED_TROLL_CAVE, TwilightForestMod.prefix("trollcave"), 1, 2);
+		register(event, FINAL_CASTLE, CONFIGURED_FINAL_CASTLE, TwilightForestMod.prefix("finalcastle"), 1, 2);
 	}
 
 	private static void register(RegistryEvent.Register<Structure<?>> event, Structure<?> structure, StructureFeature<?, ?> config, ResourceLocation name, int min, int max) {
