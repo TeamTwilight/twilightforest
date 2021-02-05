@@ -1,0 +1,47 @@
+{
+  "config": {
+    "max_water_depth": 0,
+    "ignore_vines": true,
+    "heightmap": "MOTION_BLOCKING",
+    "minimum_size": {
+      "limit": 0,
+      "lower_size": 0,
+      "upper_size": 0,
+      "min_clipped_height": 4,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "decorators": [],
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "twilightforest:twilight_oak_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "leaves_provider": {
+      "state": {
+        "Properties": {
+          "persistent": "false",
+          "distance": "7"
+        },
+        "Name": "twilightforest:rainboak_leaves"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "foliage_placer": {
+      "radius": 2,
+      "offset": 4,
+      "height": 4,
+      "type": "minecraft:fancy_foliage_placer"
+    },
+    "trunk_placer": {
+      "base_height": 3,
+      "height_rand_a": 11,
+      "height_rand_b": 0,
+      "type": "minecraft:fancy_trunk_placer"
+    }
+  },
+  "type": "minecraft:tree"
+}

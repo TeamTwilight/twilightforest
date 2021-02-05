@@ -46,17 +46,17 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      "twilightforest:tree/dead_canopy_trees"
+      "twilightforest:pumpkin_lamppost",
+      "twilightforest:spook_grass",
+      "twilightforest:spook_tall_grass",
+      "twilightforest:small_log",
+      "twilightforest:webs",
+      "twilightforest:graveyard",
+      "twilightforest:tree/dead_canopy_trees",
+      "twilightforest:tree/twilight_oak_trees"
     ]
   ],
-  "starts": [
-    "twilightforest:configured_hedgemaze",
-    "twilightforest:configured_hollowhillsmall",
-    "twilightforest:configured_hollowhillmedium",
-    "twilightforest:configured_hollowhilllarge",
-    "twilightforest:configured_courtyard",
-    "twilightforest:configured_lichtower"
-  ],
+  "starts": [],
   "spawners": {
     "monster": [
       {

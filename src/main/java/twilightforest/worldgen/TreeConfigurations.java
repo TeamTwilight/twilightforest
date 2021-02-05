@@ -1,17 +1,23 @@
 package twilightforest.worldgen;
 
+import java.util.OptionalInt;
+
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LanternBlock;
 import net.minecraft.util.Direction;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.FeatureSpread;
+import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.TwoLayerFeature;
 import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
+import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
+import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import twilightforest.block.BlockTFFirefly;
 import twilightforest.block.BlockTFMagicLog;
@@ -245,6 +251,17 @@ public final class TreeConfigurations {
             .setIgnoreVines()
             .build();
 
+    public static final BaseTreeFeatureConfig LARGE_RAINBOAK_TREE =  new BaseTreeFeatureConfig.Builder(
+    		new SimpleBlockStateProvider(BlockConstants.OAK_LOG), 
+    		new SimpleBlockStateProvider(BlockConstants.RAINBOW_LEAVES), 
+    		new FancyFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(4), 4), 
+    		new FancyTrunkPlacer(3, 11, 0), 
+    		new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
+	)
+			.setIgnoreVines()
+			.func_236702_a_(Heightmap.Type.MOTION_BLOCKING)
+			.build();
+    
     public static final BaseTreeFeatureConfig MUSHROOM_BROWN = new BaseTreeFeatureConfig.Builder(
             new SimpleBlockStateProvider(BlockConstants.MUSHROOM_STEM),
             new SimpleBlockStateProvider(BlockConstants.MUSHROOM_CAP_BROWN),

@@ -44,7 +44,17 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      "twilightforest:tree/canopy_trees"
+      "twilightforest:flower_placer",
+      "twilightforest:grass_placer",
+      "twilightforest:random_common",
+      "twilightforest:random_fallen",
+      "twilightforest:random_water",
+      "twilightforest:fallen_leaves",
+      "twilightforest:well",
+      "twilightforest:tree/canopy_trees",
+      "twilightforest:tree/twilight_oak_trees",
+      "twilightforest:tree/twilight_oak_trees",
+      "twilightforest:tree/hollow_oak_trees"
     ]
   ],
   "starts": [

@@ -1,0 +1,26 @@
+{
+  "config": {
+    "can_replace": false,
+    "project": false,
+    "need_water": false,
+    "xspread": 7,
+    "yspread": 3,
+    "zspread": 7,
+    "whitelist": [],
+    "blacklist": [],
+    "tries": 128,
+    "state_provider": {
+      "state": {
+        "Properties": {
+          "half": "lower"
+        },
+        "Name": "minecraft:tall_grass"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "block_placer": {
+      "type": "minecraft:double_plant_placer"
+    }
+  },
+  "type": "minecraft:random_patch"
+}

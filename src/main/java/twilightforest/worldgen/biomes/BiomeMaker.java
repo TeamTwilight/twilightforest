@@ -26,12 +26,12 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void commonBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyTrees(addDefaultStructures(defaultGenSettingBuilder())))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), twilightForestGen(defaultGenSettingBuilder()))
 						.build()
 		);
 
 		biomes.put(BiomeKeys.DENSE_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning(), addCanopyTrees(addCanopyTrees(addDefaultStructures(defaultGenSettingBuilder()))))
+				biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning(), denseForestGen(defaultGenSettingBuilder()))
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.2F)
@@ -40,7 +40,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.FIREFLY_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addFireflyCanopyTrees(addDefaultStructures(defaultGenSettingBuilder())))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), fireflyForestGen(defaultGenSettingBuilder()))
 						.temperature(0.5F)
 						.downfall(1)
 						.depth(0.125F)
@@ -59,7 +59,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.OAK_SAVANNAH,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addWildcardTrees(addDefaultStructures(defaultGenSettingBuilder())))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), oakSavannaGen(defaultGenSettingBuilder()))
 						.category(Biome.Category.SAVANNA)
 						.temperature(0.9F)
 						.downfall(0)
@@ -71,14 +71,14 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void mushroomBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.MUSHROOM_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyMushrooms(addDefaultStructures(defaultGenSettingBuilder()), false))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), mushroomForestGen(defaultGenSettingBuilder()))
 						.temperature(0.8F)
 						.downfall(0.8F)
 						.build()
 		);
 
 		biomes.put(BiomeKeys.DENSE_MUSHROOM_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyMushrooms(addDefaultStructures(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_MUSHROOM_TOWER)), true))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), denseMushroomForestGen(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_MUSHROOM_TOWER)))
 						.temperature(0.8F)
 						.downfall(1)
 						.depth(0.125F)
@@ -89,7 +89,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void rareBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SPOOKY_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0xC45123).withFoliageColor(0xFF8501).setWaterColor(0xFA9111), defaultMobSpawning(), addDeadCanopyTrees(addDefaultStructures(defaultGenSettingBuilder())))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0xC45123).withFoliageColor(0xFF8501).setWaterColor(0xFA9111), defaultMobSpawning(), spookyForestGen(defaultGenSettingBuilder()))
 						.temperature(0.5F)
 						.downfall(1)
 						.depth(0.125F)
@@ -98,7 +98,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.ENCHANTED_FOREST, // FIXME: colors
-				biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x00FFFF).withGrassColor(0x00FFFF), defaultMobSpawning(), addRainbowOaks(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_QUEST_GROVE)))
+				biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x00FFFF).withGrassColor(0x00FFFF), defaultMobSpawning(), enchantedForestGen(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_QUEST_GROVE)))
 						.build()
 		);
 

@@ -1,0 +1,24 @@
+{
+  "config": {
+    "state": {
+      "Properties": {
+        "snowy": "false"
+      },
+      "Name": "minecraft:mycelium"
+    },
+    "radius": {
+      "base": 4,
+      "spread": 2
+    },
+    "half_height": 3,
+    "targets": [
+      {
+        "Properties": {
+          "snowy": "false"
+        },
+        "Name": "minecraft:grass_block"
+      }
+    ]
+  },
+  "type": "twilightforest:mycelium_blob"
+}
