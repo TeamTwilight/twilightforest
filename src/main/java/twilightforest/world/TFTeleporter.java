@@ -240,7 +240,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkStructure(World world, BlockPos pos) {
-		ChunkGeneratorTFBase generator = TFGenerationSettings.getChunkGenerator(world);
+		ChunkGeneratorTwilightBase generator = TFGenerationSettings.getChunkGenerator(world);
 		if (generator != null) {
 			if (!world.isBlockLoaded(pos)) {
 				//generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4); //TODO: Can we even do this?

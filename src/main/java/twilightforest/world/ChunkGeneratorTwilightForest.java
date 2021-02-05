@@ -22,13 +22,12 @@ import twilightforest.util.IntPair;
 import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
-public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
-	public static final Codec<ChunkGeneratorTwilightForest> codecTFChunk = RecordCodecBuilder.create((instance) ->
-			instance.group(
-					BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
-					Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
-					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter(ChunkGeneratorTwilightForest::getDimensionSettings))
-					.apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
+public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
+	public static final Codec<ChunkGeneratorTwilightForest> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+			BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
+			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
+			DimensionSettings.field_236098_b_.fieldOf("settings").forGetter(ChunkGeneratorTwilightForest::getDimensionSettings)
+	).apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
 
 	private long seed;
 
@@ -39,7 +38,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 	@Override
 	protected Codec<? extends ChunkGenerator> func_230347_a_() {
-		return codecTFChunk;
+		return CODEC;
 	}
 
 	@Override

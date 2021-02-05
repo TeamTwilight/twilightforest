@@ -23,5 +23,4 @@ settings.gradle
 eclipse
 run
 classes
-src/generated/resources/.cache/
 logs

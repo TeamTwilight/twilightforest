@@ -16,20 +16,19 @@ import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
 // Actually, figure out how to get this back up again
-public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
-
+public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 	protected final long seed;
 	protected final Supplier<DimensionSettings> dimensionSettings;
 	private final boolean shouldGenerateBedrock;
 
-	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings, boolean shouldGenerateBedrock) {
+	public ChunkGeneratorTwilightBase(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings, boolean shouldGenerateBedrock) {
 		super(provider, seed, settings);
 		this.seed = seed;
 		this.dimensionSettings = settings;
 		this.shouldGenerateBedrock = shouldGenerateBedrock;
 	}
 
-	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
+	public ChunkGeneratorTwilightBase(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
 		this(provider, seed, settings, true);
 	}
 
@@ -60,7 +59,6 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 	}
 
 	protected final void deformTerrainForFeature(WorldGenRegion primer) {
-
 		IntPair nearCenter = new IntPair();
 		TFFeature nearFeature = TFFeature.getNearestFeature(getPos(primer).x, getPos(primer).z, primer, nearCenter);
 

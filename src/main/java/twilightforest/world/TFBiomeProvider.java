@@ -30,14 +30,11 @@ import java.util.Optional;
 import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeProvider {
-	public static final Codec<TFBiomeProvider> tfBiomeProviderCodec = RecordCodecBuilder.create((instance) -> instance.group(
+	public static final Codec<TFBiomeProvider> TF_BIOME_PROVIDER_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
 			RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(provider -> provider.registry)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
-	private final Registry<Biome> registry;
-	private final Layer genBiomes;
-	private final long seed;
 	private static final List<RegistryKey<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
 			BiomeKeys.LAKE,
 			BiomeKeys.FOREST,
@@ -60,6 +57,10 @@ public class TFBiomeProvider extends BiomeProvider {
 			BiomeKeys.THORNLANDS,
 			BiomeKeys.SPOOKY_FOREST
 	);
+
+	private final Registry<Biome> registry;
+	private final Layer genBiomes;
+	private final long seed;
 
 	public TFBiomeProvider(long seed, Registry<Biome> registryIn) {
 		super(BIOMES
@@ -159,7 +160,7 @@ public class TFBiomeProvider extends BiomeProvider {
 
 	@Override
 	protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
-		return tfBiomeProviderCodec;
+		return TF_BIOME_PROVIDER_CODEC;
 	}
 
 	@Override
@@ -171,5 +172,4 @@ public class TFBiomeProvider extends BiomeProvider {
 	public Biome getNoiseBiome(int x, int y, int z) {
 		return genBiomes.func_242936_a(registry, x, z);
 	}
-
 }

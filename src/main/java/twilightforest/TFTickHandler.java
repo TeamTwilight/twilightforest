@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,7 +21,7 @@ import twilightforest.data.ItemTagGenerator;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.List;
@@ -31,9 +32,12 @@ public class TFTickHandler {
 
 	@SubscribeEvent
 	public static void playerTick(TickEvent.PlayerTickEvent event) {
-
 		PlayerEntity player = event.player;
-		World world = player.world;
+
+		if (!(player.world instanceof ServerWorld))
+			return;
+
+		ServerWorld world = (ServerWorld) player.world;
 
 		// check for portal creation, at least if it's not disabled
 		if (!world.isRemote && !TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.ticksExisted % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
@@ -52,7 +56,7 @@ public class TFTickHandler {
 		// check the player for being in a forbidden progression area, only every 20 ticks
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 20 == 0
 				&& TFGenerationSettings.isProgressionEnforced(world)
-				&& TFGenerationSettings.isTwilightForest(world)
+				&& TFGenerationSettings.isTwilightChunk(world)
 				&& !player.isCreative() && !player.isSpectator()) {
 
 			checkBiomeForProgression(player, world);
@@ -60,7 +64,7 @@ public class TFTickHandler {
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
-			if (TFGenerationSettings.isTwilightForest(world)) {
+			if (TFGenerationSettings.isTwilightChunk(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
 				} else {
@@ -85,7 +89,7 @@ public class TFTickHandler {
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(PlayerEntity player, World world) {
 
-		ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
+		ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
 		if (chunkGenerator == null) return false;
 
 		int px = MathHelper.floor(player.getPosX());

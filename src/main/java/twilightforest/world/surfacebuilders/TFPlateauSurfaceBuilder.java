@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
@@ -90,7 +90,7 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 
 	//TODO: Re-evaluate
 	private static boolean shouldGenerateBedrock(World world) {
-		ChunkGeneratorTFBase generator = TFGenerationSettings.getChunkGenerator(world);
+		ChunkGeneratorTwilightBase generator = TFGenerationSettings.getChunkGenerator(world);
 		return generator == null || generator.shouldGenerateBedrock();
 	}
 }

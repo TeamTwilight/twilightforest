@@ -41,7 +41,7 @@ public class TFMazeMapData extends MapData {
 
 		// when we are in a labyrinth, snap to the LABYRINTH
 		// FIXME: This doesn't look right, but it stops crashes
-		if (TFGenerationSettings.isTwilightForest(world) && !world.isRemote) {
+		if (TFGenerationSettings.isTwilightChunk((ServerWorld) world) && !world.isRemote) {
 			if (TFFeature.getFeatureForRegion(x >> 4, z >> 4, (ServerWorld) world) == TFFeature.LABYRINTH) {
 				BlockPos mc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
 				this.xCenter = mc.getX();

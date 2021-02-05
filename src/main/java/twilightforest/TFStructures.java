@@ -24,7 +24,7 @@ import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
 import twilightforest.structures.start.TFStructure;
 import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
-import twilightforest.world.TFDimensions;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,6 +93,7 @@ public class TFStructures {
 		new TFIceTowerPieces();
 		new TFTrollCavePieces();
 		new TFFinalCastlePieces();
+		// FIXME Next version change, change the names to include underscores
 		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedgemaze"), 1, 2);
 		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("questgrove"), 1, 2);
 		register(event, MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TwilightForestMod.prefix("mushroomtower"), 1, 2);
@@ -123,7 +124,7 @@ public class TFStructures {
 	}
 
 	public static void load(WorldEvent.Load event) {
-		if(event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).getDimensionKey().equals(TFDimensions.twilightForest)){
+		if(event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).getChunkProvider().generator instanceof ChunkGeneratorTwilightBase){
 			ServerWorld serverWorld = (ServerWorld)event.getWorld();
 			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkProvider().generator.func_235957_b_().func_236195_a_());
 			tempMap.putAll(SEPARATION_SETTINGS);

@@ -1,47 +1,48 @@
 package twilightforest.world;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.function.Supplier;
 
-public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
-
-	public static final Codec<ChunkGeneratorTwilightVoid> codecVoidChunk = null; /* FIXME RecordCodecBuilder.create((instance) ->
-			instance.group(
-					BiomeProvider.PROVIDER_CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
-					Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
-					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter((obj) -> obj.dimensionSettings))
-					.apply(instance, instance.stable(ChunkGeneratorTwilightVoid::new)));*/
+public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
+	public static final Codec<ChunkGeneratorTwilightSky> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+			BiomeProvider.CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
+			Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
+			DimensionSettings.field_236098_b_.fieldOf("settings").forGetter(ChunkGeneratorTwilightSky::getDimensionSettings)
+	).apply(instance, instance.stable(ChunkGeneratorTwilightSky::new)));
 
 	//private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
 	private final long seed;
-	protected final DimensionSettings dimensionSettings;
+	protected final Supplier<DimensionSettings> dimensionSettings;
 
-	public ChunkGeneratorTwilightVoid(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
+	public ChunkGeneratorTwilightSky(BiomeProvider provider, long seed, Supplier<DimensionSettings> settings) {
 		super(provider, seed, settings, false);
 		this.seed = seed;
-		this.dimensionSettings = settings.get();
+		this.dimensionSettings = settings;
 	}
 
 	@Override
 	protected Codec<? extends ChunkGenerator> func_230347_a_() {
-		return null;
+		return CODEC;
 	}
 
 	@Override
 	public ChunkGenerator func_230349_a_(long l) {
-		return null;
+		return new ChunkGeneratorTwilightSky(this.biomeProvider.getBiomeProvider(l), l, this.dimensionSettings);
+	}
+
+	private Supplier<DimensionSettings> getDimensionSettings() {
+		return this.dimensionSettings;
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 		ChunkBitArray data = new ChunkBitArray();
 		//func_222529_a(x, z, data);
-		squishTerrain(data);
+		//squishTerrain(data); Not required anymore; noise config
 
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		//this.biomesForGeneration = getBiomeProvider().getBiomesInArea(biomesForGeneration, x * 16, z * 16, 16, 16);
@@ -79,18 +80,13 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	public void func_230352_b_(IWorld iWorld, StructureManager structureManager, IChunk iChunk) {
+	public void func_230352_b_(IWorld world, StructureManager p_230352_2_, IChunk chunk) {
+		super.func_230352_b_(world, p_230352_2_, chunk);
 
-	}
+		if(!(world instanceof WorldGenRegion))
+			return;
 
-	@Override
-	public int getHeight(int i, int i1, Heightmap.Type type) {
-		return 0;
-	}
-
-	@Override
-	public IBlockReader func_230348_a_(int i, int i1) {
-		return null;
+		deformTerrainForFeature((WorldGenRegion) world);
 	}
 
 	/*@Override

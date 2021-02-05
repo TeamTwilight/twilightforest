@@ -24,9 +24,7 @@ import net.minecraft.world.gen.settings.NoiseSettings;
 import net.minecraft.world.gen.settings.ScalingSettings;
 import net.minecraft.world.gen.settings.SlideSettings;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.ChunkGeneratorTwilightForest;
-import twilightforest.world.TFBiomeProvider;
-import twilightforest.world.TFDimensions;
+import twilightforest.world.*;
 import twilightforest.worldgen.biomes.BiomeMaker;
 
 import java.lang.reflect.Constructor;
@@ -47,21 +45,66 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 	}
 
 	private Map<ResourceLocation, Dimension> getDimensions() {
-		return ImmutableMap.of(
-				new ResourceLocation(TwilightForestMod.ID, "twilightforest"), makeTwilightForest()
+		NoiseSettings forestNoiseSettings = new NoiseSettings(
+				128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
+				new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+				new SlideSettings(-10, 3, 0),
+				new SlideSettings(-30, 0, 0),
+				1,
+				2,
+				1.0D,
+				-0.46875D,
+				false,
+				true,
+				false,
+				false
 		);
-	}
 
-	private Map<ResourceLocation, Biome> getBiomes() {
-		return BiomeMaker
-				.generateBiomes()
-				.entrySet()
-				.stream()
-				.peek(registryKeyBiomeEntry -> registryKeyBiomeEntry.getValue().setRegistryName(registryKeyBiomeEntry.getKey().getLocation()))
-				.collect(Collectors.toMap(entry -> entry.getKey().getLocation(), Map.Entry::getValue));
-	}
+		Optional<DimensionSettings> forestDimensionSettings = makeDimensionSettings(
+				new DimensionStructuresSettings(Optional.empty(), ImmutableMap.of()),
+				forestNoiseSettings,
+				Blocks.STONE.getDefaultState(),
+				Blocks.WATER.getDefaultState(),
+				-10,
+				0,
+				31,
+				false
+		);
 
-	private Dimension makeTwilightForest() {
+		NoiseSettings skyNoiseSettings = new NoiseSettings(
+				128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
+				new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+				new SlideSettings(-3000, 64,  -46),
+				new SlideSettings(-30, 7, 1),
+				1,
+				2,
+				1.0D,
+				-0.46875D,
+				false,
+				true,
+				false,
+				false
+		);
+
+		Optional<DimensionSettings> skyDimensionSettings = makeDimensionSettings(
+				new DimensionStructuresSettings(Optional.empty(), ImmutableMap.of()),
+				skyNoiseSettings,
+				Blocks.STONE.getDefaultState(),
+				Blocks.WATER.getDefaultState(),
+				-10,
+				-10,
+				0,
+				false
+		);
+
+		// Register the dimension noise settings in the local datagen registry. Hacky.
+		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY), RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, TwilightForestMod.prefix("forest_noise_config")), forestDimensionSettings::get);
+		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY), RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, TwilightForestMod.prefix("sky_noise_config")), skyDimensionSettings::get);
+
+		TFDimensions.init();
+		ChunkGeneratorTwilightBase forestChunkGen = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 0L, forestDimensionSettings::get);
+		ChunkGeneratorTwilightBase skyChunkGen = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 0L, skyDimensionSettings::get);
+
 		Optional<DimensionType> twilightType = makeDimensionType(
 				OptionalLong.of(13000L), // TODO Kill the celestial bodies
 				true,
@@ -84,39 +127,19 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		// Register the type in the local datagen registry. Hacky.
 		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.DIMENSION_TYPE_KEY), RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), twilightType::get);
 
-		NoiseSettings noiseSettings = new NoiseSettings(
-				128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
-				new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-				new SlideSettings(-10, 3, 0),
-				new SlideSettings(-30, 0, 0),
-				1,
-				2,
-				1.0D,
-				-0.46875D,
-				false,
-				true,
-				false,
-				false
+		return ImmutableMap.of(
+				TwilightForestMod.prefix("twilightforest"), new Dimension(twilightType::get, forestChunkGen),
+				TwilightForestMod.prefix("skyblock"), new Dimension(twilightType::get, skyChunkGen)
 		);
+	}
 
-		Optional<DimensionSettings> dimensionSettings = makeDimensionSettings(
-				new DimensionStructuresSettings(Optional.empty(), ImmutableMap.of()),
-				noiseSettings,
-				Blocks.STONE.getDefaultState(),
-				Blocks.WATER.getDefaultState(),
-				-1,
-				0,
-				31,
-				false
-		);
-
-		// Register the dimension noise settings in the local datagen registry. Hacky.
-		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY), RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, new ResourceLocation(TwilightForestMod.ID, "forest_noise_config")), dimensionSettings::get);
-
-		TFDimensions.init();
-		ChunkGeneratorTwilightForest chunkGenerator = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 0L, dimensionSettings::get);
-
-		return new Dimension(twilightType::get, chunkGenerator);
+	private Map<ResourceLocation, Biome> getBiomes() {
+		return BiomeMaker
+				.generateBiomes()
+				.entrySet()
+				.stream()
+				.peek(registryKeyBiomeEntry -> registryKeyBiomeEntry.getValue().setRegistryName(registryKeyBiomeEntry.getKey().getLocation()))
+				.collect(Collectors.toMap(entry -> entry.getKey().getLocation(), Map.Entry::getValue));
 	}
 
 	// Otherwise an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
@@ -146,7 +169,24 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 	}
 
 	@SuppressWarnings("SameParameterValue")
-	private static Optional<DimensionType> makeDimensionType(OptionalLong fixedTime, boolean hasSkyLight, boolean hasCeiling, boolean ultrawarm, boolean natural, double coordinateScale, boolean hasDragonFight, boolean piglinSafe, boolean bedWorks, boolean respawnAnchorWorks, boolean hasRaids, int logicalHeight, IBiomeMagnifier magnifier, ResourceLocation infiniburn, ResourceLocation effects, float ambientLight) {
+	private static Optional<DimensionType> makeDimensionType(
+			OptionalLong fixedTime,
+			boolean hasSkyLight,
+			boolean hasCeiling,
+			boolean ultrawarm,
+			boolean natural,
+			double coordinateScale,
+			boolean hasDragonFight,
+			boolean piglinSafe,
+			boolean bedWorks,
+			boolean respawnAnchorWorks,
+			boolean hasRaids,
+			int logicalHeight,
+			IBiomeMagnifier magnifier,
+			ResourceLocation infiniburn,
+			ResourceLocation effects,
+			float ambientLight
+	) {
 		try {
 			Constructor<DimensionType> ctor = DimensionType.class.getDeclaredConstructor(
 					OptionalLong.class,
