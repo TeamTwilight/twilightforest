@@ -46,16 +46,17 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      {
-        "config": {
-          "feature": "twilightforest:tree/base/mangrove_tree",
-          "decorator": {
-            "config": {},
-            "type": "minecraft:square"
-          }
-        },
-        "type": "minecraft:decorated"
-      }
+      "twilightforest:flower_placer",
+      "twilightforest:grass_placer",
+      "twilightforest:random_common",
+      "twilightforest:random_fallen",
+      "twilightforest:random_water",
+      "minecraft:patch_sugar_cane_swamp",
+      "minecraft:vines",
+      "twilightforest:well",
+      "twilightforest:tree/mangrove_trees",
+      "twilightforest:tree/twilight_oak_trees",
+      "twilightforest:tree/hollow_oak_trees"
     ]
   ],
   "starts": [

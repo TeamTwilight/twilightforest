@@ -30,7 +30,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
 	public ComponentTFFinalCastleDungeonRoom31(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFinalCastlePieces.TFFCDunR31, nbt);
+		this(TFFinalCastlePieces.TFFCDunR31, nbt);
 	}
 
 	public ComponentTFFinalCastleDungeonRoom31(IStructurePieceType piece, CompoundNBT nbt) {
@@ -45,7 +45,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		this.size = 31;
 		this.height = 7;
 		this.level = level;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH);
 	}
 
 	@Override

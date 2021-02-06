@@ -10,6 +10,10 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 import javax.annotation.Nullable;
 
 public class TwilightForestRenderInfo extends DimensionRenderInfo {
+
+    private ISkyRenderHandler skyRenderer;
+    private IWeatherRenderHandler weatherRenderer;
+
     public TwilightForestRenderInfo(float cloudHeight, boolean placebo, FogType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
         super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
     }
@@ -62,12 +66,16 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
     @Nullable
     @Override
     public ISkyRenderHandler getSkyRenderHandler() {
-        return new TFSkyRenderer();
+        if (skyRenderer == null)
+            skyRenderer = new TFSkyRenderer();
+        return skyRenderer;
     }
 
     @Nullable
     @Override
     public IWeatherRenderHandler getWeatherRenderHandler() {
-        return new TFWeatherRenderer();
+        if (weatherRenderer == null)
+            weatherRenderer = new TFWeatherRenderer();
+        return weatherRenderer;
     }
 }

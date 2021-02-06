@@ -10,7 +10,7 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -75,6 +75,6 @@ public class FogHandler {
 
 	private static boolean isSpooky() {
 		return Minecraft.getInstance().world != null && Minecraft.getInstance().player != null &&
-				Objects.equals(Minecraft.getInstance().world.func_242406_i(Minecraft.getInstance().player.getPosition()), Optional.of(TFBiomes.spookyForest));
+				Objects.equals(Minecraft.getInstance().world.func_242406_i(Minecraft.getInstance().player.getPosition()), Optional.of(BiomeKeys.SPOOKY_FOREST));
 	}
 }

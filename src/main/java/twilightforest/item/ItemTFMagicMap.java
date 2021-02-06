@@ -19,7 +19,7 @@ import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.network.PacketMagicMap;
 import twilightforest.network.TFPacketHandler;
 
@@ -122,7 +122,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && TFBiomes.stream.getLocation().equals(overBiome.getRegistryName()) ? overBiome : downBiome != null && TFBiomes.stream.getLocation().equals(downBiome.getRegistryName()) ? downBiome : biome;
+						biome = overBiome != null && BiomeKeys.STREAM.getLocation().equals(overBiome.getRegistryName()) ? overBiome : downBiome != null && BiomeKeys.STREAM.getLocation().equals(downBiome.getRegistryName()) ? downBiome : biome;
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
 
@@ -171,26 +171,26 @@ public class ItemTFMagicMap extends FilledMapItem {
 	}
 
 	private static void setupBiomeColors() {
-		putBiomeColor(TFBiomes.twilightForest, new MapColorBrightness(MaterialColor.FOLIAGE, 1));
-		putBiomeColor(TFBiomes.denseTwilightForest, new MapColorBrightness(MaterialColor.FOLIAGE, 0));
-		putBiomeColor(TFBiomes.tfLake, new MapColorBrightness(MaterialColor.WATER, 3));
-		putBiomeColor(TFBiomes.stream, new MapColorBrightness(MaterialColor.WATER, 1));
-		putBiomeColor(TFBiomes.tfSwamp, new MapColorBrightness(MaterialColor.DIAMOND, 3));
-		putBiomeColor(TFBiomes.fireSwamp, new MapColorBrightness(MaterialColor.NETHERRACK, 1));
-		putBiomeColor(TFBiomes.clearing, new MapColorBrightness(MaterialColor.GRASS, 2));
-		putBiomeColor(TFBiomes.oakSavanna, new MapColorBrightness(MaterialColor.GRASS, 0));
-		putBiomeColor(TFBiomes.highlands, new MapColorBrightness(MaterialColor.DIRT, 0));
-		putBiomeColor(TFBiomes.thornlands, new MapColorBrightness(MaterialColor.WOOD, 3));
-		putBiomeColor(TFBiomes.finalPlateau, new MapColorBrightness(MaterialColor.LIGHT_GRAY, 2));
-		putBiomeColor(TFBiomes.fireflyForest, new MapColorBrightness(MaterialColor.EMERALD, 1));
-		putBiomeColor(TFBiomes.darkForest, new MapColorBrightness(MaterialColor.GREEN, 3));
-		putBiomeColor(TFBiomes.darkForestCenter, new MapColorBrightness(MaterialColor.ADOBE, 3));
-		putBiomeColor(TFBiomes.snowy_forest, new MapColorBrightness(MaterialColor.SNOW, 1));
-		putBiomeColor(TFBiomes.glacier, new MapColorBrightness(MaterialColor.ICE, 1));
-		putBiomeColor(TFBiomes.mushrooms, new MapColorBrightness(MaterialColor.ADOBE, 0));
-		putBiomeColor(TFBiomes.deepMushrooms, new MapColorBrightness(MaterialColor.PINK, 0));
-		putBiomeColor(TFBiomes.enchantedForest, new MapColorBrightness(MaterialColor.LIME, 2));
-		putBiomeColor(TFBiomes.spookyForest, new MapColorBrightness(MaterialColor.PURPLE, 0));
+		putBiomeColor(BiomeKeys.FOREST, new MapColorBrightness(MaterialColor.FOLIAGE, 1));
+		putBiomeColor(BiomeKeys.DENSE_FOREST, new MapColorBrightness(MaterialColor.FOLIAGE, 0));
+		putBiomeColor(BiomeKeys.LAKE, new MapColorBrightness(MaterialColor.WATER, 3));
+		putBiomeColor(BiomeKeys.STREAM, new MapColorBrightness(MaterialColor.WATER, 1));
+		putBiomeColor(BiomeKeys.SWAMP, new MapColorBrightness(MaterialColor.DIAMOND, 3));
+		putBiomeColor(BiomeKeys.FIRE_SWAMP, new MapColorBrightness(MaterialColor.NETHERRACK, 1));
+		putBiomeColor(BiomeKeys.CLEARING, new MapColorBrightness(MaterialColor.GRASS, 2));
+		putBiomeColor(BiomeKeys.OAK_SAVANNAH, new MapColorBrightness(MaterialColor.GRASS, 0));
+		putBiomeColor(BiomeKeys.HIGHLANDS, new MapColorBrightness(MaterialColor.DIRT, 0));
+		putBiomeColor(BiomeKeys.THORNLANDS, new MapColorBrightness(MaterialColor.WOOD, 3));
+		putBiomeColor(BiomeKeys.FINAL_PLATEAU, new MapColorBrightness(MaterialColor.LIGHT_GRAY, 2));
+		putBiomeColor(BiomeKeys.FIREFLY_FOREST, new MapColorBrightness(MaterialColor.EMERALD, 1));
+		putBiomeColor(BiomeKeys.DARK_FOREST, new MapColorBrightness(MaterialColor.GREEN, 3));
+		putBiomeColor(BiomeKeys.DARK_FOREST_CENTER, new MapColorBrightness(MaterialColor.ADOBE, 3));
+		putBiomeColor(BiomeKeys.SNOWY_FOREST, new MapColorBrightness(MaterialColor.SNOW, 1));
+		putBiomeColor(BiomeKeys.GLACIER, new MapColorBrightness(MaterialColor.ICE, 1));
+		putBiomeColor(BiomeKeys.MUSHROOM_FOREST, new MapColorBrightness(MaterialColor.ADOBE, 0));
+		putBiomeColor(BiomeKeys.DENSE_MUSHROOM_FOREST, new MapColorBrightness(MaterialColor.PINK, 0));
+		putBiomeColor(BiomeKeys.ENCHANTED_FOREST, new MapColorBrightness(MaterialColor.CYAN, 2));
+		putBiomeColor(BiomeKeys.SPOOKY_FOREST, new MapColorBrightness(MaterialColor.PURPLE, 0));
 	}
 
 	private static void putBiomeColor(RegistryKey<Biome> biome, MapColorBrightness color) {

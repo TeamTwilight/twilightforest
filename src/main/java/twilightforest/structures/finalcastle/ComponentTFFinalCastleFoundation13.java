@@ -26,7 +26,7 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 	protected int groundLevel = -1;
 
 	public ComponentTFFinalCastleFoundation13(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFinalCastlePieces.TFFCToF13, nbt);
+		this(TFFinalCastlePieces.TFFCToF13, nbt);
 	}
 
 	public ComponentTFFinalCastleFoundation13(IStructurePieceType piece, CompoundNBT nbt) {

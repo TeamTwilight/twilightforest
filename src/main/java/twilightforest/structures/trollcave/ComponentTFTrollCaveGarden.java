@@ -37,7 +37,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		// stone stalactites!
 		for (int i = 0; i < 128; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, manager, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, manager, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
 		}
 
 		return true;

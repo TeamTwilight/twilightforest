@@ -240,6 +240,8 @@ public class TFConfig {
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
+
+			// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example) before strictly using this
 			public ForgeConfigSpec.ConfigValue<String> twilightForestID;
 
 			public WorldGenWeights worldGenWeights = new WorldGenWeights();

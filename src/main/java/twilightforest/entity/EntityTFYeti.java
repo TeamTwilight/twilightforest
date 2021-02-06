@@ -22,7 +22,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import twilightforest.TFSounds;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 
 import javax.annotation.Nullable;
@@ -179,7 +179,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends EntityTFYeti> entityType, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		Optional<RegistryKey<Biome>> key = world.func_242406_i(pos);
-		if (Objects.equals(key, Optional.of(TFBiomes.snowy_forest))) {
+		if (Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST))) {
 			return canSpawnOn(entityType, world, reason, pos, random);
 		} else {
 			// normal EntityMob spawn check, checks light level
@@ -194,10 +194,10 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	public static boolean isValidLightLevel(IServerWorld world, BlockPos blockPos, Random random) {
 		Optional<RegistryKey<Biome>> key = world.func_242406_i(blockPos);
 		if (world.getLightFor(LightType.SKY, blockPos) > random.nextInt(32)) {
-			return Objects.equals(key, Optional.of(TFBiomes.snowy_forest));
+			return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
 		} else {
 			int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
-			return i <= random.nextInt(8) || Objects.equals(key, Optional.of(TFBiomes.snowy_forest));
+			return i <= random.nextInt(8) || Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
 		}
 	}
 

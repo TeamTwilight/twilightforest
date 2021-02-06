@@ -1,4 +1,4 @@
-package twilightforest.biomes;
+package twilightforest.worldgen.biomes;
 
 import twilightforest.block.TFBlocks;
 

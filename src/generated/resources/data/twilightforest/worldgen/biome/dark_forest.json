@@ -17,45 +17,22 @@
   "carvers": {},
   "features": [
     [],
-    [
-      "minecraft:lake_water",
-      "minecraft:lake_lava"
-    ],
     [],
     [],
     [],
     [],
-    [
-      "minecraft:ore_dirt",
-      "minecraft:ore_gravel",
-      "minecraft:ore_granite",
-      "minecraft:ore_diorite",
-      "minecraft:ore_andesite",
-      "minecraft:ore_coal",
-      "minecraft:ore_iron",
-      "minecraft:ore_gold",
-      "minecraft:ore_redstone",
-      "minecraft:ore_diamond",
-      "minecraft:ore_lapis",
-      "minecraft:disk_clay",
-      "twilightforest:ore/wood_roots_spread"
-    ],
+    [],
+    [],
     [],
     [
-      "minecraft:patch_grass_forest",
-      "minecraft:patch_tall_grass",
-      "minecraft:spring_water",
-      "minecraft:spring_lava",
-      {
-        "config": {
-          "feature": "twilightforest:tree/base/darkwood_tree",
-          "decorator": {
-            "config": {},
-            "type": "minecraft:square"
-          }
-        },
-        "type": "minecraft:decorated"
-      }
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
+      "twilightforest:random_water",
+      "twilightforest:mushgloom_cluster",
+      "minecraft:patch_brown_mushroom",
+      "minecraft:patch_red_mushroom",
+      "twilightforest:small_log",
+      "twilightforest:tree/darkwood_lantern_trees"
     ]
   ],
   "starts": [

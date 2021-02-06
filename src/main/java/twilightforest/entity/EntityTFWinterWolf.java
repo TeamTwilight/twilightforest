@@ -22,7 +22,7 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import twilightforest.TFSounds;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
@@ -154,6 +154,6 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 
 	public static boolean canSpawnHere(EntityType<? extends EntityTFWinterWolf> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		Optional<RegistryKey<Biome>> key = world.func_242406_i(pos);
-		return Objects.equals(key, Optional.of(TFBiomes.snowy_forest)) || MonsterEntity.isValidLightLevel(world, pos, random);
+		return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 }

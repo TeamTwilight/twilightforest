@@ -38,7 +38,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// the maze is 50 x 50 for now
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
 	}
 
 	@Override

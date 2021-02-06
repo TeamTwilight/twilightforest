@@ -54,7 +54,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		super(TFMinotaurMazePieces.TFMMaze, feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
 		this.level = level;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, Direction.SOUTH);
 
 		// make maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize());

@@ -1,4 +1,4 @@
-package twilightforest.biomes;
+package twilightforest.worldgen.biomes;
 
 public class TFBiomeOakSavanna extends TFBiomeBase {
 

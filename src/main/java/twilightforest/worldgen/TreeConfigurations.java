@@ -1,17 +1,23 @@
 package twilightforest.worldgen;
 
+import java.util.OptionalInt;
+
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LanternBlock;
 import net.minecraft.util.Direction;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.FeatureSpread;
+import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.TwoLayerFeature;
 import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
+import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
+import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import twilightforest.block.BlockTFFirefly;
 import twilightforest.block.BlockTFMagicLog;
@@ -55,9 +61,8 @@ public final class TreeConfigurations {
                     TreeDecorators.LIVING_ROOTS,
                     TreeDecorators.FIREFLY,
                     new TrunkSideDecorator( // A few more Fireflies!
-
-                            3,
-                            0.4f,
+                            4,
+                            0.5f,
                             new SimpleBlockStateProvider(TFBlocks.firefly.get().getDefaultState().with(BlockTFFirefly.FACING, Direction.NORTH))
                     ),
                     new DangleFromTreeDecorator(
@@ -100,6 +105,7 @@ public final class TreeConfigurations {
             new TrunkRiser(5, new BranchingTrunkPlacer(6, 4, 0, 1, new BranchesConfig(0, 3, 6, 2, 0.3, 0.25), false)),
             new TwoLayerFeature(1, 0, 1)
     )
+            .setMaxWaterDepth(6)
             .setDecorators(ImmutableList.of(
                     TreeDecorators.FIREFLY,
                     new TreeRootsDecorator(3, 1, 12, new SimpleBlockStateProvider(BlockConstants.MANGROVE_WOOD), (new WeightedBlockStateProvider())
@@ -110,15 +116,48 @@ public final class TreeConfigurations {
             .setIgnoreVines()
             .build();
 
+    private static final SimpleBlockStateProvider DARKWOOD_LEAVES_PROVIDER = new SimpleBlockStateProvider(BlockConstants.DARKWOOD_LEAVES);
+
     public static final BaseTreeFeatureConfig DARKWOOD_TREE = new BaseTreeFeatureConfig.Builder(
             new SimpleBlockStateProvider(BlockConstants.DARKWOOD_LOG),
-            new SimpleBlockStateProvider(BlockConstants.DARKWOOD_LEAVES),
+            DARKWOOD_LEAVES_PROVIDER,
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, FeatureSpread.func_242252_a(0), 1, 0, 0.45f),
             new BranchingTrunkPlacer(6, 3, 3, 5, new BranchesConfig(4, 0, 10, 4, 0.23, 0.23), false),
             new TwoLayerFeature(1, 0, 1)
     )
             .setDecorators(ImmutableList.of(
                     TreeDecorators.LIVING_ROOTS,
+                    new DangleFromTreeDecorator(
+                            32,
+                            32,
+                            1,
+                            2,
+                            2,
+                            DARKWOOD_LEAVES_PROVIDER,
+                            DARKWOOD_LEAVES_PROVIDER
+                    )
+            ))
+            .setIgnoreVines()
+            .build();
+
+    public static final BaseTreeFeatureConfig DARKWOOD_LANTERN_TREE = new BaseTreeFeatureConfig.Builder(
+            new SimpleBlockStateProvider(BlockConstants.DARKWOOD_LOG),
+            DARKWOOD_LEAVES_PROVIDER,
+            new LeafSpheroidFoliagePlacer(4.5f, 2.25f, FeatureSpread.func_242252_a(0), 1, 0, 0.45f),
+            new BranchingTrunkPlacer(6, 3, 3, 5, new BranchesConfig(4, 0, 10, 4, 0.23, 0.23), false),
+            new TwoLayerFeature(1, 0, 1)
+    )
+            .setDecorators(ImmutableList.of(
+                    TreeDecorators.LIVING_ROOTS,
+                    new DangleFromTreeDecorator(
+                            32,
+                            32,
+                            1,
+                            2,
+                            2,
+                            DARKWOOD_LEAVES_PROVIDER,
+                            DARKWOOD_LEAVES_PROVIDER
+                    ),
                     new DangleFromTreeDecorator(
                             0,
                             1,
@@ -212,6 +251,17 @@ public final class TreeConfigurations {
             .setIgnoreVines()
             .build();
 
+    public static final BaseTreeFeatureConfig LARGE_RAINBOAK_TREE =  new BaseTreeFeatureConfig.Builder(
+    		new SimpleBlockStateProvider(BlockConstants.OAK_LOG), 
+    		new SimpleBlockStateProvider(BlockConstants.RAINBOW_LEAVES), 
+    		new FancyFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(4), 4), 
+    		new FancyTrunkPlacer(3, 11, 0), 
+    		new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
+	)
+			.setIgnoreVines()
+			.func_236702_a_(Heightmap.Type.MOTION_BLOCKING)
+			.build();
+    
     public static final BaseTreeFeatureConfig MUSHROOM_BROWN = new BaseTreeFeatureConfig.Builder(
             new SimpleBlockStateProvider(BlockConstants.MUSHROOM_STEM),
             new SimpleBlockStateProvider(BlockConstants.MUSHROOM_CAP_BROWN),

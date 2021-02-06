@@ -35,7 +35,7 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 		// spawn list!
 		this.spawnListIndex = -1;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, Direction.SOUTH);
 	}
 
 	@Override

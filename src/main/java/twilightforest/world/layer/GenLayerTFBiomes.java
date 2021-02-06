@@ -6,7 +6,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.TFBiomeProvider;
 
 import java.util.List;
@@ -21,18 +21,18 @@ public enum GenLayerTFBiomes implements IAreaTransformer0 {
 	private static final int RARE_BIOME_CHANCE = 15;
 
 	protected static final List<RegistryKey<Biome>> commonBiomes = ImmutableList.of(
-			TFBiomes.twilightForest,
-			TFBiomes.denseTwilightForest,
-			TFBiomes.mushrooms,
-			TFBiomes.oakSavanna,
-			TFBiomes.fireflyForest
+			BiomeKeys.FOREST,
+			BiomeKeys.DENSE_FOREST,
+			BiomeKeys.MUSHROOM_FOREST,
+			BiomeKeys.OAK_SAVANNAH,
+			BiomeKeys.FIREFLY_FOREST
 	);
 	protected static final List<RegistryKey<Biome>> rareBiomes = ImmutableList.of(
-			TFBiomes.tfLake,
-			TFBiomes.deepMushrooms,
-			TFBiomes.enchantedForest,
-			TFBiomes.clearing,
-			TFBiomes.spookyForest
+			BiomeKeys.LAKE,
+			BiomeKeys.DENSE_MUSHROOM_FOREST,
+			BiomeKeys.ENCHANTED_FOREST,
+			BiomeKeys.CLEARING,
+			BiomeKeys.SPOOKY_FOREST
 	);
 
 	private Registry<Biome> registry;

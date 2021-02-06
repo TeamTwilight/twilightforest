@@ -42,7 +42,6 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		FogRenderer.applyFog();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
-		RenderSystem.color3f(f, f1, f2);
 		RenderSystem.depthMask(false);
 		RenderSystem.enableFog();
 		RenderSystem.color3f(f, f1, f2);
@@ -63,11 +62,8 @@ public class TFSkyRenderer implements ISkyRenderHandler {
          * if (afloat != null) ...
          */
 
-		RenderSystem.enableTexture();
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		ms.push();
-		float f16 = 1.0F - world.getRainStrength(partialTicks);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, f16);
 		ms.rotate(Vector3f.YP.rotationDegrees(-90.0F));
 		ms.rotate(Vector3f.XP.rotationDegrees(world.func_242415_f(partialTicks) * 360.0F));
         /* TF - snip out sun/moon
@@ -75,7 +71,6 @@ public class TFSkyRenderer implements ISkyRenderHandler {
          * ...
          * tessellator.draw();
          */
-		RenderSystem.disableTexture();
 		float f15 = 1.0F; // TF - stars are always bright
 
 		//if (f15 > 0.0F) { Always true
@@ -93,7 +88,6 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.enableAlphaTest();
 		RenderSystem.enableFog();
 		ms.pop();
-		RenderSystem.disableTexture();
 		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
 		/** world.getWorldInfo().getVoidFogHeight() -> 27, because the sea level for TF is lower TODO: Keep an eye on Forge PR #7528*/
 		double d0 = mc.player.getEyePosition(partialTicks).y - 30;
@@ -142,10 +136,6 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 			RenderSystem.color3f(f, f1, f2);
 		}
 
-		ms.push();
-		ms.translate(0.0F, -((float) (d0 - 16.0D)), 0.0F);
-		//RenderSystem.callList(rg.glSkyList2);
-		ms.pop();
 		RenderSystem.enableTexture();
 		RenderSystem.depthMask(true);
 		RenderSystem.disableFog();

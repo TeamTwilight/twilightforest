@@ -44,6 +44,15 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
+      "twilightforest:flower_placer",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:mycelium_blob",
+      "twilightforest:random_common",
+      "twilightforest:random_fallen",
+      "twilightforest:random_water",
+      "twilightforest:well",
+      "twilightforest:tree/twilight_oak_trees",
+      "twilightforest:tree/hollow_oak_trees",
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:mushroom_field_vegetation",
@@ -53,13 +62,7 @@
     ]
   ],
   "starts": [
-    "twilightforest:configured_mushroomtower",
-    "twilightforest:configured_hedgemaze",
-    "twilightforest:configured_hollowhillsmall",
-    "twilightforest:configured_hollowhillmedium",
-    "twilightforest:configured_hollowhilllarge",
-    "twilightforest:configured_courtyard",
-    "twilightforest:configured_lichtower"
+    "twilightforest:configured_mushroomtower"
   ],
   "spawners": {
     "monster": [

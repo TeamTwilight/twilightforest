@@ -35,37 +35,24 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	protected int treasureFloor = -1;
 
 	public ComponentTFIceTowerWing(TemplateManager manager, CompoundNBT nbt) {
-		super(TFIceTowerPieces.TFITWin, nbt);
+		this(TFIceTowerPieces.TFITWin, nbt);
 	}
 
 	public ComponentTFIceTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.hasBase = nbt.getBoolean("hasBase");
+		this.treasureFloor = nbt.getInt("treasureFloor");
 	}
 
 	protected ComponentTFIceTowerWing(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("hasBase", this.hasBase);
-//		tagCompound.putInt("treasureFloor", this.treasureFloor);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.hasBase = tagCompound.getBoolean("hasBase");
-		this.treasureFloor = tagCompound.getInt("treasureFloor");
+		tagCompound.putBoolean("hasBase", this.hasBase);
+		tagCompound.putInt("treasureFloor", this.treasureFloor);
 	}
 
 	@Override

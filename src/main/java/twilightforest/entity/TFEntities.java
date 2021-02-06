@@ -23,6 +23,7 @@ import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SharedConstants;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.spawner.WorldEntitySpawner;
@@ -160,7 +161,10 @@ public class TFEntities {
 
 	@SuppressWarnings("unchecked")
 	private static <E extends Entity> EntityType<E> build(ResourceLocation id, EntityType.Builder<E> builder) {
+		boolean cache = SharedConstants.useDatafixers;
+		SharedConstants.useDatafixers = false;
 		EntityType<E> ret = (EntityType<E>) builder.build(id.toString()).setRegistryName(id);
+		SharedConstants.useDatafixers = cache;
 		ALL.add(ret);
 		return ret;
 	}

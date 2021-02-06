@@ -5,7 +5,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.TFBiomeProvider;
 import twilightforest.world.TFDimensions;
 
@@ -76,13 +76,13 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 		switch ((index) & 0b11) {
 			case 0:
 			default:
-				return TFBiomeProvider.getBiomeId(TFBiomes.glacier, registry);
+				return TFBiomeProvider.getBiomeId(BiomeKeys.GLACIER, registry);
 			case 1:
-				return TFBiomeProvider.getBiomeId(TFBiomes.fireSwamp, registry);
+				return TFBiomeProvider.getBiomeId(BiomeKeys.FIRE_SWAMP, registry);
 			case 2:
-				return TFBiomeProvider.getBiomeId(TFBiomes.darkForestCenter, registry);
+				return TFBiomeProvider.getBiomeId(BiomeKeys.DARK_FOREST_CENTER, registry);
 			case 3:
-				return TFBiomeProvider.getBiomeId(TFBiomes.finalPlateau, registry);
+				return TFBiomeProvider.getBiomeId(BiomeKeys.FINAL_PLATEAU, registry);
 		}
 	}
 }

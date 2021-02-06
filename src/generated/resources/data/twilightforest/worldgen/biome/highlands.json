@@ -44,10 +44,16 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      "twilightforest:tree/placeholder_filler_trees"
+      "twilightforest:random_common",
+      "minecraft:mega_spruce",
+      "minecraft:trees_giant_spruce",
+      "minecraft:spruce",
+      "minecraft:forest_rock"
     ]
   ],
-  "starts": [],
+  "starts": [
+    "twilightforest:configured_trollcave"
+  ],
   "spawners": {
     "monster": [
       {

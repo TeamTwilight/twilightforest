@@ -1,0 +1,223 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "feature": {
+                  "config": {
+                    "feature": {
+                      "config": {
+                        "feature": {
+                          "config": {
+                            "features": [
+                              {
+                                "config": {
+                                  "can_replace": false,
+                                  "project": true,
+                                  "need_water": false,
+                                  "xspread": 7,
+                                  "yspread": 3,
+                                  "zspread": 7,
+                                  "whitelist": [],
+                                  "blacklist": [],
+                                  "tries": 4,
+                                  "state_provider": {
+                                    "state": {
+                                      "Name": "twilightforest:mayapple"
+                                    },
+                                    "type": "minecraft:simple_state_provider"
+                                  },
+                                  "block_placer": {
+                                    "type": "minecraft:simple_block_placer"
+                                  }
+                                },
+                                "type": "minecraft:random_patch"
+                              },
+                              {
+                                "config": {
+                                  "can_replace": false,
+                                  "project": true,
+                                  "need_water": false,
+                                  "xspread": 7,
+                                  "yspread": 3,
+                                  "zspread": 7,
+                                  "whitelist": [],
+                                  "blacklist": [],
+                                  "tries": 4,
+                                  "state_provider": {
+                                    "state": {
+                                      "Name": "twilightforest:fiddlehead"
+                                    },
+                                    "type": "minecraft:simple_state_provider"
+                                  },
+                                  "block_placer": {
+                                    "type": "minecraft:simple_block_placer"
+                                  }
+                                },
+                                "type": "minecraft:random_patch"
+                              },
+                              {
+                                "config": {
+                                  "can_replace": false,
+                                  "project": true,
+                                  "need_water": false,
+                                  "xspread": 7,
+                                  "yspread": 3,
+                                  "zspread": 7,
+                                  "whitelist": [],
+                                  "blacklist": [],
+                                  "tries": 64,
+                                  "state_provider": {
+                                    "state": {
+                                      "Name": "minecraft:grass"
+                                    },
+                                    "type": "minecraft:simple_state_provider"
+                                  },
+                                  "block_placer": {
+                                    "type": "minecraft:simple_block_placer"
+                                  }
+                                },
+                                "type": "minecraft:random_patch"
+                              },
+                              {
+                                "config": {
+                                  "can_replace": false,
+                                  "project": false,
+                                  "need_water": false,
+                                  "xspread": 7,
+                                  "yspread": 3,
+                                  "zspread": 7,
+                                  "whitelist": [],
+                                  "blacklist": [],
+                                  "tries": 32,
+                                  "state_provider": {
+                                    "state": {
+                                      "Properties": {
+                                        "half": "lower"
+                                      },
+                                      "Name": "minecraft:tall_grass"
+                                    },
+                                    "type": "minecraft:simple_state_provider"
+                                  },
+                                  "block_placer": {
+                                    "type": "minecraft:double_plant_placer"
+                                  }
+                                },
+                                "type": "minecraft:random_patch"
+                              },
+                              {
+                                "config": {
+                                  "can_replace": false,
+                                  "project": true,
+                                  "need_water": false,
+                                  "xspread": 7,
+                                  "yspread": 3,
+                                  "zspread": 7,
+                                  "whitelist": [],
+                                  "blacklist": [],
+                                  "tries": 32,
+                                  "state_provider": {
+                                    "state": {
+                                      "Name": "minecraft:fern"
+                                    },
+                                    "type": "minecraft:simple_state_provider"
+                                  },
+                                  "block_placer": {
+                                    "type": "minecraft:simple_block_placer"
+                                  }
+                                },
+                                "type": "minecraft:random_patch"
+                              },
+                              {
+                                "config": {
+                                  "can_replace": false,
+                                  "project": false,
+                                  "need_water": false,
+                                  "xspread": 7,
+                                  "yspread": 3,
+                                  "zspread": 7,
+                                  "whitelist": [],
+                                  "blacklist": [],
+                                  "tries": 16,
+                                  "state_provider": {
+                                    "state": {
+                                      "Properties": {
+                                        "half": "lower"
+                                      },
+                                      "Name": "minecraft:large_fern"
+                                    },
+                                    "type": "minecraft:simple_state_provider"
+                                  },
+                                  "block_placer": {
+                                    "type": "minecraft:double_plant_placer"
+                                  }
+                                },
+                                "type": "minecraft:random_patch"
+                              }
+                            ]
+                          },
+                          "type": "minecraft:simple_random_selector"
+                        },
+                        "decorator": {
+                          "config": {
+                            "count": {
+                              "base": -1,
+                              "spread": 4
+                            }
+                          },
+                          "type": "minecraft:count"
+                        }
+                      },
+                      "type": "minecraft:decorated"
+                    },
+                    "decorator": {
+                      "config": {},
+                      "type": "minecraft:spread_32_above"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                },
+                "decorator": {
+                  "config": {
+                    "outer": {
+                      "config": {},
+                      "type": "minecraft:square"
+                    },
+                    "inner": {
+                      "config": {},
+                      "type": "minecraft:heightmap"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
+            "decorator": {
+              "config": {},
+              "type": "minecraft:square"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {
+            "count": 30
+          },
+          "type": "minecraft:count"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "chance": 5
+      },
+      "type": "minecraft:chance"
+    }
+  },
+  "type": "minecraft:decorated"
+}

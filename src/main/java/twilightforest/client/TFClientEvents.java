@@ -172,7 +172,7 @@ public class TFClientEvents {
 			Minecraft minecraft = Minecraft.getInstance();
 
 			// only fire if we're in the twilight forest
-			if (minecraft.world != null && TFGenerationSettings.isTwilightForest(minecraft.world)) {
+			if (minecraft.world != null && "twilightforest".equals(minecraft.world.getDimensionKey().getLocation().getNamespace())) {
 				// vignette
 				if (minecraft.ingameGUI != null) {
 					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;

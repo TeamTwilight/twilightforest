@@ -38,7 +38,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	protected ComponentTFMushroomTowerBridge(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
@@ -68,7 +68,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 
 	public MutableBoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(dSize - 1, 1, 1, dSize, this.getCoordBaseMode());
-		return StructureTFComponentOld.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
+		return feature.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
 	}
 
 	@Override

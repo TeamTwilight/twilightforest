@@ -79,7 +79,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TileEntityKeepsakeCasket;
 import twilightforest.util.TFItemStackUtils;
-import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.*;
@@ -106,7 +106,7 @@ public class TFEventListener {
 		if (event.getType() == EntityClassification.MONSTER
 				&& event.getWorld() instanceof ServerWorld
 				&& event.getWorld().getChunkProvider() instanceof ServerChunkProvider
-				&& ((ServerWorld) event.getWorld()).getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())
+				&& ((ServerWorld) event.getWorld()).getChunkProvider().generator instanceof ChunkGeneratorTwilightBase
 				&& event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().getSeaLevel())
 			event.setCanceled(true);
 	}
@@ -615,7 +615,7 @@ public class TFEventListener {
 			return false;
 		}
 
-		ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
+		ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
 
 		if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
 			// what feature is nearby?  is it one the player has not unlocked?

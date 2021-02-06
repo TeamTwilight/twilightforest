@@ -9,8 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -20,15 +22,19 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
+import twilightforest.structures.finalcastle.ComponentTFFinalCastleMain;
+import twilightforest.structures.icetower.ComponentTFIceTowerMain;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
 import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
+import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
+import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
 
@@ -41,7 +47,7 @@ import java.util.*;
 public enum TFFeature {
 
 	NOTHING    ( 0, "no_feature"       , false) { { this.enableDecorations().disableStructure(); } },
-	SMALL_HILL ( 1, "small_hollow_hill", true ) {
+	SMALL_HILL ( 1, "small_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -54,10 +60,10 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 2, z);
 		}
 	},
-	MEDIUM_HILL ( 2, "medium_hollow_hill", true ) {
+	MEDIUM_HILL ( 2, "medium_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -75,10 +81,10 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 5, z);
 		}
 	},
-	LARGE_HILL ( 3, "large_hollow_hill", true ) {
+	LARGE_HILL ( 3, "large_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -97,7 +103,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 5, z);
 		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
@@ -160,10 +166,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on Auroral Fortification"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartAuroraPalace(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFIceTowerMain(this, rand, 0, x, y, z);
+		}
 	},
 	QUEST_ISLAND ( 1, "quest_island", false ) { { this.disableStructure(); } },
 	QUEST_GROVE  ( 1, "quest_grove" , true  ) {
@@ -179,7 +185,7 @@ public enum TFFeature {
 	},
 	DRUID_GROVE    ( 1, "druid_grove"   , false ) { { this.disableStructure(); } },
 	FLOATING_RUINS ( 3, "floating_ruins", false ) { { this.disableStructure(); } },
-	HYDRA_LAIR     ( 2, "hydra_lair"    , true , TwilightForestMod.prefix("progress_labyrinth") ) {
+	HYDRA_LAIR     ( 2, "hydra_lair"    , true, true, TwilightForestMod.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
 		}
@@ -233,7 +239,7 @@ public enum TFFeature {
 			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	},
-	DARK_TOWER ( true, 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
+	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
 			this.addMonster(TFEntities.tower_golem, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -299,7 +305,7 @@ public enum TFFeature {
 		}
 	},
 	WORLD_TREE ( 3, "world_tree", false ) { { this.disableStructure(); } },
-	YETI_CAVE  ( 2, "yeti_lairs", true , TwilightForestMod.prefix("progress_lich") ) {
+	YETI_CAVE  ( 2, "yeti_lairs", true, true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -345,10 +351,15 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on the Highlands"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public GenerationStage.Decoration getDecorationStage() {
+			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
+		}
+
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFTrollCaveMain(TFTrollCavePieces.TFTCMai, this, 0, x, y, z);
+		}
 	},
 	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
@@ -368,10 +379,10 @@ public enum TFFeature {
 					.addMonster(3, EntityType.BLAZE, 10, 1, 1);
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartFinalCastle(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFFinalCastleMain(this, rand, 0, x, y, z);
+		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
 
@@ -381,18 +392,18 @@ public enum TFFeature {
 		}
 	};
 
-	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = ImmutableMap.builder()
-		.put(TFBiomes.darkForest.getLocation(), KNIGHT_STRONGHOLD)
-		.put(TFBiomes.darkForestCenter.getLocation(), DARK_TOWER)
-		.put(TFBiomes.deepMushrooms.getLocation(), MUSHROOM_TOWER)
-		.put(TFBiomes.enchantedForest.getLocation(), QUEST_GROVE)
-		.put(TFBiomes.finalPlateau.getLocation(), FINAL_CASTLE)
-		.put(TFBiomes.fireSwamp.getLocation(), HYDRA_LAIR)
-		.put(TFBiomes.glacier.getLocation(), ICE_TOWER)
-		.put(TFBiomes.highlands.getLocation(), TROLL_CAVE)
-		.put(TFBiomes.snowy_forest.getLocation(), YETI_CAVE)
-		.put(TFBiomes.tfSwamp.getLocation(), LABYRINTH)
-		.put(TFBiomes.tfLake.getLocation(), QUEST_ISLAND)
+	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFFeature>()
+		.put(BiomeKeys.DARK_FOREST.getLocation(), KNIGHT_STRONGHOLD)
+		.put(BiomeKeys.DARK_FOREST_CENTER.getLocation(), DARK_TOWER)
+		.put(BiomeKeys.DENSE_MUSHROOM_FOREST.getLocation(), MUSHROOM_TOWER)
+		.put(BiomeKeys.ENCHANTED_FOREST.getLocation(), QUEST_GROVE)
+		.put(BiomeKeys.FINAL_PLATEAU.getLocation(), FINAL_CASTLE)
+		.put(BiomeKeys.FIRE_SWAMP.getLocation(), HYDRA_LAIR)
+		.put(BiomeKeys.GLACIER.getLocation(), ICE_TOWER)
+		.put(BiomeKeys.HIGHLANDS.getLocation(), TROLL_CAVE)
+		.put(BiomeKeys.SNOWY_FOREST.getLocation(), YETI_CAVE)
+		.put(BiomeKeys.SWAMP.getLocation(), LABYRINTH)
+		.put(BiomeKeys.LAKE.getLocation(), QUEST_ISLAND)
 		.build();
 
 	//IStructurePieceTypes that can be referred to
@@ -402,10 +413,10 @@ public enum TFFeature {
 	public static final IStructurePieceType TFHydra = registerPiece("TFHydra", ComponentTFHydraLair::new);
 	public static final IStructurePieceType TFYeti = registerPiece("TFYeti", ComponentTFYetiCave::new);
 
-	public final boolean useSurfaceHeight;
 	public final int size;
 	public final String name;
 	private final boolean shouldHaveFeatureGenerator;
+	public final boolean centerBounds;
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
 	public boolean isTerrainAltered;
@@ -424,11 +435,10 @@ public enum TFFeature {
 	private static final int maxSize = Arrays.stream(VALUES).mapToInt(v -> v.size).max().orElse(0);
 
 	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
-		this(false, size, name, featureGenerator, requiredAdvancements);
+		this(size, name, featureGenerator, false, requiredAdvancements);
 	}
 
-	TFFeature(boolean useSurfaceHeight, int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
-		this.useSurfaceHeight = useSurfaceHeight;
+	TFFeature(int size, String name, boolean featureGenerator, boolean centerBounds, ResourceLocation... requiredAdvancements) {
 		this.size = size;
 		this.name = name;
 		this.areChunkDecorationsEnabled = false;
@@ -444,6 +454,7 @@ public enum TFFeature {
 		this.requiredAdvancements = requiredAdvancements;
 
 		shouldHaveFeatureGenerator = featureGenerator;
+		this.centerBounds = centerBounds;
 	}
 
 	static void init() {}
@@ -947,5 +958,29 @@ public enum TFFeature {
 
 	public static IStructurePieceType registerPiece(String name, IStructurePieceType piece) {
 		return Registry.register(Registry.STRUCTURE_PIECE, TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)), piece);
+	}
+
+	public final MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable Direction dir) {
+		if(centerBounds) {
+			x += (maxX + minX) / 4;
+			y += (maxY + minY) / 4;
+			z += (maxZ + minZ) / 4;
+		}
+		switch (dir) {
+			default:
+				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+
+			case SOUTH: // '\0'
+				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+
+			case WEST: // '\001'
+				return new MutableBoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
+
+			case NORTH: // '\002'
+				return new MutableBoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
+
+			case EAST: // '\003'
+				return new MutableBoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
+		}
 	}
 }

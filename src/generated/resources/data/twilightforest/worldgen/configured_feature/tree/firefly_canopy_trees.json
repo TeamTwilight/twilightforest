@@ -10,8 +10,8 @@
         "inner": {
           "config": {
             "count": 8,
-            "extra_chance": 0.1,
-            "extra_count": 1
+            "extra_chance": 0.4,
+            "extra_count": 4
           },
           "type": "minecraft:count_extra"
         }

@@ -15,20 +15,19 @@ import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
 import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
-public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
-	public static final Codec<ChunkGeneratorTwilightForest> codecTFChunk = RecordCodecBuilder.create((instance) ->
-			instance.group(
-					BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
-					Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
-					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter(ChunkGeneratorTwilightForest::getDimensionSettings))
-					.apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
+public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
+	public static final Codec<ChunkGeneratorTwilightForest> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+			BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
+			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
+			DimensionSettings.field_236098_b_.fieldOf("settings").forGetter(ChunkGeneratorTwilightForest::getDimensionSettings)
+	).apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
 
 	private long seed;
 
@@ -39,7 +38,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 	@Override
 	protected Codec<? extends ChunkGenerator> func_230347_a_() {
-		return codecTFChunk;
+		return CODEC;
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Biome biome = primer.getBiome(getPos(primer).asBlockPos().add(x, 0, z));
-				if (!TFBiomes.glacier.getLocation().equals(biome.getRegistryName())) continue;
+				if (!BiomeKeys.GLACIER.getLocation().equals(biome.getRegistryName())) continue;
 
 				// find the (current) top block
 				int gBase = -1;
@@ -114,7 +113,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
 						Biome biome = primer.getBiome(getPos(primer).asBlockPos().add(x + bx + 2, 0, z + bz + 2));
-						if (TFBiomes.darkForest.getLocation().equals(biome.getRegistryName()) || TFBiomes.darkForestCenter.getLocation().equals(biome.getRegistryName())) {
+						if (BiomeKeys.DARK_FOREST.getLocation().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.getLocation().equals(biome.getRegistryName())) {
 							thicks[x + z * 5]++;
 							biomeFound = true;
 						}

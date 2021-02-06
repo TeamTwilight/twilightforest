@@ -44,7 +44,12 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      "minecraft:trees_mountain_edge"
+      "twilightforest:grass_placer",
+      "twilightforest:random_common",
+      "twilightforest:small_log",
+      "minecraft:spruce_snowy",
+      "minecraft:trees_giant_spruce",
+      "minecraft:pile_snow"
     ]
   ],
   "starts": [

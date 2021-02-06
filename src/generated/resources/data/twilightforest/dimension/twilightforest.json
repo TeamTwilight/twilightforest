@@ -1,0 +1,12 @@
+{
+  "type": "twilightforest:forest_type",
+  "generator": {
+    "biome_source": {
+      "seed": 0,
+      "type": "twilightforest:grid"
+    },
+    "seed": 0,
+    "settings": "twilightforest:forest_noise_config",
+    "type": "twilightforest:featured_noise"
+  }
+}

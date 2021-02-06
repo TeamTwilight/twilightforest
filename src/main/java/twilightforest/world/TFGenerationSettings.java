@@ -19,16 +19,20 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	public static final int MAXHEIGHT = 256; // actual max height
 
 	@Nullable
-	public static ChunkGeneratorTFBase getChunkGenerator(World world) {
+	public static ChunkGeneratorTwilightBase getChunkGenerator(World world) {
 		if (world instanceof ServerWorld) {
 			ChunkGenerator chunkGenerator = ((ServerWorld) world).getChunkProvider().generator;
-			return chunkGenerator instanceof ChunkGeneratorTFBase ? (ChunkGeneratorTFBase) chunkGenerator : null;
+			return chunkGenerator instanceof ChunkGeneratorTwilightBase ? (ChunkGeneratorTwilightBase) chunkGenerator : null;
 		}
 		return null;
 	}
 
-	public static boolean isTwilightForest(World world) {
+	public static boolean isStrictlyTwilightForest(World world) {
 		return world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get());
+	}
+
+	public static boolean isTwilightChunk(ServerWorld world) {
+		return world.getChunkProvider().generator instanceof ChunkGeneratorTwilightBase;
 	}
 
 	public static boolean isProgressionEnforced(World world) {
@@ -46,7 +50,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static void markStructureConquered(World world, BlockPos pos, TFFeature feature) {
-		ChunkGeneratorTFBase generator = getChunkGenerator(world);
+		ChunkGeneratorTwilightBase generator = getChunkGenerator(world);
 		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerWorld) world) == feature) {
 			//generator.setStructureConquered(pos, true);
 		}
