@@ -829,29 +829,31 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	/**
 	 * Place a library treasure chest somewhere in the library
 	 */
+	@SuppressWarnings("fallthrough")
 	protected void decorateLibraryTreasure(ISeedReader world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
+		// FIXME: case 3 gets slightly higher chance than others
 		switch (rand.nextInt(4)) {
 			case 0:
 			default:
 				if (!isLadderPos(2, 1, ladderUpDir, ladderDownDir)) {
 					placeTreasureAtCurrentPosition(world, 2, top - 2, 1, TFTreasure.tower_library, sbb);
+					break;
 				}
-				break;
 			case 1:
 				if (!isLadderPos(size - 2, 2, ladderUpDir, ladderDownDir)) {
 					placeTreasureAtCurrentPosition(world, size - 2, top - 2, 2, TFTreasure.tower_library, sbb);
+					break;
 				}
-				break;
 			case 2:
 				if (!isLadderPos(size - 3, size - 2, ladderUpDir, ladderDownDir)) {
 					placeTreasureAtCurrentPosition(world, size - 3, top - 2, size - 2, TFTreasure.tower_library, sbb);
+					break;
 				}
-				break;
 			case 3:
 				if (!isLadderPos(1, size - 3, ladderUpDir, ladderDownDir)) {
 					placeTreasureAtCurrentPosition(world, 1, top - 2, size - 3, TFTreasure.tower_library, sbb);
+					break;
 				}
-				break;
 		}
 	}
 

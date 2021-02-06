@@ -385,8 +385,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
+	@SuppressWarnings("fallthrough")
 	private void decorateFloor(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop) {
 		// pick an appropriate decoration and use it
+		// FIXME: if minY <= 64, some cases gets double weight
 
 		if (isTop) {
 			// there are a limited amount that can go at the top
@@ -415,8 +417,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				case 2:
 					if (y + this.boundingBox.minY > 64) {
 						decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
+						break;
 					}
-					break;
 				case 3:
 					decorateForge(world, decoRNG, sbb, rotation, y);
 					break;
@@ -441,8 +443,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				case 5:
 					if (y + this.boundingBox.minY > 64) {
 						decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
+						break;
 					}
-					break;
 				case 6:
 					decorateLounge(world, generator, decoRNG, sbb, rotation, y);
 					break;

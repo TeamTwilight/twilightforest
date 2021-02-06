@@ -425,6 +425,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Add a bunch of random half floors
 	 */
+	@SuppressWarnings("fallthrough")
 	private void addHalfFloors(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
 		int spacing = 4;//this.size > 9 ? 4 : 3;
@@ -447,12 +448,13 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 				makeHalfFloor(world, sbb, rotation, y, spacing);
 
 				// decorate
+				// FIXME: Case 1 gets double weight when size >= 11
 				switch (rand.nextInt(8)) {
 					case 0:
 						if (this.size < 11) {
 							decorateReappearingFloor(world, rand, sbb, rotation, y);
+							break;
 						}
-						break;
 					case 1:
 						decorateSpawner(world, rand, sbb, rotation, y);
 						break;
