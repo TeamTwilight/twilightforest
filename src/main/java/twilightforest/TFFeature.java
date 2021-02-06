@@ -1,5 +1,6 @@
 package twilightforest;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -380,20 +381,19 @@ public enum TFFeature {
 		}
 	};
 
-    @SuppressWarnings("serial")
-	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new HashMap<ResourceLocation, TFFeature>(){{
-		put(TFBiomes.darkForest.getLocation(), KNIGHT_STRONGHOLD);
-		put(TFBiomes.darkForestCenter.getLocation(), DARK_TOWER);
-		put(TFBiomes.deepMushrooms.getLocation(), MUSHROOM_TOWER);
-		put(TFBiomes.enchantedForest.getLocation(), QUEST_GROVE);
-		put(TFBiomes.finalPlateau.getLocation(), FINAL_CASTLE);
-		put(TFBiomes.fireSwamp.getLocation(), HYDRA_LAIR);
-		put(TFBiomes.glacier.getLocation(), ICE_TOWER);
-		put(TFBiomes.highlands.getLocation(), TROLL_CAVE);
-		put(TFBiomes.snowy_forest.getLocation(), YETI_CAVE);
-		put(TFBiomes.tfSwamp.getLocation(), LABYRINTH);
-		put(TFBiomes.tfLake.getLocation(), QUEST_ISLAND);
-	}};
+	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = ImmutableMap.builder()
+		.put(TFBiomes.darkForest.getLocation(), KNIGHT_STRONGHOLD)
+		.put(TFBiomes.darkForestCenter.getLocation(), DARK_TOWER)
+		.put(TFBiomes.deepMushrooms.getLocation(), MUSHROOM_TOWER)
+		.put(TFBiomes.enchantedForest.getLocation(), QUEST_GROVE)
+		.put(TFBiomes.finalPlateau.getLocation(), FINAL_CASTLE)
+		.put(TFBiomes.fireSwamp.getLocation(), HYDRA_LAIR)
+		.put(TFBiomes.glacier.getLocation(), ICE_TOWER)
+		.put(TFBiomes.highlands.getLocation(), TROLL_CAVE)
+		.put(TFBiomes.snowy_forest.getLocation(), YETI_CAVE)
+		.put(TFBiomes.tfSwamp.getLocation(), LABYRINTH)
+		.put(TFBiomes.tfLake.getLocation(), QUEST_ISLAND)
+		.build();
 
 	//IStructurePieceTypes that can be referred to
 	public static final IStructurePieceType TFHill = registerPiece("TFHill", ComponentTFHollowHill::new);
