@@ -38,7 +38,7 @@ public class ItemTFPhantomArmor extends ArmorItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A original) {
 		return (A) phantomArmorModel.get(armorSlot);
 	}

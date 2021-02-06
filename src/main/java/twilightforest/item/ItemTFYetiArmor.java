@@ -61,7 +61,7 @@ public class ItemTFYetiArmor extends ArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
 		return (A) yetiArmorModel.get(armorSlot);
 	}

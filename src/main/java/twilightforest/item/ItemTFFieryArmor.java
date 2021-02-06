@@ -47,7 +47,7 @@ public class ItemTFFieryArmor extends ArmorItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A oldModel) {
 		return (A) fieryArmorModel.get(armorSlot);
 	}

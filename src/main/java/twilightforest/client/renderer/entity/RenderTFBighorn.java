@@ -13,7 +13,7 @@ public class RenderTFBighorn extends SheepRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("bighorn.png");
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public RenderTFBighorn(EntityRendererManager manager, SheepModel<? extends SheepEntity> baseModel, EntityModel<?> coatModel, float shadowSize) {
 		super(manager);
 		this.shadowSize = shadowSize;

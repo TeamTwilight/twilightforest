@@ -11,7 +11,7 @@ public class RenderTFBoar extends PigRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("wildboar.png");
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public RenderTFBoar(EntityRendererManager manager, PigModel<? extends PigEntity> model) {
 		super(manager);
 		this.entityModel = (PigModel<PigEntity>) model;

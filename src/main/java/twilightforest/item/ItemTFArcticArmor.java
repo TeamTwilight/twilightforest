@@ -43,7 +43,7 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A oldM) {
 		return (A) arcticArmorModel.get(armorSlot);
 	}
