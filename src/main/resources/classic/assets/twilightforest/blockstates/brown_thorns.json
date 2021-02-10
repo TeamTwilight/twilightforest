@@ -1,0 +1,83 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "axis": "y"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns"
+      }
+    },
+    {
+      "when": {
+        "axis": "z"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "axis": "x"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns",
+        "x": 90,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns_top",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns_bottom",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns_top",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns_bottom",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns_top"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/brown_thorns_bottom"
+      }
+    }
+  ]
+}

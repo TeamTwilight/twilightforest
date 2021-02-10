@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
@@ -17,7 +16,7 @@ import java.util.Map;
 
 public class ItemTFKnightlyArmor extends ArmorItem {
 
-	private static final Map<EquipmentSlotType, BipedModel> knightlyArmorModel = new EnumMap<>(EquipmentSlotType.class);
+	private static final Map<EquipmentSlotType, BipedModel<?>> knightlyArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
 	public ItemTFKnightlyArmor(IArmorMaterial material, EquipmentSlotType slot, Properties props) {
 		super(material, slot, props);
@@ -35,8 +34,9 @@ public class ItemTFKnightlyArmor extends ArmorItem {
 	@Nullable
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel original) {
-		return knightlyArmorModel.get(armorSlot);
+	@SuppressWarnings("unchecked")
+	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A original) {
+		return (A) knightlyArmorModel.get(armorSlot);
 	}
 
 	@OnlyIn(Dist.CLIENT)

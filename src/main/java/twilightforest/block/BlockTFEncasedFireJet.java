@@ -3,9 +3,9 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.enums.FireJetVariant;
 
 public class BlockTFEncasedFireJet extends BlockTFFireJet {
@@ -24,7 +24,7 @@ public class BlockTFEncasedFireJet extends BlockTFFireJet {
 
 		if (variant == FireJetVariant.IDLE && powered) {
 			world.setBlockState(pos, state.with(STATE, FireJetVariant.POPPING));
-			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.JET_START, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 }

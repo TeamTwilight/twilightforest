@@ -1,72 +1,237 @@
 package twilightforest;
 
+import net.minecraft.entity.passive.ParrotEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import twilightforest.entity.TFEntities;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class TFSounds {
 
-	public static final SoundEvent KOBOLD_DEATH = createEvent("mob.kobold.die");
-	public static final SoundEvent KOBOLD_AMBIENT = createEvent("mob.kobold.kobold");
-	public static final SoundEvent KOBOLD_HURT = createEvent("mob.kobold.hurt");
-	public static final SoundEvent KOBOLD_PARROT = createEvent("mob.kobold.parrot");
-	public static final SoundEvent CICADA = createEvent("mob.cicada");
-	public static final SoundEvent NAGA_HISS = createEvent("mob.naga.hiss");
-	public static final SoundEvent NAGA_HURT = createEvent("mob.naga.hurt");
-	public static final SoundEvent NAGA_RATTLE = createEvent("mob.naga.rattle");
-	public static final SoundEvent NAGA_PARROT = createEvent("mob.naga.parrot");
-	public static final SoundEvent RAVEN_CAW = createEvent("mob.raven.caw");
-	public static final SoundEvent RAVEN_SQUAWK = createEvent("mob.raven.squawk");
-	public static final SoundEvent REDCAP_DEATH = createEvent("mob.redcap.die");
-	public static final SoundEvent REDCAP_AMBIENT = createEvent("mob.redcap.redcap");
-	public static final SoundEvent REDCAP_HURT = createEvent("mob.redcap.hurt");
-	public static final SoundEvent REDCAP_PARROT = createEvent("mob.redcap.parrot");
-	public static final SoundEvent TINYBIRD_CHIRP = createEvent("mob.tinybird.chirp");
-	public static final SoundEvent TINYBIRD_HURT = createEvent("mob.tinybird.hurt");
-	public static final SoundEvent TINYBIRD_SONG = createEvent("mob.tinybird.song");
-	public static final SoundEvent URGHAST_TRAP_ACTIVE = createEvent("mob.urghast.trapactive");
-	public static final SoundEvent URGHAST_TRAP_ON = createEvent("mob.urghast.trapon");
-	public static final SoundEvent URGHAST_TRAP_SPINDOWN = createEvent("mob.urghast.trapspindown");
-	public static final SoundEvent URGHAST_TRAP_WARMUP = createEvent("mob.urghast.trapwarmup");
-	public static final SoundEvent WRAITH = createEvent("mob.wraith.wraith");
-	public static final SoundEvent WRAITH_PARROT = createEvent("mob.wraith.parrot");
-	public static final SoundEvent HYDRA_HURT = createEvent("mob.hydra.hurt");
-	public static final SoundEvent HYDRA_DEATH = createEvent("mob.hydra.death");
-	public static final SoundEvent HYDRA_GROWL = createEvent("mob.hydra.growl");
-	public static final SoundEvent HYDRA_ROAR = createEvent("mob.hydra.roar");
-	public static final SoundEvent HYDRA_WARN = createEvent("mob.hydra.warn");
-	public static final SoundEvent HYDRA_PARROT = createEvent("mob.hydra.parrot");
-	public static final SoundEvent MOSQUITO = createEvent("mob.mosquito.mosquito");
-	public static final SoundEvent MOSQUITO_PARROT = createEvent("mob.mosquito.parrot");
-	public static final SoundEvent ICE_AMBIENT = createEvent("mob.ice.noise");
-	public static final SoundEvent ICE_HURT = createEvent("mob.ice.hurt");
-	public static final SoundEvent ICE_DEATH = createEvent("mob.ice.death");
-	public static final SoundEvent ICE_PARROT = createEvent("mob.ice.parrot");
-	public static final SoundEvent MINOTAUR_PARROT = createEvent("mob.minotaur.parrot");
-	public static final SoundEvent ALPHAYETI_ALERT = createEvent("mob.alphayeti.alert");
-	public static final SoundEvent ALPHAYETI_DIE = createEvent("mob.alphayeti.die");
-	public static final SoundEvent ALPHAYETI_GRAB = createEvent("mob.alphayeti.grab");
-	public static final SoundEvent ALPHAYETI_GROWL = createEvent("mob.alphayeti.growl");
-	public static final SoundEvent ALPHAYETI_HURT = createEvent("mob.alphayeti.hurt");
-	public static final SoundEvent ALPHAYETI_PANT = createEvent("mob.alphayeti.pant");
-	public static final SoundEvent ALPHAYETI_ROAR = createEvent("mob.alphayeti.roar");
-	public static final SoundEvent ALPHAYETI_THROW = createEvent("mob.alphayeti.throw");
-	public static final SoundEvent ALPHAYETI_PARROT = createEvent("mob.alphayeti.parrot");
-	public static final SoundEvent DEER_DEATH = createEvent("mob.deer.death");
-	public static final SoundEvent DEER_HURT = createEvent("mob.deer.hurt");
-	public static final SoundEvent DEER_IDLE = createEvent("mob.deer.idle");
-	public static final SoundEvent MISTWOLF_TARGET = createEvent("mob.mistwolf.target");
-	public static final SoundEvent MISTWOLF_HURT = createEvent("mob.mistwolf.hurt");
-	public static final SoundEvent MISTWOLF_IDLE = createEvent("mob.mistwolf.idle");
-	public static final SoundEvent MISTWOLF_PARROT = createEvent("mob.mistwolf.parrot");
-	public static final SoundEvent TOME_DEATH = createEvent("mob.tome.death");
-	public static final SoundEvent TOME_HURT = createEvent("mob.tome.hurt");
-	public static final SoundEvent TOME_IDLE = createEvent("mob.tome.idle");
-	public static final SoundEvent TOME_PARROT = createEvent("mob.tome.parrot");
-
+	public static final SoundEvent KOBOLD_DEATH = createEvent("entity.kobold.die");
+	public static final SoundEvent KOBOLD_AMBIENT = createEvent("entity.kobold.ambient");
+	public static final SoundEvent KOBOLD_HURT = createEvent("entity.kobold.hurt");
+	public static final SoundEvent KOBOLD_PARROT = createEvent("entity.kobold.parrot");
+	public static final SoundEvent CICADA = createEvent("entity.cicada");
+	public static final SoundEvent NAGA_HISS = createEvent("entity.naga.hiss");
+	public static final SoundEvent NAGA_HURT = createEvent("entity.naga.hurt");
+	public static final SoundEvent NAGA_RATTLE = createEvent("entity.naga.rattle");
+	public static final SoundEvent NAGA_PARROT = createEvent("entity.naga.parrot");
+	public static final SoundEvent RAVEN_CAW = createEvent("entity.raven.caw");
+	public static final SoundEvent RAVEN_SQUAWK = createEvent("entity.raven.squawk");
+	public static final SoundEvent REDCAP_DEATH = createEvent("entity.redcap.die");
+	public static final SoundEvent REDCAP_AMBIENT = createEvent("entity.redcap.ambient");
+	public static final SoundEvent REDCAP_HURT = createEvent("entity.redcap.hurt");
+	public static final SoundEvent REDCAP_PARROT = createEvent("entity.redcap.parrot");
+	public static final SoundEvent TINYBIRD_CHIRP = createEvent("entity.tinybird.chirp");
+	public static final SoundEvent TINYBIRD_HURT = createEvent("entity.tinybird.hurt");
+	public static final SoundEvent TINYBIRD_SONG = createEvent("entity.tinybird.song");
+	public static final SoundEvent URGHAST_TRAP_ACTIVE = createEvent("entity.urghast.trapactive");
+	public static final SoundEvent URGHAST_TRAP_ON = createEvent("entity.urghast.trapon");
+	public static final SoundEvent URGHAST_TRAP_SPINDOWN = createEvent("entity.urghast.trapspindown");
+	public static final SoundEvent URGHAST_TRAP_WARMUP = createEvent("entity.urghast.trapwarmup");
+	public static final SoundEvent WRAITH = createEvent("entity.wraith.ambient");
+	public static final SoundEvent WRAITH_PARROT = createEvent("entity.wraith.parrot");
+	public static final SoundEvent HYDRA_HURT = createEvent("entity.hydra.hurt");
+	public static final SoundEvent HYDRA_DEATH = createEvent("entity.hydra.death");
+	public static final SoundEvent HYDRA_GROWL = createEvent("entity.hydra.growl");
+	public static final SoundEvent HYDRA_ROAR = createEvent("entity.hydra.roar");
+	public static final SoundEvent HYDRA_WARN = createEvent("entity.hydra.warn");
+	public static final SoundEvent HYDRA_SHOOT = createEvent("entity.hydra.shoot");
+	public static final SoundEvent HYDRA_PARROT = createEvent("entity.hydra.parrot");
+	public static final SoundEvent MOSQUITO = createEvent("entity.mosquito.ambient");
+	public static final SoundEvent MOSQUITO_PARROT = createEvent("entity.mosquito.parrot");
+	public static final SoundEvent ICE_CORE_AMBIENT = createEvent("entity.ice.noise");
+	public static final SoundEvent ICE_CORE_HURT = createEvent("entity.ice.hurt");
+	public static final SoundEvent ICE_CORE_DEATH = createEvent("entity.ice.death");
+	public static final SoundEvent ICE_CORE_SHOOT = createEvent("entity.ice.shoot");
+	public static final SoundEvent ICE_CORE_PARROT = createEvent("entity.ice.parrot");
+	public static final SoundEvent MINOTAUR_PARROT = createEvent("entity.minotaur.parrot");
+	public static final SoundEvent ALPHAYETI_ALERT = createEvent("entity.alphayeti.alert");
+	public static final SoundEvent ALPHAYETI_DIE = createEvent("entity.alphayeti.die");
+	public static final SoundEvent ALPHAYETI_GRAB = createEvent("entity.alphayeti.grab");
+	public static final SoundEvent ALPHAYETI_GROWL = createEvent("entity.alphayeti.growl");
+	public static final SoundEvent ALPHAYETI_HURT = createEvent("entity.alphayeti.hurt");
+	public static final SoundEvent ALPHAYETI_PANT = createEvent("entity.alphayeti.pant");
+	public static final SoundEvent ALPHAYETI_ROAR = createEvent("entity.alphayeti.roar");
+	public static final SoundEvent ALPHAYETI_THROW = createEvent("entity.alphayeti.throw");
+	public static final SoundEvent ALPHAYETI_ICE = createEvent("entity.alphayeti.ice");
+	public static final SoundEvent ALPHAYETI_PARROT = createEvent("entity.alphayeti.parrot");
+	public static final SoundEvent DEER_DEATH = createEvent("entity.deer.death");
+	public static final SoundEvent DEER_HURT = createEvent("entity.deer.hurt");
+	public static final SoundEvent DEER_IDLE = createEvent("entity.deer.idle");
+	public static final SoundEvent MISTWOLF_TARGET = createEvent("entity.mistwolf.target");
+	public static final SoundEvent MISTWOLF_DEATH = createEvent("entity.mistwolf.death");
+	public static final SoundEvent MISTWOLF_HURT = createEvent("entity.mistwolf.hurt");
+	public static final SoundEvent MISTWOLF_IDLE = createEvent("entity.mistwolf.idle");
+	public static final SoundEvent MISTWOLF_PARROT = createEvent("entity.mistwolf.parrot");
+	public static final SoundEvent TOME_DEATH = createEvent("entity.tome.death");
+	public static final SoundEvent TOME_HURT = createEvent("entity.tome.hurt");
+	public static final SoundEvent TOME_IDLE = createEvent("entity.tome.idle");
+	public static final SoundEvent TOME_PARROT = createEvent("entity.tome.parrot");
+	public static final SoundEvent BLOCKCHAIN_AMBIENT = createEvent("entity.blockchain.ambient");
+	public static final SoundEvent BLOCKCHAIN_HURT = createEvent("entity.blockchain.hurt");
+	public static final SoundEvent BLOCKCHAIN_DEATH = createEvent("entity.blockchain.death");
+	public static final SoundEvent FIRE_BEETLE_STEP = createEvent("entity.firebeetle.step");
+	public static final SoundEvent FIRE_BEETLE_HURT = createEvent("entity.firebeetle.hurt");
+	public static final SoundEvent FIRE_BEETLE_DEATH = createEvent("entity.firebeetle.death");
+	public static final SoundEvent FIRE_BEETLE_SHOOT = createEvent("entity.firebeetle.shoot");
+	public static final SoundEvent HEDGE_SPIDER_STEP = createEvent("entity.hedgespider.step");
+	public static final SoundEvent HEDGE_SPIDER_HURT = createEvent("entity.hedgespider.hurt");
+	public static final SoundEvent HEDGE_SPIDER_DEATH = createEvent("entity.hedgespider.death");
+	public static final SoundEvent HEDGE_SPIDER_AMBIENT = createEvent("entity.hedgespider.ambient");
+	public static final SoundEvent HELMET_CRAB_STEP = createEvent("entity.helmetcrab.step");
+	public static final SoundEvent HELMET_CRAB_HURT = createEvent("entity.helmetcrab.hurt");
+	public static final SoundEvent HELMET_CRAB_DEATH = createEvent("entity.helmetcrab.death");
+	public static final SoundEvent HOSTILE_WOLF_TARGET = createEvent("entity.hostilewolf.target");
+	public static final SoundEvent HOSTILE_WOLF_DEATH = createEvent("entity.hostilewolf.death");
+	public static final SoundEvent HOSTILE_WOLF_HURT = createEvent("entity.hostilewolf.hurt");
+	public static final SoundEvent HOSTILE_WOLF_IDLE = createEvent("entity.hostilewolf.idle");
+	public static final SoundEvent KING_SPIDER_STEP = createEvent("entity.kingspider.step");
+	public static final SoundEvent KING_SPIDER_HURT = createEvent("entity.kingspider.hurt");
+	public static final SoundEvent KING_SPIDER_DEATH = createEvent("entity.kingspider.death");
+	public static final SoundEvent KING_SPIDER_AMBIENT = createEvent("entity.kingspider.ambient");
+	public static final SoundEvent LOYAL_ZOMBIE_STEP = createEvent("entity.loyalzombie.step");
+	public static final SoundEvent LOYAL_ZOMBIE_HURT = createEvent("entity.loyalzombie.hurt");
+	public static final SoundEvent LOYAL_ZOMBIE_DEATH = createEvent("entity.loyalzombie.death");
+	public static final SoundEvent LOYAL_ZOMBIE_AMBIENT = createEvent("entity.loyalzombie.ambient");
+	public static final SoundEvent MAZE_SLIME_HURT = createEvent("entity.mazeslime.hurt");
+	public static final SoundEvent MAZE_SLIME_DEATH = createEvent("entity.mazeslime.death");
+	public static final SoundEvent MAZE_SLIME_SQUISH = createEvent("entity.mazeslime.ambient");
+	public static final SoundEvent MAZE_SLIME_HURT_SMALL = createEvent("entity.mazeslimesmall.hurt");
+	public static final SoundEvent MAZE_SLIME_DEATH_SMALL = createEvent("entity.mazeslimesmall.death");
+	public static final SoundEvent MAZE_SLIME_SQUISH_SMALL = createEvent("entity.mazeslimesmall.ambient");
+	public static final SoundEvent GHASTLING_HURT = createEvent("entity.ghastling.hurt");
+	public static final SoundEvent GHASTLING_DEATH = createEvent("entity.ghastling.death");
+	public static final SoundEvent GHASTLING_AMBIENT = createEvent("entity.ghastling.ambient");
+	public static final SoundEvent GHASTGUARD_HURT = createEvent("entity.ghastguard.hurt");
+	public static final SoundEvent GHASTGUARD_DEATH = createEvent("entity.ghastguard.death");
+	public static final SoundEvent GHASTGUARD_AMBIENT = createEvent("entity.ghastguard.ambient");
+	public static final SoundEvent MINOTAUR_STEP = createEvent("entity.minotaur.step");
+	public static final SoundEvent MINOTAUR_HURT = createEvent("entity.minotaur.hurt");
+	public static final SoundEvent MINOTAUR_DEATH = createEvent("entity.minotaur.death");
+	public static final SoundEvent MINOTAUR_AMBIENT = createEvent("entity.minotaur.ambient");
+	public static final SoundEvent MINOTAUR_ATTACK = createEvent("entity.minotaur.attack");
+	public static final SoundEvent MINOSHROOM_STEP = createEvent("entity.minoshroom.step");
+	public static final SoundEvent MINOSHROOM_HURT = createEvent("entity.minoshroom.hurt");
+	public static final SoundEvent MINOSHROOM_DEATH = createEvent("entity.minoshroom.death");
+	public static final SoundEvent MINOSHROOM_AMBIENT = createEvent("entity.minoshroom.ambient");
+	public static final SoundEvent MINOSHROOM_ATTACK = createEvent("entity.minoshroom.attack");
+	public static final SoundEvent PHANTOM_THROW_AXE = createEvent("entity.phantom.axe");
+	public static final SoundEvent PHANTOM_THROW_PICK = createEvent("entity.phantom.pick");
+	public static final SoundEvent PINCH_BEETLE_STEP = createEvent("entity.pinchbeetle.step");
+	public static final SoundEvent PINCH_BEETLE_HURT = createEvent("entity.pinchbeetle.hurt");
+	public static final SoundEvent PINCH_BEETLE_DEATH = createEvent("entity.pinchbeetle.death");
+	public static final SoundEvent SKELETON_DRUID_STEP = createEvent("entity.druid.step");
+	public static final SoundEvent SKELETON_DRUID_HURT = createEvent("entity.druid.hurt");
+	public static final SoundEvent SKELETON_DRUID_DEATH = createEvent("entity.druid.death");
+	public static final SoundEvent SKELETON_DRUID_AMBIENT = createEvent("entity.druid.ambient");
+	public static final SoundEvent SKELETON_DRUID_SHOOT = createEvent("entity.druid.shoot");
+	public static final SoundEvent SLIME_BEETLE_STEP = createEvent("entity.slimebeetle.step");
+	public static final SoundEvent SLIME_BEETLE_HURT = createEvent("entity.slimebeetle.hurt");
+	public static final SoundEvent SLIME_BEETLE_DEATH = createEvent("entity.slimebeetle.death");
+	public static final SoundEvent SLIME_BEETLE_SQUISH_SMALL = createEvent("entity.slimebeetle.squish");
+	public static final SoundEvent ICE_GUARDIAN_AMBIENT = createEvent("entity.iceguardian.ambient");
+	public static final SoundEvent ICE_GUARDIAN_HURT = createEvent("entity.iceguardian.hurt");
+	public static final SoundEvent ICE_GUARDIAN_DEATH = createEvent("entity.iceguardian.death");
+	public static final SoundEvent SWARM_SPIDER_STEP = createEvent("entity.swarmspider.step");
+	public static final SoundEvent SWARM_SPIDER_HURT = createEvent("entity.swarmspider.hurt");
+	public static final SoundEvent SWARM_SPIDER_DEATH = createEvent("entity.swarmspider.death");
+	public static final SoundEvent SWARM_SPIDER_AMBIENT = createEvent("entity.swarmspider.ambient");
+	public static final SoundEvent BROODLING_STEP = createEvent("entity.broodling.step");
+	public static final SoundEvent BROODLING_HURT = createEvent("entity.broodling.hurt");
+	public static final SoundEvent BROODLING_DEATH = createEvent("entity.broodling.death");
+	public static final SoundEvent BROODLING_AMBIENT = createEvent("entity.broodling.ambient");
+	public static final SoundEvent CARMINITE_GOLEM_STEP = createEvent("entity.carminitegolem.step");
+	public static final SoundEvent CARMINITE_GOLEM_HURT = createEvent("entity.carminitegolem.hurt");
+	public static final SoundEvent CARMINITE_GOLEM_DEATH = createEvent("entity.carminitegolem.death");
+	public static final SoundEvent CARMINITE_GOLEM_ATTACK = createEvent("entity.carminitegolem.attack");
+	public static final SoundEvent SNOW_QUEEN_HURT = createEvent("entity.snowqueen.hurt");
+	public static final SoundEvent SNOW_QUEEN_DEATH = createEvent("entity.snowqueen.death");
+	public static final SoundEvent SNOW_QUEEN_AMBIENT = createEvent("entity.snowqueen.ambient");
+	public static final SoundEvent SNOW_QUEEN_BREAK = createEvent("entity.snowqueen.break");
+	public static final SoundEvent SNOW_QUEEN_ATTACK = createEvent("entity.snowqueen.attack");
+	public static final SoundEvent TERMITE_STEP = createEvent("entity.termite.step");
+	public static final SoundEvent TERMITE_HURT = createEvent("entity.termite.hurt");
+	public static final SoundEvent TERMITE_DEATH = createEvent("entity.termite.death");
+	public static final SoundEvent TERMITE_AMBIENT = createEvent("entity.termite.ambient");
+	public static final SoundEvent WINTER_WOLF_TARGET = createEvent("entity.winterwolf.target");
+	public static final SoundEvent WINTER_WOLF_DEATH = createEvent("entity.winterwolf.death");
+	public static final SoundEvent WINTER_WOLF_HURT = createEvent("entity.winterwolf.hurt");
+	public static final SoundEvent WINTER_WOLF_SHOOT = createEvent("entity.winterwolf.shoot");
+	public static final SoundEvent WINTER_WOLF_IDLE = createEvent("entity.winterwolf.idle");
+	public static final SoundEvent LICH_AMBIENT = createEvent("entity.lich.ambient");
+	public static final SoundEvent LICH_HURT = createEvent("entity.lich.hurt");
+	public static final SoundEvent LICH_DEATH = createEvent("entity.lich.death");
+	public static final SoundEvent LICH_TELEPORT = createEvent("entity.lich.teleport");
+	public static final SoundEvent LICH_SHOOT = createEvent("entity.lich.shoot");
+	public static final SoundEvent LICH_CLONE_HURT = createEvent("entity.lichclone.hurt");
+	public static final SoundEvent SHIELD_BREAK = createEvent("entity.shield.break");
+	public static final SoundEvent SHIELD_ADD = createEvent("entity.shield.add");
+	public static final SoundEvent MINION_SUMMON = createEvent("entity.minion.summon");
+	public static final SoundEvent MINION_AMBIENT = createEvent("entity.minion.ambient");
+	public static final SoundEvent MINION_HURT = createEvent("entity.minion.hurt");
+	public static final SoundEvent MINION_DEATH = createEvent("entity.minion.death");
+	public static final SoundEvent MINION_STEP = createEvent("entity.minion.step");
+	public static final SoundEvent URGHAST_HURT = createEvent("entity.urghast.hurt");
+	public static final SoundEvent URGHAST_DEATH = createEvent("entity.urghast.death");
+	public static final SoundEvent URGHAST_AMBIENT = createEvent("entity.urghast.ambient");
+	public static final SoundEvent TEAR_BREAK = createEvent("entity.tear.break");
+	public static final SoundEvent YETI_DIE = createEvent("entity.yeti.die");
+	public static final SoundEvent YETI_GRAB = createEvent("entity.yeti.grab");
+	public static final SoundEvent YETI_GROWL = createEvent("entity.yeti.growl");
+	public static final SoundEvent YETI_HURT = createEvent("entity.yeti.hurt");
+	public static final SoundEvent YETI_THROW = createEvent("entity.yeti.throw");
+	public static final SoundEvent QUEST_RAM_HURT = createEvent("entity.quest.hurt");
+	public static final SoundEvent QUEST_RAM_DEATH = createEvent("entity.quest.death");
+	public static final SoundEvent QUEST_RAM_AMBIENT = createEvent("entity.quest.ambient");
+	public static final SoundEvent QUEST_RAM_STEP = createEvent("entity.quest.step");
+	public static final SoundEvent BIGHORN_HURT = createEvent("entity.bighorn.hurt");
+	public static final SoundEvent BIGHORN_DEATH = createEvent("entity.bighorn.death");
+	public static final SoundEvent BIGHORN_AMBIENT = createEvent("entity.bighorn.ambient");
+	public static final SoundEvent BIGHORN_STEP = createEvent("entity.bighorn.step");
+	public static final SoundEvent BOAR_HURT = createEvent("entity.boar.hurt");
+	public static final SoundEvent BOAR_DEATH = createEvent("entity.boar.death");
+	public static final SoundEvent BOAR_AMBIENT = createEvent("entity.boar.ambient");
+	public static final SoundEvent BOAR_STEP = createEvent("entity.boar.step");
+	public static final SoundEvent BLOCKCHAIN_FIRED = createEvent("item.blockchain.fire");
+	public static final SoundEvent BLOCKCHAIN_COLLIDE = createEvent("item.blockchain.collide");
+	public static final SoundEvent BLOCKCHAIN_HIT = createEvent("item.blockchain.hit");
+	public static final SoundEvent ICEBOMB_FIRED = createEvent("item.icebomb.fired");
+	public static final SoundEvent LAMP_BURN = createEvent("item.lamp.burn");
+	public static final SoundEvent MOONWORM_SQUISH = createEvent("item.moonworm.squish");
+	public static final SoundEvent MAGNET_GRAB = createEvent("item.magnet.grab");
+	public static final SoundEvent FAN_WOOSH = createEvent("item.fan.woosh");
+	public static final SoundEvent SCEPTER_DRAIN = createEvent("item.scepter.drain");
+	public static final SoundEvent SCEPTER_PEARL = createEvent("item.scepter.pearl");
+	public static final SoundEvent SCEPTER_USE = createEvent("item.scepter.use");
+	public static final SoundEvent POWDER_USE = createEvent("item.powder.use");
+	public static final SoundEvent REACTOR_AMBIENT = createEvent("te.reactor.idle");
+	public static final SoundEvent JET_ACTIVE = createEvent("te.jet.active");
+	public static final SoundEvent JET_START = createEvent("te.jet.start");
+	public static final SoundEvent JET_POP = createEvent("te.jet.pop");
+	public static final SoundEvent SMOKER_START = createEvent("te.smoker.start");
+	public static final SoundEvent CHARM_KEEP = createEvent("item.charm.keep");
+	public static final SoundEvent CHARM_LIFE = createEvent("item.charm.life");
+	public static final SoundEvent BUILDER_ON = createEvent("block.builder.on");
+	public static final SoundEvent BUILDER_OFF = createEvent("block.builder.off");
+	public static final SoundEvent BUILDER_REPLACE = createEvent("block.builder.replace");
+	public static final SoundEvent DOOR_ACTIVATED = createEvent("block.door.activate");
+	public static final SoundEvent DOOR_REAPPEAR = createEvent("block.door.reappear");
+	public static final SoundEvent DOOR_VANISH = createEvent("block.door.vanish");
+	public static final SoundEvent VANISHING_BLOCK = createEvent("block.vanish.vanish");
+	public static final SoundEvent LOCKED_VANISHING_BLOCK = createEvent("block.vanish.locked");
+	public static final SoundEvent UNLOCK_VANISHING_BLOCK = createEvent("block.vanish.unlock");
+	public static final SoundEvent REAPPEAR_BLOCK = createEvent("block.vanish.reappear");
+	public static final SoundEvent TIME_CORE = createEvent("block.core.time");
+	public static final SoundEvent TRANSFORMATION_CORE = createEvent("block.core.transformation");
+	public static final SoundEvent PORTAL_WOOSH = createEvent("block.portal.woosh");
+	public static final SoundEvent PEDESTAL_ACTIVATE = createEvent("block.pedestal.activate");
+	
 	public static final SoundEvent SLIDER = createEvent("random.slider");
 
 	public static final SoundEvent MUSIC = createEvent("music.bg");
@@ -107,20 +272,23 @@ public final class TFSounds {
 				HYDRA_GROWL,
 				HYDRA_HURT,
 				HYDRA_ROAR,
+				HYDRA_SHOOT,
 				HYDRA_WARN,
 				HYDRA_PARROT,
 				MOSQUITO,
 				MOSQUITO_PARROT,
-				ICE_AMBIENT,
-				ICE_DEATH,
-				ICE_HURT,
-				ICE_PARROT,
+				ICE_CORE_AMBIENT,
+				ICE_CORE_DEATH,
+				ICE_CORE_HURT,
+				ICE_CORE_SHOOT,
+				ICE_CORE_PARROT,
 				MINOTAUR_PARROT,
 				ALPHAYETI_ALERT,
 				ALPHAYETI_DIE,
 				ALPHAYETI_GRAB,
 				ALPHAYETI_GROWL,
 				ALPHAYETI_HURT,
+				ALPHAYETI_ICE,
 				ALPHAYETI_PANT,
 				ALPHAYETI_ROAR,
 				ALPHAYETI_THROW,
@@ -129,6 +297,7 @@ public final class TFSounds {
 				DEER_HURT,
 				DEER_IDLE,
 				MISTWOLF_TARGET,
+				MISTWOLF_DEATH,
 				MISTWOLF_HURT,
 				MISTWOLF_IDLE,
 				MISTWOLF_PARROT,
@@ -136,49 +305,201 @@ public final class TFSounds {
 				TOME_HURT,
 				TOME_IDLE,
 				TOME_PARROT,
+				BLOCKCHAIN_AMBIENT,
+				BLOCKCHAIN_HURT,
+				BLOCKCHAIN_DEATH,
+				FIRE_BEETLE_STEP,
+				FIRE_BEETLE_HURT,
+				FIRE_BEETLE_DEATH,
+				FIRE_BEETLE_SHOOT,
+				HEDGE_SPIDER_STEP,
+				HEDGE_SPIDER_HURT,
+				HEDGE_SPIDER_DEATH,
+				HEDGE_SPIDER_AMBIENT,
+				HELMET_CRAB_STEP,
+				HELMET_CRAB_HURT,
+				HELMET_CRAB_DEATH,
+				HOSTILE_WOLF_TARGET,
+				HOSTILE_WOLF_DEATH,
+				HOSTILE_WOLF_HURT,
+				HOSTILE_WOLF_IDLE,
+				KING_SPIDER_STEP,
+				KING_SPIDER_HURT,
+				KING_SPIDER_DEATH,
+				KING_SPIDER_AMBIENT,
+				LOYAL_ZOMBIE_STEP,
+				LOYAL_ZOMBIE_HURT,
+				LOYAL_ZOMBIE_DEATH,
+				LOYAL_ZOMBIE_AMBIENT,
+				MAZE_SLIME_HURT,
+				MAZE_SLIME_DEATH,
+				MAZE_SLIME_SQUISH,
+				MAZE_SLIME_HURT_SMALL,
+				MAZE_SLIME_DEATH_SMALL,
+				MAZE_SLIME_SQUISH_SMALL,
+				GHASTLING_HURT,
+				GHASTLING_DEATH,
+				GHASTLING_AMBIENT,
+				GHASTGUARD_HURT,
+				GHASTGUARD_DEATH,
+				GHASTGUARD_AMBIENT,
+				MINOTAUR_STEP,
+				MINOTAUR_HURT,
+				MINOTAUR_DEATH,
+				MINOTAUR_AMBIENT,
+				MINOTAUR_ATTACK,
+				MINOSHROOM_STEP,
+				MINOSHROOM_HURT,
+				MINOSHROOM_DEATH,
+				MINOSHROOM_AMBIENT,
+				MINOSHROOM_ATTACK,
+				PHANTOM_THROW_AXE,
+				PHANTOM_THROW_PICK,
+				PINCH_BEETLE_STEP,
+				PINCH_BEETLE_HURT,
+				PINCH_BEETLE_DEATH,
+				SKELETON_DRUID_STEP,
+				SKELETON_DRUID_HURT,
+				SKELETON_DRUID_DEATH,
+				SKELETON_DRUID_AMBIENT,
+				SKELETON_DRUID_SHOOT,
+				SLIME_BEETLE_STEP,
+				SLIME_BEETLE_HURT,
+				SLIME_BEETLE_DEATH,
+				SLIME_BEETLE_SQUISH_SMALL,
+				ICE_GUARDIAN_AMBIENT,
+				ICE_GUARDIAN_HURT,
+				ICE_GUARDIAN_DEATH,
+				SWARM_SPIDER_STEP,
+				SWARM_SPIDER_HURT,
+				SWARM_SPIDER_DEATH,
+				SWARM_SPIDER_AMBIENT,
+				BROODLING_STEP,
+				BROODLING_HURT,
+				BROODLING_DEATH,
+				BROODLING_AMBIENT,
+				CARMINITE_GOLEM_STEP,
+				CARMINITE_GOLEM_HURT,
+				CARMINITE_GOLEM_DEATH,
+				CARMINITE_GOLEM_ATTACK,
+				SNOW_QUEEN_HURT,
+				SNOW_QUEEN_DEATH,
+				SNOW_QUEEN_AMBIENT,
+				SNOW_QUEEN_ATTACK,
+				SNOW_QUEEN_BREAK,
+				TERMITE_STEP,
+				TERMITE_HURT,
+				TERMITE_DEATH,
+				TERMITE_AMBIENT,
+				WINTER_WOLF_TARGET,
+				WINTER_WOLF_DEATH,
+				WINTER_WOLF_HURT,
+				WINTER_WOLF_SHOOT,
+				WINTER_WOLF_IDLE,
+				LICH_AMBIENT,
+				LICH_HURT,
+				LICH_DEATH,
+				LICH_TELEPORT,
+				LICH_SHOOT,
+				LICH_CLONE_HURT,
+				SHIELD_BREAK,
+				SHIELD_ADD,
+				MINION_SUMMON,
+				MINION_AMBIENT,
+				MINION_HURT,
+				MINION_DEATH,
+				MINION_STEP,
+				URGHAST_HURT,
+				URGHAST_DEATH,
+				URGHAST_AMBIENT,
+				TEAR_BREAK,
+				QUEST_RAM_HURT,
+				QUEST_RAM_AMBIENT,
+				QUEST_RAM_DEATH,
+				QUEST_RAM_STEP,
+				BIGHORN_HURT,
+				BIGHORN_AMBIENT,
+				BIGHORN_DEATH,
+				BIGHORN_STEP,
+				BOAR_HURT,
+				BOAR_AMBIENT,
+				BOAR_DEATH,
+				BOAR_STEP,
+				BLOCKCHAIN_FIRED,
+				BLOCKCHAIN_COLLIDE,
+				BLOCKCHAIN_HIT,
+				ICEBOMB_FIRED,
+				LAMP_BURN,
+				MOONWORM_SQUISH,
+				MAGNET_GRAB,
+				FAN_WOOSH,
+				SCEPTER_DRAIN,
+				SCEPTER_USE,
+				SCEPTER_PEARL,
+				POWDER_USE,
+				REACTOR_AMBIENT,
+				JET_ACTIVE,
+				JET_START,
+				JET_POP,
+				SMOKER_START,
+				CHARM_KEEP,
+				CHARM_LIFE,
+				BUILDER_ON,
+				BUILDER_OFF,
+				BUILDER_REPLACE,
+				DOOR_ACTIVATED,
+				DOOR_REAPPEAR,
+				DOOR_VANISH,
+				LOCKED_VANISHING_BLOCK,
+				UNLOCK_VANISHING_BLOCK,
+				VANISHING_BLOCK,
+				REAPPEAR_BLOCK, 
+				TIME_CORE,
+				TRANSFORMATION_CORE,
+				PORTAL_WOOSH,
+				PEDESTAL_ACTIVATE,
 				SLIDER,
 				MUSIC
 		);
 
-		//registerParrotSounds();
+		registerParrotSounds();
 	}
 
-	//TODO: Registering Parrot sounds are private, again
-	/*private static void registerParrotSounds() {
+	private static void registerParrotSounds() {
 
-		ParrotEntity.registerMimicSound(EntityTFKobold.class, KOBOLD_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFRedcap.class, REDCAP_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFRedcapSapper.class, REDCAP_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFBlockGoblin.class, REDCAP_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFBoggard.class, REDCAP_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFWraith.class, WRAITH_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFMosquitoSwarm.class, MOSQUITO_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFIceExploder.class, ICE_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFIceShooter.class, ICE_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFSnowGuardian.class, ICE_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFLoyalZombie.class, SoundEvents.E_PARROT_IM_ZOMBIE);
-		ParrotEntity.registerMimicSound(EntityTFMinotaur.class, MINOTAUR_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFKingSpider.class, SoundEvents.E_PARROT_IM_SPIDER);
-		ParrotEntity.registerMimicSound(EntityTFHedgeSpider.class, SoundEvents.E_PARROT_IM_SPIDER);
-		ParrotEntity.registerMimicSound(EntityTFSwarmSpider.class, SoundEvents.E_PARROT_IM_SPIDER);
-		ParrotEntity.registerMimicSound(EntityTFTowerBroodling.class, SoundEvents.E_PARROT_IM_SPIDER);
-		ParrotEntity.registerMimicSound(EntityTFHostileWolf.class, MISTWOLF_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFWinterWolf.class, MISTWOLF_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFSkeletonDruid.class, SoundEvents.E_PARROT_IM_SKELETON);
-		ParrotEntity.registerMimicSound(EntityTFTowerGhast.class, SoundEvents.E_PARROT_IM_GHAST);
-		ParrotEntity.registerMimicSound(EntityTFMiniGhast.class, SoundEvents.E_PARROT_IM_GHAST);
-		ParrotEntity.registerMimicSound(EntityTFTowerTermite.class, SoundEvents.E_PARROT_IM_SILVERFISH);
-		ParrotEntity.registerMimicSound(EntityTFDeathTome.class, TOME_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.kobold, KOBOLD_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.redcap, REDCAP_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.redcap_sapper, REDCAP_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.blockchain_goblin, REDCAP_PARROT);
+//		ParrotEntity.IMITATION_SOUND_EVENTS.put(EntityTFBoggard.class, REDCAP_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.wraith, WRAITH_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.mosquito_swarm, MOSQUITO_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.unstable_ice_core, ICE_CORE_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.stable_ice_core, ICE_CORE_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.snow_guardian, ICE_CORE_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.loyal_zombie, SoundEvents.ENTITY_PARROT_IMITATE_ZOMBIE);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.minotaur, MINOTAUR_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.king_spider, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.hedge_spider, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.swarm_spider, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.tower_broodling, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.mist_wolf, MISTWOLF_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.winter_wolf, MISTWOLF_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.skeleton_druid, SoundEvents.ENTITY_PARROT_IMITATE_SKELETON);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.tower_ghast, SoundEvents.ENTITY_PARROT_IMITATE_GHAST);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.mini_ghast, SoundEvents.ENTITY_PARROT_IMITATE_GHAST);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.tower_termite, SoundEvents.ENTITY_PARROT_IMITATE_SILVERFISH);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.death_tome, TOME_PARROT);
 
-		ParrotEntity.registerMimicSound(EntityTFHydra.class, HYDRA_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFKnightPhantom.class, WRAITH_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFLich.class, SoundEvents.E_PARROT_IM_BLAZE);
-		ParrotEntity.registerMimicSound(EntityTFMinoshroom.class, MINOTAUR_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFNaga.class, NAGA_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFSnowQueen.class, ICE_PARROT);
-		ParrotEntity.registerMimicSound(EntityTFUrGhast.class, SoundEvents.E_PARROT_IM_GHAST);
-		ParrotEntity.registerMimicSound(EntityTFYetiAlpha.class, ALPHAYETI_PARROT);
-	}*/
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.hydra, HYDRA_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.knight_phantom, WRAITH_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.lich, SoundEvents.ENTITY_PARROT_IMITATE_BLAZE);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.minoshroom, MINOTAUR_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.naga, NAGA_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.snow_queen, ICE_CORE_PARROT);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.ur_ghast, SoundEvents.ENTITY_PARROT_IMITATE_GHAST);
+		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.yeti_alpha, ALPHAYETI_PARROT);
+	}
 
 	private TFSounds() {}
 

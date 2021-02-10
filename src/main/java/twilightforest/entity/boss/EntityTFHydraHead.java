@@ -12,28 +12,8 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
 	private static final DataParameter<Float> DATA_MOUTH_POSITION = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.FLOAT);
 	private static final DataParameter<Byte> DATA_STATE = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.BYTE);
 
-	public EntityTFHydraHead(EntityType<? extends EntityTFHydraHead> type, World world) {
-		super(type, world);
-	}
-
-	public EntityTFHydraHead(EntityTFHydra hydra, World world, float width, float height) {
-		super(TFEntities.hydra_head, hydra, world, width, height);
-		// the necks draw with the head, so we just draw the head at all times, sorry
-		this.ignoreFrustumCheck = true;
-	}
-
-	public EntityTFHydraHead(EntityTFHydra hydra, String name, float width, float height) {
-		super(TFEntities.hydra_head, hydra, name, width, height);
-	}
-
-	@Override
-	public int getVerticalFaceSpeed() {
-		return 500;
-	}
-
-	@Override
-	protected void onDeathUpdate() {
-		++this.deathTime;
+	public EntityTFHydraHead(EntityTFHydra hydra) {
+		super(hydra, 3F, 3F);
 	}
 
 	@Override

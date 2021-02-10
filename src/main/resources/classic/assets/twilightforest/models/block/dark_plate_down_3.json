@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/pressure_plate_down",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_darkwood_3"
+  }
+}

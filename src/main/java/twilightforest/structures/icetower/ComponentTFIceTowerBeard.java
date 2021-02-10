@@ -22,6 +22,8 @@ public class ComponentTFIceTowerBeard extends StructureTFComponentOld {
 
 	public ComponentTFIceTowerBeard(TemplateManager manager, CompoundNBT nbt) {
 		super(TFIceTowerPieces.TFITBea, nbt);
+		this.size = nbt.getInt("beardSize");
+		this.height = nbt.getInt("beardHeight");
 	}
 
 	public ComponentTFIceTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
@@ -39,26 +41,11 @@ public class ComponentTFIceTowerBeard extends StructureTFComponentOld {
 		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("beardSize", this.size);
-//		tagCompound.putInt("beardHeight", this.height);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.size = tagCompound.getInt("beardSize");
-		this.height = tagCompound.getInt("beardHeight");
+		tagCompound.putInt("beardSize", this.size);
+		tagCompound.putInt("beardHeight", this.height);
 	}
 
 	/**

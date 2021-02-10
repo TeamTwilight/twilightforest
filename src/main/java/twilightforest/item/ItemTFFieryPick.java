@@ -2,28 +2,16 @@ package twilightforest.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.TFItemStackUtils;
-
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -33,7 +21,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 		super(toolMaterial, 1, -2.8F, props);
 	}
 
-	@SubscribeEvent
+	/*@SubscribeEvent FIXME Re-implement with IGlobalLootModifier
 	public static void onDrops(BlockEvent.HarvestDropsEvent event) {
 		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe.get()
 				&& event.getState().getBlock().canHarvestBlock(event.getState(), event.getWorld(), event.getPos(), event.getHarvester())
@@ -53,7 +41,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 
 					int combinedCount = input.getCount() * result.getCount();
 
-					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount/*, result.getItemDamage()*/)));
+					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount*//*, result.getItemDamage()*//*)));
 					removeThese.add(input);
 
 					// [VanillaCopy] SlotFurnaceOutput.onCrafting
@@ -86,7 +74,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 			event.getDrops().removeAll(removeThese);
 			event.getDrops().addAll(addThese);
 		}
-	}
+	}*/
 
 	@Override
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {

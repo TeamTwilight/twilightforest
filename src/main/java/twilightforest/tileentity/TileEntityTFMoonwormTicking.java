@@ -2,7 +2,6 @@ package twilightforest.tileentity;
 
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import twilightforest.tileentity.TFTileEntities;
 
 public class TileEntityTFMoonwormTicking extends TileEntity implements ITickableTileEntity {
 	public int yawDelay;

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/lily_pad",
+  "textures": {
+    "texture": "twilightforest:block/huge_lilypad_1",
+    "particle": "#texture"
+  }
+}

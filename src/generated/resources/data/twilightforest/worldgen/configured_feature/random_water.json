@@ -1,0 +1,54 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "features": [
+                  {
+                    "feature": "twilightforest:huge_lily_pad",
+                    "chance": 0.4
+                  },
+                  {
+                    "feature": "twilightforest:huge_water_lily",
+                    "chance": 0.4
+                  }
+                ],
+                "default": "minecraft:patch_waterlilly"
+              },
+              "type": "minecraft:random_selector"
+            },
+            "decorator": {
+              "config": {
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:square"
+                },
+                "inner": {
+                  "config": {},
+                  "type": "minecraft:heightmap"
+                }
+              },
+              "type": "minecraft:decorated"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 5
+      },
+      "type": "minecraft:count"
+    }
+  },
+  "type": "minecraft:decorated"
+}

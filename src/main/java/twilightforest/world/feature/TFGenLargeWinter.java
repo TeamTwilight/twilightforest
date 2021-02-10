@@ -7,7 +7,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
@@ -108,7 +107,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 			default:
 				return (dy - 1) % 4;
 			case 1:
-				return (int) (4F * (float) dy / (float) treeHeight + (0.75F * dy % 3));
+				return (int) (4F * dy / treeHeight + (0.75F * dy % 3));
 			case 99:
 				return (treeHeight - (dy / 2) - 1) % 4; // bad
 		}

@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import twilightforest.TFConfig;

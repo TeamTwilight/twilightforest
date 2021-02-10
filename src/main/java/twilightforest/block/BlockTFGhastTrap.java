@@ -12,6 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.tileentity.*;
 
@@ -47,7 +48,7 @@ public class BlockTFGhastTrap extends Block {
 			}
 
 			world.setBlockState(pos, state.with(ACTIVE, true));
-			world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			world.playSound(null, pos, TFSounds.JET_START, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			world.addBlockEvent(pos, this, ACTIVATE_EVENT, 0);
 		}
 	}
@@ -72,35 +73,35 @@ public class BlockTFGhastTrap extends Block {
 		double d0 = 0.0625D;
 
 		for (int i = 0; i < 6; ++i) {
-			double d1 = (double) ((float) pos.getX() + random.nextFloat());
-			double d2 = (double) ((float) pos.getY() + random.nextFloat());
-			double d3 = (double) ((float) pos.getZ() + random.nextFloat());
+			double d1 = pos.getX() + random.nextFloat();
+			double d2 = pos.getY() + random.nextFloat();
+			double d3 = pos.getZ() + random.nextFloat();
 
 			if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube(worldIn, pos)) {
-				d2 = (double) pos.getY() + d0 + 1.0D;
+				d2 = pos.getY() + d0 + 1.0D;
 			}
 
 			if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube(worldIn, pos)) {
-				d2 = (double) pos.getY() - d0;
+				d2 = pos.getY() - d0;
 			}
 
 			if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube(worldIn, pos)) {
-				d3 = (double) pos.getZ() + d0 + 1.0D;
+				d3 = pos.getZ() + d0 + 1.0D;
 			}
 
 			if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube(worldIn, pos)) {
-				d3 = (double) pos.getZ() - d0;
+				d3 = pos.getZ() - d0;
 			}
 
 			if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube(worldIn, pos)) {
-				d1 = (double) pos.getX() + d0 + 1.0D;
+				d1 = pos.getX() + d0 + 1.0D;
 			}
 
 			if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube(worldIn, pos)) {
-				d1 = (double) pos.getX() - d0;
+				d1 = pos.getX() - d0;
 			}
 
-			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
+			if (d1 < pos.getX() || d1 > pos.getX() + 1 || d2 < 0.0D || d2 > pos.getY() + 1 || d3 < pos.getZ() || d3 > pos.getZ() + 1) {
 				worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, d1, d2, d3, 0.0D, 0.0D, 0.0D);
 			}
 		}

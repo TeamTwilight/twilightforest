@@ -51,17 +51,17 @@ public class EntityTFIceCrystal extends EntityTFIceMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_AMBIENT;
+		return TFSounds.ICE_CORE_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_HURT;
+		return TFSounds.ICE_CORE_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_DEATH;
+		return TFSounds.ICE_CORE_DEATH;
 	}
 
 	public void setToDieIn30Seconds() {

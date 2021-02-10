@@ -2,13 +2,12 @@ package twilightforest.tileentity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import twilightforest.TFSounds;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.FireJetVariant;
@@ -51,7 +50,7 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEnt
 				{
 					world.addParticle(ParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
 				}
-				world.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + world.rand.nextFloat() * 0.2F, 0.9F + world.rand.nextFloat() * 0.15F);
+				world.playSound(null, pos, TFSounds.JET_POP, SoundCategory.BLOCKS, 0.2F + world.rand.nextFloat() * 0.2F, 0.9F + world.rand.nextFloat() * 0.15F);
 			}
 		}
 	}
@@ -85,10 +84,10 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEnt
 
 			// sounds
 			if (counter % 4 == 0) {
-				world.playSound(x + 0.5, y + 0.5, z + 0.5, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
+				world.playSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_ACTIVE, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
 
 			} else if (counter == 1) {
-				world.playSound(x + 0.5, y + 0.5, z + 0.5, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
+				world.playSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_START, SoundCategory.BLOCKS, 1.0F + world.rand.nextFloat(), world.rand.nextFloat() * 0.7F + 0.3F, false);
 			}
 		}
 

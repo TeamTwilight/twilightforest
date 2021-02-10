@@ -6,8 +6,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.features.GenDruidHut;
-import twilightforest.features.TFGenGraveyard;
+import twilightforest.worldgen.structures.GenDruidHut;
+import twilightforest.worldgen.structures.TFGenGraveyard;
 import twilightforest.world.TFCavesCarver;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -96,5 +96,5 @@ public class TFBiomeFeatures {
 			new TFGenWoodRoots(NoFeatureConfig.field_236558_a_));
 
 	public static final RegistryObject<WorldCarver<ProbabilityConfig>> TF_CAVES = WORLD_CARVERS.register("tf_caves",  () ->
-			new TFCavesCarver(ProbabilityConfig.field_236576_b_, 256));
+			new TFCavesCarver(ProbabilityConfig.CODEC, 256));
 }

@@ -1,7 +1,6 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -27,14 +26,12 @@ public class ComponentNagaCourtyardWallAbstract extends StructureTFComponentTemp
 
     private Template decayTemplate;
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardWallAbstract(IStructurePieceType piece, CompoundNBT nbt, ResourceLocation wall, ResourceLocation wall_decayed) {
-        super(piece, nbt);
+    public ComponentNagaCourtyardWallAbstract(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt, ResourceLocation wall, ResourceLocation wall_decayed) {
+        super(manager, piece, nbt);
         this.WALL = wall;
         this.WALL_DECAYED = wall_decayed;
     }
 
-    @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardWallAbstract(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation wall, ResourceLocation wall_decayed) {
         super(type, feature, i, x, y, z, rotation);
         this.WALL = wall;
@@ -42,7 +39,7 @@ public class ComponentNagaCourtyardWallAbstract extends StructureTFComponentTemp
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
+    protected void loadTemplates(TemplateManager templateManager) {
         TEMPLATE = templateManager.getTemplate(WALL);
         decayTemplate = templateManager.getTemplate(WALL_DECAYED);
     }

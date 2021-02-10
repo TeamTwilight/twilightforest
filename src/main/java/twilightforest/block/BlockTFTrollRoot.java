@@ -42,17 +42,11 @@ public class BlockTFTrollRoot extends Block {
 	}
 
 	@Override
+	@Deprecated
 	public BlockState updatePostPlacement(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
 		if (dirToNeighbor == Direction.UP) {
 			return isValidPosition(state, world, pos) ? state : Blocks.AIR.getDefaultState();
 		}
 		return state;
 	}
-
-	//TODO: Move to client
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

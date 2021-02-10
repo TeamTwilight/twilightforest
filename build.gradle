@@ -41,6 +41,8 @@ group = config.group_name
 archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
+
 minecraft {
     mappings channel: "snapshot", version: config.mcp_mappings
     //version = config.minecraft_version + "-" + config.forge_version // grab latest forge
@@ -174,8 +176,10 @@ repositories {
 
 dependencies {
     // progwml6
-    //compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    //runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+//    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+//    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.3:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.3:${jei_version}")
 
     /*deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
     deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"

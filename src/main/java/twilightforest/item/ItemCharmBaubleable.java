@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.Rarity;
 
 //TODO 1.14: Baubles is dead
 public class ItemCharmBaubleable extends Item {

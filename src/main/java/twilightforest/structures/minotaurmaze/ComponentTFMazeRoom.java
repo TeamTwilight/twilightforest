@@ -22,7 +22,7 @@ import java.util.Random;
 public class ComponentTFMazeRoom extends StructureTFComponentOld {
 
 	public ComponentTFMazeRoom(TemplateManager manager, CompoundNBT nbt) {
-		super(TFMinotaurMazePieces.TFMMR, nbt);
+		this(TFMinotaurMazePieces.TFMMR, nbt);
 	}
 
 	public ComponentTFMazeRoom(IStructurePieceType piece, CompoundNBT nbt) {
@@ -41,7 +41,7 @@ public class ComponentTFMazeRoom extends StructureTFComponentOld {
 	 */
 	@Override
 	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
-		;
+		// NO-OP
 	}
 
 	@Override

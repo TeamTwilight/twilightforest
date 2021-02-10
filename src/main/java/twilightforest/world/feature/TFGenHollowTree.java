@@ -23,21 +23,6 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	private static final int LEAF_DUNGEON_CHANCE = 8;
 
-//	protected BlockState treeState = TFBlocks.oak_log.get().getDefaultState();
-//	protected BlockState branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Twilight Oak Wood
-//	protected BlockState leafState = TFBlocks.oak_leaves.get().getDefaultState()/*.with(LeavesBlock.CHECK_DECAY, false)*/;
-//	protected BlockState rootState = TFBlocks.root.get().getDefaultState();
-//
-//	protected IPlantable source = TFBlocks.oak_sapling.get();
-
-//	public TFGenHollowTree() {
-//		this(false);
-//	}
-//
-//	public TFGenHollowTree(boolean notify) {
-//		super(notify);
-//	}
-
 	public TFGenHollowTree(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}

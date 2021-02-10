@@ -21,8 +21,14 @@ public class ComponentTFTowerRoof extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
+	public ComponentTFTowerRoof(TemplateManager manager, CompoundNBT nbt) {
+		this(TFLichTowerPieces.TFLTRoo, nbt);
+	}
+
 	public ComponentTFTowerRoof(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.size = nbt.getInt("roofSize");
+		this.height = nbt.getInt("roofHeight");
 	}
 
 	public ComponentTFTowerRoof(IStructurePieceType type, TFFeature feature, int i) {
@@ -33,30 +39,11 @@ public class ComponentTFTowerRoof extends StructureTFComponentOld {
 		// inheritors need to add a bounding box or die~!
 	}
 
-	public ComponentTFTowerRoof(TemplateManager manager, CompoundNBT nbt) {
-		super(TFLichTowerPieces.TFLTRoo, nbt);
-	}
-
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("roofSize", this.size);
-//		tagCompound.putInt("roofHeight", this.height);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.size = tagCompound.getInt("roofSize");
-		this.height = tagCompound.getInt("roofHeight");
+		tagCompound.putInt("roofSize", this.size);
+		tagCompound.putInt("roofHeight", this.height);
 	}
 
 	/**

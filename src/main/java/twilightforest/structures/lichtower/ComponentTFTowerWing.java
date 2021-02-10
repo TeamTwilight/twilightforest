@@ -1,6 +1,11 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LadderBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.VineBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.HangingEntity;
@@ -15,15 +20,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCastleBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -40,11 +44,23 @@ import java.util.Random;
 public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 	public ComponentTFTowerWing(TemplateManager manager, CompoundNBT nbt) {
-		super(TFLichTowerPieces.TFLTWin, nbt);
+		this(TFLichTowerPieces.TFLTWin, nbt);
 	}
 
 	public ComponentTFTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+
+		this.size = nbt.getInt("towerSize");
+		this.height = nbt.getInt("towerHeight");
+
+		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
+
+		this.highestOpening = nbt.getInt("highestOpening");
+		// too lazy to do this as a loop
+		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
+		this.openingTowards[1] = nbt.getBoolean("openingTowards1");
+		this.openingTowards[2] = nbt.getBoolean("openingTowards2");
+		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
 	}
 
 	public int size;
@@ -69,25 +85,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 		this.highestOpening = 0;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
-
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("towerSize", this.size);
-//		tagCompound.putInt("towerHeight", this.height);
-//
-//		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
-//
-//		tagCompound.putInt("highestOpening", this.highestOpening);
-//		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
-//		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
-//		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
-//		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
-//	}
 
 	/**
 	 * Turn the openings array into an array of ints.
@@ -108,17 +107,16 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
 
-		this.size = tagCompound.getInt("towerSize");
-		this.height = tagCompound.getInt("towerHeight");
+		tagCompound.putInt("towerSize", this.size);
+		tagCompound.putInt("towerHeight", this.height);
 
-		this.readOpeningsFromArray(tagCompound.getIntArray("doorInts"));
+		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
 
-		this.highestOpening = tagCompound.getInt("highestOpening");
-		// too lazy to do this as a loop
-		this.openingTowards[0] = tagCompound.getBoolean("openingTowards0");
-		this.openingTowards[1] = tagCompound.getBoolean("openingTowards1");
-		this.openingTowards[2] = tagCompound.getBoolean("openingTowards2");
-		this.openingTowards[3] = tagCompound.getBoolean("openingTowards3");
+		tagCompound.putInt("highestOpening", this.highestOpening);
+		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
+		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
+		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
+		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
 	}
 
 	/**
@@ -831,7 +829,9 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	/**
 	 * Place a library treasure chest somewhere in the library
 	 */
+	@SuppressWarnings("fallthrough")
 	protected void decorateLibraryTreasure(ISeedReader world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
+		// FIXME: case 3 gets slightly higher chance than others
 		switch (rand.nextInt(4)) {
 			case 0:
 			default:
@@ -1334,7 +1334,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 
 		// place a cute planted thing
-		setBlockState(world, Blocks.GRASS.getDefaultState(), cx, 1, cz, sbb);
+		setBlockState(world, Blocks.GRASS_BLOCK.getDefaultState(), cx, 1, cz, sbb);
 
 		int i = rand.nextInt(6);
 		boolean isTree = i > 4;
@@ -1344,10 +1344,11 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		setBlockState(world, plant, cx, 2, cz, sbb);
 		final BlockPos pos = getBlockPosWithOffset(cx, 2, cz);
 
-		if(isTree) //grow tree
-			((SaplingBlock) Blocks.OAK_SAPLING).grow((ServerWorld)world, world.getRandom(), pos, plant);
+		// FIXME: we CANNOT use world.getWorld in structure generation, we CANNOT cast to ServerWorld either. Saplings require a ServerWorld.....
+		/*if(isTree) //grow tree
+			((SaplingBlock) Blocks.OAK_SAPLING).grow(world, world.getRandom(), pos, plant);
 		else //grow sapling
-			plant.getBlock().randomTick(plant, (ServerWorld)world, pos, world.getRandom());
+			plant.getBlock().randomTick(plant, world, pos, world.getRandom());*/
 
 
 		// otherwise, place the block into a flowerpot
@@ -1953,7 +1954,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * Makes paintings of the minimum size or larger on the specified wall
 	 */
 	protected void generatePaintingsOnWall(ISeedReader world, Random rand, int howMany, int floorLevel, Direction direction, int minSize, MutableBoundingBox sbb) {
-		for (int i = 0; i < howMany; i++) {
+		//FIXME: disable for now
+		/*for (int i = 0; i < howMany; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
@@ -1968,7 +1970,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 				// place the painting
 				world.addEntity(painting);
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -2061,7 +2063,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		}
 
 		// I guess we didn't get one
-		//TwilightForestMod.LOGGER.info("getRandomWallSpot - We didn't find a valid random spot on the wall.");
+		TwilightForestMod.LOGGER.info("ComponentTFTowerWing#getRandomWallSpot - We didn't find a valid random spot on the wall.");
 		return null;
 	}
 

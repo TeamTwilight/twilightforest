@@ -28,6 +28,8 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 
 	public ComponentTFCloudCastle(TemplateManager manager, CompoundNBT nbt) {
 		super(TFTrollCavePieces.TFClCa, nbt);
+		this.minerPlaced = nbt.getBoolean("minerPlaced");
+		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
 	public ComponentTFCloudCastle(TFFeature feature, int index, int x, int y, int z) {
@@ -42,23 +44,14 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 		// spawn list!
 		this.spawnListIndex = 1;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, Direction.SOUTH);
 	}
-
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
-//		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
-//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.minerPlaced = tagCompound.getBoolean("minerPlaced");
-		this.warriorPlaced = tagCompound.getBoolean("warriorPlaced");
+		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
+		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
 	}
 
 	@Override
@@ -102,12 +95,12 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				this.minerPlaced = true;
 
-				EntityTFGiantMiner miner = new EntityTFGiantMiner(TFEntities.giant_miner, world.getWorld());
+				/* FIXME EntityTFGiantMiner miner = new EntityTFGiantMiner(TFEntities.giant_miner, world);
 				miner.setPosition(bx, by, bz);
 				miner.enablePersistence();
 				miner.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);
 
-				world.addEntity(miner);
+				world.addEntity(miner);*/
 			}
 		}
 		if (!this.warriorPlaced) {
@@ -119,12 +112,12 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				this.warriorPlaced = true;
 
-				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(TFEntities.armored_giant, world.getWorld());
+				/* FIXME EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(TFEntities.armored_giant, world);
 				warrior.setPosition(bx, by, bz);
 				warrior.enablePersistence();
 				warrior.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);
 
-				world.addEntity(warrior);
+				world.addEntity(warrior);*/
 			}
 		}
 

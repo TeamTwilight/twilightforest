@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "state=idle": {
+      "model": "twilightforest:block/encased_fire_jet"
+    },
+    "state=popping": {
+      "model": "twilightforest:block/encased_fire_jet_on"
+    },
+    "state=flame": {
+      "model": "twilightforest:block/encased_fire_jet_on"
+    }
+  }
+}

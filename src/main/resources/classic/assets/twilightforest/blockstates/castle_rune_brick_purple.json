@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/castle_rune_brick_0"
+      },
+      {
+        "model": "twilightforest:block/castle_rune_brick_1"
+      },
+      {
+        "model": "twilightforest:block/castle_rune_brick_2"
+      },
+      {
+        "model": "twilightforest:block/castle_rune_brick_3"
+      },
+      {
+        "model": "twilightforest:block/castle_rune_brick_4"
+      },
+      {
+        "model": "twilightforest:block/castle_rune_brick_5"
+      },
+      {
+        "model": "twilightforest:block/castle_rune_brick_6"
+      },
+      {
+        "model": "twilightforest:block/castle_rune_brick_7"
+      }
+    ]
+  }
+}

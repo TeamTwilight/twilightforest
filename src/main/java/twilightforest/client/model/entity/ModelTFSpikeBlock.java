@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFSpikeBlock;

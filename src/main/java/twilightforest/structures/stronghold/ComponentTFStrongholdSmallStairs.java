@@ -27,28 +27,21 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 
 	public ComponentTFStrongholdSmallStairs(TemplateManager manager, CompoundNBT nbt) {
 		super(TFStrongholdPieces.TFSSS, nbt);
+		this.enterBottom = nbt.getBoolean("enterBottom");
+		this.hasTreasure = nbt.getBoolean("hasTreasure");
+		this.chestTrapped = nbt.getBoolean("chestTrapped");
 	}
 
 	public ComponentTFStrongholdSmallStairs(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStrongholdPieces.TFSSS, feature, i, facing, x, y, z);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("enterBottom", this.enterBottom);
-//		tagCompound.putBoolean("hasTreasure", this.hasTreasure);
-//		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.enterBottom = tagCompound.getBoolean("enterBottom");
-		this.hasTreasure = tagCompound.getBoolean("hasTreasure");
-		this.chestTrapped = tagCompound.getBoolean("chestTrapped");
+		tagCompound.putBoolean("enterBottom", this.enterBottom);
+		tagCompound.putBoolean("hasTreasure", this.hasTreasure);
+		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
 	}
 
 	@Override

@@ -9,12 +9,6 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkHooks;
-import twilightforest.network.PacketAreaProtection;
-import twilightforest.network.TFPacketHandler;
-
-import javax.annotation.Nullable;
 
 public class EntityTFProtectionBox extends Entity {
 

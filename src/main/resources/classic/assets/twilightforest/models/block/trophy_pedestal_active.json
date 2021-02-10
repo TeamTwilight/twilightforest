@@ -1,0 +1,15 @@
+{
+  "parent": "twilightforest:block/util/pedestal_2_layer",
+  "textures": {
+    "end": "twilightforest:block/pedestal/top",
+    "north": "twilightforest:block/pedestal/naga",
+    "south": "twilightforest:block/pedestal/lich",
+    "west": "twilightforest:block/pedestal/hydra",
+    "east": "twilightforest:block/pedestal/ur-ghast",
+    "end2": "twilightforest:block/pedestal/top_glow",
+    "north2": "twilightforest:block/pedestal/naga_glow",
+    "south2": "twilightforest:block/pedestal/lich_glow",
+    "west2": "twilightforest:block/pedestal/hydra_glow",
+    "east2": "twilightforest:block/pedestal/ur-ghast_glow"
+  }
+}

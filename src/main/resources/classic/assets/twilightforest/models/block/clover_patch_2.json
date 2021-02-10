@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/util/flat_tex",
+  "textures": {
+    "particle": "twilightforest:block/cloverpatch",
+    "texture": "twilightforest:block/patch/clover_2",
+    "ctm": "twilightforest:block/patch/clover_2_ctm"
+  }
+}

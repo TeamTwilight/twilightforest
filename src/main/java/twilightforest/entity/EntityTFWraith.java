@@ -18,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.TFNearestPlayerGoal;
@@ -137,9 +136,9 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getPosX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			double d1 = this.parentEntity.getPosY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			double d2 = this.parentEntity.getPosZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d0 = this.parentEntity.getPosX() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
+			double d1 = this.parentEntity.getPosY() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
+			double d2 = this.parentEntity.getPosZ() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.5D);
 		}
 	}
@@ -203,7 +202,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).applyKnockback((float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				((LivingEntity) entityIn).applyKnockback(i * 0.5F, MathHelper.sin(this.rotationYaw * 0.017453292F), (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
 				this.setMotion(getMotion().getX() * 0.6D, getMotion().getY(), getMotion().getZ() * 0.6D);
 			}
 
@@ -219,7 +218,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
 				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof AxeItem && itemstack1.getItem() == Items.SHIELD) {
-					float f1 = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+					float f1 = 0.25F + EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
 					if (this.rand.nextFloat() < f1) {
 						entityplayer.getCooldownTracker().setCooldown(Items.SHIELD, 100);

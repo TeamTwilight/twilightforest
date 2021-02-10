@@ -1,0 +1,14 @@
+{
+  "config": {
+    "top_material": {
+      "Name": "twilightforest:deadrock_weathered"
+    },
+    "under_material": {
+      "Name": "twilightforest:deadrock"
+    },
+    "underwater_material": {
+      "Name": "twilightforest:deadrock"
+    }
+  },
+  "type": "twilightforest:plateau"
+}

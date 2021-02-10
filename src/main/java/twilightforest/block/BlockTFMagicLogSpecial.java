@@ -6,7 +6,6 @@ import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -18,8 +17,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
+import twilightforest.TFSounds;
 import twilightforest.enums.MagicWoodVariant;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.network.PacketChangeBiome;
 import twilightforest.network.TFPacketHandler;
@@ -59,16 +58,16 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
 		if (world.isRemote || !state.get(ACTIVE)) return;
 
 		switch (this.magicWoodVariant) {
 			case TIME:
-				world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.1F, 0.5F);
+				world.playSound(null, pos, TFSounds.TIME_CORE, SoundCategory.BLOCKS, 0.1F, 0.5F);
 				doTreeOfTimeEffect(world, pos, rand);
 				break;
 			case TRANS:
-				world.playSound(null, pos, SoundEvents.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 0.1F, rand.nextFloat() * 2F);
+				world.playSound(null, pos, TFSounds.TRANSFORMATION_CORE, SoundCategory.BLOCKS, 0.1F, rand.nextFloat() * 2F);
 				doTreeOfTransformationEffect(world, pos, rand);
 				break;
 			case MINE:
@@ -163,7 +162,7 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 		int moved = ItemTFOreMagnet.doMagnet(world, pos, dPos);
 
 		if (moved > 0) {
-			world.playSound(null, pos, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 0.1F, 1.0F);
+			world.playSound(null, pos, TFSounds.MAGNET_GRAB, SoundCategory.BLOCKS, 0.1F, 1.0F);
 		}
 	}
 

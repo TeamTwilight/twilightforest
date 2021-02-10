@@ -1,0 +1,68 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "twilightforest:block/castleblock_frame",
+    "all":      "twilightforest:block/castleblock_frame",
+    "all2":     "twilightforest:block/castle_door_vanished"
+  },
+  "elements": [
+    {
+      "from": [  0,  0,  0 ],
+      "to":   [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#all", "cullface": "down" , "tintindex": 0 },
+        "up":    { "texture": "#all", "cullface": "up"   , "tintindex": 0 },
+        "north": { "texture": "#all", "cullface": "north", "tintindex": 0 },
+        "south": { "texture": "#all", "cullface": "south", "tintindex": 0 },
+        "west":  { "texture": "#all", "cullface": "west" , "tintindex": 0 },
+        "east":  { "texture": "#all", "cullface": "east" , "tintindex": 0 }
+      }
+    }, {
+      "from": [  0,  0,  0 ],
+      "to":   [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#all2", "cullface": "down" , "tintindex": 1 },
+        "up":    { "texture": "#all2", "cullface": "up"   , "tintindex": 1 },
+        "north": { "texture": "#all2", "cullface": "north", "tintindex": 1 },
+        "south": { "texture": "#all2", "cullface": "south", "tintindex": 1 },
+        "west":  { "texture": "#all2", "cullface": "west" , "tintindex": 1 },
+        "east":  { "texture": "#all2", "cullface": "east" , "tintindex": 1 }
+      }
+    }, {
+      "from": [  0,  0,  0 ],
+      "to":   [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#all2", "cullface": "down" , "tintindex": 2 },
+        "up":    { "texture": "#all2", "cullface": "up"   , "tintindex": 2 },
+        "north": { "texture": "#all2", "cullface": "north", "tintindex": 2 },
+        "south": { "texture": "#all2", "cullface": "south", "tintindex": 2 },
+        "west":  { "texture": "#all2", "cullface": "west" , "tintindex": 2 },
+        "east":  { "texture": "#all2", "cullface": "east" , "tintindex": 2 }
+      }
+    }
+  ],
+  "loader": "ctm:ctm",
+  "ctm_version": 1,
+  "ctm_overrides": {
+    "0": { "type": "ctm"       , "layer": "CUTOUT", "textures": [ "twilightforest:block/castleblock_frame_ct"      ] },
+    "1": { "type": "EDGES_FULL", "layer": "CUTOUT", "textures": [ "twilightforest:block/castleblock_frame_edge_v2" ],
+      "extra": { "connect_to": [
+        { "block": "twilightforest:castle_door_yellow" },
+        { "block": "twilightforest:castle_door_purple" },
+        { "block": "twilightforest:castle_door_pink" },
+        { "block": "twilightforest:castle_door_blue" }
+      ]}
+    },
+    "2": { "type": "EDGES", "layer": "CUTOUT", "textures": [
+        "twilightforest:block/castleblock_frame_edge2",
+        "twilightforest:block/castle_door_vanished"
+      ],
+      "extra": { "connect_to": [
+        { "block": "twilightforest:castle_door_yellow" },
+        { "block": "twilightforest:castle_door_purple" },
+        { "block": "twilightforest:castle_door_pink" },
+        { "block": "twilightforest:castle_door_blue" }
+      ] }
+    }
+  }
+}

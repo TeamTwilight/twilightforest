@@ -1,0 +1,69 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "features": [
+                  {
+                    "feature": "twilightforest:small_log",
+                    "chance": 0.15
+                  },
+                  {
+                    "feature": "twilightforest:grove_ruins",
+                    "chance": 0.15
+                  },
+                  {
+                    "feature": "twilightforest:monolith",
+                    "chance": 0.15
+                  },
+                  {
+                    "feature": "twilightforest:outside_stalagmite",
+                    "chance": 0.15
+                  },
+                  {
+                    "feature": "twilightforest:stone_circle",
+                    "chance": 0.15
+                  }
+                ],
+                "default": {
+                  "config": {},
+                  "type": "minecraft:no_op"
+                }
+              },
+              "type": "minecraft:random_selector"
+            },
+            "decorator": {
+              "config": {
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:square"
+                },
+                "inner": {
+                  "config": {},
+                  "type": "minecraft:heightmap"
+                }
+              },
+              "type": "minecraft:decorated"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 1
+      },
+      "type": "minecraft:count"
+    }
+  },
+  "type": "minecraft:decorated"
+}

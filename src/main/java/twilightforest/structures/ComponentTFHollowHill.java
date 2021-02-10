@@ -13,7 +13,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -29,16 +28,18 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	int radius;
 
 	public ComponentTFHollowHill(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFeature.TFHill, nbt);
+		this(TFFeature.TFHill, nbt);
 	}
 
 	public ComponentTFHollowHill(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		hillSize = nbt.getInt("hillSize");
+		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	public ComponentTFHollowHill(IStructurePieceType type, TFFeature feature, Random rand, int i, int size, int x, int y, int z) {
-		super(type, feature, i);
+	public ComponentTFHollowHill(IStructurePieceType piece, TFFeature feature, Random rand, int i, int size, int x, int y, int z) {
+		super(piece, feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);
 
@@ -47,21 +48,13 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		radius = ((hillSize * 2 + 1) * 8) - 6;
 
 		// can we determine the size here?
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / 2, radius * 2, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / 2, radius * 2, Direction.SOUTH);
 	}
-
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//		tagCompound.putInt("hillSize", this.hillSize);
-//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.hillSize = tagCompound.getInt("hillSize");
-		this.radius = ((hillSize * 2 + 1) * 8) - 6;
+		tagCompound.putInt("hillSize", hillSize);
 	}
 
 	/**
@@ -72,6 +65,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 //		int area = (int)(Math.PI * radius * radius);
 //		int sn = area / 16; // number of stalactites (there will actually be around twice this number)
 		int[] sna = {0, 128, 256, 512};
+
 		int sn = sna[hillSize]; // number of stalactites mga = {0, 3, 9, 18}
 		int[] mga = {0, 1, 4, 9};
 		int mg = mga[hillSize]; // number of monster generators mga = {0, 3, 9, 18} (reduced due to "natural" spawning)
@@ -97,17 +91,17 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		// ore or glowing stalactites! (smaller, less plentiful)
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateOreStalactite(world, manager, dest[0], 1, dest[1], sbb);
+			generateOreStalactite(world, generator, manager, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalactites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}
 
 		// level 3 hills get 2 mid-air wraith spawners
@@ -139,7 +133,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	/**
 	 * Generate a random ore stalactite
 	 */
-	protected void generateOreStalactite(ISeedReader world, StructureManager manager, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateOreStalactite(ISeedReader world, ChunkGenerator generator, StructureManager manager, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -152,14 +146,14 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 			// make the actual stalactite
 			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).func_242765_a(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).generate(world, generator, stalRNG, pos);
 		}
 	}
 
 	/**
 	 * Make a random stone stalactite
 	 */
-	protected void generateBlockStalactite(ISeedReader world, StructureManager manager, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateBlockStalactite(ISeedReader world, ChunkGenerator generator, StructureManager manager, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -175,7 +169,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			}
 
 			// make the actual stalactite
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).func_242765_a(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).generate(world, generator, stalRNG, pos);
 		}
 	}
 

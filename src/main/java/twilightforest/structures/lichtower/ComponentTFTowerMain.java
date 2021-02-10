@@ -37,7 +37,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
 	public ComponentTFTowerMain(TFFeature feature, Random rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
-		super(TFLichTowerPieces.TFLTMai, feature, index, x, y, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
+		super(TFLichTowerPieces.TFLTMai, feature, index, x, y + 6, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}
 
 	@Override
@@ -459,6 +459,9 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		for (int i = 0; i < 5; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
+
+			if(wCoords == null)
+				continue;
 
 			// offset to see where the fence should be
 			BlockPos.Mutable tCoords = new BlockPos.Mutable(wCoords.getX(), wCoords.getY(), wCoords.getZ());

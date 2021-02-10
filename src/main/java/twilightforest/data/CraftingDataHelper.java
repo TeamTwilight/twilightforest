@@ -49,7 +49,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
 		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return NBTIngredient.fromStacks(stack);
+		return Ingredient.fromStacks(stack);
 	}
 
 	protected final Ingredient multipleIngredients(Ingredient... ingredientArray) {
@@ -67,7 +67,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
 		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return CompoundIngredient.merge(ingredientList);
+		return Ingredient.merge(ingredientList);
 	}
 
 	protected final void castleBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, IItemProvider... ingredients) {
@@ -264,6 +264,15 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.key('#', material.get())
 				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
 				.build(consumer, locWood(name + "_trapdoor"));
+	}
+	
+	protected final void woodBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
+				.patternLine("##")
+				.patternLine("##")
+				.key('#', material.get())
+				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.build(consumer, locWood(name + "_wood"));
 	}
 
 	protected final ResourceLocation locCastle(String name) {

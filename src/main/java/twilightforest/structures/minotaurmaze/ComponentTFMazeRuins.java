@@ -32,7 +32,7 @@ public class ComponentTFMazeRuins extends StructureTFComponentOld {
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// I have no bounding box
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y - 2, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH);
 	}
 
 	/**

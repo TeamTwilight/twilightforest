@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_rh",
+  "textures": {
+    "bottom": "twilightforest:block/wood/door/trans_lower",
+    "top": "twilightforest:block/wood/door/trans_upper"
+  }
+}

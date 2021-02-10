@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "locked=false": {
+      "model": "twilightforest:block/locked_vanishing_block_unlocked"
+    },
+    "locked=true": {
+      "model": "twilightforest:block/locked_vanishing_block"
+    }
+  }
+}

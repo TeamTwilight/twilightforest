@@ -31,7 +31,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		super(type, world);
 	}
 
-	public EntityTFHydraMortar(EntityType<? extends EntityTFHydraMortar> type, World world, EntityTFHydraHead head) {
+	public EntityTFHydraMortar(EntityType<? extends EntityTFHydraMortar> type, World world, EntityTFHydra head) {
 		super(type, head, world);
 
 		Vector3d vector = head.getLookVec();
@@ -90,8 +90,8 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
-		if (func_234616_v_() instanceof EntityTFHydraPart) {
-			EntityTFHydra hydra = ((EntityTFHydraPart) func_234616_v_()).hydra;
+		if (func_234616_v_() instanceof EntityTFHydra) {
+			EntityTFHydra hydra = (EntityTFHydra) func_234616_v_();
 			if (hydra == null || hydra.getParts() == null)
 				return false;
 			if (entity == hydra)

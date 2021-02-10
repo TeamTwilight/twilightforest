@@ -7,32 +7,43 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.entity.MultiPartEntityPart;
+import net.minecraftforge.entity.PartEntity;
 
 import java.util.List;
 
-public class EntityTFNagaSegment extends MultiPartEntityPart {
+public class EntityTFNagaSegment extends PartEntity<EntityTFNaga> {
 
 	private EntityTFNaga naga;
 	private int segment;
 	private int deathCounter;
 	private EntitySize entitySize;
 
-	public EntityTFNagaSegment(EntityType<? extends EntityTFNagaSegment> type, World world) {
-		super(type, world);
+	public EntityTFNagaSegment(EntityTFNaga naga) {
+		super(naga);
+		size = EntitySize.flexible(1.8F, 1.8F);
 		this.stepHeight = 2;
 		deactivate();
-		this.ignoreFrustumCheck = true;
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource src, float damage) {
 		return !isInvisible() && super.attackEntityFrom(src, damage * 2F / 3F);
+	}
+
+	@Override
+	protected void readAdditional(CompoundNBT compound) {
+
+	}
+
+	@Override
+	protected void writeAdditional(CompoundNBT compound) {
+
 	}
 
 	@Override
@@ -74,16 +85,11 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 		}
 	}
 
-	@Override
-	public boolean canRemove() {
-		return this.deathCounter <= -1 || super.canRemove();
-	}
-
 	private void collideWithEntity(Entity entity) {
 		entity.applyEntityCollision(this);
 
 		// attack anything that's not us
-		if ((entity instanceof LivingEntity) && !(entity instanceof EntityTFNaga) && !(entity instanceof EntityTFNagaSegment)) {
+		if (entity instanceof LivingEntity && !(entity instanceof EntityTFNaga)) {
 			int attackStrength = 2;
 
 			// get rid of nearby deer & look impressive
@@ -105,6 +111,11 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 		//setSize(1.8F, 1.8F);
 		this.size = EntitySize.flexible(1.8F, 1.8F);
 		setInvisible(false);
+	}
+
+	@Override
+	protected void registerData() {
+
 	}
 
 	// make public

@@ -9,7 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -25,7 +24,7 @@ import java.util.Map;
 
 public class ItemTFPhantomArmor extends ArmorItem {
 
-	private static final Map<EquipmentSlotType, BipedModel> phantomArmorModel = new EnumMap<>(EquipmentSlotType.class);
+	private static final Map<EquipmentSlotType, BipedModel<?>> phantomArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
 	public ItemTFPhantomArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
 		super(armorMaterial, armorType, props);
@@ -39,8 +38,9 @@ public class ItemTFPhantomArmor extends ArmorItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel original) {
-		return phantomArmorModel.get(armorSlot);
+	@SuppressWarnings("unchecked")
+	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A original) {
+		return (A) phantomArmorModel.get(armorSlot);
 	}
 
 	@OnlyIn(Dist.CLIENT)

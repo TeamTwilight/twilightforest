@@ -20,7 +20,7 @@ import java.util.Random;
 public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 
 	public ComponentTFMazeDeadEndChest(TemplateManager manager, CompoundNBT nbt) {
-		super(TFMinotaurMazePieces.TFMMDEC, nbt);
+		this(TFMinotaurMazePieces.TFMMDEC, nbt);
 	}
 
 	public ComponentTFMazeDeadEndChest(IStructurePieceType piece, CompoundNBT nbt) {

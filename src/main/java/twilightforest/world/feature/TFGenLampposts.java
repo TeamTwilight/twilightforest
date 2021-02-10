@@ -9,8 +9,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-
 import java.util.Random;
 
 public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
@@ -23,9 +21,9 @@ public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		// we should start on a grass block
-		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS) {
+		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS_BLOCK) {
 			return false;
 		}
 

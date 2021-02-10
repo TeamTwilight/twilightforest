@@ -1,0 +1,45 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "features": [
+                  {
+                    "feature": "twilightforest:mushroom/base/brown_canopy_mushroom",
+                    "chance": 0.675
+                  },
+                  {
+                    "feature": "twilightforest:mushroom/base/red_canopy_mushroom",
+                    "chance": 0.225
+                  }
+                ],
+                "default": "twilightforest:tree/base/canopy_tree"
+              },
+              "type": "minecraft:random_selector"
+            },
+            "decorator": {
+              "config": {},
+              "type": "minecraft:heightmap_world_surface"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 8
+      },
+      "type": "minecraft:count"
+    }
+  },
+  "type": "minecraft:decorated"
+}

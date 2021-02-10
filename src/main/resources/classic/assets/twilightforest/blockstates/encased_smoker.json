@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "twilightforest:block/encased_smoker"
+    },
+    "active=true": {
+      "model": "twilightforest:block/encased_smoker_on"
+    }
+  }
+}

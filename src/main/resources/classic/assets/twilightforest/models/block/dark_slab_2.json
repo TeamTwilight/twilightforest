@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "side": "twilightforest:block/wood/planks_darkwood_2",
+    "bottom": "twilightforest:block/wood/planks_darkwood_2",
+    "top": "twilightforest:block/wood/planks_darkwood_2"
+  }
+}

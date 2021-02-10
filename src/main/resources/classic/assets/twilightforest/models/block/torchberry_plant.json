@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/util/cross_2_layer",
+  "textures": {
+    "cross": "twilightforest:block/torchberry_plant",
+    "cross2": "twilightforest:block/torchberry_plant_glow"
+  }
+}

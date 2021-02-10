@@ -8,8 +8,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.TFSounds;
 
 import java.util.Random;
 
@@ -33,7 +33,7 @@ public class BlockTFBuiltTranslucent extends Block {
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(ACTIVE)) {
 			world.removeBlock(pos, false);
-			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
+			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundCategory.BLOCKS, 0.3F, 0.5F);
 
 			for (Direction e : Direction.values()) {
 				BlockTFBuilder.activateBuiltBlocks(world, pos.offset(e));

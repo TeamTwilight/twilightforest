@@ -7,13 +7,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ItemParticleData;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 
 @OnlyIn(Dist.CLIENT)
 public class ParticleGhastTear extends SpriteTexturedParticle {
@@ -22,7 +21,8 @@ public class ParticleGhastTear extends SpriteTexturedParticle {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getParticleIcon(item);
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-		this.particleScale = 16.0F;
+		this.particleScale = 2.0F;
+		this.particleGravity = 0.6F;
 
 		this.maxAge = 20 + rand.nextInt(40);
 		this.canCollide = true;
@@ -36,7 +36,7 @@ public class ParticleGhastTear extends SpriteTexturedParticle {
 	@Override
 	public void tick() {
 		if (this.onGround && rand.nextBoolean()) {
-			world.playSound(null, this.posX, this.posY + 1D, this.posZ, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 0.5F, 1.0F);
+			world.playSound(null, this.posX, this.posY + 1D, this.posZ, TFSounds.TEAR_BREAK, SoundCategory.HOSTILE, 0.5F, 1.0F);
 
 			ItemStack itemID = new ItemStack(Items.GHAST_TEAR);
 			for (int i = 0; i < 20; ++i) {

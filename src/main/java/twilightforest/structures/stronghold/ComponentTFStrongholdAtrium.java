@@ -9,15 +9,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.List;
 import java.util.Random;
@@ -28,30 +27,17 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 	public ComponentTFStrongholdAtrium(TemplateManager manager, CompoundNBT nbt) {
 		super(TFStrongholdPieces.TFSAt, nbt);
+		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
 	public ComponentTFStrongholdAtrium(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStrongholdPieces.TFSAt, feature, i, facing, x, y, z);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("enterBottom", this.enterBottom);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.enterBottom = tagCompound.getBoolean("enterBottom");
+		tagCompound.putBoolean("enterBottom", this.enterBottom);
 	}
 
 	@Override
@@ -125,12 +111,12 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		this.fillWithRandomizedBlocks(world, sbb, 15, 1, 16, 15, 12, 16, false, rand, deco.randomBlocks);
 
 		// grass
-		BlockState grass = Blocks.GRASS.getDefaultState();
+		BlockState grass = Blocks.GRASS_BLOCK.getDefaultState();
 		this.generateMaybeBox(world, sbb, rand, 0.5F, 6, 0, 6, 11, 0, 11, grass, grass, false, false);
 		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, grass, AIR, false);
 
 		// tree
-		this.spawnATree(world, manager, rand.nextInt(5), 8, 1, 8, sbb);
+		this.spawnATree(world, generator, manager, rand.nextInt(5), 8, 1, 8, sbb);
 
 		// statues
 		placeCornerStatue(world, 2, 8, 2, 0, sbb);
@@ -144,8 +130,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		return true;
 	}
 
-	private void spawnATree(ISeedReader world, StructureManager manager, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
-		/* FIXME
+	private void spawnATree(ISeedReader world, ChunkGenerator generator, StructureManager manager, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
@@ -158,30 +143,30 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 				case 0:
 				default:
 					// oak tree
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG); //TODO: minHeight
+					treeGen = Features.OAK;
 					break;
 				case 1:
 					// jungle tree
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: minHeight
+					treeGen = Features.JUNGLE_TREE;
 					break;
 				case 2:
 					// birch
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG); //TODO: minHeight
+					treeGen = Features.BIRCH;
 					break;
 				case 3:
-					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.OAK_TREE); //TODO: minHeight
+					treeGen = ConfiguredFeatures.TWILIGHT_OAK_BASE;
 					break;
 				case 4:
-					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.RAINBOAK_TREE);
+					treeGen = ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
 					break;
 			}
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.func_236265_a_(world, manager, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.getRandom(), pos)) {
+				if (treeGen.generate(world, generator, world.getRandom(), pos)) {
 					break;
 				}
 			}
-		}*/
+		}
 	}
 
 	private void placeBalconyPillar(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {

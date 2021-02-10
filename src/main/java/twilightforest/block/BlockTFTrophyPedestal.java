@@ -6,7 +6,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -16,6 +15,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.world.TFGenerationSettings;
@@ -89,7 +89,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	private void doPedestalEffect(World world, BlockPos pos, BlockState state) {
 		world.setBlockState(pos, state.with(ACTIVE, true));
 		removeNearbyShields(world, pos);
-		world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_INFECT, SoundCategory.BLOCKS, 4.0F, 0.1F);
+		world.playSound(null, pos, TFSounds.PEDESTAL_ACTIVATE, SoundCategory.BLOCKS, 4.0F, 0.1F);
 	}
 
 	private void rewardNearbyPlayers(World world, BlockPos pos) {

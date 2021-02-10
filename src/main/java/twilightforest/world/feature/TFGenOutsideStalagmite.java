@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 
@@ -22,7 +21,7 @@ public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, CaveStalactiteConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, CaveStalactiteConfig config) {
 		int length = rand.nextInt(10) + 5;
 
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 1, length, 1)) {

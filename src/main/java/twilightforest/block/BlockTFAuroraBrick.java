@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.IntegerProperty;
@@ -9,8 +8,6 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-
-import javax.annotation.Nullable;
 
 public class BlockTFAuroraBrick extends Block {
 
@@ -22,14 +19,14 @@ public class BlockTFAuroraBrick extends Block {
 
 	private static float getFractalNoise(int iteration, float size, BlockPos pos) {
 		return iteration == 0 ? 0 : ((SimplexNoise.noise(
-				((float) pos.getX() + (iteration * size)) / size,
-				((float) pos.getY() + (iteration * size)) / size,
-				((float) pos.getZ() + (iteration * size)) / size)
+				(pos.getX() + (iteration * size)) / size,
+				(pos.getY() + (iteration * size)) / size,
+				(pos.getZ() + (iteration * size)) / size)
 				+ 1.0f) * 0.5f) + getFractalNoise(iteration - 1, size, pos);
 	}
 
 	public static float fractalNoise(int iterations, float size, BlockPos pos) {
-		return getFractalNoise(iterations, size, pos) / (float) iterations;
+		return getFractalNoise(iterations, size, pos) / iterations;
 	}
 
 	private static int calcVariant(BlockPos pos) {

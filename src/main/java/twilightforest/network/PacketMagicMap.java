@@ -1,17 +1,13 @@
 package twilightforest.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapItemRenderer;
-import net.minecraft.item.FilledMapItem;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TFMagicMapData;
-import twilightforest.TFMazeMapData;
 import twilightforest.item.ItemTFMagicMap;
 
 import java.io.IOException;
@@ -57,7 +53,7 @@ public class PacketMagicMap {
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
 					MapItemRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapItemRenderer();
-					String s = FilledMapItem.getMapName(message.inner.getMapId());
+					String s = ItemTFMagicMap.getMapName(message.inner.getMapId());
 					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(Minecraft.getInstance().world, s);
 					if (mapdata == null) {
 						mapdata = new TFMagicMapData(s);

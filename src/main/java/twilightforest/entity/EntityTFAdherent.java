@@ -55,12 +55,12 @@ public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob,
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
 		// [VanillaCopy] adapted from EntitySnowman, with lower velocity and inaccuracy calculation
-		double d0 = attackTarget.getPosY() + (double) attackTarget.getEyeHeight() - 1.100000023841858D;
+		double d0 = attackTarget.getPosY() + attackTarget.getEyeHeight() - 1.100000023841858D;
 		double d1 = attackTarget.getPosX() - this.getPosX();
 		double d2 = d0 - natureBolt.getPosY();
 		double d3 = attackTarget.getPosZ() - this.getPosZ();
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
-		natureBolt.shoot(d1, d2 + (double) f, d3, 0.6F, 10 - this.world.getDifficulty().getId() * 4);
+		natureBolt.shoot(d1, d2 + f, d3, 0.6F, 10 - this.world.getDifficulty().getId() * 4);
 
 		this.world.addEntity(natureBolt);
 

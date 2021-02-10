@@ -2,12 +2,12 @@ package twilightforest.item;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.EntityTFIceBomb;
 
@@ -19,7 +19,7 @@ public class ItemTFIceBomb extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+		player.playSound(TFSounds.ICEBOMB_FIRED, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
 		if (!world.isRemote) {
 			if (!player.abilities.isCreativeMode) {

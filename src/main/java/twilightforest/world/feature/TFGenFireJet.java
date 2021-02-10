@@ -8,8 +8,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-
 import java.util.Random;
 
 public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {
@@ -19,7 +17,7 @@ public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.add(
 					rand.nextInt(8) - rand.nextInt(8),

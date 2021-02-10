@@ -17,8 +17,6 @@ import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
 
-import javax.annotation.Nullable;
-
 public class EntityTFDeer extends AnimalEntity {
 
 	public EntityTFDeer(EntityType<? extends EntityTFDeer> type, World world) {

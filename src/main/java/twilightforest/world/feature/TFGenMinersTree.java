@@ -2,12 +2,12 @@ package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.IWorldGenerationReader;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
@@ -35,8 +35,8 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		// 9 block high trunk
-		for (int dy = 0; dy < 10; dy++) {
-			setBranchBlockState(world, rand, pos.up(dy), branch, mbb, config);
+		for (int dy = 0; dy <= 9; dy++) {
+			setLogBlockState(world, rand, pos.up(dy), trunk, mbb, config);
 		}
 
 		// branches with leaf blocks
@@ -53,7 +53,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		putBranchWithLeaves(world, rand, pos.add(0, 6, -5), leaves, branch, false, mbb, config);
 
 		// place minewood core
-		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState(), 3);
+		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
 		world.getPendingBlockTicks().scheduleTick(pos.up(), TFBlocks.mining_log_core.get(), 20);
 
 		// root bulb
@@ -64,11 +64,11 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		// roots!
-		/*int numRoots = 3 + rand.nextInt(2);
+		int numRoots = 3 + rand.nextInt(2);
 		double offset = rand.nextDouble();
 		for (int b = 0; b < numRoots; b++) {
 			buildRoot(world, rand, pos, root, offset, b, mbb, config);
-		}*/
+		}
 
 		return true;
 	}

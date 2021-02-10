@@ -7,7 +7,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.FeatureUtil;
 
@@ -20,7 +19,7 @@ public class TFGenFoundation extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int sx = 5 + rand.nextInt(5);
 		int sz = 5 + rand.nextInt(5);
 

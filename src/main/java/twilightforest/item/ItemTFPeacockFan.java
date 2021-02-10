@@ -7,7 +7,6 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
@@ -19,6 +18,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
@@ -66,7 +66,7 @@ public class ItemTFPeacockFan extends Item {
 
 			}
 
-			player.playSound(SoundEvents.ENTITY_PLAYER_BREATH, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+			player.playSound(TFSounds.FAN_WOOSH, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 		}
 
 		player.setActiveHand(hand);

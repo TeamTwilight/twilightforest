@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "active=false,vanished=false": {
+      "model": "twilightforest:block/reappearing_block"
+    },
+    "active=true,vanished=false": {
+      "model": "twilightforest:block/reappearing_block_active"
+    },
+    "active=false,vanished=true": {
+      "model": "twilightforest:block/reappearing_block_vanished"
+    },
+    "active=true,vanished=true": {
+      "model": "twilightforest:block/reappearing_block_vanished_active"
+    }
+  }
+}

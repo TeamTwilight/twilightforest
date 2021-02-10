@@ -1,13 +1,6 @@
 {
   "replace": false,
   "values": [
-    "twilightforest:twilight_oak_log",
-    "twilightforest:canopy_log",
-    "twilightforest:mangrove_log",
-    "twilightforest:dark_log",
-    "twilightforest:time_log",
-    "twilightforest:transformation_log",
-    "twilightforest:mining_log",
-    "twilightforest:sorting_log"
+    "#twilightforest:logs"
   ]
 }

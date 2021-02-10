@@ -1,0 +1,36 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": "twilightforest:tree/base/swampy_oak",
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {
+                "count": 8,
+                "extra_chance": 0.4,
+                "extra_count": 4
+              },
+              "type": "minecraft:count_extra"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 3,
+        "extra_chance": 0.6,
+        "extra_count": 1
+      },
+      "type": "minecraft:count_extra"
+    }
+  },
+  "type": "minecraft:decorated"
+}

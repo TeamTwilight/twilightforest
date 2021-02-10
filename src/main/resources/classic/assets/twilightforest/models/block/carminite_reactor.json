@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/util/cube_all_3_layer",
+  "textures": {
+    "all": "twilightforest:block/towerdev_reactor_off",
+    "all2": "twilightforest:block/tower_device_level_1/towerdev_reactor_off_1",
+    "all3": "twilightforest:block/tower_device_level_2/towerdev_reactor_off_2"
+  }
+}

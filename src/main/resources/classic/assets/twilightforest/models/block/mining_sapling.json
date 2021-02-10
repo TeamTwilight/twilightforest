@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "twilightforest:block/mining_sapling"
+  }
+}

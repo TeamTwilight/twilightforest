@@ -10,7 +10,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -34,7 +33,7 @@ public class TFGenHugeLilyPad extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		for (int i = 0; i < 10; i++) {
 			BlockPos dPos = pos.add(
 					random.nextInt(8) - random.nextInt(8),

@@ -12,4 +12,14 @@ public class EnchantmentTFFireReact extends Enchantment {
 				EquipmentSlotType.LEGS, EquipmentSlotType.FEET
 		});
 	}
+	
+	@Override
+	public boolean canGenerateInLoot() {
+		return false;
+	}
+	
+	@Override
+	public boolean canVillagerTrade() {
+	      return false;
+	}
 }

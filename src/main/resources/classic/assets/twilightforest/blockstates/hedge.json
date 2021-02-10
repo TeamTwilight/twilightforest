@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/hedge",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/hedge_rose"
+      }
+    ]
+  }
+}

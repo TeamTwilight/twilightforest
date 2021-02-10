@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/4_cubed",
+  "textures": {
+    "all": "twilightforest:block/towerdev_reappearing_trace_off"
+  }
+}

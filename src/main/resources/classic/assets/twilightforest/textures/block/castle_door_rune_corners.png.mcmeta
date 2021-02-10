@@ -1,0 +1,21 @@
+{
+  "ctm": {
+    "ctm_version": 1,
+    "type":"CTM",
+    "layer":"CUTOUT",
+    "textures":[
+      "twilightforest:block/castle_door_rune_ctm"
+    ],
+    "extra": {
+      "ignore_states": true,
+      "connect_inside": true,
+      "light": 15,
+      "connect_to": [
+        { "block": "twilightforest:castle_door_yellow" },
+        { "block": "twilightforest:castle_door_purple" },
+        { "block": "twilightforest:castle_door_pink" },
+        { "block": "twilightforest:castle_door_blue" }
+      ]
+    }
+  }
+} 

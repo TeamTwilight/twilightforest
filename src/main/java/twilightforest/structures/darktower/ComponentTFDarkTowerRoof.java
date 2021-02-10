@@ -21,7 +21,7 @@ import java.util.Random;
 public class ComponentTFDarkTowerRoof extends ComponentTFTowerRoof {
 
 	public ComponentTFDarkTowerRoof(TemplateManager manager, CompoundNBT nbt) {
-		super(TFDarkTowerPieces.TFDTRooS, nbt);
+		this(TFDarkTowerPieces.TFDTRooS, nbt);
 	}
 
 	public ComponentTFDarkTowerRoof(IStructurePieceType piece, CompoundNBT nbt) {

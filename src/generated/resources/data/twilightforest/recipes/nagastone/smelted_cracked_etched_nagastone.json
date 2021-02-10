@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "twilightforest:etched_nagastone"
+  },
+  "result": "twilightforest:etched_nagastone_weathered",
+  "experience": 0.3,
+  "cookingtime": 200
+}

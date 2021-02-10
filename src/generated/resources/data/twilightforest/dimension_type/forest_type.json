@@ -1,0 +1,16 @@
+{
+  "logical_height": 256,
+  "infiniburn": "minecraft:infiniburn_overworld",
+  "effects": "twilightforest:renderer",
+  "ambient_light": 0.0,
+  "bed_works": true,
+  "respawn_anchor_works": true,
+  "has_raids": false,
+  "ultrawarm": false,
+  "natural": true,
+  "coordinate_scale": 0.125,
+  "piglin_safe": false,
+  "fixed_time": 13000,
+  "has_skylight": true,
+  "has_ceiling": false
+}

@@ -10,7 +10,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -84,7 +83,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 	 * This will return false if it can't find a valid ceiling and floor, or if there are other errors.
 	 */
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, CaveStalactiteConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, CaveStalactiteConfig config) {
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
 
@@ -172,7 +171,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 				}
 
 				for (int dy = 0; dy != (spikeLength * dir); dy += dir) {
-					func_230367_a_(world, pos.add(dx, dy, dz), config.blockState); //setBlockState
+					setBlockState(world, pos.add(dx, dy, dz), config.blockState);
 				}
 			}
 		}

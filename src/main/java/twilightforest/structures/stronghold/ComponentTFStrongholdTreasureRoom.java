@@ -25,24 +25,17 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 
 	public ComponentTFStrongholdTreasureRoom(TemplateManager manager, CompoundNBT nbt) {
 		super(TFStrongholdPieces.TFTreaR, nbt);
+		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
 	public ComponentTFStrongholdTreasureRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStrongholdPieces.TFTreaR, feature, i, facing, x, y, z);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("enterBottom", this.enterBottom);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.enterBottom = tagCompound.getBoolean("enterBottom");
+		tagCompound.putBoolean("enterBottom", this.enterBottom);
 	}
 
 	@Override
@@ -61,30 +54,30 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 	 * Generate the blocks that go here
 	 */
 	@Override
-	public boolean func_230383_a_(ISeedReader worldIn, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		placeStrongholdWalls(worldIn, sbb, 0, 0, 0, 8, 6, 17, rand, deco.randomBlocks);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 17, rand, deco.randomBlocks);
 
 		// statues
-		this.placeWallStatue(worldIn, 1, 1, 4, Rotation.CLOCKWISE_90, sbb);
-		this.placeWallStatue(worldIn, 1, 1, 13, Rotation.CLOCKWISE_90, sbb);
-		this.placeWallStatue(worldIn, 7, 1, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
-		this.placeWallStatue(worldIn, 7, 1, 13, Rotation.COUNTERCLOCKWISE_90, sbb);
-		this.placeWallStatue(worldIn, 4, 1, 16, Rotation.NONE, sbb);
+		this.placeWallStatue(world, 1, 1, 4, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 1, 1, 13, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 7, 1, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 7, 1, 13, Rotation.COUNTERCLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 4, 1, 16, Rotation.NONE, sbb);
 
-		this.fillWithRandomizedBlocks(worldIn, sbb, 1, 1, 8, 7, 5, 9, false, rand, deco.randomBlocks);
-		this.fillWithBlocks(worldIn, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
+		this.fillWithRandomizedBlocks(world, sbb, 1, 1, 8, 7, 5, 9, false, rand, deco.randomBlocks);
+		this.fillWithBlocks(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
 
 		// spawnwers
-		this.setSpawner(worldIn, 4, 1, 4, sbb, TFEntities.helmet_crab);
+		this.setSpawner(world, 4, 1, 4, sbb, TFEntities.helmet_crab);
 
-		this.setSpawner(worldIn, 4, 4, 15, sbb, TFEntities.helmet_crab);
+		this.setSpawner(world, 4, 4, 15, sbb, TFEntities.helmet_crab);
 
 		// treasure!
-		this.placeTreasureAtCurrentPosition(worldIn, 2, 4, 13, TFTreasure.stronghold_room, sbb);
-		this.placeTreasureAtCurrentPosition(worldIn, 6, 4, 13, TFTreasure.stronghold_room, sbb);
+		this.placeTreasureAtCurrentPosition(world, 2, 4, 13, TFTreasure.stronghold_room, sbb);
+		this.placeTreasureAtCurrentPosition(world, 6, 4, 13, TFTreasure.stronghold_room, sbb);
 
 		// doors
-		placeDoors(worldIn, rand, sbb);
+		placeDoors(world, rand, sbb);
 
 		return true;
 	}

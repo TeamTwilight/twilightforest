@@ -16,17 +16,6 @@
   },
   "parent": "twilightforest:root",
   "criteria": {
-    "boggard": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": {
-          "type": "twilightforest:boggard",
-          "location": {
-            "feature": "twilightforest:small_hollow_hill"
-          }
-        }
-      }
-    },
     "redcap": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -38,8 +27,6 @@
         }
       }
     }
-  },
-  "requirements": [
-    [ "boggard", "redcap" ]
-  ]
+  }
 }
+

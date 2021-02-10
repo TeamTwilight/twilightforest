@@ -34,7 +34,7 @@ public abstract class TFTree extends Tree {
 		} else {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
 			feature.config.forcePlacement();
-			if (feature.func_242765_a(world, generator, rand, pos)) {
+			if (feature.generate(world, generator, rand, pos)) {
 				return true;
 			} else {
 				world.setBlockState(pos, state, 4);

@@ -2,14 +2,15 @@ package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
@@ -24,7 +25,7 @@ public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TFTreeFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TFTreeFeatureConfig config) {
 		// check soil
 		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
 		if ((materialUnder != Material.ORGANIC && materialUnder != Material.EARTH) || pos.getY() >= TFGenerationSettings.MAXHEIGHT - 12) {
@@ -41,7 +42,7 @@ public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 		putLeaves(world, rand, pos.up(3), false, config);
 
 		// sorting engine
-		world.setBlockState(pos.up(), TFBlocks.sorting_log_core.get().getDefaultState(), 3);
+		world.setBlockState(pos.up(), TFBlocks.sorting_log_core.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
 
 		return true;
 	}

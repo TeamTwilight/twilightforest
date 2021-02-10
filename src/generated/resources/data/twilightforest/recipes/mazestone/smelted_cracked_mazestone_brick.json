@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "twilightforest:maze_stone_brick"
+  },
+  "result": "twilightforest:maze_stone_cracked",
+  "experience": 0.3,
+  "cookingtime": 200
+}

@@ -6,8 +6,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -32,7 +30,7 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
 	@Override
 	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
-		;
+		// NO-OP
 	}
 
 	@Override
@@ -44,17 +42,17 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 		// ore or glowing stalactites! (smaller, less plentiful)
 		for (int i = 0; i < stalacts; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateOreStalactite(world, manager, dest[0], 1, dest[1], sbb);
+			generateOreStalactite(world, generator, manager, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalactites!
 		for (int i = 0; i < stalacts; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < stalags; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}
 
 		// boss spawner seems important

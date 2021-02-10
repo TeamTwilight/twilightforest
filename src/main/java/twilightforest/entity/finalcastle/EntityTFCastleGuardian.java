@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -49,6 +48,12 @@ public class EntityTFCastleGuardian extends CreatureEntity { // Not exactly livi
     public AxisAlignedBB getCollisionBoundingBox() {
         return this.getBoundingBox();
     }*/
+
+    // To go with the fix me above. I think this is the solution?
+    @Override
+    public boolean func_241845_aY() {
+        return true;
+    }
 
     @Override
     public boolean canBeCollidedWith() {

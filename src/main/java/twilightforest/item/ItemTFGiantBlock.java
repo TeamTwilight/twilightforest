@@ -40,7 +40,7 @@ public class ItemTFGiantBlock extends BlockItem {
 		}
 
 		for (BlockPos iterPos : BlockTFGiantBlock.getVolume(pos)) {
-			if (!context.getPlayer().canPlayerEdit(iterPos, facing, itemstack) || !worldIn.func_226663_a_(iblockstate, iterPos, ISelectionContext.dummy())) {
+			if (!context.getPlayer().canPlayerEdit(iterPos, facing, itemstack) || !worldIn.placedBlockCollides(iblockstate, iterPos, ISelectionContext.dummy())) {
 				return ActionResultType.FAIL;
 			}
 		}

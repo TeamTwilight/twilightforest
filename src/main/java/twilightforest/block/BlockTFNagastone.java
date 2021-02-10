@@ -10,8 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import twilightforest.enums.NagastoneVariant;
 
-import javax.annotation.Nullable;
-
 public class BlockTFNagastone extends Block {
 
 	public static final EnumProperty<NagastoneVariant> VARIANT = EnumProperty.create("variant", NagastoneVariant.class);
@@ -31,6 +29,7 @@ public class BlockTFNagastone extends Block {
 		return getVariant(ctx.getWorld(), ctx.getPos());
 	}
 
+	@SuppressWarnings("fallthrough")
 	private BlockState getVariant(IWorld world, BlockPos pos) {
 		int connectionCount = 0;
 		BlockState stateOut;

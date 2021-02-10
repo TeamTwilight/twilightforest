@@ -1,0 +1,50 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "max_length": 5,
+                "min_height": 10,
+                "hanging": false,
+                "state": {
+                  "Name": "minecraft:stone"
+                },
+                "size_factor": 3.0
+              },
+              "type": "twilightforest:outside_stalagmite"
+            },
+            "decorator": {
+              "config": {
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:square"
+                },
+                "inner": {
+                  "config": {},
+                  "type": "minecraft:heightmap"
+                }
+              },
+              "type": "minecraft:decorated"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 1
+      },
+      "type": "minecraft:count"
+    }
+  },
+  "type": "minecraft:decorated"
+}

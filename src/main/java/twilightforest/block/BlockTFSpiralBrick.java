@@ -25,9 +25,9 @@ public class BlockTFSpiralBrick extends Block {
 
     public BlockTFSpiralBrick() {
         super(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
+        //TODO: Check if we need thise two
 //        this.setLightOpacity(255);
 //        this.useNeighborBrightness = true;
-        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
         this.setDefaultState(this.stateContainer.getBaseState().with(DIAGONAL, Diagonals.TOP_RIGHT).with(AXIS_FACING, Direction.Axis.X));
     }
 

@@ -31,27 +31,27 @@ public class ModelTFTowerBoss extends ModelTFGhast<EntityTFUrGhast> {
 		if (num == 0) {
 			this.tentacles[num].rotationPointX = 4.5F;
 			this.tentacles[num].rotationPointZ = 4.5F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		}
 		if (num == 1) {
 			this.tentacles[num].rotationPointX = -4.5F;
 			this.tentacles[num].rotationPointZ = 4.5F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		}
 		if (num == 2) {
 			this.tentacles[num].rotationPointX = 0F;
 			this.tentacles[num].rotationPointZ = 0F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		}
 		if (num == 3) {
 			this.tentacles[num].rotationPointX = 5.5F;
 			this.tentacles[num].rotationPointZ = -4.5F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		}
 		if (num == 4) {
 			this.tentacles[num].rotationPointX = -5.5F;
 			this.tentacles[num].rotationPointZ = -4.5F;
-			this.tentacles[num].rotationPointY = (float) (23 + yOffset);
+			this.tentacles[num].rotationPointY = 23 + yOffset;
 		} else if (num == 5) {
 			this.tentacles[num].rotationPointX = -7.5F;
 			this.tentacles[num].rotationPointY = 3.5F;

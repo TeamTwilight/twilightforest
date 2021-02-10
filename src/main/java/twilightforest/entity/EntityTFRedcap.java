@@ -18,7 +18,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFRedcapLightTNT;
@@ -44,7 +43,10 @@ public class EntityTFRedcap extends MonsterEntity {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F));
+		// This is safe because AvoidEntityGoal doesn't use the LivingEntity interface, only the Entity one
+		@SuppressWarnings({"rawtypes", "unchecked"})
+		AvoidEntityGoal avoidGoal = new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F);
+		this.goalSelector.addGoal(1, avoidGoal);
 		this.goalSelector.addGoal(2, new EntityAITFRedcapShy(this, 1.0F));
 		this.goalSelector.addGoal(3, new EntityAITFRedcapLightTNT(this, 1.0F)); // light TNT
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));

@@ -10,7 +10,6 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFConfig;
@@ -24,10 +23,11 @@ import java.util.Random;
 
 public abstract class StructureTFStrongholdComponent extends StructureTFComponentOld {
 
-	public List<BlockPos> doors = new ArrayList<BlockPos>();
+	public List<BlockPos> doors = new ArrayList<>();
 
 	public StructureTFStrongholdComponent(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
 	}
 
 	public StructureTFStrongholdComponent(IStructurePieceType type, TFFeature feature, int i, Direction facing, int x, int y, int z) {
@@ -35,14 +35,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setCoordBaseMode(facing);
 	}
-
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
-//	}
 
 	/**
 	 * Turn the openings array into an array of ints.
@@ -62,8 +54,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		// init doors
-		this.readOpeningsFromArray(tagCompound.getIntArray("doorInts"));
+		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
 	}
 
 	/**

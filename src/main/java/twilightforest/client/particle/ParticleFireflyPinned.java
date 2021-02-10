@@ -5,8 +5,6 @@ import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
-
 import javax.annotation.Nullable;
 
 /**

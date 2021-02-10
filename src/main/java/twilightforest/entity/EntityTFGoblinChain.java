@@ -1,18 +1,20 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.nbt.CompoundNBT;
 
-public class EntityTFGoblinChain extends MultiPartEntityPart {
-	public EntityTFGoblinChain(EntityType<? extends EntityTFGoblinChain> type, World world) {
-		super(type, world);
+public class EntityTFGoblinChain extends EntityTFBlockGoblin.MultipartGenericsAreDumb {
+
+	public EntityTFGoblinChain(Entity parent) {
+		super(parent);
+		size = EntitySize.flexible(0.75F, 0.75F);
 	}
 
-	public EntityTFGoblinChain(World world, Entity entity) {
-		super(TFEntities.goblin_chain, world, entity);
-	}
+	@Override
+	protected void registerData() {
 
+	}
 
 	@Override
 	public void tick() {
@@ -37,5 +39,15 @@ public class EntityTFGoblinChain extends MultiPartEntityPart {
 	@Override
 	public boolean canBeCollidedWith() {
 		return false;
+	}
+
+	@Override
+	protected void readAdditional(CompoundNBT compound) {
+
+	}
+
+	@Override
+	protected void writeAdditional(CompoundNBT compound) {
+
 	}
 }

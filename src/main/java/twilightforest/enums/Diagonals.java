@@ -59,6 +59,8 @@ public enum Diagonals implements IStringSerializable {
                         return TOP_LEFT;
                     case TOP_LEFT:
                         return BOTTOM_LEFT;
+                    default:
+                        return diagonal;
                 }
             default:
                 return diagonal;
@@ -118,6 +120,8 @@ public enum Diagonals implements IStringSerializable {
                         return BOTTOM_RIGHT;
                     case TOP_LEFT:
                         return TOP_RIGHT;
+                    default:
+                        return diagonal;
                 }
             default:
                 return diagonal;

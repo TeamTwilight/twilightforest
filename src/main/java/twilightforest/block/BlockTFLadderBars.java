@@ -2,16 +2,12 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.LadderBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-
-import static net.minecraft.util.Direction.*;
 
 public class BlockTFLadderBars extends LadderBlock {
     public static final BooleanProperty LEFT = BooleanProperty.create("left");

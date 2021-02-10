@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/util/cube_all_2_layer_no_shade",
+  "textures": {
+    "all": "twilightforest:block/towerdev_antibuilt",
+    "all2": "twilightforest:block/tower_device_level_2/towerdev_antibuilt_1"
+  }
+}

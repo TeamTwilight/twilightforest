@@ -42,18 +42,4 @@ public class BlockTFBossSpawner extends Block {
 	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
 		return state.getBlockHardness(world, pos) >= 0f;
 	}
-
-	//TODO: Find out what this does now
-//	@Override
-//	@Deprecated
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
-
-	//TODO: Move to client
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

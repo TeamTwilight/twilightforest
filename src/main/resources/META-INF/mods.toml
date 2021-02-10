@@ -1,23 +1,24 @@
 modLoader="javafml" #mandatory
-loaderVersion="[32,)"
+loaderVersion="[34,)"
 issueTrackerURL="https://github.com/TeamTwilight/twilightforest/issues" #optional
-displayURL="https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest" #optional
-updateJSONURL="https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.15.x/update.json"
-logoFile="logo.png" #optional
-credits="By Benimatic (Ben Mazur)" #optional
-authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus" #optional
 license="GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
 
 [[mods]]
 modId="twilightforest"
 version="${file.jarVersion}"
 displayName="The Twilight Forest"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest" #optional
+updateJSONURL="https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.16.x/update.json"
+logoFile="twilightforest_logo.png" #optional
+credits="By Benimatic (Ben Mazur)" #optional
+authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, GizmoTheMoonPig
+" #optional
 description='''
 An enchanted forest dimension.'''
 
 [[dependencies.twilightforest]]
     modId="forge"
     mandatory=true
-    versionRange="[32,)"
+    versionRange="[36.0.16,)"
     ordering="NONE"
     side="BOTH"

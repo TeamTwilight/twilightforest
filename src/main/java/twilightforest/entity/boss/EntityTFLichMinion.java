@@ -6,8 +6,10 @@ import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 
 import java.util.List;
 
@@ -40,6 +42,26 @@ public class EntityTFLichMinion extends ZombieEntity {
 		} else {
 			return false;
 		}
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.MINION_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.MINION_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.MINION_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getStepSound() {
+		return TFSounds.MINION_STEP;
 	}
 
 	@Override

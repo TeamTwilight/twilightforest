@@ -95,14 +95,20 @@ steps:
                 value = "$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)"
             },
             [Ordered]@{
-                name = "Commit"
-                value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 6))]$($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION)"
+                name = "Forge Version"
+                value = "$($env:JAVAPROPS_FORGE_VERSION)"
             },
             [Ordered]@{
-                name = "Download"
-                value = "$downloadUrl"
+                name = "Commit"
+                value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 6))]$($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION)"
             }
         )
+    }
+    if ($jobResult -eq "Succeeded") {
+        $json["fields"] += [Ordered]@{
+            name = "Download"
+            value = "$downloadUrl"
+        }
     }
     Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
   displayName: Format discord message
@@ -119,11 +125,3 @@ steps:
     embeds: |
       [$(DiscordMessage)]
   condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
-
-- powershell: |
-    (gci env:*).GetEnumerator() | Sort-Object Name | ForEach-Object {
-      $nameAsCapitalSnakeCase = $_.Name
-      Write-Output "$nameAsCapitalSnakeCase = $($_.Value)"
-    }
-  displayName: Dump Variables
-  #condition: eq(variables['system.debug'], 'true')

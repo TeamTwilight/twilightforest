@@ -9,77 +9,54 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import twilightforest.entity.TFEntities;
+import net.minecraftforge.entity.PartEntity;
 
-public class EntityTFHydraPart extends MobEntity {
+public class EntityTFHydraPart extends PartEntity<EntityTFHydra> {
 
-	private static final DataParameter<String> PART_NAME = EntityDataManager.createKey(EntityTFHydraPart.class, DataSerializers.STRING);
+	final float maxHealth = 1000F;
+	float health = maxHealth;
 
-	public EntityTFHydra hydra;
+	int deathTime;
+	int hurtTime;
 
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, World world) {
-		super(type, world);
+	public EntityTFHydraPart(EntityTFHydra hydra) {
+		super(hydra);
+		isImmuneToFire();
 	}
 
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type,EntityTFHydra parent, World world, float width, float height) {
-		super(type, world);
-		isImmuneToFire();
-		this.hydra = parent;
+	// [VanillaCopy] from MobEntity
+	public boolean canEntityBeSeen(Entity entityIn) {
+		Vector3d vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+		Vector3d vector3d1 = new Vector3d(entityIn.getPosX(), entityIn.getPosYEye(), entityIn.getPosZ());
+		return this.world.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() == RayTraceResult.Type.MISS;
+	}
+
+	public EntityTFHydraPart(EntityTFHydra parent, float width, float height) {
+		this(parent);
 		this.size = EntitySize.flexible(width, height);
 		this.recalculateSize();
 	}
 
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type,EntityTFHydra hydra, String name, float width, float height) {
-		this(type, hydra, hydra.world, width, height);
-		setPartName(name);
-		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
-	}
-
-	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(PART_NAME, "");
-	}
-
-	public String getPartName() {
-		return dataManager.get(PART_NAME);
-	}
-
-	public void setPartName(String name) {
-		dataManager.set(PART_NAME, name);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
-		compound.putString("PartName", getPartName());
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
-		setPartName(compound.getString("PartName"));
-	}
-
 	@Override
 	public void tick() {
-		if (this.hydra != null && this.hydra.deathTime > 190) {
-			remove();
-		}
-
-		//  just die if we've been alive 60 seconds and there's still no body
-		if (this.hydra == null && this.ticksExisted > 1200) {
-			remove();
-		}
-
 		super.baseTick();
+
+		if(hurtTime > 0)
+			hurtTime--;
+
+		if(health <= 0F)
+			deathTime++;
 
 		lastTickPosX = getPosX();
 		lastTickPosY = getPosY();
 		lastTickPosZ = getPosZ();
 
-		if (this.newPosRotationIncrements > 0) {
+		// FIXME
+		/*if (this.newPosRotationIncrements > 0) {
 			double x = this.getPosX() + (this.interpTargetX - this.getPosX()) / this.newPosRotationIncrements;
 			double y = this.getPosY() + (this.interpTargetY - this.getPosY()) / this.newPosRotationIncrements;
 			double z = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / this.newPosRotationIncrements;
@@ -104,22 +81,32 @@ public class EntityTFHydraPart extends MobEntity {
 		while (rotationPitch - prevRotationPitch >= 180F) prevRotationPitch += 360F;
 
 		while (rotationYawHead - prevRotationYawHead < -180F) prevRotationYawHead -= 360F;
-		while (rotationYawHead - prevRotationYawHead >= 180F) prevRotationYawHead += 360F;
-	}
-
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 1000D);
+		while (rotationYawHead - prevRotationYawHead >= 180F) prevRotationYawHead += 360F;*/
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		return hydra != null && hydra.attackEntityFromPart(this, source, amount);
+		return getParent() != null && getParent().attackEntityFromPart(this, source, amount);
+	}
+
+	@Override
+	protected void readAdditional(CompoundNBT compound) {
+
+	}
+
+	@Override
+	protected void writeAdditional(CompoundNBT compound) {
+
 	}
 
 	@Override
 	public boolean isEntityEqual(Entity entity) {
-		return this == entity || hydra == entity;
+		return this == entity || getParent() == entity;
+	}
+
+	@Override
+	protected void registerData() {
+
 	}
 
 	@Override
@@ -131,11 +118,6 @@ public class EntityTFHydraPart extends MobEntity {
 	@Override
 	public boolean isNonBoss() {
 		return false;
-	}
-
-	@Override
-	public boolean canDespawn(double p_213397_1_) {
-		return hydra == null;
 	}
 
 	public void setWidth(float width) {

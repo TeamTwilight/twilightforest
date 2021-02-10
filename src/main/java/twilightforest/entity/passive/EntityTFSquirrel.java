@@ -55,12 +55,6 @@ public class EntityTFSquirrel extends AnimalEntity {
 		return this.getHeight() * 0.7F;
 	}
 
-	//TODO: Move this to Renderer?
-//	@Override
-//	public float getRenderSizeModifier() {
-//		return 0.3F;
-//	}
-
 	@Override
 	public float getBlockPathWeight(BlockPos pos) {
 		// prefer standing on leaves

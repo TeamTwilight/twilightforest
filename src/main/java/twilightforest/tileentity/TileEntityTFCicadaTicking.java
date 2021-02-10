@@ -6,7 +6,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
-import twilightforest.tileentity.TFTileEntities;
 
 public class TileEntityTFCicadaTicking extends TileEntity implements ITickableTileEntity {
 	private int yawDelay;

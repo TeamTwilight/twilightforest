@@ -18,7 +18,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFRiderSpearAttack;
 
@@ -96,7 +95,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(TFEntities.goblin_knight_upper, this.world);
 		upper.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
-		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag); //TODO: verify
+		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag);
 		this.world.addEntity(upper);
 		upper.startRiding(this);
 

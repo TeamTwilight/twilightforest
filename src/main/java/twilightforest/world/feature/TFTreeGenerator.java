@@ -58,7 +58,6 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 //		return TFGenHollowTree.canGrowInto(blockType);
 //	}
 
-	//TODO: Check the logic here
 	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, MutableBoundingBox mbb, T config) {
 		Set<BlockPos> branchSet = Sets.newHashSet();
 		Set<BlockPos> rootSet = Sets.newHashSet();
@@ -67,7 +66,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 
 	//AbstractTreeFeature.place from 1.15, modified for us
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
 		Set<BlockPos> logs = Sets.newHashSet();
 		Set<BlockPos> leaves = Sets.newHashSet();
 		MutableBoundingBox mutableboundingbox = MutableBoundingBox.getNewBoundingBox();
@@ -150,7 +149,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	 */
 	protected abstract boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, MutableBoundingBox mbb, T config);
 
-	//AbstractTrunkPlancer.func_236911_a_ copy
+	//AbstractTrunkPlacer.func_236911_a_ copy - Use that one instead when extending that Abstract
 	protected boolean setLogBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> logPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (TreeFeature.isReplaceableAt(world, pos)) {
 			this.setBlockState(world, pos, config.trunkProvider.getBlockState(random, pos), mbb);
@@ -212,6 +211,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 		}
 	}
 
+	// TODO should move to FeatureUtil
 	public static boolean canRootGrowIn(IWorldReader world, BlockPos pos) {
 		BlockState blockState = world.getBlockState(pos);
 		Block blockID = blockState.getBlock();
@@ -224,7 +224,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 					&& blockID != TFBlocks.stronghold_shield.get()
 					&& blockID != TFBlocks.trophy_pedestal.get()
 					&& blockID != TFBlocks.boss_spawner.get()
-					&& (blockState.getMaterial() == Material.ORGANIC || blockState.getMaterial() == Material.EARTH || blockState.getMaterial() == Material.ROCK);
+					&& (blockState.getMaterial() == Material.ORGANIC || blockState.getMaterial() == Material.EARTH || blockState.getMaterial() == Material.ROCK || blockState.getMaterial() == Material.WATER);
 		}
 	}
 

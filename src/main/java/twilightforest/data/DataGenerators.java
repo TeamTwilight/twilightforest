@@ -12,12 +12,12 @@ public class DataGenerators {
 	public static void gatherData(GatherDataEvent evt) {
 		evt.getGenerator().addProvider(new BlockstateGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
 		evt.getGenerator().addProvider(new ItemModelGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
-		BlockTagsProvider blocktags = new BlockTagGenerator(evt.getGenerator());
+		BlockTagsProvider blocktags = new BlockTagGenerator(evt.getGenerator(), evt.getExistingFileHelper());
 		evt.getGenerator().addProvider(blocktags);
-		evt.getGenerator().addProvider(new ItemTagGenerator(evt.getGenerator(), blocktags));
+		evt.getGenerator().addProvider(new ItemTagGenerator(evt.getGenerator(), blocktags, evt.getExistingFileHelper()));
 		evt.getGenerator().addProvider(new LootGenerator(evt.getGenerator()));
 		evt.getGenerator().addProvider(new StonecuttingGenerator(evt.getGenerator()));
 		evt.getGenerator().addProvider(new CraftingGenerator(evt.getGenerator()));
-		evt.getGenerator().addProvider(new BiomeGenerator(evt.getGenerator()));
+		evt.getGenerator().addProvider(new TwilightWorldDataCompiler(evt.getGenerator()));
 	}
 }

@@ -4,11 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.EntityTFMiniGhast;
@@ -140,7 +140,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 
 		} else {
 			if (counter % 5 == 0 && counter <= 250) {
-				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, counter / 100F, counter / 100F, false);
+				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT, SoundCategory.BLOCKS, counter / 100F, counter / 100F, false);
 			}
 		}
 	}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "side": "twilightforest:block/shield_outside",
+    "top": "twilightforest:block/shield_inside"
+  }
+}

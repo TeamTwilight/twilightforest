@@ -29,7 +29,7 @@ public enum RenderEffect {
 			RenderSystem.enableBlend();
 			RenderSystem.disableCull();
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			// todo 1.15 layer.render(entity, 0, 0, partialTicks, 0, 0, 0, 0.0625F);
+			// fixme 1.16 layer.render(entity, 0, 0, partialTicks, 0, 0, 0, 0.0625F);
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
 			RenderSystem.popMatrix();

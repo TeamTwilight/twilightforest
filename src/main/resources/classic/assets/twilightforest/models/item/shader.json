@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:item/lunchcase",
+  "textures": {
+    "missing": "twilightforest:block/fluffy_cloud",
+    "face": "twilightforest:block/lunchbox_face",
+    "side": "twilightforest:block/lunchbox_side"
+  }
+}

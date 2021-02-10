@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ColumnPos;
@@ -27,6 +28,7 @@ import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
@@ -36,11 +38,12 @@ import java.util.function.Predicate;
 
 public class TFTeleporter implements ITeleporter {
 
-	private static final Map<ColumnPos, PortalPosition> destinationCoordinateCache = Maps.newHashMapWithExpectedSize(4096);
+	private static final Map<ResourceLocation, Map<ColumnPos, PortalPosition>> destinationCoordinateCache = new HashMap<>();
 	private static final Object2LongMap<ColumnPos> columnMap = new Object2LongOpenHashMap<>();
 
 	@Nullable
-	public static PortalInfo reposition(Entity entity, ServerWorld dest) {
+	@Override
+	public PortalInfo getPortalInfo(Entity entity, ServerWorld dest, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
 		PortalInfo pos;
 		if ((pos = placeInExistingPortal(dest, entity, entity.getPosition(), entity instanceof PlayerEntity)) == null) {
 			pos = moveToSafeCoords(dest, entity);
@@ -60,7 +63,7 @@ public class TFTeleporter implements ITeleporter {
 		if (!isPlayer && columnMap.containsKey(columnPos)) {
 			return null;
 		} else {
-			PortalPosition portalPosition = destinationCoordinateCache.get(columnPos);
+			PortalPosition portalPosition = destinationCoordinateCache.containsKey(world.getDimensionKey().getLocation()) ? destinationCoordinateCache.get(world.getDimensionKey().getLocation()).get(columnPos) : null;
 			if (portalPosition != null) {
 				blockpos = portalPosition.pos;
 				portalPosition.lastUpdateTime = world.getGameTime();
@@ -81,7 +84,7 @@ public class TFTeleporter implements ITeleporter {
 
 						// skip chunks that aren't generated
 						ChunkPos chunkPos = new ChunkPos(pos.add(i1, 0, j1));
-						if (!world.getChunkProvider().isChunkLoaded(chunkPos)) {
+						if (!world.getChunkProvider().chunkManager.func_241090_h_(chunkPos)) {
 							continue;
 						}
 
@@ -127,7 +130,8 @@ public class TFTeleporter implements ITeleporter {
 			return null;
 		} else {
 			if (flag) {
-				destinationCoordinateCache.put(columnPos, new PortalPosition(blockpos, world.getGameTime()));
+				destinationCoordinateCache.putIfAbsent(world.getDimensionKey().getLocation(), Maps.newHashMapWithExpectedSize(4096));
+				destinationCoordinateCache.get(world.getDimensionKey().getLocation()).put(columnPos, new PortalPosition(blockpos, world.getGameTime()));
 				world.getChunkProvider().registerTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x, blockpos.getY(), columnPos.z));
 			}
 
@@ -236,7 +240,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkStructure(World world, BlockPos pos) {
-		ChunkGeneratorTFBase generator = TFGenerationSettings.getChunkGenerator(world);
+		ChunkGeneratorTwilightBase generator = TFGenerationSettings.getChunkGenerator(world);
 		if (generator != null) {
 			if (!world.isBlockLoaded(pos)) {
 				//generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4); //TODO: Can we even do this?
@@ -266,7 +270,6 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static void makePortal(Entity entity, ServerWorld world, Vector3d pos) {
-
 		// ensure area is populated first
 		loadSurroundingArea(world, pos);
 
@@ -364,12 +367,13 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static double getYFactor(ServerWorld world) {
-		return world.getDimensionKey().func_240901_a_().equals(World.OVERWORLD.func_240901_a_()) ? 2.0 : 0.5;
+		return world.getDimensionKey().getLocation().equals(World.OVERWORLD.getLocation()) ? 2.0 : 0.5;
 	}
 
 	private static void cachePortalCoords(ServerWorld world, Vector3d loc, BlockPos pos) {
 		int x = MathHelper.floor(loc.x), z = MathHelper.floor(loc.z);
-		destinationCoordinateCache.put(new ColumnPos(x, z), new PortalPosition(pos, world.getGameTime()));
+		destinationCoordinateCache.putIfAbsent(world.getDimensionKey().getLocation(), Maps.newHashMapWithExpectedSize(4096));
+		destinationCoordinateCache.get(world.getDimensionKey().getLocation()).put(new ColumnPos(x, z), new PortalPosition(pos, world.getGameTime()));
 	}
 
 	private static boolean isIdealForPortal(ServerWorld world, BlockPos pos) {
@@ -502,5 +506,4 @@ public class TFTeleporter implements ITeleporter {
 			this.lastUpdateTime = time;
 		}
 	}
-
 }

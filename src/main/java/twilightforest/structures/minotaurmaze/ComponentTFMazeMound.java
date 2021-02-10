@@ -12,7 +12,6 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -54,7 +53,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		if (this.averageGroundLevel < 0) {
-			this.averageGroundLevel = this.getAverageGroundLevel(world, sbb);
+			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
 
 			if (this.averageGroundLevel < 0) {
 				return true;
@@ -81,7 +80,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 
 				// leave a hole in the middle
 				if (!(cx <= 2 && cx >= -1 && cz <= 2 && cz >= -1) && ((!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) || hheight > 6)) {
-					this.setBlockState(world, Blocks.GRASS.getDefaultState(), x, hheight, z, sbb);
+					this.setBlockState(world, Blocks.GRASS_BLOCK.getDefaultState(), x, hheight, z, sbb);
 
 					// only fill to the bottom when we're not in the entrances
 					if (!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) {
@@ -101,7 +100,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(ISeedReader world, MutableBoundingBox boundingBox) {
+	protected int getAverageGroundLevel(ISeedReader world, ChunkGenerator generator, MutableBoundingBox boundingBox) {
 		int totalHeight = 0;
 		int totalMeasures = 0;
 
@@ -111,7 +110,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 
 				if (boundingBox.isVecInside(pos)) {
 					final BlockPos topPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos);
-					totalHeight += Math.max(topPos.getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
+					totalHeight += Math.max(topPos.getY(), generator.getGroundHeight());
 					++totalMeasures;
 				}
 			}

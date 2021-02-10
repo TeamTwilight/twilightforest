@@ -83,13 +83,13 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 		}
 
 		// TODO: True adds 0.5
-		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getPosX()), (double) ((int) this.getPosY()), (double) ((int) this.getPosZ()), false) < 4.0D) {
+		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq(((int) this.getPosX()), ((int) this.getPosY()), ((int) this.getPosZ()), false) < 4.0D) {
 			this.spawnPosition = new BlockPos((int) this.getPosX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getPosY() + this.rand.nextInt(6) - 2, (int) this.getPosZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
 		}
 
-		double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getPosX();
-		double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getPosY();
-		double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getPosZ();
+		double d0 = this.spawnPosition.getX() + 0.5D - this.getPosX();
+		double d1 = this.spawnPosition.getY() + 0.1D - this.getPosY();
+		double d2 = this.spawnPosition.getZ() + 0.5D - this.getPosZ();
 		this.setMotion(this.getMotion().add(new Vector3d(
 				(Math.signum(d0) * 0.5D - this.getMotion().getX()) * 0.10000000149011612D,
 				(Math.signum(d1) * 0.699999988079071D - this.getMotion().getY()) * 0.10000000149011612D,

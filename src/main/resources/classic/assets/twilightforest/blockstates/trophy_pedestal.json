@@ -1,0 +1,158 @@
+{
+  "variants": {
+    "active=false": [
+      {
+        "model": "twilightforest:block/trophy_pedestal"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_1"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_1",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_1",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_1",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_2"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_2",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_2",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_2",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_3"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_3",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_3",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_3",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_4"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_4",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_4",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_4",
+        "y": 270
+      }
+    ],
+    "active=true": [
+      {
+        "model": "twilightforest:block/trophy_pedestal_active"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_1"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_1",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_1",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_1",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_2"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_2",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_2",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_2",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_3"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_3",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_3",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_3",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_4"
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_4",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_4",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/trophy_pedestal_active_4",
+        "y": 270
+      }
+    ]
+  }
+}

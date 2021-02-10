@@ -84,8 +84,5 @@
   "requirements": [
     [ "kill_lich", "trophy", "lifedrain_scepter", "twilight_scepter", "zombie_scepter", "shield_scepter" ],
     [ "kill_naga" ]
-  ],
-  "rewards": {
-    "function": "twilightforest:give_3_shields"
-  }
+  ]
 }

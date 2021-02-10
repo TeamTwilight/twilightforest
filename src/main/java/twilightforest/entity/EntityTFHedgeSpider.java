@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -8,14 +9,16 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 
 import java.util.Random;
 
@@ -60,8 +63,27 @@ public class EntityTFHedgeSpider extends SpiderEntity {
 				|| MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.HEDGE_SPIDER_AMBIENT;
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.HEDGE_SPIDER_HURT;
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.HEDGE_SPIDER_DEATH;
+	}
+	
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState blockIn) {
+		this.playSound(TFSounds.HEDGE_SPIDER_STEP, 0.15F, 1.0F);
+	}
+
 	public static boolean canSpawn(EntityType<EntityTFHedgeSpider> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL &&
-				isValidLightLevel(world, pos, random);
+		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random);
 	}
 }

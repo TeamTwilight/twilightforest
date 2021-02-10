@@ -28,7 +28,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLootTables {
 	protected void addTables() {
 		registerLootTable(TFEntities.adherent, emptyLootTable());
 		registerLootTable(TFEntities.harbinger_cube, emptyLootTable());
-		registerLootTable(TFEntities.firefly, emptyLootTable());
+		//registerLootTable(TFEntities.firefly, emptyLootTable());
 		registerLootTable(TFEntities.mosquito_swarm, emptyLootTable());
 		registerLootTable(TFEntities.pinch_beetle, emptyLootTable());
 		registerLootTable(TFEntities.quest_ram, emptyLootTable());
@@ -62,7 +62,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLootTables {
 								.rolls(ConstantRange.of(1))
 								.addEntry(TableLootEntry.builder(EntityType.GHAST.getLootTable()))
 								.acceptCondition(LootConditionIsMinion.builder(true))));
-		registerLootTable(TFEntities.boggard,
+		/*registerLootTable(TFEntities.boggard,
 				LootTable.builder()
 						.addLootPool(LootPool.builder()
 								.rolls(ConstantRange.of(1))
@@ -78,7 +78,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLootTables {
 								.rolls(ConstantRange.of(1))
 								.addEntry(ItemLootEntry.builder(Items.IRON_PICKAXE)
 										.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(1.0F, 1.0F))))
-								.acceptCondition(RandomChance.builder(0.1111F))));
+								.acceptCondition(RandomChance.builder(0.1111F))));*/
 		registerLootTable(TFEntities.helmet_crab,
 				LootTable.builder()
 						.addLootPool(LootPool.builder()

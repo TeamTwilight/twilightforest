@@ -11,7 +11,6 @@ public class BlockTFNagastonePillar extends BlockTFDirectionalRotatedPillar {
 
     protected BlockTFNagastonePillar() {
         super(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
-        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
         this.setDefaultState(this.stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(REVERSED, false));
     }
 }

@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/carminite_block"
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "x": 90
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "x": 180
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/carminite_block",
+        "x": 270,
+        "y": 270
+      }
+    ]
+  }
+}

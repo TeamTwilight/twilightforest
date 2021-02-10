@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "twilightforest:block/transformation_sapling"
+  }
+}

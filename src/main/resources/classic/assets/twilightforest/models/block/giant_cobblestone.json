@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/giant_block",
+  "textures": {
+    "all": "minecraft:block/cobblestone"
+  }
+}

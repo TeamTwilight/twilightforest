@@ -6,8 +6,8 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFHydraNeck;
 import twilightforest.entity.boss.EntityTFHydraNeck;
-
-public class RenderTFHydraNeck extends MobRenderer<EntityTFHydraNeck, ModelTFHydraNeck> {
+//FIXME: merge into the base hydra renderer
+public class RenderTFHydraNeck {/*extends MobRenderer<EntityTFHydraNeck, ModelTFHydraNeck> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
@@ -18,5 +18,5 @@ public class RenderTFHydraNeck extends MobRenderer<EntityTFHydraNeck, ModelTFHyd
 	@Override
 	public ResourceLocation getEntityTexture(EntityTFHydraNeck entity) {
 		return textureLoc;
-	}
+	}*/
 }

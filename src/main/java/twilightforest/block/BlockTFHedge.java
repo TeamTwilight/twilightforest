@@ -94,8 +94,7 @@ public class BlockTFHedge extends Block {
 					player.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
 
 					// trigger this again!
-					//TODO: Do we? Or just leave it for this method to do itself?
-					//world.scheduleUpdate(pos, this, 10);
+					world.getPendingBlockTicks().scheduleTick(pos, this, 10);
 				}
 			}
 		}

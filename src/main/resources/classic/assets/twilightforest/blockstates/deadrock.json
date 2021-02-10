@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/deadrock"
+      },
+      {
+        "model": "twilightforest:block/deadrock",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/deadrock_mirrored"
+      },
+      {
+        "model": "twilightforest:block/deadrock_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

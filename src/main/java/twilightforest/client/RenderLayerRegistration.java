@@ -42,20 +42,20 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.brown_thorns.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.burnt_thorns.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.hedge_maze_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.hollow_hill_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.quest_grove_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.mushroom_tower_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.hedge_maze_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.hollow_hill_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.quest_grove_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.mushroom_tower_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.naga_courtyard_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.lich_tower_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.minotaur_labyrinth_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.hydra_lair_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.goblin_stronghold_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.dark_tower_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.yeti_cave_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.aurora_palace_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.troll_cave_cottage_miniature_structure.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.final_castle_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.minotaur_labyrinth_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.hydra_lair_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.goblin_stronghold_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.dark_tower_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.yeti_cave_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.aurora_palace_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.troll_cave_cottage_miniature_structure.get(), cutout);
+//		RenderTypeLookup.setRenderLayer(TFBlocks.final_castle_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.fiery_block.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.firefly_jar.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.moss_patch.get(), cutout);
@@ -74,6 +74,7 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.mangrove_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.darkwood_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.hollow_oak_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.time_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.transformation_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.mining_sapling.get(), cutout);
@@ -93,5 +94,13 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_green.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_purple.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_orange.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.boss_spawner.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.reappearing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.locked_vanishing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.vanishing_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.carminite_builder.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.antibuilder.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.carminite_reactor.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.ghast_trap.get(), cutout);
 	}
 }

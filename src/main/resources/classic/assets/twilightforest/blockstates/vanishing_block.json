@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "twilightforest:block/vanishing_block"
+    },
+    "active=true": {
+      "model": "twilightforest:block/vanishing_block_active"
+    }
+  }
+}

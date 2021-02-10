@@ -7,11 +7,9 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.util.MushroomUtil;
@@ -25,7 +23,7 @@ public class TFGenBigMushgloom extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int height = 3 + rand.nextInt(2) + rand.nextInt(2);
 
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos.add(-1, 0, -1), 3, height, 3)) {
@@ -33,7 +31,7 @@ public class TFGenBigMushgloom extends Feature<NoFeatureConfig> {
 		}
 
 		Block blockUnder = world.getBlockState(pos.down()).getBlock();
-		if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS && blockUnder != Blocks.MYCELIUM) {
+		if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS_BLOCK && blockUnder != Blocks.MYCELIUM) {
 			return false;
 		}
 

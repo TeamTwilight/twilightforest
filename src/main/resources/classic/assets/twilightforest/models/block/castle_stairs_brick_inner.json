@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "side": "twilightforest:block/castle_stairs_brick",
+    "bottom": "twilightforest:block/castle_stairs_brick",
+    "top": "twilightforest:block/castle_stairs_brick"
+  }
+}

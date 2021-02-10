@@ -23,24 +23,17 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 
 	public ComponentTFStrongholdBalconyRoom(TemplateManager manager, CompoundNBT nbt) {
 		super(TFStrongholdPieces.TFSBalR, nbt);
+		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
 	public ComponentTFStrongholdBalconyRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStrongholdPieces.TFSBalR, feature, i, facing, x, y, z);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("enterBottom", this.enterBottom);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.enterBottom = tagCompound.getBoolean("enterBottom");
+		tagCompound.putBoolean("enterBottom", this.enterBottom);
 	}
 
 	@Override

@@ -50,8 +50,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.cicada.get());
 		registerDropSelfLootTable(TFBlocks.moonworm.get());
 		registerDropSelfLootTable(TFBlocks.trophy_pedestal.get());
-		registerDropSelfLootTable(TFBlocks.terrorcotta_circle.get());
-		registerDropSelfLootTable(TFBlocks.terrorcotta_diagonal.get());
+		//registerDropSelfLootTable(TFBlocks.terrorcotta_circle.get());
+		//registerDropSelfLootTable(TFBlocks.terrorcotta_diagonal.get());
 		registerDropSelfLootTable(TFBlocks.aurora_block.get());
 		registerDropSelfLootTable(TFBlocks.aurora_pillar.get());
 		registerLootTable(TFBlocks.aurora_slab.get(), droppingSlab(TFBlocks.aurora_slab.get()));
@@ -160,9 +160,27 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.nagastone_stairs_mossy_right.get());
 		registerDropSelfLootTable(TFBlocks.nagastone_stairs_weathered_left.get());
 		registerDropSelfLootTable(TFBlocks.nagastone_stairs_weathered_right.get());
+		registerLootTable(TFBlocks.naga_trophy.get(), dropping(TFItems.naga_trophy.get()));
+		registerLootTable(TFBlocks.naga_wall_trophy.get(), dropping(TFItems.naga_trophy.get()));
+		registerLootTable(TFBlocks.lich_trophy.get(), dropping(TFItems.lich_trophy.get()));
+		registerLootTable(TFBlocks.lich_wall_trophy.get(), dropping(TFItems.lich_trophy.get()));
+		registerLootTable(TFBlocks.minoshroom_trophy.get(), dropping(TFItems.minoshroom_trophy.get()));
+		registerLootTable(TFBlocks.minoshroom_wall_trophy.get(), dropping(TFItems.minoshroom_trophy.get()));
+		registerLootTable(TFBlocks.hydra_trophy.get(), dropping(TFItems.hydra_trophy.get()));
+		registerLootTable(TFBlocks.hydra_wall_trophy.get(), dropping(TFItems.hydra_trophy.get()));
+		registerLootTable(TFBlocks.knight_phantom_trophy.get(), dropping(TFItems.knight_phantom_trophy.get()));
+		registerLootTable(TFBlocks.knight_phantom_wall_trophy.get(), dropping(TFItems.knight_phantom_trophy.get()));
+		registerLootTable(TFBlocks.ur_ghast_trophy.get(), dropping(TFItems.ur_ghast_trophy.get()));
+		registerLootTable(TFBlocks.ur_ghast_wall_trophy.get(), dropping(TFItems.ur_ghast_trophy.get()));
+		registerLootTable(TFBlocks.snow_queen_trophy.get(), dropping(TFItems.snow_queen_trophy.get()));
+		registerLootTable(TFBlocks.snow_queen_wall_trophy.get(), dropping(TFItems.snow_queen_trophy.get()));
+		registerLootTable(TFBlocks.quest_ram_trophy.get(), dropping(TFItems.quest_ram_trophy.get()));
+		registerLootTable(TFBlocks.quest_ram_wall_trophy.get(), dropping(TFItems.quest_ram_trophy.get()));
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.stone_twist.get());
-		registerDropSelfLootTable(TFBlocks.lapis_block.get());
+		//registerDropSelfLootTable(TFBlocks.lapis_block.get());
+		registerLootTable(TFBlocks.keepsake_casket.get(), droppingWithName(TFBlocks.keepsake_casket.get()));
+
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());
 		registerDropSelfLootTable(TFBlocks.oak_sapling.get());
@@ -280,6 +298,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.sort_plate.get());
 		registerLootTable(TFBlocks.sort_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.sort_trapdoor.get());
+
+
 	}
 
 	private void registerLeavesNoSapling(Block leaves) {

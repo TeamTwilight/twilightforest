@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:twilight_oak_gate",
+    "twilightforest:canopy_gate",
+    "twilightforest:mangrove_gate",
+    "twilightforest:dark_gate",
+    "twilightforest:time_gate",
+    "twilightforest:trans_gate",
+    "twilightforest:mine_gate",
+    "twilightforest:sort_gate"
+  ]
+}

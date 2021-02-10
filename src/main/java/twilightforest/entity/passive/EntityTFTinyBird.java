@@ -106,12 +106,6 @@ public class EntityTFTinyBird extends EntityTFBird {
 		return this.getHeight() * 0.7F;
 	}
 
-	//TODO: Move to Renderer?
-//	@Override
-//	public float getRenderSizeModifier() {
-//		return 0.3F;
-//	}
-
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return false;
@@ -174,9 +168,9 @@ public class EntityTFTinyBird extends EntityTFBird {
 				this.spawnPosition = new BlockPos((int) this.getPosX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getPosY() + this.rand.nextInt(6) - yTarget, (int) this.getPosZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
 			}
 
-			double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getPosX();
-			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getPosY();
-			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getPosZ();
+			double d0 = this.spawnPosition.getX() + 0.5D - this.getPosX();
+			double d1 = this.spawnPosition.getY() + 0.1D - this.getPosY();
+			double d2 = this.spawnPosition.getZ() + 0.5D - this.getPosZ();
 
 //			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
 //			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;

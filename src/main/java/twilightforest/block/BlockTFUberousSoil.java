@@ -56,7 +56,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 			if (plant.getPlantType(world, pos.up()) == PlantType.CROP) {
 				world.setBlockState(pos, Blocks.FARMLAND.getDefaultState().with(FarmlandBlock.MOISTURE, 2));
 			} else if (plant.getPlantType(world, pos.up()) == PlantType.PLAINS) {
-				world.setBlockState(pos, Blocks.GRASS.getDefaultState());
+				world.setBlockState(pos, Blocks.GRASS_BLOCK.getDefaultState());
 			} else {
 				world.setBlockState(pos, Blocks.DIRT.getDefaultState());
 			}
@@ -85,7 +85,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 		pos = pos.offset(Direction.Plane.HORIZONTAL.random(rand));
 
 		Block blockAt = world.getBlockState(pos).getBlock();
-		if (world.isAirBlock(pos.up()) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS || blockAt == Blocks.FARMLAND)) {
+		if (world.isAirBlock(pos.up()) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS_BLOCK || blockAt == Blocks.FARMLAND)) {
 			world.setBlockState(pos, this.getDefaultState());
 		}
 	}

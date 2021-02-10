@@ -38,9 +38,9 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 		boolean isHighlands = false; //FIXME biomePos.apply(new BlockPos(offsetX * 16, 0, offsetZ * 16)) instanceof TFBiomeHighlands;
 
 		for(int k = 0; k < maxcaves; ++k) {
-			double randX = (double)(offsetX * 16 + rand.nextInt(16));
-			double randY = (double)(rand.nextInt(rand.nextInt(120) + 8));
-			double randZ = (double)(offsetZ * 16 + rand.nextInt(16));
+			double randX = offsetX * 16 + rand.nextInt(16);
+			double randY = (rand.nextInt(rand.nextInt(120) + 8));
+			double randZ = offsetZ * 16 + rand.nextInt(16);
 			int maxnodes = 1;
 			if (rand.nextInt(4) == 0) {
 				float cavesize = 1.0F + rand.nextFloat() * 6.0F;
@@ -65,7 +65,7 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 	 * VanillaCopy of CaveWorldCarver.func_227205_a_
 	 */
 	protected void generateLargeCaveNode(IChunk chunk, Function<BlockPos, Biome> biomePos, long seed, int seaLevel, int chunkX, int chunkZ, double offsetX, double startY, double offsetZ, float caveSize, double yScale, BitSet mask) {
-		double sizeVar = 1.5D + (double)(MathHelper.sin(((float)Math.PI / 2F)) * caveSize);
+		double sizeVar = 1.5D + MathHelper.sin(((float)Math.PI / 2F)) * caveSize;
 		double scaledSize = sizeVar * yScale;
 		this.func_227208_a_(chunk, biomePos, seed, seaLevel, chunkX, chunkZ, offsetX + 1.0D, startY, offsetZ, sizeVar, scaledSize, mask);
 	}
@@ -83,12 +83,12 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 		}
 
 		for(int loop = loopStart; loop < loopEnd; ++loop) {
-			double cavesize = 1.5D + (double)(MathHelper.sin((float)Math.PI * (float)loop / (float)loopEnd) * caveRadius);
+			double cavesize = 1.5D + MathHelper.sin((float)Math.PI * loop / loopEnd) * caveRadius;
 			double scale = cavesize * yScale;
 			float f2 = MathHelper.cos(yaw);
-			offsetX += (double)(MathHelper.cos(pitch) * f2);
-			startY += (double)MathHelper.sin(yaw);
-			offsetZ += (double)(MathHelper.sin(pitch) * f2);
+			offsetX += MathHelper.cos(pitch) * f2;
+			startY += MathHelper.sin(yaw);
+			offsetZ += MathHelper.sin(pitch) * f2;
 			yaw = yaw * (flag ? 0.92F : 0.7F);
 			yaw = yaw + yawoffset * 0.1F;
 			pitch += pitchoffset * 0.1F;
@@ -115,9 +115,9 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 	//VanillaCopy of WorldCarver.func_227208_a_, modified to call TFCavesCarver.canCarveArea
 	@Override
 	protected boolean func_227208_a_(IChunk chunk, Function<BlockPos, Biome> biomePos, long seed, int seaLevel, int chunkX, int chunkZ, double offsetX, double startY, double offsetZ, double sizeVar, double scaledSize, BitSet mask) {
-		Random random = new Random(seed + (long)chunkX + (long)chunkZ);
-		double d0 = (double)(chunkX * 16 + 8);
-		double d1 = (double)(chunkZ * 16 + 8);
+		Random random = new Random(seed + chunkX + chunkZ);
+		double d0 = chunkX * 16 + 8;
+		double d1 = chunkZ * 16 + 8;
 
 		if (!(offsetX < d0 - 16.0D - sizeVar * 2.0D) && !(offsetZ < d1 - 16.0D - sizeVar * 2.0D) && !(offsetX > d0 + 16.0D + sizeVar * 2.0D) && !(offsetZ > d1 + 16.0D + sizeVar * 2.0D)) {
 			int minX = Math.max(MathHelper.floor(offsetX - sizeVar) - chunkX * 16 - 1, 0);
@@ -136,16 +136,16 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 
 				for(int posX = minX; posX < maxX; ++posX) {
 					int rX = posX + chunkX * 16;
-					double sizeX = ((double)rX + 0.5D - offsetX) / sizeVar;
+					double sizeX = (rX + 0.5D - offsetX) / sizeVar;
 
 					for(int posZ = minZ; posZ < maxZ; ++posZ) {
 						int rZ = posZ + chunkZ * 16;
-						double sizeZ = ((double)rZ + 0.5D - offsetZ) / sizeVar;
+						double sizeZ = (rZ + 0.5D - offsetZ) / sizeVar;
 						if (!(sizeX * sizeX + sizeZ * sizeZ >= 1.0D)) {
 							MutableBoolean mutableboolean = new MutableBoolean(false);
 
 							for(int posY = maxY; posY > minY; --posY) {
-								double sizeY = ((double)posY - 0.5D - startY) / scaledSize;
+								double sizeY = (posY - 0.5D - startY) / scaledSize;
 								if (!this.func_222708_a(sizeX, sizeY, sizeZ, posY)) {
 									hasHitWater |= this.canCarveArea(chunk, biomePos, mask, random, mutable, mutable1, mutable2, sizeX, sizeY, sizeZ, rX, rZ, posX, posY, posZ, mutableboolean);
 								}

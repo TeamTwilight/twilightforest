@@ -8,8 +8,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.SphereReplaceConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-
 import java.util.Random;
 
 /**
@@ -37,7 +35,7 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
 //        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
 //        {
 //            return false;
@@ -54,7 +52,7 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 				for (int dy = pos.getY() - yRange; dy <= pos.getY() + yRange; dy++) {
 					BlockPos dPos = new BlockPos(dx, dy, dz);
 					Block blockThere = world.getBlockState(dPos).getBlock();
-					if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS || blockThere == Blocks.STONE) {
+					if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS_BLOCK || blockThere == Blocks.STONE) {
 						world.setBlockState(dPos, config.state, 16 | 2);
 					}
 				}

@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "twilightforest:block/etched_nagastone_weathered"
+    },
+    "facing=up": {
+      "model": "twilightforest:block/etched_nagastone_weathered_up"
+    },
+    "facing=north": {
+      "model": "twilightforest:block/etched_nagastone_weathered_north"
+    },
+    "facing=south": {
+      "model": "twilightforest:block/etched_nagastone_weathered_south"
+    },
+    "facing=west": {
+      "model": "twilightforest:block/etched_nagastone_weathered_west"
+    },
+    "facing=east": {
+      "model": "twilightforest:block/etched_nagastone_weathered_east"
+    }
+  }
+}

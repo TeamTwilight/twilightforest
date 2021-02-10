@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/north_face",
+  "textures": {
+    "texture": "twilightforest:block/huge_gloom_cap"
+  }
+}

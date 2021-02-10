@@ -1,0 +1,45 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "twilightforest:block/ladder_iron"
+  },
+  "elements": [
+    {
+      "from": [ 0, 13, 15.2 ],
+      "to"  : [ 8, 15, 16   ],
+      "faces": {
+        "up"   : { "uv": [ 8, 0  , 0, 0.8 ], "texture": "#particle"                      },
+        "down" : { "uv": [ 8, 1.2, 0, 2   ], "texture": "#particle"                      },
+        "north": { "uv": [ 0, 0  , 8, 2   ], "texture": "#particle"                      },
+        "south": { "uv": [ 8, 0  , 0, 2   ], "texture": "#particle", "cullface": "south" }
+      }
+    }, {
+      "from": [ 0,  9, 15.2 ],
+      "to"  : [ 8, 11, 16   ],
+      "faces": {
+        "up"   : { "uv": [ 8, 4  , 0, 4.8 ], "texture": "#particle"                      },
+        "down" : { "uv": [ 8, 5.2, 0, 6   ], "texture": "#particle"                      },
+        "north": { "uv": [ 0, 4  , 8, 6   ], "texture": "#particle"                      },
+        "south": { "uv": [ 8, 4  , 0, 6   ], "texture": "#particle", "cullface": "south" }
+      }
+    }, {
+      "from": [ 0, 5, 15.2 ],
+      "to"  : [ 8, 7, 16   ],
+      "faces": {
+        "up"   : { "uv": [ 8, 8  , 0,  8.8 ], "texture": "#particle"                      },
+        "down" : { "uv": [ 8, 9.2, 0, 10   ], "texture": "#particle"                      },
+        "north": { "uv": [ 0, 8  , 8, 10   ], "texture": "#particle"                      },
+        "south": { "uv": [ 8, 8  , 0, 10   ], "texture": "#particle", "cullface": "south" }
+      }
+    }, {
+      "from": [ 0, 1, 15.2 ],
+      "to"  : [ 8, 3, 16   ],
+      "faces": {
+        "up"   : { "uv": [ 8, 12  , 0, 12.8 ], "texture": "#particle"                      },
+        "down" : { "uv": [ 8, 13.2, 0, 14   ], "texture": "#particle"                      },
+        "north": { "uv": [ 0, 12  , 8, 14   ], "texture": "#particle"                      },
+        "south": { "uv": [ 8, 12  , 0, 14   ], "texture": "#particle", "cullface": "south" }
+      }
+    }
+  ]
+}

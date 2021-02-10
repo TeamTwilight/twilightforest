@@ -110,7 +110,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	public void scheduleBlockUpdate(World world, BlockPos pos) {
 		int offset = world.getBlockState(pos).get(DELAY);
 		int update = TICK_TIME - ((int) (world.getDayTime() - (offset * OFFSET_TIME)) % TICK_TIME);
-		//world.scheduleUpdate(pos, this, update); TODO: ?
+		world.getPendingBlockTicks().scheduleTick(pos, this, update);
 	}
 
 	@Override

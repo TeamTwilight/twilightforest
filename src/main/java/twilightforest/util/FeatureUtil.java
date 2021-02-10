@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
@@ -51,14 +52,14 @@ public class FeatureUtil {
 		}
 	}
 
-	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float vRadius, float hRadius, BlockStateProvider state, Set<BlockPos> leaves) {
-		float vRadiusSquared = vRadius * vRadius;
-		float hRadiusSquared = hRadius * hRadius;
-		float radius = vRadiusSquared * hRadiusSquared;
+	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
+		float xzRadiusSquared = xzRadius * xzRadius;
+		float yRadiusSquared = yRadius * yRadius;
+		float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
 		putLeafBlock(world, random, centerPos, state, leaves);
 
-		for (int y = 0; y <= hRadius; y++) {
-			if (y > hRadius) continue;
+		for (int y = 0; y <= yRadius; y++) {
+			if (y > yRadius) continue;
 
 			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
 			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
@@ -71,29 +72,100 @@ public class FeatureUtil {
 			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
 		}
 
-		for (int x = 0; x <= vRadius; x++) {
-			for (int z = 1; z <= vRadius; z++) {
-				if (x * x + z * z > vRadiusSquared) continue;
+		for (int x = 0; x <= xzRadius; x++) {
+			for (int z = 1; z <= xzRadius; z++) {
+				if (x * x + z * z > xzRadiusSquared) continue;
 
 				putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
 				putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
 				putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
 				putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
 
-				for (int y = 0; y <= hRadius; y++) {
-					if (((x * x + z * z) * hRadiusSquared) + ((y * y) * vRadiusSquared) > radius) continue;
+				for (int y = 1; y <= yRadius; y++) {
+					float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
-					putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
-					putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+					if (xzSquare + (((y - verticalBias) * (y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
+						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+					}
 
-					putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
-					putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+					if (xzSquare + (((y + verticalBias) * (y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
+						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+					}
 				}
 			}
+		}
+	}
+
+	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
+		float radiusSquared = radius * radius;
+		putLeafBlock(world, random, centerPos, state, leaves);
+
+		for (int y = 0; y <= radius; y++) {
+			if (y > radius) continue;
+
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+		}
+
+		for (int x = 0; x <= radius; x++) {
+			for (int z = 1; z <= radius; z++) {
+				float xzSquare = x * x + z * z;
+
+				if (xzSquare > radiusSquared) continue;
+
+				putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
+				putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
+				putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
+				putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
+
+				for (int y = 1; y <= radius; y++) {
+
+					if (xzSquare + y * y <= radius * radius) {
+						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+
+						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+					}
+				}
+			}
+		}
+	}
+
+	public static boolean hasAirAround(IWorldGenerationReader world, BlockPos pos) {
+		for (Direction e : directionsExceptDown) {
+			if (world.hasBlockState(pos, b -> b.getBlock() instanceof AirBlock)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
+	 * This takes all variables for setting Branch
+	 */
+	public static void drawBresenhamBranch(IWorldGenerationReader world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+		for (BlockPos pixel : getBresenhamArrays(from, to)) {
+			AbstractTrunkPlacer.func_236911_a_(world, random, pixel, state, mbb, config);
 		}
 	}
 
@@ -120,7 +192,7 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	public static void drawBresenhamBranch(TFTreeGenerator generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	public static void drawBresenhamBranch(TFTreeGenerator<? extends TFTreeFeatureConfig> generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		for (BlockPos pixel : getBresenhamArrays(from, to)) {
 			generator.setBranchBlockState(world, random, pixel, state, mbb, config);
 			//world.setBlockState(pixel, state);
@@ -381,7 +453,7 @@ public class FeatureUtil {
 			for (byte dy = 0; dy <= rad; dy++) {
 				for (byte dz = 0; dz <= rad; dz++) {
 					// determine how far we are from the center.
-					int dist = 0;
+					int dist;
 					if (dx >= dy && dx >= dz) {
 						dist = dx + (Math.max(dy, dz) >> 1) + (Math.min(dy, dz) >> 2);
 					} else if (dy >= dx && dy >= dz) {
@@ -423,12 +495,11 @@ public class FeatureUtil {
 	/**
 	 * Does the block have at least 1 air block adjacent
 	 */
+	private static final Direction[] directionsExceptDown = new Direction[]{Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
+
 	public static boolean hasAirAround(IWorld world, BlockPos pos) {
-		for (Direction e : Direction.values()) {
-			if (e == Direction.DOWN)
-				continue; // todo 1.9 was in old logic
-			if (world.isBlockLoaded(pos.offset(e))
-					&& world.isAirBlock(pos.offset(e))) {
+		for (Direction e : directionsExceptDown) {
+			if (world.isAirBlock(pos.offset(e))) {
 				return true;
 			}
 		}

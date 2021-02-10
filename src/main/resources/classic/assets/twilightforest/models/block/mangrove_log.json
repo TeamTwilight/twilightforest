@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "twilightforest:block/mangrove_log",
+    "end": "twilightforest:block/mangrove_log_top"
+  }
+}

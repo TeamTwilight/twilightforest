@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,reversed=false": {
+      "model": "twilightforest:block/nagastone_pillar",
+      "x": 270,
+      "y": 270
+    },
+    "axis=y,reversed=false": {
+      "model": "twilightforest:block/nagastone_pillar"
+    },
+    "axis=z,reversed=false": {
+      "model": "twilightforest:block/nagastone_pillar",
+      "x": 270
+    },
+    "axis=x,reversed=true": {
+      "model": "twilightforest:block/nagastone_pillar_reversed",
+      "x": 270,
+      "y": 270
+    },
+    "axis=y,reversed=true": {
+      "model": "twilightforest:block/nagastone_pillar_reversed"
+    },
+    "axis=z,reversed=true": {
+      "model": "twilightforest:block/nagastone_pillar_reversed",
+      "x": 270
+    }
+  }
+}

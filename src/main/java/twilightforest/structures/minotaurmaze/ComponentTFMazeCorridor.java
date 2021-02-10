@@ -19,7 +19,7 @@ import java.util.Random;
 public class ComponentTFMazeCorridor extends StructureTFComponentOld {
 
 	public ComponentTFMazeCorridor(TemplateManager manager, CompoundNBT nbt) {
-		super(TFMinotaurMazePieces.TFMMC, nbt);
+		this(TFMinotaurMazePieces.TFMMC, nbt);
 	}
 
 	public ComponentTFMazeCorridor(IStructurePieceType piece, CompoundNBT nbt) {

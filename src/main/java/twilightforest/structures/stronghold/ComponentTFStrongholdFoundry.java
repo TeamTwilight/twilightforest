@@ -9,8 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -26,24 +24,17 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 
 	public ComponentTFStrongholdFoundry(TemplateManager manager, CompoundNBT nbt) {
 		super(TFStrongholdPieces.TFSFo, nbt);
+		this.entranceLevel = nbt.getInt("entranceLevel");
 	}
 
 	public ComponentTFStrongholdFoundry(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStrongholdPieces.TFSFo, feature, i, facing, x, y, z);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("entranceLevel", this.entranceLevel);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.entranceLevel = tagCompound.getInt("entranceLevel");
+		tagCompound.putInt("entranceLevel", this.entranceLevel);
 	}
 
 	@Override

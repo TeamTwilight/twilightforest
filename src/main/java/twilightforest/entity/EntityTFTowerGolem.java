@@ -11,7 +11,6 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
@@ -21,6 +20,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 
 public class EntityTFTowerGolem extends MonsterEntity {
 
@@ -64,17 +64,17 @@ public class EntityTFTowerGolem extends MonsterEntity {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_IRON_GOLEM_HURT;
+		return TFSounds.CARMINITE_GOLEM_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_IRON_GOLEM_DEATH;
+		return TFSounds.CARMINITE_GOLEM_DEATH;
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(SoundEvents.ENTITY_IRON_GOLEM_STEP, 1.0F, 1.0F);
+		this.playSound(TFSounds.CARMINITE_GOLEM_STEP, 1.0F, 1.0F);
 	}
 
 	@Override
@@ -93,13 +93,13 @@ public class EntityTFTowerGolem extends MonsterEntity {
 			BlockState iblockstate = this.world.getBlockState(new BlockPos(i, j, k));
 
 			if (iblockstate.getMaterial() != Material.AIR) {
-				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, iblockstate), this.getPosX() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), this.getBoundingBox().minY + 0.1D, this.getPosZ() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), 4.0D * ((double) this.rand.nextFloat() - 0.5D), 0.5D, ((double) this.rand.nextFloat() - 0.5D) * 4.0D);
+				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, iblockstate), this.getPosX() + (this.rand.nextFloat() - 0.5D) * this.getWidth(), this.getBoundingBox().minY + 0.1D, this.getPosZ() + (this.rand.nextFloat() - 0.5D) * this.getWidth(), 4.0D * (this.rand.nextFloat() - 0.5D), 0.5D, (this.rand.nextFloat() - 0.5D) * 4.0D);
 			}
 		}
 		// End copy
 
 		if (this.rand.nextBoolean()) {
-			this.world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, 1.0F), this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
+			this.world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, 1.0F), this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.getPosY() + this.rand.nextDouble() * this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), 0, 0, 0);
 		}
 	}
 
@@ -108,7 +108,7 @@ public class EntityTFTowerGolem extends MonsterEntity {
 	public void handleStatusUpdate(byte id) {
 		if (id == 4) {
 			this.attackTimer = 10;
-			this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+			this.playSound(TFSounds.CARMINITE_GOLEM_ATTACK, 1.0F, 1.0F);
 		} else {
 			super.handleStatusUpdate(id);
 		}

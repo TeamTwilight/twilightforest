@@ -1,0 +1,83 @@
+{
+  "config": {
+    "max_water_depth": 0,
+    "ignore_vines": true,
+    "heightmap": "OCEAN_FLOOR",
+    "minimum_size": {
+      "limit": 11,
+      "lower_size": 0,
+      "upper_size": 5,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "decorators": [
+      {
+        "placement_count": 1,
+        "probability_of_placement": 1.0,
+        "deco_provider": {
+          "state": {
+            "Properties": {
+              "facing": "north"
+            },
+            "Name": "twilightforest:firefly"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "type": "twilightforest:trunkside_decorator"
+      }
+    ],
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "west": "true",
+          "up": "true",
+          "south": "true",
+          "north": "true",
+          "east": "true",
+          "down": "true"
+        },
+        "Name": "minecraft:mushroom_stem"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "leaves_provider": {
+      "state": {
+        "Properties": {
+          "west": "true",
+          "up": "true",
+          "south": "true",
+          "north": "true",
+          "east": "true",
+          "down": "false"
+        },
+        "Name": "minecraft:brown_mushroom_block"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "foliage_placer": {
+      "random_add_horizontal": 1,
+      "random_add_vertical": 0,
+      "vertical_filler_bias": 0.0,
+      "horizontal_radius": 4.25,
+      "vertical_radius": 0.0,
+      "offset": 1,
+      "type": "twilightforest:spheroid_foliage_placer"
+    },
+    "trunk_placer": {
+      "branch_start_offset_down": 6,
+      "branch_config": {
+        "random_add_length": 1.0,
+        "spacing_yaw": 0.3,
+        "downwards_pitch": 0.2,
+        "count_minimum": 3,
+        "random_add_count": 1,
+        "length": 9.0
+      },
+      "perpendicular_branches": true,
+      "base_height": 12,
+      "height_rand_a": 5,
+      "height_rand_b": 5,
+      "type": "twilightforest:branching_trunk_placer"
+    }
+  },
+  "type": "minecraft:tree"
+}

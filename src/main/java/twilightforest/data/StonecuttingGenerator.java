@@ -1,7 +1,6 @@
 package twilightforest.data;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
@@ -25,12 +24,27 @@ public class StonecuttingGenerator extends RecipeProvider {
 
 	@Override
 	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
+		consumer.accept(stonecutting(TFBlocks.castle_brick.get(), TFBlocks.castle_brick_frame.get()));
+		consumer.accept(stonecutting(TFBlocks.castle_brick.get(), TFBlocks.castle_brick_worn.get()));
+		consumer.accept(stonecutting(TFBlocks.castle_brick_frame.get(), TFBlocks.castle_pillar_bold.get()));
+		consumer.accept(stonecutting(TFBlocks.castle_pillar_bold.get(), TFBlocks.castle_pillar_bold_tile.get()));
+		consumer.accept(stonecutting(TFBlocks.castle_pillar_encased.get(), TFBlocks.castle_pillar_encased_tile.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_pillar_encased.get(), TFBlocks.castle_stairs_encased.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_pillar_bold.get(), TFBlocks.castle_stairs_bold.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_brick.get(), TFBlocks.castle_stairs_brick.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_brick_worn.get(), TFBlocks.castle_stairs_worn.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_stairs_cracked.get()));
 		consumer.accept(stonecutting(TFBlocks.castle_brick_mossy.get(), TFBlocks.castle_stairs_mossy.get()));
+		
+		consumer.accept(stonecutting(TFBlocks.dark_log.get(), TFBlocks.tower_wood.get()));
+		consumer.accept(stonecutting(TFBlocks.dark_wood.get(), TFBlocks.tower_wood.get()));
+		consumer.accept(stonecutting(TFBlocks.tower_wood.get(), TFBlocks.tower_wood_encased.get()));
+		
+		consumer.accept(stonecutting(TFBlocks.maze_stone.get(), TFBlocks.maze_stone_border.get()));
+		consumer.accept(stonecutting(TFBlocks.maze_stone.get(), TFBlocks.maze_stone_brick.get()));
+		consumer.accept(stonecutting(TFBlocks.maze_stone.get(), TFBlocks.maze_stone_chiseled.get()));
+		consumer.accept(stonecutting(TFBlocks.maze_stone.get(), TFBlocks.maze_stone_decorative.get()));
+		consumer.accept(stonecutting(TFBlocks.maze_stone.get(), TFBlocks.maze_stone_mosaic.get()));
 	}
 
 	@Override
@@ -47,7 +61,7 @@ public class StonecuttingGenerator extends RecipeProvider {
 	}
 
 	private static ResourceLocation getIdFor(Item input, Item output) {
-		String path = String.format("stonecutting/%s_to_%s", input.getRegistryName().getPath(), output.getRegistryName().getPath());
+		String path = String.format("stonecutting/%s/%s", input.getRegistryName().getPath(), output.getRegistryName().getPath());
 		return prefix(path);
 	}
 

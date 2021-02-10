@@ -8,11 +8,11 @@ public class StructureDecoratorDarkTower extends StructureTFDecorator {
 
 	public StructureDecoratorDarkTower() {
 		this.blockState = TFBlocks.tower_wood.get().getDefaultState();
-		this.accentState = TFBlocks.castle_stairs_encased.get().getDefaultState();
+		this.accentState = TFBlocks.tower_wood_encased.get().getDefaultState();
 		this.fenceState = Blocks.OAK_FENCE.getDefaultState();
 		this.stairState = Blocks.SPRUCE_STAIRS.getDefaultState();
-		this.pillarState = TFBlocks.castle_stairs_encased.get().getDefaultState();
-		this.platformState = TFBlocks.castle_stairs_encased.get().getDefaultState();
+		this.pillarState = TFBlocks.tower_wood_encased.get().getDefaultState();
+		this.platformState = TFBlocks.tower_wood_encased.get().getDefaultState();
 		this.randomBlocks = new StructureTFTowerWoods();
 	}
 

@@ -3,8 +3,6 @@ package twilightforest;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,11 +26,6 @@ public class TFConfig {
 					comment("Settings that are not reversible without consequences.").
 					push("Dimension Settings");
 			{
-				DIMENSION.twilightForestSeed = builder.
-						translation(config + "dimension_seed").
-						worldRestart().
-						comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.").
-						define("twilightForestSeed", "");
 				DIMENSION.newPlayersSpawnInTF = builder.
 						translation(config + "spawn_in_tf").
 						comment("If true, players spawning for the first time will spawn in the Twilight Forest.").
@@ -47,6 +40,11 @@ public class TFConfig {
 						worldRestart().
 						comment("If true, giant Twilight Oaks will also spawn in void worlds").
 						define("skylightOaks", true);
+				DIMENSION.twilightForestID = builder.
+						translation(config + "twilight_dimension_id").
+						worldRestart().
+						comment("Destination dimension for Twilight Portals and some other logic as well").
+						define("twilightDimensionID", "twilightforest:twilightforest");
 				builder.
 						comment("Weights for various small features").
 						push("World-Gen Weights");
@@ -181,10 +179,10 @@ public class TFConfig {
 					translation(config + "portals").
 					comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.").
 					define("disablePortalCreation", false);
-			portalCreationItems = builder.
-					translation(config + "portal_creator").
-					comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
-					define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
+			//portalCreationItems = builder.
+			//		translation(config + "portal_creator").
+			//		comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
+			//		define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
 			checkPortalDestination = builder.
 					translation(config + "check_portal_destination").
 					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
@@ -239,10 +237,12 @@ public class TFConfig {
 
 		public static class Dimension {
 
-			public ForgeConfigSpec.ConfigValue<String> twilightForestSeed;
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
+
+			// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example) before strictly using this
+			public ForgeConfigSpec.ConfigValue<String> twilightForestID;
 
 			public WorldGenWeights worldGenWeights = new WorldGenWeights();
 
@@ -473,14 +473,13 @@ public class TFConfig {
 	}
 
 	public static void build() {
-		buildPortalIngredient();
+		//buildPortalIngredient();
 		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();
 	}
 
-	public static Ingredient portalIngredient;
+	/*public static Ingredient portalIngredient;
 
 	private static void buildPortalIngredient() {
-
 		List<ItemStack> stacks = new ArrayList<>();
 
 		for (String s : COMMON_CONFIG.portalCreationItems.get()) {
@@ -492,7 +491,7 @@ public class TFConfig {
 		}
 
 		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
-	}
+	}*/
 
 	private static Optional<ItemStack> parseItemStack(String string) {
 		ResourceLocation id = ResourceLocation.tryCreate(string);

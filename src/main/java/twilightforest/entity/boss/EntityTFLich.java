@@ -12,7 +12,6 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Items;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -33,6 +32,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -227,9 +227,9 @@ public class EntityTFLich extends MonsterEntity {
 
 		if (this.getPhase() == 3)
 			world.addParticle(ParticleTypes.ANGRY_VILLAGER,
-				this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
-				this.getPosY() + 1.0D + (double) (this.rand.nextFloat() * this.getHeight()),
-				this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
+				this.getPosX() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(),
+				this.getPosY() + 1.0D + this.rand.nextFloat() * this.getHeight(),
+				this.getPosZ() + this.rand.nextFloat() * this.getWidth() * 2.0F - this.getWidth(),
 				this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D);
 
 		if (!world.isRemote) {
@@ -256,7 +256,7 @@ public class EntityTFLich extends MonsterEntity {
 		}
 
 		if (isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
-			playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			playSound(TFSounds.LICH_CLONE_HURT, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 			return false;
 		}
 
@@ -271,10 +271,10 @@ public class EntityTFLich extends MonsterEntity {
 				// reduce shield for magic damage greater than 1 heart
 				if (getShieldStrength() > 0) {
 					setShieldStrength(getShieldStrength() - 1);
-					playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+					playSound(TFSounds.SHIELD_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				}
 			} else {
-				playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				playSound(TFSounds.SHIELD_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				if (src.getTrueSource() instanceof LivingEntity) {
 					setRevengeTarget((LivingEntity) src.getTrueSource());
 				}
@@ -328,10 +328,10 @@ public class EntityTFLich extends MonsterEntity {
 		double sz = getPosZ() + (MathHelper.sin(bodyFacingAngle) * 0.65);
 
 		double tx = getAttackTarget().getPosX() - sx;
-		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (getPosY() + getHeight() / 2.0F);
+		double ty = (getAttackTarget().getBoundingBox().minY + getAttackTarget().getHeight() / 2.0F) - (getPosY() + getHeight() / 2.0F);
 		double tz = getAttackTarget().getPosZ() - sz;
 
-		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
 		EntityTFLichBolt projectile = new EntityTFLichBolt(TFEntities.lich_bolt, world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
@@ -347,10 +347,10 @@ public class EntityTFLich extends MonsterEntity {
 		double sz = getPosZ() + (MathHelper.sin(bodyFacingAngle) * 0.65);
 
 		double tx = getAttackTarget().getPosX() - sx;
-		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (getPosY() + getHeight() / 2.0F);
+		double ty = (getAttackTarget().getBoundingBox().minY + getAttackTarget().getHeight() / 2.0F) - (getPosY() + getHeight() / 2.0F);
 		double tz = getAttackTarget().getPosZ() - sz;
 
-		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
 		EntityTFLichBomb projectile = new EntityTFLichBomb(TFEntities.lich_bomb, world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
@@ -473,8 +473,8 @@ public class EntityTFLich extends MonsterEntity {
 		setPositionAndUpdate(destX, destY, destZ);
 
 		makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.world.playSound(null, srcX, srcY, srcZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
-		this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
+		this.world.playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
+		this.playSound(TFSounds.LICH_TELEPORT, 1.0F, 1.0F);
 
 		// sometimes we need to do this
 		this.isJumping = false;
@@ -559,17 +559,17 @@ public class EntityTFLich extends MonsterEntity {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ENTITY_BLAZE_AMBIENT;
+		return TFSounds.LICH_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_BLAZE_HURT;
+		return TFSounds.LICH_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_BLAZE_DEATH;
+		return TFSounds.LICH_DEATH;
 	}
 
 	@Override

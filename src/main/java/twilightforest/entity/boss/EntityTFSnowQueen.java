@@ -11,7 +11,6 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -28,6 +27,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -35,8 +35,6 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.IEntityMultiPart;
-import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
@@ -48,7 +46,7 @@ import twilightforest.world.TFGenerationSettings;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart, IBreathAttacker {
+public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BOOLEAN);
@@ -70,7 +68,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super(type, world);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
-			this.iceArray[i] = TFEntities.snow_queen_ice_shield.create(world);
+			this.iceArray[i] = new EntityTFSnowQueenIceShield(this);
 		}
 
 		this.setCurrentPhase(Phase.SUMMON);
@@ -115,17 +113,17 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_AMBIENT;
+		return TFSounds.SNOW_QUEEN_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_HURT;
+		return TFSounds.SNOW_QUEEN_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_DEATH;
+		return TFSounds.SNOW_QUEEN_DEATH;
 	}
 
 	@Override
@@ -192,17 +190,6 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (this.world instanceof ServerWorld && isAlive()) {
-			ServerWorld serverWorld = (ServerWorld) this.world;
-			for (EntityTFSnowQueenIceShield segment : iceArray) {
-				if (!segment.isAddedToWorld()) {
-					segment.setParentUUID(this.getUniqueID());
-					segment.setParentId(this.getEntityId());
-					serverWorld.addEntity(segment);
-				}
-			}
-		}
 
 		for (int i = 0; i < this.iceArray.length; i++) {
 			if (i < this.iceArray.length - 1) {
@@ -279,7 +266,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 			if (collided instanceof LivingEntity && super.attackEntityAsMob(collided)) {
 				Vector3d motion = collided.getMotion();
 				collided.setMotion(motion.x, motion.y + 0.4, motion.z);
-				this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+				this.playSound(TFSounds.SNOW_QUEEN_ATTACK, 1.0F, 1.0F);
 			}
 		}
 	}
@@ -336,21 +323,12 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		return false;
 	}
 
-	@Override
-	public World getWorld() {
-		return this.world;
-	}
-
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
-		return false;
-	}
-
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
+	@Nullable
 	@Override
-	public Entity[] getParts() {
+	public PartEntity<?>[] getParts() {
 		return iceArray;
 	}
 

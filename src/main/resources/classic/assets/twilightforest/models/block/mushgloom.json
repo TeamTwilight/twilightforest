@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/util/cross_2_layer",
+  "textures": {
+    "cross": "twilightforest:block/mushgloom",
+    "cross2": "twilightforest:block/mushgloom_head"
+  }
+}

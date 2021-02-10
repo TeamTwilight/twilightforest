@@ -93,7 +93,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 
 			double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
-			distanceDesired = (double) MathHelper.sqrt(distanceDesired);
+			distanceDesired = MathHelper.sqrt(distanceDesired);
 
 			// add velocity
 			double velX = offsetX / distanceDesired * 0.05D;

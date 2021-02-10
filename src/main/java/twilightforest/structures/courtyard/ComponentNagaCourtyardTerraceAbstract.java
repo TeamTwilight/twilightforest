@@ -1,7 +1,6 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -21,20 +20,18 @@ public abstract class ComponentNagaCourtyardTerraceAbstract extends StructureTFC
 
     private final ResourceLocation TERRACE;
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardTerraceAbstract(IStructurePieceType piece, CompoundNBT nbt, ResourceLocation terrace) {
-        super(piece, nbt);
+    public ComponentNagaCourtyardTerraceAbstract(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt, ResourceLocation terrace) {
+        super(manager, piece, nbt);
         TERRACE = terrace;
     }
 
-    @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardTerraceAbstract(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation terrace) {
         super(type, feature, i, x, y, z, rotation);
         TERRACE = terrace;
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
+    protected void loadTemplates(TemplateManager templateManager) {
         TEMPLATE = templateManager.getTemplate(TERRACE);
     }
 

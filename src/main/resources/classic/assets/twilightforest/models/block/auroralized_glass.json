@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/util/tinted_cube_all",
+  "textures": {
+    "all": "twilightforest:block/auroralized_glass"
+  }
+}

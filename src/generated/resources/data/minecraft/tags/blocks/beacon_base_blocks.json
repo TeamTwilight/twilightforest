@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "twilightforest:knightmetal_block",
-    "twilightforest:ironwood_block",
-    "twilightforest:fiery_block",
-    "twilightforest:steeleaf_block",
-    "twilightforest:arctic_fur_block",
-    "twilightforest:carminite_block"
+    "#twilightforest:storage_blocks/arctic_fur",
+    "#twilightforest:storage_blocks/carminite",
+    "#twilightforest:storage_blocks/fiery",
+    "#twilightforest:storage_blocks/ironwood",
+    "#twilightforest:storage_blocks/knightmetal",
+    "#twilightforest:storage_blocks/steeleaf"
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "twilightforest:block/etched_nagastone_down",
+    "up": "twilightforest:block/etched_nagastone_down",
+    "north": "twilightforest:block/stone_tiles",
+    "south": "twilightforest:block/stone_tiles",
+    "east": "twilightforest:block/etched_nagastone_left",
+    "west": "twilightforest:block/etched_nagastone_right",
+    "particle": "#down"
+  }
+}

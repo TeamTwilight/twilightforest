@@ -1,0 +1,12 @@
+{
+  "ctm": {
+    "ctm_version": 1,
+    "type": "ctm",
+    "layer": "CUTOUT",
+    "textures": [ "twilightforest:block/fiery_block_inner_ctm" ],
+    "extra": {
+      "light": 15,
+      "connect_inside": true
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": "twilightforest:tree/base/hollow_tree",
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {
+                "count": 8,
+                "extra_chance": 0.4,
+                "extra_count": 4
+              },
+              "type": "minecraft:count_extra"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {},
+      "type": "minecraft:square"
+    }
+  },
+  "type": "minecraft:decorated"
+}

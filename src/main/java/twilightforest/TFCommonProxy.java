@@ -1,11 +1,5 @@
 package twilightforest;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.server.ServerWorld;
-
 public class TFCommonProxy {
 	public void init() {}
 

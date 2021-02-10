@@ -38,6 +38,8 @@ public final class RotationUtil {
 						return NONE;
 					case COUNTERCLOCKWISE_90:
 						return CLOCKWISE_90;
+					default:
+						return original;
 				}
 
 			case COUNTERCLOCKWISE_90:
@@ -51,6 +53,8 @@ public final class RotationUtil {
 						return COUNTERCLOCKWISE_90;
 					case COUNTERCLOCKWISE_90:
 						return NONE;
+					default:
+						return original;
 				}
 
 			case CLOCKWISE_90:
@@ -64,6 +68,8 @@ public final class RotationUtil {
 						return CLOCKWISE_90;
 					case COUNTERCLOCKWISE_90:
 						return CLOCKWISE_180;
+					default:
+						return original;
 				}
 
 			default:

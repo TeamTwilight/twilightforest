@@ -13,10 +13,9 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFDimensions;
-
 import javax.annotation.Nonnull;
 
 public class ItemTFMagicBeans extends Item {
@@ -53,11 +52,12 @@ public class ItemTFMagicBeans extends Item {
 
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
-		if (world.getDimensionKey() == TFDimensions.twilightForest) {
+		if (world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) {
 			// WorldProviderTwilightForest has this method on both server and client
 			return ((ClientWorld)world).func_239132_a_().func_239213_a_();
 		} else {
 			// otherwise, world.dimension.getCloudHeight() is client only. guess 128
+			// FIXME Isn't cloud height re-added to Dimension Type?
 			return 128;
 		}
 	}

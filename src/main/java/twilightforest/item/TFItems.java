@@ -68,24 +68,24 @@ public class TFItems {
 	public static final RegistryObject<Item> torchberries = ITEMS.register("torchberries", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> raw_venison = ITEMS.register("raw_venison", () -> new Item(defaultBuilder().food(TFItems.VENISON_RAW)));
 	public static final RegistryObject<Item> cooked_venison = ITEMS.register("cooked_venison", () -> new Item(defaultBuilder().food(TFItems.VENISON_COOKED)));
-	public static final RegistryObject<Item> hydra_chop = ITEMS.register("hydra_chop", () -> new ItemTFHydraChops(defaultBuilder().food(TFItems.HYDRA_CHOP).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_blood = ITEMS.register("fiery_blood", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_tears = ITEMS.register("fiery_tears", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> naga_trophy = ITEMS.register("naga_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.naga_trophy, BossVariant.NAGA));
-	public static final RegistryObject<Item> lich_trophy = ITEMS.register("lich_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.lich_trophy, BossVariant.LICH));
-	public static final RegistryObject<Item> minoshroom_trophy = ITEMS.register("minoshroom_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.minoshroom_trophy, BossVariant.MINOSHROOM));
-	public static final RegistryObject<Item> hydra_trophy = ITEMS.register("hydra_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.hydra_trophy, BossVariant.HYDRA));
-	public static final RegistryObject<Item> knight_phantom_trophy = ITEMS.register("knight_phantom_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.knight_phantom_trophy, BossVariant.KNIGHT_PHANTOM));
-	public static final RegistryObject<Item> ur_ghast_trophy = ITEMS.register("ur_ghast_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.ur_ghast_trophy, BossVariant.UR_GHAST));
-	public static final RegistryObject<Item> snow_queen_trophy = ITEMS.register("snow_queen_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.snow_queen_trophy, BossVariant.SNOW_QUEEN));
-	public static final RegistryObject<Item> quest_ram_trophy = ITEMS.register("quest_ram_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.quest_ram_trophy, BossVariant.QUEST_RAM));
-	public static final RegistryObject<Item> fiery_ingot = ITEMS.register("fiery_ingot", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_helmet = ITEMS.register("fiery_helmet", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.HEAD, defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_chestplate = ITEMS.register("fiery_chestplate", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.CHEST, defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_leggings = ITEMS.register("fiery_leggings", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.LEGS, defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_boots = ITEMS.register("fiery_boots", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.FEET, defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_sword = ITEMS.register("fiery_sword", () -> new ItemTFFierySword(TwilightItemTier.TOOL_FIERY, defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_pickaxe = ITEMS.register("fiery_pickaxe", () -> new ItemTFFieryPick(TwilightItemTier.TOOL_FIERY, defaultBuilder().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> hydra_chop = ITEMS.register("hydra_chop", () -> new ItemTFHydraChops(defaultBuilder().isImmuneToFire().food(TFItems.HYDRA_CHOP).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_blood = ITEMS.register("fiery_blood", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_tears = ITEMS.register("fiery_tears", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> naga_trophy = ITEMS.register("naga_trophy", () -> new ItemTFTrophy(TFBlocks.naga_trophy.get(), TFBlocks.naga_wall_trophy.get(), defaultBuilder().rarity(TwilightForestMod.getRarity()), BossVariant.NAGA));
+	public static final RegistryObject<Item> lich_trophy = ITEMS.register("lich_trophy", () -> new ItemTFTrophy(TFBlocks.lich_trophy.get(), TFBlocks.lich_wall_trophy.get(), defaultBuilder().rarity(TwilightForestMod.getRarity()), BossVariant.LICH));
+	public static final RegistryObject<Item> minoshroom_trophy = ITEMS.register("minoshroom_trophy", () -> new ItemTFTrophy(TFBlocks.minoshroom_trophy.get(), TFBlocks.minoshroom_wall_trophy.get(), defaultBuilder().rarity(TwilightForestMod.getRarity()), BossVariant.MINOSHROOM));
+	public static final RegistryObject<Item> hydra_trophy = ITEMS.register("hydra_trophy", () -> new ItemTFTrophy(TFBlocks.hydra_trophy.get(), TFBlocks.hydra_wall_trophy.get(), defaultBuilder().rarity(TwilightForestMod.getRarity()), BossVariant.HYDRA));
+	public static final RegistryObject<Item> knight_phantom_trophy = ITEMS.register("knight_phantom_trophy", () -> new ItemTFTrophy(TFBlocks.knight_phantom_trophy.get(), TFBlocks.knight_phantom_wall_trophy.get(), defaultBuilder().rarity(TwilightForestMod.getRarity()), BossVariant.KNIGHT_PHANTOM));
+	public static final RegistryObject<Item> ur_ghast_trophy = ITEMS.register("ur_ghast_trophy", () -> new ItemTFTrophy(TFBlocks.ur_ghast_trophy.get(), TFBlocks.ur_ghast_wall_trophy.get(), defaultBuilder().rarity(TwilightForestMod.getRarity()), BossVariant.UR_GHAST));
+	public static final RegistryObject<Item> snow_queen_trophy = ITEMS.register("snow_queen_trophy", () -> new ItemTFTrophy(TFBlocks.snow_queen_trophy.get(), TFBlocks.snow_queen_wall_trophy.get(), defaultBuilder().rarity(TwilightForestMod.getRarity()), BossVariant.SNOW_QUEEN));
+	public static final RegistryObject<Item> quest_ram_trophy = ITEMS.register("quest_ram_trophy", () -> new ItemTFTrophy(TFBlocks.quest_ram_trophy.get(), TFBlocks.quest_ram_wall_trophy.get(), defaultBuilder().rarity(TwilightForestMod.getRarity()), BossVariant.QUEST_RAM));
+	public static final RegistryObject<Item> fiery_ingot = ITEMS.register("fiery_ingot", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_helmet = ITEMS.register("fiery_helmet", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.HEAD, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_chestplate = ITEMS.register("fiery_chestplate", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.CHEST, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_leggings = ITEMS.register("fiery_leggings", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.LEGS, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_boots = ITEMS.register("fiery_boots", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.FEET, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_sword = ITEMS.register("fiery_sword", () -> new ItemTFFierySword(TwilightItemTier.TOOL_FIERY, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_pickaxe = ITEMS.register("fiery_pickaxe", () -> new ItemTFFieryPick(TwilightItemTier.TOOL_FIERY, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> steeleaf_ingot = ITEMS.register("steeleaf_ingot", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> steeleaf_helmet = ITEMS.register("steeleaf_helmet", () -> new ItemTFSteeleafArmor(TwilightArmorMaterial.ARMOR_STEELEAF, EquipmentSlotType.HEAD, defaultBuilder()));
 	public static final RegistryObject<Item> steeleaf_chestplate = ITEMS.register("steeleaf_chestplate", () -> new ItemTFSteeleafArmor(TwilightArmorMaterial.ARMOR_STEELEAF, EquipmentSlotType.CHEST, defaultBuilder()));
@@ -98,7 +98,7 @@ public class TFItems {
 	public static final RegistryObject<Item> steeleaf_hoe = ITEMS.register("steeleaf_hoe", () -> new ItemTFSteeleafHoe(TwilightItemTier.TOOL_STEELEAF, defaultBuilder()));
 	public static final RegistryObject<Item> minotaur_axe_gold = ITEMS.register("minotaur_axe_gold", () -> new ItemTFMinotaurAxe(ItemTier.GOLD, defaultBuilder().rarity(Rarity.COMMON)));
 	public static final RegistryObject<Item> minotaur_axe = ITEMS.register("minotaur_axe", () -> new ItemTFMinotaurAxe(ItemTier.DIAMOND, defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> mazebreaker_pickaxe = ITEMS.register("mazebreaker_pickaxe", () -> new ItemTFMazebreakerPick(ItemTier.DIAMOND, defaultBuilder().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> mazebreaker_pickaxe = ITEMS.register("mazebreaker_pickaxe", () -> new ItemTFMazebreakerPick(ItemTier.DIAMOND, defaultBuilder().setNoRepair().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> transformation_powder = ITEMS.register("transformation_powder", () -> new ItemTFTransformPowder(defaultBuilder()));
 	public static final RegistryObject<Item> raw_meef = ITEMS.register("raw_meef", () -> new Item(defaultBuilder().food(TFItems.MEEF_RAW)));
 	public static final RegistryObject<Item> cooked_meef = ITEMS.register("cooked_meef", () -> new Item(defaultBuilder().food(TFItems.MEEF_COOKED)));
@@ -110,13 +110,13 @@ public class TFItems {
 	public static final RegistryObject<Item> ore_magnet = ITEMS.register("ore_magnet", () -> new ItemTFOreMagnet(defaultBuilder().maxDamage(12)));
 	public static final RegistryObject<Item> crumble_horn = ITEMS.register("crumble_horn", () -> new ItemTFCrumbleHorn(defaultBuilder().maxDamage(1024).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> peacock_fan = ITEMS.register("peacock_fan", () -> new ItemTFPeacockFan(defaultBuilder().maxDamage(1024).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> moonworm_queen = ITEMS.register("moonworm_queen", () -> new ItemTFMoonwormQueen(defaultBuilder().maxDamage(256).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> moonworm_queen = ITEMS.register("moonworm_queen", () -> new ItemTFMoonwormQueen(defaultBuilder().setNoRepair().maxDamage(256).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> charm_of_life_1 = ITEMS.register("charm_of_life_1", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_life_2 = ITEMS.register("charm_of_life_2", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_keeping_1 = ITEMS.register("charm_of_keeping_1", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_keeping_2 = ITEMS.register("charm_of_keeping_2", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_keeping_3 = ITEMS.register("charm_of_keeping_3", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> tower_key = ITEMS.register("tower_key", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> tower_key = ITEMS.register("tower_key", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> borer_essence = ITEMS.register("borer_essence", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> carminite = ITEMS.register("carminite", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> experiment_115 = ITEMS.register("experiment_115", () -> new ItemTFExperiment115(TFBlocks.experiment_115.get(), defaultBuilder().food(TFItems.EXPERIMENT_115)));
@@ -133,7 +133,7 @@ public class TFItems {
 	public static final RegistryObject<Item> knightmetal_shield = ITEMS.register("knightmetal_shield", () -> new ItemKnightlyShield(defaultBuilder().maxDamage(1024)));
 	public static final RegistryObject<Item> phantom_helmet = ITEMS.register("phantom_helmet", () -> new ItemTFPhantomArmor(TwilightArmorMaterial.ARMOR_PHANTOM, EquipmentSlotType.HEAD, defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> phantom_chestplate = ITEMS.register("phantom_chestplate", () -> new ItemTFPhantomArmor(TwilightArmorMaterial.ARMOR_PHANTOM, EquipmentSlotType.CHEST, defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> lamp_of_cinders = ITEMS.register("lamp_of_cinders", () -> new ItemTFLampOfCinders(defaultBuilder().maxDamage(1024).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> lamp_of_cinders = ITEMS.register("lamp_of_cinders", () -> new ItemTFLampOfCinders(defaultBuilder().isImmuneToFire().maxDamage(1024).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> alpha_fur = ITEMS.register("alpha_fur", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> yeti_helmet = ITEMS.register("yeti_helmet", () -> new ItemTFYetiArmor(TwilightArmorMaterial.ARMOR_YETI, EquipmentSlotType.HEAD, defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> yeti_chestplate = ITEMS.register("yeti_chestplate", () -> new ItemTFYetiArmor(TwilightArmorMaterial.ARMOR_YETI, EquipmentSlotType.CHEST, defaultBuilder().rarity(Rarity.UNCOMMON)));
@@ -153,7 +153,7 @@ public class TFItems {
 	public static final RegistryObject<Item> ice_bow = ITEMS.register("ice_bow", () -> new ItemTFIceBow(defaultBuilder().rarity(Rarity.UNCOMMON).maxDamage(384)));
 	public static final RegistryObject<Item> ender_bow = ITEMS.register("ender_bow", () -> new ItemTFEnderBow(defaultBuilder().rarity(Rarity.UNCOMMON).maxDamage(384)));
 	public static final RegistryObject<Item> ice_sword = ITEMS.register("ice_sword", () -> new ItemTFIceSword(TwilightItemTier.TOOL_ICE, defaultBuilder()));
-	public static final RegistryObject<Item> glass_sword = ITEMS.register("glass_sword", () -> new ItemTFGlassSword(TwilightItemTier.TOOL_GLASS, defaultBuilder().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> glass_sword = ITEMS.register("glass_sword", () -> new ItemTFGlassSword(TwilightItemTier.TOOL_GLASS, defaultBuilder().setNoRepair().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> knightmetal_ring = ITEMS.register("knightmetal_ring", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> block_and_chain = ITEMS.register("block_and_chain", () -> new ItemTFChainBlock(defaultBuilder().maxDamage(99)));
 	public static final RegistryObject<Item> cube_talisman = ITEMS.register("cube_talisman", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
@@ -177,9 +177,9 @@ public class TFItems {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void addItemModelProperties() {
-		ItemModelsProperties.func_239418_a_(cube_of_annihilation.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(cube_of_annihilation.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
 				ItemTFCubeOfAnnihilation.getThrownUuid(stack) != null ? 1 : 0);
-		ItemModelsProperties.func_239418_a_(moon_dial.get(), new ResourceLocation("phase"), new IItemPropertyGetter() {
+		ItemModelsProperties.registerProperty(moon_dial.get(), new ResourceLocation("phase"), new IItemPropertyGetter() {
 			@Override
 			public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entityBase) {
 				boolean flag = entityBase != null;
@@ -187,7 +187,7 @@ public class TFItems {
 
 				if (world == null && entity != null) world = (ClientWorld) entity.world;
 
-				return world == null ? 0.0F : (float) (world.func_230315_m_().func_236043_f_() ? MathHelper.frac(world.func_242414_af() / 8.0f) : this.wobble(world, Math.random()));
+				return world == null ? 0.0F : (float) (world.getDimensionType().isNatural() ? MathHelper.frac(world.getMoonPhase() / 8.0f) : this.wobble(world, Math.random()));
 			}
 
 			@OnlyIn(Dist.CLIENT)
@@ -211,7 +211,7 @@ public class TFItems {
 				return this.rotation;
 			}
 		});
-		ItemModelsProperties.func_239418_a_(moonworm_queen.get(), TwilightForestMod.prefix("alt"), (stack, world, entity) -> {
+		ItemModelsProperties.registerProperty(moonworm_queen.get(), TwilightForestMod.prefix("alt"), (stack, world, entity) -> {
 			if (entity != null && entity.getActiveItemStack() == stack) {
 				int useTime = stack.getUseDuration() - entity.getItemInUseCount();
 				if (useTime >= ItemTFMoonwormQueen.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
@@ -221,21 +221,21 @@ public class TFItems {
 
 			return 0;
 		});
-		ItemModelsProperties.func_239418_a_(ore_magnet.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+		ItemModelsProperties.registerProperty(ore_magnet.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
 			if (entity == null) {
 				return 0.0F;
 			} else {
 				ItemStack itemstack = entity.getActiveItemStack();
-				return !itemstack.isEmpty() ? (float) (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
+				return !itemstack.isEmpty() ? (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
 			}
 		});
-		ItemModelsProperties.func_239418_a_(ore_magnet.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(ore_magnet.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
 				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
-		ItemModelsProperties.func_239418_a_(block_and_chain.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(block_and_chain.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
 				ItemTFChainBlock.getThrownUuid(stack) != null ? 1 : 0);
-		ItemModelsProperties.func_239418_a_(experiment_115.get(), ItemTFExperiment115.THINK, (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(experiment_115.get(), ItemTFExperiment115.THINK, (stack, world, entity) ->
 				stack.hasTag() && stack.getTag().contains("think") ? 1 : 0);
-		ItemModelsProperties.func_239418_a_(experiment_115.get(), ItemTFExperiment115.FULL, (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(experiment_115.get(), ItemTFExperiment115.FULL, (stack, world, entity) ->
 				stack.hasTag() && stack.getTag().contains("full") ? 1 : 0);
 	}
 }

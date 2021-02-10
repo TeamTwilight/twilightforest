@@ -12,7 +12,9 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.*;
+import net.minecraft.item.crafting.ICraftingRecipe;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IWorldPosCallable;
@@ -103,13 +105,13 @@ public class ContainerTFUncrafting extends Container {
 
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getStackInSlot(0);
-			IRecipe[] recipes = getRecipesFor(inputStack, world);
+			ICraftingRecipe[] recipes = getRecipesFor(inputStack, world);
 
 			int size = recipes.length;
 
 			if (size > 0) {
 
-				IRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
+				ICraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				ItemStack[] recipeItems = getIngredients(recipe);
 
 				if (recipe instanceof IShapedRecipe) {
@@ -282,48 +284,39 @@ public class ContainerTFUncrafting extends Container {
 		return ingredient;
 	}
 
-	private static IRecipe[] getRecipesFor(ItemStack inputStack, World world) {
+	private static ICraftingRecipe[] getRecipesFor(ItemStack inputStack, World world) {
 
-		List<IRecipe> recipes = new ArrayList<>();
+		List<ICraftingRecipe> recipes = new ArrayList<>();
 
 		if (!inputStack.isEmpty()) {
-			for (IRecipe recipe : world.getRecipeManager().getRecipes()) {
-				if (recipe.canFit(3, 3) && !recipe.getIngredients().isEmpty() && matches(inputStack, recipe.getRecipeOutput())) {
-					recipes.add(recipe);
+			for (IRecipe<?> recipe : world.getRecipeManager().getRecipes()) {
+				if (recipe instanceof ICraftingRecipe && recipe.canFit(3, 3) && !recipe.getIngredients().isEmpty() && matches(inputStack, recipe.getRecipeOutput())) {
+					recipes.add((ICraftingRecipe) recipe);
 				}
 			}
 		}
 
-		return recipes.toArray(new IRecipe[0]);
+		return recipes.toArray(new ICraftingRecipe[0]);
 	}
 
 	private static boolean matches(ItemStack input, ItemStack output) {
 		return input.getItem() == output.getItem() && input.getCount() >= output.getCount();
 	}
 
-	private static IRecipe[] getRecipesFor(CraftingInventory matrix, World world) {
-
-		List<IRecipe> recipes = new ArrayList<>();
-
-		for (IRecipe recipe : world.getRecipeManager().getRecipes()) {
-			if (recipe.matches(matrix, world)) {
-				recipes.add(recipe);
-			}
-		}
-
-		return recipes.toArray(new IRecipe[0]);
+	private static ICraftingRecipe[] getRecipesFor(CraftingInventory matrix, World world) {
+		return world.getRecipeManager().getRecipes(IRecipeType.CRAFTING, matrix, world).toArray(new ICraftingRecipe[0]);
 	}
 
 	private void chooseRecipe(CraftingInventory inventory) {
 
-		IRecipe[] recipes = getRecipesFor(inventory, world);
+		ICraftingRecipe[] recipes = getRecipesFor(inventory, world);
 
 		if (recipes.length == 0) {
 			this.tinkerResult.setInventorySlotContents(0, ItemStack.EMPTY);
 			return;
 		}
 
-		IRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
+		ICraftingRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
 		if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean(GameRules.DO_LIMITED_CRAFTING) || ((ServerPlayerEntity) this.player).getRecipeBook().isUnlocked(recipe))) {
 			this.tinkerResult.setRecipeUsed(recipe);
@@ -609,7 +602,7 @@ public class ContainerTFUncrafting extends Container {
 		});
 	}
 
-	private ItemStack[] getIngredients(IRecipe<?> recipe) {
+	private ItemStack[] getIngredients(ICraftingRecipe recipe) {
 		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
 		for (int i = 0; i < recipe.getIngredients().size(); i++) {

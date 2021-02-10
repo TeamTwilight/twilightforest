@@ -4,12 +4,17 @@ import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -17,12 +22,18 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
+import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.renderer.entity.LayerShields;
+import twilightforest.item.TFItems;
 import twilightforest.world.TFGenerationSettings;
+
+import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
@@ -30,6 +41,28 @@ public class TFClientEvents {
 
 	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {
+
+		@SubscribeEvent
+		public static void modelBake(ModelBakeEvent event) {
+			fullbrightItem(event, TFItems.fiery_ingot);
+			fullbrightItem(event, TFItems.fiery_boots);
+			fullbrightItem(event, TFItems.fiery_chestplate);
+			fullbrightItem(event, TFItems.fiery_helmet);
+			fullbrightItem(event, TFItems.fiery_leggings);
+			fullbrightItem(event, TFItems.fiery_pickaxe);
+			fullbrightItem(event, TFItems.fiery_sword);
+			fullbright(event, TFBlocks.fiery_block.getId(), "");
+		}
+
+		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
+			fullbright(event, Objects.requireNonNull(item.getId()), "inventory");
+		}
+
+		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state) {
+			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
+			event.getModelRegistry().put(mrl, new FullbrightBakedModel(event.getModelRegistry().get(mrl)));
+		}
+
 		@SubscribeEvent
 		public static void texStitch(TextureStitchEvent.Pre evt) {
 			AtlasTexture map = evt.getMap();
@@ -115,7 +148,7 @@ public class TFClientEvents {
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
 		GameSettings settings = Minecraft.getInstance().gameSettings;
-		if (/*FIXME settings.thirdPersonView != 0 ||*/ settings.hideGUI) return;
+		if (settings.getPointOfView() != PointOfView.FIRST_PERSON || settings.hideGUI) return;
 
 		Entity entity = Minecraft.getInstance().getRenderViewEntity();
 		if (entity instanceof LivingEntity) {
@@ -139,7 +172,7 @@ public class TFClientEvents {
 			Minecraft minecraft = Minecraft.getInstance();
 
 			// only fire if we're in the twilight forest
-			if (minecraft.world != null && TFGenerationSettings.isTwilightForest(minecraft.world)) {
+			if (minecraft.world != null && "twilightforest".equals(minecraft.world.getDimensionKey().getLocation().getNamespace())) {
 				// vignette
 				if (minecraft.ingameGUI != null) {
 					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;

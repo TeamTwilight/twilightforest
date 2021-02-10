@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "twilightforest:block/etched_nagastone_up_weathered",
+    "end": "twilightforest:block/stone_tiles_weathered"
+  }
+}

@@ -35,37 +35,24 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	protected int treasureFloor = -1;
 
 	public ComponentTFIceTowerWing(TemplateManager manager, CompoundNBT nbt) {
-		super(TFIceTowerPieces.TFITWin, nbt);
+		this(TFIceTowerPieces.TFITWin, nbt);
 	}
 
 	public ComponentTFIceTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.hasBase = nbt.getBoolean("hasBase");
+		this.treasureFloor = nbt.getInt("treasureFloor");
 	}
 
 	protected ComponentTFIceTowerWing(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("hasBase", this.hasBase);
-//		tagCompound.putInt("treasureFloor", this.treasureFloor);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.hasBase = tagCompound.getBoolean("hasBase");
-		this.treasureFloor = tagCompound.getInt("treasureFloor");
+		tagCompound.putBoolean("hasBase", this.hasBase);
+		tagCompound.putInt("treasureFloor", this.treasureFloor);
 	}
 
 	@Override
@@ -150,7 +137,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (isOutOfRange((StructurePiece) list.get(0), dx[0], dx[1], dx[2], RANGE)) {
+		if (isOutOfRange(list.get(0), dx[0], dx[1], dx[2], RANGE)) {
 			return false;
 		}
 
@@ -293,6 +280,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * @param ladderDownDir
 	 */
 	@Override
+	@SuppressWarnings("fallthrough")
 	protected void decorateFloor(ISeedReader world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		boolean hasTreasure = (this.treasureFloor == floor);
 

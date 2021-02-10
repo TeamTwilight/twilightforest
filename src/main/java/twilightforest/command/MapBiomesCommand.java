@@ -14,7 +14,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFMagicMap;
 
 import javax.imageio.ImageIO;
@@ -64,7 +63,7 @@ public class MapBiomesCommand {
 
     public static LiteralArgumentBuilder<CommandSource> register() {
         // TODO elevate command perm
-        return Commands.literal("biomepng").executes(MapBiomesCommand::execute);
+        return Commands.literal("biomepng").requires(cs -> cs.hasPermissionLevel(2)).executes(MapBiomesCommand::execute);
     }
 
     private static int execute(CommandContext<CommandSource> source) {

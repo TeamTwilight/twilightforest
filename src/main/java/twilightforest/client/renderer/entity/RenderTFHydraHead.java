@@ -10,8 +10,8 @@ import twilightforest.client.model.entity.ModelTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
-
-public class RenderTFHydraHead extends MobRenderer<EntityTFHydraHead, ModelTFHydraHead> {
+//FIXME: merge into the base hydra renderer
+public class RenderTFHydraHead {/*extends MobRenderer<EntityTFHydraHead, ModelTFHydraHead> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
@@ -67,5 +67,5 @@ public class RenderTFHydraHead extends MobRenderer<EntityTFHydraHead, ModelTFHyd
 	@Override
 	public ResourceLocation getEntityTexture(EntityTFHydraHead entity) {
 		return textureLoc;
-	}
+	}*/
 }

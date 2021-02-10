@@ -7,7 +7,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.nbt.CompoundNBT;
@@ -17,6 +16,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
+import twilightforest.TFSounds;
 import twilightforest.entity.EntityTFChainBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.TwilightItemTier;
@@ -46,7 +46,7 @@ public class ItemTFChainBlock extends ToolItem {
 		if (getThrownUuid(stack) != null)
 			return new ActionResult<>(ActionResultType.PASS, stack);
 
-		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F));
+		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isRemote) {
 			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(TFEntities.chain_block, world, player, hand);

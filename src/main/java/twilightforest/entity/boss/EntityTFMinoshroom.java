@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -12,6 +13,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
@@ -20,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMinotaur;
@@ -91,6 +94,38 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 				}
 			}
 		}
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.MINOSHROOM_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.MINOSHROOM_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.MINOSHROOM_DEATH;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState block) {
+		playSound(TFSounds.MINOSHROOM_STEP, 0.15F, 0.8F);
+	}
+	
+	@Override
+	public boolean attackEntityAsMob(Entity entity) {
+		boolean success = super.attackEntityAsMob(entity);
+
+		if (success && this.isCharging()) {
+			entity.addVelocity(0, 0.4, 0);
+			playSound(TFSounds.MINOSHROOM_ATTACK, 1.0F, 1.0F);
+		}
+
+		return success;
 	}
 
 	@OnlyIn(Dist.CLIENT)

@@ -5,7 +5,6 @@ import net.minecraft.block.*;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -21,8 +20,9 @@ import java.util.Random;
  *
  * @author Ben
  */
-public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 
+// TODO Split into Separate Brown and Red Mushrooms
+public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	public BlockState treeState   = Blocks.MUSHROOM_STEM.getDefaultState().with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.UP, false);
 	public BlockState branchState = Blocks.MUSHROOM_STEM.getDefaultState();
 	public BlockState leafState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false).with(HugeMushroomBlock.WEST, false);
@@ -33,7 +33,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		// determine a height
 		int treeHeight = 12;
 		if (random.nextInt(3) == 0) {
@@ -50,7 +50,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 
 		// check if we're on dirt or grass
 		Block blockUnder = world.getBlockState(pos.down()).getBlock();
-		if (blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM) {
+		if (blockUnder != Blocks.GRASS_BLOCK && blockUnder != Blocks.DIRT && blockUnder != Blocks.MYCELIUM) {
 			return false;
 		}
 
@@ -79,28 +79,25 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	 * @param angle
 	 * @param tilt
 	 */
-	private void buildBranch(IWorld world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG) {
+	private void buildBranch(ISeedReader world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		// only actually draw the branch if it's not going to load new chunks
-		if (world.isAreaLoaded(dest, 5)) {
-			if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
-				// branch
-				drawBresehnam(world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
-				drawBresehnam(world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
-			} else {
-				// trunk
-				drawBresehnam(world, src, dest.down(), treeState);
-			}
-
-			if (trunk) {
-				// add a firefly (torch) to the trunk
-				addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
-			}
-
-			drawMushroomCircle(world, dest, 4, leafState);
+		if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
+			// branch
+			drawBresehnam(world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
+			drawBresehnam(world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
+		} else {
+			// trunk
+			drawBresehnam(world, src, dest.down(), treeState);
 		}
+
+		if (trunk) {
+			// add a firefly (torch) to the trunk
+			addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
+		}
+
+		drawMushroomCircle(world, dest, 4, leafState);
 	}
 
 	/**
@@ -108,7 +105,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	 * <p>
 	 * This assumes that the baseState you've passed in is the center variant
 	 */
-	private void drawMushroomCircle(IWorld world, BlockPos pos, int rad, BlockState baseState) {
+	private void drawMushroomCircle(ISeedReader world, BlockPos pos, int rad, BlockState baseState) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -155,7 +152,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 		}
 	}
 
-	protected void addFirefly(IWorld world, BlockPos pos, int height, double angle) {
+	protected void addFirefly(ISeedReader world, BlockPos pos, int height, double angle) {
 		int iAngle = (int) (angle * 4.0);
 		if (iAngle == 0) {
 			setIfEmpty(world, pos.add( 1, height,  0), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.EAST));
@@ -168,7 +165,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 		}
 	}
 
-	private void setIfEmpty(IWorld world, BlockPos pos, BlockState state) {
+	private void setIfEmpty(ISeedReader world, BlockPos pos, BlockState state) {
 		if (world.isAirBlock(pos)) {
 			world.setBlockState(pos, state, 3);
 		}
@@ -177,7 +174,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	/**
 	 * Copied over from FeatureUtil, as this is the only place this will ever be used for now
 	 */
-	public static void drawBresehnam(IWorld world, BlockPos from, BlockPos to, BlockState state) {
+	public static void drawBresehnam(ISeedReader world, BlockPos from, BlockPos to, BlockState state) {
 		for (BlockPos pixel : FeatureUtil.getBresenhamArrays(from, to)) {
 			world.setBlockState(pixel, state, 3);
 		}

@@ -23,13 +23,12 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.IEntityMultiPart;
-import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
@@ -41,7 +40,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
+public class EntityTFHydra extends MobEntity implements IMob {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;
@@ -55,7 +54,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 
 	private static final DataParameter<Boolean> DATA_SPAWNHEADS = EntityDataManager.createKey(EntityTFHydra.class, DataSerializers.BOOLEAN);
 
-	private final Entity partArray[];
+	private final EntityTFHydraPart[] partArray;
 
 	public final int numHeads = 7;
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[numHeads];
@@ -72,12 +71,12 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	public EntityTFHydra(EntityType<? extends EntityTFHydra> type, World world) {
 		super(type, world);
 
-		List<Entity> parts = new ArrayList<>();
+		List<EntityTFHydraPart> parts = new ArrayList<>();
 
-		body = new EntityTFHydraSmallPart(world, 4F, 4F);
-		leftLeg = new EntityTFHydraSmallPart(world, 2F, 3F);
-		rightLeg = new EntityTFHydraSmallPart(world, 2F, 3F);
-		tail = new EntityTFHydraSmallPart(world, 4F, 4F);
+		body = new EntityTFHydraSmallPart(this, 4F, 4F);
+		leftLeg = new EntityTFHydraSmallPart(this, 2F, 3F);
+		rightLeg = new EntityTFHydraSmallPart(this, 2F, 3F);
+		tail = new EntityTFHydraSmallPart(this, 4F, 4F);
 
 		parts.add(body);
 		parts.add(leftLeg);
@@ -89,7 +88,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 			Collections.addAll(parts, hc[i].getNeckArray());
 		}
 
-		partArray = parts.toArray(new Entity[0]);
+		partArray = parts.toArray(new EntityTFHydraPart[0]);
 
 		this.ignoreFrustumCheck = true;
 		this.isImmuneToFire();
@@ -177,7 +176,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 			// don't spawn if we're connected in multiplayer 
 			if (!world.isRemote && shouldSpawnHeads()) {
 				for (int i = 0; i < numHeads; i++) {
-					hc[i].headEntity = new EntityTFHydraHead(this, "head" + i, 3F, 3F);
+					hc[i].headEntity = new EntityTFHydraHead(this);
 					hc[i].headEntity.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 					hc[i].setHeadPosition();
 					world.addEntity(hc[i].headEntity);
@@ -355,7 +354,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 				}
 			}
 
-			if (numTicksToChaseTarget-- <= 0 || !getAttackTarget().isAlive() || getAttackTarget().getDistanceSq(this) > (double) (f * f)) {
+			if (numTicksToChaseTarget-- <= 0 || !getAttackTarget().isAlive() || getAttackTarget().getDistanceSq(this) > f * f) {
 				setAttackTarget(null);
 			}
 		} else {
@@ -543,7 +542,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	private LivingEntity findSecondaryTarget(double range) {
 		return this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(), this.getPosX() + 1, this.getPosY() + 1, this.getPosZ() + 1).grow(range, range, range))
 				.stream()
-				.filter(e -> !(e instanceof EntityTFHydra || e instanceof EntityTFHydraPart))
+				.filter(e -> !(e instanceof EntityTFHydra))
 				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
 				.min(Comparator.comparingDouble(this::getDistanceSq)).orElse(null);
 	}
@@ -615,11 +614,6 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		return 500;
 	}
 
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
-		return calculateRange(source) <= 400 && super.attackEntityFrom(source, Math.round(damage / 8.0F));
-	}
-
 	public boolean attackEntityFromPart(EntityTFHydraPart part, DamageSource source, float damage) {
 		// if we're in a wall, kill that wall
 		if (!world.isRemote && source == DamageSource.IN_WALL) {
@@ -677,8 +671,9 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
+	@Nullable
 	@Override
-	public Entity[] getParts() {
+	public PartEntity<?>[] getParts() {
 		return partArray;
 	}
 
@@ -795,11 +790,6 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 					vx, vy, vz
 			);
 		}
-	}
-
-	@Override
-	public World getWorld() {
-		return this.world;
 	}
 
 	@Override

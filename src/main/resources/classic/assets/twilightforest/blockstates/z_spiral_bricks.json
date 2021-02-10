@@ -1,0 +1,51 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "shadow_y": "twilightforest:blocks/spiral_shadow_z",
+      "shadow_z": "twilightforest:blocks/spiral_shadow_x",
+      "inner_a": "twilightforest:blocks/spiral_inner_down",
+      "inner_b": "twilightforest:blocks/spiral_inner_up"
+    },
+    "uvlock": true
+  },
+  "variants": {
+    "diagonal": {
+      "bottom_left": {
+        "textures": {
+          "inner_a": "twilightforest:blocks/spiral_inner_right"
+        },
+        "model": "twilightforest:spiral_bottom_right",
+        "submodel": { "otherside": { "model": "twilightforest:spiral_bottom_left", "uvlock": true, "y": 180, "x": 90 } },
+        "x": 270,
+        "y": 90
+      },
+      "bottom_right": {
+        "textures": {
+          "inner_a": "twilightforest:blocks/spiral_inner_left"
+        },
+        "model": "twilightforest:spiral_bottom_left",
+        "submodel": { "otherside": { "model": "twilightforest:spiral_bottom_right", "uvlock": true, "y": 180, "x": 90 } },
+        "x": 180,
+        "y": 90
+      },
+      "top_left": {
+        "textures": {
+          "inner_b": "twilightforest:blocks/spiral_inner_right"
+        },
+        "model": "twilightforest:spiral_top_right",
+        "submodel": { "otherside": { "model": "twilightforest:spiral_top_left", "uvlock": true, "y": 180, "x": 90 } },
+        "y": 90
+      },
+      "top_right": {
+        "textures": {
+          "inner_b": "twilightforest:blocks/spiral_inner_left"
+        },
+        "model": "twilightforest:spiral_top_left",
+        "submodel": { "otherside": { "model": "twilightforest:spiral_top_right", "uvlock": true, "y": 180, "x": 90 } },
+        "x": 90,
+        "y": 90
+      }
+    }
+  }
+}

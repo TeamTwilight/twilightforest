@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_mine_1"
+  }
+}

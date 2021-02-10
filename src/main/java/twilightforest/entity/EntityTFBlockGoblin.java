@@ -17,17 +17,17 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.entity.PartEntity;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
 
 import java.util.List;
 import java.util.UUID;
 
-public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPart {
+public class EntityTFBlockGoblin extends MonsterEntity {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
 
@@ -46,22 +46,32 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	public final EntityTFGoblinChain chain2;
 	public final EntityTFGoblinChain chain3;
 
-	private Entity[] partsArray;
+	private MultipartGenericsAreDumb[] partsArray;
 
 	public EntityTFBlockGoblin(EntityType<? extends EntityTFBlockGoblin> type, World world) {
 		super(type, world);
 
-		chain1 = new EntityTFGoblinChain(world, this);
-		chain2 = new EntityTFGoblinChain(world, this);
-		chain3 = new EntityTFGoblinChain(world, this);
+		chain1 = new EntityTFGoblinChain(this);
+		chain2 = new EntityTFGoblinChain(this);
+		chain3 = new EntityTFGoblinChain(this);
 
-		partsArray = new Entity[]{block, chain1, chain2, chain3};
+		partsArray = new MultipartGenericsAreDumb[]{block, chain1, chain2, chain3};
+	}
+
+	static abstract class MultipartGenericsAreDumb extends PartEntity<Entity> {
+
+		public MultipartGenericsAreDumb(Entity parent) {
+			super(parent);
+		}
 	}
 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 0.8F, 1.5F));
+		// This is safe because AvoidEntityGoal doesn't use the LivingEntity interface, only the Entity one
+		@SuppressWarnings({"rawtypes", "unchecked"})
+		AvoidEntityGoal avoidGoal = new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F);
+		this.goalSelector.addGoal(1, avoidGoal);
 		this.goalSelector.addGoal(4, new EntityAIThrowSpikeBlock(this, this.block));
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0F, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
@@ -94,17 +104,17 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
     @Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.REDCAP_AMBIENT;
+		return TFSounds.BLOCKCHAIN_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.REDCAP_HURT;
+		return TFSounds.BLOCKCHAIN_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.REDCAP_AMBIENT;
+		return TFSounds.BLOCKCHAIN_DEATH;
 	}
 
 	/**
@@ -248,7 +258,7 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
 		if (this.isThrowing() && collider.isEntityInsideOpaqueBlock()) {
 			this.setThrowing(false);
-			collider.playSound(SoundEvents.BLOCK_ANVIL_PLACE, 0.65F, 0.75F);
+			collider.playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.65F, 0.75F);
 		}
 	}
 
@@ -261,7 +271,7 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 			if (collided instanceof LivingEntity) {
 				if (super.attackEntityAsMob(collided)) {
 					collided.addVelocity(0, 0.4, 0);
-					this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+					this.playSound(TFSounds.BLOCKCHAIN_HIT, 1.0F, 1.0F);
 					this.recoilCounter = 40;
 					if (this.isThrowing()) {
 						this.setThrowing(false);
@@ -306,21 +316,11 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 		}
 	}
 
-	@Override
-	public World getWorld() {
-		return this.world;
-	}
-
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
-		return false;
-	}
-
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
 	@Override
-	public Entity[] getParts() {
+	public MultipartGenericsAreDumb[] getParts() {
 		return partsArray;
 	}
 }

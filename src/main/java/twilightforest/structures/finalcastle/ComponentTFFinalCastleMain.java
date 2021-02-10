@@ -36,7 +36,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		x = ((x + 127) >> 8) << 8;
 		z = ((z + 127) >> 8) << 8;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
 
 		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
 

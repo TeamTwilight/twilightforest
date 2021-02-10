@@ -1,7 +1,6 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
@@ -68,7 +67,7 @@ public class EntityAITFYetiRampage extends Goal {
 //		this.yeti.world.playAuxSFX(2004, rx, ry, rz, 0);
 
 		if (this.yeti.getAttackTarget() != null) {
-			this.yeti.getLookController().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, (float) this.yeti.getVerticalFaceSpeed());
+			this.yeti.getLookController().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, this.yeti.getVerticalFaceSpeed());
 		}
 
 		if (this.yeti.isOnGround()) {
@@ -99,7 +98,7 @@ public class EntityAITFYetiRampage extends Goal {
 			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice, yeti.world, yeti);
 			Vector3d vec = new Vector3d(0.5F + yeti.getRNG().nextFloat() * 0.5F, 0.5F + yeti.getRNG().nextFloat() * 0.3F, 0).rotateYaw(yeti.getRNG().nextFloat() * 360F);
 			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRNG().nextFloat() * 0.3F, 0);
-			yeti.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (yeti.getRNG().nextFloat() * 0.4F + 0.8F));
+			yeti.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (yeti.getRNG().nextFloat() * 0.4F + 0.8F));
 			yeti.world.addEntity(ice);
 		}
 	}

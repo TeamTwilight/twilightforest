@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "state=builder_inactive": {
+      "model": "twilightforest:block/carminite_builder"
+    },
+    "state=builder_active": {
+      "model": "twilightforest:block/carminite_builder_active"
+    },
+    "state=builder_timeout": {
+      "model": "twilightforest:block/carminite_builder_timeout"
+    }
+  }
+}

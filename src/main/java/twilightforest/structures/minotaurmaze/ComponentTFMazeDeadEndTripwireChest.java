@@ -31,7 +31,7 @@ public class ComponentTFMazeDeadEndTripwireChest extends ComponentTFMazeDeadEndC
 		super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// add tripwire
-		this.placeTripwire(world.getWorld(), 1, 1, 2, 3, Direction.EAST, sbb);
+		this.placeTripwire(world, 1, 1, 2, 3, Direction.EAST, sbb);
 
 		// TNT!
 		BlockState tnt = Blocks.TNT.getDefaultState();

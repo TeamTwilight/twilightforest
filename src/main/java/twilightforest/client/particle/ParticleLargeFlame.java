@@ -1,11 +1,8 @@
 package twilightforest.client.particle;
 
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -33,13 +30,13 @@ public class ParticleLargeFlame extends SpriteTexturedParticle {
 
 	@Override
 	public float getScale(float partialTicks) {
-		float relativeAge = ((float) this.age + partialTicks) / (float) this.maxAge;
+		float relativeAge = (this.age + partialTicks) / this.maxAge;
 		return this.flameScale * (1.0F - relativeAge * relativeAge * 0.5F);
 	}
 
 	@Override
 	public int getBrightnessForRender(float partialTicks) {
-		float var2 = ((float) this.age + partialTicks) / (float) this.maxAge;
+		float var2 = (this.age + partialTicks) / this.maxAge;
 
 		if (var2 < 0.0F) {
 			var2 = 0.0F;

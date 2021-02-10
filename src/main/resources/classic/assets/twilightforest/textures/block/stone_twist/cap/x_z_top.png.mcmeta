@@ -1,0 +1,17 @@
+{
+  "ctm": {
+    "ctm_version": 1,
+    "type": "ctm",
+    "textures": [ "twilightforest:block/stone_twist/cap/x_ctm" ],
+    "extra": {
+      "connect_inside": true,
+      "connect_to": [{
+        "block": "twilightforest:stone_twist_thin",
+        "predicate": [
+          { "axis": "z" },
+          { "up": false }
+        ]
+      }]
+    }
+  }
+}

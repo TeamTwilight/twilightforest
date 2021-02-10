@@ -1,14 +1,15 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.*;
@@ -18,8 +19,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -27,8 +30,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.TFDimensions;
+import twilightforest.data.BlockTagGenerator;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.TFTeleporter;
 
@@ -38,7 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class BlockTFPortal extends BreakableBlock {
+// KelpBlock seems to use ILiquidContainer as it's a block that permanently has water, so I suppose in best practices we also use this interface as well?
+public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
 
@@ -71,7 +76,13 @@ public class BlockTFPortal extends BreakableBlock {
 		return state.get(DISALLOW_RETURN) ? AABB : VoxelShapes.empty();
 	}
 
-//	@Override
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		// The portal itself is kind of technically water, and this checks the checkbox in Sugar Cane logic to not destroy itself when portal is made.
+		return Fluids.WATER.getFlowingFluidState(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
+	}
+
+	//	@Override
 //	@Deprecated
 //	public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB entityBB, List<AxisAlignedBB> blockBBs, @Nullable Entity entity, boolean isActualState) {
 //		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
@@ -139,7 +150,6 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState requiredState) {
-
 		if (portalSize.incrementAndGet() > MAX_PORTAL_SIZE) return false;
 
 		boolean isPoolProbablyEnclosed = true;
@@ -156,7 +166,7 @@ public class BlockTFPortal extends BreakableBlock {
 						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
 					}
 
-				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up())) || state.getBlock() == TFBlocks.uberous_soil.get()) {
+				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up()))) {
 					blocksChecked.put(positionCheck, false);
 
 				} else return false;
@@ -167,13 +177,11 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static boolean isNatureBlock(BlockState state) {
-		Material mat = state.getMaterial();
-		return mat == Material.PLANTS || mat == Material.TALL_PLANTS || mat == Material.LEAVES;
+		return BlockTagGenerator.PORTAL_DECO.contains(state.getBlock());
 	}
 
 	private static boolean isGrassOrDirt(BlockState state) {
-		Material mat = state.getMaterial();
-		return state.isSolid() && (mat == Material.ORGANIC || mat == Material.EARTH);
+		return BlockTagGenerator.PORTAL_EDGE.contains(state.getBlock());
 	}
 
 	@Override
@@ -195,13 +203,6 @@ public class BlockTFPortal extends BreakableBlock {
 		}
 	}
 
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.TRANSLUCENT;
-//	}
-
 	@Override
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		if (state == this.getDefaultState()) {
@@ -210,12 +211,13 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		return !entity.getEntityWorld().getDimensionKey().func_240901_a_().equals(TFDimensions.twilightForest.func_240901_a_())
-				? TFDimensions.twilightForest : World.OVERWORLD /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
+		RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
+
+		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(twilightForest.getLocation())
+				? twilightForest : RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
-
 		if (!entity.isAlive() || entity.world.isRemote) {
 			return;
 		}
@@ -239,11 +241,12 @@ public class BlockTFPortal extends BreakableBlock {
 
 		entity.changeDimension(serverWorld, new TFTeleporter());
 
-		if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
+		// No more setting spawn point
+		/*if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
 			playerMP.func_242111_a(destination, playerMP.getPosition(), playerMP.rotationYaw, true, false);
-		}
+		}*/
 	}
 
 	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
@@ -255,16 +258,16 @@ public class BlockTFPortal extends BreakableBlock {
 		if (stateIn.get(DISALLOW_RETURN) && random < 80) return;
 
 		if (random == 0) {
-			worldIn.playSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
+			worldIn.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.PORTAL_WOOSH, SoundCategory.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
 		}
 
 		for (int i = 0; i < 4; ++i) {
-			double xPos = (double) ((float) pos.getX() + rand.nextFloat());
+			double xPos = pos.getX() + rand.nextFloat();
 			double yPos = pos.getY()+1D;
-			double zPos = (double) ((float) pos.getZ() + rand.nextFloat());
-			double xSpeed = ((double) rand.nextFloat() - 0.5D) * 0.5D;
+			double zPos = pos.getZ() + rand.nextFloat();
+			double xSpeed = (rand.nextFloat() - 0.5D) * 0.5D;
 			double ySpeed = rand.nextFloat();
-			double zSpeed = ((double) rand.nextFloat() - 0.5D) * 0.5D;
+			double zSpeed = (rand.nextFloat() - 0.5D) * 0.5D;
 			//int j = rand.nextInt(2) * 2 - 1;
 
 			//if (worldIn.getBlockState(pos.west()).getBlock() != this && worldIn.getBlockState(pos.east()).getBlock() != this) {
@@ -277,5 +280,15 @@ public class BlockTFPortal extends BreakableBlock {
 
 			worldIn.addParticle(ParticleTypes.PORTAL, xPos, yPos, zPos, xSpeed, ySpeed, zSpeed);
 		}
+	}
+
+	@Override
+	public boolean canContainFluid(IBlockReader iBlockReader, BlockPos blockPos, BlockState blockState, Fluid fluid) {
+		return false;
+	}
+
+	@Override
+	public boolean receiveFluid(IWorld iWorld, BlockPos blockPos, BlockState blockState, FluidState fluidState) {
+		return false;
 	}
 }

@@ -1,0 +1,45 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "twilightforest:block/ladder_iron"
+  },
+  "elements": [
+    {
+      "from": [  8, 13, 15.2 ],
+      "to"  : [ 16, 15, 16   ],
+      "faces": {
+        "up"   : { "uv": [ 16  , 0  ,  8  , 0.8 ], "texture": "#particle"                      },
+        "down" : { "uv": [ 16  , 1.2,  8  , 2   ], "texture": "#particle"                      },
+        "north": { "uv": [  8  , 0  , 16  , 2   ], "texture": "#particle"                      },
+        "south": { "uv": [ 16  , 0  ,  8  , 2   ], "texture": "#particle", "cullface": "south" }
+      }
+    }, {
+      "from": [  8,  9, 15.2 ],
+      "to"  : [ 16, 11, 16   ],
+      "faces": {
+        "up"   : { "uv": [ 16  , 4  ,  8  , 4.8 ], "texture": "#particle"                      },
+        "down" : { "uv": [ 16  , 5.2,  8  , 6   ], "texture": "#particle"                      },
+        "north": { "uv": [  8  , 4  , 16  , 6   ], "texture": "#particle"                      },
+        "south": { "uv": [ 16  , 4  ,  8  , 6   ], "texture": "#particle", "cullface": "south" }
+      }
+    }, {
+      "from": [  8, 5, 15.2 ],
+      "to"  : [ 16, 7, 16   ],
+      "faces": {
+        "up"   : { "uv": [ 16  , 8  ,  8  ,  8.8 ], "texture": "#particle"                      },
+        "down" : { "uv": [ 16  , 9.2,  8  , 10   ], "texture": "#particle"                      },
+        "north": { "uv": [  8  , 8  , 16  , 10   ], "texture": "#particle"                      },
+        "south": { "uv": [ 16  , 8  ,  8  , 10   ], "texture": "#particle", "cullface": "south" }
+      }
+    }, {
+      "from": [  8, 1, 15.2 ],
+      "to"  : [ 16, 3, 16   ],
+      "faces": {
+        "up"   : { "uv": [ 16  , 12  ,  8  , 12.8 ], "texture": "#particle"                      },
+        "down" : { "uv": [ 16  , 13.2,  8  , 14   ], "texture": "#particle"                      },
+        "north": { "uv": [  8  , 12  , 16  , 14   ], "texture": "#particle"                      },
+        "south": { "uv": [ 16  , 12 ,   8  , 14   ], "texture": "#particle", "cullface": "south" }
+      }
+    }
+  ]
+}

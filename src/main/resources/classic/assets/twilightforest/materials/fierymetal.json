@@ -1,0 +1,28 @@
+{
+  "type": "fierymetal",
+  "parameters": {
+    "min_max_texture": false,
+    "gradient_map" : [
+      {
+        "node"  : "1.0",
+        "color" : "080606"
+      },
+      {
+        "node"  : "0.75",
+        "color" : "191313"
+      },
+      {
+        "node"  : "0.50",
+        "color" : "3c2323"
+      },
+      {
+        "node"  : "0.35",
+        "color" : "fffa96"
+      },
+      {
+        "node"  : "0.2",
+        "color" : "fb9624"
+      }
+    ]
+  }
+}

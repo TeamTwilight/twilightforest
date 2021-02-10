@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "particle": "twilightforest:block/nagastone_cross_section",
+    "end": "twilightforest:block/nagastone_cross_section",
+    "side": "twilightforest:block/nagastone_long_vertical"
+  }
+}

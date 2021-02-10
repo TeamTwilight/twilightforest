@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_fence_gate_open",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_twilight_oak_2"
+  }
+}

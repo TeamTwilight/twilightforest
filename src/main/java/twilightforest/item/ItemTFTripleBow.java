@@ -41,7 +41,7 @@ public class ItemTFTripleBow extends BowItem {
 				}
 
 				float f = getArrowVelocity(i);
-				if (!((double)f < 0.1D)) {
+				if (!(f < 0.1D)) {
 					boolean flag1 = entityplayer.abilities.isCreativeMode || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
 					if (!worldIn.isRemote) {
 						ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
@@ -70,9 +70,9 @@ public class ItemTFTripleBow extends BowItem {
 						int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
 
 						if (j > 0) {
-							entityarrow.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
-							entityarrow1.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
-							entityarrow2.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
+							entityarrow.setDamage(entityarrow.getDamage() + j * 0.5D + 0.5D);
+							entityarrow1.setDamage(entityarrow.getDamage() + j * 0.5D + 0.5D);
+							entityarrow2.setDamage(entityarrow.getDamage() + j * 0.5D + 0.5D);
 						}
 
 						int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);

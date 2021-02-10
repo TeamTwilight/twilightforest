@@ -1,14 +1,12 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
@@ -27,9 +25,8 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
 
     private Template templateBig;
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardHedgeAbstract(IStructurePieceType piece, CompoundNBT nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
-        super(piece, nbt);
+    public ComponentNagaCourtyardHedgeAbstract(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
+        super(manager, piece, nbt);
         this.HEDGE = hedge;
         this.HEDGE_BIG = hedgeBig;
     }
@@ -42,7 +39,7 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
+    protected void loadTemplates(TemplateManager templateManager) {
         TEMPLATE = templateManager.getTemplate(HEDGE);
         templateBig = templateManager.getTemplate(HEDGE_BIG);
     }

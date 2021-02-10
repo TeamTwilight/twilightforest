@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/util/tinted_cube_column",
+  "textures": {
+    "end": "twilightforest:block/aurora_pillar_top",
+    "side": "twilightforest:block/aurora_slab_side"
+  }
+}

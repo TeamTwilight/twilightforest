@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "twilightforest:dark_log"
+    }
+  },
+  "result": {
+    "item": "twilightforest:dark_wood",
+    "count": 3
+  }
+}

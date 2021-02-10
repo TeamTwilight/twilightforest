@@ -38,7 +38,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// the maze is 50 x 50 for now
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		// grass underneath
 		for (int fx = 0; fx <= DIAMETER; fx++) {
 			for (int fz = 0; fz <= DIAMETER; fz++) {
-				setBlockState(world, Blocks.GRASS.getDefaultState(), fx, FLOOR_LEVEL - 1, fz, sbb);
+				setBlockState(world, Blocks.GRASS_BLOCK.getDefaultState(), fx, FLOOR_LEVEL - 1, fz, sbb);
 			}
 		}
 

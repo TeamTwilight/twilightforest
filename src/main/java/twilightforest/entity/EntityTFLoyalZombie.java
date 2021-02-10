@@ -15,10 +15,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.TFSounds;
 
 public class EntityTFLoyalZombie extends TameableEntity {
 
@@ -102,22 +102,22 @@ public class EntityTFLoyalZombie extends TameableEntity {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
+		return TFSounds.LOYAL_ZOMBIE_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_ZOMBIE_HURT;
+		return TFSounds.LOYAL_ZOMBIE_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_ZOMBIE_DEATH;
+		return TFSounds.LOYAL_ZOMBIE_DEATH;
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(SoundEvents.ENTITY_ZOMBIE_STEP, 0.15F, 1.0F);
+		playSound(TFSounds.LOYAL_ZOMBIE_STEP, 0.15F, 1.0F);
 	}
 
 	@Override

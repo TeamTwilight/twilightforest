@@ -1,0 +1,10 @@
+{
+  "parent": "twilightforest:block/util/pedestal",
+  "textures": {
+    "end": "twilightforest:block/pedestal/top",
+    "north": "twilightforest:block/pedestal/snow_queen_latent",
+    "south": "twilightforest:block/pedestal/naga_latent",
+    "west": "twilightforest:block/pedestal/lich_latent",
+    "east": "twilightforest:block/pedestal/hydra_latent"
+  }
+}

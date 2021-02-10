@@ -35,12 +35,12 @@ public class ItemTFEnderBow extends BowItem {
 				player.rotationYaw = living.rotationYaw;
 				player.rotationPitch = living.rotationPitch;
 				player.setPositionAndUpdate(living.getPosX(), living.getPosY(), living.getPosZ());
-				player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
+				player.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 
 				living.rotationYaw = sourceYaw;
 				living.rotationPitch = sourcePitch;
 				living.setPositionAndUpdate(sourceX, sourceY, sourceZ);
-				living.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
+				living.playSound(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 			}
 		}
 	}

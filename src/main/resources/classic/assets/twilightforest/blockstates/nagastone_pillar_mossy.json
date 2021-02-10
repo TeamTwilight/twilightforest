@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,reversed=false": {
+      "model": "twilightforest:block/nagastone_pillar_mossy",
+      "x": 270,
+      "y": 270
+    },
+    "axis=y,reversed=false": {
+      "model": "twilightforest:block/nagastone_pillar_mossy"
+    },
+    "axis=z,reversed=false": {
+      "model": "twilightforest:block/nagastone_pillar_mossy",
+      "x": 270
+    },
+    "axis=x,reversed=true": {
+      "model": "twilightforest:block/nagastone_pillar_mossy_reversed",
+      "x": 270,
+      "y": 270
+    },
+    "axis=y,reversed=true": {
+      "model": "twilightforest:block/nagastone_pillar_mossy_reversed"
+    },
+    "axis=z,reversed=true": {
+      "model": "twilightforest:block/nagastone_pillar_mossy_reversed",
+      "x": 270
+    }
+  }
+}
