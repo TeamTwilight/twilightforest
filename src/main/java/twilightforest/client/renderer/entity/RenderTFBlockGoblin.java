@@ -66,7 +66,6 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 			this.renderMultiBoundingBox(stack, buffer.getBuffer(RenderType.getLines()), goblin.block, 0.25F, 1.0F, 0.0F);
 			stack.pop();
 		}
-
 	}
 
 	private void renderChain(T goblin, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
