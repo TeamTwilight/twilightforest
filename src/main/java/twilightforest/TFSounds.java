@@ -5,17 +5,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.entity.TFEntities;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class TFSounds {
 	
-	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, TwilightForestMod.ID);
-
 	public static final SoundEvent ALPHAYETI_ALERT = createEvent("entity.alphayeti.alert");
 	public static final SoundEvent ALPHAYETI_DEATH = createEvent("entity.alphayeti.death");
 	public static final SoundEvent ALPHAYETI_GRAB = createEvent("entity.alphayeti.grab");
@@ -254,8 +247,7 @@ public final class TFSounds {
 		return new SoundEvent(name).setRegistryName(name);
 	}
 
-	@SubscribeEvent
-	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+	static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
 		event.getRegistry().registerAll(
 				ALPHAYETI_ALERT, ALPHAYETI_DEATH, ALPHAYETI_GRAB, ALPHAYETI_GROWL, ALPHAYETI_HURT, ALPHAYETI_ICE, ALPHAYETI_PANT, ALPHAYETI_ROAR, ALPHAYETI_THROW,
 				BIGHORN_AMBIENT, BIGHORN_DEATH, BIGHORN_HURT, BIGHORN_STEP,

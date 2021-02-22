@@ -3,6 +3,7 @@ package twilightforest;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -89,7 +90,7 @@ public class TwilightForestMod {
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
 		//TFBiomes.BIOMES.register(modbus);
-		TFSounds.SOUNDS.register(modbus);
+		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		modbus.addGenericListener(Structure.class, TFStructures::register);
