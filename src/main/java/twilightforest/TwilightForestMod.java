@@ -89,6 +89,7 @@ public class TwilightForestMod {
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
 		//TFBiomes.BIOMES.register(modbus);
+		TFSounds.SOUNDS.register(modbus);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		modbus.addGenericListener(Structure.class, TFStructures::register);

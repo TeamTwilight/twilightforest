@@ -16,32 +16,12 @@ public class EntityTFSpikeBlock extends EntityTFBlockGoblin.MultipartGenericsAre
 
 	public EntityTFSpikeBlock(Entity goblin) {
 		super(goblin);
-		size = EntitySize.flexible(0.75F, 0.75F);
+		realSize = EntitySize.flexible(0.75F, 0.75F);
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		return false;
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
-
-		this.ticksExisted++;
-
-		lastTickPosX = getPosX();
-		lastTickPosY = getPosY();
-		lastTickPosZ = getPosZ();
-
-		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
-		}
-		for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) {
-		}
-		for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) {
-		}
-		for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) {
-		}
 	}
 
 	@Override

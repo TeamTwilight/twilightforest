@@ -1,12 +1,23 @@
 package twilightforest.client;
 
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.server.ServerWorld;
+import twilightforest.ASMHooks;
 import twilightforest.TFCommonProxy;
+
+import javax.annotation.Nullable;
 
 public class TFClientProxy extends TFCommonProxy {
 
 	private boolean isDangerOverlayShown;
 
 //	public static MusicTicker.MusicType TFMUSICTYPE;
+
+	@Nullable
+	public static Iterable<Entity> getEntityListForASM() {
+		return ASMHooks.world instanceof ServerWorld ? ((ServerWorld) ASMHooks.world).func_241136_z_() : ASMHooks.world instanceof ClientWorld ? ((ClientWorld) ASMHooks.world).getAllEntities() : null;
+	}
 
 	@Override
 	public void init() {

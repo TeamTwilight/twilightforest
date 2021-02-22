@@ -3,20 +3,23 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
-//FIXME: merge into the base hydra renderer
-public class RenderTFHydraHead {/*extends MobRenderer<EntityTFHydraHead, ModelTFHydraHead> {
+
+import javax.annotation.Nullable;
+
+public class RenderTFHydraHead extends TFPartRenderer<EntityTFHydraHead, ModelTFHydraHead> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
-	public RenderTFHydraHead(EntityRendererManager manager, ModelTFHydraHead modelbase, float shadowSize) {
-		super(manager, modelbase, shadowSize);
+
+	public RenderTFHydraHead(EntityRendererManager manager) {
+		super(manager, new ModelTFHydraHead());
 	}
 
 	@Override
@@ -27,32 +30,18 @@ public class RenderTFHydraHead {/*extends MobRenderer<EntityTFHydraHead, ModelTF
 		if (headCon != null) {
 			// see whether we want to render these
 			if (headCon.shouldRenderHead()) {
+				stack.rotate(Vector3f.YP.rotationDegrees(-180));
 				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}
 
-			//TODO: Idk what I should do about this
-//			if (headCon.shouldRenderNeck(0)) {
-//				renderManager.renderEntityStatic(headCon.necka, partialTicks, false);
-//			}
-//			if (headCon.shouldRenderNeck(1)) {
-//				renderManager.renderEntityStatic(headCon.neckb, partialTicks, false);
-//			}
-//			if (headCon.shouldRenderNeck(2)) {
-//				renderManager.renderEntityStatic(headCon.neckc, partialTicks, false);
-//			}
-//			if (headCon.shouldRenderNeck(3)) {
-//				renderManager.renderEntityStatic(headCon.neckd, partialTicks, false);
-//			}
-//			if (headCon.shouldRenderNeck(4)) {
-//				renderManager.renderEntityStatic(headCon.necke, partialTicks, false);
-//			}
 		} else {
 			super.render(entity, yaw, partialTicks, stack, buffer, light);
 		}
 	}
 
-	private HydraHeadContainer getHeadObject(EntityTFHydraHead entity) {
-		EntityTFHydra hydra = entity.hydra;
+	@Nullable
+	public static HydraHeadContainer getHeadObject(EntityTFHydraHead entity) {
+		EntityTFHydra hydra = entity.getParent();
 
 		if (hydra != null) {
 			for (int i = 0; i < hydra.numHeads; i++) {
@@ -67,5 +56,5 @@ public class RenderTFHydraHead {/*extends MobRenderer<EntityTFHydraHead, ModelTF
 	@Override
 	public ResourceLocation getEntityTexture(EntityTFHydraHead entity) {
 		return textureLoc;
-	}*/
+	}
 }

@@ -18,15 +18,16 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.BossInfo;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
@@ -37,7 +38,6 @@ import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
 import twilightforest.network.TFPacketHandler;
@@ -751,6 +751,7 @@ public class EntityTFNaga extends MonsterEntity {
 	 */
 	private void moveSegments() {
 		for (int i = 0; i < this.bodySegments.length; i++) {
+			bodySegments[i].tick();
 			Entity leader = i == 0 ? this : this.bodySegments[i - 1];
 			double followX = leader.getPosX();
 			double followY = leader.getPosY();
@@ -824,6 +825,11 @@ public class EntityTFNaga extends MonsterEntity {
 		if (!world.isRemote) {
 			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.NAGA_COURTYARD);
 		}
+	}
+
+	@Override
+	public boolean isMultipartEntity() {
+		return true;
 	}
 
 	@Nullable

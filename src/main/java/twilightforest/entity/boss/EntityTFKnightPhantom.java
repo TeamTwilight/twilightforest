@@ -30,7 +30,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.loot.TFTreasure;
@@ -318,17 +317,17 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.WRAITH;
+		return TFSounds.PHANTOM_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.WRAITH;
+		return TFSounds.PHANTOM_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.WRAITH;
+		return TFSounds.PHANTOM_DEATH;
 	}
 
 	private void switchToFormationByNumber(int formationNumber) {

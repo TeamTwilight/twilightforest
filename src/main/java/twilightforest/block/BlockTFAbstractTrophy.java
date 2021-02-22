@@ -58,7 +58,7 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 					sound = TFSounds.SNOW_QUEEN_AMBIENT;
 					break;
 				case KNIGHT_PHANTOM:
-					sound = TFSounds.WRAITH;
+					sound = TFSounds.PHANTOM_AMBIENT;
 					pitch = 1.1F;
 					break;
 				case MINOSHROOM:

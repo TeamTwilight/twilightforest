@@ -54,9 +54,9 @@ public class RenderTFChainBlock extends EntityRenderer<EntityTFChainBlock> {
 
 	private void renderChain(EntityTFChainBlock chainBlock, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (chain != null) {
-			double chainInX = (chain.getPosX() - chainBlock.getPosX());
-			double chainInY = (chain.getPosY() - chainBlock.getPosY());
-			double chainInZ = (chain.getPosZ() - chainBlock.getPosZ());
+			double chainInX = (MathHelper.lerp(partialTicks, chain.lastTickPosX, chain.getPosX()) - MathHelper.lerp(partialTicks, chainBlock.lastTickPosX, chainBlock.getPosX()));
+			double chainInY = (MathHelper.lerp(partialTicks, chain.lastTickPosY, chain.getPosY()) - MathHelper.lerp(partialTicks, chainBlock.lastTickPosY, chainBlock.getPosY()));
+			double chainInZ = (MathHelper.lerp(partialTicks, chain.lastTickPosZ, chain.getPosZ()) - MathHelper.lerp(partialTicks, chainBlock.lastTickPosZ, chainBlock.getPosZ()));
 
 			stack.push();
 			IVertexBuilder ivertexbuilder = buffer.getBuffer(this.chainModel.getRenderType(textureLoc));

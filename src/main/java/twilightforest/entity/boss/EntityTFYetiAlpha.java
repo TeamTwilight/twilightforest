@@ -192,7 +192,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ALPHAYETI_DIE;
+		return TFSounds.ALPHAYETI_DEATH;
 	}
 
 	@Override

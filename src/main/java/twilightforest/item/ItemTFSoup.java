@@ -4,6 +4,6 @@ import net.minecraft.item.SoupItem;
 
 public class ItemTFSoup extends SoupItem {
 	public ItemTFSoup(Properties props) {
-		super(props);
+		super(props.maxStackSize(1));
 	}
 }

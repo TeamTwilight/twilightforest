@@ -1,39 +1,53 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Pose;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.client.renderer.entity.RenderTFNagaSegment;
+import twilightforest.entity.TFPartEntity;
 
 import java.util.List;
 
-public class EntityTFNagaSegment extends PartEntity<EntityTFNaga> {
+public class EntityTFNagaSegment extends TFPartEntity<EntityTFNaga> {
 
-	private EntityTFNaga naga;
-	private int segment;
 	private int deathCounter;
-	private EntitySize entitySize;
 
 	public EntityTFNagaSegment(EntityTFNaga naga) {
 		super(naga);
-		size = EntitySize.flexible(1.8F, 1.8F);
+		setPosition(naga.getPosX(), naga.getPosY(), naga.getPosZ());
+	}
+
+	@Override
+	protected void registerData() {
 		this.stepHeight = 2;
 		deactivate();
 	}
 
 	@Override
+	@OnlyIn(Dist.CLIENT)
+	public EntityRenderer<?> renderer(EntityRendererManager manager) {
+		return new RenderTFNagaSegment<>(manager);
+	}
+
+	@Override
 	public boolean attackEntityFrom(DamageSource src, float damage) {
-		return !isInvisible() && super.attackEntityFrom(src, damage * 2F / 3F);
+		return !isInvisible() && getParent().attackEntityFrom(src, damage * 2F / 3F);
+	}
+
+	@Override
+	public boolean isEntityEqual(Entity entityIn) {
+		return entityIn == this || entityIn == getParent();
 	}
 
 	@Override
@@ -97,25 +111,18 @@ public class EntityTFNagaSegment extends PartEntity<EntityTFNaga> {
 				attackStrength *= 3;
 			}
 
-			entity.attackEntityFrom(DamageSource.causeMobDamage(naga), attackStrength);
+			entity.attackEntityFrom(DamageSource.causeMobDamage(getParent()), attackStrength);
 		}
 	}
 
 	public void deactivate() {
-		//setSize(0, 0);
-		this.entitySize = EntitySize.flexible(0.0F, 0.0F);
+		setSize(EntitySize.flexible(0.0F, 0.0F));
 		setInvisible(true);
 	}
 
 	public void activate() {
-		//setSize(1.8F, 1.8F);
-		this.size = EntitySize.flexible(1.8F, 1.8F);
+		setSize(EntitySize.flexible(1.8F, 1.8F));
 		setInvisible(false);
-	}
-
-	@Override
-	protected void registerData() {
-
 	}
 
 	// make public
@@ -134,10 +141,5 @@ public class EntityTFNagaSegment extends PartEntity<EntityTFNaga> {
 	@Override
 	public boolean isNonBoss() {
 		return false;
-	}
-
-	@Override
-	public EntitySize getSize(Pose pose) {
-		return size;
 	}
 }

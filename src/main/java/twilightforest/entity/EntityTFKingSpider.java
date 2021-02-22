@@ -73,7 +73,6 @@ public class EntityTFKingSpider extends SpiderEntity {
 		EntityTFSkeletonDruid druid = TFEntities.skeleton_druid.create(world);
 		druid.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
 		druid.onInitialSpawn(worldIn, difficulty, SpawnReason.JOCKEY, null, null);
-		this.world.addEntity(druid);
 		Entity lastRider = this;
 		while (!lastRider.getPassengers().isEmpty())
 			lastRider = lastRider.getPassengers().get(0);

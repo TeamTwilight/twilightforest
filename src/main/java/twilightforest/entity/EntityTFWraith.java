@@ -262,17 +262,17 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.WRAITH;
+		return TFSounds.WRAITH_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.WRAITH;
+		return TFSounds.WRAITH_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.WRAITH;
+		return TFSounds.WRAITH_DEATH;
 	}
 
 	public static boolean getCanSpawnHere(EntityType<? extends EntityTFWraith> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {

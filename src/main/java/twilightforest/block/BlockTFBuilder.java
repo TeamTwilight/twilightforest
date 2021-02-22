@@ -77,7 +77,7 @@ public class BlockTFBuilder extends Block {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		TowerDeviceVariant variant = state.get(STATE);
 
 		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && world.isBlockPowered(pos)) {

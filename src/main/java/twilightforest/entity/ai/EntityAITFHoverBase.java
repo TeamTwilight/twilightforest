@@ -2,6 +2,7 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceContext;
@@ -9,7 +10,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.TwilightForestMod;
 
-public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
+public abstract class EntityAITFHoverBase<T extends MobEntity> extends Goal {
 
 	protected final T attacker;
 
@@ -28,7 +29,7 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 
 	@Override
 	public void startExecuting() {
-		LivingEntity target = this.attacker.getRevengeTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 		if (target != null) {
 			// find a spot above the player
 			makeNewHoverSpot(target);

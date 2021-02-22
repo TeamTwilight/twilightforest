@@ -219,6 +219,6 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.YETI_DIE;
+		return TFSounds.YETI_DEATH;
 	}
 }

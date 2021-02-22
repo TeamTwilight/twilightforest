@@ -8,32 +8,11 @@ public class EntityTFGoblinChain extends EntityTFBlockGoblin.MultipartGenericsAr
 
 	public EntityTFGoblinChain(Entity parent) {
 		super(parent);
-		size = EntitySize.flexible(0.75F, 0.75F);
 	}
 
 	@Override
 	protected void registerData() {
-
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
-
-		this.ticksExisted++;
-
-		lastTickPosX = getPosX();
-		lastTickPosY = getPosY();
-		lastTickPosZ = getPosZ();
-
-		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
-		}
-		for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) {
-		}
-		for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) {
-		}
-		for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) {
-		}
+		realSize = EntitySize.flexible(0.75F, 0.75F);
 	}
 
 	@Override

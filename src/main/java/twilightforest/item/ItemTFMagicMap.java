@@ -10,7 +10,9 @@ import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
@@ -87,6 +89,8 @@ public class ItemTFMagicMap extends FilledMapItem {
 		return STR_ID + "_" + id;
 	}
 
+	private static final Map<ChunkPos, Biome[]> CACHE = new HashMap<>();
+
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
 		if (world.getDimensionKey() == data.dimension && viewer instanceof PlayerEntity) {
@@ -98,17 +102,17 @@ public class ItemTFMagicMap extends FilledMapItem {
 			int viewerZ = MathHelper.floor(viewer.getPosZ() - centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 512 / blocksPerPixel;
 
-			// use the generation map, which is larger scale than the other biome map
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-//			Biome[] biomes = world.getBiomeAccess().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
-			Biome[] biomes = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
-
-			for(int l = 0; l < 128 * biomesPerPixel; ++l) {
-				for(int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
-					biomes[l * 128 * biomesPerPixel + i1] = world.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel));
+			Biome[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
+				Biome[] array = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
+				for(int l = 0; l < 128 * biomesPerPixel; ++l) {
+					for(int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
+						array[l * 128 * biomesPerPixel + i1] = world.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel));
+					}
 				}
-			}
+				return array;
+			});
 
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {

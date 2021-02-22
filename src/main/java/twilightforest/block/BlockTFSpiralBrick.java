@@ -24,7 +24,7 @@ public class BlockTFSpiralBrick extends Block {
     public static final EnumProperty<Direction.Axis> AXIS_FACING = EnumProperty.create("axis", Direction.Axis.class);
 
     public BlockTFSpiralBrick() {
-        super(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
+        super(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE).notSolid());
         //TODO: Check if we need thise two
 //        this.setLightOpacity(255);
 //        this.useNeighborBrightness = true;
@@ -122,52 +122,4 @@ public class BlockTFSpiralBrick extends Block {
 		return state.with(DIAGONAL, Diagonals.mirrorOn(state.get(AXIS_FACING), state.get(DIAGONAL), mirrorIn));
 	}
 
-//	@Override
-//    public boolean rotateBlock(World world, BlockPos pos, Direction facing) {
-//        BlockState state = world.getBlockState(pos);
-//
-//        if (facing.getAxis() == state.get(AXIS_FACING)) {
-//            state = state.cycleProperty(DIAGONAL);
-//        } else {
-//            switch (facing.getAxis()) {
-//                case X:
-//                    state = state.with(AXIS_FACING, state.get(AXIS_FACING) == Direction.Axis.Y ? Direction.Axis.Z : Direction.Axis.Y);
-//                    break;
-//                case Y:
-//                    state = state.with(AXIS_FACING, state.get(AXIS_FACING) == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
-//                    break;
-//                case Z:
-//                    state = state.with(AXIS_FACING, state.get(AXIS_FACING) == Direction.Axis.Y ? Direction.Axis.X : Direction.Axis.Y);
-//                    break;
-//            }
-//        }
-//
-//        world.setBlockState(pos, state);
-//        return true;
-//    }
-
-	//TODO: Does not exist
-//	@Nullable
-//	@Override
-//	public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos) {
-//		return Direction.values();
-//	}
-
-	//TODO: Check this
-//	@Override
-//	@Deprecated
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
-
-//
-//	@Override
-//	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
-//		return getBlockFaceShape(world, state, pos, face) == BlockFaceShape.SOLID;
-//	}
-
-	//    @Override
-//    protected ItemStack getSilkTouchDrop(BlockState state) {
-//        return new ItemStack(Item.getItemFromBlock(this));
-//    }
 }

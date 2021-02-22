@@ -9,8 +9,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.IBreathAttacker;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> extends Goal {
@@ -112,6 +114,9 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 		float var9 = 0.5F;
 		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(var9, var9, var9));
 		double hitDist = 0;
+
+		if(entityHost.isMultipartEntity())
+		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(entityHost.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost) {

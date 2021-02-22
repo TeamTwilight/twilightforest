@@ -8,8 +8,10 @@ import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> {
@@ -151,6 +153,9 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(range, range, range));
 		double hitDist = 0;
+
+		if(attacker.isMultipartEntity())
+			possibleList.removeAll(Arrays.asList(Objects.requireNonNull(attacker.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.attacker) {

@@ -58,7 +58,7 @@ public class EntityTFBlockGoblin extends MonsterEntity {
 		partsArray = new MultipartGenericsAreDumb[]{block, chain1, chain2, chain3};
 	}
 
-	static abstract class MultipartGenericsAreDumb extends PartEntity<Entity> {
+	static abstract class MultipartGenericsAreDumb extends TFPartEntity<Entity> {
 
 		public MultipartGenericsAreDumb(Entity parent) {
 			super(parent);
@@ -314,6 +314,11 @@ public class EntityTFBlockGoblin extends MonsterEntity {
 		} else {
 			return (dataManager.get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
 		}
+	}
+
+	@Override
+	public boolean isMultipartEntity() {
+		return true;
 	}
 
 	/**

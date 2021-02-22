@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +18,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFHydraMortar extends ThrowableEntity {
@@ -31,8 +33,8 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		super(type, world);
 	}
 
-	public EntityTFHydraMortar(EntityType<? extends EntityTFHydraMortar> type, World world, EntityTFHydra head) {
-		super(type, head, world);
+	public EntityTFHydraMortar(EntityType<? extends EntityTFHydraMortar> type, World world, EntityTFHydraHead head) {
+		super(type, head.getParent(), world);
 
 		Vector3d vector = head.getLookVec();
 
@@ -58,7 +60,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	public void tick() {
 		super.tick();
 
-		this.pushOutOfBlocks(this.getPosX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getPosZ());
+		//this.pushOutOfBlocks(this.getPosX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getPosZ());
 
 		if (this.isOnGround()) {
 //			this.motionX *= 0.9D;
@@ -79,31 +81,25 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	@Override
 	protected void onImpact(RayTraceResult ray) {
 		if (ray instanceof EntityRayTraceResult) {
-			if (((EntityRayTraceResult)ray).getEntity() == null && !megaBlast) {
-				// we hit the ground
-				this.setMotion(this.getMotion().getX(), 0.0D, this.getMotion().getZ());
-				this.onGround = true;
-			} else if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() != func_234616_v_() && !isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
+			if (!world.isRemote &&
+
+					(!(((EntityRayTraceResult)ray).getEntity() instanceof EntityTFHydraMortar) || ((EntityTFHydraMortar) ((EntityRayTraceResult)ray).getEntity()).func_234616_v_() != func_234616_v_()) &&
+
+					((EntityRayTraceResult)ray).getEntity() != func_234616_v_() &&
+
+					!isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
 				detonate();
 			}
-		}
+		} else if (!megaBlast) {
+			// we hit the ground
+			this.setMotion(this.getMotion().getX(), 0.0D, this.getMotion().getZ());
+			this.onGround = true;
+		} else
+			detonate();
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
-		if (func_234616_v_() instanceof EntityTFHydra) {
-			EntityTFHydra hydra = (EntityTFHydra) func_234616_v_();
-			if (hydra == null || hydra.getParts() == null)
-				return false;
-			if (entity == hydra)
-				return true;
-			for (Entity e : hydra.getParts())
-				if (entity == e)
-					return true;
-			for (HydraHeadContainer container : hydra.hc)
-				if (entity == container.headEntity)
-					return true;
-		}
-		return false;
+		return (func_234616_v_() instanceof EntityTFHydra && entity instanceof EntityTFHydraPart && ((EntityTFHydraPart) entity).getParent() == func_234616_v_());
 	}
 
 	@Override
@@ -177,5 +173,10 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	@Override
 	protected float getGravityVelocity() {
 		return 0.05F;
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

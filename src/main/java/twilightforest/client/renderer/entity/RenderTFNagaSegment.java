@@ -13,20 +13,17 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFNaga;
 import twilightforest.entity.boss.EntityTFNagaSegment;
 
-public class RenderTFNagaSegment<T extends EntityTFNagaSegment> extends EntityRenderer<T> {
+public class RenderTFNagaSegment<T extends EntityTFNagaSegment> extends TFPartRenderer<T, ModelTFNaga<T>> {
 	private static final ResourceLocation part_TextureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
 
-	private final Model segmentModel = new ModelTFNaga<>();
-
 	public RenderTFNagaSegment(EntityRendererManager m) {
-		super(m);
+		super(m, new ModelTFNaga<>());
 	}
 
 	@Override
 	public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
 		if(!entityIn.isInvisible()) {
 			matrixStackIn.push();
-			IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.segmentModel.getRenderType(part_TextureLoc));
 
 			float yawDiff = entityIn.rotationYaw - entityIn.prevRotationYaw;
 			if (yawDiff > 180) {
@@ -39,10 +36,11 @@ public class RenderTFNagaSegment<T extends EntityTFNagaSegment> extends EntityRe
 			matrixStackIn.rotate(Vector3f.YP.rotationDegrees(yaw2));
 			matrixStackIn.rotate(Vector3f.XP.rotationDegrees(entityIn.rotationPitch));
 
-			matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
+			//matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
 			matrixStackIn.scale(2.0F, 2.0F, 2.0F);
-			this.segmentModel.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-			super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+			matrixStackIn.translate(0.0D, -1.501F, 0.0D);
+			int light = renderManager.getPackedLight(entityIn.getParent(), partialTicks);
+			super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, light);
 			matrixStackIn.pop();
 		}
 	}

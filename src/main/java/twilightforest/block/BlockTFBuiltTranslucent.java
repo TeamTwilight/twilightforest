@@ -30,7 +30,7 @@ public class BlockTFBuiltTranslucent extends Block {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(ACTIVE)) {
 			world.removeBlock(pos, false);
 			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundCategory.BLOCKS, 0.3F, 0.5F);

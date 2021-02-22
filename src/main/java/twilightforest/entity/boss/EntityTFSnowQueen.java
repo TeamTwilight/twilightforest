@@ -79,12 +79,10 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new EntityAITFHoverSummon(this, 1.0D));
 		this.goalSelector.addGoal(2, new EntityAITFHoverThenDrop(this, 80, 20));
 		this.goalSelector.addGoal(3, new EntityAITFHoverBeam(this, 80, 100));
 		this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -192,6 +190,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 		super.tick();
 
 		for (int i = 0; i < this.iceArray.length; i++) {
+			iceArray[i].tick();
 			if (i < this.iceArray.length - 1) {
 				// set block position
 				Vector3d blockPos = this.getIceShieldPosition(i);
@@ -323,15 +322,6 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 		return false;
 	}
 
-	/**
-	 * We need to do this for the bounding boxes on the parts to become active
-	 */
-	@Nullable
-	@Override
-	public PartEntity<?>[] getParts() {
-		return iceArray;
-	}
-
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
 		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
@@ -454,5 +444,19 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 	@Override
 	public boolean isNonBoss() {
 		return false;
+	}
+
+	@Override
+	public boolean isMultipartEntity() {
+		return true;
+	}
+
+	/**
+	 * We need to do this for the bounding boxes on the parts to become active
+	 */
+	@Nullable
+	@Override
+	public PartEntity<?>[] getParts() {
+		return iceArray;
 	}
 }

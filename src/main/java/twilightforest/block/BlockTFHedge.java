@@ -80,7 +80,7 @@ public class BlockTFHedge extends Block {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		// find players within range
 		List<PlayerEntity> nearbyPlayers = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(8.0));
 

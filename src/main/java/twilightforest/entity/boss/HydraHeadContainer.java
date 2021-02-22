@@ -95,7 +95,7 @@ public class HydraHeadContainer {
 		}
 	}
 
-	public EntityTFHydraHead headEntity;
+	public final EntityTFHydraHead headEntity;
 	public final EntityTFHydraNeck necka;
 	public final EntityTFHydraNeck neckb;
 	public final EntityTFHydraNeck neckc;
@@ -137,11 +137,14 @@ public class HydraHeadContainer {
 		this.damageTaken = 0;
 		this.respawnCounter = -1;
 
-		necka = new EntityTFHydraNeck(this.hydra);
-		neckb = new EntityTFHydraNeck(this.hydra);
-		neckc = new EntityTFHydraNeck(this.hydra);
-		neckd = new EntityTFHydraNeck(this.hydra);
-		necke = new EntityTFHydraNeck(this.hydra);
+		headEntity = new EntityTFHydraHead(hydra);
+		headEntity.setPosition(hydra.getPosX(), hydra.getPosY(), hydra.getPosZ());
+
+		necka = new EntityTFHydraNeck(this.headEntity);
+		neckb = new EntityTFHydraNeck(this.headEntity);
+		neckc = new EntityTFHydraNeck(this.headEntity);
+		neckd = new EntityTFHydraNeck(this.headEntity);
+		necke = new EntityTFHydraNeck(this.headEntity);
 
 		// state positions, where is each state positioned?
 		stateNeckLength = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
@@ -171,6 +174,8 @@ public class HydraHeadContainer {
 			this.ticksNeeded = 20;
 			this.ticksProgress = 20;
 		}
+		setHeadPosition();
+		setNeckPosition();
 	}
 
 	protected void setupStateRotations() {
@@ -311,6 +316,7 @@ public class HydraHeadContainer {
 	 */
 	public void tick() {
 
+		headEntity.tick();
 		// neck updates
 		necka.tick();
 		neckb.tick();
@@ -323,7 +329,10 @@ public class HydraHeadContainer {
 
 		if (headEntity != null) {
 			// make sure this is set up
-			headEntity.setWidthAndHeight(this.isActive() ? 4.0F : 1.0F);
+			if(isActive() && headEntity.size.width > 0)
+				headEntity.activate();
+			else if(!isActive() && headEntity.size.width != 0)
+				headEntity.deactivate();
 
 			// only actually do these things on the server
 			if (!hydra.world.isRemote) {
@@ -544,7 +553,7 @@ public class HydraHeadContainer {
 		}
 
 		if (headEntity.getState() == State.MORTAR_BEGINNING) {
-			headEntity.world.addParticle(ParticleTypes.SPLASH, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
@@ -608,7 +617,7 @@ public class HydraHeadContainer {
 		// head1 is above
 		// head2 is to the right
 		// head3 is to the left
-		setupStateRotations(); // temporary, for debugging
+		//setupStateRotations(); // temporary, for debugging
 
 		float neckLength = getCurrentNeckLength();
 		float xRotation = getCurrentHeadXRotation();
@@ -645,7 +654,7 @@ public class HydraHeadContainer {
 				// stop hurting yourself!
 				this.endCurrentAction();
 			} else */{
-				EntityTFHydraMortar mortar = new EntityTFHydraMortar(TFEntities.hydra_mortar, headEntity.world, hydra);
+				EntityTFHydraMortar mortar = new EntityTFHydraMortar(TFEntities.hydra_mortar, headEntity.world, headEntity);
 
 				// launch blasting mortars if the player is hiding
 				if (this.targetEntity != null && !headEntity.canEntityBeSeen(this.targetEntity)) {
@@ -672,7 +681,7 @@ public class HydraHeadContainer {
 		if (headEntity.getState() == State.FLAMING) {
 			Entity target = getHeadLookTarget();
 
-			if (target != null) {
+			if (target != null && target != headEntity.getParent() && (!(target instanceof EntityTFHydraPart) || ((EntityTFHydraPart) target).getParent() != headEntity.getParent())) {
 				/*if (target instanceof EntityTFHydraPart || target instanceof MultiPartEntityPart) {
 					// stop hurting yourself!
 					this.endCurrentAction();

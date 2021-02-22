@@ -3,6 +3,7 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
@@ -78,7 +79,9 @@ public class ModelTFHydraHead extends SegmentedModel<EntityTFHydraHead> {
 		head.rotateAngleY = getRotationY(entity, partialTicks);
 		head.rotateAngleX = getRotationX(entity, partialTicks);
 
-		float mouthOpen = entity.getMouthOpen();
+		float mouthOpenLast = entity.getMouthOpenLast();
+		float mouthOpenReal = entity.getMouthOpen();
+		float mouthOpen = MathHelper.lerp(partialTicks, mouthOpenLast, mouthOpenReal);
 		head.rotateAngleX -= (float) (mouthOpen * (Math.PI / 12.0));
 		jaw.rotateAngleX = (float) (mouthOpen * (Math.PI / 3.0));
 	}
