@@ -1,3 +1,4 @@
+project.logger.lifecycle('var: ' + System.getenv('ARTIFACTORY_USER') + ' : ' + System.env.ARTIFACTORY_USER)
 // define the properties file
 ext.configFile = file "gradle.properties"
 configFile.withReader {
