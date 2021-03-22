@@ -48,7 +48,7 @@ steps:
   displayName: Publish to Maven
   inputs:
     workingDirectory: ''
-    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE -PCIMavenUser=$(Artifactory.User)'
+    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE -PCIMavenUser=$(Artifactory.User) -PCIMavenPass=$(Artifactory.Password)'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
