@@ -44,21 +44,6 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
 
-- task: Gradle@2
-  displayName: Publish to Maven
-  inputs:
-    workingDirectory: ''
-    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE -PCIMavenUser=$(Artifactory.User) -PCIMavenPass=$(Artifactory.Password)'
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'publish'
-  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
-
 - script: |
     # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
     ./gradlew --stop
@@ -140,3 +125,18 @@ steps:
     embeds: |
       [$(DiscordMessage)]
   condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
+
+- task: Gradle@2
+  displayName: Publish to Maven
+  inputs:
+    workingDirectory: ''
+    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE -PCIMavenUser=$(Artifactory.User) -PCIMavenPass=$(Artifactory.Password)'
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'publish'
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
