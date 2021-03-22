@@ -218,7 +218,7 @@ publishing {
             url "https://modmaven.dev:443/artifactory/mods"
             credentials {
                 username (hasProperty("CIMavenUser") ? CIMavenUser : 'null')
-                password (hasProperty("CIMavenPass") ? CIMavenUser : 'null')
+                password (hasProperty("CIMavenPass") ? CIMavenPass : 'null')
             }
         }
     }
