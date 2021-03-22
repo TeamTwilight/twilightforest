@@ -211,11 +211,13 @@ publishing {
         mavenJava(MavenPublication) {
             artifact jar
             setGroupId 'teamtwilight'
+            setArtifactId mod_id
         }
     }
     repositories {
         maven {
             url "https://modmaven.dev:443/artifactory/mods"
+            //url "file:///${project.projectDir}/mcmodsrepo"
             credentials {
                 username (hasProperty("CIMavenUser") ? CIMavenUser : 'null')
                 password (hasProperty("CIMavenPass") ? CIMavenPass : 'null')
