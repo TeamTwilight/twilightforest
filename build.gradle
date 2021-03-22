@@ -1,4 +1,4 @@
-project.logger.lifecycle('var: ' + System.getenv('ARTIFACTORY_USER') + ' : ' + System.env.ARTIFACTORY_USER)
+project.logger.lifecycle('var: ' + (hasProperty("CIMavenUser") ? CIMavenUser : 'null'))
 // define the properties file
 ext.configFile = file "gradle.properties"
 configFile.withReader {
