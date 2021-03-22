@@ -44,11 +44,6 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
 
-- script: |
-    # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
-    ./gradlew --stop
-  displayName: Kill Daemon
-
 - task: CopyFiles@2
   displayName: Copy Release build to artifact staging
   inputs:
@@ -140,3 +135,8 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'publish'
   condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+
+- script: |
+    # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
+    ./gradlew --stop
+  displayName: Kill Daemon
