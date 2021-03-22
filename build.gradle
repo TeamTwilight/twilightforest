@@ -219,8 +219,8 @@ publishing {
             url "https://modmaven.dev:443/artifactory/mods"
             //url "file:///${project.projectDir}/mcmodsrepo"
             credentials {
-                username (hasProperty("CIMavenUser") ? CIMavenUser : 'null')
-                password (hasProperty("CIMavenPass") ? CIMavenPass : 'null')
+                username System.getenv('ARTIFACTORY_USER')
+                password System.getenv('ARTIFACTORY_PASS')
             }
         }
     }
