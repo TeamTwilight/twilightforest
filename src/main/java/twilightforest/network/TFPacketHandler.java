@@ -36,5 +36,7 @@ public class TFPacketHandler {
 		CHANNEL.messageBuilder(PacketUpdateShield.class, id++).encoder(PacketUpdateShield::encode).decoder(PacketUpdateShield::new).consumer(PacketUpdateShield.Handler::onMessage).add();
 		CHANNEL.messageBuilder(PacketSetSkylightEnabled.class, id++).encoder(PacketSetSkylightEnabled::encode).decoder(PacketSetSkylightEnabled::new).consumer(PacketSetSkylightEnabled.Handler::onMessage).add();
 		CHANNEL.messageBuilder(PacketUncraftingGui.class, id++).encoder(PacketUncraftingGui::encode).decoder(PacketUncraftingGui::new).consumer(PacketUncraftingGui.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketUpdateTFMultipart.class, id++).encoder(PacketUpdateTFMultipart::encode).decoder(PacketUpdateTFMultipart::new).consumer(PacketUpdateTFMultipart.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketSpawnFallenLeafFrom.class, id++).encoder(PacketSpawnFallenLeafFrom::encode).decoder(PacketSpawnFallenLeafFrom::new).consumer(PacketSpawnFallenLeafFrom.Handler::onMessage).add();
 	}
 }

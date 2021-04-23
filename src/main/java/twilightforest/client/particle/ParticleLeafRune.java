@@ -3,7 +3,6 @@ package twilightforest.client.particle;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -16,7 +15,7 @@ public class ParticleLeafRune extends SpriteTexturedParticle {
 		this.motionY = velY;
 		this.motionZ = velZ;
 
-		this.particleScale = this.rand.nextFloat() * 0.5F;
+		this.particleScale = this.rand.nextFloat() * 0.25F;
 		this.maxAge = (int)(Math.random() * 10.0D) + 40;
 		this.particleGravity = 0.3F + rand.nextFloat() * 0.6F;
 	}

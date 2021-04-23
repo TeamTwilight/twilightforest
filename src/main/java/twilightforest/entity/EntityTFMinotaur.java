@@ -16,15 +16,15 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 import twilightforest.item.TFItems;
+import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
@@ -95,11 +95,12 @@ public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
+		entity.attackEntityFrom(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		boolean success = super.attackEntityAsMob(entity);
-
 		if (success && this.isCharging()) {
+			entity.attackEntityFrom(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 			entity.addVelocity(0, 0.4, 0);
-			playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+			playSound(TFSounds.MINOTAUR_ATTACK, 1.0F, 1.0F);
 		}
 
 		return success;
@@ -116,22 +117,22 @@ public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ENTITY_COW_AMBIENT;
+		return TFSounds.MINOTAUR_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_COW_HURT;
+		return TFSounds.MINOTAUR_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_COW_DEATH;
+		return TFSounds.MINOTAUR_DEATH;
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 0.8F);
+		playSound(TFSounds.MINOTAUR_STEP, 0.15F, 0.8F);
 	}
 
 	@Override

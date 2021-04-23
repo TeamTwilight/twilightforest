@@ -11,7 +11,6 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
@@ -34,7 +33,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 
 		this.setCoordBaseMode(Direction.NORTH);
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getCoordBaseMode());
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getCoordBaseMode());
 	}
 
 	@Override

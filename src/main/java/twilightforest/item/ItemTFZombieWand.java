@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Effects;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,7 @@ public class ItemTFZombieWand extends Item {
 
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage() - 1) {
+		if (stack.getDamage() == stack.getMaxDamage()) {
 			return ActionResult.resultFail(stack);
 		}
 
@@ -53,7 +54,7 @@ public class ItemTFZombieWand extends Item {
 				zombie.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 1));
 				world.addEntity(zombie);
 
-				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
+				stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
 			}
 		}
 
@@ -62,7 +63,7 @@ public class ItemTFZombieWand extends Item {
 
 	@Override
 	public float getXpRepairRatio(ItemStack stack) {
-		return 0.1f;
+		return 1f;
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponentOld {
 		// rails
 		//fillWithRandomizedBlocks(world, sbb, 0, 1, 0, length, 2, 0, false, rand, deco.randomBlocks);
 		//fillWithRandomizedBlocks(world, sbb, 0, 1, 6, length, 2, 6, false, rand, deco.randomBlocks);
-		BlockState castlePillar = TFBlocks.castle_pillar_bold.get().getDefaultState().with(RotatedPillarBlock.AXIS, (this.rotation == Rotation.NONE || this.rotation == Rotation.CLOCKWISE_180) ? Direction.Axis.X : Direction.Axis.Z);
+		BlockState castlePillar = TFBlocks.castle_pillar_bold.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		fillWithBlocks(world, sbb, 0, 2, 0, length, 2, 0, castlePillar, castlePillar, false);
 		fillWithBlocks(world, sbb, 0, 2, 6, length, 2, 6, castlePillar, castlePillar, false);
@@ -57,7 +57,7 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponentOld {
 		// supports
 		int l3 = length / 3;
 		for (int i = 0; i < l3; i++) {
-			int sl = l3 - (int) (MathHelper.cos((float) (l3 - i) / (float) l3 * 1.6F) * (float) l3); // this could be better, maybe?
+			int sl = l3 - (int) (MathHelper.cos((float) (l3 - i) / (float) l3 * 1.6F) * l3); // this could be better, maybe?
 			fillWithRandomizedBlocks(world, sbb, i, -sl, 0, i, 0, 0, false, rand, deco.randomBlocks);
 			fillWithRandomizedBlocks(world, sbb, i, -sl, 6, i, 0, 6, false, rand, deco.randomBlocks);
 			fillWithRandomizedBlocks(world, sbb, length - i, -sl, 0, length - i, 0, 0, false, rand, deco.randomBlocks);

@@ -2,6 +2,7 @@ package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -55,14 +56,10 @@ public class ComponentTFMazeRoomVault extends ComponentTFMazeRoom {
 		fillWithBlocks(world, sbb, 10, 0, 6, 10, 0, 9, Blocks.TNT.getDefaultState(), AIR, false);
 
 		// LEWTZ!
-		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 7, 2, 6, sbb);
-		this.placeTreasureAtCurrentPosition(world, 8, 2, 6, TFTreasure.labyrinth_vault, sbb);
-		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 8, 2, 9, sbb);
-		this.placeTreasureAtCurrentPosition(world, 7, 2, 9, TFTreasure.labyrinth_vault, sbb);
-		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 6, 2, 7, sbb);
-		this.placeTreasureAtCurrentPosition(world, 6, 2, 8, TFTreasure.labyrinth_vault, sbb);
-		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 9, 2, 8, sbb);
-		this.placeTreasureAtCurrentPosition(world, 9, 2, 7, TFTreasure.labyrinth_vault, sbb);
+		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFTreasure.labyrinth_vault, sbb, false);
+		this.setDoubleLootChest(world, 8, 2, 9, 7, 2, 9, Direction.NORTH, TFTreasure.labyrinth_vault, sbb, false);
+		this.setDoubleLootChest(world, 6, 2, 8, 6, 2, 7, Direction.EAST, TFTreasure.labyrinth_vault, sbb, false);
+		this.setDoubleLootChest(world, 9, 2, 7, 9, 2, 8, Direction.WEST, TFTreasure.labyrinth_vault, sbb, false);
 
 		// mazebreaker!
 

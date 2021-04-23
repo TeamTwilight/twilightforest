@@ -1,7 +1,0 @@
-{
-  // https://minecraft.gamepedia.com/Custom_world_generation#Carvers
-  "type": "underwater_cave",
-  "config": {
-    "probability": 0.25
-  }
-}

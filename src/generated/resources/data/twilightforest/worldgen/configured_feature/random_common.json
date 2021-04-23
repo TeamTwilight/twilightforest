@@ -1,0 +1,154 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "features": [
+              {
+                "config": {
+                  "feature": "twilightforest:druid_hut",
+                  "decorator": {
+                    "config": {
+                      "chance": 2
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:well",
+                  "decorator": {
+                    "config": {
+                      "chance": 5
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:grove_ruins",
+                  "decorator": {
+                    "config": {
+                      "chance": 2
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:monolith",
+                  "decorator": {
+                    "config": {
+                      "chance": 5
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:outside_stalagmite",
+                  "decorator": {
+                    "config": {
+                      "chance": 6
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:stone_circle",
+                  "decorator": {
+                    "config": {
+                      "chance": 5
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:foundation",
+                  "decorator": {
+                    "config": {
+                      "chance": 5
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:hollow_log",
+                  "decorator": {
+                    "config": {
+                      "chance": 5
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:hollow_stump",
+                  "decorator": {
+                    "config": {
+                      "chance": 6
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              {
+                "config": {
+                  "feature": "twilightforest:small_log",
+                  "decorator": {
+                    "config": {
+                      "chance": 5
+                    },
+                    "type": "minecraft:chance"
+                  }
+                },
+                "type": "minecraft:decorated"
+              }
+            ]
+          },
+          "type": "minecraft:simple_random_selector"
+        },
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {},
+              "type": "minecraft:heightmap"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {},
+      "type": "minecraft:square"
+    }
+  },
+  "type": "minecraft:decorated"
+}

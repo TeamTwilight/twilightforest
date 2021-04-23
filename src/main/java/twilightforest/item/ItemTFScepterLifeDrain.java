@@ -6,10 +6,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +25,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,8 +39,14 @@ public class ItemTFScepterLifeDrain extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		player.setActiveHand(hand);
-		return ActionResult.resultSuccess(player.getHeldItem(hand));
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (stack.getDamage() == stack.getMaxDamage()) {
+			return ActionResult.resultFail(player.getHeldItem(hand));
+		} else {
+			player.setActiveHand(hand);
+			return ActionResult.resultSuccess(player.getHeldItem(hand));
+		}
 	}
 
 	@Override
@@ -84,7 +91,7 @@ public class ItemTFScepterLifeDrain extends Item {
 
 			if (possibleEntity.canBeCollidedWith()) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
 				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
@@ -109,7 +116,7 @@ public class ItemTFScepterLifeDrain extends Item {
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		World world = living.world;
 
-		if (stack.getDamage() >= this.getMaxDamage(stack)) {
+		if (stack.getDamage() == this.getMaxDamage(stack)) {
 			// do not use
 			living.resetActiveHand();
 			return;
@@ -132,8 +139,8 @@ public class ItemTFScepterLifeDrain extends Item {
 						if (target instanceof MobEntity) {
 							((MobEntity) target).spawnExplosionParticle();
 						}
-						target.playSound(SoundEvents.ENTITY_GENERIC_BIG_FALL, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-						animateTargetShatter(world, (LivingEntity) target);
+						target.playSound(TFSounds.SCEPTER_DRAIN, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+						animateTargetShatter(world, target);
 						if (!world.isRemote) {
 							target.remove();
 							target.onDeath(DamageSource.causeIndirectMagicDamage(living, living));
@@ -164,7 +171,7 @@ public class ItemTFScepterLifeDrain extends Item {
 					// this is a new creature to start draining
 					makeRedMagicTrail(world, living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ(), target.getPosX(), target.getPosY() + target.getEyeHeight(), target.getPosZ());
 
-					living.playSound(SoundEvents.ITEM_FLINTANDSTEEL_USE, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+					living.playSound(TFSounds.SCEPTER_USE, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
 					if (!world.isRemote) {
 						target.attackEntityFrom(DamageSource.causeIndirectMagicDamage(living, living), 1);
@@ -179,7 +186,7 @@ public class ItemTFScepterLifeDrain extends Item {
 				}
 
 				if (!world.isRemote) {
-					stack.damageItem(1, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
+					stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
 				}
 			}
 		}

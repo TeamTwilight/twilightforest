@@ -89,12 +89,6 @@ public class EntityTFBunny extends AnimalEntity {
 		return this.getHeight() * 0.5F;
 	}
 
-	//TODO: Moved to renderer?
-//	@Override
-//	public float getRenderSizeModifier() {
-//		return 0.3F;
-//	}
-
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return false;
@@ -116,5 +110,4 @@ public class EntityTFBunny extends AnimalEntity {
 		// default to just prefering lighter areas
 		return this.world.getLight(pos) - 0.5F;
 	}
-
 }

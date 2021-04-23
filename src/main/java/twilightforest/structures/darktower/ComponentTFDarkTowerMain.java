@@ -1,5 +1,6 @@
 package twilightforest.structures.darktower;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemFrameEntity;
@@ -9,6 +10,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.SlabType;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
@@ -20,10 +22,12 @@ import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.RegistryObject;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -36,6 +40,7 @@ import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecorator;
 import twilightforest.structures.TFMaze;
 import twilightforest.util.RotationUtil;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -250,20 +255,20 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	@Override
-	public boolean func_230383_a_(ISeedReader seed, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(seed.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// make walls
-		makeEncasedWalls(seed, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
+		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
 
 		// clear inside
-		fillWithAir(seed, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
+		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		if (this.getComponentType() == 0) {
 			// deco to ground
 			for (int x = 0; x < this.size; x++) {
 				for (int z = 0; z < this.size; z++) {
-					this.setBlockState(seed, deco.accentState, x, -1, z, sbb);
+					this.setBlockState(world, deco.accentState, x, -1, z, sbb);
 				}
 			}
 		}
@@ -291,31 +296,31 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		int topFloorsStartY = height - (bottomFloors * 5 + 1);
 
 		// add bottom and top floors
-		addThreeQuarterFloors(seed, manager, generator, decoRNG, sbb, 0, bottomFloors * 5);
+		addThreeQuarterFloors(world, manager, generator, decoRNG, sbb, 0, bottomFloors * 5);
 		if (this.getComponentType() < 2) {
-			addThreeQuarterFloors(seed, manager, generator, decoRNG, sbb, topFloorsStartY, height - 1);
+			addThreeQuarterFloors(world, manager, generator, decoRNG, sbb, topFloorsStartY, height - 1);
 		} else {
-			addThreeQuarterFloorsDecorateBoss(seed, decoRNG, sbb, topFloorsStartY, height - 1);
+			addThreeQuarterFloorsDecorateBoss(world, decoRNG, sbb, topFloorsStartY, height - 1);
 			// boss destruction
 
-			destroyTower(seed, decoRNG, 12, height + 4, 3, 4, sbb);
-			destroyTower(seed, decoRNG, 3, height + 4, 12, 4, sbb);
-			destroyTower(seed, decoRNG, 3, height + 4, 3, 4, sbb);
-			destroyTower(seed, decoRNG, 12, height + 4, 12, 4, sbb);
-			destroyTower(seed, decoRNG, 8, height + 4, 8, 5, sbb);
+			destroyTower(world, decoRNG, 12, height + 4, 3, 4, sbb);
+			destroyTower(world, decoRNG, 3, height + 4, 12, 4, sbb);
+			destroyTower(world, decoRNG, 3, height + 4, 3, 4, sbb);
+			destroyTower(world, decoRNG, 12, height + 4, 12, 4, sbb);
+			destroyTower(world, decoRNG, 8, height + 4, 8, 5, sbb);
 
 			// make spawner where it will hopefully last
-			decorateBossSpawner(seed, decoRNG, sbb, Rotation.NONE, height - 6);
+			decorateBossSpawner(world, decoRNG, sbb, Rotation.NONE, height - 6);
 		}
 
 		if (beamMaze) {
-			addTimberMaze(seed, decoRNG, sbb, (bottomFloors * 5), topFloorsStartY);
+			addTimberMaze(world, decoRNG, sbb, (bottomFloors * 5), topFloorsStartY);
 		} else {
-			addBuilderPlatforms(seed, decoRNG, sbb, (bottomFloors * 5), topFloorsStartY);
+			addBuilderPlatforms(world, decoRNG, sbb, (bottomFloors * 5), topFloorsStartY);
 		}
 
 		// openings
-		makeOpenings(seed, sbb);
+		makeOpenings(world, sbb);
 
 		return true;
 	}
@@ -383,8 +388,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
+	@SuppressWarnings("fallthrough")
 	private void decorateFloor(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop) {
 		// pick an appropriate decoration and use it
+		// FIXME: if minY <= 64, some cases gets double weight
 
 		if (isTop) {
 			// there are a limited amount that can go at the top
@@ -394,7 +401,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 					decorateAquarium(world, decoRNG, sbb, rotation, y);
 					break;
 				case 1:
-					decorateBotanical(world, decoRNG, sbb, rotation, y);
+					decorateBotanical(world, generator, decoRNG, sbb, rotation, y);
 					break;
 				case 2:
 					decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
@@ -408,7 +415,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 					decorateAquarium(world, decoRNG, sbb, rotation, y);
 					break;
 				case 1:
-					decorateBotanical(world, decoRNG, sbb, rotation, y);
+					decorateBotanical(world, generator, decoRNG, sbb, rotation, y);
 					break;
 				case 2:
 					if (y + this.boundingBox.minY > 64) {
@@ -434,7 +441,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 					decorateAquarium(world, decoRNG, sbb, rotation, y);
 					break;
 				case 4:
-					decorateBotanical(world, decoRNG, sbb, rotation, y);
+					decorateBotanical(world, generator, decoRNG, sbb, rotation, y);
 					break;
 				case 5:
 					if (y + this.boundingBox.minY > 64) {
@@ -442,7 +449,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 						break;
 					}
 				case 6:
-					decorateLounge(world, decoRNG, sbb, rotation, y);
+					decorateLounge(world, generator, decoRNG, sbb, rotation, y);
 					break;
 				case 7:
 					decorateForge(world, decoRNG, sbb, rotation, y);
@@ -666,26 +673,22 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			case 0:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 1, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState(), x + 0, y + 2, z + 1, sbb);
-				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.setDoubleLootChest(world, x, y + 2, z + 1, x + 1, y + 2, z + 1, Direction.SOUTH, TFTreasure.darktower_cache, sbb, false);
 				break;
 			case 1:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 1, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, x + 0, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.setDoubleLootChest(world, x, y + 2, z, x, y + 2, z + 1, Direction.WEST, TFTreasure.darktower_cache, sbb, false);
 				break;
 			case 2:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 0, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 0, TFTreasure.darktower_cache, sbb);
+				this.setDoubleLootChest(world, x + 1, y + 2, z, x, y + 2, z, Direction.NORTH, TFTreasure.darktower_cache, sbb, false);
 				break;
 			case 3:
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 1, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.setDoubleLootChest(world, x + 1, y + 2, z + 1, x + 1, y + 2, z, Direction.EAST, TFTreasure.darktower_cache, sbb, false);
 				break;
 		}
 	}
@@ -727,7 +730,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, antiBuilderBlockState, 5, y + 3, 13, rotation, sbb);
 	}
 
-	private void decorateLounge(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateLounge(ISeedReader world, ChunkGenerator generator, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		//  brewing area in corner - walls
 		this.fillBlocksRotated(world, sbb, 17, y + 1, 1, 17, y + 4, 6, deco.pillarState, rotation);
 		this.fillBlocksRotated(world, sbb, 12, y + 1, 1, 17, y + 4, 1, deco.pillarState, rotation);
@@ -777,12 +780,12 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.CEILING, decoRNG.nextBoolean() ? Direction.EAST : Direction.NORTH, false), 8, y + 2, 8, rotation, sbb);
 
 		// planter for trees
-		placeTreePlanter(world, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
+		placeTreePlanter(world, generator, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
 	}
 
 	private void makeDispenserPillar(ISeedReader world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairMeta, Rotation rotation, MutableBoundingBox sbb) {
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, true), x, y + 2, z, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.DISPENSER.getDefaultState().with(DispenserBlock.FACING, stairMeta), x, y + 3, z, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.DISPENSER.getDefaultState().with(DispenserBlock.FACING, stairMeta.getOpposite()), x, y + 3, z, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, false), x, y + 4, z, rotation, sbb);
 	}
 
@@ -830,15 +833,15 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		placeItemFrameRotated(world, 14, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(Items.REDSTONE), sbb);
 		placeItemFrameRotated(world, 15, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.borer_essence.get()), sbb);
 
-		placeItemFrameRotated(world, 17, y + 2, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 2, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 2, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get(), 1), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
 		placeItemFrameRotated(world, 17, y + 3, 4, rotation, WEST, new ItemStack(TFItems.carminite.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get(), 1), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
 
 		if (y < this.height - 13) {
 			// device bottom
@@ -874,32 +877,32 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		// short piston plunger 1
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 17, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, false), 13, y + 1, 17, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.SOUTH), 14, y + 2, 17, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.SOUTH), 14, y + 2, 17, rotation, sbb);
 		setBlockStateRotated(world, redstone, 14, y + 2, 16, rotation, sbb);
 
 		// short piston plunger 2
 		setBlockStateRotated(world, deco.accentState, 17, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, false), 17, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.EAST), 17, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.EAST), 17, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, redstone, 16, y + 2, 14, rotation, sbb);
 
 		// long piston plunger 1
 		setBlockStateRotated(world, redstone, 14, y + 2, 11, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 11, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, true), 13, y + 1, 11, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.NORTH), 14, y + 2, 10, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH), 14, y + 2, 10, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 9, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, false), 13, y + 1, 9, rotation, sbb);
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(PistonBlock.FACING, Direction.NORTH), 14, y + 2, 9, rotation, sbb);
+		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH), 14, y + 2, 9, rotation, sbb);
 
 		// long piston plunger 2
 		setBlockStateRotated(world, redstone, 11, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 11, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, true), 11, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.WEST), 10, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.WEST), 10, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 9, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, false), 9, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(PistonBlock.FACING, Direction.WEST), 9, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.WEST), 9, y + 2, 14, rotation, sbb);
 	}
 
 	//TODO: Parameter "forgeDeco" is unused. Remove?
@@ -920,9 +923,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		if (sbb.isVecInside(pos)) {
 			ItemFrameEntity frame = new ItemFrameEntity(world.getWorld(), pos, facing);
 			if (!itemStack.isEmpty()) {
-				frame.setDisplayedItem(itemStack);
+				frame.setDisplayedItemWithUpdate(itemStack, false);
 			}
-
 			// check if the frame is on a valid surface or not?  The wall may not have been generated yet, on a chunk boundry
 			world.addEntity(frame);
 		}
@@ -986,10 +988,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this.makeStonePillar(world, forgeDeco, 9, y, 17, Direction.NORTH, rotation, sbb);
 
 		// anvils
-		BlockState anvil = Blocks.DAMAGED_ANVIL.getDefaultState()
+		BlockState anvil = BlockTags.ANVIL.getRandomElement(decoRNG).getDefaultState()
 				.with(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.random(decoRNG));
 		this.setBlockStateRotated(world, anvil, 13, y + 2, 5, rotation, sbb);
-		anvil = Blocks.DAMAGED_ANVIL.getDefaultState()
+		anvil = BlockTags.ANVIL.getRandomElement(decoRNG).getDefaultState()
 				.with(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.random(decoRNG));
 		this.setBlockStateRotated(world, anvil, 13, y + 2, 13, rotation, sbb);
 
@@ -1001,7 +1003,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	private void makeFurnacePillar(ISeedReader world, StructureTFDecorator forgeDeco, Random rand, int x, int y, int z, Direction direction, Rotation rotation, MutableBoundingBox sbb) {
 
 		this.setBlockStateRotated(world, getStairState(deco.stairState, direction, rotation, true), x, y + 2, z, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().with(FurnaceBlock.FACING, direction), x, y + 3, z, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.FACING, direction.getOpposite()), x, y + 3, z, rotation, sbb);
 
 		// randomly put some charcoal in the furnace burn slot
 		int amount = rand.nextBoolean() ? rand.nextInt(5) + 4 : 0;
@@ -1077,7 +1079,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		destroyTower(world, decoRNG, 12, y, 3, 2, sbb);
 	}
 
-	private void decorateBotanical(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateBotanical(ISeedReader world, ChunkGenerator generator, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		// main part
 		makePillarFrame(world, sbb, this.deco, rotation, 12, y, 12, 4, 4, 4, true);
 		this.fillBlocksRotated(world, sbb, 13, y + 1, 13, 14, y + 1, 14, deco.blockState, rotation);
@@ -1097,7 +1099,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, true), 14, y + 1, 4, rotation, sbb);
 
 		//setBlockStateRotated(world, Blocks.CHEST, 0, 13, y + 2, 4, rotation, sbb);
-		placeTreasureRotated(world, 13, y + 2, 4, rotation, TFTreasure.basement, sbb);
+		placeTreasureRotated(world, 13, y + 2, 4, getCoordBaseMode(), rotation, TFTreasure.basement, sbb);
 		setBlockStateRotated(world, Blocks.CRAFTING_TABLE.getDefaultState(), 14, y + 2, 4, rotation, sbb);
 
 		BlockState slab = Blocks.SPRUCE_SLAB.getDefaultState()
@@ -1122,11 +1124,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 
 		// planter for trees
-		placeTreePlanter(world, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
+		placeTreePlanter(world, generator, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
 	}
 
-	private void placeTreePlanter(ISeedReader world, int treeNum, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
-		/* FIXME
+	private void placeTreePlanter(ISeedReader world, ChunkGenerator generator, int treeNum, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		setBlockStateRotated(world, deco.pillarState, x + 1, y, z + 1, rotation, sbb);
 		setBlockStateRotated(world, deco.pillarState, x + 1, y, z - 1, rotation, sbb);
 		setBlockStateRotated(world, deco.pillarState, x - 1, y, z + 1, rotation, sbb);
@@ -1148,37 +1149,46 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				case 0:
 				default:
 					// oak tree
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG);
+					treeGen = Features.OAK;
 					break;
 				case 1:
 					// jungle tree
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
+					treeGen = Features.JUNGLE_TREE; //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
 					break;
 				case 2:
 					// birch
-					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG);
+					treeGen = Features.BIRCH;
 					break;
 				case 3:
-					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.OAK_TREE);
+					treeGen = ConfiguredFeatures.TWILIGHT_OAK_BASE;
 					break;
 				case 4:
-					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.RAINBOAK_TREE);
+					treeGen = ConfiguredFeatures.RAINBOW_OAK_TREE_BASE;
 					break;
 			}
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.func_236265_a_(world, ((ServerWorld) world).func_241112_a_(), ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.getRandom(), new BlockPos(dx, dy, dz))) {
+				if (treeGen.generate(world, generator, world.getRandom(), new BlockPos(dx, dy, dz))) {
 					break;
 				}
 			}
-		}*/
+		}
 	}
 
-	//TODO: Each flower has their own block. Flatten
 	private void placeRandomPlant(ISeedReader world, Random decoRNG, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
-		int potMeta = decoRNG.nextInt(15); // this seems to be the only way to set the flower pre-placement
-		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState()/*.with(FlowerPotBlock.LEGACY_DATA, potMeta)*/;
-		setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
+		Block flowerPot = BlockTags.FLOWER_POTS.getRandomElement(decoRNG);
+		//dont include special saplings or thorns in our pots
+		List<FlowerPotBlock> blacklistedPots = ImmutableList.of(
+				TFBlocks.potted_hollow_oak_sapling.get(), TFBlocks.potted_time_sapling.get(),
+				TFBlocks.potted_trans_sapling.get(), TFBlocks.potted_mine_sapling.get(),
+				TFBlocks.potted_sort_sapling.get(), TFBlocks.potted_thorn.get(),
+				TFBlocks.potted_dead_thorn.get(), TFBlocks.potted_green_thorn.get());
+		BlockState flowerPotState = flowerPot.getDefaultState();
+		if(!blacklistedPots.contains(flowerPot)) {
+			setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
+		} else {
+			setBlockStateRotated(world, decoRNG.nextBoolean() ? Blocks.FLOWER_POT.getDefaultState() : Blocks.POTTED_DEAD_BUSH.getDefaultState(), x, y, z, rotation, sbb);
+		}
 	}
 
 	//TODO: Parameter "decoRNG" is unused. Remove?
@@ -1310,7 +1320,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			tags.putShort("MaxNearbyEntities", (short) 2);//(short) (world.difficultySetting));
 			tags.putShort("SpawnCount", (short) 1);
 
-			spawner.read(spawner.getBlockState(), tags);
+			spawner.getSpawnerBaseLogic().read(tags);
 		}
 	}
 

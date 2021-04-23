@@ -56,12 +56,6 @@ public class EntityTFRaven extends EntityTFTinyBird {
 		return this.getHeight() * 0.75F;
 	}
 
-	//TODO: Move to renderer?
-//	@Override
-//	public float getRenderSizeModifier() {
-//		return 0.3F;
-//	}
-
 	@Override
 	public boolean isSpooked() {
 		return this.hurtTime > 0;

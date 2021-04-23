@@ -9,23 +9,31 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
+import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 
-public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiPart, IEntityAdditionalSpawnData {
+public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditionalSpawnData {
 
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
-	private Hand hand = Hand.MAIN_HAND;
+	private static DataParameter<Boolean> HAND = EntityDataManager.createKey(EntityTFChainBlock.class, DataSerializers.BOOLEAN);
 	private boolean isReturning = false;
 	private int blocksSmashed = 0;
 	private double velX;
@@ -37,30 +45,38 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	public final EntityTFGoblinChain chain3;
 	public final EntityTFGoblinChain chain4;
 	public final EntityTFGoblinChain chain5;
-	private Entity[] partsArray;
+	private EntityTFBlockGoblin.MultipartGenericsAreDumb[] partsArray;
 
 	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world) {
 		super(type, world);
 
-		chain1 = new EntityTFGoblinChain(world, this);
-		chain2 = new EntityTFGoblinChain(world, this);
-		chain3 = new EntityTFGoblinChain(world, this);
-		chain4 = new EntityTFGoblinChain(world, this);
-		chain5 = new EntityTFGoblinChain(world, this);
-		partsArray =  new Entity[]{ chain1, chain2, chain3, chain4, chain5 };
+		chain1 = new EntityTFGoblinChain(this);
+		chain2 = new EntityTFGoblinChain(this);
+		chain3 = new EntityTFGoblinChain(this);
+		chain4 = new EntityTFGoblinChain(this);
+		chain5 = new EntityTFGoblinChain(this);
+		partsArray =  new EntityTFBlockGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
 	}
 
 	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world, LivingEntity thrower, Hand hand) {
 		super(type, thrower, world);
 		this.isReturning = false;
-		this.hand = hand;
-		chain1 = new EntityTFGoblinChain(world, this);
-		chain2 = new EntityTFGoblinChain(world, this);
-		chain3 = new EntityTFGoblinChain(world, this);
-		chain4 = new EntityTFGoblinChain(world, this);
-		chain5 = new EntityTFGoblinChain(world, this);
-		partsArray =  new Entity[]{ chain1, chain2, chain3, chain4, chain5 };
+		this.setHand(hand);
+		chain1 = new EntityTFGoblinChain(this);
+		chain2 = new EntityTFGoblinChain(this);
+		chain3 = new EntityTFGoblinChain(this);
+		chain4 = new EntityTFGoblinChain(this);
+		chain5 = new EntityTFGoblinChain(this);
+		partsArray =  new EntityTFBlockGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
 		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+	}
+
+	private void setHand(Hand hand) {
+		dataManager.set(HAND, hand == Hand.MAIN_HAND);
+	}
+
+	public Hand getHand() {
+		return dataManager.get(HAND) ? Hand.MAIN_HAND : Hand.OFF_HAND;
 	}
 
 	@Override
@@ -89,7 +105,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 
 			// only hit living things
 			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.func_234616_v_()) {
-				if (entityRay.getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
+				if (entityRay.getEntity().attackEntityFrom(TFDamageSources.SPIKED(this, (LivingEntity)this.func_234616_v_()), 10)) {
 					// age when we hit a monster so that we go back to the player faster
 					this.ticksExisted += 60;
 				}
@@ -101,7 +117,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 
 			if (blockRay.getPos() != null && !this.world.isAirBlock(blockRay.getPos())) {
 				if (!this.isReturning) {
-					playSound(SoundEvents.BLOCK_ANVIL_LAND, 0.125f, this.rand.nextFloat());
+					playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.125f, this.rand.nextFloat());
 				}
 
 				if (this.blocksSmashed < MAX_SMASH) {
@@ -186,7 +202,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 					PlayerEntity player = (PlayerEntity) func_234616_v_();
 
 					if (block.canHarvestBlock(state, world, pos, player)) {
-						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
+						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(getHand()));
 					}
 				}
 
@@ -201,6 +217,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 		super.tick();
 
 		if (world.isRemote) {
+
 			chain1.tick();
 			chain2.tick();
 			chain3.tick();
@@ -210,7 +227,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			// set chain positions
 			if (this.func_234616_v_() != null) {
 				// interpolate chain position
-				Vector3d handVec = this.func_234616_v_().getLookVec().rotateYaw(hand == Hand.MAIN_HAND ? -0.4F : 0.4F);
+				Vector3d handVec = this.func_234616_v_().getLookVec().rotateYaw(getHand() == Hand.MAIN_HAND ? -0.4F : 0.4F);
 
 				double sx = this.func_234616_v_().getPosX() + handVec.x;
 				double sy = this.func_234616_v_().getPosY() + handVec.y - 0.4F + this.func_234616_v_().getEyeHeight();
@@ -263,6 +280,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 
 	@Override
 	protected void registerData() {
+		dataManager.register(HAND, true);
 	}
 
 	@Override
@@ -274,25 +292,20 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 		}
 	}
 
-	@Override
-	public World getWorld() {
-		return this.world;
-	}
-
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
+	/*@Override
+	public boolean isMultipartEntity() {
 		return false;
 	}
 
 	@Override
-	public Entity[] getParts() {
+	public EntityTFBlockGoblin.MultipartGenericsAreDumb[] getParts() {
 		return partsArray;
-	}
+	}*/
 
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
 		buffer.writeInt(func_234616_v_() != null ? func_234616_v_().getEntityId() : -1);
-		buffer.writeBoolean(hand == Hand.MAIN_HAND);
+		buffer.writeBoolean(getHand() == Hand.MAIN_HAND);
 	}
 
 	@Override
@@ -301,7 +314,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 		if (e instanceof LivingEntity) {
 			setShooter(e);
 		}
-		hand = additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
+		setHand(additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND);
 	}
 
 	@Override

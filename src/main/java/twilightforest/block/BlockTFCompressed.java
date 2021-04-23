@@ -2,17 +2,26 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShearsItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import twilightforest.util.TFDamageSources;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockTFCompressed extends Block {
 
@@ -42,7 +51,7 @@ public class BlockTFCompressed extends Block {
 				&& entityIn instanceof LivingEntity
 				&& (!EnchantmentHelper.hasFrostWalker((LivingEntity) entityIn))
 				&& this == TFBlocks.fiery_block.get()) {
-			entityIn.attackEntityFrom(DamageSource.HOT_FLOOR, 1.0F);
+			entityIn.attackEntityFrom(TFDamageSources.FIERY, 1.0F);
 		}
 
 		super.onEntityWalk(worldIn, pos, entityIn);
@@ -65,5 +74,14 @@ public class BlockTFCompressed extends Block {
 	@Override
 	public boolean isStickyBlock(BlockState state) {
 		return this == TFBlocks.carminite_block.get();
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		if (this == TFBlocks.steeleaf_block.get()) {
+			tooltip.add(new TranslationTextComponent("block.steeleaf.tooltip"));
+		} else if (this == TFBlocks.arctic_fur_block.get()) {
+			tooltip.add(new TranslationTextComponent("block.arctic.tooltip"));
+		}
 	}
 }

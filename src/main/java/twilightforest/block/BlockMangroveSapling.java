@@ -2,7 +2,6 @@ package twilightforest.block;
 
 import net.minecraft.block.*;
 import net.minecraft.block.trees.Tree;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;

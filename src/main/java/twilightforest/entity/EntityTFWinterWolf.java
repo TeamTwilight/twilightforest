@@ -2,28 +2,35 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.item.DyeColor;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.biomes.TFBiomes;
+import net.minecraft.world.biome.Biome;
+import twilightforest.TFSounds;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker {
 
@@ -98,9 +105,31 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 			world.addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
 		}
 	}
+	
+	@Override
+	public void setAttackTarget(@Nullable LivingEntity entity) {
+		if (entity != null && entity != getAttackTarget())
+			playSound(TFSounds.WINTER_WOLF_TARGET, 4F, getSoundPitch());
+		super.setAttackTarget(entity);
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.WINTER_WOLF_IDLE;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.WINTER_WOLF_HURT;
+	}
 
 	private void playBreathSound() {
-		playSound(SoundEvents.ENTITY_GHAST_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
+		playSound(TFSounds.WINTER_WOLF_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.WINTER_WOLF_DEATH;
 	}
 
 	@Override
@@ -124,6 +153,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 	}
 
 	public static boolean canSpawnHere(EntityType<? extends EntityTFWinterWolf> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return /* FIXME world.getBiome(pos) == TFBiomes.snowy_forest.get() ||*/ MonsterEntity.isValidLightLevel(world, pos, random);
+		Optional<RegistryKey<Biome>> key = world.func_242406_i(pos);
+		return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 }

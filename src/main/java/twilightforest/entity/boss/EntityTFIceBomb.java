@@ -1,11 +1,10 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.WaterFluid;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
@@ -17,6 +16,7 @@ import net.minecraft.world.World;
 import twilightforest.entity.projectile.EntityTFThrowable;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.potions.TFPotions;
+import twilightforest.util.TFDamageSources;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult ray) {
-		this.setMotion(this.getMotion().getX(), 0.0D, this.getMotion().getZ());
+		this.setMotion(0.0D, 0.0D, 0.0D);
 		this.hasHit = true;
 
 		if (!world.isRemote)
@@ -67,11 +67,14 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		if (state.getMaterial() == Material.WATER) {
 			this.world.setBlockState(pos, Blocks.ICE.getDefaultState());
 		}
-		if (state.getMaterial() == Material.LAVA) {
+		if (state.getBlockState() == Blocks.LAVA.getDefaultState()) {
 			this.world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
 		}
 		if (this.world.isAirBlock(pos) && Blocks.SNOW.getDefaultState().isValidPosition(this.world, pos)) {
 			this.world.setBlockState(pos, Blocks.SNOW.getDefaultState());
+		}
+		if(this.world.getBlockState(pos) == Blocks.GRASS.getDefaultState() || this.world.getBlockState(pos) == Blocks.TALL_GRASS.getDefaultState()) {
+			this.world.setBlockState(pos, Blocks.SNOW.getDefaultState(), 3);
 		}
 	}
 
@@ -112,7 +115,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		if (this.world.isRemote) {
 			// sparkles
 			BlockState stateId = Blocks.SNOW.getDefaultState();
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 10; i++) {
 				double dx = this.getPosX() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dy = this.getPosY() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dz = this.getPosZ() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
@@ -139,7 +142,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 
 					entity.remove();
 				} else {
-					entity.attackEntityFrom(DamageSource.MAGIC, 1);
+					entity.attackEntityFrom(TFDamageSources.FROZEN(this, (LivingEntity)this.func_234616_v_()), 1);
 					entity.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
 				}
 			}

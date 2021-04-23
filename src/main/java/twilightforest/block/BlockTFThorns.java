@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
@@ -26,13 +27,12 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 	}
 
 	@Override
-	protected boolean canConnectTo(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
-		return (neighborState.getBlock() instanceof BlockTFThorns
-						|| neighborState.getBlock() == TFBlocks.thorn_rose.get()
-						|| neighborState.getBlock() == TFBlocks.thorn_leaves.get()
-						|| neighborState.getMaterial() == Material.PLANTS
-						|| neighborState.getMaterial() == Material.EARTH)
-						&& dirToNeighbor.getAxis() != state.get(AXIS);
+	public boolean canConnectTo(BlockState state, boolean solidSide) {
+		return (state.getBlock() instanceof BlockTFThorns
+						|| state.getBlock() == TFBlocks.thorn_rose.get()
+						|| state.getBlock() == TFBlocks.thorn_leaves.get()
+						|| state.getMaterial() == Material.PLANTS
+						|| state.getMaterial() == Material.EARTH);
 	}
 
 	@Nullable
@@ -44,7 +44,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 	@Override
 	@Deprecated
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
-		entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
+		entity.attackEntityFrom(TFDamageSources.THORNS, THORN_DAMAGE);
 	}
 
 	@Override

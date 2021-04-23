@@ -6,12 +6,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraftforge.client.model.generators.*;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFExperiment115;
-import twilightforest.item.TFItems;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -141,6 +142,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.uncrafting_table.get());
 		toBlockModel(TFBlocks.boss_spawner.get(), new ResourceLocation("block/spawner"));
 		toBlock(TFBlocks.firefly_jar.get());
+		toBlock(TFBlocks.cicada_jar.get());
 		generated(TFBlocks.moss_patch.getId().getPath(), prefix("block/patch/moss"));
 		generated(TFBlocks.mayapple.getId().getPath(), prefix("block/mayapple"));
 		generated(TFBlocks.clover_patch.getId().getPath(), prefix("block/patch/clover"));
@@ -167,6 +169,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.nagastone_stairs_mossy_right.get());
 		toBlock(TFBlocks.nagastone_stairs_weathered_left.get());
 		toBlock(TFBlocks.nagastone_stairs_weathered_right.get());
+		toBlockModel(TFBlocks.spiral_bricks.get(), new ResourceLocation("twilightforest:block/spiral_bricks/x_spiral_bottom_right"));
 		toBlock(TFBlocks.stone_twist.get());
 		//toBlock(TFBlocks.lapis_block.get());
 		toBlock(TFBlocks.oak_log.get());
@@ -183,6 +186,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.twilight_oak_gate.get());
 		toBlock(TFBlocks.twilight_oak_plate.get());
 		toBlockModel(TFBlocks.twilight_oak_trapdoor.get(), "twilight_oak_trapdoor_bottom");
+		generated(TFBlocks.twilight_oak_sign.getId().getPath(), prefix("items/" + TFBlocks.twilight_oak_sign.getId().getPath()));
+
 		toBlock(TFBlocks.canopy_log.get());
 		toBlock(TFBlocks.canopy_wood.get());
 		toBlock(TFBlocks.canopy_leaves.get());
@@ -195,6 +200,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.canopy_gate.get());
 		toBlock(TFBlocks.canopy_plate.get());
 		toBlockModel(TFBlocks.canopy_trapdoor.get(), "canopy_trapdoor_bottom");
+		generated(TFBlocks.canopy_sign.getId().getPath(), prefix("items/" + TFBlocks.canopy_sign.getId().getPath()));
+
 		toBlock(TFBlocks.mangrove_log.get());
 		toBlock(TFBlocks.mangrove_wood.get());
 		toBlock(TFBlocks.mangrove_leaves.get());
@@ -207,6 +214,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.mangrove_gate.get());
 		toBlock(TFBlocks.mangrove_plate.get());
 		toBlockModel(TFBlocks.mangrove_trapdoor.get(), "mangrove_trapdoor_bottom");
+		generated(TFBlocks.mangrove_sign.getId().getPath(), prefix("items/" + TFBlocks.mangrove_sign.getId().getPath()));
+
 		toBlock(TFBlocks.dark_log.get());
 		toBlock(TFBlocks.dark_wood.get());
 		toBlock(TFBlocks.dark_leaves.get());
@@ -219,7 +228,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.dark_gate.get());
 		toBlock(TFBlocks.dark_plate.get());
 		toBlockModel(TFBlocks.dark_trapdoor.get(), "dark_trapdoor_bottom");
-
+		generated(TFBlocks.darkwood_sign.getId().getPath(), prefix("items/" + TFBlocks.darkwood_sign.getId().getPath()));
+		generated(TFBlocks.hollow_oak_sapling.getId().getPath(), prefix("block/" + TFBlocks.hollow_oak_sapling.getId().getPath()));
+		
 		toBlock(TFBlocks.time_log.get());
 		toBlock(TFBlocks.time_wood.get());
 		toBlock(TFBlocks.time_log_core.get());
@@ -233,6 +244,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.time_gate.get());
 		toBlock(TFBlocks.time_plate.get());
 		toBlockModel(TFBlocks.time_trapdoor.get(), "time_trapdoor_bottom");
+		generated(TFBlocks.time_sign.getId().getPath(), prefix("items/" + TFBlocks.time_sign.getId().getPath()));
 
 		toBlock(TFBlocks.transformation_log.get());
 		toBlock(TFBlocks.transformation_wood.get());
@@ -247,6 +259,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.trans_gate.get());
 		toBlock(TFBlocks.trans_plate.get());
 		toBlockModel(TFBlocks.trans_trapdoor.get(), "trans_trapdoor_bottom");
+		generated(TFBlocks.trans_sign.getId().getPath(), prefix("items/" + TFBlocks.trans_sign.getId().getPath()));
 
 		toBlock(TFBlocks.mining_log.get());
 		toBlock(TFBlocks.mining_wood.get());
@@ -261,6 +274,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.mine_gate.get());
 		toBlock(TFBlocks.mine_plate.get());
 		toBlockModel(TFBlocks.mine_trapdoor.get(), "mine_trapdoor_bottom");
+		generated(TFBlocks.mine_sign.getId().getPath(), prefix("items/" + TFBlocks.mine_sign.getId().getPath()));
 
 		toBlock(TFBlocks.sorting_log.get());
 		toBlock(TFBlocks.sorting_wood.get());
@@ -275,6 +289,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.sort_gate.get());
 		toBlock(TFBlocks.sort_plate.get());
 		toBlockModel(TFBlocks.sort_trapdoor.get(), "sort_trapdoor_bottom");
+		generated(TFBlocks.sort_sign.getId().getPath(), prefix("items/" + TFBlocks.sort_sign.getId().getPath()));
 	}
 
 	private ItemModelBuilder generated(String name, ResourceLocation... layers) {

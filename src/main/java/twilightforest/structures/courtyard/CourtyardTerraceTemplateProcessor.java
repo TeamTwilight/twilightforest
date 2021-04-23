@@ -26,15 +26,14 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
     }
 
 	@Override
-	protected IStructureProcessorType getType() {
+	protected IStructureProcessorType<?> getType() {
 		return TFStructureProcessors.COURTYARD_TERRACE;
 	}
 
-	//TODO: Check me
     @Nullable
     @Override
     public Template.BlockInfo process(IWorldReader world, BlockPos pos, BlockPos piecepos, Template.BlockInfo oldinfo, Template.BlockInfo newinfo, PlacementSettings settings, @Nullable Template template) {
-        Random random = settings.getRandom(pos);
+        Random random = settings.getRandom(newinfo.pos);
 
         if (!shouldPlaceBlock(random))
             return null;
@@ -73,22 +72,22 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
 
         if (state == Blocks.STONE_BRICKS.getDefaultState())
             return random.nextBoolean() ? (shouldMakeNewBlockInfo ? new Template.BlockInfo(newinfo.pos, state, null) : newinfo) :
-                    new Template.BlockInfo(pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
+                    new Template.BlockInfo(newinfo.pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
 
         if (state == Blocks.SMOOTH_STONE_SLAB.getDefaultState())
-            return random.nextBoolean() ? newinfo : new Template.BlockInfo(pos, Blocks.COBBLESTONE_SLAB.getDefaultState(), null);
+            return random.nextBoolean() ? newinfo : new Template.BlockInfo(newinfo.pos, Blocks.COBBLESTONE_SLAB.getDefaultState(), null);
 
         if (block == TFBlocks.etched_nagastone.get())
-            return random.nextBoolean() ? newinfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.etched_nagastone_mossy.get(), TFBlocks.etched_nagastone_weathered.get()), DirectionalBlock.FACING), null);
+            return random.nextBoolean() ? newinfo : new Template.BlockInfo(newinfo.pos, translateState(state, randomBlock(random, TFBlocks.etched_nagastone_mossy.get(), TFBlocks.etched_nagastone_weathered.get()), DirectionalBlock.FACING), null);
 
         if (block == TFBlocks.nagastone_pillar.get())
-            return random.nextBoolean() ? newinfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_pillar_mossy.get(), TFBlocks.nagastone_pillar_weathered.get()), RotatedPillarBlock.AXIS), null);
+            return random.nextBoolean() ? newinfo : new Template.BlockInfo(newinfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_pillar_mossy.get(), TFBlocks.nagastone_pillar_weathered.get()), RotatedPillarBlock.AXIS), null);
 
         if (block == TFBlocks.nagastone_stairs_left.get())
-            return random.nextBoolean() ? newinfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
+            return random.nextBoolean() ? newinfo : new Template.BlockInfo(newinfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE), null);
 
         if (block == TFBlocks.nagastone_stairs_right.get())
-            return random.nextBoolean() ? newinfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
+            return random.nextBoolean() ? newinfo : new Template.BlockInfo(newinfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE), null);
 
         return newinfo;
     }

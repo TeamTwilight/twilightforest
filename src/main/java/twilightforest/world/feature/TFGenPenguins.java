@@ -7,7 +7,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFPenguin;
 
@@ -20,7 +19,7 @@ public class TFGenPenguins extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 
 		for (int i = 0; i < 3; i++) { // FIXME This is terrible, this should be done at entity spawning stage not feature generation
 			BlockPos dPos = pos.add(

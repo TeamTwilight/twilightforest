@@ -1,0 +1,51 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "state": {
+              "Properties": {
+                "snowy": "false"
+              },
+              "Name": "minecraft:mycelium"
+            },
+            "radius": {
+              "base": 4,
+              "spread": 2
+            },
+            "half_height": 3,
+            "targets": [
+              {
+                "Properties": {
+                  "snowy": "false"
+                },
+                "Name": "minecraft:grass_block"
+              }
+            ]
+          },
+          "type": "twilightforest:mycelium_blob"
+        },
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {},
+              "type": "minecraft:heightmap_spread_double"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {},
+      "type": "minecraft:square"
+    }
+  },
+  "type": "minecraft:decorated"
+}

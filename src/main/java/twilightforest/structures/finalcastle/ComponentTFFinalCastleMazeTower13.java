@@ -1,7 +1,10 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -32,10 +35,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 	public ComponentTFFinalCastleMazeTower13(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		color = NBTUtil.readBlockState(nbt.getCompound("color"));
 	}
 
 	public ComponentTFFinalCastleMazeTower13(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFinalCastlePieces.TFFCSiTo, nbt);
+		this(TFFinalCastlePieces.TFFCSiTo, nbt);
 	}
 
 	public ComponentTFFinalCastleMazeTower13(IStructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, BlockState color, Direction direction) {
@@ -62,10 +66,16 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			entranceFloor = floors - 1;
 		}
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
 
 		// we should have a door where we started
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
+	}
+
+	@Override
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
+		tagCompound.put("color", NBTUtil.writeBlockState(color));
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
@@ -75,7 +85,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		this.color = color;
 		this.size = 13;
 		this.height = floors * 8 + 1;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
@@ -107,7 +117,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 			// are we there?
 			if (this.isWithinRange(dest.getX(), dest.getZ(), this.boundingBox.minX + 6, this.boundingBox.minZ + 6, 30)) {
-				TwilightForestMod.LOGGER.debug("We are within range of our destination, building final tower");
+				//TwilightForestMod.LOGGER.debug("We are within range of our destination, building final tower");
 				int howFar = 20;
 				if (!buildEndTowerTowards(list, rand, dest, this.findBestDirectionTowards(dest), howFar)) {
 					if (!buildEndTowerTowards(list, rand, dest, this.findSecondDirectionTowards(dest), howFar)) {
@@ -178,7 +188,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			absoluteDir = (dz >= 0) ? Direction.SOUTH : Direction.NORTH;
 		}
 
-		TwilightForestMod.LOGGER.debug("Determining best direction!  center is at {}, {} and dest is at {}. offset is {}, {} so the best absolute direction is {}", cx, cz, dest, dx, dz, absoluteDir);
+		//TwilightForestMod.LOGGER.debug("Determining best direction!  center is at {}, {} and dest is at {}. offset is {}, {} so the best absolute direction is {}", cx, cz, dest, dx, dz, absoluteDir);
 
 		return absoluteDir;
 	}
@@ -200,7 +210,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			absoluteDir = (dz >= 0) ? Direction.SOUTH : Direction.NORTH;
 		}
 
-		TwilightForestMod.LOGGER.debug("Determining second direction!  center is at {}, {} and dest is at {}. offset is {}, {} so the best absolute direction is {}", cx, cz, dest, dx, dz, absoluteDir);
+		//TwilightForestMod.LOGGER.debug("Determining second direction!  center is at {}, {} and dest is at {}. offset is {}, {} so the best absolute direction is {}", cx, cz, dest, dx, dz, absoluteDir);
 
 		return absoluteDir;
 	}
@@ -211,7 +221,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 		Direction[] cardinals = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
 
-		TwilightForestMod.LOGGER.debug("Determining third direction!  first is {}, and second is {}", first, second);
+		//TwilightForestMod.LOGGER.debug("Determining third direction!  first is {}, and second is {}", first, second);
 
 		for (Direction f : cardinals) {
 			if (f != first && f != second && f != Rotation.CLOCKWISE_180.rotate(this.getCoordBaseMode())) {
@@ -236,19 +246,19 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			);
 		}
 
-		TwilightForestMod.LOGGER.debug("original direction is {}", facing);
+		//TwilightForestMod.LOGGER.debug("original direction is {}", facing);
 
 		// build towards
 		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, facing);
-		TwilightForestMod.LOGGER.debug("Our coord mode is {}, and direction is {}, so our door is going to be at {} and the new tower will appear at {}", this.getCoordBaseMode(), facing, opening, tc);
+		//TwilightForestMod.LOGGER.debug("Our coord mode is {}, and direction is {}, so our door is going to be at {} and the new tower will appear at {}", this.getCoordBaseMode(), facing, opening, tc);
 
 		// find start
-		StructurePiece start = (StructurePiece) list.get(0);
+		StructurePiece start = list.get(0);
 
 		int centerX = ((start.getBoundingBox().minX + 128) >> 8) << 8;
 		int centerZ = ((start.getBoundingBox().minZ + 128) >> 8) << 8;
 
-		TwilightForestMod.LOGGER.debug("Testing range, uncorrected center is at {}, {}", centerX, centerZ);
+		//TwilightForestMod.LOGGER.debug("Testing range, uncorrected center is at {}, {}", centerX, centerZ);
 
 		if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
@@ -266,7 +276,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			StructurePiece intersect = StructurePiece.findIntersecting(list, largerBB);
 
 			if (intersect == null) {
-				TwilightForestMod.LOGGER.debug("tower success!");
+				//TwilightForestMod.LOGGER.debug("tower success!");
 				list.add(sTower);
 				sTower.buildTowards(this, list, rand, dest);
 
@@ -567,7 +577,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		// nullify sky light
 		//nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final BlockState doorState = color;
+		final BlockState doorState = doorColor();
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {
@@ -580,5 +590,22 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			//this.fillWithAir(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz);
 			this.fillWithBlocks(world, sbb, dx - 1, dy, dz, dx + 1, dy + 3, dz, doorState, AIR, false);
 		}
+	}
+
+	public BlockState doorColor() {
+		if (color == TFBlocks.castle_rune_brick_pink.get().getBlock().getDefaultState()) {
+			return TFBlocks.castle_door_pink.get().getDefaultState();
+		}
+		if (color == TFBlocks.castle_rune_brick_blue.get().getBlock().getDefaultState()) {
+			return TFBlocks.castle_door_blue.get().getDefaultState();
+		}
+		if (color == TFBlocks.castle_rune_brick_yellow.get().getBlock().getDefaultState()) {
+			return TFBlocks.castle_door_yellow.get().getDefaultState();
+		}
+		if (color == TFBlocks.castle_rune_brick_purple.get().getBlock().getDefaultState()) {
+			return TFBlocks.castle_door_purple.get().getDefaultState();
+		}
+		TwilightForestMod.LOGGER.warn("Couldn't add door to tower, rune color couldn't be read");
+		return Blocks.AIR.getDefaultState();
 	}
 }

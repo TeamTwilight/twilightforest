@@ -4,13 +4,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.IBreathAttacker;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> extends Goal {
@@ -40,7 +43,7 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 	public boolean shouldExecute() {
 		this.attackTarget = this.entityHost.getRevengeTarget();
 
-		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
+		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget) || !EntityPredicates.CAN_HOSTILE_AI_TARGET.test(attackTarget)) {
 			return false;
 		} else {
 			breathX = attackTarget.getPosX();
@@ -68,7 +71,8 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 	public boolean shouldContinueExecuting() {
 		return this.durationLeft > 0 && this.entityHost.isAlive() && this.attackTarget.isAlive()
 				&& this.entityHost.getDistance(attackTarget) <= this.breathRange
-				&& this.entityHost.getEntitySenses().canSee(attackTarget);
+				&& this.entityHost.getEntitySenses().canSee(attackTarget)
+				&& EntityPredicates.CAN_HOSTILE_AI_TARGET.test(attackTarget);
 	}
 
 	/**
@@ -113,10 +117,13 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(var9, var9, var9));
 		double hitDist = 0;
 
+		if(entityHost.isMultipartEntity())
+		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(entityHost.getParts())));
+
 		for (Entity possibleEntity : possibleList) {
-			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost) {
+			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost && EntityPredicates.CAN_HOSTILE_AI_TARGET.test(possibleEntity)) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
 				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {

@@ -57,7 +57,7 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 		Rotation rotation = (this.boundingBox.minX ^ this.boundingBox.minZ) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_180;
 
 		// treasure!
-		this.placeTreasureRotated(world, 8, 2, 13, rotation, TFTreasure.stronghold_cache, sbb);
+		this.placeTreasureRotated(world, 8, 2, 13, rotation == Rotation.NONE ? getCoordBaseMode().rotateY() : getCoordBaseMode().rotateYCCW(), rotation, TFTreasure.stronghold_cache, sbb);
 
 		// niche!
 

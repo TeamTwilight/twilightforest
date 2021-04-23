@@ -3,8 +3,6 @@ package twilightforest;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,11 +26,6 @@ public class TFConfig {
 					comment("Settings that are not reversible without consequences.").
 					push("Dimension Settings");
 			{
-				DIMENSION.twilightForestSeed = builder.
-						translation(config + "dimension_seed").
-						worldRestart().
-						comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.").
-						define("twilightForestSeed", "");
 				DIMENSION.newPlayersSpawnInTF = builder.
 						translation(config + "spawn_in_tf").
 						comment("If true, players spawning for the first time will spawn in the Twilight Forest.").
@@ -181,10 +174,10 @@ public class TFConfig {
 					translation(config + "portals").
 					comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.").
 					define("disablePortalCreation", false);
-			portalCreationItems = builder.
-					translation(config + "portal_creator").
-					comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
-					define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
+			//portalCreationItems = builder.
+			//		translation(config + "portal_creator").
+			//		comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
+			//		define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
 			checkPortalDestination = builder.
 					translation(config + "check_portal_destination").
 					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
@@ -239,7 +232,6 @@ public class TFConfig {
 
 		public static class Dimension {
 
-			public ForgeConfigSpec.ConfigValue<String> twilightForestSeed;
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
@@ -263,7 +255,7 @@ public class TFConfig {
 
 			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
 
-			public class HollowHillStalactites {
+			public static class HollowHillStalactites {
 
 				public ForgeConfigSpec.ConfigValue<List<? extends String>> largeHill;
 				public ForgeConfigSpec.ConfigValue<List<? extends String>> mediumHill;
@@ -359,6 +351,10 @@ public class TFConfig {
 					translation(config + "animate_trophyitem").
 					comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.").
 					define("rotateTrophyHeadsGui", true);
+			disableOptifineNagScreen = builder.
+					translation(config + "optifine").
+					comment("Disable the nag screen when Optifine is installed.").
+					define("disableOptifineNagScreen", false);
 			builder.
 					comment("Client only: Controls for the Loading screen").
 					push("Loading Screen");
@@ -408,16 +404,16 @@ public class TFConfig {
 								"twilightforest:magic_beans",
 								"twilightforest:ironwood_raw",
 								"twilightforest:naga_scale",
-								"twilightforest:experiment_115:2",
-								"twilightforest:miniature_structure",
-								"twilightforest:miniature_structure:6",
+								//TODO "twilightforest:experiment_115:2",
+								"twilightforest:twilight_portal_miniature_structure",
+								"twilightforest:lich_tower_miniature_structure",
 								"twilightforest:knightmetal_block",
-								"twilightforest:tower_device:10",
-								"twilightforest:twilight_sapling:5",
-								"twilightforest:twilight_sapling:6",
-								"twilightforest:twilight_sapling:7",
-								"twilightforest:twilight_sapling:8",
-								"twilightforest:twilight_sapling:9",
+								"twilightforest:ghast_trap",
+								"twilightforest:time_sapling",
+								"twilightforest:transformation_sapling",
+								"twilightforest:mining_sapling",
+								"twilightforest:sorting_sapling",
+								"twilightforest:rainboak_sapling",
 								"twilightforest:borer_essence"
 						), s -> s instanceof String && ResourceLocation.tryCreate((String) s) != null);
 			}
@@ -427,6 +423,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue silentCicadas;
 		public ForgeConfigSpec.BooleanValue firstPersonEffects;
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
+		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 
 		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
 
@@ -473,14 +470,13 @@ public class TFConfig {
 	}
 
 	public static void build() {
-		buildPortalIngredient();
+		//buildPortalIngredient();
 		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();
 	}
 
-	public static Ingredient portalIngredient;
+	/*public static Ingredient portalIngredient;
 
 	private static void buildPortalIngredient() {
-
 		List<ItemStack> stacks = new ArrayList<>();
 
 		for (String s : COMMON_CONFIG.portalCreationItems.get()) {
@@ -492,7 +488,7 @@ public class TFConfig {
 		}
 
 		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
-	}
+	}*/
 
 	private static Optional<ItemStack> parseItemStack(String string) {
 		ResourceLocation id = ResourceLocation.tryCreate(string);

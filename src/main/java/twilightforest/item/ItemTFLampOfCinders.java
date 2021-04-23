@@ -7,14 +7,15 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
@@ -44,14 +45,13 @@ public class ItemTFLampOfCinders extends Item {
 			if (player instanceof ServerPlayerEntity)
 				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, player.getHeldItem(context.getHand()));
 
-			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F, 1.5F);
+			player.playSound(TFSounds.LAMP_BURN, 0.5F, 1.5F);
 
 			// spawn flame particles
 			for (int i = 0; i < 10; i++) {
 				float dx = pos.getX() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
 				float dy = pos.getY() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
 				float dz = pos.getZ() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
-
 				world.addParticle(ParticleTypes.SMOKE, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 				world.addParticle(ParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
@@ -91,7 +91,7 @@ public class ItemTFLampOfCinders extends Item {
 		int range = 4;
 
 		if (!world.isRemote) {
-			world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.ENTITY_GHAST_SHOOT, living.getSoundCategory(), 1.5F, 0.8F);
+			world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.LAMP_BURN, living.getSoundCategory(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <= range; dx++) {
@@ -112,6 +112,13 @@ public class ItemTFLampOfCinders extends Item {
 				);
 
 				world.playEvent((PlayerEntity) living, 2004, rPos, 0);
+			}
+
+			//burn mobs!
+			for(LivingEntity targets : world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(new BlockPos(living.getPosX(), living.getPosYEye(), living.getPosZ())).grow(4.0D))) {
+				if(!(targets instanceof PlayerEntity)) {
+					targets.setFire(5);
+				}
 			}
 		}
 	}

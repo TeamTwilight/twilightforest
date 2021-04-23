@@ -5,14 +5,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 
-public class ModelTFArmor extends BipedModel {
+public class ModelTFArmor extends BipedModel<LivingEntity> {
 
 	public ModelTFArmor(float modelSize) {
 		super(modelSize, 0.0F, 64, 32);
 	}
 
 	@Override
-	public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// [VanillaCopy] ModelArmorStandArmor
 		// this prevents helmets from always facing south, and the armor "breathing" on the stand
 		if (entityIn instanceof ArmorStandEntity) {
@@ -40,7 +40,7 @@ public class ModelTFArmor extends BipedModel {
 			this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
 			this.bipedHeadwear.copyModelAngles(this.bipedHead);
 		} else
-			super.setRotationAngles((LivingEntity) entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		// TF - Defer to super otherwise
 	}
 }

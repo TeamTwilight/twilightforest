@@ -1,41 +1,32 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.nbt.CompoundNBT;
 
-public class EntityTFGoblinChain extends MultiPartEntityPart {
-	public EntityTFGoblinChain(EntityType<? extends EntityTFGoblinChain> type, World world) {
-		super(type, world);
+public class EntityTFGoblinChain extends EntityTFBlockGoblin.MultipartGenericsAreDumb {
+
+	public EntityTFGoblinChain(Entity parent) {
+		super(parent);
 	}
-
-	public EntityTFGoblinChain(World world, Entity entity) {
-		super(TFEntities.goblin_chain, world, entity);
-	}
-
 
 	@Override
-	public void tick() {
-		super.tick();
-
-		this.ticksExisted++;
-
-		lastTickPosX = getPosX();
-		lastTickPosY = getPosY();
-		lastTickPosZ = getPosZ();
-
-		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
-		}
-		for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) {
-		}
-		for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) {
-		}
-		for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) {
-		}
+	protected void registerData() {
+		realSize = EntitySize.flexible(0.75F, 0.75F);
 	}
 
 	@Override
 	public boolean canBeCollidedWith() {
 		return false;
+	}
+
+	@Override
+	protected void readAdditional(CompoundNBT compound) {
+
+	}
+
+	@Override
+	protected void writeAdditional(CompoundNBT compound) {
+
 	}
 }

@@ -44,11 +44,6 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
 
-- script: |
-    # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
-    ./gradlew --stop
-  displayName: Kill Daemon
-
 - task: CopyFiles@2
   displayName: Copy Release build to artifact staging
   inputs:
@@ -95,14 +90,20 @@ steps:
                 value = "$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)"
             },
             [Ordered]@{
-                name = "Commit"
-                value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 6))]$($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION)"
+                name = "Forge Version"
+                value = "$($env:JAVAPROPS_FORGE_VERSION)"
             },
             [Ordered]@{
-                name = "Download"
-                value = "$downloadUrl"
+                name = "Commit"
+                value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 6))]$($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION)"
             }
         )
+    }
+    if ($jobResult -eq "Succeeded") {
+        $json["fields"] += [Ordered]@{
+            name = "Download"
+            value = "$downloadUrl"
+        }
     }
     Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
   displayName: Format discord message
@@ -120,10 +121,25 @@ steps:
       [$(DiscordMessage)]
   condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
 
-- powershell: |
-    (gci env:*).GetEnumerator() | Sort-Object Name | ForEach-Object {
-      $nameAsCapitalSnakeCase = $_.Name
-      Write-Output "$nameAsCapitalSnakeCase = $($_.Value)"
-    }
-  displayName: Dump Variables
-  #condition: eq(variables['system.debug'], 'true')
+- task: Gradle@2
+  displayName: Publish to Maven
+  inputs:
+    workingDirectory: ''
+    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'publish'
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+  env:
+    ARTIFACTORY_USER: $(Artifactory.User)
+    ARTIFACTORY_PASS: $(Artifactory.Password)
+
+- script: |
+    # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
+    ./gradlew --stop
+  displayName: Kill Daemon

@@ -4,14 +4,13 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.FeatureUtil;
 
@@ -24,7 +23,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		if (rand.nextInt(4) == 0) {
 			return generate4x4Well(world, rand, pos);
 		} else {
@@ -79,7 +78,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 		for (int dy = -1; dy >= -20; dy--) {
 			Block dblock = world.getBlockState(pos.add(1, dy, 1)).getBlock();
 			// we only drill through dirt, grass, gravel and stone
-			if (dblock != Blocks.DIRT && dblock != Blocks.GRASS && dblock != Blocks.GRAVEL && dblock != Blocks.STONE) {
+			if (dblock != Blocks.DIRT && dblock != Blocks.GRASS_BLOCK && dblock != Blocks.GRAVEL && dblock != Blocks.STONE) {
 				break;
 			}
 			// we also need a solid block under where we're digging
@@ -98,7 +97,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 				world.setBlockState(pos.add(3, dy, 1), Blocks.AIR.getDefaultState(),3);
 
 				//TODO: unique treasure table that is themed for underwater well exploration
-				TFTreasure.basement.generateChest(world, pos.add(3, dy, 1), false);
+				TFTreasure.basement.generateChest(world, pos.add(3, dy, 1), Direction.NORTH, false);
 
 				// set flag so we only get one chest
 				madeTreasure = true;
@@ -170,7 +169,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 					Block dblock = dState.getBlock();
 
 					// we only drill through dirt, grass, gravel and stone
-					if (dblock != Blocks.DIRT && dblock != Blocks.GRASS && dblock != Blocks.GRAVEL && dblock != Blocks.STONE) {
+					if (dblock != Blocks.DIRT && dblock != Blocks.GRASS_BLOCK && dblock != Blocks.GRAVEL && dblock != Blocks.STONE) {
 						break;
 					}
 					// we also need a solid block under where we're digging

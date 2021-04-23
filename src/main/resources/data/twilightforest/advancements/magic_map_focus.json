@@ -11,7 +11,7 @@
       "with": [
         { "translate": "item.twilightforest.magic_map_focus" },
         { "translate": "item.twilightforest.raven_feather" },
-        { "translate": "item.glowstone" },
+        { "translate": "item.minecraft.glowstone_dust" },
         { "translate": "item.twilightforest.torchberries" }
       ]
     }

@@ -1,60 +1,58 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.EntityTFMinotaur;
 
+/**
+ * ModelMinotaur - MCVinnyq
+ * Created using Tabula 8.0.0
+ */
+@OnlyIn(Dist.CLIENT)
 public class ModelTFMinotaur extends BipedModel<EntityTFMinotaur> {
 
-	public ModelRenderer righthorn1;
-	public ModelRenderer righthorn2;
-	public ModelRenderer lefthorn1;
-	public ModelRenderer lefthorn2;
+    public ModelTFMinotaur() {
+        super(0, 0, 64, 64);
+        this.bipedRightLeg = new ModelRenderer(this, 0, 0);
+        this.bipedRightLeg.setRotationPoint(-2.5F, 12.0F, 0.0F);
+        this.bipedRightLeg.setTextureOffset(0, 26).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedRightArm = new ModelRenderer(this, 0, 0);
+        this.bipedRightArm.setRotationPoint(-7.5F, -4.0F, 0.0F);
+        this.bipedRightArm.setTextureOffset(20, 26).addBox(-3.0F, -4.0F, -2.5F, 4.0F, 14.0F, 5.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedBody = new ModelRenderer(this, 0, 0);
+        this.bipedBody.setRotationPoint(0.0F, -2.0F, 0.0F);
+        this.bipedBody.setTextureOffset(34, 0).addBox(-5.0F, -2.0F, -2.5F, 10.0F, 14.0F, 5.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedHead = new ModelRenderer(this, 0, 0);
+        this.bipedHead.setRotationPoint(0.0F, -2.0F, 0.0F);
+        this.bipedHead.addBox(-4.0F, -10.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedHead.setTextureOffset(25, 1).addBox(-3.0F, -5.0F, -5.0F, 6.0F, 3.0F, 1.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedHead.setTextureOffset(0, 16).addBox(-8.0F, -9.0F, -1.0F, 4.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedHead.setTextureOffset(0, 20).addBox(-8.0F, -11.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedHead.setTextureOffset(12, 16).addBox(4.0F, -9.0F, -1.0F, 4.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedHead.setTextureOffset(12, 20).addBox(6.0F, -11.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedLeftLeg = new ModelRenderer(this, 0, 0);
+        this.bipedLeftLeg.setRotationPoint(2.5F, 12.0F, 0.0F);
+        this.bipedLeftLeg.setTextureOffset(0, 43).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, 0.0F, 0.0F);
+        this.bipedLeftArm = new ModelRenderer(this, 0, 0);
+        this.bipedLeftArm.setRotationPoint(7.5F, -4.0F, 0.0F);
+        this.bipedLeftArm.setTextureOffset(20, 45).addBox(0.0F, -4.0F, -2.5F, 4.0F, 14.0F, 5.0F, 0.0F, 0.0F, 0.0F);
 
-	ModelRenderer snout;
+        this.bipedHeadwear = new ModelRenderer(this, 0, 0);
+    }
 
-	public ModelTFMinotaur() {
-		super(0.0F);
-
-		this.righthorn1 = new ModelRenderer(this, 24, 0);
-		this.righthorn1.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3);
-		this.righthorn1.setRotationPoint(-2.5F, -6.5F, 0.0F);
-		this.righthorn1.rotateAngleY = -25F / (180F / (float) Math.PI);
-		this.righthorn1.rotateAngleZ = 10F / (180F / (float) Math.PI);
-
-		this.righthorn2 = new ModelRenderer(this, 40, 0);
-		this.righthorn2.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2);
-		this.righthorn2.setRotationPoint(-4.5F, 0.0F, 0.0F);
-		this.righthorn2.rotateAngleY = -15F / (180F / (float) Math.PI);
-		this.righthorn2.rotateAngleZ = 45F / (180F / (float) Math.PI);
-
-		this.righthorn1.addChild(righthorn2);
-
-		this.lefthorn1 = new ModelRenderer(this, 24, 0);
-		this.lefthorn1.mirror = true;
-		this.lefthorn1.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3);
-		this.lefthorn1.setRotationPoint(2.5F, -6.5F, 0.0F);
-		this.lefthorn1.rotateAngleY = 25F / (180F / (float) Math.PI);
-		this.lefthorn1.rotateAngleZ = -10F / (180F / (float) Math.PI);
-
-		this.lefthorn2 = new ModelRenderer(this, 40, 0);
-		this.lefthorn2.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2);
-		this.lefthorn2.setRotationPoint(4.5F, 0.0F, 0.0F);
-		this.lefthorn2.rotateAngleY = 15F / (180F / (float) Math.PI);
-		this.lefthorn2.rotateAngleZ = -45F / (180F / (float) Math.PI);
-
-		this.lefthorn1.addChild(lefthorn2);
-
-		this.bipedHead.addChild(righthorn1);
-		this.bipedHead.addChild(lefthorn1);
-
-		snout = new ModelRenderer(this, 9, 12);
-		snout.addBox(-2, -1, -1, 4, 3, 1);
-		snout.setRotationPoint(0F, -2.0F, -4F);
-
-		this.bipedHead.addChild(snout);
-
-		// kill off headwear box
-		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
-	}
+    /**
+     * This is a helper function from Tabula to set the rotation of model parts
+     */
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
+    }
 }

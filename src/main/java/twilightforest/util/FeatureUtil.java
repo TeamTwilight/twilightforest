@@ -4,7 +4,6 @@ import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -53,6 +52,7 @@ public class FeatureUtil {
 		}
 	}
 
+	// TODO Determine if we should cut this method
 	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
 		float xzRadiusSquared = xzRadius * xzRadius;
 		float yRadiusSquared = yRadius * yRadius;
@@ -85,14 +85,14 @@ public class FeatureUtil {
 				for (int y = 1; y <= yRadius; y++) {
 					float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
-					if (xzSquare + ((((float) y - verticalBias) * ((float) y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
+					if (xzSquare + (((y - verticalBias) * (y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
 						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
 						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
 					}
 
-					if (xzSquare + ((((float) y + verticalBias) * ((float) y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
+					if (xzSquare + (((y + verticalBias) * (y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
 						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
@@ -193,7 +193,7 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	public static void drawBresenhamBranch(TFTreeGenerator generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	public static void drawBresenhamBranch(TFTreeGenerator<? extends TFTreeFeatureConfig> generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		for (BlockPos pixel : getBresenhamArrays(from, to)) {
 			generator.setBranchBlockState(world, random, pixel, state, mbb, config);
 			//world.setBlockState(pixel, state);

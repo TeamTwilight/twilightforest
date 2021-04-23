@@ -3,6 +3,8 @@ package twilightforest.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.DownloadTerrainScreen;
 import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,10 +29,9 @@ public class LoadingScreenListener {
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof DownloadTerrainScreen && client.player != null) {
-			RegistryKey<World> tfDimension = TFDimensions.twilightForest;
-			if (client.player.getEntityWorld().getDimensionKey() == tfDimension || lastDimension == tfDimension) {
+			if (client.player.getEntityWorld().getDimensionKey() == TFDimensions.twilightForest || lastDimension == TFDimensions.twilightForest) {
 				GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading();
-				guiLoading.setEntering(client.player.getEntityWorld().getDimensionKey() == tfDimension);
+				guiLoading.setEntering(client.player.getEntityWorld().getDimensionKey() == TFDimensions.twilightForest);
 				event.setGui(guiLoading);
 			}
 		}

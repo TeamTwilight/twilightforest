@@ -1,6 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.EntityPredicates;
 import twilightforest.entity.EntityTFGoblinKnightLower;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
@@ -17,7 +18,7 @@ public class EntityAITFRiderSpearAttack extends Goal {
 
 	@Override
 	public boolean shouldExecute() {
-		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof EntityTFGoblinKnightUpper) {
+		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof EntityTFGoblinKnightUpper && EntityPredicates.CAN_HOSTILE_AI_TARGET.test(entity.getAttackTarget())) {
 			int timer = ((EntityTFGoblinKnightUpper) this.entity.getPassengers().get(0)).heavySpearTimer;
 			return timer > 0 && timer < EntityTFGoblinKnightUpper.HEAVY_SPEAR_TIMER_START;
 		} else {

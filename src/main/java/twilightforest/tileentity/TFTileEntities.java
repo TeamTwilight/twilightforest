@@ -1,5 +1,6 @@
 package twilightforest.tileentity;
 
+import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,8 +35,11 @@ public class TFTileEntities {
 	public static final RegistryObject<TileEntityType<TileEntityTFTowerBuilder>> TOWER_BUILDER            = TILE_ENTITIES.register("tower_builder", () ->
 			TileEntityType.Builder.create(TileEntityTFTowerBuilder::new, TFBlocks.carminite_builder.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFTrophy>> TROPHY                         = TILE_ENTITIES.register("trophy", () ->
-			TileEntityType.Builder.create(TileEntityTFTrophy::new, TFBlocks.naga_trophy.get(), TFBlocks.lich_trophy.get(), TFBlocks.minoshroom_trophy.get(), TFBlocks.hydra_trophy.get(), TFBlocks.knight_phantom_trophy.get(), TFBlocks.ur_ghast_trophy.get(), TFBlocks.snow_queen_trophy.get(), TFBlocks.quest_ram_trophy.get()).build(null));
-
+			TileEntityType.Builder.create(TileEntityTFTrophy::new, TFBlocks.naga_trophy.get(), TFBlocks.lich_trophy.get(), TFBlocks.minoshroom_trophy.get(), 
+					TFBlocks.hydra_trophy.get(), TFBlocks.knight_phantom_trophy.get(), TFBlocks.ur_ghast_trophy.get(), TFBlocks.snow_queen_trophy.get(), 
+					TFBlocks.quest_ram_trophy.get(), TFBlocks.naga_wall_trophy.get(), TFBlocks.lich_wall_trophy.get(), TFBlocks.minoshroom_wall_trophy.get(), 
+					TFBlocks.hydra_wall_trophy.get(), TFBlocks.knight_phantom_wall_trophy.get(), TFBlocks.ur_ghast_wall_trophy.get(), TFBlocks.snow_queen_wall_trophy.get(), 
+					TFBlocks.quest_ram_wall_trophy.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFAlphaYetiSpawner>> ALPHA_YETI_SPAWNER     = TILE_ENTITIES.register("alpha_yeti_spawner", () ->
 			TileEntityType.Builder.create(TileEntityTFAlphaYetiSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFFinalBossSpawner>> FINAL_BOSS_SPAWNER     = TILE_ENTITIES.register("final_boss_spawner", () ->
@@ -62,6 +66,20 @@ public class TFTileEntities {
 	public static final RegistryObject<TileEntityType<TileEntityTFMoonwormTicking>> MOONWORM = TILE_ENTITIES.register("moonworm", () ->
 			TileEntityType.Builder.create(TileEntityTFMoonwormTicking::new, TFBlocks.moonworm.get()).build(null));
 
+	public static final RegistryObject<TileEntityType<TileEntityKeepsakeCasket>> KEEPSAKE_CASKET          = TILE_ENTITIES.register("keepsake_casket", () ->
+			TileEntityType.Builder.create(TileEntityKeepsakeCasket::new, TFBlocks.keepsake_casket.get()).build(null));
+
+	public static final RegistryObject<TileEntityType<TileEntityTFSign>> TF_SIGN = TILE_ENTITIES.register("tf_sign", () ->
+			TileEntityType.Builder.create(TileEntityTFSign::new,
+					TFBlocks.twilight_oak_sign.get(), TFBlocks.twilight_wall_sign.get(),
+					TFBlocks.canopy_sign.get(), TFBlocks.canopy_wall_sign.get(),
+					TFBlocks.mangrove_sign.get(), TFBlocks.mangrove_wall_sign.get(),
+					TFBlocks.darkwood_sign.get(), TFBlocks.darkwood_wall_sign.get(),
+					TFBlocks.time_sign.get(), TFBlocks.time_wall_sign.get(),
+					TFBlocks.trans_sign.get(), TFBlocks.trans_wall_sign.get(),
+					TFBlocks.mine_sign.get(), TFBlocks.mine_wall_sign.get(),
+					TFBlocks.sort_sign.get(), TFBlocks.sort_wall_sign.get()).build(null));
+
 	@OnlyIn(Dist.CLIENT)
 	public static void registerTileEntityRenders() {
 		// tile entities
@@ -72,5 +90,6 @@ public class TFTileEntities {
 //		ClientRegistry.bindTileEntityRenderer(TileEntityTFHydraSpawner.class, new TileEntityMobSpawnerRenderer());
 		ClientRegistry.bindTileEntityRenderer(MOONWORM.get(), TileEntityTFMoonwormRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TileEntityTFTrophyRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(TF_SIGN.get(), SignTileEntityRenderer::new);
 	}
 }

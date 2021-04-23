@@ -20,7 +20,7 @@ import java.util.Random;
 public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 
 	public ComponentTFMazeDeadEndChest(TemplateManager manager, CompoundNBT nbt) {
-		super(TFMinotaurMazePieces.TFMMDEC, nbt);
+		this(TFMinotaurMazePieces.TFMMDEC, nbt);
 	}
 
 	public ComponentTFMazeDeadEndChest(IStructurePieceType piece, CompoundNBT nbt) {
@@ -29,6 +29,7 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 
 	public ComponentTFMazeDeadEndChest(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(type, feature, i, x, y, z, rotation);
+		this.setCoordBaseMode(rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;
@@ -45,8 +46,7 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 3, 1, 3, sbb);
 
 		// chest
-		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 2, 2, 4, sbb);
-		this.placeTreasureAtCurrentPosition(world, 3, 2, 4, TFTreasure.labyrinth_deadend, sbb);
+		this.setDoubleLootChest(world, 2, 2, 4, 3, 2, 4, Direction.SOUTH, TFTreasure.labyrinth_deadend, sbb, false);
 
 //		// torches
 //		this.setBlockState(world, Blocks.TORCH, 0, 1, 3, 4, sbb);

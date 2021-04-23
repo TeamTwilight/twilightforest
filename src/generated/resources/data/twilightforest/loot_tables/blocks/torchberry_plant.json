@@ -5,13 +5,25 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "twilightforest:torchberries"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "item": "minecraft:shears"
+                  }
+                }
+              ],
+              "name": "twilightforest:torchberry_plant"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "twilightforest:torchberries"
+            }
+          ]
         }
       ]
     }

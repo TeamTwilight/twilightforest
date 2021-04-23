@@ -1,125 +1,79 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import twilightforest.entity.TFEntities;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
+import twilightforest.entity.TFPartEntity;
 
-public class EntityTFHydraPart extends MobEntity {
+public abstract class EntityTFHydraPart extends TFPartEntity<EntityTFHydra> {
 
-	private static final DataParameter<String> PART_NAME = EntityDataManager.createKey(EntityTFHydraPart.class, DataSerializers.STRING);
+	final float maxHealth = 1000F;
+	float health = maxHealth;
 
-	public EntityTFHydra hydra;
+	private EntitySize cacheSize;
 
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, World world) {
-		super(type, world);
-	}
-
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type,EntityTFHydra parent, World world, float width, float height) {
-		super(type, world);
-		isImmuneToFire();
-		this.hydra = parent;
-		this.size = EntitySize.flexible(width, height);
-		this.recalculateSize();
-	}
-
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type,EntityTFHydra hydra, String name, float width, float height) {
-		this(type, hydra, hydra.world, width, height);
-		setPartName(name);
-		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
+	public EntityTFHydraPart(EntityTFHydra hydra) {
+		super(hydra);
 	}
 
 	@Override
 	protected void registerData() {
-		super.registerData();
-		dataManager.register(PART_NAME, "");
+		isImmuneToFire();
 	}
 
-	public String getPartName() {
-		return dataManager.get(PART_NAME);
+	// [VanillaCopy] from MobEntity
+	public boolean canEntityBeSeen(Entity entityIn) {
+		Vector3d vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+		Vector3d vector3d1 = new Vector3d(entityIn.getPosX(), entityIn.getPosYEye(), entityIn.getPosZ());
+		return this.world.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() == RayTraceResult.Type.MISS;
 	}
 
-	public void setPartName(String name) {
-		dataManager.set(PART_NAME, name);
+	public EntityTFHydraPart(EntityTFHydra parent, float width, float height) {
+		this(parent);
+		setSize(EntitySize.flexible(width, height));
+		this.recalculateSize();
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
-		compound.putString("PartName", getPartName());
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
-		setPartName(compound.getString("PartName"));
+	protected void setSize(EntitySize size) {
+		super.setSize(size);
+		cacheSize = size;
 	}
 
 	@Override
 	public void tick() {
-		if (this.hydra != null && this.hydra.deathTime > 190) {
-			remove();
-		}
+		extinguish();
+		super.tick();
 
-		//  just die if we've been alive 60 seconds and there's still no body
-		if (this.hydra == null && this.ticksExisted > 1200) {
-			remove();
-		}
+		if(hurtTime > 0)
+			hurtTime--;
 
-		super.baseTick();
+		if(health <= 0F)
+			deathTime++;
 
-		lastTickPosX = getPosX();
-		lastTickPosY = getPosY();
-		lastTickPosZ = getPosZ();
-
-		if (this.newPosRotationIncrements > 0) {
-			double x = this.getPosX() + (this.interpTargetX - this.getPosX()) / this.newPosRotationIncrements;
-			double y = this.getPosY() + (this.interpTargetY - this.getPosY()) / this.newPosRotationIncrements;
-			double z = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / this.newPosRotationIncrements;
-			double yawDelta = MathHelper.wrapDegrees(this.interpTargetYaw - this.rotationYaw);
-			this.rotationYaw = (float) (this.rotationYaw + yawDelta / this.newPosRotationIncrements);
-			this.rotationPitch = (float) (this.rotationPitch + (this.interpTargetPitch - this.rotationPitch) / this.newPosRotationIncrements);
-			--this.newPosRotationIncrements;
-			this.setPosition(x, y, z);
-			this.setRotation(this.rotationYaw, this.rotationPitch);
-		}
-
-		this.rotationYawHead = this.rotationYaw;
-		this.prevRotationYawHead = this.prevRotationYaw;
-
-		while (rotationYaw - prevRotationYaw < -180F) prevRotationYaw -= 360F;
-		while (rotationYaw - prevRotationYaw >= 180F) prevRotationYaw += 360F;
-
-		while (renderYawOffset - prevRenderYawOffset < -180F) prevRenderYawOffset -= 360F;
-		while (renderYawOffset - prevRenderYawOffset >= 180F) prevRenderYawOffset += 360F;
-
-		while (rotationPitch - prevRotationPitch < -180F) prevRotationPitch -= 360F;
-		while (rotationPitch - prevRotationPitch >= 180F) prevRotationPitch += 360F;
-
-		while (rotationYawHead - prevRotationYawHead < -180F) prevRotationYawHead -= 360F;
-		while (rotationYawHead - prevRotationYawHead >= 180F) prevRotationYawHead += 360F;
-	}
-
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 1000D);
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		return hydra != null && hydra.attackEntityFromPart(this, source, amount);
+		return getParent() != null && getParent().attackEntityFromPart(this, source, amount);
+	}
+
+	@Override
+	protected void readAdditional(CompoundNBT compound) {
+
+	}
+
+	@Override
+	protected void writeAdditional(CompoundNBT compound) {
+
 	}
 
 	@Override
 	public boolean isEntityEqual(Entity entity) {
-		return this == entity || hydra == entity;
+		return this == entity || getParent() == entity;
 	}
 
 	@Override
@@ -133,25 +87,13 @@ public class EntityTFHydraPart extends MobEntity {
 		return false;
 	}
 
-	@Override
-	public boolean canDespawn(double p_213397_1_) {
-		return hydra == null;
+	public void activate() {
+		size = cacheSize;
+		recalculateSize();
 	}
 
-	public void setWidth(float width) {
-		setWidthAndHeight(width, size.height);
-	}
-
-	public void setHeight(float height) {
-		setWidthAndHeight(size.width, height);
-	}
-
-	public void setWidthAndHeight(float value) {
-		setWidthAndHeight(value, value);
-	}
-
-	public void setWidthAndHeight(float width, float height) {
-		size = EntitySize.flexible(width, height);
+	public void deactivate() {
+		size = EntitySize.flexible(0, 0);
 		recalculateSize();
 	}
 }

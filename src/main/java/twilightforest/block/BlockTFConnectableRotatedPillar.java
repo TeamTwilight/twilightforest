@@ -1,12 +1,12 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.SixWayBlock;
+import net.minecraft.block.*;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -65,23 +65,29 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
     }
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
-		return state.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(dirToNeighbor), canConnectTo(state, dirToNeighbor, neighborState, world, pos, neighborPos));
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos) {
+		return facing.getAxis().isHorizontal() ? state.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(this.canConnectTo(facingState, facingState.isSolidSide(world, facingPos, facing.getOpposite())))) : super.updatePostPlacement(state, facing, facingState, world, pos, facingPos);
 	}
 
-	protected boolean canConnectTo(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
-		return state.getBlock() == neighborState.getBlock() && state.get(AXIS) != dirToNeighbor.getAxis();
+	public boolean canConnectTo(BlockState state, boolean solidSide) {
+		Block block = state.getBlock();
+		return !cannotAttach(block) && solidSide || block instanceof BlockTFForceField || block instanceof PaneBlock || block.isIn(BlockTags.WALLS);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		BlockState ret = getDefaultState().with(AXIS, ctx.getFace().getAxis());
-		for (Direction dir : Direction.values()) {
-			BlockPos neighborPos = ctx.getPos().offset(dir);
-			boolean connect = canConnectTo(ret, dir, ctx.getWorld().getBlockState(neighborPos), ctx.getWorld(), ctx.getPos(), neighborPos);
-			ret = ret.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(dir), connect);
-		}
-		return ret;
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		IBlockReader iblockreader = context.getWorld();
+		BlockPos blockpos = context.getPos();
+		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
+		BlockPos blockpos1 = blockpos.north();
+		BlockPos blockpos2 = blockpos.south();
+		BlockPos blockpos3 = blockpos.west();
+		BlockPos blockpos4 = blockpos.east();
+		BlockState blockstate = iblockreader.getBlockState(blockpos1);
+		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
+		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
+		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
+		return this.getDefaultState().with(AXIS, context.getFace().getAxis()).with(NORTH, Boolean.valueOf(this.canConnectTo(blockstate, blockstate.isSolidSide(iblockreader, blockpos1, Direction.SOUTH)))).with(SOUTH, Boolean.valueOf(this.canConnectTo(blockstate1, blockstate1.isSolidSide(iblockreader, blockpos2, Direction.NORTH)))).with(WEST, Boolean.valueOf(this.canConnectTo(blockstate2, blockstate2.isSolidSide(iblockreader, blockpos3, Direction.EAST)))).with(EAST, Boolean.valueOf(this.canConnectTo(blockstate3, blockstate3.isSolidSide(iblockreader, blockpos4, Direction.WEST))));
 	}
 
 	// Utility to make a bounding-box piece

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "side": "twilightforest:block/stone_twist/twist_side",
+    "end": "twilightforest:block/stone_twist/twist_end"
+  }
+}

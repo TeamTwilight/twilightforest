@@ -35,7 +35,7 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 		// spawn list!
 		this.spawnListIndex = -1;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, Direction.SOUTH);
 	}
 
 	@Override
@@ -50,11 +50,8 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 		this.fillWithBlocks(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
 
 		// chests
-		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 5, 6, 5, sbb);
-		this.placeTreasureAtCurrentPosition(world, 5, 6, 6, TFTreasure.troll_vault, false, sbb);
-
-		this.placeTreasureAtCurrentPosition(world, 6, 6, 5, TFTreasure.troll_garden, true, sbb);
-		this.setBlockState(world, Blocks.TRAPPED_CHEST.getDefaultState(), 6, 6, 6, sbb);
+		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getCoordBaseMode().rotateY(), TFTreasure.troll_vault, sbb, false);
+		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getCoordBaseMode().rotateY(), TFTreasure.troll_garden, sbb, false);
 
 		return true;
 	}

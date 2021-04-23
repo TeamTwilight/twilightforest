@@ -22,7 +22,7 @@ import java.util.Random;
 public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMazeTower13 {
 
 	public ComponentTFFinalCastleDamagedTower(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFinalCastlePieces.TFFCDamT, nbt);
+		this(TFFinalCastlePieces.TFFCDamT, nbt);
 	}
 
 	public ComponentTFFinalCastleDamagedTower(IStructurePieceType piece, CompoundNBT nbt) {

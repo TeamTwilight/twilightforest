@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -25,6 +24,8 @@ public class ItemTFFierySword extends SwordItem {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
+			target.setFire(15);
+		} else {
 			for (int var1 = 0; var1 < 20; ++var1) {
 				double px = target.getPosX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
 				double py = target.getPosY() + random.nextFloat() * target.getHeight();

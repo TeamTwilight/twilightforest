@@ -15,18 +15,19 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
 import twilightforest.TFSounds;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 public class EntityTFYeti extends MonsterEntity implements IHostileMount {
@@ -46,13 +47,13 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 			protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_GRAB, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+					playSound(TFSounds.YETI_GRAB, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
 			}
 
 			@Override
 			public void resetTask() {
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_THROW, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
+					playSound(TFSounds.YETI_THROW, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
 				super.resetTask();
 			}
 		});
@@ -100,7 +101,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (source.getTrueSource() != null) {
+		if (source.getTrueSource() != null && !source.isCreativePlayer()) {
 			// become angry
 			this.setAngry(true);
 		}
@@ -176,27 +177,27 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 		return true;
 	}
 
-	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends EntityTFYeti> entityType, IWorld world, SpawnReason p_223324_2_, BlockPos pos, Random random) {
-		/* FIXME
-		if (world.getBiome(new BlockPos(pos)) == TFBiomes.snowy_forest.get()) {
-			return canSpawnOn(entityType, world, p_223324_2_, pos, random);
-		} else*/ {
+	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends EntityTFYeti> entityType, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		Optional<RegistryKey<Biome>> key = world.func_242406_i(pos);
+		if (Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST))) {
+			return canSpawnOn(entityType, world, reason, pos, random);
+		} else {
 			// normal EntityMob spawn check, checks light level
-			return normalYetiSpawnHandler(entityType, world, p_223324_2_, pos, random);
+			return normalYetiSpawnHandler(entityType, world, reason, pos, random);
 		}
 	}
 
-	public static boolean normalYetiSpawnHandler(EntityType<? extends MonsterEntity> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean normalYetiSpawnHandler(EntityType<? extends MonsterEntity> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(IWorld world, BlockPos blockPos, Random random) {
-		/* FIXME
+	public static boolean isValidLightLevel(IServerWorld world, BlockPos blockPos, Random random) {
+		Optional<RegistryKey<Biome>> key = world.func_242406_i(blockPos);
 		if (world.getLightFor(LightType.SKY, blockPos) > random.nextInt(32)) {
-			return world.getBiome(blockPos) == TFBiomes.snowy_forest.get();
-		} else*/ {
-			int i = /*world.isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) :*/ world.getLight(blockPos);
-			return i <= random.nextInt(8) /*|| world.getBiome(blockPos) == TFBiomes.snowy_forest.get()*/;
+			return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
+		} else {
+			int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
+			return i <= random.nextInt(8) || Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
 		}
 	}
 
@@ -208,16 +209,16 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ALPHAYETI_GROWL;
+		return TFSounds.YETI_GROWL;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.ALPHAYETI_HURT;
+		return TFSounds.YETI_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ALPHAYETI_DIE;
+		return TFSounds.YETI_DEATH;
 	}
 }

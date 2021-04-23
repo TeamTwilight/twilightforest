@@ -10,8 +10,9 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
+import twilightforest.worldgen.BlockConstants;
 
 import java.util.Random;
 
@@ -26,71 +27,63 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 		this.genTwilightBiomeTerrain(rand, primer, biome, x, z, startheight, noiseVal, defaultBlock, defaultFluid, config.getTop(), config.getUnder(), config.getUnderWaterMaterial(), sealevel);
 	}
 
-	// Copy of super's generateBiomeTerrain, relevant edits noted.
-	//protected void genTwilightBiomeTerrain(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
-	protected void genTwilightBiomeTerrain(Random rand, IChunk primer, Biome biome, int x, int z, int startHeight, double noiseVal, BlockState defaultBlock, BlockState defaultFluid, BlockState top, BlockState middle, BlockState bottom, int sealevel) {
-		BlockState topState = top;
-		BlockState middleState = middle;
-		BlockState stoneReplacement = TFBlocks.deadrock.get().getDefaultState();
-		int generatedDirtDepth = -1;
-		int dirtDepth = (int) (noiseVal / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
-		int localX = x & 15;
-		int localZ = z & 15;
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
-		boolean generateBedrock = /*shouldGenerateBedrock(world);*/ true; // TF - conditional bedrock gen //TODO 1.15: World is not a valid argument. Set to true for now
+	//[VanillaCopy] of DefaultrfaceBuilder.buildSurface, but we fill everything with deadrock
+	protected void genTwilightBiomeTerrain(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, BlockState top, BlockState middle, BlockState bottom, int sealevel) {
+		BlockState blockstate = top;
+		BlockState blockstate1 = middle;
+		BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+		int i = -1;
+		int j = (int)(noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
+		int k = x & 15;
+		int l = z & 15;
 
-		for (int y = startHeight; y >= 0; --y) { //Author's note: beginning value was 255. It is now startHeight
-			mutable.setPos(localX, y, localZ);
-			// TF - conditional bedrock gen
-			if (generateBedrock && y <= rand.nextInt(5)) {
-				primer.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
-			} else {
-				BlockState stateHere = primer.getBlockState(mutable);
-
-				// TF - use block check for air
-				if (stateHere.getBlock() == Blocks.AIR) {
-					// generatedDirtDepth = -1; TF - commented out? todo 1.9
-				} else if (stateHere.getBlock() == Blocks.STONE) {
-					if (generatedDirtDepth == -1) {
-						if (dirtDepth <= 0) {
-							topState = Blocks.AIR.getDefaultState(); // FIXME Properly address if this is the right blockstate to equate to
-							middleState = defaultBlock;
-						} else if (y >= sealevel - 4 && y <= sealevel + 1) {
-							topState = top;
-							middleState = middle;
-						}
-
-						// TF - use block check for air
-						if (y < sealevel && (topState == null || topState.getBlock() == Blocks.AIR)) {
-							if (biome.getTemperature(mutable.setPos(x, y, z)) < 0.15F) {
-								topState = Blocks.ICE.getDefaultState();
-							} else {
-								topState = defaultFluid;
-							}
-							mutable.setPos(localZ, y, localX);
-						}
-
-						generatedDirtDepth = dirtDepth;
-
-						if (y >= sealevel - 1) {
-							primer.setBlockState(mutable, topState, false);
-						} else if (y < sealevel - 7 - dirtDepth) {
-							topState = Blocks.AIR.getDefaultState(); // FIXME Properly address if this is the right blockstate to equate to
-							middleState = defaultBlock;
-							primer.setBlockState(mutable, bottom, false);
-						} else {
-							primer.setBlockState(mutable, middleState, false);
-						}
+		for(int i1 = startHeight; i1 >= 0; --i1) {
+			blockpos$mutable.setPos(k, i1, l);
+			BlockState blockstate2 = chunkIn.getBlockState(blockpos$mutable);
+			if (blockstate2.isAir()) {
+				i = -1;
+			} else if (blockstate2.isIn(defaultBlock.getBlock())) {
+				if (!chunkIn.getBlockState(blockpos$mutable).isIn(TFBlocks.deadrock_weathered.get()) || !chunkIn.getBlockState(blockpos$mutable).isIn(TFBlocks.deadrock_cracked.get())) {
+					chunkIn.setBlockState(blockpos$mutable, BlockConstants.DEADROCK, false);
+				}
+				if (i == -1) {
+					if (j <= 0) {
+						blockstate = Blocks.AIR.getDefaultState();
+						blockstate1 = defaultBlock;
+					} else if (i1 >= sealevel - 4 && i1 <= sealevel + 1) {
+						blockstate = top;
+						blockstate1 = middle;
 					}
-					primer.setBlockState(mutable, stoneReplacement, false);
+
+					if (i1 < sealevel && (blockstate == null || blockstate.isAir())) {
+						if (biomeIn.getTemperature(blockpos$mutable.setPos(x, i1, z)) < 0.15F) {
+							blockstate = Blocks.ICE.getDefaultState();
+						} else {
+							blockstate = defaultFluid;
+						}
+
+						blockpos$mutable.setPos(k, i1, l);
+					}
+
+					i = j;
+					if (i1 >= sealevel - 1) {
+						chunkIn.setBlockState(blockpos$mutable, blockstate, false);
+					} else if (i1 < sealevel - 7 - j) {
+						blockstate = Blocks.AIR.getDefaultState();
+						blockstate1 = defaultBlock;
+						chunkIn.setBlockState(blockpos$mutable, bottom, false);
+					} else {
+						chunkIn.setBlockState(blockpos$mutable, blockstate1, false);
+					}
+				} else if (i > 0) {
+					--i;
+					chunkIn.setBlockState(blockpos$mutable, blockstate1, false);
+					if (i == 0 && blockstate1.isIn(Blocks.SAND) && j > 1) {
+						i = random.nextInt(4) + Math.max(0, i1 - 63);
+						blockstate1 = blockstate1.isIn(Blocks.RED_SAND) ? Blocks.RED_SANDSTONE.getDefaultState() : Blocks.SANDSTONE.getDefaultState();
+					}
 				}
 			}
 		}
-	}
-
-	//TODO: Re-evaluate
-	private static boolean shouldGenerateBedrock(World world) {
-		ChunkGeneratorTFBase generator = TFGenerationSettings.getChunkGenerator(world);
-		return generator == null || generator.shouldGenerateBedrock();
 	}
 }

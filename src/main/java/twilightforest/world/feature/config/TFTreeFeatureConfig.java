@@ -18,16 +18,16 @@ import java.util.Random;
 public class TFTreeFeatureConfig implements IFeatureConfig {
 	public static final Codec<TFTreeFeatureConfig> codecTFTreeConfig = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					BlockStateProvider.field_236796_a_.fieldOf("trunk_provider").forGetter((obj) -> obj.trunkProvider),
-					BlockStateProvider.field_236796_a_.fieldOf("leaves_provider").forGetter((obj) -> obj.leavesProvider),
-					BlockStateProvider.field_236796_a_.fieldOf("branch_provider").forGetter((obj) -> obj.branchProvider),
-					BlockStateProvider.field_236796_a_.fieldOf("roots_provider").forGetter((obj) -> obj.rootsProvider),
+					BlockStateProvider.CODEC.fieldOf("trunk_provider").forGetter((obj) -> obj.trunkProvider),
+					BlockStateProvider.CODEC.fieldOf("leaves_provider").forGetter((obj) -> obj.leavesProvider),
+					BlockStateProvider.CODEC.fieldOf("branch_provider").forGetter((obj) -> obj.branchProvider),
+					BlockStateProvider.CODEC.fieldOf("roots_provider").forGetter((obj) -> obj.rootsProvider),
 					Codec.INT.fieldOf("minimum_size").orElse(20).forGetter((obj) -> obj.minHeight),
 					Codec.INT.fieldOf("add_first_five_chance").orElse(1).forGetter((obj) -> obj.chanceAddFiveFirst),
 					Codec.INT.fieldOf("add_second_five_chance").orElse(1).forGetter((obj) -> obj.chanceAddFiveSecond),
 					Codec.BOOL.fieldOf("has_leaves").orElse(true).forGetter((obj) -> obj.hasLeaves),
 					Codec.BOOL.fieldOf("check_water").orElse(false).forGetter((obj) -> obj.checkWater),
-					BlockStateProvider.field_236796_a_.fieldOf("sapling").orElse(new SimpleBlockStateProvider(Blocks.OAK_SAPLING.getDefaultState())).forGetter((obj) -> obj.sapling))
+					BlockStateProvider.CODEC.fieldOf("sapling").orElse(new SimpleBlockStateProvider(Blocks.OAK_SAPLING.getDefaultState())).forGetter((obj) -> obj.sapling))
 					.apply(instance, TFTreeFeatureConfig::new));
 
 	public final BlockStateProvider trunkProvider;

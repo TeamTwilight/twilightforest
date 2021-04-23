@@ -3,17 +3,15 @@ package twilightforest.entity.boss;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.entity.TFEntities;
+import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
@@ -98,7 +96,7 @@ public class HydraHeadContainer {
 		}
 	}
 
-	public EntityTFHydraHead headEntity;
+	public final EntityTFHydraHead headEntity;
 	public final EntityTFHydraNeck necka;
 	public final EntityTFHydraNeck neckb;
 	public final EntityTFHydraNeck neckc;
@@ -140,17 +138,20 @@ public class HydraHeadContainer {
 		this.damageTaken = 0;
 		this.respawnCounter = -1;
 
-		necka = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "a", 2F, 2F);
-		neckb = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "b", 2F, 2F);
-		neckc = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "c", 2F, 2F);
-		neckd = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "d", 2F, 2F);
-		necke = new EntityTFHydraNeck(this.hydra, "neck" + headNum + "e", 2F, 2F);
+		headEntity = new EntityTFHydraHead(hydra);
+		headEntity.setPosition(hydra.getPosX(), hydra.getPosY(), hydra.getPosZ());
+
+		necka = new EntityTFHydraNeck(this.headEntity);
+		neckb = new EntityTFHydraNeck(this.headEntity);
+		neckc = new EntityTFHydraNeck(this.headEntity);
+		neckd = new EntityTFHydraNeck(this.headEntity);
+		necke = new EntityTFHydraNeck(this.headEntity);
 
 		// state positions, where is each state positioned?
-		stateNeckLength = new Map[this.hydra.numHeads];
-		stateXRotations = new Map[this.hydra.numHeads];
-		stateYRotations = new Map[this.hydra.numHeads];
-		stateMouthOpen = new Map[this.hydra.numHeads];
+		stateNeckLength = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		stateXRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		stateYRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		stateMouthOpen = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
 
 		for (int i = 0; i < this.hydra.numHeads; i++) {
 			stateNeckLength[i] = new EnumMap<>(State.class);
@@ -174,6 +175,8 @@ public class HydraHeadContainer {
 			this.ticksNeeded = 20;
 			this.ticksProgress = 20;
 		}
+		setHeadPosition();
+		setNeckPosition();
 	}
 
 	protected void setupStateRotations() {
@@ -314,6 +317,7 @@ public class HydraHeadContainer {
 	 */
 	public void tick() {
 
+		headEntity.tick();
 		// neck updates
 		necka.tick();
 		neckb.tick();
@@ -321,17 +325,15 @@ public class HydraHeadContainer {
 		neckd.tick();
 		necke.tick();
 
-		// check if the head is here
-		if (headEntity == null) {
-			headEntity = findNearbyHead("head" + headNum);
-		}
-
 		// adjust for difficulty
 		setDifficultyVariables();
 
 		if (headEntity != null) {
 			// make sure this is set up
-			headEntity.setWidthAndHeight(this.isActive() ? 4.0F : 1.0F);
+			if(isActive() && headEntity.size.width > 0)
+				headEntity.activate();
+			else if(!isActive() && headEntity.size.width != 0)
+				headEntity.deactivate();
 
 			// only actually do these things on the server
 			if (!hydra.world.isRemote) {
@@ -397,16 +399,16 @@ public class HydraHeadContainer {
 
 		} else {
 			this.headEntity.deathTime = 0;
-			this.headEntity.setHealth((float) this.headEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue());
+			this.headEntity.health = this.headEntity.maxHealth;
 		}
 	}
 
 	private void doExplosionOn(EntityTFHydraPart part, boolean large) {
 		for (int i = 0; i < 10; ++i) {
-			double vx = part.getRNG().nextGaussian() * 0.02D;
-			double vy = part.getRNG().nextGaussian() * 0.02D;
-			double vz = part.getRNG().nextGaussian() * 0.02D;
-			part.world.addParticle((part.getRNG().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getPosX() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), part.getPosY() + part.getRNG().nextFloat() * part.getHeight(), part.getPosZ() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), vx, vy, vz);
+			double vx = part.world.rand.nextGaussian() * 0.02D;
+			double vy = part.world.rand.nextGaussian() * 0.02D;
+			double vz = part.world.rand.nextGaussian() * 0.02D;
+			part.world.addParticle((part.world.rand.nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getPosX() + part.world.rand.nextFloat() * part.getWidth() * 2.0F - part.getWidth(), part.getPosY() + part.world.rand.nextFloat() * part.getHeight(), part.getPosZ() + part.world.rand.nextFloat() * part.getWidth() * 2.0F - part.getWidth(), vx, vy, vz);
 		}
 	}
 
@@ -521,8 +523,8 @@ public class HydraHeadContainer {
 		double pz = headEntity.getPosZ() + vector.z * dist;
 
 		if (headEntity.getState() == State.FLAME_BEGINNING) {
-			headEntity.world.addParticle(ParticleTypes.FLAME, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
-			headEntity.world.addParticle(ParticleTypes.SMOKE, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.FLAME, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.SMOKE, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.FLAMING) {
@@ -532,13 +534,13 @@ public class HydraHeadContainer {
 				double dy = look.y;
 				double dz = look.z;
 
-				double spread = 5 + headEntity.getRNG().nextDouble() * 2.5;
-				double velocity = 1.0 + headEntity.getRNG().nextDouble();
+				double spread = 5 + headEntity.world.rand.nextDouble() * 2.5;
+				double velocity = 1.0 + headEntity.world.rand.nextDouble();
 
 				// spread flame
-				dx += headEntity.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-				dy += headEntity.getRNG().nextGaussian() * 0.007499999832361937D * spread;
-				dz += headEntity.getRNG().nextGaussian() * 0.007499999832361937D * spread;
+				dx += headEntity.world.rand.nextGaussian() * 0.007499999832361937D * spread;
+				dy += headEntity.world.rand.nextGaussian() * 0.007499999832361937D * spread;
+				dz += headEntity.world.rand.nextGaussian() * 0.007499999832361937D * spread;
 				dx *= velocity;
 				dy *= velocity;
 				dz *= velocity;
@@ -548,24 +550,24 @@ public class HydraHeadContainer {
 		}
 
 		if (headEntity.getState() == State.BITE_BEGINNING || headEntity.getState() == State.BITE_READY) {
-			headEntity.world.addParticle(ParticleTypes.SPLASH, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.SPLASH, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.MORTAR_BEGINNING) {
-			headEntity.world.addParticle(ParticleTypes.SPLASH, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.world.rand.nextDouble() - 0.5, py + headEntity.world.rand.nextDouble() - 0.5, pz + headEntity.world.rand.nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
 	private void playSounds() {
 		if (headEntity.getState() == State.FLAMING && headEntity.ticksExisted % 5 == 0) {
 			// fire breathing!
-			headEntity.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F + headEntity.getRNG().nextFloat(), headEntity.getRNG().nextFloat() * 0.7F + 0.3F);
+			headEntity.playSound(TFSounds.HYDRA_SHOOT, 0.5F + headEntity.world.rand.nextFloat(), headEntity.world.rand.nextFloat() * 0.7F + 0.3F);
 		}
 		if (headEntity.getState() == State.ROAR_RAWR) {
-			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.getRNG().nextFloat() * 0.3F + 0.7F);
+			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.world.rand.nextFloat() * 0.3F + 0.7F);
 		}
 		if (headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
-			headEntity.playSound(TFSounds.HYDRA_WARN, 2.0F, headEntity.getRNG().nextFloat() * 0.3F + 0.7F);
+			headEntity.playSound(TFSounds.HYDRA_WARN, 2.0F, headEntity.world.rand.nextFloat() * 0.3F + 0.7F);
 		}
 	}
 
@@ -616,7 +618,7 @@ public class HydraHeadContainer {
 		// head1 is above
 		// head2 is to the right
 		// head3 is to the left
-		setupStateRotations(); // temporary, for debugging
+		//setupStateRotations(); // temporary, for debugging
 
 		float neckLength = getCurrentNeckLength();
 		float xRotation = getCurrentHeadXRotation();
@@ -649,14 +651,14 @@ public class HydraHeadContainer {
 		if (this.currentState == State.MORTAR_SHOOTING && this.ticksProgress % 10 == 0) {
 			Entity lookTarget = getHeadLookTarget();
 
-			if (lookTarget instanceof EntityTFHydraPart || lookTarget instanceof MultiPartEntityPart) {
+			/*if (lookTarget instanceof EntityTFHydraPart || lookTarget instanceof MultiPartEntityPart) {
 				// stop hurting yourself!
 				this.endCurrentAction();
-			} else {
-				EntityTFHydraMortar mortar = new EntityTFHydraMortar(TFEntities.hydra_mortar, headEntity.world, this.headEntity);
+			} else */{
+				EntityTFHydraMortar mortar = new EntityTFHydraMortar(TFEntities.hydra_mortar, headEntity.world, headEntity);
 
 				// launch blasting mortars if the player is hiding
-				if (this.targetEntity != null && !headEntity.getEntitySenses().canSee(this.targetEntity)) {
+				if (this.targetEntity != null && !headEntity.canEntityBeSeen(this.targetEntity)) {
 					mortar.setToBlasting();
 				}
 
@@ -670,9 +672,9 @@ public class HydraHeadContainer {
 			List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getBoundingBox().grow(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
-				if (nearby instanceof LivingEntity && !(nearby instanceof EntityTFHydraPart) && !(nearby instanceof EntityTFHydra)) {
+				if (nearby instanceof LivingEntity && nearby != hydra) {
 					// bite it!
-					nearby.attackEntityFrom(DamageSource.causeMobDamage(hydra), BITE_DAMAGE);
+					nearby.attackEntityFrom(TFDamageSources.HYDRA_BITE, BITE_DAMAGE);
 				}
 			}
 		}
@@ -680,11 +682,11 @@ public class HydraHeadContainer {
 		if (headEntity.getState() == State.FLAMING) {
 			Entity target = getHeadLookTarget();
 
-			if (target != null) {
-				if (target instanceof EntityTFHydraPart || target instanceof MultiPartEntityPart) {
+			if (target != null && target != headEntity.getParent() && (!(target instanceof EntityTFHydraPart) || ((EntityTFHydraPart) target).getParent() != headEntity.getParent())) {
+				/*if (target instanceof EntityTFHydraPart || target instanceof MultiPartEntityPart) {
 					// stop hurting yourself!
 					this.endCurrentAction();
-				} else if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, FLAME_DAMAGE)) {
+				} else */if (!target.isImmuneToFire() && target.attackEntityFrom(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
 					target.setFire(FLAME_BURN_FACTOR);
 				}
 			}
@@ -721,7 +723,7 @@ public class HydraHeadContainer {
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != headEntity && possibleEntity != necka && possibleEntity != neckb && possibleEntity != neckc) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow(borderSize, borderSize, borderSize);
 				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
@@ -748,23 +750,6 @@ public class HydraHeadContainer {
 
 	public void endCurrentAction() {
 		this.ticksProgress = this.ticksNeeded;
-	}
-
-	/**
-	 * Search for nearby heads with the string as their name
-	 */
-	@Nullable
-	private EntityTFHydraHead findNearbyHead(String string) {
-		List<EntityTFHydraHead> nearbyHeads = hydra.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydra.getPosX(), hydra.getPosY(), hydra.getPosZ(), hydra.getPosX() + 1, hydra.getPosY() + 1, hydra.getPosZ() + 1).grow(16.0D, 16.0D, 16.0D));
-
-		for (EntityTFHydraHead nearbyHead : nearbyHeads) {
-			if (nearbyHead.getPartName().equals(string)) {
-				nearbyHead.hydra = hydra;
-				return nearbyHead;
-			}
-		}
-
-		return null;
 	}
 
 	private float getCurrentNeckLength() {

@@ -1,27 +1,34 @@
 package twilightforest.world.layer;
 
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
+import twilightforest.world.TFBiomeProvider;
 
 public enum GenLayerTFCompanionBiomes implements ICastleTransformer {
 	INSTANCE;
 
 	GenLayerTFCompanionBiomes() { }
 
+	private Registry<Biome> registry;
+
+	public GenLayerTFCompanionBiomes setup(Registry<Biome> registry) {
+		this.registry = registry;
+		return this;
+	}
 
 	@Override
 	public int apply(INoiseRandom noise, int up, int left, int down, int right, int center) {
-		// FIXME oh god
-		int fireSwamp        = 0;//Registry.BIOME.getId(TFBiomes.fireSwamp.get());
-		int swamp            = 0;//Registry.BIOME.getId(TFBiomes.tfSwamp.get());
-		int glacier          = 0;//Registry.BIOME.getId(TFBiomes.glacier.get());
-		int snowyForest      = 0;//Registry.BIOME.getId(TFBiomes.snowy_forest.get());
-		int darkForestCenter = 0;//Registry.BIOME.getId(TFBiomes.darkForestCenter.get());
-		int darkForest       = 0;//Registry.BIOME.getId(TFBiomes.darkForest.get());
-		int highlandsCenter  = 0;//Registry.BIOME.getId(TFBiomes.highlandsCenter.get());
-		int highlands        = 0;//Registry.BIOME.getId(TFBiomes.highlands.get());
+		int fireSwamp        = TFBiomeProvider.getBiomeId(BiomeKeys.FIRE_SWAMP, registry);
+		int swamp            = TFBiomeProvider.getBiomeId(BiomeKeys.SWAMP, registry);
+		int glacier          = TFBiomeProvider.getBiomeId(BiomeKeys.GLACIER, registry);
+		int snowyForest      = TFBiomeProvider.getBiomeId(BiomeKeys.SNOWY_FOREST, registry);
+		int darkForestCenter = TFBiomeProvider.getBiomeId(BiomeKeys.DARK_FOREST_CENTER, registry);
+		int darkForest       = TFBiomeProvider.getBiomeId(BiomeKeys.DARK_FOREST, registry);
+		int highlandsCenter  = TFBiomeProvider.getBiomeId(BiomeKeys.FINAL_PLATEAU, registry);
+		int highlands        = TFBiomeProvider.getBiomeId(BiomeKeys.HIGHLANDS, registry);
 
 		if (isKey(fireSwamp, center, right, left, up, down)) {
 			return swamp;

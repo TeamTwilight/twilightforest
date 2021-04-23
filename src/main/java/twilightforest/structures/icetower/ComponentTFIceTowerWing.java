@@ -35,37 +35,24 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	protected int treasureFloor = -1;
 
 	public ComponentTFIceTowerWing(TemplateManager manager, CompoundNBT nbt) {
-		super(TFIceTowerPieces.TFITWin, nbt);
+		this(TFIceTowerPieces.TFITWin, nbt);
 	}
 
 	public ComponentTFIceTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.hasBase = nbt.getBoolean("hasBase");
+		this.treasureFloor = nbt.getInt("treasureFloor");
 	}
 
 	protected ComponentTFIceTowerWing(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("hasBase", this.hasBase);
-//		tagCompound.putInt("treasureFloor", this.treasureFloor);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.hasBase = tagCompound.getBoolean("hasBase");
-		this.treasureFloor = tagCompound.getInt("treasureFloor");
+		tagCompound.putBoolean("hasBase", this.hasBase);
+		tagCompound.putInt("treasureFloor", this.treasureFloor);
 	}
 
 	@Override
@@ -150,7 +137,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (isOutOfRange((StructurePiece) list.get(0), dx[0], dx[1], dx[2], RANGE)) {
+		if (isOutOfRange(list.get(0), dx[0], dx[1], dx[2], RANGE)) {
 			return false;
 		}
 
@@ -293,6 +280,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * @param ladderDownDir
 	 */
 	@Override
+	@SuppressWarnings("fallthrough")
 	protected void decorateFloor(ISeedReader world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		boolean hasTreasure = (this.treasureFloor == floor);
 
@@ -452,7 +440,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 1, bottom + 8, 5, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 1, bottom + 8, 5, getCoordBaseMode().getOpposite(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 7, 5, ladderUpDir, sbb);
 		}
@@ -486,7 +474,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 1, bottom + 5, 5, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 1, bottom + 5, 5, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
 			final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 4, 5, ladderUpDir, sbb);
@@ -517,7 +505,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 7, bottom + 6, 1, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 7, bottom + 6, 1, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -560,7 +548,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 6, 5, ladderDownDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 6, 5, getCoordBaseMode(), ladderDownDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -597,7 +585,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 7, 7, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 7, 7, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -622,7 +610,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 5, 2, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 5, 2, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -654,7 +642,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 5, 2, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 5, 2, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -713,7 +701,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 8, bottom + 8, 7, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 8, bottom + 8, 7, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 

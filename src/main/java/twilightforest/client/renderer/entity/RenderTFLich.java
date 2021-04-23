@@ -7,8 +7,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFLich;
 import twilightforest.entity.boss.EntityTFLich;
 
-import javax.annotation.Nonnull;
-
 public class RenderTFLich extends BipedRenderer<EntityTFLich, ModelTFLich> {
 
 	private static final ResourceLocation LICH_TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");

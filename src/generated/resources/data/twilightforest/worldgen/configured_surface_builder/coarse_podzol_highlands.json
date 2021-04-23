@@ -1,0 +1,20 @@
+{
+  "config": {
+    "top_material": {
+      "Properties": {
+        "snowy": "false"
+      },
+      "Name": "minecraft:podzol"
+    },
+    "under_material": {
+      "Name": "minecraft:coarse_dirt"
+    },
+    "underwater_material": {
+      "Properties": {
+        "snowy": "false"
+      },
+      "Name": "minecraft:grass_block"
+    }
+  },
+  "type": "twilightforest:highlands"
+}

@@ -2,11 +2,16 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -18,10 +23,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.PacketDistributor;
-import twilightforest.network.PacketAnnihilateBlock;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.world.ChunkGeneratorTFBase;
+import org.apache.logging.log4j.core.jmx.Server;
+import twilightforest.TFSounds;
+import twilightforest.client.particle.ParticleAnnihilate;
+import twilightforest.client.particle.TFParticleType;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
@@ -37,20 +43,6 @@ public class BlockTFCastleDoor extends Block {
 		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false).with(VANISHED, false));
 	}
-
-	//TODO: Material cannot be dynamic
-//	@Override
-//	@Deprecated
-//	public Material getMaterial(BlockState state) {
-//		return state.get(VANISHED) ? Material.GLASS : super.getMaterial(state);
-//	}
-
-	//TODO: Move to unmapped method
-//	@Override
-//	@Deprecated
-//	public MaterialColor getMaterialColor(BlockState state, IBlockReader worldIn, BlockPos pos) {
-//		return state.get(VANISHED) ? MaterialColor.AIR : super.getMaterialColor(state, worldIn, pos);
-//	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -89,7 +81,7 @@ public class BlockTFCastleDoor extends Block {
 		if (state.get(VANISHED) || state.get(ACTIVE)) return ActionResultType.FAIL;
 
 		if (isBlockLocked(world, pos)) {
-			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1.0F, 0.3F);
+			world.playSound(null, pos, TFSounds.DOOR_ACTIVATED, SoundCategory.BLOCKS, 1.0F, 0.3F);
 			return ActionResultType.PASS;
 		} else {
 			changeToActiveBlock(world, pos, state);
@@ -107,21 +99,15 @@ public class BlockTFCastleDoor extends Block {
 	private static boolean isBlockLocked(World world, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!world.isRemote) {
-			ChunkGeneratorTFBase generator = TFGenerationSettings.getChunkGenerator(world);
-			return generator != null /*&& generator.isStructureLocked(pos, lockIndex)*/;
+			ChunkGeneratorTwilightBase generator = TFGenerationSettings.getChunkGenerator(world);
+			//return generator != null && generator.isStructureLocked(pos, lockIndex);
 		}
 		return false;
 	}
 
-	//TODO: Does not exist. Must be specified in scheduleTick() directly
-//	@Override
-//	public int tickRate() {
-//		return 5;
-//	}
-
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(VANISHED)) {
 			if (state.get(ACTIVE)) {
 				world.setBlockState(pos, state.with(VANISHED, false).with(ACTIVE, false));
@@ -136,7 +122,7 @@ public class BlockTFCastleDoor extends Block {
 
 				playVanishSound(world, pos);
 
-				this.sendAnnihilateBlockPacket(world, pos);
+				vanishParticles(world, pos);
 
 				// activate all adjacent inactive doors
 				for (Direction e : Direction.values()) {
@@ -146,17 +132,12 @@ public class BlockTFCastleDoor extends Block {
 		}
 	}
 
-	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimensionKey()); //RegistryKey<World>
-		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAnnihilateBlock(pos));
-	}
-
 	private static void playVanishSound(World world, BlockPos pos) {
-		world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.75F);
+		world.playSound(null, pos, TFSounds.DOOR_VANISH, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.75F);
 	}
 
 	private static void playReappearSound(World world, BlockPos pos) {
-		world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.25F);
+		world.playSound(null, pos, TFSounds.DOOR_REAPPEAR, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.25F);
 	}
 
 	/**
@@ -170,54 +151,23 @@ public class BlockTFCastleDoor extends Block {
 		}
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-		if (state.get(ACTIVE)) {
-			for (int i = 0; i < 1; ++i) {
-				//this.sparkle(world, x, y, z, random);
+	private static void vanishParticles(World world, BlockPos pos) {
+		Random rand = world.getRandom();
+		if(world instanceof ServerWorld) {
+			for (int dx = 0; dx < 4; ++dx) {
+				for (int dy = 0; dy < 4; ++dy) {
+					for (int dz = 0; dz < 4; ++dz) {
+
+						double x = pos.getX() + (dx + 0.5D) / 4;
+						double y = pos.getY() + (dy + 0.5D) / 4;
+						double z = pos.getZ() + (dz + 0.5D) / 4;
+
+						double speed = rand.nextGaussian() * 0.2D;
+
+						((ServerWorld)world).spawnParticle(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+					}
+				}
 			}
 		}
 	}
-
-	// [VanillaCopy] BlockRedStoneOre.spawnParticles with own rand
-	//@SuppressWarnings("unused")
-//	private void sparkle(World worldIn, BlockPos pos, Random rand) {
-//		Random random = rand;
-//		double d0 = 0.0625D;
-//
-//		for (int i = 0; i < 6; ++i) {
-//			double d1 = (double) ((float) pos.getX() + random.nextFloat());
-//			double d2 = (double) ((float) pos.getY() + random.nextFloat());
-//			double d3 = (double) ((float) pos.getZ() + random.nextFloat());
-//
-//			if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube()) {
-//				d2 = (double) pos.getY() + 0.0625D + 1.0D;
-//			}
-//
-//			if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube()) {
-//				d2 = (double) pos.getY() - 0.0625D;
-//			}
-//
-//			if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube()) {
-//				d3 = (double) pos.getZ() + 0.0625D + 1.0D;
-//			}
-//
-//			if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube()) {
-//				d3 = (double) pos.getZ() - 0.0625D;
-//			}
-//
-//			if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube()) {
-//				d1 = (double) pos.getX() + 0.0625D + 1.0D;
-//			}
-//
-//			if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube()) {
-//				d1 = (double) pos.getX() - 0.0625D;
-//			}
-//
-//			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
-//				worldIn.spawnParticle(ParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D, new int[0]);
-//			}
-//		}
-//	}
 }

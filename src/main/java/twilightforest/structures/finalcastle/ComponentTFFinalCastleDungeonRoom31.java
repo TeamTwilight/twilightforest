@@ -16,7 +16,6 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -31,7 +30,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
 	public ComponentTFFinalCastleDungeonRoom31(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFinalCastlePieces.TFFCDunR31, nbt);
+		this(TFFinalCastlePieces.TFFCDunR31, nbt);
 	}
 
 	public ComponentTFFinalCastleDungeonRoom31(IStructurePieceType piece, CompoundNBT nbt) {
@@ -46,7 +45,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		this.size = 31;
 		this.height = 7;
 		this.level = level;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH);
 	}
 
 	@Override
@@ -195,7 +194,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		return true;
 	}
 
-	protected static final Predicate<Biome> plateauBiomes = biome -> false; /* FIXME or remove
+	protected static final Predicate<Biome> plateauBiomes = biome -> true; /* FIXME or remove
 			biome == TFBiomes.highlandsCenter.get() || biome == TFBiomes.thornlands.get()*/;
 
 	protected BlockState getRuneColor(BlockState forceFieldColor) {

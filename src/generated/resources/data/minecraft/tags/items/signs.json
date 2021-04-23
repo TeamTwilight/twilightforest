@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:twilight_oak_sign",
+    "twilightforest:canopy_sign",
+    "twilightforest:mangrove_sign",
+    "twilightforest:darkwood_sign",
+    "twilightforest:time_sign",
+    "twilightforest:trans_sign",
+    "twilightforest:mine_sign",
+    "twilightforest:sort_sign"
+  ]
+}

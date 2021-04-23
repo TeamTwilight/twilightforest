@@ -30,12 +30,12 @@ public enum BossVariant implements IStringSerializable, SkullBlock.ISkullType {
 	QUEST_RAM     (TrophyType.IRONWOOD, null),
 	FINAL_BOSS    (TrophyType.GOLD    , TileEntityTFFinalBossSpawner::new);
 
-	private final Supplier<? extends TileEntityTFBossSpawner> factory;
+	private final Supplier<? extends TileEntityTFBossSpawner<?>> factory;
 	private final TrophyType trophyType;
 
 	public static final BossVariant[] VARIANTS = values();
 
-	BossVariant(TrophyType trophyType, @Nullable Supplier<? extends TileEntityTFBossSpawner> factory) {
+	BossVariant(TrophyType trophyType, @Nullable Supplier<? extends TileEntityTFBossSpawner<?>> factory) {
 		this.factory = factory;
 		this.trophyType = trophyType;
 	}
@@ -54,7 +54,7 @@ public enum BossVariant implements IStringSerializable, SkullBlock.ISkullType {
 	}
 
 	@Nullable
-	public TileEntityTFBossSpawner getSpawner() {
+	public TileEntityTFBossSpawner<?> getSpawner() {
 		return factory != null ? factory.get() : null;
 	}
 

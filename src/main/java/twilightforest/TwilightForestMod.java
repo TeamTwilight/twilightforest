@@ -1,14 +1,29 @@
 package twilightforest;
 
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.WoodType;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.IDispenseItemBehavior;
+import net.minecraft.dispenser.IPosition;
+import net.minecraft.dispenser.OptionalDispenseBehavior;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,18 +32,24 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.dispenser.TransformationDispenseBehavior;
+import twilightforest.entity.projectile.EntityTFMoonwormShot;
+import twilightforest.dispenser.CrumbleDispenseBehavior;
+import twilightforest.dispenser.FeatherFanDispenseBehavior;
+import twilightforest.dispenser.MoonwormDispenseBehavior;
+import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
+import twilightforest.worldgen.biomes.BiomeGrassColors;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.enchantment.TFEnchantments;
-import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
@@ -39,7 +60,9 @@ import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.world.newfeature.TwilightFeatures;
+import twilightforest.worldgen.TwilightFeatures;
+
+import java.util.Locale;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -54,7 +77,7 @@ public class TwilightForestMod {
 	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
-	public static final GameRules.RuleKey<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.func_234903_a_("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)); //Putting it in UPDATES since other world stuff is here
+	public static final GameRules.RuleKey<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)); //Putting it in UPDATES since other world stuff is here
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -78,23 +101,30 @@ public class TwilightForestMod {
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
-		MinecraftForge.EVENT_BUS.addListener(this::startServer);
+		ASMHooks.registerMultipartEvents(MinecraftForge.EVENT_BUS);
+		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
-		//TFBiomes.BIOMES.register(modbus);
+		BiomeKeys.BIOMES.register(modbus);
+		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
+		modbus.addGenericListener(Structure.class, TFStructures::register);
+		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
+		MinecraftForge.EVENT_BUS.addListener(TFStructures::fillSpawnInfo);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
-		TFBiomeFeatures.WORLD_CARVERS.register(modbus);
+//		TFBiomeFeatures.WORLD_CARVERS.register(modbus);
 //		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
 //		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
 //		TFDimensions.MOD_DIMENSIONS.register(modbus);
-		new TwilightFeatures(); // TODO make deferred registry once available
+		// Poke these so they exist when we need them FIXME this is probably terrible design
+		new TwilightFeatures();
+		new BiomeGrassColors();
 
 		// TODO: move these to proper spots
 		// WorldProviderTwilightForest.syncFromConfig();
@@ -124,12 +154,8 @@ public class TwilightForestMod {
 		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
-		TFFeature.init();
-		/* FIXME
-		TFBiomes.addBiomeTypes();
-		TFBiomes.addBiomeFeatures();*/
+		BiomeKeys.addBiomeTypes();
 		TFDimensions.init();
-		TFEntities.addEntityAttributes();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
@@ -153,14 +179,76 @@ public class TwilightForestMod {
 
 		TFConfig.build();
 		TFGenCaveStalactite.loadStalactites();
+		
+		evt.enqueueWork(() -> {
+			TFBlocks.tfCompostables();
+			TFBlocks.TFPots();
+			DispenserBlock.registerDispenseBehavior(TFItems.moonworm_queen.get(), new MoonwormDispenseBehavior() {
+				@Override
+				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+					return new EntityTFMoonwormShot(worldIn, position.getX(), position.getY(), position.getZ());
+				}
+			});
+
+			IDispenseItemBehavior idispenseitembehavior = new OptionalDispenseBehavior() {
+				/**
+				 * Dispense the specified stack, play the dispense sound and spawn particles.
+				 */
+				protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+					this.setSuccessful(ArmorItem.func_226626_a_(source, stack));
+					return stack;
+				}
+			};
+			DispenserBlock.registerDispenseBehavior(TFBlocks.naga_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.lich_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.minoshroom_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.hydra_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.knight_phantom_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.ur_ghast_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.snow_queen_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.quest_ram_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.cicada.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.firefly.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.moonworm.get().asItem(), idispenseitembehavior);
+
+			IDispenseItemBehavior pushmobsbehavior = new FeatherFanDispenseBehavior();
+			DispenserBlock.registerDispenseBehavior(TFItems.peacock_fan.get().asItem(), pushmobsbehavior);
+
+			IDispenseItemBehavior crumblebehavior = new CrumbleDispenseBehavior();
+			DispenserBlock.registerDispenseBehavior(TFItems.crumble_horn.get().asItem(), crumblebehavior);
+
+			IDispenseItemBehavior transformbehavior = new TransformationDispenseBehavior();
+			DispenserBlock.registerDispenseBehavior(TFItems.transformation_powder.get().asItem(), transformbehavior);
+
+			DispenserBlock.registerDispenseBehavior(TFItems.twilight_scepter.get(), new MoonwormDispenseBehavior() {
+				@Override
+				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+					return new EntityTFTwilightWandBolt(worldIn, position.getX(), position.getY(), position.getZ());
+				}
+
+				@Override
+				protected void playDispenseSound(IBlockSource source) {
+					BlockPos pos = source.getBlockPos();
+					source.getWorld().playSound(null, pos, TFSounds.SCEPTER_PEARL, SoundCategory.BLOCKS, 1, 1);
+				}
+			});
+		});
+		WoodType.register(TFBlocks.TWILIGHT_OAK);
+		WoodType.register(TFBlocks.CANOPY);
+		WoodType.register(TFBlocks.MANGROVE);
+		WoodType.register(TFBlocks.DARKWOOD);
+		WoodType.register(TFBlocks.TIMEWOOD);
+		WoodType.register(TFBlocks.TRANSFORMATION);
+		WoodType.register(TFBlocks.MINING);
+		WoodType.register(TFBlocks.SORTING);
 	}
 
-	public void startServer(FMLServerAboutToStartEvent event) {
-		TFCommand.register(event.getServer().getCommandManager().getDispatcher());
+	public void registerCommands(RegisterCommandsEvent event) {
+		TFCommand.register(event.getDispatcher());
 	}
 
 	public static ResourceLocation prefix(String name) {
-		return new ResourceLocation(ID, name);
+		return new ResourceLocation(ID, name.toLowerCase(Locale.ROOT));
 	}
 
 	public static ResourceLocation getModelTexture(String name) {

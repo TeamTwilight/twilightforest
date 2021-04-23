@@ -6,48 +6,65 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.boss.EntityTFNaga;
 import twilightforest.entity.boss.EntityTFNagaSegment;
 
+/**
+ * ModelNagaHead - Undefined
+ * Created using Tabula 8.0.0
+ */
+@OnlyIn(Dist.CLIENT)
 public class ModelTFNaga<T extends Entity> extends SegmentedModel<T> {
+    public ModelRenderer head;
+    public ModelRenderer tongue;
+    public ModelRenderer body;
+    private T entity;
 
-	private T entity;
+    public ModelTFNaga() {
+        this.textureWidth = 128;
+        this.textureHeight = 64;
+        this.tongue = new ModelRenderer(this, 0, 0);
+        this.tongue.setRotationPoint(0.0F, 10.0F, -16.0F);
+        this.tongue.setTextureOffset(84, 0).addBox(-6.0F, 0.0F, -12.0F, 12.0F, 0.0F, 12.0F, 0.0F, 0.0F, 0.0F);
+        this.setRotateAngle(tongue, 0.4363323129985824F, 0.0F, 0.0F);
+        this.head = new ModelRenderer(this, 0, 0);
+        this.head.setRotationPoint(0.0F, 8.0F, 0.0F);
+        this.head.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
+        this.head.addChild(this.tongue);
 
-	public ModelTFNaga() {
-		head = new ModelRenderer(this, 0, 0);
-		head.addBox(-8F, -12F, -8F, 16, 16, 16, 0F);
-		head.setRotationPoint(0F, 0F, 0F);
+        this.body = new ModelRenderer(this, 0, 0);
+        this.body.setRotationPoint(0.0F, 8.0F, 0.0F);
+        this.body.addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
 
-		body = new ModelRenderer(this, 0, 0);
-		body.addBox(-8F, -16F, -8F, 16, 16, 16, 0F);
-		body.setRotationPoint(0F, 0F, 0F);
-	}
+    }
 
-	@Override
-	public Iterable<ModelRenderer> getParts() {
-		return ImmutableList.of(head, body);
-	}
+    @Override
+    public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float alpha) {
+        if (entity instanceof EntityTFNaga) {
+            head.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
+        } else if (entity instanceof EntityTFNagaSegment) {
+            body.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
+        } else {
+            head.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
+        }
+    }
 
-	@Override
-	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(head, body);
+    }
 
-		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { }
 
-		if (entity instanceof EntityTFNaga) {
-			head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
-		} else if (entity instanceof EntityTFNagaSegment) {
-			body.render(stack, builder, light, overlay, red, green, blue, scale * 2);
-		} else {
-			head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
-		}
-	}
-
-	@Override
-	public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
-		this.entity = entity;
-	}
-
-	//fields
-	public ModelRenderer head;
-	public ModelRenderer body;
+    /**
+     * This is a helper function from Tabula to set the rotation of model parts
+     */
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
+    }
 }

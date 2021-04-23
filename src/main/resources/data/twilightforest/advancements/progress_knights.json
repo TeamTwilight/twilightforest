@@ -31,12 +31,6 @@
         ]
       }
     },
-    "structure": {
-      "trigger": "twilightforest:structure_cleared",
-      "conditions": {
-        "structure": "knight_stronghold"
-      }
-    },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
@@ -45,11 +39,8 @@
     }
   },
   "requirements": [
-    [ "knight", "trophy" ],
-    [ "structure" ],
+    [ "knight" ],
+    [ "trophy" ],
     [ "previous_progression" ]
-  ],
-  "rewards": {
-    "function": "twilightforest:give_3_shields"
-  }
+  ]
 }

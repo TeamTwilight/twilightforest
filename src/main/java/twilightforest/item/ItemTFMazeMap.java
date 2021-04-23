@@ -28,6 +28,7 @@ import twilightforest.network.TFPacketHandler;
 import javax.annotation.Nullable;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
+// FIXME: Map does not display data. Investigate
 public class ItemTFMazeMap extends FilledMapItem {
 
 	public static final String STR_ID = "mazemap";
@@ -86,11 +87,11 @@ public class ItemTFMazeMap extends FilledMapItem {
 			int blocksPerPixel = 1 << data.scale;
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
-			int viewerX = MathHelper.floor(viewer.getPosX() - (double) centerX) / blocksPerPixel + 64;
-			int viewerZ = MathHelper.floor(viewer.getPosZ() - (double) centerZ) / blocksPerPixel + 64;
+			int viewerX = MathHelper.floor(viewer.getPosX() - centerX) / blocksPerPixel + 64;
+			int viewerZ = MathHelper.floor(viewer.getPosZ() - centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
-			if (world.func_230315_m_().func_236037_d_()) {
+			if (world.getDimensionType().getHasCeiling()) {
 				viewRadiusPixels /= 2;
 			}
 
@@ -120,7 +121,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 								int numLiquid = 0;
 								double d1 = 0.0D;
 
-								if (world.func_230315_m_().func_236037_d_()) {
+								if (world.getDimensionType().getHasCeiling()) {
 									int l3 = worldX + worldZ * 231871;
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 
@@ -194,7 +195,7 @@ public class ItemTFMazeMap extends FilledMapItem {
                                     brightness = 0;
                                 }*/
 
-								MaterialColor mapcolor = (MaterialColor) Iterables.getFirst(Multisets.<MaterialColor>copyHighestCountFirst(multiset), MaterialColor.AIR);
+								MaterialColor mapcolor = Iterables.getFirst(Multisets.<MaterialColor>copyHighestCountFirst(multiset), MaterialColor.AIR);
 
                                 /*if (mapcolor == MaterialColor.WATER)
                                 {

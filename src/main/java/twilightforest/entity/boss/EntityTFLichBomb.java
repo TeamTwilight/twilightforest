@@ -10,10 +10,12 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.ExplosionContext;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.projectile.EntityTFThrowable;
+import twilightforest.util.TFDamageSources;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFLichBomb extends EntityTFThrowable implements IRendersAsItem {
@@ -76,7 +78,7 @@ public class EntityTFLichBomb extends EntityTFThrowable implements IRendersAsIte
 
 	private void explode() {
 		if (!this.world.isRemote) {
-			this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 2F, false, Explosion.Mode.NONE);
+			this.world.createExplosion(this, TFDamageSources.LICH_BOMB, null, this.getPosX(), this.getPosY(), this.getPosZ(), 2F, false, Explosion.Mode.NONE);
 			this.remove();
 		}
 	}

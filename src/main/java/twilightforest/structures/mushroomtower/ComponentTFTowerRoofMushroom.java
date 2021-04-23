@@ -7,7 +7,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -22,17 +21,16 @@ import java.util.Random;
 
 public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 
+	public ComponentTFTowerRoofMushroom(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMushroomTowerPieces.TFMTRoofMush, nbt);
+	}
+
 	public ComponentTFTowerRoofMushroom(TFFeature feature, int i, ComponentTFTowerWing wing, float pHang) {
 		super(TFMushroomTowerPieces.TFMTRoofMush, feature, i);
-
 		this.height = wing.size;
-
-		int overhang = (int) (wing.size * pHang);
-
-		this.size = wing.size + (overhang * 2);
-
+		int overhang = (int) (height * pHang);
+		this.size = height + (overhang * 2);
 		this.setCoordBaseMode(Direction.SOUTH);
-
 		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - overhang, wing.getBoundingBox().maxY + 2, wing.getBoundingBox().minZ - overhang, wing.getBoundingBox().maxX + overhang, wing.getBoundingBox().maxY + this.height + 1, wing.getBoundingBox().maxZ + overhang);
 	}
 
@@ -41,11 +39,6 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
-	}
-
-	public ComponentTFTowerRoofMushroom(TemplateManager manager, CompoundNBT nbt) {
-		super(TFMushroomTowerPieces.TFMTRoofMush, nbt);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -63,7 +56,7 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 				hollow = -1;
 			}
 
-			makeCircle(world.getWorld(), y, radius, hollow, sbb);
+			makeCircle(world, y, radius, hollow, sbb);
 		}
 
 		return true;

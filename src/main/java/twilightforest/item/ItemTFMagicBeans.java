@@ -13,10 +13,9 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFDimensions;
-
 import javax.annotation.Nonnull;
 
 public class ItemTFMagicBeans extends Item {
@@ -34,7 +33,7 @@ public class ItemTFMagicBeans extends Item {
 		Block blockAt = world.getBlockState(pos).getBlock();
 
 		int minY = pos.getY() + 1;
-		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 25));
+		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 40));
 		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil.get()) {
 			if (!world.isRemote) {
 				ItemStack is = player.getHeldItem(context.getHand());
@@ -53,13 +52,7 @@ public class ItemTFMagicBeans extends Item {
 
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
-		if (world.getDimensionKey() == TFDimensions.twilightForest) {
-			// WorldProviderTwilightForest has this method on both server and client
-			return ((ClientWorld)world).func_239132_a_().func_239213_a_();
-		} else {
-			// otherwise, world.dimension.getCloudHeight() is client only. guess 128
-			return 128;
-		}
+		return 128;
 	}
 
 

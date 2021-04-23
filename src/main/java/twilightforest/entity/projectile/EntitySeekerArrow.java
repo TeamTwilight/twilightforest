@@ -3,6 +3,7 @@ package twilightforest.entity.projectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
@@ -14,13 +15,14 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class EntitySeekerArrow extends EntityTFArrow {
 
 	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntitySeekerArrow.class, DataSerializers.VARINT);
 
 	private static final double seekDistance = 5.0;
-	private static final double seekFactor = 0.2;
+	private static final double seekFactor = 0.8;
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
@@ -47,7 +49,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 
 			if (world.isRemote && !inGround) {
 				for (int i = 0; i < 4; ++i) {
-					this.world.addParticle(ParticleTypes.WITCH, this.getPosX() + this.getMotion().getX() * (double) i / 4.0D, this.getPosY() + this.getMotion().getY() * (double) i / 4.0D, this.getPosZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
+					this.world.addParticle(ParticleTypes.WITCH, this.getPosX() + this.getMotion().getX() * i / 4.0D, this.getPosY() + this.getMotion().getY() * i / 4.0D, this.getPosZ() + this.getMotion().getZ() * i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
 				}
 			}
 
@@ -106,7 +108,22 @@ public class EntitySeekerArrow extends EntityTFArrow {
 			double closestDot = -1.0;
 			Entity closestTarget = null;
 
+			List<MonsterEntity> monsters = this.world.getEntitiesWithinAABB(MonsterEntity.class, targetBB);
+
 			for (LivingEntity living : this.world.getEntitiesWithinAABB(LivingEntity.class, targetBB)) {
+
+				if (!monsters.isEmpty()) {
+					for (MonsterEntity targets : monsters) {
+						Vector3d motionVec = getMotionVec().normalize();
+						Vector3d targetVec = getVectorToTarget(living).normalize();
+						double dot = motionVec.dotProduct(targetVec);
+						if (dot > Math.max(closestDot, seekThreshold)) {
+							closestDot = dot;
+							closestTarget = targets;
+							break;
+						}
+					}
+				}
 
 				if (living instanceof PlayerEntity) {
 					continue;
@@ -123,7 +140,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 
 				if (dot > Math.max(closestDot, seekThreshold)) {
 					closestDot = dot;
-					closestTarget = living;
+					if (monsters.isEmpty()) closestTarget = living;
 				}
 			}
 
@@ -138,7 +155,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	}
 
 	private Vector3d getVectorToTarget(Entity target) {
-		return new Vector3d(target.getPosX() - this.getPosX(), (target.getPosY() + (double) target.getEyeHeight()) - this.getPosY(), target.getPosZ() - this.getPosZ());
+		return new Vector3d(target.getPosX() - this.getPosX(), (target.getPosY() + target.getEyeHeight()) - this.getPosY(), target.getPosZ() - this.getPosZ());
 	}
 
 	@Nullable

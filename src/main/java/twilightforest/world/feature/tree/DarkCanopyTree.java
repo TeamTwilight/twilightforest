@@ -1,15 +1,16 @@
 package twilightforest.world.feature.tree;
 
+import net.minecraft.block.trees.Tree;
+import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import twilightforest.world.feature.TFBiomeFeatures;
-import twilightforest.world.feature.config.TFTreeFeatureConfig;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.Random;
 
-public class DarkCanopyTree extends TFTree {
+public class DarkCanopyTree extends Tree {
 
 	@Override
-	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return null;// FIXME  TFBiomeFeatures.DARK_CANOPY_TREE.get().withConfiguration(TFBiomeDecorator.DARK_OAK_TREE);
+	public ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random rand, boolean largeHive) {
+		return ConfiguredFeatures.DARKWOOD_TREE_BASE;
 	}
 }

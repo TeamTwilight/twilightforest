@@ -16,7 +16,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
@@ -50,17 +49,17 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_AMBIENT;
+		return TFSounds.ICE_GUARDIAN_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_HURT;
+		return TFSounds.ICE_GUARDIAN_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_DEATH;
+		return TFSounds.ICE_GUARDIAN_DEATH;
 	}
 
 	@Override

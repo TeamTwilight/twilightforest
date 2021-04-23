@@ -1,6 +1,16 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.DirectionalBlock;
+import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.HorizontalFaceBlock;
+import net.minecraft.block.LadderBlock;
+import net.minecraft.block.LeverBlock;
+import net.minecraft.block.RedstoneDiodeBlock;
+import net.minecraft.block.RepeaterBlock;
+import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.AttachFace;
@@ -12,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
@@ -24,7 +33,12 @@ import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecorator;
-import twilightforest.structures.lichtower.*;
+import twilightforest.structures.lichtower.ComponentTFTowerRoof;
+import twilightforest.structures.lichtower.ComponentTFTowerRoofAttachedSlab;
+import twilightforest.structures.lichtower.ComponentTFTowerRoofFence;
+import twilightforest.structures.lichtower.ComponentTFTowerRoofGableForwards;
+import twilightforest.structures.lichtower.ComponentTFTowerRoofSlabForwards;
+import twilightforest.structures.lichtower.ComponentTFTowerWing;
 import twilightforest.util.RotationUtil;
 
 import java.util.ArrayList;
@@ -36,26 +50,19 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<>();
 
 	public ComponentTFDarkTowerWing(TemplateManager manager, CompoundNBT nbt) {
-		super(TFDarkTowerPieces.TFDTWin, nbt);
+		this(TFDarkTowerPieces.TFDTWin, nbt);
 	}
 
 	public ComponentTFDarkTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.keyTower = nbt.getBoolean("keyTower");
+
+		this.readDoorsTypesFromArray(nbt.getIntArray("doorTypeInts"));
 	}
 
 	protected ComponentTFDarkTowerWing(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
-
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("keyTower", this.keyTower);
-//
-//		tagCompound.putIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
-//	}
 
 	/**
 	 * Turn the openings array into an array of ints.
@@ -75,9 +82,10 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.keyTower = tagCompound.getBoolean("keyTower");
 
-		this.readDoorsTypesFromArray(tagCompound.getIntArray("doorTypeInts"));
+		tagCompound.putBoolean("keyTower", this.keyTower);
+
+		tagCompound.putIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
 	}
 
 	/**
@@ -417,6 +425,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Add a bunch of random half floors
 	 */
+	@SuppressWarnings("fallthrough")
 	private void addHalfFloors(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
 		int spacing = 4;//this.size > 9 ? 4 : 3;
@@ -439,6 +448,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 				makeHalfFloor(world, sbb, rotation, y, spacing);
 
 				// decorate
+				// FIXME: Case 1 gets double weight when size >= 11
 				switch (rand.nextInt(8)) {
 					case 0:
 						if (this.size < 11) {
@@ -547,7 +557,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		cx = this.size > 9 ? 5 : 3;
 
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, rotation, true), cx, y + 1, cz + 0, rotation, sbb);
-		setBlockStateRotated(world, getSlabState(Blocks.SPRUCE_PLANKS.getDefaultState(), SlabType.TOP), cx, y + 1, cz + 1, rotation, sbb);
+		setBlockStateRotated(world, getSlabState(Blocks.SPRUCE_SLAB.getDefaultState(), SlabType.TOP), cx, y + 1, cz + 1, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, true), cx, y + 1, cz + 2, rotation, sbb);
 	}
 
@@ -626,8 +636,8 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 //				}
 //				break;
 //		}
-		return initialState.with(LeverBlock.HORIZONTAL_FACING, direction)
-				.with(LeverBlock.FACE, face)
+		return initialState.with(HorizontalBlock.HORIZONTAL_FACING, direction)
+				.with(HorizontalFaceBlock.FACE, face)
 				.with(LeverBlock.POWERED, isPowered);
 	}
 
@@ -708,7 +718,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		setBlockStateRotated(world, deco.accentState, x + 1, y + 3, z - 2, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.WEST, false), x + 2, y + 3, z - 2, rotation, sbb);
 
-		placeTreasureRotated(world, x + 1, y + 2, z + 1, rotation, TFTreasure.darktower_cache, sbb);
+		placeTreasureRotated(world, x + 1, y + 2, z + 1, getCoordBaseMode(), rotation, TFTreasure.darktower_cache, sbb);
 	}
 
 	/**

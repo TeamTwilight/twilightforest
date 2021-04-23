@@ -1,8 +1,6 @@
 package twilightforest.util;
 
 import net.minecraft.util.ResourceLocation;
-import twilightforest.TwilightForestMod;
-
 import static twilightforest.TwilightForestMod.prefix;
 
 public class TFEntityNames {

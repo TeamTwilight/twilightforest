@@ -14,15 +14,5 @@
       "west" : { "texture": "#all", "tintindex": 4, "cullface": "west"  },
       "east" : { "texture": "#all", "tintindex": 5, "cullface": "east"  }
     }
-  }],
-  "loader": "ctm:ctm",
-  "ctm_version": 1,
-  "ctm_overrides": {
-    "0": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 2 }},
-    "1": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
-    "2": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
-    "3": { "type": "V", "extra": { "size": 4, "x_offset":  0, "y_offset": 1 }},
-    "4": { "type": "V", "extra": { "size": 4, "x_offset": -1, "y_offset": 1 }},
-    "5": { "type": "V", "extra": { "size": 4, "x_offset":  1, "y_offset": 1 }}
-  }
+  }]
 }

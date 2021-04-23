@@ -18,27 +18,26 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.BossInfo;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.IEntityMultiPart;
-import twilightforest.entity.MultiPartEntityPart;
-import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
 import twilightforest.network.TFPacketHandler;
@@ -48,7 +47,7 @@ import twilightforest.world.TFGenerationSettings;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
+public class EntityTFNaga extends MonsterEntity {
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -69,6 +68,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, AttributeModifier.Operation.ADDITION);
 
 	private static final DataParameter<Boolean> DATA_DAZE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> DATA_CHARGE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
 
 	public EntityTFNaga(EntityType<? extends EntityTFNaga> type, World world) {
 		super(type, world);
@@ -78,7 +78,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		this.ignoreFrustumCheck = true;
 
 		for (int i = 0; i < bodySegments.length; i++) {
-			bodySegments[i] = TFEntities.naga_segment.create(world);
+			bodySegments[i] = new EntityTFNagaSegment(this);
 		}
 
 		this.goNormal();
@@ -88,6 +88,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	protected void registerData() {
 		super.registerData();
 		dataManager.register(DATA_DAZE, false);
+		dataManager.register(DATA_CHARGE, false);
 	}
 
 	public boolean isDazed() {
@@ -96,6 +97,14 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 	protected void setDazed(boolean daze) {
 		dataManager.set(DATA_DAZE, daze);
+	}
+
+	public boolean isCharging() {
+		return dataManager.get(DATA_CHARGE);
+	}
+
+	protected void setCharging(boolean charge) {
+		dataManager.set(DATA_CHARGE, charge);
 	}
 
 	private float getMaxHealthPerDifficulty() {
@@ -286,6 +295,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				case CHARGE: {
 					BlockPos tpoint = taskOwner.findCirclePoint(clockwise, 14, Math.PI);
 					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
+					taskOwner.setCharging(true);
 					break;
 				}
 				case CIRCLE: {
@@ -309,6 +319,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				}
 				case DAZE: {
 					taskOwner.setDazed(true);
+					taskOwner.setCharging(false);
 					break;
 				}
 			}
@@ -321,6 +332,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 		private void transitionState() {
 			taskOwner.setDazed(false);
+			taskOwner.setCharging(false);
 			switch (movementState) {
 				case INTIMIDATE: {
 					clockwise = !clockwise;
@@ -475,19 +487,6 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		setSegmentsPerHealth();
 
 		super.tick();
-
-		// update bodySegments parts
-		if (this.world instanceof ServerWorld && isAlive()) {
-			ServerWorld serverWorld = (ServerWorld) this.world;
-			for (EntityTFNagaSegment segment : bodySegments) {
-				if (!segment.isAddedToWorld()) {
-					segment.setParentUUID(this.getUniqueID());
-					segment.setParentId(this.getEntityId());
-					serverWorld.addEntity(segment);
-				}
-
-			}
-		}
 
 		moveSegments();
 	}
@@ -752,9 +751,9 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				double d1 = this.rand.nextGaussian() * 0.02D;
 				double d2 = this.rand.nextGaussian() * 0.02D;
 				this.world.addParticle(ParticleTypes.EXPLOSION,
-						segment.getPosX() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d0 * 10.0D,
-						segment.getPosY() + (double) (this.rand.nextFloat() * segment.getHeight()) - d1 * 10.0D,
-						segment.getPosZ() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d2 * 10.0D,
+						segment.getPosX() + this.rand.nextFloat() * segment.getWidth() * 2.0F - segment.getWidth() - d0 * 10.0D,
+						segment.getPosY() + this.rand.nextFloat() * segment.getHeight() - d1 * 10.0D,
+						segment.getPosZ() + this.rand.nextFloat() * segment.getWidth() * 2.0F - segment.getWidth() - d2 * 10.0D,
 						d0, d1, d2);
 			}
 		}
@@ -765,6 +764,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	 */
 	private void moveSegments() {
 		for (int i = 0; i < this.bodySegments.length; i++) {
+			bodySegments[i].tick();
 			Entity leader = i == 0 ? this : this.bodySegments[i - 1];
 			double followX = leader.getPosX();
 			double followY = leader.getPosY();
@@ -774,7 +774,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
 
 
-			double straightenForce = 0.05D + (1.0 / (float) (i + 1)) * 0.5D;
+			double straightenForce = 0.05D + (1.0 / (i + 1)) * 0.5D;
 
 			double idealX = -MathHelper.sin(angle) * straightenForce;
 			double idealZ = MathHelper.cos(angle) * straightenForce;
@@ -794,7 +794,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 			bodySegments[i].setPosition(destX, destY, destZ);
 
-			double distance = (double) MathHelper.sqrt(diff.x * diff.x + diff.z * diff.z);
+			double distance = MathHelper.sqrt(diff.x * diff.x + diff.z * diff.z);
 
 			if (i == 0) {
 				// tilt segment next to head up towards head
@@ -841,17 +841,13 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	}
 
 	@Override
-	public World getWorld() {
-		return this.world;
+	public boolean isMultipartEntity() {
+		return true;
 	}
 
+	@Nullable
 	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource src, float damage) {
-		return attackEntityFrom(src, damage);
-	}
-
-	@Override
-	public Entity[] getParts() {
+	public PartEntity<?>[] getParts() {
 		return bodySegments;
 	}
 

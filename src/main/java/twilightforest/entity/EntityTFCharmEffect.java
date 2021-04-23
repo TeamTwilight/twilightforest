@@ -68,12 +68,12 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 
 		//[VanillaCopy] Beginning of LivingEntity.onLivingUpdate
 		if (this.newPosRotationIncrements > 0) {
-			double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / (double) this.newPosRotationIncrements;
-			double d1 = this.getPosY() + (this.interpTargetY - this.getPosY()) / (double) this.newPosRotationIncrements;
-			double d2 = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / (double) this.newPosRotationIncrements;
-			double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - (double) this.rotationYaw);
-			this.rotationYaw = (float) ((double) this.rotationYaw + d3 / (double) this.newPosRotationIncrements);
-			this.rotationPitch = (float) ((double) this.rotationPitch + (this.interpTargetPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
+			double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / this.newPosRotationIncrements;
+			double d1 = this.getPosY() + (this.interpTargetY - this.getPosY()) / this.newPosRotationIncrements;
+			double d2 = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / this.newPosRotationIncrements;
+			double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - this.rotationYaw);
+			this.rotationYaw = (float) (this.rotationYaw + d3 / this.newPosRotationIncrements);
+			this.rotationPitch = (float) (this.rotationPitch + (this.interpTargetPitch - this.rotationPitch) / this.newPosRotationIncrements);
 			--this.newPosRotationIncrements;
 			this.setPosition(d0, d1, d2);
 			this.setRotation(this.rotationYaw, this.rotationPitch);

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "twilightforest:ironwood_raw"
-  },
-  "result": "twilightforest:ironwood_ingot",
-  "experience": 1.0,
-  "cookingtime": 100
-}

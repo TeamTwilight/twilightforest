@@ -1,6 +1,6 @@
 {
   "result": {
-    "nbt": "{ench:[{lvl:2s,id:32s}]}",
+    "nbt": "{Enchantments:[{lvl:2s,id:\"minecraft:efficiency\"}]}",
     "item": "twilightforest:steeleaf_axe",
     "type": "minecraft:item_nbt"
   },

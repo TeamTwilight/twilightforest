@@ -3,26 +3,27 @@ package twilightforest.structures;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.tileentity.SignTileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.StructureBoundingBoxUtils;
 
@@ -74,25 +75,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 				default:
 					this.rotation = Rotation.NONE;
 			}
-		}
-	}
-
-	public static MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable Direction dir) {
-		switch (dir) {
-			default:
-				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
-
-			case SOUTH: // '\0'
-				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
-
-			case WEST: // '\001'
-				return new MutableBoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
-
-			case NORTH: // '\002'
-				return new MutableBoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
-
-			case EAST: // '\003'
-				return new MutableBoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
 		}
 	}
 
@@ -185,7 +167,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world.getWorld(), pos, trapped);
+			treasureType.generateChest(world, pos, getCoordBaseMode(), trapped);
 		}
 	}
 
@@ -194,8 +176,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, MutableBoundingBox sbb) {
-		this.placeTreasureRotated(world, x, y, z, rotation, treasureType, false, sbb);
+	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, MutableBoundingBox sbb) {
+		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
 	}
 
 	/**
@@ -203,14 +185,43 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+		if(facing == null) {
+			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
+			facing = Direction.NORTH;
+		}
+
 		int dx = getXWithOffsetRotated(x, z, rotation);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world.getWorld(), pos, trapped);
+			treasureType.generateChest(world, pos, facing, trapped);
 		}
+	}
+
+	protected void manualTreaurePlacement(ISeedReader world, int x, int y, int z, Direction facing, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+		int lootx = getXWithOffset(x, z);
+		int looty = getYWithOffset(y);
+		int lootz = getZWithOffset(x, z);
+		BlockPos lootPos = new BlockPos(lootx, looty, lootz);
+		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.LEFT).with(ChestBlock.FACING, facing), x, y, z, sbb);
+		treasureType.generateChestContents(world, lootPos);
+	}
+
+	protected void setDoubleLootChest(ISeedReader world, int x, int y, int z, int otherx, int othery, int otherz, Direction facing, TFTreasure treasureType, MutableBoundingBox sbb, boolean trapped) {
+		if(facing == null) {
+			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
+			facing = Direction.NORTH;
+		}
+
+		int lootx = getXWithOffset(x, z);
+		int looty = getYWithOffset(y);
+		int lootz = getZWithOffset(x, z);
+		BlockPos lootPos = new BlockPos(lootx, looty, lootz);
+		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.LEFT).with(ChestBlock.FACING, facing), x, y, z, sbb);
+		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.RIGHT).with(ChestBlock.FACING, facing), otherx, othery, otherz, sbb);
+		treasureType.generateChestContents(world, lootPos);
 	}
 
 	/**
@@ -220,43 +231,40 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * scan unloaded chunks looking for connections.
 	 *
 	 */
-	protected void placeTripwire(World world, int x, int y, int z, int size, Direction facing, MutableBoundingBox sbb) {
-		if (!(world instanceof ISeedReader))
-			return;
+	protected void placeTripwire(ISeedReader world, int x, int y, int z, int size, Direction facing, MutableBoundingBox sbb) {
 
-		// FIXME this is terrible to cast but this compiles for now. This whole class will be shredded eventually, for Structure Templates
-		ISeedReader seedReader = (ISeedReader) world;
+		// FIXME: not sure if this capture crap is still needed
 
 		int dx = facing.getXOffset();
 		int dz = facing.getZOffset();
 
-		world.captureBlockSnapshots = true;
+//		world.captureBlockSnapshots = true;
 
 		// add tripwire hooks
 		BlockState tripwireHook = Blocks.TRIPWIRE_HOOK.getDefaultState();
-		setBlockState(seedReader, tripwireHook.with(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
-		setBlockState(seedReader, tripwireHook.with(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
+		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
+		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
 
 		// add string
 		BlockState tripwire = Blocks.TRIPWIRE.getDefaultState();
 		for (int i = 1; i < size; i++) {
-			setBlockState(seedReader, tripwire, x + dx * i, y, z + dz * i, sbb);
+			setBlockState(world, tripwire, x + dx * i, y, z + dz * i, sbb);
 		}
 
-		world.captureBlockSnapshots = false;
+//		world.captureBlockSnapshots = false;
 
-		@SuppressWarnings("unchecked")
-		List<BlockSnapshot> blockSnapshots = (List<BlockSnapshot>) world.capturedBlockSnapshots.clone();
-		world.capturedBlockSnapshots.clear();
+//		@SuppressWarnings("unchecked")
+//		List<BlockSnapshot> blockSnapshots = (List<BlockSnapshot>) world.capturedBlockSnapshots.clone();
+//		world.capturedBlockSnapshots.clear();
 
-		for (BlockSnapshot snap : blockSnapshots) {
-			int updateFlag = snap.getFlag();
-			BlockState oldBlock = snap.getReplacedBlock();
-			BlockState newBlock = world.getBlockState(snap.getPos());
-
-			newBlock.getBlock().onBlockAdded(oldBlock, world, snap.getPos(), newBlock, false);
-			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag, 512 /*Placeholder*/);
-		}
+//		for (BlockSnapshot snap : blockSnapshots) {
+//			int updateFlag = snap.getFlag();
+//			BlockState oldBlock = snap.getReplacedBlock();
+//			BlockState newBlock = world.getBlockState(snap.getPos());
+//
+//			newBlock.getBlock().onBlockAdded(oldBlock, world, snap.getPos(), newBlock, false);
+//			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag, 512 /*Placeholder*/);
+//		}
 	}
 
 	protected void placeSignAtCurrentPosition(ISeedReader world, int x, int y, int z, String string0, String string1, MutableBoundingBox sbb) {
@@ -557,7 +565,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * <p>
 	 * This is basically copied from ComponentVillage
 	 */
-	protected int getAverageGroundLevel(ISeedReader world, MutableBoundingBox sbb) {
+	protected int getAverageGroundLevel(ISeedReader world, ChunkGenerator generator, MutableBoundingBox sbb) {
 		int totalHeight = 0;
 		int heightCount = 0;
 
@@ -565,7 +573,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			for (int by = this.boundingBox.minX; by <= this.boundingBox.maxX; ++by) {
 				BlockPos pos = new BlockPos(by, 64, bz);
 				if (sbb.isVecInside(pos)) {
-					totalHeight += Math.max(world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos).getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
+					totalHeight += Math.max(world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos).getY(), generator.getGroundHeight());
 					++heightCount;
 				}
 			}
@@ -630,7 +638,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 				return null;
 			}
 
-			structurecomponent = (StructurePiece) iterator.next();
+			structurecomponent = iterator.next();
 		}
 		while (structurecomponent == exclude || structurecomponent.getBoundingBox() == null || !structurecomponent.getBoundingBox().intersectsWith(toCheck));
 

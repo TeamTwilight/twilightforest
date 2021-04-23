@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -12,10 +13,12 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFFlockToSameKind;
 import twilightforest.entity.ai.EntityAITFPanicOnFlockDeath;
+import twilightforest.util.TFDamageSources;
 
 public class EntityTFKobold extends MonsterEntity {
 
@@ -89,5 +92,17 @@ public class EntityTFKobold extends MonsterEntity {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 8;
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity entityIn) {
+		return determineDeathMessage(entityIn, this.getAttribute(Attributes.MAX_HEALTH).getBaseValue() > 50);
+	}
+
+	public boolean determineDeathMessage(Entity entityIn, boolean isFinalBoss) {
+		if (isFinalBoss) {
+			entityIn.attackEntityFrom(TFDamageSources.FINAL_BOSS, (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		}
+		return super.attackEntityAsMob(entityIn);
 	}
 }

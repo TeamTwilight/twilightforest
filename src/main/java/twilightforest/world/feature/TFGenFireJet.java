@@ -8,7 +8,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
 
@@ -19,7 +19,10 @@ public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+
+		if(!FeatureUtil.isAreaSuitable(world, rand, pos, 5, 2, 5)) return false;
+
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.add(
 					rand.nextInt(8) - rand.nextInt(8),
@@ -30,6 +33,15 @@ public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {
 			if (world.isAirBlock(dPos) && world.canBlockSeeSky(dPos) && world.getBlockState(dPos.down()).getMaterial() == Material.ORGANIC
 					&& world.getBlockState(dPos.east().down()).getMaterial() == Material.ORGANIC && world.getBlockState(dPos.west().down()).getMaterial() == Material.ORGANIC
 					&& world.getBlockState(dPos.south().down()).getMaterial() == Material.ORGANIC && world.getBlockState(dPos.north().down()).getMaterial() == Material.ORGANIC) {
+
+				//create blocks around the jet/smoker, just in case
+				for (int gx = -2; gx <= 2; gx++) {
+					for (int gz = -2; gz <= 2; gz++) {
+						BlockPos grassPos = dPos.add(gx, -1, gz);
+						world.setBlockState(grassPos, Blocks.GRASS_BLOCK.getDefaultState(), 0);
+					}
+				}
+
 				// jet
 				world.setBlockState(dPos.down(), config.state, 0);
 

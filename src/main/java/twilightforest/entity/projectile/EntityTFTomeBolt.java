@@ -17,6 +17,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.util.TFDamageSources;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsItem {
@@ -68,7 +69,7 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 			if (result instanceof EntityRayTraceResult) {
 				EntityRayTraceResult entityRay = ((EntityRayTraceResult) result);
 				if (entityRay.getEntity() instanceof LivingEntity
-						&& entityRay.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), 6)) {
+						&& entityRay.getEntity().attackEntityFrom(TFDamageSources.LOST_WORDS(this, (LivingEntity)this.func_234616_v_()), 6)) {
 					// inflict move slowdown
 					int duration = world.getDifficulty() == Difficulty.PEACEFUL ? 3 : world.getDifficulty() == Difficulty.NORMAL ? 7 : 9;
 					((LivingEntity) entityRay.getEntity()).addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration * 20, 1));

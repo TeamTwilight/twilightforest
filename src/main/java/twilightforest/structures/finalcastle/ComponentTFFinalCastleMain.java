@@ -36,15 +36,15 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		x = ((x + 127) >> 8) << 8;
 		z = ((z + 127) >> 8) << 8;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
 
 		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
 
 		int cx = (x >> 8) << 8;
 		int cz = (z >> 8) << 8;
 
-		TwilightForestMod.LOGGER.debug("Making castle at {}, {}. center is {}, {}", x, z, cc.getX(), cc.getZ());
-		TwilightForestMod.LOGGER.debug("Natural center at {}, {}", cx, cz);
+		//TwilightForestMod.LOGGER.debug("Making castle at {}, {}. center is {}, {}", x, z, cc.getX(), cc.getZ());
+		//TwilightForestMod.LOGGER.debug("Natural center at {}, {}", cx, cz);
 
 		// decorator
 		if (this.deco == null) {
@@ -151,9 +151,9 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 			sTower.buildTowards(this, list, rand, dest);
 
 			// check if we've successfully built the end tower
-			TwilightForestMod.LOGGER.debug("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
+			//TwilightForestMod.LOGGER.debug("Working towards {},{},{}", dest.getX(), dest.getY(), dest.getZ());
 			if (this.isMazeComplete(list, type)) {
-				TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
+				//TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
 				complete = true;
 			} else {
 				// TODO: add limit on retrying, in case of infinite loop?
@@ -174,7 +174,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 			int x = (boundingBox.maxX - boundingBox.minX / 2) + boundingBox.minX;
 			int y = (boundingBox.maxY - boundingBox.minY / 2) + boundingBox.minY;
 			int z = (boundingBox.maxZ - boundingBox.minZ / 2) + boundingBox.minZ;
-			TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
+			//TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
 			if (type == TFBlocks.castle_rune_brick_pink.get().getDefaultState() && structurecomponent instanceof ComponentTFFinalCastleEntranceTower) {
 				return true;
 			}

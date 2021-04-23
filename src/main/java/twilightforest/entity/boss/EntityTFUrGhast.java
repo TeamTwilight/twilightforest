@@ -17,6 +17,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -28,6 +30,7 @@ import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.BlockTFGhastTrap;
@@ -39,6 +42,7 @@ import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.TFDamageSources;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -197,6 +201,21 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			super.checkDespawn();
 		}
 	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+	      return TFSounds.URGHAST_AMBIENT;
+	   }
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return TFSounds.URGHAST_HURT;
+	   }
+
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.URGHAST_DEATH;
+	   }
 
 	@Override
 	public void livingTick() {
@@ -207,9 +226,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		} else {
 			if (this.isInTantrum()) {
 				world.addParticle(TFParticleType.BOSS_TEAR.get(),
-						this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
-						this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D,
-						this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
+						this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.75D,
+						this.getPosY() + this.rand.nextDouble() * this.getHeight() * 0.5D,
+						this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.75D,
 						0, 0, 0
 				);
 			}
@@ -406,7 +425,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, below)) {
 			if (world.canBlockSeeSky(player.getPosition())) {
-				player.attackEntityFrom(DamageSource.ANVIL, 3);
+				player.attackEntityFrom(TFDamageSources.GHAST_TEAR, 3);
 			}
 		}
 
@@ -438,7 +457,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	protected void spitFireball() {
 		double offsetX = this.getAttackTarget().getPosX() - this.getPosX();
-		double offsetY = this.getAttackTarget().getBoundingBox().minY + (double) (this.getAttackTarget().getHeight() / 2.0F) - (this.getPosY() + (double) (this.getHeight() / 2.0F));
+		double offsetY = this.getAttackTarget().getBoundingBox().minY + this.getAttackTarget().getHeight() / 2.0F - (this.getPosY() + this.getHeight() / 2.0F);
 		double offsetZ = this.getAttackTarget().getPosZ() - this.getPosZ();
 
 		EntityTFUrGhastFireball entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX, offsetY, offsetZ);
@@ -447,7 +466,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		Vector3d lookVec = this.getLook(1.0F);
 		entityFireball.setPosition(
 				this.getPosX() + lookVec.x * shotSpawnDistance,
-				this.getPosY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
+				this.getPosY() + this.getHeight() / 2.0F + lookVec.y * shotSpawnDistance,
 				this.getPosZ() + lookVec.z * shotSpawnDistance
 		);
 		this.world.addEntity(entityFireball);
@@ -457,7 +476,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			entityFireball.explosionPower = 1;
 			entityFireball.setPosition(
 					this.getPosX() + lookVec.x * shotSpawnDistance,
-					this.getPosY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
+					this.getPosY() + this.getHeight() / 2.0F + lookVec.y * shotSpawnDistance,
 					this.getPosZ() + lookVec.z * shotSpawnDistance
 			);
 			this.world.addEntity(entityFireball);
@@ -571,7 +590,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
 		if (this.deathTime == 20 && !world.isRemote) {
-			TFTreasure.darktower_boss.generateChest((ServerWorld)world, findChestCoords(), false);
+			TFTreasure.darktower_boss.generateChest(world, findChestCoords(), Direction.NORTH, false);
 		}
 	}
 

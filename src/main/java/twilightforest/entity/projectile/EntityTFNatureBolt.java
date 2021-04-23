@@ -1,6 +1,5 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -24,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.TFEntities;
+import twilightforest.util.TFDamageSources;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjectile, IRendersAsItem {
@@ -89,7 +89,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 				Entity owner = func_234616_v_();
 				Entity entityHit = ((EntityRayTraceResult) ray).getEntity();
 				if (entityHit instanceof LivingEntity && (owner == null || (entityHit != owner && entityHit != owner.getRidingEntity()))) {
-					if (entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.func_234616_v_()), 2)
+					if (entityHit.attackEntityFrom(TFDamageSources.LEAF_BRAIN(this, (LivingEntity)this.func_234616_v_()), 2)
 							&& world.getDifficulty() != Difficulty.PEACEFUL) {
 						int poisonTime = world.getDifficulty() == Difficulty.HARD ? 7 : 3;
 						((LivingEntity) entityHit).addPotionEffect(new EffectInstance(Effects.POISON, poisonTime * 20, 0));

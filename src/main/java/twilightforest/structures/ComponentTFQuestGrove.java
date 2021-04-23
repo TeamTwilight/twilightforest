@@ -3,6 +3,7 @@ package twilightforest.structures;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.HorizontalFaceBlock;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemStack;
@@ -40,11 +41,10 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 	//TODO: Parameter "rand" is unused. Remove?
 	public ComponentTFQuestGrove(TFFeature feature, Random rand, int i, int x, int y, int z) {
 		super(TFFeature.TFQuest1, feature, i);
-
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// the maze is 25 x 25 for now
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, 0, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, 0, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		}
 
 		// dispenser frame and button
-		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().with(HorizontalFaceBlock.FACE, AttachFace.WALL).with(HorizontalFaceBlock.HORIZONTAL_FACING, Direction.SOUTH), 13, 5, 19, sbb);
+		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().with(HorizontalFaceBlock.FACE, AttachFace.WALL).with(HorizontalBlock.HORIZONTAL_FACING, Direction.SOUTH), 13, 5, 19, sbb);
 
 		setBlockState(world, MOSSY_STONEBRICK, 12, 7, 20, sbb);
 		setBlockState(world, MOSSY_STONEBRICK, 13, 7, 20, sbb);

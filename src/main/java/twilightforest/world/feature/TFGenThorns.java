@@ -11,7 +11,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -28,7 +27,7 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 
 		// make a 3-5 long stack going up
 		int nextLength = 2 + rand.nextInt(4);
@@ -44,22 +43,26 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 		for (int i = 0; i < length; i++) {
 			BlockPos dPos = pos.offset(dir, i);
 
-			if (Math.abs(dPos.getX() - oPos.getX()) < MAX_SPREAD && Math.abs(dPos.getZ() - oPos.getZ()) < MAX_SPREAD && canPlaceThorns(world, dPos)) {
-				world.setBlockState(dPos, TFBlocks.brown_thorns.get().getDefaultState().with(RotatedPillarBlock.AXIS, dir.getAxis()), 3);
+			if (world.canBlockSeeSky(pos)) {
+				if (Math.abs(dPos.getX() - oPos.getX()) < MAX_SPREAD && Math.abs(dPos.getZ() - oPos.getZ()) < MAX_SPREAD && canPlaceThorns(world, dPos)) {
+					world.setBlockState(dPos, TFBlocks.brown_thorns.get().getDefaultState().with(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
 
-				// did we make it to the end?
-				if (i == length - 1) {
-					complete = true;
-					// maybe a leaf?  or a rose?
-					if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
-						if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
-							// leaf
-							world.setBlockState(dPos.offset(dir), TFBlocks.thorn_leaves.get().getDefaultState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
-						} else {
-							// rose
-							world.setBlockState(dPos.offset(dir), TFBlocks.thorn_rose.get().getDefaultState(), 3);
+					// did we make it to the end?
+					if (i == length - 1) {
+						complete = true;
+						// maybe a leaf?  or a rose?
+						if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
+							if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
+								// leaf
+								world.setBlockState(dPos.offset(dir), TFBlocks.thorn_leaves.get().getDefaultState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+							} else {
+								// rose
+								world.setBlockState(dPos.offset(dir), TFBlocks.thorn_rose.get().getDefaultState(), 3);
+							}
 						}
 					}
+				} else {
+					break;
 				}
 			} else {
 				break;

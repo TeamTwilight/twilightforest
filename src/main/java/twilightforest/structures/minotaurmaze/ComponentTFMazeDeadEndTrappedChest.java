@@ -25,6 +25,7 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 
 	public ComponentTFMazeDeadEndTrappedChest(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(TFMinotaurMazePieces.TFMMDETrC, feature, i, x, y, z, rotation);
+		this.setCoordBaseMode(rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;
@@ -41,8 +42,7 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 3, 1, 3, sbb);
 
 		// chest
-		this.setBlockState(world, Blocks.TRAPPED_CHEST.getDefaultState(), 2, 2, 4, sbb);
-		this.placeTreasureAtCurrentPosition(world, 3, 2, 4, TFTreasure.labyrinth_deadend, true, sbb);
+		this.setDoubleLootChest(world, 2, 2, 4,3, 2, 4, Direction.SOUTH, TFTreasure.labyrinth_deadend, sbb, true);
 
 //		// torches
 //		this.setBlockState(world, Blocks.TORCH, 0, 1, 3, 4, sbb);

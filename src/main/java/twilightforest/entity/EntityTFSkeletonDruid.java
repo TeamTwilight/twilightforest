@@ -9,11 +9,13 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.*;
+import twilightforest.TFSounds;
 import twilightforest.entity.projectile.EntityTFNatureBolt;
 
 import java.util.Random;
@@ -29,6 +31,27 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 		super.registerGoals();
 		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.25D, 20, 10.0F));
 	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+	      return TFSounds.SKELETON_DRUID_AMBIENT;
+	   }
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return TFSounds.SKELETON_DRUID_HURT;
+	   }
+
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.SKELETON_DRUID_DEATH;
+	   }
+
+	@Override
+	protected SoundEvent getStepSound() {
+	      return TFSounds.SKELETON_DRUID_STEP;
+	   }
+
 
 	@Override
 	public void setCombatTask() {
@@ -46,7 +69,7 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 	public void attackEntityWithRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		if (this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof HoeItem) {
 			EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
-			playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+			playSound(TFSounds.SKELETON_DRUID_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
 			double tx = attackTarget.getPosX() - this.getPosX();
 			double ty = attackTarget.getPosY() + attackTarget.getEyeHeight() - 2.699999988079071D - this.getPosY();

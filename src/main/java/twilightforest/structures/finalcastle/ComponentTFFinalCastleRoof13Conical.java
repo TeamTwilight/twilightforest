@@ -26,6 +26,7 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponentOld
 
 	public ComponentTFFinalCastleRoof13Conical(TemplateManager manager, CompoundNBT nbt) {
 		super(TFFinalCastlePieces.TFFCRo13Con, nbt);
+		this.slope = nbt.getInt("slope");
 	}
 
 	public ComponentTFFinalCastleRoof13Conical(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
@@ -39,17 +40,10 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponentOld
 		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().maxY + height - 1, sideTower.getBoundingBox().maxZ + 2);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//		tagCompound.putInt("slope", this.slope);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.slope = tagCompound.getInt("slope");
+		tagCompound.putInt("slope", this.slope);
 	}
 
 	@Override

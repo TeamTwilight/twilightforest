@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:potted_twilight_oak_sapling",
+    "twilightforest:potted_canopy_sapling",
+    "twilightforest:potted_mangrove_sapling",
+    "twilightforest:potted_darkwood_sapling",
+    "twilightforest:potted_rainboak_sapling",
+    "twilightforest:potted_hollow_oak_sapling",
+    "twilightforest:potted_time_sapling",
+    "twilightforest:potted_trans_sapling",
+    "twilightforest:potted_mine_sapling",
+    "twilightforest:potted_sort_sapling",
+    "twilightforest:potted_mayapple",
+    "twilightforest:potted_fiddlehead",
+    "twilightforest:potted_mushgloom",
+    "twilightforest:potted_thorn",
+    "twilightforest:potted_green_thorn",
+    "twilightforest:potted_dead_thorn"
+  ]
+}

@@ -28,8 +28,8 @@ public class RenderTFHydraMortar extends EntityRenderer<EntityTFHydraMortar> {
 		stack.push();
 		float blink;
 		// [VanillaCopy] TNTRenderer
-		if ((float)mortar.fuse - partialTicks + 1.0F < 10.0F) {
-			float f = 1.0F - ((float)mortar.fuse - partialTicks + 1.0F) / 10.0F;
+		if (mortar.fuse - partialTicks + 1.0F < 10.0F) {
+			float f = 1.0F - (mortar.fuse - partialTicks + 1.0F) / 10.0F;
 			f = MathHelper.clamp(f, 0.0F, 1.0F);
 			f = f * f;
 			f = f * f;

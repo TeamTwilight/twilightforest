@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "twilightforest:mangrove_log"
+    }
+  },
+  "result": {
+    "item": "twilightforest:mangrove_wood",
+    "count": 3
+  }
+}

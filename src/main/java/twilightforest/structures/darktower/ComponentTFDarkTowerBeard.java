@@ -6,7 +6,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -24,6 +23,8 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 
 	public ComponentTFDarkTowerBeard(TemplateManager manager, CompoundNBT nbt) {
 		super(TFDarkTowerPieces.TFDTBea, nbt);
+		this.size = nbt.getInt("beardSize");
+		this.height = nbt.getInt("beardHeight");
 	}
 
 	public ComponentTFDarkTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
@@ -37,20 +38,12 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("beardSize", this.size);
-//		tagCompound.putInt("beardHeight", this.height);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.size = tagCompound.getInt("beardSize");
-		this.height = tagCompound.getInt("beardHeight");
+
+		tagCompound.putInt("beardSize", this.size);
+		tagCompound.putInt("beardHeight", this.height);
 	}
 
 	/**

@@ -4,18 +4,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.network.IPacket;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.entity.TFEntities;
 import twilightforest.potions.TFPotions;
-
-import javax.annotation.Nonnull;
 
 public class EntityIceArrow extends EntityTFArrow {
 
@@ -33,7 +29,7 @@ public class EntityIceArrow extends EntityTFArrow {
 		if (world.isRemote && !inGround) {
 			BlockState stateId = Blocks.SNOW.getDefaultState();
 			for (int i = 0; i < 4; ++i) {
-				this.world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), this.getPosX() + this.getMotion().getX() * (double) i / 4.0D, this.getPosY() + this.getMotion().getY() * (double) i / 4.0D, this.getPosZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
+				this.world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), this.getPosX() + this.getMotion().getX() * i / 4.0D, this.getPosY() + this.getMotion().getY() * i / 4.0D, this.getPosZ() + this.getMotion().getZ() * i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
 			}
 		}
 	}

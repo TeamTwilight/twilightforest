@@ -1,6 +1,6 @@
 package twilightforest.structures.trollcave;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -8,26 +8,28 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.gen.placement.DepthAverageConfig;
+import net.minecraft.world.gen.placement.Placement;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.world.feature.TFBiomeFeatures;
+import twilightforest.worldgen.BlockConstants;
 
 import java.util.List;
 import java.util.Random;
 
 public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
-	private ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), FeatureSpread.func_242252_a(5), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
-	private ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.DIRT.getDefaultState(), FeatureSpread.func_242252_a(5), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
-	//private ConfiguredFeature<?,?> bigRedMushroomGen = Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_RED_MUSHROOM);
-	//private ConfiguredFeature<?,?> bigBrownMushroomGen = Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_BROWN_MUSHROOM);
-	private ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	private final ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.MYCELIUM, FeatureSpread.func_242253_a(5, 2), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK))).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
+	private final ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.DIRT, FeatureSpread.func_242253_a(5, 2), 0, ImmutableList.of(BlockConstants.STONE, BlockConstants.DEADROCK))).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
+	private final ConfiguredFeature<?,?> smallUberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.UBEROUS_SOIL, FeatureSpread.func_242253_a(4, 3), 0, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(60, 10)));
+	private final ConfiguredFeature<?,?> bigRedMushroomGen = Features.HUGE_RED_MUSHROOM.withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
+	private final ConfiguredFeature<?,?> bigBrownMushroomGen = Features.HUGE_BROWN_MUSHROOM.withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
+	private final ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(15, 10)));
 
 	public ComponentTFTrollCaveGarden(TemplateManager manager, CompoundNBT nbt) {
 		super(TFTrollCavePieces.TFTCGard, nbt);
@@ -38,7 +40,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
 	@Override
@@ -51,9 +53,9 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
-			return false;
-		}
+//		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
+//			return false;
+//		}
 
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
@@ -64,40 +66,40 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 		// dirt!
 		for (int i = 0; i < 24; i++) {
-			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, manager, generator, dirtGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+			BlockPos dest = getCenterBiasedCaveCoords(decoRNG);
+			generate(world, manager, generator, dirtGen, decoRNG, dest.getX() * 4, 1, dest.getZ() * 4, sbb);
 		}
 
 		// mycelium!
 		for (int i = 0; i < 16; i++) {
-			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, manager, generator, myceliumBlobGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+			BlockPos dest = getCenterBiasedCaveCoords(decoRNG);
+			generate(world, manager, generator, myceliumBlobGen, decoRNG, dest.getX() * 4, 1, dest.getZ() * 4, sbb);
 		}
 
 		// uberous!
 		for (int i = 0; i < 16; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, manager, generator, uberousGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+			generate(world, manager, generator, smallUberousGen, decoRNG, dest.getX() * 4, 1, dest.getZ() * 4, sbb);
 
-			generateAtSurface(world, manager, generator, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
+			generateAtSurface(world, manager, generator, smallUberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
 		}
 
 		// mushglooms first
 		for (int i = 0; i < 32; i++) {
-			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, manager, generator, bigMushgloomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+			BlockPos dest = getCenterBiasedCaveCoords(decoRNG);
+			generate(world, manager, generator, bigMushgloomGen, decoRNG, dest.getX() * 4, 1, dest.getZ() * 4, sbb);
 		}
 
 		// mushrooms!
 		for (int i = 0; i < 64; i++) {
-			BlockPos dest = getCoordsInCave(decoRNG);
-			//FIXME generate(world, manager, generator, rand.nextBoolean() ? bigBrownMushroomGen : bigRedMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+			BlockPos dest = getCenterBiasedCaveCoords(decoRNG);
+			generate(world, manager, generator, rand.nextBoolean() ? bigBrownMushroomGen : bigRedMushroomGen, decoRNG, dest.getX() * 4, 1, dest.getZ() * 4, sbb);
 		}
 
 		// stone stalactites!
 		for (int i = 0; i < 128; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, manager, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, manager, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
 		}
 
 		return true;
@@ -111,7 +113,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos)) {
-			feature.func_242765_a(world, generator, rand, pos);
+			feature.generate(world, generator, rand, pos);
 		}
 	}
 }

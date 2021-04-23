@@ -5,6 +5,7 @@ import net.minecraft.util.text.StringTextComponent;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.TFEntities;
 import twilightforest.tileentity.TFTileEntities;
+import twilightforest.util.TFDamageSources;
 
 public class TileEntityTFFinalBossSpawner extends TileEntityTFBossSpawner<EntityTFKobold> {
 
@@ -18,5 +19,6 @@ public class TileEntityTFFinalBossSpawner extends TileEntityTFBossSpawner<Entity
 		myCreature.setCustomName(new StringTextComponent("Final Boss"));
 		myCreature.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1024);
 		myCreature.setHealth(myCreature.getMaxHealth());
+		myCreature.attackEntityAsMob(myCreature);
 	}
 }

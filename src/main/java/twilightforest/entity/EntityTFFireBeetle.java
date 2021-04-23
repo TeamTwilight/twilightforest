@@ -13,11 +13,12 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
+import twilightforest.util.TFDamageSources;
 
 public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker {
 
@@ -57,17 +58,17 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_SPIDER_HURT;
+		return TFSounds.FIRE_BEETLE_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_SPIDER_DEATH;
+		return TFSounds.FIRE_BEETLE_DEATH;
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
+		playSound(TFSounds.FIRE_BEETLE_STEP, 0.15F, 1.0F);
 	}
 
 	@Override
@@ -112,7 +113,7 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 				world.addParticle(ParticleTypes.FLAME, px, py, pz, dx, dy, dz);
 			}
 
-			playSound(SoundEvents.ENTITY_GHAST_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
+			playSound(TFSounds.FIRE_BEETLE_SHOOT, rand.nextFloat() * 0.5F, rand.nextFloat() * 0.5F);
 		}
 	}
 
@@ -142,8 +143,16 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE)) {
+		if (!target.isImmuneToFire() && target.attackEntityFrom(TFDamageSources.TORCHED(this), BREATH_DAMAGE)) {
 			target.setFire(BREATH_DURATION);
 		}
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity entityIn) {
+		if (isBreathing()) {
+			entityIn.attackEntityFrom(TFDamageSources.TORCHED(this), BREATH_DAMAGE);
+		}
+		return super.attackEntityAsMob(entityIn);
 	}
 }

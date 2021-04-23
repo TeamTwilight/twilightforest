@@ -8,12 +8,10 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
 public class ComponentNagaCourtyardTerraceDuct extends ComponentNagaCourtyardTerraceAbstract {
-    @SuppressWarnings({"WeakerAccess", "unused"})
     public ComponentNagaCourtyardTerraceDuct(TemplateManager manager, CompoundNBT nbt) {
-        super(NagaCourtyardPieces.TFNCDu, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_duct"));
+        super(manager, NagaCourtyardPieces.TFNCDu, nbt, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_duct"));
     }
 
-    @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardTerraceDuct(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(NagaCourtyardPieces.TFNCDu, feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_duct"));
     }

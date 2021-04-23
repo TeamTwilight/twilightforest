@@ -24,24 +24,17 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 
 	public ComponentTFStrongholdUpperAscender(TemplateManager manager, CompoundNBT nbt) {
 		super(TFStrongholdPieces.TFSUA, nbt);
+		this.exitTop = nbt.getBoolean("exitTop");
 	}
 
 	public ComponentTFStrongholdUpperAscender(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStrongholdPieces.TFSUA, feature, i, facing, x, y, z);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("exitTop", this.exitTop);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.exitTop = tagCompound.getBoolean("exitTop");
+		tagCompound.putBoolean("exitTop", this.exitTop);
 	}
 
 	@Override

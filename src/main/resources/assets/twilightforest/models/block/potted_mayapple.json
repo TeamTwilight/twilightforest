@@ -1,0 +1,86 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"top": "twilightforest:block/mayapple",
+		"stem": "twilightforest:block/mayapple_side",
+		"dirt": "block/dirt",
+		"particle": "block/flower_pot",
+		"flowerpot": "block/flower_pot"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 6, 11],
+			"faces": {
+				"north": {"uv": [5, 10, 11, 16], "texture": "#flowerpot"},
+				"east": {"uv": [5, 10, 11, 16], "texture": "#flowerpot"},
+				"south": {"uv": [5, 10, 11, 16], "texture": "#flowerpot"},
+				"west": {"uv": [5, 10, 11, 16], "texture": "#flowerpot"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#flowerpot"},
+				"down": {"uv": [5, 5, 6, 11], "texture": "#flowerpot", "cullface": "down"}
+			}
+		},
+		{
+			"from": [6, 5, 6],
+			"to": [10, 5, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 13, 14]},
+			"faces": {
+				"up": {"uv": [4, 4, 9, 9], "texture": "#dirt"}
+			}
+		},
+		{
+			"from": [7.5, 2, 7.5],
+			"to": [8.5, 8, 8.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [23, 10, 15]},
+			"faces": {
+				"north": {"uv": [8, 10, 9, 16], "texture": "#stem"},
+				"east": {"uv": [8, 10, 9, 16], "texture": "#stem"},
+				"south": {"uv": [8, 10, 9, 16], "texture": "#stem"},
+				"west": {"uv": [8, 10, 9, 16], "texture": "#stem"},
+				"up": {"uv": [8, 15, 9, 16], "texture": "#stem"},
+				"down": {"uv": [8, 15, 9, 16], "texture": "#stem"}
+			}
+		},
+		{
+			"from": [4, 8, 4],
+			"to": [12, 8, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 16, 12]},
+			"faces": {
+				"up": {"uv": [4, 4, 13, 13], "texture": "#top"},
+				"down": {"uv": [4, 4, 13, 13], "texture": "#top"}
+			}
+		},
+		{
+			"from": [6, 5, 6],
+			"to": [10, 6, 6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 13, 14]},
+			"faces": {
+				"south": {"uv": [6, 10, 10, 11], "texture": "#flowerpot"}
+			}
+		},
+		{
+			"from": [6, 5, 10],
+			"to": [10, 6, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 13, 18]},
+			"faces": {
+				"north": {"uv": [6, 10, 10, 11], "texture": "#flowerpot"}
+			}
+		},
+		{
+			"from": [6, 5, 6],
+			"to": [6, 6, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 13, 14]},
+			"faces": {
+				"east": {"uv": [6, 10, 10, 11], "texture": "#flowerpot"}
+			}
+		},
+		{
+			"from": [10, 5, 6],
+			"to": [10, 6, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [18, 13, 14]},
+			"faces": {
+				"west": {"uv": [6, 10, 10, 11], "texture": "#flowerpot"}
+			}
+		}
+	]
+}

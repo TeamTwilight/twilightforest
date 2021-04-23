@@ -5,7 +5,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 import java.util.function.Supplier;

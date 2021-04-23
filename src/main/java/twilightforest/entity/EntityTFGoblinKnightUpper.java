@@ -14,17 +14,17 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityTFGoblinKnightUpper extends MonsterEntity {
@@ -122,6 +122,21 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 	}
 
 	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.GOBLIN_KNIGHT_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.GOBLIN_KNIGHT_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.GOBLIN_KNIGHT_HURT;
+	}
+
+	@Override
 	public void updateAITasks() {
 		super.updateAITasks();
 
@@ -129,6 +144,10 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 			// synch target with lower goblin
 			if (getRidingEntity() instanceof LivingEntity && this.getAttackTarget() == null) {
 				this.setAttackTarget(((MobEntity) this.getRidingEntity()).getAttackTarget());
+			}
+
+			if(getAttackTarget() instanceof PlayerEntity && ((PlayerEntity)getAttackTarget()).abilities.disableDamage) {
+				this.setAttackTarget(null);
 			}
 
 			if (!isPassenger() && this.hasShield()) {
@@ -218,13 +237,13 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float amount) {
 		// don't take suffocation damage while riding
-		if (damageSource == DamageSource.IN_WALL && !this.getPassengers().isEmpty()) {
+		if (damageSource == DamageSource.IN_WALL && this.getRidingEntity() != null) {
 			return false;
 		}
 
 		Entity attacker = damageSource.getTrueSource();
 
-		if (attacker != null) {
+		if (attacker != null && !damageSource.isCreativePlayer()) {
 			double dx = this.getPosX() - attacker.getPosX();
 			double dz = this.getPosZ() - attacker.getPosZ();
 			float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;

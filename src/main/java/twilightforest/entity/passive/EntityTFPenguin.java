@@ -1,8 +1,10 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -11,9 +13,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.entity.TFEntities;
+
+import java.util.Random;
 
 public class EntityTFPenguin extends EntityTFBird {
 	public EntityTFPenguin(EntityType<? extends EntityTFPenguin> type, World world) {
@@ -47,5 +53,12 @@ public class EntityTFPenguin extends EntityTFBird {
 		return MobEntity.func_233666_p_()
 				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)
 				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D);
+	}
+
+	public static boolean canSpawn(EntityType<? extends EntityTFPenguin> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+		BlockPos blockpos = pos.down();
+		return MobEntity.canSpawnOn(type, world, reason, pos, rand)
+				|| (world.getBlockState(blockpos).getBlock() == Blocks.ICE)
+				|| (world.getBlockState(blockpos).getBlock() == Blocks.PACKED_ICE);
 	}
 }

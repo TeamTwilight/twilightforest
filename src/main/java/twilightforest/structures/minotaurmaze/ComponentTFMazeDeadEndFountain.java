@@ -7,7 +7,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
@@ -20,7 +19,7 @@ import java.util.Random;
 public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 
 	public ComponentTFMazeDeadEndFountain(TemplateManager manager, CompoundNBT nbt) {
-		super(TFMinotaurMazePieces.TFMMDEF, nbt);
+		this(TFMinotaurMazePieces.TFMMDEF, nbt);
 	}
 
 	public ComponentTFMazeDeadEndFountain(IStructurePieceType piece, CompoundNBT nbt) {

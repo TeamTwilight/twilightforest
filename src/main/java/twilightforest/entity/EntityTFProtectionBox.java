@@ -9,16 +9,10 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkHooks;
-import twilightforest.network.PacketAreaProtection;
-import twilightforest.network.TFPacketHandler;
-
-import javax.annotation.Nullable;
 
 public class EntityTFProtectionBox extends Entity {
 
-	public int lifeTime = 60;
+	public int lifeTime;
 
 	public final int sizeX;
 	public final int sizeY;
@@ -28,7 +22,8 @@ public class EntityTFProtectionBox extends Entity {
 
 	public EntityTFProtectionBox(EntityType<?> type, World world) {
 		super(type, world);
-		throw new IllegalStateException("only here to satisfy registry, should never be used!");
+		sizeX = sizeY = sizeZ = 0;
+		sbb = null;
 	}
 
 	public EntityTFProtectionBox(World world, MutableBoundingBox sbb) {
@@ -43,6 +38,8 @@ public class EntityTFProtectionBox extends Entity {
 		sizeZ = sbb.getZSize();
 
 		this.size = EntitySize.fixed(Math.max(sizeX, sizeZ), sizeY);
+
+		lifeTime = 60;
 	}
 
 	@Override

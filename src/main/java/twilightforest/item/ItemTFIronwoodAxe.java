@@ -7,7 +7,7 @@ import net.minecraft.util.NonNullList;
 public class ItemTFIronwoodAxe extends AxeItem {
 
 	protected ItemTFIronwoodAxe(IItemTier material, Properties props) {
-		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f, props);
+		super(material, 6F, material.getEfficiency() * 0.05f - 3.4f, props);
 	}
 
 	@Override

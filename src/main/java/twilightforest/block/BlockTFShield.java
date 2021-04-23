@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -9,7 +8,6 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import twilightforest.util.EntityUtil;
 
@@ -40,9 +38,11 @@ public class BlockTFShield extends DirectionalBlock {
 		BlockRayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
 		Direction hitFace = ray.getFace();
-		Direction blockFace = state.get(DirectionalBlock.FACING);
+		boolean upOrDown = state.get(DirectionalBlock.FACING) == Direction.UP || state.get(DirectionalBlock.FACING) == Direction.DOWN;
+		Direction sideFace = state.get(DirectionalBlock.FACING).getOpposite();
+		Direction upFace = state.get(DirectionalBlock.FACING);
 
-		if (hitFace == blockFace) {
+		if (hitFace == (upOrDown ? upFace : sideFace)) {
 			return player.getDigSpeed(Blocks.STONE.getDefaultState(), pos) / 1.5F / 100F;
 		} else {
 			return super.getPlayerRelativeBlockHardness(state, player, world, pos);

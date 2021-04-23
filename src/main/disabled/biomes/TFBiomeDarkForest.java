@@ -1,4 +1,4 @@
-package twilightforest.biomes;
+package twilightforest.worldgen.biomes;
 
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;

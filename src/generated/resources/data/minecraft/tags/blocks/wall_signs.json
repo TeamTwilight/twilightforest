@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:twilight_wall_sign",
+    "twilightforest:canopy_wall_sign",
+    "twilightforest:mangrove_wall_sign",
+    "twilightforest:darkwood_wall_sign",
+    "twilightforest:time_wall_sign",
+    "twilightforest:trans_wall_sign",
+    "twilightforest:mine_wall_sign",
+    "twilightforest:sort_wall_sign"
+  ]
+}

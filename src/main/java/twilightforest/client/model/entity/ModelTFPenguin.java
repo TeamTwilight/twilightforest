@@ -87,12 +87,14 @@ public class ModelTFPenguin extends AgeableModel<EntityTFPenguin> {
 		if (isChild) {
 			float f = 2.0F;
 			stack.push();
-			stack.translate(0.0F, 5F * scale, 0.75F * scale);
+			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
+			stack.translate(0.0F, 1.5F * scale, 0.0F);
 			this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 			stack.pop();
+
 			stack.push();
 			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
-			stack.translate(0.0F, 24F * scale, 0.0F);
+			stack.translate(0.0F, 1.5F * scale, 0.0F);
 			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 			stack.pop();
 		} else {

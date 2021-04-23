@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -9,8 +10,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import twilightforest.enums.NagastoneVariant;
-
-import javax.annotation.Nullable;
 
 public class BlockTFNagastone extends Block {
 
@@ -31,6 +30,7 @@ public class BlockTFNagastone extends Block {
 		return getVariant(ctx.getWorld(), ctx.getPos());
 	}
 
+	@SuppressWarnings("fallthrough")
 	private BlockState getVariant(IWorld world, BlockPos pos) {
 		int connectionCount = 0;
 		BlockState stateOut;
@@ -38,7 +38,7 @@ public class BlockTFNagastone extends Block {
 
 		for (Direction side : Direction.values()) {
 			BlockState neighborState = world.getBlockState(pos.offset(side));
-			if (neighborState.getBlock() == this || neighborState.getBlock() == TFBlocks.naga_stone_head.get()) {
+			if (neighborState.getBlock() == this || (neighborState.getBlock() == TFBlocks.naga_stone_head.get() && side == neighborState.get(BlockTFHorizontal.HORIZONTAL_FACING))) {
 				facings[connectionCount++] = side;
 				if (connectionCount >= 2) {
 					break;

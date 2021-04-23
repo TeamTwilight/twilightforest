@@ -41,6 +41,8 @@ group = config.group_name
 archivesBaseName = "${config.mod_id}-${config.minecraft_version}"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
+
 minecraft {
     mappings channel: "snapshot", version: config.mcp_mappings
     //version = config.minecraft_version + "-" + config.forge_version // grab latest forge
@@ -174,8 +176,10 @@ repositories {
 
 dependencies {
     // progwml6
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+//    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+//    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.4:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:${jei_version}")
 
     /*deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
     deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"
@@ -200,25 +204,30 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }
 
-/*task createPom {
-    doLast {
-        pom {
-            project {
-                groupId project.group
-                artifactId project.archivesBaseName
-                version project.version
+jar.finalizedBy('reobfJar')
 
-                inceptionYear '2012'
-                licenses {
-                    license {
-                        name 'LGPL 2.1'
-                        url 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html'
-                        distribution 'repo'
-                    }
-                }
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+            artifact sourceJar
+            setGroupId 'teamtwilight'
+            setArtifactId mod_id
+        }
+    }
+    repositories {
+        maven {
+            //url "file:///${project.projectDir}/mcmodsrepo"
+            url "https://modmaven.dev:443/artifactory/local-releases"
+            credentials {
+                username System.getenv('ARTIFACTORY_USER')
+                password System.getenv('ARTIFACTORY_PASS')
             }
-        }.writeTo(libsDir.path + "/" + project.archivesBaseName + "-" + project.version + ".pom")
+        }
     }
 }
 
-build.dependsOn createPom*/
+task sourceJar(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}

@@ -13,17 +13,12 @@ public class ModelTFHydraNeck extends SegmentedModel<EntityTFHydraNeck> {
 		textureWidth = 512;
 		textureHeight = 256;
 
-		neck = new ModelRenderer(this/*, "neck"*/);
-		neck.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
-		neck.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
-		neck.setRotationPoint(0F, 0F, 0F);
-	}
+		this.neck = new ModelRenderer(this, 0, 0);
+		this.neck.setRotationPoint(0F, 0F, 0F);
+		this.neck.setTextureOffset(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
+		this.neck.setTextureOffset(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
+	}
 
 	@Override
 	public Iterable<ModelRenderer> getParts() {

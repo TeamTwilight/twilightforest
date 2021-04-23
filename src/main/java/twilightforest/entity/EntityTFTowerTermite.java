@@ -8,7 +8,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.Direction;
@@ -16,6 +15,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
 import java.util.EnumSet;
@@ -56,17 +56,17 @@ public class EntityTFTowerTermite extends MonsterEntity {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ENTITY_SILVERFISH_AMBIENT;
+		return TFSounds.TERMITE_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_SILVERFISH_HURT;
+		return TFSounds.TERMITE_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_SILVERFISH_DEATH;
+		return TFSounds.TERMITE_DEATH;
 	}
 
 	// [VanillaCopy] EntitySilverfish.attackEntityFrom
@@ -85,7 +85,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
+		this.playSound(TFSounds.TERMITE_STEP, 0.15F, 1.0F);
 	}
 
 	@Override

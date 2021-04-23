@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "twilightforest:block/hollow_oak_sapling"
+  }
+}

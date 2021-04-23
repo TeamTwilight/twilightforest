@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.projectile.EntityTFThrowable;
+import twilightforest.util.TFDamageSources;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsItem {
@@ -107,7 +108,7 @@ public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsIte
 
 			if (!this.world.isRemote) {
 				if (entityHit instanceof LivingEntity) {
-					entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.func_234616_v_()), 6);
+					entityHit.attackEntityFrom(TFDamageSources.LICH_BOLT, 6);
 				}
 				this.world.setEntityState(this, (byte) 3);
 				this.remove();

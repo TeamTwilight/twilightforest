@@ -20,6 +20,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
 
 import javax.annotation.Nullable;
@@ -31,7 +32,7 @@ public class BlockTFCinderFurnace extends Block {
 	private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
 	BlockTFCinderFurnace() {
-		super(Properties.create(Material.WOOD).hardnessAndResistance(7.0F).setLightLevel((state) -> 15));
+		super(Properties.create(Material.WOOD).harvestTool(ToolType.PICKAXE).setRequiresTool().hardnessAndResistance(7.0F).setLightLevel((state) -> 15));
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
 	}
 

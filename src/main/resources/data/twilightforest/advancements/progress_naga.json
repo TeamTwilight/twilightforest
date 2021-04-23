@@ -45,8 +45,5 @@
   "requirements": [
     [ "naga", "scale" ],
     [ "kill_mob" ]
-  ],
-  "rewards": {
-    "function": "twilightforest:give_3_shields"
-  }
+  ]
 }

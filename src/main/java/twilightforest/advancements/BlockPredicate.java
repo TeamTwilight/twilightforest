@@ -24,11 +24,11 @@ public class BlockPredicate {
     public static final BlockPredicate ANY = new BlockPredicate(ImmutableSet.of(), Blocks.AIR, NBTPredicate.ANY) {
         @Override public boolean test(World world, BlockPos pos) { return true; }
     };
-    private ImmutableSet<PropertyPredicate> propertyPredicates;
+    private ImmutableSet<PropertyPredicate<?>> propertyPredicates;
     private final Block block;
     private final NBTPredicate nbtPredicate;
 
-    private BlockPredicate(ImmutableSet<PropertyPredicate> propertyPredicates, Block block, NBTPredicate nbt) {
+    private BlockPredicate(ImmutableSet<PropertyPredicate<?>> propertyPredicates, Block block, NBTPredicate nbt) {
         this.propertyPredicates = propertyPredicates;
         this.block = block;
         this.nbtPredicate = nbt;
@@ -41,7 +41,7 @@ public class BlockPredicate {
         JsonObject json = element.getAsJsonObject();
 
         Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(JSONUtils.getString(json, "block")));
-        StateContainer container = block.getStateContainer();
+        StateContainer<?, ?> container = block.getStateContainer();
         HashSet<PropertyPredicate<?>> properties = new HashSet<>();
 
         if (json.has("properties")) {
@@ -62,7 +62,7 @@ public class BlockPredicate {
 
         NBTPredicate nbtPredicate = json.has("nbt") ? NBTPredicate.deserialize(json.get("nbt")) : NBTPredicate.ANY;
 
-        return new BlockPredicate(new ImmutableSet.Builder<PropertyPredicate>().addAll(properties).build(), block, nbtPredicate);
+        return new BlockPredicate(new ImmutableSet.Builder<PropertyPredicate<?>>().addAll(properties).build(), block, nbtPredicate);
     }
 
     private static <T extends Comparable<T>> void createPropertyPredicateAndAddToSet(
@@ -94,7 +94,7 @@ public class BlockPredicate {
     private boolean test(BlockState state) {
         if (block != state.getBlock()) return false; // Not same block
 
-        for (PropertyPredicate propertyPredicate : propertyPredicates)
+        for (PropertyPredicate<?> propertyPredicate : propertyPredicates)
             if (!propertyPredicate.test(state))
                 return false;
 

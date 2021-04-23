@@ -1,4 +1,4 @@
-package twilightforest.biomes;
+package twilightforest.worldgen.biomes;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeAmbience;

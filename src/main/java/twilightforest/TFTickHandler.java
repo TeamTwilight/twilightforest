@@ -7,20 +7,22 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
+import twilightforest.data.ItemTagGenerator;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.util.StructureBoundingBoxUtils;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
@@ -32,9 +34,12 @@ public class TFTickHandler {
 
 	@SubscribeEvent
 	public static void playerTick(TickEvent.PlayerTickEvent event) {
-
 		PlayerEntity player = event.player;
-		World world = player.world;
+
+		if (!(player.world instanceof ServerWorld))
+			return;
+
+		ServerWorld world = (ServerWorld) player.world;
 
 		// check for portal creation, at least if it's not disabled
 		if (!world.isRemote && !TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.ticksExisted % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
@@ -53,15 +58,15 @@ public class TFTickHandler {
 		// check the player for being in a forbidden progression area, only every 20 ticks
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 20 == 0
 				&& TFGenerationSettings.isProgressionEnforced(world)
-				&& TFGenerationSettings.isTwilightForest(world)
+				&& TFGenerationSettings.isTwilightChunk(world)
 				&& !player.isCreative() && !player.isSpectator()) {
 
-			checkBiomeForProgression(player, world);
+			TFGenerationSettings.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
-			if (TFGenerationSettings.isTwilightForest(world)) {
+			if (TFGenerationSettings.isTwilightChunk(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
 				} else {
@@ -86,39 +91,36 @@ public class TFTickHandler {
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(PlayerEntity player, World world) {
 
-		ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
-		if (chunkGenerator == null) return false;
+		ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
+		if (chunkGenerator == null)
+			return false;
 
-		int px = MathHelper.floor(player.getPosX());
-		int pz = MathHelper.floor(player.getPosZ());
 
-//		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
-//		if (fullSBB != null) {
-//
-//			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
-//
-//			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getPosX()(), center.getPosZ()(), world);
-//
-//			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
-//				sendAllClearPacket(world, player);
-//				return false;
-//			} else {
-//				sendStructureProtectionPacket(world, player, fullSBB);
-//				return true;
-//			}
-//		}
-		return false;
+		return TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, player.getPosition(), 100).map(structure -> {
+			MutableBoundingBox fullSBB = structure.getBoundingBox();
+			Vector3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
+
+			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerWorld) world);
+
+			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
+				sendAllClearPacket(world, player);
+				return false;
+			} else {
+				sendStructureProtectionPacket(world, player, fullSBB);
+				return true;
+			}
+		}).orElse(false);
 	}
 
 	private static void checkForPortalCreation(PlayerEntity player, World world, float rangeToCheck) {
-		if (world.getDimensionKey().func_240901_a_().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
-				|| world.getDimensionKey() == TFDimensions.twilightForest
+		if (world.getDimensionKey().getLocation().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
+				|| world.getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation())
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));
 
 			for (ItemEntity entityItem : itemList) {
-				if (TFConfig.portalIngredient.test(entityItem.getItem())) {
+				if (ItemTagGenerator.PORTAL_ACTIVATOR.contains(entityItem.getItem().getItem())) {
 					BlockPos pos = new BlockPos(entityItem.getPositionVec().subtract(0, -0.1d, 0)); //TODO Quick fix, find if there's a more performant fix than this
 					BlockState state = world.getBlockState(pos);
 					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {
@@ -141,17 +143,4 @@ public class TFTickHandler {
 		}
 	}
 
-	/**
-	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
-	 */
-	private static void checkBiomeForProgression(PlayerEntity player, World world) {
-		/* FIXME
-		Biome currentBiome = world.getBiome(player.getPosition());
-		if (currentBiome instanceof TFBiomeBase) {
-			TFBiomeBase tfBiome = (TFBiomeBase) currentBiome;
-			if (!tfBiome.doesPlayerHaveRequiredAdvancements(player)) {
-				tfBiome.enforceProgression(player, world);
-			}
-		}*/
-	}
 }

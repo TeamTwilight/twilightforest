@@ -6,7 +6,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -16,8 +15,10 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.util.PlayerHelper;
 import twilightforest.world.TFGenerationSettings;
 
 //TODO 1.14: Thaumcraft is dead
@@ -63,7 +64,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	private boolean isTrophyOnTop(World world, BlockPos pos) {
-		return world.getBlockState(pos.up()).getBlock() instanceof BlockTFTrophy;
+		return world.getBlockState(pos.up()).getBlock() instanceof BlockTFAbstractTrophy;
 	}
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
@@ -82,14 +83,13 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	private boolean isPlayerEligible(PlayerEntity player) {
-		//return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, TwilightForestMod.prefix("progress_lich"));
-		return false; //TODO PLACEHOLDER
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_lich"));
 	}
 
 	private void doPedestalEffect(World world, BlockPos pos, BlockState state) {
 		world.setBlockState(pos, state.with(ACTIVE, true));
 		removeNearbyShields(world, pos);
-		world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_INFECT, SoundCategory.BLOCKS, 4.0F, 0.1F);
+		world.playSound(null, pos, TFSounds.PEDESTAL_ACTIVATE, SoundCategory.BLOCKS, 4.0F, 0.1F);
 	}
 
 	private void rewardNearbyPlayers(World world, BlockPos pos) {
@@ -107,11 +107,10 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 					}
 	}
 
-	//TODO: Moved to BlockState
-//	@Override
-//	public float getBlockHardness(BlockState state, IBlockReader world, BlockPos pos) {
-//		return state.get(ACTIVE) ? super.getBlockHardness(state, world, pos) : -1;
-//	}
+	@Override
+	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
+		return state.get(ACTIVE) ? super.getPlayerRelativeBlockHardness(state, player, worldIn, pos) : -1;
+	}
 
 //	@Override
 //	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {

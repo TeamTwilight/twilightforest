@@ -1,38 +1,63 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Pose;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import twilightforest.entity.MultiPartEntityPart;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.client.renderer.entity.RenderTFNagaSegment;
+import twilightforest.entity.TFPartEntity;
 
 import java.util.List;
 
-public class EntityTFNagaSegment extends MultiPartEntityPart {
+public class EntityTFNagaSegment extends TFPartEntity<EntityTFNaga> {
 
-	private EntityTFNaga naga;
-	private int segment;
 	private int deathCounter;
-	private EntitySize entitySize;
 
-	public EntityTFNagaSegment(EntityType<? extends EntityTFNagaSegment> type, World world) {
-		super(type, world);
+	public EntityTFNagaSegment(EntityTFNaga naga) {
+		super(naga);
+		setPosition(naga.getPosX(), naga.getPosY(), naga.getPosZ());
+	}
+
+	@Override
+	protected void registerData() {
 		this.stepHeight = 2;
 		deactivate();
-		this.ignoreFrustumCheck = true;
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public EntityRenderer<?> renderer(EntityRendererManager manager) {
+		return new RenderTFNagaSegment<>(manager);
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource src, float damage) {
-		return !isInvisible() && super.attackEntityFrom(src, damage * 2F / 3F);
+		return !isInvisible() && getParent().attackEntityFrom(src, damage * 2F / 3F);
+	}
+
+	@Override
+	public boolean isEntityEqual(Entity entityIn) {
+		return entityIn == this || entityIn == getParent();
+	}
+
+	@Override
+	protected void readAdditional(CompoundNBT compound) {
+
+	}
+
+	@Override
+	protected void writeAdditional(CompoundNBT compound) {
+
 	}
 
 	@Override
@@ -74,16 +99,11 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 		}
 	}
 
-	@Override
-	public boolean canRemove() {
-		return this.deathCounter <= -1 || super.canRemove();
-	}
-
 	private void collideWithEntity(Entity entity) {
 		entity.applyEntityCollision(this);
 
 		// attack anything that's not us
-		if ((entity instanceof LivingEntity) && !(entity instanceof EntityTFNaga) && !(entity instanceof EntityTFNagaSegment)) {
+		if (entity instanceof LivingEntity && !(entity instanceof EntityTFNaga)) {
 			int attackStrength = 2;
 
 			// get rid of nearby deer & look impressive
@@ -91,19 +111,17 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 				attackStrength *= 3;
 			}
 
-			entity.attackEntityFrom(DamageSource.causeMobDamage(naga), attackStrength);
+			entity.attackEntityFrom(DamageSource.causeMobDamage(getParent()), attackStrength);
 		}
 	}
 
 	public void deactivate() {
-		//setSize(0, 0);
-		this.entitySize = EntitySize.flexible(0.0F, 0.0F);
+		setSize(EntitySize.flexible(0.0F, 0.0F));
 		setInvisible(true);
 	}
 
 	public void activate() {
-		//setSize(1.8F, 1.8F);
-		this.size = EntitySize.flexible(1.8F, 1.8F);
+		setSize(EntitySize.flexible(1.8F, 1.8F));
 		setInvisible(false);
 	}
 
@@ -123,10 +141,5 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	@Override
 	public boolean isNonBoss() {
 		return false;
-	}
-
-	@Override
-	public EntitySize getSize(Pose pose) {
-		return size;
 	}
 }

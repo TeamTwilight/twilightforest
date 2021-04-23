@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.boss.EntityTFNagaSegment;
 
 public class RenderTFNagaSegment<T extends EntityTFNagaSegment> extends EntityRenderer<T> {
 

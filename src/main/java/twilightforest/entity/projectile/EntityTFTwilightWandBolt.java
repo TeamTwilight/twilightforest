@@ -29,6 +29,10 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 		func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 
+	public EntityTFTwilightWandBolt(World worldIn, double x, double y, double z) {
+		super(TFEntities.wand_bolt, worldIn, x, y, z);
+	}
+
 	@Override
 	public void tick() {
 		super.tick();

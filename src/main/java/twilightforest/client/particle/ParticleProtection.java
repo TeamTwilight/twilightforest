@@ -25,6 +25,7 @@ public class ParticleProtection extends SuspendedTownParticle {
 			this.spriteSet = spriteSet;
 		}
 
+		@Override
 		public Particle makeParticle(BasicParticleType data, ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
 			ParticleProtection particle = new ParticleProtection(world, x, y, z, vx, vy, vz);
 			particle.selectSpriteRandomly(this.spriteSet);

@@ -66,37 +66,17 @@
       }
     },
     {
-      "from": [ 16, 16, 16 ],
-      "to":   [  0,  0,  0 ],
+      "from": [ 15.99, 15.99, 15.99 ],
+      "to":   [  0.01,  0.01,  0.01 ],
       "shade": false,
       "faces": {
-        "down":  { "texture": "#over", "cullface": "up"   , "tintindex": 1 },
-        "up":    { "texture": "#over", "cullface": "down" , "tintindex": 1 },
-        "north": { "texture": "#over", "cullface": "south", "tintindex": 1 },
-        "south": { "texture": "#over", "cullface": "north", "tintindex": 1 },
-        "west":  { "texture": "#over", "cullface": "east" , "tintindex": 1 },
-        "east":  { "texture": "#over", "cullface": "west" , "tintindex": 1 }
+        "down":  { "texture": "#over", "tintindex": 1 },
+        "up":    { "texture": "#over", "tintindex": 1 },
+        "north": { "texture": "#over", "tintindex": 1 },
+        "south": { "texture": "#over", "tintindex": 1 },
+        "west":  { "texture": "#over", "tintindex": 1 },
+        "east":  { "texture": "#over", "tintindex": 1 }
       }
     }
-  ],
-  "loader": "ctm:ctm",
-  "ctm_version": 1,
-  "ctm_overrides": {
-    "0": {
-      "type": "ctm",
-      "layer": "CUTOUT",
-      "textures": [ "twilightforest:block/fiery_block_inner_ctm" ],
-      "extra": {
-        "light": 15,
-        "connect_inside": true
-      }
-    },
-    "1": {
-      "type": "pattern",
-      "extra": {
-        "light": 15,
-        "size": 2
-      }
-    }
-  }
+  ]
 }

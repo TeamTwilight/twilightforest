@@ -1,23 +1,22 @@
 package twilightforest.world.feature;
 
-import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.features.GenDruidHut;
-import twilightforest.features.TFGenGraveyard;
-import twilightforest.world.TFCavesCarver;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.feature.tree.SnowTreePlacer;
+import twilightforest.world.feature.tree.SnowUnderTrees;
+import twilightforest.worldgen.structures.GenDruidHut;
+import twilightforest.worldgen.structures.TFGenGraveyard;
 
 //I'd call this TFFeatures, but that'd be confused with TFFeature.
 public class TFBiomeFeatures {
 
 	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, TwilightForestMod.ID);
-	public static final DeferredRegister<WorldCarver<?>> WORLD_CARVERS = DeferredRegister.create(ForgeRegistries.WORLD_CARVERS, TwilightForestMod.ID);
-
+	
 	public static final RegistryObject<Feature<NoFeatureConfig>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () ->
 			new TFGenBigMushgloom(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> CANOPY_MUSHROOM = FEATURES.register("canopy_mushroom", () ->
@@ -28,8 +27,8 @@ public class TFBiomeFeatures {
 			new TFGenCanopyTree(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<CaveStalactiteConfig>> CAVE_STALACTITE = FEATURES.register("cave_stalactite", () ->
 			new TFGenCaveStalactite(CaveStalactiteConfig.caveStalactiteCodec));
-	public static final RegistryObject<Feature<TFTreeFeatureConfig>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
-			new TFGenDarkCanopyTree(TFTreeFeatureConfig.codecTFTreeConfig));
+	public static final RegistryObject<Feature<BaseTreeFeatureConfig>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
+			new TFGenDarkCanopyTree(BaseTreeFeatureConfig.CODEC));
 	public static final RegistryObject<Feature<NoFeatureConfig>> DRUID_HUT = FEATURES.register("druid_hut", () ->
 			new GenDruidHut(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> FALLEN_HOLLOW_LOG = FEATURES.register("fallen_hollow_log", () ->
@@ -94,7 +93,10 @@ public class TFBiomeFeatures {
 			new TFGenWell(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> WOOD_ROOTS = FEATURES.register("wood_roots", () ->
 			new TFGenWoodRoots(NoFeatureConfig.field_236558_a_));
-
-	public static final RegistryObject<WorldCarver<ProbabilityConfig>> TF_CAVES = WORLD_CARVERS.register("tf_caves",  () ->
-			new TFCavesCarver(ProbabilityConfig.field_236576_b_, 256));
+	public static final RegistryObject<Feature<NoFeatureConfig>> SNOW_UNDER_TREES = FEATURES.register("snow_under_trees", () ->
+			new SnowUnderTrees(NoFeatureConfig.field_236558_a_));
+	public static final RegistryObject<Feature<BaseTreeFeatureConfig>> SNOW_TREE = FEATURES.register("anywhere_tree", () ->
+			new SnowTreePlacer(BaseTreeFeatureConfig.CODEC));
+	public static final RegistryObject<Feature<BlockClusterFeatureConfig>> DARK_FOREST_PLACER = FEATURES.register("dark_forest_placer", () ->
+			new TFGenDarkForestFeature(BlockClusterFeatureConfig.field_236587_a_));
 }

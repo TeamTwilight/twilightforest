@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:time_wood"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:time_planks",
+    "count": 4
+  }
+}

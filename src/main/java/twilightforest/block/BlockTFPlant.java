@@ -1,12 +1,15 @@
 package twilightforest.block;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.BushBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -16,17 +19,21 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.PlantType;
+import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.client.particle.LeafParticleData;
 import twilightforest.enums.PlantVariant;
+import twilightforest.network.PacketSpawnFallenLeafFrom;
+import twilightforest.network.TFPacketHandler;
 
 import java.util.Random;
 
 public class BlockTFPlant extends BushBlock {
 	private static final VoxelShape MAYAPPLE_SHAPE = makeCuboidShape(4, 0, 4, 13, 6, 13);
-	private static final VoxelShape FALLEN_LEAVES_SHAPE = makeCuboidShape(0, 0, 0, 1, 1, 1);
+	private static final VoxelShape FALLEN_LEAVES_SHAPE = makeCuboidShape(0, 0, 0, 16, 1, 16);
 
 	public final PlantVariant plantVariant;
 
@@ -154,21 +161,23 @@ public class BlockTFPlant extends BushBlock {
 	@Deprecated
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entityIn) {
 		super.onEntityCollision(state, world, pos, entityIn);
-		if (world.isRemote && state.getBlock() == TFBlocks.fallen_leaves.get() && entityIn instanceof LivingEntity && (entityIn.getMotion().getX() != 0 || entityIn.getMotion().getZ() != 0) && RANDOM.nextBoolean()) {
-			int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.getDefaultState(), world, pos, 0);
-			int r = MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			int g = MathHelper.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			int b = MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+		if (state.getBlock() == TFBlocks.fallen_leaves.get() && entityIn instanceof LivingEntity && (entityIn.getMotion().getX() != 0 || entityIn.getMotion().getZ() != 0) && RANDOM.nextBoolean()) {
+			if(world.isRemote) {
+				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.getDefaultState(), world, pos, 0);
+				int r = MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int g = MathHelper.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int b = MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+					world.addParticle(new LeafParticleData(r, g, b),
+							pos.getX() + world.rand.nextFloat(),
+							pos.getY(),
+							pos.getZ() + world.rand.nextFloat(),
 
-			world.addParticle(new LeafParticleData(r, g, b),
-					pos.getX() + world.rand.nextFloat(),
-					pos.getY(),
-					pos.getZ() + world.rand.nextFloat(),
-
-					(world.rand.nextFloat() * -0.5F) * entityIn.getMotion().getX(),
-					world.rand.nextFloat() * 0.5F + 0.25F,
-					(world.rand.nextFloat() * -0.5F) * entityIn.getMotion().getZ()
-			);
+							(world.rand.nextFloat() * -0.5F) * entityIn.getMotion().getX(),
+							world.rand.nextFloat() * 0.5F + 0.25F,
+							(world.rand.nextFloat() * -0.5F) * entityIn.getMotion().getZ()
+				);
+			} else if (world instanceof ServerWorld)
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new PacketSpawnFallenLeafFrom(pos, entityIn.getMotion()));
 		}
 	}
 }

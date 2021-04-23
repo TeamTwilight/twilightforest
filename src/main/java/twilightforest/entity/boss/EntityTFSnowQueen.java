@@ -11,7 +11,6 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -28,6 +27,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -35,20 +35,19 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.IEntityMultiPart;
-import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.enums.BossVariant;
+import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart, IBreathAttacker {
+public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BOOLEAN);
@@ -70,7 +69,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super(type, world);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
-			this.iceArray[i] = TFEntities.snow_queen_ice_shield.create(world);
+			this.iceArray[i] = new EntityTFSnowQueenIceShield(this);
 		}
 
 		this.setCurrentPhase(Phase.SUMMON);
@@ -81,12 +80,10 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new EntityAITFHoverSummon(this, 1.0D));
 		this.goalSelector.addGoal(2, new EntityAITFHoverThenDrop(this, 80, 20));
 		this.goalSelector.addGoal(3, new EntityAITFHoverBeam(this, 80, 100));
 		this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -115,17 +112,17 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_AMBIENT;
+		return TFSounds.SNOW_QUEEN_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_HURT;
+		return TFSounds.SNOW_QUEEN_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_DEATH;
+		return TFSounds.SNOW_QUEEN_DEATH;
 	}
 
 	@Override
@@ -193,18 +190,8 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	public void tick() {
 		super.tick();
 
-		if (this.world instanceof ServerWorld && isAlive()) {
-			ServerWorld serverWorld = (ServerWorld) this.world;
-			for (EntityTFSnowQueenIceShield segment : iceArray) {
-				if (!segment.isAddedToWorld()) {
-					segment.setParentUUID(this.getUniqueID());
-					segment.setParentId(this.getEntityId());
-					serverWorld.addEntity(segment);
-				}
-			}
-		}
-
 		for (int i = 0; i < this.iceArray.length; i++) {
+			iceArray[i].tick();
 			if (i < this.iceArray.length - 1) {
 				// set block position
 				Vector3d blockPos = this.getIceShieldPosition(i);
@@ -279,7 +266,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 			if (collided instanceof LivingEntity && super.attackEntityAsMob(collided)) {
 				Vector3d motion = collided.getMotion();
 				collided.setMotion(motion.x, motion.y + 0.4, motion.z);
-				this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+				this.playSound(TFSounds.SNOW_QUEEN_ATTACK, 1.0F, 1.0F);
 			}
 		}
 	}
@@ -302,7 +289,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float damage) {
-		boolean result = super.attackEntityFrom(source, damage);
+		boolean result = super.attackEntityFrom(TFDamageSources.SQUISH, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
 			this.damageWhileBeaming += damage;
@@ -334,24 +321,6 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	@Override
 	public boolean onLivingFall(float distance, float damageMultiplier) {
 		return false;
-	}
-
-	@Override
-	public World getWorld() {
-		return this.world;
-	}
-
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
-		return false;
-	}
-
-	/**
-	 * We need to do this for the bounding boxes on the parts to become active
-	 */
-	@Override
-	public Entity[] getParts() {
-		return iceArray;
 	}
 
 	public void destroyBlocksInAABB(AxisAlignedBB box) {
@@ -444,7 +413,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE);
+		target.attackEntityFrom(TFDamageSources.CHILLING_BREATH, BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 
@@ -476,5 +445,19 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	@Override
 	public boolean isNonBoss() {
 		return false;
+	}
+
+	@Override
+	public boolean isMultipartEntity() {
+		return true;
+	}
+
+	/**
+	 * We need to do this for the bounding boxes on the parts to become active
+	 */
+	@Nullable
+	@Override
+	public PartEntity<?>[] getParts() {
+		return iceArray;
 	}
 }

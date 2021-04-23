@@ -1,13 +1,21 @@
 package twilightforest.data;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+
+import java.util.Set;
+import java.util.function.Predicate;
 
 public class BlockTagGenerator extends BlockTagsProvider {
 	public static final ITag.INamedTag<Block> TOWERWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("towerwood").toString());
@@ -33,8 +41,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final ITag.INamedTag<Block> ORES_IRONWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ores/ironwood").toString());
 	public static final ITag.INamedTag<Block> ORES_KNIGHTMETAL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ores/knightmetal").toString());
 
-	public BlockTagGenerator(DataGenerator generator) {
-		super(generator);
+	public static final ITag.INamedTag<Block> PORTAL_EDGE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/edge").toString());
+	public static final ITag.INamedTag<Block> PORTAL_DECO = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/decoration").toString());
+
+	public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
+		super(generator, TwilightForestMod.ID, exFileHelper);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -114,6 +125,33 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		getOrCreateBuilder(BlockTags.WOODEN_DOORS)
 				.add(TFBlocks.twilight_oak_door.get(), TFBlocks.canopy_door.get(), TFBlocks.mangrove_door.get(), TFBlocks.dark_door.get())
 				.add(TFBlocks.time_door.get(), TFBlocks.trans_door.get(), TFBlocks.mine_door.get(), TFBlocks.sort_door.get());
+		getOrCreateBuilder(BlockTags.FLOWER_POTS)
+				.add(TFBlocks.potted_twilight_oak_sapling.get(), TFBlocks.potted_canopy_sapling.get(), TFBlocks.potted_mangrove_sapling.get(), TFBlocks.potted_darkwood_sapling.get(), TFBlocks.potted_rainboak_sapling.get())
+				.add(TFBlocks.potted_hollow_oak_sapling.get(), TFBlocks.potted_time_sapling.get(), TFBlocks.potted_trans_sapling.get(), TFBlocks.potted_mine_sapling.get(), TFBlocks.potted_sort_sapling.get())
+				.add(TFBlocks.potted_mayapple.get(), TFBlocks.potted_fiddlehead.get(), TFBlocks.potted_mushgloom.get(), TFBlocks.potted_thorn.get(), TFBlocks.potted_green_thorn.get(), TFBlocks.potted_dead_thorn.get());
+		getOrCreateBuilder(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.fiery_block.get());
+		getOrCreateBuilder(BlockTags.PORTALS).add(TFBlocks.twilight_portal.get());
+		getOrCreateBuilder(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder.get());
+		getOrCreateBuilder(BlockTags.DRAGON_IMMUNE).add(TFBlocks.giant_obsidian.get());
+
+		getOrCreateBuilder(BlockTags.SIGNS).add(TFBlocks.twilight_oak_sign.get(), TFBlocks.twilight_wall_sign.get(),
+				TFBlocks.canopy_sign.get(), TFBlocks.canopy_wall_sign.get(),
+				TFBlocks.mangrove_sign.get(), TFBlocks.mangrove_wall_sign.get(),
+				TFBlocks.darkwood_sign.get(), TFBlocks.darkwood_wall_sign.get(),
+				TFBlocks.time_sign.get(), TFBlocks.time_wall_sign.get(),
+				TFBlocks.trans_sign.get(), TFBlocks.trans_wall_sign.get(),
+				TFBlocks.mine_sign.get(), TFBlocks.mine_wall_sign.get(),
+				TFBlocks.sort_sign.get(), TFBlocks.sort_wall_sign.get());
+
+		getOrCreateBuilder(BlockTags.STANDING_SIGNS).add(TFBlocks.twilight_oak_sign.get(), TFBlocks.canopy_sign.get(),
+				TFBlocks.mangrove_sign.get(), TFBlocks.darkwood_sign.get(),
+				TFBlocks.time_sign.get(), TFBlocks.trans_sign.get(),
+				TFBlocks.mine_sign.get(), TFBlocks.sort_sign.get());
+
+		getOrCreateBuilder(BlockTags.WALL_SIGNS).add(TFBlocks.twilight_wall_sign.get(), TFBlocks.canopy_wall_sign.get(),
+				TFBlocks.mangrove_wall_sign.get(), TFBlocks.darkwood_wall_sign.get(),
+				TFBlocks.time_wall_sign.get(), TFBlocks.trans_wall_sign.get(),
+				TFBlocks.mine_wall_sign.get(), TFBlocks.sort_wall_sign.get());
 
 		getOrCreateBuilder(TOWERWOOD).add(TFBlocks.tower_wood.get(), TFBlocks.tower_wood_mossy.get(), TFBlocks.tower_wood_cracked.get(), TFBlocks.tower_wood_infested.get());
 
@@ -135,5 +173,57 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		getOrCreateBuilder(ORES_IRONWOOD);
 		getOrCreateBuilder(ORES_KNIGHTMETAL);
+
+		getOrCreateBuilder(PORTAL_EDGE).add(Blocks.GRASS_BLOCK, Blocks.MYCELIUM).add(getAllFilteredBlocks(b -> /*b.material == Material.ORGANIC ||*/ b.material == Material.EARTH));
+		getOrCreateBuilder(PORTAL_DECO)
+				// FIXME Somehow Minecraft's BlockTags do not exist when this executes so we will do these as optionals instead
+				//.addOptionalTag(BlockTags.FLOWERS.getName()).addOptionalTag(BlockTags.LEAVES.getName()).addOptionalTag(BlockTags.SAPLINGS.getName()).addOptionalTag(BlockTags.CROPS.getName())
+				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
+				.add(Blocks.BAMBOO)
+				.add(getAllFilteredBlocks(b -> (
+						b.material == Material.PLANTS || b.material == Material.TALL_PLANTS || b.material == Material.LEAVES)
+								&& isExcludedFromTagBuilder(b, null)
+								//&& isExcludedFromTagBuilder(b, BlockTags.FLOWERS)
+								//&& isExcludedFromTagBuilder(b, BlockTags.LEAVES)
+				));
+	}
+
+	private static Block[] getAllFilteredBlocks(Predicate<Block> predicate) {
+		return ForgeRegistries.BLOCKS.getValues().stream().filter(predicate).toArray(Block[]::new);
+	}
+
+	//private static final MutableBoolean bool = new MutableBoolean();
+	//private static final Map<ResourceLocation, ITag<Block>> map = Maps.newHashMap();
+	//private static final Function<ResourceLocation, ITag<Block>> mapGetter = map::get;
+	private static final Set<Block> plants;
+	static {
+		plants = ImmutableSet.<Block>builder().add(
+				Blocks.DANDELION, Blocks.POPPY, Blocks.BLUE_ORCHID, Blocks.ALLIUM, Blocks.AZURE_BLUET, Blocks.RED_TULIP, Blocks.ORANGE_TULIP, Blocks.WHITE_TULIP, Blocks.PINK_TULIP, Blocks.OXEYE_DAISY, Blocks.CORNFLOWER, Blocks.LILY_OF_THE_VALLEY, Blocks.WITHER_ROSE, // BlockTags.FLOWERS
+				Blocks.SUNFLOWER, Blocks.LILAC, Blocks.PEONY, Blocks.ROSE_BUSH, // BlockTags.FLOWERS
+				Blocks.JUNGLE_LEAVES, Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.ACACIA_LEAVES, Blocks.BIRCH_LEAVES, // BlockTags.LEAVES
+				Blocks.OAK_SAPLING, Blocks.SPRUCE_SAPLING, Blocks.BIRCH_SAPLING, Blocks.JUNGLE_SAPLING, Blocks.ACACIA_SAPLING, Blocks.DARK_OAK_SAPLING, // BlockTags.SAPLINGS
+				Blocks.BEETROOTS, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT, Blocks.MELON_STEM, Blocks.PUMPKIN_STEM, // BlockTags.CROPS
+
+				// TF addons of above taglists
+				TFBlocks.oak_sapling.get(), TFBlocks.canopy_sapling.get(), TFBlocks.mangrove_sapling.get(), TFBlocks.darkwood_sapling.get(),
+				TFBlocks.time_sapling.get(), TFBlocks.transformation_sapling.get(), TFBlocks.mining_sapling.get(), TFBlocks.sorting_sapling.get(),
+				TFBlocks.hollow_oak_sapling.get(), TFBlocks.rainboak_sapling.get(),
+				TFBlocks.rainboak_leaves.get(), TFBlocks.oak_leaves.get(), TFBlocks.canopy_leaves.get(), TFBlocks.mangrove_leaves.get(), TFBlocks.dark_leaves.get(),
+				TFBlocks.time_leaves.get(), TFBlocks.transformation_leaves.get(), TFBlocks.mining_leaves.get(), TFBlocks.sorting_leaves.get(),
+				TFBlocks.thorn_leaves.get(), TFBlocks.beanstalk_leaves.get()
+		).build();
+	}
+
+	private boolean isExcludedFromTagBuilder(Block block, ITag.INamedTag<Block> tag) {
+		/* FIXME make this work somehow
+		getOrCreateBuilder(tag)
+				.getInternalBuilder()
+				.getProxyStream()
+				.forEach(proxy -> proxy
+						.getEntry()
+						.matches(mapGetter, ForgeRegistries.BLOCKS::getValue, i -> bool.setValue(block.equals(i)))
+				);*/
+
+		return !plants.contains(block);
 	}
 }

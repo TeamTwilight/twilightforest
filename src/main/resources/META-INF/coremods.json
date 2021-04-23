@@ -1,4 +1,6 @@
 {
-  "render_tf_sky": "META-INF/asm/render_tf_sky.js",
-  "portalinfo": "META-INF/asm/portalinfo.js"
+  "seed": "META-INF/asm/seed.js",
+  "maprendercontext": "META-INF/asm/maprendercontext.js",
+  "music": "META-INF/asm/music.js",
+  "multipart": "META-INF/asm/multipart.js"
 }

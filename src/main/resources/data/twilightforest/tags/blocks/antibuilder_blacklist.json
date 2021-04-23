@@ -5,7 +5,18 @@
     "minecraft:bedrock",
     "minecraft:redstone_lamp",
     "minecraft:tnt",
-    "minecraft:water"
+    "minecraft:water",
+    "twilightforest:antibuilder",
+    "twilightforest:carminite_builder",
+    "twilightforest:built_block",
+    "twilightforest:ghast_trap",
+    "twilightforest:carminite_reactor",
+    "twilightforest:reactor_debris",
+    "twilightforest:fake_gold",
+    "twilightforest:fake_diamond",
+    "twilightforest:vanishing_block",
+    "twilightforest:locked_vanishing_block",
+    "twilightforest:reappearing_block"
   ],
   "optional": [
     "tombmanygraves:grave_block"

@@ -1,11 +1,7 @@
 package twilightforest.item;
 
-import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ItemStack;
@@ -14,7 +10,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeMod;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
 
@@ -24,7 +19,7 @@ import java.util.List;
 public class ItemTFGiantPick extends PickaxeItem {
 
 	protected ItemTFGiantPick(IItemTier material, Properties props) {
-		super(material, 8 + (int)material.getAttackDamage(), -3.5F, props);
+		super(material, 8, -3.5F, props);
 	}
 
 	@Override

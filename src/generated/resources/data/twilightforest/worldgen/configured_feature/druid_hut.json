@@ -1,0 +1,22 @@
+{
+  "config": {
+    "feature": {
+      "config": {},
+      "type": "twilightforest:druid_hut"
+    },
+    "decorator": {
+      "config": {
+        "outer": {
+          "config": {},
+          "type": "minecraft:square"
+        },
+        "inner": {
+          "config": {},
+          "type": "minecraft:heightmap"
+        }
+      },
+      "type": "minecraft:decorated"
+    }
+  },
+  "type": "minecraft:decorated"
+}

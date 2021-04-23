@@ -8,7 +8,7 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
-import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 public class ConquerCommand {
@@ -21,12 +21,12 @@ public class ConquerCommand {
     }
 
     private static int changeStructureActivity(CommandSource source, boolean flag) throws CommandSyntaxException {
-        if (!TFGenerationSettings.isTwilightForest(source.getWorld())) {
+        if (!TFGenerationSettings.isTwilightChunk(source.getWorld())) {
             throw TFCommand.NOT_IN_TF.create();
         }
 
         // are you in a structure?
-        ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(source.getWorld());
+        ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(source.getWorld());
 
         BlockPos pos = new BlockPos(source.getPos());
         if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {

@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -28,14 +29,14 @@ public class ItemTFShieldWand extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage() - 1) {
+		if (stack.getDamage() == stack.getMaxDamage()) {
 			return ActionResult.resultFail(stack);
 		}
 
 		if (!world.isRemote) {
 			player.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 				cap.replenishShields();
-				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
+				stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
 			});
 		}
 
@@ -47,7 +48,7 @@ public class ItemTFShieldWand extends Item {
 
 	@Override
 	public float getXpRepairRatio(ItemStack stack) {
-		return 0.1f;
+		return 1f;
 	}
 
 	@Override

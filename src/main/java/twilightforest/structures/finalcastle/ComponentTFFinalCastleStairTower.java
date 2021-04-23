@@ -32,7 +32,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 		this.setCoordBaseMode(rotation);
 		this.size = 9;
 		this.height = 51;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, Direction.SOUTH);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 		this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final BlockState castleDoor = getGlyphMeta(); //TODO: WTF do I do here...?
+		final BlockState castleDoor = TFBlocks.castle_door_blue.get().getDefaultState();
 		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 3, 2, castleDoor, AIR, false);
 
 		// stairs

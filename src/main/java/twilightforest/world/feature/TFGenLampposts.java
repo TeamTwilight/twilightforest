@@ -9,7 +9,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
@@ -23,9 +23,9 @@ public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		// we should start on a grass block
-		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS) {
+		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS_BLOCK) {
 			return false;
 		}
 
@@ -42,7 +42,7 @@ public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
 
 		// generate lamp
 		for (int dy = 0; dy < height; dy++) {
-			world.setBlockState(pos.up(dy), Blocks.OAK_FENCE.getDefaultState(), 16 | 2);
+			world.setBlockState(pos.up(dy), TFBlocks.canopy_fence.get().getDefaultState(), 16 | 2);
 		}
 		world.setBlockState(pos.up(height), config.state.rotate(ROTATIONS[rand.nextInt(ROTATIONS.length)]), 16 | 2);
 		return true;

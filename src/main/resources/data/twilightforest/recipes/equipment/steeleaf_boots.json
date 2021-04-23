@@ -1,6 +1,6 @@
 {
   "result": {
-    "nbt": "{ench:[{lvl:2s,id:2s}]}",
+    "nbt": "{Enchantments:[{lvl:2s,id:\"minecraft:feather_falling\"}]}",
     "item": "twilightforest:steeleaf_boots",
     "type": "minecraft:item_nbt"
   },

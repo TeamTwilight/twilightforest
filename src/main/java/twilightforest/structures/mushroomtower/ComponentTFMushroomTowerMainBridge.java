@@ -34,7 +34,7 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 		ComponentTFMushroomTowerMain wing = new ComponentTFMushroomTowerMain(getFeatureType(), index, dx[0], dx[1], dx[2], 15, wingHeight, direction);
 
 		list.add(wing);
-		wing.buildComponent((StructurePiece) list.get(0), list, rand);
+		wing.buildComponent(list.get(0), list, rand);
 		addOpening(x, y, z, rotation);
 
 		return true;

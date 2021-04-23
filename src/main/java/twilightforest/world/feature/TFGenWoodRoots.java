@@ -24,7 +24,7 @@ public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		// start must be in stone
 		if (world.getBlockState(pos).getBlock() != Blocks.STONE) {
 			return false;

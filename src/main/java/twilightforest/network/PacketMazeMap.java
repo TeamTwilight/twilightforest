@@ -8,6 +8,7 @@ import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TFMazeMapData;
+import twilightforest.item.ItemTFMazeMap;
 
 import java.io.IOException;
 import java.util.function.Supplier;
@@ -48,7 +49,7 @@ public class PacketMazeMap {
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
 					MapItemRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapItemRenderer();
-					String s = FilledMapItem.getMapName(message.inner.getMapId());
+					String s = ItemTFMazeMap.getMapName(message.inner.getMapId());
 					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(Minecraft.getInstance().world, s);
 					if (mapdata == null) {
 						mapdata = new TFMazeMapData(s);

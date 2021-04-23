@@ -1,8 +1,8 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "smoking_block": { "trigger": "minecraft:inventory_changed",    "conditions": { "items": [{ "item": "twilightforest:fire_jet", "data": 0 }] }},
-    "fire_swamp":    { "trigger": "twilightforest:has_advancement", "conditions": { "advancement": "twilightforest:alt/biomes/fire_swamp"       }}
+    "smoking_block": { "trigger": "minecraft:inventory_changed",    "conditions": { "items": [{"item": "twilightforest:smoker" }]}},
+    "fire_swamp":    { "trigger": "twilightforest:has_advancement", "conditions": { "advancement": "twilightforest:alt/biomes/fire_swamp"}}
   },
   "requirements": [
     [ "smoking_block", "fire_swamp" ]

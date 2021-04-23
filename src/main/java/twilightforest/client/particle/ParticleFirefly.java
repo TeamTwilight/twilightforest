@@ -5,7 +5,6 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -21,7 +20,7 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 		particleRed = 0.9F;
 		particleGreen = 1.0F;
 		particleBlue = 0.0F;
-		particleScale = 0.2f + (rand.nextFloat() * 0.6f);
+		particleScale = 0.2f + (rand.nextFloat() * 0.1f);
 		maxAge = 10 + rand.nextInt(21);
 		halfLife = maxAge / 2;
 		canCollide = true;

@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
@@ -7,12 +8,15 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
@@ -74,5 +78,25 @@ public class EntityTFBighorn extends SheepEntity {
 		EntityTFBighorn babySheep = TFEntities.bighorn_sheep.create(world);
 		babySheep.setFleeceColor(getDyeColorMixFromParents(this, otherParent));
 		return babySheep;
+	}
+    
+    @Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.BIGHORN_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.BIGHORN_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.BIGHORN_DEATH;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState block) {
+		this.playSound(TFSounds.BIGHORN_STEP, 0.15F, 1.0F);
 	}
 }

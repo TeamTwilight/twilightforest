@@ -9,6 +9,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import twilightforest.block.BlockTFCicada;
+import twilightforest.block.BlockTFCritter;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
@@ -22,21 +24,6 @@ import java.util.Set;
 public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	private static final int LEAF_DUNGEON_CHANCE = 8;
-
-//	protected BlockState treeState = TFBlocks.oak_log.get().getDefaultState();
-//	protected BlockState branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Twilight Oak Wood
-//	protected BlockState leafState = TFBlocks.oak_leaves.get().getDefaultState()/*.with(LeavesBlock.CHECK_DECAY, false)*/;
-//	protected BlockState rootState = TFBlocks.root.get().getDefaultState();
-//
-//	protected IPlantable source = TFBlocks.oak_sapling.get();
-
-//	public TFGenHollowTree() {
-//		this(false);
-//	}
-//
-//	public TFGenHollowTree(boolean notify) {
-//		super(notify);
-//	}
 
 	public TFGenHollowTree(Codec<TFTreeFeatureConfig> config) {
 		super(config);
@@ -56,8 +43,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	@Override
 	public boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		int height = random.nextInt(64) + 32;
-		int diameter = random.nextInt(4) + 1;
+		int diameter = random.nextInt(3) + 2;
+		int height = random.nextInt(64) + (diameter * 4);
 
 		// do we have enough height?
 		if (pos.getY() < 1 || pos.getY() + height + diameter > TFGenerationSettings.MAXHEIGHT) {
@@ -104,7 +91,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		buildTrunk(world, random, pos, trunk, branch, root, diameter, height, mbb, config);
 
 		// fireflies
-		int numFireflies = random.nextInt(3 * diameter) + 5;
+		int numFireflies = random.nextInt(6 * diameter) + 5;
 		for (int i = 0; i <= numFireflies; i++) {
 			int fHeight = (int) (height * random.nextDouble() * 0.9) + (height / 10);
 			double fAngle = random.nextDouble();
@@ -112,8 +99,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		// cicadas
-		numFireflies = random.nextInt(3 * diameter) + 5;
-		for (int i = 0; i <= numFireflies; i++) {
+		int numCicadas = random.nextInt(3 * diameter) + 5;
+		for (int i = 0; i <= numCicadas; i++) {
 			int fHeight = (int) (height * random.nextDouble() * 0.9) + (height / 10);
 			double fAngle = random.nextDouble();
 			addCicada(world, pos, diameter, fHeight, fAngle);
@@ -434,7 +421,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	private void makeLeafDungeonChest(IWorld world, Random random, BlockPos pos) {
 		pos = pos.offset(Direction.Plane.HORIZONTAL.random(random));
-		TFTreasure.tree_cache.generateChest(world, pos.down(), false);
+		TFTreasure.tree_cache.generateChest(world, pos.down(), Direction.NORTH, false);
 	}
 
 	/**
@@ -464,7 +451,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.firefly.get().getDefaultState().isValidPosition(world, src)) {
+		if (TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, facing).isValidPosition(world, src)) {
 			world.setBlockState(src, TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, facing), 3);
 		}
 	}
@@ -485,8 +472,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.cicada.get().getDefaultState().isValidPosition(world, src)) {
-			world.setBlockState(src, TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, facing),3);
+		if (TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, facing).isValidPosition(world, src)) {
+			world.setBlockState(src, TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, facing), 3);
 		}
 	}
 }

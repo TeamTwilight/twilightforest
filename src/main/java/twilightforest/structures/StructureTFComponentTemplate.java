@@ -1,7 +1,6 @@
 package twilightforest.structures;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -23,11 +22,13 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     protected BlockPos templatePosition = BlockPos.ZERO;
     protected BlockPos rotatedPosition;
     protected Template TEMPLATE;
+    public Runnable LAZY_TEMPLATE_LOADER;
 
-    public StructureTFComponentTemplate(IStructurePieceType piece, CompoundNBT nbt) {
+    public StructureTFComponentTemplate(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt) {
         super(piece, nbt);
-        this.rotation = Rotation.NONE;
-        this.mirror = Mirror.NONE;
+        this.templatePosition = new BlockPos(nbt.getInt("TPX"), nbt.getInt("TPY"), nbt.getInt("TPZ"));
+        this.placeSettings.setRotation(this.rotation);
+		LAZY_TEMPLATE_LOADER = () -> setup(manager);
     }
 
     public StructureTFComponentTemplate(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
@@ -51,29 +52,20 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
     }
 
-    public final void setup(TemplateManager templateManager, MinecraftServer server) {
-        loadTemplates(templateManager, server);
+    public final void setup(TemplateManager templateManager) {
+        loadTemplates(templateManager);
         setModifiedTemplatePositionFromRotation();
         setBoundingBoxFromTemplate(rotatedPosition);
     }
 
-    protected abstract void loadTemplates(TemplateManager templateManager, MinecraftServer server);
-
-    //TODO: See super
-//    @Override
-//    protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//        super.writeStructureToNBT(tagCompound);
-//        tagCompound.putInt("TPX", this.templatePosition.getX());
-//        tagCompound.putInt("TPY", this.templatePosition.getY());
-//        tagCompound.putInt("TPZ", this.templatePosition.getZ());
-//    }
+    protected abstract void loadTemplates(TemplateManager templateManager);
 
     @Override
     protected void readAdditional(CompoundNBT tagCompound) {
         super.readAdditional(tagCompound);
-		this.templatePosition = new BlockPos(tagCompound.getInt("TPX"), tagCompound.getInt("TPY"), tagCompound.getInt("TPZ"));
-		this.placeSettings.setRotation(this.rotation);
-//		setup(manager, FMLCommonHandler.instance().getMinecraftServerInstance());
+        tagCompound.putInt("TPX", this.templatePosition.getX());
+        tagCompound.putInt("TPY", this.templatePosition.getY());
+        tagCompound.putInt("TPZ", this.templatePosition.getZ());
 	}
 
     protected final void setModifiedTemplatePositionFromRotation() {

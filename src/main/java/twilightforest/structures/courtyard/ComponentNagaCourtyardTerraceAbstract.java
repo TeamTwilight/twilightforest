@@ -1,7 +1,6 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -21,26 +20,24 @@ public abstract class ComponentNagaCourtyardTerraceAbstract extends StructureTFC
 
     private final ResourceLocation TERRACE;
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardTerraceAbstract(IStructurePieceType piece, CompoundNBT nbt, ResourceLocation terrace) {
-        super(piece, nbt);
+    public ComponentNagaCourtyardTerraceAbstract(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt, ResourceLocation terrace) {
+        super(manager, piece, nbt);
         TERRACE = terrace;
     }
 
-    @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardTerraceAbstract(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation terrace) {
         super(type, feature, i, x, y, z, rotation);
         TERRACE = terrace;
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
+    protected void loadTemplates(TemplateManager templateManager) {
         TEMPLATE = templateManager.getTemplate(TERRACE);
     }
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
-		placeSettings.setBoundingBox(structureBoundingBox).addProcessor(new CourtyardTerraceTemplateProcessor(0.2F));
+		placeSettings.setBoundingBox(structureBoundingBox).clearProcessors().addProcessor(new CourtyardTerraceTemplateProcessor(0.0F));
 		TEMPLATE.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings, random, 18);
 		return true;
 	}

@@ -12,7 +12,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -47,7 +46,7 @@ public class EntityTFRisingZombie extends ZombieEntity {
 			zombie.setHealth(getHealth());
 			zombie.setChild(isChild());
 			world.addEntity(zombie);
-			if (rand.nextBoolean() && world.getBlockState(getPosition().down()).getBlock() == Blocks.GRASS)
+			if (rand.nextBoolean() && world.getBlockState(getPosition().down()).getBlock() == Blocks.GRASS_BLOCK)
 				world.setBlockState(getPosition().down(), Blocks.DIRT.getDefaultState());
 		}
 		if (world.isRemote && !world.isAirBlock(getPosition().down())) {

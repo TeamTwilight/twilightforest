@@ -3,7 +3,6 @@ package twilightforest.client.model.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFLoyalZombie;
 

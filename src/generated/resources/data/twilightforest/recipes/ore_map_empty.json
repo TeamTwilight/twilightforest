@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "twilightforest:ore_map_empty"
+      "item": "twilightforest:maze_map_empty"
     },
     {
       "tag": "forge:storage_blocks/diamond"

@@ -8,8 +8,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-
 import java.util.Random;
 
 public class TFGenWebs extends Feature<NoFeatureConfig> {
@@ -23,7 +21,7 @@ public class TFGenWebs extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		while (pos.getY() > generator.getGroundHeight() && world.isAirBlock(pos))
 			pos = pos.down();
 

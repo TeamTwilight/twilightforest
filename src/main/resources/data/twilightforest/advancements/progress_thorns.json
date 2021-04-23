@@ -15,7 +15,7 @@
   "criteria": {
     "discover": {
       "trigger": "minecraft:location",
-      "conditions": { "feature": "twilightforest:final_castle" }
+      "conditions": { "feature": "twilightforest:finalcastle" }
     },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",

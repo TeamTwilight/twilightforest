@@ -1,6 +1,6 @@
 {
   "result": {
-    "nbt": "{ench:[{lvl:2s,id:0s}]}",
+    "nbt": "{Enchantments:[{lvl:2s,id:\"minecraft:protection\"}]}",
     "item": "twilightforest:yeti_helmet",
     "type": "minecraft:item_nbt"
   },

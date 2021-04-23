@@ -11,7 +11,7 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 
 	float initialParticleScale;
 
-	ParticleAnnihilate(ClientWorld world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	public ParticleAnnihilate(ClientWorld world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
 		this.motionY *= 0.10000000149011612D;
@@ -24,7 +24,7 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 		this.particleScale *= scale;
 		this.initialParticleScale = this.particleScale;
 		this.maxAge = (int) (60.0D / (Math.random() * 0.8D + 0.6D));
-		this.maxAge = (int) ((float) this.maxAge * scale);
+		this.maxAge = (int) (this.maxAge * scale);
 		this.canCollide = true;
 	}
 
@@ -57,7 +57,7 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 
 		this.particleScale *= 0.97D;
 
-		if (this.particleScale < 0.4D) {
+		if (this.particleScale < 0.04F) {
 			this.setExpired();
 		}
 

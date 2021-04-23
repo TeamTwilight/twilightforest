@@ -1,8 +1,7 @@
 package twilightforest.structures.courtyard;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
@@ -25,25 +24,26 @@ public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcesso
     }
 
 	@Override
-	protected IStructureProcessorType getType() {
+	protected IStructureProcessorType<?> getType() {
 		return TFStructureProcessors.COURTYARD_STAIRS;
 	}
 
 	@Nullable
 	@Override
-	public Template.BlockInfo process(IWorldReader worldReaderIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
-		Random random = placementSettingsIn.getRandom(pos);
+	public Template.BlockInfo process(IWorldReader worldReaderIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo oldInfo, Template.BlockInfo newInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
+		Random random = placementSettingsIn.getRandom(newInfo.pos);
 
 		if (shouldPlaceBlock(random)) {
-			BlockState state = blockInfo.state;
+			BlockState state = newInfo.state;
 			Block block = state.getBlock();
 
 			if (block == TFBlocks.nagastone_stairs_left.get())
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
-			if (block == TFBlocks.nagastone_stairs_right.get())
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
+				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE), null);
 
-			return blockInfo;
+			if (block == TFBlocks.nagastone_stairs_right.get())
+				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE), null);
+
+			return newInfo;
 		}
 
 		return null;

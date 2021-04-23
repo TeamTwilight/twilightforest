@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFSpikeBlock;
@@ -11,13 +10,14 @@ public class ModelTFSpikeBlock extends SegmentedModel<EntityTFSpikeBlock> {
 	ModelRenderer[] spikes = new ModelRenderer[27];
 
 	public ModelTFSpikeBlock() {
-
-		block = new ModelRenderer(this, 32, 16);
+		this.textureWidth = 64;
+		this.textureHeight = 48;
+		block = new ModelRenderer(this, 32, 32);
 		block.addBox(-4F, -8F, -4F, 8, 8, 8, 0F);
 		block.setRotationPoint(0F, 0F, 0F);
 
 		for (int i = 0; i < spikes.length; i++) {
-			spikes[i] = new ModelRenderer(this, 56, 16);
+			spikes[i] = new ModelRenderer(this, 56, 36);
 			spikes[i].addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
 			block.addChild(spikes[i]);
 		}

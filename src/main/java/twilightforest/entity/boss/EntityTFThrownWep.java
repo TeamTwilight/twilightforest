@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.projectile.EntityTFThrowable;
+import twilightforest.item.TFItems;
+import twilightforest.util.TFDamageSources;
 
 public class EntityTFThrownWep extends EntityTFThrowable {
 
@@ -76,7 +78,7 @@ public class EntityTFThrownWep extends EntityTFThrowable {
 
 			if (!world.isRemote) {
 				if (((EntityRayTraceResult)result).getEntity() != null) {
-					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), projectileDamage);
+					((EntityRayTraceResult)result).getEntity().attackEntityFrom(this.getItem().getItem() == TFItems.knightmetal_pickaxe.get() ? TFDamageSources.THROWN_PICKAXE : TFDamageSources.THROWN_AXE, projectileDamage);
 				}
 				world.setEntityState(this, (byte) 3);
 				remove();

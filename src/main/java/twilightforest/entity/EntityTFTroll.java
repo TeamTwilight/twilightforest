@@ -1,16 +1,12 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -18,10 +14,14 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.util.WorldUtil;
+
+import java.util.Random;
 
 public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
@@ -145,13 +145,18 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getPosX() - this.getPosX();
-			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.getPosY();
+			double d1 = target.getBoundingBox().minY + target.getHeight() / 3.0F - ice.getPosY();
 			double d2 = target.getPosZ() - this.getPosZ();
-			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
+			double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.world.getDifficulty().getId() * 4);
 
-			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ICEBOMB_FIRED, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			this.world.addEntity(ice);
 		}
+	}
+
+	public static boolean canSpawn(EntityType<? extends EntityTFTroll> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+		BlockPos blockpos = pos.down();
+		return !(world.getBlockState(blockpos).getBlock() == TFBlocks.giant_obsidian.get()) && !world.canSeeSky(pos) && pos.getY() < 60;
 	}
 }

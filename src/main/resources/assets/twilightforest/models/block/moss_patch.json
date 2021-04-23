@@ -1541,14 +1541,5 @@
     "south":{"uv":[15,15,16,16],"texture":"#texture","tintindex":2},
     "west":{"uv":[15,15,16,16],"texture":"#texture","tintindex":3},
     "east":{"uv":[15,15,16,16],"texture":"#texture","tintindex":4}
-  }}],
-  "loader": "ctm:ctm",
-  "ctm_version": 1,
-  "ctm_overrides": {
-    "0": { "type": "ctm"         , "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] },
-    "1": { "type": "ctm_tf_north", "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] },
-    "2": { "type": "ctm_tf_south", "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] },
-    "3": { "type": "ctm_tf_west" , "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] },
-    "4": { "type": "ctm_tf_east" , "layer": "CUTOUT", "textures": [ "twilightforest:block/patch/moss_0_ctm" ] }
-  }
+  }}]
 }

@@ -1,12 +1,10 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFProtectionBox;
 import twilightforest.entity.EntityTFProtectionBox;
@@ -14,7 +12,7 @@ import twilightforest.entity.EntityTFProtectionBox;
 public class RenderTFProtectionBox<T extends EntityTFProtectionBox> extends EntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("protectionbox.png");
-	private final ModelTFProtectionBox boxModel = new ModelTFProtectionBox();
+	private final ModelTFProtectionBox<T> boxModel = new ModelTFProtectionBox<>();
 
 	public RenderTFProtectionBox(EntityRendererManager manager) {
 		super(manager);

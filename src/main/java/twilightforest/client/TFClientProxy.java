@@ -1,29 +1,23 @@
 package twilightforest.client;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.MusicTicker;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.multiplayer.ClientAdvancementManager;
-import net.minecraft.command.CommandException;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.server.ServerWorld;
+import twilightforest.ASMHooks;
 import twilightforest.TFCommonProxy;
-import twilightforest.TFSounds;
-import twilightforest.client.renderer.tileentity.*;
-import twilightforest.tileentity.TileEntityTFTrophy;
+
+import javax.annotation.Nullable;
 
 public class TFClientProxy extends TFCommonProxy {
 
 	private boolean isDangerOverlayShown;
 
 //	public static MusicTicker.MusicType TFMUSICTYPE;
+
+	@Nullable
+	public static Iterable<Entity> getEntityListForASM() {
+		return ASMHooks.world instanceof ServerWorld ? ((ServerWorld) ASMHooks.world).func_241136_z_() : ASMHooks.world instanceof ClientWorld ? ((ClientWorld) ASMHooks.world).getAllEntities() : null;
+	}
 
 	@Override
 	public void init() {
@@ -65,16 +59,4 @@ public class TFClientProxy extends TFCommonProxy {
 //		this.isDangerOverlayShown = isDangerOverlayShown;
 //	}
 
-//	@Override
-//	public boolean doesPlayerHaveAdvancement(PlayerEntity player, ResourceLocation advId) {
-//		if (player instanceof ClientPlayerEntity) {
-//			ClientAdvancementManager manager = ((ClientPlayerEntity) player).connection.getAdvancementManager();
-//			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
-//			if (adv == null) return false;
-//			AdvancementProgress progress = manager.advancementToProgress.get(adv);
-//			return progress != null && progress.isDone();
-//		}
-//
-//		return super.doesPlayerHaveAdvancement(player, advId);
-//	}
 }

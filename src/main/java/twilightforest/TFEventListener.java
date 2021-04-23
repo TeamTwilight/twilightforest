@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.IMob;
@@ -15,6 +14,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -24,9 +24,9 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -34,8 +34,8 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -66,6 +66,7 @@ import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.ITFProjectile;
+import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
@@ -74,12 +75,15 @@ import twilightforest.network.PacketSetSkylightEnabled;
 import twilightforest.network.PacketUpdateShield;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
+import twilightforest.tileentity.TileEntityKeepsakeCasket;
 import twilightforest.util.TFItemStackUtils;
-import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -99,20 +103,6 @@ public class TFEventListener {
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
-
-	@SubscribeEvent
-	public static void onMobSpawn(WorldEvent.PotentialSpawns event) {
-		if (event.getType() == EntityClassification.MONSTER &&
-
-				event.getWorld() instanceof ServerWorld &&
-
-				event.getWorld().getChunkProvider() instanceof ServerChunkProvider &&
-
-				((ServerWorld) event.getWorld()).getDimensionKey().func_240901_a_().equals(TFDimensions.twilightForest.func_240901_a_()) &&
-
-				event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().func_230356_f_())
-			event.setCanceled(true);
-	}
 
 	@SubscribeEvent
 	public static void onCrafting(PlayerEvent.ItemCraftedEvent event) {
@@ -201,80 +191,129 @@ public class TFEventListener {
 		// enderbow teleports
 
 		// Smashing!
-		ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
-		Block block = Block.getBlockFromItem(stack.getItem());
-		if (block instanceof BlockTFCritter) {
-			BlockTFCritter poorBug = (BlockTFCritter) block;
-			living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
-			living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), poorBug.getSoundType(poorBug.getDefaultState()).getBreakSound(), living.getSoundCategory(), 1, 1);
+		if (damageSource != DamageSource.FALL && damageSource != DamageSource.DROWN && damageSource != DamageSource.SWEET_BERRY_BUSH) {
+			ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
+			Block block = Block.getBlockFromItem(stack.getItem());
+			if (block instanceof BlockTFCritter) {
+				BlockTFCritter poorBug = (BlockTFCritter) block;
+				living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
+				living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.BUG_SQUISH, living.getSoundCategory(), 1, 1);
+			}
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void charmOfLife(LivingDeathEvent event) {
-
+	// For when the player dies
+	public static void applyDeathItems(LivingDeathEvent event) {
 		LivingEntity living = event.getEntityLiving();
-		if (living.world.isRemote) return;
 
-		boolean charm1 = false;
-		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> s.getItem() == TFItems.charm_of_life_2.get(), 1);
-		if (!charm2) {
-			charm1 = TFItemStackUtils.consumeInventoryItem(living, s -> s.getItem() == TFItems.charm_of_life_1.get(), 1);
+		if (living.world.isRemote || !(living instanceof PlayerEntity) || living instanceof FakePlayer) return;
+
+		PlayerEntity player = (PlayerEntity) living; // To avoid triple-casting
+
+		if (charmOfLife(player)) {
+			event.setCanceled(true); // Executes if the player had charms
+		} else if (!living.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
+			// Did the player recover? No? Let's give them their stuff based on the keeping charms
+			charmOfKeeping(player);
+
+			// Then let's store the rest of their stuff in the casket
+			keepsakeCasket(player);
 		}
+	}
+
+	private static void keepsakeCasket(PlayerEntity player) {
+		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.keepsake_casket.get().asItem());
+
+		if (casketConsumed) {
+			World world = player.getEntityWorld();
+			BlockPos.Mutable pos = player.getPosition().toMutable();
+
+			if (pos.getY() < 2) {
+				pos.setY(2);
+			} else {
+				int logicalHeight = player.getEntityWorld().getDimensionType().getLogicalHeight();
+
+				if (pos.getY() > logicalHeight) {
+					pos.setY(logicalHeight - 1);
+				}
+			}
+
+			// TODO determine if block was air or better yet make a tag list of blocks that are OK to place the casket in
+			BlockPos immutablePos = pos.toImmutable();
+			FluidState fluidState = world.getFluidState(immutablePos);
+
+			if (world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())))) {
+				TileEntity te = world.getTileEntity(immutablePos);
+
+				if (te instanceof TileEntityKeepsakeCasket) {
+					TileEntityKeepsakeCasket casket = (TileEntityKeepsakeCasket) te;
+
+					int casketCapacity = casket.getSizeInventory();
+					List<ItemStack> list = new ArrayList<>(casketCapacity);
+
+					list.addAll(player.inventory.armorInventory);
+					player.inventory.armorInventory.clear();
+					list.addAll(player.inventory.offHandInventory);
+					player.inventory.offHandInventory.clear();
+					list.addAll(player.inventory.mainInventory);
+					player.inventory.mainInventory.clear();
+
+					casket.setItems(NonNullList.from(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
+				}
+			} else {
+				TwilightForestMod.LOGGER.error("Could not place Keepsake Casket at " + pos.toString());
+			}
+		}
+	}
+
+	private static boolean charmOfLife(PlayerEntity player) {
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_life_2.get());
+		boolean charm1 = !charm2 && TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_life_1.get());
 
 		if (charm2 || charm1) {
-
 			if (charm1) {
-				living.setHealth(8);
-				living.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 0));
+				player.setHealth(8);
+				player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 0));
 			}
 
 			if (charm2) {
-				living.setHealth((float) living.getAttribute(Attributes.MAX_HEALTH).getBaseValue()); //Max Health
+				player.setHealth((float) player.getAttribute(Attributes.MAX_HEALTH).getBaseValue()); //Max Health
 
-				living.addPotionEffect(new EffectInstance(Effects.REGENERATION, 600, 3));
-				living.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 600, 0));
-				living.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 600, 0));
+				player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 600, 3));
+				player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 600, 0));
+				player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 600, 0));
 			}
 
 			// spawn effect thingers
-			EntityTFCharmEffect effect = new EntityTFCharmEffect(TFEntities.charm_effect, living.world, living, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
-			living.world.addEntity(effect);
+			EntityTFCharmEffect effect = new EntityTFCharmEffect(TFEntities.charm_effect, player.world, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			player.world.addEntity(effect);
 
-			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(TFEntities.charm_effect, living.world, living, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(TFEntities.charm_effect, player.world, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
 			effect2.offset = (float) Math.PI;
-			living.world.addEntity(effect2);
+			player.world.addEntity(effect2);
 
-			living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
+			player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), TFSounds.CHARM_LIFE, player.getSoundCategory(), 1, 1);
 
-			event.setCanceled(true);
+			return true;
 		}
+
+		return false;
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void charmOfKeeping(LivingDeathEvent event) {
-
-		LivingEntity living = event.getEntityLiving();
-		if (living.world.isRemote) return;
-
-		if (living instanceof PlayerEntity && !living.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
-			keepItems((PlayerEntity) living);
-		}
-	}
-
-	private static void keepItems(PlayerEntity player) {
-
+	private static void charmOfKeeping(PlayerEntity player) {
 		// drop any existing held items, just in case
 		dropStoredItems(player);
 
 		// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
-		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_3.get(), 1);
-		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_2.get(), 1);
-		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, s -> s.getItem() == TFItems.charm_of_keeping_1.get(), 1);
+		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_keeping_3.get());
+		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_keeping_2.get());
+		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.charm_of_keeping_1.get());
 
 		PlayerInventory keepInventory = new PlayerInventory(null);
 
 		UUID playerUUID = player.getUniqueID();
+
 
 		if (tier1) {
 			keepAllArmor(player, keepInventory);
@@ -304,21 +343,26 @@ public class TFEventListener {
 			keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_1.get()));
 		}
 
-		// always keep tower keys
+		//TODO: Baubles is dead
+		/*if (tier1 && TFCompat.BAUBLES.isActivated()) {
+			playerKeepsMapBaubles.put(playerUUID, Baubles.keepBaubles(player));
+		}*/
+
+		// always keep tower keys and held phantom armor
 		for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
 			ItemStack stack = player.inventory.mainInventory.get(i);
 			if (stack.getItem() == TFItems.tower_key.get()) {
 				keepInventory.mainInventory.set(i, stack.copy());
 				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 			}
+			if (stack.getItem() instanceof ItemTFPhantomArmor) {
+				keepInventory.mainInventory.set(i, stack.copy());
+				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			}
 		}
 
-		//TODO: Baubles is dead
-		/*if (tier1 && TFCompat.BAUBLES.isActivated()) {
-			playerKeepsMapBaubles.put(playerUUID, Baubles.keepBaubles(player));
-		}*/
-
-		for (int i = 0; i < player.inventory.armorInventory.size(); i++) { // TODO also consider Phantom tools, when those get added
+		// Keep phantom equipment
+		for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
 			ItemStack armor = player.inventory.armorInventory.get(i);
 			if (armor.getItem() instanceof ItemTFPhantomArmor) {
 				keepInventory.armorInventory.set(i, armor.copy());
@@ -407,7 +451,7 @@ public class TFEventListener {
 				effect2.offset = (float) Math.PI;
 				player.world.addEntity(effect2);
 
-				player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, player.getSoundCategory(), 1.5F, 1.0F);
+				player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), TFSounds.CHARM_KEEP, player.getSoundCategory(), 1.5F, 1.0F);
 			}
 		}
 
@@ -433,8 +477,7 @@ public class TFEventListener {
 		PlayerInventory keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
 			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {}", player.getName());
-			//TODO: Field is final
-//			keepInventory.player = player;
+			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
 		//TODO: Baubles is dead
@@ -491,28 +534,28 @@ public class TFEventListener {
 			// check nearby blocks for same block or same drop
 
 			// pre-check for cobble!
-			//TODO: How to figure this out
-//			Item cobbleItem = Item.getItemFromBlock(Blocks.COBBLESTONE);
-//			boolean allCobble = state.getBlock().getItemDropped(state, world.rand, 0) == cobbleItem;
-//
-//			if (allCobble) {
-//				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
-//					if (dPos.equals(pos)) continue;
-//					BlockState stateThere = world.getBlockState(dPos);
-//					if (stateThere.getBlock().getItemDropped(stateThere, world.rand, 0) != cobbleItem) {
-//						allCobble = false;
-//						break;
-//					}
-//				}
-//			}
-//
-//			if (allCobble && !player.abilities.isCreativeMode) {
-//				shouldMakeGiantCobble = true;
-//				amountOfCobbleToReplace = 64;
-//			} else {
-//				shouldMakeGiantCobble = false;
-//				amountOfCobbleToReplace = 0;
-//			}
+			Item cobbleItem = Blocks.COBBLESTONE.asItem();
+			boolean allCobble = state.getBlock().asItem() == cobbleItem;
+
+			if (allCobble) {
+				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
+					if (dPos.equals(pos))
+						continue;
+					BlockState stateThere = world.getBlockState(dPos);
+					if (stateThere.getBlock().asItem() != cobbleItem) {
+						allCobble = false;
+						break;
+					}
+				}
+			}
+
+			if (allCobble && !player.abilities.isCreativeMode) {
+				shouldMakeGiantCobble = true;
+				amountOfCobbleToReplace = 64;
+			} else {
+				shouldMakeGiantCobble = false;
+				amountOfCobbleToReplace = 0;
+			}
 
 			// break all nearby blocks
 			if (player instanceof ServerPlayerEntity) {
@@ -571,9 +614,9 @@ public class TFEventListener {
 			return false;
 		}
 
-		ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
+		ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
 
-		if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
+		if (chunkGenerator != null && TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 0).map(structure -> structure.getBoundingBox().isVecInside(pos)).orElse(false)) {
 			// what feature is nearby?  is it one the player has not unlocked?
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerWorld) world);
 
@@ -636,9 +679,10 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			if (event.getTo() == TFDimensions.twilightForest) {
+			if (event.getTo().getLocation().equals(TFDimensions.twilightForest.getLocation())) {
 				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
 			}
+
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
 		}
 	}

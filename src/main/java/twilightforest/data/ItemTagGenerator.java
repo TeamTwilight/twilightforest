@@ -9,7 +9,9 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
 public class ItemTagGenerator extends ItemTagsProvider {
@@ -48,23 +50,25 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	public static final ITag.INamedTag<Item> ORES_IRONWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ores/ironwood").toString());
 	public static final ITag.INamedTag<Item> ORES_KNIGHTMETAL = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ores/knightmetal").toString());
 
-	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider) {
-		super(generator, blockprovider);
+	public static final ITag.INamedTag<Item> PORTAL_ACTIVATOR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("portal/activator").toString());
+
+	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
+		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);
 	}
 
 	@Override
 	protected void registerTags() {
-		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, ItemTagGenerator.TWILIGHT_OAK_LOGS);
-		this.copy(BlockTagGenerator.CANOPY_LOGS, ItemTagGenerator.CANOPY_LOGS);
-		this.copy(BlockTagGenerator.MANGROVE_LOGS, ItemTagGenerator.MANGROVE_LOGS);
-		this.copy(BlockTagGenerator.DARKWOOD_LOGS, ItemTagGenerator.DARKWOOD_LOGS);
-		this.copy(BlockTagGenerator.TIME_LOGS, ItemTagGenerator.TIME_LOGS);
-		this.copy(BlockTagGenerator.TRANSFORMATION_LOGS, ItemTagGenerator.TRANSFORMATION_LOGS);
-		this.copy(BlockTagGenerator.MINING_LOGS, ItemTagGenerator.MINING_LOGS);
-		this.copy(BlockTagGenerator.SORTING_LOGS, ItemTagGenerator.SORTING_LOGS);
+		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, TWILIGHT_OAK_LOGS);
+		this.copy(BlockTagGenerator.CANOPY_LOGS, CANOPY_LOGS);
+		this.copy(BlockTagGenerator.MANGROVE_LOGS, MANGROVE_LOGS);
+		this.copy(BlockTagGenerator.DARKWOOD_LOGS, DARKWOOD_LOGS);
+		this.copy(BlockTagGenerator.TIME_LOGS, TIME_LOGS);
+		this.copy(BlockTagGenerator.TRANSFORMATION_LOGS, TRANSFORMATION_LOGS);
+		this.copy(BlockTagGenerator.MINING_LOGS, MINING_LOGS);
+		this.copy(BlockTagGenerator.SORTING_LOGS, SORTING_LOGS);
 
-		this.copy(BlockTagGenerator.TWILIGHT_LOGS, ItemTagGenerator.TWILIGHT_LOGS);
-		this.copy(BlockTags.LOGS, ItemTags.LOGS);
+		this.copy(BlockTagGenerator.TWILIGHT_LOGS, TWILIGHT_LOGS);
+		getOrCreateBuilder(ItemTags.LOGS).addTag(TWILIGHT_LOGS);
 
 		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
@@ -86,18 +90,22 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		this.copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
 		this.copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
+		getOrCreateBuilder(ItemTags.SIGNS).add(TFBlocks.twilight_oak_sign.get().asItem(), TFBlocks.canopy_sign.get().asItem(),
+				TFBlocks.mangrove_sign.get().asItem(), TFBlocks.darkwood_sign.get().asItem(),
+				TFBlocks.time_sign.get().asItem(), TFBlocks.trans_sign.get().asItem(),
+				TFBlocks.mine_sign.get().asItem(), TFBlocks.sort_sign.get().asItem());
 
-		this.copy(BlockTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR, ItemTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR);
-		this.copy(BlockTagGenerator.STORAGE_BLOCKS_CARMINITE, ItemTagGenerator.STORAGE_BLOCKS_CARMINITE);
-		this.copy(BlockTagGenerator.STORAGE_BLOCKS_FIERY, ItemTagGenerator.STORAGE_BLOCKS_FIERY);
-		this.copy(BlockTagGenerator.STORAGE_BLOCKS_IRONWOOD, ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD);
-		this.copy(BlockTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL);
-		this.copy(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF, ItemTagGenerator.STORAGE_BLOCKS_STEELEAF);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR, STORAGE_BLOCKS_ARCTIC_FUR);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_CARMINITE, STORAGE_BLOCKS_CARMINITE);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_FIERY, STORAGE_BLOCKS_FIERY);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_IRONWOOD);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_KNIGHTMETAL);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF, STORAGE_BLOCKS_STEELEAF);
 
-		this.copy(BlockTagGenerator.ORES_IRONWOOD, ItemTagGenerator.ORES_IRONWOOD);
-		this.copy(BlockTagGenerator.ORES_KNIGHTMETAL, ItemTagGenerator.ORES_KNIGHTMETAL);
+		this.copy(BlockTagGenerator.ORES_IRONWOOD, ORES_IRONWOOD);
+		this.copy(BlockTagGenerator.ORES_KNIGHTMETAL, ORES_KNIGHTMETAL);
 
-		this.copy(BlockTagGenerator.TOWERWOOD, ItemTagGenerator.TOWERWOOD);
+		this.copy(BlockTagGenerator.TOWERWOOD, TOWERWOOD);
 
 		getOrCreateBuilder(PAPER).add(Items.PAPER);
 		getOrCreateBuilder(FEATHER).add(Items.FEATHER).add(TFItems.raven_feather.get());
@@ -113,5 +121,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		getOrCreateBuilder(ORES_IRONWOOD).add(TFItems.ironwood_raw.get());
 		getOrCreateBuilder(ORES_KNIGHTMETAL).add(TFItems.armor_shard_cluster.get());
+
+		getOrCreateBuilder(PORTAL_ACTIVATOR).addOptionalTag(Tags.Items.GEMS_DIAMOND.getName()); // FIXME Somehow Forge's Tags.Items.GEMS_DIAMOND does not exist when this executes so we will do it as an optional instead
 	}
 }

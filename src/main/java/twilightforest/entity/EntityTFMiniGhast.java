@@ -9,12 +9,14 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
 
 import java.util.Random;
 
@@ -39,9 +41,24 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) {
-		return 1.2F;
+	protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+		return 0.5F;
 	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+	      return TFSounds.GHASTLING_AMBIENT;
+	   }
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	      return TFSounds.GHASTLING_HURT;
+	   }
+
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.GHASTLING_DEATH;
+	   }
 
 	// Loosely based on EntityEnderman.shouldAttackPlayer
 	@Override
@@ -53,7 +70,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 			return living.canEntityBeSeen(this);
 		} else {
 			Vector3d vec3d = living.getLook(1.0F).normalize();
-			Vector3d vec3d1 = new Vector3d(this.getPosX() - living.getPosX(), this.getBoundingBox().minY + (double) this.getEyeHeight() - (living.getPosY() + (double) living.getEyeHeight()), this.getPosZ() - living.getPosZ());
+			Vector3d vec3d1 = new Vector3d(this.getPosX() - living.getPosX(), this.getBoundingBox().minY + this.getEyeHeight() - (living.getPosY() + living.getEyeHeight()), this.getPosZ() - living.getPosZ());
 			double d0 = vec3d1.length();
 			vec3d1 = vec3d1.normalize();
 			double d1 = vec3d.dotProduct(vec3d1);

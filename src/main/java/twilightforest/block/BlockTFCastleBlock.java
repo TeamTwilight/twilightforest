@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 public class BlockTFCastleBlock extends Block {
 
 	public BlockTFCastleBlock(MaterialColor color) {
-		super(Properties.create(Material.ROCK, color).hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE));
+		super(Properties.create(Material.ROCK, color).setRequiresTool().hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE));
 	}
 
 	@Override
@@ -36,11 +36,4 @@ public class BlockTFCastleBlock extends Block {
 
 		super.harvestBlock(world, player, pos, state, te, stack);
 	}
-
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

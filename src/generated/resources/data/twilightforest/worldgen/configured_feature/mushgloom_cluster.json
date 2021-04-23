@@ -1,0 +1,23 @@
+{
+  "config": {
+    "can_replace": false,
+    "project": true,
+    "need_water": false,
+    "xspread": 7,
+    "yspread": 3,
+    "zspread": 7,
+    "whitelist": [],
+    "blacklist": [],
+    "tries": 8,
+    "state_provider": {
+      "state": {
+        "Name": "twilightforest:mushgloom"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "block_placer": {
+      "type": "minecraft:simple_block_placer"
+    }
+  },
+  "type": "minecraft:random_patch"
+}

@@ -1,0 +1,26 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "state": {
+          "Name": "twilightforest:smoker"
+        }
+      },
+      "type": "twilightforest:fire_jet"
+    },
+    "decorator": {
+      "config": {
+        "outer": {
+          "config": {},
+          "type": "minecraft:square"
+        },
+        "inner": {
+          "config": {},
+          "type": "minecraft:heightmap"
+        }
+      },
+      "type": "minecraft:decorated"
+    }
+  },
+  "type": "minecraft:decorated"
+}

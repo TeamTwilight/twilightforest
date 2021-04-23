@@ -71,14 +71,6 @@ public class TFItems {
 	public static final RegistryObject<Item> hydra_chop = ITEMS.register("hydra_chop", () -> new ItemTFHydraChops(defaultBuilder().isImmuneToFire().food(TFItems.HYDRA_CHOP).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> fiery_blood = ITEMS.register("fiery_blood", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> fiery_tears = ITEMS.register("fiery_tears", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> naga_trophy = ITEMS.register("naga_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.naga_trophy, BossVariant.NAGA));
-	public static final RegistryObject<Item> lich_trophy = ITEMS.register("lich_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.lich_trophy, BossVariant.LICH));
-	public static final RegistryObject<Item> minoshroom_trophy = ITEMS.register("minoshroom_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.minoshroom_trophy, BossVariant.MINOSHROOM));
-	public static final RegistryObject<Item> hydra_trophy = ITEMS.register("hydra_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.hydra_trophy, BossVariant.HYDRA));
-	public static final RegistryObject<Item> knight_phantom_trophy = ITEMS.register("knight_phantom_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.knight_phantom_trophy, BossVariant.KNIGHT_PHANTOM));
-	public static final RegistryObject<Item> ur_ghast_trophy = ITEMS.register("ur_ghast_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.ur_ghast_trophy, BossVariant.UR_GHAST));
-	public static final RegistryObject<Item> snow_queen_trophy = ITEMS.register("snow_queen_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.snow_queen_trophy, BossVariant.SNOW_QUEEN));
-	public static final RegistryObject<Item> quest_ram_trophy = ITEMS.register("quest_ram_trophy", () -> new ItemTFTrophy(defaultBuilder().rarity(TwilightForestMod.getRarity()), TFBlocks.quest_ram_trophy, BossVariant.QUEST_RAM));
 	public static final RegistryObject<Item> fiery_ingot = ITEMS.register("fiery_ingot", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> fiery_helmet = ITEMS.register("fiery_helmet", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.HEAD, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> fiery_chestplate = ITEMS.register("fiery_chestplate", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.CHEST, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
@@ -177,9 +169,9 @@ public class TFItems {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void addItemModelProperties() {
-		ItemModelsProperties.func_239418_a_(cube_of_annihilation.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(cube_of_annihilation.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
 				ItemTFCubeOfAnnihilation.getThrownUuid(stack) != null ? 1 : 0);
-		ItemModelsProperties.func_239418_a_(moon_dial.get(), new ResourceLocation("phase"), new IItemPropertyGetter() {
+		ItemModelsProperties.registerProperty(moon_dial.get(), new ResourceLocation("phase"), new IItemPropertyGetter() {
 			@Override
 			public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entityBase) {
 				boolean flag = entityBase != null;
@@ -187,7 +179,7 @@ public class TFItems {
 
 				if (world == null && entity != null) world = (ClientWorld) entity.world;
 
-				return world == null ? 0.0F : (float) (world.func_230315_m_().func_236043_f_() ? MathHelper.frac(world.func_242414_af() / 8.0f) : this.wobble(world, Math.random()));
+				return world == null ? 0.0F : (float) (world.getDimensionType().isNatural() ? MathHelper.frac(world.getMoonPhase() / 8.0f) : this.wobble(world, Math.random()));
 			}
 
 			@OnlyIn(Dist.CLIENT)
@@ -211,7 +203,7 @@ public class TFItems {
 				return this.rotation;
 			}
 		});
-		ItemModelsProperties.func_239418_a_(moonworm_queen.get(), TwilightForestMod.prefix("alt"), (stack, world, entity) -> {
+		ItemModelsProperties.registerProperty(moonworm_queen.get(), TwilightForestMod.prefix("alt"), (stack, world, entity) -> {
 			if (entity != null && entity.getActiveItemStack() == stack) {
 				int useTime = stack.getUseDuration() - entity.getItemInUseCount();
 				if (useTime >= ItemTFMoonwormQueen.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
@@ -221,21 +213,21 @@ public class TFItems {
 
 			return 0;
 		});
-		ItemModelsProperties.func_239418_a_(ore_magnet.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+		ItemModelsProperties.registerProperty(ore_magnet.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
 			if (entity == null) {
 				return 0.0F;
 			} else {
 				ItemStack itemstack = entity.getActiveItemStack();
-				return !itemstack.isEmpty() ? (float) (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
+				return !itemstack.isEmpty() ? (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
 			}
 		});
-		ItemModelsProperties.func_239418_a_(ore_magnet.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(ore_magnet.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
 				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
-		ItemModelsProperties.func_239418_a_(block_and_chain.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(block_and_chain.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
 				ItemTFChainBlock.getThrownUuid(stack) != null ? 1 : 0);
-		ItemModelsProperties.func_239418_a_(experiment_115.get(), ItemTFExperiment115.THINK, (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(experiment_115.get(), ItemTFExperiment115.THINK, (stack, world, entity) ->
 				stack.hasTag() && stack.getTag().contains("think") ? 1 : 0);
-		ItemModelsProperties.func_239418_a_(experiment_115.get(), ItemTFExperiment115.FULL, (stack, world, entity) ->
+		ItemModelsProperties.registerProperty(experiment_115.get(), ItemTFExperiment115.FULL, (stack, world, entity) ->
 				stack.hasTag() && stack.getTag().contains("full") ? 1 : 0);
 	}
 }

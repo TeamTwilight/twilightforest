@@ -11,7 +11,6 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -40,13 +39,13 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 	 */
 	@Override
 	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
-		;
+		// NO-OP
 	}
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		if (this.averageGroundLevel < 0) {
-			this.averageGroundLevel = this.getAverageGroundLevel(world, sbb);
+			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
 
 			if (this.averageGroundLevel < 0) {
 				return true;
@@ -67,7 +66,7 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(ISeedReader world, MutableBoundingBox boundingBox) {
+	protected int getAverageGroundLevel(ISeedReader world, ChunkGenerator generator, MutableBoundingBox boundingBox) {
 		int yTotal = 0;
 		int count = 0;
 
@@ -76,7 +75,7 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 				BlockPos pos = new BlockPos(x, 64, z);
 				if (boundingBox.isVecInside(pos)) {
 					final BlockPos topBlock = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos);
-					yTotal += Math.max(topBlock.getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
+					yTotal += Math.max(topBlock.getY(), generator.getGroundHeight());
 					++count;
 				}
 			}

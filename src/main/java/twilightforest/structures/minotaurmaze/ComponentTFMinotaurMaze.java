@@ -29,13 +29,32 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
 	public ComponentTFMinotaurMaze(TemplateManager manager, CompoundNBT nbt) {
 		super(TFMinotaurMazePieces.TFMMaze, nbt);
+
+		this.level = nbt.getInt("mazeLevel");
+		this.rcoords = nbt.getIntArray("roomCoords");
+
+		// recreate maze object
+		maze = new TFMaze(getMazeSize(), getMazeSize());
+		setFixedMazeSeed();
+
+		// blank out rcoords above 1 so that the room generation works properly
+		//TODO: re-do this. :)
+		for (int i = 2; i < rcoords.length; i++) {
+			this.rcoords[i] = 0;
+		}
+
+		// recreate rooms
+		this.addRoomsToMaze(this.rcoords[0], this.rcoords[1], (this.rcoords.length + 1) / 2);
+
+		// regenerate maze
+		maze.generateRecursiveBacktracker(0, 0);
 	}
 
 	public ComponentTFMinotaurMaze(TFFeature feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
 		super(TFMinotaurMazePieces.TFMMaze, feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
 		this.level = level;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, Direction.SOUTH);
 
 		// make maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize());
@@ -82,43 +101,11 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		this(feature, index, x, y, z, 11, 11, level);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("mazeLevel", this.level);
-//		tagCompound.putIntArray("roomCoords", this.rcoords);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-
-		this.level = tagCompound.getInt("mazeLevel");
-		this.rcoords = tagCompound.getIntArray("roomCoords");
-
-		// recreate maze object
-		maze = new TFMaze(getMazeSize(), getMazeSize());
-		setFixedMazeSeed();
-
-		// blank out rcoords above 1 so that the room generation works properly
-		//TODO: re-do this. :)
-		for (int i = 2; i < rcoords.length; i++) {
-			this.rcoords[i] = 0;
-		}
-
-		// recreate rooms
-		this.addRoomsToMaze(this.rcoords[0], this.rcoords[1], (this.rcoords.length + 1) / 2);
-
-		// regenerate maze
-		maze.generateRecursiveBacktracker(0, 0);
+		tagCompound.putInt("mazeLevel", this.level);
+		tagCompound.putIntArray("roomCoords", this.rcoords);
 	}
 
 	protected ComponentTFMazeRoom makeRoom(Random random, int i, int dx, int dz) {
@@ -215,6 +202,8 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		int worldZ = boundingBox.minZ + dz * 5 + 1;
 
 		int decorationType = random.nextInt(8);
+
+		decorationType = decorationType >= 3 ? 0 : decorationType;
 
 		switch (decorationType) {
 			default:

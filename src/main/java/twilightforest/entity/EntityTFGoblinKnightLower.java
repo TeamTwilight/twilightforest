@@ -15,11 +15,15 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityPredicates;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFRiderSpearAttack;
 
 import javax.annotation.Nullable;
@@ -96,8 +100,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(TFEntities.goblin_knight_upper, this.world);
 		upper.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
-		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag); //TODO: verify
-		this.world.addEntity(upper);
+		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag);
 		upper.startRiding(this);
 
 		return livingData;
@@ -110,11 +113,13 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 	@Override
 	public void updateAITasks() {
-		super.updateAITasks();
-
 		if (isBeingRidden() && getPassengers().get(0) instanceof LivingEntity && this.getAttackTarget() == null) {
 			this.setAttackTarget(((MobEntity) this.getPassengers().get(0)).getAttackTarget());
 		}
+		if(getAttackTarget() instanceof PlayerEntity && ((PlayerEntity)getAttackTarget()).abilities.disableDamage) {
+			this.setAttackTarget(null);
+		}
+		super.updateAITasks();
 	}
 
 	@Override
@@ -126,6 +131,22 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 			return super.attackEntityAsMob(entity);
 		}
 
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT : TFSounds.GOBLIN_KNIGHT_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH : TFSounds.GOBLIN_KNIGHT_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT : TFSounds.GOBLIN_KNIGHT_HURT;
 	}
 
 	@Override
@@ -140,7 +161,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 			attacker = source.getTrueSource();
 		}
 
-		if (attacker != null) {
+		if (attacker != null && !source.isCreativePlayer()) {
 			// determine angle
 
 			double dx = this.getPosX() - attacker.getPosX();
@@ -171,11 +192,21 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		return super.attackEntityFrom(source, amount);
 	}
 
-	private void breakArmor() {
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
-		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void handleStatusUpdate(byte id) {
+		if (id == 5) {
+			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);
+			this.renderBrokenItemStack(broken);
+			this.renderBrokenItemStack(broken);
+			this.renderBrokenItemStack(broken);
+		} else {
+			super.handleStatusUpdate(id);
+		}
+	}
 
+	private void breakArmor() {
+		world.setEntityState(this, (byte) 5);
 		this.setHasArmor(false);
 	}
 }

@@ -20,7 +20,7 @@ import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.minecraft.world.gen.PerlinNoiseGenerator;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.worldgen.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 

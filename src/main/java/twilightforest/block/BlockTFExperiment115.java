@@ -18,10 +18,8 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -87,8 +85,6 @@ public class BlockTFExperiment115 extends Block {
 				return ActionResultType.SUCCESS;
 			}
 		}
-
-		if (stack.isEmpty()) return ActionResultType.SUCCESS;
 		return this.eatCake(worldIn, pos, state, player);
 	}
 
@@ -100,9 +96,9 @@ public class BlockTFExperiment115 extends Block {
             int i = state.get(BITES_TAKEN);
 
             if (i < 7) {
-              world.setBlockState(pos, state.with(BITES_TAKEN, i + 1), 3);
+            	world.setBlockState(pos, state.with(BITES_TAKEN, Integer.valueOf(i + 1)), 3);
             } else {
-              world.removeBlock(pos, false);
+            	world.removeBlock(pos, false);
             }
 
             if (player instanceof ServerPlayerEntity)
