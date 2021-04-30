@@ -76,55 +76,6 @@ public class TFClientSetup {
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
         DimensionRenderInfo.field_239208_a_.put(TwilightForestMod.prefix("renderer"), renderInfo);
-        
-        //[VanillaCopy] Allows bows to use animations when being fired
-        ItemModelsProperties.registerProperty(TFItems.ender_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
-            if (entity == null) {
-               return 0.0F;
-            } else {
-               return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
-            }
-        });
-        
-        ItemModelsProperties.registerProperty(TFItems.ender_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
-            return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
-        });
-        
-        ItemModelsProperties.registerProperty(TFItems.ice_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
-            if (entity == null) {
-               return 0.0F;
-            } else {
-               return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
-            }
-        });
-        
-        ItemModelsProperties.registerProperty(TFItems.ice_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
-            return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
-        });
-        
-        ItemModelsProperties.registerProperty(TFItems.seeker_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
-            if (entity == null) {
-               return 0.0F;
-            } else {
-               return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
-            }
-        });
-        
-        ItemModelsProperties.registerProperty(TFItems.seeker_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
-            return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
-        });
-        
-        ItemModelsProperties.registerProperty(TFItems.triple_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
-            if (entity == null) {
-               return 0.0F;
-            } else {
-               return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
-            }
-        });
-        
-        ItemModelsProperties.registerProperty(TFItems.triple_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
-            return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
-        });
 
         evt.enqueueWork(() -> {
             Atlases.addWoodType(TFBlocks.TWILIGHT_OAK);

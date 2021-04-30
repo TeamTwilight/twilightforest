@@ -39,8 +39,7 @@
     }
   },
   "requirements": [
-    [ "knight" ],
-    [ "trophy" ],
+    [ "knight", "trophy" ],
     [ "previous_progression" ]
   ]
 }

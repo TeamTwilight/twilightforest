@@ -171,6 +171,10 @@ public class TFItems {
 	public static void addItemModelProperties() {
 		ItemModelsProperties.registerProperty(cube_of_annihilation.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
 				ItemTFCubeOfAnnihilation.getThrownUuid(stack) != null ? 1 : 0);
+
+		ItemModelsProperties.registerProperty(TFItems.knightmetal_shield.get(), new ResourceLocation("blocking"), (stack, world, entity) ->
+				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
+
 		ItemModelsProperties.registerProperty(moon_dial.get(), new ResourceLocation("phase"), new IItemPropertyGetter() {
 			@Override
 			public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entityBase) {
@@ -199,10 +203,10 @@ public class TFItems {
 					this.rota *= 0.9D;
 					this.rotation = MathHelper.positiveModulo(this.rotation + this.rota, 1.0D);
 				}
-
 				return this.rotation;
 			}
 		});
+
 		ItemModelsProperties.registerProperty(moonworm_queen.get(), TwilightForestMod.prefix("alt"), (stack, world, entity) -> {
 			if (entity != null && entity.getActiveItemStack() == stack) {
 				int useTime = stack.getUseDuration() - entity.getItemInUseCount();
@@ -210,23 +214,53 @@ public class TFItems {
 					return 1;
 				}
 			}
-
 			return 0;
 		});
+
+		ItemModelsProperties.registerProperty(TFItems.ender_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+			if(entity == null) return 0.0F;
+			else return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F; });
+
+		ItemModelsProperties.registerProperty(TFItems.ender_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
+				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
+
+		ItemModelsProperties.registerProperty(TFItems.ice_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+			if(entity == null) return 0.0F;
+			else return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F; });
+
+		ItemModelsProperties.registerProperty(TFItems.ice_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
+				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
+
+		ItemModelsProperties.registerProperty(TFItems.seeker_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+			if (entity == null) return 0.0F;
+			else return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F; });
+
+		ItemModelsProperties.registerProperty(TFItems.seeker_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
+				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
+
+		ItemModelsProperties.registerProperty(TFItems.triple_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+			if (entity == null) return 0.0F;
+			else return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F; });
+
+		ItemModelsProperties.registerProperty(TFItems.triple_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
+				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
+
 		ItemModelsProperties.registerProperty(ore_magnet.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
-			if (entity == null) {
-				return 0.0F;
-			} else {
+			if (entity == null) return 0.0F;
+			else {
 				ItemStack itemstack = entity.getActiveItemStack();
 				return !itemstack.isEmpty() ? (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
-			}
-		});
+			}});
+
 		ItemModelsProperties.registerProperty(ore_magnet.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
 				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
+
 		ItemModelsProperties.registerProperty(block_and_chain.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
 				ItemTFChainBlock.getThrownUuid(stack) != null ? 1 : 0);
+
 		ItemModelsProperties.registerProperty(experiment_115.get(), ItemTFExperiment115.THINK, (stack, world, entity) ->
 				stack.hasTag() && stack.getTag().contains("think") ? 1 : 0);
+
 		ItemModelsProperties.registerProperty(experiment_115.get(), ItemTFExperiment115.FULL, (stack, world, entity) ->
 				stack.hasTag() && stack.getTag().contains("full") ? 1 : 0);
 	}

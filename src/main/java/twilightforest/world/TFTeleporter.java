@@ -461,7 +461,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static BlockState randNatureBlock(Random random) {
-		Block[] blocks = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.TALL_GRASS, Blocks.POPPY, Blocks.DANDELION};
+		Block[] blocks = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.GRASS, Blocks.POPPY, Blocks.DANDELION};
 		return blocks[random.nextInt(blocks.length)].getDefaultState();
 	}
 

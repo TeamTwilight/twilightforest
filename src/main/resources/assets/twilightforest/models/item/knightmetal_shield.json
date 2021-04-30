@@ -37,7 +37,7 @@
     }
   },
   "textures": {
-    "k_shield": "twilightforest:items/knightly_shield",
+    "k_shield": "twilightforest:items/knightmetal_shield",
     "v_shield": "minecraft:entity/shield_base"
   },
   "elements": [{

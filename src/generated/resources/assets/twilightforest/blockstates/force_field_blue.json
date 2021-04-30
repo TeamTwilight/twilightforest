@@ -2,7 +2,8 @@
   "multipart": [
     {
       "apply": {
-        "model": "twilightforest:block/force_field_blue_post"
+        "model": "twilightforest:block/force_field_blue_post",
+        "uvlock": true
       }
     },
     {
@@ -10,7 +11,17 @@
         "north": "true"
       },
       "apply": {
-        "model": "twilightforest:block/force_field_blue_side"
+        "model": "twilightforest:block/force_field_blue_side",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "false"
+      },
+      "apply": {
+        "model": "twilightforest:block/force_field_blue_noside",
+        "uvlock": true
       }
     },
     {
@@ -19,7 +30,17 @@
       },
       "apply": {
         "model": "twilightforest:block/force_field_blue_side",
-        "y": 90
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "false"
+      },
+      "apply": {
+        "model": "twilightforest:block/force_field_blue_noside_alt",
+        "uvlock": true
       }
     },
     {
@@ -27,7 +48,18 @@
         "south": "true"
       },
       "apply": {
-        "model": "twilightforest:block/force_field_blue_side_alt"
+        "model": "twilightforest:block/force_field_blue_side_alt",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "false"
+      },
+      "apply": {
+        "model": "twilightforest:block/force_field_blue_noside_alt",
+        "y": 90,
+        "uvlock": true
       }
     },
     {
@@ -36,32 +68,8 @@
       },
       "apply": {
         "model": "twilightforest:block/force_field_blue_side_alt",
-        "y": 90
-      }
-    },
-    {
-      "when": {
-        "north": "false"
-      },
-      "apply": {
-        "model": "twilightforest:block/force_field_blue_noside"
-      }
-    },
-    {
-      "when": {
-        "east": "false"
-      },
-      "apply": {
-        "model": "twilightforest:block/force_field_blue_noside",
-        "y": 90
-      }
-    },
-    {
-      "when": {
-        "south": "false"
-      },
-      "apply": {
-        "model": "twilightforest:block/force_field_blue_noside_alt"
+        "y": 90,
+        "uvlock": true
       }
     },
     {
@@ -69,8 +77,9 @@
         "west": "false"
       },
       "apply": {
-        "model": "twilightforest:block/force_field_blue_noside_alt",
-        "y": 90
+        "model": "twilightforest:block/force_field_blue_noside",
+        "y": 270,
+        "uvlock": true
       }
     }
   ]

@@ -275,6 +275,7 @@
   "block.twilightforest.trollvidr": "巨魔藤蔓",
   "block.twilightforest.unripe_trollber": "未熟的巨魔莓",
   "block.twilightforest.trollber": "巨魔莓",
+  "block.twilightforest.slider": "滑动陷阱",
   "block.twilightforest.knightmetal_block": "骑士金属块",
   "block.twilightforest.huge_lilypad": "巨型睡莲",
   "block.twilightforest.huge_waterlily": "巨型荷花",
@@ -955,7 +956,9 @@
   "subtitles.te.jet.active": "射焰方块：射焰",
   "subtitles.te.jet.pop": "射焰方块：砰砰",
   "subtitles.te.smoker.start": "烟雾方块：开始活动",
-  "subtitles.te.reactor.idle": "砷铅铁反应堆：呼呼",
+  "subtitles.te.reactor.idle": "砷铅铁反应堆：呼呼作响",
+
+  "subtitles.random.slider": "滑动陷阱：移动",
 
   // 死亡信息
   "death.attack.ghastTear": "%1$s被炽热之泪烫死了",
@@ -982,6 +985,8 @@
   "death.attack.fireJet.player": "%1$s在逃离%2$s时不小心走进了喷射的火焰中",
   "death.attack.reactor": "%1$s离砷铅铁反应堆站得太近了",
   "death.attack.reactor.player": "%1$s在逃离%2$s时离砷铅铁反应堆站得太近了",
+  "death.attack.slider": "%1$s被滑动陷阱切碎了",
+  "death.attack.slider.player": "%1$s在逃离%2$s时被滑动陷阱切碎了",
   "death.attack.thorns": "%1$s走进了荆棘丛",
   "death.attack.thorns.player": "%1$s在逃离%2$s时走进了荆棘丛",
   "death.attack.knightmetal": "%1$s被骑士金属块刺穿了",

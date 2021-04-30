@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "twilightforest:underbrick"
+  },
+  "result": "twilightforest:underbrick_cracked",
+  "experience": 0.3,
+  "cookingtime": 200
+}

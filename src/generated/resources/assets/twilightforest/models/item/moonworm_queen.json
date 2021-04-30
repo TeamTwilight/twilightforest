@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:items/moonworm_queen"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "twilightforest:alt": 1.0
+      },
+      "model": "twilightforest:item/moonworm_queen_alt"
+    }
+  ]
+}

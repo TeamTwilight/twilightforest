@@ -68,7 +68,8 @@
         "south": "true"
       },
       "apply": {
-        "model": "twilightforest:block/brown_thorns_top"
+        "model": "twilightforest:block/brown_thorns_bottom",
+        "y": 180
       }
     },
     {
@@ -76,7 +77,8 @@
         "north": "true"
       },
       "apply": {
-        "model": "twilightforest:block/brown_thorns_bottom"
+        "model": "twilightforest:block/brown_thorns_top",
+        "y": 180
       }
     }
   ]

@@ -10,9 +10,11 @@ import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFExperiment115;
+import twilightforest.item.TFItems;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -80,6 +82,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.trollvidr.getId().getPath(), prefix("block/" + TFBlocks.trollvidr.getId().getPath()));
 		generated(TFBlocks.unripe_trollber.getId().getPath(), prefix("block/" + TFBlocks.unripe_trollber.getId().getPath()));
 		generated(TFBlocks.trollber.getId().getPath(), prefix("block/" + TFBlocks.trollber.getId().getPath()));
+		toBlock(TFBlocks.slider.get());
 		generated(TFBlocks.huge_lilypad.getId().getPath(), prefix("block/" + TFBlocks.huge_lilypad.getId().getPath()));
 		generated(TFBlocks.huge_waterlily.getId().getPath(), prefix("block/" + TFBlocks.huge_waterlily.getId().getPath()));
 		toBlock(TFBlocks.castle_brick.get());
@@ -110,10 +113,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.cinder_log.get());
 		toBlock(TFBlocks.cinder_wood.get());
 		toBlockModel(TFBlocks.cinder_furnace.get(), new ResourceLocation("block/furnace"));
-		toBlock(TFBlocks.castle_door_yellow.get());
-		toBlock(TFBlocks.castle_door_purple.get());
-		toBlock(TFBlocks.castle_door_pink.get());
-		toBlock(TFBlocks.castle_door_blue.get());
+		//toBlock(TFBlocks.castle_door_yellow.get());
+		//toBlock(TFBlocks.castle_door_purple.get());
+		//toBlock(TFBlocks.castle_door_pink.get());
+		//toBlock(TFBlocks.castle_door_blue.get());
 		ModelFile think115 = generated("item/think115", prefix("items/think115"));
 		ModelFile fullBlockSprinkle = getExistingFile(prefix("block/experiment115_8_8_regenerating"));
 		generated(TFBlocks.experiment_115.getId().getPath(), prefix("items/experiment_115"))
@@ -290,10 +293,228 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.sort_plate.get());
 		toBlockModel(TFBlocks.sort_trapdoor.get(), "sort_trapdoor_bottom");
 		generated(TFBlocks.sort_sign.getId().getPath(), prefix("items/" + TFBlocks.sort_sign.getId().getPath()));
+
+		singleTex(TFItems.naga_scale);
+		singleTex(TFItems.naga_chestplate);
+		singleTex(TFItems.naga_leggings);
+		singleTex(TFItems.twilight_scepter);
+		singleTex(TFItems.lifedrain_scepter);
+		singleTex(TFItems.zombie_scepter);
+		singleTex(TFItems.shield_scepter);
+		singleTex(TFItems.ore_meter);
+		singleTex(TFItems.magic_map);
+		singleTex(TFItems.maze_map);
+		biggerTex(TFItems.ore_map, prefix("items/" + TFItems.ore_map.getId().getPath()));
+		singleTex(TFItems.raven_feather);
+		singleTex(TFItems.magic_map_focus);
+		singleTex(TFItems.maze_map_focus);
+		singleTex(TFItems.liveroot);
+		singleTex(TFItems.ironwood_raw);
+		singleTex(TFItems.ironwood_ingot);
+		singleTex(TFItems.ironwood_helmet);
+		singleTex(TFItems.ironwood_chestplate);
+		singleTex(TFItems.ironwood_leggings);
+		singleTex(TFItems.ironwood_boots);
+		singleTex(TFItems.ironwood_sword);
+		singleTex(TFItems.ironwood_pickaxe);
+		singleTex(TFItems.ironwood_axe);
+		singleTex(TFItems.ironwood_shovel);
+		singleTex(TFItems.ironwood_hoe);
+		singleTex(TFItems.torchberries);
+		singleTex(TFItems.raw_venison);
+		singleTex(TFItems.cooked_venison);
+		singleTex(TFItems.hydra_chop);
+		singleTex(TFItems.fiery_blood);
+		singleTex(TFItems.fiery_tears);
+		singleTex(TFItems.fiery_ingot);
+		singleTex(TFItems.fiery_helmet);
+		singleTex(TFItems.fiery_chestplate);
+		singleTex(TFItems.fiery_leggings);
+		singleTex(TFItems.fiery_boots);
+		singleTex(TFItems.fiery_sword);
+		singleTex(TFItems.fiery_pickaxe);
+		singleTex(TFItems.steeleaf_ingot);
+		singleTex(TFItems.steeleaf_helmet);
+		singleTex(TFItems.steeleaf_chestplate);
+		singleTex(TFItems.steeleaf_leggings);
+		singleTex(TFItems.steeleaf_boots);
+		singleTex(TFItems.steeleaf_sword);
+		singleTex(TFItems.steeleaf_pickaxe);
+		singleTex(TFItems.steeleaf_axe);
+		singleTex(TFItems.steeleaf_shovel);
+		singleTex(TFItems.steeleaf_hoe);
+		singleTex(TFItems.minotaur_axe_gold);
+		singleTex(TFItems.minotaur_axe);
+		singleTex(TFItems.mazebreaker_pickaxe);
+		singleTex(TFItems.transformation_powder);
+		singleTex(TFItems.raw_meef);
+		singleTex(TFItems.cooked_meef);
+		singleTex(TFItems.meef_stroganoff);
+		singleTex(TFItems.maze_wafer);
+		singleTex(TFItems.magic_map_empty);
+		singleTex(TFItems.maze_map_empty);
+		biggerTex(TFItems.ore_map_empty, prefix("items/" + TFItems.ore_map_empty.getId().getPath()));
+		ModelFile magnetPull1 = generated("ore_magnet_pulling_1", prefix("items/ore_magnet_pulling_1"));
+		ModelFile magnetPull2 = generated("ore_magnet_pulling_2", prefix("items/ore_magnet_pulling_2"));
+		singleTex(TFItems.ore_magnet)
+				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.5).model(magnetPull1).end()
+				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
+		singleTex(TFItems.crumble_horn);
+		singleTex(TFItems.peacock_fan);
+		ModelFile queenAlt =  generated("moonworm_queen_alt", prefix("items/moonworm_queen_alt"));
+		singleTex(TFItems.moonworm_queen).override().predicate(prefix("alt"), 1).model(queenAlt).end();
+		singleTex(TFItems.charm_of_keeping_1);
+		singleTex(TFItems.charm_of_keeping_2);
+		singleTex(TFItems.charm_of_keeping_3);
+		singleTex(TFItems.charm_of_life_1);
+		singleTex(TFItems.charm_of_life_2);
+		singleTex(TFItems.tower_key);
+		generated(TFItems.borer_essence.getId().getPath(), prefix("items/" + TFItems.borer_essence.getId().getPath()), prefix("items/borer_essence_particles"));
+		singleTex(TFItems.carminite);
+		singleTex(TFItems.armor_shard);
+		singleTex(TFItems.armor_shard_cluster);
+		singleTex(TFItems.knightmetal_ingot);
+		biggerTex(TFItems.knightmetal_helmet, prefix("items/" + TFItems.knightmetal_helmet.getId().getPath()));
+		singleTex(TFItems.knightmetal_chestplate);
+		singleTex(TFItems.knightmetal_leggings);
+		singleTex(TFItems.knightmetal_boots);
+		singleTex(TFItems.knightmetal_sword);
+		singleTex(TFItems.knightmetal_pickaxe);
+		singleTex(TFItems.knightmetal_axe);
+		singleTex(TFItems.knightmetal_ring);
+		singleTex(TFItems.phantom_helmet);
+		singleTex(TFItems.phantom_chestplate);
+		singleTex(TFItems.lamp_of_cinders);
+		singleTex(TFItems.alpha_fur);
+		biggerTex(TFItems.yeti_helmet, prefix("items/" + TFItems.yeti_helmet.getId().getPath()));
+		singleTex(TFItems.yeti_chestplate);
+		singleTex(TFItems.yeti_leggings);
+		singleTex(TFItems.yeti_boots);
+		singleTex(TFItems.ice_bomb);
+		singleTex(TFItems.arctic_fur);
+		arcticArmorTex(TFItems.arctic_helmet);
+		arcticArmorTex(TFItems.arctic_chestplate);
+		arcticArmorTex(TFItems.arctic_leggings);
+		arcticArmorTex(TFItems.arctic_boots);
+		singleTex(TFItems.magic_beans);
+		ModelFile triplePulling0 = generated("triple_bow_pulling_0", prefix("items/triple_bow_pulling_0"));
+		ModelFile triplePulling1 = generated("triple_bow_pulling_1", prefix("items/triple_bow_pulling_1"));
+		ModelFile triplePulling2 = generated("triple_bow_pulling_2", prefix("items/triple_bow_pulling_2"));
+		bowTex(TFItems.triple_bow, triplePulling0, triplePulling1, triplePulling2);
+		ModelFile seekerPulling0 = generated("seeker_bow_pulling_0", prefix("items/seeker_bow_pulling_0"));
+		ModelFile seekerPulling1 = generated("seeker_bow_pulling_1", prefix("items/seeker_bow_pulling_1"));
+		ModelFile seekerPulling2 = generated("seeker_bow_pulling_2", prefix("items/seeker_bow_pulling_2"));
+		bowTex(TFItems.seeker_bow, seekerPulling0, seekerPulling1, seekerPulling2);
+		ModelFile icePulling0 = generated("ice_bow_pulling_0", prefix("items/ice_bow_solid_pulling_0"), prefix("items/ice_bow_clear_pulling_0"));
+		ModelFile icePulling1 = generated("ice_bow_pulling_1", prefix("items/ice_bow_solid_pulling_1"), prefix("items/ice_bow_clear_pulling_1"));
+		ModelFile icePulling2 = generated("ice_bow_pulling_2", prefix("items/ice_bow_solid_pulling_2"), prefix("items/ice_bow_clear_pulling_2"));
+		iceBowTex(TFItems.ice_bow, icePulling0, icePulling1, icePulling2);
+		ModelFile enderPulling0 = generated("ender_bow_pulling_0", prefix("items/ender_bow_pulling_0"));
+		ModelFile enderPulling1 = generated("ender_bow_pulling_1", prefix("items/ender_bow_pulling_1"));
+		ModelFile enderPulling2 = generated("ender_bow_pulling_2", prefix("items/ender_bow_pulling_2"));
+		bowTex(TFItems.ender_bow, enderPulling0, enderPulling1, enderPulling2);
+		generated(TFItems.ice_sword.getId().getPath(), prefix("items/ice_sword_solid"), prefix("items/ice_sword_clear"));
+		generated(TFItems.glass_sword.getId().getPath(), prefix("items/glass_sword_solid"), prefix("items/glass_sword_clear"));
+		ModelFile chainThrown = biggerTexString("block_and_chain_thrown", prefix("items/block_and_chain_thrown"));
+		biggerTex(TFItems.block_and_chain, prefix("items/block_and_chain")).override().predicate(prefix("thrown"), 1).model(chainThrown).end();
+		ModelFile cubeThrown = biggerTexString("cube_of_annihilation_thrown", prefix("items/cube_of_annihilation_thrown"));
+		biggerTex(TFItems.cube_of_annihilation, prefix("items/cube_of_annihilation")).override().predicate(prefix("thrown"), 1).model(cubeThrown).end();
+		singleTex(TFItems.cube_talisman);
+		//moon dial is a big boi
+		ModelFile full = phaseTex("moon_dial_full", prefix("items/moon_dial/full"));
+		ModelFile waning_gib = phaseTex("moon_dial_waning_gib", prefix("items/moon_dial/waning_gibbous"));
+		ModelFile quarter3 = phaseTex("moon_dial_quarter3", prefix("items/moon_dial/third_quarter"));
+		ModelFile waning_cres = phaseTex("moon_dial_waning_cres", prefix("items/moon_dial/waning_cresent"));
+		ModelFile unlit = phaseTex("moon_dial_new", prefix("items/moon_dial/new")); //cant use new for the name lmao
+		ModelFile waxing_cres = phaseTex("moon_dial_waxing_cres", prefix("items/moon_dial/waxing_cresent"));
+		ModelFile quarter1 = phaseTex("moon_dial_quarter1", prefix("items/moon_dial/first_quarter"));
+		ModelFile waxing_gib = phaseTex("moon_dial_waxing_gib", prefix("items/moon_dial/waxing_gibbous"));
+		phaseTex(TFItems.moon_dial.getId().getPath(), prefix("items/moon_dial/full"))
+				.override().predicate(new ResourceLocation("phase"), 0).model(full).end()
+				.override().predicate(new ResourceLocation("phase"), 0.125F).model(waning_gib).end()
+				.override().predicate(new ResourceLocation("phase"), 0.25F).model(quarter3).end()
+				.override().predicate(new ResourceLocation("phase"), 0.375F).model(waning_cres).end()
+				.override().predicate(new ResourceLocation("phase"), 0.5F).model(unlit).end()
+				.override().predicate(new ResourceLocation("phase"), 0.625F).model(waxing_cres).end()
+				.override().predicate(new ResourceLocation("phase"), 0.75F).model(quarter1).end()
+				.override().predicate(new ResourceLocation("phase"), 0.875F).model(waxing_gib).end();
+
+		//compat stuff
+		ModelFile freshBook = generated("logbook_0", prefix("items/logbook/fresh"));
+		ModelFile usedBook = generated("logbook_1", prefix("items/logbook/used"));
+		ModelFile smortBook = generated("logbook_2", prefix("items/logbook/knowledgable"));
+		ModelFile masterBook = generated("logbook_3", prefix("items/logbook/supreme"));
+		generated("logbook", prefix("items/logbook/fresh"))
+				.override().predicate(new ResourceLocation("completion"), 0).model(freshBook).end()
+				.override().predicate(new ResourceLocation("completion"), 0.333F).model(usedBook).end()
+				.override().predicate(new ResourceLocation("completion"), 0.666F).model(smortBook).end()
+				.override().predicate(new ResourceLocation("completion"), 1).model(masterBook).end();
+
+		withExistingParent("shader", prefix("item/lunchcase"))
+				.texture("missing", prefix("block/fluffy_cloud"))
+				.texture("face", prefix("block/lunchbox_face"))
+				.texture("side", prefix("block/lunchbox_side"));
+
+		withExistingParent("shader_bag", prefix("item/lunchcase"))
+				.texture("missing", prefix("block/fluffy_cloud"))
+				.texture("face", prefix("block/lunchbox_face"))
+				.texture("side", prefix("block/lunchbox_side"));
+
+		//these models are used as references in other things, they dont have actual items
+		generated("trophy", prefix("items/trophy"));
+		generated("trophy_minor", prefix("items/trophy_minor"));
+		generated("trophy_quest", prefix("items/trophy_quest"));
+		generated("shield", prefix("items/lich_shield_frame"), prefix("items/lich_shield_fill"));
 	}
 
 	private ItemModelBuilder generated(String name, ResourceLocation... layers) {
 		ItemModelBuilder builder = withExistingParent(name, "item/generated");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		return builder;
+	}
+
+	private ItemModelBuilder singleTex(RegistryObject<Item> item) {
+		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()));
+	}
+
+	private ItemModelBuilder biggerTex(RegistryObject<Item> item, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(item.getId().getPath(), "twilightforest:item/util/overlap_gui");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		return builder;
+	}
+
+	private ItemModelBuilder biggerTexString(String name, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(name, "twilightforest:item/util/overlap_gui");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		return builder;
+	}
+
+	private ItemModelBuilder arcticArmorTex(RegistryObject<Item> item) {
+		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()), prefix("items/" + item.getId().getPath() + "_0"));
+	}
+
+	private ItemModelBuilder bowTex(RegistryObject<Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
+		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()))
+				.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
+				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
+				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
+	}
+
+	private ItemModelBuilder iceBowTex(RegistryObject<Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
+		return generated(item.getId().getPath(), prefix("items/ice_bow_solid"), prefix("items/ice_bow_clear"))
+				.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
+				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
+				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
+	}
+
+	private ItemModelBuilder phaseTex(String name, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(name, "twilightforest:item/util/readable");
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}

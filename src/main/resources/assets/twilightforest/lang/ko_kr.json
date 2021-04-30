@@ -247,6 +247,7 @@
   "block.twilightforest.trollvidr": "트롤비더",
   "block.twilightforest.unripe_trollber": "덜익은 트롤버",
   "block.twilightforest.trollber": "트롤버",
+  "block.twilightforest.slider": "미끄럼 함정",
   "block.twilightforest.knightmetal_block": "나이트메탈의 블록",
   "block.twilightforest.huge_lilypad": "거대한 수련 잎",
   "block.twilightforest.huge_waterlily": "거대한 수련",
@@ -917,7 +918,9 @@
   "subtitles.te.jet.active": "Fire Jet flares",
   "subtitles.te.jet.pop": "Fire Jet pops",
   "subtitles.te.smoker.start": "Smoker starts",
-  "subtitles.te.reactor.idle": "Carminite Reactor wooshes",*/
+  "subtitles.te.reactor.idle": "Carminite Reactor wooshes",
+
+  "subtitles.random.slider": "Sliding Trap moves",*/
 
   /*"death.attack.ghastTear": "%1$s was scalded by fiery tears",
   "death.attack.ghastTear.player": "%1$s was scalded by fiery tears while escaping %2$s",
@@ -943,6 +946,14 @@
   "death.attack.fireJet.player": "%1$s accidentally walked into a fire jet while escaping %2$s",
   "death.attack.reactor": "%1$s stood too close to a carminite reactor",
   "death.attack.reactor.player": "%1$s stood too close to a carminite reactor while escaping %2$s",
+  "death.attack.slider": "%1$s was sliced up by a sliding trap",
+  "death.attack.slider.player": "%1$s was sliced up by a sliding trap while escaping %2$s",
+  "death.attack.thorns": "%1$s walked into some thorns",
+  "death.attack.thorns.player": "%1$s walked into some thorns while escaping %2$s",
+  "death.attack.knightmetal": "%1$s was spiked by a knightmetal block",
+  "death.attack.knightmetal.player": "%1$s was spiked by a knightmetal block while escaping %2$s",
+  "death.attack.fiery": "%1$s walked onto a fiery block",
+  "death.attack.fiery.player": "%1$s walked onto a fiery block while escaping %2$s",
 
   "death.attack.axing": "%1$s was chopped up by %2$s",
   "death.attack.axing.item": "%1$s was chopped up by %2$s using %3$s",

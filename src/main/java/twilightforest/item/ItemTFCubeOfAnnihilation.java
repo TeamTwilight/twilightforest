@@ -27,8 +27,7 @@ public class ItemTFCubeOfAnnihilation extends Item {
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity holder, int slot, boolean isSelected) {
 		if (!world.isRemote && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
-			stack.getTag().remove(THROWN_UUID_KEY + "Most");
-			stack.getTag().remove(THROWN_UUID_KEY + "Least");
+			stack.getTag().remove(THROWN_UUID_KEY);
 		}
 	}
 

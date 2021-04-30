@@ -23,6 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -43,6 +44,7 @@ import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
+import twilightforest.item.ItemTFFieryPick;
 import twilightforest.worldgen.biomes.BiomeGrassColors;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
@@ -147,6 +149,11 @@ public class TwilightForestMod {
 		//How do I add a condition serializer as fast as possible? An event that fires really early
 		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
 		TFTreasure.init();
+	}
+
+	@SubscribeEvent
+	public static void registerSmelting(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
+		evt.getRegistry().register(new ItemTFFieryPick.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
 	}
 
 	@SubscribeEvent

@@ -1,0 +1,56 @@
+{
+  "parent": "twilightforest:item/util/readable",
+  "textures": {
+    "layer0": "twilightforest:items/moon_dial/full"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "minecraft:phase": 0.0
+      },
+      "model": "twilightforest:item/moon_dial_full"
+    },
+    {
+      "predicate": {
+        "minecraft:phase": 0.125
+      },
+      "model": "twilightforest:item/moon_dial_waning_gib"
+    },
+    {
+      "predicate": {
+        "minecraft:phase": 0.25
+      },
+      "model": "twilightforest:item/moon_dial_quarter3"
+    },
+    {
+      "predicate": {
+        "minecraft:phase": 0.375
+      },
+      "model": "twilightforest:item/moon_dial_waning_cres"
+    },
+    {
+      "predicate": {
+        "minecraft:phase": 0.5
+      },
+      "model": "twilightforest:item/moon_dial_new"
+    },
+    {
+      "predicate": {
+        "minecraft:phase": 0.625
+      },
+      "model": "twilightforest:item/moon_dial_waxing_cres"
+    },
+    {
+      "predicate": {
+        "minecraft:phase": 0.75
+      },
+      "model": "twilightforest:item/moon_dial_quarter1"
+    },
+    {
+      "predicate": {
+        "minecraft:phase": 0.875
+      },
+      "model": "twilightforest:item/moon_dial_waxing_gib"
+    }
+  ]
+}

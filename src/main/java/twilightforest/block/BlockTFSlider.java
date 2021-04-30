@@ -11,6 +11,7 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -19,8 +20,10 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.TFSounds;
 import twilightforest.entity.EntityTFSlideBlock;
 import twilightforest.entity.TFEntities;
+import twilightforest.util.TFDamageSources;
 
 import java.util.Random;
 
@@ -38,7 +41,6 @@ public class BlockTFSlider extends RotatedPillarBlock {
 
 	protected BlockTFSlider() {
 		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly().notSolid());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0));
 	}
 
@@ -64,9 +66,10 @@ public class BlockTFSlider extends RotatedPillarBlock {
 
 	@Override
 	@Deprecated
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
-			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
+			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
+			//world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.SLIDER, SoundCategory.BLOCKS, 0.75F, 1.5F);
 
 			EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(TFEntities.slider, world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
 			world.addEntity(slideBlock);
@@ -109,7 +112,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 
 	public void scheduleBlockUpdate(World world, BlockPos pos) {
 		int offset = world.getBlockState(pos).get(DELAY);
-		int update = TICK_TIME - ((int) (world.getDayTime() - (offset * OFFSET_TIME)) % TICK_TIME);
+		int update = TICK_TIME - ((int) (world.getGameTime() - (offset * OFFSET_TIME)) % TICK_TIME);
 		world.getPendingBlockTicks().scheduleTick(pos, this, update);
 	}
 
@@ -122,7 +125,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	@Override
 	@Deprecated
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
-		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
+		entity.attackEntityFrom(TFDamageSources.SLIDER, BLOCK_DAMAGE);
 		if (entity instanceof LivingEntity) {
 			double kx = (pos.getX() + 0.5 - entity.getPosX()) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.getPosZ()) * 2.0;

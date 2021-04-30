@@ -69,6 +69,9 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		this.copy(BlockTagGenerator.TWILIGHT_LOGS, TWILIGHT_LOGS);
 		getOrCreateBuilder(ItemTags.LOGS).addTag(TWILIGHT_LOGS);
+		getOrCreateBuilder(ItemTags.LOGS_THAT_BURN)
+				.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS)
+				.addTag(TIME_LOGS).addTag(TRANSFORMATION_LOGS).addTag(MINING_LOGS).addTag(SORTING_LOGS);
 
 		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);

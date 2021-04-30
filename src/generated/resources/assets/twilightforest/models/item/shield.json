@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:items/lich_shield_frame",
+    "layer1": "twilightforest:items/lich_shield_fill"
+  }
+}

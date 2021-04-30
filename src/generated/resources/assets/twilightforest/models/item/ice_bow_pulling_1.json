@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:items/ice_bow_solid_pulling_1",
+    "layer1": "twilightforest:items/ice_bow_clear_pulling_1"
+  }
+}

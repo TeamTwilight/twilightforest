@@ -1,0 +1,22 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "side": "twilightforest:block/slider_h_90",
+    "end":  "twilightforest:block/slider_top",
+    "particle": "twilightforest:block/slider_h_90"
+  },
+  "elements": [
+    {
+      "from": [ 5, 0, 5 ],
+      "to": [ 11, 16, 11 ],
+      "faces": {
+        "down":  { "uv": [ 5, 5, 11, 11 ], "texture": "#end", "cullface": "down" },
+        "up":    { "uv": [ 5, 5, 11, 11 ], "texture": "#end", "cullface": "up"},
+        "north": { "uv": [ 5, 0, 11, 16 ], "texture": "#side"},
+        "south": { "uv": [ 5, 0, 11, 16 ], "texture": "#side"},
+        "west":  { "uv": [ 5, 0, 11, 16 ], "texture": "#side"},
+        "east":  { "uv": [ 5, 0, 11, 16 ], "texture": "#side"}
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "twilightforest:etched_nagastone"
+  },
+  "result": "twilightforest:nagastone_stairs_left",
+  "count": 1
+}

@@ -260,10 +260,12 @@
   "block.twilightforest.giant_obsidian": "Obsidienne géante",
   "block.twilightforest.uberous_soil": "Sol herbeux",
   "block.twilightforest.huge_stalk": "Énorme tige",
-  "block.twilightforest.huge_gloom_block": "Énorme champignon lumieux",
+  "block.twilightforest.huge_mushgloom": "Énorme champignon lumieux",
+  //"block.twilightforest.huge_mushgloom_stem": "Huge Mushgloom Stem",
   "block.twilightforest.trollvidr": "Trollvidr",
   "block.twilightforest.unripe_trollber": "Trollber verte",
-  "block.twilightforest.troll_ber": "Trollber",
+  "block.twilightforest.trollber": "Trollber",
+  "block.twilightforest.slider": "Piège à glissière",
   "block.twilightforest.knightmetal_block": "Bloc de métal de chevalier",
   "block.twilightforest.huge_lilypad": "Énorme nénuphar",
   "block.twilightforest.huge_waterlily": "Énorme fleur à nénuphar",
@@ -943,7 +945,9 @@
   "subtitles.te.jet.active": "Fire Jet flares",
   "subtitles.te.jet.pop": "Fire Jet pops",
   "subtitles.te.smoker.start": "Smoker starts",
-  "subtitles.te.reactor.idle": "Carminite Reactor wooshes",*/
+  "subtitles.te.reactor.idle": "Carminite Reactor wooshes",
+
+  "subtitles.random.slider": "Sliding Trap moves",*/
 
   /*"death.attack.ghastTear": "%1$s was scalded by fiery tears",
   "death.attack.ghastTear.player": "%1$s was scalded by fiery tears while escaping %2$s",
@@ -969,6 +973,14 @@
   "death.attack.fireJet.player": "%1$s accidentally walked into a fire jet while escaping %2$s",
   "death.attack.reactor": "%1$s stood too close to a carminite reactor",
   "death.attack.reactor.player": "%1$s stood too close to a carminite reactor while escaping %2$s",
+  "death.attack.slider": "%1$s was sliced up by a sliding trap",
+  "death.attack.slider.player": "%1$s was sliced up by a sliding trap while escaping %2$s",
+  "death.attack.thorns": "%1$s walked into some thorns",
+  "death.attack.thorns.player": "%1$s walked into some thorns while escaping %2$s",
+  "death.attack.knightmetal": "%1$s was spiked by a knightmetal block",
+  "death.attack.knightmetal.player": "%1$s was spiked by a knightmetal block while escaping %2$s",
+  "death.attack.fiery": "%1$s walked onto a fiery block",
+  "death.attack.fiery.player": "%1$s walked onto a fiery block while escaping %2$s",
 
   "death.attack.axing": "%1$s was chopped up by %2$s",
   "death.attack.axing.item": "%1$s was chopped up by %2$s using %3$s",

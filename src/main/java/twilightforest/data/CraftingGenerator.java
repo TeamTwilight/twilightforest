@@ -119,6 +119,18 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.addCriterion("has_item", hasItem(TFItems.armor_shard.get()))
 				.build(consumer, TwilightForestMod.prefix("material/" + TFItems.armor_shard_cluster.getId().getPath()));
 
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.underbrick_mossy.get(), 1)
+				.addIngredient(Ingredient.fromItems(Blocks.VINE))
+				.addIngredient(Ingredient.fromItems(TFBlocks.underbrick.get()))
+				.addCriterion("has_item", hasItem(TFBlocks.underbrick.get()))
+				.build(consumer, TwilightForestMod.prefix("underbrick_mossy"));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.maze_stone_mossy.get(), 1)
+				.addIngredient(Ingredient.fromItems(Blocks.VINE))
+				.addIngredient(Ingredient.fromItems(TFBlocks.maze_stone_brick.get()))
+				.addCriterion("has_item", hasItem(TFBlocks.maze_stone_brick.get()))
+				.build(consumer, TwilightForestMod.prefix("maze_stone/maze_stone_mossy"));
+
 		ShapelessRecipeBuilder.shapelessRecipe(TFItems.carminite.get())
 				.addIngredient(Ingredient.fromItems(TFItems.borer_essence.get()))
 				.addIngredient(Ingredient.fromItems(TFItems.borer_essence.get()))
@@ -493,13 +505,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.addCriterion("has_item", hasItem(TFBlocks.etched_nagastone_mossy.get()))
 				.build(consumer, locNaga("nagastone_stairs_mossy_reverse"));
 		
-		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.etched_nagastone_mossy.get(), 3)
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.etched_nagastone_mossy.get(), 1)
 			.addIngredient(Ingredient.fromItems(Blocks.VINE))
 			.addIngredient(Ingredient.fromItems(TFBlocks.etched_nagastone.get()))
 			.addCriterion("has_item", hasItem(TFBlocks.etched_nagastone.get()))
 			.build(consumer, locNaga("etched_nagastone_mossy"));
 		
-		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.nagastone_pillar_mossy.get(), 3)
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.nagastone_pillar_mossy.get(), 1)
 			.addIngredient(Ingredient.fromItems(Blocks.VINE))
 			.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_pillar.get()))
 			.addCriterion("has_item", hasItem(TFBlocks.nagastone_pillar.get()))
@@ -622,7 +634,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 	private void crackedStoneRecipes(Consumer<IFinishedRecipe> consumer, String processName, CookingRecipeSerializer<?> process, int smeltingTime) {
 		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFBlocks.nagastone_pillar.get()), TFBlocks.nagastone_pillar_weathered.get(), 0.3f, smeltingTime, process).addCriterion("has_item", hasItem(TFBlocks.nagastone_pillar.get())).build(consumer, TwilightForestMod.prefix("nagastone/" + processName + "_cracked_nagastone_pillar").toString());
 		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFBlocks.etched_nagastone.get()), TFBlocks.etched_nagastone_weathered.get(), 0.3f, smeltingTime, process).addCriterion("has_item", hasItem(TFBlocks.etched_nagastone.get())).build(consumer, TwilightForestMod.prefix("nagastone/" + processName + "_cracked_etched_nagastone").toString());
-		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFBlocks.maze_stone_brick.get()), TFBlocks.maze_stone_cracked.get(), 0.3f, smeltingTime, process).addCriterion("has_item", hasItem(TFBlocks.maze_stone_brick.get())).build(consumer, TwilightForestMod.prefix("mazestone/" + processName + "_cracked_mazestone_brick").toString());
+		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFBlocks.maze_stone_brick.get()), TFBlocks.maze_stone_cracked.get(), 0.3f, smeltingTime, process).addCriterion("has_item", hasItem(TFBlocks.maze_stone_brick.get())).build(consumer, TwilightForestMod.prefix("maze_stone/" + processName + "_maze_stone_cracked").toString());
 		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFBlocks.castle_brick.get()), TFBlocks.castle_brick_cracked.get(), 0.3f, smeltingTime, process).addCriterion("has_item", hasItem(TFBlocks.castle_brick.get())).build(consumer, TwilightForestMod.prefix("castleblock/" + processName + "_cracked_castle_brick").toString());
+		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFBlocks.underbrick.get()), TFBlocks.underbrick_cracked.get(), 0.3f, smeltingTime, process).addCriterion("has_item", hasItem(TFBlocks.underbrick.get())).build(consumer, TwilightForestMod.prefix(processName + "_cracked_underbrick").toString());
 	}
 }

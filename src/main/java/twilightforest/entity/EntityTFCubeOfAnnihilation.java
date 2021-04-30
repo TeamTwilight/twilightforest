@@ -2,24 +2,28 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MinecraftVersion;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
-import twilightforest.network.TFPacketHandler;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.NetworkHooks;
+import twilightforest.client.particle.TFParticleType;
+import twilightforest.item.ItemTFCubeOfAnnihilation;
 import twilightforest.item.TFItems;
-import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.util.WorldUtil;
 
-import java.util.List;
+import java.util.Random;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -85,7 +89,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 				if (canAnnihilate(pos, state)) {
 					this.world.removeBlock(pos, false);
 					this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
-					this.sendAnnihilateBlockPacket(world, pos);
+					this.annihilateParticles(world, pos);
 				} else {
 					this.hasHitObstacle = true;
 				}
@@ -99,9 +103,24 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 		return block.isIn(WHITELIST) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
 	}
 
-	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimensionKey());
-		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAnnihilateBlock(pos));
+	private void annihilateParticles(World world, BlockPos pos) {
+		Random rand = world.getRandom();
+		if(world instanceof ServerWorld) {
+			for (int dx = 0; dx < 3; ++dx) {
+				for (int dy = 0; dy < 3; ++dy) {
+					for (int dz = 0; dz < 3; ++dz) {
+
+						double x = pos.getX() + (dx + 0.5D) / 4;
+						double y = pos.getY() + (dy + 0.5D) / 4;
+						double z = pos.getZ() + (dz + 0.5D) / 4;
+
+						double speed = rand.nextGaussian() * 0.2D;
+
+						((ServerWorld)world).spawnParticle(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -117,11 +136,11 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			// always head towards either the point or towards the player
 			Vector3d destPoint = new Vector3d(this.func_234616_v_().getPosX(), this.func_234616_v_().getPosY() + this.func_234616_v_().getEyeHeight(), this.func_234616_v_().getPosZ());
 
+			double distToPlayer = this.getDistance(this.func_234616_v_());
+
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
-				List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().offset(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()).grow(1.0D, 1.0D, 1.0D));
-
-				if (list.contains(this.func_234616_v_())) {
+				if (distToPlayer < 2F) {
 					this.remove();
 				}
 			} else {
@@ -129,26 +148,22 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			}
 
 			// set motions
-			Vector3d velocity = new Vector3d(this.getPosX() - destPoint.x, (this.getPosY() + this.getHeight() / 2F) - destPoint.y, this.getPosZ() - destPoint.z);
+			Vector3d velocity = new Vector3d(this.getPosX() - destPoint.getX(), (this.getPosY() + this.getHeight() / 2F) - destPoint.getY(), this.getPosZ() - destPoint.getZ());
 
-			addVelocity(-velocity.x, -velocity.y, -velocity.z);
+			setMotion(-velocity.getX(), -velocity.getY(), -velocity.getZ());
 
 			// normalize speed
 			float currentSpeed = MathHelper.sqrt(this.getMotion().getX() * this.getMotion().getX() + this.getMotion().getY() * this.getMotion().getY() + this.getMotion().getZ() * this.getMotion().getZ());
 
 			float maxSpeed = 0.5F;
 
-
 			if (currentSpeed > maxSpeed) {
 				this.setMotion(new Vector3d(
-						this.getMotion().getX() / currentSpeed / maxSpeed,
-						this.getMotion().getY() / currentSpeed / maxSpeed,
-						this.getMotion().getZ() / currentSpeed / maxSpeed));
+						this.getMotion().getX() / (currentSpeed / maxSpeed),
+						this.getMotion().getY() / (currentSpeed / maxSpeed),
+						this.getMotion().getZ() / (currentSpeed / maxSpeed)));
 			} else {
 				float slow = 0.5F;
-//				this.motionX *= slow;
-//				this.motionY *= slow;
-//				this.motionZ *= slow;
 				this.getMotion().mul(slow, slow, slow);
 			}
 
@@ -173,5 +188,10 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			PlayerEntity player = (PlayerEntity) this.func_234616_v_();
 			return !player.isHandActive();
 		}
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

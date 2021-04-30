@@ -114,7 +114,7 @@ public abstract class BlockTFCritter extends DirectionalBlock implements IWaterL
 		Direction facing = state.get(DirectionalBlock.FACING);
 		BlockPos restingPos = pos.offset(facing.getOpposite());
 		BlockState restingOn = world.getBlockState(restingPos);
-		return restingOn.isSolidSide(world, restingPos, facing) || hasEnoughSolidSide(world, pos, facing);
+		return hasEnoughSolidSide(world, restingPos, facing);
 	}
 
 	public abstract ItemStack getSquishResult(); // oh no!

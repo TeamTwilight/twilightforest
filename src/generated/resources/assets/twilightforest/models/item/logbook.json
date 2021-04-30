@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:items/logbook/fresh"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "minecraft:completion": 0.0
+      },
+      "model": "twilightforest:item/logbook_0"
+    },
+    {
+      "predicate": {
+        "minecraft:completion": 0.333
+      },
+      "model": "twilightforest:item/logbook_1"
+    },
+    {
+      "predicate": {
+        "minecraft:completion": 0.666
+      },
+      "model": "twilightforest:item/logbook_2"
+    },
+    {
+      "predicate": {
+        "minecraft:completion": 1.0
+      },
+      "model": "twilightforest:item/logbook_3"
+    }
+  ]
+}

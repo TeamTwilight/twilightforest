@@ -1,7 +1,9 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "#side"
+    "side": "twilightforest:block/slider_v",
+    "end":  "twilightforest:block/slider_top",
+    "particle": "twilightforest:block/slider_v"
   },
   "elements": [
     {

@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.ContainerTFUncrafting;
@@ -141,8 +142,8 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 	private void drawSlotAsBackground(MatrixStack ms, Slot backgroundSlot, Slot appearSlot) {
 
-		int screenX = appearSlot.xPos;
-		int screenY = appearSlot.yPos;
+		int screenX = appearSlot.xPos + guiLeft;
+		int screenY = appearSlot.yPos + guiTop;
 		ItemStack itemStackToRender = backgroundSlot.getStack();
 		itemRenderer.zLevel = 50.0F;
 
@@ -154,7 +155,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		// draw 50% gray rectangle over the item
 		RenderSystem.disableLighting();
 		RenderSystem.disableDepthTest();
-		AbstractGui.fill(ms, screenX, screenY, screenX + 16, screenY + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
+		AbstractGui.fill(ms, appearSlot.xPos, appearSlot.yPos, appearSlot.xPos + 16, appearSlot.yPos + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
 		RenderSystem.enableLighting();
 		RenderSystem.enableDepthTest();
 

@@ -76,7 +76,7 @@
     "dark_plate"           : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:dark_plate"             }]}},
     "dark_door"            : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:dark_door"              }]}},
     "dark_trapdoor"        : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:dark_trapdoor"          }]}},
-    "canopy_sign"          : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:darkwood_sign"          }]}},
+    "dark_sign"            : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:darkwood_sign"          }]}},
     "time_log"             : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:time_log"               }]}},
     "time_wood"            : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:time_wood"              }]}},
     "time_leaves"          : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:time_leaves"            }]}},

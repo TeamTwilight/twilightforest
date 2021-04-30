@@ -129,6 +129,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 		trophyPedestal();
 		auroraBlocks();
+		slider();
 		simpleBlock(TFBlocks.underbrick.get());
 		simpleBlock(TFBlocks.underbrick_cracked.get());
 		simpleBlock(TFBlocks.underbrick_mossy.get());
@@ -320,15 +321,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 					.texture("pane", TwilightForestMod.prefix("block/forcefield_white"));
 
 			getMultipartBuilder(block.get())
-					.part().modelFile(post).addModel().end()
-					.part().modelFile(side).addModel().condition(SixWayBlock.NORTH, true).end()
-					.part().modelFile(side).rotationY(90).addModel().condition(SixWayBlock.EAST, true).end()
-					.part().modelFile(sidealt).addModel().condition(SixWayBlock.SOUTH, true).end()
-					.part().modelFile(sidealt).rotationY(90).addModel().condition(SixWayBlock.WEST, true).end()
-					.part().modelFile(noside).addModel().condition(SixWayBlock.NORTH, false).end()
-					.part().modelFile(noside).rotationY(90).addModel().condition(SixWayBlock.EAST, false).end()
-					.part().modelFile(nosidealt).addModel().condition(SixWayBlock.SOUTH, false).end()
-					.part().modelFile(nosidealt).rotationY(90).addModel().condition(SixWayBlock.WEST, false).end();
+					.part().modelFile(post).uvLock(true).addModel().end()
+					.part().modelFile(side).uvLock(true).addModel().condition(SixWayBlock.NORTH, true).end()
+					.part().modelFile(noside).uvLock(true).addModel().condition(SixWayBlock.NORTH, false).end()
+					.part().modelFile(side).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.EAST, true).end()
+					.part().modelFile(nosidealt).uvLock(true).addModel().condition(SixWayBlock.EAST, false).end()
+					.part().modelFile(sidealt).uvLock(true).addModel().condition(SixWayBlock.SOUTH, true).end()
+					.part().modelFile(nosidealt).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.SOUTH, false).end()
+					.part().modelFile(sidealt).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.WEST, true).end()
+					.part().modelFile(noside).uvLock(true).rotationY(270).addModel().condition(SixWayBlock.WEST, false).end();
 		}
 
 	}
@@ -985,6 +986,41 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
 	}*/
 
+	private void slider() {
+		ModelFile slider = models().getExistingFile(TwilightForestMod.prefix("block/slider"));
+		ModelFile horizSlider = models().getExistingFile(TwilightForestMod.prefix("block/slider_horiz"));
+		getVariantBuilder(TFBlocks.slider.get()).forAllStates(state -> {
+			switch (state.get(BlockTFSlider.AXIS)) {
+				case X:
+					switch(state.get(BlockTFSlider.DELAY)) {
+						case 0:
+						case 1:
+						case 2:
+						default:
+							return ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).rotationY(90).build();
+					}
+				case Y:
+				default:
+					switch(state.get(BlockTFSlider.DELAY)) {
+						case 0:
+						case 1:
+						case 2:
+						default:
+							return ConfiguredModel.builder().modelFile(slider).build();
+					}
+				case Z:
+					switch(state.get(BlockTFSlider.DELAY)) {
+						case 0:
+						case 1:
+						case 2:
+						default:
+							return ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).build();
+					}
+
+			}
+		});
+	}
+
 	private void towerBlocks() {
 		ResourceLocation cube3 = prefix("block/util/cube_all_3_layer");
 		ResourceLocation cubeBt3 = prefix("block/util/cube_bottom_top_3_layer");
@@ -1171,6 +1207,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 	
 	private void thorns() {
+		boolean fixer = Direction.SOUTH.getAxis() == Direction.Axis.Z;
 		ModelFile green = models().withExistingParent(TFBlocks.green_thorns.getId().getPath(), prefix("block/thorns_main"))
 						.texture("side", prefix("block/green_thorns_side"))
 						.texture("end", prefix("block/green_thorns_top"));
@@ -1188,8 +1225,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(greenBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(greenTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
 						.part().modelFile(greenBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(greenTop).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(greenBottom).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(fixer ? greenBottom : greenTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? greenTop : greenBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
 
 		ModelFile brown = models().withExistingParent(TFBlocks.brown_thorns.getId().getPath(), prefix("block/thorns_main"))
 						.texture("side", prefix("block/brown_thorns_side"))
@@ -1208,8 +1245,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(brownBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(brownTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
 						.part().modelFile(brownBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(brownTop).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(brownBottom).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(fixer ? brownBottom : brownTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? brownTop : brownBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
 
 		ModelFile burnt = models().withExistingParent(TFBlocks.burnt_thorns.getId().getPath(), prefix("block/thorns_main"))
 						.texture("side", prefix("block/burnt_thorns_side"))
@@ -1228,8 +1265,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(burntBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(burntTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
 						.part().modelFile(burntBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(burntTop).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(burntBottom).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(fixer ? burntBottom : burntTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? burntTop : burntBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
 	}
 
 	private void auroraBlocks() {

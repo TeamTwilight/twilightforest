@@ -54,4 +54,14 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 
 		return super.isSideInvisible(state, adjacentBlockState, side);
 	}
+
+	@Override
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return 1.0F;
+	}
+
+	@Override
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+		return true;
+	}
 }

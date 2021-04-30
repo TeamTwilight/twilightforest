@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -17,6 +18,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.vector.Vector3d;
@@ -25,7 +28,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFSounds;
+import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -42,7 +47,6 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		super(type, world);
 		this.preventEntitySpawning = true;
 		this.entityCollisionReduction = 1F;
-		//this.yOffset = this.height / 2.0F;
 	}
 
 	public EntityTFSlideBlock(EntityType<? extends EntityTFSlideBlock> type, World world, double x, double y, double z, BlockState state) {
@@ -51,7 +55,6 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		this.myState = state;
 		this.preventEntitySpawning = true;
 		this.entityCollisionReduction = 1F;
-		//this.yOffset = this.height / 2.0F;
 		this.setPosition(x, y, z);
 		this.setMotion(new Vector3d(0, 0, 0));
 		this.prevPosX = x;
@@ -175,7 +178,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	private void damageKnockbackEntities(List<Entity> entities) {
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity) {
-				entity.attackEntityFrom(DamageSource.GENERIC, 5);
+				entity.attackEntityFrom(TFDamageSources.SLIDER, 5);
 
 				double kx = (this.getPosX() - entity.getPosX()) * 2.0;
 				double kz = (this.getPosZ() - entity.getPosZ()) * 2.0;
@@ -185,35 +188,20 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		}
 	}
 
-	/* FIXME
-	@Override
-	public AxisAlignedBB getCollisionBox(Entity entity) {
-		return null;
-	}*/
-
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public boolean canRenderOnFire() {
 		return false;
 	}
 
-	//Atomic: Suppressed deprecation, Ideally I'd use a state string here, but that is more work than I'm willing to put in right now.
-	// TODO: use NBTUtil functions
-	// TODO: Flattening happened. Meta does not exist
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void readAdditional(@Nonnull CompoundNBT compound) {
-		//Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(compound.getString("TileID")));
-		//int meta = compound.getByte("Meta");
-		//this.myState = b.getStateFromMeta(meta);
 		this.slideTime = compound.getInt("Time");
 		dataManager.set(MOVE_DIRECTION, Direction.byIndex(compound.getByte("Direction")));
 	}
 
 	@Override
 	protected void writeAdditional(@Nonnull CompoundNBT compound) {
-		compound.putString("TileID", myState.getBlock().getRegistryName().toString());
-		//compound.putByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
 		compound.putInt("Time", this.slideTime);
 		compound.putByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
 	}

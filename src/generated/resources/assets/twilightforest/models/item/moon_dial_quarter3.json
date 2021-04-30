@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:item/util/readable",
+  "textures": {
+    "layer0": "twilightforest:items/moon_dial/third_quarter"
+  }
+}
