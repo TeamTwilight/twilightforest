@@ -31,7 +31,7 @@ public class TFGenMonolith extends Feature<NoFeatureConfig> {
 		int dir = rand.nextInt(4);
 		int h0, h1, h2, h3;
 
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 2, ht, 2)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 2, ht, 2)) {
 			return false;
 		}
 

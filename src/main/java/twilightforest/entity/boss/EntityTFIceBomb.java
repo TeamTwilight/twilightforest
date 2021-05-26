@@ -4,10 +4,8 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.WaterFluid;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -83,9 +81,6 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		super.tick();
 
 		if (this.hasHit) {
-//			this.motionX *= 0.1D;
-//			this.motionY *= 0.1D;
-//			this.motionZ *= 0.1D;
 			this.getMotion().mul(0.1D, 0.1D, 0.1D);
 
 			this.zoneTimer--;

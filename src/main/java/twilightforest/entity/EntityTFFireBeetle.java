@@ -34,11 +34,9 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(2, new EntityAITFBreathAttack<>(this, 1.0F, 5F, 30, 0.1F));
+		this.goalSelector.addGoal(2, new EntityAITFBreathAttack<>(this, 5F, 30, 0.1F));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0F, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		//this.goalSelector.addGoal(7, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		//this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}

@@ -1,8 +1,10 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.SoundEvents;
@@ -65,12 +67,17 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable implements IRende
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult target) {
+	protected void onImpact(RayTraceResult result) {
 		// only damage living things
-		if (target instanceof EntityRayTraceResult) {
-			if (!world.isRemote && ((EntityRayTraceResult)target).getEntity() instanceof LivingEntity) {
-				((EntityRayTraceResult)target).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), 8);
-				// TODO: damage armor?
+		if (result instanceof EntityRayTraceResult) {
+			Entity target = ((EntityRayTraceResult)result).getEntity();
+			if (!world.isRemote && target instanceof LivingEntity) {
+				target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), 8);
+				//damage armor pieces
+				if(target instanceof PlayerEntity) {
+					for(ItemStack stack : target.getArmorInventoryList())
+						stack.damageItem(rand.nextInt(1), ((PlayerEntity)target), (user) -> user.sendBreakAnimation(stack.getEquipmentSlot()));
+				}
 			}
 		}
 

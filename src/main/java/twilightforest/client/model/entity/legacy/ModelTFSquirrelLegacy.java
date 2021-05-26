@@ -131,7 +131,7 @@ public class ModelTFSquirrelLegacy extends SegmentedModel<EntityTFSquirrel> {
 
 		if (limbSwingAmount > 0.2) {
 			float wiggle = Math.min(limbSwingAmount, 0.6F);
-			this.tail.rotateAngleX = (MathHelper.cos(ageInTicks * 0.6662F) * 1.0F - (float) Math.PI / 3) * wiggle;
+			this.tail.rotateAngleX = (MathHelper.cos(ageInTicks * 0.6662F) - (float) Math.PI / 3) * wiggle;
 			this.fluff2.rotateAngleX = MathHelper.cos(ageInTicks * 0.7774F) * 1.2F * wiggle;
 			this.fluff3.rotateAngleX = MathHelper.cos(ageInTicks * 0.8886F + (float) Math.PI / 2) * 1.4F * wiggle;
 		} else {

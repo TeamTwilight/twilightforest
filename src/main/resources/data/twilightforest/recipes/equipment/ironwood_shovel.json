@@ -13,7 +13,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "tag": "twilightforest:ironwood_ingots"
+      "tag": "twilightforest:ingots/ironwood"
     },
     "X": {
       "tag": "forge:rods/wooden"

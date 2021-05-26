@@ -182,7 +182,6 @@ public class SnowTreePlacer extends Feature<BaseTreeFeatureConfig> {
     private VoxelShapePart func_236403_a_(IWorld p_236403_1_, MutableBoundingBox p_236403_2_, Set<BlockPos> p_236403_3_, Set<BlockPos> p_236403_4_) {
         List<Set<BlockPos>> list = Lists.newArrayList();
         VoxelShapePart voxelshapepart = new BitSetVoxelShapePart(p_236403_2_.getXSize(), p_236403_2_.getYSize(), p_236403_2_.getZSize());
-        int i = 6;
 
         for(int j = 0; j < 6; ++j) {
             list.add(Sets.newHashSet());

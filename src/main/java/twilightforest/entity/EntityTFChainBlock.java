@@ -12,7 +12,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -177,17 +176,6 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 		}
 	}
 
-	private DamageSource getDamageSource() {
-		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
-		if (thrower instanceof PlayerEntity) {
-			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
-		} else if (thrower != null) {
-			return DamageSource.causeMobDamage(thrower);
-		} else {
-			return DamageSource.causeThrownDamage(this, null);
-		}
-	}
-
 	private void affectBlocksInAABB(AxisAlignedBB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 
@@ -265,9 +253,6 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
 
 					// separate the return velocity from the normal bouncy velocity
-//					this.getMotion().getX() = this.velX * (1.0 - age) + (back.x * 2F * age);
-//					this.getMotion().getY() = this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity();
-//					this.getMotion().getZ() = this.velZ * (1.0 - age) + (back.z * 2F * age);
 					this.setMotion(new Vector3d(
 							this.velX * (1.0 - age) + (back.x * 2F * age),
 							this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity(),
@@ -291,16 +276,6 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 			thrower.resetActiveHand();
 		}
 	}
-
-	/*@Override
-	public boolean isMultipartEntity() {
-		return false;
-	}
-
-	@Override
-	public EntityTFBlockGoblin.MultipartGenericsAreDumb[] getParts() {
-		return partsArray;
-	}*/
 
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {

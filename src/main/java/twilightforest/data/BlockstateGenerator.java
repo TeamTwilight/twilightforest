@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
+import team.chisel.ctm.client.util.Dir;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.FireJetVariant;
@@ -47,7 +48,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		builtinEntity(TFBlocks.firefly.get(), "minecraft:block/slime_block");
 		builtinEntity(TFBlocks.moonworm.get(), "minecraft:block/slime_block");
 		builtinEntity(TFBlocks.cicada.get(), "minecraft:block/slime_block");
-		builtinEntity(TFBlocks.keepsake_casket.get(), "minecraft:block/chiseled_stone_bricks");
+		builtinEntity(TFBlocks.keepsake_casket.get(), "minecraft:block/netherite_block");
 
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
 		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
@@ -240,7 +241,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.hedge.get(), ConfiguredModel.builder()
 						.weight(10).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath(), blockTexture(TFBlocks.hedge.get()))).nextModel()
 						.weight(1).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath() + "_rose", prefix("block/" + TFBlocks.hedge.getId().getPath() + "_rose"))).build());
-		simpleBlock(TFBlocks.boss_spawner.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_naga.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_lich.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_hydra.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_ur_ghast.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_knight_phantom.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_snow_queen.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_minoshroom.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_alpha_yeti.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_final_boss.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlockExisting(TFBlocks.firefly_jar.get());
 		simpleBlockExisting(TFBlocks.cicada_jar.get());
 		registerPlantBlocks();
@@ -299,9 +308,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 		builtinEntity(TFBlocks.sort_sign.get(), "twilightforest:block/wood/planks_sort_0");
 		builtinEntity(TFBlocks.sort_wall_sign.get(), "twilightforest:block/wood/planks_sort_0");
 
+		casketStuff();
+		stonePillar();
 	}
 
-	//TODO: Absolutely not a 100% reflection of what existed
 	private void registerForceFields() {
 		ImmutableList<RegistryObject<Block>> forceFields = ImmutableList.of(TFBlocks.force_field_pink, TFBlocks.force_field_blue, TFBlocks.force_field_green, TFBlocks.force_field_purple, TFBlocks.force_field_orange);
 
@@ -442,6 +452,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.with(DirectionalBlock.FACING, Direction.WEST).setModels(new ConfiguredModel(west));
 		getVariantBuilder(b).partialState()
 						.with(DirectionalBlock.FACING, Direction.EAST).setModels(new ConfiguredModel(east));
+	}
+
+	private void casketStuff() {
+		models().withExistingParent("casket_obsidian", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/obsidian")).texture("side", new ResourceLocation("block/obsidian"));
+		models().withExistingParent("casket_stone", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/stone")).texture("side", new ResourceLocation("block/stone"));
+		models().withExistingParent("casket_basalt", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/basalt_top")).texture("side", new ResourceLocation("block/basalt_side"));
 	}
 
 	private void registerSmokersAndJets() {
@@ -985,6 +1001,28 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
 	}*/
+
+	private void stonePillar() {
+		ModelFile main_x = models().withExistingParent("pillar_main_x", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_x")).texture("side_z", prefix("block/stone_twist/twist_x"));
+		ModelFile bottom_x = models().withExistingParent("pillar_bottom_x", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_x"));
+		ModelFile top_x = models().withExistingParent("pillar_top_x", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_x"));
+		ModelFile main_y = models().withExistingParent("pillar_main_y", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_y")).texture("side_z", prefix("block/stone_twist/twist_y"));
+		ModelFile bottom_y = models().withExistingParent("pillar_bottom_y", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_y"));
+		ModelFile top_y = models().withExistingParent("pillar_top_y", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_y"));
+		ModelFile main_z = models().withExistingParent("pillar_main_z", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_x")).texture("side_z", prefix("block/stone_twist/twist_y"));
+		ModelFile bottom_z = models().withExistingParent("pillar_bottom_z", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_z"));
+		ModelFile top_z = models().withExistingParent("pillar_top_z", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_z"));
+		getMultipartBuilder(TFBlocks.stone_twist_thin.get())
+				.part().modelFile(main_x).uvLock(true).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).end()
+				.part().modelFile(top_x).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).condition(SixWayBlock.EAST, false).end()
+				.part().modelFile(bottom_x).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).condition(SixWayBlock.WEST, false).end()
+				.part().modelFile(main_y).uvLock(true).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).end()
+				.part().modelFile(top_y).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).condition(SixWayBlock.UP, false).end()
+				.part().modelFile(bottom_y).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).condition(SixWayBlock.DOWN, false).end()
+				.part().modelFile(main_z).uvLock(true).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).end()
+				.part().modelFile(top_z).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).condition(SixWayBlock.NORTH, false).end()
+				.part().modelFile(bottom_z).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).condition(SixWayBlock.SOUTH, false).end();
+	}
 
 	private void slider() {
 		ModelFile slider = models().getExistingFile(TwilightForestMod.prefix("block/slider"));

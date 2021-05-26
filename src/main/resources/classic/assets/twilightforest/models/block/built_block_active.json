@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/util/cube_all_2_layer_no_shade",
-  "textures": {
-    "all": "twilightforest:block/towerdev_built_on",
-    "all2": "twilightforest:block/tower_device_level_1/towerdev_builder_on_1"
-  }
-}

@@ -1,7 +1,6 @@
 package twilightforest.structures.trollcave;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,9 +19,7 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.gen.placement.DepthAverageConfig;
-import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
@@ -31,7 +28,6 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.worldgen.BlockConstants;
-import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.List;
 import java.util.Random;
@@ -124,18 +120,18 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		// stone stalactites!
 		for (int i = 0; i < 128; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, manager, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, manager, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
 		}
 
 		// uberous!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateAtSurface(world, manager, generator, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
+			generateAtSurface(world, generator, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
 		}
 
 		return true;
@@ -230,7 +226,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	/**
 	 * Make a random stone stalactite
 	 */
-	protected void generateBlockStalactite(ISeedReader world, ChunkGenerator generator, StructureManager manager, Random rand, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateBlockStalactite(ISeedReader world, ChunkGenerator generator, Random rand, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -245,7 +241,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	/**
 	 * Use the generator at the surface above specified coords
 	 */
-	protected void generateAtSurface(ISeedReader world, StructureManager manager, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateAtSurface(ISeedReader world, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = y;
@@ -270,7 +266,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		// treasure!
 		int mid = this.size / 2;
 		this.fillWithBlocks(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);
-		this.fillWithAir(world, sbb, mid - 1, 1, mid - 1, mid + 0, 2, mid + 0);
+		this.fillWithAir(world, sbb, mid - 1, 1, mid - 1, mid, 2, mid);
 		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFTreasure.troll_garden, false, sbb);
 	}
 }

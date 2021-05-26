@@ -59,7 +59,7 @@ public class ComponentTFStrongholdRightTurn extends StructureTFStrongholdCompone
 		placeCornerStatue(world, 6, 1, 6, 3, sbb);
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}

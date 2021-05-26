@@ -169,10 +169,7 @@ public class ModelTFYetiAlpha extends BipedModel<EntityTFYetiAlpha> {
 			this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.66F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
 			this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.66F) * 2.0F * limbSwingAmount * 0.5F;
 
-//            this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-//            this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-
-			this.bipedRightArm.rotateAngleY += MathHelper.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
+            this.bipedRightArm.rotateAngleY += MathHelper.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
 			this.bipedLeftArm.rotateAngleY -= MathHelper.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
 
 			this.bipedRightArm.rotateAngleX += Math.PI * 1.25;

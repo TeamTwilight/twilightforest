@@ -29,6 +29,7 @@ import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFWraith;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
@@ -179,28 +180,32 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		BlockPos fixedSize = innerSize.add(-graveSize.getX(), 0, -graveSize.getZ());
 		BlockPos chestloc = new BlockPos(random.nextInt(2) - (mirror == Mirror.FRONT_BACK ? 1 : 0), 1, 0).rotate(rotation);
 
-		for (int x = 0; x <= fixedSize.getX(); x += (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90 ? 2 : 5))
+		for (int x = 0; x <= fixedSize.getX(); x += (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90 ? 2 : 5)) {
 			for (int z = 0; z <= fixedSize.getZ(); z += (rotation == Rotation.NONE || rotation == Rotation.CLOCKWISE_180 ? 2 : 5)) {
 				if (x == innerSize.getX() / 2 || z == innerSize.getZ() / 2)
 					continue;
 				BlockPos placement = fixed.add(x, -2, z);
 				Pair<GraveType, Template> grave = graves.get(rand.nextInt(graves.size()));
 				grave.getValue().func_237146_a_(world, placement, placement, placementsettings, random, flags);
-				data.addAll(grave.getValue().func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
+				data.addAll(grave.getValue().func_215381_a(placement, placementsettings, Blocks.STRUCTURE_BLOCK));
 				if (grave.getKey() == GraveType.Full) {
 					if (random.nextBoolean()) {
-						if (random.nextInt(3) == 0)
-							placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation));
-						trap.func_237146_a_(world, placement, placement, placementsettings, random, flags);
+						if (random.nextInt(3) == 0) {
+							placement = placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation));
+							trap.func_237146_a_(world, placement, placement, placementsettings, random, flags);
+						}
 						data.addAll(trap.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
-						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().with(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags))
+						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().with(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags)) {
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
-						/*EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith, world.getWorld());
-						wraith.setPositionAndUpdate(placement.getX(), placement.getY(), placement.getZ());
-						world.addEntity(wraith);*/ // TODO
+							world.setBlockState(placement.add(chestloc).down(), Blocks.MOSSY_COBBLESTONE.getDefaultState(), 3);
+						}
+						EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith, world.getWorld());
+						wraith.setPosition(placement.getX(), placement.getY(), placement.getZ());
+						world.addEntity(wraith);
 					}
 				}
 			}
+		}
 
 		data.forEach(info -> {
 			if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA) {

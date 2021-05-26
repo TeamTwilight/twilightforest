@@ -1,6 +1,8 @@
 {
   "result": {
-    "item": "twilightforest:ironwood_hoe"
+    "nbt": "{Enchantments:[{lvl:1s,id:\"minecraft:efficiency\"}]}",
+    "item": "twilightforest:ironwood_hoe",
+    "type": "minecraft:item_nbt"
   },
   "group": "ironwood_tool",
   "pattern": [
@@ -11,7 +13,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "tag": "twilightforest:ironwood_ingots"
+      "tag": "twilightforest:ingots/ironwood"
     },
     "X": {
       "tag": "forge:rods/wooden"

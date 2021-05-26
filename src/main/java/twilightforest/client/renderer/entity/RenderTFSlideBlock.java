@@ -1,8 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.client.Minecraft;
@@ -11,7 +9,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -19,8 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.data.IModelData;
-import org.lwjgl.opengl.GL11;
 import twilightforest.entity.EntityTFSlideBlock;
 
 import java.util.Random;

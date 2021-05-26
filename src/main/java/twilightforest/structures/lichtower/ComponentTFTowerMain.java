@@ -224,7 +224,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 
 		// place platform
-		int floorLevel = 0 + flight * 5;
+		int floorLevel = flight * 5;
 		BlockState crossingfloor = rand.nextBoolean() ? Blocks.SMOOTH_STONE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE) : Blocks.BIRCH_PLANKS.getDefaultState();
 		for (int dx = 6; dx <= 8; dx++) {
 			for (int dz = 4; dz <= 10; dz++) {
@@ -299,7 +299,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		decoratePaintings(world, rand, floorLevel, sbb);
 
 		// seems like we should have a spawner
-		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
+		setBlockState(world, TFBlocks.boss_spawner_lich.get().getDefaultState(), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
 	protected void makeTowerPaintings(ISeedReader world, Random rand, MutableBoundingBox sbb) {
@@ -389,41 +389,41 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		int cy = floorLevel + 4;
 		int cz = size / 2;
 
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 2, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 2, cy, cz, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz + 2, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx, cy, cz + 2, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 2, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 2, cy, cz, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz - 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 2, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx, cy, cz - 2, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz - 1, sbb);
 
 		cy++;
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 2, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 1, cy, cz, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 2, cy, cz, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz + 2, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx, cy, cz + 2, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 2, cy, cz + 0, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx - 1, cy, cz, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 2, cy, cz, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy, cz - 1, sbb);
-		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, cy, cz - 1, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz - 2, sbb);
+		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx, cy, cz - 2, sbb);
 		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz - 1, sbb);
 
 		cy++;
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz + 1, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy, cz + 0, sbb);
-		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 0, cy, cz - 1, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx + 1, cy, cz, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx, cy, cz + 1, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx - 1, cy, cz, sbb);
+		setBlockState(world, Blocks.TORCH.getDefaultState(), cx, cy, cz - 1, sbb);
 
 		for (int y = floorLevel + 5; y < height - 1; y++) {
-			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx + 0, y, cz + 0, sbb);
+			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), cx, y, cz, sbb);
 		}
 	}
 

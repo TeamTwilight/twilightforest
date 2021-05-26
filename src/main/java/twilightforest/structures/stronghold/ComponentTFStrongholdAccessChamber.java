@@ -66,10 +66,10 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		this.fillWithAir(world, sbb, 3, -2, 3, 5, 2, 5);
 
 		// stairs surrounding shaft
-		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), AIR, false);
-		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), rotation, false), AIR, false);
-		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), AIR, false);
-		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_90.rotate(Direction.WEST), rotation, false), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), false), AIR, false);
+		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), false), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), false), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_90.rotate(Direction.WEST), false), AIR, false);
 
 		// pillar
 		this.setBlockState(world, deco.pillarState, 2, 0, 2, sbb);

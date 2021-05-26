@@ -6,8 +6,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.BushBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -16,6 +18,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -29,6 +33,8 @@ import twilightforest.enums.PlantVariant;
 import twilightforest.network.PacketSpawnFallenLeafFrom;
 import twilightforest.network.TFPacketHandler;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class BlockTFPlant extends BushBlock {
@@ -179,5 +185,16 @@ public class BlockTFPlant extends BushBlock {
 			} else if (world instanceof ServerWorld)
 				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new PacketSpawnFallenLeafFrom(pos, entityIn.getMotion()));
 		}
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		if(stack.getItem() == TFBlocks.clover_patch.get().asItem()) {
+			tooltip.add(new TranslationTextComponent("twilightforest.misc.nyi"));
+		} else if (stack.getItem() == TFBlocks.moss_patch.get().asItem()) {
+			tooltip.add(new TranslationTextComponent("twilightforest.misc.wip0"));
+			tooltip.add(new TranslationTextComponent("twilightforest.misc.wip1"));
+		}
+		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 }

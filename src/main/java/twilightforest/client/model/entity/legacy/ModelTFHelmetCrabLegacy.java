@@ -205,10 +205,10 @@ public class ModelTFHelmetCrabLegacy extends SegmentedModel<EntityTFHelmetCrab> 
 		float f8 = 0.3926991F;
 		//this.Leg1.rotateAngleY = f8 * 2.0F + f7;
 		//this.Leg2.rotateAngleY = -f8 * 2.0F - f7;
-		this.Leg3.rotateAngleY = f8 * 1.0F + f7;
-		this.Leg4.rotateAngleY = -f8 * 1.0F - f7;
-		this.Leg5.rotateAngleY = -f8 * 1.0F + f7;
-		this.Leg6.rotateAngleY = f8 * 1.0F - f7;
+		this.Leg3.rotateAngleY = f8 + f7;
+		this.Leg4.rotateAngleY = -f8 - f7;
+		this.Leg5.rotateAngleY = -f8 + f7;
+		this.Leg6.rotateAngleY = f8 - f7;
 		//this.Leg7.rotateAngleY = -f8 * 2.0F + f7;
 		this.Leg8.rotateAngleY = f8 * 2.0F - f7;
 		float f10 = -(MathHelper.cos(limbSwing * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * limbSwingAmount;

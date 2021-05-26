@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFSlimeBeetle;
 import twilightforest.entity.EntityTFSwarmSpider;
 
 public class RenderTFSwarmSpider extends SpiderRenderer<EntityTFSwarmSpider> {

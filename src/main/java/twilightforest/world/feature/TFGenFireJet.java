@@ -21,7 +21,7 @@ public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {
 	@Override
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 
-		if(!FeatureUtil.isAreaSuitable(world, rand, pos, 5, 2, 5)) return false;
+		if(!FeatureUtil.isAreaSuitable(world, pos, 5, 2, 5)) return false;
 
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.add(

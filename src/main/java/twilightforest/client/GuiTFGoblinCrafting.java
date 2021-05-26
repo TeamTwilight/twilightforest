@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.ContainerTFUncrafting;
@@ -34,12 +33,12 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 	protected void init() {
 		super.init();
 
-		this.buttons.add(new CycleButton(guiLeft + 40, guiTop + 22, true, button -> {
+		this.addButton(new CycleButton(guiLeft + 40, guiTop + 22, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(0));
 			container.unrecipeInCycle++;
 			container.onCraftMatrixChanged(container.tinkerInput);
 		}));
-		this.buttons.add(new CycleButton(guiLeft + 40, guiTop + 55, false, button -> {
+		this.addButton(new CycleButton(guiLeft + 40, guiTop + 55, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(1));
 			container.unrecipeInCycle--;
 			container.onCraftMatrixChanged(container.tinkerInput);
@@ -47,12 +46,12 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 		//this.buttonList.add(new ModeButton(uiLeft + 7, guiTop + 57));
 
-		this.buttons.add(new CycleButtonMini(guiLeft + 27, guiTop + 56, true, button -> {
+		this.addButton(new CycleButtonMini(guiLeft + 27, guiTop + 56, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(2));
 			container.ingredientsInCycle++;
 			container.onCraftMatrixChanged(container.tinkerInput);
 		}));
-		this.buttons.add(new CycleButtonMini(guiLeft + 27, guiTop + 63, false, button -> {
+		this.addButton(new CycleButtonMini(guiLeft + 27, guiTop + 63, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(3));
 			container.ingredientsInCycle--;
 			container.onCraftMatrixChanged(container.tinkerInput);
@@ -60,12 +59,12 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 		//this.buttonList.add(new RefreshButton(uiLeft + 26, guiTop + 57));
 
-		this.buttons.add(new CycleButton(guiLeft + 121, guiTop + 22, true, button -> {
+		this.addButton(new CycleButton(guiLeft + 121, guiTop + 22, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(4));
 			container.unrecipeInCycle++;
 			container.onCraftMatrixChanged(container.assemblyMatrix);
 		}));
-		this.buttons.add(new CycleButton(guiLeft + 121, guiTop + 55, false, button -> {
+		this.addButton(new CycleButton(guiLeft + 121, guiTop + 55, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(5));
 			container.unrecipeInCycle--;
 			container.onCraftMatrixChanged(container.assemblyMatrix);
@@ -115,28 +114,26 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 		int costVal = tfContainer.getUncraftingCost();
 		if (costVal > 0) {
+			int color;
+			String cost = "" + costVal;
 			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.isCreativeMode) {
-				int color = 0xA00000;
-				String cost = "" + costVal;
-				fontRendererObj.drawStringWithShadow(ms, cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+				color = 0xA00000;
 			} else {
-				int color = 0x80FF20;
-				String cost = "" + costVal;
-				fontRendererObj.drawStringWithShadow(ms, cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+				color = 0x80FF20;
 			}
+			fontRendererObj.drawStringWithShadow(ms, cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 		}
 
 		costVal = tfContainer.getRecraftingCost();
 		if (costVal > 0) {
+			int color;
+			String cost = "" + costVal;
 			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.isCreativeMode) {
-				int color = 0xA00000;
-				String cost = "" + costVal;
-				fontRendererObj.drawStringWithShadow(ms, cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+				color = 0xA00000;
 			} else {
-				int color = 0x80FF20;
-				String cost = "" + costVal;
-				fontRendererObj.drawStringWithShadow(ms, cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+				color = 0x80FF20;
 			}
+			fontRendererObj.drawStringWithShadow(ms, cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 		}
 	}
 
@@ -236,11 +233,6 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 				this.blit(ms, this.x, this.y, textureX, textureY, this.width, this.height);
 			}
-		}
-
-		@Override
-		public void onPress() {
-			TFPacketHandler.CHANNEL.sendToServer(new PacketUncraftingGui(this.up ? 2 : 3));
 		}
 	}
 

@@ -14,19 +14,16 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFTomeBolt;
+import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
 
 public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob {
-
-	public static final ResourceLocation HURT_LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome_hurt");
 
 	public EntityTFDeathTome(EntityType<? extends EntityTFDeathTome> type, World world) {
 		super(type, world);
@@ -70,7 +67,7 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 			if (!world.isRemote) {
 				LootContext ctx = getLootContextBuilder(true, src).build(LootParameterSets.ENTITY);
 
-				world.getServer().getLootTableManager().getLootTableFromLocation(HURT_LOOT_TABLE).generate(ctx, s -> entityDropItem(s, 1.0F));
+				world.getServer().getLootTableManager().getLootTableFromLocation(TFTreasure.DEATH_TOME_HURT).generate(ctx, s -> entityDropItem(s, 1.0F));
 			}
 			return true;
 		} else {

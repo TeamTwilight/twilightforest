@@ -1,8 +1,17 @@
 {
   "config": {
     "feature": {
-      "config": {},
-      "type": "twilightforest:druid_hut"
+      "config": {
+        "feature": {
+          "config": {},
+          "type": "twilightforest:druid_hut"
+        },
+        "decorator": {
+          "config": {},
+          "type": "twilightforest:nostructure"
+        }
+      },
+      "type": "minecraft:decorated"
     },
     "decorator": {
       "config": {

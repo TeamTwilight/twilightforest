@@ -123,7 +123,7 @@ public class EntityTFHydra extends MobEntity implements IMob {
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
+			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner_hydra.get().getDefaultState());
 			remove();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {

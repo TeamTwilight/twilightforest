@@ -64,22 +64,10 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			int y = 48;
 			for (int x = 5; x < this.size - 4; x += 2) {
-//	        	for (int wy = 0; wy < 15; wy++) {
-//		       		fieldMeta = rand.nextInt(4) + 1;
-//	        		this.setBlockStateRotated(world, fieldBlock, fieldMeta, x, y + wy, 0, rotation, sbb);
-//	        	}
-//	        	fieldMeta = rand.nextInt(5);
 				this.fillBlocksRotated(world, sbb, x, y, 0, x, y + 14, 0, fieldBlock, rotation);
 			}
 			y = 24;
 			for (int x = 1; x < this.size - 1; x += 8) {
-//	        		for (int wy = 0; wy < 15; wy++) {
-//		        		fieldMeta = rand.nextInt(4) + 1;
-//	        			this.setBlockStateRotated(world, fieldBlock, fieldMeta, x, y + wy, 0, rotation, sbb);
-//		        		fieldMeta = rand.nextInt(4) + 1;
-//	        			this.setBlockStateRotated(world, fieldBlock, fieldMeta, x + 2, y + wy, 0, rotation, sbb);
-//	        		}
-//	        		fieldMeta = rand.nextInt(5);
 				this.fillBlocksRotated(world, sbb, x, y, 0, x, y + 14, 0, fieldBlock, rotation);
 //	        		fieldMeta = rand.nextInt(5);
 				this.fillBlocksRotated(world, sbb, x + 2, y, 0, x + 2, y + 14, 0, fieldBlock, rotation);

@@ -32,12 +32,7 @@ public class ModelTFCubeOfAnnihilation extends SegmentedModel<EntityTFCubeOfAnni
 		boxZ.setRotationPoint(0F, 0F, 0F);
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
-
-	@Override
+    @Override
 	public Iterable<ModelRenderer> getParts() {
 		return ImmutableList.of(
 				box,

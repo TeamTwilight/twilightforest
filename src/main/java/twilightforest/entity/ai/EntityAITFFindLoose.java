@@ -16,15 +16,8 @@ import java.util.List;
 public class EntityAITFFindLoose extends Goal {
 	protected final CreatureEntity creature;
 	private final double speed;
-	//TODO: Lots of unused
-	private double targetX;
-	private double targetY;
-	private double targetZ;
-	private double pitch;
-	private double yaw;
 	protected ItemEntity closestItem;
 	private int delayTemptCounter;
-	private boolean isRunning;
 	private final Ingredient temptItem;
 
 	public EntityAITFFindLoose(CreatureEntity creature, double speed, Ingredient temptItem) {
@@ -60,10 +53,6 @@ public class EntityAITFFindLoose extends Goal {
 
 	@Override
 	public void startExecuting() {
-		this.targetX = this.closestItem.getPosX();
-		this.targetY = this.closestItem.getPosY();
-		this.targetZ = this.closestItem.getPosZ();
-		this.isRunning = true;
 	}
 
 	@Override
@@ -71,7 +60,6 @@ public class EntityAITFFindLoose extends Goal {
 		this.closestItem = null;
 		this.creature.getNavigator().clearPath();
 		this.delayTemptCounter = 100;
-		this.isRunning = false;
 	}
 
 	@Override
@@ -83,9 +71,5 @@ public class EntityAITFFindLoose extends Goal {
 			this.creature.getNavigator().tryMoveToEntityLiving(this.closestItem, this.speed);
 		}
 
-	}
-
-	public boolean isRunning() {
-		return this.isRunning;
 	}
 }

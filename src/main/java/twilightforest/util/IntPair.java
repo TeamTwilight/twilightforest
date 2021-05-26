@@ -6,8 +6,4 @@ public final class IntPair {
 
 	public IntPair() {}
 
-	public IntPair(int x, int z) {
-		this.x = x;
-		this.z = z;
-	}
 }

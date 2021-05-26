@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:deadrock",
+    "twilightforest:deadrock_cracked",
+    "twilightforest:deadrock_weathered",
+    "twilightforest:castle_brick",
+    "twilightforest:castle_brick_cracked",
+    "twilightforest:castle_brick_frame",
+    "twilightforest:castle_brick_mossy",
+    "twilightforest:castle_brick_roof",
+    "twilightforest:castle_brick_worn",
+    "twilightforest:castle_rune_brick_blue",
+    "twilightforest:castle_rune_brick_purple",
+    "twilightforest:castle_rune_brick_yellow",
+    "twilightforest:castle_rune_brick_pink",
+    "twilightforest:force_field_pink",
+    "twilightforest:force_field_orange",
+    "twilightforest:force_field_green",
+    "twilightforest:force_field_blue",
+    "twilightforest:force_field_purple",
+    "twilightforest:brown_thorns",
+    "twilightforest:green_thorns"
+  ]
+}

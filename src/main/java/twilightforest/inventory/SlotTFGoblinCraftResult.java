@@ -11,14 +11,12 @@ public class SlotTFGoblinCraftResult extends CraftingResultSlot {
 	private final PlayerEntity player;
 	private final IInventory inputSlot;
 	private final InventoryTFGoblinUncrafting uncraftingMatrix;
-	private final CraftingInventory assemblyMatrix;
 
 	public SlotTFGoblinCraftResult(PlayerEntity player, IInventory input, IInventory uncraftingMatrix, IInventory assemblyMatrix, IInventory result, int slotIndex, int x, int y) {
 		super(player, (CraftingInventory) assemblyMatrix, result, slotIndex, x, y);
 		this.player = player;
 		this.inputSlot = input;
 		this.uncraftingMatrix = (InventoryTFGoblinUncrafting) uncraftingMatrix;
-		this.assemblyMatrix = (CraftingInventory) assemblyMatrix;
 	}
 
 	@Override

@@ -2,26 +2,20 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFAbstractTrophy;
 import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.BlockTFTrophyWall;
 import twilightforest.block.TFBlocks;
-import twilightforest.client.model.item.BuiltInItemModel;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.enums.BossVariant;
 import twilightforest.tileentity.TileEntityTFTrophy;
@@ -30,8 +24,6 @@ import javax.annotation.Nullable;
 
 //Legacy lines are commented out and labeled
 public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFTrophy> {
-	
-	public static class DummyTile extends TileEntityTFTrophy {}
 
 	private static final ModelTFHydraHeadTrophy hydraHead = new ModelTFHydraHeadTrophy();
 	private static final ResourceLocation textureLocHydra = TwilightForestMod.getModelTexture("hydra4.png");
@@ -60,52 +52,19 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
-	private final ModelResourceLocation itemModelLocation;
-
 	public TileEntityTFTrophyRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
 		super(rendererDispatcherIn);
-		this.itemModelLocation = null;
-	}
-	
-	//TODO: Unless you can get a dispatcher here, we can't do this.
-//	public TileEntityTFTrophyRenderer(ModelResourceLocation itemModelLocation) {
-//		this.itemModelLocation = itemModelLocation;
-//		MinecraftForge.EVENT_BUS.register(this);
-//	}
-	
-	@SubscribeEvent
-	public void onModelBake(ModelBakeEvent event) {
-		event.getModelRegistry().put(itemModelLocation, new BakedModel());
-	}
-
-	private class BakedModel extends BuiltInItemModel {
-
-		BakedModel() {
-			super("minecraft:blocks/soul_sand");
-		}
-
-		@Override
-		protected void setItemStack(ItemStack stack) {
-			TileEntityTFTrophyRenderer.stack = stack;
-		}
-
-		@Override
-		protected void setTransform(ItemCameraTransforms.TransformType transform) {
-			TileEntityTFTrophyRenderer.this.transform = transform;
-		}
 	}
 
 	public static ItemStack stack = new ItemStack(TFBlocks.naga_trophy.get());
-	private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
-
 	@Override
 	public void render(TileEntityTFTrophy tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		float f = tileEntityIn.getAnimationProgress(partialTicks);
 		BlockState blockstate = tileEntityIn.getBlockState();
 		boolean flag = blockstate.getBlock() instanceof BlockTFTrophyWall;
-		IVertexBuilder vertex = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(textureLocKnightPhantomArmor));
 		Direction direction = flag ? blockstate.get(BlockTFTrophyWall.FACING) : null;
 		float f1 = 22.5F * (flag ? (2 + direction.getHorizontalIndex()) * 4 : blockstate.get(BlockTFTrophy.ROTATION));
+		matrixStackIn.push();
 		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.HYDRA && flag) {
 			//FIXME: both rotation points are legacy
 			//hydraHead.mouth.setRotationPoint(0F, 15F, -19F);
@@ -114,20 +73,18 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			//hydraHead.mouth.setRotationPoint(0F, 10F, -20F);
 			hydraHead.openMouthForTrophy(0.0F);
 		}
-		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST && flag) {
-			ghastHead.setTranslate(matrixStackIn, 0F, .5F, 0F);
-		} else if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST && !flag) {
-			ghastHead.setTranslate(matrixStackIn, 0F, 1F, 0F);
+		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST) {
+			ghastHead.setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
 		render(direction, f1, ((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant(), f, matrixStackIn, bufferIn, combinedLightIn);
+		matrixStackIn.pop();
 	}
 
 	public static void render(@Nullable Direction directionIn, float y, BossVariant variant, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight) {
 		matrixStackIn.push();
-		if (directionIn == null) {
+		if (directionIn == null || variant == BossVariant.UR_GHAST) {
 			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
 		} else {
-			float f = 0.25F;
 			matrixStackIn.translate(0.5F - directionIn.getXOffset() * 0.25F, 0.25D, 0.5F - directionIn.getZOffset() * 0.25F);
 		}
 		matrixStackIn.scale(-1.0F, -1.0F, 1.0F);

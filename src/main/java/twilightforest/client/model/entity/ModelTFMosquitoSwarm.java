@@ -64,14 +64,6 @@ public class ModelTFMosquitoSwarm extends SegmentedModel<EntityTFMosquitoSwarm> 
 		addBugsToNodes(node6);
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		core.render(scale / 2.0F);
-////		node1.render(scale);
-////		node2.render(scale);
-////		node3.render(scale);
-//	}
-
 	@Override
 	public Iterable<ModelRenderer> getParts() {
 		return ImmutableList.of(core, node1, node2, node3, node4, node5, node6);

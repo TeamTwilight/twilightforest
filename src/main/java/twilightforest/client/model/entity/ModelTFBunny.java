@@ -66,21 +66,12 @@ public class ModelTFBunny extends SegmentedModel<EntityTFBunny> {
 		head.setRotationPoint(0F, 22F, -1F);
 		setRotation(head, 0F, 0F, 0F);
 		head.mirror = true;
-		//head.addBox("head", -2F, -4F, -3F, 4, 4, 4);
-		//head.addBox("ear2", -2.5F, -8F, -0.5F, 2, 4, 1);
-		//head.addBox("ear1", 0.5F, -8F, -0.5F, 2, 4, 1);
-		head.setTextureOffset(0, 0).addBox(-2F, -4F, -3F, 4, 4, 4);
+        head.setTextureOffset(0, 0).addBox(-2F, -4F, -3F, 4, 4, 4);
 		head.setTextureOffset(16, 0).addBox(-2.5F, -8F, -0.5F, 2, 4, 1);
 		head.setTextureOffset(16, 0).addBox(0.5F, -8F, -0.5F, 2, 4, 1);
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
-
-	@Override
+    @Override
 	public Iterable<ModelRenderer> getParts() {
 		return ImmutableList.of(
 				tail,

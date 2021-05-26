@@ -9,7 +9,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFNaga;
 import twilightforest.entity.boss.EntityTFNagaSegment;
 
-//scaling was commented out since textures are bigger now
+//FIXME legacy: scaling was commented out since textures are bigger now
 public class RenderTFNagaSegment<T extends EntityTFNagaSegment> extends TFPartRenderer<T, ModelTFNaga<T>> {
 	private static final ResourceLocation part_TextureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
 

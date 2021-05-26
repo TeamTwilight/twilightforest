@@ -1,0 +1,168 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 4,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:iron_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:gunpowder"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:ironwood_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:milk_bucket"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 12.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:maze_wafer"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 5.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:firefly"
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 6.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:charm_of_keeping_1"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_pickaxe"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:ironwood_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:ironwood_sword"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:maze_map_focus"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 3.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:tnt"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Potion:\"minecraft:strong_healing\"}"
+            }
+          ],
+          "name": "minecraft:potion"
+        }
+      ]
+    }
+  ]
+}

@@ -19,12 +19,8 @@ public class TFBiomeFeatures {
 	
 	public static final RegistryObject<Feature<NoFeatureConfig>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () ->
 			new TFGenBigMushgloom(NoFeatureConfig.field_236558_a_));
-	public static final RegistryObject<Feature<NoFeatureConfig>> CANOPY_MUSHROOM = FEATURES.register("canopy_mushroom", () ->
-			new TFGenCanopyMushroom(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> CANOPY_OAK = FEATURES.register("canopy_oak", () ->
 			new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final RegistryObject<Feature<TFTreeFeatureConfig>> CANOPY_TREE = FEATURES.register("canopy_tree", () ->
-			new TFGenCanopyTree(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<CaveStalactiteConfig>> CAVE_STALACTITE = FEATURES.register("cave_stalactite", () ->
 			new TFGenCaveStalactite(CaveStalactiteConfig.caveStalactiteCodec));
 	public static final RegistryObject<Feature<BaseTreeFeatureConfig>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
@@ -45,8 +41,6 @@ public class TFBiomeFeatures {
 			new TFGenGraveyard(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> GROVE_RUINS = FEATURES.register("grove_ruins", () ->
 			new TFGenGroveRuins(NoFeatureConfig.field_236558_a_));
-	public static final RegistryObject<Feature<NoFeatureConfig>> HANGING_LAMPS = FEATURES.register("hanging_lamps", () ->
-			new TFGenHangingLamps(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> HOLLOW_STUMP = FEATURES.register("hollow_stump", () ->
 			new TFGenHollowStump(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> HOLLOW_TREE = FEATURES.register("hollow_tree", () ->
@@ -57,10 +51,6 @@ public class TFBiomeFeatures {
 			new TFGenHugeWaterLily(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<BlockStateFeatureConfig>> LAMPPOSTS = FEATURES.register("lampposts", () ->
 			new TFGenLampposts(BlockStateFeatureConfig.field_236455_a_));
-	public static final RegistryObject<Feature<TFTreeFeatureConfig>> LARGE_WINTER_TREE = FEATURES.register("large_winter_tree", () ->
-			new TFGenLargeWinter(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final RegistryObject<Feature<TFTreeFeatureConfig>> MANGROVE_TREE = FEATURES.register("mangrove_tree", () ->
-			new TFGenMangroveTree(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> MINERS_TREE = FEATURES.register("miners_tree", () ->
 			new TFGenMinersTree(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<NoFeatureConfig>> MONOLITH = FEATURES.register("monolith", () ->
@@ -69,12 +59,8 @@ public class TFBiomeFeatures {
 			new TFGenMyceliumBlob(SphereReplaceConfig.field_236516_a_));
 	public static final RegistryObject<Feature<CaveStalactiteConfig>> OUTSIDE_STALAGMITE = FEATURES.register("outside_stalagmite", () ->
 			new TFGenOutsideStalagmite(CaveStalactiteConfig.caveStalactiteCodec));
-	public static final RegistryObject<Feature<NoFeatureConfig>> PENGUINS = FEATURES.register("penguins", () ->
-			new TFGenPenguins(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> PLANT_ROOTS = FEATURES.register("plant_roots", () ->
 			new TFGenPlantRoots(NoFeatureConfig.field_236558_a_));
-	public static final RegistryObject<Feature<TFTreeFeatureConfig>> SORTING_TREE = FEATURES.register("sorting_tree", () ->
-			new TFGenSortingTree(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<NoFeatureConfig>> STONE_CIRCLE = FEATURES.register("stone_circle", () ->
 			new TFGenStoneCircle(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> THORNS = FEATURES.register("thorns", () ->
@@ -83,8 +69,6 @@ public class TFBiomeFeatures {
 			new TFGenTorchBerries(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> TREE_OF_TIME = FEATURES.register("tree_of_time", () ->
 			new TFGenTreeOfTime(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final RegistryObject<Feature<TFTreeFeatureConfig>> TREE_OF_TRANSFORMATION = FEATURES.register("tree_of_transformation", () ->
-			new TFGenTreeOfTransformation(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<NoFeatureConfig>> TROLL_ROOTS = FEATURES.register("troll_roots", () ->
 			new TFGenTrollRoots(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> WEBS = FEATURES.register("webs", () ->

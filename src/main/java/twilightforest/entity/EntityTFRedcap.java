@@ -7,7 +7,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -33,11 +32,6 @@ public class EntityTFRedcap extends MonsterEntity {
 
 	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world) {
 		super(type, world);
-	}
-
-	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world, double x, double y, double z) {
-		this(type, world);
-		this.setPosition(x, y, z);
 	}
 
 	@Override

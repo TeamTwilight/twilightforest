@@ -51,13 +51,12 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 	 */
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		makeDarkBeard(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
+		makeDarkBeard(world, sbb, 0, 0, size - 1, height - 1, size - 1);
 
 		return true;
 	}
 
-	//TODO: Parameter "minY" is unused. Remove?
-	protected void makeDarkBeard(ISeedReader world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	protected void makeDarkBeard(ISeedReader world, MutableBoundingBox sbb, int minX, int minZ, int maxX, int maxY, int maxZ) {
 		BlockState frameState = TFBlocks.tower_wood_encased.get().getDefaultState();
 
 		for (int x = minX; x <= maxX; x++) {

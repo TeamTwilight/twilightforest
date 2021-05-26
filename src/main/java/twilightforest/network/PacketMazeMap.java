@@ -2,7 +2,6 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapItemRenderer;
-import net.minecraft.item.FilledMapItem;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.world.storage.MapData;

@@ -40,7 +40,7 @@ public class ComponentTFDarkTowerRoofFourPost extends ComponentTFDarkTowerRoof {
 		for (int y = 1; y < height; y++) {
 			setBlockState(world, deco.blockState, x, y, z, sbb);
 		}
-		setBlockState(world, deco.accentState, x, height + 0, z, sbb);
+		setBlockState(world, deco.accentState, x, height, z, sbb);
 		setBlockState(world, deco.accentState, x, height + 1, z, sbb);
 		setBlockState(world, deco.accentState, x + 1, height + 1, z, sbb);
 		setBlockState(world, deco.accentState, x - 1, height + 1, z, sbb);

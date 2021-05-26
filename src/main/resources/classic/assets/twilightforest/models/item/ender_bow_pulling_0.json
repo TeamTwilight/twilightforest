@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:item/ender_bow",
-  "textures": {
-    "layer0": "twilightforest:items/enderbow_pulling_0"
-  }
-}

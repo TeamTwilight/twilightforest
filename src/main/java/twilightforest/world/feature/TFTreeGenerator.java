@@ -223,7 +223,14 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 			return (blockState.getBlockHardness(world, pos) >= 0)
 					&& blockID != TFBlocks.stronghold_shield.get()
 					&& blockID != TFBlocks.trophy_pedestal.get()
-					&& blockID != TFBlocks.boss_spawner.get()
+					&& blockID != TFBlocks.boss_spawner_naga.get()
+					&& blockID != TFBlocks.boss_spawner_lich.get()
+					&& blockID != TFBlocks.boss_spawner_hydra.get()
+					&& blockID != TFBlocks.boss_spawner_ur_ghast.get()
+					&& blockID != TFBlocks.boss_spawner_knight_phantom.get()
+					&& blockID != TFBlocks.boss_spawner_snow_queen.get()
+					&& blockID != TFBlocks.boss_spawner_minoshroom.get()
+					&& blockID != TFBlocks.boss_spawner_alpha_yeti.get()
 					&& (blockState.getMaterial() == Material.ORGANIC || blockState.getMaterial() == Material.EARTH || blockState.getMaterial() == Material.ROCK || blockState.getMaterial() == Material.WATER);
 		}
 	}

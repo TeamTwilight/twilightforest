@@ -37,8 +37,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public ComponentTFHollowHill(IStructurePieceType piece, TFFeature feature, Random rand, int i, int size, int x, int y, int z) {
+	public ComponentTFHollowHill(IStructurePieceType piece, TFFeature feature, int i, int size, int x, int y, int z) {
 		super(piece, feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);
@@ -62,8 +61,6 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	 */
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-//		int area = (int)(Math.PI * radius * radius);
-//		int sn = area / 16; // number of stalactites (there will actually be around twice this number)
 		int[] sna = {0, 128, 256, 512};
 
 		int sn = sna[hillSize]; // number of stalactites mga = {0, 3, 9, 18}
@@ -106,10 +103,6 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 		// level 3 hills get 2 mid-air wraith spawners
 		if (hillSize == 3) {
-//			int[] dest = getEmptysInHill(hy + 10, 20);
-//			placeWraithSpawner(dest[0], hy + 10, dest[1]);
-//			dest = getEmptysInHill(hy + 10, 20);
-//			placeWraithSpawner(dest[0], hy + 10, dest[1]);
 		}
 
 		return true;
@@ -251,6 +244,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			case 0:
 			case 1:
 			case 2:
+			default:
 				return TFEntities.swarm_spider;
 			case 3:
 			case 4:
@@ -263,8 +257,6 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 				return EntityType.SILVERFISH;
 			case 9:
 				return TFEntities.redcap;
-			default:
-				return TFEntities.swarm_spider;
 		}
 	}
 
@@ -276,6 +268,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			case 0:
 			case 1:
 			case 2:
+			default:
 				return TFEntities.redcap;
 			case 3:
 			case 4:
@@ -288,8 +281,6 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 				return TFEntities.swarm_spider;
 			case 9:
 				return EntityType.CAVE_SPIDER;
-			default:
-				return TFEntities.redcap;
 		}
 	}
 

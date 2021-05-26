@@ -1,0 +1,225 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 4,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "weight": 25,
+          "name": "twilightforest:structures/useless"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:iron_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:gunpowder"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:ironwood_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 5.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:firefly"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 12.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:experiment_115"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 12.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:glowstone_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 6.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:redstone"
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 6.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:charm_of_keeping_1"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:steeleaf_pickaxe"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:ironwood_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:ironwood_sword"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:charm_of_life_1"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:feather_falling": 3
+              }
+            }
+          ],
+          "name": "minecraft:enchanted_book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:knockback": 2
+              }
+            }
+          ],
+          "name": "minecraft:enchanted_book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:efficiency": 3
+              }
+            }
+          ],
+          "name": "minecraft:enchanted_book"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:tower_key"
+        }
+      ]
+    }
+  ]
+}

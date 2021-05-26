@@ -13,6 +13,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import twilightforest.enums.Diagonals;
 
@@ -25,9 +26,6 @@ public class BlockTFSpiralBrick extends Block {
 
     public BlockTFSpiralBrick() {
         super(Properties.create(Material.ROCK, MaterialColor.STONE).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE).notSolid());
-        //TODO: Check if we need thise two
-//        this.setLightOpacity(255);
-//        this.useNeighborBrightness = true;
         this.setDefaultState(this.stateContainer.getBaseState().with(DIAGONAL, Diagonals.TOP_RIGHT).with(AXIS_FACING, Direction.Axis.X));
     }
 
@@ -35,6 +33,11 @@ public class BlockTFSpiralBrick extends Block {
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		super.fillStateContainer(builder);
 		builder.add(AXIS_FACING, DIAGONAL);
+	}
+
+	@Override
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+		return super.getLightValue(state, world, pos);
 	}
 
 	@Nullable

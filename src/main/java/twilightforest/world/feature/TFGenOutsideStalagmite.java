@@ -24,7 +24,7 @@ public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, CaveStalactiteConfig config) {
 		int length = rand.nextInt(10) + 5;
 
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 1, length, 1)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 1, length, 1)) {
 			return false;
 		}
 

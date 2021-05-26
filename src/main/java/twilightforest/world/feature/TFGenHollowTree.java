@@ -2,15 +2,11 @@ package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.*;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import twilightforest.block.BlockTFCicada;
-import twilightforest.block.BlockTFCritter;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;

@@ -3,19 +3,15 @@ package twilightforest.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.block.TFBlocks;
+import twilightforest.data.BlockTagGenerator;
 
 import java.util.Random;
 
-import static twilightforest.TwilightForestMod.prefix;
-
 public class TileEntityTFAntibuilder extends TileEntity implements ITickableTileEntity {
-	private static final ITag.INamedTag<Block> BLACKLIST = BlockTags.makeWrapperTag(prefix("antibuilder_blacklist").toString());
 	private static final int REVERT_CHANCE = 10;
 
 	private static final int RADIUS = 4;
@@ -247,7 +243,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 	}
 
 	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
-		return BLACKLIST.contains(stateThere.getBlock()) || BLACKLIST.contains(replaceWith.getBlock());
+		return BlockTagGenerator.ANTIBUILDER_IGNORES.contains(stateThere.getBlock()) || BlockTagGenerator.ANTIBUILDER_IGNORES.contains(replaceWith.getBlock());
 	}
 
 	private void captureBlockData() {

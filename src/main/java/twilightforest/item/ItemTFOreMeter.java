@@ -55,7 +55,7 @@ public class ItemTFOreMeter extends Item {
 		int countRoots = 0;
 		int countOreRoots = 0;
 
-		int total = 0;
+		int total;
 
 		ScanResult dummy = new ScanResult();
 		for (int cx = chunkX - radius; cx <= chunkX + radius; cx++) {

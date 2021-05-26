@@ -342,9 +342,8 @@ public class FeatureUtil {
 	/**
 	 * Draw a flat blob (circle) of leaves.  This one makes it offset to surround a 2x2 area instead of a 1 block area
 	 */
-	// TODO: Parameter "useHack" is unused. Is it worth keeping? -Androsa
 	// FIXME Probably nuke method once 1.16.2 comes
-	public static void makeLeafCircle2(IWorld world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves,  boolean useHack) {
+	public static void makeLeafCircle2(IWorld world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -377,8 +376,7 @@ public class FeatureUtil {
 	/**
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 */
-	// TODO: Parameter "rand" is unused. Is it worth keeping? -Androsa
-	public static boolean isAreaSuitable(IWorld world, Random rand, BlockPos pos, int width, int height, int depth) {
+	public static boolean isAreaSuitable(IWorld world, BlockPos pos, int width, int height, int depth) {
 		boolean flag = true;
 
 		// check if there's anything within the diameter
@@ -418,7 +416,7 @@ public class FeatureUtil {
 			for (byte dy = 0; dy <= rad; dy++) {
 				for (byte dz = 0; dz <= rad; dz++) {
 					// determine how far we are from the center.
-					int dist = 0;
+					int dist;
 					if (dx >= dy && dx >= dz) {
 						dist = dx + (Math.max(dy, dz) >> 1) + (Math.min(dy, dz) >> 2);
 					} else if (dy >= dx && dy >= dz) {

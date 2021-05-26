@@ -14,6 +14,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkStatus;
@@ -155,7 +156,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isStrictlyTwilightForest(World world) {
-		return world.getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation());
+		return world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get());
 	}
 
 	public static boolean isTwilightChunk(ServerWorld world) {
@@ -180,7 +181,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		}
 	}
 
-	public static Optional<StructureStart<?>> locateTFStructureInRange(ServerWorld world, BlockPos pos, int range) {
+	public static Optional<StructureStart<?>> locateTFStructureInRange(ISeedReader world, BlockPos pos, int range) {
 		int cx1 = MathHelper.floor((pos.getX() - range) >> 4);
 		int cx2 = MathHelper.ceil((pos.getX() + range) >> 4);
 		int cz1 = MathHelper.floor((pos.getZ() - range) >> 4);
@@ -196,9 +197,10 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 			for (int x = cx1; x <= cx2; ++x) {
 				for (int z = cz1; z <= cz2; ++z) {
-					Optional<StructureStart<?>> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_REFERENCES).func_230346_b_(structureFeature).stream().
+					Optional<StructureStart<?>> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).func_230346_b_(structureFeature).stream().
 							map((longVal) -> SectionPos.from(new ChunkPos(longVal), 0)).<StructureStart<?>>map((sectionPos) -> world.
-							getChunk(sectionPos.getSectionX(), sectionPos.getSectionZ(), ChunkStatus.STRUCTURE_STARTS).func_230342_a_(structureFeature)).
+							chunkExists(sectionPos.getSectionX(), sectionPos.getSectionZ()) ? world.
+							getChunk(sectionPos.getSectionX(), sectionPos.getSectionZ(), ChunkStatus.STRUCTURE_STARTS).func_230342_a_(structureFeature) : null).
 							filter((structureStart) -> structureStart != null && structureStart.isValid()).
 							findFirst();
 					if (structure.isPresent())

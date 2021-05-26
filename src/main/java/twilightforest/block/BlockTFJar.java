@@ -21,15 +21,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 
 import java.util.Random;
 
-//@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
-public class BlockTFJar extends Block /*implements IInfusionStabiliser*/ {
+public class BlockTFJar extends Block {
 
-	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F));
+	private static final VoxelShape JAR = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 14.0D, 13.0D);
+	private static final VoxelShape LID = Block.makeCuboidShape(4.0D, 14.0D, 4.0D, 12.0D, 16.0D, 12.0D);
+	private static final VoxelShape AABB = VoxelShapes.or(JAR, LID);
 
 	protected BlockTFJar(Block.Properties props) {
 		super(props);
@@ -39,13 +41,6 @@ public class BlockTFJar extends Block /*implements IInfusionStabiliser*/ {
 	@Deprecated
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
-	}
-
-	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if(this == TFBlocks.cicada_jar.get() && rand.nextInt(500) == 1) {
-			worldIn.playSound(null, new BlockPos(pos.getX(), pos.getY(), pos.getZ()), TFSounds.CICADA, SoundCategory.BLOCKS, 1.0F, 1.0F);
-		}
 	}
 
 	@Override
@@ -72,6 +67,9 @@ public class BlockTFJar extends Block /*implements IInfusionStabiliser*/ {
 				world.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
+			if(rand.nextInt(200) == 0 && !TFConfig.CLIENT_CONFIG.silentCicadas.get()) {
+				world.playSound(null, pos, TFSounds.CICADA, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			}
 			for (int i = 0; i < 1; i++) {
 				double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 				double dy = pos.getY();
@@ -81,9 +79,4 @@ public class BlockTFJar extends Block /*implements IInfusionStabiliser*/ {
 			}
 		}
 	}
-
-	/*@Override
-	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
-		return true;
-	}*/
 }

@@ -4,14 +4,23 @@
       "config": {
         "feature": {
           "config": {
-            "state": {
-              "Properties": {
-                "facing": "north"
+            "feature": {
+              "config": {
+                "state": {
+                  "Properties": {
+                    "facing": "north"
+                  },
+                  "Name": "minecraft:jack_o_lantern"
+                }
               },
-              "Name": "minecraft:jack_o_lantern"
+              "type": "twilightforest:lampposts"
+            },
+            "decorator": {
+              "config": {},
+              "type": "twilightforest:nostructure"
             }
           },
-          "type": "twilightforest:lampposts"
+          "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {},

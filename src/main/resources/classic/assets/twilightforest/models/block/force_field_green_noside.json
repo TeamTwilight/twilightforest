@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/util/pane/noside",
-  "textures": {
-    "pane": "twilightforest:block/forcefield_white"
-  }
-}

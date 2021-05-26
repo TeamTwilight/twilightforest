@@ -7,7 +7,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;

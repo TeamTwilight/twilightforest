@@ -116,7 +116,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, grass, AIR, false);
 
 		// tree
-		this.spawnATree(world, generator, manager, rand.nextInt(5), 8, 1, 8, sbb);
+		this.spawnATree(world, generator, rand.nextInt(5), 8, 1, 8, sbb);
 
 		// statues
 		placeCornerStatue(world, 2, 8, 2, 0, sbb);
@@ -125,18 +125,17 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		placeCornerStatue(world, 15, 8, 15, 3, sbb);
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}
 
-	private void spawnATree(ISeedReader world, ChunkGenerator generator, StructureManager manager, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
+	private void spawnATree(ISeedReader world, ChunkGenerator generator, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
 			ConfiguredFeature<?,?> treeGen;
 			// grow a tree
-			int minHeight = 8;
 
 			//TODO: All trees here grab configs from DefaultBiomeFeatures or TFBiomeDecorator, and will not have "minHeight"
 			switch (treeNum) {
@@ -171,11 +170,11 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 	private void placeBalconyPillar(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 5, 1, 5, 5, 12, 5, deco.pillarState, rotation);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), 5, 1, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, true), 5, 5, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 6, 5, 5, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, true), 5, 12, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 6, 12, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), false), 5, 1, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), false), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), true), 5, 5, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), true), 6, 5, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), true), 5, 12, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), true), 6, 12, 5, rotation, sbb);
 	}
 }

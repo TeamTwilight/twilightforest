@@ -53,15 +53,4 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 	}
 
 	//TODO: Are these used at all?
-//	@Override
-//	public Entity getThrower() {
-//		return this.shootingEntity;
-//	}
-//
-//	@Override
-//	public void setThrower(Entity entity) {
-//		if (entity instanceof LivingEntity) {
-//			this.shootingEntity = (LivingEntity) entity;
-//		}
-//	}
 }

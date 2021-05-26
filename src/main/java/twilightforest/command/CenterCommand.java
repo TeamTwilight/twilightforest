@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import twilightforest.TFFeature;
 
 public class CenterCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {
@@ -25,9 +26,9 @@ public class CenterCommand {
         int dx = MathHelper.floor(source.getPos().getX());
         int dz = MathHelper.floor(source.getPos().getZ());
 
-        BlockPos cc = BlockPos.ZERO; //twilightforest.TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4);
+        BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4);
 
-        boolean fc = false; //twilightforest.TFFeature.isInFeatureChunk(dx, dz);
+        boolean fc = TFFeature.isInFeatureChunk(dx, dz);
         source.sendFeedback(new TranslationTextComponent("commands.tffeature.center", cc), false);
         source.sendFeedback(new TranslationTextComponent("commands.tffeature.chunk", fc), false);
         return Command.SINGLE_SUCCESS;

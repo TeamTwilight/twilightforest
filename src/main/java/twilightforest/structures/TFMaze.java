@@ -10,6 +10,8 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.worldgen.ConfiguredFeatures;
+
 import java.util.Random;
 
 /**
@@ -118,13 +120,13 @@ public class TFMaze {
 			return getRaw(sx * 2 + 2, sz * 2 + 1);
 		}
 		if (dx == sx - 1 && dz == sz) {
-			return getRaw(sx * 2 + 0, sz * 2 + 1);
+			return getRaw(sx * 2, sz * 2 + 1);
 		}
 		if (dx == sx && dz == sz + 1) {
 			return getRaw(sx * 2 + 1, sz * 2 + 2);
 		}
 		if (dx == sx && dz == sz - 1) {
-			return getRaw(sx * 2 + 1, sz * 2 + 0);
+			return getRaw(sx * 2 + 1, sz * 2);
 		}
 
 		TwilightForestMod.LOGGER.info("Wall check out of bounds; s = {}, {}; d = {}, {}", sx, sz, dx, dz);
@@ -137,13 +139,13 @@ public class TFMaze {
 			putRaw(sx * 2 + 2, sz * 2 + 1, value);
 		}
 		if (dx == sx - 1 && dz == sz) {
-			putRaw(sx * 2 + 0, sz * 2 + 1, value);
+			putRaw(sx * 2, sz * 2 + 1, value);
 		}
 		if (dx == sx && dz == sz + 1) {
 			putRaw(sx * 2 + 1, sz * 2 + 2, value);
 		}
 		if (dx == sx && dz == sz - 1) {
-			putRaw(sx * 2 + 1, sz * 2 + 0, value);
+			putRaw(sx * 2 + 1, sz * 2, value);
 		}
 	}
 
@@ -182,129 +184,6 @@ public class TFMaze {
 	}
 
 	/**
-	 * Copies the maze into the world by placing walls.
-	 * TODO: Unused. Remove?
-	 */
-	public void copyToWorld(ISeedReader world, StructureManager manager, ChunkGenerator generator, int dx, int dy, int dz) {
-		worldX = dx;
-		worldY = dy;
-		worldZ = dz;
-
-		for (int x = 0; x < rawWidth; x++) {
-			for (int z = 0; z < rawDepth; z++) {
-				if (getRaw(x, z) == 0) {
-					int mdx = dx + (x / 2 * (evenBias + oddBias));
-					int mdz = dz + (z / 2 * (evenBias + oddBias));
-
-					if (isEven(x) && isEven(z)) {
-						if (type == 4 && shouldTree(x, z)) {
-							// occasionally make a tree 
-							// FIXME TFBiomeFeatures.CANOPY_TREE.get().withConfiguration(TFBiomeDecorator.CANOPY_TREE_CONFIG).func_236265_a_(world, manager, generator, rand, new BlockPos(mdx, dy, mdz));
-						} else {
-							// make a block!
-							for (int y = 0; y < head; y++) {
-								putHeadBlock(world, mdx, dy + tall + y, mdz);
-							}
-							for (int y = 0; y < tall; y++) {
-								putWallBlock(world, mdx, dy + y, mdz);
-							}
-							for (int y = 1; y <= roots; y++) {
-								putRootBlock(world, mdx, dy - y, mdz);
-							}
-						}
-					}
-					if (isEven(x) && !isEven(z)) {
-						// make a | vertical | wall!
-						for (int even = 0; even < evenBias; even++) {
-							for (int odd = 1; odd <= oddBias; odd++) {
-								for (int y = 0; y < head; y++) {
-									putHeadBlock(world, mdx + even, dy + tall + y, mdz + odd);
-								}
-								for (int y = 0; y < tall; y++) {
-									putWallBlock(world, mdx + even, dy + y, mdz + odd);
-								}
-								for (int y = 1; y <= roots; y++) {
-									putRootBlock(world, mdx + even, dy - y, mdz + odd);
-								}
-							}
-						}
-					}
-					if (!isEven(x) && isEven(z)) {
-						// make a - horizontal - wall!
-						for (int even = 0; even < evenBias; even++) {
-							for (int odd = 1; odd <= oddBias; odd++) {
-								for (int y = 0; y < head; y++) {
-									putHeadBlock(world, mdx + odd, dy + tall + y, mdz + even);
-								}
-								for (int y = 0; y < tall; y++) {
-									putWallBlock(world, mdx + odd, dy + y, mdz + even);
-								}
-								for (int y = 1; y <= roots; y++) {
-									putRootBlock(world, mdx + odd, dy - y, mdz + even);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		placeTorches(world);
-	}
-
-	/**
-	 * Copies the maze into the world by carving out empty spaces.
-	 * TODO: Unused. Remove?
-	 */
-	public void carveToWorld(ISeedReader world, int dx, int dy, int dz) {
-		worldX = dx;
-		worldY = dy;
-		worldZ = dz;
-
-		for (int x = 0; x < rawWidth; x++) {
-			for (int z = 0; z < rawDepth; z++) {
-				if (getRaw(x, z) != 0) {
-					int mdx = dx + (x / 2 * (evenBias + oddBias));
-					int mdz = dz + (z / 2 * (evenBias + oddBias));
-
-					if (isEven(x) && isEven(z)) {
-						// carve a one-block wide pillar
-						for (int y = 0; y < tall; y++) {
-							carveBlock(world, mdx, dy + y, mdz);
-						}
-					} else if (isEven(x) && !isEven(z)) {
-						// carve a | vertical | wall
-						for (int i = 1; i <= oddBias; i++) {
-							for (int y = 0; y < tall; y++) {
-								carveBlock(world, mdx, dy + y, mdz + i);
-							}
-						}
-					} else if (!isEven(x) && isEven(z)) {
-						// carve a - horizontal - wall!
-						for (int i = 1; i <= oddBias; i++) {
-							for (int y = 0; y < tall; y++) {
-								carveBlock(world, mdx + i, dy + y, mdz);
-							}
-						}
-					} else if (!isEven(x) && !isEven(z)) // this should always be true at this point
-					{
-						// carve an open space
-						for (int mx = 1; mx <= oddBias; mx++) {
-							for (int mz = 1; mz <= oddBias; mz++) {
-								for (int y = 0; y < tall; y++) {
-									carveBlock(world, mdx + mx, dy + y, mdz + mz);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		placeTorches(world);
-	}
-
-	/**
 	 * Copy the maze into a StructureTFComponentOld
 	 */
 	public void copyToStructure(ISeedReader world, StructureManager manager, ChunkGenerator generator, int dx, int dy, int dz, StructureTFComponentOld component, MutableBoundingBox sbb) {
@@ -322,9 +201,8 @@ public class TFMaze {
 
 					if (isEven(x) && isEven(z)) {
 						if (type == 4 && shouldTree(x, z)) {
-							// occasionally make a tree 
-//							(new TFGenCanopyTree()).generate(world, rand, mdx, dy, mdz);
-							putCanopyTree(world, manager, generator, mdx, dy, mdz, component, sbb);
+							// occasionally make a tree
+							putCanopyTree(world, generator, mdx, dy, mdz, component, sbb);
 						} else {
 							// make a block!
 							for (int even = 0; even < evenBias; even++) {
@@ -503,16 +381,16 @@ public class TFMaze {
 	/**
 	 * Puts a canopy tree in the world at the specified structure coordinates.
 	 */
-	private void putCanopyTree(ISeedReader world, StructureManager manager, ChunkGenerator generator, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
+	private void putCanopyTree(ISeedReader world, ChunkGenerator generator, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		BlockPos pos = component.getBlockPosWithOffset(x, y, z);
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
 		if (sbb.isVecInside(pos)) {
-			// FIXME TFBiomeFeatures.CANOPY_TREE.get().withConfiguration(TFBiomeDecorator.CANOPY_TREE_CONFIG).func_236265_a_(world, manager, generator, rand, pos);
+			ConfiguredFeatures.CANOPY_TREE_BASE.generate(world, generator, rand, pos);
 		}
 	}
 
-	private final boolean isEven(int n) {
+	private boolean isEven(int n) {
 		return n % 2 == 0;
 	}
 
@@ -598,46 +476,6 @@ public class TFMaze {
 		}
 
 		return rand.nextInt(50) == 0;
-	}
-
-	/**
-	 * If the worldX is set properly, this returns where in that world the maze coordinate x lies
-	 *
-	 * @param x
-	 * @return
-	 * TODO: Unused. Remove?
-	 */
-	int getWorldX(int x) {
-		return worldX + (x * (evenBias + oddBias)) + 1;
-	}
-
-	/**
-	 * If the worldZ is set properly, this returns where in that world the maze coordinate z lies
-	 *
-	 * @param z
-	 * @return
-	 * TODO: Unused. Remove?
-	 */
-	int getWorldZ(int z) {
-		return worldZ + (z * (evenBias + oddBias)) + 1;
-	}
-
-	/**
-	 * Carves a room into the maze.  The coordinates given are cell coordinates.
-	 * TODO: Unused. Remove?
-	 */
-	public void carveRoom0(int cx, int cz) {
-
-		putCell(cx, cz, 5);
-
-		putCell(cx + 1, cz, 5);
-		putWall(cx, cz, cx + 1, cz, 5);
-		putCell(cx - 1, cz, 5);
-		putWall(cx, cz, cx - 1, cz, 5);
-		putCell(cx, cz + 1, 5);
-		putWall(cx, cz, cx, cz + 1, 5);
-		putCell(cx, cz - 1, 5);
-		putWall(cx, cz, cx, cz - 1, 5);
 	}
 
 	/**

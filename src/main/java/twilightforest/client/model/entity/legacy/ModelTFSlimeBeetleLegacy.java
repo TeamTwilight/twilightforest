@@ -194,8 +194,8 @@ public class ModelTFSlimeBeetleLegacy extends SegmentedModel<EntityTFSlimeBeetle
 		float var10 = 0.3926991F;
 		this.Leg1.rotateAngleY = var10 * 2.0F + var9;
 		this.Leg2.rotateAngleY = -var10 * 2.0F - var9;
-		this.Leg3.rotateAngleY = var10 * 1.0F + var9;
-		this.Leg4.rotateAngleY = -var10 * 1.0F - var9;
+		this.Leg3.rotateAngleY = var10 + var9;
+		this.Leg4.rotateAngleY = -var10 - var9;
 		this.Leg5.rotateAngleY = -var10 * 2.0F + var9;
 		this.Leg6.rotateAngleY = var10 * 2.0F - var9;
 

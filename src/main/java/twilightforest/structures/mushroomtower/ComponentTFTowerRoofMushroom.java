@@ -71,8 +71,6 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 		for (int dx = -radius; dx <= radius; dx++) {
 			for (int dz = -radius; dz <= radius; dz++) {
 				// determine how far we are from the center.
-//				int ax = Math.abs(dx);
-//				int az = Math.abs(dz);
 				float dist = MathHelper.sqrt(dx * dx + dz * dz);
 
 				// make a trunk!

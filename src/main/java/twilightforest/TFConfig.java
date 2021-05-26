@@ -40,6 +40,11 @@ public class TFConfig {
 						worldRestart().
 						comment("If true, giant Twilight Oaks will also spawn in void worlds").
 						define("skylightOaks", true);
+				DIMENSION.twilightForestID = builder.
+						translation(config + "twilight_dimension_id").
+						worldRestart().
+						comment("Destination dimension for Twilight Portals and some other logic as well").
+						define("twilightDimensionID", "twilightforest:twilightforest");
 				builder.
 						comment("Weights for various small features").
 						push("World-Gen Weights");
@@ -105,17 +110,17 @@ public class TFConfig {
 							translation(config + "large_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in large hills only").
-							define("largeHill", Collections.emptyList());
+							defineList("largeHill", new ArrayList<>(), s -> s instanceof String);
 					DIMENSION.hollowHillStalactites.mediumHill = builder.
 							translation(config + "medium_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in medium and large hills").
-							define("mediumHill", Collections.emptyList());
+							defineList("mediumHill", new ArrayList<>(), s -> s instanceof String);
 					DIMENSION.hollowHillStalactites.smallHill = builder.
 							translation(config + "small_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in all hills").
-							define("mediumHill", Collections.emptyList());
+							defineList("smallHill", new ArrayList<>(), s -> s instanceof String);
 					DIMENSION.hollowHillStalactites.useConfigOnly = builder.
 							translation(config + "stalactite_config_only").
 							worldRestart().
@@ -201,6 +206,11 @@ public class TFConfig {
 					translation(config + "uncrafting").
 					comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
 					define("disableUncrafting", false);
+			casketUUIDLocking = builder.
+					worldRestart().
+					translation(config + "casket_uuid_locking").
+					comment("If true, Keepsake Caskets that are spawned when a player dies will not be accessible by other players. Use this if you dont want people taking from other people's death caskets. NOTE: server operators will still be able to open locked caskets.")
+					.define("uuid_locking", false);
 			builder.
 					comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
 					push("Shield Parrying");
@@ -236,11 +246,13 @@ public class TFConfig {
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
 
+			// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example) before strictly using this
+			// Reason this is needed is so users can reconfig portals to use Skylight Forest or a Void Forest or another dimension entirely
+			public ForgeConfigSpec.ConfigValue<String> twilightForestID;
+
 			public WorldGenWeights worldGenWeights = new WorldGenWeights();
 
 			public static class WorldGenWeights {
-
-				//TODO: Due to the new way of Feature generation, should these be chances?
 				public ForgeConfigSpec.IntValue stoneCircleWeight;
 				public ForgeConfigSpec.IntValue wellWeight;
 				public ForgeConfigSpec.IntValue stalagmiteWeight;
@@ -322,6 +334,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
 		public ForgeConfigSpec.BooleanValue progressionRuleDefault;
 		public ForgeConfigSpec.BooleanValue disableUncrafting;
+		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 
@@ -404,7 +417,7 @@ public class TFConfig {
 								"twilightforest:magic_beans",
 								"twilightforest:ironwood_raw",
 								"twilightforest:naga_scale",
-								//TODO "twilightforest:experiment_115:2",
+								"twilightforest:experiment_115{think:1}",
 								"twilightforest:twilight_portal_miniature_structure",
 								"twilightforest:lich_tower_miniature_structure",
 								"twilightforest:knightmetal_block",

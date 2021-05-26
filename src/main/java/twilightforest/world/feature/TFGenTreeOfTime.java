@@ -7,7 +7,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -20,14 +19,6 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 	public TFGenTreeOfTime(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
-
-//	public TFGenTreeOfTime(boolean notify) {
-//		super(notify);
-//
-//		this.treeState = TFBlocks.magic_log.getDefaultState();
-//		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(LeavesBlock.CHECK_DECAY, false);
-//	}
 
 	@Override
 	public boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {

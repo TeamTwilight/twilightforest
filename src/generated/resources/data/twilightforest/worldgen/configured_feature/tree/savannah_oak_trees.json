@@ -9,11 +9,16 @@
         },
         "inner": {
           "config": {
-            "count": 8,
-            "extra_chance": 0.4,
-            "extra_count": 4
+            "outer": {
+              "config": {},
+              "type": "minecraft:heightmap"
+            },
+            "inner": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
           },
-          "type": "minecraft:count_extra"
+          "type": "minecraft:decorated"
         }
       },
       "type": "minecraft:decorated"

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "side": "twilightforest:block/etched_nagastone_right_weathered",
-    "bottom": "twilightforest:block/stone_tiles_weathered",
-    "top": "twilightforest:block/nagastone_bare_weathered"
-  }
-}

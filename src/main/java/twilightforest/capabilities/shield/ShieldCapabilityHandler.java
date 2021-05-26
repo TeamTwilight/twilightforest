@@ -2,8 +2,12 @@ package twilightforest.capabilities.shield;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TFSounds;
+import twilightforest.network.PacketUpdateShield;
+import twilightforest.network.TFPacketHandler;
 
 public class ShieldCapabilityHandler implements IShieldCapability {
 
@@ -94,13 +98,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	}
 
 	private void sendUpdatePacket() {
-		if (!host.world.isRemote) {
-//			IMessage message = new PacketUpdateShield(host, this);
-//			TFPacketHandler.CHANNEL.sendToAllTracking(message, host);
-//			// sendToAllTracking doesn't send to your own client so we need to send that as well.
-//			if (host instanceof ServerPlayerEntity) {
-//				TFPacketHandler.CHANNEL.sendTo(message, (ServerPlayerEntity) host);
-//			}
-		}
+		if (host instanceof ServerPlayerEntity)
+			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> host), new PacketUpdateShield(host, this));
 	}
 }

@@ -40,15 +40,8 @@ public class RenderTFMistWolf extends WolfRenderer {
 	/**
 	 * Queries whether should render the specified pass or not.
 	 */
-//	protected int shouldRenderPass(LivingEntity par1EntityLiving, int par2, float par3) {
-////        GL11.glFogf(GL11.GL_FOG_START, 1.0f);
-////        GL11.glFogf(GL11.GL_FOG_END, 5.0f);
-//
-//
-//		return -1;
-//	}
 
-	@Override
+    @Override
 	public ResourceLocation getEntityTexture(WolfEntity entity) {
 		return textureLoc;
 	}

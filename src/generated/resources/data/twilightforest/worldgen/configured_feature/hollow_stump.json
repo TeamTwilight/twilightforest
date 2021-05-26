@@ -4,53 +4,62 @@
       "config": {
         "feature": {
           "config": {
-            "has_leaves": false,
-            "check_water": false,
-            "sapling": {
-              "state": {
-                "Properties": {
-                  "stage": "0"
+            "feature": {
+              "config": {
+                "has_leaves": false,
+                "check_water": false,
+                "sapling": {
+                  "state": {
+                    "Properties": {
+                      "stage": "0"
+                    },
+                    "Name": "twilightforest:hollow_oak_sapling"
+                  },
+                  "type": "minecraft:simple_state_provider"
                 },
-                "Name": "twilightforest:hollow_oak_sapling"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "add_first_five_chance": 1,
-            "add_second_five_chance": 1,
-            "branch_provider": {
-              "state": {
-                "Name": "twilightforest:twilight_oak_wood"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "roots_provider": {
-              "state": {
-                "Name": "twilightforest:root"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "minimum_size": 0,
-            "trunk_provider": {
-              "state": {
-                "Properties": {
-                  "axis": "y"
+                "add_first_five_chance": 1,
+                "add_second_five_chance": 1,
+                "branch_provider": {
+                  "state": {
+                    "Name": "twilightforest:twilight_oak_wood"
+                  },
+                  "type": "minecraft:simple_state_provider"
                 },
-                "Name": "twilightforest:twilight_oak_log"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "leaves_provider": {
-              "state": {
-                "Properties": {
-                  "persistent": "false",
-                  "distance": "7"
+                "roots_provider": {
+                  "state": {
+                    "Name": "twilightforest:root"
+                  },
+                  "type": "minecraft:simple_state_provider"
                 },
-                "Name": "twilightforest:twilight_oak_leaves"
+                "minimum_size": 0,
+                "trunk_provider": {
+                  "state": {
+                    "Properties": {
+                      "axis": "y"
+                    },
+                    "Name": "twilightforest:twilight_oak_log"
+                  },
+                  "type": "minecraft:simple_state_provider"
+                },
+                "leaves_provider": {
+                  "state": {
+                    "Properties": {
+                      "persistent": "false",
+                      "distance": "7"
+                    },
+                    "Name": "twilightforest:twilight_oak_leaves"
+                  },
+                  "type": "minecraft:simple_state_provider"
+                }
               },
-              "type": "minecraft:simple_state_provider"
+              "type": "twilightforest:hollow_stump"
+            },
+            "decorator": {
+              "config": {},
+              "type": "twilightforest:nostructure"
             }
           },
-          "type": "twilightforest:hollow_stump"
+          "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {

@@ -4,14 +4,15 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +21,6 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.util.TFDamageSources;
 
 import java.util.EnumSet;
@@ -40,7 +40,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		this.goalSelector.addGoal(5, new AIFlyTowardsTarget(this));
 		this.goalSelector.addGoal(6, new AIRandomFly(this));
 		this.goalSelector.addGoal(7, new AILookAround(this));
-		this.targetSelector.addGoal(1, new TFNearestPlayerGoal(this));
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
 	static class AIFlyTowardsTarget extends Goal {

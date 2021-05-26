@@ -42,9 +42,9 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 		int maxcaves = rand.nextInt(rand.nextInt(rand.nextInt(45) + 1) + 1);
 
 		for (int k = 0; k < maxcaves; ++k) {
-			double randx = (double) (chunkXOffset * 16 + rand.nextInt(16));
-			double randy = (double) this.func_230361_b_(rand);
-			double randz = (double) (chunkZOffset * 16 + rand.nextInt(16));
+			double randx = chunkXOffset * 16 + rand.nextInt(16);
+			double randy = this.func_230361_b_(rand);
+			double randz = chunkZOffset * 16 + rand.nextInt(16);
 			int l = 1;
 			if (rand.nextInt(4) == 0) {
 				float cavesize = 1.0F + rand.nextFloat() * 6.0F;
@@ -102,9 +102,9 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 			double d0 = 1.5D + (double) (MathHelper.sin((float) Math.PI * (float) j / (float) p_227206_18_) * caveRadius);
 			double d1 = d0 * p_227206_19_;
 			float f2 = MathHelper.cos(p_227206_16_);
-			randOffsetXCoord += (double) (MathHelper.cos(pitch) * f2);
-			startY += (double) MathHelper.sin(p_227206_16_);
-			randOffsetZCoord += (double) (MathHelper.sin(pitch) * f2);
+			randOffsetXCoord += MathHelper.cos(pitch) * f2;
+			startY += MathHelper.sin(p_227206_16_);
+			randOffsetZCoord += MathHelper.sin(pitch) * f2;
 			p_227206_16_ = p_227206_16_ * (flag ? 0.92F : 0.7F);
 			p_227206_16_ = p_227206_16_ + f1 * 0.1F;
 			pitch += f * 0.1F;

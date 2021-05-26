@@ -20,7 +20,7 @@ public class TFGenStoneCircle extends Feature<NoFeatureConfig> {
 
 	@Override
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos.add(-3, 0, -3), 6, 4, 6)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos.add(-3, 0, -3), 6, 4, 6)) {
 			return false;
 		}
 

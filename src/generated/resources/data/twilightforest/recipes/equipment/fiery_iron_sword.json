@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_sword"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "twilightforest:fiery_vial"
+    },
+    {
+      "tag": "forge:rods/blaze"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:fiery_sword"
+  }
+}

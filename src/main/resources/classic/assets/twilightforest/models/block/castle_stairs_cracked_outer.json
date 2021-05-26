@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "side": "twilightforest:block/castle_stairs_cracked",
-    "bottom": "twilightforest:block/castle_stairs_cracked",
-    "top": "twilightforest:block/castle_stairs_cracked"
-  }
-}

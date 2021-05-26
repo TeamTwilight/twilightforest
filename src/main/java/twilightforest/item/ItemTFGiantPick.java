@@ -3,8 +3,8 @@ package twilightforest.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.IItemTier;
-import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -37,16 +37,4 @@ public class ItemTFGiantPick extends PickaxeItem {
 		// 64x strength vs giant blocks
 		return state.getBlock() instanceof BlockTFGiantBlock ? destroySpeed * 64 : destroySpeed;
 	}
-
-	//TODO: It's actually an ImmutableMap, so this can't work
-//	@Override
-//	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-//		Multimap<Attribute, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
-//
-//		if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-//			multimap.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Tool modifier", 2.5, AttributeModifier.Operation.ADDITION));
-//		}
-//
-//		return multimap;
-//	}
 }

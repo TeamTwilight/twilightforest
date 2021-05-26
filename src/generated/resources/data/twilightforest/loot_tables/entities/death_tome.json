@@ -1,0 +1,63 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:paper"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 3
+        },
+        {
+          "function": "minecraft:looting_enchant",
+          "count": 1.0
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "quality": 3,
+          "name": "minecraft:writable_book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 19,
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "twilightforest:entities/death_tome_books"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:magic_map_focus"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.025,
+          "looting_multiplier": 0.005
+        }
+      ]
+    }
+  ]
+}

@@ -111,7 +111,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 							boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
-							Multiset<MaterialColor> multiset = HashMultiset.<MaterialColor>create();
+							Multiset<MaterialColor> multiset = HashMultiset.create();
 							Chunk chunk = world.getChunkAt(new BlockPos(worldX, 0, worldZ));
 
 							int brightness = 1;
@@ -131,7 +131,6 @@ public class ItemTFMazeMap extends FilledMapItem {
 										multiset.add(Blocks.STONE.getDefaultState().getMaterialColor(world, BlockPos.ZERO), 100);
 									}
 
-									d1 = 100.0D;
 								} else {
 									// TF - remove extra 2 levels of loops
 									// maze maps are always 0 scale, which is 1 pixel = 1 block, so the loops are unneeded
@@ -181,39 +180,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 									}
 								}
 
-                                /*numLiquid = numLiquid / (blocksPerPixel * blocksPerPixel);
-								double d2 = (d1 - d0) * 4.0D / (double)(blocksPerPixel + 4) + ((double)(xPixel + zPixel & 1) - 0.5D) * 0.4D;
-                                int brightness = 1;
-
-                                if (d2 > 0.6D)
-                                {
-                                    brightness = 2;
-                                }
-
-                                if (d2 < -0.6D)
-                                {
-                                    brightness = 0;
-                                }*/
-
-								MaterialColor mapcolor = Iterables.getFirst(Multisets.<MaterialColor>copyHighestCountFirst(multiset), MaterialColor.AIR);
-
-                                /*if (mapcolor == MaterialColor.WATER)
-                                {
-                                    d2 = (double)numLiquid * 0.1D + (double)(xPixel + zPixel & 1) * 0.2D;
-                                    brightness = 1;
-
-                                    if (d2 < 0.5D)
-                                    {
-                                        brightness = 2;
-                                    }
-
-                                    if (d2 > 0.9D)
-                                    {
-                                        brightness = 0;
-                                    }
-                                }*/
-
-								d0 = d1;
+								MaterialColor mapcolor = Iterables.getFirst(Multisets.copyHighestCountFirst(multiset), MaterialColor.AIR);
 
 								if (zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0)) {
 									byte b0 = data.colors[xPixel + zPixel * 128];

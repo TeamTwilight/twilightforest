@@ -31,11 +31,11 @@ public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 
 		// check area clear
 		if (goingX) {
-			if (!FeatureUtil.isAreaSuitable(world, rand, pos, length, 3, 2)) {
+			if (!FeatureUtil.isAreaSuitable(world, pos, length, 3, 2)) {
 				return false;
 			}
 		} else {
-			if (!FeatureUtil.isAreaSuitable(world, rand, pos, 3, length, 2)) {
+			if (!FeatureUtil.isAreaSuitable(world, pos, 3, length, 2)) {
 				return false;
 			}
 		}
@@ -68,7 +68,6 @@ public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 				logState = Blocks.JUNGLE_LOG.getDefaultState();
 				break;
 		}
-		branchState = logState;
 
 		// check biome
 		// Androsa: Uh...what are we checking?

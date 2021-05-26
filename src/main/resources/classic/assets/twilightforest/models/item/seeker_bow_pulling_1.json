@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:item/seeker_bow",
-  "textures": {
-    "layer0": "twilightforest:items/seekerbow_pulling_1"
-  }
-}

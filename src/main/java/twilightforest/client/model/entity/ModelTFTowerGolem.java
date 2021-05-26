@@ -83,13 +83,7 @@ public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends SegmentedMo
 		rightleg.setTextureOffset(84, 43).addBox(-5.5F, 8F, -4F, 6, 14, 7);
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		//super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
-
-	@Override
+    @Override
 	public Iterable<ModelRenderer> getParts() {
 		return ImmutableList.of(
 				head,
@@ -118,11 +112,8 @@ public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends SegmentedMo
 		this.leftleg.rotateAngleY = 0.0F;
 		this.rightleg.rotateAngleY = 0.0F;
 
-//        this.leftleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount; // biped leg movement
-//        this.rightleg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
 
-
-		this.rightarm.rotateAngleZ = MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+        this.rightarm.rotateAngleZ = MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 		this.leftarm.rotateAngleZ = -MathHelper.cos(ageInTicks * 0.09F) * 0.05F - 0.05F;
 	}
 

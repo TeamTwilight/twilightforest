@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFMazeSlime;
-import twilightforest.entity.EntityTFSwarmSpider;
 
 public class RenderTFMazeSlime extends SlimeRenderer {
 

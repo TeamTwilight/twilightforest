@@ -28,7 +28,7 @@ public class BlockTFTrophyWall extends BlockTFAbstractTrophy {
 			.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.makeCuboidShape(4.0D, 4.0D, 8.0D, 12.0D, 12.0D, 16.0D), Direction.SOUTH, Block.makeCuboidShape(4.0D, 4.0D, 0.0D, 12.0D, 12.0D, 8.0D), Direction.EAST, Block.makeCuboidShape(0.0D, 4.0D, 4.0D, 8.0D, 12.0D, 12.0D), Direction.WEST, Block.makeCuboidShape(8.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D)));
 
 	public BlockTFTrophyWall(BossVariant variant) {
-		super(variant, Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(1.0F));
+		super(variant, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 
@@ -39,6 +39,9 @@ public class BlockTFTrophyWall extends BlockTFAbstractTrophy {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		if (((BlockTFAbstractTrophy) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
+			return BlockTFTrophy.GHAST_SHAPE;
+		}
 		return SHAPES.get(state.get(FACING));
 	}
 

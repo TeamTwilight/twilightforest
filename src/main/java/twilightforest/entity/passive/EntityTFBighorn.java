@@ -19,25 +19,12 @@ import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
+import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Random;
 
 public class EntityTFBighorn extends SheepEntity {
-
-	public static final ResourceLocation SHEARED_LOOT_TABLE = TwilightForestMod.prefix("entities/bighorn_sheep/sheared");
-	public static final Map<DyeColor, ResourceLocation> COLORED_LOOT_TABLES;
-
-	static {
-		Map<DyeColor, ResourceLocation> map = new EnumMap<>(DyeColor.class);
-		for (DyeColor color : DyeColor.values()) {
-			map.put(color, TwilightForestMod.prefix("entities/bighorn_sheep/" + color.getString()));
-		}
-		COLORED_LOOT_TABLES = Collections.unmodifiableMap(map);
-	}
 
 	public EntityTFBighorn(EntityType<? extends EntityTFBighorn> type, World world) {
 		super(type, world);
@@ -50,7 +37,45 @@ public class EntityTFBighorn extends SheepEntity {
 
 	@Override
 	public ResourceLocation getLootTable() {
-		return this.getSheared() ? SHEARED_LOOT_TABLE : COLORED_LOOT_TABLES.get(this.getFleeceColor());
+		if (this.getSheared()) {
+			return this.getType().getLootTable();
+		} else {
+			switch(this.getFleeceColor()) {
+				case WHITE:
+				default:
+					return TFTreasure.BIGHORN_SHEEP_WHITE;
+				case ORANGE:
+					return TFTreasure.BIGHORN_SHEEP_ORANGE;
+				case MAGENTA:
+					return TFTreasure.BIGHORN_SHEEP_MAGENTA;
+				case LIGHT_BLUE:
+					return TFTreasure.BIGHORN_SHEEP_LIGHT_BLUE;
+				case YELLOW:
+					return TFTreasure.BIGHORN_SHEEP_YELLOW;
+				case LIME:
+					return TFTreasure.BIGHORN_SHEEP_LIME;
+				case PINK:
+					return TFTreasure.BIGHORN_SHEEP_PINK;
+				case GRAY:
+					return TFTreasure.BIGHORN_SHEEP_GRAY;
+				case LIGHT_GRAY:
+					return TFTreasure.BIGHORN_SHEEP_LIGHT_GRAY;
+				case CYAN:
+					return TFTreasure.BIGHORN_SHEEP_CYAN;
+				case PURPLE:
+					return TFTreasure.BIGHORN_SHEEP_PURPLE;
+				case BLUE:
+					return TFTreasure.BIGHORN_SHEEP_BLUE;
+				case BROWN:
+					return TFTreasure.BIGHORN_SHEEP_BROWN;
+				case GREEN:
+					return TFTreasure.BIGHORN_SHEEP_GREEN;
+				case RED:
+					return TFTreasure.BIGHORN_SHEEP_RED;
+				case BLACK:
+					return TFTreasure.BIGHORN_SHEEP_BLACK;
+			}
+		}
 	}
 
 	private static DyeColor getRandomFleeceColor(Random random) {

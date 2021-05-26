@@ -86,11 +86,6 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		return true;
 	}
 
-//	@Override
-//	public boolean generate(World world, Random random, BlockPos pos) {
-//		return generate(world, random, pos, true);
-//	}
-
 	private void makeLeafBlob(IWorld world, Random random, BlockPos leafPos, Set<BlockPos> setLeaves, TFTreeFeatureConfig config) {
 		FeatureUtil.makeLeafCircle(world, leafPos.down(), 3, config.leavesProvider.getBlockState(random, leafPos.down()), setLeaves, true);
 		FeatureUtil.makeLeafCircle(world, leafPos, 4, config.leavesProvider.getBlockState(random, leafPos), setLeaves, true);

@@ -1,0 +1,73 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 32,
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 1.0,
+                "max": 10.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:enchanted_book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 11.0,
+                "max": 20.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:enchanted_book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 21.0,
+                "max": 30.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:enchanted_book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 31.0,
+                "max": 40.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:enchanted_book"
+        }
+      ]
+    }
+  ]
+}

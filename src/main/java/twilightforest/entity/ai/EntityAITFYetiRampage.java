@@ -60,21 +60,12 @@ public class EntityAITFYetiRampage extends Goal {
 	public void tick() {
 		this.currentDuration--;
 
-//    	int rx = MathHelper.floor(this.yeti.posX);
-//    	int ry = MathHelper.floor(this.yeti.posY - 1);
-//    	int rz = MathHelper.floor(this.yeti.posZ);
-//    	
-//		this.yeti.world.playAuxSFX(2004, rx, ry, rz, 0);
-
-		if (this.yeti.getAttackTarget() != null) {
+        if (this.yeti.getAttackTarget() != null) {
 			this.yeti.getLookController().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, this.yeti.getVerticalFaceSpeed());
 		}
 
 		if (this.yeti.isOnGround()) {
-//			this.yeti.motionX = 0;
-//			this.yeti.motionZ = 0;
-//			this.yeti.motionY = 0.4F;
-			this.yeti.setMotion(0, 0.4, 0);
+            this.yeti.setMotion(0, 0.4, 0);
 		}
 
 		this.yeti.destroyBlocksInAABB(this.yeti.getBoundingBox().grow(1, 2, 1).offset(0, 2, 0));

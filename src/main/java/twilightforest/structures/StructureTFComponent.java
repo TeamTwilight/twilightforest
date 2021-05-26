@@ -56,6 +56,8 @@ public abstract class StructureTFComponent extends StructurePiece {
 			.add(Blocks.CHEST)
 			.add(Blocks.TRAPPED_CHEST)
 			.add(Blocks.STONE_BRICK_STAIRS)
+			.add(Blocks.LAVA)
+			.add(Blocks.WATER)
 			.add(TFBlocks.castle_stairs_brick.get())
 			.add(TFBlocks.force_field_blue.get())
 			.add(TFBlocks.force_field_green.get())

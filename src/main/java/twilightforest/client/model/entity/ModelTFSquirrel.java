@@ -1,12 +1,8 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -92,7 +88,7 @@ public class ModelTFSquirrel extends SegmentedModel<EntityTFSquirrel> {
 
         if (limbSwingAmount > 0.2) {
             float wiggle = Math.min(limbSwingAmount, 0.6F);
-            this.tail2.rotateAngleX = (MathHelper.cos(ageInTicks * 0.6662F) * 1.0F - (float) Math.PI / 3) * wiggle;
+            this.tail2.rotateAngleX = (MathHelper.cos(ageInTicks * 0.6662F) - (float) Math.PI / 3) * wiggle;
             this.tail1.rotateAngleX = 2.5F + MathHelper.cos(ageInTicks * 0.7774F) * 1.2F * wiggle;
         } else {
             this.tail2.rotateAngleX = 0.2F + MathHelper.cos(ageInTicks * 0.3335F) * 0.25F;

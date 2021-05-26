@@ -28,7 +28,6 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -195,7 +194,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_ur_ghast.get().getDefaultState());
 			}
 			remove();
 		} else {
@@ -255,7 +254,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
-		return src == DamageSource.IN_WALL || super.isInvulnerableTo(src);
+		return src == DamageSource.IN_WALL || src == DamageSource.IN_FIRE || src == DamageSource.ON_FIRE || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -321,7 +320,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		ServerWorldInfo worldInfo = (ServerWorldInfo) world.getServer().getWorld(World.OVERWORLD).getWorldInfo(); // grab the overworld to set weather properly
 
-//		worldInfo.setClearWeatherTime(0); TODO
+		worldInfo.setClearWeatherTime(0);
 		worldInfo.setRainTime(rainTime);
 		worldInfo.setThunderTime(rainTime);
 		worldInfo.setRaining(true);

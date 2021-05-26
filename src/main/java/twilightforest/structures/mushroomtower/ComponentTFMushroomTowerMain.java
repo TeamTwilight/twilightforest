@@ -134,19 +134,19 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 
 		// try to remove blocks inside this door
 		if (dx == 0) {
-			setBlockState(world, AIR, dx + 1, dy + 0, dz, sbb);
+			setBlockState(world, AIR, dx + 1, dy, dz, sbb);
 			setBlockState(world, AIR, dx + 1, dy + 1, dz, sbb);
 		}
 		if (dx == size - 1) {
-			setBlockState(world, AIR, dx - 1, dy + 0, dz, sbb);
+			setBlockState(world, AIR, dx - 1, dy, dz, sbb);
 			setBlockState(world, AIR, dx - 1, dy + 1, dz, sbb);
 		}
 		if (dz == 0) {
-			setBlockState(world, AIR, dx, dy + 0, dz + 1, sbb);
+			setBlockState(world, AIR, dx, dy, dz + 1, sbb);
 			setBlockState(world, AIR, dx, dy + 1, dz + 1, sbb);
 		}
 		if (dz == size - 1) {
-			setBlockState(world, AIR, dx, dy + 0, dz - 1, sbb);
+			setBlockState(world, AIR, dx, dy, dz - 1, sbb);
 			setBlockState(world, AIR, dx, dy + 1, dz - 1, sbb);
 		}
 	}

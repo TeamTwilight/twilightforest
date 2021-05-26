@@ -13,7 +13,6 @@ public class TFEntityNames {
 	public static final ResourceLocation SQUIRREL = prefix("squirrel");
 	public static final ResourceLocation BUNNY = prefix("bunny");
 	public static final ResourceLocation RAVEN = prefix("raven");
-	public static final ResourceLocation FIREFLY = prefix("firefly");
 
 	public static final ResourceLocation QUEST_RAM = prefix("quest_ram");
 
@@ -40,7 +39,6 @@ public class TFEntityNames {
 
 	// Courtyard
 	public static final ResourceLocation NAGA = prefix("naga");
-	public static final ResourceLocation NAGA_SEGMENT = prefix("naga_segment");
 
 	// Lich Tower
 	public static final ResourceLocation LICH = prefix("lich");
@@ -82,7 +80,6 @@ public class TFEntityNames {
 	public static final ResourceLocation STABLE_ICE_CORE = prefix("stable_ice_core");
 	public static final ResourceLocation UNSTABLE_ICE_CORE = prefix("unstable_ice_core");
 	public static final ResourceLocation SNOW_QUEEN = prefix("snow_queen");
-	public static final ResourceLocation SNOW_QUEEN_ICE_SHIELD = prefix("snow_queen_ice_shield");
 	public static final ResourceLocation ICE_CRYSTAL = prefix("ice_crystal");
 
 	// Highlands
@@ -96,17 +93,14 @@ public class TFEntityNames {
 	public static final ResourceLocation ROVING_CUBE = prefix("roving_cube");
 	public static final ResourceLocation SLIDER = prefix("slider");
 	public static final ResourceLocation CASTLE_GUARDIAN = prefix("castle_guardian");
+	public static final ResourceLocation PLATEAU_BOSS = prefix("plateau_boss");
 
 	// Technical
-	public static final ResourceLocation HYDRA_HEAD = prefix("hydra_head");
-	public static final ResourceLocation HYDRA_NECK = prefix("hydra_neck");
-	public static final ResourceLocation HYDRA_PART = prefix("hydra_part");
 	public static final ResourceLocation CHARM_EFFECT = prefix("charm_effect");
 	public static final ResourceLocation FALLING_ICE = prefix("falling_ice");
 	public static final ResourceLocation CHAIN_BLOCK = prefix("chain_block");
 	public static final ResourceLocation CUBE_OF_ANNIHILATION = prefix("cube_of_annihilation");
 	public static final ResourceLocation PROTECTION_BOX = prefix("protection_box");
-	public static final ResourceLocation GOBLIN_CHAIN = prefix("goblin_chain");
 
 	// Projectiles
 	public static final ResourceLocation NATURE_BOLT = prefix("nature_bolt");
@@ -115,6 +109,7 @@ public class TFEntityNames {
 	public static final ResourceLocation TOME_BOLT = prefix("tome_bolt");
 	public static final ResourceLocation HYDRA_MORTAR = prefix("hydra_mortar");
 	public static final ResourceLocation LICH_BOMB = prefix("lich_bomb");
+	public static final ResourceLocation CICADA_SHOT = prefix("cicada_shot");
 	public static final ResourceLocation MOONWORM_SHOT = prefix("moonworm_shot");
 	public static final ResourceLocation SLIME_BLOB = prefix("slime_blob");
 	public static final ResourceLocation THROWN_WEP = prefix("thrown_wep");

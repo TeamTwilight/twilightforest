@@ -97,7 +97,7 @@ public class ComponentTFTowerRoof extends StructureTFComponentOld {
 	/**
 	 * Does this roof intersect anything except the parent tower?
 	 */
-	public boolean fits(ComponentTFTowerWing parent, List<StructurePiece> list, Random rand) {
+	public boolean fits(ComponentTFTowerWing parent, List<StructurePiece> list) {
 		return StructurePiece.findIntersecting(list, this.boundingBox) == parent;
 	}
 }

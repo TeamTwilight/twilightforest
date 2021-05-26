@@ -3,13 +3,8 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.SignItem;
-import net.minecraft.item.TallBlockItem;
 import net.minecraft.util.Direction;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,19 +12,13 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ISTER;
-import twilightforest.data.BlockTagGenerator;
+import twilightforest.compat.TFCompat;
 import twilightforest.enums.*;
-import twilightforest.item.*;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.item.TFItems;
 import twilightforest.world.feature.tree.*;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Callable;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 @Nonnull
@@ -60,7 +49,15 @@ public class TFBlocks {
 	public static final RegistryObject<Block> maze_stone_mosaic          = BLOCKS.register("maze_stone_mosaic", () -> new BlockTFMazestone(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(100.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> maze_stone_border          = BLOCKS.register("maze_stone_border", () -> new BlockTFMazestone(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(100.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> hedge                      = BLOCKS.register("hedge", () -> new BlockTFHedge(Block.Properties.create(Material.CACTUS).harvestTool(ToolType.AXE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.PLANT)));
-	public static final RegistryObject<Block> boss_spawner               = BLOCKS.register("boss_spawner", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops()));
+	public static final RegistryObject<Block> boss_spawner_naga          = BLOCKS.register("boss_spawner_naga", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.NAGA));
+	public static final RegistryObject<Block> boss_spawner_lich          = BLOCKS.register("boss_spawner_lich", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.LICH));
+	public static final RegistryObject<Block> boss_spawner_hydra         = BLOCKS.register("boss_spawner_hydra", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.HYDRA));
+	public static final RegistryObject<Block> boss_spawner_ur_ghast      = BLOCKS.register("boss_spawner_ur_ghast", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.UR_GHAST));
+	public static final RegistryObject<Block> boss_spawner_knight_phantom = BLOCKS.register("boss_spawner_knight_phantom", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.KNIGHT_PHANTOM));
+	public static final RegistryObject<Block> boss_spawner_snow_queen    = BLOCKS.register("boss_spawner_snow_queen", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.SNOW_QUEEN));
+	public static final RegistryObject<Block> boss_spawner_minoshroom    = BLOCKS.register("boss_spawner_minoshroom", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.MINOSHROOM));
+	public static final RegistryObject<Block> boss_spawner_alpha_yeti    = BLOCKS.register("boss_spawner_alpha_yeti", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.ALPHA_YETI));
+	public static final RegistryObject<Block> boss_spawner_final_boss    = BLOCKS.register("boss_spawner_final_boss", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.FINAL_BOSS));
 	public static final RegistryObject<Block> firefly_jar                = BLOCKS.register("firefly_jar", () -> new BlockTFJar(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 0.0F).sound(SoundType.WOOD).setLightLevel((state) -> 15).notSolid()));
 	public static final RegistryObject<Block> cicada_jar                 = BLOCKS.register("cicada_jar", () -> new BlockTFJar(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 0.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<Block> moss_patch                 = BLOCKS.register("moss_patch", () -> new BlockTFPlant(PlantVariant.MOSSPATCH, Block.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().notSolid()));
@@ -73,27 +70,27 @@ public class TFBlocks {
 	public static final RegistryObject<Block> fallen_leaves              = BLOCKS.register("fallen_leaves", () -> new BlockTFPlant(PlantVariant.FALLEN_LEAVES, Block.Properties.create(Material.TALL_PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().notSolid()));
 	public static final RegistryObject<Block> root                       = BLOCKS.register("root", () -> new Block(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> liveroot_block             = BLOCKS.register("liveroot_block", () -> new Block(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> uncrafting_table           = BLOCKS.register("uncrafting_table", () -> new BlockTFUncraftingTable());
+	public static final RegistryObject<Block> uncrafting_table           = BLOCKS.register("uncrafting_table", BlockTFUncraftingTable::new);
 	public static final RegistryObject<Block> smoker                     = BLOCKS.register("smoker", () -> new BlockTFSmoker(Block.Properties.create(Material.ROCK, MaterialColor.GRASS).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> encased_smoker             = BLOCKS.register("encased_smoker", () -> new BlockTFEncasedSmoker(Block.Properties.create(Material.WOOD, MaterialColor.SAND).setRequiresTool().harvestTool(ToolType.AXE).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> fire_jet                   = BLOCKS.register("fire_jet", () -> new BlockTFFireJet(Block.Properties.create(Material.ROCK, MaterialColor.GRASS).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD).tickRandomly().setLightLevel((state) -> state.get(BlockTFFireJet.STATE) != FireJetVariant.FLAME ? 0 : 15)));
 	public static final RegistryObject<Block> encased_fire_jet           = BLOCKS.register("encased_fire_jet", () -> new BlockTFEncasedFireJet(Block.Properties.create(Material.WOOD, MaterialColor.SAND).setRequiresTool().harvestTool(ToolType.AXE).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD).setLightLevel((state) -> 15)));
 	public static final RegistryObject<Block> naga_stone_head            = BLOCKS.register("naga_stone_head", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> naga_stone                 = BLOCKS.register("naga_stone", () -> new BlockTFNagastone(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<SaplingBlock> oak_sapling            = BLOCKS.register("twilight_oak_sapling", () -> new BlockTFSapling(new SmallOakTree()));
-	public static final RegistryObject<SaplingBlock> canopy_sapling         = BLOCKS.register("canopy_sapling", () -> new BlockTFSapling(new CanopyTree()));
-	public static final RegistryObject<SaplingBlock> mangrove_sapling       = BLOCKS.register("mangrove_sapling", () -> new BlockMangroveSapling(new MangroveTree()));
-	public static final RegistryObject<SaplingBlock> darkwood_sapling       = BLOCKS.register("darkwood_sapling", () -> new BlockTFSapling(new DarkCanopyTree()));
-	public static final RegistryObject<SaplingBlock> hollow_oak_sapling     = BLOCKS.register("hollow_oak_sapling", () -> new BlockTFSapling(new HollowTree()));
-	public static final RegistryObject<SaplingBlock> time_sapling           = BLOCKS.register("time_sapling", () -> new BlockTFSapling(new TimeTree()));
-	public static final RegistryObject<SaplingBlock> transformation_sapling = BLOCKS.register("transformation_sapling", () -> new BlockTFSapling(new TransformationTree()));
-	public static final RegistryObject<SaplingBlock> mining_sapling         = BLOCKS.register("mining_sapling", () -> new BlockTFSapling(new MinersTree()));
-	public static final RegistryObject<SaplingBlock> sorting_sapling        = BLOCKS.register("sorting_sapling", () -> new BlockTFSapling(new SortingTree()));
-	public static final RegistryObject<SaplingBlock> rainboak_sapling       = BLOCKS.register("rainboak_sapling", () -> new BlockTFSapling(new RainboakTree()));
-	public static final RegistryObject<RotatedPillarBlock> time_log           = BLOCKS.register("time_log", () -> new BlockTFMagicLog(logProperties(MaterialColor.DIRT, MaterialColor.OBSIDIAN)));
-	public static final RegistryObject<RotatedPillarBlock> transformation_log = BLOCKS.register("transformation_log", () -> new BlockTFMagicLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN)));
-	public static final RegistryObject<RotatedPillarBlock> mining_log         = BLOCKS.register("mining_log", () -> new BlockTFMagicLog(logProperties(MaterialColor.SAND, MaterialColor.QUARTZ)));
-	public static final RegistryObject<RotatedPillarBlock> sorting_log        = BLOCKS.register("sorting_log", () -> new BlockTFMagicLog(logProperties(MaterialColor.OBSIDIAN, MaterialColor.BROWN)));
+	public static final RegistryObject<SaplingBlock> oak_sapling            = BLOCKS.register("twilight_oak_sapling", () -> new SaplingBlock(new SmallOakTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> canopy_sapling         = BLOCKS.register("canopy_sapling", () -> new SaplingBlock(new CanopyTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> mangrove_sapling       = BLOCKS.register("mangrove_sapling", () -> new BlockMangroveSapling(new MangroveTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> darkwood_sapling       = BLOCKS.register("darkwood_sapling", () -> new SaplingBlock(new DarkCanopyTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> hollow_oak_sapling     = BLOCKS.register("hollow_oak_sapling", () -> new SaplingBlock(new HollowTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> time_sapling           = BLOCKS.register("time_sapling", () -> new SaplingBlock(new TimeTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> transformation_sapling = BLOCKS.register("transformation_sapling", () -> new SaplingBlock(new TransformationTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> mining_sapling         = BLOCKS.register("mining_sapling", () -> new SaplingBlock(new MinersTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> sorting_sapling        = BLOCKS.register("sorting_sapling", () -> new SaplingBlock(new SortingTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<SaplingBlock> rainboak_sapling       = BLOCKS.register("rainboak_sapling", () -> new SaplingBlock(new RainboakTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<RotatedPillarBlock> time_log           = BLOCKS.register("time_log", () -> new BlockTFLog(logProperties(MaterialColor.DIRT, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> transformation_log = BLOCKS.register("transformation_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> mining_log         = BLOCKS.register("mining_log", () -> new BlockTFLog(logProperties(MaterialColor.SAND, MaterialColor.QUARTZ).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> sorting_log        = BLOCKS.register("sorting_log", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> time_wood                  = BLOCKS.register("time_wood", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> transformation_wood        = BLOCKS.register("transformation_wood", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> mining_wood                = BLOCKS.register("mining_wood", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
@@ -106,17 +103,18 @@ public class TFBlocks {
 	public static final RegistryObject<Block> transformation_leaves      = BLOCKS.register("transformation_leaves", () -> new BlockTFMagicLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly().notSolid().harvestTool(ToolType.HOE)));
 	public static final RegistryObject<Block> mining_leaves              = BLOCKS.register("mining_leaves", () -> new BlockTFMagicLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly().notSolid().harvestTool(ToolType.HOE)));
 	public static final RegistryObject<Block> sorting_leaves             = BLOCKS.register("sorting_leaves", () -> new BlockTFMagicLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly().notSolid().harvestTool(ToolType.HOE)));
-	public static final RegistryObject<Block> firefly                    = BLOCKS.register("firefly", () -> new BlockTFFirefly(Block.Properties.create(Material.MISCELLANEOUS).setLightLevel((state) -> 15).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
-	public static final RegistryObject<Block> cicada                     = BLOCKS.register("cicada", () -> new BlockTFCicada(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
-	public static final RegistryObject<Block> moonworm                   = BLOCKS.register("moonworm", () -> new BlockTFMoonworm(Block.Properties.create(Material.MISCELLANEOUS).setLightLevel((state) -> 14).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
+	public static final RegistryObject<Block> firefly                    = BLOCKS.register("firefly", () -> new BlockTFFirefly(Block.Properties.create(new Material.Builder(MaterialColor.AIR).doesNotBlockMovement().notSolid().replaceable().build()).setLightLevel((state) -> 15).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
+	public static final RegistryObject<Block> cicada                     = BLOCKS.register("cicada", () -> new BlockTFCicada(Block.Properties.create(new Material.Builder(MaterialColor.AIR).doesNotBlockMovement().notSolid().replaceable().build()).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
+	public static final RegistryObject<Block> moonworm                   = BLOCKS.register("moonworm", () -> new BlockTFMoonworm(Block.Properties.create(new Material.Builder(MaterialColor.AIR).doesNotBlockMovement().notSolid().replaceable().build()).setLightLevel((state) -> 14).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
 	public static final RegistryObject<Block> tower_wood                 = BLOCKS.register("tower_wood", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).harvestTool(ToolType.AXE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> tower_wood_encased         = BLOCKS.register("tower_wood_encased", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.SAND).harvestTool(ToolType.AXE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> tower_wood_cracked         = BLOCKS.register("tower_wood_cracked", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).harvestTool(ToolType.AXE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> tower_wood_mossy           = BLOCKS.register("tower_wood_mossy", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).harvestTool(ToolType.AXE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> tower_wood_infested        = BLOCKS.register("tower_wood_infested", () -> new BlockInfestedTowerWood(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).harvestTool(ToolType.AXE).hardnessAndResistance(0.75F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> reappearing_block          = BLOCKS.register("reappearing_block", () -> new BlockReappearing(Block.Properties.create(Material.WOOD, MaterialColor.SAND).setRequiresTool().harvestTool(ToolType.AXE).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD).setLightLevel((state) -> 4)));
+	// FIXME Split Vanishing block into regular breakable variant, and then the unbreakable variant
 	public static final RegistryObject<Block> vanishing_block            = BLOCKS.register("vanishing_block", () -> new BlockTFVanishingBlock(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(-1.0F, 35.0F).sound(SoundType.WOOD).setLightLevel((state) -> state.get(BlockTFVanishingBlock.ACTIVE) ? 4 : 0)));
-	public static final RegistryObject<Block> locked_vanishing_block     = BLOCKS.register("locked_vanishing_block", () -> new BlockTFLockedVanishing(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(-1.0F, 35.0F).sound(SoundType.WOOD).setLightLevel((state) -> 4)));
+	public static final RegistryObject<Block> locked_vanishing_block     = BLOCKS.register("locked_vanishing_block", () -> new BlockTFLockedVanishing(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(-1.0F, 35.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> carminite_builder          = BLOCKS.register("carminite_builder", () -> new BlockTFBuilder(Block.Properties.create(Material.WOOD, MaterialColor.SAND).setRequiresTool().harvestTool(ToolType.AXE).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD).setLightLevel((state) -> state.get(BlockTFBuilder.STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? 4 : 0)));
 	public static final RegistryObject<Block> built_block                = BLOCKS.register("built_block", () -> new BlockTFBuiltTranslucent(Block.Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL).notSolid().noDrops()));
 	public static final RegistryObject<Block> antibuilder                = BLOCKS.register("antibuilder", () -> new BlockTFAntibuilder(Block.Properties.create(Material.WOOD, MaterialColor.SAND).setRequiresTool().harvestTool(ToolType.AXE).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD).setLightLevel((state) -> 10)));
@@ -144,14 +142,14 @@ public class TFBlocks {
 	public static final RegistryObject<BlockTFTrophyWall> quest_ram_wall_trophy      = BLOCKS.register("quest_ram_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.QUEST_RAM));
 	public static final RegistryObject<Block> stronghold_shield           = BLOCKS.register("stronghold_shield", () -> new BlockTFShield(Block.Properties.create(Material.ROCK).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops()));
 	public static final RegistryObject<Block> trophy_pedestal             = BLOCKS.register("trophy_pedestal", () -> new BlockTFTrophyPedestal(Block.Properties.create(Material.ROCK).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(2.0F, 2000.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> aurora_block                = BLOCKS.register("aurora_block", () -> new BlockTFAuroraBrick(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
+	public static final RegistryObject<Block> aurora_block                = BLOCKS.register("aurora_block", () -> new BlockTFAuroraBrick(Block.Properties.create(Material.PACKED_ICE).harvestTool(ToolType.PICKAXE).hardnessAndResistance(10.0F, 10.0F)));
 	public static final RegistryObject<RotatedPillarBlock> aurora_pillar  = BLOCKS.register("aurora_pillar", () -> new RotatedPillarBlock(Block.Properties.create(Material.PACKED_ICE).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> aurora_slab                 = BLOCKS.register("aurora_slab", () -> new SlabBlock(Block.Properties.create(Material.PACKED_ICE).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> auroralized_glass           = BLOCKS.register("auroralized_glass", () -> new BlockTFAuroralizedGlass(Block.Properties.create(Material.ICE).notSolid()));
 	public static final RegistryObject<Block> underbrick                  = BLOCKS.register("underbrick", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> underbrick_mossy            = BLOCKS.register("underbrick_mossy", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> underbrick_cracked          = BLOCKS.register("underbrick_cracked", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> underbrick_floor            = BLOCKS.register("underbrick_floor", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> underbrick_floor            = BLOCKS.register("underbrick_floor", () -> new BlockTFUnfinished(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE), true));
 	public static final RegistryObject<Block> brown_thorns                = BLOCKS.register("brown_thorns", () -> new BlockTFThorns(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.WOOD).noDrops()));
 	public static final RegistryObject<Block> green_thorns                = BLOCKS.register("green_thorns", () -> new BlockTFThorns(Block.Properties.create(Material.WOOD, MaterialColor.FOLIAGE).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.WOOD).noDrops()));
 	public static final RegistryObject<Block> burnt_thorns                = BLOCKS.register("burnt_thorns", () -> new BlockTFBurntThorns(Block.Properties.create(Material.WOOD, MaterialColor.STONE).hardnessAndResistance(0.01F, 0.0F).sound(SoundType.SAND).noDrops()));
@@ -162,14 +160,14 @@ public class TFBlocks {
 	public static final RegistryObject<Block> deadrock_cracked            = BLOCKS.register("deadrock_cracked", () -> new Block(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> deadrock_weathered          = BLOCKS.register("deadrock_weathered", () -> new Block(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> trollsteinn                 = BLOCKS.register("trollsteinn", () -> new BlockTFTrollSteinn(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(2.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> wispy_cloud                 = BLOCKS.register("wispy_cloud", () -> new BlockTFWispyCloud(Block.Properties.create(Material.SNOW).hardnessAndResistance(0.3F).sound(SoundType.CLOTH).notSolid()));
+	public static final RegistryObject<Block> wispy_cloud                 = BLOCKS.register("wispy_cloud", () -> new BreakableBlock(Block.Properties.create(Material.SNOW).hardnessAndResistance(0.3F).sound(SoundType.CLOTH).notSolid()));
 	public static final RegistryObject<Block> fluffy_cloud                = BLOCKS.register("fluffy_cloud", () -> new Block(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(0.8F, 0.0F).sound(SoundType.CLOTH)));
 	public static final RegistryObject<Block> giant_cobblestone           = BLOCKS.register("giant_cobblestone", () -> new BlockTFGiantBlock(Block.Properties.from(Blocks.COBBLESTONE).setRequiresTool().hardnessAndResistance(128, 10)));
 	public static final RegistryObject<Block> giant_log                   = BLOCKS.register("giant_log", () -> new BlockTFGiantLog(Block.Properties.from(Blocks.OAK_LOG).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(128, 0)));
 	public static final RegistryObject<Block> giant_leaves                = BLOCKS.register("giant_leaves", () -> new BlockTFGiantLeaves(Block.Properties.from(Blocks.OAK_LEAVES).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(0.2F * 64F, 0.0F).notSolid()));
 	public static final RegistryObject<Block> giant_obsidian              = BLOCKS.register("giant_obsidian", () -> new BlockTFGiantBlock(Block.Properties.from(Blocks.OBSIDIAN).setRequiresTool().hardnessAndResistance(50.0F * 64F * 64F, 2000.0F * 64F * 64F)));
 	public static final RegistryObject<Block> uberous_soil                = BLOCKS.register("uberous_soil", () -> new BlockTFUberousSoil(Block.Properties.create(Material.EARTH).harvestTool(ToolType.SHOVEL).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
-	public static final RegistryObject<Block> huge_stalk                  = BLOCKS.register("huge_stalk", () -> new BlockTFHugeStalk(Block.Properties.create(Material.WOOD, MaterialColor.FOLIAGE).hardnessAndResistance(1.25F, 7.0F).sound(SoundType.PLANT)));
+	public static final RegistryObject<Block> huge_stalk                  = BLOCKS.register("huge_stalk", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.FOLIAGE).hardnessAndResistance(1.25F, 7.0F).sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> huge_mushgloom              = BLOCKS.register("huge_mushgloom", () -> new HugeMushroomBlock(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(0.2F).sound(SoundType.WOOD).setLightLevel((state) -> 5)));
 	public static final RegistryObject<Block> huge_mushgloom_stem         = BLOCKS.register("huge_mushgloom_stem", () -> new HugeMushroomBlock(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(0.2F).sound(SoundType.WOOD).setLightLevel((state) -> 5)));
 	public static final RegistryObject<Block> trollvidr                   = BLOCKS.register("trollvidr", () -> new BlockTFTrollRoot(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement()));
@@ -177,7 +175,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> trollber                    = BLOCKS.register("trollber", () -> new BlockTFTrollRoot(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement().setLightLevel((state) -> 15)));
 	public static final RegistryObject<BlockTFHugeLilyPad> huge_lilypad   = BLOCKS.register("huge_lilypad", () -> new BlockTFHugeLilyPad(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> huge_waterlily              = BLOCKS.register("huge_waterlily", () -> new BlockTFHugeWaterLily(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)));
-	public static final RegistryObject<RotatedPillarBlock> slider         = BLOCKS.register("slider", () -> new BlockTFSlider());
+	public static final RegistryObject<RotatedPillarBlock> slider         = BLOCKS.register("slider", BlockTFSlider::new);
 	public static final RegistryObject<Block> castle_brick                = BLOCKS.register("castle_brick", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
 	public static final RegistryObject<Block> castle_brick_worn           = BLOCKS.register("castle_brick_worn", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
 	public static final RegistryObject<Block> castle_brick_cracked        = BLOCKS.register("castle_brick_cracked", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
@@ -203,21 +201,21 @@ public class TFBlocks {
 	public static final RegistryObject<Block> force_field_orange          = BLOCKS.register("force_field_orange", () -> new BlockTFForceField(Block.Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).setLightLevel((state) -> 2).noDrops().notSolid()));
 	public static final RegistryObject<Block> force_field_green           = BLOCKS.register("force_field_green", () -> new BlockTFForceField(Block.Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).setLightLevel((state) -> 2).noDrops().notSolid()));
 	public static final RegistryObject<Block> force_field_blue            = BLOCKS.register("force_field_blue", () -> new BlockTFForceField(Block.Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).setLightLevel((state) -> 2).noDrops().notSolid()));
-	public static final RegistryObject<Block> cinder_furnace              = BLOCKS.register("cinder_furnace", () -> new BlockTFCinderFurnace());
+	public static final RegistryObject<Block> cinder_furnace              = BLOCKS.register("cinder_furnace", BlockTFCinderFurnace::new);
 	public static final RegistryObject<RotatedPillarBlock> cinder_log     = BLOCKS.register("cinder_log", () -> new BlockTFLog(Block.Properties.create(Material.WOOD, MaterialColor.GRAY).harvestTool(ToolType.AXE).hardnessAndResistance(1.0F)));
-	public static final RegistryObject<Block> cinder_wood                 = BLOCKS.register("cinder_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.GRAY).harvestTool(ToolType.AXE).hardnessAndResistance(1.0F)));
-	public static final RegistryObject<Block> castle_door_yellow          = BLOCKS.register("castle_door_yellow", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, (state) -> state.get(BlockTFCastleDoor.VANISHED) ? MaterialColor.AIR : MaterialColor.CYAN).setRequiresTool().notSolid().hardnessAndResistance(100.0F, 35.0F)));
-	public static final RegistryObject<Block> castle_door_purple          = BLOCKS.register("castle_door_purple", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, (state) -> state.get(BlockTFCastleDoor.VANISHED) ? MaterialColor.AIR : MaterialColor.CYAN).setRequiresTool().notSolid().hardnessAndResistance(100.0F, 35.0F)));
-	public static final RegistryObject<Block> castle_door_pink            = BLOCKS.register("castle_door_pink", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, (state) -> state.get(BlockTFCastleDoor.VANISHED) ? MaterialColor.AIR : MaterialColor.CYAN).setRequiresTool().notSolid().hardnessAndResistance(100.0F, 35.0F)));
-	public static final RegistryObject<Block> castle_door_blue            = BLOCKS.register("castle_door_blue", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, (state) -> state.get(BlockTFCastleDoor.VANISHED) ? MaterialColor.AIR : MaterialColor.CYAN).setRequiresTool().notSolid().hardnessAndResistance(100.0F, 35.0F)));
-	public static final RegistryObject<Block> experiment_115              = BLOCKS.register("experiment_115", () -> new BlockTFExperiment115());
-	public static final RegistryObject<Block> twilight_portal_miniature_structure    = BLOCKS.register("twilight_portal_miniature_structure", () -> new BlockTFMiniatureStructure());
+	public static final RegistryObject<Block> cinder_wood                 = BLOCKS.register("cinder_wood", () -> new BlockTFUnfinished(Block.Properties.create(Material.WOOD, MaterialColor.GRAY).harvestTool(ToolType.AXE).hardnessAndResistance(1.0F), true));
+	public static final RegistryObject<Block> castle_door_yellow          = BLOCKS.register("castle_door_yellow", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, (state) -> state.get(BlockTFCastleDoor.VANISHED) ? MaterialColor.AIR : MaterialColor.CYAN).setRequiresTool().hardnessAndResistance(100.0F, 35.0F)));
+	public static final RegistryObject<Block> castle_door_purple          = BLOCKS.register("castle_door_purple", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, (state) -> state.get(BlockTFCastleDoor.VANISHED) ? MaterialColor.AIR : MaterialColor.CYAN).setRequiresTool().hardnessAndResistance(100.0F, 35.0F)));
+	public static final RegistryObject<Block> castle_door_pink            = BLOCKS.register("castle_door_pink", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, (state) -> state.get(BlockTFCastleDoor.VANISHED) ? MaterialColor.AIR : MaterialColor.CYAN).setRequiresTool().hardnessAndResistance(100.0F, 35.0F)));
+	public static final RegistryObject<Block> castle_door_blue            = BLOCKS.register("castle_door_blue", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, (state) -> state.get(BlockTFCastleDoor.VANISHED) ? MaterialColor.AIR : MaterialColor.CYAN).setRequiresTool().hardnessAndResistance(100.0F, 35.0F)));
+	public static final RegistryObject<Block> experiment_115              = BLOCKS.register("experiment_115", BlockTFExperiment115::new);
+	public static final RegistryObject<Block> twilight_portal_miniature_structure    = BLOCKS.register("twilight_portal_miniature_structure", BlockTFMiniatureStructure::new);
 //	public static final RegistryObject<Block> hedge_maze_miniature_structure         = BLOCKS.register("hedge_maze_miniature_structure", () -> new BlockTFMiniatureStructure());
 //	public static final RegistryObject<Block> hollow_hill_miniature_structure        = BLOCKS.register("hollow_hill_miniature_structure", () -> new BlockTFMiniatureStructure());
 //	public static final RegistryObject<Block> quest_grove_miniature_structure        = BLOCKS.register("quest_grove_miniature_structure", () -> new BlockTFMiniatureStructure());
 //	public static final RegistryObject<Block> mushroom_tower_miniature_structure     = BLOCKS.register("mushroom_tower_miniature_structure", () -> new BlockTFMiniatureStructure());
-	public static final RegistryObject<Block> naga_courtyard_miniature_structure     = BLOCKS.register("naga_courtyard_miniature_structure", () -> new BlockTFMiniatureStructure());
-	public static final RegistryObject<Block> lich_tower_miniature_structure         = BLOCKS.register("lich_tower_miniature_structure", () -> new BlockTFMiniatureStructure());
+	public static final RegistryObject<Block> naga_courtyard_miniature_structure     = BLOCKS.register("naga_courtyard_miniature_structure", BlockTFMiniatureStructure::new);
+	public static final RegistryObject<Block> lich_tower_miniature_structure         = BLOCKS.register("lich_tower_miniature_structure", BlockTFMiniatureStructure::new);
 //	public static final RegistryObject<Block> minotaur_labyrinth_miniature_structure = BLOCKS.register("minotaur_labyrinth_miniature_structure", () -> new BlockTFMiniatureStructure());
 //	public static final RegistryObject<Block> hydra_lair_miniature_structure         = BLOCKS.register("hydra_lair_miniature_structure", () -> new BlockTFMiniatureStructure());
 //	public static final RegistryObject<Block> goblin_stronghold_miniature_structure  = BLOCKS.register("goblin_stronghold_miniature_structure", () -> new BlockTFMiniatureStructure());
@@ -232,26 +230,26 @@ public class TFBlocks {
 	public static final RegistryObject<Block> steeleaf_block                         = BLOCKS.register("steeleaf_block", () -> new BlockTFCompressed(Block.Properties.create(Material.LEAVES, MaterialColor.FOLIAGE).harvestTool(ToolType.HOE).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> arctic_fur_block                       = BLOCKS.register("arctic_fur_block", () -> new BlockTFCompressed(Block.Properties.create(Material.WOOL, MaterialColor.WOOL).harvestTool(ToolType.HOE).hardnessAndResistance(0.8F, 10.0F).sound(SoundType.CLOTH)));
 	public static final RegistryObject<Block> carminite_block                        = BLOCKS.register("carminite_block", () -> new BlockTFCompressed(Block.Properties.create(Material.CLAY, MaterialColor.RED).hardnessAndResistance(0.0F, 10.0F).sound(SoundType.SLIME)));
-	public static final RegistryObject<Block> spiral_bricks                          = BLOCKS.register("spiral_bricks", () -> new BlockTFSpiralBrick());
+	public static final RegistryObject<Block> spiral_bricks                          = BLOCKS.register("spiral_bricks", BlockTFSpiralBrick::new);
 	public static final RegistryObject<Block> etched_nagastone                       = BLOCKS.register("etched_nagastone", () -> new BlockTFNagastoneEtched(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> nagastone_pillar                       = BLOCKS.register("nagastone_pillar", () -> new BlockTFNagastonePillar());
-	public static final RegistryObject<StairsBlock> nagastone_stairs_left            = BLOCKS.register("nagastone_stairs_left", () -> new BlockTFNagastoneStairs(etched_nagastone.get().getDefaultState()));
-	public static final RegistryObject<StairsBlock> nagastone_stairs_right           = BLOCKS.register("nagastone_stairs_right", () -> new BlockTFNagastoneStairs(etched_nagastone.get().getDefaultState()));
+	public static final RegistryObject<Block> nagastone_pillar                       = BLOCKS.register("nagastone_pillar", BlockTFNagastonePillar::new);
+	public static final RegistryObject<StairsBlock> nagastone_stairs_left            = BLOCKS.register("nagastone_stairs_left", () -> new StairsBlock(etched_nagastone.get().getDefaultState(), AbstractBlock.Properties.from(etched_nagastone.get())));
+	public static final RegistryObject<StairsBlock> nagastone_stairs_right           = BLOCKS.register("nagastone_stairs_right", () -> new StairsBlock(etched_nagastone.get().getDefaultState(), AbstractBlock.Properties.from(etched_nagastone.get())));
 	public static final RegistryObject<Block> etched_nagastone_mossy                 = BLOCKS.register("etched_nagastone_mossy", () -> new BlockTFNagastoneEtched(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> nagastone_pillar_mossy                 = BLOCKS.register("nagastone_pillar_mossy", () -> new BlockTFNagastonePillar());
-	public static final RegistryObject<StairsBlock> nagastone_stairs_mossy_left      = BLOCKS.register("nagastone_stairs_mossy_left", () -> new BlockTFNagastoneStairs(etched_nagastone_mossy.get().getDefaultState()));
-	public static final RegistryObject<StairsBlock> nagastone_stairs_mossy_right     = BLOCKS.register("nagastone_stairs_mossy_right", () -> new BlockTFNagastoneStairs(etched_nagastone_mossy.get().getDefaultState()));
+	public static final RegistryObject<Block> nagastone_pillar_mossy                 = BLOCKS.register("nagastone_pillar_mossy", BlockTFNagastonePillar::new);
+	public static final RegistryObject<StairsBlock> nagastone_stairs_mossy_left      = BLOCKS.register("nagastone_stairs_mossy_left", () -> new StairsBlock(etched_nagastone_mossy.get().getDefaultState(), AbstractBlock.Properties.from(etched_nagastone_mossy.get())));
+	public static final RegistryObject<StairsBlock> nagastone_stairs_mossy_right     = BLOCKS.register("nagastone_stairs_mossy_right", () -> new StairsBlock(etched_nagastone_mossy.get().getDefaultState(), AbstractBlock.Properties.from(etched_nagastone_mossy.get())));
 	public static final RegistryObject<Block> etched_nagastone_weathered             = BLOCKS.register("etched_nagastone_weathered", () -> new BlockTFNagastoneEtched(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> nagastone_pillar_weathered             = BLOCKS.register("nagastone_pillar_weathered", () -> new BlockTFNagastonePillar());
-	public static final RegistryObject<StairsBlock> nagastone_stairs_weathered_left  = BLOCKS.register("nagastone_stairs_weathered_left", () -> new BlockTFNagastoneStairs(etched_nagastone_weathered.get().getDefaultState()));
-	public static final RegistryObject<StairsBlock> nagastone_stairs_weathered_right = BLOCKS.register("nagastone_stairs_weathered_right", () -> new BlockTFNagastoneStairs(etched_nagastone_weathered.get().getDefaultState()));
+	public static final RegistryObject<Block> nagastone_pillar_weathered             = BLOCKS.register("nagastone_pillar_weathered", BlockTFNagastonePillar::new);
+	public static final RegistryObject<StairsBlock> nagastone_stairs_weathered_left  = BLOCKS.register("nagastone_stairs_weathered_left", () -> new StairsBlock(etched_nagastone_weathered.get().getDefaultState(), AbstractBlock.Properties.from(etched_nagastone_weathered.get())));
+	public static final RegistryObject<StairsBlock> nagastone_stairs_weathered_right = BLOCKS.register("nagastone_stairs_weathered_right", () -> new StairsBlock(etched_nagastone_weathered.get().getDefaultState(), AbstractBlock.Properties.from(etched_nagastone_weathered.get())));
 	public static final RegistryObject<Block> iron_ladder                = BLOCKS.register("iron_ladder", () -> new BlockTFLadderBars(Block.Properties.create(Material.MISCELLANEOUS).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL).notSolid()));
 	//public static final RegistryObject<Block> terrorcotta_circle         = BLOCKS.register("terrorcotta_circle", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).setRequiresTool().hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	//public static final RegistryObject<Block> terrorcotta_diagonal       = BLOCKS.register("terrorcotta_diagonal", () -> new BlockTFDiagonal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).setRequiresTool().hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	public static final RegistryObject<RotatedPillarBlock> stone_twist   = BLOCKS.register("stone_twist", () -> new RotatedPillarBlock(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(1.5F, 10.0F)));
-//	public static final RegistryObject<Block> stone_twist_thin           = BLOCKS.register("stone_twist_thin", () -> new BlockTFWallPillar(Material.ROCK, 12, 16));
+	public static final RegistryObject<Block> stone_twist_thin           = BLOCKS.register("stone_twist_thin", () -> new BlockTFWallPillar(Material.ROCK, 12, 16));
 	//public static final RegistryObject<Block> lapis_block                = BLOCKS.register("lapis_block", () -> new Block(Block.Properties.create(Material.IRON).setRequiresTool().hardnessAndResistance(3.0F, 5.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<BlockKeepsakeCasket> keepsake_casket = BLOCKS.register("keepsake_casket", () -> new BlockKeepsakeCasket());
+	public static final RegistryObject<BlockKeepsakeCasket> keepsake_casket = BLOCKS.register("keepsake_casket", BlockKeepsakeCasket::new);
 
 	//Pot all the things!
 	public static final RegistryObject<FlowerPotBlock> potted_twilight_oak_sapling = BLOCKS.register("potted_twilight_oak_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, oak_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
@@ -372,155 +370,15 @@ public class TFBlocks {
 
 	@SubscribeEvent
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
-		IForgeRegistry<Item> r = evt.getRegistry();
-		List<RegistryObject<? extends Block>> standard = Arrays.asList(
-						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
-						reappearing_block, vanishing_block, locked_vanishing_block, carminite_builder, antibuilder, carminite_reactor, ghast_trap,
-						fake_gold, fake_diamond, stronghold_shield, trophy_pedestal,
-						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
-						brown_thorns, green_thorns, burnt_thorns, thorn_rose, thorn_leaves, beanstalk_leaves,
-						aurora_block, aurora_pillar, aurora_slab, auroralized_glass,
-						deadrock, deadrock_cracked, deadrock_weathered,
-						trollsteinn, wispy_cloud, fluffy_cloud, giant_cobblestone, giant_log, giant_leaves, giant_obsidian,
-						uberous_soil, huge_stalk, huge_mushgloom, huge_mushgloom_stem, trollvidr, unripe_trollber, trollber,
-						slider, castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
-						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
-						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,
-						castle_rune_brick_yellow, castle_rune_brick_purple, castle_rune_brick_pink, castle_rune_brick_blue,
-						force_field_pink, force_field_blue, force_field_green, force_field_purple, force_field_orange,
-						cinder_furnace, cinder_log, cinder_wood,
-						castle_door_yellow, castle_door_purple, castle_door_pink, castle_door_blue,
-						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
-						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
-						nagastone_pillar, nagastone_pillar_mossy, nagastone_pillar_weathered, etched_nagastone, etched_nagastone_mossy, etched_nagastone_weathered, spiral_bricks,
-						nagastone_stairs_left, nagastone_stairs_right, nagastone_stairs_mossy_left, nagastone_stairs_mossy_right, nagastone_stairs_weathered_left, nagastone_stairs_weathered_right,
-						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
-						hedge, boss_spawner, root, liveroot_block, uncrafting_table, firefly_jar, cicada_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
-						naga_stone_head, naga_stone,
-						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
-						iron_ladder, /*terrorcotta_circle, terrorcotta_diagonal,*/ stone_twist, /*lapis_block,*/ keepsake_casket,
-						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
-						rainboak_leaves, rainboak_sapling,
-						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,
-						oak_wood, canopy_wood, mangrove_wood, dark_wood, time_wood, transformation_wood, mining_wood, sorting_wood,
-						time_log_core, transformation_log_core, mining_log_core, sorting_log_core,
-						oak_sapling, canopy_sapling, mangrove_sapling, darkwood_sapling, hollow_oak_sapling, time_sapling, transformation_sapling, mining_sapling, sorting_sapling,
-						twilight_oak_planks, twilight_oak_stairs, twilight_oak_slab, twilight_oak_button, twilight_oak_fence, twilight_oak_gate, twilight_oak_plate, twilight_oak_trapdoor,
-						canopy_planks, canopy_stairs, canopy_slab, canopy_button, canopy_fence, canopy_gate, canopy_plate, canopy_trapdoor,
-						mangrove_planks, mangrove_stairs, mangrove_slab, mangrove_button, mangrove_fence, mangrove_gate, mangrove_plate, mangrove_trapdoor,
-						dark_planks, dark_stairs, dark_slab, dark_button, dark_fence, dark_gate, dark_plate, dark_trapdoor,
-						time_planks, time_stairs, time_slab, time_button, time_fence, time_gate, time_plate, time_trapdoor,
-						trans_planks, trans_stairs, trans_slab, trans_button, trans_fence, trans_gate, trans_plate, trans_trapdoor,
-						mine_planks, mine_stairs, mine_slab, mine_button, mine_fence, mine_gate, mine_plate, mine_trapdoor,
-						sort_planks, sort_stairs, sort_slab, sort_button, sort_fence, sort_gate, sort_plate, sort_trapdoor
-		);
-		for (RegistryObject<? extends Block> b : standard) {
-			r.register(new BlockItem(b.get(), TFItems.defaultBuilder()).setRegistryName(b.get().getRegistryName()));
-		}
-
-		//I would like to put signs before doors :)
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), twilight_oak_sign.get(), twilight_wall_sign.get())
-				.setRegistryName(twilight_oak_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), canopy_sign.get(), canopy_wall_sign.get())
-				.setRegistryName(canopy_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), mangrove_sign.get(), mangrove_wall_sign.get())
-				.setRegistryName(mangrove_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), darkwood_sign.get(), darkwood_wall_sign.get())
-				.setRegistryName(darkwood_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), time_sign.get(), time_wall_sign.get())
-				.setRegistryName(time_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), trans_sign.get(), trans_wall_sign.get())
-				.setRegistryName(trans_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), mine_sign.get(), mine_wall_sign.get())
-				.setRegistryName(mine_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), sort_sign.get(), sort_wall_sign.get())
-				.setRegistryName(sort_sign.getId()));
-		
-		List<Block> doors = Arrays.asList(twilight_oak_door.get(), canopy_door.get(), mangrove_door.get(), dark_door.get(), time_door.get(), trans_door.get(), mine_door.get(), sort_door.get());
-		for (Block b : doors) {
-			r.register(new TallBlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
-		}
-
-		// FIXME: using anon classes currently to get around the classloader as a bandaid fix
-		r.register(new ItemBlockWearable(firefly.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.FIREFLY.getId());
-			}
-		})).setRegistryName(firefly.getId()));
-		r.register(new ItemBlockWearable(moonworm.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.MOONWORM.getId());
-			}
-		})).setRegistryName(moonworm.getId()));
-		r.register(new ItemBlockWearable(cicada.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.CICADA.getId());
-			}
-		})).setRegistryName(cicada.getId()));
-
-		r.register(new ItemTFTrophy(naga_trophy.get(), naga_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(naga_trophy.getId()));
-		r.register(new ItemTFTrophy(lich_trophy.get(), lich_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(lich_trophy.getId()));
-		r.register(new ItemTFTrophy(minoshroom_trophy.get(), minoshroom_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(minoshroom_trophy.getId()));
-		r.register(new ItemTFTrophy(hydra_trophy.get(), hydra_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(hydra_trophy.getId()));
-		r.register(new ItemTFTrophy(knight_phantom_trophy.get(), knight_phantom_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(knight_phantom_trophy.getId()));
-		r.register(new ItemTFTrophy(ur_ghast_trophy.get(), ur_ghast_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(ur_ghast_trophy.getId()));
-		r.register(new ItemTFTrophy(snow_queen_trophy.get(), snow_queen_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(snow_queen_trophy.getId()));
-		r.register(new ItemTFTrophy(quest_ram_trophy.get(), quest_ram_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(quest_ram_trophy.getId()));
-
-		r.register(new ItemBlockTFHugeLilyPad(huge_lilypad.get(), TFItems.defaultBuilder())
-						.setRegistryName(huge_lilypad.getId()));
-		r.register(new ItemBlockTFHugeWaterLily(huge_waterlily.get(), TFItems.defaultBuilder())
-						.setRegistryName(huge_waterlily.getId()));
+		TFBlockItems.registerBlockItems(evt);
+		TFCompat.initCompatItems(evt);
 	}
 
 	private static AbstractBlock.Properties logProperties(MaterialColor top, MaterialColor side) {
 		return AbstractBlock.Properties.create(Material.WOOD, (state) ->
 				state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
 	}
-	
+
 	public static void tfCompostables() {
 		ComposterBlock.registerCompostable(0.1F, fallen_leaves.get());
 		ComposterBlock.registerCompostable(0.3F, canopy_leaves.get());
@@ -563,13 +421,67 @@ public class TFBlocks {
 		ComposterBlock.registerCompostable(0.65F, trollber.get());
 		ComposterBlock.registerCompostable(0.85F, huge_lilypad.get());
 		ComposterBlock.registerCompostable(0.85F, huge_mushgloom.get());
-		
+
 		//eh, we'll do items here too
 		ComposterBlock.registerCompostable(0.3F, TFItems.torchberries.get());
 		ComposterBlock.registerCompostable(0.5F, TFItems.liveroot.get());
 		ComposterBlock.registerCompostable(0.65F, TFItems.maze_wafer.get());
 		ComposterBlock.registerCompostable(0.85F, TFItems.experiment_115.get());
 		ComposterBlock.registerCompostable(0.85F, TFItems.magic_beans.get());
+	}
+
+	public static void TFBurnables() {
+		FireBlock fireblock = (FireBlock)Blocks.FIRE;
+		fireblock.setFireInfo(root.get(), 5, 20);
+		fireblock.setFireInfo(liveroot_block.get(), 5, 20);
+		fireblock.setFireInfo(oak_wood.get(), 5, 5);
+		fireblock.setFireInfo(twilight_oak_planks.get(), 5, 20);
+		fireblock.setFireInfo(twilight_oak_slab.get(), 5, 20);
+		fireblock.setFireInfo(twilight_oak_stairs.get(), 5, 20);
+		fireblock.setFireInfo(twilight_oak_fence.get(), 5, 20);
+		fireblock.setFireInfo(twilight_oak_gate.get(), 5, 20);
+		fireblock.setFireInfo(canopy_wood.get(), 5, 5);
+		fireblock.setFireInfo(canopy_planks.get(), 5, 20);
+		fireblock.setFireInfo(canopy_slab.get(), 5, 20);
+		fireblock.setFireInfo(canopy_stairs.get(), 5, 20);
+		fireblock.setFireInfo(canopy_fence.get(), 5, 20);
+		fireblock.setFireInfo(canopy_gate.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_wood.get(), 5, 5);
+		fireblock.setFireInfo(mangrove_planks.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_slab.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_stairs.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_fence.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_gate.get(), 5, 20);
+		fireblock.setFireInfo(dark_wood.get(), 5, 5);
+		fireblock.setFireInfo(dark_planks.get(), 5, 20);
+		fireblock.setFireInfo(dark_slab.get(), 5, 20);
+		fireblock.setFireInfo(dark_stairs.get(), 5, 20);
+		fireblock.setFireInfo(dark_fence.get(), 5, 20);
+		fireblock.setFireInfo(dark_gate.get(), 5, 20);
+		fireblock.setFireInfo(time_wood.get(), 5, 5);
+		fireblock.setFireInfo(time_planks.get(), 5, 20);
+		fireblock.setFireInfo(time_slab.get(), 5, 20);
+		fireblock.setFireInfo(time_stairs.get(), 5, 20);
+		fireblock.setFireInfo(time_fence.get(), 5, 20);
+		fireblock.setFireInfo(time_gate.get(), 5, 20);
+		fireblock.setFireInfo(transformation_wood.get(), 5, 5);
+		fireblock.setFireInfo(trans_planks.get(), 5, 20);
+		fireblock.setFireInfo(trans_slab.get(), 5, 20);
+		fireblock.setFireInfo(trans_stairs.get(), 5, 20);
+		fireblock.setFireInfo(trans_fence.get(), 5, 20);
+		fireblock.setFireInfo(trans_gate.get(), 5, 20);
+		fireblock.setFireInfo(mining_wood.get(), 5, 5);
+		fireblock.setFireInfo(mine_planks.get(), 5, 20);
+		fireblock.setFireInfo(mine_slab.get(), 5, 20);
+		fireblock.setFireInfo(mine_stairs.get(), 5, 20);
+		fireblock.setFireInfo(mine_fence.get(), 5, 20);
+		fireblock.setFireInfo(mine_gate.get(), 5, 20);
+		fireblock.setFireInfo(sorting_wood.get(), 5, 5);
+		fireblock.setFireInfo(sort_planks.get(), 5, 20);
+		fireblock.setFireInfo(sort_slab.get(), 5, 20);
+		fireblock.setFireInfo(sort_stairs.get(), 5, 20);
+		fireblock.setFireInfo(sort_fence.get(), 5, 20);
+		fireblock.setFireInfo(sort_gate.get(), 5, 20);
 	}
 
 	public static void TFPots() {

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "side": "twilightforest:block/wood/planks_trans_0",
-    "bottom": "twilightforest:block/wood/planks_trans_0",
-    "top": "twilightforest:block/wood/planks_trans_0"
-  }
-}

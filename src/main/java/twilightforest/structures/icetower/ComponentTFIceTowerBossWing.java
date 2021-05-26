@@ -76,7 +76,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 		final BlockState packedIce = Blocks.PACKED_ICE.getDefaultState();
 		this.fillBlocksRotated(world, sbb, 8, y + 1, 1, 10, y + 1, 3, packedIce, rotation);
 		if (y > 1) {
-			this.randomlyFillBlocksRotated(world, sbb, rand, 0.5F, 8, y + 0, 1, 10, y + 0, 3, packedIce, AIR, rotation);
+			this.randomlyFillBlocksRotated(world, sbb, rand, 0.5F, 8, y, 1, 10, y, 3, packedIce, AIR, rotation);
 		}
 		this.fillBlocksRotated(world, sbb, 11, y + 2, 1, 13, y + 2, 3, packedIce, rotation);
 		this.randomlyFillBlocksRotated(world, sbb, rand, 0.5F, 11, y + 1, 1, 13, y + 1, 3, packedIce, AIR, rotation);
@@ -98,7 +98,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 			}
 		}
 
-		final BlockState snowQueenSpawner = TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN);
+		final BlockState snowQueenSpawner = TFBlocks.boss_spawner_snow_queen.get().getDefaultState();
 
 		this.setBlockStateRotated(world, snowQueenSpawner, 7, top - 6, 7, Rotation.NONE, sbb);
 

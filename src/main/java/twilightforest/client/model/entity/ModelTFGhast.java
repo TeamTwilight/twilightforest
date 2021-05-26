@@ -60,12 +60,8 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends SegmentedModel<T
 	/**
 	 * Sets the models various rotation angles then renders the model.
 	 */
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//	}
 
-	@Override
+    @Override
 	public Iterable<ModelRenderer> getParts() {
 		return ImmutableList.of(body);
 	}

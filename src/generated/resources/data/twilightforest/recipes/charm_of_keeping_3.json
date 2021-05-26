@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:charm_of_keeping_2"
+    },
+    {
+      "item": "twilightforest:charm_of_keeping_2"
+    },
+    {
+      "item": "twilightforest:charm_of_keeping_2"
+    },
+    {
+      "item": "twilightforest:charm_of_keeping_2"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:charm_of_keeping_3"
+  }
+}

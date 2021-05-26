@@ -31,8 +31,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		super(TFFeature.TFHedge, nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public ComponentTFHedgeMaze(TFFeature feature, Random rand, int i, int x, int y, int z) {
+	public ComponentTFHedgeMaze(TFFeature feature, int i, int x, int y, int z) {
 		super(TFFeature.TFHedge, feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);

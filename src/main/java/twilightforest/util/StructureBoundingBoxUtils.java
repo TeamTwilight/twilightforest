@@ -1,6 +1,5 @@
 package twilightforest.util;
 
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.vector.Vector3i;
@@ -25,10 +24,5 @@ public class StructureBoundingBoxUtils {
 						Math.min(sbbIn.maxX, sbbMask.maxX),
 						Math.min(sbbIn.maxY, sbbMask.maxY),
 						Math.min(sbbIn.maxZ, sbbMask.maxZ));
-	}
-
-	//TODO: Method unused
-	public static AxisAlignedBB toAABB(MutableBoundingBox sbb) {
-		return new AxisAlignedBB(sbb.minX, sbb.minY, sbb.minZ, sbb.maxX + 1, sbb.maxY + 1, sbb.maxZ + 1);
 	}
 }

@@ -22,11 +22,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	public ComponentTFFinalCastleEntranceBottomTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
 		super(TFFinalCastlePieces.TFFCEnBoTo, feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.castle_rune_brick_pink.get().getDefaultState(), direction);
 
-//    		addOpening(12, 1, size / 2, 0);
-//    		addOpening(size / 2, 1, 0, 1);
-//    		addOpening(0, 1, size / 2, 2);
-//    		addOpening(size / 2, 1, 12, 3);
-	}
+    }
 
 	@Override
 	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {

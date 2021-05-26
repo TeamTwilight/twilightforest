@@ -1,0 +1,280 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 4,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 9.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:iron_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 5.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:emerald"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 9.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:ironwood_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 12.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:maze_wafer"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Potion:\"minecraft:strong_regeneration\"}"
+            }
+          ],
+          "name": "minecraft:potion"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Potion:\"minecraft:strong_healing\"}"
+            }
+          ],
+          "name": "minecraft:potion"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Potion:\"minecraft:strong_swiftness\"}"
+            }
+          ],
+          "name": "minecraft:potion"
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:punch": 2,
+                "minecraft:infinity": 1
+              }
+            }
+          ],
+          "name": "minecraft:bow"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:flame": 1,
+                "minecraft:power": 3
+              }
+            }
+          ],
+          "name": "minecraft:bow"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 12.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:efficiency": 4,
+                "minecraft:unbreaking": 2
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_shovel"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:efficiency": 5
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_axe"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:protection": 3
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:protection": 2
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:fire_protection": 4
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:respiration": 3
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_helmet"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald_block"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ender_chest"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:efficiency": 4,
+                "minecraft:silk_touch": 1
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_pickaxe"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:sharpness": 4,
+                "minecraft:knockback": 2
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:fire_aspect": 2,
+                "minecraft:bane_of_arthropods": 5
+              }
+            }
+          ],
+          "name": "twilightforest:steeleaf_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "twilightforest:enchant",
+              "enchantments": {
+                "minecraft:fortune": 2,
+                "minecraft:efficiency": 4,
+                "minecraft:unbreaking": 3
+              }
+            }
+          ],
+          "name": "twilightforest:mazebreaker_pickaxe"
+        }
+      ]
+    }
+  ]
+}

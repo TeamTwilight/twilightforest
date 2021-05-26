@@ -1,0 +1,175 @@
+{
+  "type": "chest",
+  "pools": [{
+    "name": "questing_ram",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:gray_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/questing_ram_rewards\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Questing Ram's Loot Crate"
+          }
+        }
+      ]
+    }]
+  }, {
+    "name": "naga",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:lime_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/naga\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Naga's Loot Crate"
+          }
+        }
+      ]
+    }]
+  }, {
+    "name": "lich",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:light_gray_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/lich\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Lich's Loot Crate"
+          }
+        }
+      ]
+    }]
+  }, {
+    "name": "minoshroom",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:red_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/minoshroom\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Minoshroom's Loot Crate"
+          }
+        }
+      ]
+    }]
+  }, {
+    "name": "hydra",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:cyan_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/hydra\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Hydra's Loot Crate"
+          }
+        }
+      ]
+    }]
+  }, {
+    "name": "knight_phantom",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:green_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:structures/stronghold_boss\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Knight Phantoms' Loot Crate"
+          }
+        }
+      ]
+    }]
+  }, {
+    "name": "ur-ghast",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:white_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:structures/darktower_boss\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Ur-Ghast's Loot Crate"
+          }
+        }
+      ]
+    }]
+  }, {
+    "name": "alpha_yeti",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:light_blue_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/yeti_alpha\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Alpha Yeti's Loot Crate"
+          }
+        }
+      ]
+    }]
+  }, {
+    "name": "snow_queen",
+    "rolls": 1,
+    "entries": [{
+      "type": "item",
+      "name": "minecraft:blue_shulker_box",
+      "functions": [
+        {
+          "function": "set_nbt",
+          "tag": "{\"BlockEntityTag\":{\"LootTable\":\"twilightforest:entities/snow_queen\"}}"
+        },
+        {
+          "function": "set_name",
+          "name": {
+            "text": "Snow Queen's Loot Crate"
+          }
+        }
+      ]
+    }]
+  }]
+}

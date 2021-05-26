@@ -1,0 +1,81 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 6.0,
+                "max": 11.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:naga_scale"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:naga_trophy"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader",
+              "default": "twilightforest:naga_scale"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{shader_name:\"twilightforest:naga\"}"
+            }
+          ],
+          "name": "twilightforest:naga_scale"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader_bag_twilight",
+              "default": "twilightforest:naga_scale"
+            }
+          ],
+          "name": "twilightforest:naga_scale"
+        }
+      ]
+    }
+  ]
+}

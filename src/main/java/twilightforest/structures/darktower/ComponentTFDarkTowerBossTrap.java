@@ -79,7 +79,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 		makeOpenings(world, sbb);
 
 		// half floors, always starting at y = 4
-		addBossTrapFloors(world, decoRNG, sbb, 4, height - 1);
+		addBossTrapFloors(world, sbb);
 
 		// demolish some
 		destroyTower(world, decoRNG, 5, height + 2, 5, 4, sbb);
@@ -107,11 +107,10 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 
 	/**
 	 * Add specific boss trap floors
-	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void addBossTrapFloors(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
+	protected void addBossTrapFloors(ISeedReader world, MutableBoundingBox sbb) {
 
-		makeFullFloor(world, sbb, Rotation.COUNTERCLOCKWISE_90, 4, 4);
+		makeFullFloor(world, sbb, 4);
 
 		addStairsDown(world, sbb, Rotation.COUNTERCLOCKWISE_90, 4, size - 2, 4);
 		addStairsDown(world, sbb, Rotation.COUNTERCLOCKWISE_90, 4, size - 3, 4);

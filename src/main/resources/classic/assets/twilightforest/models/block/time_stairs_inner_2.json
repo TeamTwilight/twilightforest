@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "side": "twilightforest:block/wood/planks_time_2",
-    "bottom": "twilightforest:block/wood/planks_time_2",
-    "top": "twilightforest:block/wood/planks_time_2"
-  }
-}

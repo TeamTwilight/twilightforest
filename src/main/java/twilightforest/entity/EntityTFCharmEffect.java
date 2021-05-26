@@ -86,9 +86,6 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 
 			float rotation = this.ticksExisted / 5.0F + offset;
 			Vector3d look = new Vector3d(DISTANCE, 0, 0).rotateYaw(rotation);
-			//this.getX() += look.x;
-//        	this.getY() += Math.sin(this.ticksExisted / 3.0F + offset);
-			//this.getZ() += look.z;
 			this.getPositionVec().add(look.x, 0.0D, look.z);
 
 			this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());

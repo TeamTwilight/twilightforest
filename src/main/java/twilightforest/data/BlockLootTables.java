@@ -9,10 +9,12 @@ import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.conditions.TableBonus;
 import net.minecraft.loot.functions.ApplyBonus;
+import net.minecraft.loot.functions.CopyBlockState;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import twilightforest.block.BlockKeepsakeCasket;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
@@ -176,8 +178,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.quest_ram_wall_trophy.get(), dropping(TFBlocks.quest_ram_trophy.get().asItem()));
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.stone_twist.get());
+		registerDropSelfLootTable(TFBlocks.stone_twist_thin.get());
 		//registerDropSelfLootTable(TFBlocks.lapis_block.get());
-		registerLootTable(TFBlocks.keepsake_casket.get(), droppingWithName(TFBlocks.keepsake_casket.get()));
+		registerLootTable(TFBlocks.keepsake_casket.get(), casketInfo(TFBlocks.keepsake_casket.get()));
 		registerFlowerPot(TFBlocks.potted_twilight_oak_sapling.get());
 		registerFlowerPot(TFBlocks.potted_canopy_sapling.get());
 		registerFlowerPot(TFBlocks.potted_mangrove_sapling.get());
@@ -345,6 +348,10 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 	private static LootTable.Builder silkAndStick(Block block, IItemProvider nonSilk, float... nonSilkFortune) {
 		ILootCondition.IBuilder NOT_SILK_TOUCH_OR_SHEARS = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLootTables.class, null, "field_218577_e");
 		return droppingWithSilkTouchOrShears(block, withSurvivesExplosion(block, ItemLootEntry.builder(nonSilk.asItem())).acceptCondition(TableBonus.builder(Enchantments.FORTUNE, nonSilkFortune))).addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptCondition(NOT_SILK_TOUCH_OR_SHEARS).addEntry(withExplosionDecay(block, ItemLootEntry.builder(Items.STICK).acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 2.0F)))).acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
+	}
+
+	private static LootTable.Builder casketInfo(Block block) {
+		return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptFunction(CopyBlockState.func_227545_a_(block).func_227552_a_(BlockKeepsakeCasket.BREAKAGE)));
 	}
 
 	private void registerEmpty(Block b) {

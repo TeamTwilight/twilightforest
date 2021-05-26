@@ -25,6 +25,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	public static final ITag.INamedTag<Item> SORTING_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("sortwood_logs").toString());
 
 	public static final ITag.INamedTag<Item> TWILIGHT_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("logs").toString());
+	public static final ITag.INamedTag<Item> TF_FENCES = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fences").toString());
+	public static final ITag.INamedTag<Item> TF_FENCE_GATES = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fence_gates").toString());
 
 	public static final ITag.INamedTag<Item> PAPER = ItemTags.makeWrapperTag("forge:paper");
 	public static final ITag.INamedTag<Item> FEATHER = ItemTags.makeWrapperTag("forge:feather");
@@ -67,7 +69,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTagGenerator.MINING_LOGS, MINING_LOGS);
 		this.copy(BlockTagGenerator.SORTING_LOGS, SORTING_LOGS);
 
-		this.copy(BlockTagGenerator.TWILIGHT_LOGS, TWILIGHT_LOGS);
+		this.copy(BlockTagGenerator.TF_LOGS, TWILIGHT_LOGS);
 		getOrCreateBuilder(ItemTags.LOGS).addTag(TWILIGHT_LOGS);
 		getOrCreateBuilder(ItemTags.LOGS_THAT_BURN)
 				.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS)
@@ -78,6 +80,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
 
+		this.copy(BlockTagGenerator.TF_FENCES, TF_FENCES);
+		this.copy(BlockTagGenerator.TF_FENCE_GATES, TF_FENCE_GATES);
 		this.copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
 		this.copy(Tags.Blocks.FENCES, Tags.Items.FENCES);
 		this.copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
@@ -126,6 +130,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		getOrCreateBuilder(ORES_IRONWOOD).add(TFItems.ironwood_raw.get());
 		getOrCreateBuilder(ORES_KNIGHTMETAL).add(TFItems.armor_shard_cluster.get());
 
-		getOrCreateBuilder(PORTAL_ACTIVATOR).addOptionalTag(Tags.Items.GEMS_DIAMOND.getName()); // FIXME Somehow Forge's Tags.Items.GEMS_DIAMOND does not exist when this executes so we will do it as an optional instead
+		getOrCreateBuilder(PORTAL_ACTIVATOR).addOptionalTag(Tags.Items.GEMS_DIAMOND.getName());
 	}
 }

@@ -1,8 +1,17 @@
 {
   "config": {
     "feature": {
-      "config": {},
-      "type": "twilightforest:well"
+      "config": {
+        "feature": {
+          "config": {},
+          "type": "twilightforest:well"
+        },
+        "decorator": {
+          "config": {},
+          "type": "twilightforest:nostructure"
+        }
+      },
+      "type": "minecraft:decorated"
     },
     "decorator": {
       "config": {

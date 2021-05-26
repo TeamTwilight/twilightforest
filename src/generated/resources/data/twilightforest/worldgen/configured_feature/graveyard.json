@@ -1,8 +1,17 @@
 {
   "config": {
     "feature": {
-      "config": {},
-      "type": "twilightforest:graveyard"
+      "config": {
+        "feature": {
+          "config": {},
+          "type": "twilightforest:graveyard"
+        },
+        "decorator": {
+          "config": {},
+          "type": "twilightforest:nostructure"
+        }
+      },
+      "type": "minecraft:decorated"
     },
     "decorator": {
       "config": {

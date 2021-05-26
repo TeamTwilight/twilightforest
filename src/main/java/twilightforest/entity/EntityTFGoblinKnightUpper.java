@@ -24,7 +24,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityTFGoblinKnightUpper extends MonsterEntity {

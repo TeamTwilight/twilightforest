@@ -1,0 +1,120 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:triple_bow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:seeker_bow"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "min": 1.0,
+        "max": 4.0,
+        "type": "minecraft:uniform"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 7
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "min": 0.0,
+                "max": 1.0
+              }
+            }
+          ],
+          "name": "minecraft:packed_ice"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "min": 2.0,
+        "max": 5.0,
+        "type": "minecraft:uniform"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 16
+            }
+          ],
+          "name": "minecraft:snowball"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:snow_queen_trophy"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader",
+              "default": "twilightforest:ice_bomb"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{shader_name:\"twilightforest:snow_queen\"}"
+            }
+          ],
+          "name": "twilightforest:ice_bomb"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader_bag_twilight",
+              "default": "twilightforest:ice_bomb"
+            }
+          ],
+          "name": "twilightforest:ice_bomb"
+        }
+      ]
+    }
+  ]
+}

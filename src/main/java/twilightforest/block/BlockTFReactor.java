@@ -30,11 +30,6 @@ public class BlockTFReactor extends Block {
 		builder.add(ACTIVE);
 	}
 
-//	@Override
-//	public int tickRate(IWorldReader world) {
-//		return 15;
-//	}
-
 	@Override
 	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {

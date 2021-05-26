@@ -10,10 +10,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.client.renderer.tileentity.TileEntityTFCicadaRenderer;
-import twilightforest.client.renderer.tileentity.TileEntityTFFireflyRenderer;
-import twilightforest.client.renderer.tileentity.TileEntityTFMoonwormRenderer;
-import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
+import twilightforest.client.renderer.tileentity.*;
 import twilightforest.tileentity.spawner.*;
 
 public class TFTileEntities {
@@ -41,23 +38,23 @@ public class TFTileEntities {
 					TFBlocks.hydra_wall_trophy.get(), TFBlocks.knight_phantom_wall_trophy.get(), TFBlocks.ur_ghast_wall_trophy.get(), TFBlocks.snow_queen_wall_trophy.get(), 
 					TFBlocks.quest_ram_wall_trophy.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFAlphaYetiSpawner>> ALPHA_YETI_SPAWNER     = TILE_ENTITIES.register("alpha_yeti_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFAlphaYetiSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFAlphaYetiSpawner::new, TFBlocks.boss_spawner_alpha_yeti.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFFinalBossSpawner>> FINAL_BOSS_SPAWNER     = TILE_ENTITIES.register("final_boss_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFFinalBossSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFFinalBossSpawner::new, TFBlocks.boss_spawner_final_boss.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFHydraSpawner>> HYDRA_SPAWNER          = TILE_ENTITIES.register("hydra_boss_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFHydraSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFHydraSpawner::new, TFBlocks.boss_spawner_hydra.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFKnightPhantomsSpawner>> KNIGHT_PHANTOM_SPAWNER = TILE_ENTITIES.register("knight_phantom_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFKnightPhantomsSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFKnightPhantomsSpawner::new, TFBlocks.boss_spawner_knight_phantom.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFLichSpawner>> LICH_SPAWNER           = TILE_ENTITIES.register("lich_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFLichSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFLichSpawner::new, TFBlocks.boss_spawner_lich.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFMinoshroomSpawner>> MINOSHROOM_SPAWNER     = TILE_ENTITIES.register("minoshroom_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFMinoshroomSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFMinoshroomSpawner::new, TFBlocks.boss_spawner_minoshroom.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFNagaSpawner>> NAGA_SPAWNER           = TILE_ENTITIES.register("naga_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFNagaSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFNagaSpawner::new, TFBlocks.boss_spawner_naga.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFSnowQueenSpawner>> SNOW_QUEEN_SPAWNER     = TILE_ENTITIES.register("snow_queen_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFSnowQueenSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFSnowQueenSpawner::new, TFBlocks.boss_spawner_snow_queen.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFTowerBossSpawner>> TOWER_BOSS_SPAWNER     = TILE_ENTITIES.register("tower_boss_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFTowerBossSpawner::new, TFBlocks.boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFTowerBossSpawner::new, TFBlocks.boss_spawner_ur_ghast.get()).build(null));
 
 	public static final RegistryObject<TileEntityType<TileEntityTFCicadaTicking>> CICADA     = TILE_ENTITIES.register("cicada", () ->
 			TileEntityType.Builder.create(TileEntityTFCicadaTicking::new, TFBlocks.cicada.get()).build(null));
@@ -85,11 +82,9 @@ public class TFTileEntities {
 		// tile entities
 		ClientRegistry.bindTileEntityRenderer(FIREFLY.get(), TileEntityTFFireflyRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(CICADA.get(), TileEntityTFCicadaRenderer::new);
-//		ClientRegistry.bindTileEntityRenderer(TileEntityTFNagaSpawner.class, new TileEntityMobSpawnerRenderer());
-//		ClientRegistry.bindTileEntityRenderer(TileEntityTFLichSpawner.class, new TileEntityMobSpawnerRenderer());
-//		ClientRegistry.bindTileEntityRenderer(TileEntityTFHydraSpawner.class, new TileEntityMobSpawnerRenderer());
 		ClientRegistry.bindTileEntityRenderer(MOONWORM.get(), TileEntityTFMoonwormRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TileEntityTFTrophyRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(TF_SIGN.get(), SignTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(KEEPSAKE_CASKET.get(), TileEntityTFCasketRenderer::new);
 	}
 }

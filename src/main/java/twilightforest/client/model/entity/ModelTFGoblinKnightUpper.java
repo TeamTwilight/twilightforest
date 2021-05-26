@@ -1,13 +1,9 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -162,7 +158,7 @@ public class ModelTFGoblinKnightUpper extends BipedModel<EntityTFGoblinKnightUpp
     private float getArmRotationDuringSwing(float attackTime) {
         if (attackTime <= 10) {
             // rock back
-            return attackTime * 1.0F;
+            return attackTime;
         }
         if (attackTime > 10 && attackTime <= 30) {
             // hang back

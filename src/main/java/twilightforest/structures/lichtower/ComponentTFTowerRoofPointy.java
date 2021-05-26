@@ -48,7 +48,7 @@ public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 
 		for (int y = 0; y <= height; y++) {
 			int min, mid, max;
-			int slopeChange = slopeChangeForSize(size);
+			int slopeChange = slopeChangeForSize();
 			if (y < slopeChange) {
 				min = y;
 				max = size - y - 1;
@@ -74,7 +74,7 @@ public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 		return true;
 	}
 
-	public int slopeChangeForSize(int pSize) {
+	public int slopeChangeForSize() {
 		if (size > 10) {
 			return 3;
 		} else if (size > 6) {

@@ -4,14 +4,11 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.ChunkGeneratorTwilightBase;
-import twilightforest.world.TFGenerationSettings;
 import twilightforest.worldgen.BlockConstants;
 
 import java.util.Random;

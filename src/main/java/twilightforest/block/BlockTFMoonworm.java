@@ -27,24 +27,8 @@ public class BlockTFMoonworm extends BlockTFCritter {
 		return TFTileEntities.MOONWORM.get().create();
 	}
 
-//	@Override
-//	public int quantityDropped(BlockState state, int fortune, Random random) {
-//		return 0;
-//	}
-
 	@Override
 	public ItemStack getSquishResult() {
 		return new ItemStack(Items.LIME_DYE, 1);
 	}
-
-	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
-	//TODO 1.14: Something may have changed, look into this when we compile
-//	@SuppressWarnings("deprecation")
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public void registerModel() {
-//		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockDirectional.FACING).build());
-//		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-//		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFMoonwormTicking.class);
-//	}
 }

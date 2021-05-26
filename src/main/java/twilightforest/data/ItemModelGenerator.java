@@ -143,7 +143,15 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.root.get());
 		toBlock(TFBlocks.liveroot_block.get());
 		toBlock(TFBlocks.uncrafting_table.get());
-		toBlockModel(TFBlocks.boss_spawner.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_naga.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_lich.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_hydra.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_ur_ghast.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_knight_phantom.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_snow_queen.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_minoshroom.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_alpha_yeti.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_final_boss.get(), new ResourceLocation("block/spawner"));
 		toBlock(TFBlocks.firefly_jar.get());
 		toBlock(TFBlocks.cicada_jar.get());
 		generated(TFBlocks.moss_patch.getId().getPath(), prefix("block/patch/moss"));
@@ -172,8 +180,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.nagastone_stairs_mossy_right.get());
 		toBlock(TFBlocks.nagastone_stairs_weathered_left.get());
 		toBlock(TFBlocks.nagastone_stairs_weathered_right.get());
-		toBlockModel(TFBlocks.spiral_bricks.get(), new ResourceLocation("twilightforest:block/spiral_bricks/x_spiral_bottom_right"));
+		toBlockModel(TFBlocks.spiral_bricks.get(), prefix("block/spiral_bricks/x_spiral_bottom_right"));
 		toBlock(TFBlocks.stone_twist.get());
+		toBlockModel(TFBlocks.stone_twist_thin.get(), prefix("block/pillar/pillar_inventory"));
 		//toBlock(TFBlocks.lapis_block.get());
 		toBlock(TFBlocks.oak_log.get());
 		toBlock(TFBlocks.oak_wood.get());
@@ -397,21 +406,21 @@ public class ItemModelGenerator extends ItemModelProvider {
 		arcticArmorTex(TFItems.arctic_leggings);
 		arcticArmorTex(TFItems.arctic_boots);
 		singleTex(TFItems.magic_beans);
-		ModelFile triplePulling0 = generated("triple_bow_pulling_0", prefix("items/triple_bow_pulling_0"));
-		ModelFile triplePulling1 = generated("triple_bow_pulling_1", prefix("items/triple_bow_pulling_1"));
-		ModelFile triplePulling2 = generated("triple_bow_pulling_2", prefix("items/triple_bow_pulling_2"));
+		ModelFile triplePulling0 = bowItem("triple_bow_pulling_0", prefix("items/triple_bow_pulling_0"));
+		ModelFile triplePulling1 = bowItem("triple_bow_pulling_1", prefix("items/triple_bow_pulling_1"));
+		ModelFile triplePulling2 = bowItem("triple_bow_pulling_2", prefix("items/triple_bow_pulling_2"));
 		bowTex(TFItems.triple_bow, triplePulling0, triplePulling1, triplePulling2);
-		ModelFile seekerPulling0 = generated("seeker_bow_pulling_0", prefix("items/seeker_bow_pulling_0"));
-		ModelFile seekerPulling1 = generated("seeker_bow_pulling_1", prefix("items/seeker_bow_pulling_1"));
-		ModelFile seekerPulling2 = generated("seeker_bow_pulling_2", prefix("items/seeker_bow_pulling_2"));
+		ModelFile seekerPulling0 = bowItem("seeker_bow_pulling_0", prefix("items/seeker_bow_pulling_0"));
+		ModelFile seekerPulling1 = bowItem("seeker_bow_pulling_1", prefix("items/seeker_bow_pulling_1"));
+		ModelFile seekerPulling2 = bowItem("seeker_bow_pulling_2", prefix("items/seeker_bow_pulling_2"));
 		bowTex(TFItems.seeker_bow, seekerPulling0, seekerPulling1, seekerPulling2);
-		ModelFile icePulling0 = generated("ice_bow_pulling_0", prefix("items/ice_bow_solid_pulling_0"), prefix("items/ice_bow_clear_pulling_0"));
-		ModelFile icePulling1 = generated("ice_bow_pulling_1", prefix("items/ice_bow_solid_pulling_1"), prefix("items/ice_bow_clear_pulling_1"));
-		ModelFile icePulling2 = generated("ice_bow_pulling_2", prefix("items/ice_bow_solid_pulling_2"), prefix("items/ice_bow_clear_pulling_2"));
+		ModelFile icePulling0 = bowItem("ice_bow_pulling_0", prefix("items/ice_bow_solid_pulling_0"), prefix("items/ice_bow_clear_pulling_0"));
+		ModelFile icePulling1 = bowItem("ice_bow_pulling_1", prefix("items/ice_bow_solid_pulling_1"), prefix("items/ice_bow_clear_pulling_1"));
+		ModelFile icePulling2 = bowItem("ice_bow_pulling_2", prefix("items/ice_bow_solid_pulling_2"), prefix("items/ice_bow_clear_pulling_2"));
 		iceBowTex(TFItems.ice_bow, icePulling0, icePulling1, icePulling2);
-		ModelFile enderPulling0 = generated("ender_bow_pulling_0", prefix("items/ender_bow_pulling_0"));
-		ModelFile enderPulling1 = generated("ender_bow_pulling_1", prefix("items/ender_bow_pulling_1"));
-		ModelFile enderPulling2 = generated("ender_bow_pulling_2", prefix("items/ender_bow_pulling_2"));
+		ModelFile enderPulling0 = bowItem("ender_bow_pulling_0", prefix("items/ender_bow_pulling_0"));
+		ModelFile enderPulling1 = bowItem("ender_bow_pulling_1", prefix("items/ender_bow_pulling_1"));
+		ModelFile enderPulling2 = bowItem("ender_bow_pulling_2", prefix("items/ender_bow_pulling_2"));
 		bowTex(TFItems.ender_bow, enderPulling0, enderPulling1, enderPulling2);
 		tool(TFItems.ice_sword.getId().getPath(), prefix("items/ice_sword_solid"), prefix("items/ice_sword_clear"));
 		tool(TFItems.glass_sword.getId().getPath(), prefix("items/glass_sword_solid"), prefix("items/glass_sword_clear"));
@@ -455,10 +464,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.texture("face", prefix("block/lunchbox_face"))
 				.texture("side", prefix("block/lunchbox_side"));
 
-		withExistingParent("shader_bag", prefix("item/lunchcase"))
-				.texture("missing", prefix("block/fluffy_cloud"))
-				.texture("face", prefix("block/lunchbox_face"))
-				.texture("side", prefix("block/lunchbox_side"));
+		withExistingParent("shader_bag_common", prefix("item/shader"));
+		withExistingParent("shader_bag_uncommon", prefix("item/shader"));
+		withExistingParent("shader_bag_rare", prefix("item/shader"));
+		withExistingParent("shader_bag_epic", prefix("item/shader"));
+		withExistingParent("shader_bag_ie_masterwork", prefix("item/shader"));
+		withExistingParent("shader_bag_twilight", prefix("item/shader"));
 
 		//these models are used as references in other things, they dont have actual items
 		generated("trophy", prefix("items/trophy"));

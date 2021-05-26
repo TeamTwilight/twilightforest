@@ -12,6 +12,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.tileentity.TileEntityTFFlameJet;
 
@@ -73,11 +75,7 @@ public class BlockTFFireJet extends Block {
 	private boolean isLava(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		Block b = state.getBlock();
-		IntegerProperty levelProp = b instanceof FlowingFluidBlock
-				? FlowingFluidBlock.LEVEL
-				: null;
-		return state.getMaterial() == Material.LAVA
-				&& (levelProp == null || state.get(levelProp) == 0);
+		return b.isIn(BlockTagGenerator.FIRE_JET_FUEL) || b.getFluidState(state).isTagged(FluidTagGenerator.FIRE_JET_FUEL);
 	}
 
 	@Override

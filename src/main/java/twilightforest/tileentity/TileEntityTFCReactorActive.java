@@ -11,6 +11,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.ExplosionContext;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
+import twilightforest.data.BlockTagGenerator;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.util.TFDamageSources;
@@ -165,7 +166,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 
 				for (byte dz = 0; dz <= rad; dz++) {
 					// determine how far we are from the center.
-					byte dist = 0;
+					byte dist;
 					if (dx >= dy && dx >= dz) {
 						dist = (byte) (dx + (byte) ((Math.max(dy, dz) * 0.5) + (Math.min(dy, dz) * 0.25)));
 					} else if (dy >= dx && dy >= dz) {
@@ -212,7 +213,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 	private void transformBlock(BlockPos pos, BlockState state, int fuzz, boolean netherTransform) {
 		BlockState stateThere = world.getBlockState(pos);
 
-		if (stateThere.getBlock() != Blocks.AIR && stateThere.getBlockHardness(world, pos) == -1) {
+		if (stateThere.getBlock() != Blocks.AIR && (stateThere.getBlock().isIn(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getBlockHardness(world, pos) == -1)) {
 			// don't destroy unbreakable stuff
 			return;
 		}
@@ -236,7 +237,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 	private void createFakeBlock(BlockPos pos, BlockState state) {
 		BlockState stateThere = world.getBlockState(pos);
 
-		if (stateThere.getBlock() != Blocks.AIR && stateThere.getBlockHardness(world, pos) == -1) {
+		if (stateThere.getBlock() != Blocks.AIR && (stateThere.getBlock().isIn(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getBlockHardness(world, pos) == -1)) {
 			// don't destroy unbreakable stuff
 			return;
 		} else {

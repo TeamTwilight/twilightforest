@@ -58,8 +58,6 @@ public class ItemTFMoonwormQueen extends Item {
 		ItemStack itemstack = player.getHeldItem(context.getHand());
 
 		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.placedBlockCollides(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
-			BlockState iblockstate1 = TFBlocks.moonworm.get().getStateForPlacement(blockItemUseContext);
-
 			if (this.tryPlace(blockItemUseContext).isSuccess()) {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
@@ -124,7 +122,7 @@ public class ItemTFMoonwormQueen extends Item {
 					Block block = blockstate1.getBlock();
 					if (block == blockstate.getBlock()) {
 						blockstate1 = this.func_219985_a(blockpos, world, itemstack, blockstate1);
-						this.onBlockPlaced(blockpos, world, playerentity, itemstack, blockstate1);
+						this.onBlockPlaced(blockpos, world, playerentity, itemstack);
 						block.onBlockPlacedBy(world, blockpos, blockstate1, playerentity, itemstack);
 						if (playerentity instanceof ServerPlayerEntity) {
 							CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)playerentity, blockpos, itemstack);
@@ -152,7 +150,7 @@ public class ItemTFMoonwormQueen extends Item {
 		return context;
 	}
 
-	protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
+	protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack) {
 		return BlockItem.setTileEntityNBT(worldIn, player, pos, stack);
 	}
 

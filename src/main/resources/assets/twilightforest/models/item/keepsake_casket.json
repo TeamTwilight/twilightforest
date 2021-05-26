@@ -1,0 +1,33 @@
+{
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "block/netherite_block"
+  },
+  "display": {
+    "gui": {
+      "rotation": [ 30, 225, 0 ],
+      "translation": [ 0, 0, 0],
+      "scale":[ 0.625, 0.625, 0.625 ]
+    },
+    "ground": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 3, 0],
+      "scale":[ 0.3, 0.3, 0.3 ]
+    },
+    "fixed": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 0, 0],
+      "scale":[ 0.625, 0.625, 0.625 ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [ 75, 315, 0 ],
+      "translation": [ 0, 2.5, 0],
+      "scale": [ 0.375, 0.375, 0.375 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 315, 0 ],
+      "translation": [ 0, 0, 0],
+      "scale": [ 0.4, 0.4, 0.4 ]
+    }
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/util/pane/side_alt",
-  "textures": {
-    "pane": "twilightforest:block/forcefield_white",
-    "edge": "#pane"
-  }
-}

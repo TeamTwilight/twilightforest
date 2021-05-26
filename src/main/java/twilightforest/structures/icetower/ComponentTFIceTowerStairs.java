@@ -60,7 +60,6 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 	}
 
 	private void placeStairs(ISeedReader world, MutableBoundingBox sbb, int x, int y, int z) {
-		BlockPos pos = new BlockPos(x, y, z);
 		if (this.getBlockStateFromPos(world, x, y, z, sbb).getMaterial().isReplaceable()) {
 			this.setBlockState(world, deco.blockState, x, y, z, sbb);
 			this.setBlockState(world, deco.blockState, x, y - 1, z, sbb);

@@ -4,11 +4,20 @@
       "config": {
         "feature": {
           "config": {
-            "state": {
-              "Name": "twilightforest:firefly_jar"
+            "feature": {
+              "config": {
+                "state": {
+                  "Name": "twilightforest:firefly_jar"
+                }
+              },
+              "type": "twilightforest:lampposts"
+            },
+            "decorator": {
+              "config": {},
+              "type": "twilightforest:nostructure"
             }
           },
-          "type": "twilightforest:lampposts"
+          "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {},

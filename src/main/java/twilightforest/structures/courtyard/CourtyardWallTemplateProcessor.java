@@ -7,7 +7,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
-import twilightforest.block.BlockTFNagastoneStairs;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.RandomizedTemplateProcessor;
 import twilightforest.structures.TFStructureProcessors;

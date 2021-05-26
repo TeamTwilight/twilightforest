@@ -154,7 +154,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.isBoundingBoxOutsideBiomes(world, sbb, plateauBiomes)) {
+		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes)) {
 			return false;
 		}
 
@@ -186,7 +186,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 				this.fillBlocksRotated(world, sbb, cs, 0, z, cs, this.height - 1, z, castleMagic, rotation);
 				// horizontals
-				int y = ((z - cs) % 8 == 0) ? decoRNG.nextInt(3) + 0 : decoRNG.nextInt(3) + 4;
+				int y = ((z - cs) % 8 == 0) ? decoRNG.nextInt(3) : decoRNG.nextInt(3) + 4;
 				this.fillBlocksRotated(world, sbb, cs, y, z + 1, cs, y, z + 3, castleMagic, rotation);
 			}
 		}

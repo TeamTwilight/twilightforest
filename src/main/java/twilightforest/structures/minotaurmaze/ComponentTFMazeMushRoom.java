@@ -93,19 +93,19 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 		final BlockState mushroomStem = Blocks.MUSHROOM_STEM.getDefaultState().with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.UP, false);
 
 		// cap
-		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.CENTER, redMushroomBlock), mx + 0, my, mz + 0, sbb);
-		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.WEST, redMushroomBlock), mx + 1, my, mz + 0, sbb);
+		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.CENTER, redMushroomBlock), mx, my, mz, sbb);
+		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.WEST, redMushroomBlock), mx + 1, my, mz, sbb);
 		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.NORTH_WEST, redMushroomBlock), mx + 1, my, mz + 1, sbb);
-		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.NORTH, redMushroomBlock), mx + 0, my, mz + 1, sbb);
+		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.NORTH, redMushroomBlock), mx, my, mz + 1, sbb);
 		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.NORTH_EAST, redMushroomBlock), mx - 1, my, mz + 1, sbb);
-		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.EAST, redMushroomBlock), mx - 1, my, mz + 0, sbb);
+		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.EAST, redMushroomBlock), mx - 1, my, mz, sbb);
 		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, redMushroomBlock), mx - 1, my, mz - 1, sbb);
-		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.SOUTH, redMushroomBlock), mx + 0, my, mz - 1, sbb);
+		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.SOUTH, redMushroomBlock), mx, my, mz - 1, sbb);
 		this.setBlockState(world, MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, redMushroomBlock), mx + 1, my, mz - 1, sbb);
 
 		// stem
 		for (int y = 1; y < my; y++) {
-			this.setBlockState(world, mushroomStem, mx + 0, y, mz + 0, sbb);
+			this.setBlockState(world, mushroomStem, mx, y, mz, sbb);
 		}
 	}
 }

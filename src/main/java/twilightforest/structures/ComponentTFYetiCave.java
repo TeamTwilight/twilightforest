@@ -26,7 +26,7 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 	}
 
 	public ComponentTFYetiCave(TFFeature feature, Random rand, int i, int x, int y, int z) {
-		super(TFFeature.TFYeti, feature, rand, i, 2, x, y, z);
+		super(TFFeature.TFYeti, feature, i, 2, x, y, z);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 		}
 
 		// spawn alpha yeti
-		final BlockState yetiSpawner = TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI);
+		final BlockState yetiSpawner = TFBlocks.boss_spawner_alpha_yeti.get().getDefaultState();
 		setBlockStateRotated(world, yetiSpawner, radius, 1, radius, Rotation.NONE, sbb);
 
 		return true;

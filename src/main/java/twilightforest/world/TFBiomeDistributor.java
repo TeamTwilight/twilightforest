@@ -14,8 +14,6 @@ import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.Layer;
-import net.minecraft.world.gen.layer.SmoothLayer;
-import net.minecraft.world.gen.layer.ZoomLayer;
 import twilightforest.world.layer.*;
 import twilightforest.worldgen.biomes.BiomeKeys;
 

@@ -207,9 +207,9 @@ public class EntityTFTowerTermite extends MonsterEntity {
 				Random random = this.silverfish.getRNG();
 				BlockPos blockpos = new BlockPos(this.silverfish.getPosition());
 
-				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : 0 - i) {
-					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : 0 - j) {
-						for (int k = 0; k <= 10 && k >= -10; k = k <= 0 ? 1 - k : 0 - k) {
+				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : -i) {
+					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : -j) {
+						for (int k = 0; k <= 10 && k >= -10; k = k <= 0 ? 1 - k : -k) {
 
 							BlockPos blockpos1 = blockpos.add(j, i, k);
 							BlockState iblockstate = world.getBlockState(blockpos1);

@@ -172,9 +172,6 @@ public class EntityTFTinyBird extends EntityTFBird {
 			double d1 = this.spawnPosition.getY() + 0.1D - this.getPosY();
 			double d2 = this.spawnPosition.getZ() + 0.5D - this.getPosZ();
 
-//			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
-//			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
-//			this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
 			this.getMotion().add(new Vector3d(
 					(Math.signum(d0) * 0.5D - this.getMotion().getX()) * 0.10000000149011612D,
 					(Math.signum(d1) * 0.699999988079071D - this.getMotion().getY()) * 0.10000000149011612D,

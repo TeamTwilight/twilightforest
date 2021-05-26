@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.block.BlockState;
@@ -7,8 +9,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.DamageSource;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -18,12 +24,15 @@ import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
-public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
+public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements IWaterLoggable {
+
+	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	private static final float THORN_DAMAGE = 4.0F;
 
 	BlockTFThorns(Properties props) {
 		super(props, 10);
+		this.setDefaultState(getDefaultState().with(WATERLOGGED, false));
 	}
 
 	@Override
@@ -117,5 +126,33 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
+		boolean flag = fluidstate.getFluid() == Fluids.WATER;
+		return super.getStateForPlacement(context).with(WATERLOGGED, Boolean.valueOf(flag));
+	}
+
+	@Override
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+		}
+
+		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	}
+
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
+		builder.add(WATERLOGGED);
 	}
 }

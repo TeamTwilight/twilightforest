@@ -70,42 +70,49 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 		return Ingredient.merge(ingredientList);
 	}
 
-	protected final void castleBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, IItemProvider... ingredients) {
+	protected final void charmRecipe(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Item> item) {
+		ShapelessRecipeBuilder.shapelessRecipe(result.get())
+				.addIngredient(item.get(), 4)
+				.addCriterion("has_item", hasItem(item.get()))
+				.build(consumer, TwilightForestMod.prefix(name));
+	}
+
+	protected final void castleBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> criteria, IItemProvider... ingredients) {
 		ShapedRecipeBuilder.shapedRecipe(result.get(), 4)
 				.patternLine("##")
 				.patternLine("##")
 				.key('#', Ingredient.fromItems(ingredients))
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(criteria.get()))
 				.build(consumer, locCastle(name));
 	}
 
-	protected final void stairsBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, IItemProvider... ingredients) {
+	protected final void stairsBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, IItemProvider... ingredients) {
 		ShapedRecipeBuilder.shapedRecipe(result.get(),  8)
 				.patternLine("#  ")
 				.patternLine("## ")
 				.patternLine("###")
 				.key('#', Ingredient.fromItems(ingredients))
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(criteria.get()))
 				.build(consumer, loc);
 	}
 
-	protected final void stairsRightBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, IItemProvider... ingredients) {
+	protected final void stairsRightBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, IItemProvider... ingredients) {
 		ShapedRecipeBuilder.shapedRecipe(result.get(),  8)
 				.patternLine("###")
 				.patternLine(" ##")
 				.patternLine("  #")
 				.key('#', Ingredient.fromItems(ingredients))
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(criteria.get()))
 				.build(consumer, loc);
 	}
 
-	protected final void reverseStairsBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, IItemProvider ingredient) {
+	protected final void reverseStairsBlock(Consumer<IFinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, IItemProvider ingredient) {
 		ShapelessRecipeBuilder.shapelessRecipe(result.get(),  3)
 				.addIngredient(ingredient)
 				.addIngredient(ingredient)
 				.addIngredient(ingredient)
 				.addIngredient(ingredient)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(criteria.get()))
 				.build(consumer, loc);
 	}
 
@@ -115,14 +122,14 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("###")
 				.patternLine("###")
 				.key('#', ingredient)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(ingredient))
 				.build(consumer, TwilightForestMod.prefix("compressed_blocks/" + name));
 	}
 
 	protected final void reverseCompressBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Item> result, ITag.INamedTag<Item> ingredient) {
 		ShapelessRecipeBuilder.shapelessRecipe(result.get(), 9)
 				.addIngredient(ingredient)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(ingredient))
 				.build(consumer, TwilightForestMod.prefix("compressed_blocks/reversed/" + name));
 	}
 
@@ -131,7 +138,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("###")
 				.patternLine("# #")
 				.key('#', material)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material))
 				.build(consumer, locEquip(name));
 	}
 
@@ -141,7 +148,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("###")
 				.patternLine("###")
 				.key('#', material)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material))
 				.build(consumer, locEquip(name));
 	}
 
@@ -151,7 +158,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("# #")
 				.patternLine("# #")
 				.key('#', material)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material))
 				.build(consumer, locEquip(name));
 	}
 
@@ -160,7 +167,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("# #")
 				.patternLine("# #")
 				.key('#', material)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material))
 				.build(consumer, locEquip(name));
 	}
 
@@ -171,7 +178,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine(" X ")
 				.key('#', material)
 				.key('X', handle)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material))
 				.build(consumer, locEquip(name));
 	}
 
@@ -182,7 +189,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("X")
 				.key('#', material)
 				.key('X', handle)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material))
 				.build(consumer, locEquip(name));
 	}
 
@@ -193,14 +200,14 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine(" X")
 				.key('#', material)
 				.key('X', handle)
-				.addCriterion("has_" + result.get().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material))
 				.build(consumer, locEquip(name));
 	}
 
 	protected final void buttonBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
 		ShapelessRecipeBuilder.shapelessRecipe(result.get())
 				.addIngredient(material.get())
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_button"));
 	}
 
@@ -210,7 +217,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("##")
 				.patternLine("##")
 				.key('#', material.get())
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_door"));
 	}
 
@@ -220,7 +227,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("#S#")
 				.key('#', material.get())
 				.key('S', Tags.Items.RODS_WOODEN)
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_fence"));
 	}
 
@@ -230,14 +237,14 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("S#S")
 				.key('#', material.get())
 				.key('S', Tags.Items.RODS_WOODEN)
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_gate"));
 	}
 
 	protected final void planksBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
 		ShapelessRecipeBuilder.shapelessRecipe(result.get(), 4)
 				.addIngredient(material.get())
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_planks"));
 	}
 
@@ -245,7 +252,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(result.get())
 				.patternLine("##")
 				.key('#', material.get())
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_plate"));
 	}
 
@@ -253,7 +260,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(result.get(), 6)
 				.patternLine("###")
 				.key('#', material.get())
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_slab"));
 	}
 
@@ -262,7 +269,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("###")
 				.patternLine("###")
 				.key('#', material.get())
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_trapdoor"));
 	}
 	
@@ -271,7 +278,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine("##")
 				.patternLine("##")
 				.key('#', material.get())
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_wood"));
 	}
 
@@ -282,8 +289,16 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.patternLine(" - ")
 				.key('#', material.get())
 				.key('-', Tags.Items.RODS_WOODEN)
-				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get().asItem()))
+				.addCriterion("has_item", hasItem(material.get()))
 				.build(consumer, locWood(name + "_wood"));
+	}
+
+	protected final void fieryConversion(Consumer<IFinishedRecipe> consumer, Supplier<? extends Item> result, Item armor, int vials) {
+		ShapelessRecipeBuilder.shapelessRecipe(result.get())
+				.addIngredient(armor)
+				.addIngredient(Ingredient.fromTag(ItemTagGenerator.FIERY_VIAL), vials)
+				.addCriterion("has_item", hasItem(ItemTagGenerator.FIERY_VIAL))
+				.build(consumer, locEquip("fiery_" + armor.getRegistryName().getPath()));
 	}
 
 	protected final ResourceLocation locCastle(String name) {

@@ -12,10 +12,7 @@ public class ModelTFTroll extends BipedModel<EntityTFTroll> {
 	public ModelTFTroll() {
 		super(0.0F, 0.0F, 128, 64);
 
-//		this.textureWidth = 128;
-//		this.textureHeight = 64;
-
-		this.bipedHead = new ModelRenderer(this, 0, 0);
+        this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addBox(-5.0F, -8.0F, -3.0F, 10, 10, 10);
 		this.bipedHead.setRotationPoint(0.0F, -9.0F, -6.0F);
 

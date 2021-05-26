@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:twilight_oak_fence",
+    "twilightforest:canopy_fence",
+    "twilightforest:mangrove_fence",
+    "twilightforest:dark_fence",
+    "twilightforest:time_fence",
+    "twilightforest:trans_fence",
+    "twilightforest:mine_fence",
+    "twilightforest:sort_fence"
+  ]
+}

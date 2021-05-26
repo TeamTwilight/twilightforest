@@ -24,9 +24,8 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickableTil
 	private int blocksMade = 0;
 
 	private BlockPos lastBlockCoords;
-	private Direction nextFacing;
 
-	private PlayerEntity trackedPlayer;
+    private PlayerEntity trackedPlayer;
 
 	private BlockState blockBuiltState = TFBlocks.built_block.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, false);
 
@@ -52,7 +51,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickableTil
 			}
 
 			// find player facing
-			this.nextFacing = findNextFacing();
+            Direction nextFacing = findNextFacing();
 
 			++this.ticksRunning;
 

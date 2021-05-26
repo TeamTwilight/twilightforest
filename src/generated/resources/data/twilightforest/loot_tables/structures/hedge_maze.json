@@ -1,0 +1,250 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 4,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "weight": 25,
+          "name": "twilightforest:structures/useless"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:oak_planks"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:brown_mushroom"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:red_mushroom"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:wheat"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:string"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 6.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:stick"
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:melon_slice"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:melon_seeds"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:pumpkin_seeds"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 12.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:arrow"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "twilightforest:firefly"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:cobweb"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 2.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:apple"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "name": "minecraft:shears"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "name": "minecraft:saddle"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "name": "minecraft:bow"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "minecraft:golden_apple"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "minecraft:mushroom_stew"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "minecraft:diamond"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "minecraft:diamond_hoe"
+        }
+      ]
+    }
+  ]
+}

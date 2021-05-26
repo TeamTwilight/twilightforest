@@ -205,29 +205,7 @@ public class ModelTFHydraLegacy extends SegmentedModel<EntityTFHydra> {
 		head3.addChild(frill3);
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//
-////		neck1a.render(scale);
-////		neck1b.render(scale);
-////		neck1c.render(scale);
-////		neck1d.render(scale);
-////		head1.render(scale);
-////		neck2a.render(scale);
-////		neck2b.render(scale);
-////		neck2c.render(scale);
-////		neck2d.render(scale);
-////		head2.render(scale);
-////		neck3a.render(scale);
-////		neck3b.render(scale);
-////		neck3c.render(scale);
-////		neck3d.render(scale);
-////		head3.render(scale);
-//	}
-
-	@Override
+    @Override
 	public Iterable<ModelRenderer> getParts() {
 		return ImmutableList.of(
 				body,
@@ -257,43 +235,7 @@ public class ModelTFHydraLegacy extends SegmentedModel<EntityTFHydra> {
 		leg2.rotateAngleY = 0.0F;
 	}
 
-	//	@Override
-//	public void setLivingAnimations(EntityLiving entityliving, float f, float f1, float time) {
-//		EntityTFHydra hydra = (EntityTFHydra)entityliving;
-//		
-//		// position the heads
-//		Vec3 vec;
-//		
-//        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 7*-16);
-//        vec.rotateAroundX((60 * 3.141593F) / 180F);
-//        vec.rotateAroundY((0 * 3.141593F) / 180F);
-//        head1.setRotationPoint((float)vec.x, (float)vec.y - 48, (float)vec.z);
-//		
-//        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 9*-16);
-//        vec.rotateAroundX((45 * 3.141593F) / 180F);
-//        vec.rotateAroundY((-60 * 3.141593F) / 180F);
-//        head2.setRotationPoint((float)vec.x, (float)vec.y - 48, (float)vec.z);
-//		
-//        vec = Vec3.getVec3Pool().getVecFromPool(0, 0, 9*-16);
-//        vec.rotateAroundX((-10 * 3.141593F) / 180F);
-//        vec.rotateAroundY((60 * 3.141593F) / 180F);
-//        head3.setRotationPoint((float)vec.x, (float)vec.y - 48, (float)vec.z);
-//		
-//        // rotate the heads
-//        if (hydra.head1 != null)
-//        {
-//			head1.rotateAngleY = getRotationY(hydra, hydra.head1, time);
-//			head1.rotateAngleX = getRotationX(hydra, hydra.head1, time);
-//	
-//			head2.rotateAngleY = getRotationY(hydra, hydra.head3, time);
-//			head2.rotateAngleX = getRotationX(hydra, hydra.head3, time);
-//	
-//			head3.rotateAngleY = getRotationY(hydra, hydra.head2, time);
-//			head3.rotateAngleX = getRotationX(hydra, hydra.head2, time) - 0.015F;
-//        }
-//	}
-
-	public float getRotationY(EntityTFHydra hydra, EntityTFHydraPart whichHead, float time) {
+    public float getRotationY(EntityTFHydra hydra, EntityTFHydraPart whichHead, float time) {
 
 		float yawOffset = hydra.prevRenderYawOffset + (hydra.renderYawOffset - hydra.prevRenderYawOffset) * time;
 		float yaw = whichHead.prevRotationYaw + (whichHead.rotationYaw - whichHead.prevRotationYaw) * time;

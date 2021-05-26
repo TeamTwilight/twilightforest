@@ -11,7 +11,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraftforge.common.Tags;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.PlayerHelper;
 
@@ -21,15 +20,6 @@ public class BlockTFAuroraBrick extends Block {
 
 	public BlockTFAuroraBrick(Properties props) {
 		super(props);
-	}
-
-	@Override
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
-		if(PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_glacier"))) {
-			return player.getDigSpeed(Blocks.STONE.getDefaultState(), pos);
-		} else {
-			return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
-		}
 	}
 
 	private static float getFractalNoise(int iteration, float size, BlockPos pos) {

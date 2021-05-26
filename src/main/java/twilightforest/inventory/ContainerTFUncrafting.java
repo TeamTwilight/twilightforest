@@ -78,7 +78,7 @@ public class ContainerTFUncrafting extends Container {
 		}
 		for (invX = 0; invX < 3; ++invX) {
 			for (invY = 0; invY < 3; ++invY) {
-				this.addSlot(new SlotTFGoblinAssembly(inventory.player, this.tinkerInput, this.assemblyMatrix, this.uncraftingMatrix, invY + invX * 3, 62 + invY * 18, 17 + invX * 18));
+				this.addSlot(new SlotTFGoblinAssembly(this.assemblyMatrix, invY + invX * 3, 62 + invY * 18, 17 + invX * 18));
 			}
 		}
 

@@ -22,7 +22,6 @@ public class ModelTFDeathTome extends EntityModel<EntityTFDeathTome> {
     private final ModelRenderer pagesLeft;
     private final ModelRenderer flippingPageRight;
     private final ModelRenderer flippingPageLeft;
-    private final ModelRenderer bookSpine = (new ModelRenderer(64, 32, 12, 0)).addBox(-1.0F, -5.0F, 0.0F, 2.0F, 10.0F, 0.005F);
 
     public ModelTFDeathTome() {
         everything = (new ModelRenderer(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
@@ -35,7 +34,8 @@ public class ModelTFDeathTome extends EntityModel<EntityTFDeathTome> {
         this.flippingPageLeft = (new ModelRenderer(64, 32, 24, 10)).addBox(0.0F, -4.0F, 0.0F, 5.0F, 8.0F, 0.005F);
         this.coverRight.setRotationPoint(0.0F, 0.0F, -1.0F);
         this.coverLeft.setRotationPoint(0.0F, 0.0F, 1.0F);
-        this.bookSpine.rotateAngleY = ((float) Math.PI / 2F);
+        ModelRenderer bookSpine = (new ModelRenderer(64, 32, 12, 0)).addBox(-1.0F, -5.0F, 0.0F, 2.0F, 10.0F, 0.005F);
+        bookSpine.rotateAngleY = ((float) Math.PI / 2F);
 
         book.addChild(coverRight);
         book.addChild(coverLeft);

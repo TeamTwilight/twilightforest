@@ -1,0 +1,219 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:twilight_scepter"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:lifedrain_scepter"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:zombie_scepter"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:shield_scepter"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "min": 2.0,
+        "max": 4.0,
+        "type": "minecraft:uniform"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 10.0,
+                "max": 40.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:golden_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 10.0,
+                "max": 40.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:golden_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 10.0,
+                "max": 40.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:golden_chestplate"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 10.0,
+                "max": 40.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:golden_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": {
+                "min": 10.0,
+                "max": 40.0,
+                "type": "minecraft:uniform"
+              },
+              "treasure": false
+            }
+          ],
+          "name": "minecraft:golden_boots"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "min": 0.0,
+                "max": 1.0
+              }
+            }
+          ],
+          "name": "minecraft:ender_pearl"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 5.0,
+                "max": 9.0,
+                "type": "minecraft:uniform"
+              }
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "min": 0.0,
+                "max": 1.0
+              }
+            }
+          ],
+          "name": "minecraft:bone"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:lich_trophy"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader",
+              "default": "minecraft:gold_nugget"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{shader_name:\"twilightforest:lich\"}"
+            }
+          ],
+          "name": "minecraft:gold_nugget"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader_bag_twilight",
+              "default": "minecraft:gold_nugget"
+            }
+          ],
+          "name": "minecraft:gold_nugget"
+        }
+      ]
+    }
+  ]
+}

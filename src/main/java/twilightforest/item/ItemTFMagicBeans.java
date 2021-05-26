@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -13,7 +12,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import javax.annotation.Nonnull;
@@ -33,7 +31,7 @@ public class ItemTFMagicBeans extends Item {
 		Block blockAt = world.getBlockState(pos).getBlock();
 
 		int minY = pos.getY() + 1;
-		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 40));
+		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight() + 40));
 		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil.get()) {
 			if (!world.isRemote) {
 				ItemStack is = player.getHeldItem(context.getHand());
@@ -50,8 +48,7 @@ public class ItemTFMagicBeans extends Item {
 		}
 	}
 
-	@SuppressWarnings("RedundantCast")
-	private float getCloudHeight(World world) {
+	private float getCloudHeight() {
 		return 128;
 	}
 

@@ -26,7 +26,7 @@ public class TFGenBigMushgloom extends Feature<NoFeatureConfig> {
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int height = 3 + rand.nextInt(2) + rand.nextInt(2);
 
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos.add(-1, 0, -1), 3, height, 3)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos.add(-1, 0, -1), 3, height, 3)) {
 			return false;
 		}
 
@@ -59,14 +59,5 @@ public class TFGenBigMushgloom extends Feature<NoFeatureConfig> {
 		world.setBlockState(pos.add(-1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, defState), 3);
 		world.setBlockState(pos.add(0, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH, defState), 3);
 		world.setBlockState(pos.add(1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, defState), 3);
-//		world.setBlockState(pos.add(-1, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
-//		world.setBlockState(pos.add(0, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH));
-//		world.setBlockState(pos.add(1, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
-//		world.setBlockState(pos.add(-1, 0, 0), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.WEST));
-//		world.setBlockState(pos, defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.CENTER));
-//		world.setBlockState(pos.add(1, 0, 0), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.EAST));
-//		world.setBlockState(pos.add(-1, 0, 1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST));
-//		world.setBlockState(pos.add(0, 0, 1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH));
-//		world.setBlockState(pos.add(1, 0, 1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST));
 	}
 }

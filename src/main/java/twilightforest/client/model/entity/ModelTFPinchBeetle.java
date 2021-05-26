@@ -3,10 +3,8 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -124,8 +122,8 @@ public class ModelTFPinchBeetle extends SegmentedModel<EntityTFPinchBeetle> {
         float var10 = 0.3926991F;
         this.leftLeg1.rotateAngleY = -var10 * 2.0F + var9;
         this.rightLeg1.rotateAngleY = var10 * 2.0F - var9;
-        this.leftLeg2.rotateAngleY = var10 * 1.0F + var9;
-        this.rightLeg2.rotateAngleY = -var10 * 1.0F - var9;
+        this.leftLeg2.rotateAngleY = var10 + var9;
+        this.rightLeg2.rotateAngleY = -var10 - var9;
         this.leftLeg3.rotateAngleY = var10 * 2.0F + var9;
         this.rightLeg3.rotateAngleY = -var10 * 2.0F - var9;
 

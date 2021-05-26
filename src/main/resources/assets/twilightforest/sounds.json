@@ -239,6 +239,12 @@
   "item.charm.life": { "subtitle": "subtitles.item.charm.life", "sounds": ["item/totem/use_totem"] },  
 
   "random.slider": { "subtitle": "subtitles.random.slider", "sounds": [ "twilightforest:random/creakgo2" ] },
+
+  "casket.open": { "subtitle": "subtitles.block.casket.open", "sounds": [ "twilightforest:random/casket/open" ] },
+  "casket.close": { "subtitle": "subtitles.block.casket.close", "sounds": [ "twilightforest:random/casket/close" ] },
+  "casket.locked": { "subtitle": "subtitles.block.casket.locked", "sounds": [ "block/wooden_door/close", "block/wooden_door/open" ] },
+  "casket.repair": { "subtitle": "subtitles.block.casket.repair", "sounds": [ "twilightforest:random/casket/repair" ] },
+
   "music.bg": { "sounds": [
 	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },
 	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25 },

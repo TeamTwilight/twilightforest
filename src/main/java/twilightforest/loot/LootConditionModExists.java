@@ -31,6 +31,10 @@ public class LootConditionModExists implements ILootCondition {
         return exists;
     }
 
+    public static ILootCondition.IBuilder builder(String modid) {
+        return () -> new LootConditionModExists(modid);
+    }
+
     public static class Serializer implements ILootSerializer<LootConditionModExists> {
 
 		@Override

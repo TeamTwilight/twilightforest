@@ -59,7 +59,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 
 		// beard
 		for (int i = 1; i < 4; i++) {
-			fillWithRandomizedBlocks(world, sbb, i, 0 - (i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
+			fillWithRandomizedBlocks(world, sbb, i, -(i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
 		}
 		this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
 

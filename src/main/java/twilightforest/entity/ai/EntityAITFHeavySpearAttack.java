@@ -12,7 +12,7 @@ public class EntityAITFHeavySpearAttack extends Goal {
 
 	public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper upperKnight) {
 		this.entity = upperKnight;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK)); // Prevent moving TODO 1.15: check this again, I'm uncertain
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

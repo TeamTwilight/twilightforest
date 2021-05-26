@@ -1,6 +1,8 @@
 {
   "parent": "block/block",
   "textures": {
+    "blank": "twilightforest:block/stone_twist/twist_blank",
+    "crown": "twilightforest:block/stone_twist/twist_crown",
     "particle": "#side_x"
   },
   "elements": [{
@@ -24,16 +26,6 @@
       "up"  : { "texture": "#blank", "tintindex": 0 },
       "down": { "texture": "#blank", "tintindex": 0 }
     }
-  }],
-  "ctm_overrides": {
-    "1": {
-      "type": "CTM",
-      "layer": "CUTOUT",
-      "textures": [ "#crown" ],
-      "extra": {
-        "connect_inside": true
-      }
-    }
-  }
+  }]
 }
 

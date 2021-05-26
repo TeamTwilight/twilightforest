@@ -33,7 +33,7 @@ import java.util.Map;
 
 public class TFStructures {
 
-	private static final Map<Structure<?>, StructureSeparationSettings> SEPARATION_SETTINGS = new HashMap<>();
+	public static final Map<Structure<?>, StructureSeparationSettings> SEPARATION_SETTINGS = new HashMap<>();
 
 	public static final Structure<NoFeatureConfig> HEDGE_MAZE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HEDGE_MAZE);
 	public static final StructureFeature<?, ?> CONFIGURED_HEDGE_MAZE = HEDGE_MAZE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
@@ -132,10 +132,5 @@ public class TFStructures {
 			tempMap.putAll(SEPARATION_SETTINGS);
 			serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;
 		}
-	}
-
-	public static void fillSpawnInfo(StructureSpawnListGatherEvent event) {
-		if (event.getStructure() instanceof TFStructure)
-			event.getStructure().getSpawnList().forEach(spawn -> event.addEntitySpawn(EntityClassification.MONSTER, spawn));
 	}
 }

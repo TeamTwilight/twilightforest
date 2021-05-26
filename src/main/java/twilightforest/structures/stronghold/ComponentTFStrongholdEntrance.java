@@ -136,7 +136,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		this.placeWallStatue(world, 16, 1, 8, Rotation.COUNTERCLOCKWISE_90, sbb);
 
 		// doors
-		this.placeDoors(world, rand, sbb);
+		this.placeDoors(world, sbb);
 
 		return true;
 	}

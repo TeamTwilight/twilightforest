@@ -1,6 +1,5 @@
 package twilightforest.dispenser;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;

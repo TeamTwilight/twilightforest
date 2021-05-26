@@ -5,8 +5,17 @@
         "feature": {
           "config": {
             "feature": {
-              "config": {},
-              "type": "twilightforest:stone_circle"
+              "config": {
+                "feature": {
+                  "config": {},
+                  "type": "twilightforest:stone_circle"
+                },
+                "decorator": {
+                  "config": {},
+                  "type": "twilightforest:nostructure"
+                }
+              },
+              "type": "minecraft:decorated"
             },
             "decorator": {
               "config": {

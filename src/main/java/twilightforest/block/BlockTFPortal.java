@@ -49,7 +49,6 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
 
 	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));
-	private static final AxisAlignedBB AABB_ITEM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.4F, 1.0F);
 
 	private static final int MIN_PORTAL_SIZE =  4;
 	private static final int MAX_PORTAL_SIZE = 64;
@@ -82,12 +81,6 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 		// The portal itself is kind of technically water, and this checks the checkbox in Sugar Cane logic to not destroy itself when portal is made.
 		return Fluids.WATER.getFlowingFluidState(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
 	}
-
-	//	@Override
-//	@Deprecated
-//	public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB entityBB, List<AxisAlignedBB> blockBBs, @Nullable Entity entity, boolean isActualState) {
-//		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
-//	}
 
 	public boolean tryToCreatePortal(World world, BlockPos pos, ItemEntity catalyst, @Nullable PlayerEntity player) {
 
@@ -129,7 +122,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	public boolean canFormPortal(BlockState state) {
-		return state == Blocks.WATER.getDefaultState() || state.getBlock() == this && state.get(DISALLOW_RETURN);
+		return state.getBlock().isIn(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.get(DISALLOW_RETURN);
 	}
 
 	private static void causeLightning(World world, BlockPos pos, boolean fake) {
@@ -150,7 +143,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 		}
 	}
 
-	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState requiredState) {
+	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState poolBlock) {
 		if (portalSize.incrementAndGet() > MAX_PORTAL_SIZE) return false;
 
 		boolean isPoolProbablyEnclosed = true;
@@ -161,10 +154,10 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 			if (!blocksChecked.containsKey(positionCheck)) {
 				BlockState state = world.getBlockState(positionCheck);
 
-				if (state == requiredState && world.getBlockState(positionCheck.down()).isSolid()) {
+				if (state == poolBlock && world.getBlockState(positionCheck.down()).isSolid()) {
 					blocksChecked.put(positionCheck, true);
 					if (isPoolProbablyEnclosed) {
-						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
+						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, poolBlock);
 					}
 
 				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up()))) {
@@ -212,8 +205,10 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation())
-				? TFDimensions.twilightForest : RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
+		RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
+
+		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(twilightForest.getLocation())
+				? twilightForest : RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
@@ -240,12 +235,6 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 
 		entity.changeDimension(serverWorld, new TFTeleporter());
 
-		// No more setting spawn point
-		/*if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
-			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
-			// set respawn point for TF dimension to near the arrival portal
-			playerMP.func_242111_a(destination, playerMP.getPosition(), playerMP.rotationYaw, true, false);
-		}*/
 	}
 
 	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
@@ -267,15 +256,6 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 			double xSpeed = (rand.nextFloat() - 0.5D) * 0.5D;
 			double ySpeed = rand.nextFloat();
 			double zSpeed = (rand.nextFloat() - 0.5D) * 0.5D;
-			//int j = rand.nextInt(2) * 2 - 1;
-
-			//if (worldIn.getBlockState(pos.west()).getBlock() != this && worldIn.getBlockState(pos.east()).getBlock() != this) {
-			//	xPos = (double) pos.getX() + 0.5D + 0.25D * (double) j;
-			//	xSpeed = (double) (rand.nextFloat() * 2.0F * (float) j);
-			//} else {
-			//	zPos = (double) pos.getZ() + 0.5D + 0.25D * (double) j;
-			//	zSpeed = (double) (rand.nextFloat() * 2.0F * (float) j);
-			//}
 
 			worldIn.addParticle(ParticleTypes.PORTAL, xPos, yPos, zPos, xSpeed, ySpeed, zSpeed);
 		}

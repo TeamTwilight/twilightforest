@@ -3,12 +3,9 @@ package twilightforest.world.feature;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -24,12 +21,9 @@ import net.minecraft.world.gen.IWorldGenerationBaseReader;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
-import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.*;
 
@@ -54,7 +48,7 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
 		Material materialUnder;
-		for (int dy = pos.getY(); dy >= TFGenerationSettings.SEALEVEL; dy--) {
+		for (int dy = pos.getY(); dy >= 0; dy--) {
 			materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
 			if (materialUnder == Material.ORGANIC || materialUnder == Material.EARTH) {
 				// yes!
@@ -119,15 +113,6 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 			if (j1 - i1 > configIn.maxWaterDepth) {
 				return false;
 			}
-
-			int k1;
-			if (configIn.field_236682_l_ == Heightmap.Type.OCEAN_FLOOR) {
-				k1 = i1;
-			} else if (configIn.field_236682_l_ == Heightmap.Type.WORLD_SURFACE) {
-				k1 = j1;
-			} else {
-				k1 = generationReader.getHeight(configIn.field_236682_l_, positionIn).getY();
-			}
 			//set our blockpos to the valid dirt pos, not highest ground
 			blockpos = new BlockPos(positionIn.getX(), validPos.getY(), positionIn.getZ());
 		} else {
@@ -182,7 +167,6 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 	private VoxelShapePart func_236403_a_(IWorld p_236403_1_, MutableBoundingBox p_236403_2_, Set<BlockPos> p_236403_3_, Set<BlockPos> p_236403_4_) {
 		List<Set<BlockPos>> list = Lists.newArrayList();
 		VoxelShapePart voxelshapepart = new BitSetVoxelShapePart(p_236403_2_.getXSize(), p_236403_2_.getYSize(), p_236403_2_.getZSize());
-		int i = 6;
 
 		for(int j = 0; j < 6; ++j) {
 			list.add(Sets.newHashSet());

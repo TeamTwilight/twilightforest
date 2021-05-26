@@ -61,9 +61,9 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 									  int dx, int dz) {
 		for (int y = 1; y < 5; y++) {
 			final BlockState chiselledMazeBlock = TFBlocks.maze_stone_chiseled.get().getDefaultState();
-			setBlockState(world, chiselledMazeBlock, dx + 0, y, dz + 0, sbb);
-			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz + 0, sbb);
-			setBlockState(world, chiselledMazeBlock, dx + 0, y, dz + 2, sbb);
+			setBlockState(world, chiselledMazeBlock, dx, y, dz, sbb);
+			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz, sbb);
+			setBlockState(world, chiselledMazeBlock, dx, y, dz + 2, sbb);
 			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz + 2, sbb);
 		}
 		setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), dx + 1, 1, dz + 1, sbb);
@@ -72,22 +72,22 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		final BlockState defaultState = Blocks.OAK_STAIRS.getDefaultState();
 
 
-		setBlockState(world, getStairState(defaultState, Direction.NORTH, rotation, false), dx + 1, 1, dz + 0, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.WEST, rotation, false), dx + 0, 1, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.EAST, rotation, false), dx + 2, 1, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.SOUTH, rotation, false), dx + 1, 1, dz + 2, sbb);
+		setBlockState(world, getStairState(defaultState, Direction.NORTH, false), dx + 1, 1, dz, sbb);
+		setBlockState(world, getStairState(defaultState, Direction.WEST, false), dx, 1, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, Direction.EAST, false), dx + 2, 1, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, Direction.SOUTH, false), dx + 1, 1, dz + 2, sbb);
 
-		setBlockState(world, getStairState(defaultState, Direction.NORTH, rotation, true), dx + 1, 4, dz + 0, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.WEST, rotation, true), dx + 0, 4, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.EAST, rotation, true), dx + 2, 4, dz + 1, sbb);
-		setBlockState(world, getStairState(defaultState, Direction.SOUTH, rotation, true), dx + 1, 4, dz + 2, sbb);
+		setBlockState(world, getStairState(defaultState, Direction.NORTH, true), dx + 1, 4, dz, sbb);
+		setBlockState(world, getStairState(defaultState, Direction.WEST, true), dx, 4, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, Direction.EAST, true), dx + 2, 4, dz + 1, sbb);
+		setBlockState(world, getStairState(defaultState, Direction.SOUTH, true), dx + 1, 4, dz + 2, sbb);
 
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 2, dz + 0, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 0, 2, dz + 1, sbb);
+		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 2, dz, sbb);
+		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx, 2, dz + 1, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 2, 2, dz + 1, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 2, dz + 2, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 3, dz + 0, sbb);
-		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 0, 3, dz + 1, sbb);
+		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 3, dz, sbb);
+		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx, 3, dz + 1, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 2, 3, dz + 1, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 3, dz + 2, sbb);
 	}

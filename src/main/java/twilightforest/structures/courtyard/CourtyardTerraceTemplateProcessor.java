@@ -9,7 +9,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
-import twilightforest.block.BlockTFNagastoneStairs;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.RandomizedTemplateProcessor;
 import twilightforest.structures.TFStructureProcessors;
@@ -43,9 +42,6 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
 
         final BlockState SMOOTHBRICK_SLAB_STATE = Blocks.SMOOTH_STONE_SLAB.getDefaultState();
         final BlockState SMOOTHBRICK_STATE = Blocks.STONE_BRICKS.getDefaultState(); //Blocks.DOUBLE_STONE_SLAB.getDefaultState().with(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK).with(BlockDoubleStoneSlab.SEAMLESS, false);
-
-        //final BlockState SANDSTONE_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND);
-        //final BlockState SANDSTONE_STATE = Blocks.DOUBLE_STONE_SLAB.getDefaultState().with(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND).with(BlockDoubleStoneSlab.SEAMLESS, false);
 
         if (state == Blocks.SANDSTONE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE)) {
             BlockState stateCheck = world.getBlockState(pos);

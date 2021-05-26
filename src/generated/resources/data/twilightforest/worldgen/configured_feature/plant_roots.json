@@ -5,8 +5,17 @@
         "feature": {
           "config": {
             "feature": {
-              "config": {},
-              "type": "twilightforest:plant_roots"
+              "config": {
+                "feature": {
+                  "config": {},
+                  "type": "twilightforest:plant_roots"
+                },
+                "decorator": {
+                  "config": {},
+                  "type": "twilightforest:nostructure"
+                }
+              },
+              "type": "minecraft:decorated"
             },
             "decorator": {
               "config": {

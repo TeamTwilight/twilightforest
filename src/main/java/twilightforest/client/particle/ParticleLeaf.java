@@ -80,9 +80,9 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 	public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
 		particleAlpha = Math.min(MathHelper.clamp(age, 0, 20) / 20F, MathHelper.clamp(maxAge - age, 0, 20) / 20F);
 		Vector3d lvt_4_1_ = entity.getProjectedView();
-		float lvt_5_1_ = (float)(MathHelper.lerp((double)partialTicks, this.prevPosX, this.posX) - lvt_4_1_.getX());
-		float lvt_6_1_ = (float)(MathHelper.lerp((double)partialTicks, this.prevPosY, this.posY) - lvt_4_1_.getY());
-		float lvt_7_1_ = (float)(MathHelper.lerp((double)partialTicks, this.prevPosZ, this.posZ) - lvt_4_1_.getZ());
+		float lvt_5_1_ = (float)(MathHelper.lerp(partialTicks, this.prevPosX, this.posX) - lvt_4_1_.getX());
+		float lvt_6_1_ = (float)(MathHelper.lerp(partialTicks, this.prevPosY, this.posY) - lvt_4_1_.getY());
+		float lvt_7_1_ = (float)(MathHelper.lerp(partialTicks, this.prevPosZ, this.posZ) - lvt_4_1_.getZ());
 		Quaternion lvt_8_2_ = new Quaternion(entity.getRotation());
 		if (this.particleAngle != 0.0F) {
 			float lvt_9_1_ = MathHelper.lerp(partialTicks, this.prevParticleAngle, this.particleAngle);
@@ -105,10 +105,10 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 		float lvt_14_1_ = this.getMinV();
 		float lvt_15_1_ = this.getMaxV();
 		int lvt_16_1_ = this.getBrightnessForRender(partialTicks);
-		buffer.pos((double)lvt_10_1_[0].getX(), (double)lvt_10_1_[0].getY(), (double)lvt_10_1_[0].getZ()).tex(lvt_13_2_, lvt_15_1_).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(lvt_16_1_).endVertex();
-		buffer.pos((double)lvt_10_1_[1].getX(), (double)lvt_10_1_[1].getY(), (double)lvt_10_1_[1].getZ()).tex(lvt_13_2_, lvt_14_1_).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(lvt_16_1_).endVertex();
-		buffer.pos((double)lvt_10_1_[2].getX(), (double)lvt_10_1_[2].getY(), (double)lvt_10_1_[2].getZ()).tex(lvt_12_2_, lvt_14_1_).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(lvt_16_1_).endVertex();
-		buffer.pos((double)lvt_10_1_[3].getX(), (double)lvt_10_1_[3].getY(), (double)lvt_10_1_[3].getZ()).tex(lvt_12_2_, lvt_15_1_).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(lvt_16_1_).endVertex();
+		buffer.pos(lvt_10_1_[0].getX(), lvt_10_1_[0].getY(), lvt_10_1_[0].getZ()).tex(lvt_13_2_, lvt_15_1_).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(lvt_16_1_).endVertex();
+		buffer.pos(lvt_10_1_[1].getX(), lvt_10_1_[1].getY(), lvt_10_1_[1].getZ()).tex(lvt_13_2_, lvt_14_1_).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(lvt_16_1_).endVertex();
+		buffer.pos(lvt_10_1_[2].getX(), lvt_10_1_[2].getY(), lvt_10_1_[2].getZ()).tex(lvt_12_2_, lvt_14_1_).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(lvt_16_1_).endVertex();
+		buffer.pos(lvt_10_1_[3].getX(), lvt_10_1_[3].getY(), lvt_10_1_[3].getZ()).tex(lvt_12_2_, lvt_15_1_).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(lvt_16_1_).endVertex();
 	}
 
 	@Override

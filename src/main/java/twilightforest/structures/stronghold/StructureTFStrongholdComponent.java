@@ -75,14 +75,13 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	 */
 	public static MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, Direction facing) {
 		switch (facing) {
-			case SOUTH:
-				return new MutableBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
 			case WEST:
 				return new MutableBoundingBox(x - zSize + 1 + zOff, y + yOff, z + xOff, x + zOff, y + ySize - 1 + yOff, z + xSize - 1 + xOff);
 			case NORTH:
 				return new MutableBoundingBox(x - xSize + 1 - xOff, y + yOff, z - zSize + 1 + zOff, x - xOff, y + ySize - 1 + yOff, z + zOff);
 			case EAST:
 				return new MutableBoundingBox(x + zOff, y + yOff, z - xSize + 1 - xOff, x + zSize - 1 + zOff, y + ySize - 1 + yOff, z - xOff);
+			case SOUTH:
 			default:
 				return new MutableBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
 		}
@@ -146,7 +145,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 	protected void addNewUpperComponent(StructurePiece parent, List<StructurePiece> list, Random random, Rotation facing, int x, int y, int z) {
-		StructureTFStrongholdComponent attempted = null;
+		StructureTFStrongholdComponent attempted;
 
 		int index = this.componentType + 1;
 		Direction nFacing = getStructureRelativeRotation(facing);
@@ -201,7 +200,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	 * Make a doorway
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void placeDoorwayAt(ISeedReader world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeDoorwayAt(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb) {
 		if (x == 0 || x == this.getXSize()) {
 			this.fillWithBlocks(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceState, Blocks.AIR.getDefaultState(), false);
 			this.fillWithAir(world, sbb, x, y, z - 1, x, y + 3, z + 1);
@@ -231,11 +230,10 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	protected void placeSmallDoorwayAt(ISeedReader world, int facing, int x, int y, int z, MutableBoundingBox sbb) {
 		if (facing == 0 || facing == 2) {
 			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
-			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
 		} else {
 			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 1, z + 1, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
-			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
 		}
+		this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
 	}
 
 	/**
@@ -275,23 +273,23 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 
 		// antlers
-		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + 0, y + 4, z + oz, sbb);
-		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z + 0, sbb);
+		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z + oz, sbb);
+		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z, sbb);
 
 		// arms
-		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, false), x + 0, y + 3, z + oz, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, false), x + ox, y + 3, z + 0, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, true), x + 0, y + 2, z + oz, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, true), x + ox, y + 2, z + 0, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, true), x + ox, y + 2, z + oz, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smz, false), x, y + 3, z + oz, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smx, false), x + ox, y + 3, z, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smz, true), x, y + 2, z + oz, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smx, true), x + ox, y + 2, z, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smx, true), x + ox, y + 2, z + oz, sbb);
 
 		// sword
-		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 0, z + oz, sbb);
+		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y, z + oz, sbb);
 		this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z + oz, sbb);
 
 		// feet
-		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, false), x + 0, y + 0, z + oz, sbb);
-		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, false), x + ox, y + 0, z + 0, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smz, false), x, y, z + oz, sbb);
+		this.setBlockState(world, getStairState(deco.stairState, smx, false), x + ox, y, z, sbb);
 	}
 
 	/**
@@ -318,24 +316,24 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 			// arms
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x - ox, y + 3, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x + ox, y + 3, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, false), x - ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, false), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), false), x - ox, y + 3, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x + ox, y + 3, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x - ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z - oz, sbb);
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, true), x - ox, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, true), x + ox, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + 0, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x - ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), true), x - ox, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), true), x + ox, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x - ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z - oz, sbb);
 
 			// sword
-			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 0, z - oz, sbb);
+			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y, z - oz, sbb);
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 1, z - oz, sbb);
 
 			// feet
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x - ox, y + 0, z + 0, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x + ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), false), x - ox, y, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x + ox, y, z, sbb);
 		} else {
 			if (facing == Rotation.COUNTERCLOCKWISE_90) {
 				oz = -oz;
@@ -347,24 +345,24 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z + oz, sbb);
 
 			// arms
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x, y + 3, z + oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, false), x + ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, false), x + ox, y + 3, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), false), x, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x, y + 3, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), false), x + ox, y + 3, z + oz, sbb);
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, true), x, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, true), x, y + 2, z + oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + oz, y + 2, z + 0, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + ox, y + 2, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), true), x, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), true), x, y + 2, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + oz, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), true), x + ox, y + 2, z + oz, sbb);
 
 			// sword
-			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 0, z, sbb);
+			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y, z, sbb);
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z, sbb);
 
 			// feet
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x, y + 0, z - ox, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x, y + 0, z + ox, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), false), x, y, z - ox, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), false), x, y, z + ox, sbb);
 		}
 	}
 
@@ -466,10 +464,10 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Place any doors on our list
 	 */
-	public void placeDoors(ISeedReader world, Random rand, MutableBoundingBox sbb) {
+	public void placeDoors(ISeedReader world, MutableBoundingBox sbb) {
 		if (this.doors != null) {
 			for (BlockPos doorCoords : doors) {
-				this.placeDoorwayAt(world, rand, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
+				this.placeDoorwayAt(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
 
 				//this.setBlockState(world, Blocks.WOOL, doorCoords.posX, doorCoords.posX, doorCoords.posY + 2, doorCoords.posZ, sbb);
 			}

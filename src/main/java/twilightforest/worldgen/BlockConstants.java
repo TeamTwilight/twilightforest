@@ -7,8 +7,6 @@ import twilightforest.block.TFBlocks;
 
 public final class BlockConstants {
     //Blockstates
-	public static final BlockState WATER = Blocks.WATER.getDefaultState();
-    public static final BlockState LAVA = Blocks.LAVA.getDefaultState();
     public static final BlockState SPRUCE_LOG = Blocks.SPRUCE_LOG.getDefaultState();
     public static final BlockState SPRUCE_LEAVES = Blocks.SPRUCE_LEAVES.getDefaultState();
     public static final BlockState JUNGLE_LOG = Blocks.JUNGLE_LOG.getDefaultState();

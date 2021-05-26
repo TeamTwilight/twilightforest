@@ -86,7 +86,6 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 					case 1:
 						return TFItems.steeleaf_sword.get();
 					case 2:
-						return TFItems.knightmetal_sword.get();
 					case 3:
 						return TFItems.knightmetal_sword.get();
 				}

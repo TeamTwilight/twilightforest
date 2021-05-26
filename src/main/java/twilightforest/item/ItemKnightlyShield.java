@@ -22,7 +22,6 @@ public class ItemKnightlyShield extends ShieldItem {
 
     @Override
     public ITextComponent getDisplayName(ItemStack stack) {
-        //return I18n.translateToLocal(this.getTranslationKey(stack) + ".name").trim();
 		return new TranslationTextComponent(this.getTranslationKey(stack));
     }
 

@@ -14,28 +14,22 @@ import javax.annotation.Nullable;
 
 public class BlockTFBossSpawner extends Block {
 
-	public static final EnumProperty<BossVariant> VARIANT = EnumProperty.create("boss", BossVariant.class);
+	private final BossVariant boss;
 
-	protected BlockTFBossSpawner(Block.Properties props) {
+	protected BlockTFBossSpawner(Block.Properties props, BossVariant variant) {
 		super(props);
-		this.setDefaultState(stateContainer.getBaseState().with(VARIANT, BossVariant.NAGA));
-	}
-
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(VARIANT);
+		boss = variant;
 	}
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {
-		return state.get(VARIANT).hasSpawner();
+		return boss.hasSpawner();
 	}
 
 	@Override
 	@Nullable
 	public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
-		return state.get(VARIANT).getSpawner();
+		return boss.getSpawner();
 	}
 
 	@Override

@@ -168,7 +168,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		}
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}

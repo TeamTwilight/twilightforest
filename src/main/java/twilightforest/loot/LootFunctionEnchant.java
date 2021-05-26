@@ -1,25 +1,19 @@
 package twilightforest.loot;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSyntaxException;
+import com.google.common.collect.Maps;
+import com.google.gson.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootFunction;
 import net.minecraft.loot.LootFunctionType;
 import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IRegistryDelegate;
 
@@ -53,32 +47,25 @@ public class LootFunctionEnchant extends LootFunction {
 		return stack;
 	}
 
-	// Not using stack.addEnchantment because it doesn't handle duplicates like enchanted book does
-	private void addEnchantment(ItemStack stack, Enchantment e, short level) {
-		if (stack.getTag() == null) {
-			stack.setTag(new CompoundNBT());
+	public static LootFunctionEnchant.Builder builder() {
+		return new LootFunctionEnchant.Builder();
+	}
+
+	public static class Builder extends LootFunction.Builder<LootFunctionEnchant.Builder> {
+		private final Map<IRegistryDelegate<Enchantment>, Short> enchants = Maps.newHashMap();
+
+		protected LootFunctionEnchant.Builder doCast() {
+			return this;
 		}
 
-		final String enchantedCompoundKey = stack.getItem() == Items.ENCHANTED_BOOK ? "StoredEnchantments" : "ench";
-
-		if (!stack.getTag().contains(enchantedCompoundKey, Constants.NBT.TAG_LIST)) {
-			stack.getTag().put(enchantedCompoundKey, new ListNBT());
+		public LootFunctionEnchant.Builder apply(Enchantment p_216077_1_, Integer p_216077_2_) {
+			this.enchants.put(p_216077_1_.delegate, p_216077_2_.shortValue());
+			return this;
 		}
 
-		ListNBT list = stack.getTag().getList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
-
-		for (int i = 0; i < list.size(); i++) {
-			CompoundNBT existing = list.getCompound(i);
-			if (e.getRegistryName().equals(existing.getString("id"))) {
-				existing.putShort("lvl", level);
-				return;
-			}
+		public ILootFunction build() {
+			return new LootFunctionEnchant(this.getConditions(), this.enchants);
 		}
-
-		CompoundNBT newCmp = new CompoundNBT();
-		newCmp.putString("id", e.getRegistryName().toString());
-		newCmp.putShort("lvl", level);
-		list.add(newCmp);
 	}
 
 	public static class Serializer extends LootFunction.Serializer<LootFunctionEnchant> {

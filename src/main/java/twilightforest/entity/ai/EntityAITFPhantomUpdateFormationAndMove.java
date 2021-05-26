@@ -61,11 +61,10 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 			case CHARGE_MINUSZ:
 				return getMoveAcrossPosition(false, false);
 			case WAITING_FOR_LEADER:
+			default:
 				return getLoiterPosition();
 			case ATTACK_PLAYER_ATTACK:
 				return getAttackPlayerPosition();
-			default:
-				return getLoiterPosition();
 		}
 	}
 
@@ -146,14 +145,12 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 	private void pickRandomFormation() {
 		switch (boss.getRNG().nextInt(8)) {
 			case 0:
+			case 7:
 				boss.switchToFormation(EntityTFKnightPhantom.Formation.SMALL_CLOCKWISE);
 				break;
 			case 1:
-				boss.switchToFormation(EntityTFKnightPhantom.Formation.SMALL_ANTICLOCKWISE);
-				//boss.switchToFormation(EntityTFKnightPhantom.Formation.LARGE_ANTICLOCKWISE);
-				break;
 			case 2:
-				boss.switchToFormation(EntityTFKnightPhantom.Formation.SMALL_ANTICLOCKWISE);
+				//boss.switchToFormation(EntityTFKnightPhantom.Formation.SMALL_ANTICLOCKWISE);
 				break;
 			case 3:
 				boss.switchToFormation(EntityTFKnightPhantom.Formation.CHARGE_PLUSX);
@@ -166,10 +163,6 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 				break;
 			case 6:
 				boss.switchToFormation(EntityTFKnightPhantom.Formation.CHARGE_MINUSZ);
-				break;
-			case 7:
-				boss.switchToFormation(EntityTFKnightPhantom.Formation.SMALL_CLOCKWISE);
-				//boss.switchToFormation(EntityTFKnightPhantom.Formation.LARGE_CLOCKWISE);
 				break;
 		}
 	}

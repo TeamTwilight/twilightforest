@@ -1,8 +1,10 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
@@ -12,18 +14,20 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.entity.TFEntities;
+import twilightforest.util.TFDamageSources;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAsItem {
 
-	private static final int DAMAGE = 8;
+	private static final int DAMAGE = 2;
 
 	public EntityTFIceSnowball(EntityType<? extends EntityTFIceSnowball> type, World world) {
 		super(type, world);
 	}
 
-	public EntityTFIceSnowball(EntityType<? extends EntityTFIceSnowball> type, World world, LivingEntity thrower) {
-		super(type, world, thrower);
+	public EntityTFIceSnowball(World world, LivingEntity thrower) {
+		super(TFEntities.ice_snowball, world, thrower);
 	}
 
 	@Override
@@ -68,9 +72,14 @@ public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAs
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (result instanceof EntityRayTraceResult) {
-			if (!world.isRemote && ((EntityRayTraceResult)result).getEntity() instanceof LivingEntity) {
-				((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), DAMAGE);
-				// TODO: damage armor?
+			Entity target = ((EntityRayTraceResult)result).getEntity();
+			if (!world.isRemote && target instanceof LivingEntity) {
+				target.attackEntityFrom(TFDamageSources.SNOWBALL_FIGHT(this, (LivingEntity) this.func_234616_v_()), DAMAGE);
+				//damage armor pieces
+				if(target instanceof PlayerEntity) {
+					for(ItemStack stack : target.getArmorInventoryList())
+					stack.damageItem(rand.nextInt(1), ((PlayerEntity)target), (user) -> user.sendBreakAnimation(stack.getEquipmentSlot()));
+				}
 			}
 		}
 

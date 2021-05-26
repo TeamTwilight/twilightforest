@@ -331,7 +331,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * Add the specified roof to this tower and set the roofType variable.
 	 */
 	protected void tryToFitRoof(List<StructurePiece> list, Random rand, ComponentTFTowerRoof roof) {
-		if (roof.fits(this, list, rand)) {
+		if (roof.fits(this, list)) {
 			list.add(roof);
 			roof.buildComponent(this, list, rand);
 			roofType = roof.getClass();
@@ -394,23 +394,16 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		}
 
 		// decorate?
-		decorateThisTower(worldIn, rand, sbb);
+		decorateThisTower(worldIn, sbb);
 
 		// windows
-		makeWindows(worldIn, rand, sbb, size < 4);
+		makeWindows(worldIn, sbb, size < 4);
 
 		// throw a bunch of opening markers in there
 //        makeOpeningMarkers(world, rand, 100, sbb);
 
 		// openings
 		makeOpenings(worldIn, sbb);
-
-//        // relight
-//     	for (int lx = -1; lx < 3; lx++) {
-//         	for (int lz = -1; lz < 3; lz++) {
-//         		world.updateLightByType(LightType.Sky, sbb.minX + (lx * 16), sbb.maxY, sbb.minZ + (lx * 16));
-//         	}
-//     	}
 
 		return true;
 	}
@@ -450,7 +443,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	/**
 	 * Add some appropriate decorations to this tower
 	 */
-	protected void decorateThisTower(ISeedReader world, Random rand, MutableBoundingBox sbb) {
+	protected void decorateThisTower(ISeedReader world, MutableBoundingBox sbb) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) * (this.boundingBox.minZ * 756839));
 
 		if (size > 3) {
@@ -537,15 +530,15 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 		// some of these go only on the bottom floor (ladderDownDir == null) and some go only on upper floors
 		if (rand.nextInt(7) == 0 && ladderDownDir == null) {
-			decorateWell(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
+			decorateWell(world, rand, bottom, sbb);
 		} else if (rand.nextInt(7) == 0 && ladderDownDir == null) {
 			decorateSkeletonRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		} else if (rand.nextInt(6) == 0 && ladderDownDir == null) {
-			decorateZombieRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
+			decorateZombieRoom(world, rand, bottom, ladderUpDir, ladderDownDir, sbb);
 		} else if (rand.nextInt(5) == 0 && ladderDownDir == null) {
 			decorateCactusRoom(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		} else if (rand.nextInt(4) == 0 && ladderDownDir != null) {
-			decorateTreasureChest(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
+			decorateTreasureChest(world, bottom, top, sbb);
 		} else if (rand.nextInt(5) == 0) {
 			decorateSpiderWebs(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		} else if (rand.nextInt(12) == 0 && ladderDownDir != null) {
@@ -555,20 +548,14 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			decorateFullLibrary(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 		} else {
 			decorateLibrary(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
-//			if (ladderDownDir == -1) {
-//				// trap it!
-//				decorateTrap(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
-//			}
 		}
 	}
 
 	/**
 	 * Decorate this floor with a scenic well.
 	 */
-	protected void decorateWell(ISeedReader world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
+	protected void decorateWell(ISeedReader world, Random rand, int bottom, MutableBoundingBox sbb) {
 		int cx = size / 2;
-		int cz = cx;
-		int cy = bottom;
 
 		BlockState waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA.getDefaultState() : Blocks.WATER.getDefaultState();
 
@@ -577,22 +564,22 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			final BlockState stoneBricks = Blocks.STONE_BRICKS.getDefaultState();
 			final BlockState stoneSlabs = StructureTFHelper.stoneSlab;
 
-			setBlockState(world, stoneBricks, cx - 1, cy + 0, cz - 1, sbb);
-			setBlockState(world, stoneSlabs, cx - 1, cy + 1, cz - 1, sbb);
-			setBlockState(world, stoneBricks, cx + 0, cy + 0, cz - 1, sbb);
-			setBlockState(world, stoneBricks, cx + 1, cy + 0, cz - 1, sbb);
-			setBlockState(world, stoneSlabs, cx + 1, cy + 1, cz - 1, sbb);
-			setBlockState(world, stoneBricks, cx - 1, cy + 0, cz + 0, sbb);
-			setBlockState(world, waterOrLava, cx + 0, cy + 0, cz + 0, sbb);
-			setBlockState(world, stoneBricks, cx + 1, cy + 0, cz + 0, sbb);
-			setBlockState(world, stoneBricks, cx - 1, cy + 0, cz + 1, sbb);
-			setBlockState(world, stoneSlabs, cx - 1, cy + 1, cz + 1, sbb);
-			setBlockState(world, stoneBricks, cx + 0, cy + 0, cz + 1, sbb);
-			setBlockState(world, stoneBricks, cx + 1, cy + 0, cz + 1, sbb);
-			setBlockState(world, stoneSlabs, cx + 1, cy + 1, cz + 1, sbb);
+			setBlockState(world, stoneBricks, cx - 1, bottom, cx - 1, sbb);
+			setBlockState(world, stoneSlabs, cx - 1, bottom + 1, cx - 1, sbb);
+			setBlockState(world, stoneBricks, cx, bottom, cx - 1, sbb);
+			setBlockState(world, stoneBricks, cx + 1, bottom, cx - 1, sbb);
+			setBlockState(world, stoneSlabs, cx + 1, bottom + 1, cx - 1, sbb);
+			setBlockState(world, stoneBricks, cx - 1, bottom, cx, sbb);
+			setBlockState(world, waterOrLava, cx, bottom, cx, sbb);
+			setBlockState(world, stoneBricks, cx + 1, bottom, cx, sbb);
+			setBlockState(world, stoneBricks, cx - 1, bottom, cx + 1, sbb);
+			setBlockState(world, stoneSlabs, cx - 1, bottom + 1, cx + 1, sbb);
+			setBlockState(world, stoneBricks, cx, bottom, cx + 1, sbb);
+			setBlockState(world, stoneBricks, cx + 1, bottom, cx + 1, sbb);
+			setBlockState(world, stoneSlabs, cx + 1, bottom + 1, cx + 1, sbb);
 		}
 
-		setBlockState(world, waterOrLava, cx + 0, cy - 1, cz + 0, sbb);
+		setBlockState(world, waterOrLava, cx, bottom - 1, cx, sbb);
 	}
 
 	/**
@@ -635,7 +622,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	/**
 	 * Add a zombie spawner on this floor and decorate it in an appropriately scary manner.
 	 */
-	protected void decorateZombieRoom(ISeedReader world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
+	protected void decorateZombieRoom(ISeedReader world, Random rand, int bottom, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		// zombie spawner
 		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.ZOMBIE);
 		final BlockState ironBars = Blocks.IRON_BARS.getDefaultState();
@@ -662,7 +649,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			if (!chainCollides(slab, slabList)) {
 				// if it doesn't collide, manufacture it and add it to the list
 
-				setBlockState(world, ironBars, slab.getX(), bottom + 0, slab.getZ(), sbb);
+				setBlockState(world, ironBars, slab.getX(), bottom, slab.getZ(), sbb);
 				setBlockState(world, StructureTFHelper.birchSlab, slab.getX(), bottom + 1, slab.getZ(), sbb);
 				setBlockState(world, soulSand, slab.getX(), bottom + 2, slab.getZ(), sbb);
 				slabList.add(slab);
@@ -706,35 +693,34 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	/**
 	 * Decorate this floor with an enticing treasure chest.
 	 */
-	protected void decorateTreasureChest(ISeedReader world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
+	protected void decorateTreasureChest(ISeedReader world, int bottom, int top, MutableBoundingBox sbb) {
 		int cx = size / 2;
-		int cz = cx;
 		final BlockState stoneBrick = Blocks.STONE_BRICKS.getDefaultState();
 
 		// bottom decoration
 		final BlockState stoneBrickStairs = Blocks.STONE_BRICK_STAIRS.getDefaultState();
 		final BlockState topStoneBrickStairs = stoneBrickStairs.with(StairsBlock.HALF, Half.TOP);
 
-		setBlockState(world, stoneBrick, cx, bottom, cz, sbb);
-		setBlockState(world, stoneBrick, cx, top-1, cz, sbb);
+		setBlockState(world, stoneBrick, cx, bottom, cx, sbb);
+		setBlockState(world, stoneBrick, cx, top-1, cx, sbb);
 		if(size < 6) {
-			surroundBlockCardinalRotated(world, stoneBrickStairs, cx, bottom, cz, sbb);
+			surroundBlockCardinalRotated(world, stoneBrickStairs, cx, bottom, cx, sbb);
 
-			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top-1, cz, sbb);
+			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top-1, cx, sbb);
 		} else {
-			surroundBlockCardinalRotated(world, stoneBrickStairs, cx, bottom, cz, sbb);
-			surroundBlockCorners(world, stoneBrick, cx, bottom, cz, sbb);
+			surroundBlockCardinalRotated(world, stoneBrickStairs, cx, bottom, cx, sbb);
+			surroundBlockCorners(world, stoneBrick, cx, bottom, cx, sbb);
 
 			// pillars
 			for (int cy = bottom + 1; cy < top - 1; cy++) {
-				surroundBlockCorners(world, stoneBrick, cx, cy, cz, sbb);
+				surroundBlockCorners(world, stoneBrick, cx, cy, cx, sbb);
 			}
 
-			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top-1, cz, sbb);
-			surroundBlockCorners(world, stoneBrick, cx, top-1, cz, sbb);
+			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top-1, cx, sbb);
+			surroundBlockCorners(world, stoneBrick, cx, top-1, cx, sbb);
 		}
 
-		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cz, TFTreasure.tower_room, sbb);
+		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cx, TFTreasure.tower_room, sbb);
 	}
 
 	/**
@@ -841,7 +827,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		}
 		// treasure?!?!
 		if (rand.nextInt(2) == 0 && this.size > 5) {
-			decorateLibraryTreasure(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
+			decorateLibraryTreasure(world, rand, top, ladderUpDir, ladderDownDir, sbb);
 		}
 
 		if (rand.nextInt(2) == 0 && this.size > 5) {
@@ -853,7 +839,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * Place a library treasure chest somewhere in the library
 	 */
 	@SuppressWarnings("fallthrough")
-	protected void decorateLibraryTreasure(ISeedReader world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
+	protected void decorateLibraryTreasure(ISeedReader world, Random rand, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		// FIXME: case 3 gets slightly higher chance than others
 		switch (rand.nextInt(4)) {
 			case 0:
@@ -901,7 +887,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		}
 		// treasure?!?!
 		if (rand.nextInt(2) == 0 && this.size > 5) {
-			decorateLibraryTreasure(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
+			decorateLibraryTreasure(world, rand, top, ladderUpDir, ladderDownDir, sbb);
 		}
 	}
 
@@ -910,7 +896,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * <p>
 	 * This is not called at the moment, since I added monsters and the monsters set off the trap.  Perhaps I need a better way of activating it.
 	 */
-	protected void decorateTrap(ISeedReader world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, MutableBoundingBox sbb) {
+	protected void decorateTrap(ISeedReader world, int bottom, int top, MutableBoundingBox sbb) {
 		for (int dx = 2; dx <= size - 3; dx++) {
 			for (int dz = 2; dz <= size - 3; dz++) {
 				if (dx == 2 || dx == size - 3 || dz == 2 || dz == size - 3) {
@@ -1313,10 +1299,10 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 				for (int y = top; y <= bottom; y++) {
 					setBlockState(world, mossyCobbleStone, moss.getX(), decoTop - y, moss.getZ(), sbb);
 					// surround it with vines
-					setBlockState(world, vineEast, moss.getX() + 1, decoTop - y, moss.getZ() + 0, sbb);
-					setBlockState(world, vineWest, moss.getX() - 1, decoTop - y, moss.getZ() + 0, sbb);
-					setBlockState(world, vineSouth, moss.getX() + 0, decoTop - y, moss.getZ() + 1, sbb);
-					setBlockState(world, vineNorth, moss.getX() + 0, decoTop - y, moss.getZ() - 1, sbb);
+					setBlockState(world, vineEast, moss.getX() + 1, decoTop - y, moss.getZ(), sbb);
+					setBlockState(world, vineWest, moss.getX() - 1, decoTop - y, moss.getZ(), sbb);
+					setBlockState(world, vineSouth, moss.getX(), decoTop - y, moss.getZ() + 1, sbb);
+					setBlockState(world, vineNorth, moss.getX(), decoTop - y, moss.getZ() - 1, sbb);
 				}
 				mossList.add(moss);
 			}
@@ -1395,22 +1381,22 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 		if (size > 7) {
 			// actual well structure
-			setBlockState(world, stoneBrick, cx - 1, cy + 0, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx - 1, cy, cz - 1, sbb);
 			setBlockState(world, stoneSlab, cx - 1, cy + 1, cz - 1, sbb);
-			setBlockState(world, stoneBrick, cx + 0, cy + 0, cz - 1, sbb);
-			setBlockState(world, stoneBrick, cx + 1, cy + 0, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx, cy, cz - 1, sbb);
+			setBlockState(world, stoneBrick, cx + 1, cy, cz - 1, sbb);
 			setBlockState(world, stoneSlab, cx + 1, cy + 1, cz - 1, sbb);
-			setBlockState(world, stoneBrick, cx - 1, cy + 0, cz + 0, sbb);
-			setBlockState(world, waterOrLava, cx + 0, cy + 0, cz + 0, sbb);
-			setBlockState(world, stoneBrick, cx + 1, cy + 0, cz + 0, sbb);
-			setBlockState(world, stoneBrick, cx - 1, cy + 0, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx - 1, cy, cz, sbb);
+			setBlockState(world, waterOrLava, cx, cy, cz, sbb);
+			setBlockState(world, stoneBrick, cx + 1, cy, cz, sbb);
+			setBlockState(world, stoneBrick, cx - 1, cy, cz + 1, sbb);
 			setBlockState(world, stoneSlab, cx - 1, cy + 1, cz + 1, sbb);
-			setBlockState(world, stoneBrick, cx + 0, cy + 0, cz + 1, sbb);
-			setBlockState(world, stoneBrick, cx + 1, cy + 0, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx, cy, cz + 1, sbb);
+			setBlockState(world, stoneBrick, cx + 1, cy, cz + 1, sbb);
 			setBlockState(world, stoneSlab, cx + 1, cy + 1, cz + 1, sbb);
 		}
 
-		setBlockState(world, waterOrLava, cx + 0, cy - 1, cz + 0, sbb);
+		setBlockState(world, waterOrLava, cx, cy - 1, cz, sbb);
 	}
 
 	/**
@@ -1418,27 +1404,6 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 */
 	public boolean isDeadEnd() {
 		return openings.size() == 1;
-	}
-
-	/**
-	 * Returns true if this tower has four exits.
-	 * TODO: Unused. Remove?
-	 */
-	public boolean hasExitsOnAllWalls() {
-		int exits = 0;
-		for (int i = 0; i < 4; i++) {
-			exits += this.openingTowards[i] ? 1 : 0;
-		}
-
-		return exits == 4;
-	}
-
-	/**
-	 * Returns true if this tower has stairs
-	 * TODO: Unused. Remove?
-	 */
-	public boolean hasStairs() {
-		return highestOpening > 1;
 	}
 
 	/**
@@ -1454,65 +1419,13 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
 	protected void makeDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
-		// try to add blocks outside this door
-//		if (dx == 0) {
-//			setBlockState(world, Blocks.STONE.getDefaultState(), dx - 1, dy + 0, dz, sbb);
-//	        setBlockState(world, Blocks.STONE.getDefaultState(), dx - 1, dy + 1, dz, sbb);
-//		}
-//		if (dx == size - 1) {
-//			setBlockState(world, Blocks.STONE.getDefaultState(), dx + 1, dy + 0, dz, sbb);
-//	        setBlockState(world, Blocks.STONE.getDefaultState(), dx + 1, dy + 1, dz, sbb);
-//		}
-//		if (dz == 0) {
-//			setBlockState(world, Blocks.STONE.getDefaultState(), dx, dy + 0, dz - 1, sbb);
-//	        setBlockState(world, Blocks.STONE.getDefaultState(), dx, dy + 1, dz - 1, sbb);
-//		}
-//		if (dz == size - 1) {
-//			setBlockState(world, Blocks.STONE.getDefaultState(), dx, dy + 0, dz + 1, sbb);
-//	        setBlockState(world, Blocks.STONE.getDefaultState(), dx, dy + 1, dz + 1, sbb);
-//		}
-//		
-
-		setBlockState(world, AIR, dx, dy + 0, dz, sbb);
+		setBlockState(world, AIR, dx, dy, dz, sbb);
 		setBlockState(world, AIR, dx, dy + 1, dz, sbb);
-//        updateLight(world, dx, dy + 0, dz);
-//        updateLight(world, dx, dy + 1, dz);
 
 		if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb).getBlock() != Blocks.AIR) {
 			BlockState state = StructureTFHelper.stoneSlabDouble;
 			setBlockState(world, state, dx, dy + 2, dz, sbb);
 		}
-
-		// clear the door
-		if (dx == 0) {
-//			setBlockState(world, AIR, dx - 1, dy + 0, dz, sbb);
-//	        setBlockState(world, AIR, dx - 1, dy + 1, dz, sbb);
-			updateLight(world, dx - 1, dy + 0, dz);
-			updateLight(world, dx - 1, dy + 1, dz);
-		}
-		if (dx == size - 1) {
-//			setBlockState(world, AIR, dx + 1, dy + 0, dz, sbb);
-//	        setBlockState(world, AIR, dx + 1, dy + 1, dz, sbb);
-			updateLight(world, dx + 1, dy + 0, dz);
-			updateLight(world, dx + 1, dy + 1, dz);
-		}
-		if (dz == 0) {
-//			setBlockState(world, AIR, dx, dy + 0, dz - 1, sbb);
-//	        setBlockState(world, AIR, dx, dy + 1, dz - 1, sbb);
-			updateLight(world, dx, dy + 0, dz - 1);
-			updateLight(world, dx, dy + 1, dz - 1);
-		}
-		if (dz == size - 1) {
-//			setBlockState(world, AIR, dx, dy + 0, dz + 1, sbb);
-//	        setBlockState(world, AIR, dx, dy + 1, dz + 1, sbb);
-			updateLight(world, dx, dy + 0, dz + 1);
-			updateLight(world, dx, dy + 1, dz + 1);
-		}
-	}
-
-	//TODO: Since light updates don't work like this, should we remove this?
-	protected void updateLight(ISeedReader world, int dx, int dy, int dz) {
-		//world.updateAllLightTypes(getXWithOffset(dx, dz), getYWithOffset(dy), getZWithOffset(dx, dz));
 	}
 
 	/**
@@ -1627,10 +1540,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * The function currently looks "outside" to see if the window will be blocked, but it can't see into the future, so a tower built after this one may block it.
 	 * <p>
 	 * Maybe this could eventually have access to the list of bounding boxes for better accuracy?
-	 *
-	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void makeWindows(ISeedReader world, Random rand, MutableBoundingBox sbb, boolean real) {
+	protected void makeWindows(ISeedReader world, MutableBoundingBox sbb, boolean real) {
 
 		//for (int i = 0; i < 4; i++) {
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
@@ -1711,7 +1622,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 //		int numFlights = ((this.height - 3) / rise) - 1;
 		int numFlights = (highestOpening / rise);
 		for (int i = 0; i < numFlights; i++) {
-			makeStairs5flight(world, rand, sbb, i * rise, getRotation(Rotation.NONE, i * 3), true);
+			makeStairs5flight(world, sbb, i * rise, getRotation(Rotation.NONE, i * 3), true);
 		}
 
 		return true;
@@ -1719,9 +1630,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 	/**
 	 * Function called by makeStairs5 to place stair blocks
-	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void makeStairs5flight(ISeedReader world, Random rand, MutableBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
+	protected void makeStairs5flight(ISeedReader world, MutableBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
 		Direction temp = this.getCoordBaseMode();
 
 		this.setCoordBaseMode(rotation.rotate(temp));
@@ -1754,8 +1664,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		int rise = 2;
 		int numFlights = (highestOpening / rise);
 		for (int i = 0; i < numFlights; i++) {
-			makeStairs7flight(world, rand, sbb, 1 + i * rise, getRotation(Rotation.NONE, i * 3), true);
-			makeStairs7flight(world, rand, sbb, 1 + i * rise, getRotation(Rotation.CLOCKWISE_180, i * 3), false);
+			makeStairs7flight(world, sbb, 1 + i * rise, getRotation(Rotation.NONE, i * 3), true);
+			makeStairs7flight(world, sbb, 1 + i * rise, getRotation(Rotation.CLOCKWISE_180, i * 3), false);
 		}
 
 		return true;
@@ -1763,9 +1673,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 	/**
 	 * Function called by makeStairs7 to place stair blocks
-	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void makeStairs7flight(ISeedReader world, Random rand, MutableBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
+	protected void makeStairs7flight(ISeedReader world, MutableBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
 		final Direction temp = this.getCoordBaseMode();
 
 		this.setCoordBaseMode(rotation.rotate(temp));
@@ -1800,8 +1709,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		int rise = 3;
 		int numFlights = (highestOpening / rise);
 		for (int i = 0; i < numFlights; i++) {
-			makeStairs9flight(world, rand, sbb, 1 + i * rise, getRotation(Rotation.NONE, i * 3), true);
-			makeStairs9flight(world, rand, sbb, 1 + i * rise, getRotation(Rotation.CLOCKWISE_180, i * 3), false);
+			makeStairs9flight(world, sbb, 1 + i * rise, getRotation(Rotation.NONE, i * 3), true);
+			makeStairs9flight(world, sbb, 1 + i * rise, getRotation(Rotation.CLOCKWISE_180, i * 3), false);
 		}
 
 		return true;
@@ -1809,9 +1718,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 	/**
 	 * Function called by makeStairs7 to place stair blocks
-	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void makeStairs9flight(ISeedReader world, Random rand, MutableBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
+	protected void makeStairs9flight(ISeedReader world, MutableBoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
 		//TODO: Can we just... not do this?
 		Direction temp = this.getCoordBaseMode();
 		this.setCoordBaseMode(rotation.rotate(temp));
@@ -1993,7 +1901,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			painting.setPosition(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
 
 			// check if we can fit a painting there
-			if (checkPainting(world, painting, sbb)) {
+			if (checkPainting(world, painting)) {
 				// place the painting
 				world.addEntity(painting);
 			}
@@ -2022,7 +1930,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	/**
 	 * This is similar to PaintingEntity.isOnValidSurface, except that it does not check for a solid wall behind the painting.
 	 */
-	protected boolean checkPainting(ISeedReader world, PaintingEntity painting, MutableBoundingBox sbb) {
+	protected boolean checkPainting(ISeedReader world, PaintingEntity painting) {
 
 		if (painting == null) {
 			return false;
