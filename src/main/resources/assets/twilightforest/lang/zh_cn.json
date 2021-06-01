@@ -1,10 +1,10 @@
 {
   "itemGroup.twilightforest": "暮色森林",
 
-  "_comment": "进度",
+  // 进度
   "advancement.twilightforest.root.desc": "前往那神秘的魔法林地：暮色森林。",
 
-  "_comment": "普通进度",
+  // 普通进度
   "advancement.twilightforest.hedge": "碾碎爬虫",
   "advancement.twilightforest.hedge.desc": "在%s中击杀一只蜘蛛。",
 
@@ -18,7 +18,7 @@
   "advancement.twilightforest.quest_ram": "完美的羊",
   "advancement.twilightforest.quest_ram.desc": "把谜题羊所缺少的部分交给它。",
 
-  "_comment": "地图",
+  // 地图
   "advancement.twilightforest.magic_map_focus": "用火书写",
   "advancement.twilightforest.magic_map_focus.desc": "用%2$s、%3$s和%4$s合成%1$s。",
   "advancement.twilightforest.magic_map": "我有千里眼",
@@ -28,7 +28,7 @@
   "advancement.twilightforest.ore_map": "这玩意值这么多？",
   "advancement.twilightforest.ore_map.desc": "合成%s。",
 
-  "_comment": "主线初始进度",
+  // 主线初始进度
   "advancement.twilightforest.twilight_hunter": "森林之静",
   "advancement.twilightforest.twilight_hunter.desc": "猎杀一些暮色森林的野生动物。",
 
@@ -42,7 +42,7 @@
   "advancement.twilightforest.lich_scepters": "众杖合力！",
   "advancement.twilightforest.lich_scepters.desc": "取得所有四种力量的权杖。",
 
-  "_comment": "沼泽进度",
+  // 沼泽进度
   "advancement.twilightforest.progress_labyrinth": "强力的牛头人沙拉酱肉",
   "advancement.twilightforest.progress_labyrinth.desc": "在吃下温暖人心的蘑菇炖肉后，你认为你已经做好了前往火焰沼泽的准备。",
   "advancement.twilightforest.kill_hydra": "九头蛇猎人",
@@ -52,7 +52,7 @@
   "advancement.twilightforest.hydra_chop": "快看！九头蛇的肉！",
   "advancement.twilightforest.hydra_chop.desc": "在你的胃空空如也的时候从暴走的%s上砍下来几块肉。",
 
-  "_comment": "黑暗森林进度",
+  // 黑暗森林进度
   "advancement.twilightforest.progress_trophy_pedestal": "受奖冠军",
   "advancement.twilightforest.progress_trophy_pedestal.desc": "将奖杯放置于黑暗森林遗迹中的奖杯基座上，并获得你的头衔。",
   "advancement.twilightforest.progress_knights": "号令砷铅铁机关",
@@ -67,7 +67,7 @@
   "advancement.twilightforest.experiment_115_2": "做个记录：大胜利！",
   "advancement.twilightforest.experiment_115_2.desc": "它是如此的松软美味！",
 
-  "_comment": "Snow Forest Progression",
+  // 积雪森林进度
   "advancement.twilightforest.progress_yeti": "首领的毛皮",
   "advancement.twilightforest.progress_yeti.desc": "披上%s松软的毛皮，以此抵抗冰川里那刺骨的寒风。",
   "advancement.twilightforest.progress_glacier": "澄澈之空",
@@ -75,16 +75,22 @@
   "advancement.twilightforest.arctic_dyed": "追赶潮流",
   "advancement.twilightforest.arctic_dyed.desc": "给全套极地装备染色。",
 
-  "_comment": "Mid-way Misc. Stuff",
+  // 中途支线和杂项
   "advancement.twilightforest.glass_sword": "会心一击",
   "advancement.twilightforest.glass_sword.desc": "但愿你善用此物。",
 
   "advancement.twilightforest.fiery_set": "血泪成河",
-  "advancement.twilightforest.fiery_set.desc": "身着至少一件炽铁装备时，手持炽铁工具或武器。",
+  "advancement.twilightforest.fiery_set.desc": "物品栏中有至少一件炽铁盔甲时，手持炽铁工具或武器。",
 
-  "_comment": "高原",
+  // 高原
   "advancement.twilightforest.progress_merge": "最终对决",
   "advancement.twilightforest.progress_merge.desc": "击杀%s、%s和%s，以驱散高原上空的酸雨，给自己踏足高原的勇气。",
+  "advancement.twilightforest.troll": "和巨魔玩耍",
+  "advancement.twilightforest.troll.desc": "找到并击杀一只%s。",
+  "advancement.twilightforest.beanstalk": "杰克与豆茎",
+  "advancement.twilightforest.beanstalk.desc": "在巨魔洞穴中获取一些%s，将其种在云下发光的土壤上。",
+  "advancement.twilightforest.giants": "飘然云上",
+  "advancement.twilightforest.giants.desc": "击杀云中的一个%s，取得一把%s，然后返回巨魔洞穴。",
   "advancement.twilightforest.progress_troll": "让烈焰燃烧得更猛烈些吧！",
   "advancement.twilightforest.progress_troll.desc": "在巨魔洞穴中找到%s，用它来焚烧掉荆棘之墙。",
   "advancement.twilightforest.progress_thorns": "穿越荆棘【未实现】",
@@ -92,7 +98,7 @@
   "advancement.twilightforest.progress_castle": "这就是，城堡吗……【未实现】",
   "advancement.twilightforest.progress_castle.desc": "这城堡里究竟有什么？！",
 
-  "_comment": "收集",
+  // 收集
   "advancement.twilightforest.twilight_dining": "永恒黄昏之宴",
   "advancement.twilightforest.twilight_dining.desc": "品尝所有只能在暮色森林找到的食物。",
   "advancement.twilightforest.experiment_115_3": "每天都吃 115，坚持 115 年，直到永远",
@@ -106,7 +112,7 @@
   "twilightforest.ore_meter.exposed": "暴露数量： %d",
   "twilightforest.scepter_charges": "剩余使用次数： %d",
 
-  "_comment": "命令",
+  // 命令
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "你现在不在暮色森林维度中",
   "commands.tffeature.nearest": "距离当前位置最近的地标：%s",
@@ -118,7 +124,8 @@
   "commands.tffeature.structure.conquer.status": "当前结构征服标记：%s",
   "commands.tffeature.structure.conquer.update": "当前结构征服标记现已从 %s 更改为 %s",
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
-	
+  "commands.tfreload.reload": "正在重新加载暮色森林着色器！",
+
   // 生物群系
   "biome.twilightforest.forest": "暮色森林",
   "biome.twilightforest.dense_forest": "繁密森林",
@@ -151,7 +158,7 @@
   // 状态效果
   "effect.twilightforest.frosted": "霜冻",
 	
-  "_comment": "方块",
+  // 方块
   "block.twilightforest.twilight_oak_wood": "暮色橡木木头",
   "block.twilightforest.canopy_wood": "苍穹木木头",
   "block.twilightforest.mangrove_wood": "红木木头",
@@ -179,12 +186,20 @@
   "block.twilightforest.maze_stone_ceiling": "迷宫石顶",
   "block.twilightforest.spiral_bricks": "螺旋石砖",
   "block.twilightforest.hedge": "树篱",
-  "block.twilightforest.boss_spawner": "Boss刷怪笼",
+  "block.twilightforest.boss_spawner_naga": "娜迦 Boss刷怪笼",
+  "block.twilightforest.boss_spawner_lich": "巫妖 Boss刷怪笼",
+  "block.twilightforest.boss_spawner_minoshroom": "米诺菇 Boss刷怪笼",
+  "block.twilightforest.boss_spawner_hydra": "九头蛇 Boss刷怪笼",
+  "block.twilightforest.boss_spawner_knight_phantom": "幻影骑士 Boss刷怪笼",
+  "block.twilightforest.boss_spawner_ur_ghast": "暮初恶魂 Boss刷怪笼",
+  "block.twilightforest.boss_spawner_alpha_yeti": "雪怪首领 Boss刷怪笼",
+  "block.twilightforest.boss_spawner_snow_queen": "冰雪女王 Boss刷怪笼",
+  "block.twilightforest.boss_spawner_final_boss": "最终Boss Boss刷怪笼",
   "block.twilightforest.firefly_jar": "萤火虫罐子",
   "block.twilightforest.cicada_jar": "蝉罐子",
-  "block.twilightforest.moss_patch": "苔藓块",
+  "block.twilightforest.moss_patch": "苔藓块【开发中】",
   "block.twilightforest.mayapple": "鬼臼果",
-  "block.twilightforest.clover_patch": "三叶草【开发中】",
+  "block.twilightforest.clover_patch": "三叶草【未实现】",
   "block.twilightforest.fiddlehead": "暮色蕨",
   "block.twilightforest.mushgloom": "荧光蘑菇",
   "block.twilightforest.torchberry_plant": "火炬浆果植物",
@@ -247,7 +262,7 @@
   "block.twilightforest.underbrick": "地下砖",
   "block.twilightforest.underbrick_mossy": "生苔地下砖",
   "block.twilightforest.underbrick_cracked": "裂纹地下砖",
-  "block.twilightforest.underbrick_floor": "抛光地下砖",
+  "block.twilightforest.underbrick_floor": "抛光地下砖【未实现】",
   "block.twilightforest.brown_thorns": "荆棘",
   "block.twilightforest.green_thorns": "翠绿荆棘",
   "block.twilightforest.burnt_thorns": "烧焦荆棘",
@@ -258,7 +273,7 @@
   "block.twilightforest.deadrock_cracked": "裂纹死岩",
   "block.twilightforest.deadrock": "死岩",
   "block.twilightforest.dark_leaves": "黑树树叶",
-  "block.twilightforest.auroralized_glass": "极光玻璃",
+  "block.twilightforest.auroralized_glass": "极光玻璃【未实现】",
   "block.twilightforest.aurora_pillar": "极光柱",
   "block.twilightforest.aurora_slab": "极光台阶",
   "block.twilightforest.trollsteinn": "巨魔岩石",
@@ -275,7 +290,7 @@
   "block.twilightforest.trollvidr": "巨魔藤蔓",
   "block.twilightforest.unripe_trollber": "未熟的巨魔莓",
   "block.twilightforest.trollber": "巨魔莓",
-  "block.twilightforest.slider": "滑动陷阱",
+  "block.twilightforest.slider": "滑动陷阱【未实现】",
   "block.twilightforest.knightmetal_block": "骑士金属块",
   "block.twilightforest.huge_lilypad": "巨型睡莲",
   "block.twilightforest.huge_waterlily": "巨型荷花",
@@ -319,7 +334,8 @@
   "block.twilightforest.twilight_portal_miniature_structure": "微雕：暮色传送门【未实现】",
   "block.twilightforest.naga_courtyard_miniature_structure": "微雕：娜迦庭院【未实现】",
   "block.twilightforest.lich_tower_miniature_structure": "微雕：巫妖塔【未实现】",
-  "block.twilightforest.stone_twist": "螺纹石",
+  "block.twilightforest.stone_twist": "螺纹石【未实现】",
+  "block.twilightforest.stone_twist_thin": "石柱【未实现】",
   "block.twilightforest.lapis_block": "青金石块【未实现】",
   "block.twilightforest.etched_nagastone": "蚀刻娜迦石",
   "block.twilightforest.nagastone_pillar": "娜迦石柱",
@@ -344,8 +360,13 @@
   "block.twilightforest.lich_trophy": "巫妖奖杯",
   "block.twilightforest.ur_ghast_trophy": "暮初恶魂奖杯",
   "block.twilightforest.snow_queen_trophy": "冰雪女王奖杯",
+  "block.twilightforest.yeti_trophy": "雪怪首领奖杯",
   "block.twilightforest.quest_ram_trophy": "谜题羊奖杯",
-  "block.twilightforest.keepsake_casket": "藏物匣",
+
+  "block.twilightforest.keepsake_casket": "遗物匣【开发中】",
+  "block.twilightforest.casket.broken": "你的遗物匣破损不堪，无法存放更多物品。所有本应存入匣中的物品全部掉落在地。",
+  "block.twilightforest.casket.locked": "这个匣子只能由%s打开！",
+
   "block.twilightforest.potted_twilight_oak_sapling": "暮色橡树树苗盆栽",
   "block.twilightforest.potted_canopy_sapling": "苍穹树树苗盆栽",
   "block.twilightforest.potted_mangrove_sapling": "红树树苗盆栽",
@@ -463,7 +484,7 @@
   "block.arctic.tooltip": "摔落伤害减少90%",
   "block.knightmetal.tooltip": "就像是加强版的仙人掌",
 
-  "_comment": "结构",
+  // 结构
   "structure.twilight_portal": "暮色森林传送门",
   "structure.hedge_maze": "树篱迷宫",
   "structure.hollow_hill": "空心矿山",
@@ -480,7 +501,7 @@
   "structure.troll_cave_and_cloud_castle": "巨魔洞穴与云上小屋",
   "structure.final_castle": "终焉城堡",
 
-  "_comment": "物品",
+  // 物品
   "item.twilightforest.boarkchop": "野猪排",
   "item.twilightforest.naga_scale": "娜迦鳞片",
   "item.twilightforest.naga_chestplate": "娜迦胸甲",
@@ -591,8 +612,8 @@
   "item.twilightforest.glass_sword": "玻璃剑",
   "item.twilightforest.knightmetal_ring": "骑士金属环",
   "item.twilightforest.block_and_chain": "链锤",
-  "item.twilightforest.cube_talisman": "立方护符",
-  "item.twilightforest.cube_of_annihilation": "湮灭立方",
+  "item.twilightforest.cube_talisman": "立方护符【未实现】",
+  "item.twilightforest.cube_of_annihilation": "湮灭立方【开发中】",
   "item.twilightforest.moon_dial": "月相罗盘",
 
   "item.twilightforest.wild_boar_spawn_egg": "野猪刷怪蛋",
@@ -619,7 +640,7 @@
   "item.twilightforest.minotaur_spawn_egg": "米诺陶刷怪蛋",
   "item.twilightforest.minoshroom_spawn_egg": "米诺菇刷怪蛋",
   "item.twilightforest.fire_beetle_spawn_egg": "喷火甲虫刷怪蛋",
-  "item.twilightforest.slime_beetle_spawn_egg": "粘液甲虫刷怪蛋",
+  "item.twilightforest.slime_beetle_spawn_egg": "黏液甲虫刷怪蛋",
   "item.twilightforest.pinch_beetle_spawn_egg": "巨钳甲虫刷怪蛋",
   "item.twilightforest.maze_slime_spawn_egg": "迷宫史莱姆刷怪蛋",
   "item.twilightforest.redcap_sapper_spawn_egg": "红帽工兵刷怪蛋",
@@ -650,7 +671,7 @@
   "item.twilightforest.adherent_spawn_egg": "信徒刷怪蛋【未实现】",
   "item.twilightforest.roving_cube_spawn_egg": "悬浮立方刷怪蛋【未实现】",
 
-  "item.twilightforest.guide": "旅行者日记",
+  "item.twilightforest.guide": "旅行者日记【开发中】",
 
   "item.twilightforest.minotaur_axe.tooltip": "冲刺时造成额外伤害",
   "item.twilightforest.minotaur_axe_gold.tooltip": "冲刺时造成额外伤害",
@@ -673,7 +694,7 @@
 
   "item.twilightforest.arctic_armor.tooltip": "能像皮革盔甲一样染色",
 
-  "_comment": "实体",
+  // 实体
   "entity.twilightforest.wild_boar": "野猪",
   "entity.twilightforest.bighorn_sheep": "大角羊",
   "entity.twilightforest.deer": "野鹿",
@@ -703,7 +724,7 @@
   "entity.twilightforest.minotaur": "米诺陶",
   "entity.twilightforest.minoshroom": "米诺菇",
   "entity.twilightforest.fire_beetle": "喷火甲虫",
-  "entity.twilightforest.slime_beetle": "粘液甲虫",
+  "entity.twilightforest.slime_beetle": "黏液甲虫",
   "entity.twilightforest.pinch_beetle": "巨钳甲虫",
   "entity.twilightforest.maze_slime": "迷宫史莱姆",
   "entity.twilightforest.redcap_sapper": "红帽工兵",
@@ -738,6 +759,26 @@
   "entity.twilightforest.castle_guardian": "城堡守卫【未实现】",
   "entity.twilightforest.roving_cube": "悬浮立方【未实现】",
 	
+  "entity.twilightforest.ice_snowball": "冰霜雪球",
+  "entity.twilightforest.ice_arrow": "寒冰箭",
+  "entity.twilightforest.seeker_arrow": "追踪箭",
+  "entity.twilightforest.cicada_shot": "蝉",
+  "entity.twilightforest.moonworm_shot": "月光蠕虫",
+  "entity.twilightforest.nature_bolt": "自然法束",
+  "entity.twilightforest.slime_blob": "黏液滴",
+  "entity.twilightforest.tome_bolt": "死灵书法束",
+  "entity.twilightforest.wand_bolt": "暮色权杖法束",
+  "entity.twilightforest.lich_bolt": "巫妖法束",
+  "entity.twilightforest.lich_bomb": "爆炸巫妖法束",
+  "entity.twilightforest.hydra_mortar": "九头蛇爆弹",
+  "entity.twilightforest.falling_ice": "陨冰",
+  "entity.twilightforest.chain_block": "链锤",
+  "entity.twilightforest.thrown_wep": "投掷武器",
+  "entity.twilightforest.charm_effect": "符咒视效",
+  "entity.twilightforest.cube_of_annihilation": "湮灭立方",
+  "entity.twilightforest.slider": "滑动陷阱",
+  "entity.twilightforest.protection_box": "进度保护箱",
+
   // 字幕
   "subtitles.entity.alphayeti.alert": "雪怪首领：瞄准玩家",
   "subtitles.entity.alphayeti.death": "雪怪首领：死亡",
@@ -864,9 +905,9 @@
   "subtitles.entity.redcap.hurt": "红帽：痛苦地尖叫",
   "subtitles.entity.shield.add": "护盾生成",
   "subtitles.entity.shield.break": "护盾破碎",
-  "subtitles.entity.slimebeetle.death": "粘液甲虫：死亡",
-  "subtitles.entity.slimebeetle.hurt": "粘液甲虫：受伤",
-  "subtitles.entity.slimebeetle.squish": "粘液甲虫：吧唧",
+  "subtitles.entity.slimebeetle.death": "黏液甲虫：死亡",
+  "subtitles.entity.slimebeetle.hurt": "黏液甲虫：受伤",
+  "subtitles.entity.slimebeetle.squish": "黏液甲虫：吧唧",
   "subtitles.entity.snowqueen.ambient": "冰雪女王：噼啪作响",
   "subtitles.entity.snowqueen.attack": "冰雪女王：攻击",
   "subtitles.entity.snowqueen.break": "冰雪女王护盾：反弹",
@@ -935,6 +976,10 @@
   "subtitles.block.core.transformation": "变化树：嗡嗡作响",
   "subtitles.block.portal.woosh": "暮色森林传送门：呼唤",
   "subtitles.block.pedestal.activate": "奖杯基座：接收奖杯",
+  "subtitles.block.casket.open": "遗物匣：开启",
+  "subtitles.block.casket.close": "遗物匣：关闭",
+  "subtitles.block.casket.repair": "玩家：修复遗物匣",
+  "subtitles.block.casket.locked": "遗物匣：咔哒",
 
   "subtitles.item.blockchain.collide": "链锤：击中方块",
   "subtitles.item.blockchain.hit": "链锤：击中实体",
@@ -997,6 +1042,8 @@
   "death.attack.axing": "%1$s被%2$s剁碎了",
   "death.attack.axing.item": "%1$s被%2$s用%3$s剁碎了",
   "death.attack.ant": "多亏%2$s让%1$s过上了蚂蚁的生活",
+  "death.attack.cicada": "%1$s被蝉击中致死",
+  "death.attack.moonworm": "%1$s被月光蠕虫击中致死",
   "death.attack.ant.item": "多亏%2$s用%3$s让%1$s过上了蚂蚁的生活",
   "death.attack.haunt": "%1$s加入了%2$s的游魂队伍",
   "death.attack.haunt.item": "%1$s在被%3$s杀死后加入了%2$s的游魂队伍",
@@ -1014,6 +1061,8 @@
   "death.attack.lostWords.item": "%1$s被%2$s用%3$s杀死后失语了",
   "death.attack.snowballFight": "%1$s在雪仗中被%2$s击败了",
   "death.attack.snowballFight.item": "%1$s在雪仗中被%2$s用%3$s击败了",
+  "death.attack.yeeted": "%1$s人生中最后一次被%2$s抛起",
+  "death.attack.yeeted.item": "%1$s在手持%3$s时人生中最后一次被%2$s抛起",
 
   // 杂项
   "twilightforest.misc.wip0": "这个方块仍在制作当中，可能会有能导致存档损坏的 Bug 或不可预料的特性。",
@@ -1023,7 +1072,7 @@
   "twilightforest.loading.title.enter": "正在前往暮色森林……",
   "twilightforest.loading.title.leave": "正在离开暮色森林……",
 
-  "_comment": "配置",
+  // 配置
   "twilightforest.config.dimension": "维度设定",
   "twilightforest.config.dimension.tooltip": "这些设定只有在重启后才会生效。",
   "twilightforest.config.dimension_id": "维度 ID",
@@ -1144,8 +1193,10 @@
   "twilightforest.config.loading_icon_tilting.tooltip": "地图加载过程中，图标晃动的幅度。",
   "twilightforest.config.loading_icon_tilt_pushback": "图标倾斜度偏移",
   "twilightforest.config.loading_icon_tilt_pushback.tooltip": "重新令图标居中所使用的后移量。",
+  "twilightforest.config.casket_uuid_locking": "遗物匣 UUID 锁定",
+  "twilightforest.config.casket_uuid_locking.tooltip": "若为 true，则其他玩家无权开启某玩家死亡后生成的遗物匣。如果你不想让人从其他人死亡后的匣子中拿取物品，即可使用该配置。注意：服务器管理员仍可以开启上锁的匣子。",
 
-  "_comment": "书",
+  // 引导书
   "twilightforest.book.lichtower.1": "§8[[被野兽啃坏的探险家笔记]]§0\n\n我开始了对这塔周围奇怪气场的测试。塔身的每一块砖都受一种强力魔咒的保护，这么强大的力量我还是头一次见到。这魔咒甚至还能覆盖塔周围的区域。",
   "twilightforest.book.lichtower.2": "换做是在我的故乡，我有很多对付此类魔法的方法，但是我在这里没多少补给。让我来深入研究一下……",
   "twilightforest.book.lichtower.3": "§8[[若干篇后]]§0\n\n重大进展！我在旅途中看见了一种蛇形的巨兽，它被困在了装饰考究的“庭院”里。当时我捡起了一根破旧的羽毛，忽略了那些绿色的鳞片。",
@@ -1187,13 +1238,13 @@
   "twilightforest.book.unknown.1": "§8[[一本看上去被传抄了无数遍的书]]§0\n\n我的学识实在不足以解释这建筑周围的力场是怎么回事，我只能说这是一种强力魔法。如果这魔咒和之前的魔咒的原理一样，那么我应该在别的地方寻找答案。",
   "twilightforest.book.unknown.2": "也许我还有什么事情没有做，抑或我还没击败什么怪物。我想是时候掉头回去了。当然，我会回来看看看有没有新进展的。",
 
-  "_comment": "流体",
+  // 流体
 
   "fluid.fierymetal": "熔融炽铁",
   "fluid.knightmetal": "熔融骑士金属",
   "fluid.fiery_essence": "炽热精华",
 
-  "_comment": "匠魂联动",
+  // 匠魂联动
 
   "material.nagascale": "娜迦鳞片",
   "material.steeleaf": "钢叶",
@@ -1214,30 +1265,36 @@
   "modifier.veiled": "遁形",
   "modifier.veiled.desc": "§o就像观察者！§r\n弹射物将会隐形。",
 
-  "_comment": "沉浸工程联动",
-  "item.tf_Engineering_Shader": "暮色皮肤：%s",
-  "item.tf_Engineering_Shader_Bag": "%s暮色皮肤奖励袋",
+  // 沉浸工程联动
+  "desc.immersiveengineering.info.shader.rarity.twilight": "暮色",
 
-  "twilightforest.shader.twilight": "暮色",
+  "item.twilightforest.shader": "暮色皮肤：%s",
+  "item.twilightforest.shader_bag": "%s暮色皮肤奖励袋",
 
-  "twilightforest.shader.snakestone": "娜迦石",
-  "twilightforest.shader.naga": "娜迦",
-  "twilightforest.shader.lich": "巫妖",
-
-  "twilightforest.shader.mazestone": "迷宫石",
-  "twilightforest.shader.minoshroom": "米诺菇",
-  "twilightforest.shader.hydra": "九头蛇",
-
-  "twilightforest.shader.underbrick": "地下砖",
-  "twilightforest.shader.knight_phantom": "幻影骑士",
-  "twilightforest.shader.towerwood": "塔木",
-  "twilightforest.shader.ur-ghast": "暮初恶魂",
-
-  "twilightforest.shader.alpha_yeti": "雪怪首领",
-  "twilightforest.shader.auroralized": "极光",
-  "twilightforest.shader.snow_queen": "冰雪女王",
-
-  "twilightforest.shader.final_castle": "终焉城堡",
+  "item.twilightforest.shader.name.twilight": "暮色",
+  "item.twilightforest.shader.name.firefly": "萤火虫",
+  "item.twilightforest.shader.name.questing_ram": "谜题羊",
+  "item.twilightforest.shader.name.ironwood": "铁木",
+  "item.twilightforest.shader.name.steeleaf": "钢叶",
+  "item.twilightforest.shader.name.knightly": "骑士金属",
+  "item.twilightforest.shader.name.fiery": "炽铁",
+  "item.twilightforest.shader.name.snakestone": "蛇纹石",
+  "item.twilightforest.shader.name.naga": "娜迦",
+  "item.twilightforest.shader.name.lich": "巫妖",
+  "item.twilightforest.shader.name.mazestone": "迷宫石",
+  "item.twilightforest.shader.name.pinch_beetle": "巨钳甲虫",
+  "item.twilightforest.shader.name.minoshroom": "米诺菇",
+  "item.twilightforest.shader.name.hydra": "九头蛇",
+  "item.twilightforest.shader.name.underbrick": "地下砖",
+  "item.twilightforest.shader.name.knight_phantom": "幻影骑士",
+  "item.twilightforest.shader.name.towerwood": "塔木",
+  "item.twilightforest.shader.name.carminite": "砷铅铁",
+  "item.twilightforest.shader.name.ur-ghast": "暮初恶魂",
+  "item.twilightforest.shader.name.alpha_yeti": "雪怪首领",
+  "item.twilightforest.shader.name.auroralized": "极光",
+  "item.twilightforest.shader.name.snow_queen": "冰雪女王",
+  "item.twilightforest.shader.name.cube_of_annihilation": "湮灭立方",
+  "item.twilightforest.shader.name.final_castle": "终焉城堡",
 
   // Optifine
   "twilightforest.gui.optifine.title": "警告：检测到 OPTIFINE",
