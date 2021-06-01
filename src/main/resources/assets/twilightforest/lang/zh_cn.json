@@ -1158,8 +1158,8 @@
   "twilightforest.config.antibuilder_blacklist": "反建器黑名单",
   "twilightforest.config.antibuilder_blacklist.tooltip": "反建器黑名单。格式：domain:block:meta；其中 meta 为可选项。",
 
-  "twilightforest.config.optifine": "在安装 Optifine 时禁用提示界面。",
-  "twilightforest.config.optifine.tooltip": "在安装 Optifine 时禁用启动时显示的提示界面。",
+  "twilightforest.config.optifine": "禁用针对 Optifine 的警告。",
+  "twilightforest.config.optifine.tooltip": "禁用启动时针对 Optifine 可能引起问题的警告。",
 
   "twilightforest.config.animate_trophyitem": "奖杯头颅旋转",
   "twilightforest.config.animate_trophyitem.tooltip": "启用后，奖杯的物品模型中的头颅会旋转。对性能没有影响。为不苟言笑的人准备的选项。",
@@ -1298,5 +1298,5 @@
 
   // Optifine
   "twilightforest.gui.optifine.title": "警告：检测到 OPTIFINE",
-  "twilightforest.gui.optifine.message": "在继续游戏前，请注意 Optifine 会导致游戏崩溃、多组成部分实体视觉效果错误和许多其他问题。\n\n在汇报漏洞前请先移除 Optifine ，然后查看漏洞是否仍会出现。\n\nOptifine 相关的问题在暮色森林的终端无法解决！"
+  "twilightforest.gui.optifine.message": "在继续游戏前，请注意 Optifine 会导致游戏崩溃、多组成部分实体视觉效果错误和许多其他问题。\n\n在汇报漏洞前请先移除 Optifine ，然后查看漏洞是否仍会出现。\n\n暮色森林无法解决 Optifine 相关的问题！"
 }
