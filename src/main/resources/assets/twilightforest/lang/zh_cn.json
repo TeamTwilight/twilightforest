@@ -1298,5 +1298,5 @@
 
   // Optifine
   "twilightforest.gui.optifine.title": "警告：检测到 OPTIFINE",
-  "twilightforest.gui.optifine.message": "在继续游戏前，请注意 Optifine 会导致游戏崩溃、多组成部分实体视觉效果错误和许多其他问题。\n\n在汇报漏洞前请先移除 Optifine ，然后查看漏洞是否仍会出现。\n\n暮色森林无法解决 Optifine 相关的问题！"
+  "twilightforest.gui.optifine.message": "在继续游戏前，请注意 Optifine 会导致游戏崩溃、多组成部分实体视觉效果错误和许多其他问题。\n\n在汇报漏洞前请先移除 Optifine ，然后查看漏洞是否仍会出现。\n\n暮色森林不负责解决 Optifine 相关的问题！"
 }
