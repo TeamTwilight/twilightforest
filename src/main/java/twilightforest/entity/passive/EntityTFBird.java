@@ -72,7 +72,7 @@ public abstract class EntityTFBird extends AnimalEntity {
 	}
 
 	@Override
-	public AnimalEntity func_241840_a(ServerWorld world, AgeableEntity entityanimal) {
+	public AnimalEntity createChild(ServerWorld world, AgeableEntity entityanimal) {
 		return null;
 	}
 

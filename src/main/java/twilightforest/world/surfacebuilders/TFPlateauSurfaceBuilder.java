@@ -24,7 +24,7 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 		this.genTwilightBiomeTerrain(rand, primer, biome, x, z, startheight, noiseVal, defaultBlock, defaultFluid, config.getTop(), config.getUnder(), config.getUnderWaterMaterial(), sealevel);
 	}
 
-	//[VanillaCopy] of DefaultrfaceBuilder.buildSurface, but we fill everything with deadrock
+	//[VanillaCopy] of DefaultSurfaceBuilder.buildSurface, but we fill everything with deadrock
 	protected void genTwilightBiomeTerrain(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, BlockState top, BlockState middle, BlockState bottom, int sealevel) {
 		BlockState blockstate = top;
 		BlockState blockstate1 = middle;
@@ -39,8 +39,8 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 			BlockState blockstate2 = chunkIn.getBlockState(blockpos$mutable);
 			if (blockstate2.isAir()) {
 				i = -1;
-			} else if (blockstate2.isIn(defaultBlock.getBlock())) {
-				if (!chunkIn.getBlockState(blockpos$mutable).isIn(TFBlocks.deadrock_weathered.get()) || !chunkIn.getBlockState(blockpos$mutable).isIn(TFBlocks.deadrock_cracked.get())) {
+			} else if (blockstate2.matchesBlock(defaultBlock.getBlock())) {
+				if (!chunkIn.getBlockState(blockpos$mutable).matchesBlock(TFBlocks.deadrock_weathered.get()) || !chunkIn.getBlockState(blockpos$mutable).matchesBlock(TFBlocks.deadrock_cracked.get())) {
 					chunkIn.setBlockState(blockpos$mutable, BlockConstants.DEADROCK, false);
 				}
 				if (i == -1) {
@@ -75,9 +75,9 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 				} else if (i > 0) {
 					--i;
 					chunkIn.setBlockState(blockpos$mutable, blockstate1, false);
-					if (i == 0 && blockstate1.isIn(Blocks.SAND) && j > 1) {
+					if (i == 0 && blockstate1.matchesBlock(Blocks.SAND) && j > 1) {
 						i = random.nextInt(4) + Math.max(0, i1 - 63);
-						blockstate1 = blockstate1.isIn(Blocks.RED_SAND) ? Blocks.RED_SANDSTONE.getDefaultState() : Blocks.SANDSTONE.getDefaultState();
+						blockstate1 = blockstate1.matchesBlock(Blocks.RED_SAND) ? Blocks.RED_SANDSTONE.getDefaultState() : Blocks.SANDSTONE.getDefaultState();
 					}
 				}
 			}

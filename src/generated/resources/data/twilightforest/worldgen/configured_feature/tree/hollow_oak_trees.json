@@ -1,6 +1,33 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/hollow_tree",
+    "feature": {
+      "config": {
+        "feature": "twilightforest:tree/base/hollow_tree",
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:heightmap"
+                },
+                "inner": {
+                  "config": {},
+                  "type": "twilightforest:nostructure"
+                }
+              },
+              "type": "minecraft:decorated"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
     "decorator": {
       "config": {
         "outer": {

@@ -36,12 +36,18 @@ import java.util.Random;
 public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 
 	private final BossVariant variant;
+	private final int comparatorValue;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	
-	protected BlockTFAbstractTrophy(BossVariant variant, AbstractBlock.Properties builder) {
+	protected BlockTFAbstractTrophy(BossVariant variant, int value, AbstractBlock.Properties builder) {
 		super(builder);
 		this.variant = variant;
+		this.comparatorValue = value;
 		setDefaultState(stateContainer.getBaseState().with(POWERED, Boolean.valueOf(false)));
+	}
+
+	public int getComparatorValue() {
+		return comparatorValue;
 	}
 
 	@Override
@@ -88,7 +94,7 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 		if (!world.isRemote && te instanceof TileEntityTFTrophy) {
 			SoundEvent sound = null;
 			float volume = 1.0F;
-			float pitch = 1.0F;
+			float pitch = 0.9F;
 			switch (variant) {
 				case NAGA:
 					sound = TFSounds.NAGA_RATTLE;
@@ -106,7 +112,7 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 					break;
 				case UR_GHAST:
 					sound = TFSounds.URGHAST_AMBIENT;
-					pitch = 0.8F;
+					pitch = 0.6F;
 					break;
 				case SNOW_QUEEN:
 					sound = TFSounds.SNOW_QUEEN_AMBIENT;
@@ -120,6 +126,11 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 					volume = 0.75F;
 					pitch = 0.7F;
 					break;
+				case ALPHA_YETI:
+					sound = world.rand.nextInt(50) == 0 ? TFSounds.ALPHAYETI_ROAR : TFSounds.ALPHAYETI_GROWL;
+					volume = 0.75F;
+					pitch = 0.75F;
+					break;
 				case QUEST_RAM:
 					sound = TFSounds.QUEST_RAM_AMBIENT;
 					pitch = 0.7F;
@@ -128,7 +139,7 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 					break;
 			}
 			if (sound != null) {
-				world.playSound((PlayerEntity)null, pos, sound, SoundCategory.BLOCKS, volume, pitch);
+				world.playSound((PlayerEntity)null, pos, sound, SoundCategory.BLOCKS, volume, world.rand.nextFloat() * 0.1F + pitch);
 			}
 		}
 	}
@@ -179,6 +190,15 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 					case UR_GHAST:
 						for (int red = 0; red < 10; red++) {
 							((ServerWorld)world).spawnParticle(RedstoneParticleData.REDSTONE_DUST,
+									(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
+									(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
+									(double) pos.getZ() + (rand.nextDouble() * 1),
+									1, 0, 0, 0, 0);
+						}
+						break;
+					case ALPHA_YETI:
+						for(int sweat = 0; sweat < 10; sweat++) {
+							((ServerWorld)world).spawnParticle(ParticleTypes.SPLASH,
 									(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
 									(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
 									(double) pos.getZ() + (rand.nextDouble() * 1),

@@ -44,13 +44,13 @@ public class SnowTreePlacer extends Feature<BaseTreeFeatureConfig> {
 
     private static boolean func_236414_e_(IWorldGenerationBaseReader p_236414_0_, BlockPos p_236414_1_) {
         return p_236414_0_.hasBlockState(p_236414_1_, (p_236415_0_) -> {
-            return p_236415_0_.isIn(Blocks.VINE);
+            return p_236415_0_.matchesBlock(Blocks.VINE);
         });
     }
 
     private static boolean isWaterAt(IWorldGenerationBaseReader p_236416_0_, BlockPos p_236416_1_) {
         return p_236416_0_.hasBlockState(p_236416_1_, (p_236413_0_) -> {
-            return p_236413_0_.isIn(Blocks.WATER);
+            return p_236413_0_.matchesBlock(Blocks.WATER);
         });
     }
 
@@ -83,7 +83,7 @@ public class SnowTreePlacer extends Feature<BaseTreeFeatureConfig> {
     }
 
     private boolean place(IWorldGenerationReader generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, MutableBoundingBox boundingBoxIn, BaseTreeFeatureConfig configIn) {
-        int i = configIn.trunkPlacer.func_236917_a_(rand);
+        int i = configIn.trunkPlacer.getHeight(rand);
         int j = configIn.foliagePlacer.func_230374_a_(rand, i, configIn);
         int k = i - j;
         int l = configIn.foliagePlacer.func_230376_a_(rand, k);
@@ -96,12 +96,12 @@ public class SnowTreePlacer extends Feature<BaseTreeFeatureConfig> {
             }
 
             int k1;
-            if (configIn.field_236682_l_ == Heightmap.Type.OCEAN_FLOOR) {
+            if (configIn.heightmap == Heightmap.Type.OCEAN_FLOOR) {
                 k1 = i1;
-            } else if (configIn.field_236682_l_ == Heightmap.Type.WORLD_SURFACE) {
+            } else if (configIn.heightmap == Heightmap.Type.WORLD_SURFACE) {
                 k1 = j1;
             } else {
-                k1 = generationReader.getHeight(configIn.field_236682_l_, positionIn).getY();
+                k1 = generationReader.getHeight(configIn.heightmap, positionIn).getY();
             }
 
             blockpos = new BlockPos(positionIn.getX(), k1, positionIn.getZ());
@@ -116,7 +116,7 @@ public class SnowTreePlacer extends Feature<BaseTreeFeatureConfig> {
                 OptionalInt optionalint = configIn.minimumSize.func_236710_c_();
                 int l1 = this.func_241521_a_(generationReader, i, blockpos, configIn);
                 if (l1 >= i || optionalint.isPresent() && l1 >= optionalint.getAsInt()) {
-                    List<FoliagePlacer.Foliage> list = configIn.trunkPlacer.func_230382_a_(generationReader, rand, l1, blockpos, p_225557_4_, boundingBoxIn, configIn);
+                    List<FoliagePlacer.Foliage> list = configIn.trunkPlacer.getFoliages(generationReader, rand, l1, blockpos, p_225557_4_, boundingBoxIn, configIn);
                     list.forEach((p_236407_8_) -> {
                         configIn.foliagePlacer.func_236752_a_(generationReader, rand, configIn, l1, p_236407_8_, j, l, p_225557_5_, boundingBoxIn);
                     });
@@ -172,7 +172,7 @@ public class SnowTreePlacer extends Feature<BaseTreeFeatureConfig> {
             }
 
             VoxelShapePart voxelshapepart = this.func_236403_a_(reader, mutableboundingbox, set, set2);
-            Template.func_222857_a(reader, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
+            Template.updatePostProcessing(reader, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
             return true;
         } else {
             return false;

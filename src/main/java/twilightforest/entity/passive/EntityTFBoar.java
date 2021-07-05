@@ -19,7 +19,7 @@ public class EntityTFBoar extends PigEntity {
 	}
 
 	@Override
-	public PigEntity func_241840_a(ServerWorld world, AgeableEntity entityanimal) {
+	public PigEntity createChild(ServerWorld world, AgeableEntity entityanimal) {
 		return TFEntities.wild_boar.create(world);
 	}
 	

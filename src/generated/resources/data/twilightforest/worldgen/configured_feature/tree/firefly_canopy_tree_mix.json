@@ -1,6 +1,14 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/firefly_canopy_tree",
+    "feature": {
+      "config": {
+        "features": [
+          "twilightforest:tree/base/canopy_tree",
+          "twilightforest:tree/base/firefly_canopy_tree"
+        ]
+      },
+      "type": "minecraft:simple_random_selector"
+    },
     "decorator": {
       "config": {
         "outer": {

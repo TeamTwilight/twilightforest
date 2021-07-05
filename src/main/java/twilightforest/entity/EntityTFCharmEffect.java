@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 	private static final DataParameter<Integer> DATA_OWNER = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
 	private static final DataParameter<ItemStack> DATA_ITEMID = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.ITEMSTACK);
-	private static final double DISTANCE = 1.75;
+	private static final double DISTANCE = 0.75;
 	private double interpTargetX;
 	private double interpTargetY;
 	private double interpTargetZ;
@@ -50,12 +50,11 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 		this.setOwner(owner);
 		this.setItemID(item);
 
-		Vector3d look = new Vector3d(DISTANCE, 0, 0);
-
 		this.setLocationAndAngles(owner.getPosX(), owner.getPosY() + owner.getEyeHeight(), owner.getPosZ(), owner.rotationYaw, owner.rotationPitch);
-		double x = getPosX() + look.x * DISTANCE;
-		//this.getPosY() += look.y * DISTANCE;
-		double z = getPosZ() + look.z * DISTANCE;
+
+		Vector3d look = new Vector3d(DISTANCE, 0, 0);
+		double x = getPosX() + (look.x * DISTANCE);
+		double z = getPosZ() + (look.z * DISTANCE);
 		this.setPosition(x, this.getPosY(), z);
 	}
 
@@ -66,7 +65,7 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 		this.lastTickPosZ = this.getPosZ();
 		super.tick();
 
-		//[VanillaCopy] Beginning of LivingEntity.onLivingUpdate
+		//[VanillaCopy] Beginning of LivingEntity.livingTick
 		if (this.newPosRotationIncrements > 0) {
 			double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / this.newPosRotationIncrements;
 			double d1 = this.getPosY() + (this.interpTargetY - this.getPosY()) / this.newPosRotationIncrements;
@@ -82,17 +81,13 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 		LivingEntity orbiting = getOwner();
 
 		if (orbiting != null) {
-			this.setLocationAndAngles(orbiting.getPosX(), orbiting.getPosY() + orbiting.getEyeHeight(), orbiting.getPosZ(), orbiting.rotationYaw, orbiting.rotationPitch);
-
-			float rotation = this.ticksExisted / 5.0F + offset;
+			float rotation = this.ticksExisted / 10.0F + offset;
 			Vector3d look = new Vector3d(DISTANCE, 0, 0).rotateYaw(rotation);
-			this.getPositionVec().add(look.x, 0.0D, look.z);
-
-			this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+			this.setLocationAndAngles(orbiting.getPosX() + look.x, orbiting.getPosY() + orbiting.getEyeHeight(), orbiting.getPosZ() + look.z, orbiting.rotationYaw, orbiting.rotationPitch);
 		}
 
 		if (!this.getItemID().isEmpty()) {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 2; i++) {
 				double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 				double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 				double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());

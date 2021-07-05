@@ -282,6 +282,15 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.build(consumer, locWood(name + "_wood"));
 	}
 
+	protected final void strippedWoodBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
+				.patternLine("##")
+				.patternLine("##")
+				.key('#', material.get())
+				.addCriterion("has_item", hasItem(material.get()))
+				.build(consumer, locWood(name + "_stripped_wood"));
+	}
+
 	protected final void signBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
 		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
 				.patternLine("###")

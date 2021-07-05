@@ -771,7 +771,7 @@ public class EntityTFHydra extends MobEntity implements IMob {
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	public boolean canChangeDimension() {
 		return false;
 	}
 }

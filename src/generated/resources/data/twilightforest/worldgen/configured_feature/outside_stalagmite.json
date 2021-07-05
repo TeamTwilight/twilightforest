@@ -4,15 +4,24 @@
       "config": {
         "feature": {
           "config": {
-            "max_length": 5,
-            "min_height": 10,
-            "hanging": false,
-            "state": {
-              "Name": "minecraft:stone"
+            "feature": {
+              "config": {
+                "max_length": 5,
+                "min_height": 10,
+                "hanging": false,
+                "state": {
+                  "Name": "minecraft:stone"
+                },
+                "size_factor": 3.0
+              },
+              "type": "twilightforest:outside_stalagmite"
             },
-            "size_factor": 3.0
+            "decorator": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
           },
-          "type": "twilightforest:outside_stalagmite"
+          "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {

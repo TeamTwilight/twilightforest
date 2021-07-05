@@ -130,7 +130,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 			tessellator.draw();
 		}
 
-		if (world.func_239132_a_().func_239216_b_()) {
+		if (world.getDimensionRenderInfo().func_239216_b_()) {
 			RenderSystem.color3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
 		} else {
 			RenderSystem.color3f(f, f1, f2);

@@ -66,7 +66,7 @@ public class EntityTFCastleGuardian extends CreatureEntity { // Not exactly livi
     }
 
     @Override // So it won't be allowed to be duplicated by Mod mob spawners
-    public boolean isNonBoss() {
+    public boolean canChangeDimension() {
         return false;
     }
 

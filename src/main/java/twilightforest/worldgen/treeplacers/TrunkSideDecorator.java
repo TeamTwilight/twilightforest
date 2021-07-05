@@ -37,7 +37,7 @@ public class TrunkSideDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<TrunkSideDecorator> func_230380_a_() {
+    protected TreeDecoratorType<TrunkSideDecorator> getDecoratorType() {
         return TwilightFeatures.TRUNKSIDE_DECORATOR;
     }
 

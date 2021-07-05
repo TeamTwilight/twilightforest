@@ -40,7 +40,7 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
 				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
 
 			if (state == Blocks.SMOOTH_STONE_SLAB.getDefaultState())
-				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, Blocks.COBBLESTONE_SLAB.getDefaultState(), null);
+				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, translateState(state, Blocks.COBBLESTONE_SLAB, SlabBlock.TYPE), null);
 
 			if (block == TFBlocks.etched_nagastone.get())
 				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, translateState(state, randomBlock(random, TFBlocks.etched_nagastone_mossy.get(), TFBlocks.etched_nagastone_weathered.get()), DirectionalBlock.FACING), null);

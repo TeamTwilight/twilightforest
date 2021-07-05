@@ -1,19 +1,22 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.*;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.Direction;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -25,15 +28,14 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
-import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.TFTeleporter;
 
@@ -137,7 +139,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 
 			for (Entity victim : list) {
 				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
-					victim.func_241841_a((ServerWorld) world, bolt);
+					victim.causeLightningStrike((ServerWorld) world, bolt);
 				}
 			}
 		}
@@ -216,7 +218,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 			return;
 		}
 
-		if (entity.isPassenger() || entity.isBeingRidden() || !entity.isNonBoss()) {
+		if (entity.isPassenger() || entity.isBeingRidden() || !entity.canChangeDimension()) {
 			return;
 		}
 
@@ -234,6 +236,12 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 			return;
 
 		entity.changeDimension(serverWorld, new TFTeleporter());
+
+		if (destination ==  RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) && entity instanceof ServerPlayerEntity && forcedEntry) {
+			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
+			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
+			playerMP.func_242111_a(destination, playerMP.getPosition(), playerMP.rotationYaw, true, false);
+		}
 
 	}
 

@@ -1,17 +1,16 @@
 package twilightforest.compat.ie;
 
 import blusunrize.immersiveengineering.api.Lib;
+import blusunrize.immersiveengineering.api.client.TextUtils;
 import blusunrize.immersiveengineering.api.shader.IShaderItem;
 import blusunrize.immersiveengineering.api.shader.ShaderCase;
 import blusunrize.immersiveengineering.api.shader.ShaderLayer;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.shader.impl.ShaderCaseItem;
-import blusunrize.immersiveengineering.client.ClientUtils;
 import blusunrize.immersiveengineering.common.blocks.IEBlocks;
 import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerStandingBlock;
 import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerTileEntity;
 import blusunrize.immersiveengineering.common.blocks.cloth.ShaderBannerWallBlock;
-import blusunrize.immersiveengineering.common.items.ShaderItem;
 import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.block.BannerBlock;
@@ -117,16 +116,16 @@ public class ItemTFShader extends Item implements IShaderItem {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
-        list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.level").append(ClientUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader.rarity." + this.getRarity(stack).name().toLowerCase(Locale.US)), getRarity(stack).color)));
+        list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.level").appendSibling(TextUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader.rarity." + this.getRarity(stack).name().toLowerCase(Locale.US)), getRarity(stack).color)));
         if(ShaderRegistry.shaderRegistry.containsKey(getShaderName(stack))) {
             if (!Screen.hasShiftDown())
-                list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo").appendString(" ").append(new TranslationTextComponent(Lib.DESC_INFO + "holdShift")));
+                list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo").appendString(" ").appendSibling(new TranslationTextComponent(Lib.DESC_INFO + "holdShift")));
             else {
                 list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo"));
 
                 for (ShaderCase sCase : ShaderRegistry.shaderRegistry.get(getShaderName(stack)).getCases())
                     if (!(sCase instanceof ShaderCaseItem))
-                        list.add(ClientUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader." + sCase.getShaderType()), TextFormatting.DARK_GRAY));
+                        list.add(TextUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader." + sCase.getShaderType()), TextFormatting.DARK_GRAY));
             }
         }
     }

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -48,6 +49,9 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	private static final ModelTFPhantomArmorHead phantomArmorModel = new ModelTFPhantomArmorHead();
 	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
 
+	private static final ModelTFYetiAlphaHead yetiHead = new ModelTFYetiAlphaHead();
+	private static final ResourceLocation textureLocYeti = TwilightForestMod.getModelTexture("yetialpha.png");
+
 	private static final ModelTFQuestRamHead ramHead = new ModelTFQuestRamHead();
 	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
@@ -67,20 +71,20 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		matrixStackIn.push();
 		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.HYDRA && flag) {
 			//FIXME: both rotation points are legacy
-			//hydraHead.mouth.setRotationPoint(0F, 15F, -19F);
+			//hydraHead.mouth.setRotationPoint(0.0F, 15.0F, -19.0F);
 			hydraHead.openMouthForTrophy(0.5F);
 		} else {
-			//hydraHead.mouth.setRotationPoint(0F, 10F, -20F);
+			//hydraHead.mouth.setRotationPoint(0.0F, 10.0F, -20.0F);
 			hydraHead.openMouthForTrophy(0.0F);
 		}
 		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST) {
 			ghastHead.setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
-		render(direction, f1, ((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant(), f, matrixStackIn, bufferIn, combinedLightIn);
+		render(direction, f1, ((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant(), f, matrixStackIn, bufferIn, combinedLightIn, ItemCameraTransforms.TransformType.NONE);
 		matrixStackIn.pop();
 	}
 
-	public static void render(@Nullable Direction directionIn, float y, BossVariant variant, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight) {
+	public static void render(@Nullable Direction directionIn, float y, BossVariant variant, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight, ItemCameraTransforms.TransformType camera) {
 		matrixStackIn.push();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
 			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
@@ -91,7 +95,8 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		switch (variant) {
 		case HYDRA:
 			matrixStackIn.scale(0.25F, 0.25F, 0.25F);
-			matrixStackIn.translate(0.0F, -1.1F, 0.0F);
+			matrixStackIn.translate(0.0F, -1.0F, 0.0F);
+			if (camera == ItemCameraTransforms.TransformType.GUI) hydraHead.openMouthForTrophy(0.35F);
 			hydraHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder hydraVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocHydra));
 			hydraHead.head.render(matrixStackIn, hydraVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -117,21 +122,21 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			break;
 		case SNOW_QUEEN:
 			//FIXME: Legacy
-			//matrixStackIn.translate(0.0F, .25F, 0.0F);
+			//matrixStackIn.translate(0.0F, 0.25F, 0.0F);
 			waifuHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder waifuVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocSnowQueen));
 			waifuHead.head.render(matrixStackIn, waifuVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		case MINOSHROOM:
 			//FIXME: Legacy
-			//matrixStackIn.translate(0.0F, .25F, 0.0F);
-			matrixStackIn.translate(0.0F, .3F, 0.0F);
+			//matrixStackIn.translate(0.0F, 0.25F, 0.0F);
+			matrixStackIn.translate(0.0F, 0.31F, 0.0F);
 			minoshroomHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder minoVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocMinoshroom));
 			minoshroomHead.head.render(matrixStackIn, minoVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		case KNIGHT_PHANTOM:
-			matrixStackIn.translate(0.0F, .25F, 0.0F);
+			matrixStackIn.translate(0.0F, 0.25F, 0.0F);
 			phantomHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder phantomVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocKnightPhantom));
 			phantomHead.head.render(matrixStackIn, phantomVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -142,8 +147,15 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			IVertexBuilder phantomArmorVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocKnightPhantomArmor));
 			phantomArmorModel.head.render(matrixStackIn, phantomArmorVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.0625F);
 			break;
+		case ALPHA_YETI:
+			matrixStackIn.scale(0.2F, 0.2F, 0.2F);
+			matrixStackIn.translate(0.0F, -1.5F, 0.0F);
+			yetiHead.setRotations(animationProgress * 4.5F, y, 0.0F);
+			IVertexBuilder yetiVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocYeti));
+			yetiHead.main.render(matrixStackIn, yetiVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			break;
 		case QUEST_RAM:
-			matrixStackIn.scale(.7f, .7f, .7f);
+			matrixStackIn.scale(0.7f, 0.7f, 0.7f);
 			ramHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder ramVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocQuestRam));
 			ramHead.render(matrixStackIn, ramVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

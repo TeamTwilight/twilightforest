@@ -19,7 +19,7 @@ public class TrunkRiser extends AbstractTrunkPlacer {
     public static final Codec<TrunkRiser> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.intRange(0, 16).fieldOf("offset_up").forGetter(o -> o.offset),
-                    AbstractTrunkPlacer.field_236905_c_.fieldOf("trunk_placer").forGetter(o -> o.placer)
+                    AbstractTrunkPlacer.CODEC.fieldOf("trunk_placer").forGetter(o -> o.placer)
             ).apply(instance, TrunkRiser::new)
     );
 
@@ -27,19 +27,19 @@ public class TrunkRiser extends AbstractTrunkPlacer {
     private final AbstractTrunkPlacer placer;
 
     public TrunkRiser(int baseHeight, AbstractTrunkPlacer placer) {
-        super(placer.field_236906_d_, placer.field_236907_e_, placer.field_236908_f_);
+        super(placer.baseHeight, placer.heightRandA, placer.heightRandB);
 
         this.offset = baseHeight;
         this.placer = placer;
     }
 
     @Override
-    protected TrunkPlacerType<TrunkRiser> func_230381_a_() {
+    protected TrunkPlacerType<TrunkRiser> getPlacerType() {
         return TwilightFeatures.TRUNK_RISER;
     }
 
     @Override
-    public List<FoliagePlacer.Foliage> func_230382_a_(IWorldGenerationReader iWorldGenerationReader, Random random, int i, BlockPos blockPos, Set<BlockPos> set, MutableBoundingBox mutableBoundingBox, BaseTreeFeatureConfig baseTreeFeatureConfig) {
-        return placer.func_230382_a_(iWorldGenerationReader, random, i, blockPos.up(offset), set, mutableBoundingBox, baseTreeFeatureConfig);
+    public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader iWorldGenerationReader, Random random, int i, BlockPos blockPos, Set<BlockPos> set, MutableBoundingBox mutableBoundingBox, BaseTreeFeatureConfig baseTreeFeatureConfig) {
+        return placer.getFoliages(iWorldGenerationReader, random, i, blockPos.up(offset), set, mutableBoundingBox, baseTreeFeatureConfig);
     }
 }

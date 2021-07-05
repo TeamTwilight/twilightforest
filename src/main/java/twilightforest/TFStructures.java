@@ -35,52 +35,52 @@ public class TFStructures {
 
 	public static final Map<Structure<?>, StructureSeparationSettings> SEPARATION_SETTINGS = new HashMap<>();
 
-	public static final Structure<NoFeatureConfig> HEDGE_MAZE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HEDGE_MAZE);
+	public static final Structure<NoFeatureConfig> HEDGE_MAZE = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.HEDGE_MAZE);
 	public static final StructureFeature<?, ?> CONFIGURED_HEDGE_MAZE = HEDGE_MAZE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> QUEST_GROVE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.QUEST_GROVE);
+	public static final Structure<NoFeatureConfig> QUEST_GROVE = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.QUEST_GROVE);
 	public static final StructureFeature<?, ?> CONFIGURED_QUEST_GROVE = QUEST_GROVE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> MUSHROOM_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.MUSHROOM_TOWER);
+	public static final Structure<NoFeatureConfig> MUSHROOM_TOWER = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.MUSHROOM_TOWER);
 	public static final StructureFeature<?, ?> CONFIGURED_MUSHROOM_TOWER = MUSHROOM_TOWER.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> HOLLOW_HILL_SMALL = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.SMALL_HILL);
+	public static final Structure<NoFeatureConfig> HOLLOW_HILL_SMALL = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.SMALL_HILL);
 	public static final StructureFeature<?, ?> CONFIGURED_HOLLOW_HILL_SMALL = HOLLOW_HILL_SMALL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> HOLLOW_HILL_MEDIUM = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.MEDIUM_HILL);
+	public static final Structure<NoFeatureConfig> HOLLOW_HILL_MEDIUM = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.MEDIUM_HILL);
 	public static final StructureFeature<?, ?> CONFIGURED_HOLLOW_HILL_MEDIUM = HOLLOW_HILL_MEDIUM.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> HOLLOW_HILL_LARGE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LARGE_HILL);
+	public static final Structure<NoFeatureConfig> HOLLOW_HILL_LARGE = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.LARGE_HILL);
 	public static final StructureFeature<?, ?> CONFIGURED_HOLLOW_HILL_LARGE = HOLLOW_HILL_LARGE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> NAGA_COURTYARD = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.NAGA_COURTYARD, true);
+	public static final Structure<NoFeatureConfig> NAGA_COURTYARD = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.NAGA_COURTYARD, true);
 	public static final StructureFeature<?, ?> CONFIGURED_NAGA_COURTYARD = NAGA_COURTYARD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> LICH_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LICH_TOWER);
+	public static final Structure<NoFeatureConfig> LICH_TOWER = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.LICH_TOWER);
 	public static final StructureFeature<?, ?> CONFIGURED_LICH_TOWER = LICH_TOWER.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> LABYRINTH = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LABYRINTH);
+	public static final Structure<NoFeatureConfig> LABYRINTH = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.LABYRINTH);
 	public static final StructureFeature<?, ?> CONFIGURED_LABYRINTH = LABYRINTH.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> HYDRA_LAIR = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HYDRA_LAIR);
+	public static final Structure<NoFeatureConfig> HYDRA_LAIR = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.HYDRA_LAIR);
 	public static final StructureFeature<?, ?> CONFIGURED_HYDRA_LAIR = HYDRA_LAIR.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> KNIGHT_STRONGHOLD = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.KNIGHT_STRONGHOLD);
+	public static final Structure<NoFeatureConfig> KNIGHT_STRONGHOLD = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.KNIGHT_STRONGHOLD);
 	public static final StructureFeature<?, ?> CONFIGURED_KNIGHT_STRONGHOLD = KNIGHT_STRONGHOLD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> DARK_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.DARK_TOWER);
+	public static final Structure<NoFeatureConfig> DARK_TOWER = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.DARK_TOWER);
 	public static final StructureFeature<?, ?> CONFIGURED_DARK_TOWER = DARK_TOWER.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> YETI_CAVE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.YETI_CAVE);
+	public static final Structure<NoFeatureConfig> YETI_CAVE = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.YETI_CAVE);
 	public static final StructureFeature<?, ?> CONFIGURED_YETI_CAVE = YETI_CAVE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> AURORA_PALACE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.ICE_TOWER);
+	public static final Structure<NoFeatureConfig> AURORA_PALACE = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.ICE_TOWER);
 	public static final StructureFeature<?, ?> CONFIGURED_AURORA_PALACE = AURORA_PALACE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> TROLL_CAVE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.TROLL_CAVE);
+	public static final Structure<NoFeatureConfig> TROLL_CAVE = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.TROLL_CAVE);
 	public static final StructureFeature<?, ?> CONFIGURED_TROLL_CAVE = TROLL_CAVE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> FINAL_CASTLE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.FINAL_CASTLE);
+	public static final Structure<NoFeatureConfig> FINAL_CASTLE = new TFStructure<>(NoFeatureConfig.CODEC, TFFeature.FINAL_CASTLE);
 	public static final StructureFeature<?, ?> CONFIGURED_FINAL_CASTLE = FINAL_CASTLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
 	public static void register(RegistryEvent.Register<Structure<?>> event) {

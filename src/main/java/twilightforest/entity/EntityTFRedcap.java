@@ -7,6 +7,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -19,6 +20,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
+import twilightforest.entity.ai.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.EntityAITFRedcapLightTNT;
 import twilightforest.entity.ai.EntityAITFRedcapShy;
 
@@ -37,10 +39,7 @@ public class EntityTFRedcap extends MonsterEntity {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		// This is safe because AvoidEntityGoal doesn't use the LivingEntity interface, only the Entity one
-		//FIXME haha nope, it uses LivingEntity now
-		//AvoidEntityGoal avoidGoal = new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F);
-		//this.goalSelector.addGoal(1, avoidGoal);
+		this.goalSelector.addGoal(1, new AvoidAnyEntityGoal<>(this, TNTEntity.class, 2.0F, 1.0F, 2.0F));
 		this.goalSelector.addGoal(2, new EntityAITFRedcapShy(this, 1.0F));
 		this.goalSelector.addGoal(3, new EntityAITFRedcapLightTNT(this, 1.0F)); // light TNT
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));

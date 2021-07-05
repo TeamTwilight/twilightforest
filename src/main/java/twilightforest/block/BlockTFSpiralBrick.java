@@ -104,7 +104,7 @@ public class BlockTFSpiralBrick extends Block {
     }
 
 	@Override
-	public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation rot) {
+	public BlockState rotate(BlockState state, Rotation rot) {
 		if (rot == Rotation.NONE) return state;
 
 		Direction.Axis axis = state.get(AXIS_FACING);

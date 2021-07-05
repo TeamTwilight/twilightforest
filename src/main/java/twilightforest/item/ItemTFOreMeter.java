@@ -86,7 +86,7 @@ public class ItemTFOreMeter extends Item {
 		player.sendMessage(new TranslationTextComponent(Blocks.COAL_ORE.getTranslationKey()).appendString(" - " + countCoal + " " + percent(countCoal, total)), Util.DUMMY_UUID);
 		player.sendMessage(new TranslationTextComponent(Blocks.IRON_ORE.getTranslationKey()).appendString(" - " + countIron + " " + percent(countIron, total)), Util.DUMMY_UUID);
 		player.sendMessage(new TranslationTextComponent(Blocks.GOLD_ORE.getTranslationKey()).appendString(" - " + countGold + " " + percent(countGold, total)), Util.DUMMY_UUID);
-		player.sendMessage(new TranslationTextComponent(Blocks.DIAMOND_ORE.getTranslationKey()).appendString(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").append(new TranslationTextComponent(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)), Util.DUMMY_UUID);
+		player.sendMessage(new TranslationTextComponent(Blocks.DIAMOND_ORE.getTranslationKey()).appendString(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").appendSibling(new TranslationTextComponent(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)), Util.DUMMY_UUID);
 		player.sendMessage(new TranslationTextComponent(Blocks.LAPIS_ORE.getTranslationKey()).appendString(" - " + countLapis + " " + percent(countLapis, total)), Util.DUMMY_UUID);
 		player.sendMessage(new TranslationTextComponent(Blocks.REDSTONE_ORE.getTranslationKey()).appendString(" - " + countRedstone + " " + percent(countRedstone, total)), Util.DUMMY_UUID);
 		player.sendMessage(new TranslationTextComponent(TFBlocks.root.get().getTranslationKey()).appendString(" - " + countRoots + " " + percent(countRoots, total)), Util.DUMMY_UUID);

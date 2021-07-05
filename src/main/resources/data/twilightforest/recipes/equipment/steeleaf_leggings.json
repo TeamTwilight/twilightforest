@@ -13,7 +13,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "tag": "twilightforest:ingots/steeleaf"
+      "tag": "forge:ingots/steeleaf"
     }
   }
 }

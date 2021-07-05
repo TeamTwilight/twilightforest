@@ -82,13 +82,13 @@
       "twilightforest:flower_placer",
       "twilightforest:random_common",
       "twilightforest:random_fallen",
-      "twilightforest:tree/firefly_canopy_trees",
+      "twilightforest:tree/firefly_canopy_tree_mix",
       "twilightforest:tree/twilight_oak_trees",
-      "minecraft:oak",
-      "minecraft:birch",
+      "twilightforest:tree/vanilla/vanilla_tf_oak",
+      "twilightforest:tree/vanilla/vanilla_tf_birch",
       "twilightforest:tree/twilight_oak_trees",
-      "minecraft:oak",
-      "minecraft:birch",
+      "twilightforest:tree/vanilla/vanilla_tf_oak",
+      "twilightforest:tree/vanilla/vanilla_tf_birch",
       "twilightforest:tree/hollow_placer"
     ]
   ],

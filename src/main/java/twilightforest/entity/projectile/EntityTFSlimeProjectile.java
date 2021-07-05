@@ -72,7 +72,7 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable implements IRende
 		if (result instanceof EntityRayTraceResult) {
 			Entity target = ((EntityRayTraceResult)result).getEntity();
 			if (!world.isRemote && target instanceof LivingEntity) {
-				target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), 8);
+				target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getShooter()), 8);
 				//damage armor pieces
 				if(target instanceof PlayerEntity) {
 					for(ItemStack stack : target.getArmorInventoryList())

@@ -20,6 +20,8 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.TFSounds;
@@ -67,7 +69,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 		chain4 = new EntityTFGoblinChain(this);
 		chain5 = new EntityTFGoblinChain(this);
 		partsArray =  new EntityTFBlockGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
-		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	private void setHand(Hand hand) {
@@ -103,8 +105,8 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 			EntityRayTraceResult entityRay = (EntityRayTraceResult) ray;
 
 			// only hit living things
-			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.func_234616_v_()) {
-				if (entityRay.getEntity().attackEntityFrom(TFDamageSources.SPIKED(this, (LivingEntity)this.func_234616_v_()), 10)) {
+			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getShooter()) {
+				if (entityRay.getEntity().attackEntityFrom(TFDamageSources.SPIKED(this, (LivingEntity)this.getShooter()), 10)) {
 					// age when we hit a monster so that we go back to the player faster
 					this.ticksExisted += 60;
 				}
@@ -178,7 +180,6 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 
 	private void affectBlocksInAABB(AxisAlignedBB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-
 			BlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
@@ -186,16 +187,17 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, null) < 7F
 					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
-				if (func_234616_v_() instanceof PlayerEntity) {
-					PlayerEntity player = (PlayerEntity) func_234616_v_();
+				if (getShooter() instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity) getShooter();
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
+						if (block.canHarvestBlock(state, world, pos, player)) {
+							block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(getHand()));
 
-					if (block.canHarvestBlock(state, world, pos, player)) {
-						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(getHand()));
+							world.destroyBlock(pos, false);
+							this.blocksSmashed++;
+						}
 					}
 				}
-
-				world.destroyBlock(pos, false);
-				this.blocksSmashed++;
 			}
 		}
 	}
@@ -213,13 +215,13 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 			chain5.tick();
 
 			// set chain positions
-			if (this.func_234616_v_() != null) {
+			if (this.getShooter() != null) {
 				// interpolate chain position
-				Vector3d handVec = this.func_234616_v_().getLookVec().rotateYaw(getHand() == Hand.MAIN_HAND ? -0.4F : 0.4F);
+				Vector3d handVec = this.getShooter().getLookVec().rotateYaw(getHand() == Hand.MAIN_HAND ? -0.4F : 0.4F);
 
-				double sx = this.func_234616_v_().getPosX() + handVec.x;
-				double sy = this.func_234616_v_().getPosY() + handVec.y - 0.4F + this.func_234616_v_().getEyeHeight();
-				double sz = this.func_234616_v_().getPosZ() + handVec.z;
+				double sx = this.getShooter().getPosX() + handVec.x;
+				double sy = this.getShooter().getPosY() + handVec.y - 0.4F + this.getShooter().getEyeHeight();
+				double sz = this.getShooter().getPosZ() + handVec.z;
 
 				double ox = sx - this.getPosX();
 				double oy = sy - this.getPosY() - 0.25F;
@@ -232,10 +234,10 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 				this.chain5.setPosition(sx - ox * 0.85, sy - oy * 0.85, sz - oz * 0.85);
 			}
 		} else {
-			if (func_234616_v_() == null) {
+			if (getShooter() == null) {
 				remove();
 			} else {
-				double distToPlayer = this.getDistance(this.func_234616_v_());
+				double distToPlayer = this.getDistance(this.getShooter());
 				// return if far enough away
 				if (!this.isReturning && distToPlayer > MAX_CHAIN) {
 					this.isReturning = true;
@@ -247,7 +249,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 						this.remove();
 					}
 
-					LivingEntity returnTo = (LivingEntity) this.func_234616_v_();
+					LivingEntity returnTo = (LivingEntity) this.getShooter();
 
 					Vector3d back = new Vector3d(returnTo.getPosX(), returnTo.getPosY() + returnTo.getEyeHeight(), returnTo.getPosZ()).subtract(this.getPositionVec()).normalize();
 					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
@@ -271,7 +273,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 	@Override
 	public void remove() {
 		super.remove();
-		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
+		LivingEntity thrower = (LivingEntity) this.getShooter();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain.get()) {
 			thrower.resetActiveHand();
 		}
@@ -279,7 +281,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
-		buffer.writeInt(func_234616_v_() != null ? func_234616_v_().getEntityId() : -1);
+		buffer.writeInt(getShooter() != null ? getShooter().getEntityId() : -1);
 		buffer.writeBoolean(getHand() == Hand.MAIN_HAND);
 	}
 

@@ -464,7 +464,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	public boolean canChangeDimension() {
 		return false;
 	}
 

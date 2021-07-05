@@ -73,7 +73,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 		boolean flag = this.generate(world, random, pos, logs, leaves, mutableboundingbox, config);
 		if (mutableboundingbox.minX <= mutableboundingbox.maxX && flag && !logs.isEmpty()) {
 			VoxelShapePart voxelshapepart = this.getVoxelShapePart(world, mutableboundingbox, logs);
-			Template.func_222857_a(world, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
+			Template.updatePostProcessing(world, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
 			return true;
 		} else {
 			return false;
@@ -102,7 +102,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 					BlockState blockstate = world.getBlockState(mutable);
 					if (blockstate.hasProperty(BlockStateProperties.DISTANCE_1_7)) {
 						list.get(0).add(mutable.toImmutable());
-						TreeFeature.func_236408_b_(world, mutable, blockstate.with(BlockStateProperties.DISTANCE_1_7, 1));
+						TreeFeature.setBlockStateWithoutUpdate(world, mutable, blockstate.with(BlockStateProperties.DISTANCE_1_7, 1));
 						if (mbb.isVecInside(mutable)) {
 							voxelshapepart.setFilled(mutable.getX() - mbb.minX, mutable.getY() - mbb.minY, mutable.getZ() - mbb.minZ, true, true);
 						}
@@ -128,7 +128,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 							int k = blockstate1.get(BlockStateProperties.DISTANCE_1_7);
 							if (k > l + 1) {
 								BlockState blockstate2 = blockstate1.with(BlockStateProperties.DISTANCE_1_7, l + 1);
-								TreeFeature.func_236408_b_(world, mutable, blockstate2);
+								TreeFeature.setBlockStateWithoutUpdate(world, mutable, blockstate2);
 								if (mbb.isVecInside(mutable)) {
 									voxelshapepart.setFilled(mutable.getX() - mbb.minX, mutable.getY() - mbb.minY, mutable.getZ() - mbb.minZ, true, true);
 								}

@@ -88,7 +88,7 @@ public abstract class EntityTFHydraPart extends TFPartEntity<EntityTFHydra> {
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	public boolean canChangeDimension() {
 		return false;
 	}
 

@@ -16,7 +16,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.world.BlockEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import twilightforest.TFSounds;
@@ -161,6 +163,10 @@ public class ItemTFCrumbleHorn extends Item {
 		Block block = state.getBlock();
 
 		if (block.isAir(state, world, pos)) return false;
+
+		if(living instanceof PlayerEntity) {
+			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (PlayerEntity)living))) return false;
+		}
 
 		for (Pair<Predicate<BlockState>, UnaryOperator<BlockState>> transform : crumbleTransforms) {
 			if (transform.getLeft().test(state) && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {

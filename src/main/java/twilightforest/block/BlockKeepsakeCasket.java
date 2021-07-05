@@ -102,7 +102,7 @@ public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingE
 
 	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.isIn(newState.getBlock())) {
+		if (!state.matchesBlock(newState.getBlock())) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 			if (tileentity instanceof IInventory) {
 				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
@@ -205,7 +205,7 @@ public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingE
 	//[VanillaCopy] of FlowingFluidBlock.reactWithNeighbors, adapted for blockstates
 	private void reactWithNeighbors(World worldIn, BlockPos pos, BlockState state) {
 		if (state.get(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA) {
-			boolean flag = worldIn.getBlockState(pos.down()).isIn(Blocks.SOUL_SOIL);
+			boolean flag = worldIn.getBlockState(pos.down()).matchesBlock(Blocks.SOUL_SOIL);
 
 			for(Direction direction : Direction.values()) {
 				if (direction != Direction.DOWN) {
@@ -215,7 +215,7 @@ public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingE
 						worldIn.playEvent(1501, pos, 0);
 					}
 
-					if (flag && worldIn.getBlockState(blockpos).isIn(Blocks.BLUE_ICE)) {
+					if (flag && worldIn.getBlockState(blockpos).matchesBlock(Blocks.BLUE_ICE)) {
 						worldIn.setBlockState(pos, state.with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.BASALT));
 						worldIn.playEvent(1501, pos, 0);
 					}

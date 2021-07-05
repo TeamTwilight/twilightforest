@@ -11,6 +11,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.event.world.BlockEvent;
 import twilightforest.entity.projectile.EntityTFThrowable;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.potions.TFPotions;
@@ -36,8 +39,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		this.setMotion(0.0D, 0.0D, 0.0D);
 		this.hasHit = true;
 
-		if (!world.isRemote)
-			this.doTerrainEffects();
+		this.doTerrainEffects();
 	}
 
 	private void doTerrainEffects() {
@@ -51,7 +53,11 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
-					this.doTerrainEffect(new BlockPos(ix + x, iy + y, iz + z));
+					BlockPos pos = new BlockPos(ix + x, iy + y, iz + z);
+					BlockSnapshot blocksnapshot = BlockSnapshot.create(world.getDimensionKey(), world, pos);
+					if (!world.isRemote && !MinecraftForge.EVENT_BUS.post(new BlockEvent.EntityPlaceEvent(blocksnapshot, world.getBlockState(pos), null))) {
+						this.doTerrainEffect(pos);
+					}
 				}
 			}
 		}
@@ -97,10 +103,10 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 
 	public void makeTrail() {
 		BlockState stateId = Blocks.SNOW.getDefaultState();
-		for (int i = 0; i < 10; i++) {
-			double dx = getPosX() + 0.75F * (rand.nextFloat() - 0.5F);
-			double dy = getPosY() + 0.75F * (rand.nextFloat() - 0.5F);
-			double dz = getPosZ() + 0.75F * (rand.nextFloat() - 0.5F);
+		for (int i = 0; i < 5; i++) {
+			double dx = getPosX() + 1.5F * (rand.nextFloat() - 0.5F);
+			double dy = getPosY() + 1.5F * (rand.nextFloat() - 0.5F);
+			double dz = getPosZ() + 1.5F * (rand.nextFloat() - 0.5F);
 
 			world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, -getMotion().getX(), -getMotion().getY(), -getMotion().getZ());
 		}
@@ -110,7 +116,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		if (this.world.isRemote) {
 			// sparkles
 			BlockState stateId = Blocks.SNOW.getDefaultState();
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 15; i++) {
 				double dx = this.getPosX() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dy = this.getPosY() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dz = this.getPosZ() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
@@ -128,7 +134,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		List<LivingEntity> nearby = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(3, 2, 3));
 
 		for (LivingEntity entity : nearby) {
-			if (entity != this.func_234616_v_()) {
+			if (entity != this.getShooter()) {
 				if (entity instanceof EntityTFYeti) {
 					// TODO: make "frozen yeti" entity?
 					BlockPos pos = new BlockPos(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
@@ -137,7 +143,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 
 					entity.remove();
 				} else {
-					entity.attackEntityFrom(TFDamageSources.FROZEN(this, (LivingEntity)this.func_234616_v_()), 1);
+					entity.attackEntityFrom(TFDamageSources.FROZEN(this, (LivingEntity)this.getShooter()), 1);
 					entity.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
 				}
 			}

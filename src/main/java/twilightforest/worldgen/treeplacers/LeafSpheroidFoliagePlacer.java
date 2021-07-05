@@ -22,7 +22,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
             instance -> instance.group(
                     Codec.floatRange(0, 16f).fieldOf("horizontal_radius").forGetter(o -> o.horizontalRadius),
                     Codec.floatRange(0, 16f).fieldOf("vertical_radius").forGetter(o -> o.verticalRadius),
-                    FeatureSpread.func_242254_a(0, 8, 8).fieldOf("offset").forGetter(obj -> obj.field_236750_g_),
+                    FeatureSpread.createCodec(0, 8, 8).fieldOf("offset").forGetter(obj -> obj.offset),
                     Codec.intRange(0, 16).fieldOf("random_add_horizontal").orElse(0).forGetter(o -> o.randomHorizontal),
                     Codec.intRange(0, 16).fieldOf("random_add_vertical").orElse(0).forGetter(o -> o.randomVertical),
                     Codec.floatRange(-0.5f, 0.5f).fieldOf("vertical_filler_bias").orElse(0f).forGetter(o -> o.verticalBias),
@@ -41,7 +41,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     private final int shag_factor;
 
     public LeafSpheroidFoliagePlacer(float horizontalRadius, float verticalRadius, FeatureSpread yOffset, int randomHorizontal, int randomVertical, float verticalBias, int shag_factor) {
-        super(FeatureSpread.func_242252_a((int) horizontalRadius), yOffset);
+        super(FeatureSpread.create((int) horizontalRadius), yOffset);
 
         this.horizontalRadius = horizontalRadius;
         this.verticalRadius = verticalRadius;
@@ -52,7 +52,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected FoliagePlacerType<LeafSpheroidFoliagePlacer> func_230371_a_() {
+    protected FoliagePlacerType<LeafSpheroidFoliagePlacer> getPlacerType() {
         return TwilightFeatures.FOLIAGE_SPHEROID;
     }
 

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "twilightforest:stripped_twilight_oak_log"
+    }
+  },
+  "result": {
+    "item": "twilightforest:stripped_twilight_oak_wood",
+    "count": 3
+  }
+}

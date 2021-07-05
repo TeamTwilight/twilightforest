@@ -2,6 +2,7 @@ package twilightforest.structures.lichtower;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SixWayBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
@@ -19,10 +20,8 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
-import twilightforest.enums.BossVariant;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
@@ -292,11 +291,11 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// now a chandelier
 		decorateLichChandelier(world, floorLevel, sbb);
 
-		// and wall torches
-		decorateTorches(world, rand, floorLevel, sbb);
-
 		// make paintings
 		decoratePaintings(world, rand, floorLevel, sbb);
+
+		// and wall torches
+		decorateTorches(world, rand, floorLevel, sbb);
 
 		// seems like we should have a spawner
 		setBlockState(world, TFBlocks.boss_spawner_lich.get().getDefaultState(), size / 2, floorLevel + 2, size / 2, sbb);
@@ -431,7 +430,8 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	 * Cover the walls in the lich's room with paintings.  How is this going to work, chunk by chunk?
 	 */
 	protected void decoratePaintings(ISeedReader world, Random rand, int floorLevel, MutableBoundingBox sbb) {
-		int howMany = 100;
+		// I reduced this number since it turns out paintings already generate in the boss room before this is called
+		int howMany = 25;
 
 		for (final Direction horizontal : Direction.Plane.HORIZONTAL) {
 			// do wall 0.
@@ -467,14 +467,13 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			BlockPos.Mutable tCoords = new BlockPos.Mutable(wCoords.getX(), wCoords.getY(), wCoords.getZ());
 
 			// is there a painting or another torch there?
-			AxisAlignedBB torchBox = new AxisAlignedBB(tCoords.getX(), tCoords.getY(), tCoords.getZ(), tCoords.getX() + 1.0, tCoords.getY() + 2.0, tCoords.getZ() + 1.0);
 			BlockState blockState = world.getBlockState(tCoords);
 			BlockState aboveBlockState = world.getBlockState(tCoords.up());
 			if (blockState.getMaterial() == Material.AIR &&
 					aboveBlockState.getMaterial() == Material.AIR &&
-					world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0) {
+					getEntitiesInAABB(world, new AxisAlignedBB(tCoords)).size() == 0) {
 				// if not, place a torch
-				world.setBlockState(tCoords, Blocks.OAK_FENCE.getDefaultState(), 2);
+				world.setBlockState(tCoords, Blocks.OAK_FENCE.getDefaultState().with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(direction.getOpposite()), true), 2);
 				world.setBlockState(tCoords.up(), Blocks.TORCH.getDefaultState(), 2);
 			}
 		}

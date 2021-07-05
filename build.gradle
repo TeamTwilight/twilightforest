@@ -184,23 +184,19 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}")
 
-    //deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
-    //deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"
-
+    //implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}")
+    //implementation fg.deobf("slimeknights:TConstruct:${minecraft_version}-${tcon_version}")
 
     // tterrag
-    runtimeOnly fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
-    compileOnly fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
+    implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
 
     // blamejared
-    compileOnly fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
-    runtimeOnly fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
+    implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // theillusivec4
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
     // player
     //deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"

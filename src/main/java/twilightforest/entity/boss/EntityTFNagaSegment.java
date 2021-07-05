@@ -139,7 +139,7 @@ public class EntityTFNagaSegment extends TFPartEntity<EntityTFNaga> {
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	public boolean canChangeDimension() {
 		return false;
 	}
 }

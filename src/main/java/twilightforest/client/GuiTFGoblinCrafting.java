@@ -168,7 +168,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		}
 
 		@Override
-		public void renderButton(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+		public void renderWidget(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				Minecraft.getInstance().getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -217,7 +217,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		}
 
 		@Override
-		public void renderButton(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+		public void renderWidget(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				Minecraft.getInstance().getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

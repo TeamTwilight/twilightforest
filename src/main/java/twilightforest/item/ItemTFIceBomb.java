@@ -26,7 +26,7 @@ public class ItemTFIceBomb extends Item {
 				player.getHeldItem(hand).shrink(1);
 			}
 			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice, world, player);
-			ice.func_234612_a_(player, player.rotationPitch, player.rotationYaw, -20.0F, 0.5F, 1.0F);
+			ice.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, -20.0F, 0.75F, 1.0F);
 			world.addEntity(ice);
 		}
 

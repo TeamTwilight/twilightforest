@@ -14,7 +14,7 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Nullable
 	public static Iterable<Entity> getEntityListForASM() {
-		return ASMHooks.world instanceof ServerWorld ? ((ServerWorld) ASMHooks.world).func_241136_z_() : ASMHooks.world instanceof ClientWorld ? ((ClientWorld) ASMHooks.world).getAllEntities() : null;
+		return ASMHooks.world instanceof ServerWorld ? ((ServerWorld) ASMHooks.world).getEntitiesIteratable() : ASMHooks.world instanceof ClientWorld ? ((ClientWorld) ASMHooks.world).getAllEntities() : null;
 	}
 
 	@Override

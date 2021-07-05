@@ -9,7 +9,7 @@
     },
     "frame": "goal"
   },
-  "parent": "twilightforest:progress_merge",
+  "parent": "twilightforest:giants",
   "criteria": {
     "lamp": {
       "trigger": "minecraft:inventory_changed",

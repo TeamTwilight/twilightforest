@@ -30,7 +30,7 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 
 	public EntityTFMoonwormShot(EntityType<? extends EntityTFMoonwormShot> type, World world, LivingEntity thrower) {
 		super(type, world, thrower);
-		func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
+		setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
 	}
 	public EntityTFMoonwormShot(World worldIn, double x, double y, double z) {
 		super(TFEntities.moonworm_shot, worldIn, x, y, z);

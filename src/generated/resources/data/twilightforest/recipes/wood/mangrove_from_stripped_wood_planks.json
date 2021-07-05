@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:stripped_mangrove_wood"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:mangrove_planks",
+    "count": 4
+  }
+}

@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -26,6 +27,7 @@ import twilightforest.block.BlockTFAbstractTrophy;
 import twilightforest.client.renderer.ShaderGrabbagStackRenderer;
 import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
 import twilightforest.compat.ie.ItemTFShaderGrabbag;
+import twilightforest.enums.BossVariant;
 import twilightforest.tileentity.TileEntityKeepsakeCasket;
 
 public class ISTER extends ItemStackTileEntityRenderer {
@@ -53,41 +55,24 @@ public class ISTER extends ItemStackTileEntityRenderer {
 					IBakedModel modelBack = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(back);
 
 					ms.push();
-					ms.translate(0.5F, 0.0F, 0.5F);
-					ms.rotate(Vector3f.YP.rotationDegrees(-45));
-					ms.translate(0.0F, -0.25F, -0.9F);
-					switch(((BlockTFAbstractTrophy) block).getVariant()) {
-						case NAGA:
-							ms.scale(0.85f, 0.85f, 0.85f);
-							break;
-						case HYDRA:
-							ms.scale(1.1F, 1.1F, 1.1F);
-							ms.translate(0.02F, 0.05F, 0.0F);
-							break;
-						case UR_GHAST:
-							ms.translate(0F, -0.65F, 0F);
-							break;
-						case QUEST_RAM:
-							ms.scale(1.1f, 1.1f, 1.1f);
-							ms.translate(-0.05F, 0.0F, 0.0F);
-							break;
-						default:
-							break;
-					}
-					Minecraft.getInstance().getItemRenderer().renderItem(TileEntityTFTrophyRenderer.stack, ItemCameraTransforms.TransformType.GUI, false, ms, buffers, light, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false));
+					ms.translate(0.5F, 0.5F, -1.5F);
+					Minecraft.getInstance().getItemRenderer().renderItem(TileEntityTFTrophyRenderer.stack, ItemCameraTransforms.TransformType.GUI, false, ms, buffers, 240, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false));
 					ms.pop();
 
 					ms.push();
-					ms.translate(0.5F, 0.0F, 0.5F);
-					ms.rotate(Vector3f.YP.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : 0));
-					ms.translate(-0.5F, 0.0F, -0.5F);
-					TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light);
+					ms.translate(0.5F, 0.5F, 0.5F);
+					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.HYDRA || ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.QUEST_RAM) ms.scale(0.9F, 0.9F, 0.9F);
+					ms.rotate(Vector3f.XP.rotationDegrees(30));
+					ms.rotate(Vector3f.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : -45));
+					ms.translate(-0.5F, -0.5F, -0.5F);
+					ms.translate(0.0F, 0.25F, 0.0F);
+					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
+					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
+					TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light, camera);
 					ms.pop();
 
-					//Fun Scaling, may add as a secret later
-					//GlStateManager.rotatef(TFClientEvents.rotationTicker, 0F, 0F, 0F);
 				} else {
-					TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light);
+					TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light, camera);
 				}
 			} else if (block instanceof BlockKeepsakeCasket) {
 				TileEntityRendererDispatcher.instance.renderItem(new TileEntityKeepsakeCasket(), ms, buffers, light, overlay);

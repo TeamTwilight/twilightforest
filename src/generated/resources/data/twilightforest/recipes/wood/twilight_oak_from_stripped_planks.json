@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:stripped_twilight_oak_log"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:twilight_oak_planks",
+    "count": 4
+  }
+}

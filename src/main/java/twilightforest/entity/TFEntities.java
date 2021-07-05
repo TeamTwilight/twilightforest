@@ -311,7 +311,7 @@ public class TFEntities {
 	@SubscribeEvent
 	public static void addEntityAttributes(EntityAttributeCreationEvent event) {
 		event.put(wild_boar, PigEntity.func_234215_eI_().create());
-		event.put(bighorn_sheep, SheepEntity.func_234225_eI_().create());
+		event.put(bighorn_sheep, SheepEntity.registerAttributes().create());
 		event.put(deer, EntityTFDeer.registerAttributes().create());
 		event.put(redcap, EntityTFRedcap.registerAttributes().create());
 		event.put(swarm_spider, EntityTFSwarmSpider.registerAttributes().create());
@@ -439,6 +439,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(roving_cube, RenderTFRovingCube::new);
 		RenderingRegistry.registerEntityRenderingHandler(rising_zombie, m -> new RenderTFBiped<>(m, new ModelTFRisingZombie(false), new ModelTFRisingZombie(true), new ModelTFRisingZombie(true), 0.5F, "textures/entity/zombie/zombie.png"));
 		//RenderingRegistry.registerEntityRenderingHandler(castle_guardian, m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
+		RenderingRegistry.registerEntityRenderingHandler(plateau_boss, RenderNoop::new);
 
 		// projectiles
 		RenderingRegistry.registerEntityRenderingHandler(nature_bolt, m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));

@@ -339,8 +339,8 @@ public enum TFFeature {
 					.addMonster(TFEntities.troll, 20, 4, 4)
 					.addMonster(EntityType.WITCH, 5, 1, 1)
 					// cloud monsters
-					.addMonster(1, TFEntities.giant_miner, 10, 1, 4)
-					.addMonster(1, TFEntities.armored_giant, 10, 1, 4);
+					.addMonster(1, TFEntities.giant_miner, 10, 1, 1)
+					.addMonster(1, TFEntities.armored_giant, 10, 1, 1);
 		}
 
 		@Override

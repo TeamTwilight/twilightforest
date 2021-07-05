@@ -29,6 +29,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.advancements.TFAdvancements;
@@ -66,7 +67,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 	@Nullable
 	@Override
-	public AnimalEntity func_241840_a(ServerWorld world, AgeableEntity mate) {
+	public AnimalEntity createChild(ServerWorld world, AgeableEntity mate) {
 		return null;
 	}
 
@@ -114,7 +115,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 	private void rewardQuest() {
 		// todo flesh the context out more
-		LootContext ctx = new LootContext.Builder((ServerWorld) world).withParameter(LootParameters.THIS_ENTITY, this).build(LootParameterSets.field_237453_h_);
+		LootContext ctx = new LootContext.Builder((ServerWorld) world).withParameter(LootParameters.THIS_ENTITY, this).build(LootParameterSets.BARTER);
 		world.getServer().getLootTableManager().getLootTableFromLocation(TFTreasure.QUESTING_RAM_REWARDS).generate(ctx, s -> entityDropItem(s, 1.0F));
 
 		for (ServerPlayerEntity player : this.world.getEntitiesWithinAABB(ServerPlayerEntity.class, getBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
@@ -123,7 +124,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 	}
 
 	@Override
-	public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
 		ItemStack currentItem = player.getHeldItem(hand);
 
 		if (tryAccept(currentItem)) {
@@ -133,7 +134,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 			return ActionResultType.SUCCESS;
 		} else {
-			return super.func_230254_b_(player, hand);
+			return super.applyPlayerInteraction(player, vec, hand);
 		}
 	}
 

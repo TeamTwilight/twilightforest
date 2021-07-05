@@ -85,8 +85,8 @@
           },
           "type": "minecraft:simple_state_provider"
         },
-        "attempts_minimum": 1,
-        "random_add_attempts": 2,
+        "attempts_minimum": 0,
+        "random_add_attempts": 1,
         "minimum_required_length": 2,
         "type": "twilightforest:dangle_from_tree_decorator"
       },

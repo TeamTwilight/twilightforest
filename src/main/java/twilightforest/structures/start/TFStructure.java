@@ -138,8 +138,9 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 
 		@Override
 		public void func_230364_a_(DynamicRegistries p_230364_1_, ChunkGenerator p_230364_2_, TemplateManager p_230364_3_, int p_230364_4_, int p_230364_5_, Biome p_230364_6_, C p_230364_7_) {
-			int x = (p_230364_4_ << 4);
-			int z = (p_230364_5_ << 4);
+			boolean dontCenter = feature == TFFeature.LICH_TOWER || feature == TFFeature.TROLL_CAVE || feature == TFFeature.YETI_CAVE;
+			int x = (p_230364_4_ << 4) + (dontCenter ? 0 : 7);
+			int z = (p_230364_5_ << 4) + (dontCenter ? 0 : 7);
 			int y = TFGenerationSettings.SEALEVEL + 1;
 			StructurePiece start = feature.provideStructureStart(rand, x, y, z);
 			if(start == null)

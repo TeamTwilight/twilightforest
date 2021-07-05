@@ -445,7 +445,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	public boolean canChangeDimension() {
 		return false;
 	}
 

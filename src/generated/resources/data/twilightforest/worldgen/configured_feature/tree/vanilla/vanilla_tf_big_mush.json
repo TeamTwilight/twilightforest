@@ -1,0 +1,34 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature_true": "minecraft:huge_red_mushroom",
+            "feature_false": "minecraft:huge_brown_mushroom"
+          },
+          "type": "minecraft:random_boolean_selector"
+        },
+        "decorator": {
+          "config": {},
+          "type": "twilightforest:nostructure"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "outer": {
+          "config": {},
+          "type": "minecraft:square"
+        },
+        "inner": {
+          "config": {},
+          "type": "minecraft:heightmap"
+        }
+      },
+      "type": "minecraft:decorated"
+    }
+  },
+  "type": "minecraft:decorated"
+}

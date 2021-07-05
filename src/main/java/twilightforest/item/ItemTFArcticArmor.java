@@ -50,10 +50,10 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void initArmorModel() {
-		arcticArmorModel.put(EquipmentSlotType.HEAD, new ModelTFArcticArmor(0.6F));
+		arcticArmorModel.put(EquipmentSlotType.HEAD, new ModelTFArcticArmor(0.75F));
 		arcticArmorModel.put(EquipmentSlotType.CHEST, new ModelTFArcticArmor(1.0F));
-		arcticArmorModel.put(EquipmentSlotType.LEGS, new ModelTFArcticArmor(0.4F));
-		arcticArmorModel.put(EquipmentSlotType.FEET, new ModelTFArcticArmor(0.55F));
+		arcticArmorModel.put(EquipmentSlotType.LEGS, new ModelTFArcticArmor(0.5F));
+		arcticArmorModel.put(EquipmentSlotType.FEET, new ModelTFArcticArmor(1.0F));
 	}
 
 	@Override

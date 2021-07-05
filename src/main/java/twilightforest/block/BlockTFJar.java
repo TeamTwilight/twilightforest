@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -56,6 +57,15 @@ public class BlockTFJar extends Block {
 	}
 
 	@Override
+	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+		super.randomTick(state, worldIn, pos, random);
+		//need to counter a higher random tick speed resulting in so many sounds, so here we go
+		if(!TFConfig.CLIENT_CONFIG.silentCicadas.get() && random.nextInt(worldIn.getGameRules().get(GameRules.RANDOM_TICK_SPEED).get()) <= 3) {
+			worldIn.playSound(null, pos, TFSounds.CICADA, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		}
+	}
+
+	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
 		if(this == TFBlocks.firefly_jar.get()) {
@@ -67,16 +77,11 @@ public class BlockTFJar extends Block {
 				world.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
-			if(rand.nextInt(200) == 0 && !TFConfig.CLIENT_CONFIG.silentCicadas.get()) {
-				world.playSound(null, pos, TFSounds.CICADA, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			}
-			for (int i = 0; i < 1; i++) {
-				double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
-				double dy = pos.getY();
-				double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
+			double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
+			double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.2F);
+			double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
-				world.addParticle(ParticleTypes.NOTE, dx, dy, dz, 0, 0, 0);
-			}
+			world.addParticle(ParticleTypes.NOTE, dx, dy, dz, 0, 0, 0);
 		}
 	}
 }

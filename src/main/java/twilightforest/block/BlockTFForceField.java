@@ -46,7 +46,7 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 
 	@OnlyIn(Dist.CLIENT)
 	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (adjacentBlockState.isIn(this)) {
+		if (adjacentBlockState.matchesBlock(this)) {
 			if (!side.getAxis().isHorizontal()) {
 				return true;
 			}

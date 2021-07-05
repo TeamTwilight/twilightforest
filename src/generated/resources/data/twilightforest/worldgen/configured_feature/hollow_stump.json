@@ -21,6 +21,9 @@
                 "add_second_five_chance": 1,
                 "branch_provider": {
                   "state": {
+                    "Properties": {
+                      "axis": "y"
+                    },
                     "Name": "twilightforest:twilight_oak_wood"
                   },
                   "type": "minecraft:simple_state_provider"

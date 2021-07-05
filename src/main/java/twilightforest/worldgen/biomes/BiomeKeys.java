@@ -51,8 +51,8 @@ public class BiomeKeys {
 				.scale(0)
 				.temperature(0)
 				.setEffects(new BiomeAmbience.Builder().setFogColor(0).setWaterColor(0).setWaterFogColor(0).withSkyColor(0).build())
-				.withGenerationSettings(new BiomeGenerationSettings.Builder().withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j).build())
-				.withMobSpawnSettings(new MobSpawnInfo.Builder().copy())
+				.withGenerationSettings(new BiomeGenerationSettings.Builder().withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS).build())
+				.withMobSpawnSettings(new MobSpawnInfo.Builder().build())
 				.withTemperatureModifier(Biome.TemperatureModifier.NONE)
 				.build());
 		return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, TwilightForestMod.prefix(name));

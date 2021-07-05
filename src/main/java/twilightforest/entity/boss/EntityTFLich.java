@@ -612,7 +612,7 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	public boolean canChangeDimension() {
 		return false;
 	}
 }

@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
+import twilightforest.entity.ai.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
 import twilightforest.util.TFDamageSources;
 
@@ -67,10 +69,7 @@ public class EntityTFBlockGoblin extends MonsterEntity {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		// This is safe because AvoidEntityGoal doesn't use the LivingEntity interface, only the Entity one
-		//FIXME uses LivingEntity now, this doesnt work
-		//AvoidEntityGoal avoidGoal = new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F);
-		//this.goalSelector.addGoal(1, avoidGoal);
+		this.goalSelector.addGoal(1, new AvoidAnyEntityGoal<>(this, TNTEntity.class, 2.0F, 1.0F, 2.0F));
 		this.goalSelector.addGoal(4, new EntityAIThrowSpikeBlock(this, this.block));
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0F, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));

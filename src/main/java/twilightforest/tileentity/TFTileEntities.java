@@ -33,10 +33,10 @@ public class TFTileEntities {
 			TileEntityType.Builder.create(TileEntityTFTowerBuilder::new, TFBlocks.carminite_builder.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFTrophy>> TROPHY                         = TILE_ENTITIES.register("trophy", () ->
 			TileEntityType.Builder.create(TileEntityTFTrophy::new, TFBlocks.naga_trophy.get(), TFBlocks.lich_trophy.get(), TFBlocks.minoshroom_trophy.get(), 
-					TFBlocks.hydra_trophy.get(), TFBlocks.knight_phantom_trophy.get(), TFBlocks.ur_ghast_trophy.get(), TFBlocks.snow_queen_trophy.get(), 
-					TFBlocks.quest_ram_trophy.get(), TFBlocks.naga_wall_trophy.get(), TFBlocks.lich_wall_trophy.get(), TFBlocks.minoshroom_wall_trophy.get(), 
-					TFBlocks.hydra_wall_trophy.get(), TFBlocks.knight_phantom_wall_trophy.get(), TFBlocks.ur_ghast_wall_trophy.get(), TFBlocks.snow_queen_wall_trophy.get(), 
-					TFBlocks.quest_ram_wall_trophy.get()).build(null));
+					TFBlocks.hydra_trophy.get(), TFBlocks.knight_phantom_trophy.get(), TFBlocks.ur_ghast_trophy.get(), TFBlocks.yeti_trophy.get(),
+					TFBlocks.snow_queen_trophy.get(), TFBlocks.quest_ram_trophy.get(), TFBlocks.naga_wall_trophy.get(), TFBlocks.lich_wall_trophy.get(),
+					TFBlocks.minoshroom_wall_trophy.get(), TFBlocks.hydra_wall_trophy.get(), TFBlocks.knight_phantom_wall_trophy.get(), TFBlocks.ur_ghast_wall_trophy.get(),
+					TFBlocks.yeti_wall_trophy.get(), TFBlocks.snow_queen_wall_trophy.get(), TFBlocks.quest_ram_wall_trophy.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFAlphaYetiSpawner>> ALPHA_YETI_SPAWNER     = TILE_ENTITIES.register("alpha_yeti_spawner", () ->
 			TileEntityType.Builder.create(TileEntityTFAlphaYetiSpawner::new, TFBlocks.boss_spawner_alpha_yeti.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFFinalBossSpawner>> FINAL_BOSS_SPAWNER     = TILE_ENTITIES.register("final_boss_spawner", () ->

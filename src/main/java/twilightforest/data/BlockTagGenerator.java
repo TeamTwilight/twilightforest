@@ -34,15 +34,15 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final ITag.INamedTag<Block> TF_FENCES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("fences").toString());
     public static final ITag.INamedTag<Block> TF_FENCE_GATES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("fence_gates").toString());
 
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/carminite").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_FIERY = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/fiery").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString());
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.makeWrapperTag("forge:storage_blocks/arctic_fur");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.makeWrapperTag("forge:storage_blocks/carminite");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_FIERY = BlockTags.makeWrapperTag("forge:storage_blocks/fiery");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.makeWrapperTag("forge:storage_blocks/ironwood");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.makeWrapperTag("forge:storage_blocks/knightmetal");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.makeWrapperTag("forge:storage_blocks/steeleaf");
 
-    public static final ITag.INamedTag<Block> ORES_IRONWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ores/ironwood").toString());
-    public static final ITag.INamedTag<Block> ORES_KNIGHTMETAL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ores/knightmetal").toString());
+    public static final ITag.INamedTag<Block> ORES_IRONWOOD = BlockTags.makeWrapperTag("forge:ores/ironwood");
+    public static final ITag.INamedTag<Block> ORES_KNIGHTMETAL = BlockTags.makeWrapperTag("forge:ores/knightmetal");
 
     public static final ITag.INamedTag<Block> PORTAL_EDGE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/edge").toString());
     public static final ITag.INamedTag<Block> PORTAL_POOL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/fluid").toString());
@@ -74,21 +74,21 @@ public class BlockTagGenerator extends BlockTagsProvider {
     @Override
     protected void registerTags() {
         getOrCreateBuilder(TWILIGHT_OAK_LOGS)
-                .add(TFBlocks.oak_log.get(), TFBlocks.oak_wood.get());
+                .add(TFBlocks.oak_log.get(), TFBlocks.stripped_oak_log.get(), TFBlocks.oak_wood.get(), TFBlocks.stripped_oak_wood.get());
         getOrCreateBuilder(CANOPY_LOGS)
-                .add(TFBlocks.canopy_log.get(), TFBlocks.canopy_wood.get());
+                .add(TFBlocks.canopy_log.get(), TFBlocks.stripped_canopy_log.get(), TFBlocks.canopy_wood.get(), TFBlocks.stripped_canopy_wood.get());
         getOrCreateBuilder(MANGROVE_LOGS)
-                .add(TFBlocks.mangrove_log.get(), TFBlocks.mangrove_log.get());
+                .add(TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_log.get(), TFBlocks.mangrove_wood.get(), TFBlocks.stripped_mangrove_wood.get());
         getOrCreateBuilder(DARKWOOD_LOGS)
-                .add(TFBlocks.dark_log.get(), TFBlocks.dark_wood.get());
+                .add(TFBlocks.dark_log.get(), TFBlocks.stripped_dark_log.get(), TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_wood.get());
         getOrCreateBuilder(TIME_LOGS)
-                .add(TFBlocks.time_log.get(), TFBlocks.time_wood.get());
+                .add(TFBlocks.time_log.get(), TFBlocks.stripped_time_log.get(), TFBlocks.time_wood.get(), TFBlocks.stripped_time_wood.get());
         getOrCreateBuilder(TRANSFORMATION_LOGS)
-                .add(TFBlocks.transformation_log.get(), TFBlocks.transformation_wood.get());
+                .add(TFBlocks.transformation_log.get(), TFBlocks.stripped_transformation_log.get(), TFBlocks.transformation_wood.get(), TFBlocks.stripped_transformation_wood.get());
         getOrCreateBuilder(MINING_LOGS)
-                .add(TFBlocks.mining_log.get(), TFBlocks.mining_wood.get());
+                .add(TFBlocks.mining_log.get(), TFBlocks.stripped_mining_log.get(), TFBlocks.mining_wood.get(), TFBlocks.stripped_mining_wood.get());
         getOrCreateBuilder(SORTING_LOGS)
-                .add(TFBlocks.sorting_log.get(), TFBlocks.sorting_wood.get());
+                .add(TFBlocks.sorting_log.get(), TFBlocks.stripped_sorting_log.get(), TFBlocks.sorting_wood.get(), TFBlocks.stripped_sorting_wood.get());
 
         getOrCreateBuilder(TF_LOGS)
                 .addTags(TWILIGHT_OAK_LOGS, CANOPY_LOGS, MANGROVE_LOGS, DARKWOOD_LOGS, TIME_LOGS, TRANSFORMATION_LOGS, MINING_LOGS, SORTING_LOGS);
@@ -207,6 +207,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 STORAGE_BLOCKS_STEELEAF
         );
 
+        getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addTags(STORAGE_BLOCKS_ARCTIC_FUR, STORAGE_BLOCKS_CARMINITE, STORAGE_BLOCKS_FIERY,  STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_STEELEAF);
+
+        getOrCreateBuilder(Tags.Blocks.ORES).addTags(ORES_IRONWOOD, ORES_KNIGHTMETAL);
         getOrCreateBuilder(ORES_IRONWOOD);
         getOrCreateBuilder(ORES_KNIGHTMETAL);
 
@@ -232,6 +235,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .add(TFBlocks.hydra_trophy.get(), TFBlocks.hydra_wall_trophy.get())
                 .add(TFBlocks.knight_phantom_trophy.get(), TFBlocks.knight_phantom_wall_trophy.get())
                 .add(TFBlocks.ur_ghast_trophy.get(), TFBlocks.ur_ghast_wall_trophy.get())
+                .add(TFBlocks.yeti_trophy.get(), TFBlocks.yeti_wall_trophy.get())
                 .add(TFBlocks.snow_queen_trophy.get(), TFBlocks.snow_queen_wall_trophy.get())
                 .add(TFBlocks.quest_ram_trophy.get(), TFBlocks.quest_ram_wall_trophy.get());
 
@@ -299,6 +303,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .add(Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
 
         getOrCreateBuilder(ORE_MAGNET_END_STONE)
+                // Using a Quark ore as an example filler
                 .addOptional(new ResourceLocation("quark", "biotite_ore"));
 
         getOrCreateBuilder(ORE_MAGNET_ROOT)

@@ -74,7 +74,7 @@ public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAs
 		if (result instanceof EntityRayTraceResult) {
 			Entity target = ((EntityRayTraceResult)result).getEntity();
 			if (!world.isRemote && target instanceof LivingEntity) {
-				target.attackEntityFrom(TFDamageSources.SNOWBALL_FIGHT(this, (LivingEntity) this.func_234616_v_()), DAMAGE);
+				target.attackEntityFrom(TFDamageSources.SNOWBALL_FIGHT(this, (LivingEntity) this.getShooter()), DAMAGE);
 				//damage armor pieces
 				if(target instanceof PlayerEntity) {
 					for(ItemStack stack : target.getArmorInventoryList())

@@ -21,6 +21,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -80,6 +81,7 @@ public class BlockTFTrophyPedestal extends Block implements IWaterLoggable {
 	@Override
 	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		world.updateComparatorOutputLevel(pos, this);
 		if (world.isRemote || state.get(ACTIVE) || !isTrophyOnTop(world, pos)) return;
 
 		if (TFGenerationSettings.isProgressionEnforced(world)) {
@@ -141,5 +143,19 @@ public class BlockTFTrophyPedestal extends Block implements IWaterLoggable {
 	@Override
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
 		return state.get(ACTIVE) ? super.getPlayerRelativeBlockHardness(state, player, worldIn, pos) : -1;
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+		Block trophy = worldIn.getBlockState(pos.up()).getBlock();
+		if(trophy instanceof BlockTFTrophy) {
+			return ((BlockTFTrophy)trophy).getComparatorValue();
+		}
+		return 0;
 	}
 }

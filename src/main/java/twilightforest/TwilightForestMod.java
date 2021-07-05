@@ -1,5 +1,6 @@
 package twilightforest;
 
+import com.google.common.collect.Maps;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.WoodType;
 import net.minecraft.dispenser.IBlockSource;
@@ -7,9 +8,7 @@ import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -182,11 +181,31 @@ public class TwilightForestMod {
 
 		TFConfig.build();
 		TFGenCaveStalactite.loadStalactites();
-		
+
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();
 			TFBlocks.TFBurnables();
 			TFBlocks.TFPots();
+
+			AxeItem.BLOCK_STRIPPING_MAP = Maps.newHashMap(AxeItem.BLOCK_STRIPPING_MAP);
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.oak_log.get(), TFBlocks.stripped_oak_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.canopy_log.get(), TFBlocks.stripped_canopy_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.dark_log.get(), TFBlocks.stripped_dark_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.time_log.get(), TFBlocks.stripped_time_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.transformation_log.get(), TFBlocks.stripped_transformation_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.mining_log.get(), TFBlocks.stripped_mining_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.sorting_log.get(), TFBlocks.stripped_sorting_log.get());
+
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.oak_wood.get(), TFBlocks.stripped_oak_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.canopy_wood.get(), TFBlocks.stripped_canopy_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.mangrove_wood.get(), TFBlocks.stripped_mangrove_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.time_wood.get(), TFBlocks.stripped_time_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.transformation_wood.get(), TFBlocks.stripped_transformation_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.mining_wood.get(), TFBlocks.stripped_mining_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.sorting_wood.get(), TFBlocks.stripped_sorting_wood.get());
+
 			DispenserBlock.registerDispenseBehavior(TFItems.moonworm_queen.get(), new MoonwormDispenseBehavior() {
 				@Override
 				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {

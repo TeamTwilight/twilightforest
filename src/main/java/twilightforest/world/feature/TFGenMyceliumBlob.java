@@ -21,19 +21,19 @@ public class TFGenMyceliumBlob extends AbstractSphereReplaceConfig {
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
 
 		boolean flag = false;
-		int i = config.radius.func_242259_a(random);
+		int i = config.radius.getSpread(random);
 
 		for(int j = pos.getX() - i; j <= pos.getX() + i; ++j) {
 			for(int k = pos.getZ() - i; k <= pos.getZ() + i; ++k) {
 				int l = j - pos.getX();
 				int i1 = k - pos.getZ();
 				if (l * l + i1 * i1 <= i * i) {
-					for(int j1 = pos.getY() - config.field_242809_d; j1 <= pos.getY() + config.field_242809_d; ++j1) {
+					for(int j1 = pos.getY() - config.halfHeight; j1 <= pos.getY() + config.halfHeight; ++j1) {
 						BlockPos blockpos = new BlockPos(j, j1, k);
 						Block block = world.getBlockState(blockpos).getBlock();
 
 						for(BlockState blockstate : config.targets) {
-							if (blockstate.isIn(block) && world.isAirBlock(pos.up())) {
+							if (blockstate.matchesBlock(block) && world.isAirBlock(pos.up())) {
 								world.setBlockState(blockpos, config.state, 2);
 								flag = true;
 								break;

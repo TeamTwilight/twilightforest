@@ -144,7 +144,7 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 			pos.setPos(posX, posY, posZ);
 			BlockState blockstate = chunk.getBlockState(pos);
 			BlockState blockstate1 = chunk.getBlockState(posUp.setAndMove(pos, Direction.UP));
-			if (blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(Blocks.MYCELIUM)) {
+			if (blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.matchesBlock(Blocks.MYCELIUM)) {
 				isSurface.setTrue();
 			}
 
@@ -159,17 +159,17 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 					for (Direction facing : Direction.values()) {
 						BlockState areaAround = chunk.getBlockState(posUp.offset(facing));
 						BlockState areaAboveAround = chunk.getBlockState(posUp.setPos(pos.add(0, 1, 0).offset(facing)));
-						if(rand.nextInt(10) == 0 && chunk.getBlockState(pos).isIn(Blocks.CAVE_AIR) && chunk.getBlockState(pos.offset(facing)).isIn(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
+						if(rand.nextInt(10) == 0 && chunk.getBlockState(pos).matchesBlock(Blocks.CAVE_AIR) && chunk.getBlockState(pos.offset(facing)).isIn(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
 							chunk.setBlockState(pos.offset(facing), TFBlocks.trollsteinn.get().getDefaultState(), false);
 						}
-						if (!aboveSurface.isIn(Blocks.WATER) && !areaAround.isIn(Blocks.WATER) && !areaAboveAround.isIn(Blocks.WATER)) {
+						if (!aboveSurface.matchesBlock(Blocks.WATER) && !areaAround.matchesBlock(Blocks.WATER) && !areaAboveAround.matchesBlock(Blocks.WATER)) {
 							chunk.setBlockState(pos, CAVE_AIR, false);
-							if (chunk.getBlockState(pos.up()).isIn(BlockTags.BASE_STONE_OVERWORLD) && chunk.getBlockState(pos).isIn(Blocks.CAVE_AIR) && !this.isHighlands) {
+							if (chunk.getBlockState(pos.up()).isIn(BlockTags.BASE_STONE_OVERWORLD) && chunk.getBlockState(pos).matchesBlock(Blocks.CAVE_AIR) && !this.isHighlands) {
 								chunk.setBlockState(pos.up(), Blocks.DIRT.getDefaultState(), false);
 							}
 							if (isSurface.isTrue()) {
 								posDown.setAndMove(pos, Direction.DOWN);
-								if (chunk.getBlockState(posDown).isIn(Blocks.DIRT)) {
+								if (chunk.getBlockState(posDown).matchesBlock(Blocks.DIRT)) {
 									chunk.setBlockState(posDown, biomePos.apply(pos).getGenerationSettings().getSurfaceBuilderConfig().getTop(), false);
 								}
 							}
@@ -183,6 +183,6 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 
 	@Override
 	protected boolean canCarveBlock(BlockState state, BlockState aboveState) {
-		return this.isCarvable(state) || (state.isIn(Blocks.SAND) || state.isIn(TFBlocks.trollsteinn.get()) || state.isIn(Blocks.GRAVEL)) && !aboveState.getFluidState().isTagged(FluidTags.WATER);
+		return this.isCarvable(state) || (state.matchesBlock(Blocks.SAND) || state.matchesBlock(TFBlocks.trollsteinn.get()) || state.matchesBlock(Blocks.GRAVEL)) && !aboveState.getFluidState().isTagged(FluidTags.WATER);
 	}
 }

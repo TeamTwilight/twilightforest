@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:huge_stalk"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.beanstalk"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.beanstalk.desc",
+      "with": [
+        { "translate": "item.twilightforest.magic_beans" }
+      ]
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:troll",
+  "criteria": {
+    "beans": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:magic_beans"
+          }
+        ]
+      }
+    },
+    "use_beans": {
+      "trigger": "twilightforest:on_item_use",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:magic_beans"
+          }
+        ]
+      }
+    }
+  }
+}

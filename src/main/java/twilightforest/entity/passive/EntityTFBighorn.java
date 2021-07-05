@@ -93,7 +93,7 @@ public class EntityTFBighorn extends SheepEntity {
     }
 
     @Override
-	public SheepEntity func_241840_a(ServerWorld world, AgeableEntity ageable) {
+	public SheepEntity createChild(ServerWorld world, AgeableEntity ageable) {
 		if (!(ageable instanceof EntityTFBighorn)) {
 			TwilightForestMod.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
 			return null;

@@ -20,6 +20,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import twilightforest.TFSounds;
 import twilightforest.block.BlockTFCritter;
 import twilightforest.util.WorldUtil;
@@ -115,7 +117,7 @@ public class ItemTFPeacockFan extends Item {
 	private int doFan(World world, PlayerEntity player) {
 		AxisAlignedBB fanBox = getEffectAABB(player);
 
-		fanBlocksInAABB(world, fanBox);
+		fanBlocksInAABB(world, fanBox, player);
 
 		fanEntitiesInAABB(world, player, fanBox);
 
@@ -148,22 +150,23 @@ public class ItemTFPeacockFan extends Item {
 		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}
 
-	private int fanBlocksInAABB(World world, AxisAlignedBB box) {
+	private int fanBlocksInAABB(World world, AxisAlignedBB box, PlayerEntity player) {
 		int fan = 0;
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			fan += fanBlock(world, pos);
+			fan += fanBlock(world, pos, player);
 		}
 		return fan;
 	}
 
-	private int fanBlock(World world, BlockPos pos) {
+	private int fanBlock(World world, BlockPos pos, PlayerEntity player) {
 		int cost = 0;
 
 		BlockState state = world.getBlockState(pos);
-
-		if (state.getBlock() instanceof FlowerBlock || state.getBlock() instanceof TallGrassBlock || state.getBlock() instanceof BlockTFCritter) {
-			if (random.nextInt(3) == 0) {
-				world.destroyBlock(pos, true);
+		if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
+			if (state.getBlock() instanceof FlowerBlock) {
+				if (random.nextInt(3) == 0) {
+					world.destroyBlock(pos, true);
+				}
 			}
 		}
 

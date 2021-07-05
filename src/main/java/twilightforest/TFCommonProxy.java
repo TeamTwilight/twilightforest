@@ -9,7 +9,7 @@ public class TFCommonProxy {
 
 	@Nullable
 	public static Iterable<Entity> getEntityListForASM() {
-		return ASMHooks.world instanceof ServerWorld ? ((ServerWorld) ASMHooks.world).func_241136_z_() : null;
+		return ASMHooks.world instanceof ServerWorld ? ((ServerWorld) ASMHooks.world).getEntitiesIteratable() : null;
 	}
 
 	public void init() {}

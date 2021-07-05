@@ -5,12 +5,23 @@
   }],
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "ie_shader"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader"     }]}},
-    "ie_shader_bag": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader_bag" }]}},
-    "tf_shader"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader"           }]}},
-    "tf_shader_bag": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader_bag"       }]}}
+    "ie_shader"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader" }]}},
+    "ie_common": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader_bag_common" }]}},
+    "ie_uncommon": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader_bag_uncommon" }]}},
+    "ie_rare": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader_bag_rare" }]}},
+    "ie_epic": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader_bag_epic" }]}},
+    "ie_masterwork": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader_bag_ie_masterwork" }]}},
+    "ie_twilight": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "immersiveengineering:shader_bag_twilight" }]}},
+    "tf_shader"    : { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader" }]}},
+    "tf_common": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader_bag_common" }]}},
+    "tf_uncommon": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader_bag_uncommon" }]}},
+    "tf_rare": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader_bag_rare" }]}},
+    "tf_epic": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader_bag_epic" }]}},
+    "tf_masterwork": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader_bag_ie_masterwork" }]}},
+    "tf_twilight": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:shader_bag_twilight" }]}}
   },
   "requirements": [
-    [ "ie_shader", "ie_shader_bag", "tf_shader", "tf_shader_bag" ]
+    [ "ie_shader", "ie_common", "ie_uncommon", "ie_rare", "ie_epic", "ie_masterwork", "ie_twilight",
+      "tf_shader", "tf_common", "tf_uncommon", "tf_rare", "tf_epic", "tf_masterwork", "tf_twilight" ]
   ]
 }

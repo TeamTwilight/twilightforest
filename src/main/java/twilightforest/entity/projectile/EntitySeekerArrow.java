@@ -69,7 +69,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 				if (dotProduct > seekThreshold) {
 
 					// add vector to target, scale to match current velocity
-					Vector3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(targetLen / totalLen));
+					Vector3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(courseLen / totalLen));
 
 					this.setMotion(newMotion.add(0, 0.045F, 0));
 
@@ -129,7 +129,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 					continue;
 				}
 
-				if (func_234616_v_() != null && living instanceof TameableEntity && ((TameableEntity) living).getOwner() == func_234616_v_()) {
+				if (getShooter() != null && living instanceof TameableEntity && ((TameableEntity) living).getOwner() == getShooter()) {
 					continue;
 				}
 

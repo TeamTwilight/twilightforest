@@ -29,6 +29,9 @@
         "root_length": 12,
         "air_roots_provider": {
           "state": {
+            "Properties": {
+              "axis": "y"
+            },
             "Name": "twilightforest:mangrove_wood"
           },
           "type": "minecraft:simple_state_provider"

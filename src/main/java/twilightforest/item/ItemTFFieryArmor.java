@@ -54,9 +54,9 @@ public class ItemTFFieryArmor extends ArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void initArmorModel() {
-		fieryArmorModel.put(EquipmentSlotType.HEAD, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.HEAD, new ModelTFFieryArmor(0.75F));
 		fieryArmorModel.put(EquipmentSlotType.CHEST, new ModelTFFieryArmor(1.0F));
 		fieryArmorModel.put(EquipmentSlotType.LEGS, new ModelTFFieryArmor(0.5F));
-		fieryArmorModel.put(EquipmentSlotType.FEET, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.FEET, new ModelTFFieryArmor(1.0F));
 	}
 }

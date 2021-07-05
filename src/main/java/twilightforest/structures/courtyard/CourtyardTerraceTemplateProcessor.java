@@ -40,13 +40,13 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
         boolean shouldMakeNewBlockInfo = false;
         BlockState state = newinfo.state;
 
-        final BlockState SMOOTHBRICK_SLAB_STATE = Blocks.SMOOTH_STONE_SLAB.getDefaultState();
-        final BlockState SMOOTHBRICK_STATE = Blocks.STONE_BRICKS.getDefaultState(); //Blocks.DOUBLE_STONE_SLAB.getDefaultState().with(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK).with(BlockDoubleStoneSlab.SEAMLESS, false);
+        final BlockState SMOOTHBRICK_SLAB_STATE = Blocks.STONE_BRICK_SLAB.getDefaultState();
+        final BlockState SMOOTHBRICK_STATE = Blocks.STONE_BRICKS.getDefaultState();
 
         if (state == Blocks.SANDSTONE_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE)) {
-            BlockState stateCheck = world.getBlockState(pos);
+            BlockState stateCheck = world.getBlockState(newinfo.pos);
             if (stateCheck == SMOOTHBRICK_SLAB_STATE)
-                return new Template.BlockInfo(pos, SMOOTHBRICK_SLAB_STATE, null);
+                return new Template.BlockInfo(newinfo.pos, SMOOTHBRICK_SLAB_STATE, null);
             else if (stateCheck.getMaterial() == Material.AIR)
                 return null;
             else
@@ -56,12 +56,12 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
         }
 
         if (state.getBlock() == Blocks.SANDSTONE_SLAB) {
-            BlockState stateCheck = world.getBlockState(pos);
+            BlockState stateCheck = world.getBlockState(newinfo.pos);
 
             if (stateCheck.getMaterial() == Material.AIR)
                 return null;
             else
-                return new Template.BlockInfo(pos, SMOOTHBRICK_SLAB_STATE, null);
+                return new Template.BlockInfo(newinfo.pos, SMOOTHBRICK_SLAB_STATE, null);
         }
 
         Block block = state.getBlock();

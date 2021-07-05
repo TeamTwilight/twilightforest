@@ -71,7 +71,7 @@ public class EntityTFThrownWep extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (result instanceof EntityRayTraceResult) {
-			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFKnightPhantom || ((EntityRayTraceResult)result).getEntity() == this.func_234616_v_()) {
+			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFKnightPhantom || ((EntityRayTraceResult)result).getEntity() == this.getShooter()) {
 				return;
 			}
 

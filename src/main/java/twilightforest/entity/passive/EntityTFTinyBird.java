@@ -40,6 +40,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 		super(type, world);
 		setBirdType(rand.nextInt(4));
 		setIsBirdLanded(true);
+		setGrowingAge(0);
 	}
 
 	@Override
@@ -235,5 +236,10 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	@Override
 	protected void collideWithNearbyEntities() {
+	}
+
+	@Override
+	public boolean isChild() {
+		return false;
 	}
 }

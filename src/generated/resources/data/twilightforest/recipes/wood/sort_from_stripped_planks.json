@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:stripped_sorting_log"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:sort_planks",
+    "count": 4
+  }
+}

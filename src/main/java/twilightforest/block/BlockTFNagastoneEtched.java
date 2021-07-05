@@ -34,7 +34,7 @@ public class BlockTFNagastoneEtched extends DirectionalBlock {
     }
 
 	@Override
-	public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation rot) {
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 

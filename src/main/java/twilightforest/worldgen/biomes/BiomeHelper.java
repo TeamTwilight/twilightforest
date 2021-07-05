@@ -11,6 +11,7 @@ import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
 import twilightforest.worldgen.ConfiguredFeatures;
 import twilightforest.worldgen.ConfiguredWorldCarvers;
+import twilightforest.worldgen.TwilightFeatures;
 
 public abstract class BiomeHelper {
 
@@ -162,8 +163,6 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder fireSwampGen(BiomeGenerationSettings.Builder biome) {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GRASS_PLACER);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_FALLEN_FEATURE);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_WATER_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIRE_JET);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SMOKER);
 		biome.withFeature(GenerationStage.Decoration.LAKES, Features.LAKE_LAVA);
@@ -179,7 +178,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder darkForestGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 		
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
@@ -197,7 +196,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder darkForestCenterGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
@@ -234,7 +233,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder glacierGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 		addCaves(biome);
 		return biome;
 	}
@@ -269,7 +268,7 @@ public abstract class BiomeHelper {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREES);
 	}
     public static void addFireflyCanopyTrees(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREES);
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREE_MIX);
 	}
 
     public static void addDeadCanopyTrees(BiomeGenerationSettings.Builder biome) {
@@ -278,7 +277,10 @@ public abstract class BiomeHelper {
 
     public static void addCanopyMushrooms(BiomeGenerationSettings.Builder biome, boolean dense) {
         DefaultBiomeFeatures.withNormalMushroomGeneration(biome); // Add small mushrooms
-        DefaultBiomeFeatures.withMushroomBiomeVegetation(biome); // Add large mushrooms
+		//Same config as DefaultBiomeFeatures.withMushroomBiomeVegetation, we just use our custom large mushrooms instead
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.BROWN_MUSHROOM_TAIGA);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.RED_MUSHROOM_TAIGA);
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_BIG_MUSH);
 
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, dense ? ConfiguredFeatures.CANOPY_MUSHROOMS_DENSE : ConfiguredFeatures.CANOPY_MUSHROOMS_SPARSE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, dense ? ConfiguredFeatures.BIG_MUSHGLOOM : ConfiguredFeatures.MUSHGLOOM_CLUSTER);
@@ -302,11 +304,11 @@ public abstract class BiomeHelper {
 
 	public static void addTwilightOakTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.OAK);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.BIRCH);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_OAK);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_BIRCH);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.OAK);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.BIRCH);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_OAK);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_BIRCH);
 	}
     
     public static void addHollowOakTrees(BiomeGenerationSettings.Builder biome) {
@@ -479,7 +481,7 @@ public abstract class BiomeHelper {
                 .temperature(0.5F)
                 .downfall(0.5F)
                 .setEffects(biomeAmbience.build())
-                .withMobSpawnSettings(mobSpawnInfo.copy())
+                .withMobSpawnSettings(mobSpawnInfo.build())
                 .withGenerationSettings(biomeGenerationSettings.build())
                 .withTemperatureModifier(Biome.TemperatureModifier.NONE);
     }

@@ -18,6 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
@@ -35,7 +36,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	}
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
-		return WolfEntity.func_234233_eS_()
+		return WolfEntity.registerAttributes()
 				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0D);
 	}
 
@@ -100,7 +101,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	}
 
 	@Override
-	public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
 		return ActionResultType.PASS;
 	}
 }

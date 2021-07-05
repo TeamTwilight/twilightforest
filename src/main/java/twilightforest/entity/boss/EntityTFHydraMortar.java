@@ -46,7 +46,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		setLocationAndAngles(px, py, pz, 0, 0);
 		// these are being set to extreme numbers when we get here, why?
 		head.setMotion(new Vector3d(0, 0, 0));
-		func_234612_a_(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.5F, 1F);
+		setDirectionAndMovement(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.5F, 1F);
 
 		TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getMotion().getX(), head.getMotion().getZ());
 	}
@@ -80,9 +80,9 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		if (ray instanceof EntityRayTraceResult) {
 			if (!world.isRemote &&
 
-					(!(((EntityRayTraceResult)ray).getEntity() instanceof EntityTFHydraMortar) || ((EntityTFHydraMortar) ((EntityRayTraceResult)ray).getEntity()).func_234616_v_() != func_234616_v_()) &&
+					(!(((EntityRayTraceResult)ray).getEntity() instanceof EntityTFHydraMortar) || ((EntityTFHydraMortar) ((EntityRayTraceResult)ray).getEntity()).getShooter() != getShooter()) &&
 
-					((EntityRayTraceResult)ray).getEntity() != func_234616_v_() &&
+					((EntityRayTraceResult)ray).getEntity() != getShooter() &&
 
 					!isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
 				detonate();
@@ -96,7 +96,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
-		return (func_234616_v_() instanceof EntityTFHydra && entity instanceof EntityTFHydraPart && ((EntityTFHydraPart) entity).getParent() == func_234616_v_());
+		return (getShooter() instanceof EntityTFHydra && entity instanceof EntityTFHydraPart && ((EntityTFHydraPart) entity).getParent() == getShooter());
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		Explosion.Mode flag1 = flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE;
 		this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), explosionPower, flag, flag1);
 
-		DamageSource src = new IndirectEntityDamageSource("onFire", this, func_234616_v_()).setFireDamage().setProjectile();
+		DamageSource src = new IndirectEntityDamageSource("onFire", this, getShooter()).setFireDamage().setProjectile();
 
 		for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0D, 1.0D, 1.0D))) {
 			if (nearby.attackEntityFrom(src, DIRECT_DAMAGE) && !nearby.isImmuneToFire()) {
