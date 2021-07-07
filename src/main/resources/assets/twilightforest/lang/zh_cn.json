@@ -452,6 +452,8 @@
   //"block.twilightforest.mine_wall_sign": "Minewood Wall Sign",
   //"block.twilightforest.sort_sign": "Sortingwood Sign",
   //"block.twilightforest.sort_wall_sign": "Sortingwood Wall Sign",
+	
+  "block.twilightforest.twilight_portal": "暮光之城森林门户",
 
   //"block.steeleaf.tooltip": "Reduces fall damage by 25%",
   //"block.arctic.tooltip": "Reduces fall damage by 90%",
