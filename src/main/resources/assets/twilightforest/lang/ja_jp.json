@@ -434,6 +434,8 @@
   "block.twilightforest.sort_door": "Sortingwood Door",
   "block.twilightforest.sort_sign": "Sortingwood Sign",
   "block.twilightforest.sort_wall_sign": "Sortingwood Wall Sign",*/
+  
+  "block.twilightforest.twilight_portal": "トワイライトフォレストポータル",
 
   //"block.steeleaf.tooltip": "Reduces fall damage by 25%",
   //"block.arctic.tooltip": "Reduces fall damage by 90%",
