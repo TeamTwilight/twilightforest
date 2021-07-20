@@ -41,9 +41,9 @@ public class ItemTFKnightlyArmor extends ArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void initArmorModel() {
-		knightlyArmorModel.put(EquipmentSlotType.HEAD, new ModelTFKnightlyArmor(0.5F));
+		knightlyArmorModel.put(EquipmentSlotType.HEAD, new ModelTFKnightlyArmor(0.75F));
 		knightlyArmorModel.put(EquipmentSlotType.CHEST, new ModelTFKnightlyArmor(1.0F));
 		knightlyArmorModel.put(EquipmentSlotType.LEGS, new ModelTFKnightlyArmor(0.5F));
-		knightlyArmorModel.put(EquipmentSlotType.FEET, new ModelTFKnightlyArmor(0.5F));
+		knightlyArmorModel.put(EquipmentSlotType.FEET, new ModelTFKnightlyArmor(1.0F));
 	}
 }

@@ -16,10 +16,7 @@ public class ModelTFYeti<T extends EntityTFYeti> extends BipedModel<T> {
 	public ModelTFYeti() {
 		super(0.0F, 0.0F, 128, 64);
 
-//		this.textureWidth = 128;
-//		this.textureHeight = 64;
-
-		this.bipedHead = new ModelRenderer(this, 0, 0);
+        this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);
 		this.bipedHeadwear = new ModelRenderer(this, 32, 0);
 		this.bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);

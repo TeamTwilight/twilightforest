@@ -31,8 +31,6 @@ public class ItemTFIronwoodArmor extends ArmorItem {
 					istack.addEnchantment(Enchantments.AQUA_AFFINITY, 1);
 					break;
 				case CHEST:
-					istack.addEnchantment(Enchantments.PROTECTION, 1);
-					break;
 				case LEGS:
 					istack.addEnchantment(Enchantments.PROTECTION, 1);
 					break;

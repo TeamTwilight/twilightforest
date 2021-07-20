@@ -33,8 +33,5 @@ public class RenderTFSnowQueen extends BipedRenderer<EntityTFSnowQueen, ModelTFS
 		super.render(queen, yaw, partialTicks, stack, buffer, light);
 
 		//FIXME
-//		for (int i = 0; i < queen.iceArray.length; i++) {
-//			renderManager.renderEntityStatic(queen.iceArray[i], partialTicks, false);
-//		}
-	}
+    }
 }

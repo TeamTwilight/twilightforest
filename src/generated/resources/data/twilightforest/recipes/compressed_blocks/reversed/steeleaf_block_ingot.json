@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "twilightforest:storage_blocks/steeleaf"
+      "tag": "forge:storage_blocks/steeleaf"
     }
   ],
   "result": {

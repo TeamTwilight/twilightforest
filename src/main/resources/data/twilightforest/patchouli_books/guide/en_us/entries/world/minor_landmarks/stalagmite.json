@@ -1,0 +1,17 @@
+{
+  "name": "Stalagmite",
+  "icon": "minecraft:coal_ore",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 2100,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Stalagmite",
+      "images": ["twilightforest:textures/gui/patchouli_images/stalagmite.png"]
+    }, {
+      "type": "text",
+      "text": "Small, stone stalagmites occasionally jut out of the ground. These stone clumps can have various ores inside them, although rare. The real question though is how did these form? Was this whole area a cave once, or is there some greater magic involved?"
+    }
+  ]
+}

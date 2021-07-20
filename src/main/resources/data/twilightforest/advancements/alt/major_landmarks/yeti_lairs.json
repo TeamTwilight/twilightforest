@@ -3,7 +3,7 @@
   "criteria": {
     "discover": {
       "trigger": "minecraft:location",
-      "conditions": { "feature": "twilightforest:yeti_lairs" }
+      "conditions": { "feature": "twilightforest:yeticave" }
     }
   }
 }

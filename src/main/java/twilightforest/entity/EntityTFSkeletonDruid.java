@@ -3,8 +3,10 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.monster.SkeletonEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
@@ -29,7 +31,7 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.25D, 20, 10.0F));
+		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.25D, 60, 5.0F));
 	}
 	
 	@Override

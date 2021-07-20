@@ -1,6 +1,6 @@
 {
   "name": "Fire Jet",
-  "icon": "twilightforest:fire_jet:3",
+  "icon": "twilightforest:fire_jet",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/fire_jet",
   "sortnum": 5050,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Fire Jet",
-      "item": "twilightforest:fire_jet:3",
+      "item": "twilightforest:fire_jet",
       "text": "Volatile jets that will shoot streams of fire at random. I have to be careful around these, for they don't seem to be triggered by anything. For some reason, they stop erupting when there's no Lava beneath it, perhaps that is their secret?"
     }
   ]

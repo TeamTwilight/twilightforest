@@ -1,6 +1,6 @@
 {
   "name": "Meats, Meals, and Edibles",
-  "icon": "twilightforest:experiment_115:2",
+  "icon": "twilightforest:experiment_115{full:1}",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/foods/any",
   "sortnum": 1100,

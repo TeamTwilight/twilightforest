@@ -1,0 +1,17 @@
+{
+  "name": "Foundation",
+  "icon": "minecraft:cobblestone",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 2100,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Foundation",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
+      "type": "text",
+      "text": "Amongst the various druid huts, an adventurer will sometimes come across a crumbing foundation of what appears to be a house. These ruins may signify an older race that lived in the area at one point, or they may serve as a reminder of what once was. The ground underneath seems hollow, perhaps something is buried under the house?"
+    }
+  ]
+}

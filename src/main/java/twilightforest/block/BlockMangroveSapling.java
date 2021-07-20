@@ -14,16 +14,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ServerWorld;
+import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nullable;
+import java.util.Properties;
 import java.util.Random;
 
-public class BlockMangroveSapling extends BlockTFSapling implements IWaterLoggable {
+public class BlockMangroveSapling extends SaplingBlock implements IWaterLoggable {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	protected BlockMangroveSapling(Tree tree) {
-		super(tree);
+	protected BlockMangroveSapling(Tree tree, AbstractBlock.Properties properties) {
+		super(tree, properties);
 		this.setDefaultState(this.stateContainer.getBaseState().with(WATERLOGGED, false));
 	}
 

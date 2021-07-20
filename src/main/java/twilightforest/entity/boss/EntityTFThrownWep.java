@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -72,7 +71,7 @@ public class EntityTFThrownWep extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (result instanceof EntityRayTraceResult) {
-			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFKnightPhantom || ((EntityRayTraceResult)result).getEntity() == this.func_234616_v_()) {
+			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFKnightPhantom || ((EntityRayTraceResult)result).getEntity() == this.getShooter()) {
 				return;
 			}
 

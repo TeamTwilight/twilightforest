@@ -1,11 +1,15 @@
 {
   "name": "Troll Caves",
-  "icon": "twilightforest:miniature_structure:13",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/troll_lairs",
-  "sortnum": 8000,
+  "sortnum": 8010,
   "pages": [
     {
+      "type": "image",
+      "title": "Troll Caves",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "things and stuff"
     }

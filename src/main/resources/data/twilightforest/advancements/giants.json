@@ -1,0 +1,42 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:giant_pickaxe"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.giants"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.giants.desc",
+      "with": [
+        { "translate": "entity.twilightforest.giant_miner" },
+        { "translate": "item.twilightforest.giant_pickaxe" }
+      ]
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:beanstalk",
+  "criteria": {
+    "giant": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:giant_miner",
+          "location": {
+            "feature": "twilightforest:troll_cave"
+          }
+        }
+      }
+    },
+    "pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:giant_pickaxe"
+          }
+        ]
+      }
+    }
+  }
+}

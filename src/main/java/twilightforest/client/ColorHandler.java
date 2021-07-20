@@ -1,9 +1,11 @@
 package twilightforest.client;
 
+import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.FoliageColors;
 import net.minecraft.world.GrassColors;
@@ -11,13 +13,17 @@ import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.compat.ie.ItemTFShader;
 import twilightforest.item.ItemTFArcticArmor;
 import twilightforest.item.TFItems;
 
 import java.awt.Color;
+import java.util.Locale;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ColorHandler {
@@ -372,18 +378,20 @@ public final class ColorHandler {
 						: 0xFFFFFF,
 				TFItems.arctic_helmet.get(), TFItems.arctic_chestplate.get(), TFItems.arctic_leggings.get(), TFItems.arctic_boots.get());
 
-		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
-			itemColors.register(twilightforest.compat.ie.ItemTFShader::getShaderColors, twilightforest.compat.ie.ItemTFShader.shader);
-			itemColors.register((stack, tintIndex) -> {
-				int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).color);
+		if (ModList.get().isLoaded("immersiveengineering")) {
+			itemColors.register(ItemTFShader::getShaderColors, ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
+			for(Rarity r: ShaderRegistry.rarityWeightMap.keySet()) {
+				itemColors.register((stack, tintIndex) -> {
+					int c = r.color.getColor();
 
-				float d = tintIndex + 1;
+					float d = tintIndex + 1;
 
-				return (int) ((c >> 16 & 0xFF) / d) << 16
-						| (int) ((c >> 8 & 0xFF) / d) << 8
-						| (int) ((c & 0xFF) / d);
-			}, twilightforest.compat.ie.ItemTFShaderGrabbag.shader_bag);
-		}*/
+					return (int) ((c >> 16 & 0xFF) / d) << 16
+							| (int) ((c >> 8 & 0xFF) / d) << 8
+							| (int) ((c & 0xFF) / d);
+				}, ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + r.name().toLowerCase(Locale.US).replace(':', '_'))));
+			}
+		}
 	}
 
 	private ColorHandler() {}

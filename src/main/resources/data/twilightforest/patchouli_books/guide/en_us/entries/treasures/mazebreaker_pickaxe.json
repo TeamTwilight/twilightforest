@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Mazebreaker",
-      "item": "twilightforest:mazebreaker_pickaxe:0{ench:[{lvl:4s,id:32s},{lvl:3s,id:34s},{lvl:2s,id:35s}]}",
+      "item": "twilightforest:mazebreaker_pickaxe{Enchantments:[{id:efficiency,lvl:4},{id:fortune,lvl:2},{id:unbreaking,lvl:3}]}",
       "text": "things and stuff"
     }
   ]

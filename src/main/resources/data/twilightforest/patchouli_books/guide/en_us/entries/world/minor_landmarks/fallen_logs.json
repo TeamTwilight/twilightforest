@@ -1,0 +1,24 @@
+{
+  "name": "Fallen Logs",
+  "icon": "minecraft:iron_axe",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 2100,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Fallen Log",
+      "images": ["twilightforest:textures/gui/patchouli_images/fallen_log.png"]
+    }, {
+      "type": "text",
+      "text": "Small logs litter the floor of the Twilight Forest. Nature is slowly reclaiming them, as moss has begun to grow on some of them. Did these logs naturally fall, or were they chopped down by someone, or something, else?"
+    }, {
+      "type": "image",
+      "title": "Fallen Hollow Log",
+      "images": ["twilightforest:textures/gui/patchouli_images/hollow_log.png"]
+    }, {
+      "type": "text",
+      "text": "Oh how the mighty have fallen! Occasionally, large, hollow logs can be seen laying on the floor. These logs have moss growing inside them, and sometimes a firefly is still hanging on for dear life. How could such a large tree fall down like this?"
+    }
+  ]
+}

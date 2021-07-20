@@ -107,7 +107,7 @@ public class EntityTFLich extends MonsterEntity {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new EntityAITFLichShadows(this));
 		this.goalSelector.addGoal(2, new EntityAITFLichMinions(this));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, true) {
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 0.75D, true) {
 			@Override
 			public boolean shouldExecute() {
 				return getPhase() == 3 && super.shouldExecute();
@@ -136,7 +136,7 @@ public class EntityTFLich extends MonsterEntity {
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
 				.createMutableAttribute(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D)
 				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45000001788139344D); // Same speed as an angry enderman
 	}
 
@@ -152,10 +152,6 @@ public class EntityTFLich extends MonsterEntity {
 		this.bossInfo.removePlayer(player);
 	}
 
-//	@Override
-//	public void setInWeb() {
-//	}
-
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return false;
@@ -164,8 +160,8 @@ public class EntityTFLich extends MonsterEntity {
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL && !isShadowClone()) {
-			if (!detachHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
+			if (detachHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_lich.get().getDefaultState());
 			}
 			remove();
 		} else {
@@ -183,7 +179,7 @@ public class EntityTFLich extends MonsterEntity {
 	public int getPhase() {
 		if (isShadowClone() || getShieldStrength() > 0) {
 			return 1;
-		} else if (getMinionsToSummon() > 0) {
+		} else if (getMinionsToSummon() > 0 || countMyMinions() > 0) {
 			return 2;
 		} else {
 			return 3;
@@ -402,7 +398,7 @@ public class EntityTFLich extends MonsterEntity {
 		return world.getEntitiesWithinAABB(getClass(), new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX() + 1, getPosY() + 1, getPosZ() + 1).grow(32.0D, 16.0D, 32.0D));
 	}
 
-	public boolean wantsNewMinion(EntityTFLichMinion minion) {
+	public boolean wantsNewMinion() {
 		return countMyMinions() < EntityTFLich.MAX_ACTIVE_MINIONS;
 	}
 
@@ -611,7 +607,12 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
+	public boolean canChangeDimension() {
 		return false;
 	}
 }

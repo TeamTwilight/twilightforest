@@ -6,6 +6,10 @@
   "sortnum": 2200,
   "pages": [
     {
+      "type": "image",
+      "title": "Enchanted Forest",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "things and stuff"
     }

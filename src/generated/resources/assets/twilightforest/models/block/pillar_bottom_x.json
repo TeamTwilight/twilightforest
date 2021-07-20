@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/pillar/pillar_bottom",
+  "textures": {
+    "bottom_x": "twilightforest:block/stone_twist/cap/y_y_bottom",
+    "bottom_z": "twilightforest:block/stone_twist/cap/y_y_bottom",
+    "bottom_cap": "twilightforest:block/stone_twist/cap/end_bottom_x"
+  }
+}

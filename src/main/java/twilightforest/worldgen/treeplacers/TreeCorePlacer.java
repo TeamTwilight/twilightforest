@@ -32,7 +32,7 @@ public class TreeCorePlacer extends TreeDecorator {
 	}
 
 	@Override
-	protected TreeDecoratorType<TreeCorePlacer> func_230380_a_() {
+	protected TreeDecoratorType<TreeCorePlacer> getDecoratorType() {
 		return TwilightFeatures.CORE_PLACER;
 	}
 

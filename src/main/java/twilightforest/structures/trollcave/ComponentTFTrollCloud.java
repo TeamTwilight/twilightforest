@@ -2,7 +2,6 @@ package twilightforest.structures.trollcave;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -10,7 +9,6 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
@@ -24,17 +22,6 @@ public class ComponentTFTrollCloud extends StructureTFComponentOld {
 		super(TFTrollCavePieces.TFTCloud, nbt);
 		this.size = nbt.getInt("size");
 		this.height = nbt.getInt("height");
-	}
-
-	public ComponentTFTrollCloud(TFFeature feature, int index, int x, int y, int z) {
-		super(TFTrollCavePieces.TFTCloud, feature, index);
-		this.setCoordBaseMode(Direction.SOUTH);
-
-		this.size = 40;
-		this.height = 20;
-
-		int radius = this.size / 2;
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH);
 	}
 
 	@Override

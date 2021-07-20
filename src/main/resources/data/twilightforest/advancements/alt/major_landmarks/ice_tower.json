@@ -3,7 +3,7 @@
   "criteria": {
     "discover": {
       "trigger": "minecraft:location",
-      "conditions": { "feature": "twilightforest:ice_tower" }
+      "conditions": { "feature": "twilightforest:aurorapalace" }
     }
   }
 }

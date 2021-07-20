@@ -19,7 +19,6 @@ public class TFPacketHandler {
 	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
 		int id = 0;
-		CHANNEL.messageBuilder(PacketAnnihilateBlock.class, id++).encoder(PacketAnnihilateBlock::encode).decoder(PacketAnnihilateBlock::new).consumer(PacketAnnihilateBlock.Handler::onMessage).add();
 		CHANNEL.messageBuilder(PacketAreaProtection.class, id++).encoder(PacketAreaProtection::encode).decoder(PacketAreaProtection::new).consumer(new SimpleChannel.MessageBuilder.ToBooleanBiFunction<PacketAreaProtection, Supplier<NetworkEvent.Context>>() {
 			@Override
 			public boolean applyAsBool(PacketAreaProtection message, Supplier<NetworkEvent.Context> ctx) {

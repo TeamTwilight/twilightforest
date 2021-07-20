@@ -11,6 +11,7 @@ import net.minecraft.item.Items;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -29,7 +30,7 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 
 	public EntityTFMoonwormShot(EntityType<? extends EntityTFMoonwormShot> type, World world, LivingEntity thrower) {
 		super(type, world, thrower);
-		func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
+		setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
 	}
 	public EntityTFMoonwormShot(World worldIn, double x, double y, double z) {
 		super(TFEntities.moonworm_shot, worldIn, x, y, z);
@@ -108,7 +109,7 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 
 			if (ray instanceof EntityRayTraceResult) {
 				if (((EntityRayTraceResult)ray).getEntity() != null) {
-					((EntityRayTraceResult)ray).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), 0);
+					((EntityRayTraceResult)ray).getEntity().attackEntityFrom(new IndirectEntityDamageSource("moonworm", this, this), rand.nextInt(3) == 0 ? 1 : 0);
 				}
 			}
 

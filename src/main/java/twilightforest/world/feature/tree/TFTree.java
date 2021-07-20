@@ -24,11 +24,11 @@ public abstract class TFTree extends Tree {
 		return null;
 	}
 
-	public abstract ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand);
+	public abstract ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature();
 
 	@Override
 	public boolean attemptGrowTree(ServerWorld world, ChunkGenerator generator, BlockPos pos, BlockState state, Random rand) {
-		ConfiguredFeature<TFTreeFeatureConfig, ?> feature = this.createTreeFeature(rand);
+		ConfiguredFeature<TFTreeFeatureConfig, ?> feature = this.createTreeFeature();
 		if (feature == null) {
 			return false;
 		} else {

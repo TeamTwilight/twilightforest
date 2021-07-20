@@ -47,16 +47,16 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 
 	protected void makeARing(ISeedReader world, int y, MutableBoundingBox sbb) {
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 + 1, sbb);
-		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 + 0, sbb);
+		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 - 1, sbb);
 		setBlockState(world, deco.accentState, size / 2 + 2, y, size / 2 + 1, sbb);
-		setBlockState(world, deco.accentState, size / 2 + 2, y, size / 2 + 0, sbb);
+		setBlockState(world, deco.accentState, size / 2 + 2, y, size / 2, sbb);
 		setBlockState(world, deco.accentState, size / 2 + 2, y, size / 2 - 1, sbb);
 		setBlockState(world, deco.accentState, size / 2 + 1, y, size / 2 - 2, sbb);
-		setBlockState(world, deco.accentState, size / 2 + 0, y, size / 2 - 2, sbb);
+		setBlockState(world, deco.accentState, size / 2, y, size / 2 - 2, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 1, y, size / 2 - 2, sbb);
 		setBlockState(world, deco.accentState, size / 2 + 1, y, size / 2 + 2, sbb);
-		setBlockState(world, deco.accentState, size / 2 + 0, y, size / 2 + 2, sbb);
+		setBlockState(world, deco.accentState, size / 2, y, size / 2 + 2, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 1, y, size / 2 + 2, sbb);
 	}
 }

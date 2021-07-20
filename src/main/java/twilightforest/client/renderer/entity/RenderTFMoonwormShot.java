@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.TwilightForestMod;
@@ -16,21 +17,24 @@ import twilightforest.entity.projectile.EntityTFMoonwormShot;
 
 public class RenderTFMoonwormShot extends EntityRenderer<EntityTFMoonwormShot> {
 
-	private static final Quaternion ROT = new Vector3f(1, 0, 1).rotationDegrees(90);
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final ModelTFMoonworm wormModel = new ModelTFMoonworm();
 
 	public RenderTFMoonwormShot(EntityRendererManager manager) {
 		super(manager);
-		this.shadowSize = 0.5F;
+		this.shadowSize = 0.25F;
 	}
 
 	@Override
 	public void render(EntityTFMoonwormShot entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		stack.rotate(ROT);
+		stack.translate(0.0, 0.5, 0.0);
+		stack.scale(-1f, -1f, -1f);
 
-		IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutout(getEntityTexture(entity)));
+		stack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 180.0F));
+		stack.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
+
+		IVertexBuilder builder = buffer.getBuffer(wormModel.getRenderType(textureLoc));
 		wormModel.render(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
 		stack.pop();

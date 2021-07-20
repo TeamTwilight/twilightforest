@@ -62,11 +62,6 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 
 	@Override
 	public void livingTick() {
-		if (!this.getPassengers().isEmpty()) {
-			if (this.getPassengers().get(0).isSneaking()) {
-				this.getPassengers().get(0).setSneaking(false);
-			}
-		}
 
 		super.livingTick();
 

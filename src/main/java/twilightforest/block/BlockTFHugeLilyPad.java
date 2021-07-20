@@ -112,14 +112,6 @@ public class BlockTFHugeLilyPad extends BushBlock {
 		return PushReaction.BLOCK;
 	}
 
-//	@Override
-//	@Deprecated
-//	public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
-//		if (!(entityIn instanceof EntityBoat)) {
-//			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB);
-//		}
-//	}
-
 	@Override
 	@Deprecated
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {

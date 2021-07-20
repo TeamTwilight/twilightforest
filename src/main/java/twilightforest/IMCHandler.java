@@ -117,16 +117,8 @@ public class IMCHandler {
 		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
 	}
 
-	public static ImmutableList<BlockState> getOreBlocks() {
-		return ORE_BLOCKS_BUILDER.build();
-	}
-
 	public static ImmutableList<ItemStack> getLoadingIconStacks() {
 		return LOADING_ICONS_BUILDER.build();
-	}
-
-	public static ImmutableMultimap<BlockState, BlockState> getCrumblingBlocks() {
-		return CRUMBLE_BLOCKS_BUILDER.build();
 	}
 
 	public static ImmutableMultimap<Integer, TFGenCaveStalactite.StalactiteEntry> getStalactites() {

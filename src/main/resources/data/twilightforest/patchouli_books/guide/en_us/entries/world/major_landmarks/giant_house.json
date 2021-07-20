@@ -1,11 +1,15 @@
 {
   "name": "Giant House",
-  "icon": "twilightforest:miniature_structure:13",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/giant_cloud",
   "sortnum": 8100,
   "pages": [
     {
+      "type": "image",
+      "title": "Giant Cloud",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "things and stuff"
     }

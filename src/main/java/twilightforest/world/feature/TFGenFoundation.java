@@ -25,7 +25,7 @@ public class TFGenFoundation extends Feature<NoFeatureConfig> {
 		int sz = 5 + rand.nextInt(5);
 
 
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, sx, 4, sz)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, sx, 4, sz)) {
 			return false;
 		}
 

@@ -67,7 +67,7 @@ public abstract class EntityAITFHoverBase<T extends MobEntity> extends Goal {
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
 		float radius = this.attacker.getWidth() / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getHeight(), hz + radius);
-		return !this.attacker.world.checkNoEntityCollision(attacker, VoxelShapes.create(aabb)) || this.attacker.world.getCollisionShapes(attacker, aabb).count() > 0;
+		return !this.attacker.world.checkNoEntityCollision(attacker, VoxelShapes.create(aabb)) || !this.attacker.world.hasNoCollisions(attacker, aabb);
 	}
 
 	/**

@@ -1,6 +1,8 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -69,6 +71,12 @@ public class ModelTFHelmetCrab extends SegmentedModel<EntityTFHelmetCrab> {
         this.body.addChild(this.leftClaw);
         this.body.addChild(this.rightClaw);
         this.helmet.addChild(this.horns);
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if(this.isSitting) matrixStackIn.translate(0, -0.25F, 0);
+        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
     @Override

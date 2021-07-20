@@ -1,12 +1,9 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.EntityTFMinotaur;
@@ -45,6 +42,12 @@ public class ModelTFMinotaur extends BipedModel<EntityTFMinotaur> {
         this.bipedLeftArm.setTextureOffset(20, 45).addBox(0.0F, -4.0F, -2.5F, 4.0F, 14.0F, 5.0F, 0.0F, 0.0F, 0.0F);
 
         this.bipedHeadwear = new ModelRenderer(this, 0, 0);
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if(this.isSitting) matrixStackIn.translate(0, 0.5F, 0);
+        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
     /**

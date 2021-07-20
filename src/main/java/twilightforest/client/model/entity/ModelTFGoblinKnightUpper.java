@@ -1,12 +1,10 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -86,6 +84,7 @@ public class ModelTFGoblinKnightUpper extends BipedModel<EntityTFGoblinKnightUpp
     @Override
     public void setRotationAngles(EntityTFGoblinKnightUpper entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean hasShield = entity.hasShield();
+        boolean boat = entity.getRidingEntity() instanceof BoatEntity;
 
         this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
         this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
@@ -107,13 +106,15 @@ public class ModelTFGoblinKnightUpper extends BipedModel<EntityTFGoblinKnightUpp
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
 
-        if (this.isSitting) {
-            this.bipedRightArm.rotateAngleX += -((float) Math.PI / 5F);
-            this.bipedLeftArm.rotateAngleX += -((float) Math.PI / 5F);
-            this.bipedRightLeg.rotateAngleX = 0;
-            this.bipedLeftLeg.rotateAngleX = 0;
-//            this.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
-//            this.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
+        if (this.isSitting && boat) {
+            this.bipedRightArm.rotateAngleX += (-(float)Math.PI / 5F);
+            this.bipedLeftArm.rotateAngleX += (-(float)Math.PI / 5F);
+            this.bipedRightLeg.rotateAngleX = -1.4137167F;
+            this.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+            this.bipedRightLeg.rotateAngleZ = 0.07853982F;
+            this.bipedLeftLeg.rotateAngleX = -1.4137167F;
+            this.bipedLeftLeg.rotateAngleY = (-(float)Math.PI / 10F);
+            this.bipedLeftLeg.rotateAngleZ = -0.07853982F;
         }
 
         if (this.leftArmPose != ArmPose.EMPTY) {
@@ -157,7 +158,7 @@ public class ModelTFGoblinKnightUpper extends BipedModel<EntityTFGoblinKnightUpp
     private float getArmRotationDuringSwing(float attackTime) {
         if (attackTime <= 10) {
             // rock back
-            return attackTime * 1.0F;
+            return attackTime;
         }
         if (attackTime > 10 && attackTime <= 30) {
             // hang back

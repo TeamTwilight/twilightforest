@@ -69,15 +69,7 @@ public class TFClientEvents {
 		public static void texStitch(TextureStitchEvent.Pre evt) {
 			AtlasTexture map = evt.getMap();
 
-			//TODO: Removed until Tinkers' Construct is available
-		/*map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenFieryStill                                        ));
-		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenFieryFlow                                         ));
-		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenKnightmetalStill, true, KNIGHTMETAL_GRADIENT_MAP  ));
-		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenKnightmetalFlow , true, KNIGHTMETAL_GRADIENT_MAP  ));
-		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_still" ), RegisterBlockEvent.essenceFieryStill     , true, FIERY_ESSENCE_GRADIENT_MAP));
-		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));*/
-
-			//TODO: Removed until Immersive Engineering is available
+		//FIXME bring back if you can get GradientMappedTexture working
 		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_grip" ), IEShaderRegister.PROCESSED_REVOLVER_GRIP_LAYER, true, EASY_GRAYSCALING_MAP ));
 			map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "immersiveengineering", "revolvers/shaders/revolver_0"    ), IEShaderRegister.PROCESSED_REVOLVER_LAYER     , true, EASY_GRAYSCALING_MAP ));
@@ -98,8 +90,15 @@ public class TFClientEvents {
 							true, EASY_GRAYSCALING_MAP
 					));
 				}
-			}
-		}*/
+			}*/
+
+			//TODO: Removed until Tinkers' Construct is available
+		/*map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenFieryStill                                        ));
+		map.setTextureEntry( new MoltenFieryTexture   ( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenFieryFlow                                         ));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_still"  ), RegisterBlockEvent.moltenKnightmetalStill, true, KNIGHTMETAL_GRADIENT_MAP  ));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenKnightmetalFlow , true, KNIGHTMETAL_GRADIENT_MAP  ));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_still" ), RegisterBlockEvent.essenceFieryStill     , true, FIERY_ESSENCE_GRADIENT_MAP));
+		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));*/
 		}
 
 		//TODO: Fields are unused due to missing compat
@@ -118,9 +117,9 @@ public class TFClientEvents {
 	};
 
 	public static final GradientNode[] EASY_GRAYSCALING_MAP = {
-			new GradientNode(0.0f, 0xFF_80_80_80),
-			new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
-			new GradientNode(1.0f, 0xFF_FF_FF_FF)
+		new GradientNode(0.0f, 0xFF_80_80_80),
+		new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
+		new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};*/
 
 		@SubscribeEvent
@@ -129,6 +128,10 @@ public class TFClientEvents {
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
+
+			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
+			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
+			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
 		}
 	}
 

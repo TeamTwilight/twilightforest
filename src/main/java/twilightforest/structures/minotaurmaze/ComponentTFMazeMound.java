@@ -44,7 +44,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 		super.buildComponent(structurecomponent, list, random);
 
 		// add aboveground maze entrance building
-		mazeAbove = new ComponentTFMazeUpperEntrance(getFeatureType(), 3, random, boundingBox.minX + 10, boundingBox.minY + 0, boundingBox.minZ + 10);
+		mazeAbove = new ComponentTFMazeUpperEntrance(getFeatureType(), 3, random, boundingBox.minX + 10, boundingBox.minY, boundingBox.minZ + 10);
 		list.add(mazeAbove);
 		mazeAbove.buildComponent(this, list, random);
 	}

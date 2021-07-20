@@ -1,6 +1,6 @@
 {
   "name": "Anti-builder",
-  "icon": "twilightforest:tower_device:9",
+  "icon": "twilightforest:antibuilder",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6240,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Anti-builder",
-      "item": "twilightforest:tower_device:9",
+      "item": "twilightforest:antibuilder",
       "text": "There is a strange aura emitted from this block, and it seems to be protecting anything that is within this bound. Any attempts to place a block in this field results in it being broken, and breaking anything augments a strange red-and-green block. There doesn't seem to be a switch to turn it off, but there must be a way."
     }
   ]

@@ -13,7 +13,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFFlockToSameKind;

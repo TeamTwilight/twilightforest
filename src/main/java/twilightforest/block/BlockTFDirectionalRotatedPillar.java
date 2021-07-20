@@ -37,7 +37,7 @@ public abstract class BlockTFDirectionalRotatedPillar extends RotatedPillarBlock
 					|| mirror == Mirror.LEFT_RIGHT && axis == Direction.Axis.Z
 					|| mirror == Mirror.FRONT_BACK && axis == Direction.Axis.X) {
 
-				return state.func_235896_a_(REVERSED);
+				return state.cycleValue(REVERSED);
 			}
 		}
 		return super.mirror(state, mirror);

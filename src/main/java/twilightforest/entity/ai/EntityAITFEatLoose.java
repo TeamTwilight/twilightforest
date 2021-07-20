@@ -3,7 +3,6 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.crafting.Ingredient;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
 import java.util.EnumSet;
@@ -11,14 +10,12 @@ import java.util.List;
 
 public class EntityAITFEatLoose extends Goal {
 	private final EntityTFQuestRam temptedQuestRam;
-	private final Ingredient target;
 
 	private int delayTemptCounter;
 	private ItemEntity temptingItem;
 
-	public EntityAITFEatLoose(EntityTFQuestRam entityTFQuestRam, Ingredient target) {
+	public EntityAITFEatLoose(EntityTFQuestRam entityTFQuestRam) {
 		this.temptedQuestRam = entityTFQuestRam;
-		this.target = target;
 		setMutexFlags(EnumSet.of(Flag.LOOK));
 	}
 

@@ -1,0 +1,154 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 4,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20,
+              "treasure": false
+            }
+          ],
+          "name": "twilightforest:knightmetal_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20,
+              "treasure": false
+            }
+          ],
+          "name": "twilightforest:knightmetal_pickaxe"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20,
+              "treasure": false
+            }
+          ],
+          "name": "twilightforest:knightmetal_axe"
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20,
+              "treasure": false
+            }
+          ],
+          "name": "twilightforest:phantom_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20,
+              "treasure": false
+            }
+          ],
+          "name": "twilightforest:phantom_chestplate"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30,
+              "treasure": false
+            }
+          ],
+          "name": "twilightforest:phantom_helmet"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30,
+              "treasure": false
+            }
+          ],
+          "name": "twilightforest:phantom_chestplate"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:knight_phantom_trophy"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader",
+              "default": "twilightforest:knightmetal_ingot"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{shader_name:\"twilightforest:knight_phantom\"}"
+            }
+          ],
+          "name": "twilightforest:carminite"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "item": "twilightforest:shader_bag_twilight",
+              "default": "twilightforest:knightmetal_ingot"
+            }
+          ],
+          "name": "twilightforest:carminite"
+        }
+      ]
+    }
+  ]
+}

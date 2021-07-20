@@ -1,6 +1,6 @@
 {
   "name": "Vanishing Block",
-  "icon": "twilightforest:tower_device:2",
+  "icon": "twilightforest:vanishing_block",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6210,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Vanishing Block",
-      "item": "twilightforest:tower_device:2",
+      "item": "twilightforest:vanishing_block",
       "text": "This is more peculiar than I anticipated. When I touch or give this block a Redstone signal, it vanishes before my eyes. Even after waiting, it never comes back, so what purpose can it serve for security?"
     }
   ]

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "side": "twilightforest:block/wood/planks_twilight_oak_2",
-    "bottom": "twilightforest:block/wood/planks_twilight_oak_2",
-    "top": "twilightforest:block/wood/planks_twilight_oak_2"
-  }
-}

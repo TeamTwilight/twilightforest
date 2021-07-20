@@ -9,7 +9,8 @@ public class ModelTFGoblinChain extends SegmentedModel<Entity> {
 	ModelRenderer chain;
 
 	public ModelTFGoblinChain() {
-
+		this.textureWidth = 64;
+		this.textureHeight = 64;
 		chain = new ModelRenderer(this, 56, 36);
 		chain.addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
 		chain.setRotationPoint(0F, 0F, 0F);

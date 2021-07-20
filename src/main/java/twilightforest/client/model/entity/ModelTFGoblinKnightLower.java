@@ -1,12 +1,9 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -70,6 +67,19 @@ public class ModelTFGoblinKnightLower extends BipedModel<EntityTFGoblinKnightLow
         this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
         this.bipedRightLeg.rotateAngleY = 0.0F;
         this.bipedLeftLeg.rotateAngleY = 0.0F;
+        this.bipedRightLeg.rotateAngleZ = 0.0F;
+        this.bipedLeftLeg.rotateAngleZ = 0.0F;
+
+        if (this.isSitting) {
+            this.bipedRightArm.rotateAngleX += (-(float)Math.PI / 5F);
+            this.bipedLeftArm.rotateAngleX += (-(float)Math.PI / 5F);
+            this.bipedRightLeg.rotateAngleX = -1.4137167F;
+            this.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+            this.bipedRightLeg.rotateAngleZ = 0.07853982F;
+            this.bipedLeftLeg.rotateAngleX = -1.4137167F;
+            this.bipedLeftLeg.rotateAngleY = (-(float)Math.PI / 10F);
+            this.bipedLeftLeg.rotateAngleZ = -0.07853982F;
+        }
 
         if (entity.isBeingRidden()) {
             this.bipedHead.rotateAngleY = 0;

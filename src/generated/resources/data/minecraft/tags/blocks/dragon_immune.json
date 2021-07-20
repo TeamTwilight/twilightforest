@@ -1,6 +1,24 @@
 {
   "replace": false,
   "values": [
-    "twilightforest:giant_obsidian"
+    "twilightforest:boss_spawner_naga",
+    "twilightforest:boss_spawner_lich",
+    "twilightforest:boss_spawner_minoshroom",
+    "twilightforest:boss_spawner_hydra",
+    "twilightforest:boss_spawner_knight_phantom",
+    "twilightforest:boss_spawner_ur_ghast",
+    "twilightforest:boss_spawner_alpha_yeti",
+    "twilightforest:boss_spawner_snow_queen",
+    "twilightforest:boss_spawner_final_boss",
+    "twilightforest:force_field_pink",
+    "twilightforest:force_field_orange",
+    "twilightforest:force_field_green",
+    "twilightforest:force_field_blue",
+    "twilightforest:force_field_purple",
+    "twilightforest:giant_obsidian",
+    "twilightforest:stronghold_shield",
+    "twilightforest:vanishing_block",
+    "twilightforest:locked_vanishing_block",
+    "twilightforest:keepsake_casket"
   ]
 }

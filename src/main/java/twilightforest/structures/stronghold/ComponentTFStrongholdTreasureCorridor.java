@@ -61,9 +61,9 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 
 		// niche!
 
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, rotation, true), 8, 3, 12, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, true), 8, 3, 13, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, true), 8, 3, 14, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, true), 8, 3, 12, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, true), 8, 3, 13, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, true), 8, 3, 14, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 12, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 14, rotation, sbb);
 		this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.SOUTH), 7, 1, 12, rotation, sbb);
@@ -71,7 +71,7 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 		this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.NORTH), 7, 1, 14, rotation, sbb);
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}

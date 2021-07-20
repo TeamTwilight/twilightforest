@@ -4,7 +4,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -47,9 +46,7 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponentOld {
 		// span
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, length, 1, 6, false, rand, deco.randomBlocks);
 		// rails
-		//fillWithRandomizedBlocks(world, sbb, 0, 1, 0, length, 2, 0, false, rand, deco.randomBlocks);
-		//fillWithRandomizedBlocks(world, sbb, 0, 1, 6, length, 2, 6, false, rand, deco.randomBlocks);
-		BlockState castlePillar = TFBlocks.castle_pillar_bold.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.X);
+        BlockState castlePillar = TFBlocks.castle_pillar_bold.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		fillWithBlocks(world, sbb, 0, 2, 0, length, 2, 0, castlePillar, castlePillar, false);
 		fillWithBlocks(world, sbb, 0, 2, 6, length, 2, 6, castlePillar, castlePillar, false);

@@ -37,14 +37,15 @@ public class LayerIce<T extends LivingEntity, M extends EntityModel<T>> extends 
 		// make cubes
 		for (int i = 0; i < numCubes; i++) {
 			stack.push();
-			float dx = (float) (entity.getPosX() + random.nextGaussian() * 0.2F * entity.getWidth());
-			float dy = (float) (entity.getPosY() + random.nextGaussian() * 0.2F * entity.getHeight()) + entity.getHeight() / 2F;
-			float dz = (float) (entity.getPosZ() + random.nextGaussian() * 0.2F * entity.getWidth());
+			float dx = (float) (random.nextGaussian() * 0.2F * entity.getWidth());
+			float dy = (float) (random.nextGaussian() * 0.2F * entity.getHeight()) + entity.getHeight() / 2F;
+			float dz = (float) (random.nextGaussian() * 0.2F * entity.getWidth());
 			stack.translate(dx, dy, dz);
 			stack.scale(0.5F, 0.5F, 0.5F);
 			stack.rotate(Vector3f.XP.rotationDegrees(random.nextFloat() * 360F));
 			stack.rotate(Vector3f.YP.rotationDegrees(random.nextFloat() * 360F));
 			stack.rotate(Vector3f.ZP.rotationDegrees(random.nextFloat() * 360F));
+			stack.translate(-0.5F, -0.5F, -0.5F);
 
 			Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(Blocks.ICE.getDefaultState(), stack, buffer, light, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
 			stack.pop();

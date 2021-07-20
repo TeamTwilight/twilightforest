@@ -1,14 +1,16 @@
 {
   "name": "Troll",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:troll\"}}",
+  "icon": "twilightforest:troll_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/troll",
-  "sortnum": 8010,
+  "sortnum": 8020,
   "pages": [
     {
       "type": "entity",
-      "entity": "twilightforest:troll",
-      "text": "things and stuff"
+      "entity": "twilightforest:troll"
+    }, {
+      "type": "text",
+      "text": "These lumbering brutes inhabit the Troll Caves, and although slow, they will attack an intruder with great strength if they get too close. There is a vast number of them in these caves, perhaps they are guarding something?..."
     }
   ]
 }

@@ -18,7 +18,7 @@ public class ChunkGeneratorTwilightSky extends ChunkGeneratorTwilightBase {
 	public static final Codec<ChunkGeneratorTwilightSky> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			BiomeProvider.CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
 			Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
-			DimensionSettings.field_236098_b_.fieldOf("settings").forGetter(ChunkGeneratorTwilightSky::getDimensionSettings)
+			DimensionSettings.DIMENSION_SETTINGS_CODEC.fieldOf("settings").forGetter(ChunkGeneratorTwilightSky::getDimensionSettings)
 	).apply(instance, instance.stable(ChunkGeneratorTwilightSky::new)));
 
 	//private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();

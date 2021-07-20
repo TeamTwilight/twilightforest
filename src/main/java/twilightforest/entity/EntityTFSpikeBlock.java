@@ -49,6 +49,11 @@ public class EntityTFSpikeBlock extends EntityTFBlockGoblin.MultipartGenericsAre
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	protected void readAdditional(CompoundNBT compound) {
 	}
 

@@ -67,7 +67,7 @@ public class EntityTFDeer extends AnimalEntity {
     }
 
 	@Override
-	public EntityTFDeer func_241840_a(ServerWorld p_241840_1_, AgeableEntity mate) {
+	public EntityTFDeer createChild(ServerWorld p_241840_1_, AgeableEntity mate) {
 		return TFEntities.deer.create(world);
 	}
 

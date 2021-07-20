@@ -14,12 +14,7 @@ public class BlockTFAntibuilder extends Block {
 		super(props);
 	}
 
-//	@Override
-//	public int tickRate(IWorldReader world) {
-//		return 15;
-//	}
-
-	@Override
+    @Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}

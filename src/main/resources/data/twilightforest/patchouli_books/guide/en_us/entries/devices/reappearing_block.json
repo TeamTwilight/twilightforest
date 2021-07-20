@@ -1,6 +1,6 @@
 {
   "name": "Reappearing Block",
-  "icon": "twilightforest:tower_device:0",
+  "icon": "twilightforest:reappearing_block",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6200,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Reappearing Block",
-      "item": "twilightforest:tower_device:0",
+      "item": "twilightforest:reappearing_block",
       "text": "There appears to be something compelling and intriguing about this device. When I touch this block or give it a Redstone signal, it vanishes before my eyes. It seems to come back after a determined amount of time, but I guess I'll never understand why."
     }
   ]

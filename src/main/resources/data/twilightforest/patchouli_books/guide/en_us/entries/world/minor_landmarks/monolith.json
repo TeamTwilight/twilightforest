@@ -1,0 +1,17 @@
+{
+  "name": "Monolith",
+  "icon": "minecraft:obsidian",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 2100,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Monolith",
+      "images": ["twilightforest:textures/gui/patchouli_images/monolith.png"]
+    }, {
+      "type": "text",
+      "text": "Strange, obsidian pillars are seen throughout the forest. These pillars are topped with a lapis block. It also seems that ravens like to hang around the pillars, but the reason why is unclear."
+    }
+  ]
+}

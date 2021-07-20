@@ -11,8 +11,7 @@ import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
 import twilightforest.worldgen.ConfiguredFeatures;
 import twilightforest.worldgen.ConfiguredWorldCarvers;
-
-import java.util.function.Consumer;
+import twilightforest.worldgen.TwilightFeatures;
 
 public abstract class BiomeHelper {
 
@@ -164,8 +163,6 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder fireSwampGen(BiomeGenerationSettings.Builder biome) {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GRASS_PLACER);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_FALLEN_FEATURE);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_WATER_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIRE_JET);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SMOKER);
 		biome.withFeature(GenerationStage.Decoration.LAKES, Features.LAKE_LAVA);
@@ -181,7 +178,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder darkForestGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 		
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
@@ -199,7 +196,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder darkForestCenterGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
@@ -236,16 +233,14 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder glacierGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 		addCaves(biome);
 		return biome;
 	}
 	
-	public static BiomeGenerationSettings.Builder withWoodRoots(BiomeGenerationSettings.Builder biome) {
+	public static void withWoodRoots(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ConfiguredFeatures.WOOD_ROOTS_SPREAD);
-
-        return biome;
-    }
+	}
 
     public static BiomeGenerationSettings.Builder addDefaultStructures(BiomeGenerationSettings.Builder biome) {
     	return biome.
@@ -257,116 +252,81 @@ public abstract class BiomeHelper {
 				withStructure(TFStructures.CONFIGURED_LICH_TOWER);
 	}
     
-    public static BiomeGenerationSettings.Builder addThorns(BiomeGenerationSettings.Builder biome) {
+    public static void addThorns(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.THORNS);
+	}
 
-        return biome;
-    }
-
-    public static BiomeGenerationSettings.Builder addForestVegetation(BiomeGenerationSettings.Builder biome) {
+    public static void addForestVegetation(BiomeGenerationSettings.Builder biome) {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FOREST_GRASS_PLACER);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FLOWER_PLACER);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_COMMON_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_FALLEN_FEATURE);
-
-		return biome;
 	}
 
     //Canopies, trees, and anything resembling a forest thing
-    public static BiomeGenerationSettings.Builder addCanopyTrees(BiomeGenerationSettings.Builder biome) {
+    public static void addCanopyTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREES);
+	}
+    public static void addFireflyCanopyTrees(BiomeGenerationSettings.Builder biome) {
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREE_MIX);
+	}
 
-        return biome;
-    }
-    public static BiomeGenerationSettings.Builder addFireflyCanopyTrees(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREES);
-
-        return biome;
-    }
-
-    public static BiomeGenerationSettings.Builder addDeadCanopyTrees(BiomeGenerationSettings.Builder biome) {
+    public static void addDeadCanopyTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEAD_CANOPY_TREES);
+	}
 
-        return biome;
-    }
-
-    public static BiomeGenerationSettings.Builder addCanopyMushrooms(BiomeGenerationSettings.Builder biome, boolean dense) {
+    public static void addCanopyMushrooms(BiomeGenerationSettings.Builder biome, boolean dense) {
         DefaultBiomeFeatures.withNormalMushroomGeneration(biome); // Add small mushrooms
-        DefaultBiomeFeatures.withMushroomBiomeVegetation(biome); // Add large mushrooms
+		//Same config as DefaultBiomeFeatures.withMushroomBiomeVegetation, we just use our custom large mushrooms instead
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.BROWN_MUSHROOM_TAIGA);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.RED_MUSHROOM_TAIGA);
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_BIG_MUSH);
 
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, dense ? ConfiguredFeatures.CANOPY_MUSHROOMS_DENSE : ConfiguredFeatures.CANOPY_MUSHROOMS_SPARSE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, dense ? ConfiguredFeatures.BIG_MUSHGLOOM : ConfiguredFeatures.MUSHGLOOM_CLUSTER);
+	}
 
-        return biome;
-    }
-
-    public static BiomeGenerationSettings.Builder addRainbowOaks(BiomeGenerationSettings.Builder biome) {
+    public static void addRainbowOaks(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RAINBOW_OAK_TREES);
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.LARGE_RAINBOW_OAK_TREES);
+	}
 
-        return biome;
-    }
-
-    public static BiomeGenerationSettings.Builder addMangroveTrees(BiomeGenerationSettings.Builder biome) {
+    public static void addMangroveTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREES);
+	}
 
-        return biome;
-    }
-
-    public static BiomeGenerationSettings.Builder addDarkwoodTrees(BiomeGenerationSettings.Builder biome) {
+    public static void addDarkwoodTrees(BiomeGenerationSettings.Builder biome) {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREES);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BUSH_DARK_FOREST_TREES);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OAK_DARK_FOREST_TREES);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BIRCH_DARK_FOREST_TREES);
-
-        return biome;
-    }
-
-	public static BiomeGenerationSettings.Builder addDarkwoodLanternTrees(BiomeGenerationSettings.Builder biome) {
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_LANTERN_TREES);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_LANTERN_TREES);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BUSH_DARK_FOREST_TREES);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OAK_DARK_FOREST_TREES);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BIRCH_DARK_FOREST_TREES);
-
-		return biome;
 	}
-    
-    public static BiomeGenerationSettings.Builder addTwilightOakTrees(BiomeGenerationSettings.Builder biome) {
+
+	public static void addTwilightOakTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.OAK);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.BIRCH);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_OAK);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_BIRCH);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.OAK);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.BIRCH);
-
-        return biome;
-    }
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_OAK);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_BIRCH);
+	}
     
-    public static BiomeGenerationSettings.Builder addHollowOakTrees(BiomeGenerationSettings.Builder biome) {
+    public static void addHollowOakTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.HOLLOW_TREE_PLACER);
-
-        return biome;
-    }
+	}
     
-    public static BiomeGenerationSettings.Builder addRareOakTrees(BiomeGenerationSettings.Builder biome) {
+    public static void addRareOakTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OAK_TREES_SPARSE);
-
-        return biome;
-    }
-
-	public static BiomeGenerationSettings.Builder addSwampTrees(BiomeGenerationSettings.Builder biome) {
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SWAMPY_OAK_TREES);
-
-		return biome;
 	}
 
-	public static BiomeGenerationSettings.Builder addSmallStoneClusters(BiomeGenerationSettings.Builder biome) {
+	public static void addSwampTrees(BiomeGenerationSettings.Builder biome) {
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SWAMPY_OAK_TREES);
+	}
+
+	public static void addSmallStoneClusters(BiomeGenerationSettings.Builder biome) {
 		biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ConfiguredFeatures.SMALL_ANDESITE);
 		biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ConfiguredFeatures.SMALL_DIORITE);
 		biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ConfiguredFeatures.SMALL_GRANITE);
-
-		return biome;
 	}
 
     public static BiomeAmbience.Builder whiteAshParticles(BiomeAmbience.Builder builder) {
@@ -375,19 +335,15 @@ public abstract class BiomeHelper {
     }
 
     //Caves!
-	public static BiomeGenerationSettings.Builder addCaves(BiomeGenerationSettings.Builder biome) {
+	public static void addCaves(BiomeGenerationSettings.Builder biome) {
 		biome.withCarver(GenerationStage.Carving.AIR, ConfiguredWorldCarvers.TFCAVES_CONFIGURED);
 		biome.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.PLANT_ROOTS);
 		biome.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.TORCH_BERRIES);
-
-		return biome;
 	}
 
-	public static BiomeGenerationSettings.Builder addHighlandCaves(BiomeGenerationSettings.Builder biome) {
+	public static void addHighlandCaves(BiomeGenerationSettings.Builder biome) {
 		biome.withCarver(GenerationStage.Carving.AIR, ConfiguredWorldCarvers.HIGHLANDCAVES_CONFIGURED);
 		biome.withFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.TROLL_ROOTS);
-
-		return biome;
 	}
 
 	//Special mob spawns. EntityClassification.MONSTER is forced underground, so use CREATURE for above ground spawns.
@@ -458,13 +414,7 @@ public abstract class BiomeHelper {
 		return spawnInfo;
 	}
 
-    // Only use if a Builder modification function does not return the builder
-    public static BiomeGenerationSettings.Builder modify(BiomeGenerationSettings.Builder builder, Consumer<BiomeGenerationSettings.Builder> consumer) {
-        consumer.accept(builder);
-        return builder;
-    }
-
-    // Defaults
+	// Defaults
     public static BiomeAmbience.Builder defaultAmbientBuilder() {
         return new BiomeAmbience.Builder()
                 .setFogColor(0xC0FFD8) // TODO Change based on Biome. Not previously done before
@@ -522,11 +472,7 @@ public abstract class BiomeHelper {
         return spawnInfo;
     }
 
-    public static Biome.Builder biomeWithDefaults() {
-        return biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder());
-    }
-
-    public static Biome.Builder biomeWithDefaults(BiomeAmbience.Builder biomeAmbience, MobSpawnInfo.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
+	public static Biome.Builder biomeWithDefaults(BiomeAmbience.Builder biomeAmbience, MobSpawnInfo.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
         return new Biome.Builder()
                 .precipitation(Biome.RainType.RAIN)
                 .category(Biome.Category.FOREST)
@@ -535,7 +481,7 @@ public abstract class BiomeHelper {
                 .temperature(0.5F)
                 .downfall(0.5F)
                 .setEffects(biomeAmbience.build())
-                .withMobSpawnSettings(mobSpawnInfo.copy())
+                .withMobSpawnSettings(mobSpawnInfo.build())
                 .withGenerationSettings(biomeGenerationSettings.build())
                 .withTemperatureModifier(Biome.TemperatureModifier.NONE);
     }

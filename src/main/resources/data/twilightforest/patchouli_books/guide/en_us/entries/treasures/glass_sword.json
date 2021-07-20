@@ -7,7 +7,7 @@
   "pages": [
     {
       "title": "Glass Sword",
-      "type": "twilightforest:headed_spotlight",
+      "type": "spotlight",
       "item": "twilightforest:glass_sword",
       "text": "A stunning example of what a master craftsman is able to produce. Not only is the blade of this sabre unparalleled in sharpness beyond anything comparable, but its reflective and see-through surface also cascade the twilight through to cast snowflake like imagery on your surroundings. Truly, this is the height of craftsmanship."
     }, {

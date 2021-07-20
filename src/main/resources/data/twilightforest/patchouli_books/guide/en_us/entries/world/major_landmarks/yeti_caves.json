@@ -1,11 +1,15 @@
 {
   "name": "Yeti Caves",
-  "icon": "twilightforest:miniature_structure:11",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/yeti_lairs",
   "sortnum": 7010,
   "pages": [
     {
+      "type": "image",
+      "title": "Yeti Cave",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "things and stuff"
     }

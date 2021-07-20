@@ -1,6 +1,6 @@
 {
   "name": "Smoking Block",
-  "icon": "twilightforest:fire_jet:0",
+  "icon": "twilightforest:smoker",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/smoking_block",
   "sortnum": 5050,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Smoking Block",
-      "item": "twilightforest:fire_jet:0",
+      "item": "twilightforest:smoker",
       "text": "These seem to be relatively safe to stand over. The soles of my feet aren't blistering and my skin isn't burning, but on the other hand it isn't pleasant to breathe in. This thing does seem to sustain itself, no heat needed; I wonder if that would be useful?"
     }
   ]

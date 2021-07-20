@@ -1,15 +1,14 @@
 package twilightforest.world;
 
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
 	public static long seed;
-	public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, TwilightForestMod.prefix("twilightforest"));
+	// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example)
+	//public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
 
 	public static void init() {
 		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("smart_distribution"), TFBiomeDistributor.TF_CODEC);

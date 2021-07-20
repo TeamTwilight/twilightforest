@@ -1,11 +1,15 @@
 {
   "name": "Labyrinth",
-  "icon": "twilightforest:miniature_structure:7",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/labyrinth",
   "sortnum": 5010,
   "pages": [
     {
+      "type": "image",
+      "title": "Minotaur Labyrinth",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "Large, sprawling mazes that can be found beneath the Twilight Swamp biome. Locating one of these landmarks requires a good eye for terrain, as the entrance is hidden inside a hill the size of a Small Hollow Hill."
     },

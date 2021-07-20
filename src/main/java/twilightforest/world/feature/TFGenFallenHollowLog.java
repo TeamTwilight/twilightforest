@@ -37,7 +37,7 @@ public class TFGenFallenHollowLog extends Feature<NoFeatureConfig> {
 
 	private boolean makeLog4Z(IWorld world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 9, 3, 4)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 9, 3, 4)) {
 			return false;
 		}
 
@@ -133,7 +133,7 @@ public class TFGenFallenHollowLog extends Feature<NoFeatureConfig> {
 	 */
 	private boolean makeLog4X(IWorld world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 4, 3, 9)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 4, 3, 9)) {
 			return false;
 		}
 

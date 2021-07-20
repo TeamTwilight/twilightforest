@@ -114,7 +114,7 @@ public class TFTickHandler {
 
 	private static void checkForPortalCreation(PlayerEntity player, World world, float rangeToCheck) {
 		if (world.getDimensionKey().getLocation().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
-				|| world.getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation())
+				|| world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));

@@ -3,7 +3,7 @@
   "criteria": {
     "discover": {
       "trigger": "minecraft:location",
-      "conditions": { "feature": "twilightforest:small_hollow_hill" }
+      "conditions": { "feature": "twilightforest:hollowhillsmall" }
     }
   }
 }

@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -7,7 +8,9 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -26,7 +29,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
 import java.util.EnumSet;
@@ -63,7 +65,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 		if (!(this instanceof EntityTFUrGhast)) this.goalSelector.addGoal(5, new AIRandomFly(this));
 		this.goalSelector.addGoal(7, new GhastEntity.LookAroundGoal(this));
 		this.goalSelector.addGoal(7, attackAI = new AIAttack(this));
-		this.targetSelector.addGoal(1, new TFNearestPlayerGoal(this));
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 	
 	@Override
@@ -204,7 +206,6 @@ public class EntityTFTowerGhast extends GhastEntity {
 			LivingEntity entitylivingbase = this.parentEntity.getAttackTarget();
 
 			if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.getEntitySenses().canSee(entitylivingbase)) {
-				World world = this.parentEntity.world;
 				this.prevAttackTimer = attackTimer;
 				++this.attackTimer;
 
@@ -315,9 +316,6 @@ public class EntityTFTowerGhast extends GhastEntity {
 		double d4 = getAttackTarget().getPosZ() - (this.getPosZ() + vec3d.z * 4.0D);
 		FireballEntity entitylargefireball = new FireballEntity(world, this, d2, d3, d4);
 		entitylargefireball.explosionPower = this.getFireballStrength();
-//		entitylargefireball.getPosX() = this.getPosX() + vec3d.x * 4.0D;
-//		entitylargefireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + 0.5D;
-//		entitylargefireball.getPosZ() = this.getPosZ() + vec3d.z * 4.0D;
 		entitylargefireball.setPosition(this.getPosX() + vec3d.x * 4.0D, this.getPosY() + this.getHeight() / 2.0F + 0.5D, this.getPosZ() + vec3d.z * 4.0D);
 		world.addEntity(entitylargefireball);
 
@@ -394,6 +392,11 @@ public class EntityTFTowerGhast extends GhastEntity {
 	@Override
 	public boolean detachHome() {
 		this.maximumHomeDistance = -1.0F;
+		return false;
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
 		return false;
 	}
 

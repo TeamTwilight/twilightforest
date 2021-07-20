@@ -60,7 +60,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 
 		// beard
 		for (int i = 1; i < 4; i++) {
-			fillWithRandomizedBlocks(world, sbb, i, 0 - (i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
+			fillWithRandomizedBlocks(world, sbb, i, -(i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
 		}
 		this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
 
@@ -79,9 +79,9 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 				int sy = y + i;
 				int sz = 1;
 
-				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz, rotation, sbb);
+				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, false), sx, sy, sz, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
+				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, false), sx, sy, sz + 1, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz + 1, rotation, sbb);
 			}
 			// landing
@@ -91,7 +91,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 		// door, second floor
 		this.fillWithBlocks(world, sbb, 1, 18, 0, 2, 20, 0, castleDoor, AIR, false);
 
-		BlockState stairState = getStairState(deco.stairState, Direction.SOUTH, rotation, false);
+		BlockState stairState = getStairState(deco.stairState, Direction.SOUTH, false);
 
 		// second floor landing
 		this.fillWithBlocks(world, sbb, 1, 17, 1, 3, 17, 3, deco.blockState, deco.blockState, false);
@@ -114,9 +114,9 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 				int sy = y + i;
 				int sz = 1;
 
-				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz, rotation, sbb);
+				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, false), sx, sy, sz, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
+				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, false), sx, sy, sz + 1, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz + 1, rotation, sbb);
 			}
 			// landing

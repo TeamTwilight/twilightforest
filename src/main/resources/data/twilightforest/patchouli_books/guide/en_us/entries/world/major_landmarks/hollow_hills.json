@@ -1,18 +1,33 @@
 {
   "name": "Hollow Hills",
-  "icon": "twilightforest:miniature_structure:2",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/hollow_hills",
   "sortnum": 2000,
   "pages": [
     {
+      "type": "image",
+      "title": "Small Hollow Hill",
+      "advancement": "twilightforest:alt/major_landmarks/small_hollow_hill",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "advancement": "twilightforest:alt/major_landmarks/small_hollow_hill",
       "text": "things and stuff"
     }, {
+      "type": "image",
+      "title": "Medium Hollow Hill",
+      "advancement": "twilightforest:alt/major_landmarks/medium_hollow_hill",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "advancement": "twilightforest:alt/major_landmarks/medium_hollow_hill",
       "text": "things and stuff"
+    }, {
+      "type": "image",
+      "title": "Large Hollow Hill",
+      "advancement": "twilightforest:alt/major_landmarks/large_hollow_hill",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/major_landmarks/large_hollow_hill",

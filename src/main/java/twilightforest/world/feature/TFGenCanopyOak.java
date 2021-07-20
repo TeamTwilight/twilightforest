@@ -140,10 +140,6 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		this.setBranchBlockState(world, treeRNG, dest.west(), branchpos, mbb, config);
 		this.setBranchBlockState(world, treeRNG, dest.north(), branchpos, mbb, config);
 		this.setBranchBlockState(world, treeRNG, dest.south(), branchpos, mbb, config);
-//		setBlockAndNotifyAdequately(world, dest.east(), branchState);
-//		setBlockAndNotifyAdequately(world, dest.west(), branchState);
-//		setBlockAndNotifyAdequately(world, dest.north(), branchState);
-//		setBlockAndNotifyAdequately(world, dest.south(), branchState);
 
 		this.leaves.add(dest);
 	}

@@ -3,8 +3,17 @@
     "feature": {
       "config": {
         "feature": {
-          "config": {},
-          "type": "twilightforest:fallen_small_log"
+          "config": {
+            "feature": {
+              "config": {},
+              "type": "twilightforest:fallen_small_log"
+            },
+            "decorator": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
+          },
+          "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {

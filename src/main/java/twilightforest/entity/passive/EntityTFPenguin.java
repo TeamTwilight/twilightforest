@@ -40,7 +40,7 @@ public class EntityTFPenguin extends EntityTFBird {
 	}
 
 	@Override
-	public AnimalEntity func_241840_a(ServerWorld world, AgeableEntity entityanimal) {
+	public AnimalEntity createChild(ServerWorld world, AgeableEntity entityanimal) {
 		return TFEntities.penguin.create(world);
 	}
 

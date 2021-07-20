@@ -38,8 +38,8 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 		// dais
 		this.setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), 2, 1, 4, sbb);
 		this.setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), 3, 1, 4, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 2, 1, 3, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 3, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, false), 2, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, false), 3, 1, 3, sbb);
 
 		// chest
 		this.setDoubleLootChest(world, 2, 2, 4,3, 2, 4, Direction.SOUTH, TFTreasure.labyrinth_deadend, sbb, true);

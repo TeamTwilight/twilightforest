@@ -2,7 +2,6 @@ package twilightforest.block;
 
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -66,12 +65,12 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
 
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos) {
-		return facing.getAxis().isHorizontal() ? state.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(this.canConnectTo(facingState, facingState.isSolidSide(world, facingPos, facing.getOpposite())))) : super.updatePostPlacement(state, facing, facingState, world, pos, facingPos);
+		return state.with(SixWayBlock.FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(facingState, facingState.isSolidSide(world, facingPos, facing.getOpposite())));
 	}
 
 	public boolean canConnectTo(BlockState state, boolean solidSide) {
 		Block block = state.getBlock();
-		return !cannotAttach(block) && solidSide || block instanceof BlockTFForceField || block instanceof PaneBlock || block.isIn(BlockTags.WALLS);
+		return !cannotAttach(block) && solidSide;
 	}
 
 	@Override

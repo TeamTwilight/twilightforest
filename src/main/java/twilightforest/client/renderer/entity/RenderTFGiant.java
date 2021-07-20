@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
@@ -22,6 +23,14 @@ public class RenderTFGiant<T extends EntityTFGiantMiner> extends BipedRenderer<T
 		slimModel = new PlayerModel<>(0, true);
 
 		this.addLayer(new BipedArmorLayer<>(this, new BipedModel<>(0.5F), new BipedModel<>(0.5F)));
+	}
+
+	@Override
+	public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+		if(this.entityModel.isSitting) {
+			matrixStackIn.translate(0, -2.5F, 0);
+		}
+		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Override

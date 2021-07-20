@@ -27,7 +27,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 	public static final Codec<ChunkGeneratorTwilightForest> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
-			DimensionSettings.field_236098_b_.fieldOf("settings").forGetter(ChunkGeneratorTwilightForest::getDimensionSettings)
+			DimensionSettings.DIMENSION_SETTINGS_CODEC.fieldOf("settings").forGetter(ChunkGeneratorTwilightForest::getDimensionSettings)
 	).apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
 
 	private long seed;

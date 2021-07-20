@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "quark:biotite_ore",
+      "required": false
+    }
+  ]
+}

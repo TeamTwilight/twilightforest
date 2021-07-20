@@ -1,4 +1,7 @@
 {
+  "_comment": "I made all these trees by hand because I thought they would look nice in the book.",
+  "_comment2": "This took me hours, please dont completely remove them if you want the pages changed. Thanks! -Gizmo",
+
   "name": "Magical Trees",
   "icon": "twilightforest:time_sapling",
   "category": "treasures",
@@ -9,21 +12,135 @@
       "type": "text",
       "text": "Magic Trees can be found in dungeons on top of big trees inside the lootchest"
     }, {
+      "type": "empty"
+    }, {
+      "type": "multiblock",
+      "name": "Tree of Time",
+      "advancement": "twilightforest:alt/treasures/tree_of_time",
+      "enable_visualize": false,
+      "multiblock": {
+        "pattern": [
+          [ "              ", "              ", "              ", "              ", "         LLL  ", "         LLL  ", "         LLL  ", "              ", "              ", "              ", "              ", "              " ],
+          [ "              ", "    LLL       ", "    LLL       ", "    LLL  LLL  ", "        LLLLL ", "        LLLLL ", "        LLLLL ", "     LLL LLL  ", "     LLL      ", "     LLL      ", "              ", "              " ],
+          [ "              ", "    LLL       ", "    LXL       ", "    LLLL LLL  ", "     LLLLLLLL ", "     LLLLLXLL ", "        LLLLL ", "     LLL LLL  ", "     LXL      ", "     LLL      ", "              ", "              " ],
+          [ "              ", "   LLLL       ", "   LLLLL      ", "   LLXLLLLLLL ", "   LLLLLLLLLL ", "    LLLLLXLLL ", "     LLLLLLLL ", "     LXLLLLL  ", "     LLLL     ", "     LLLL     ", "     LLL      ", "              " ],
+          [ "   LLL        ", "  LLLLL       ", "  LLLLLL  LLL ", "  LLXLXLLLLLLL", "   LLLXLLLLLLL", "    LLLLLXLLLL", "     LLLXLLLL ", "     LLXLL    ", "    LLLXLL    ", "    LLXLL     ", "    LLLLL     ", "     LLL      " ],
+          [ "   LLL        ", "  LLLLL       ", "  LLXLLL  LLL ", "  LLXLLLLLLLLL", "   LLLXLLXLXLL", "    LLLLXLLLLL", "     LLXXLLLL ", "     LLXLL    ", "    LLLXLL    ", "    LLXLL     ", "    LLLLL     ", "     LLL      " ],
+          [ "   LLL        ", "  LLLLL       ", "  LLLLLL  LLL ", "  LLXXXLLLLLLL", "   LLLXXXLXLLL", " LLLLLXVXLXLLL", " LLLLLXXXLLLL ", " LLLLLLLLL    ", "    LLXXLL    ", "    LLLLL     ", "    LLLLL     ", "     LLL      " ],
+          [ "              ", "   LLL        ", "   LLLLL  LLL ", "   LLXLL LLLLL", " LLLLLWWWLLLLL", "LLLLLLW0WXLLLL", "LLLLLLWWWLLLL ", "LLLLLLLXLL    ", " LLLLLLLL     ", "     LLLL     ", "     LLL      ", "              " ],
+          [ "              ", "              ", "    LLL   LLL ", "   LLLLL LLLLL", " LLLLXWWWLLXLL", "LLLLLLWVWXLLLL", "LLXXLLWWWLLLL ", "LLLLLLLL      ", " LLLL         ", "              ", "              ", "              " ],
+          [ "              ", "              ", "    LLL   LLL ", "   LLLLL LLLLL", " LLLLLWWWLWLLL", "LLLLWWWVWWLLLL", "LLLWWLWWWLLLL ", "LLLLLLLL      ", " LLLL         ", "              ", "              ", "              " ],
+          [ "              ", "              ", "              ", "    LLLL  LLL ", "    LLWWW LLL ", " LLLLXWVW LLL ", " LLLLLWWW     ", " LLLLLLL      ", "              ", "              ", "              ", "              " ],
+          [ "              ", "              ", "              ", "              ", "     LWWW     ", "     LWVW     ", "     LWWW     ", "              ", "              ", "              ", "              ", "              " ],
+          [ "              ", "              ", "              ", "              ", "      WWW     ", "      WVW     ", "      WCW     ", "              ", "              ", "              ", "              ", "              " ],
+          [ "              ", "              ", "              ", "              ", "      WWW     ", "      WVW     ", "      WWW     ", "              ", "              ", "              ", "              ", "              " ],
+          [ "              ", "              ", "              ", "       X      ", "      WWW     ", "     XWVWX    ", "      WWW     ", "       X      ", "              ", "              ", "              ", "              " ]
+        ],
+        "mapping": {
+          "W": "twilightforest:time_log[axis=y]",
+          "V": "minecraft:vine[east=true,south=true,north=true,west=true]",
+          "0": "minecraft:vine[east=true,south=true,north=true,west=true]",
+          "X": "twilightforest:time_wood",
+          "C": "twilightforest:time_log_core[axis=y]",
+          "L": "twilightforest:time_leaves[persistent=true]"
+        }
+      }
+    }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/tree_of_time",
-      "text": "Tree of Time"
+      "text": "Tree of Time desc."
+    }, {
+      "type": "multiblock",
+      "name": "Tree of Transformation",
+      "advancement": "twilightforest:alt/treasures/tree_of_transformation",
+      "enable_visualize": false,
+      "multiblock": {
+        "pattern": [
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "              L     ", "           LLLLL    ", "           LLLLL    ", "          LLLLLLL   ", "           LLLLL    ", "           LLLLL    ", "             L      ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "            LLLLL   ", "           LLLLLLL  ", "          LLLLLLLLL ", "         LLLLLLLLLLL", "         LLLLLWLLLLL", "         LLLLWWWLLLL", "      L  LLLLLWLLLLL", "    LLLLLLLLLLLLLLLL", "    LLLLL LLLLLLLLL ", "   LLLLLLL LLLLLLL  ", "    LLLLL   LLLLL   ", "    LLLLL           ", "      L             ", "                    ", "                    "],
+          [ "                    ", "                    ", "   LLL              ", "  LLLLL             ", "  LLLLL             ", "  LLLLL     LLLLL   ", "   LLL     LLLLLLL  ", "          LLLLLLLL  ", "    LLLLL LLLWLLLLL ", "   LLLLLLLLLLLLLLLL ", "  LLLLLLLLLLLLLLLLL ", " LLLLLLLLLLLLLLLLL  ", " LLLLLWLLLLLLLLLL   ", " LLLLWWWLLLLLLLL    ", " LLLLLWLLLLL        ", " LLLLLLLLLLL        ", "  LLLLLLLLL         ", "   LLLLLLL          ", "    LLLLL           "],
+          [ "  LLLLL             ", " LLLLLLL            ", "LLLLLLLLL    L      ", "LLLLWLLLL  LLLLL    ", "LLLWWWLLL  LLLLL    ", "LLLLWLLLL LLLLLLL   ", "LLLLLLLLL  LLLLL    ", " LLLLLLL   LLLLL    ", "  LLLLL      L      ", "    LLLLL   W       ", "   LLLLLLL          ", "  LLLLLLLLL         ", "  LLLLWLLLL         ", "  LLLLLLLLL         ", "  LLLLLLLLL         ", "  LLLLLLLLL         ", "   LLLLLLL          ", "    LLLLL           ", "                    "],
+          [ "           LLLLL    ", "  LLLLL   LLLLLLL   ", " LLLLLLL LLLLLLLLL  ", " LLLLLLLLLLLLLLLLLL ", " LLLLLLLLLLLLWLLLLL ", " LLLLWLLLLLLWWWLLLL ", " LLLLLLLLLLLLWLLLLL ", "  LLLLLLLLLLLLLLLLL ", "      LLLLLLLLLLLL  ", "      LLLLLLWLLLL   ", "       LLL LLLLL    ", "                    ", "       W            ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "           LLLLL    ", "          LLLLLLL   ", "         LLLLLLLLL  ", "      LLLLLLLLLLLL  ", "     WLLLLLLWLLLLL  ", "    LLLLLLLLLLLLLL  ", "    LLLLLLLLLLLLLL  ", "    LLLLWLLWLLLLL   ", "    LLLLLLLLLLLL    ", "    LLLLLLLLL       ", "     LLWLLLL        ", "      LLLLL         ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "     LLLLL          ", "    LWLLLLLW        ", "    LLLLLLL         ", "    LLLWLWL         ", "    LLLLLLL         ", "    LLWLLLL         ", "     LLLLL          ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "     W    W         ", "                    ", "       WW           ", "                    ", "      W             ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "      W  W          ", "       WW           ", "       W            ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "      W  W          ", "       W            ", "       W 0          ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "        W           ", "       W            ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "       WW           ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "       C            ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "       W            ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "       W            ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "],
+          [ "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "       W            ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    ", "                    "]
+
+        ],
+        "mapping": {
+          "W": "twilightforest:transformation_log[axis=y]",
+          "C": "twilightforest:transformation_log_core[axis=y]",
+          "L": "twilightforest:transformation_leaves[persistent=true]"
+        }
+      }
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/tree_of_transformation",
-      "text": "Tree of Transformation"
+      "text": "Tree of Transformation desc."
+    }, {
+      "type": "multiblock",
+      "name": "Miner's Tree",
+      "advancement": "twilightforest:alt/treasures/tree_of_mining",
+      "enable_visualize": false,
+      "multiblock": {
+        "pattern": [
+          [ "    LLLLL    ", "   LLLLLLL   ", "    LLLLL    " ],
+          [ "   LLLLLLL   ", "  LLXXWXXLL  ", "   LLLLLLL   " ],
+          [ "  LLLLLLLLL  ", " LLXLLWLLXLL ", "  LLLLLLLLL  " ],
+          [ " LLL     LLL ", "LLXLL W LLXLL", " LLL     LLL " ],
+          [ "LLL       LLL", "LXLL  W  LLXL", "LLL       LLL" ],
+          [ "             ", "LLL   0   LLL", "             " ],
+          [ "             ", "      W      ", "             " ],
+          [ "             ", "      W      ", "             " ],
+          [ "             ", "      W      ", "             " ],
+          [ "             ", "      C      ", "             " ],
+          [ "             ", "      W      ", "             " ]
+        ],
+        "mapping": {
+          "W": "twilightforest:mining_log[axis=y]",
+          "0": "twilightforest:mining_log[axis=y]",
+          "X": "twilightforest:mining_wood",
+          "C": "twilightforest:mining_log_core[axis=y]",
+          "L": "twilightforest:mining_leaves[persistent=true]"
+        }
+      },
+      "symmetrical": true
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/tree_of_mining",
-      "text": "Miner's Tree"
+      "text": "Miner's Tree desc."
+    }, {
+      "type": "multiblock",
+      "name": "Sorting Tree",
+      "advancement": "twilightforest:alt/treasures/tree_of_sorting",
+      "enable_visualize": false,
+      "multiblock": {
+        "pattern": [
+          [ "     ", " LLL ", " LLL ", " LLL ", "     " ],
+          [ " LLL ", "LLLLL", "LLLLL", "LLLLL", " LLL " ],
+          [ " LLL ", "LLLLL", "LLLLL", "LLLLL", " LLL " ],
+          [ "     ", " LLL ", " LWL ", " LLL ", "     " ],
+          [ "     ", "     ", "  0  ", "     ", "     " ],
+          [ "     ", "     ", "  W  ", "     ", "     " ]
+        ],
+        "mapping": {
+          "W": "twilightforest:sorting_log[axis=y]",
+          "0": "twilightforest:sorting_log_core[axis=y]",
+          "L": "twilightforest:sorting_leaves[persistent=true]"
+        }
+      },
+      "symmetrical": true
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/tree_of_sorting",
-      "text": "Sorting Tree"
+      "text": "Sorting Tree desc."
     }
   ]
 }

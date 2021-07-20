@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/util/cube_column_rotationally_correct_x",
-  "textures": {
-    "side": "twilightforest:block/castle_pillar_encased_side",
-    "end": "twilightforest:block/castle_pillar_encased_end"
-  }
-}

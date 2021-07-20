@@ -1,6 +1,6 @@
 {
   "name": "Carminite Reactor",
-  "icon": "twilightforest:tower_device:12",
+  "icon": "twilightforest:carminite_reactor",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6260,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Carminite Reactor",
-      "item": "twilightforest:tower_device:12",
+      "item": "twilightforest:carminite_reactor",
       "text": "I cannot seem to understand what this is for. It is a reactor of sorts, so I'd assume it would emit power, but all it does is idle. Perhaps it is the one that needs power?"
     }, {
       "type": "text",

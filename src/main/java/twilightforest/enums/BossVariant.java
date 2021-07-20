@@ -58,10 +58,6 @@ public enum BossVariant implements IStringSerializable, SkullBlock.ISkullType {
 		return factory != null ? factory.get() : null;
 	}
 
-	public static BossVariant getVariant(int id) {
-		return id >= 0 && id < VARIANTS.length ? VARIANTS[id] : NAGA;
-	}
-
 	public enum TrophyType {
 		GOLD("trophy"),
 		IRON("trophy_minor"),

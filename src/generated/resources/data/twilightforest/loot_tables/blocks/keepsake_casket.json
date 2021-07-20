@@ -3,21 +3,14 @@
   "pools": [
     {
       "rolls": 1,
-      "entries": [
+      "entries": [],
+      "functions": [
         {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:copy_name",
-              "source": "block_entity"
-            }
-          ],
-          "name": "twilightforest:keepsake_casket"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "function": "minecraft:copy_state",
+          "block": "twilightforest:keepsake_casket",
+          "properties": [
+            "damage"
+          ]
         }
       ]
     }

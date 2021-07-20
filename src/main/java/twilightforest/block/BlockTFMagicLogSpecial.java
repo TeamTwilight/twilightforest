@@ -1,17 +1,27 @@
 package twilightforest.block;
 
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ChestBlock;
+import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.DoubleSidedInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -23,6 +33,7 @@ import twilightforest.item.ItemTFOreMagnet;
 import twilightforest.network.PacketChangeBiome;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
+import twilightforest.worldgen.biomes.BiomeKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,32 +136,44 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 	 * TODO: also change entities
 	 */
 	private void doTreeOfTransformationEffect(World world, BlockPos pos, Random rand) {
-		/* FIXME
-		Biome targetBiome = TFBiomes.enchantedForest.get();
+		final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
+		final int HEIGHT_BITS = (int) Math.round(Math.log(256.0D) / Math.log(2.0D)) - 2;
+		final int HORIZONTAL_MASK = (1 << WIDTH_BITS) - 1;
+		final int VERTICAL_MASK = (1 << HEIGHT_BITS) - 1;
+		Biome targetBiome = world.func_241828_r().getRegistry(Registry.BIOME_KEY).getValueForKey(BiomeKeys.ENCHANTED_FOREST);
 
 		for (int i = 0; i < 16; i++) {
 
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, 16, 0, 16);
-			if (dPos.distanceSq(pos) > 256.0) continue;
+			if (dPos.distanceSq(pos) > 256.0)
+				continue;
 
 			Biome biomeAt = world.getBiome(dPos);
-			if (biomeAt == targetBiome) continue;
+			if (biomeAt == targetBiome)
+				continue;
 
 			Chunk chunkAt = world.getChunk(dPos.getX() >> 4, dPos.getZ() >> 4);
-			// todo 1.15 reflect/AT into BiomeManager.data
+			int x = (dPos.getX() >> 2) & HORIZONTAL_MASK;
+			int z = (dPos.getZ() >> 2) & HORIZONTAL_MASK;
+			if (chunkAt.getBiomes().biomes[z << WIDTH_BITS | x] == targetBiome)
+				continue;
+			for (int dy = 0; dy < 255; dy += 4) {
+				int y = MathHelper.clamp(dy >> 2, 0, VERTICAL_MASK);
+				chunkAt.getBiomes().biomes[y << WIDTH_BITS + WIDTH_BITS | z << WIDTH_BITS | x] = targetBiome;
+			}
 
 			if (world instanceof ServerWorld) {
 				sendChangedBiome(chunkAt, dPos, targetBiome);
 			}
 			break;
-		}*/
+		}
 	}
 
 	/**
 	 * Send a tiny update packet to the client to inform it of the changed biome
 	 */
 	private void sendChangedBiome(Chunk chunk, BlockPos pos, Biome biome) {
-		PacketChangeBiome message = new PacketChangeBiome(pos, biome);
+		PacketChangeBiome message = new PacketChangeBiome(pos, biome.getRegistryName());
 		TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), message);
 	}
 
@@ -281,10 +304,14 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
 
 					if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.isItemEqual(currentItem)) {
-						if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
-							chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
-							beingSorted.grow(currentItem.getCount());
-							currentItem.setCount(0);
+						if (currentItem.getTag() != null && beingSorted.getTag() != null) {
+							if (beingSorted.getTag().equals(currentItem.getTag())) {
+								if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
+									chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
+									beingSorted.grow(currentItem.getCount());
+									currentItem.setCount(0);
+								}
+							}
 						}
 					}
 				}

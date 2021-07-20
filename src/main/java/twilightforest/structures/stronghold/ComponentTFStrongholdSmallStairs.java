@@ -123,7 +123,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 		}
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}

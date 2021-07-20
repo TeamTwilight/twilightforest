@@ -5,8 +5,17 @@
         "feature": {
           "config": {
             "feature": {
-              "config": {},
-              "type": "twilightforest:monolith"
+              "config": {
+                "feature": {
+                  "config": {},
+                  "type": "twilightforest:monolith"
+                },
+                "decorator": {
+                  "config": {},
+                  "type": "twilightforest:nostructure"
+                }
+              },
+              "type": "minecraft:decorated"
             },
             "decorator": {
               "config": {

@@ -45,8 +45,8 @@ public class ItemTFPhantomArmor extends ArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void initArmorModel() {
-		phantomArmorModel.put(EquipmentSlotType.HEAD, new ModelTFPhantomArmor(EquipmentSlotType.HEAD, 0.5F));
-		phantomArmorModel.put(EquipmentSlotType.CHEST, new ModelTFPhantomArmor(EquipmentSlotType.CHEST, 0.5F));
+		phantomArmorModel.put(EquipmentSlotType.HEAD, new ModelTFPhantomArmor(EquipmentSlotType.HEAD, 0.75F));
+		phantomArmorModel.put(EquipmentSlotType.CHEST, new ModelTFPhantomArmor(EquipmentSlotType.CHEST, 1.0F));
 	}
 
 	@Override

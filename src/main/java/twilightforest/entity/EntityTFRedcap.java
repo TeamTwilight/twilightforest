@@ -20,6 +20,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
+import twilightforest.entity.ai.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.EntityAITFRedcapLightTNT;
 import twilightforest.entity.ai.EntityAITFRedcapShy;
 
@@ -27,26 +28,18 @@ import javax.annotation.Nullable;
 
 public class EntityTFRedcap extends MonsterEntity {
 
-	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
-	public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
-	public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL, 1);
+	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE);
+	public ItemStack heldTNT = new ItemStack(Blocks.TNT);
+	public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL);
 
 	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world) {
 		super(type, world);
 	}
 
-	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world, double x, double y, double z) {
-		this(type, world);
-		this.setPosition(x, y, z);
-	}
-
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		// This is safe because AvoidEntityGoal doesn't use the LivingEntity interface, only the Entity one
-		@SuppressWarnings({"rawtypes", "unchecked"})
-		AvoidEntityGoal avoidGoal = new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F);
-		this.goalSelector.addGoal(1, avoidGoal);
+		this.goalSelector.addGoal(1, new AvoidAnyEntityGoal<>(this, TNTEntity.class, 2.0F, 1.0F, 2.0F));
 		this.goalSelector.addGoal(2, new EntityAITFRedcapShy(this, 1.0F));
 		this.goalSelector.addGoal(3, new EntityAITFRedcapLightTNT(this, 1.0F)); // light TNT
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));

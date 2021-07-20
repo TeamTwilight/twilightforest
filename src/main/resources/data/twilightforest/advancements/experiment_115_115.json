@@ -16,14 +16,19 @@
   "parent": "twilightforest:experiment_115",
   "criteria": {
     "eat_115_1": {
-      "trigger": "minecraft:consume_item",
+      "trigger": "minecraft:location",
       "conditions": {
-        "item": {
-          "__comment": "TEMP UNTIL WE FIGURE OUT HOW TO FIGURE OUT THAT THE PLAYER ATE 115 OF THEM",
-          "item": "twilightforest:experiment_115",
-          "count": {
-            "max": 115,
-            "min": 63
+        "player": {
+          "player": {
+            "stats": [
+              {
+                "type": "minecraft:used",
+                "stat": "twilightforest:experiment_115",
+                "value": {
+                  "min": 115
+                }
+              }
+            ]
           }
         }
       }

@@ -19,7 +19,7 @@ public enum TwilightArmorMaterial implements IArmorMaterial {
 	ARMOR_KNIGHTLY("knightly", 20, new int[]{3, 6, 8, 3}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.0F, () -> Ingredient.fromItems(TFItems.knightmetal_ingot.get())),
 	ARMOR_PHANTOM("phantom", 30, new int[]{3, 6, 8, 3}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.5F, () -> Ingredient.fromItems(TFItems.knightmetal_ingot.get())),
 	ARMOR_YETI("yetiarmor", 20, new int[]{3, 6, 7, 4}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3F, () -> Ingredient.fromItems(TFItems.alpha_fur.get())),
-	ARMOR_ARCTIC("arcticarmor", 10, new int[]{2, 5, 7, 2}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2F, () -> Ingredient.fromItems(TFItems.alpha_fur.get()));
+	ARMOR_ARCTIC("arcticarmor", 10, new int[]{2, 5, 7, 2}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2F, () -> Ingredient.fromItems(TFItems.arctic_fur.get()));
 
 	private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
 	private final String name;

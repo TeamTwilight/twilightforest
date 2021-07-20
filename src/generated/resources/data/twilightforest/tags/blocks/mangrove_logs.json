@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "twilightforest:mangrove_log",
-    "twilightforest:mangrove_log"
+    "twilightforest:stripped_mangrove_log",
+    "twilightforest:mangrove_wood",
+    "twilightforest:stripped_mangrove_wood"
   ]
 }

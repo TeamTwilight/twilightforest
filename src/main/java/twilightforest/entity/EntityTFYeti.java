@@ -80,12 +80,6 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	@Override
 	public void livingTick() {
-		if (!this.getPassengers().isEmpty()) {
-			// stop player sneaking so that they can't dismount!
-			if (this.getPassengers().get(0).isSneaking()) {
-				this.getPassengers().get(0).setSneaking(false);
-			}
-		}
 
 		super.livingTick();
 

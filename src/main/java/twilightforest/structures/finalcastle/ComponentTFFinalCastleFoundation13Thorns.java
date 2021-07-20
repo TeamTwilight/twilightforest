@@ -13,7 +13,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFThorns;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;

@@ -207,8 +207,7 @@ public class GuiTwilightForestLoading extends Screen {
 			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/block/tower_wood_encased.png");
 
 			private final float stretch = 0.985F;
-			private final float offset = 0.4F;
-			private final float depth = 1.15F;
+            private final float depth = 1.15F;
 
 			@Override
 			void renderBackground(float width, float height) {
@@ -252,7 +251,8 @@ public class GuiTwilightForestLoading extends Screen {
 				BufferBuilder buffer = tessellator.getBuffer();
 				Minecraft.getInstance().getTextureManager().bindTexture(towerwoodEncased);
 
-				final float textureHeaderXMin = stretch * offset;
+                float offset = 0.4F;
+                final float textureHeaderXMin = stretch * offset;
 				final float textureHeaderXMax = ((width / backgroundScale) * stretch) + offset;
 
 				final float headerBottom = backgroundScale / stretch;

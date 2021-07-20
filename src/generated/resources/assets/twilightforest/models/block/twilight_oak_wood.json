@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "all": "twilightforest:block/twilight_oak_log"
+    "side": "twilightforest:block/twilight_oak_log",
+    "end": "twilightforest:block/twilight_oak_log"
   }
 }

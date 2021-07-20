@@ -2,7 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.item.Item;
 
-//TODO 1.14: Baubles is dead
+//TODO 1.16: Baubles is dead, switch to curios
 public class ItemCharmBaubleable extends Item {
     ItemCharmBaubleable(Properties props) {
         super(props);

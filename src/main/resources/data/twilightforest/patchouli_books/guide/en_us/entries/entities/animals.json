@@ -1,6 +1,6 @@
 {
   "name": "Animals",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:wild_boar\"}}",
+  "icon": "twilightforest:wild_boar_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/animals",
   "sortnum": 1100,
@@ -8,43 +8,67 @@
     {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/bighorn_sheep",
-      "entity": "twilightforest:bighorn_sheep",
-      "text": "things and stuff"
+      "entity": "twilightforest:bighorn_sheep"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/bighorn_sheep",
+      "text": "The Bighorn Sheep is a docile, grazing animal. Unlike their Overworld counterparts, these sheep are born with many varieties of colourful coats, although brown seems to be the most common."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/bunny",
-      "entity": "twilightforest:bunny",
-      "text": "things and stuff"
+      "entity": "twilightforest:bunny"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/bunny",
+      "text": "A small, passive animal, the Twilight Forest Dwarf Rabbit is content to spend its days hopping throughout most of the world's biomes."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/deer",
-      "entity": "twilightforest:deer",
-      "text": "things and stuff"
+      "entity": "twilightforest:deer"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/deer",
+      "text": "Wild Deer are often found roaming throughout most of the Twilight Forest, and usually graze in small herds. Fewer things are more picturesque than a herd of deer grazing in a forest glade."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/raven",
-      "entity": "twilightforest:raven",
-      "text": "things and stuff"
+      "entity": "twilightforest:raven"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/raven",
+      "text": "These birds can be elusive, but their inky black feathers seem to shine with an unknown property. If only one could get close enough to collect one, maybe they could find out what it is..."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/squirrel",
-      "entity": "twilightforest:squirrel",
-      "text": "things and stuff"
+      "entity": "twilightforest:squirrel"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/squirrel",
+      "text": "These quirky creatures seem to serve little purpose to an adventurer."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/wild_boar",
-      "entity": "twilightforest:tiny_bird",
-      "text": "things and stuff"
+      "entity": "twilightforest:wild_boar"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/wild_boar",
+      "text": "Wild Boars seem to differ little from their pink Overworld counterparts, but their brown hides serve them well as camoflauge in the forest."
     }, {
       "type": "entity",
-      "advancement": "twilightforest:alt/entities/wild_boar",
-      "entity": "twilightforest:tiny_bird",
-      "text": "things and stuff"
+      "advancement": "twilightforest:alt/entities/tiny_bird",
+      "entity": "twilightforest:tiny_bird"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/tiny_bird",
+      "text": "These easily startled creatures pose no threat nor harm, nor do they provide any sustenance."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/penguin",
-      "entity": "twilightforest:penguin",
-      "text": "things and stuff"
+      "entity": "twilightforest:penguin"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/penguin",
+      "text": "Found in large groups atop giant glaciers, these birds have a great love for snow...and fish."
     }
   ]
 }

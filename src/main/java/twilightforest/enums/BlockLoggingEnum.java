@@ -14,10 +14,12 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public enum BlockLoggingEnum implements IStringSerializable {
-    AIR(Blocks.AIR, Fluids.EMPTY),
-    WATER(Blocks.WATER, Fluids.WATER),
-    LAVA(Blocks.LAVA, Fluids.LAVA),
-    OBSIDIAN(Blocks.OBSIDIAN, Fluids.EMPTY);
+    AIR      (Blocks.AIR,      Fluids.EMPTY),
+    WATER    (Blocks.WATER,    Fluids.WATER),
+    LAVA     (Blocks.LAVA,     Fluids.LAVA),
+    OBSIDIAN (Blocks.OBSIDIAN, Fluids.EMPTY),
+    STONE    (Blocks.STONE,    Fluids.EMPTY),
+    BASALT   (Blocks.BASALT,   Fluids.EMPTY);
 
     public static final EnumProperty<BlockLoggingEnum> MULTILOGGED = EnumProperty.create("multilogged", BlockLoggingEnum.class);
 
@@ -33,10 +35,17 @@ public enum BlockLoggingEnum implements IStringSerializable {
         if (fluid != Fluids.EMPTY) {
             Ref.FLUIDS.put(fluid, this);
         }
+        if(fluid == Fluids.EMPTY && block != Blocks.AIR) {
+            Ref.BLOCKS.put(block, this);
+        }
     }
 
     public static BlockLoggingEnum getFromFluid(Fluid fluid) {
         return Ref.FLUIDS.getOrDefault(fluid, AIR);
+    }
+
+    public static BlockLoggingEnum getFromBlock(Block block) {
+        return Ref.BLOCKS.getOrDefault(block, AIR);
     }
 
     @Override
@@ -46,6 +55,10 @@ public enum BlockLoggingEnum implements IStringSerializable {
 
     public Fluid getFluid() {
         return fluid;
+    }
+
+    public Block getBlock() {
+        return block;
     }
 
     public interface IMultiLoggable extends IBucketPickupHandler, ILiquidContainer {
@@ -72,7 +85,7 @@ public enum BlockLoggingEnum implements IStringSerializable {
             if (stateFluid != fluidState.getFluid() && Ref.FLUIDS.containsKey(fluidState.getFluid())) {
                 if (!world.isRemote()) {
                     if (stateFluid != Fluids.EMPTY) { // TODO Fix this... if Mojang ever adds a third Liquid
-                        world.setBlockState(pos, state.with(MULTILOGGED, OBSIDIAN), 3);
+                        //world.setBlockState(pos, state.with(MULTILOGGED, OBSIDIAN), 3);
                     } else {
                         world.setBlockState(pos, state.with(MULTILOGGED, Ref.FLUIDS.get(fluidState.getFluid())), 3);
                         world.getPendingFluidTicks().scheduleTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
@@ -88,5 +101,6 @@ public enum BlockLoggingEnum implements IStringSerializable {
 
     private static class Ref {
         private final static HashMap<Fluid, BlockLoggingEnum> FLUIDS = new HashMap<>();
+        private final static HashMap<Block, BlockLoggingEnum> BLOCKS = new HashMap<>();
     }
 }

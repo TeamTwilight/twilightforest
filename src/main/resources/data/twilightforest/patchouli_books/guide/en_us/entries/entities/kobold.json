@@ -1,14 +1,16 @@
 {
   "name": "Kobold",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:kobold\"}}",
+  "icon": "twilightforest:kobold_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/kobold",
   "sortnum": 2100,
   "pages": [
     {
       "type": "entity",
-      "entity": "twilightforest:kobold",
-      "text": "things and stuff"
+      "entity": "twilightforest:kobold"
+    }, {
+      "type": "text",
+      "text": "Kobolds are pesky, rat-like creatures often found in groups, wandering the halls of Labyrinths and other dark places. Their weak attacks are no match for an experienced foe, but in a group they could quickly overrun an amateur. Strangely, they may also appear when an adventurer is lost or unsure of their next path to take, and come bearing a helpful guide. Perhaps, deep down, it is still in their forgotten spiritual nature to help..."
     }
   ]
 }

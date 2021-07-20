@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -21,9 +22,13 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockKeepsakeCasket;
 import twilightforest.block.BlockTFAbstractTrophy;
+import twilightforest.client.renderer.ShaderGrabbagStackRenderer;
 import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
+import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.enums.BossVariant;
+import twilightforest.tileentity.TileEntityKeepsakeCasket;
 
 public class ISTER extends ItemStackTileEntityRenderer {
 	private final ResourceLocation typeId;
@@ -46,34 +51,31 @@ public class ISTER extends ItemStackTileEntityRenderer {
 			if (block instanceof BlockTFAbstractTrophy) {
 				if(camera == ItemCameraTransforms.TransformType.GUI) {
 
-					boolean silver = ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.KNIGHT_PHANTOM || ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.MINOSHROOM;
-					boolean quest = ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.QUEST_RAM;
-					boolean naga = ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.NAGA;
-					boolean hydra = ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.HYDRA;
-					boolean ghast = ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.UR_GHAST;
-					ModelResourceLocation gold_back = new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory");
-					ModelResourceLocation silver_back = new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory");
-					ModelResourceLocation ironwood_back = new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory");
-					IBakedModel modelBack = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(quest ? ironwood_back : silver ? silver_back : gold_back);
+					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((BlockTFAbstractTrophy) block).getVariant().getTrophyType().getModelName()), "inventory");
+					IBakedModel modelBack = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(back);
 
-					float scale1 = naga ? 0.85F : hydra || quest ? 1.15F : 1.0F;
-					float scale2 = naga ? 1.15F : hydra || quest ? 0.85F : 1.0F;
+					ms.push();
+					ms.translate(0.5F, 0.5F, -1.5F);
+					Minecraft.getInstance().getItemRenderer().renderItem(TileEntityTFTrophyRenderer.stack, ItemCameraTransforms.TransformType.GUI, false, ms, buffers, 240, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false));
+					ms.pop();
 
-					ms.translate(0.5F, 0.0F, 0.5F);
-					ms.rotate(Vector3f.YP.rotationDegrees(-45));
-					ms.translate(quest ? -0.05F : -0.025F, ghast ? -0.77F : -0.12F, -0.75F);
-					ms.scale(scale1, scale1, scale1);
-					Minecraft.getInstance().getItemRenderer().renderItem(TileEntityTFTrophyRenderer.stack, ItemCameraTransforms.TransformType.GUI, false, ms, buffers, light, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false));
-					ms.scale(scale2, scale2, scale2);
-					ms.translate(quest ? 0.05F : 0.025F, ghast ? 0.77F : 0.12F, 0.75F);
-					ms.rotate(Vector3f.YP.rotationDegrees(45));
-					ms.rotate(Vector3f.YP.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : 0));
-					ms.translate(-0.5F, 0.0F, -0.5F);
+					ms.push();
+					ms.translate(0.5F, 0.5F, 0.5F);
+					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.HYDRA || ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.QUEST_RAM) ms.scale(0.9F, 0.9F, 0.9F);
+					ms.rotate(Vector3f.XP.rotationDegrees(30));
+					ms.rotate(Vector3f.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : -45));
+					ms.translate(-0.5F, -0.5F, -0.5F);
+					ms.translate(0.0F, 0.25F, 0.0F);
+					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
+					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
+					TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light, camera);
+					ms.pop();
 
-					//Fun Scaling, may add as a secret later
-					//GlStateManager.rotatef(TFClientEvents.rotationTicker, 0F, 0F, 0F);
+				} else {
+					TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light, camera);
 				}
-				TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light);
+			} else if (block instanceof BlockKeepsakeCasket) {
+				TileEntityRendererDispatcher.instance.renderItem(new TileEntityKeepsakeCasket(), ms, buffers, light, overlay);
 			} else {
 				TileEntityRenderer<TileEntity> renderer = TileEntityRendererDispatcher.instance.getRenderer(dummy);
 				renderer.render(null, 0, ms, buffers, light, overlay);

@@ -9,10 +9,12 @@ import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.conditions.TableBonus;
 import net.minecraft.loot.functions.ApplyBonus;
+import net.minecraft.loot.functions.CopyBlockState;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import twilightforest.block.BlockKeepsakeCasket;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
@@ -170,14 +172,17 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.knight_phantom_wall_trophy.get(), dropping(TFBlocks.knight_phantom_trophy.get().asItem()));
 		registerLootTable(TFBlocks.ur_ghast_trophy.get(), dropping(TFBlocks.ur_ghast_trophy.get().asItem()));
 		registerLootTable(TFBlocks.ur_ghast_wall_trophy.get(), dropping(TFBlocks.ur_ghast_trophy.get().asItem()));
+		registerLootTable(TFBlocks.yeti_trophy.get(), dropping(TFBlocks.yeti_trophy.get().asItem()));
+		registerLootTable(TFBlocks.yeti_wall_trophy.get(), dropping(TFBlocks.yeti_wall_trophy.get().asItem()));
 		registerLootTable(TFBlocks.snow_queen_trophy.get(), dropping(TFBlocks.snow_queen_trophy.get().asItem()));
 		registerLootTable(TFBlocks.snow_queen_wall_trophy.get(), dropping(TFBlocks.snow_queen_trophy.get().asItem()));
 		registerLootTable(TFBlocks.quest_ram_trophy.get(), dropping(TFBlocks.quest_ram_trophy.get().asItem()));
 		registerLootTable(TFBlocks.quest_ram_wall_trophy.get(), dropping(TFBlocks.quest_ram_trophy.get().asItem()));
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.stone_twist.get());
+		registerDropSelfLootTable(TFBlocks.stone_twist_thin.get());
 		//registerDropSelfLootTable(TFBlocks.lapis_block.get());
-		registerLootTable(TFBlocks.keepsake_casket.get(), droppingWithName(TFBlocks.keepsake_casket.get()));
+		registerLootTable(TFBlocks.keepsake_casket.get(), casketInfo(TFBlocks.keepsake_casket.get()));
 		registerFlowerPot(TFBlocks.potted_twilight_oak_sapling.get());
 		registerFlowerPot(TFBlocks.potted_canopy_sapling.get());
 		registerFlowerPot(TFBlocks.potted_mangrove_sapling.get());
@@ -196,7 +201,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerFlowerPot(TFBlocks.potted_dead_thorn.get());
 
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
+		registerDropSelfLootTable(TFBlocks.stripped_oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());
+		registerDropSelfLootTable(TFBlocks.stripped_oak_wood.get());
 		registerDropSelfLootTable(TFBlocks.oak_sapling.get());
 		registerLootTable(TFBlocks.oak_leaves.get(), droppingWithChancesAndSticks(TFBlocks.oak_leaves.get(), TFBlocks.oak_sapling.get(), DEFAULT_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.rainboak_sapling.get());
@@ -215,7 +222,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.twilight_wall_sign.get(), dropping(TFBlocks.twilight_oak_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.canopy_log.get());
+		registerDropSelfLootTable(TFBlocks.stripped_canopy_log.get());
 		registerDropSelfLootTable(TFBlocks.canopy_wood.get());
+		registerDropSelfLootTable(TFBlocks.stripped_canopy_wood.get());
 		registerDropSelfLootTable(TFBlocks.canopy_sapling.get());
 		registerLootTable(TFBlocks.canopy_leaves.get(), droppingWithChancesAndSticks(TFBlocks.canopy_leaves.get(), TFBlocks.canopy_sapling.get(), DEFAULT_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.canopy_planks.get());
@@ -231,7 +240,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.canopy_wall_sign.get(), dropping(TFBlocks.canopy_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.mangrove_log.get());
+		registerDropSelfLootTable(TFBlocks.stripped_mangrove_log.get());
 		registerDropSelfLootTable(TFBlocks.mangrove_wood.get());
+		registerDropSelfLootTable(TFBlocks.stripped_mangrove_wood.get());
 		registerDropSelfLootTable(TFBlocks.mangrove_sapling.get());
 		registerLootTable(TFBlocks.mangrove_leaves.get(), droppingWithChancesAndSticks(TFBlocks.mangrove_leaves.get(), TFBlocks.mangrove_sapling.get(), DEFAULT_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.mangrove_planks.get());
@@ -247,7 +258,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.mangrove_wall_sign.get(), dropping(TFBlocks.mangrove_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.dark_log.get());
+		registerDropSelfLootTable(TFBlocks.stripped_dark_log.get());
 		registerDropSelfLootTable(TFBlocks.dark_wood.get());
+		registerDropSelfLootTable(TFBlocks.stripped_dark_wood.get());
 		registerDropSelfLootTable(TFBlocks.darkwood_sapling.get());
 		registerLootTable(TFBlocks.dark_leaves.get(), droppingWithChancesAndSticks(TFBlocks.dark_leaves.get(), TFBlocks.darkwood_sapling.get(), RARE_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.dark_planks.get());
@@ -263,7 +276,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.darkwood_wall_sign.get(), dropping(TFBlocks.darkwood_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.time_log.get());
+		registerDropSelfLootTable(TFBlocks.stripped_time_log.get());
 		registerDropSelfLootTable(TFBlocks.time_wood.get());
+		registerDropSelfLootTable(TFBlocks.stripped_time_wood.get());
 		registerDropping(TFBlocks.time_log_core.get(), TFBlocks.time_log.get());
 		registerDropSelfLootTable(TFBlocks.time_sapling.get());
 		registerLeavesNoSapling(TFBlocks.time_leaves.get());
@@ -280,7 +295,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.time_wall_sign.get(), dropping(TFBlocks.time_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.transformation_log.get());
+		registerDropSelfLootTable(TFBlocks.stripped_transformation_log.get());
 		registerDropSelfLootTable(TFBlocks.transformation_wood.get());
+		registerDropSelfLootTable(TFBlocks.stripped_transformation_wood.get());
 		registerDropping(TFBlocks.transformation_log_core.get(), TFBlocks.transformation_log.get());
 		registerDropSelfLootTable(TFBlocks.transformation_sapling.get());
 		registerLeavesNoSapling(TFBlocks.transformation_leaves.get());
@@ -297,7 +314,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.trans_wall_sign.get(), dropping(TFBlocks.trans_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.mining_log.get());
+		registerDropSelfLootTable(TFBlocks.stripped_mining_log.get());
 		registerDropSelfLootTable(TFBlocks.mining_wood.get());
+		registerDropSelfLootTable(TFBlocks.stripped_mining_wood.get());
 		registerDropping(TFBlocks.mining_log_core.get(), TFBlocks.mining_log.get());
 		registerDropSelfLootTable(TFBlocks.mining_sapling.get());
 		registerLeavesNoSapling(TFBlocks.mining_leaves.get());
@@ -314,7 +333,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.mine_wall_sign.get(), dropping(TFBlocks.mine_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.sorting_log.get());
+		registerDropSelfLootTable(TFBlocks.stripped_sorting_log.get());
 		registerDropSelfLootTable(TFBlocks.sorting_wood.get());
+		registerDropSelfLootTable(TFBlocks.stripped_sorting_wood.get());
 		registerDropping(TFBlocks.sorting_log_core.get(), TFBlocks.sorting_log.get());
 		registerDropSelfLootTable(TFBlocks.sorting_sapling.get());
 		registerLeavesNoSapling(TFBlocks.sorting_leaves.get());
@@ -345,6 +366,10 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 	private static LootTable.Builder silkAndStick(Block block, IItemProvider nonSilk, float... nonSilkFortune) {
 		ILootCondition.IBuilder NOT_SILK_TOUCH_OR_SHEARS = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLootTables.class, null, "field_218577_e");
 		return droppingWithSilkTouchOrShears(block, withSurvivesExplosion(block, ItemLootEntry.builder(nonSilk.asItem())).acceptCondition(TableBonus.builder(Enchantments.FORTUNE, nonSilkFortune))).addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptCondition(NOT_SILK_TOUCH_OR_SHEARS).addEntry(withExplosionDecay(block, ItemLootEntry.builder(Items.STICK).acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 2.0F)))).acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
+	}
+
+	private static LootTable.Builder casketInfo(Block block) {
+		return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptFunction(CopyBlockState.func_227545_a_(block).func_227552_a_(BlockKeepsakeCasket.BREAKAGE)));
 	}
 
 	private void registerEmpty(Block b) {

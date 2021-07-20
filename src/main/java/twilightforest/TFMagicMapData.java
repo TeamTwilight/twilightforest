@@ -66,7 +66,7 @@ public class TFMagicMapData extends MapData {
 			}
 		}
 
-		tfDecorations.removeAll(toRemove);
+		toRemove.forEach(tfDecorations::remove);
 		tfDecorations.addAll(toAdd);
 	}
 

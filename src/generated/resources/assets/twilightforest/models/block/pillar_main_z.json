@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/pillar/pillar_12_ctm",
+  "textures": {
+    "side_x": "twilightforest:block/stone_twist/twist_x",
+    "side_z": "twilightforest:block/stone_twist/twist_y"
+  }
+}

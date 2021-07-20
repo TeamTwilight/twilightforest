@@ -1,11 +1,15 @@
 {
   "name": "Hydra Lair",
-  "icon": "twilightforest:miniature_structure:8",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/hydra_lair",
   "sortnum": 5100,
   "pages": [
     {
+      "type": "image",
+      "title": "Hydra Lair",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "Deep within the Fire Swamp is the Hydra Lair: a Large Hollow Hill converted into the home of the Hydra. Still decorated with various rare ores, it's the perfect place to collect some treasures, with the exception of a giant mythical reptile standing in the midst of the treasure."
     }

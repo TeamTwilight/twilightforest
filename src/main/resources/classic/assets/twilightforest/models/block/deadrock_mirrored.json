@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/util/cube_mirrored_all",
-  "textures": {
-    "all": "twilightforest:block/deadrock"
-  }
-}

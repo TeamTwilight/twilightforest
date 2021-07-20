@@ -1,0 +1,104 @@
+{
+  "display": {
+    "gui": {
+      "rotation": [ 30, 225, 0 ],
+      "translation": [ 0, 0, 0],
+      "scale":[ 0.625, 0.625, 0.625 ]
+    },
+    "ground": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 3, 0],
+      "scale":[ 0.25, 0.25, 0.25 ]
+    },
+    "fixed": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 0, 0],
+      "scale":[ 0.5, 0.5, 0.5 ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [ 75, 45, 0 ],
+      "translation": [ 0, 2.5, 0],
+      "scale": [ 0.375, 0.375, 0.375 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 45, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.40, 0.40, 0.40 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, 225, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.40, 0.40, 0.40 ]
+    }
+  },
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "twilightforest:block/fiery_block",
+    "all": "twilightforest:block/fiery_block_inner",
+    "over": "twilightforest:block/fiery_pattern"
+  },
+  "elements": [
+    {
+      "from": [  0,  1,  0 ],
+      "to":   [ 16, 15, 16 ],
+      "shade": false,
+      "faces": {
+        "down":  { "texture": "#all", "tintindex": 0 },
+        "up":    { "texture": "#all", "tintindex": 0 }
+      }
+    },
+    {
+      "from": [  1,  0,  0 ],
+      "to":   [ 15, 16, 16 ],
+      "shade": false,
+      "faces": {
+        "west":  { "texture": "#all", "tintindex": 0 },
+        "east":  { "texture": "#all", "tintindex": 0 }
+      }
+    },
+    {
+      "from": [  0,  0,  1 ],
+      "to":   [ 16, 16, 15 ],
+      "shade": false,
+      "faces": {
+        "north": { "texture": "#all", "tintindex": 0 },
+        "south": { "texture": "#all", "tintindex": 0 }
+      }
+    },
+    {
+      "from": [ 15.99, 15.99, 15.99 ],
+      "to":   [  0.01,  0.01,  0.01 ],
+      "shade": false,
+      "faces": {
+        "down":  { "texture": "#over", "tintindex": 1 },
+        "up":    { "texture": "#over", "tintindex": 1 },
+        "north": { "texture": "#over", "tintindex": 1 },
+        "south": { "texture": "#over", "tintindex": 1 },
+        "west":  { "texture": "#over", "tintindex": 1 },
+        "east":  { "texture": "#over", "tintindex": 1 }
+      }
+    }
+  ],
+  "loader": "ctm:ctm",
+  "ctm_version": 1,
+  "ctm_overrides": {
+    "0": {
+      "type": "ctm",
+      "layer": "CUTOUT",
+      "textures": [ "twilightforest:block/fiery_block_inner_ctm" ],
+      "extra": {
+        "light": 15,
+        "connect_inside": true
+      }
+    },
+    "1": {
+      "type": "pattern",
+      "layer": "CUTOUT",
+      "extra": {
+        "light": 15,
+        "size": 2,
+        "connect_inside": true
+      }
+    }
+  }
+}

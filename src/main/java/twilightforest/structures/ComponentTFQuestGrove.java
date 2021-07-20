@@ -38,8 +38,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		super(TFFeature.TFQuest1, nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public ComponentTFQuestGrove(TFFeature feature, Random rand, int i, int x, int y, int z) {
+	public ComponentTFQuestGrove(TFFeature feature, int i, int x, int y, int z) {
 		super(TFFeature.TFQuest1, feature, i);
 		this.setCoordBaseMode(Direction.SOUTH);
 
@@ -51,7 +50,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		for (Direction e : Direction.Plane.HORIZONTAL) {
 			// make the rings
-			makeWallSide(world, rand, e, sbb);
+			makeWallSide(world, e, sbb);
 		}
 
 		// a small platform
@@ -124,7 +123,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	private void makeWallSide(ISeedReader world, Random rand, Direction direction, MutableBoundingBox sbb) {
+	private void makeWallSide(ISeedReader world, Direction direction, MutableBoundingBox sbb) {
 		Direction temp = this.getCoordBaseMode();
 		this.setCoordBaseMode(direction);
 

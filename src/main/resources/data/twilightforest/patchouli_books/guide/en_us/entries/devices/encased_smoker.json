@@ -1,6 +1,6 @@
 {
   "name": "Encased Smoker",
-  "icon": "twilightforest:fire_jet:1",
+  "icon": "twilightforest:encased_smoker",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/encased_smoker",
   "sortnum": 5060,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Encased Smoker",
-      "item": "twilightforest:fire_jet:1",
+      "item": "twilightforest:encased_smoker",
       "text": "Smoking Blocks will always emit smoke, but this is rather inconvenient for me. By wiring up a Smoking Block, I can create a device that will only emit smoke when I activate it. Now I must consider the practicality of such device."
     }
   ]

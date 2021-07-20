@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/util/tinted_cube_all",
-  "textures": {
-    "all": "twilightforest:block/tower_wood_cracked_alt"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "side": "twilightforest:block/wood/planks_twilight_oak_1",
-    "bottom": "twilightforest:block/wood/planks_twilight_oak_1",
-    "top": "twilightforest:block/wood/planks_twilight_oak_1"
-  }
-}

@@ -2,12 +2,11 @@ package twilightforest.worldgen.biomes;
 
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GrassColors;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeAmbience.GrassColorModifier;
 import twilightforest.TwilightForestMod;
 
 import java.util.Random;
-
-import static net.minecraft.world.biome.Biome.INFO_NOISE;
 
 public class BiomeGrassColors {
 	private static final Random COLOR_RNG = new Random();
@@ -45,7 +44,7 @@ public class BiomeGrassColors {
 	// FIXME Flat color, resolve
 	public static final GrassColorModifier DARK_FOREST = make("dark_forest", (x, z, color) -> ((GrassColors.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2);
 	public static final GrassColorModifier DARK_FOREST_CENTER = make("dark_forest_center", (x, z, color) -> {
-		double d0 = INFO_NOISE.noiseAt(x * 0.0225D, z * 0.0225D, false); //TODO: Check
+		double d0 = Biome.INFO_NOISE.noiseAt(x * 0.0225D, z * 0.0225D, false); //TODO: Check
 		return d0 < -0.2D ? 0x667540 : 0x554114;
 	});
 

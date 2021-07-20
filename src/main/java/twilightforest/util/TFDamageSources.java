@@ -27,6 +27,7 @@ public class TFDamageSources {
     public static DamageSource AXING(LivingEntity mob) {
         return new EntityDamageSource("axing", mob); //minotaur, minoshroom
     }
+    //TODO actually figure out how to implement this one
     public static DamageSource YEETED(LivingEntity mob) {
         return new EntityDamageSource("yeeted", mob); //yetis, alpha yeti
     }

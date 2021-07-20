@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/thorns_section_bottom",
-  "textures": {
-    "side": "twilightforest:block/brown_thorns_side",
-    "end": "twilightforest:block/brown_thorns_top"
-  }
-}

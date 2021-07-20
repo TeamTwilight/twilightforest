@@ -3,12 +3,9 @@ package twilightforest.world.feature;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -24,12 +21,9 @@ import net.minecraft.world.gen.IWorldGenerationBaseReader;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
-import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.*;
 
@@ -54,7 +48,7 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
 		Material materialUnder;
-		for (int dy = pos.getY(); dy >= TFGenerationSettings.SEALEVEL; dy--) {
+		for (int dy = pos.getY(); dy >= 0; dy--) {
 			materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
 			if (materialUnder == Material.ORGANIC || materialUnder == Material.EARTH) {
 				// yes!
@@ -99,7 +93,7 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 			}
 
 			VoxelShapePart voxelshapepart = this.func_236403_a_(reader, mutableboundingbox, set, set2);
-			Template.func_222857_a(reader, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
+			Template.updatePostProcessing(reader, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
 			return true;
 		} else {
 			return false;
@@ -108,7 +102,7 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 
 	//Mostly [VanillaCopy] of TreeFeature.place, edits noted
 	private boolean place(IWorldGenerationReader generationReader, Random rand, BlockPos positionIn, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, MutableBoundingBox boundingBoxIn, BaseTreeFeatureConfig configIn) {
-		int i = configIn.trunkPlacer.func_236917_a_(rand);
+		int i = configIn.trunkPlacer.getHeight(rand);
 		int j = configIn.foliagePlacer.func_230374_a_(rand, i, configIn);
 		int k = i - j;
 		int l = configIn.foliagePlacer.func_230376_a_(rand, k);
@@ -118,15 +112,6 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 			int j1 = generationReader.getHeight(Heightmap.Type.WORLD_SURFACE, positionIn).getY();
 			if (j1 - i1 > configIn.maxWaterDepth) {
 				return false;
-			}
-
-			int k1;
-			if (configIn.field_236682_l_ == Heightmap.Type.OCEAN_FLOOR) {
-				k1 = i1;
-			} else if (configIn.field_236682_l_ == Heightmap.Type.WORLD_SURFACE) {
-				k1 = j1;
-			} else {
-				k1 = generationReader.getHeight(configIn.field_236682_l_, positionIn).getY();
 			}
 			//set our blockpos to the valid dirt pos, not highest ground
 			blockpos = new BlockPos(positionIn.getX(), validPos.getY(), positionIn.getZ());
@@ -138,7 +123,7 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 			OptionalInt optionalint = configIn.minimumSize.func_236710_c_();
 			int l1 = this.func_241521_a_(generationReader, i, blockpos, configIn);
 			if (l1 >= i || optionalint.isPresent() && l1 >= optionalint.getAsInt()) {
-				List<FoliagePlacer.Foliage> list = configIn.trunkPlacer.func_230382_a_(generationReader, rand, l1, blockpos, p_225557_4_, boundingBoxIn, configIn);
+				List<FoliagePlacer.Foliage> list = configIn.trunkPlacer.getFoliages(generationReader, rand, l1, blockpos, p_225557_4_, boundingBoxIn, configIn);
 				list.forEach((p_236407_8_) -> {
 					configIn.foliagePlacer.func_236752_a_(generationReader, rand, configIn, l1, p_236407_8_, j, l, p_225557_5_, boundingBoxIn);
 				});
@@ -182,7 +167,6 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 	private VoxelShapePart func_236403_a_(IWorld p_236403_1_, MutableBoundingBox p_236403_2_, Set<BlockPos> p_236403_3_, Set<BlockPos> p_236403_4_) {
 		List<Set<BlockPos>> list = Lists.newArrayList();
 		VoxelShapePart voxelshapepart = new BitSetVoxelShapePart(p_236403_2_.getXSize(), p_236403_2_.getYSize(), p_236403_2_.getZSize());
-		int i = 6;
 
 		for(int j = 0; j < 6; ++j) {
 			list.add(Sets.newHashSet());

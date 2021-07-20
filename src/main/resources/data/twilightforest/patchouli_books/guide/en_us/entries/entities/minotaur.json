@@ -1,20 +1,21 @@
 {
   "name": "Minotaur",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:minotaur\"}}",
+  "icon": "twilightforest:minotaur_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/minotaur",
   "sortnum": 5020,
   "pages": [
     {
       "type": "entity",
-      "entity": "twilightforest:minotaur",
-      "text": ""
-    },
-    {
+      "entity": "twilightforest:minotaur{HandItems:[{Count:1,id:golden_axe},{}]}"
+    }, {
       "type": "text",
       "text": "Humanoid beasts that roam the Labyrinth. These part-cow, part-human beasts each have a Golden Axe as their choice of weapon, tearing defenses down. Their charge attack happens quickly and swiftly, and in groups, they overwhelm any careful adventurer."
-    },
-    {
+    }, {
+      "type": "entity",
+      "advancement": "twilightforest:alt/treasures/minotaur_axe_gold",
+      "entity": "twilightforest:minotaur{HandItems:[{Count:1,id:\"twilightforest:minotaur_axe_gold\"},{}]}"
+    }, {
       "type": "text",
       "advancement": "twilightforest:alt/treasures/minotaur_axe_gold",
       "text": "Beware the Minotaurs with the Golden Minotaur Axe. They may be rare, but their different choice of weapon is a deadly choice, with more damage to deal."

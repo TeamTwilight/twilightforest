@@ -1,12 +1,26 @@
 {
   "name": "Snow Forest",
-  "icon": "minecraft:snow",
+  "icon": "minecraft:snow_block",
   "category": "biomes",
   "advancement": "twilightforest:alt/biomes/snowy_forest",
   "sortnum": 7000,
   "pages": [
     {
+      "type": "image",
+      "title": "Snowy Forest",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"],
+      "text": "The Snowy Forest is home to the towering boughs of fir trees, deep snow drifts, and"
+    }, {
       "type": "text",
+      "text": "legendary ice caves where strange, furry creatures lurk. Deep within these woods, the mournful howls of wolves can be heard on the icy wind. Ancient lore speculates on a breath-takingly high fortress built of glowing brick located here, behind a sheer wall of ice. The snow here certainly covers many secrets beneath its silent, white blankets..."
+    }, {
+      "type": "image",
+      "title": "Glacier",
+      "advancement": "twilightforest:alt/biomes/twilight_glacier",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/biomes/twilight_glacier",
       "text": "things and stuff"
     }
   ]

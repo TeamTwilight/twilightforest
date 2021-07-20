@@ -4,7 +4,7 @@
     "discover": {
       "trigger": "minecraft:location",
       "conditions": {
-        "feature": "twilightforest:troll_lairs",
+        "feature": "twilightforest:trollcave",
         "position": { "y": { "max": 50 } }
       }
     }

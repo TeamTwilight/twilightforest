@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.particles.ParticleTypes;
@@ -40,6 +41,11 @@ public abstract class EntityTFIceMob extends MonsterEntity {
 			//BURN!!!
 			this.attackEntityFrom(DamageSource.ON_FIRE, 1.0F);
 		}
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
 	}
 
 	@Override

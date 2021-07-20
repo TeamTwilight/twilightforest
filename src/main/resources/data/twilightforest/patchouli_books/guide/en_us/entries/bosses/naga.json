@@ -1,6 +1,6 @@
 {
   "name": "Naga",
-  "icon": "twilightforest:trophy:0",
+  "icon": "twilightforest:naga_trophy",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/naga",
   "sortnum": 3010,

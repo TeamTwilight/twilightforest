@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:stone",
+    "minecraft:netherrack",
+    "minecraft:end_stone",
+    "twilightforest:root"
+  ]
+}

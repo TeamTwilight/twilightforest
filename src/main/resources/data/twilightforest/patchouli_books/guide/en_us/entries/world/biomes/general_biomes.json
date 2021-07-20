@@ -7,35 +7,84 @@
   "pages": [
     {
       "type": "text",
-      "text": "General Biome Info. These biomes aren't really special."
+      "text": "Read on for information regarding the general biomes that make up the majority of the Twilight Forest realm."
+    }, {
+      "type": "empty"
+    }, {
+      "type": "image",
+      "title": "The Twilight Forest",
+      "advancement": "twilightforest:alt/biomes/twilight_forest",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/twilight_forest",
-      "text": "Twilight Forest"
+      "text": "The heart of this dimension, the Twilight Forest is a vast biome where the majestic Canopy Trees loom overhead, Twilight Oaks twist and writhe their thick roots through the soil, and the grass underfoot is dappled with shadows. The woods are gently lit by fireflies, and through the swaying leaves above, the stars can be seen twinkling in the pernament night that reins here. Various woodland creatures can be found in this biome, such as peacefully"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/biomes/twilight_forest",
+      "text": "grazing deer and wild pigs, or flitting birds and squirrels. Mushrooms, ferns and tall grass can be found here in abundance, and many unique structures have been sighted too, looming between the Canopy trees or stretching into the moonlit skies above. There is much to explore here."
+    }, {
+      "type": "empty",
+      "advancement": "twilightforest:alt/biomes/twilight_forest"
+    }, {
+      "type": "image",
+      "title": "Firefly Forest",
+      "advancement": "twilightforest:alt/biomes/firefly_forest",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/firefly_forest",
-      "text": "Firefly Forest"
+      "text": "Within the soft twilight glow of this realm, a brighter biome sparks alight amidst the gloom; the Firefly Forest. Here, Canopy Trees stretch their hulking forms far into the sky, and curious objects known as Firefly Jars are scattered throughout. They hang from the Canopy boughs, or protrude from the flower patches. Whether this was an attempt to provide light to the forest by some lost civilization, or a strange experiment on the many fireflies that seem to congregate here, it is impossible to say."
+    }, {
+      "type": "image",
+      "title": "Twilight Clearing",
+      "advancement": "twilightforest:alt/biomes/twilight_clearing",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/twilight_clearing",
-      "text": "Twilight Clearing"
+      "text": "Occasionally, the sea of trees and foilage will part to reveal giant clearings where no flora is found. Only the odd oak tree can be found, surrounded by a blank expanse of grass. The cause for these random clearings is unknown."
+    }, {
+      "type": "image",
+      "title": "Oak Savannah",
+      "advancement": "twilightforest:alt/biomes/oak_savannah",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/oak_savannah",
-      "text": "Oak Savannah"
+      "text": "Oak Savannah desc."
+    }, {
+      "type": "image",
+      "title": "Dense Twilight Forest",
+      "advancement": "twilightforest:alt/biomes/dense_twilight_forest",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/dense_twilight_forest",
-      "text": "Dense Twilight Forest"
+      "text": "Dense Twilight Forest desc."
+    }, {
+      "type": "image",
+      "title": "Mushroom Forest",
+      "advancement": "twilightforest:alt/biomes/mushroom_forest",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/mushroom_forest",
-      "text": "Mushroom Forest"
+      "text": "The Mushroom Forest biome is a dense mass of giant fungi, home to huge Mushroom canopies amongst the prevalent growth of Canopy Trees, providing a splash of colour as well as a rough and ready food source of edible mushrooms, much in the same as way Huge Mushrooms do in the Overworld. These biomes can cover large areas, and sometimes contain important and intriguing structures... So far, no barriers to exploration have been sighted in this environment, allowing for free passage throughout them."
+    }, {
+      "type": "image",
+      "title": "Dense Mushroom Forest",
+      "advancement": "twilightforest:alt/biomes/dense_mushroom_forest",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/deep_mushroom_forest",
-      "text": "Dense Mushroom Forest"
+      "text": "Dense Mushroom Forest desc."
+    }, {
+      "type": "image",
+      "title": "Twilight Lake",
+      "advancement": "twilightforest:alt/biomes/twilight_lake",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/twilight_lake",

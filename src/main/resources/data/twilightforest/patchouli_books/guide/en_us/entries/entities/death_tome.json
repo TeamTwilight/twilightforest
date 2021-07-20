@@ -1,14 +1,16 @@
 {
   "name": "Death Tome",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:death_tome\"}}",
+  "icon": "twilightforest:death_tome_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/death_tome",
   "sortnum": 4010,
   "pages": [
     {
       "type": "entity",
-      "entity": "twilightforest:death_tome",
-      "text": "things and stuff"
+      "entity": "twilightforest:death_tome"
+    }, {
+      "type": "text",
+      "text": "If pigs can fly, then it seems books can too! The Death Tome is a sinister page-turner though, and it will attack anyone who happens across its path inside the Lich Tower. This makes it a rather slow read."
     }
   ]
 }

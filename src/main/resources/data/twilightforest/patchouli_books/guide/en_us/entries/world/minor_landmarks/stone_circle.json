@@ -1,0 +1,17 @@
+{
+  "name": "Stone Circle",
+  "icon": "minecraft:mossy_cobblestone",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 2100,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Stone Circle",
+      "images": ["twilightforest:textures/gui/patchouli_images/stone_circle.png"]
+    }, {
+      "type": "text",
+      "text": "Strange circles of mossy stone pillars can sometimes be found on the ground. Its unclear what purpose they serve, but maybe they were used in some sort of ritual?"
+    }
+  ]
+}

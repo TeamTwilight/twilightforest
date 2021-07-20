@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:stripped_dark_wood"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:dark_planks",
+    "count": 4
+  }
+}

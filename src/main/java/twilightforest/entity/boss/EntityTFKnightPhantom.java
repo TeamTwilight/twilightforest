@@ -4,46 +4,48 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
 import net.minecraft.item.AxeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.*;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.BossVariant;
 import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.ai.EntityAIPhantomAttackStart;
 import twilightforest.entity.ai.EntityAIPhantomThrowWeapon;
-import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
+import twilightforest.enums.BossVariant;
 import twilightforest.item.TFItems;
+import twilightforest.loot.TFTreasure;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -98,7 +100,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		goalSelector.addGoal(2, new EntityAIPhantomAttackStart(this));
 		goalSelector.addGoal(3, new EntityAIPhantomThrowWeapon(this));
 
-		targetSelector.addGoal(0, new TFNearestPlayerGoal(this));
+		targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -133,7 +135,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome() && getNumber() == 0) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_knight_phantom.get().getDefaultState());
 			}
 			remove();
 		} else {
@@ -173,7 +175,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 		super.onDeath(cause);
 
-		if (!world.isRemote && getNearbyKnights().isEmpty()) {
+		if (!world.isRemote && getNearbyKnights().isEmpty() && cause != DamageSource.OUT_OF_WORLD) {
 
 			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this.getPosition());
 
@@ -457,7 +459,12 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
+	public boolean canChangeDimension() {
 		return false;
 	}
 

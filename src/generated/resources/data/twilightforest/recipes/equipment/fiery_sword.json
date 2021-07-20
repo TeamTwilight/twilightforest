@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "#",
+    "X"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/fiery"
+    },
+    "X": {
+      "tag": "forge:rods/blaze"
+    }
+  },
+  "result": {
+    "item": "twilightforest:fiery_sword"
+  }
+}

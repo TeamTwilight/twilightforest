@@ -1,5 +1,6 @@
 package twilightforest.loot;
 
+import com.google.common.collect.Sets;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.loot.LootConditionType;
@@ -12,14 +13,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TwilightForestMod;
-import twilightforest.structures.StructureTFComponent;
+
+import java.util.Set;
 
 public class TFTreasure {
 	// For easy testing:
-	// /give @p chest 1 0 {"display":{"Name":"Master Loot Crate"},"BlockEntityTag":{"LootTable":"twilightforest:entities/all_bosses"}}
-
+	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
+	private static final Set<ResourceLocation> TF_LOOT_TABLES = Sets.newHashSet();
+	
 	public static final TFTreasure hill1 = new TFTreasure("hill_1");
 	public static final TFTreasure hill2 = new TFTreasure("hill_2");
 	public static final TFTreasure hill3 = new TFTreasure("hill_3");
@@ -39,10 +41,34 @@ public class TFTreasure {
 	public static final TFTreasure stronghold_boss = new TFTreasure("stronghold_boss");
 	public static final TFTreasure aurora_cache = new TFTreasure("aurora_cache");
 	public static final TFTreasure aurora_room = new TFTreasure("aurora_room");
-	public static final TFTreasure aurora_boss = new TFTreasure("aurora_boss");
+//	public static final TFTreasure aurora_boss = new TFTreasure("aurora_boss"); //unused
 	public static final TFTreasure troll_garden = new TFTreasure("troll_garden");
 	public static final TFTreasure troll_vault = new TFTreasure("troll_vault");
 	public static final TFTreasure graveyard = new TFTreasure("graveyard");
+
+	public static final ResourceLocation BIGHORN_SHEEP_WHITE = register("entities/bighorn_sheep/white");
+	public static final ResourceLocation BIGHORN_SHEEP_ORANGE = register("entities/bighorn_sheep/orange");
+	public static final ResourceLocation BIGHORN_SHEEP_MAGENTA = register("entities/bighorn_sheep/magenta");
+	public static final ResourceLocation BIGHORN_SHEEP_LIGHT_BLUE = register("entities/bighorn_sheep/light_blue");
+	public static final ResourceLocation BIGHORN_SHEEP_YELLOW = register("entities/bighorn_sheep/yellow");
+	public static final ResourceLocation BIGHORN_SHEEP_LIME = register("entities/bighorn_sheep/lime");
+	public static final ResourceLocation BIGHORN_SHEEP_PINK = register("entities/bighorn_sheep/pink");
+	public static final ResourceLocation BIGHORN_SHEEP_GRAY = register("entities/bighorn_sheep/gray");
+	public static final ResourceLocation BIGHORN_SHEEP_LIGHT_GRAY = register("entities/bighorn_sheep/light_gray");
+	public static final ResourceLocation BIGHORN_SHEEP_CYAN = register("entities/bighorn_sheep/cyan");
+	public static final ResourceLocation BIGHORN_SHEEP_PURPLE = register("entities/bighorn_sheep/purple");
+	public static final ResourceLocation BIGHORN_SHEEP_BLUE = register("entities/bighorn_sheep/blue");
+	public static final ResourceLocation BIGHORN_SHEEP_BROWN = register("entities/bighorn_sheep/brown");
+	public static final ResourceLocation BIGHORN_SHEEP_GREEN = register("entities/bighorn_sheep/green");
+	public static final ResourceLocation BIGHORN_SHEEP_RED = register("entities/bighorn_sheep/red");
+	public static final ResourceLocation BIGHORN_SHEEP_BLACK = register("entities/bighorn_sheep/black");
+
+	public static final ResourceLocation QUESTING_RAM_REWARDS = register("entities/questing_ram_rewards");
+	public static final ResourceLocation DEATH_TOME_HURT = register("entities/death_tome_hurt");
+	public static final ResourceLocation DEATH_TOME_BOOKS = register("entities/death_tome_books");
+
+	public static final ResourceLocation USELESS_LOOT = register("structures/useless");
+	public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 
 	public static LootFunctionType ENCHANT;
 	public static LootFunctionType ITEM_OR_DEFAULT;
@@ -50,10 +76,10 @@ public class TFTreasure {
 	public static LootConditionType IS_MINION;
 	public static LootConditionType MOD_EXISTS;
 
-	private final ResourceLocation lootTable;
+	public final ResourceLocation lootTable;
 
 	private TFTreasure(String path) {
-		lootTable = TwilightForestMod.prefix(String.format("structures/%s/%s", path, path));
+		lootTable = TwilightForestMod.prefix(String.format("structures/%s", path));
 	}
 
 	public static void init() {
@@ -84,5 +110,17 @@ public class TFTreasure {
 
 	private static LootConditionType registerCondition(String name, LootConditionType condition) {
 		return Registry.register(Registry.LOOT_CONDITION_TYPE, TwilightForestMod.prefix(name), condition); //ILootCondition registry
+	}
+
+	private static ResourceLocation register(String id) {
+		return register(TwilightForestMod.prefix(id));
+	}
+
+	private static ResourceLocation register(ResourceLocation id) {
+		if (TF_LOOT_TABLES.add(id)) {
+			return id;
+		} else {
+			throw new IllegalArgumentException(id + " is already a registered built-in loot table");
+		}
 	}
 }

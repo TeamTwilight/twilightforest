@@ -3,7 +3,7 @@
   "criteria": {
     "0": {
       "trigger": "minecraft:location",
-      "conditions": { "biome": "twilightforest:twilight_swamp" }
+      "conditions": { "biome": "twilightforest:swamp" }
     },
     "1": {
       "trigger": "twilightforest:has_advancement",

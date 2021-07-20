@@ -6,8 +6,17 @@
   "sortnum": 5000,
   "pages": [
     {
+      "type": "image",
+      "title": "Twilight Swamp",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "A large, damp expanse of the Twilight Forest resembling a Swamp. This place is swarming with Mosquitoes, and trespassing will sicken any adventurer with an illness. Clearing this place requires one of the Twilight Lich's magical Scepters in order to repel the Mosquitoes. There are mounds in this biome, perhaps indicating a presence of landmarks?"
+    }, {
+      "type": "image",
+      "title": "Fire Swamp",
+      "advancement": "twilightforest:alt/biomes/fire_swamp",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/fire_swamp",

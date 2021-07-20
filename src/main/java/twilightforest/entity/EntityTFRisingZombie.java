@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
@@ -58,5 +59,10 @@ public class EntityTFRisingZombie extends ZombieEntity {
 	@Override
 	public void applyKnockback(float strength, double xRatio, double zRatio) {
 		//NO-OP
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
 	}
 }

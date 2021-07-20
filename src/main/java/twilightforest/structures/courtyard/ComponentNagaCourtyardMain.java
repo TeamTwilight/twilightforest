@@ -22,7 +22,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	static final float HEDGE_FLOOF = 0.5f;
 
 	static final float WALL_DECAY = 0.1f;
-	static final float WALL_INTEGRITY = 0.9f;
+	static final float WALL_INTEGRITY = 0.95f;
 
 	public ComponentNagaCourtyardMain(TemplateManager manager, CompoundNBT nbt) {
 		super(NagaCourtyardPieces.TFNCMn, nbt);
@@ -39,7 +39,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// naga spawner seems important
-		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState(), RADIUS, 2, RADIUS, sbb);
+		setBlockState(world, TFBlocks.boss_spawner_naga.get().getDefaultState(), RADIUS, 2, RADIUS, sbb);
 
 		return true;
 	}

@@ -25,30 +25,31 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	public static final ITag.INamedTag<Item> SORTING_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("sortwood_logs").toString());
 
 	public static final ITag.INamedTag<Item> TWILIGHT_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("logs").toString());
+	public static final ITag.INamedTag<Item> TF_FENCES = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fences").toString());
+	public static final ITag.INamedTag<Item> TF_FENCE_GATES = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fence_gates").toString());
 
 	public static final ITag.INamedTag<Item> PAPER = ItemTags.makeWrapperTag("forge:paper");
-	public static final ITag.INamedTag<Item> FEATHER = ItemTags.makeWrapperTag("forge:feather");
 
 	public static final ITag.INamedTag<Item> TOWERWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("towerwood").toString());
 
 	public static final ITag.INamedTag<Item> FIERY_VIAL = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fiery_vial").toString());
 
 	public static final ITag.INamedTag<Item> ARCTIC_FUR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("arctic_fur").toString());
-	public static final ITag.INamedTag<Item> CARMINITE_GEMS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("gems/carminite").toString());
-	public static final ITag.INamedTag<Item> FIERY_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ingots/fiery").toString());
-	public static final ITag.INamedTag<Item> IRONWOOD_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ingots/ironwood").toString());
-	public static final ITag.INamedTag<Item> KNIGHTMETAL_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ingots/knightmetal").toString());
-	public static final ITag.INamedTag<Item> STEELEAF_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ingots/steeleaf").toString());
+	public static final ITag.INamedTag<Item> CARMINITE_GEMS = ItemTags.makeWrapperTag("forge:gems/carminite");
+	public static final ITag.INamedTag<Item> FIERY_INGOTS = ItemTags.makeWrapperTag("forge:ingots/fiery");
+	public static final ITag.INamedTag<Item> IRONWOOD_INGOTS = ItemTags.makeWrapperTag("forge:ingots/ironwood");
+	public static final ITag.INamedTag<Item> KNIGHTMETAL_INGOTS = ItemTags.makeWrapperTag("forge:ingots/knightmetal");
+	public static final ITag.INamedTag<Item> STEELEAF_INGOTS = ItemTags.makeWrapperTag("forge:ingots/steeleaf");
 
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_ARCTIC_FUR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_CARMINITE = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/carminite").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_FIERY = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/fiery").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_IRONWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_KNIGHTMETAL = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_STEELEAF = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString());
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_ARCTIC_FUR = ItemTags.makeWrapperTag("forge:storage_blocks/arctic_fur");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_CARMINITE = ItemTags.makeWrapperTag("forge:storage_blocks/carminite");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_FIERY = ItemTags.makeWrapperTag("forge:storage_blocks/fiery");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_IRONWOOD = ItemTags.makeWrapperTag("forge:storage_blocks/ironwood");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_KNIGHTMETAL = ItemTags.makeWrapperTag("forge:storage_blocks/knightmetal");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_STEELEAF = ItemTags.makeWrapperTag("forge:storage_blocks/steeleaf");
 
-	public static final ITag.INamedTag<Item> ORES_IRONWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ores/ironwood").toString());
-	public static final ITag.INamedTag<Item> ORES_KNIGHTMETAL = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ores/knightmetal").toString());
+	public static final ITag.INamedTag<Item> ORES_IRONWOOD = ItemTags.makeWrapperTag("forge:ores/ironwood");
+	public static final ITag.INamedTag<Item> ORES_KNIGHTMETAL = ItemTags.makeWrapperTag("forge:ores/knightmetal");
 
 	public static final ITag.INamedTag<Item> PORTAL_ACTIVATOR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("portal/activator").toString());
 
@@ -67,7 +68,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTagGenerator.MINING_LOGS, MINING_LOGS);
 		this.copy(BlockTagGenerator.SORTING_LOGS, SORTING_LOGS);
 
-		this.copy(BlockTagGenerator.TWILIGHT_LOGS, TWILIGHT_LOGS);
+		this.copy(BlockTagGenerator.TF_LOGS, TWILIGHT_LOGS);
 		getOrCreateBuilder(ItemTags.LOGS).addTag(TWILIGHT_LOGS);
 		getOrCreateBuilder(ItemTags.LOGS_THAT_BURN)
 				.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS)
@@ -78,10 +79,13 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
 
+		this.copy(BlockTagGenerator.TF_FENCES, TF_FENCES);
+		this.copy(BlockTagGenerator.TF_FENCE_GATES, TF_FENCE_GATES);
 		this.copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
-		//this.copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES); There is no item version of this vanilla block tag for Fence Gates
+		this.copy(Tags.Blocks.FENCES, Tags.Items.FENCES);
+		this.copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
 		this.copy(Tags.Blocks.FENCES_WOODEN, Tags.Items.FENCES_WOODEN);
-		this.copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES_WOODEN);
+		this.copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
 
 		this.copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
 		this.copy(BlockTags.SLABS, ItemTags.SLABS);
@@ -105,13 +109,20 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_KNIGHTMETAL);
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF, STORAGE_BLOCKS_STEELEAF);
 
+		getOrCreateBuilder(Tags.Items.STORAGE_BLOCKS)
+				.addTag(STORAGE_BLOCKS_FIERY).addTag(STORAGE_BLOCKS_ARCTIC_FUR)
+				.addTag(STORAGE_BLOCKS_CARMINITE).addTag(STORAGE_BLOCKS_IRONWOOD)
+				.addTag(STORAGE_BLOCKS_KNIGHTMETAL).addTag(STORAGE_BLOCKS_STEELEAF);
+
 		this.copy(BlockTagGenerator.ORES_IRONWOOD, ORES_IRONWOOD);
 		this.copy(BlockTagGenerator.ORES_KNIGHTMETAL, ORES_KNIGHTMETAL);
+
+		getOrCreateBuilder(Tags.Items.ORES).addTag(ORES_IRONWOOD).addTag(ORES_KNIGHTMETAL);
 
 		this.copy(BlockTagGenerator.TOWERWOOD, TOWERWOOD);
 
 		getOrCreateBuilder(PAPER).add(Items.PAPER);
-		getOrCreateBuilder(FEATHER).add(Items.FEATHER).add(TFItems.raven_feather.get());
+		getOrCreateBuilder(Tags.Items.FEATHERS).add(Items.FEATHER).add(TFItems.raven_feather.get());
 
 		getOrCreateBuilder(FIERY_VIAL).add(TFItems.fiery_blood.get(), TFItems.fiery_tears.get());
 
@@ -122,9 +133,15 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		getOrCreateBuilder(KNIGHTMETAL_INGOTS).add(TFItems.knightmetal_ingot.get());
 		getOrCreateBuilder(STEELEAF_INGOTS).add(TFItems.steeleaf_ingot.get());
 
+		getOrCreateBuilder(Tags.Items.GEMS).addTag(CARMINITE_GEMS);
+
+		getOrCreateBuilder(Tags.Items.INGOTS)
+				.addTag(IRONWOOD_INGOTS).addTag(FIERY_INGOTS)
+				.addTag(KNIGHTMETAL_INGOTS).addTag(STEELEAF_INGOTS);
+
 		getOrCreateBuilder(ORES_IRONWOOD).add(TFItems.ironwood_raw.get());
 		getOrCreateBuilder(ORES_KNIGHTMETAL).add(TFItems.armor_shard_cluster.get());
 
-		getOrCreateBuilder(PORTAL_ACTIVATOR).addOptionalTag(Tags.Items.GEMS_DIAMOND.getName()); // FIXME Somehow Forge's Tags.Items.GEMS_DIAMOND does not exist when this executes so we will do it as an optional instead
+		getOrCreateBuilder(PORTAL_ACTIVATOR).addTag(Tags.Items.GEMS_DIAMOND);
 	}
 }

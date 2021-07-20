@@ -1,12 +1,25 @@
 {
   "name": "Knight Stronghold",
-  "icon": "twilightforest:miniature_structure:9",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/knight_stronghold",
   "sortnum": 6010,
   "pages": [
     {
+      "type": "image",
+      "title": "Knight Stronghold Barrier",
+      "images": ["twilightforest:textures/gui/patchouli_images/stronghold_start.png"]
+    }, {
       "type": "text",
+      "text": "things and stuff"
+    }, {
+      "type": "image",
+      "title": "Knight Stronghold",
+      "advancement": "twilightforest:progress_trophy_pedestal",
+      "images": ["twilightforest:textures/gui/patchouli_images/stronghold.png"]
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_trophy_pedestal",
       "text": "things and stuff"
     }
   ]

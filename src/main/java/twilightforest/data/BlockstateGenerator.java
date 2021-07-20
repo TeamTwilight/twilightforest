@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
+import team.chisel.ctm.client.util.Dir;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.FireJetVariant;
@@ -44,10 +45,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 		tintedAndFlipped(TFBlocks.tower_wood_mossy.get());
 		tintedAndFlipped(TFBlocks.tower_wood_infested.get());
 
-		builtinEntity(TFBlocks.firefly.get(), "minecraft:block/slime_block");
-		builtinEntity(TFBlocks.moonworm.get(), "minecraft:block/slime_block");
-		builtinEntity(TFBlocks.cicada.get(), "minecraft:block/slime_block");
-		builtinEntity(TFBlocks.keepsake_casket.get(), "minecraft:block/chiseled_stone_bricks");
+		builtinEntity(TFBlocks.firefly.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.moonworm.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.cicada.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.keepsake_casket.get(), "minecraft:block/netherite_block");
 
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
 		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
@@ -102,6 +103,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.lich_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.minoshroom_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.hydra_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.yeti_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.snow_queen_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.knight_phantom_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.ur_ghast_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
@@ -110,6 +112,7 @@ public class BlockstateGenerator extends BlockStateProvider {
         simpleBlock(TFBlocks.lich_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.minoshroom_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.hydra_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.yeti_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.snow_queen_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.knight_phantom_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.ur_ghast_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
@@ -240,7 +243,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.hedge.get(), ConfiguredModel.builder()
 						.weight(10).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath(), blockTexture(TFBlocks.hedge.get()))).nextModel()
 						.weight(1).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath() + "_rose", prefix("block/" + TFBlocks.hedge.getId().getPath() + "_rose"))).build());
-		simpleBlock(TFBlocks.boss_spawner.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_naga.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_lich.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_hydra.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_ur_ghast.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_knight_phantom.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_snow_queen.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_minoshroom.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_alpha_yeti.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_final_boss.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlockExisting(TFBlocks.firefly_jar.get());
 		simpleBlockExisting(TFBlocks.cicada_jar.get());
 		registerPlantBlocks();
@@ -299,9 +310,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 		builtinEntity(TFBlocks.sort_sign.get(), "twilightforest:block/wood/planks_sort_0");
 		builtinEntity(TFBlocks.sort_wall_sign.get(), "twilightforest:block/wood/planks_sort_0");
 
+		casketStuff();
+		stonePillar();
 	}
 
-	//TODO: Absolutely not a 100% reflection of what existed
 	private void registerForceFields() {
 		ImmutableList<RegistryObject<Block>> forceFields = ImmutableList.of(TFBlocks.force_field_pink, TFBlocks.force_field_blue, TFBlocks.force_field_green, TFBlocks.force_field_purple, TFBlocks.force_field_orange);
 
@@ -444,6 +456,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.with(DirectionalBlock.FACING, Direction.EAST).setModels(new ConfiguredModel(east));
 	}
 
+	private void casketStuff() {
+		models().withExistingParent("casket_obsidian", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/obsidian")).texture("side", new ResourceLocation("block/obsidian"));
+		models().withExistingParent("casket_stone", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/stone")).texture("side", new ResourceLocation("block/stone"));
+		models().withExistingParent("casket_basalt", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/basalt_top")).texture("side", new ResourceLocation("block/basalt_side"));
+	}
+
 	private void registerSmokersAndJets() {
 		simpleBlock(TFBlocks.smoker.get(), new ConfiguredModel(models().getExistingFile(prefix("block/jet"))));
 		simpleBlock(TFBlocks.fire_jet.get(), new ConfiguredModel(models().getExistingFile(prefix("block/jet"))));
@@ -521,7 +539,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void registerWoodBlocks() {
-		logWoodSapling(TFBlocks.oak_log.get(), TFBlocks.oak_wood.get(), TFBlocks.oak_sapling.get());
+		logWoodSapling(TFBlocks.oak_log.get(), TFBlocks.stripped_oak_log.get(), TFBlocks.oak_wood.get(), TFBlocks.stripped_oak_wood.get(), TFBlocks.oak_sapling.get());
 		plankBlocks("twilight_oak", TFBlocks.twilight_oak_planks.get(), TFBlocks.twilight_oak_slab.get(), TFBlocks.twilight_oak_stairs.get(), TFBlocks.twilight_oak_button.get(), TFBlocks.twilight_oak_fence.get(), TFBlocks.twilight_oak_gate.get(), TFBlocks.twilight_oak_plate.get(), TFBlocks.twilight_oak_door.get(), TFBlocks.twilight_oak_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.oak_leaves.get(), "block/leaves", m -> m.texture("all", "minecraft:block/oak_leaves"));
 
@@ -529,34 +547,34 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.rainboak_sapling.get(), models().cross(TFBlocks.rainboak_sapling.getId().getPath(), rainboakSaplTex));
 		singleBlockBoilerPlate(TFBlocks.rainboak_leaves.get(), "block/leaves", m -> m.texture("all", "minecraft:block/oak_leaves"));
 
-		logWoodSapling(TFBlocks.canopy_log.get(), TFBlocks.canopy_wood.get(), TFBlocks.canopy_sapling.get());
+		logWoodSapling(TFBlocks.canopy_log.get(), TFBlocks.stripped_canopy_log.get(), TFBlocks.canopy_wood.get(), TFBlocks.stripped_canopy_wood.get(), TFBlocks.canopy_sapling.get());
 		plankBlocks("canopy", TFBlocks.canopy_planks.get(), TFBlocks.canopy_slab.get(), TFBlocks.canopy_stairs.get(), TFBlocks.canopy_button.get(), TFBlocks.canopy_fence.get(), TFBlocks.canopy_gate.get(), TFBlocks.canopy_plate.get(), TFBlocks.canopy_door.get(), TFBlocks.canopy_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.canopy_leaves.get(), "block/leaves", m -> m.texture("all", "minecraft:block/spruce_leaves"));
 
-		logWoodSapling(TFBlocks.mangrove_log.get(), TFBlocks.mangrove_wood.get(), TFBlocks.mangrove_sapling.get());
+		logWoodSapling(TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_log.get(), TFBlocks.mangrove_wood.get(), TFBlocks.stripped_mangrove_wood.get(), TFBlocks.mangrove_sapling.get());
 		plankBlocks("mangrove", TFBlocks.mangrove_planks.get(), TFBlocks.mangrove_slab.get(), TFBlocks.mangrove_stairs.get(), TFBlocks.mangrove_button.get(), TFBlocks.mangrove_fence.get(), TFBlocks.mangrove_gate.get(), TFBlocks.mangrove_plate.get(), TFBlocks.mangrove_door.get(), TFBlocks.mangrove_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.mangrove_leaves.get(), "block/leaves", m -> m.texture("all", "minecraft:block/birch_leaves"));
 
-		logWoodSapling(TFBlocks.dark_log.get(), TFBlocks.dark_wood.get(), TFBlocks.darkwood_sapling.get());
+		logWoodSapling(TFBlocks.dark_log.get(), TFBlocks.stripped_dark_log.get(), TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_wood.get(), TFBlocks.darkwood_sapling.get());
 		plankBlocks("darkwood", TFBlocks.dark_planks.get(), TFBlocks.dark_slab.get(), TFBlocks.dark_stairs.get(), TFBlocks.dark_button.get(), TFBlocks.dark_fence.get(), TFBlocks.dark_gate.get(), TFBlocks.dark_plate.get(), TFBlocks.dark_door.get(), TFBlocks.dark_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.dark_leaves.get(), "block/leaves", m -> m.texture("all", "block/darkwood_leaves"));
 
-		logWoodSapling(TFBlocks.time_log.get(), TFBlocks.time_wood.get(), TFBlocks.time_sapling.get());
+		logWoodSapling(TFBlocks.time_log.get(), TFBlocks.stripped_time_log.get(), TFBlocks.time_wood.get(), TFBlocks.stripped_time_wood.get(), TFBlocks.time_sapling.get());
 		plankBlocks("time", TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_fence.get(), TFBlocks.time_gate.get(), TFBlocks.time_plate.get(), TFBlocks.time_door.get(), TFBlocks.time_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.time_leaves.get(), "block/leaves", m -> m.texture("all", "block/time_leaves"));
 		magicLogCore(TFBlocks.time_log_core.get());
 
-		logWoodSapling(TFBlocks.transformation_log.get(), TFBlocks.transformation_wood.get(), TFBlocks.transformation_sapling.get());
+		logWoodSapling(TFBlocks.transformation_log.get(), TFBlocks.stripped_transformation_log.get(), TFBlocks.transformation_wood.get(), TFBlocks.stripped_transformation_wood.get(), TFBlocks.transformation_sapling.get());
 		plankBlocks("trans", TFBlocks.trans_planks.get(), TFBlocks.trans_slab.get(), TFBlocks.trans_stairs.get(), TFBlocks.trans_button.get(), TFBlocks.trans_fence.get(), TFBlocks.trans_gate.get(), TFBlocks.trans_plate.get(), TFBlocks.trans_door.get(), TFBlocks.trans_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.transformation_leaves.get(), "block/leaves", m -> m.texture("all", "block/transformation_leaves"));
 		magicLogCore(TFBlocks.transformation_log_core.get());
 
-		logWoodSapling(TFBlocks.mining_log.get(), TFBlocks.mining_wood.get(), TFBlocks.mining_sapling.get());
+		logWoodSapling(TFBlocks.mining_log.get(), TFBlocks.stripped_mining_log.get(), TFBlocks.mining_wood.get(), TFBlocks.stripped_mining_wood.get(), TFBlocks.mining_sapling.get());
 		plankBlocks("mine", TFBlocks.mine_planks.get(), TFBlocks.mine_slab.get(), TFBlocks.mine_stairs.get(), TFBlocks.mine_button.get(), TFBlocks.mine_fence.get(), TFBlocks.mine_gate.get(), TFBlocks.mine_plate.get(), TFBlocks.mine_door.get(), TFBlocks.mine_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.mining_leaves.get(), "block/leaves", m -> m.texture("all", "block/mining_leaves"));
 		magicLogCore(TFBlocks.mining_log_core.get());
 
-		logWoodSapling(TFBlocks.sorting_log.get(), TFBlocks.sorting_wood.get(), TFBlocks.sorting_sapling.get());
+		logWoodSapling(TFBlocks.sorting_log.get(), TFBlocks.stripped_sorting_log.get(), TFBlocks.sorting_wood.get(), TFBlocks.stripped_sorting_wood.get(), TFBlocks.sorting_sapling.get());
 		plankBlocks("sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_fence.get(), TFBlocks.sort_gate.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get(), TFBlocks.sort_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.sorting_leaves.get(), "block/leaves", m -> m.texture("all", "block/sorting_leaves"));
 		magicLogCore(TFBlocks.sorting_log_core.get());
@@ -654,10 +672,13 @@ public class BlockstateGenerator extends BlockStateProvider {
 		);
 	}
 
-	private void logWoodSapling(RotatedPillarBlock log, Block wood, Block sapling) {
+	private void logWoodSapling(RotatedPillarBlock log, RotatedPillarBlock slog, RotatedPillarBlock wood, RotatedPillarBlock swood, Block sapling) {
 		logBlock(log);
+		logBlock(slog);
 		ResourceLocation sideTex = blockTexture(log);
-		simpleBlock(wood, models().cubeAll(wood.getRegistryName().getPath(), sideTex));
+		axisBlock(wood, sideTex, sideTex);
+		ResourceLocation sSideTex = blockTexture(slog);
+		axisBlock(swood, sSideTex, sSideTex);
 
 		ResourceLocation saplingTex = prefix("block/" + sapling.getRegistryName().getPath());
 		simpleBlock(sapling, models().cross(sapling.getRegistryName().getPath(), saplingTex));
@@ -985,6 +1006,28 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
 	}*/
+
+	private void stonePillar() {
+		ModelFile main_x = models().withExistingParent("pillar_main_x", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_x")).texture("side_z", prefix("block/stone_twist/twist_x"));
+		ModelFile bottom_x = models().withExistingParent("pillar_bottom_x", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_x"));
+		ModelFile top_x = models().withExistingParent("pillar_top_x", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_x"));
+		ModelFile main_y = models().withExistingParent("pillar_main_y", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_y")).texture("side_z", prefix("block/stone_twist/twist_y"));
+		ModelFile bottom_y = models().withExistingParent("pillar_bottom_y", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_y"));
+		ModelFile top_y = models().withExistingParent("pillar_top_y", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_y"));
+		ModelFile main_z = models().withExistingParent("pillar_main_z", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_x")).texture("side_z", prefix("block/stone_twist/twist_y"));
+		ModelFile bottom_z = models().withExistingParent("pillar_bottom_z", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_z"));
+		ModelFile top_z = models().withExistingParent("pillar_top_z", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_z"));
+		getMultipartBuilder(TFBlocks.stone_twist_thin.get())
+				.part().modelFile(main_x).uvLock(true).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).end()
+				.part().modelFile(top_x).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).condition(SixWayBlock.EAST, false).end()
+				.part().modelFile(bottom_x).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).condition(SixWayBlock.WEST, false).end()
+				.part().modelFile(main_y).uvLock(true).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).end()
+				.part().modelFile(top_y).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).condition(SixWayBlock.UP, false).end()
+				.part().modelFile(bottom_y).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).condition(SixWayBlock.DOWN, false).end()
+				.part().modelFile(main_z).uvLock(true).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).end()
+				.part().modelFile(top_z).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).condition(SixWayBlock.NORTH, false).end()
+				.part().modelFile(bottom_z).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).condition(SixWayBlock.SOUTH, false).end();
+	}
 
 	private void slider() {
 		ModelFile slider = models().getExistingFile(TwilightForestMod.prefix("block/slider"));

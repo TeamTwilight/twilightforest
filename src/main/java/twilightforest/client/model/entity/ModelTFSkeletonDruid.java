@@ -2,6 +2,8 @@ package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SkeletonModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFSkeletonDruid;
@@ -24,6 +26,12 @@ public class ModelTFSkeletonDruid extends SkeletonModel<EntityTFSkeletonDruid> {
 		dress = new ModelRenderer(this, 32, 16);
 		dress.addBox(-4F, 12.0F, -2F, 8, 12, 4, 0);
 		dress.setRotationPoint(0.0F, 0.0F, 0.0F);
+	}
+
+	@Override
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		if(this.isSitting) matrixStackIn.translate(0, -0.25F, 0);
+		super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
 
 	@Override

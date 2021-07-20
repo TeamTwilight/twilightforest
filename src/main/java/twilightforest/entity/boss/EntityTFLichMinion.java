@@ -80,7 +80,7 @@ public class EntityTFLichMinion extends ZombieEntity {
 		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX() + 1, getPosY() + 1, getPosZ() + 1).grow(32.0D, 16.0D, 32.0D));
 
 		for (EntityTFLich nearbyLich : nearbyLiches) {
-			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewMinion(this)) {
+			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewMinion()) {
 				this.master = nearbyLich;
 
 				// animate our new linkage!

@@ -1,6 +1,7 @@
 {
 	"replace" : false,
 	"entries" : [
-		"twilightforest:fiery_pick_smelting"
+		"twilightforest:fiery_pick_smelting",
+		"twilightforest:giant_block_grouping"
 	]
 }

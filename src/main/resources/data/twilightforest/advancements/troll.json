@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:magic_beans"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.troll"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.troll.desc",
+      "with": [
+        { "translate": "entity.twilightforest.troll" }
+      ]
+    }
+  },
+  "parent": "twilightforest:progress_merge",
+  "criteria": {
+    "troll": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:troll",
+          "location": {
+            "feature": "twilightforest:troll_cave"
+          }
+        }
+      }
+    }
+  }
+}

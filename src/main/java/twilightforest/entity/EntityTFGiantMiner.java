@@ -82,11 +82,15 @@ public class EntityTFGiantMiner extends MonsterEntity {
 	@Override
 	public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
 		List<EntityTFGiantMiner> giantsNearby = worldIn.getEntitiesWithinAABB(EntityTFGiantMiner.class, this.getBoundingBox().grow(50));
-		return giantsNearby.size() < 15;
+		return giantsNearby.size() < 7;
 	}
 
 	public static boolean canSpawn(EntityType<? extends EntityTFGiantMiner> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
 		return pos.getY() > 60 && (MobEntity.canSpawnOn(type, world, reason, pos, rand) || world.getBlockState(pos).getBlock() == TFBlocks.wispy_cloud.get() || world.getBlockState(pos).getBlock() == TFBlocks.fluffy_cloud.get());
 	}
 
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
 }

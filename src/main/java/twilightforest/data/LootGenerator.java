@@ -20,6 +20,7 @@ public class LootGenerator extends LootTableProvider {
 
 	private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> tables = ImmutableList.of(
 					Pair.of(BlockLootTables::new, LootParameterSets.BLOCK),
+					Pair.of(ChestLootTables::new, LootParameterSets.CHEST),
 					Pair.of(EntityLootTables::new, LootParameterSets.ENTITY)
 	);
 

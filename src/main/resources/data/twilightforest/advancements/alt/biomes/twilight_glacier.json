@@ -3,7 +3,7 @@
   "criteria": {
     "discover": {
       "trigger": "minecraft:location",
-      "conditions": { "biome": "twilightforest:twilight_glacier" }
+      "conditions": { "biome": "twilightforest:glacier" }
     }
   }
 }

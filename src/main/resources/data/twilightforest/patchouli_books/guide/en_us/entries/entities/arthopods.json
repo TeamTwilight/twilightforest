@@ -1,6 +1,6 @@
 {
   "name": "Arthopods",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:pinch_beetle\"}}",
+  "icon": "twilightforest:pinch_beetle_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/arthopods",
   "sortnum": 2100,
@@ -8,48 +8,75 @@
     {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/hedge_spider",
-      "entity": "twilightforest:hedge_spider",
-      "text": "things and stuff"
+      "entity": "twilightforest:hedge_spider"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/hedge_spider",
+      "text": "These 8-legged maze dwellers are fearsome and swift in their attacks, and will stop at nothing to defend their coveted treasures."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/swarm_spider",
-      "entity": "twilightforest:swarm_spider",
-      "text": "things and stuff"
+      "entity": "twilightforest:swarm_spider"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/swarm_spider",
+      "text": "The chances of encountering these small arthopods in dark, treasure filled locations are high. Thankfully, their large numbers and group attacks can't penetrate through tough armour, but that sea of legs is enough to make less courageous individuals falter in their stead."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/slime_beetle",
-      "entity": "twilightforest:slime_beetle",
-      "text": "things and stuff"
+      "entity": "twilightforest:slime_beetle"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/slime_beetle",
+      "text": "Slime Beetles are pesky and oftentimes dangerous. Usually found underground, their accuracy in aim and reluctancy to properly engage in battle can make them hard to fend off."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/fire_beetle",
-      "entity": "twilightforest:fire_beetle",
-      "text": "things and stuff"
+      "entity": "twilightforest:fire_beetle"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/fire_beetle",
+      "text": "This Beetle is anything but cool! Their breath is extremely hot, so best to keep a distance from them. Perhaps a ranged weapon would be best..."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/pinch_beetle",
-      "entity": "twilightforest:pinch_beetle",
-      "text": "things and stuff"
+      "entity": "twilightforest:pinch_beetle"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/pinch_beetle",
+      "text": "Pinch Beetles are menacing creatures that are found far from the sunlight. Their massive pincers attempt to snap and grab onto prey, and their swiftness is alarming."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/mosquito_swarm",
-      "entity": "twilightforest:mosquito_swarm",
-      "text": "things and stuff"
+      "entity": "twilightforest:mosquito_swarm"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/mosquito_swarm",
+      "text": "These tiny insects are extremely irritating and hinder explororation much through the Swamp biome. Their high-pitched buzzing sound and stubborness follow creatures everywhere they go, and they seem to inflict an insatiable hunger upon their victims, like a poison of sorts."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/king_spider",
-      "entity": "twilightforest:king_spider",
-      "text": "things and stuff"
+      "entity": "twilightforest:king_spider"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/king_spider",
+      "text": "The King Spider certainly lives up to its name! This massive arthopod would make short work of an enemy, and that's even without the Skeleton Druid atop its back."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/tower_termite",
-      "entity": "twilightforest:tower_termite",
-      "text": "things and stuff"
+      "entity": "twilightforest:tower_termite"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/tower_termite",
+      "text": "Towerwood Borer's bear a striking resemblance to Overworld Silverfish; however, an unusual shine is noticeable on their scales, perhaps it is a kind of essence?..."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/tower_broodling",
-      "entity": "twilightforest:tower_broodling",
-      "text": "things and stuff"
+      "entity": "twilightforest:tower_broodling"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/tower_broodling",
+      "text": "The Tower Broodling is somewhat related to its cousin the Swarm Spider, but not as weak."
     }
   ]
 }

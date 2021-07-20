@@ -3,11 +3,11 @@
   "icon": "twilightforest:magic_beans",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/magic_beans",
-  "sortnum": 8010,
+  "sortnum": 8020,
   "pages": [
     {
       "title": "Magic Beans",
-      "type": "twilightforest:headed_spotlight",
+      "type": "spotlight",
       "item": "twilightforest:magic_beans",
       "text": "These beans are huge! It is fairly obvious that beans this large wont be properly accommodated by just any regular soil, if they're found here then surely their natural habitat must be around these highlands as well."
     }, {

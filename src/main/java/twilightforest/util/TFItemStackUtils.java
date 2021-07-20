@@ -2,15 +2,20 @@ package twilightforest.util;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import twilightforest.TwilightForestMod;
 
+import java.util.Collections;
 import java.util.function.Predicate;
 
 public class TFItemStackUtils {
+
+	public static int damage = 0;
+
 	@Deprecated
 	public static boolean consumeInventoryItem(LivingEntity living, final Predicate<ItemStack> matcher, final int count) {
 		TwilightForestMod.LOGGER.warn("consumeInventoryItem accessed! Forge requires the player to be alive before we can access this cap. This cap is most likely being accessed for an Afterdeath Charm!");
@@ -28,7 +33,7 @@ public class TFItemStackUtils {
 				}
 			}
 
-			//TODO: Baubles is dead (I think)
+			//TODO: Baubles is dead, replace with curios
 			/*if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
 				consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
 			}*/
@@ -42,16 +47,37 @@ public class TFItemStackUtils {
 	}
 
 	public static boolean consumeInventoryItem(final NonNullList<ItemStack> stacks, final Item item) {
-		for (int i = 0; i < stacks.size(); i++) {
-			ItemStack stack = stacks.get(i);
+		for (ItemStack stack : stacks) {
 			if (stack.getItem() == item) {
-				stack.grow(-1);
-
+				stack.shrink(1);
+				CompoundNBT nbt = stack.getOrCreateTag();
+				if (nbt.contains("BlockStateTag")) {
+					CompoundNBT damageNbt = nbt.getCompound("BlockStateTag");
+					if (damageNbt.contains("damage")) {
+						damage = damageNbt.getInt("damage");
+					}
+				}
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	public static NonNullList<ItemStack> sortArmorForCasket(PlayerEntity player) {
+		NonNullList<ItemStack> armor = player.inventory.armorInventory;
+		Collections.reverse(armor);
+		return armor;
+	}
+
+	public static NonNullList<ItemStack> sortInvForCasket(PlayerEntity player) {
+		NonNullList<ItemStack> inv = player.inventory.mainInventory;
+		NonNullList<ItemStack> sorted = NonNullList.create();
+		//hotbar at the bottom
+		sorted.addAll(inv.subList(9, 36));
+		sorted.addAll(inv.subList(0, 9));
+
+		return sorted;
 	}
 
 	public static NonNullList<ItemStack> splitToSize(ItemStack stack) {

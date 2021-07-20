@@ -59,9 +59,6 @@ public class ParticleGhastTrap extends SpriteTexturedParticle {
 		this.prevPosZ = this.posZ;
 		float proportion = (float) this.age / (float) this.maxAge;
 		proportion = 1.0F - proportion;
-//        float antiProportion = 1.0F - proportion;
-//        antiProportion *= antiProportion;
-//        antiProportion *= antiProportion;
 		this.posX = this.originX + this.motionX * proportion;
 		this.posY = this.originY + this.motionY * proportion;// - (double)(antiProportion * 1.2F);
 		this.posZ = this.originZ + this.motionZ * proportion;

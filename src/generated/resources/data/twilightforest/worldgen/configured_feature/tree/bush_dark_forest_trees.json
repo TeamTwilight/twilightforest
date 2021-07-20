@@ -4,7 +4,34 @@
       "config": {
         "feature": {
           "config": {
-            "feature": "twilightforest:tree/base/bush_dark_forest",
+            "feature": {
+              "config": {
+                "feature": "twilightforest:tree/base/bush_dark_forest",
+                "decorator": {
+                  "config": {
+                    "outer": {
+                      "config": {},
+                      "type": "minecraft:square"
+                    },
+                    "inner": {
+                      "config": {
+                        "outer": {
+                          "config": {},
+                          "type": "minecraft:heightmap"
+                        },
+                        "inner": {
+                          "config": {},
+                          "type": "twilightforest:nostructure"
+                        }
+                      },
+                      "type": "minecraft:decorated"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
             "decorator": {
               "config": {
                 "outer": {

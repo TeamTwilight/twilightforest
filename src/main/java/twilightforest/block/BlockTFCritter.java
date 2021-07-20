@@ -29,7 +29,6 @@ import twilightforest.TFSounds;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
 
 import javax.annotation.Nullable;
-import javax.swing.*;
 
 public abstract class BlockTFCritter extends DirectionalBlock implements IWaterLoggable {
 	private final float WIDTH = getWidth();
@@ -113,7 +112,6 @@ public abstract class BlockTFCritter extends DirectionalBlock implements IWaterL
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		Direction facing = state.get(DirectionalBlock.FACING);
 		BlockPos restingPos = pos.offset(facing.getOpposite());
-		BlockState restingOn = world.getBlockState(restingPos);
 		return hasEnoughSolidSide(world, restingPos, facing);
 	}
 

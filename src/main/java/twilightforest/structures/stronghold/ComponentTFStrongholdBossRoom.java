@@ -96,32 +96,32 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.fillWithBlocks(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
 
 		//spawner
-		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM), 13, 2, 13, sbb);
+		setBlockState(world, TFBlocks.boss_spawner_knight_phantom.get().getDefaultState(), 13, 2, 13, sbb);
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}
 
 	private void placeSarcophagus(ISeedReader world, MutableBoundingBox sbb, int x, int y, int z, Rotation rotation) {
 
-		this.setBlockStateRotated(world, deco.pillarState, x - 1, y, z + 0, rotation, sbb);
+		this.setBlockStateRotated(world, deco.pillarState, x - 1, y, z, rotation, sbb);
 		this.setBlockStateRotated(world, deco.pillarState, x + 1, y, z + 3, rotation, sbb);
-		this.setBlockStateRotated(world, deco.pillarState, x + 1, y, z + 0, rotation, sbb);
+		this.setBlockStateRotated(world, deco.pillarState, x + 1, y, z, rotation, sbb);
 		this.setBlockStateRotated(world, deco.pillarState, x - 1, y, z + 3, rotation, sbb);
 
 		// make either torches or fence posts
 
 		if (world.getRandom().nextInt(7) == 0) {
-			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x + 1, y + 1, z + 0, rotation, sbb);
+			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x + 1, y + 1, z, rotation, sbb);
 		} else {
-			this.setBlockStateRotated(world, deco.fenceState, x + 1, y + 1, z + 0, rotation, sbb);
+			this.setBlockStateRotated(world, deco.fenceState, x + 1, y + 1, z, rotation, sbb);
 		}
 		if (world.getRandom().nextInt(7) == 0) {
-			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x - 1, y + 1, z + 0, rotation, sbb);
+			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x - 1, y + 1, z, rotation, sbb);
 		} else {
-			this.setBlockStateRotated(world, deco.fenceState, x - 1, y + 1, z + 0, rotation, sbb);
+			this.setBlockStateRotated(world, deco.fenceState, x - 1, y + 1, z, rotation, sbb);
 		}
 		if (world.getRandom().nextInt(7) == 0) {
 			this.setBlockStateRotated(world, Blocks.TORCH.getDefaultState(), x + 1, y + 1, z + 3, rotation, sbb);
@@ -134,33 +134,33 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 			this.setBlockStateRotated(world, deco.fenceState, x - 1, y + 1, z + 3, rotation, sbb);
 		}
 
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_90.rotate(Direction.WEST), rotation, false), x + 0, y, z + 0, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), x + 0, y, z + 3, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_90.rotate(Direction.WEST), false), x, y, z, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), false), x, y, z + 3, rotation, sbb);
 
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), x + 1, y, z + 1, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), x + 1, y, z + 2, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), rotation, false), x - 1, y, z + 1, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), rotation, false), x - 1, y, z + 2, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), false), x + 1, y, z + 1, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), false), x + 1, y, z + 2, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), false), x - 1, y, z + 1, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), false), x - 1, y, z + 2, rotation, sbb);
 
-		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 1, z + 1, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 1, z + 2, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x, y + 1, z + 1, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x, y + 1, z + 2, rotation, sbb);
 	}
 
 	protected void placePillarDecorations(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), 4, 1, 8, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), 8, 1, 4, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, true), 4, 5, 8, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 8, 5, 4, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), 5, 1, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), 6, 1, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, true), 5, 5, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 6, 5, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 6, 5, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), false), 4, 1, 8, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), false), 8, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), true), 4, 5, 8, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), true), 8, 5, 4, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), false), 5, 1, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), false), 6, 1, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), false), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), true), 5, 5, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), true), 6, 5, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), true), 6, 5, 5, rotation, sbb);
 	}
 
 	@Override
-	protected void placeDoorwayAt(ISeedReader world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeDoorwayAt(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb) {
 		if (x == 0 || x == getXSize()) {
 			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		} else {

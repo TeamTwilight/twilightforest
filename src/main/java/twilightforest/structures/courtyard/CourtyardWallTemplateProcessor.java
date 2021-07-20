@@ -7,7 +7,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
-import twilightforest.block.BlockTFNagastoneStairs;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.RandomizedTemplateProcessor;
 import twilightforest.structures.TFStructureProcessors;
@@ -41,7 +40,7 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
 				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
 
 			if (state == Blocks.SMOOTH_STONE_SLAB.getDefaultState())
-				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, Blocks.COBBLESTONE_SLAB.getDefaultState(), null);
+				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, translateState(state, Blocks.COBBLESTONE_SLAB, SlabBlock.TYPE), null);
 
 			if (block == TFBlocks.etched_nagastone.get())
 				return random.nextBoolean() ? newInfo : new Template.BlockInfo(newInfo.pos, translateState(state, randomBlock(random, TFBlocks.etched_nagastone_mossy.get(), TFBlocks.etched_nagastone_weathered.get()), DirectionalBlock.FACING), null);

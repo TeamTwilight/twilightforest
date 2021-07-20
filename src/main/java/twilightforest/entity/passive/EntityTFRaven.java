@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -54,6 +55,11 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	@Override
 	public float getEyeHeight(Pose pose) {
 		return this.getHeight() * 0.75F;
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
 	}
 
 	@Override

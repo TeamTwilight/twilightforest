@@ -45,7 +45,7 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 				IRecipe<?> irecipe = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, this.world).orElse(null);
 				if (!this.isBurning() && this.canSmelt(irecipe)) {
 					this.burnTime = getBurnTime(itemstack);
-					this.recipesUsed = this.burnTime;
+					this.burnTimeTotal = this.burnTime;
 
 					if (this.isBurning()) {
 						flag1 = true;

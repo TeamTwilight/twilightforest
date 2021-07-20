@@ -12,8 +12,6 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -65,9 +63,6 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 		fillWithAir(world, sbb, 15, 1, 7, 15, 3, 8);
 
 		// random holes
-//		this.randomlyRareFillWithBlocks(world, sbb, 0, 1, 0, 15, 4, 15, 0, false);
-//		this.randomlyRareFillWithBlocks(world, sbb, 0, 3, 0, 15, 4, 15, 0, true);
-//		this.randomlyRareFillWithBlocks(world, sbb, 0, 4, 0, 15, 4, 15, 0, true);
 		this.fillWithAir(world, sbb, 1, 1, 1, 14, 4, 14);
 
 		// entrance pit

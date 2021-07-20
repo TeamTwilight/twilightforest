@@ -1,6 +1,6 @@
 {
   "name": "Entities",
   "description": "All of the good guys and bad guys!",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:wild_boar\"}}",
+  "icon": "twilightforest:wild_boar_spawn_egg",
   "sortnum": 2000
 }

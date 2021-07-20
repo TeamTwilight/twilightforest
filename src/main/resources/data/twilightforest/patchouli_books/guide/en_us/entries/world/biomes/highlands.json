@@ -1,0 +1,35 @@
+{
+  "name": "Highlands",
+  "icon": "twilightforest:uberous_soil",
+  "category": "biomes",
+  "advancement": "twilightforest:alt/biomes/twilight_highlands",
+  "sortnum": 8000,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Twilight Highlands",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
+      "type": "text",
+      "text": "things and stuff"
+    }, {
+      "type": "image",
+      "title": "Thornlands",
+      "advancement": "twilightforest:alt/biomes/thornlands",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/biomes/thornlands",
+      "text": "things and stuff"
+    }, {
+      "type": "image",
+      "title": "Final Plateau",
+      "advancement": "twilightforest:alt/biomes/final_plateau",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/biomes/final_plateau",
+      "text": "things and stuff"
+    }
+  ]
+}

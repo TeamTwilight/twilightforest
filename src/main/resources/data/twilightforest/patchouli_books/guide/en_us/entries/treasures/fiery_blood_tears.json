@@ -6,9 +6,9 @@
   "sortnum": 5120,
   "pages": [
     {
-      "type": "twilightforest:gallery",
+      "type": "spotlight",
       "title": "Fiery Blood and Tears",
-      "item_list": "twilightforest:fiery_blood|twilightforest:fiery_tears",
+      "item": "twilightforest:fiery_blood,twilightforest:fiery_tears",
       "text": "Small vials containing a hot substance. The burning essence within these vials are so hot, they can be infused into Iron to turn them into a fiery metal usable in crafting. It can be obtained from multiple powerful monsters."
     }
   ]

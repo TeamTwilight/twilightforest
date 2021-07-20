@@ -9,33 +9,53 @@
       "type": "text",
       "text": "This world is magical, I infer that using materials from this world in crafting may potentially result in tools with inherent magical abilities that enchanting would normally offer."
     }, {
-      "type": "text",
+      "type": "spotlight",
       "advancement": "twilightforest:alt/treasures/ironwood_tool_set",
-      "text": "Ironwood Tools"
+      "title": "Ironwood Tools",
+      "item": "twilightforest:ironwood_sword,twilightforest:ironwood_pickaxe,twilightforest:ironwood_axe,twilightforest:ironwood_shovel,twilightforest:ironwood_hoe",
+      "text": "things and stuff"
     }, {
-      "type": "text",
+      "type": "spotlight",
       "advancement": "twilightforest:alt/treasures/steeleaf_tool_set",
-      "text": "Steeleaf Tools"
+      "title": "Steeleaf Tools",
+      "item": "twilightforest:steeleaf_sword,twilightforest:steeleaf_pickaxe,twilightforest:steeleaf_axe,twilightforest:steeleaf_shovel,twilightforest:steeleaf_hoe",
+      "text": "things and stuff"
     }, {
-      "type": "text",
+      "type": "spotlight",
       "advancement": "twilightforest:alt/treasures/fiery_tool_set",
-      "text": "Fiery Tools"
+      "title": "Fiery Sword",
+      "item": "twilightforest:fiery_sword",
+      "text": "things and stuff"
     }, {
-      "type": "text",
+      "type": "spotlight",
       "advancement": "twilightforest:alt/treasures/fiery_tool_set",
-      "text": "Fiery Tools"
+      "title": "Fiery Pickaxe",
+      "item": "twilightforest:fiery_pickaxe",
+      "text": "things and stuff"
     }, {
-      "type": "text",
+      "type": "spotlight",
       "advancement": "twilightforest:alt/treasures/knightmetal_tool_set",
-      "text": "Knightly Tools"
+      "title": "Knightmetal Tools",
+      "item": "twilightforest:knightmetal_sword,twilightforest:knightmetal_pickaxe,twilightforest:knightmetal_axe",
+      "text": "things and stuff"
     }, {
-      "type": "text",
+      "type": "spotlight",
       "advancement": "twilightforest:alt/treasures/ice_sword",
-      "text": "Ice Sword"
+      "title": "Ice Sword",
+      "item": "twilightforest:ice_sword",
+      "text": "things and stuff"
     }, {
-      "type": "text",
+      "type": "spotlight",
       "advancement": "twilightforest:alt/treasures/giant_tool_set",
-      "text": "Giant Tools"
+      "title": "Giant Sword",
+      "item": "twilightforest:giant_sword",
+      "text": "things and stuff"
+    }, {
+      "type": "spotlight",
+      "advancement": "twilightforest:alt/treasures/giant_tool_set",
+      "title": "Giant Pickaxe",
+      "item": "twilightforest:giant_pickaxe",
+      "text": "things and stuff"
     }
   ]
 }

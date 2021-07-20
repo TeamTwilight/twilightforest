@@ -2,12 +2,15 @@ package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SlimeEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -15,11 +18,13 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class EntityTFMazeSlime extends SlimeEntity {
@@ -42,9 +47,17 @@ public class EntityTFMazeSlime extends SlimeEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.MAX_HEALTH)/*.applyModifier(DOUBLE_HEALTH) TODO: Move to initial spawn?*/;
+				.createMutableAttribute(Attributes.MAX_HEALTH);
 	}
-	
+
+	@Nullable
+	@Override
+	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		ModifiableAttributeInstance health = this.getAttribute(Attributes.MAX_HEALTH);
+		health.applyPersistentModifier(DOUBLE_HEALTH);
+		return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+	}
+
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 	      return this.isSmallSlime() ? TFSounds.MAZE_SLIME_HURT_SMALL : TFSounds.MAZE_SLIME_HURT;
@@ -70,11 +83,6 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		return true;
 	}
 
-//	@Override
-//	protected int getAttackStrength() {
-//		return super.getAttackStrength() + 3;
-//	}
-
 	@Override
 	protected boolean spawnCustomParticles() {
 		// [VanillaCopy] from super tick with own particles
@@ -85,7 +93,6 @@ public class EntityTFMazeSlime extends SlimeEntity {
 			float f2 = MathHelper.sin(f) * i * 0.5F * f1;
 			float f3 = MathHelper.cos(f) * i * 0.5F * f1;
 			World world = this.world;
-			// ParticleTypes ParticleTypes = this.getParticleType();
 			double d0 = this.getPosX() + f2;
 			double d1 = this.getPosZ() + f3;
 			BlockState state = TFBlocks.maze_stone_brick.get().getDefaultState();

@@ -7,8 +7,17 @@
             "feature": {
               "config": {
                 "feature": {
-                  "config": {},
-                  "type": "twilightforest:thorns"
+                  "config": {
+                    "feature": {
+                      "config": {},
+                      "type": "twilightforest:thorns"
+                    },
+                    "decorator": {
+                      "config": {},
+                      "type": "twilightforest:nostructure"
+                    }
+                  },
+                  "type": "minecraft:decorated"
                 },
                 "decorator": {
                   "config": {

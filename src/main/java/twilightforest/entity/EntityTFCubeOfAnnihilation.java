@@ -2,34 +2,29 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.network.IPacket;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MinecraftVersion;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.item.ItemTFCubeOfAnnihilation;
+import twilightforest.data.BlockTagGenerator;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
 import java.util.Random;
 
-import static twilightforest.TwilightForestMod.prefix;
-
 public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
-	private static final ITag.INamedTag<Block> WHITELIST = BlockTags.makeWrapperTag(prefix("annihilation_whitelist").toString());
 	private boolean hasHitObstacle = false;
 
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world) {
@@ -40,7 +35,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world, LivingEntity thrower) {
 		super(type, thrower, world);
 		this.isImmuneToFire();
-		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override
@@ -72,7 +67,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	}
 
 	private DamageSource getDamageSource() {
-		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
+		LivingEntity thrower = (LivingEntity) this.getShooter();
 		if (thrower instanceof PlayerEntity) {
 			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
 		} else if (thrower != null) {
@@ -86,12 +81,19 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			BlockState state = world.getBlockState(pos);
 			if (!state.getBlock().isAir(state, world, pos)) {
-				if (canAnnihilate(pos, state)) {
-					this.world.removeBlock(pos, false);
-					this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
-					this.annihilateParticles(world, pos);
-				} else {
-					this.hasHitObstacle = true;
+				if (getShooter() instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity) getShooter();
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
+						if (canAnnihilate(pos, state)) {
+							this.world.removeBlock(pos, false);
+							this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
+							this.annihilateParticles(world, pos);
+						} else {
+							this.hasHitObstacle = true;
+						}
+					} else {
+						this.hasHitObstacle = true;
+					}
 				}
 			}
 		}
@@ -100,7 +102,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return block.isIn(WHITELIST) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
+		return block.isIn(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
 	}
 
 	private void annihilateParticles(World world, BlockPos pos) {
@@ -128,15 +130,15 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 		super.tick();
 
 		if (!this.world.isRemote) {
-			if (this.func_234616_v_() == null) {
+			if (this.getShooter() == null) {
 				this.remove();
 				return;
 			}
 
 			// always head towards either the point or towards the player
-			Vector3d destPoint = new Vector3d(this.func_234616_v_().getPosX(), this.func_234616_v_().getPosY() + this.func_234616_v_().getEyeHeight(), this.func_234616_v_().getPosZ());
+			Vector3d destPoint = new Vector3d(this.getShooter().getPosX(), this.getShooter().getPosY() + this.getShooter().getEyeHeight(), this.getShooter().getPosZ());
 
-			double distToPlayer = this.getDistance(this.func_234616_v_());
+			double distToPlayer = this.getDistance(this.getShooter());
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
@@ -144,7 +146,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 					this.remove();
 				}
 			} else {
-				destPoint = destPoint.add(func_234616_v_().getLookVec().scale(16F));
+				destPoint = destPoint.add(getShooter().getLookVec().scale(16F));
 			}
 
 			// set motions
@@ -175,17 +177,17 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	@Override
 	public void remove() {
 		super.remove();
-		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
+		LivingEntity thrower = (LivingEntity) this.getShooter();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation.get()) {
 			thrower.resetActiveHand();
 		}
 	}
 
 	private boolean isReturning() {
-		if (this.hasHitObstacle || this.func_234616_v_() == null || !(this.func_234616_v_() instanceof PlayerEntity)) {
+		if (this.hasHitObstacle || this.getShooter() == null || !(this.getShooter() instanceof PlayerEntity)) {
 			return true;
 		} else {
-			PlayerEntity player = (PlayerEntity) this.func_234616_v_();
+			PlayerEntity player = (PlayerEntity) this.getShooter();
 			return !player.isHandActive();
 		}
 	}

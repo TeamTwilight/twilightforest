@@ -89,6 +89,11 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	public int getMaxSpawnedInChunk() {
 		return 1;
 	}

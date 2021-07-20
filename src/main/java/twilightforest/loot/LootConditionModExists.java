@@ -22,13 +22,17 @@ public class LootConditionModExists implements ILootCondition {
     }
 
     @Override
-    public LootConditionType func_230419_b_() {
+    public LootConditionType getConditionType() {
         return TFTreasure.MOD_EXISTS;
     }
 
     @Override
     public boolean test(LootContext context) {
         return exists;
+    }
+
+    public static ILootCondition.IBuilder builder(String modid) {
+        return () -> new LootConditionModExists(modid);
     }
 
     public static class Serializer implements ILootSerializer<LootConditionModExists> {

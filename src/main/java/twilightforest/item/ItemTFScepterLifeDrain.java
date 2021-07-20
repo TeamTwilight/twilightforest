@@ -58,7 +58,7 @@ public class ItemTFScepterLifeDrain extends Item {
 	 * Animates the target falling apart into a rain of shatter particles
 	 */
 	private static void animateTargetShatter(World world, LivingEntity target) {
-		ItemStack itemId = new ItemStack(getTargetDropItem(target));
+		ItemStack itemId = new ItemStack(getTargetDropItem());
 		for (int i = 0; i < 50; ++i) {
 			double gaussX = random.nextGaussian() * 0.02D;
 			double gaussY = random.nextGaussian() * 0.02D;
@@ -68,8 +68,7 @@ public class ItemTFScepterLifeDrain extends Item {
 		}
 	}
 
-	private static Item getTargetDropItem(LivingEntity target) {
-		// TODO: make this actually work
+	private static Item getTargetDropItem() {
 		return Items.ROTTEN_FLESH;
 	}
 
@@ -127,7 +126,7 @@ public class ItemTFScepterLifeDrain extends Item {
 			// is the player looking at an entity
 			Entity pointedEntity = getPlayerLookTarget(world, living);
 
-			if (pointedEntity != null && pointedEntity instanceof LivingEntity) {
+			if (pointedEntity instanceof LivingEntity) {
 				LivingEntity target = (LivingEntity) pointedEntity;
 
 				if (target.getActivePotionEffect(Effects.SLOWNESS) != null || target.getHealth() < 1) {
@@ -142,8 +141,9 @@ public class ItemTFScepterLifeDrain extends Item {
 						target.playSound(TFSounds.SCEPTER_DRAIN, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						animateTargetShatter(world, target);
 						if (!world.isRemote) {
-							target.remove();
+							target.entityDropItem(new ItemStack(getTargetDropItem(), random.nextInt(3)));
 							target.onDeath(DamageSource.causeIndirectMagicDamage(living, living));
+							target.remove();
 						}
 						living.resetActiveHand();
 					} else {
@@ -185,7 +185,7 @@ public class ItemTFScepterLifeDrain extends Item {
 					}
 				}
 
-				if (!world.isRemote) {
+				if (!world.isRemote && living instanceof PlayerEntity && !((PlayerEntity)living).isCreative()) {
 					stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
 				}
 			}

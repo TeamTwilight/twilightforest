@@ -83,10 +83,9 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 */
 	public static MutableBoundingBox getComponentToAddBoundingBox2(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Direction dir) {
 		switch (dir) {
-			default:
-				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
 			case SOUTH: // '\0'
+			default:
 				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
 			case WEST: // '\001'
@@ -120,17 +119,17 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	protected void surroundBlockCardinal(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
-		setBlockState(world, block, x + 0, y, z - 1, sbb);
-		setBlockState(world, block, x + 0, y, z + 1, sbb);
-		setBlockState(world, block, x - 1, y, z + 0, sbb);
-		setBlockState(world, block, x + 1, y, z + 0, sbb);
+		setBlockState(world, block, x, y, z - 1, sbb);
+		setBlockState(world, block, x, y, z + 1, sbb);
+		setBlockState(world, block, x - 1, y, z, sbb);
+		setBlockState(world, block, x + 1, y, z, sbb);
 	}
 
 	protected void surroundBlockCardinalRotated(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
-		setBlockState(world, block.with(StairsBlock.FACING, Direction.NORTH), x + 0, y, z - 1, sbb);
-		setBlockState(world, block.with(StairsBlock.FACING, Direction.SOUTH), x + 0, y, z + 1, sbb);
-		setBlockState(world, block.with(StairsBlock.FACING, Direction.WEST), x - 1, y, z + 0, sbb);
-		setBlockState(world, block.with(StairsBlock.FACING, Direction.EAST), x + 1, y, z + 0, sbb);
+		setBlockState(world, block.with(StairsBlock.FACING, Direction.NORTH), x, y, z - 1, sbb);
+		setBlockState(world, block.with(StairsBlock.FACING, Direction.SOUTH), x, y, z + 1, sbb);
+		setBlockState(world, block.with(StairsBlock.FACING, Direction.WEST), x - 1, y, z, sbb);
+		setBlockState(world, block.with(StairsBlock.FACING, Direction.EAST), x + 1, y, z, sbb);
 	}
 
 	protected void surroundBlockCorners(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
@@ -250,21 +249,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		for (int i = 1; i < size; i++) {
 			setBlockState(world, tripwire, x + dx * i, y, z + dz * i, sbb);
 		}
-
-//		world.captureBlockSnapshots = false;
-
-//		@SuppressWarnings("unchecked")
-//		List<BlockSnapshot> blockSnapshots = (List<BlockSnapshot>) world.capturedBlockSnapshots.clone();
-//		world.capturedBlockSnapshots.clear();
-
-//		for (BlockSnapshot snap : blockSnapshots) {
-//			int updateFlag = snap.getFlag();
-//			BlockState oldBlock = snap.getReplacedBlock();
-//			BlockState newBlock = world.getBlockState(snap.getPos());
-//
-//			newBlock.getBlock().onBlockAdded(oldBlock, world, snap.getPos(), newBlock, false);
-//			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag, 512 /*Placeholder*/);
-//		}
 	}
 
 	protected void placeSignAtCurrentPosition(ISeedReader world, int x, int y, int z, String string0, String string1, MutableBoundingBox sbb) {
@@ -282,39 +266,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			}
 		}
 	}
-
-	protected void placeSignAtCurrentPosition(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, String... text) {
-		int dx = getXWithOffset(x, z);
-		int dy = getYWithOffset(y);
-		int dz = getZWithOffset(x, z);
-		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.OAK_SIGN) {
-			world.setBlockState(pos, Blocks.OAK_SIGN.getDefaultState().with(StandingSignBlock.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
-
-			SignTileEntity teSign = (SignTileEntity) world.getTileEntity(pos);
-			if (teSign != null) {
-				int min = Math.min(text.length, 4); //TODO: Aight, who private this? Honestly it's pretty safe to assume this is 4 anyway
-
-				for (int i = 0; i < min; i++) {
-					teSign.setText(i, new StringTextComponent(text[i]));
-				}
-			}
-		}
-	}
-
-//	public boolean makeTowerWing2(List list, Random rand, int index, int x, int y, int z, int size, int height, int direction) {
-//		
-//		ComponentTFTowerWing wing = new ComponentTFTowerWing(index, x, y, z, size, height, direction);
-//		// check to see if it intersects something already there
-//		StructurePiece intersect = StructurePiece.getIntersectingStructurePiece(list, wing.boundingBox);
-//		if (intersect == null || intersect == this) {
-//			list.add(wing);
-//			wing.buildComponent(this, list, rand);
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
 
 	/**
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
@@ -531,35 +482,6 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	/**
-	 * Nullify all the sky light in this component bounding box
-	 */
-//	public void nullifySkyLightForBoundingBox(World world) {
-//		this.nullifySkyLight(world, boundingBox.minX - 1, boundingBox.minY - 1, boundingBox.minZ - 1, boundingBox.maxX + 1, boundingBox.maxY + 1, boundingBox.maxZ + 1);
-//	}
-
-	/**
-	 * Nullify all the sky light at the specified positions, using local coordinates
-	 */
-//	protected void nullifySkyLightAtCurrentPosition(World world, int sx, int sy, int sz, int dx, int dy, int dz) {
-//		// resolve all variables to their actual in-world positions
-//		nullifySkyLight(world, getXWithOffset(sx, sz), getYWithOffset(sy), getZWithOffset(sx, sz), getXWithOffset(dx, dz), getYWithOffset(dy), getZWithOffset(dx, dz));
-//	}
-
-	/**
-	 * Nullify all the sky light at the specified positions, using world coordinates
-	 */
-	//TODO: Probably can't set light anymore
-//	protected void nullifySkyLight(IWorld world, int sx, int sy, int sz, int dx, int dy, int dz) {
-//		for (int x = sx; x <= dx; x++) {
-//			for (int z = sz; z <= dz; z++) {
-//				for (int y = sy; y <= dy; y++) {
-//					world.setLightFor(LightType.SKY, new BlockPos(x, y, z), 0);
-//				}
-//			}
-//		}
-//	}
-
-	/**
 	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
 	 * levels in the BB's horizontal rectangle).
 	 * <p>
@@ -604,8 +526,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		return 0;
 	}
 
-	//TODO: Parameter "sbb" is unused. Remove?
-	protected boolean isBoundingBoxOutsideBiomes(ISeedReader world, MutableBoundingBox sbb, Predicate<Biome> predicate) {
+	protected boolean isBoundingBoxOutsideBiomes(ISeedReader world, Predicate<Biome> predicate) {
 
 		int minX = this.boundingBox.minX - 1;
 		int minZ = this.boundingBox.minZ - 1;
@@ -654,8 +575,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	/* BlockState Helpers */
-	//TODO: Parameter "rotation" is unused. Remove?
-	protected static BlockState getStairState(BlockState stairState, Direction direction, Rotation rotation, boolean isTopHalf) {
+	protected static BlockState getStairState(BlockState stairState, Direction direction, boolean isTopHalf) {
 		return stairState
 				.with(StairsBlock.FACING, direction)
 				.with(StairsBlock.HALF, isTopHalf ? Half.TOP : Half.BOTTOM);

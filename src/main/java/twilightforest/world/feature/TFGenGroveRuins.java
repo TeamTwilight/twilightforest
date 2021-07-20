@@ -40,7 +40,7 @@ public class TFGenGroveRuins extends Feature<NoFeatureConfig> {
 	 * Generate a ruin with the larger arch
 	 */
 	private boolean generateLargeArch(IWorld world, Random rand, BlockPos pos) {
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 2, 7, 6)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 2, 7, 6)) {
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class TFGenGroveRuins extends Feature<NoFeatureConfig> {
 	 * Generate a ruin with the smaller arch
 	 */
 	private boolean generateSmallArch(IWorld world, Random rand, BlockPos pos) {
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 7, 5, 9)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 7, 5, 9)) {
 			return false;
 		}
 

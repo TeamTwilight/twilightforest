@@ -5,7 +5,8 @@
     "layer": "CUTOUT",
     "textures": [ "twilightforest:block/stone_twist/twist_y_ctm" ],
     "extra": {
-      "connect_inside": true
+      "connect_inside": true,
+      "ignore_states": true
     }
   }
 }

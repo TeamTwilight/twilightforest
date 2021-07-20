@@ -35,11 +35,6 @@ public class BlockTFBuilder extends Block {
 		builder.add(STATE);
 	}
 
-//	@Override
-//	public int tickRate(IWorldReader world) {
-//		return 15;
-//	}
-
 	@Override
 	@Deprecated
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
@@ -141,7 +136,7 @@ public class BlockTFBuilder extends Block {
 				d1 = pos.getX() - d0;
 			}
 
-			float f1 = 1.0F * 0.6F + 0.4F;
+			float f1 = 0.6F + 0.4F;
 			float f2 = Math.max(0.0F, 1.0F * 1.0F * 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 1.0F * 1.0F * 0.6F - 0.7F);
 			if (d1 < pos.getX() || d1 > pos.getX() + 1 || d2 < 0.0D || d2 > pos.getY() + 1 || d3 < pos.getZ() || d3 > pos.getZ() + 1) {
@@ -166,15 +161,6 @@ public class BlockTFBuilder extends Block {
 	/**
 	 * We need variable, metadata-based tick rates
 	 */
-//	private static int getTickRateFor(BlockState state, Random rand) {
-//		if (state.getBlock() == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_ACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_ACTIVE)) {
-//			return 2 + rand.nextInt(5);
-//		} else if (state.getBlock() == TFBlocks.tower_translucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_ACTIVE) {
-//			return 10;
-//		}
-//
-//		return 15;
-//	}
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {

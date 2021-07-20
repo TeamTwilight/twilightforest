@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
@@ -64,6 +65,11 @@ public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob,
 
 		this.world.addEntity(natureBolt);
 
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
 	}
 
 	@Override

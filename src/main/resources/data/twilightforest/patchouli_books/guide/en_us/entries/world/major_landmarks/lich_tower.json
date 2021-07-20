@@ -1,11 +1,15 @@
 {
   "name": "Lich Tower",
-  "icon": "twilightforest:miniature_structure:6",
+  "icon": "twilightforest:lich_tower_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/lich_tower",
   "sortnum": 4000,
   "pages": [
     {
+      "type": "image",
+      "title": "Lich Tower",
+      "images": ["twilightforest:textures/gui/patchouli_images/lich_tower.png"]
+    }, {
       "type": "text",
       "text": "things and stuff"
     }

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:stripped_canopy_log"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:canopy_planks",
+    "count": 4
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Well",
+  "icon": "minecraft:water_bucket",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 2100,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Well",
+      "images": ["twilightforest:textures/gui/patchouli_images/well.png"]
+    }, {
+      "type": "text",
+      "text": "Small, rickety wells can be found throughout the forest. These wells seem to serve no purpose to any adventurer at first, but maybe there is treasure buried deep within."
+    }
+  ]
+}

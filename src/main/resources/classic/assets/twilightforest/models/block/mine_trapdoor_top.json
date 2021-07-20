@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/template_trapdoor_top",
-  "textures": {
-    "texture": "twilightforest:block/wood/trapdoor/mine_trapdoor"
-  }
-}

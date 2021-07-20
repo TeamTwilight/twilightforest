@@ -1,5 +1,6 @@
 package twilightforest;
 
+import com.google.common.collect.Maps;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.WoodType;
 import net.minecraft.dispenser.IBlockSource;
@@ -7,9 +8,7 @@ import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -33,26 +32,25 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.dispenser.TransformationDispenseBehavior;
-import twilightforest.entity.projectile.EntityTFMoonwormShot;
-import twilightforest.dispenser.CrumbleDispenseBehavior;
-import twilightforest.dispenser.FeatherFanDispenseBehavior;
-import twilightforest.dispenser.MoonwormDispenseBehavior;
-import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
-import twilightforest.item.ItemTFFieryPick;
-import twilightforest.worldgen.biomes.BiomeGrassColors;
-import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
-import twilightforest.enchantment.TFEnchantments;
+import twilightforest.compat.TFCompat;
+import twilightforest.dispenser.CrumbleDispenseBehavior;
+import twilightforest.dispenser.FeatherFanDispenseBehavior;
+import twilightforest.dispenser.MoonwormDispenseBehavior;
+import twilightforest.dispenser.TransformationDispenseBehavior;
+import twilightforest.entity.projectile.EntityTFMoonwormShot;
+import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
 import twilightforest.inventory.TFContainers;
+import twilightforest.item.ItemTFFieryPick;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
@@ -63,6 +61,8 @@ import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
 import twilightforest.worldgen.TwilightFeatures;
+import twilightforest.worldgen.biomes.BiomeGrassColors;
+import twilightforest.worldgen.biomes.BiomeKeys;
 
 import java.util.Locale;
 
@@ -84,10 +84,6 @@ public class TwilightForestMod {
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 	private static final Rarity rarity = Rarity.create("TWILIGHT", TextFormatting.DARK_GREEN);
-
-	// TODO: PROXIES ARE DEAD!
-	// @SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
-	// public static TFCommonProxy proxy;
 
 	public TwilightForestMod() {
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> (DistExecutor.SafeRunnable) twilightforest.client.TFClientSetup::addLegacyPack);
@@ -116,24 +112,16 @@ public class TwilightForestMod {
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		modbus.addGenericListener(Structure.class, TFStructures::register);
 		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
-		MinecraftForge.EVENT_BUS.addListener(TFStructures::fillSpawnInfo);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
-		TFEnchantments.ENCHANTMENTS.register(modbus);
-//		TFBiomeFeatures.WORLD_CARVERS.register(modbus);
-//		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
-//		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
-//		TFDimensions.MOD_DIMENSIONS.register(modbus);
+//		TFEnchantments.ENCHANTMENTS.register(modbus);
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new TwilightFeatures();
 		new BiomeGrassColors();
 
-		// TODO: move these to proper spots
-		// WorldProviderTwilightForest.syncFromConfig();
-
-		if (false/*TFConfig.COMMON_CONFIG.doCompat.get()*/) {
+		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				// TFCompat.preInitCompat(); FIXME We will just log the fact no compat is initializing, for now
+				TFCompat.preInitCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading preInit compatibility!");
@@ -152,12 +140,19 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
-	public static void registerSmelting(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
+	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
 		evt.getRegistry().register(new ItemTFFieryPick.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
+		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
+	}
+
+	@SubscribeEvent
+	public void sendIMCs(InterModEnqueueEvent evt) {
+		TFCompat.IMCSender();
 	}
 
 	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent evt) {
+
 		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
@@ -166,7 +161,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				// TFCompat.initCompat(); TODO
+				TFCompat.initCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");
@@ -176,7 +171,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				// TFCompat.postInitCompat(); TODO
+				TFCompat.postInitCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading postInit compatibility!");
@@ -186,10 +181,32 @@ public class TwilightForestMod {
 
 		TFConfig.build();
 		TFGenCaveStalactite.loadStalactites();
-		
+
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();
+			TFBlocks.TFBurnables();
 			TFBlocks.TFPots();
+			TFSounds.registerParrotSounds();
+
+			AxeItem.BLOCK_STRIPPING_MAP = Maps.newHashMap(AxeItem.BLOCK_STRIPPING_MAP);
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.oak_log.get(), TFBlocks.stripped_oak_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.canopy_log.get(), TFBlocks.stripped_canopy_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.dark_log.get(), TFBlocks.stripped_dark_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.time_log.get(), TFBlocks.stripped_time_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.transformation_log.get(), TFBlocks.stripped_transformation_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.mining_log.get(), TFBlocks.stripped_mining_log.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.sorting_log.get(), TFBlocks.stripped_sorting_log.get());
+
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.oak_wood.get(), TFBlocks.stripped_oak_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.canopy_wood.get(), TFBlocks.stripped_canopy_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.mangrove_wood.get(), TFBlocks.stripped_mangrove_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.time_wood.get(), TFBlocks.stripped_time_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.transformation_wood.get(), TFBlocks.stripped_transformation_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.mining_wood.get(), TFBlocks.stripped_mining_wood.get());
+			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.sorting_wood.get(), TFBlocks.stripped_sorting_wood.get());
+
 			DispenserBlock.registerDispenseBehavior(TFItems.moonworm_queen.get(), new MoonwormDispenseBehavior() {
 				@Override
 				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {

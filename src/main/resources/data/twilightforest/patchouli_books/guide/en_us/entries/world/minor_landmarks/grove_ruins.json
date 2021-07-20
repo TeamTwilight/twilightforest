@@ -1,0 +1,17 @@
+{
+  "name": "Grove Ruins",
+  "icon": "minecraft:mossy_stone_bricks",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 2100,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Grove Ruins",
+      "images": ["twilightforest:textures/gui/patchouli_images/grove_ruins.png"]
+    }, {
+      "type": "text",
+      "text": "Strange mossy pillars show up from time to time around the forest. These pillars only feel like a fraction of what the original structure here must have been. Perhaps an intact structure still exists somewhere..."
+    }
+  ]
+}

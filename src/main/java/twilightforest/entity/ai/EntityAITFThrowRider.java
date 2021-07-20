@@ -46,8 +46,8 @@ public class EntityAITFThrowRider extends MeleeAttackGoal {
 	protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 		double d0 = this.getAttackReachSqr(p_190102_1_);
 
-		if (p_190102_2_ <= d0 && this.func_234041_j_() <= 0) {
-			this.func_234039_g_();
+		if (p_190102_2_ <= d0 && this.getSwingCooldown() <= 0) {
+			this.resetSwingCooldown();
 			this.attacker.swingArm(Hand.MAIN_HAND);
 			if (attacker.getPassengers().isEmpty() && p_190102_1_.getRidingEntity() == null) {
 				p_190102_1_.startRiding(attacker);

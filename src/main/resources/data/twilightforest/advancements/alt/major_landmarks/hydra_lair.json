@@ -3,7 +3,7 @@
   "criteria": {
     "discover": {
       "trigger": "minecraft:location",
-      "conditions": { "feature": "twilightforest:hydra_lair" }
+      "conditions": { "feature": "twilightforest:hydralair" }
     }
   }
 }

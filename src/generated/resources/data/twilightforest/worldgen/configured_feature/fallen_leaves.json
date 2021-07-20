@@ -3,8 +3,17 @@
     "feature": {
       "config": {
         "feature": {
-          "config": {},
-          "type": "twilightforest:fallen_leaves"
+          "config": {
+            "feature": {
+              "config": {},
+              "type": "twilightforest:fallen_leaves"
+            },
+            "decorator": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
+          },
+          "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {

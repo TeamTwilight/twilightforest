@@ -157,7 +157,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         }
     }
 
-    @SuppressWarnings({"ConstantConditions", "fallthrough"})
+    @SuppressWarnings({"fallthrough"})
     private void processInnerWallsAndFloor(StructurePiece structureComponent, List<StructurePiece> list, Random random, final int offset, final Rotation[] rotations) {
         for (int x = 0; x < widthInCellCount - 1; x++) {
             for (int y = 0; y < heightInCellCount - 1; y++) {
@@ -594,7 +594,6 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         private final int OPPOSITE;
         private final int INVERTED;
         private final int INVERTED_OPPOSITE;
-        private final Direction enumFacing;
         private final int xOffset;
         private final int zOffset;
 
@@ -603,7 +602,6 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             this.OPPOSITE = oppositeBite;
             this.INVERTED = inverted;
             this.INVERTED_OPPOSITE = invertedOpposite;
-            this.enumFacing = enumFacing;
             this.xOffset = xOffset;
             this.zOffset = zOffset;
         }
@@ -612,13 +610,6 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             return (this.BYTE & directions) == this.BYTE;
         }
 
-        protected boolean unpackAndTestOpposite(int directions) {
-            return (this.OPPOSITE & directions) == this.OPPOSITE;
-        }
-
-        public Direction getEnumFacing() {
-            return enumFacing;
-        }
     }
 
 	@Override

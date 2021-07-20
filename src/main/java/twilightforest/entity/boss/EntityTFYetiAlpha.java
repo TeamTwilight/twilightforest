@@ -323,7 +323,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (!detachHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_alpha_yeti.get().getDefaultState());
 			}
 			remove();
 		} else {
@@ -426,7 +426,12 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
+	public boolean canChangeDimension() {
 		return false;
 	}
 }

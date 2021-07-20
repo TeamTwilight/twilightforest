@@ -1,6 +1,6 @@
 {
   "name": "Hydra",
-  "icon": "twilightforest:trophy:2",
+  "icon": "twilightforest:hydra_trophy",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/hydra",
   "sortnum": 5110,

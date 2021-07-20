@@ -1,11 +1,15 @@
 {
   "name": "Naga Courtyard",
-  "icon": "twilightforest:miniature_structure:5",
+  "icon": "twilightforest:naga_courtyard_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/naga_courtyard",
   "sortnum": 3000,
   "pages": [
     {
+      "type": "image",
+      "title": "Naga Courtyard",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "things and stuff"
     }

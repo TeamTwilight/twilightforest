@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "twilightforest:mining_log",
-    "twilightforest:mining_wood"
+    "twilightforest:stripped_mining_log",
+    "twilightforest:mining_wood",
+    "twilightforest:stripped_mining_wood"
   ]
 }

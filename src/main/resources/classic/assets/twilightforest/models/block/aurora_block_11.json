@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/util/tinted_cube_all",
-  "textures": {
-    "all": "twilightforest:block/aurora_block_11"
-  }
-}

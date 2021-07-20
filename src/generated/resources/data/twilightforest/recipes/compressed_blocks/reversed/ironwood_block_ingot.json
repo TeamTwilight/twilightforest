@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "twilightforest:storage_blocks/ironwood"
+      "tag": "forge:storage_blocks/ironwood"
     }
   ],
   "result": {

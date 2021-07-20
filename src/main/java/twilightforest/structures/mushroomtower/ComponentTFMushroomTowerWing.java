@@ -72,7 +72,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			int[] dest = getValidOpening(rand, Rotation.CLOCKWISE_180);
 			dest[1] = this.height - 3;
 			int childHeight = (rand.nextInt(3) + rand.nextInt(3) + 2) * FLOOR_HEIGHT + 1;
-			boolean madeIt = makeMainBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], size + 4, childHeight, Rotation.CLOCKWISE_180);
+			boolean madeIt = makeMainBridge(list, rand, this.getComponentType() + 1, dest[0], dest[1], dest[2], childHeight, Rotation.CLOCKWISE_180);
 
 			if (!madeIt) {
 				TwilightForestMod.LOGGER.info("Did not make bridge back to new main");
@@ -108,7 +108,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Have we strayed more than range blocks away from the center?
 	 */
-	private boolean isOutOfRange(StructurePiece parent, int nx, int ny, int nz, int range) {
+	private boolean isOutOfRange(StructurePiece parent, int nx, int nz, int range) {
 		final MutableBoundingBox sbb = parent.getBoundingBox();
 		final int centerX = sbb.minX + (sbb.maxX - sbb.minX + 1) / 2;
 		final int centerZ = sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2;
@@ -126,7 +126,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (isOutOfRange(list.get(0), dx[0], dx[1], dx[2], RANGE)) {
+		if (isOutOfRange(list.get(0), dx[0], dx[2], RANGE)) {
 			return false;
 		}
 
@@ -216,20 +216,14 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
 
 		ComponentTFTowerRoof roof = new ComponentTFTowerRoofMushroom(getFeatureType(), this.getComponentType() + 1, this, 1.6F);
-		if (StructurePiece.findIntersecting(list, roof.getBoundingBox()) instanceof ComponentTFTowerRoofMushroom) {
-			list.add(roof);
-			roof.buildComponent(this, list, rand);
-		} else {
+		if (!(StructurePiece.findIntersecting(list, roof.getBoundingBox()) instanceof ComponentTFTowerRoofMushroom)) {
 			roof = new ComponentTFTowerRoofMushroom(getFeatureType(), this.getComponentType() + 1, this, 1.0F);
-			if (StructurePiece.findIntersecting(list, roof.getBoundingBox()) instanceof ComponentTFTowerRoofMushroom) {
-				list.add(roof);
-				roof.buildComponent(this, list, rand);
-			} else {
+			if (!(StructurePiece.findIntersecting(list, roof.getBoundingBox()) instanceof ComponentTFTowerRoofMushroom)) {
 				roof = new ComponentTFTowerRoofMushroom(getFeatureType(), this.getComponentType() + 1, this, 0.6F);
-				list.add(roof);
-				roof.buildComponent(this, list, rand);
 			}
 		}
+		list.add(roof);
+		roof.buildComponent(this, list, rand);
 	}
 
 	@Override
@@ -267,12 +261,12 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private boolean makeMainBridge(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	private boolean makeMainBridge(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingHeight, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 
-		ComponentTFMushroomTowerMainBridge bridge = new ComponentTFMushroomTowerMainBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFMushroomTowerMainBridge bridge = new ComponentTFMushroomTowerMainBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingHeight, direction);
 
 		list.add(bridge);
 		bridge.buildComponent(this, list, rand);
@@ -324,18 +318,11 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
-
-//		// clear inside
-//		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		makeTrunk(world, sbb);
 
 		// make floors
 		makeFloorsForTower(world, sbb);
-
-		// nullify sky light
-//		this.nullifySkyLightForBoundingBox(world);
 
 		// openings
 		makeOpenings(world, sbb);
@@ -346,9 +333,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	private void makeTrunk(ISeedReader world, MutableBoundingBox sbb) {
 		int diameter = this.size / 2;
 		int hollow = (int) (diameter * 0.8);
-
-		int cx = diameter;
-		int cz = diameter;
 
 		// build the trunk upwards
 		for (int dx = -diameter; dx <= diameter; dx++) {
@@ -361,23 +345,23 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 				// make a trunk!
 				if (dist <= diameter) {
 					// make floor/ceiling
-					setBlockState(world, deco.floorState, dx + cx, 0, dz + cz, sbb);
-					setBlockState(world, deco.floorState, dx + cx, height, dz + cz, sbb);
+					setBlockState(world, deco.floorState, dx + diameter, 0, dz + diameter, sbb);
+					setBlockState(world, deco.floorState, dx + diameter, height, dz + diameter, sbb);
 
 					// make walls
 					if (dist > hollow) {
 						for (int dy = 0; dy <= height; dy++) {
-							setBlockState(world, deco.blockState, dx + cx, dy, dz + cz, sbb);
+							setBlockState(world, deco.blockState, dx + diameter, dy, dz + diameter, sbb);
 						}
 					} else {
 						for (int dy = 1; dy <= height - 1; dy++) {
-							setBlockState(world, AIR, dx + cx, dy, dz + cz, sbb);
+							setBlockState(world, AIR, dx + diameter, dy, dz + diameter, sbb);
 						}
 					}
 
 					// make base
 					if (this.hasBase) {
-						this.replaceAirAndLiquidDownwards(world, deco.blockState, dx + cx, -1, dz + cz, sbb);
+						this.replaceAirAndLiquidDownwards(world, deco.blockState, dx + diameter, -1, dz + diameter, sbb);
 					}
 				}
 			}
@@ -387,25 +371,15 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	private void makeFloorsForTower(ISeedReader world, MutableBoundingBox sbb) {
 		int floors = this.height / FLOOR_HEIGHT;
 
-		int ladderDir = 3;
-		int downLadderDir = -1;
-
 		// divide the tower into floors
 		for (int i = 0; i < floors; i++) {
 			placeFloor(world, i * FLOOR_HEIGHT, sbb);
-
-			downLadderDir = ladderDir;
-			ladderDir++;
-			ladderDir %= 4;
 		}
 	}
 
 	private void placeFloor(ISeedReader world, int dy, MutableBoundingBox sbb) {
 		int diameter = this.size / 2;
 		int hollow = (int) (diameter * 0.8);
-
-		int cx = diameter;
-		int cz = diameter;
 
 		// build the trunk upwards
 		for (int dx = -diameter; dx <= diameter; dx++) {
@@ -417,7 +391,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 				// make a floor!
 				if (dist <= hollow) { {
-						setBlockState(world, this.isAscender ? Blocks.JUNGLE_PLANKS.getDefaultState() : deco.floorState, dx + cx, dy, dz + cz, sbb);
+						setBlockState(world, this.isAscender ? Blocks.JUNGLE_PLANKS.getDefaultState() : deco.floorState, dx + diameter, dy, dz + diameter, sbb);
 					}
 				}
 			}

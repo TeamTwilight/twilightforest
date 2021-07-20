@@ -6,10 +6,14 @@
   "sortnum": 6030,
   "pages": [
     {
-      "title": "Phantom Armor",
-      "type": "twilightforest:headed_spotlight2",
-      "item0": "twilightforest:phantom_helmet",
-      "item1": "twilightforest:phantom_chestplate",
+      "type": "entity",
+      "entity": "twilightforest:snow_guardian{ArmorItems:[{},{},{Count:1,id:\"twilightforest:phantom_chestplate\"},{Count:1,id:\"twilightforest:phantom_helmet\"}]}",
+      "rotate": false,
+      "default_rotation": -15,
+      "offset": 0.15,
+      "name": "Phantom Armor Set"
+    }, {
+      "type": "text",
       "text": "It's strange, but from simply looking at it, it's clear as twilight this is no ordinary helm. The material seems metallic in nature, but feels lukewarm to the touch and it's almost as if it resonates with its surroundings."
     }, {
       "type": "text",

@@ -109,12 +109,12 @@
   "entity.minoshroom.attack": { "subtitle": "subtitles.entity.minoshroom.attack", "sounds": [ "mob/irongolem/throw" ] },
   "entity.minoshroom.death": { "subtitle": "subtitles.entity.minoshroom.death", "sounds": [ "mob/cow/hurt1", "mob/cow/hurt2", "mob/cow/hurt3" ] },
   "entity.minoshroom.hurt": { "subtitle": "subtitles.entity.minoshroom.hurt", "sounds": [   "mob/cow/hurt1", "mob/cow/hurt2", "mob/cow/hurt3" ] },
-  "entity.minoshroom.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/spider/step1", "mob/spider/step2",  "mob/spider/step3", "mob/spider/step4" ] },
+  "entity.minoshroom.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/cow/step1", "mob/cow/step2",  "mob/cow/step3", "mob/cow/step4" ] },
   "entity.minotaur.ambient": { "subtitle": "subtitles.entity.minotaur.ambient", "sounds": [ "mob/cow/say1", "mob/cow/say2", "mob/cow/say3", "mob/cow/say4" ] },
   "entity.minotaur.attack": { "subtitle": "subtitles.entity.minotaur.attack", "sounds": [ "mob/irongolem/throw" ] },
   "entity.minotaur.death": { "subtitle": "subtitles.entity.minotaur.death", "sounds": [ "mob/cow/hurt1", "mob/cow/hurt2", "mob/cow/hurt3" ] },
   "entity.minotaur.hurt": { "subtitle": "subtitles.entity.minotaur.hurt", "sounds": [   "mob/cow/hurt1", "mob/cow/hurt2", "mob/cow/hurt3" ] },
-  "entity.minotaur.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/spider/step1", "mob/spider/step2",  "mob/spider/step3", "mob/spider/step4" ] },
+  "entity.minotaur.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/cow/step1", "mob/cow/step2",  "mob/cow/step3", "mob/cow/step4" ] },
   "entity.mistwolf.death": { "subtitle": "subtitles.entity.mistwolf.death", "sounds": [ "mob/wolf/death" ] },
   "entity.mistwolf.hurt": { "subtitle": "subtitles.entity.mistwolf.hurt", "sounds": [ "twilightforest:mob/mistwolf/hurt1", "twilightforest:mob/mistwolf/hurt2" ] },
   "entity.mistwolf.idle": { "subtitle": "subtitles.entity.mistwolf.idle", "sounds": [ "twilightforest:mob/mistwolf/idle1", "twilightforest:mob/mistwolf/idle2", "twilightforest:mob/mistwolf/idle3" ] },
@@ -239,6 +239,12 @@
   "item.charm.life": { "subtitle": "subtitles.item.charm.life", "sounds": ["item/totem/use_totem"] },  
 
   "random.slider": { "subtitle": "subtitles.random.slider", "sounds": [ "twilightforest:random/creakgo2" ] },
+
+  "casket.open": { "subtitle": "subtitles.block.casket.open", "sounds": [ "twilightforest:random/casket/open" ] },
+  "casket.close": { "subtitle": "subtitles.block.casket.close", "sounds": [ "twilightforest:random/casket/close" ] },
+  "casket.locked": { "subtitle": "subtitles.block.casket.locked", "sounds": [ "block/wooden_door/close", "block/wooden_door/open" ] },
+  "casket.repair": { "subtitle": "subtitles.block.casket.repair", "sounds": [ "twilightforest:random/casket/repair" ] },
+
   "music.bg": { "sounds": [
 	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },
 	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25 },

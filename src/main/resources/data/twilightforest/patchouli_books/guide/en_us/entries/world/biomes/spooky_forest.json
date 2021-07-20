@@ -1,0 +1,17 @@
+{
+  "name": "Spooky Forest",
+  "icon": "minecraft:cobweb",
+  "category": "biomes",
+  "advancement": "twilightforest:alt/biomes/spooky_forest",
+  "sortnum": 2200,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Spooky Forest",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

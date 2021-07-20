@@ -33,11 +33,6 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		}
 	}
 
-	//TODO: Unused. Remove?
-	protected ComponentTFIceTowerMain(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFIceTowerPieces.TFITMai, feature, i, x, y, z, pSize, pHeight, direction);
-	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);

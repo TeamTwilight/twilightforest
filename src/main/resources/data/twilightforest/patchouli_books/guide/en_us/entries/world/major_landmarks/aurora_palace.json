@@ -1,11 +1,15 @@
 {
   "name": "Aurora Palace",
-  "icon": "twilightforest:miniature_structure:12",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
   "category": "major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/ice_tower",
   "sortnum": 7110,
   "pages": [
     {
+      "type": "image",
+      "title": "Aurora Palace",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
       "text": "things and stuff"
     }

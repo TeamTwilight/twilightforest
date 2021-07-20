@@ -3,8 +3,17 @@
     "feature": {
       "config": {
         "feature": {
-          "config": {},
-          "type": "twilightforest:grove_ruins"
+          "config": {
+            "feature": {
+              "config": {},
+              "type": "twilightforest:grove_ruins"
+            },
+            "decorator": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
+          },
+          "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {

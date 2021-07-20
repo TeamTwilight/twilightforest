@@ -1,8 +1,8 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.block.TNTBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -68,7 +68,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 		if (this.redcap.getDistanceSq(Vector3d.copy(tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
-			Blocks.TNT.onPlayerDestroy(redcap.world, tntPos, Blocks.TNT.getDefaultState().with(TNTBlock.UNSTABLE, true));
+			Blocks.TNT.catchFire(Blocks.TNT.getDefaultState(), redcap.world, tntPos, Direction.UP, redcap);
 			redcap.swingArm(Hand.MAIN_HAND);
 			redcap.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
 			this.redcap.getNavigator().clearPath();

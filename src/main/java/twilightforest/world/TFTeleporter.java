@@ -41,6 +41,12 @@ public class TFTeleporter implements ITeleporter {
 	private static final Map<ResourceLocation, Map<ColumnPos, PortalPosition>> destinationCoordinateCache = new HashMap<>();
 	private static final Object2LongMap<ColumnPos> columnMap = new Object2LongOpenHashMap<>();
 
+	private static boolean locked;
+
+	public TFTeleporter(boolean locked) {
+		TFTeleporter.locked = locked;
+	}
+
 	@Nullable
 	@Override
 	public PortalInfo getPortalInfo(Entity entity, ServerWorld dest, Function<ServerWorld, PortalInfo> defaultPortalInfo) {
@@ -424,7 +430,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockState(pos.east().south().down(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.twilight_portal.get().getDefaultState().with(BlockTFPortal.DISALLOW_RETURN, !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get());
+		BlockState portal = TFBlocks.twilight_portal.get().getDefaultState().with(BlockTFPortal.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
 
 		world.setBlockState(pos, portal, 2);
 		world.setBlockState(pos.east(), portal, 2);

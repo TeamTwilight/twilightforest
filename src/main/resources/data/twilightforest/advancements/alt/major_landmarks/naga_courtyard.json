@@ -3,7 +3,7 @@
   "criteria": {
     "discover": {
       "trigger": "minecraft:location",
-      "conditions": { "feature": "twilightforest:naga_courtyard" }
+      "conditions": { "feature": "twilightforest:courtyard" }
     }
   }
 }

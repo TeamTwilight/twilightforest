@@ -16,15 +16,15 @@ public interface IThornsTransformer extends IAreaTransformer1, IDimOffset1Transf
 	@Override
 	default int apply(IExtendedNoiseRandom<?> noise, IArea area, int width, int depth) {
 		return this.apply(noise,
-				area.getValue(this.getOffsetX(width + 1), this.getOffsetZ(depth + 0)),
+				area.getValue(this.getOffsetX(width + 1), this.getOffsetZ(depth)),
 				area.getValue(this.getOffsetX(width + 2), this.getOffsetZ(depth + 1)),
 				area.getValue(this.getOffsetX(width + 1), this.getOffsetZ(depth + 2)),
-				area.getValue(this.getOffsetX(width + 0), this.getOffsetZ(depth + 1)),
+				area.getValue(this.getOffsetX(width), this.getOffsetZ(depth + 1)),
 				area.getValue(this.getOffsetX(width + 1), this.getOffsetZ(depth + 1)),
-				area.getValue(this.getOffsetX(width + 2), this.getOffsetZ(depth + 0)),
+				area.getValue(this.getOffsetX(width + 2), this.getOffsetZ(depth)),
 				area.getValue(this.getOffsetX(width + 2), this.getOffsetZ(depth + 2)),
-				area.getValue(this.getOffsetX(width + 0), this.getOffsetZ(depth + 2)),
-				area.getValue(this.getOffsetX(width + 0), this.getOffsetZ(depth + 0))
+				area.getValue(this.getOffsetX(width), this.getOffsetZ(depth + 2)),
+				area.getValue(this.getOffsetX(width), this.getOffsetZ(depth))
 		);
 	}
 }

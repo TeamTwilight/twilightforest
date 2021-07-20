@@ -1,6 +1,6 @@
 {
   "name": "Ghast Trap",
-  "icon": "twilightforest:tower_device:10",
+  "icon": "twilightforest:ghast_trap",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6250,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Ghast Trap",
-      "item": "twilightforest:tower_device:10",
+      "item": "twilightforest:ghast_trap",
       "text": "Namesake, it appears that this device's sole purpose is to trap Ghasts. It seems giving this thing a Redstone signal does nothing, perhaps it needs some sort of power source?"
     }, {
       "type": "text",

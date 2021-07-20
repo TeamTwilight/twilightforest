@@ -11,27 +11,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 import twilightforest.world.TFDimensions;
 
 @OnlyIn(Dist.CLIENT)
 public class LoadingScreenListener {
 
 	private final Minecraft client = Minecraft.getInstance();
-	private RegistryKey<World> lastDimension = World.OVERWORLD; //overworld
-
-	@SubscribeEvent
-	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		if (event.phase == TickEvent.Phase.END && event.player == client.player) {
-			lastDimension = event.player.getEntityWorld().getDimensionKey();
-		}
-	}
 
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof DownloadTerrainScreen && client.player != null) {
-			if (client.player.getEntityWorld().getDimensionKey() == TFDimensions.twilightForest || lastDimension == TFDimensions.twilightForest) {
+			RegistryKey<World> tfDimension = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
+			if (client.player.getEntityWorld().getBlockState(client.player.getPosition().down()) == TFBlocks.twilight_portal.get().getDefaultState() || client.player.getEntityWorld().getDimensionKey() == tfDimension) {
 				GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading();
-				guiLoading.setEntering(client.player.getEntityWorld().getDimensionKey() == TFDimensions.twilightForest);
+				guiLoading.setEntering(client.player.getEntityWorld().getDimensionKey() == World.OVERWORLD);
 				event.setGui(guiLoading);
 			}
 		}

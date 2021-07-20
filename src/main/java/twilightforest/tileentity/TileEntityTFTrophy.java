@@ -19,7 +19,7 @@ public class TileEntityTFTrophy extends TileEntity implements ITickableTileEntit
 	@Override
 	public void tick() {
 		BlockState blockstate = this.getBlockState();
-		if (blockstate.isIn(TFBlocks.ur_ghast_trophy.get()) || blockstate.isIn(TFBlocks.ur_ghast_wall_trophy.get())) {
+		if (blockstate.matchesBlock(TFBlocks.ur_ghast_trophy.get()) || blockstate.matchesBlock(TFBlocks.ur_ghast_wall_trophy.get())) {
 			this.animated = true;
 			++this.animatedTicks;
 		}

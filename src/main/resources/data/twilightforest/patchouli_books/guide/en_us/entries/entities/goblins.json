@@ -1,6 +1,6 @@
 {
   "name": "Goblins",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:blockchain_goblin\"}}",
+  "icon": "twilightforest:blockchain_goblin_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/goblins",
   "sortnum": 2100,
@@ -8,28 +8,43 @@
     {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/redcap",
-      "entity": "twilightforest:redcap",
-      "text": "things and stuff"
+      "entity": "twilightforest:redcap{HandItems:[{Count:1,id:iron_pickaxe},{}],ArmorItems:[{Count:1,id:iron_boots},{},{},{}]}"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/redcap",
+      "text": "Redcap Goblins are somewhat shy creatures, who wait until their prey's back is turned to strike. Don't be fooled by their giggles, there's nothing funny about their combustible natures."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/redcap_sapper",
-      "entity": "twilightforest:redcap_sapper",
-      "text": "things and stuff"
+      "entity": "twilightforest:redcap_sapper{HandItems:[{Count:1,id:\"twilightforest:ironwood_pickaxe\"},{}],ArmorItems:[{Count:1,id:\"twilightforest:ironwood_boots\"},{},{},{}]}"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/redcap_sapper",
+      "text": "These tough, hill-dwelling fellows certainly have explosive personalities! They are cousins of the Redcap Goblin, naturally aggressive, and don't give up their treasures without a fight."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/goblin_knight",
-      "entity": "twilightforest:goblin_knight_lower{Passengers:[{id:\"twilightforest:goblin_knight_upper\",hasArmor:1b,hasShield:1b}],hasArmor:1b}",
-      "text": "With Upper Goblin's world always sitting Lower Goblin's shoulders, he has never skipped leg day."
+      "entity": "twilightforest:goblin_knight_lower{Passengers:[{id:\"twilightforest:goblin_knight_upper\",hasArmor:1b,hasShield:1b}],hasArmor:1b}"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/goblin_knight",
+      "text": "It appears that with Upper Goblin's world always sitting upon Lower Goblin's shoulders, he has never skipped leg day. Joking aside though, these two will make trouble for any Labyrinth intruder."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/goblin_knight",
-      "entity": "twilightforest:goblin_knight_upper{hasArmor:1b}",
-      "text": "things and stuff"
+      "entity": "twilightforest:goblin_knight_upper{hasArmor:1b}"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/goblin_knight",
+      "text": "Upon closer inspection, this Knight appears to be not one, but two goblins stacked on top of each other. Perhaps, it's because these partners in crime are more vulnerable when apart..."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/blockchain_goblin",
-      "entity": "twilightforest:blockchain_goblin",
-      "text": "Block & Chain Goblin is ready to blow everyone away with his latest technical mastery of blockchain technologies."
+      "entity": "twilightforest:blockchain_goblin"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/blockchain_goblin",
+      "text": "This Goblin wields a primitive, but effective weapon made from a simple Block & Chain. One may want to stand back though, as this creature seemed determined that his skills should blow foes away."
     }
   ]
 }

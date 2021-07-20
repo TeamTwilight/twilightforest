@@ -15,6 +15,7 @@ import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+import twilightforest.structures.start.TFStructure;
 import twilightforest.util.IntPair;
 
 import java.util.List;
@@ -321,7 +322,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 
 		// inner boundary
 		int caveBoundary = (nearFeature.size * 2) * 8 - 8;
-		int hollowCeiling = TFGenerationSettings.SEALEVEL + 16;
+		int hollowCeiling;
 
 		int offset = Math.min(Math.abs(dx), Math.abs(dz));
 		hollowCeiling = (TFGenerationSettings.SEALEVEL + 40) - (offset * 4);
@@ -387,10 +388,14 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 	}
 
 	@Override
-	public List<MobSpawnInfo.Spawners> func_230353_a_(Biome p_230353_1_, StructureManager p_230353_2_, EntityClassification p_230353_3_, BlockPos p_230353_4_) {
-		List<MobSpawnInfo.Spawners> spawns = net.minecraftforge.common.world.StructureSpawnManager.getStructureSpawns(p_230353_2_, p_230353_3_, p_230353_4_);
-		if (spawns != null) return spawns;
-		return p_230353_3_ == EntityClassification.MONSTER && p_230353_4_.getY() >= TFGenerationSettings.SEALEVEL ? ImmutableList.of() : super.func_230353_a_(p_230353_1_, p_230353_2_, p_230353_3_, p_230353_4_);
+	public List<MobSpawnInfo.Spawners> func_230353_a_(Biome biome, StructureManager structureManager, EntityClassification classification, BlockPos pos) {
+		List<MobSpawnInfo.Spawners> potentialStructureSpawns = TFStructure.gatherPotentialSpawns(structureManager, classification, pos);
+		if (potentialStructureSpawns != null)
+			return potentialStructureSpawns;
+		List<MobSpawnInfo.Spawners> spawns = net.minecraftforge.common.world.StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);
+		if (spawns != null)
+			return spawns;
+		return classification == EntityClassification.MONSTER && pos.getY() >= TFGenerationSettings.SEALEVEL ? ImmutableList.of() : super.func_230353_a_(biome, structureManager, classification, pos);
 	}
 
 }

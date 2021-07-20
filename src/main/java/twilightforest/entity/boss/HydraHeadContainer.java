@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
@@ -111,7 +110,7 @@ public class HydraHeadContainer {
 
 	private State prevState;
 	private State currentState;
-	private State nextState = NEXT_AUTOMATIC;
+	private State nextState;
 
 	public boolean isSecondaryAttacking;
 
@@ -649,7 +648,6 @@ public class HydraHeadContainer {
 
 	private void executeAttacks() {
 		if (this.currentState == State.MORTAR_SHOOTING && this.ticksProgress % 10 == 0) {
-			Entity lookTarget = getHeadLookTarget();
 
 			/*if (lookTarget instanceof EntityTFHydraPart || lookTarget instanceof MultiPartEntityPart) {
 				// stop hurting yourself!
@@ -683,10 +681,7 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != headEntity.getParent() && (!(target instanceof EntityTFHydraPart) || ((EntityTFHydraPart) target).getParent() != headEntity.getParent())) {
-				/*if (target instanceof EntityTFHydraPart || target instanceof MultiPartEntityPart) {
-					// stop hurting yourself!
-					this.endCurrentAction();
-				} else */if (!target.isImmuneToFire() && target.attackEntityFrom(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
+				if (!target.isImmuneToFire() && target.attackEntityFrom(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
 					target.setFire(FLAME_BURN_FACTOR);
 				}
 			}
@@ -822,7 +817,7 @@ public class HydraHeadContainer {
 
 		}
 
-		float factor = 0F;
+		float factor;
 
 		factor = 0.00F;
 		necka.setPosition(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
@@ -904,11 +899,6 @@ public class HydraHeadContainer {
 		return MathHelper.wrapDegrees(current + delta);
 	}
 
-	@Nullable
-	public Entity getTargetEntity() {
-		return targetEntity;
-	}
-
 	public void setTargetEntity(@Nullable Entity targetEntity) {
 		this.targetEntity = targetEntity;
 	}
@@ -929,14 +919,6 @@ public class HydraHeadContainer {
 	 */
 	public boolean shouldRenderHead() {
 		return this.headEntity.getState() != State.DEAD && this.headEntity.deathTime < 20;
-	}
-
-	/**
-	 * Same with the neck parts
-	 */
-	public boolean shouldRenderNeck(int neckNum) {
-		int time = 30 + 10 * neckNum;
-		return this.headEntity.getState() != State.DEAD && this.headEntity.deathTime < time;
 	}
 
 	/**

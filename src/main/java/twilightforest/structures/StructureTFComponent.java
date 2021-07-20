@@ -56,6 +56,8 @@ public abstract class StructureTFComponent extends StructurePiece {
 			.add(Blocks.CHEST)
 			.add(Blocks.TRAPPED_CHEST)
 			.add(Blocks.STONE_BRICK_STAIRS)
+			.add(Blocks.LAVA)
+			.add(Blocks.WATER)
 			.add(TFBlocks.castle_stairs_brick.get())
 			.add(TFBlocks.force_field_blue.get())
 			.add(TFBlocks.force_field_green.get())
@@ -132,7 +134,7 @@ public abstract class StructureTFComponent extends StructurePiece {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void setBlockState(ISeedReader worldIn, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox boundingboxIn) {
 	      BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
@@ -168,7 +170,7 @@ public abstract class StructureTFComponent extends StructurePiece {
 			sheep.setLocationAndAngles(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
 			sheep.setInvulnerable(true);
 			sheep.setInvisible(true);
-			sheep.getAlwaysRenderNameTagForRender();
+			sheep.setCustomNameVisible(true);
 			sheep.setSilent(true);
 			sheep.setNoGravity(true);
 			world.addEntity(sheep);

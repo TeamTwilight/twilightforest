@@ -240,7 +240,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 
 			y = 25 - i;
 			int x = 37 - i;
-			final BlockState stairState = getStairState(deco.stairState, Direction.WEST, rotation, false);
+			final BlockState stairState = getStairState(deco.stairState, Direction.WEST, false);
 			this.fillWithBlocks(world, sbb, x, y, 14, x, y, 22, stairState, stairState, false);
 			this.fillWithBlocks(world, sbb, x, y - 1, 14, x, y - 1, 22, deco.blockState, deco.blockState, false);
 			this.fillWithBlocks(world, sbb, x, y, 26, x, y, 34, stairState, stairState, false);
@@ -312,12 +312,12 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 			int z = 40 + y;
 			this.fillBlocksRotated(world, sbb, 1, 1, z, 4, y, z, deco.blockState, rotation);
 
-			this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, getStairState(deco.stairState, Direction.NORTH, rotation, false), rotation);
+			this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, getStairState(deco.stairState, Direction.NORTH, false), rotation);
 		}
 	}
 
 	private void makeLargeTowerStairs(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
-		final BlockState stairState = getStairState(deco.stairState, Direction.NORTH, rotation, false);
+		final BlockState stairState = getStairState(deco.stairState, Direction.NORTH, false);
 		for (int y = 1; y < 4; y++) {
 			int z = 38 + y;
 			this.fillBlocksRotated(world, sbb, 2, 1, z, 6, y, z, deco.blockState, rotation);
@@ -326,23 +326,23 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 	}
 
 	private void makeMezzTopStairs(ISeedReader world, MutableBoundingBox sbb, int y, int z, Direction stairMeta) {
-		final BlockState stairState = getStairState(deco.stairState, stairMeta, rotation, false);
+		final BlockState stairState = getStairState(deco.stairState, stairMeta, false);
 		this.fillWithBlocks(world, sbb, 38, y, z, 46, y, z, stairState, stairState, false);
 		this.fillWithBlocks(world, sbb, 38, y - 1, z, 46, y - 1, z, deco.blockState, deco.blockState, false);
 		this.fillWithAir(world, sbb, 38, y + 1, z, 46, y + 3, z);
 	}
 
 	private void makeHalfPillarBase(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int z, boolean isFlipped) {
-		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, getStairState(deco.stairState, Direction.EAST, rotation, isFlipped), rotation);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, isFlipped), 1, y, z - 1, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, rotation, isFlipped), 1, y, z + 3, rotation, sbb);
+		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, getStairState(deco.stairState, Direction.EAST, isFlipped), rotation);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, isFlipped), 1, y, z - 1, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, isFlipped), 1, y, z + 3, rotation, sbb);
 	}
 
 	private void makePillarBase(ISeedReader world, MutableBoundingBox sbb, int x, int z, int y, boolean isFlipped) {
-		this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, getStairState(deco.stairState, Direction.SOUTH, rotation, isFlipped), AIR, false);
-		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, getStairState(deco.stairState, Direction.NORTH, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x, y, z + 3, x + 3, y, z + 3, getStairState(deco.stairState, Direction.SOUTH, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, getStairState(deco.stairState, Direction.NORTH, isFlipped), AIR, false);
 
-		this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, getStairState(deco.stairState, Direction.EAST, rotation, isFlipped), AIR, false);
-		this.fillWithBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, getStairState(deco.stairState, Direction.WEST, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, getStairState(deco.stairState, Direction.EAST, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x - 1, y, z, x - 1, y, z + 3, getStairState(deco.stairState, Direction.WEST, isFlipped), AIR, false);
 	}
 }

@@ -8,15 +8,96 @@
               "config": {
                 "features": [
                   {
-                    "feature": "twilightforest:mushroom/base/brown_canopy_mushroom",
+                    "feature": {
+                      "config": {
+                        "feature": "twilightforest:mushroom/base/brown_canopy_mushroom",
+                        "decorator": {
+                          "config": {
+                            "outer": {
+                              "config": {},
+                              "type": "minecraft:square"
+                            },
+                            "inner": {
+                              "config": {
+                                "outer": {
+                                  "config": {},
+                                  "type": "minecraft:heightmap"
+                                },
+                                "inner": {
+                                  "config": {},
+                                  "type": "twilightforest:nostructure"
+                                }
+                              },
+                              "type": "minecraft:decorated"
+                            }
+                          },
+                          "type": "minecraft:decorated"
+                        }
+                      },
+                      "type": "minecraft:decorated"
+                    },
                     "chance": 0.15
                   },
                   {
-                    "feature": "twilightforest:mushroom/base/red_canopy_mushroom",
+                    "feature": {
+                      "config": {
+                        "feature": "twilightforest:mushroom/base/red_canopy_mushroom",
+                        "decorator": {
+                          "config": {
+                            "outer": {
+                              "config": {},
+                              "type": "minecraft:square"
+                            },
+                            "inner": {
+                              "config": {
+                                "outer": {
+                                  "config": {},
+                                  "type": "minecraft:heightmap"
+                                },
+                                "inner": {
+                                  "config": {},
+                                  "type": "twilightforest:nostructure"
+                                }
+                              },
+                              "type": "minecraft:decorated"
+                            }
+                          },
+                          "type": "minecraft:decorated"
+                        }
+                      },
+                      "type": "minecraft:decorated"
+                    },
                     "chance": 0.05
                   }
                 ],
-                "default": "twilightforest:tree/base/canopy_tree"
+                "default": {
+                  "config": {
+                    "feature": "twilightforest:tree/base/canopy_tree",
+                    "decorator": {
+                      "config": {
+                        "outer": {
+                          "config": {},
+                          "type": "minecraft:square"
+                        },
+                        "inner": {
+                          "config": {
+                            "outer": {
+                              "config": {},
+                              "type": "minecraft:heightmap"
+                            },
+                            "inner": {
+                              "config": {},
+                              "type": "twilightforest:nostructure"
+                            }
+                          },
+                          "type": "minecraft:decorated"
+                        }
+                      },
+                      "type": "minecraft:decorated"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                }
               },
               "type": "minecraft:random_selector"
             },

@@ -64,6 +64,14 @@ charms.json
 uncrafting_table.json
 kobold.json
 druid_hut.json
+fallen_logs.json
+foundation.json
+grove_ruins.json
+hollow_stump.json
+monolith.json
+stalagmite.json
+stone_circle.json
+well.json
 undead.json
 wolves.json
 arthopods.json
@@ -72,6 +80,7 @@ moon_dial.json
 
 2200
 enchanted_forest.json
+spooky_forest.json
 
 2310
 crumble_horn.json
@@ -173,9 +182,6 @@ yeti.json
 7030
 alpha_yeti.json
 
-7100
-glacier.json
-
 7110
 aurora_palace.json
 
@@ -190,9 +196,12 @@ snow_queen.json
 
 
 8000
-troll_caves.json
+highlands.json
 
 8010
+troll_caves.json
+
+8020
 giant_blocks.json
 magic_beans.json
 troll.json

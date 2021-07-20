@@ -32,7 +32,7 @@ public class ModelTFHydraHeadTrophy extends ModelTFGenericHead {
 
 		this.mouth = new ModelRenderer(this, 0, 0);
 		this.mouth.setRotationPoint(0.0F, 10.0F, -14.0F);
-		this.mouth.setTextureOffset(240, 162).addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F, 0.0F, 0.0F, 0.0F);
+		this.mouth.setTextureOffset(240, 162).addBox(-15.0F, -2.0F, -24.0F, 30.0F, 8.0F, 24.0F, 0.0F, 0.0F, 0.0F);
 
 		head.addChild(mouth);
 	}

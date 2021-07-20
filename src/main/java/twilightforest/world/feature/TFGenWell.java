@@ -35,7 +35,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 	 * make a cute little well
 	 */
 	public boolean generate3x3Well(ISeedReader world, Random rand, BlockPos pos) {
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 3, 4, 3)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 3, 4, 3)) {
 			return false;
 		}
 
@@ -108,7 +108,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 	}
 
 	private boolean generate4x4Well(IWorld world, Random rand, BlockPos pos) {
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 4, 4, 4)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 4, 4, 4)) {
 			return false;
 		}
 

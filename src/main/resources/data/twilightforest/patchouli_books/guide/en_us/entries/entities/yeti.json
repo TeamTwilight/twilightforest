@@ -1,15 +1,16 @@
 {
   "name": "Yeti",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:yeti\"}}",
+  "icon": "twilightforest:yeti_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/yeti",
   "sortnum": 7020,
   "pages": [
     {
       "type": "entity",
-      "advancement": "twilightforest:alt/entities/yeti",
-      "entity": "twilightforest:yeti",
-      "text": "things and stuff"
+      "entity": "twilightforest:yeti"
+    }, {
+      "type": "text",
+      "text": "Yetis are large, furry creatures that live in the Snowy Forest. They are semi-passive, and will only attack what comes close to them; they do this by picking it up and throwing it in a random direction. However, if attacked, they will pursue their foe with aggression."
     }
   ]
 }

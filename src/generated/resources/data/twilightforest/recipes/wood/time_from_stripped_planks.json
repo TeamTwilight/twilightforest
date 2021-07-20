@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:stripped_time_log"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:time_planks",
+    "count": 4
+  }
+}

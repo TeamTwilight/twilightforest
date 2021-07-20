@@ -4,11 +4,6 @@
     "particle": "block/soul_sand"
   },
   "display": {
-    "gui": {
-      "rotation": [ 30, 45, 0 ],
-      "translation": [ 0, 12, 0 ],
-      "scale": [ 1, 1, 1 ]
-    },
     "head": {
       "rotation": [ 180, 0, 180 ],
       "translation": [ 0, 24, 0 ],

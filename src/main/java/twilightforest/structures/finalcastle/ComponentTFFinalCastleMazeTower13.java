@@ -1,6 +1,5 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -66,7 +65,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			entranceFloor = floors - 1;
 		}
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
 
 		// we should have a door where we started
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
@@ -85,7 +84,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		this.color = color;
 		this.size = 13;
 		this.height = floors * 8 + 1;
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
@@ -546,9 +545,9 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			int sy = y - i;
 			int sz = 9;
 
-			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz, rotation, sbb);
+			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, false), sx, sy, sz, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz - 1, rotation, sbb);
+			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, false), sx, sy, sz - 1, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz - 1, rotation, sbb);
 			this.fillAirRotated(world, sbb, sx, sy + 1, sz - 1, sx, sy + 3, sz, rotation);
 		}
@@ -561,9 +560,9 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			int sy = y - i - 4;
 			int sz = 7 - i;
 
-			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, false), sx, sy, sz, rotation, sbb);
+			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, false), sx, sy, sz, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, false), sx - 1, sy, sz, rotation, sbb);
+			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, false), sx - 1, sy, sz, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx - 1, sy - 1, sz, rotation, sbb);
 			this.fillAirRotated(world, sbb, sx, sy + 1, sz, sx - 1, sy + 3, sz, rotation);
 		}

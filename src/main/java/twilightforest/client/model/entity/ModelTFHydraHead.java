@@ -39,13 +39,6 @@ public class ModelTFHydraHead extends SegmentedModel<EntityTFHydraHead> {
 		head.addChild(mouth);
 	}
 
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		head.render(scale);
-//	}
-
 	@Override
 	public Iterable<ModelRenderer> getParts() {
 		return ImmutableList.of(head);

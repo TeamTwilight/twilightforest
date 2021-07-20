@@ -31,12 +31,12 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 
 	private int durationLeft;
 
-	public EntityAITFBreathAttack(T living, float speed, float range, int time, float chance) {
+	public EntityAITFBreathAttack(T living, float range, int time, float chance) {
 		this.entityHost = living;
 		this.breathRange = range;
 		this.maxDuration = time;
 		this.attackChance = chance;
-		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP)); //TODO: I'm very uncertain about this
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
 	}
 
 	@Override

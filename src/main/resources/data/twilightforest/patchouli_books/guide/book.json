@@ -4,6 +4,7 @@
     "twilightforest"
   ],
   "creative_tab": "twilightforest",
+  "landing_text": "The official Twilight Forest guide book. Keep in mind this book is still a WIP, so many entries are unfinished or missing.",
   "model": "twilightforest:logbook",
   "book_texture": "patchouli:textures/gui/book_green.png",
   "filler_texture": "twilightforest:textures/gui/page_filler.png",

@@ -1,6 +1,6 @@
 {
   "name": "Ice Cores",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:stable_ice_core\"}}",
+  "icon": "twilightforest:stable_ice_core_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/ice_cores",
   "sortnum": 7120,
@@ -8,13 +8,19 @@
     {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/stable_ice_core",
-      "entity": "twilightforest:stable_ice_core",
-      "text": "things and stuff"
+      "entity": "twilightforest:stable_ice_core"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/stable_ice_core",
+      "text": "Stable Ice Cores are large, snowflake-like creatures that will attack Aurora Palace intruders without mercy. For someone on stable ground, their snowballs are little to fear, but in a horde, their merciless flurry can quickly prove life-threatening."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/unstable_ice_core",
-      "entity": "twilightforest:unstable_ice_core",
-      "text": "things and stuff"
+      "entity": "twilightforest:unstable_ice_core"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/unstable_ice_core",
+      "text": "Unstable Ice Cores, like their stable brethren, will attack Aurora Castle intruders upon sight. However, these Ice Cores have an explosive trick up their sleeves, so perhaps one should stand well back..."
     }
   ]
 }

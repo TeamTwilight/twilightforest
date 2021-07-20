@@ -83,6 +83,11 @@ public class EntityTFProtectionBox extends Entity {
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	public IPacket<?> createSpawnPacket() {
 		throw new IllegalStateException("should never be spawned on server");
 	}

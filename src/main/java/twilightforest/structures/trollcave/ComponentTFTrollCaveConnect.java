@@ -16,7 +16,6 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.MushroomUtil;
 import twilightforest.util.RotationUtil;
 
@@ -89,12 +88,12 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, manager, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 8; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, manager, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
 		}
 
 		// possible treasure
@@ -117,9 +116,9 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		Rotation rotation = RotationUtil.ROTATIONS[rand.nextInt(4)];
 
 		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid - 1, mid - 1, height, mid - 1, Blocks.OBSIDIAN.getDefaultState(), rotation);
-		this.fillBlocksRotated(world, sbb, mid + 0, 0, mid - 1, mid + 0, height - 2, mid - 1, Blocks.OBSIDIAN.getDefaultState(), rotation);
-		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid + 0, mid - 1, height - 2, mid + 0, Blocks.OBSIDIAN.getDefaultState(), rotation);
-		this.fillBlocksRotated(world, sbb, mid + 0, 0, mid + 0, mid + 0, height - 4, mid + 0, Blocks.OBSIDIAN.getDefaultState(), rotation);
+		this.fillBlocksRotated(world, sbb, mid, 0, mid - 1, mid, height - 2, mid - 1, Blocks.OBSIDIAN.getDefaultState(), rotation);
+		this.fillBlocksRotated(world, sbb, mid - 1, 0, mid, mid - 1, height - 2, mid, Blocks.OBSIDIAN.getDefaultState(), rotation);
+		this.fillBlocksRotated(world, sbb, mid, 0, mid, mid, height - 4, mid, Blocks.OBSIDIAN.getDefaultState(), rotation);
 	}
 
 	private int countExits() {

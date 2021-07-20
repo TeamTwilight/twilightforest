@@ -77,7 +77,7 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 		this.manualTreaurePlacement(world, 6, 4, 13, Direction.EAST, TFTreasure.stronghold_room, false, sbb);
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}
@@ -86,7 +86,7 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 	 * Make a doorway
 	 */
 	@Override
-	protected void placeDoorwayAt(ISeedReader world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeDoorwayAt(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb) {
 		if (x == 0 || x == getXSize()) {
 			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		} else {

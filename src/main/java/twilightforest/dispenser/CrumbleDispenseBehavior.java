@@ -48,7 +48,6 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
                         stack.setCount(0);
                     }
                     fired = true;
-                    crumbled = false;
                 }
 
                 for (Predicate<BlockState> predicate : harvestedStates) {
@@ -63,7 +62,6 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
                         stack.setCount(0);
                     }
                     fired = true;
-                    harvested = false;
                 }
                 return stack;
             }
@@ -109,6 +107,9 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
         addHarvest(() -> Blocks.SAND);
         addHarvest(() -> Blocks.RED_SAND);
         addHarvest(() -> Blocks.CLAY);
+        addHarvest(() -> Blocks.ANDESITE);
+        addHarvest(() -> Blocks.GRANITE);
+        addHarvest(() -> Blocks.DIORITE);
     }
 
     private void addCrumble(Supplier<Block> block, Supplier<BlockState> result) {

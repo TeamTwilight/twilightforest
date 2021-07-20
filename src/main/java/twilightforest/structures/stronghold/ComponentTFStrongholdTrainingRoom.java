@@ -74,7 +74,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.setBlockState(world, Blocks.ANVIL.getDefaultState(), 6, 1, 11, sbb);
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}

@@ -14,7 +14,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFSlimeBeetle;
 import twilightforest.entity.EntityTFSlimeBeetle;
 
-//inner model boolean was cut out - not needed in new model
 public class RenderTFSlimeBeetle extends MobRenderer<EntityTFSlimeBeetle, ModelTFSlimeBeetle> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("slimebeetle.png");
@@ -25,12 +24,18 @@ public class RenderTFSlimeBeetle extends MobRenderer<EntityTFSlimeBeetle, ModelT
 	}
 
 	@Override
+	public void render(EntityTFSlimeBeetle entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+		if(this.entityModel.isSitting) matrixStackIn.translate(0, -0.5F, 0);
+		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+	}
+
+	@Override
 	public ResourceLocation getEntityTexture(EntityTFSlimeBeetle entity) {
 		return textureLoc;
 	}
 
 	static class LayerInner extends LayerRenderer<EntityTFSlimeBeetle, ModelTFSlimeBeetle> {
-		private final ModelTFSlimeBeetle innerModel = new ModelTFSlimeBeetle();//true);
+		private final ModelTFSlimeBeetle innerModel = new ModelTFSlimeBeetle(true);
 
 		public LayerInner(IEntityRenderer<EntityTFSlimeBeetle, ModelTFSlimeBeetle> renderer) {
 			super(renderer);

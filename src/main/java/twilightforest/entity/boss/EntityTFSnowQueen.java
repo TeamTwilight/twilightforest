@@ -26,7 +26,6 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
@@ -35,7 +34,6 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
@@ -80,7 +78,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(1, new EntityAITFHoverSummon(this, 1.0D));
+		this.goalSelector.addGoal(1, new EntityAITFHoverSummon(this));
 		this.goalSelector.addGoal(2, new EntityAITFHoverThenDrop(this, 80, 20));
 		this.goalSelector.addGoal(3, new EntityAITFHoverBeam(this, 80, 100));
 		this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
@@ -197,12 +195,11 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 				Vector3d blockPos = this.getIceShieldPosition(i);
 
 				this.iceArray[i].setPosition(blockPos.x, blockPos.y, blockPos.z);
-				this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 			} else {
 				// last block beneath
 				this.iceArray[i].setPosition(this.getPosX(), this.getPosY() - 1, this.getPosZ());
-				this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 			}
+			this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 
 			// collide things with the block
 			if (!world.isRemote) {
@@ -230,7 +227,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (getHomePosition() != BlockPos.ZERO) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_snow_queen.get().getDefaultState());
 			}
 			remove();
 		} else {
@@ -443,7 +440,12 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
+	public boolean canChangeDimension() {
 		return false;
 	}
 

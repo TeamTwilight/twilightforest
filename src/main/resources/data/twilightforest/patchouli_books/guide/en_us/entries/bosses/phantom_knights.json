@@ -1,13 +1,13 @@
 {
   "name": "Knight Phantoms",
-  "icon": "twilightforest:trophy:4",
+  "icon": "twilightforest:knight_phantom_trophy",
   "category": "bosses",
   "advancement": "twilightforest:alt/entities/knight_phantom",
   "sortnum": 6020,
   "pages": [
     {
       "type": "entity",
-      "entity": "twilightforest:knight_phantom{ArmorItems:[{},{},{id:\"twilightforest:phantom_chestplate\",Count:1},{id:\"twilightforest:phantom_helmet\",Count:1}],HandItems:[{id:\"twilightforest:knightmetal_sword\",Count:1},{id:\"twilightforest:knightmetal_axe\",Count:1}]}",
+      "entity": "twilightforest:knight_phantom{HandItems:[{Count:1,id:\"twilightforest:knightmetal_sword\"},{}],ArmorItems:[{},{},{Count:1,id:\"twilightforest:phantom_chestplate\"},{Count:1,id:\"twilightforest:phantom_helmet\"}]}",
       "text": "A very bad knightmare"
     }
   ]

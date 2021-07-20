@@ -15,7 +15,7 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 
 	private final int maxSeekTime;
 
-	public EntityAITFHoverSummon(EntityTFSnowQueen snowQueen, double speed) {
+	public EntityAITFHoverSummon(EntityTFSnowQueen snowQueen) {
 		super(snowQueen, 6F, 6F);
 
 		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

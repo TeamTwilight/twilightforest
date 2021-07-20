@@ -1,18 +1,14 @@
 package twilightforest.worldgen;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.*;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
-import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacerType;
-import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
+import net.minecraft.world.gen.placement.ConfiguredPlacement;
+import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
@@ -22,11 +18,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFFirefly;
-import twilightforest.block.TFBlocks;
 import twilightforest.worldgen.treeplacers.*;
-import twilightforest.world.feature.TFBiomeFeatures;
-import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +38,11 @@ public final class TwilightFeatures {
     public static final TreeDecoratorType<TrunkSideDecorator> TRUNKSIDE_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("trunkside_decorator"), TrunkSideDecorator.CODEC);
     public static final TreeDecoratorType<TreeRootsDecorator> TREE_ROOTS = registerTreeFeature(TwilightForestMod.prefix("tree_roots"), TreeRootsDecorator.CODEC);
     public static final TreeDecoratorType<DangleFromTreeDecorator> DANGLING_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("dangle_from_tree_decorator"), DangleFromTreeDecorator.CODEC);
+
+    public static final Placement<NoPlacementConfig> PLACEMENT_NOTFSTRUCTURE = new OutOfStructurePlacement(NoPlacementConfig.CODEC);
+
+    public static final ConfiguredPlacement<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE = PLACEMENT_NOTFSTRUCTURE.configure(NoPlacementConfig.INSTANCE);
+    public static final ConfiguredPlacement<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE_WITHHEIGHTMAP = CONFIGURED_PLACEMENT_NOTFSTRUCTURE.withPlacement(Placement.HEIGHTMAP.configure(NoPlacementConfig.INSTANCE));
 
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
@@ -80,5 +77,10 @@ public final class TwilightFeatures {
     @SubscribeEvent
     public static void registerTreeDecorators(RegistryEvent.Register<TreeDecoratorType<?>> evt) {
         evt.getRegistry().registerAll(TREE_DECORATOR_TYPES.toArray(new TreeDecoratorType<?>[0]));
+    }
+
+    @SubscribeEvent
+    public static void registerPlacementConfigs(RegistryEvent.Register<Placement<?>> evt) {
+        evt.getRegistry().register(PLACEMENT_NOTFSTRUCTURE.setRegistryName(TwilightForestMod.prefix("nostructure")));
     }
 }

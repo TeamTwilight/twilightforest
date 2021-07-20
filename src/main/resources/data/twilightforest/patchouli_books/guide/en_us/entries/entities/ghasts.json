@@ -1,6 +1,6 @@
 {
   "name": "Ghasts",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:mini_ghast\"}}",
+  "icon": "twilightforest:mini_ghast_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/ghasts",
   "sortnum": 6110,
@@ -8,13 +8,19 @@
     {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/mini_ghast",
-      "entity": "twilightforest:mini_ghast",
-      "text": "things and stuff"
+      "entity": "twilightforest:mini_ghast"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/mini_ghast",
+      "text": "The Carminite Ghastling is smaller than an average Ghast, but by no means does this make it weaker or less formiddable. In fact, its smaller size enables it to creep up on unsuspecting prey far easier than its larger counterparts."
     }, {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/tower_ghast",
-      "entity": "twilightforest:tower_ghast",
-      "text": "things and stuff"
+      "entity": "twilightforest:tower_ghast"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/tower_ghast",
+      "text": "Carminite Ghastguards are found exclusively in the skies surrounding the menacing Dark Towers, located in the Dark Forest. They differ little from their cousins in the Nether, but their skin is ribbed and veined with a mysterious redness. One may wonder what substance runs beneath..."
     }
   ]
 }

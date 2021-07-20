@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:stripped_mining_log"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:mine_planks",
+    "count": 4
+  }
+}

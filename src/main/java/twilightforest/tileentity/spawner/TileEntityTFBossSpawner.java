@@ -62,16 +62,6 @@ public abstract class TileEntityTFBossSpawner<T extends MobEntity> extends TileE
 		return world.addEntity(myCreature);
 	}
 
-	/**
-	 * Get a temporary copy of the creature we're going to summon for display purposes
-	 */
-	public Entity getDisplayEntity() {
-		if (this.displayCreature == null) {
-			this.displayCreature = makeMyCreature();
-		}
-		return this.displayCreature;
-	}
-
 	protected void initializeCreature(T myCreature) {
 		myCreature.setHomePosAndDistance(pos, 46);
 	}

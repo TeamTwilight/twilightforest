@@ -1,6 +1,6 @@
 {
   "name": "Giants",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:giant_miner\"}}",
+  "icon": "twilightforest:giant_miner_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/giants",
   "sortnum": 8110,
@@ -8,13 +8,20 @@
     {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/giant_miner",
-      "entity": "twilightforest:giant_miner{HandItems:[{id:\"stone_pickaxe\",Count:1}]}",
-      "text": "things and stuff"
+      "entity": "twilightforest:giant_miner{HandItems:[{Count:1,id:stone_pickaxe},{}]}"
     }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/giant_miner",
+      "text": "The Giant Miner is found in the Cloud Cottage, alongside the Armored Giant. It is a massive, humanoid being that wields an equally huge pickaxe. Such a unique item must be meant for an almighty purpose..."
+    },
+    {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/armored_giant",
-      "entity": "twilightforest:armored_giant{ArmorItems:[{id:\"iron_boots\",Count:1},{id:\"iron_leggings\",Count:1},{id:\"iron_chestplate\",Count:1},{id:\"iron_helmet\",Count:1}],HandItems:[{id:\"stone_sword\",Count:1}]}",
-      "text": "things and stuff"
+      "entity": "twilightforest:armored_giant{HandItems:[{Count:1,id:stone_sword},{}],ArmorItems:[{Count:1,id:iron_boots},{Count:1,id:iron_leggings},{Count:1,id:iron_chestplate},{Count:1,id:iron_helmet}]}"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/armored_giant",
+      "text": "The Armored Giant is found with its relative, the Giant Miner, in the Cloud Cottage. However, its armor makes it much tougher than them. Like the Giant Miner, it shapeshifts to mirror the body of the being that encounters it. Perhaps they does this, because their true forms are too hideous to reveal."
     }
   ]
 }

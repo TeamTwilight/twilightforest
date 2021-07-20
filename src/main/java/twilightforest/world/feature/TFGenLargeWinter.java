@@ -67,7 +67,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 			int radius = leafRadius(treeHeight, dy, leafType);
 
-			FeatureUtil.makeLeafCircle2(world, pos.up(offGround + treeHeight - dy), radius, config.leavesProvider.getBlockState(random, pos.up(offGround + treeHeight - dy)), leaves, false);
+			FeatureUtil.makeLeafCircle2(world, pos.up(offGround + treeHeight - dy), radius, config.leavesProvider.getBlockState(random, pos.up(offGround + treeHeight - dy)), leaves);
 			this.makePineBranches(world, random, pos.up(offGround + treeHeight - dy), trunk, radius, mbb, config);
 		}
 	}

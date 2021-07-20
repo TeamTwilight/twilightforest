@@ -10,28 +10,28 @@
       "text": "PLACEHOLDER General information about charms"
     }, {
       "flag": "!mod:baubles",
-      "type": "twilightforest:gallery",
+      "type": "spotlight",
       "title": "Charms",
-      "item_list": "twilightforest:charm_of_keeping_1|twilightforest:charm_of_keeping_2|twilightforest:charm_of_keeping_3",
+      "item": "twilightforest:charm_of_keeping_1,twilightforest:charm_of_keeping_2,twilightforest:charm_of_keeping_3",
       "text": "PLACEHOLDER Charms of Keeping keep various things even after death. THIS VERSION SHOWS UP WHEN BAUBLES DOESN'T EXIST"
     }, {
       "flag": "mod:baubles",
-      "type": "twilightforest:gallery",
+      "type": "spotlight",
       "title": "Charms",
-      "item_list": "twilightforest:charm_of_keeping_1|twilightforest:charm_of_keeping_2|twilightforest:charm_of_keeping_3",
+      "item": "twilightforest:charm_of_keeping_1,twilightforest:charm_of_keeping_2,twilightforest:charm_of_keeping_3",
       "text": "PLACEHOLDER Charms of Keeping keep various things even after death. THIS VERSION SHOWS UP WHEN BAUBLES EXISTS"
     }, {
       "flag": "!mod:baubles",
-      "type": "twilightforest:gallery",
+      "type": "spotlight",
       "title": "Charms",
-      "item_list": "twilightforest:charm_of_life_1|twilightforest:charm_of_life_2",
-      "text": "Aside from it looking like a non-distinct trinket, it has a curious inscription etched into the back: \" \'Til death won't do us part.\""
+      "item": "twilightforest:charm_of_life_1,twilightforest:charm_of_life_2",
+      "text": "Aside from it looking like a non-distinct trinket, it has a curious inscription etched into the back: \" 'Til death won't do us part.\""
     }, {
       "flag": "mod:baubles",
-      "type": "twilightforest:gallery",
+      "type": "spotlight",
       "title": "Charms",
-      "item_list": "twilightforest:charm_of_life_1|twilightforest:charm_of_life_2",
-      "text": "Aside from it looking like a non-distinct trinket, it has a curious inscription etched into the back: \" \'Til death won't do us part.\"$(br2)It's small enough to tuck away where one usually keeps their other baubles and bobs."
+      "item": "twilightforest:charm_of_life_1,twilightforest:charm_of_life_2",
+      "text": "Aside from it looking like a non-distinct trinket, it has a curious inscription etched into the back: \" 'Til death won't do us part.\"$(br2)It's small enough to tuck away where one usually keeps their other baubles and bobs."
     }
   ]
 }

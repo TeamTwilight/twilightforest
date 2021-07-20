@@ -26,7 +26,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 
 	public EntityTFTwilightWandBolt(World world, LivingEntity thrower) {
 		super(TFEntities.wand_bolt, world, thrower);
-		func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
+		setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 
 	public EntityTFTwilightWandBolt(World worldIn, double x, double y, double z) {
@@ -76,7 +76,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 		if (!this.world.isRemote) {
 			if (result instanceof EntityRayTraceResult) {
 				if (((EntityRayTraceResult)result).getEntity() instanceof LivingEntity) {
-					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.func_234616_v_()), 6);
+					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getShooter()), 6);
 				}
 			}
 

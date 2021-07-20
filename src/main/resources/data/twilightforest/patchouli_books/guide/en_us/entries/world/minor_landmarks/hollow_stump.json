@@ -1,0 +1,17 @@
+{
+  "name": "Hollow Stump",
+  "icon": "twilightforest:twilight_oak_log",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
+  "sortnum": 2100,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Hollow Stump",
+      "images": ["twilightforest:textures/gui/patchouli_images/hollow_stump.png"]
+    }, {
+      "type": "text",
+      "text": "Large hollow stumps can be seen from time to time around the forest. The stumps suggest that a mighty tree once stood in its place. How did this tree fall though? Anything could have happened."
+    }
+  ]
+}

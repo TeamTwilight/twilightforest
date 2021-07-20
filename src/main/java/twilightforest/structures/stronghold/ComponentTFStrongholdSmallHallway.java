@@ -51,7 +51,7 @@ public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComp
 		this.placeWallStatue(world, 7, 1, 9, Rotation.COUNTERCLOCKWISE_90, sbb);
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world, sbb);
 
 		return true;
 	}

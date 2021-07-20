@@ -26,9 +26,11 @@ public class BlockTFTrophyWall extends BlockTFAbstractTrophy {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 	private static final Map<Direction, VoxelShape> SHAPES = Maps
 			.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.makeCuboidShape(4.0D, 4.0D, 8.0D, 12.0D, 12.0D, 16.0D), Direction.SOUTH, Block.makeCuboidShape(4.0D, 4.0D, 0.0D, 12.0D, 12.0D, 8.0D), Direction.EAST, Block.makeCuboidShape(0.0D, 4.0D, 4.0D, 8.0D, 12.0D, 12.0D), Direction.WEST, Block.makeCuboidShape(8.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D)));
+	private static final Map<Direction, VoxelShape> YETI_SHAPES = Maps
+			.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.makeCuboidShape(3.25D, 4.0D, 8.5D, 12.75D, 14.5D, 16.0D), Direction.SOUTH, Block.makeCuboidShape(3.25D, 4.0D, 0.0D, 12.75D, 14.5D, 7.5D), Direction.EAST, Block.makeCuboidShape(0.0D, 4.0D, 3.25D, 7.5D, 14.5D, 12.75D), Direction.WEST, Block.makeCuboidShape(8.5D, 4.0D, 3.25D, 16.0D, 14.5D, 12.75D)));
 
 	public BlockTFTrophyWall(BossVariant variant) {
-		super(variant, Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(1.0F));
+		super(variant, 0, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 
@@ -39,6 +41,11 @@ public class BlockTFTrophyWall extends BlockTFAbstractTrophy {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		if (((BlockTFAbstractTrophy) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
+			return BlockTFTrophy.GHAST_SHAPE;
+		} else if (((BlockTFAbstractTrophy) state.getBlock()).getVariant() == BossVariant.ALPHA_YETI) {
+			return YETI_SHAPES.get(state.get(FACING));
+		}
 		return SHAPES.get(state.get(FACING));
 	}
 

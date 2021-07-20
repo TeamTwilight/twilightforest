@@ -3,7 +3,7 @@
   "icon": "twilightforest:giant_cobblestone",
   "category": "treasures",
   "advancement": "twilightforest:alt/treasures/giant_blocks",
-  "sortnum": 8010,
+  "sortnum": 8020,
   "pages": [
     {
       "type": "text",

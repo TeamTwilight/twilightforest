@@ -6,12 +6,14 @@
   "sortnum": 6000,
   "pages": [
     {
-      "type": "text",
-      "text": "things and stuff"
+      "type": "image",
+      "title": "The Dark Forest",
+      "advancement": "twilightforest:alt/biomes/dark_forest_center",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
     }, {
       "type": "text",
       "advancement": "twilightforest:alt/biomes/dark_forest_center",
-      "text": "things and stuff"
+      "text": "One of the more sinister areas of the Twilight Dimension, the Dark Forest is shrouded in mystery and secrets. Upon entering for the first time, an adventurer will find themselves enveloped by an blinding darkness. The stars are not visible here, nor is the sky, for it is hidden by the thickly interlocked branches of many ancient trees. Ancient lore speculates of crumbling remnants of a ruin, located somewhere deep within this mournful forest."
     }
   ]
 }

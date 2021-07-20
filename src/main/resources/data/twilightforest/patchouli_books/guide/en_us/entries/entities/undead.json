@@ -1,6 +1,6 @@
 {
   "name": "Undead",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:skeleton_druid\"}}",
+  "icon": "twilightforest:skeleton_druid_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/undead",
   "sortnum": 2100,
@@ -8,18 +8,29 @@
     {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/skeleton_druid",
-      "entity": "twilightforest:skeleton_druid",
-      "text": "things and stuff"
+      "entity": "twilightforest:skeleton_druid{HandItems:[{Count:1,id:golden_hoe},{}]}"
     }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/skeleton_druid",
+      "text": "Skeleton Druids are usually found within Druid Huts, but have been sighted astride King Spiders. They are capable of casting spells laced with poison. The crumbling medallions draped upon their bones suggests there was once an ancient order...but, all that remains now are these hostile undead."
+    },
+    {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/wraith",
-      "entity": "twilightforest:wraith",
-      "text": "things and stuff"
+      "entity": "twilightforest:wraith"
     }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/wraith",
+      "text": "Wraiths are floating spirits that sometimes appear in large Hollow Hills. They are fickle beings, and will attack an intruder if they move too close. Perhaps a ranged weapon would be best against them..."
+    },
+    {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/snow_guardian",
-      "entity": "twilightforest:snow_guardian",
-      "text": "things and stuff"
+      "entity": "twilightforest:snow_guardian{HandItems:[{Count:1,id:\"twilightforest:knightmetal_sword\"},{}],ArmorItems:[{},{},{Count:1,id:\"twilightforest:arctic_chestplate\"},{Count:1,id:\"twilightforest:arctic_helmet\"}]}"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/snow_guardian",
+      "text": "Snow Guardians are found only in the Aurora Palace, and appear to be animated suits of armour filled with a flurry of snowflakes. They are naturally aggressive towards Palace intruders."
     }
   ]
 }

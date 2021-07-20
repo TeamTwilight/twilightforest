@@ -9,33 +9,64 @@
       "type": "text",
       "text": "Armor Information"
     }, {
-      "type": "text",
+      "type": "empty"
+    }, {
+      "type": "entity",
       "advancement": "twilightforest:alt/treasures/ironwood_armor_set",
-      "text": "Ironwood Armors"
+      "entity": "twilightforest:snow_guardian{ArmorItems:[{Count:1,id:\"twilightforest:ironwood_boots\"},{Count:1,id:\"twilightforest:ironwood_leggings\"},{Count:1,id:\"twilightforest:ironwood_chestplate\"},{Count:1,id:\"twilightforest:ironwood_helmet\"}]}",
+      "rotate": false,
+      "default_rotation": -15,
+      "offset": 0.15,
+      "name": "Ironwood Armor Set"
     }, {
-      "type": "text",
+      "type": "entity",
       "advancement": "twilightforest:alt/treasures/naga_armor_set",
-      "text": "Naga Scale Armors"
+      "entity": "twilightforest:snow_guardian{ArmorItems:[{},{Count:1,id:\"twilightforest:naga_leggings\"},{Count:1,id:\"twilightforest:naga_chestplate\"},{}]}",
+      "rotate": false,
+      "default_rotation": -15,
+      "offset": 0.15,
+      "name": "Naga Scale Armor Set"
     }, {
-      "type": "text",
+      "type": "entity",
       "advancement": "twilightforest:alt/treasures/steeleaf_armor_set",
-      "text": "Steeleaf Armors"
+      "entity": "twilightforest:snow_guardian{ArmorItems:[{Count:1,id:\"twilightforest:steeleaf_boots\"},{Count:1,id:\"twilightforest:steeleaf_leggings\"},{Count:1,id:\"twilightforest:steeleaf_chestplate\"},{Count:1,id:\"twilightforest:steeleaf_helmet\"}]}",
+      "rotate": false,
+      "default_rotation": -15,
+      "offset": 0.15,
+      "name": "Steeleaf Armor Set"
     }, {
-      "type": "text",
+      "type": "entity",
       "advancement": "twilightforest:alt/treasures/fiery_armor_set",
-      "text": "Fiery Armors"
+      "entity": "twilightforest:snow_guardian{ArmorItems:[{Count:1,id:\"twilightforest:fiery_boots\"},{Count:1,id:\"twilightforest:fiery_leggings\"},{Count:1,id:\"twilightforest:fiery_chestplate\"},{Count:1,id:\"twilightforest:fiery_helmet\"}]}",
+      "rotate": false,
+      "default_rotation": -15,
+      "offset": 0.15,
+      "name": "Fiery Armor Set"
     }, {
-      "type": "text",
+      "type": "entity",
       "advancement": "twilightforest:alt/treasures/knightmetal_armor_set",
-      "text": "Knightly Armors"
+      "entity": "twilightforest:snow_guardian{ArmorItems:[{Count:1,id:\"twilightforest:knightmetal_boots\"},{Count:1,id:\"twilightforest:knightmetal_leggings\"},{Count:1,id:\"twilightforest:knightmetal_chestplate\"},{Count:1,id:\"twilightforest:knightmetal_helmet\"}]}",
+      "rotate": false,
+      "default_rotation": -15,
+      "offset": 0.15,
+      "name": "Knightmetal Armor Set"
     }, {
-      "type": "text",
+      "type": "entity",
       "advancement": "twilightforest:alt/treasures/arctic_armor_set",
-      "text": "Arctic Armors"
+      "entity": "twilightforest:snow_guardian{ArmorItems:[{Count:1,id:\"twilightforest:arctic_boots\"},{Count:1,id:\"twilightforest:arctic_leggings\"},{Count:1,id:\"twilightforest:arctic_chestplate\"},{Count:1,id:\"twilightforest:arctic_helmet\"}]}",
+      "rotate": false,
+      "default_rotation": -15,
+      "offset": 0.15,
+      "name": "Arctic Armor Set"
     }, {
-      "type": "text",
+      "type": "entity",
       "advancement": "twilightforest:alt/treasures/yeti_armor_set",
-      "text": "Yeti Armors"
+      "entity": "twilightforest:snow_guardian{ArmorItems:[{Count:1,id:\"twilightforest:yeti_boots\"},{Count:1,id:\"twilightforest:yeti_leggings\"},{Count:1,id:\"twilightforest:yeti_chestplate\"},{Count:1,id:\"twilightforest:yeti_helmet\"}]}",
+      "rotate": false,
+      "default_rotation": -15,
+      "offset": 0.25,
+      "scale": 0.9,
+      "name": "Yeti Armor Set"
     }
   ]
 }

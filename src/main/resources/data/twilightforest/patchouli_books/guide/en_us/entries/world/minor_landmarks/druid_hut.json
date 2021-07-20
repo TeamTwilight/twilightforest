@@ -1,12 +1,17 @@
 {
   "name": "Druid Hut",
   "icon": "minecraft:golden_hoe",
-  "category": "minor_landmark",
+  "category": "minor_landmarks",
+  "advancement": "twilightforest:alt/biomes/general_biomes",
   "sortnum": 2100,
   "pages": [
     {
+      "type": "image",
+      "title": "Druid Huts",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
       "type": "text",
-      "text": "things and stuff"
+      "text": "Despite the dimension lacking any other human life, beautifully crafted houses still linger around. These huts are what Skeleton Druids call home. These huts dont seem to serve much of a purpose, but legends tell of some huts containing hidden basements. Whether they are trapped or not is up to an adventurer to find out..."
     }
   ]
 }

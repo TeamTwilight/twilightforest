@@ -1,0 +1,36 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "features": [
+          "twilightforest:tree/base/canopy_tree",
+          "twilightforest:tree/base/firefly_canopy_tree"
+        ]
+      },
+      "type": "minecraft:simple_random_selector"
+    },
+    "decorator": {
+      "config": {
+        "outer": {
+          "config": {},
+          "type": "minecraft:square"
+        },
+        "inner": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:heightmap"
+            },
+            "inner": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    }
+  },
+  "type": "minecraft:decorated"
+}

@@ -66,7 +66,8 @@ public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttack
 
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-		EntityTFIceSnowball snowball = TFEntities.ice_snowball.create(this.world);
+		EntityTFIceSnowball snowball = new EntityTFIceSnowball(world, this);
+		snowball.setPosition(this.getPosX(), this.getPosY() + this.getEyeHeight(), this.getPosZ());
 
 		// [VanillaCopy] Adapted from EntitySnowman
 		double d0 = target.getPosY() + target.getEyeHeight() - 1.4;
@@ -74,7 +75,8 @@ public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttack
 		double d2 = d0 - snowball.getPosY();
 		double d3 = target.getPosZ() - this.getPosZ();
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
-		snowball.shoot(d1, d2 + f, d3, 1.6F, 0.0F);
+		//accuracy of a normal difficulty skeleton
+		snowball.shoot(d1, d2 + f, d3, 1.6F, 6.0F);
 
 		this.playSound(TFSounds.ICE_CORE_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.world.addEntity(snowball);

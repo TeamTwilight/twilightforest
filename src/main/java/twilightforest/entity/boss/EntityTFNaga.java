@@ -304,7 +304,7 @@ public class EntityTFNaga extends MonsterEntity {
 					double rotation = 1; // in radians
 
 					// hook out slightly before circling
-					if (stateCounter > 1 && stateCounter < 3) {
+					if (stateCounter == 2) {
 						radius = 16;
 					}
 
@@ -349,13 +349,11 @@ public class EntityTFNaga extends MonsterEntity {
 					doCharge();
 					break;
 				case CHARGE:
+				case DAZE:
 					doCircle();
 					break;
 				case CIRCLE:
 					doIntimidate();
-					break;
-				case DAZE:
-					doCircle();
 					break;
 			}
 		}
@@ -701,7 +699,7 @@ public class EntityTFNaga extends MonsterEntity {
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (getHomePosition() != BlockPos.ZERO) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_naga.get().getDefaultState());
 			}
 			remove();
 		} else {
@@ -713,7 +711,6 @@ public class EntityTFNaga extends MonsterEntity {
 	public void remove() {
 		super.remove();
 		if (this.world instanceof ServerWorld) {
-			ServerWorld world = (ServerWorld) this.world;
 			for (EntityTFNagaSegment seg : bodySegments) {
 				// must use this instead of setDead
 				// since multiparts are not added to the world tick list which is what checks isDead
@@ -864,7 +861,12 @@ public class EntityTFNaga extends MonsterEntity {
 	}
 
 	@Override
-	public boolean isNonBoss() {
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
+	public boolean canChangeDimension() {
 		return false;
 	}
 }

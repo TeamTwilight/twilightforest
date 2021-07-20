@@ -11,28 +11,19 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFRedcap;
 
 public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
-	private final ModelRenderer bipedHead;
-	private final ModelRenderer bipedHeadwear;
-	private final ModelRenderer bipedBody;
-	private final ModelRenderer bipedRightArm;
-	private final ModelRenderer bipedLeftArm;
-	private final ModelRenderer bipedRightLeg;
-	private final ModelRenderer bipedLeftLeg;
-	private final ModelRenderer goblinRightEar;
-	private final ModelRenderer goblinLeftEar;
 
-	public ModelTFRedcap() {
-		super(0.0F);
+	public ModelTFRedcap(float size) {
+		super(size);
 		this.textureWidth = 64;
 		this.textureHeight = 32;
 
 		bipedHead = new ModelRenderer(this);
-		bipedHead.setRotationPoint(0.0F, 7.0F, 0.0F);
-		bipedHead.setTextureOffset(0, 0).addBox(-3.4F, -6.0F, -4.0F, 7.0F, 7.0F, 7.0F, 0.0F, false);
+		bipedHead.setTextureOffset(0, 0).addBox(-3.5F, -5.0F, -4.0F, 7.0F, 7.0F, 7.0F, 0.0F, false);
+		bipedHead.setRotationPoint(0.0F, 4.0F, 0.0F);
 
 		bipedHeadwear = new ModelRenderer(this);
 		bipedHeadwear.setRotationPoint(0.0F, 7.0F, 0.0F);
-		bipedHeadwear.setTextureOffset(32, 0).addBox(-2.0F, -7.0F, -3.0F, 4.0F, 5.0F, 7.0F, 0.0F, false);
+		bipedHeadwear.setTextureOffset(32, 0).addBox(-2.0F, -6.0F, -3.0F, 4.0F, 5.0F, 7.0F, 0.0F, false);
 
 		bipedBody = new ModelRenderer(this);
 		bipedBody.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -40,45 +31,40 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 
 		bipedRightArm = new ModelRenderer(this);
 		bipedRightArm.setRotationPoint(-5.0F, 8.0F, 0.0F);
-		bipedRightArm.setTextureOffset(36, 17).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 3.0F, 0.0F, false);
+		bipedRightArm.setTextureOffset(36, 17).addBox(-2.0F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, false);
 
 		bipedLeftArm = new ModelRenderer(this);
 		bipedLeftArm.setRotationPoint(5.0F, 8.0F, 0.0F);
-		bipedLeftArm.setTextureOffset(36, 17).addBox(-1.0F, -2.0F, -2.0F, 3.0F, 12.0F, 3.0F, 0.0F, false);
+		bipedLeftArm.setTextureOffset(36, 17).addBox(-1.0F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, false);
 
 		bipedRightLeg = new ModelRenderer(this);
 		bipedRightLeg.setRotationPoint(-2.0F, 15.0F, 0.0F);
-		bipedRightLeg.setTextureOffset(0, 20).addBox(-2.0F, 0.0F, -1.0F, 3.0F, 9.0F, 3.0F, 0.0F, false);
+		bipedRightLeg.setTextureOffset(0, 20).addBox(-2.0F, 0.0F, -1.5F, 3.0F, 9.0F, 3.0F, 0.0F, false);
 
 		bipedLeftLeg = new ModelRenderer(this);
 		bipedLeftLeg.setRotationPoint(3.0F, 15.0F, 0.0F);
-		bipedLeftLeg.setTextureOffset(0, 20).addBox(-2.0F, 0.0F, -1.0F, 3.0F, 9.0F, 3.0F, 0.0F, false);
+		bipedLeftLeg.setTextureOffset(0, 20).addBox(-2.0F, 0.0F, -1.5F, 3.0F, 9.0F, 3.0F, 0.0F, false);
 
-		goblinRightEar = new ModelRenderer(this);
+		ModelRenderer goblinRightEar = new ModelRenderer(this);
 		goblinRightEar.setRotationPoint(0.0F, 7.0F, 0.0F);
-		goblinRightEar.setTextureOffset(48, 20).addBox(3.0F, -6.0F, -1.0F, 2.0F, 3.0F, 1.0F, 0.0F, false);
+		goblinRightEar.setTextureOffset(48, 20).addBox(3.0F, -10.0F, -1.0F, 2.0F, 3.0F, 1.0F, 0.0F, false);
 
-		goblinLeftEar = new ModelRenderer(this);
+		ModelRenderer goblinLeftEar = new ModelRenderer(this);
 		goblinLeftEar.setRotationPoint(0.0F, 7.0F, 0.0F);
-		goblinLeftEar.setTextureOffset(48, 20).addBox(-5.0F, -6.0F, -1.0F, 2.0F, 3.0F, 1.0F, 0.0F, true);
+		goblinLeftEar.setTextureOffset(48, 20).addBox(-5.0F, -10.0F, -1.0F, 2.0F, 3.0F, 1.0F, 0.0F, true);
+
+		bipedHead.addChild(goblinLeftEar);
+		bipedHead.addChild(goblinRightEar);
 	}
 
 	@Override
 	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
 			float headPitch) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-		goblinRightEar.rotateAngleX = bipedHead.rotateAngleX;
-		goblinRightEar.rotateAngleY = bipedHead.rotateAngleY;
-		goblinRightEar.rotateAngleZ = bipedHead.rotateAngleZ;
-
-		goblinLeftEar.rotateAngleX = bipedHead.rotateAngleX;
-		goblinLeftEar.rotateAngleY = bipedHead.rotateAngleY;
-		goblinLeftEar.rotateAngleZ = bipedHead.rotateAngleZ;
-
+		this.bipedHead.rotateAngleX = headPitch * ((float)Math.PI / 180F);
 		this.bipedHead.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
-
 		this.bipedBody.rotateAngleY = 0.0F;
+
 		this.bipedRightArm.rotationPointZ = 0.0F;
 		this.bipedRightArm.rotationPointX = -5.0F;
 		this.bipedLeftArm.rotationPointZ = 0.0F;
@@ -91,8 +77,7 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 		this.bipedRightArm.rotateAngleZ = 0.0F;
 		this.bipedLeftArm.rotateAngleZ = 0.0F;
 		this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / f;
-		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount
-				/ f;
+		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount / f;
 		this.bipedRightLeg.rotateAngleY = 0.0F;
 		this.bipedLeftLeg.rotateAngleY = 0.0F;
 		this.bipedRightLeg.rotateAngleZ = 0.0F;
@@ -100,6 +85,17 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 
 		this.bipedRightArm.rotateAngleY = 0.0F;
 		this.bipedLeftArm.rotateAngleY = 0.0F;
+
+		if (this.isSitting) {
+			this.bipedRightArm.rotateAngleX += (-(float)Math.PI / 5F);
+			this.bipedLeftArm.rotateAngleX += (-(float)Math.PI / 5F);
+			this.bipedRightLeg.rotateAngleX = -1.4137167F;
+			this.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+			this.bipedRightLeg.rotateAngleZ = 0.07853982F;
+			this.bipedLeftLeg.rotateAngleX = -1.4137167F;
+			this.bipedLeftLeg.rotateAngleY = (-(float)Math.PI / 10F);
+			this.bipedLeftLeg.rotateAngleZ = -0.07853982F;
+		}
 		
 		ModelHelper.func_239101_a_(this.bipedRightArm, this.bipedLeftArm, ageInTicks);
 	      if (this.swimAnimation > 0.0F) {
@@ -132,8 +128,6 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 	            this.bipedRightArm.rotateAngleZ = MathHelper.lerp(f2, this.bipedRightArm.rotateAngleZ, (float)Math.PI);
 	         }
 
-	         float f7 = 0.3F;
-	         float f5 = 0.33333334F;
 	         this.bipedLeftLeg.rotateAngleX = MathHelper.lerp(this.swimAnimation, this.bipedLeftLeg.rotateAngleX, 0.3F * MathHelper.cos(limbSwing * 0.33333334F + (float)Math.PI));
 	         this.bipedRightLeg.rotateAngleX = MathHelper.lerp(this.swimAnimation, this.bipedRightLeg.rotateAngleX, 0.3F * MathHelper.cos(limbSwing * 0.33333334F));
 	      }
@@ -146,6 +140,7 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 	@Override
 	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red,
 			float green, float blue, float alpha) {
+		if(this.isSitting) matrixStack.translate(0, 0.25F, 0);
 		bipedHead.render(matrixStack, buffer, packedLight, packedOverlay);
 		bipedHeadwear.render(matrixStack, buffer, packedLight, packedOverlay);
 		bipedBody.render(matrixStack, buffer, packedLight, packedOverlay);
@@ -153,17 +148,9 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 		bipedLeftArm.render(matrixStack, buffer, packedLight, packedOverlay);
 		bipedRightLeg.render(matrixStack, buffer, packedLight, packedOverlay);
 		bipedLeftLeg.render(matrixStack, buffer, packedLight, packedOverlay);
-		goblinRightEar.render(matrixStack, buffer, packedLight, packedOverlay);
-		goblinLeftEar.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 	
 	private float getArmAngleSq(float limbSwing) {
 	      return -65.0F * limbSwing + limbSwing * limbSwing;
-	   }
-
-	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
 	}
 }

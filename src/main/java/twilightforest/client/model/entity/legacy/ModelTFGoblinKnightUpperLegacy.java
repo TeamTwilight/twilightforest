@@ -207,7 +207,7 @@ public class ModelTFGoblinKnightUpperLegacy extends BipedModel<EntityTFGoblinKni
 	private float getArmRotationDuringSwing(float attackTime) {
 		if (attackTime <= 10) {
 			// rock back
-			return attackTime * 1.0F;
+			return attackTime;
 		}
 		if (attackTime > 10 && attackTime <= 30) {
 			// hang back

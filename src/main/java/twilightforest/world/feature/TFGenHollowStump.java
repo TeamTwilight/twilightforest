@@ -25,7 +25,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 	public boolean generate(IWorld world, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int radius = rand.nextInt(2) + 2;
 
-		if (!FeatureUtil.isAreaSuitable(world, rand, pos.add(-radius, 0, -radius), 2 * radius, 6, 2 * radius)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos.add(-radius, 0, -radius), 2 * radius, 6, 2 * radius)) {
 			return false;
 		}
 

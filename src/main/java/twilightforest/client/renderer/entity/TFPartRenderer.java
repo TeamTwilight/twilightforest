@@ -38,7 +38,7 @@ public abstract class TFPartRenderer<T extends TFPartEntity<?>, M extends Segmen
 		float f7 = this.handleRotationFloat(entityIn, partialTicks);
 		this.applyRotations(entityIn, matrixStackIn, f7, f, partialTicks);
 		matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-		matrixStackIn.translate(0.0D, (double)-1.501F, 0.0D);
+		matrixStackIn.translate(0.0D, -1.501F, 0.0D);
 		float f8 = 0.0F;
 		float f5 = 0.0F;
 

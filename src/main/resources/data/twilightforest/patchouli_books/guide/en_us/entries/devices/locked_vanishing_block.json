@@ -1,6 +1,6 @@
 {
   "name": "Locked Vanishing Block",
-  "icon": "twilightforest:tower_device:4",
+  "icon": "twilightforest:locked_vanishing_block",
   "category": "devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6220,
@@ -8,7 +8,7 @@
     {
       "type": "spotlight",
       "title": "Locked Vanishing Block",
-      "item": "twilightforest:tower_device:4",
+      "item": "twilightforest:locked_vanishing_block",
       "text": "There's something not right with this thing. No matter what I do to it, nothing happens to it, and neither do the connected Vanishing Blocks. I noticed this strange shape in the center of this device, perhaps it needs a key of some sort?"
     }, {
       "type": "text",

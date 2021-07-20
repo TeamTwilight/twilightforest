@@ -1,6 +1,6 @@
 {
   "name": "Wolves",
-  "icon": "minecraft:spawn_egg:0{EntityTag:{id:\"twilightforest:hostile_wolf\"}}",
+  "icon": "twilightforest:hostile_wolf_spawn_egg",
   "category": "entities",
   "advancement": "twilightforest:alt/entities/wolves",
   "sortnum": 2100,
@@ -8,18 +8,29 @@
     {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/hostile_wolf",
-      "entity": "twilightforest:hostile_wolf",
-      "text": "things and stuff"
+      "entity": "twilightforest:hostile_wolf"
     }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/hostile_wolf",
+      "text": "Wild, feral creatures usually found roaming within Hedge Mazes. They are naturally aggressive and appear to be untameable."
+    },
+    {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/mist_wolf",
-      "entity": "twilightforest:mist_wolf",
-      "text": "things and stuff"
+      "entity": "twilightforest:mist_wolf"
     }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/mist_wolf",
+      "text": "Mist Wolves are giant creatures that lurk within the Dark Forest. They blend into the shadows, and attempt to inflict blindness upon attacking."
+    },
+    {
       "type": "entity",
       "advancement": "twilightforest:alt/entities/winter_wolf",
-      "entity": "twilightforest:winter_wolf",
-      "text": "things and stuff"
+      "entity": "twilightforest:winter_wolf"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:alt/entities/winter_wolf",
+      "text": "The breath of a Winter Wolf is as bad as its bite! These canines weave between the spruce trunks in the Snowy Forest, and are naturally hostile. It seems melee attacks are their speciality..."
     }
   ]
 }

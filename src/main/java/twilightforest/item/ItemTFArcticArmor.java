@@ -50,10 +50,10 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void initArmorModel() {
-		arcticArmorModel.put(EquipmentSlotType.HEAD, new ModelTFArcticArmor(0.6F));
+		arcticArmorModel.put(EquipmentSlotType.HEAD, new ModelTFArcticArmor(0.75F));
 		arcticArmorModel.put(EquipmentSlotType.CHEST, new ModelTFArcticArmor(1.0F));
-		arcticArmorModel.put(EquipmentSlotType.LEGS, new ModelTFArcticArmor(0.4F));
-		arcticArmorModel.put(EquipmentSlotType.FEET, new ModelTFArcticArmor(0.55F));
+		arcticArmorModel.put(EquipmentSlotType.LEGS, new ModelTFArcticArmor(0.5F));
+		arcticArmorModel.put(EquipmentSlotType.FEET, new ModelTFArcticArmor(1.0F));
 	}
 
 	@Override
@@ -91,8 +91,6 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 		}
 
 		switch (type) {
-			//case 0:
-				//return stack.getItem() != TFItems.arctic_helmet ? 0x793828 : 0xFFFFFF;
 			case 0:
 				return 0xFFFFFF;
 			default:
@@ -101,7 +99,7 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 	}
 
 	public void removeColor(ItemStack stack, int type) {
-		String string = "";//type == 0 ? "" : ("" + type);
+		String string = "";
 		CompoundNBT stackTagCompound = stack.getTag();
 
 		if (stackTagCompound != null) {
@@ -116,7 +114,7 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 	}
 
 	public void setColor(ItemStack stack, int color, int type) {
-		String string = "";//type == 0 ? "" : ("" + type);
+		String string = "";
 		CompoundNBT stackTagCompound = stack.getTag();
 
 		if (stackTagCompound == null) {
@@ -135,7 +133,6 @@ public class ItemTFArcticArmor extends ArmorItem implements IDyeableArmorItem {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack itemstack, ItemUseContext context) {
-		//ItemStack stack = player.getHeldItem(hand);
 
 		if (this.hasColor(itemstack)) {
 			BlockState blockAt = context.getWorld().getBlockState(context.getPos());

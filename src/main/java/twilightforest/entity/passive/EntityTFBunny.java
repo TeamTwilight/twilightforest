@@ -54,7 +54,7 @@ public class EntityTFBunny extends AnimalEntity {
 
 	@Nullable
 	@Override
-	public AgeableEntity func_241840_a(ServerWorld world, AgeableEntity ageableEntity) {
+	public AgeableEntity createChild(ServerWorld world, AgeableEntity ageableEntity) {
 		return null;
 	}
 

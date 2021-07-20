@@ -3,6 +3,7 @@ package twilightforest.entity.passive;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -28,21 +29,21 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
+import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityTFQuestRam extends AnimalEntity {
 
-	public static final ResourceLocation REWARD_LOOT_TABLE = TwilightForestMod.prefix("entities/questing_ram_rewards");
 	private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.BOOLEAN);
 
@@ -58,7 +59,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
 		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL), false));
-		this.goalSelector.addGoal(3, new EntityAITFEatLoose(this, Ingredient.fromTag(ItemTags.WOOL)));
+		this.goalSelector.addGoal(3, new EntityAITFEatLoose(this));
 		this.goalSelector.addGoal(4, new EntityAITFFindLoose(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL)));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
@@ -66,7 +67,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 	@Nullable
 	@Override
-	public AnimalEntity func_241840_a(ServerWorld world, AgeableEntity mate) {
+	public AnimalEntity createChild(ServerWorld world, AgeableEntity mate) {
 		return null;
 	}
 
@@ -114,8 +115,8 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 	private void rewardQuest() {
 		// todo flesh the context out more
-		LootContext ctx = new LootContext.Builder((ServerWorld) world).withParameter(LootParameters.THIS_ENTITY, this).build(LootParameterSets.field_237453_h_);
-		world.getServer().getLootTableManager().getLootTableFromLocation(REWARD_LOOT_TABLE).generate(ctx, s -> entityDropItem(s, 1.0F));
+		LootContext ctx = new LootContext.Builder((ServerWorld) world).withParameter(LootParameters.THIS_ENTITY, this).build(LootParameterSets.BARTER);
+		world.getServer().getLootTableManager().getLootTableFromLocation(TFTreasure.QUESTING_RAM_REWARDS).generate(ctx, s -> entityDropItem(s, 1.0F));
 
 		for (ServerPlayerEntity player : this.world.getEntitiesWithinAABB(ServerPlayerEntity.class, getBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
@@ -123,7 +124,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 	}
 
 	@Override
-	public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
 		ItemStack currentItem = player.getHeldItem(hand);
 
 		if (tryAccept(currentItem)) {
@@ -133,7 +134,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 			return ActionResultType.SUCCESS;
 		} else {
-			return super.func_230254_b_(player, hand);
+			return super.applyPlayerInteraction(player, vec, hand);
 		}
 	}
 
@@ -231,8 +232,13 @@ public class EntityTFQuestRam extends AnimalEntity {
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	protected float getSoundVolume() {
-		return 5.0F;
+		return 1.0F;
 	}
 
 	@Override

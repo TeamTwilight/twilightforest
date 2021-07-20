@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class HollowTrunkPlacer extends AbstractTrunkPlacer {
     public static final Codec<HollowTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
-            func_236915_a_(instance).and(instance.group(
+            getAbstractTrunkCodec(instance).and(instance.group(
                     Codec.floatRange(1, 16).fieldOf("outside_radius").forGetter(o -> o.outerRadius),
                     Codec.intRange(0, 8).fieldOf("random_add_radius").forGetter(o -> o.randomAddRadius),
                     BranchesConfig.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfig),
@@ -42,12 +42,12 @@ public class HollowTrunkPlacer extends AbstractTrunkPlacer {
     }
 
     @Override
-    protected TrunkPlacerType<HollowTrunkPlacer> func_230381_a_() {
+    protected TrunkPlacerType<HollowTrunkPlacer> getPlacerType() {
         return TwilightFeatures.HOLLOW_TRUNK;
     }
 
     @Override
-    public List<FoliagePlacer.Foliage> func_230382_a_(IWorldGenerationReader world, Random random, int height, BlockPos pos, Set<BlockPos> trunkBlocks, MutableBoundingBox mutableBoundingBox, BaseTreeFeatureConfig baseTreeFeatureConfig) {
+    public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader world, Random random, int height, BlockPos pos, Set<BlockPos> trunkBlocks, MutableBoundingBox mutableBoundingBox, BaseTreeFeatureConfig baseTreeFeatureConfig) {
         final float additionalRadius = random.nextInt(randomAddRadius + 1);
         final float outerRadius = this.outerRadius + additionalRadius;
         final float hollowRadius = outerRadius / 2f;
