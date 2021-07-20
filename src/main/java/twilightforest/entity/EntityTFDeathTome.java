@@ -32,7 +32,7 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1, 60, 10));
+		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1, 100, 5));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));

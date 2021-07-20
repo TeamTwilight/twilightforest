@@ -8,13 +8,13 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFDeathTome;
 
 public class ModelTFDeathTome extends EntityModel<EntityTFDeathTome> {
-    private ModelRenderer everything;
+    private final ModelRenderer everything;
 
-    private ModelRenderer book;
-    private ModelRenderer loosePage1;
-    private ModelRenderer loosePage2;
-    private ModelRenderer loosePage3;
-    private ModelRenderer loosePage4;
+    private final ModelRenderer book;
+    private final ModelRenderer loosePage1;
+    private final ModelRenderer loosePage2;
+    private final ModelRenderer loosePage3;
+    private final ModelRenderer loosePage4;
     // Book render
     private final ModelRenderer coverRight = (new ModelRenderer(64, 32, 0, 0)).addBox(-6.0F, -5.0F, -0.005F, 6.0F, 10.0F, 0.005F);
     private final ModelRenderer coverLeft = (new ModelRenderer(64, 32, 16, 0)).addBox(0.0F, -5.0F, -0.005F, 6.0F, 10.0F, 0.005F);
@@ -45,12 +45,12 @@ public class ModelTFDeathTome extends EntityModel<EntityTFDeathTome> {
         book.addChild(flippingPageRight);
         book.addChild(flippingPageLeft);
 
-        loosePage1 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, -8F, 5, 8, 0);
-        loosePage2 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 9F, 5, 8, 0);
-        loosePage3 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 11F, 5, 8, 0);
-        loosePage4 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 7F, 5, 8, 0);
+        loosePage1 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, -8F, 5, 8, 0.005F);
+        loosePage2 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 9F, 5, 8, 0.005F);
+        loosePage3 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 11F, 5, 8, 0.005F);
+        loosePage4 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 7F, 5, 8, 0.005F);
 
-        everything.addChild(book);
+        //everything.addChild(book);
         everything.addChild(loosePage1);
         everything.addChild(loosePage2);
         everything.addChild(loosePage3);
@@ -60,11 +60,13 @@ public class ModelTFDeathTome extends EntityModel<EntityTFDeathTome> {
     @Override
     public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
         this.everything.render(stack, builder, light, overlay);
+        this.book.render(stack, builder, light, overlay);
     }
 
     @Override
     public void setRotationAngles(EntityTFDeathTome entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
         book.rotateAngleZ = -0.8726646259971647F;
+
         this.everything.rotateAngleY = customAngle / (180F / (float) Math.PI) + (float) Math.PI / 2.0F;
     }
 

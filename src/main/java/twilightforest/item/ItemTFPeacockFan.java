@@ -162,9 +162,9 @@ public class ItemTFPeacockFan extends Item {
 		int cost = 0;
 
 		BlockState state = world.getBlockState(pos);
-		if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
-			if (state.getBlock() instanceof FlowerBlock) {
-				if (random.nextInt(3) == 0) {
+		if (state.getBlock() instanceof FlowerBlock) {
+			if (random.nextInt(3) == 0) {
+				if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
 					world.destroyBlock(pos, true);
 				}
 			}

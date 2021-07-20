@@ -175,7 +175,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 		super.onDeath(cause);
 
-		if (!world.isRemote && getNearbyKnights().isEmpty()) {
+		if (!world.isRemote && getNearbyKnights().isEmpty() && cause != DamageSource.OUT_OF_WORLD) {
 
 			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this.getPosition());
 

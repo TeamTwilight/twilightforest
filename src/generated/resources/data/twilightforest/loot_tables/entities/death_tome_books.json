@@ -18,7 +18,7 @@
               "treasure": false
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:book"
         },
         {
           "type": "minecraft:item",
@@ -34,7 +34,7 @@
               "treasure": false
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:book"
         },
         {
           "type": "minecraft:item",
@@ -50,7 +50,7 @@
               "treasure": false
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:book"
         },
         {
           "type": "minecraft:item",
@@ -65,7 +65,7 @@
               "treasure": false
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:book"
         }
       ]
     }

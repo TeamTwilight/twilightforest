@@ -373,16 +373,15 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLootTables {
 				LootTable.builder()
 						.addLootPool(LootPool.builder()
 								.rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(1, 10))).weight(32))
-								.addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(11, 20))).weight(8))
-								.addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(21, 30))).weight(4))
-								.addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK)
-										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(31, 40))).weight(1))));
+								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(32)
+										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(1, 10))))
+								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(8)
+										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(11, 20))))
+								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(4)
+										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(21, 30))))
+								.addEntry(ItemLootEntry.builder(Items.BOOK).weight(1)
+										.acceptFunction(EnchantWithLevels.func_215895_a(RandomValueRange.of(31, 40))))));
 
-		//FIXME add shaders for the bosses
 		registerLootTable(TFEntities.naga,
 				LootTable.builder()
 						.addLootPool(LootPool.builder()

@@ -186,6 +186,7 @@ public class TwilightForestMod {
 			TFBlocks.tfCompostables();
 			TFBlocks.TFBurnables();
 			TFBlocks.TFPots();
+			TFSounds.registerParrotSounds();
 
 			AxeItem.BLOCK_STRIPPING_MAP = Maps.newHashMap(AxeItem.BLOCK_STRIPPING_MAP);
 			AxeItem.BLOCK_STRIPPING_MAP.put(TFBlocks.oak_log.get(), TFBlocks.stripped_oak_log.get());

@@ -182,7 +182,7 @@
   "block.twilightforest.firefly": "Firefly",
   "block.twilightforest.cicada": "Cicada",
   "block.twilightforest.cicada.desc": "What if this could be launched at someone with a Railgun...?",
-  "block.twilightforest.portal": "Twilight Forest Portal",
+  "block.twilightforest.twilight_portal": "Twilight Forest Portal",
   "block.twilightforest.maze_stone": "Mazestone",
   "block.twilightforest.maze_stone_brick": "Mazestone Brick",
   "block.twilightforest.maze_stone_chiseled": "Chiseled Mazestone",
@@ -963,7 +963,7 @@
   "subtitles.entity.yeti.hurt": "Yeti hurts",
   "subtitles.entity.yeti.throw": "Yeti yeets player",
   
-  "subtitles.entity.alphayeti.parrot": "Parrot growls but cold",
+  "subtitles.entity.alphayeti.parrot": "Parrot coldly growls",
   "subtitles.entity.carminitegolem.parrot": "Parrot thunks",
   "subtitles.entity.hostilewolf.parrot": "Parrot growls",
   "subtitles.entity.hydra.parrot": "Parrot roars",

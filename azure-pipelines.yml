@@ -34,7 +34,7 @@ steps:
   displayName: Create Release Build
   inputs:
     workingDirectory: ''
-    options: '--build-cache -PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
+    options: '--build-cache --max-workers=1 -PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'

@@ -350,11 +350,9 @@ public final class TFSounds {
 				CASKET_CLOSE, CASKET_OPEN, CASKET_LOCKED, CASKET_REPAIR,
 				MUSIC
 		);
-
-		registerParrotSounds();
 	}
 
-	private static void registerParrotSounds() {
+	public static void registerParrotSounds() {
 		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.yeti_alpha, ALPHAYETI_PARROT);
 		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.blockchain_goblin, REDCAP_PARROT);
 		ParrotEntity.IMITATION_SOUND_EVENTS.put(TFEntities.tower_broodling, SoundEvents.ENTITY_PARROT_IMITATE_SPIDER);

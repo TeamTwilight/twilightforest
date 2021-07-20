@@ -1,14 +1,16 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.passive.horse.LlamaEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
@@ -26,13 +28,14 @@ import twilightforest.TFSounds;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.UUID;
 
 public class EntityTFHostileWolf extends WolfEntity implements IMob {
 
 	public EntityTFHostileWolf(EntityType<? extends EntityTFHostileWolf> type, World world) {
 		super(type, world);
-		setCollarColor(DyeColor.BLACK);
-		//setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
+		this.setTamed(false);
+		this.setSitting(false);
 	}
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -42,25 +45,17 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 
 	@Override
 	protected void registerGoals() {
-		super.registerGoals();
+		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
+		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
 		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
-		if (!world.isRemote && world.getDifficulty() == Difficulty.PEACEFUL) {
-			remove();
-		}
-	}
-
-	@Override
-	public void livingTick() {
-		super.livingTick();
-
-		if (!this.world.isRemote) {
-			this.func_241359_a_((ServerWorld)this.world, true);
-		}
+		this.targetSelector.addGoal(5, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
+		this.targetSelector.addGoal(6, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
+		this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
+		this.targetSelector.addGoal(8, new ResetAngerGoal<>(this, true));
 	}
 
 	public static boolean getCanSpawnHere(EntityType<? extends EntityTFHostileWolf> type, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
@@ -96,12 +91,37 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	}
 
 	@Override
+	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
+		return ActionResultType.PASS;
+	}
+
+	@Override
+	public ActionResultType getEntityInteractionResult(PlayerEntity playerIn, Hand hand) {
+		return ActionResultType.PASS;
+	}
+
+	@Override
 	public boolean isBreedingItem(ItemStack stack) {
 		return false;
 	}
 
 	@Override
-	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-		return ActionResultType.PASS;
+	public boolean isBegging() {
+		return false;
+	}
+
+	@Override
+	public boolean canMateWith(AnimalEntity otherAnimal) {
+		return false;
+	}
+
+	@Override
+	public WolfEntity createChild(ServerWorld world, AgeableEntity mate) {
+		return null;
+	}
+
+	@Override
+	protected boolean isDespawnPeaceful() {
+		return true;
 	}
 }

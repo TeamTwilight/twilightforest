@@ -692,7 +692,7 @@ public class TFEventListener {
 
 	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
 		// todo improve
-		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave");
+		return !world.getBlockState(pos).getBlock().getRegistryName().getPath().contains("grave") || !world.getBlockState(pos).getBlock().matchesBlock(TFBlocks.keepsake_casket.get());
 	}
 
 	/**
@@ -701,7 +701,7 @@ public class TFEventListener {
 	 */
 	private static boolean isAreaProtected(World world, PlayerEntity player, BlockPos pos) {
 
-		if (player.abilities.isCreativeMode || !TFGenerationSettings.isProgressionEnforced(world)) {
+		if (player.abilities.isCreativeMode || !TFGenerationSettings.isProgressionEnforced(world) || player instanceof FakePlayer) {
 			return false;
 		}
 

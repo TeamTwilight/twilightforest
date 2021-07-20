@@ -304,11 +304,13 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
 
 					if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.isItemEqual(currentItem)) {
-						if (currentItem.getTag() != null && beingSorted.getTag().equals(currentItem.getTag())) {
-							if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
-								chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
-								beingSorted.grow(currentItem.getCount());
-								currentItem.setCount(0);
+						if (currentItem.getTag() != null && beingSorted.getTag() != null) {
+							if (beingSorted.getTag().equals(currentItem.getTag())) {
+								if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
+									chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
+									beingSorted.grow(currentItem.getCount());
+									currentItem.setCount(0);
+								}
 							}
 						}
 					}

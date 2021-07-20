@@ -68,9 +68,9 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 			if (result instanceof EntityRayTraceResult) {
 				EntityRayTraceResult entityRay = ((EntityRayTraceResult) result);
 				if (entityRay.getEntity() instanceof LivingEntity
-						&& entityRay.getEntity().attackEntityFrom(TFDamageSources.LOST_WORDS(this, (LivingEntity)this.getShooter()), 6)) {
+						&& entityRay.getEntity().attackEntityFrom(TFDamageSources.LOST_WORDS(this, (LivingEntity)this.getShooter()), 3)) {
 					// inflict move slowdown
-					int duration = world.getDifficulty() == Difficulty.PEACEFUL ? 3 : world.getDifficulty() == Difficulty.NORMAL ? 7 : 9;
+					int duration = world.getDifficulty() == Difficulty.PEACEFUL ? 2 : world.getDifficulty() == Difficulty.NORMAL ? 6 : 8;
 					((LivingEntity) entityRay.getEntity()).addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration * 20, 1));
 				}
 			}

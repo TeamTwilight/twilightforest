@@ -235,7 +235,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 		if(serverWorld == null)
 			return;
 
-		entity.changeDimension(serverWorld, new TFTeleporter());
+		entity.changeDimension(serverWorld, new TFTeleporter(forcedEntry));
 
 		if (destination ==  RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) && entity instanceof ServerPlayerEntity && forcedEntry) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
