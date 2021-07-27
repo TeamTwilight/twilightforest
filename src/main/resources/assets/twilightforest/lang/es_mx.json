@@ -44,7 +44,7 @@
 
   // Swamp Progression
   "advancement.twilightforest.progress_labyrinth": "El Poderoso Stroganoff",
-  "advancement.twilightforest.progress_labyrinth.desc": "El guiso de carne y setas te calienta agradablemente, lo suficiente como para que sientas que estás lo suficientemente aclimatado como para aventurarte en el Pantano del Fuego.",
+  "advancement.twilightforest.progress_labyrinth.desc": "El guiso de carne y hongos te calienta agradablemente, lo suficiente como para que sientas que estás lo suficientemente aclimatado como para aventurarte en el Pantano del Fuego.",
   "advancement.twilightforest.kill_hydra": "Cazador de Hidras",
   "advancement.twilightforest.kill_hydra.desc": "Derrota a los poderosos %s y empodérate.",
   "advancement.twilightforest.mazebreaker": "Rompiendo el Laberinto",
@@ -134,8 +134,8 @@
   "biome.twilightforest.oak_savannah": "Sabana de Roble",
   "biome.twilightforest.stream": "Corriente Crepuscular",
   "biome.twilightforest.lake": "Lago Crepuscular",
-  "biome.twilightforest.mushroom_forest": "Bosque de Setas",
-  "biome.twilightforest.dense_mushroom_forest": "Bosque Denso de Setas",
+  "biome.twilightforest.mushroom_forest": "Bosque de Hongos",
+  "biome.twilightforest.dense_mushroom_forest": "Bosque Denso de Hongos",
   "biome.twilightforest.enchanted_forest": "Bosque Encantado",
   "biome.twilightforest.spooky_forest": "Bosque Espeluznante",
   "biome.twilightforest.swamp": "TPantano Crepuscular",
@@ -227,7 +227,7 @@
   "block.twilightforest.mangrove_sapling": "Retoño de Manglar Crepuscular",
   "block.twilightforest.darkwood_sapling": "Retoño de Árbol de Madera Oscura Joven",
   "block.twilightforest.hollow_oak_sapling": "Retoño de Roble Robusto Crepuscular",
-  "block.twilightforest.time_sapling": "Tree of Time Sapling",
+  "block.twilightforest.time_sapling": "Retoño de Árbol del Tiempo",
   "block.twilightforest.transformation_sapling": "Tree of Transformation Sapling",
   "block.twilightforest.mining_sapling": "Miner's Tree Sapling",
   "block.twilightforest.sorting_sapling": "Sorting Tree Sapling",
