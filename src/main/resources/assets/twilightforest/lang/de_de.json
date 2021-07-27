@@ -2,6 +2,9 @@
     //If something is commented out, it means it hasn't been translated yet.
   
   //TODO: Advancements are all out of order, so some might be missing. Refer to the en_us lang file for help
+    "advancement.twilightforest.hedge": "Kammerjäger",
+    "advancement.twilightforest.hedge.desc": "Besiege eine Spinne in einem Irrgarten.",
+    
     "advancement.twilight_portal": "Twilight-Portal",
     "advancement.twilight_portal.desc": "Baue ein Portal in den Twilight-Forest.",
     "advancement.twilight_arrival": "Ankunft in der Dämmerung",
@@ -24,8 +27,10 @@
     "advancement.twilightforest.hill2.desc": "Besiege einen Rotkäppchen-Pionier in einem mittleren hohlen Hügel.",
     "advancement.twilightforest.hill3": "Ich kann dich sehen",
     "advancement.twilightforest.hill3.desc": "Besiege ein Twilightgespenst in einem großen hohlen Hügel.",
-    "advancement.twilightforest.hedge": "Kammerjäger",
-    "advancement.twilightforest.hedge.desc": "Besiege eine Spinne in einem Irrgarten.",
+
+    
+    // Map
+    
     "advancement.twilightforest.magic_map": "Bis zum Horizont",
     "advancement.twilightforest.magic_map.desc": "Stelle eine magische Karte her.",
     "advancement.twilightforest.maze_map": "Nichts wie raus hier",
@@ -911,7 +916,7 @@
     "subtitles.twilightforest.te.reactor.idle": "Carminite Reactor wooshes",
   
     "subtitles.random.slider": "Sliding Trap moves",*/
-  
+    */
     /*"death.attack.twilightforest.ghastTear": "%1$s was scalded by fiery tears",
     "death.attack.twilightforest.ghastTear.player": "%1$s was scalded by fiery tears while escaping %2$s",
     "death.attack.twilightforest.hydraFire": "%1$s was roasted alive by the Hydra",
@@ -1141,7 +1146,7 @@
     "twilightforest.shader.mazestone": "Mazestone",
     "twilightforest.shader.minoshroom": "Minoschwammerl",
     "twilightforest.shader.hydra": "Hydra",
-    "twilightforest.shader.underbrick": "Underbrick",
+    "twilightforest.shader.underbrick": "Fundamentsziegelstein",
     "twilightforest.shader.knight_phantom": "Knight Phantom",
     "twilightforest.shader.towerwood": "Towerwood",
     "twilightforest.shader.ur-ghast": "Ur-Ghast",
