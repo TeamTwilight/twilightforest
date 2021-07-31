@@ -19,18 +19,14 @@
   "advancement.twilightforest.quest_ram.desc": "Gieb dem Schafbock der Schatzsuche, was ihm fehlt.",
   
   // Karte
-
   "advancement.twilightforest.magic_map_focus": "Mit Feuer geschrieben",
   "advancement.twilightforest.magic_map_focus.desc": "Stelle den magischen Kartenfokus mit einer Rabenfeder, Glowstonestaub und Fackelbeeren her.",
-
   "advancement.twilightforest.magic_map": "Bis zum Horizont",
   "advancement.twilightforest.magic_map.desc": "Stelle eine magische Karte her.",
   "advancement.twilightforest.maze_map": "Nichts wie raus hier",
   "advancement.twilightforest.maze_map.desc": "Stelle die Labyrinthkarte her, nachdem du einen Labyrinthkartenfokus gefunden hast.",
   "advancement.twilightforest.ore_map": "Ist es das denn wert?",
   "advancement.twilightforest.ore_map.desc": "Stelle die Labyrinth-Erzkarte her.",
-
-  
   
   // Hauptlinie-Anfangsforschritt
   "advancement.twilightforest.twilight_hunter": "Das Schweigen des Waldes",
@@ -46,18 +42,15 @@
   "advancement.twilightforest.lich_scepters": "Mit vereinten Kräften!",
   "advancement.twilightforest.lich_scepters.desc": "Erwerbe alle vier Zepter der Macht.",
 
-
-
-// Sumpffortschritt
-
+  // Sumpffortschritt
   "advancement.twilightforest.progress_labyrinth": "Gewaltiger Stroganow",
   "advancement.twilightforest.progress_labyrinth.desc": "Der Fleisch- und Pilz-Eintopf im Labyrinth macht dich bereit, den Feuersumpf zu betreten.",
   "advancement.twilightforest.kill_hydra": "Hydraschlächter",
   "advancement.twilightforest.kill_hydra.desc": "Besiege die mächtige Hydra.",
-  "advancement.twilightforest.hydra_chop": "Massive Kotletten",
-  "advancement.twilightforest.hydra_chop.desc": "Esse das übermächtige Fleisch der Hydra, wenn deine Hungerleiste leer ist.",
   "advancement.twilightforest.mazebreaker": "Brecher des Labyrinths",
   "advancement.twilightforest.mazebreaker.desc": "Finde die Labyrinthbrecher-Spitzhacke im geheimen Labyrinthgewölbe.",
+  "advancement.twilightforest.hydra_chop": "Massive Kotletten",
+  "advancement.twilightforest.hydra_chop.desc": "Esse das übermächtige Fleisch der Hydra, wenn deine Hungerleiste leer ist.",
 
   // Dunkler Wald Fortschritt
   "advancement.twilightforest.progress_trophy_pedestal": "Trophäenchampion",
@@ -68,13 +61,11 @@
   "advancement.twilightforest.ghast_trap.desc": "Töte den %ss um einen %s und aktiviere ihn, um den %s vom Himmel zu reißen.",
   "advancement.twilightforest.progress_ur_ghast": "Tränen des Feuers",
   "advancement.twilightforest.progress_ur_ghast.desc": "Berühre die feuerroten Tränen des Ur-Ghasts um der Kälte in den Schneewäldern zu widerstehen.",
+  
   "advancement.twilightforest.experiment_115": "Mystery Meat?",
   "advancement.twilightforest.experiment_115.desc": "Sieht aus wie Kuchen, obwohl...",
   "advancement.twilightforest.experiment_115_2": "Notiz machen: Großer Erfolg!",
   "advancement.twilightforest.experiment_115_2.desc": "Es ist so lecker und feucht!",
-
-
-
 
   // Schneewaldfortschritt
   "advancement.twilightforest.progress_yeti": "Alphafell",
@@ -84,7 +75,6 @@
   "advancement.twilightforest.arctic_dyed": "Einstieg in die Mode",
   "advancement.twilightforest.arctic_dyed.desc": "Färbe alle vier Teile der Arktis-Rüstung.",
 
-
   // Mittelweg Verschiedenes
   "advancement.twilightforest.glass_sword": "Ein-Hit-Wunder",
   "advancement.twilightforest.glass_sword.desc": "Hast du das gut genutzt?",
@@ -93,7 +83,6 @@
   "advancement.twilightforest.fiery_set.desc": "Nutze ein Feuerwerkzeug oder eine Feuerwaffe während du mindestens einen Teil der Feuerrüstung trägst.",
 
   // Hochlände
-
   "advancement.twilightforest.progress_merge": "Ultimativer Showdown",
   "advancement.twilightforest.progress_merge.desc": "Töte die %s, %s und %s, um den sauren Regen zu beseitigen und dich für die Highlands zu stärken.",
   "advancement.twilightforest.troll": "Wir machen ein bisschen Trolling",
@@ -102,7 +91,6 @@
   "advancement.twilightforest.beanstalk.desc": "Sammle einige %s in den Trollhöhlen und benutze sie auf dem glühenden Boden unter den Wolken.",
   "advancement.twilightforest.giants": "Ich bin auf Wolke neun",
   "advancement.twilightforest.giants.desc": "Töte einen %s in den Wolken, hole einen %s und kehre zurück zu den Trollhöhlen.",
-
   "advancement.twilightforest.progress_troll": "Alles soll brennen",
   "advancement.twilightforest.progress_troll.desc": "Finde die Lampe der Asche in den Trollhöhle und du kannst die Dornenbarriere überwinden.",
   "advancement.twilightforest.progress_thorns": "An den Dornen vorbei",
@@ -123,7 +111,6 @@
   "twilightforest.ore_meter.range": "Radius: %s, Ursprung: [%s, %s]",
   "twilightforest.ore_meter.exposed": "Exponiert: %s",
   "twilightforest.scepter_charges": "%d charges left",
-
 
   // Kommandos
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
@@ -162,8 +149,8 @@
   "biome.twilightforest.final_plateau": "Letzte Hochebene",
 
   // Gamerules
-
   "gamerule.tfEnforcedProgression": "Dämmerwald-Verlauf",
+
   // Verzaubern
   "enchantment.twilightforest.fire_react": "Feuerreaktion",
   "enchantment.twilightforest.chill_aura": "Kühlenaura",
@@ -223,7 +210,7 @@
   "block.twilightforest.clover_patch": "Kleeflecken [WIP]",
   "block.twilightforest.fiddlehead": "Farnwedel",
   "block.twilightforest.mushgloom": "Düsterpilz",
-  "block.twilightforest.berry_plant": "Fackelbeerenstrauch",
+  "block.twilightforest.torchberry_plant": "Fackelbeerenstrauch",
   "block.twilightforest.root_strand": "Wurzelstränge",
   "block.twilightforest.fallen_leaves": "Laubhaufen",
   "block.twilightforest.root": "Wurzeln",
@@ -254,18 +241,14 @@
   "block.twilightforest.stripped_transformation_log": "Entrindeter Wandelbaumsstamm",
   "block.twilightforest.stripped_mining_log": "Entrindeter Bewerksbaumsstamm",
   "block.twilightforest.stripped_sorting_log": "Entrindeter Sortierbaumsstamm",
-
   "block.twilightforest.sorting_wood": "Sortierholz",
   "block.twilightforest.mining_wood": "Bergwerksholz",
-
   "block.twilightforest.transformation_wood": "Wandelholz",
   "block.twilightforest.time_wood": "Zeitholz",
-    "block.twilightforest.stripped_sorting_wood": "Entrindetes Sortierholz",
+  "block.twilightforest.stripped_sorting_wood": "Entrindetes Sortierholz",
   "block.twilightforest.stripped_mining_wood": "Entrindetes Bewerksholz",
   "block.twilightforest.stripped_transformation_wood": "Entrindetes Wandelholz",
   "block.twilightforest.stripped_time_wood": "Entrindetes Zeitholz",
-
-
   "block.twilightforest.time_log_core": "Zeitholzuhr",
   "block.twilightforest.transformation_log_core": "Herz der Verwandlung",
   "block.twilightforest.mining_log_core": "Bergwerkskern",
@@ -277,8 +260,8 @@
   "block.twilightforest.tower_wood": "Turmholzbretter",
   "block.twilightforest.tower_wood_encased": "Eingehülltes Turmholz",
   "block.twilightforest.tower_wood_cracked": "Rissiges Turmholz",
-  "block.twilightforest.tower_stone_mossy": "Bemoostes Turmholz",
-  "block.twilightforest.tower_stone_infected": "Turmholz (Würmer)",
+  "block.twilightforest.tower_wood_mossy": "Bemoostes Turmholz",
+  "block.twilightforest.tower_wood_infected": "Turmholz (Würmer)",
   "block.twilightforest.reappearing_block": "Wiedererscheinender Block",
   "block.twilightforest.vanishing_block": "Verschwindender Block",
   "block.twilightforest.locked_vanishing_block": "Verriegelter verschwindender Block",
@@ -317,8 +300,9 @@
   "block.twilightforest.giant_leaves": "Riesenlaub",
   "block.twilightforest.giant_obsidian": "Riesenobsidian",
   "block.twilightforest.uberous_soil": "Hochwertige Erde",
-  "block.twilightforest.huge_mushgloom_stem": "Riesendüsterpilzstiel",
+  "block.twilightforest.huge_stalk": "Riesiger Stiel",
   "block.twilightforest.huge_mushgloom": "Riesendüsterpilz",
+  "block.twilightforest.huge_mushgloom_stem": "Riesendüsterpilzstiel",
   "block.twilightforest.trollvidr": "Trollpflanze",
   "block.twilightforest.unripe_trollber": "Unreife Trollbeere",
   "block.twilightforest.trollber": "Trollbeere",
@@ -336,10 +320,10 @@
   "block.twilightforest.castle_stairs_worn": "Alte Burgziegeltreppe",
   "block.twilightforest.castle_stairs_cracked": "Rissige Burgziegeltreppe",
   "block.twilightforest.castle_stairs_mossy": "Bemooste Burgziegeltreppe",
-  "block.twilightforest.castle_door_pink": "Pinker Burgtür",
-  "block.twilightforest.castle_door_blue": "Blauer Burgtür",
   "block.twilightforest.castle_door_yellow": "Gelber Burgtür",
   "block.twilightforest.castle_door_purple": "Violetter Burgtür",
+  "block.twilightforest.castle_door_pink": "Pinker Burgtür",
+  "block.twilightforest.castle_door_blue": "Blauer Burgtür",
   "block.twilightforest.castle_rune_brick_pink": "Rosa Burgrunenziegel",
   "block.twilightforest.castle_rune_brick_blue": "Blauer Burgrunenziegel",
   "block.twilightforest.castle_rune_brick_yellow": "Gelber Burgrunenziegel",
@@ -350,15 +334,12 @@
   "block.twilightforest.castle_pillar_bold_tile": "Fette Burgziegelkachel",
   "block.twilightforest.castle_stairs_encased": "Ummantelte Burgziegeltreppe",
   "block.twilightforest.castle_stairs_bold": "Fette Burgziegeltreppe",
-
-
   "block.twilightforest.force_field_purple": "Violettes Energiefeld",
   "block.twilightforest.force_field_pink": "Pinkes Energiefeld",
   "block.twilightforest.force_field_orange": "Orangenes Energiefeld",
   "block.twilightforest.force_field_green": "Grünes Energiefeld",
   "block.twilightforest.force_field_blue": "Blaues Energiefeld",
   "block.twilightforest.ironwood_block": "Eisenholzgitter",
-
   "block.twilightforest.fiery_block": "Feuereisenblock",
   "block.twilightforest.steeleaf_block": "Stahlblattblock",
   "block.twilightforest.arctic_fur_block": "Arktispelzblock",
@@ -388,16 +369,19 @@
   "block.twilightforest.terrorcotta_circle": "Terrorkotta (Circular)",
   "block.twilightforest.terrorcotta_diagonal": "Terrorkotta (Diagonal)",
   "block.twilightforest.experiment_115": "Experiment 115",
-  "block.twilightforest.trophy.hydra_trophy": "Hydratrophäe",
-  "block.twilightforest.trophy.naga_trophy": "Nagatrophäe",
+  "block.twilightforest.hydra_trophy": "Hydratrophäe",
+  "block.twilightforest.naga_trophy": "Nagatrophäe",
   "block.twilightforest.minoshroom_trophy": "Minoschwammerltrophäe",
   "block.twilightforest.knight_phantom_trophy": "Phantomrittertrophäe",
-  "block.twilightforest.trophy.lich_trophy": "Lichtrophäe",
-  "block.twilightforest.trophy.ur_ghast_trophy": "Ur-Ghasttrophäe",
-  "block.twilightforest.trophy.snow_queen_trophy": "Schneekönigintrophäe",
+  "block.twilightforest.lich_trophy": "Lichtrophäe",
+  "block.twilightforest.ur_ghast_trophy": "Ur-Ghasttrophäe",
+  "block.twilightforest.yeti_trophy": "Alpha-Yetitrophäe",
+  "block.twilightforest.snow_queen_trophy": "Schneekönigintrophäe",
   "block.twilightforest.quest_ram_trophy": "Schafbock-der-Schatzsuche-Trophäe",
 
   "block.twilightforest.keepsake_casket": "Andenkenschatulle",
+  "block.twilightforest.casket.broken": "Dein Andenkenschatulle war zu beschädigt, um weitere Gegenstände aufzunehmen. Alle Gegenstände, die in der Schatulle aufbewahrt werden sollten, sind auf den Boden gefallen.",
+  "block.twilightforest.casket.locked": "Diese Schatulle wird nur von %s geöffnet!",
 
   "block.twilightforest.potted_twilight_oak_sapling": "Dämmerungseichensetzling im Topf ",
   "block.twilightforest.potted_canopy_sapling": "Baldachinbaumsetzling im Topf",
@@ -415,6 +399,7 @@
   "block.twilightforest.potted_thorn": "Dorn im Topf",
   "block.twilightforest.potted_green_thorn": "Grüner Dorn im Topf",
   "block.twilightforest.potted_dead_thorn": "Verbrannter Dorn im Topf",
+
   "block.twilightforest.canopy_planks": "Baldachinbretter",
   "block.twilightforest.canopy_stairs": "Baldachintreppe",
   "block.twilightforest.canopy_slab": "Baldachinstufe",
@@ -426,6 +411,7 @@
   "block.twilightforest.canopy_door": "Baldachin tür",
   "block.twilightforest.canopy_sign": "Baldachinschild",
   "block.twilightforest.canopy_wall_sign": "Baldachinwandschild",
+
   "block.twilightforest.dark_planks": "Dunkelholzbretter",
   "block.twilightforest.dark_stairs": "Dunkelholztreppe",
   "block.twilightforest.dark_slab": "Dunkelholzstufe",
@@ -437,6 +423,7 @@
   "block.twilightforest.dark_door": "Dunkelholztür",
   "block.twilightforest.darkwood_sign": "Dunkelholzschild",
   "block.twilightforest.darkwood_wall_sign": "Dunkelholzwandschild",
+
   "block.twilightforest.mangrove_planks": "Mangrovenbretter",
   "block.twilightforest.mangrove_stairs": "Mangroventreppe",
   "block.twilightforest.mangrove_slab": "Mangrovenstufe",
@@ -448,6 +435,7 @@
   "block.twilightforest.mangrove_door": "Mangroventür",
   "block.twilightforest.mangrove_sign": "Mangrovenschild",
   "block.twilightforest.mangrove_wall_sign": "Mangrovenwandschild",
+
   "block.twilightforest.twilight_oak_planks": "Dämmerungseichenbretter",
   "block.twilightforest.twilight_oak_stairs": "Dämmerungseichentreppe",
   "block.twilightforest.twilight_oak_slab": "Dämmerungseichenstufe",
@@ -459,6 +447,7 @@
   "block.twilightforest.twilight_oak_door": "DämmerungseichenDoor",
   "block.twilightforest.twilight_oak_sign": "DämmerungseichenSign",
   "block.twilightforest.twilight_wall_sign": "DämmerungseichenWallschild",
+
   "block.twilightforest.time_planks": "Zeitholzbretter",
   "block.twilightforest.time_stairs": "Zeitholztreppe",
   "block.twilightforest.time_slab": "Zeitholzstufe",
@@ -470,6 +459,7 @@
   "block.twilightforest.time_door": "Zeitholztür",
   "block.twilightforest.time_sign": "Zeitholzschild",
   "block.twilightforest.time_wall_sign": "Zeitholzwandschild",
+
   "block.twilightforest.trans_planks": "Wandelholzbretter",
   "block.twilightforest.trans_stairs": "Wandelholztreppe",
   "block.twilightforest.trans_slab": "Wandelholzstufe",
@@ -481,6 +471,7 @@
   "block.twilightforest.trans_door": "Wandelholztür",
   "block.twilightforest.trans_sign": "Wandelholzschild",
   "block.twilightforest.trans_wall_sign": "Wandelholzwandschild",
+
   "block.twilightforest.mine_planks": "Bewerksholzbretter",
   "block.twilightforest.mine_stairs": "Bewerksholztreppe",
   "block.twilightforest.mine_slab": "Bewerksholzstufe",
@@ -492,6 +483,7 @@
   "block.twilightforest.mine_door": "Bewerksholztür",
   "block.twilightforest.mine_sign": "Bewerksholzschild",
   "block.twilightforest.mine_wall_sign": "Bewerksholzwandschild",
+
   "block.twilightforest.sort_planks": "Sortierholzbretter",
   "block.twilightforest.sort_stairs": "Sortierholztreppe",
   "block.twilightforest.sort_slab": "Sortierholzstufe",
@@ -502,31 +494,28 @@
   "block.twilightforest.sort_trapdoor": "Sortierholz Trapdoor",
   "block.twilightforest.sort_door": "Sortierholztür",
   "block.twilightforest.sort_sign": "Sortierholzschild",
+  "block.twilightforest.sort_wall_sign": "Sortierholzwandschild",
 
   "block.steeleaf.tooltip": "Verringert den Fallschaden um 25%",
   "block.arctic.tooltip": "Verringert den Fallschaden um 90%",
   "block.knightmetal.tooltip": "Wirkt wie ein stärkerer Kaktus",
 
-
   // Strukturen
-
   "structure.twilight_portal": "Dämmerungsportal",
-  "structure.hecken_labyrinth": "Heckenirrgarten",
+  "structure.hedge_maze": "Heckenirrgarten",
   "structure.hollow_hill": "Hohlhügel",
   "structure.quest_grove": "Schatzsuche-Hain",
   "structure.mushroom_tower": "Pilz-Burg",
-  "structure.naga_courty": "Naga-Hof",
+  "structure.naga_courtyard": "Naga-Hof",
   "structure.lich_tower": "Lich-Turm",
   "structure.minotaur_labyrinth": "Minotaurus-Labyrinth",
-  "structure.hydra_lair": "Hydra's Lair",
+  "structure.hydra_lair": "Lager der Hydra",
   "structure.goblin_stronghold": "Goblin-Hochburg",
   "structure.dark_tower": "Dunkler Turm",
-  "structure.yeti_cave": "Yeti-Höhle": "Yeti-Höhle",
+  "structure.yeti_cave": "Yeti-Höhle",
   "structure.aurora_palace": "Aurora-Palast",
   "structure.troll_cave_and_cloud_castle": "Trollhöhle und Haus in den Wolken",
   "structure.final_castle": "Endburg",
-
-
 
   // Gegenstände
   "item.twilightforest.boarkchop": "Wildschweinefleisch",
@@ -645,7 +634,7 @@
 
   "item.twilightforest.wild_boar_spawn_egg": "Wildschwein-Spawn-Ei",
   "item.twilightforest.bighorn_sheep_spawn_egg": "Dickhornschaf-Spawn-Ei",
-  "item.twilightforest.deer_spawn_egg": "Hirsch-Spawn-Ei",
+  "item.twilightforest.deer_spawn_egg": "Wilder-Hirsch-Spawn-Ei",
   "item.twilightforest.redcap_spawn_egg": "Rotkäppchen-Spawn-Ei",
   "item.twilightforest.swarm_spider_spawn_egg": "Schwarmspinne-Spawn-Ei",
   "item.twilightforest.naga_spawn_egg": "Naga-Spawn-Ei",
@@ -721,7 +710,6 @@
 
   "item.twilightforest.arctic_armor.tooltip": "Einfärbbar wie Lederrüstungen",
 
-
   // Entitäten
   "entity.twilightforest.wild_boar": "Wildschwein",
   "entity.twilightforest.bighorn_sheep": "Dickhornschaf",
@@ -781,13 +769,11 @@
   "entity.twilightforest.giant_miner": "Bergriese",
   "entity.twilightforest.armored_giant": "Gepanzerter Riese",
   "entity.twilightforest.ice_crystal": "Eiskristall",
+  "entity.twilightforest.rising_zombie": "Zombie",
   "entity.twilightforest.harbinger_cube": "Würfel der Zerstörung [Nicht Erledigt]",
   "entity.twilightforest.adherent": "Anhänger [Nicht Erledigt]",
   "entity.twilightforest.castle_guardian": "Wächter der Burg [Nicht Erledigt]",
   "entity.twilightforest.roving_cube": "Schwebender Würfel [Nicht Erledigt]",
-
-
-
 
   "entity.twilightforest.ice_snowball": "Eisschneeball",
   "entity.twilightforest.ice_arrow": "Eispfeil",
@@ -815,10 +801,10 @@
   "subtitles.twilightforest.entity.alphayeti.grab": "Alpha-Yeti packt den Spieler",
   "subtitles.twilightforest.entity.alphayeti.growl": "Alpha-Yeti knurrt",
   "subtitles.twilightforest.entity.alphayeti.hurt": "Alpha-Yeti nimmt Schaden",
-  "subtitles.twilightforest.entity.alphayeti.ice": "Alpha-Yeti throws ice",
+  "subtitles.twilightforest.entity.alphayeti.ice": "Alpha-Yeti schleudert Eis",
   "subtitles.twilightforest.entity.alphayeti.pant": "Alpha-Yeti hechelt",
   "subtitles.twilightforest.entity.alphayeti.roar": "Alpha-Yeti brüllt",
-  "subtitles.twilightforest.entity.alphayeti.throw": "Alpha-Yeti wirft Spieler",
+  "subtitles.twilightforest.entity.alphayeti.throw": "Alpha-Yeti schleudert Spieler",
   "subtitles.twilightforest.entity.bighorn.ambient": "Dickhornschaf blökt",
   "subtitles.twilightforest.entity.bighorn.death": "Dickhornschaf stirbt",
   "subtitles.twilightforest.entity.bighorn.hurt": "Dickhornschaf nimmt Schaden",
@@ -918,11 +904,11 @@
   "subtitles.twilightforest.entity.naga.hiss": "Naga zischt",
   "subtitles.twilightforest.entity.naga.hurt": "Naga nimmt Schaden",
   "subtitles.twilightforest.entity.naga.rattle": "Naga klappert",
-  "subtitles.twilightforest.entity.kphantom.axe": "Phantomritter throws axe",
+  "subtitles.twilightforest.entity.kphantom.axe": "Phantomritter schleudert axt",
   "subtitles.twilightforest.entity.kphantom.ambient": "Phantomritter keucht",
   "subtitles.twilightforest.entity.kphantom.death": "Phantomritter stirbt",
   "subtitles.twilightforest.entity.kphantom.hurt": "Phantomritter nimmt Schaden",
-  "subtitles.twilightforest.entity.kphantom.pick": "Phantomritter throws pickaxe",
+  "subtitles.twilightforest.entity.kphantom.pick": "Phantomritter schleudert axt",
   "subtitles.twilightforest.entity.pinchbeetle.death": "Zangenkäfer stirbt",
   "subtitles.twilightforest.entity.pinchbeetle.hurt": "Zangenkäfer nimmt Schaden",
   "subtitles.twilightforest.entity.quest.ambient": "Schafbock der Schatzsuche blökt",
@@ -975,7 +961,7 @@
   "subtitles.twilightforest.entity.yeti.grab": "Yeti packt den Spieler",
   "subtitles.twilightforest.entity.yeti.growl": "Yeti knurrt",
   "subtitles.twilightforest.entity.yeti.hurt": "Yeti nimmt Schaden",
-  "subtitles.twilightforest.entity.yeti.throw": "Yeti wirft Spieler",
+  "subtitles.twilightforest.entity.yeti.throw": "Yeti schlwudert Spieler",
   
   "subtitles.twilightforest.entity.alphayeti.parrot": "Papagei knurrt aber kalt",
   "subtitles.twilightforest.entity.carminitegolem.parrot": "Papagei donnert",
@@ -991,14 +977,12 @@
   "subtitles.twilightforest.entity.wraith.parrot": "Papagei keucht",
 
   "subtitles.twilightforest.block.bug.squish": "Der Käfer wird zerquetscht :(",
-
   "subtitles.twilightforest.block.builder.on": "Erbauer activiert",
   "subtitles.twilightforest.block.builder.off": "Erbauer deactiviert",
   "subtitles.twilightforest.block.builder.replace": "Erbauer ersetzt den Block",
   "subtitles.twilightforest.block.door.activate": "Burgtür fails to vanish",
   "subtitles.twilightforest.block.door.reappear": "Burgtür taucht wieder auf",
   "subtitles.twilightforest.block.door.vanish": "Burgtür verschwindet",
-
   "subtitles.twilightforest.block.vanish.locked": "Turmholztür nicht verschwunden",
   "subtitles.twilightforest.block.vanish.unlock": "Turmholztür wird entriegelt",
   "subtitles.twilightforest.block.reappear.reappear": "Wiederauftauchender Block taucht wieder auf",
@@ -1008,6 +992,10 @@
   "subtitles.twilightforest.block.core.transformation": "Wandelbaum summt",
   "subtitles.twilightforest.block.portal.woosh": "Dämmerwald Portal winkt",
   "subtitles.twilightforest.block.pedestal.activate": "Trophäensockel nimmt Trophäe an",
+  "subtitles.twilightforest.block.casket.open": "Keepsake Casket opens",
+  "subtitles.twilightforest.block.casket.close": "Keepsake Casket closes",
+  "subtitles.twilightforest.block.casket.repair": "Player repairs casket",
+  "subtitles.twilightforest.block.casket.locked": "Keepsake Casket clicks",
 
   "subtitles.twilightforest.item.blockchain.collide": "Kettenhammer trifft Block",
   "subtitles.twilightforest.item.blockchain.hit": "Kettenhammer trifft Entität",
@@ -1031,11 +1019,9 @@
   "subtitles.twilightforest.te.smoker.start": "Raucher startet",
   "subtitles.twilightforest.te.reactor.idle": "Karminit-Reaktor wummert",
 
-
   "subtitles.random.slider": "Schiebefalle bewegt sich",
   
   //Todesanzeigen
-
   "death.attack.twilightforest.ghastTear": "%1$s wurde von feurigen Tränen verbrüht",
   "death.attack.twilightforest.ghastTear.player": "%1$s wurde auf der Flucht vor %2$s von feurigen Tränen verbrüht",
   "death.attack.twilightforest.hydraFire": "%1$s wurde bei lebendigem Leib von der Hydra geröstet",
@@ -1069,6 +1055,8 @@
 
   "death.attack.twilightforest.axing": "%1$s wurde von %2$s zerhackt",
   "death.attack.twilightforest.axing.item": "%1$s wurde von %2$s mit %3$s zerhackt",
+  "death.attack.twilightforest.cicada": "%1$s wurde von Zikade zerhackt",
+  "death.attack.twilightforest.moonworm": "%1$s wurde von Moonworm zerhackt",
   "death.attack.twilightforest.ant": "%1$s lebte das Leben einer Ameise dank %2$s",
   "death.attack.twilightforest.ant.item": "%1$s lebte das Leben einer Ameise dank %2$s mit %3$s",
   "death.attack.twilightforest.haunt": "%1$s schloss sich dem Spuk von %2$s an",
@@ -1087,6 +1075,8 @@
   "death.attack.twilightforest.lostWords.item": "%1$s wusste nicht mehr weiter, nachdem er von %2$s mit %3$s getötet wurde",
   "death.attack.twilightforest.snowballFight": "%1$s verlor eine Schneeballschlacht gegen %2$s",
   "death.attack.twilightforest.snowballFight.item": "%1$s hat eine Schneeballschlacht gegen %2$s mit %3$s verloren",
+  "death.attack.twilightforest.yeeted": "%1$s wurde zum letzten Mal von %2$s geschleudert",
+  "death.attack.twilightforest.yeeted.item": "%1$s wurde zum letzten Mal von %2$s geschleudert, während er irgendwie %3$s hielt",
 
   // Verschiedenes
   "twilightforest.misc.wip0": "Dieser Block ist noch in Arbeit und kann Fehler oder unbeabsichtigte Effekte haben, die deine Welt beschädigen können.",
@@ -1108,6 +1098,7 @@
   "twilightforest.config.skylight_forest.tooltip": "Wenn true, wird der Dämmerwald als Leere generiert, mit Ausnahme von Major Structures.",
   "twilightforest.config.skylight_oaks": "Himmelslicht-Eichen [WIP]",
   "twilightforest.config.skylight_oaks.tooltip": "Wenn wahr, werden riesige Dämmerungseichen auch in leeren Welten spawnen.",
+ 
   "twilightforest.config.world_gen_weights": "Welt-Gen-Gewichte",
   "twilightforest.config.world_gen_weights.tooltip": "Gewichte für verschiedene kleine Features",
   "twilightforest.config.stone_circle_weight": "Steinkreis-Gewicht",
@@ -1120,6 +1111,7 @@
   "twilightforest.config.fallen_hollow_log_weight": "Gefallener-Hohlstamm-Gewicht",
   "twilightforest.config.fallen_small_log_weight": "Gefallenes Smallstamm-Gewicht",
   "twilightforest.config.druid_hut_weight": "Gewicht der Druidenhütte",
+
   "twilightforest.config.hollow_hill_stalactites": "Benutzerdefinierte Hohlhügel-Tropfsteine",
   "twilightforest.config.hollow_hill_stalactites.tooltip": "Definiert benutzerdefinierte Stalaktiten, die in hohlen Hügeln erzeugt werden. \n_Format ist \\\"modid:block<:meta> size max_Length min_Height weight\\\", wobei die Eigenschaften wie folgt lauten:\n_Size - die maximale Länge des Stalaktiten im Verhältnis zum Abstand zwischen Hügelboden und Decke,\n_Max length - maximale Länge eines Stalaktiten in Blöcken,\n_Min height - Mindestabstand zwischen Hügelboden und Stalaktit, damit er erzeugt werden kann,\nn_Weight - wie oft er erzeugt wird.\n\n_z.B.: \\\"minecraft:iron_ore 0.7 8 1 24\\\" würde einen Stalaktiten hinzufügen, der dem Standard-Stalaktiten aus Eisenerz entspricht.",
   "twilightforest.config.large_hill": "Große Hügel",
@@ -1130,8 +1122,10 @@
   "twilightforest.config.small_hill.tooltip": "Blöcke, die als Stalaktiten in allen Hügeln generiert werden.",
   "twilightforest.config.stalactite_config_only": "Nur die Stalaktiten-Konfiguration verwenden",
   "twilightforest.config.stalactite_config_only.tooltip": "Wenn true, werden Standard-Stalaktiten und Stalaktiten, die von anderen Mods definiert wurden, nicht verwendet.",
+
   "twilightforest.config.compat": "Kompatibilität",
   "twilightforest.config.compat.tooltip": "Soll TF-Kompatibilität geladen werden? Deaktiviere diese Option, wenn die TF-Kompatibilität zu Abstürzen führt oder wenn sie nicht gewünscht ist.",
+ 
   "twilightforest.config.performance": "Leistung",
   "twilightforest.config.performance.tooltip": "Ermöglicht es Ihnen, verschiedene Dinge zu opfern, um die Leistung der Welt zu verbessern.",
   "twilightforest.config.canopy_coverage": "Baldachinabdeckung",
@@ -1144,10 +1138,13 @@
   "twilightforest.config.glacier_packed_ice.tooltip": "Wenn diese Option auf true gesetzt wird, werden Dämmerung-Gletscher aus gepacktem Eis anstelle von normalem, durchsichtigem Eis generiert, was die Menge der Lichtprüfungsberechnungen verringert.",
   "twilightforest.config.enable_skylight": "Himmelslicht: An",
   "twilightforest.config.enable_skylight.tooltip": "Wenn die Dimension Werte für das Himmelslicht pro Block hat. Wenn du dies deaktivierst, wird die Leistung der Welterzeugung erheblich verbessert, allerdings auf Kosten einer flachen Beleuchtung überall.\n_WARNING: Sobald Chunks ohne Skylight geladen werden, gehen diese Daten verloren und können nicht einfach wiederhergestellt werden. Sei vorsichtig!",
+
   "twilightforest.config.silent_cicadas": "Stumme Zikaden",
   "twilightforest.config.silent_cicadas.tooltip": "Macht Zikaden stumm für diejenigen, die Probleme mit der Soundbibliothek haben oder sie anderweitig als störend empfindest.",
+
   "twilightforest.config.first_person_effects": "Render 1st Person Effects",
   "twilightforest.config.first_person_effects.tooltip": "Steuert, ob verschiedene Effekte aus der Mod in der Ego-Perspektive gerendert werden. Schalte dies aus, wenn du sie als störend empfinden.",
+
   "twilightforest.config.origin_dimension": "Ursprungsdimension",
   "twilightforest.config.origin_dimension.tooltip": "Die Dimension, aus der du immer in den Dämmerwald reisen kannst, sowie die Dimension, in die du zurückkehrst. Standardmäßig ist das die Oberwelt.",
   "twilightforest.config.portals_in_other_dimensions": "Portale in anderen Dimensionen",
@@ -1164,14 +1161,22 @@
   "twilightforest.config.portal_return.tooltip": "Wenn false, benötigt das Rückgabeportal das Aktivierungselement.",
   "twilightforest.config.check_portal_destination": "Pre-Check Portal Destination",
   "twilightforest.config.check_portal_destination.tooltip": "Legt fest, ob neue Portale vorab auf Sicherheit geprüft werden sollen. Wenn dies aktiviert ist, werden Portale nicht gebildet, sondern zu einem sicheren alternativen Ziel umgeleitet.",
+
   "twilightforest.config.progression_default": "Progression Rule Default",
   "twilightforest.config.progression_default.tooltip": "Legt den Standardwert der Spielregel fest, die die erzwungene Progression steuert.",
+
   "twilightforest.config.uncrafting": "Deaktiviert Uncrafting in der Uncrafting-Tabelle",
   "twilightforest.config.uncrafting.tooltip": "Deaktiviert die Uncrafting-Funktion der Uncrafting-Tabelle. Wird als Option angeboten, wenn die Interaktion mit anderen Mods ausnutzbare Rezepte erzeugt.",
-  "twilightforest.config.antibuilder_blacklist": "Antibuilder Blacklist",
-  "twilightforest.config.antibuilder_blacklist.tooltip": "Anti-Erbauer-Blacklist. (domain:block:meta) meta ist optional.",
+
+  "twilightforest.config.optifine": "Deaktiviere den Hinweisbildschirm, wenn Optifine installiert ist.",
+  "twilightforest.config.optifine.tooltip": "Deaktiviert den beim Start angezeigten Hinweisbildschirm, wenn Optifine installiert ist",
+
+  "twilightforest.config.antibuilder_blacklist": "Anti-Bauen-Schwarze-Liste",
+  "twilightforest.config.antibuilder_blacklist.tooltip": "Anti-Bauen-Schwarze-Liste. (domain:block:meta) meta ist optional.",
+
   "twilightforest.config.animate_trophyitem": "Trophäenköpfe auf Item-Modell drehen",
   "twilightforest.config.animate_trophyitem.tooltip": "Trophäenköpfe auf dem Gegenstandsmodell drehen. Hat überhaupt keine Auswirkungen auf die Leistung. Für diejenigen, die keinen Spaß mögen.",
+
   "twilightforest.config.shield_parry": "Shield Parrying",
   "twilightforest.config.shield_parry.tooltip": "Wir empfehlen den Download der Shield Parry Mod für das Parieren, aber diese Kontrollen bleiben für ohne.",
   "twilightforest.config.parry_non_twilight": "Nicht-Dämmerungs-Projektile parieren",
@@ -1184,6 +1189,7 @@
   "twilightforest.config.parry_window_throwable.tooltip": "Die Anzahl der Ticks nach dem Aufrichten eines Schildes, die es erlaubt, einen geworfenen Gegenstand zu parieren. Es sind 20 Ticks in 1 Sekunde.",
   "twilightforest.config.shield_Parry_Ticks_Beam": "Zeitmessung Windowspan für Strahlen???",
   "twilightforest.config.shield_Parry_Ticks_Beam.tooltip": "???",
+ 
   "twilightforest.config.loading_screen": "Ladebildschirm",
   "twilightforest.config.loading_screen.tooltip": "Nur Client: Steuerelemente für den Ladebildschirm",
   "twilightforest.config.loading_icon_enable": "Animation des Ladesymbols aktivieren",
@@ -1200,7 +1206,9 @@
   "twilightforest.config.loading_icon_tilting.tooltip": "Wie weit das Ladesymbol wackelt.",
   "twilightforest.config.loading_icon_tilt_pushback": "Kippversatz des Icons",
   "twilightforest.config.loading_icon_tilt_pushback.tooltip": "Pushback-Wert, um das Wackeln des Ladesymbols neu zu zentrieren.",
-  
+  "twilightforest.config.casket_uuid_locking": "Keepsake Casket UUID Locking",
+  "twilightforest.config.casket_uuid_locking.tooltip": "Wenn diese Option aktiviert ist, können andere Spieler nicht auf die Keepsake Caskets zugreifen, die beim Tod eines Spielers gespawnt werden. Verwenden Sie diese Option, wenn Sie nicht möchten, dass andere Spieler aus den Särgen anderer Spieler nehmen. HINWEIS: Serverbetreiber können verschlossene Särge immer noch öffnen.",
+
   // Bücher
   "twilightforest.book.lichtower.1": "\u00A78[[Das Notizbuch eines Entdeckers, von Monstern angefressen]]\u00A70\n\n_Ich habe begonnen, die seltsame Aura, die diesen Turm umgibt, zu untersuchen. Die Ziegel des Turms sind durch einen Fluch geschützt, der stärker ist als jeder, den ich bisher gesehen habe. Die Magie des Fluches",
   "twilightforest.book.lichtower.2": "sprudelt in die Umgebung.\n\n_In meiner Heimat hätte ich viele Möglichkeiten, mit dieser Magie umzugehen, aber hier sind meine Vorräte begrenzt. Ich muss recherchieren.. .",
@@ -1244,11 +1252,13 @@
   "twilightforest.book.unknown.2": "etwas, das ich ungetan gelassen habe, oder ein Monster, das ich noch besiegen muss. Ich muss umkehren. Ich werde später an diesen Ort zurückkehren, um zu sehen, ob sich etwas geändert hat.",
 
   //Fluid
+
   "fluid.fierymetal": "Geschmolzener Feuer",
   "fluid.knightmetal": "Geschmolzenes Rittermetall",
   "fluid.fiery_essence": "Essenz der Feuer",
 
   //TCon
+
   "material.nagascale": "Waage der Naga",
   "material.steeleaf": "Stahlblätter",
   "material.fierymetal": "Feuer",
@@ -1299,28 +1309,7 @@
   "item.twilightforest.shader.name.cube_of_annihilation": "Würfel der Zerstörung",
   "item.twilightforest.shader.name.final_castle": "Endburg",
 
-
-
-  "twilightforest.shader.snakestone": "Schlangenstein",
-
-  "twilightforest.shader.twilight": "Dämmer",
-  "twilightforest.shader.naga": "Naga",
-  "twilightforest.shader.lich": "Lich",
-  "twilightforest.shader.mazestone": "Labyrinthstein",
-  "twilightforest.shader.minoshroom": "Minoschwammerl",
-  "twilightforest.shader.hydra": "Hydra",
-  "twilightforest.shader.underbrick": "Fundamentsziegelstein",
-  "twilightforest.shader.knight_phantom": "Phantomritter",
-  "twilightforest.shader.towerwood": "Turmholz",
-  "twilightforest.shader.ur-ghast": "Ur-Ghast",
-  "twilightforest.shader.alpha_yeti": "Alpha-Yeti",
-  "twilightforest.shader.auroralized": "Aurora",
-  "twilightforest.shader.snow_queen": "Schneekönigin",
-  "twilightforest.shader.final_castle": "Endburg",
-
   // Optifine
   "twilightforest.gui.optifine.title": "WARNUNG: OPTIFINE ENTDECKT",
   "twilightforest.gui.optifine.message": "Bevor du fortfahrst, beachte bitte, dass Optifine dafür bekannt ist, Abstürze, visuelle Fehler bei mehrteiligen Entitäten und viele andere Probleme zu verursachen.\n\nBevor du einen Fehler meldest, entferne bitte zuerst Optifine und überprüfe erneut, ob der Fehler noch vorhanden ist.\n\nOptifine-bezogene Probleme können nicht von Dämmerwald gelöst werden!\n\nDieser Bildschirm kann in der Client-Konfiguration deaktiviert werden.",
-
-  }
-
+}
