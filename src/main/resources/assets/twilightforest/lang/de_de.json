@@ -676,10 +676,10 @@
   "item.twilightforest.mini_ghast_spawn_egg": "Carminite Ghastling-Spawn-Ei",
   "item.twilightforest.tower_ghast_spawn_egg": "Carminite Ghastguard-Spawn-Ei",
   "item.twilightforest.tower_golem_spawn_egg": "Karminit-Golem-Spawn-Ei",
-  "item.twilightforest.tower_termite_spawn_egg": "Towerwood Borer-Spawn-Ei",
+  "item.twilightforest.tower_termite_spawn_egg": "Turmholzwurm-Spawn-Ei",
   "item.twilightforest.tower_broodling_spawn_egg": "Karminitkrabbler-Spawn-Ei",
   "item.twilightforest.ur_ghast_spawn_egg": "Ur-Ghast-Spawn-Ei",
-  "item.twilightforest.blockchain_goblin_spawn_egg": "Kettenhammer Goblin-Spawn-Ei",
+  "item.twilightforest.blockchain_goblin_spawn_egg": "Kettenhammer-Goblin-Spawn-Ei",
   "item.twilightforest.goblin_knight_lower_spawn_egg": "Goblin-Ritter-Spawn-Ei",
   "item.twilightforest.helmet_crab_spawn_egg": "Einsiedlerkrebs-Spawn-Ei",
   "item.twilightforest.knight_phantom_spawn_egg": "Phantomritter-Spawn-Ei",
@@ -707,11 +707,11 @@
   "item.twilightforest.knightmetal_axe.tooltip": "Extraschaden bei ungepanzerten Gegnern",
   "item.twilightforest.giant_pickaxe.tooltip": "Zum Abbauen von Riesenblöcken",
   "item.twilightforest.fiery_pickaxe.tooltip": "Automatisches Schmelzen",
-  "item.twilightforest.fiery_sword.tooltip": "Setzt Gegner in Brand",
-  "item.twilightforest.fiery_helmet.tooltip": "Setzt Angreifer in Brand",
-  "item.twilightforest.fiery_chestplate.tooltip": "Setzt Angreifer in Brand",
-  "item.twilightforest.fiery_leggings.tooltip": "Setzt Angreifer in Brand",
-  "item.twilightforest.fiery_boots.tooltip": "Setzt Angreifer in Brand",
+  "item.twilightforest.fiery_sword.tooltip": "Setzt den Gegner in Brand",
+  "item.twilightforest.fiery_helmet.tooltip": "Setzt den Angreifer in Brand",
+  "item.twilightforest.fiery_chestplate.tooltip": "Setzt den Angreifer in Brand",
+  "item.twilightforest.fiery_leggings.tooltip": "Setzt den Angreifer in Brand",
+  "item.twilightforest.fiery_boots.tooltip": "Setzt den Angreifer in Brand",
   "item.twilightforest.phantom_helmet.tooltip": "Nie verloren im Tod",
   "item.twilightforest.phantom_chestplate.tooltip": "Nie verloren im Tod",
   "item.twilightforest.yeti_helmet.tooltip": "Friert Angreifer ein",
@@ -744,7 +744,7 @@
   "entity.twilightforest.raven": "Waldrabe",
   "entity.twilightforest.quest_ram": "Schafbock der Schatzsuche",
   "entity.twilightforest.kobold": "Kobold",
-  "entity.twilightforest.boggard": "Boggard [Nicht Erledigt]",
+  "entity.twilightforest.boggard": "Irrwicht [Nicht Erledigt]",
   "entity.twilightforest.lich_minion": "Diener des Lichs",
   "entity.twilightforest.loyal_zombie": "Loyaler Zombie",
   "entity.twilightforest.mosquito_swarm": "Mückenschwarm",
@@ -795,7 +795,7 @@
   "entity.twilightforest.cicada_shot": "Zikade",
   "entity.twilightforest.moonworm_shot": "Mondwurm",
   "entity.twilightforest.nature_bolt": "Strahl der Natur",
-  "entity.twilightforest.slime_blob": "Slime Blob",
+  "entity.twilightforest.slime_blob": "Schleimklecks",
   "entity.twilightforest.tome_bolt": "Strahl des Todeswälzers",
   "entity.twilightforest.wand_bolt": "Strahl des Zepters",
   "entity.twilightforest.lich_bolt": "Strahl des Lichs",
@@ -947,9 +947,9 @@
   "subtitles.twilightforest.entity.swarmspider.death": "Schwarmspinne stirbt",
   "subtitles.twilightforest.entity.swarmspider.hurt": "Schwarmspinne nimmt Schaden",
   "subtitles.twilightforest.entity.tear.break": "Ur-Ghasts Träne zerbricht",
-  "subtitles.twilightforest.entity.termite.ambient": "Towerwood Borer zischt",
-  "subtitles.twilightforest.entity.termite.death": "Towerwood Borer stirbt",
-  "subtitles.twilightforest.entity.termite.hurt": "Towerwood Borer nimmt Schaden",
+  "subtitles.twilightforest.entity.termite.ambient": "Turmholzwurm zischt",
+  "subtitles.twilightforest.entity.termite.death": "Turmholzwurm stirbt",
+  "subtitles.twilightforest.entity.termite.hurt": "Turmholzwurm nimmt Schaden",
   "subtitles.twilightforest.entity.tinybird.chirp": "Kleiner Vogel zirpt",
   "subtitles.twilightforest.entity.tinybird.hurt": "Kleiner Vogel nimmt Schaden",
   "subtitles.twilightforest.entity.tinybird.song": "Kleiner Vogel singt",
@@ -984,7 +984,7 @@
   "subtitles.twilightforest.entity.icecore.parrot": "Papagei knistert",
   "subtitles.twilightforest.entity.kobold.parrot": "Papagei murrt",
   "subtitles.twilightforest.entity.minotaur.parrot": "Papagei muht verärgert",
-  "subtitles.twilightforest.entity.mosquito.parrot": "Papagei buzzes",
+  "subtitles.twilightforest.entity.mosquito.parrot": "Papagei summt",
   "subtitles.twilightforest.entity.naga.parrot": "Papagei klappert",
   "subtitles.twilightforest.entity.redcap.parrot": "Papagei kichert",
   "subtitles.twilightforest.entity.tome.parrot": "Papagei macht Buchgeräusche",
@@ -996,16 +996,16 @@
   "subtitles.twilightforest.block.builder.off": "Erbauer deactiviert",
   "subtitles.twilightforest.block.builder.replace": "Erbauer ersetzt den Block",
   "subtitles.twilightforest.block.door.activate": "Burgtür fails to vanish",
-  "subtitles.twilightforest.block.door.reappear": "Burgtür reappears",
-  "subtitles.twilightforest.block.door.vanish": "Burgtür vanishes",
-  
-  "subtitles.twilightforest.block.vanish.locked": "Turmholztür kann nicht verschwinden",
+  "subtitles.twilightforest.block.door.reappear": "Burgtür taucht wieder auf",
+  "subtitles.twilightforest.block.door.vanish": "Burgtür verschwindet",
+
+  "subtitles.twilightforest.block.vanish.locked": "Turmholztür nicht verschwunden",
   "subtitles.twilightforest.block.vanish.unlock": "Turmholztür wird entriegelt",
   "subtitles.twilightforest.block.reappear.reappear": "Wiederauftauchender Block taucht wieder auf",
   "subtitles.twilightforest.block.reappear.vanish": "Wiederauftauchender Block verschwindet",
   "subtitles.twilightforest.block.vanish.vanish": "Verschwindender Block verschwindet",
   "subtitles.twilightforest.block.core.time": "Zeitbaum tickt",
-  "subtitles.twilightforest.block.core.transformation": "Wandelbaumhums",
+  "subtitles.twilightforest.block.core.transformation": "Wandelbaum summt",
   "subtitles.twilightforest.block.portal.woosh": "Dämmerwald Portal winkt",
   "subtitles.twilightforest.block.pedestal.activate": "Trophäensockel nimmt Trophäe an",
 
@@ -1088,8 +1088,7 @@
   "death.attack.twilightforest.snowballFight": "%1$s verlor eine Schneeballschlacht gegen %2$s",
   "death.attack.twilightforest.snowballFight.item": "%1$s hat eine Schneeballschlacht gegen %2$s mit %3$s verloren",
 
-  "effect.twilightforest.frosted": "Vereist",
-
+  // Misc
   "twilightforest.misc.wip0": "Dieser Block ist noch in Arbeit und kann Fehler oder unbeabsichtigte Effekte haben, die deine Welt beschädigen können.",
   "twilightforest.misc.wip1": "Mit Vorsicht zu verwenden.",
   "twilightforest.misc.nyi": "Dieser Block hat Effekte, die noch nicht implementiert sind.",
@@ -1202,7 +1201,7 @@
   "twilightforest.config.loading_icon_tilt_pushback": "Kippversatz des Icons",
   "twilightforest.config.loading_icon_tilt_pushback.tooltip": "Pushback-Wert, um das Wackeln des Ladesymbols neu zu zentrieren.",
   
-  // Books
+  // Bücher
   "twilightforest.book.lichtower.1": "\u00A78[[Das Notizbuch eines Entdeckers, von Monstern angefressen]]\u00A70\n\n_Ich habe begonnen, die seltsame Aura, die diesen Turm umgibt, zu untersuchen. Die Ziegel des Turms sind durch einen Fluch geschützt, der stärker ist als jeder, den ich bisher gesehen habe. Die Magie des Fluches",
   "twilightforest.book.lichtower.2": "sprudelt in die Umgebung.\n\n_In meiner Heimat hätte ich viele Möglichkeiten, mit dieser Magie umzugehen, aber hier sind meine Vorräte begrenzt. Ich muss recherchieren.. .",
   "twilightforest.book.lichtower.3": "\u00A78[[Viele Einträge später]]\u00A70\n\n_Ein Durchbruch! Auf meinen Reisen habe ich in einem geschmückten Hof ein riesiges schlangenähnliches Monster gesichtet. In der Nähe habe ich ein abgenutzte, weggeworfene grüne Skala.\n\n_Die Magie in der Skala scheint die",
@@ -1270,8 +1269,8 @@
   "modifier.veiled.desc": "§oWie ein Gespenst!§r\nProjektil wird unsichtbar sein.",
 
   // Immersive Engineering
-  "item.tf_Engineering_Shader": "Dämmer Shader: %s",
-  "item.tf_Engineering_Shader_Bag": "Dämmer %s Shadertasche",
+  "desc.immersiveengineering.info.shader.rarity.twilight": "Dämmer",
+
   "item.twilightforest.shader": "Dämmer Shader: %s",
   "item.twilightforest.shader_bag": "Dämmer %s Shadertasche",
 
@@ -1321,7 +1320,7 @@
 
   // Optifine
   "twilightforest.gui.optifine.title": "WARNUNG: OPTIFINE ENTDECKT",
-  "twilightforest.gui.optifine.message": "Bevor Sie fortfahren, beachten Sie bitte, dass Optifine dafür bekannt ist, Abstürze, visuelle Fehler bei mehrteiligen Entitäten und viele andere Probleme zu verursachen.\n\nBevor Sie einen Fehler melden, entfernen Sie bitte zuerst Optifine und überprüfen Sie erneut, ob der Fehler noch vorhanden ist.\n\nOptifine-bezogene Probleme können nicht von Dämmer Forest gelöst werden!\n\nDieser Bildschirm kann in der Client-Konfiguration deaktiviert werden.",
+  "twilightforest.gui.optifine.message": "Bevor du fortfahrst, beachte bitte, dass Optifine dafür bekannt ist, Abstürze, visuelle Fehler bei mehrteiligen Entitäten und viele andere Probleme zu verursachen.\n\nBevor du einen Fehler meldest, entferne bitte zuerst Optifine und überprüfe erneut, ob der Fehler noch vorhanden ist.\n\nOptifine-bezogene Probleme können nicht von Dämmerwald gelöst werden!\n\nDieser Bildschirm kann in der Client-Konfiguration deaktiviert werden.",
 
   }
 
