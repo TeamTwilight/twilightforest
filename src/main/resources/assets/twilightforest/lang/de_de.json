@@ -76,7 +76,7 @@
 
 
 
-  // Snow Forest Progression
+  // Schneewaldfortschritt
   "advancement.twilightforest.progress_yeti": "Alphafell",
   "advancement.twilightforest.progress_yeti.desc": "Trage Kleider aus dem weichen Fell vom Alpha-Yeti. Sie beschützen dich vor der Kälte des Gletschers.",
   "advancement.twilightforest.progress_glacier": "Klarer Himmel",
@@ -85,14 +85,14 @@
   "advancement.twilightforest.arctic_dyed.desc": "Färbe alle vier Teile der Arktis-Rüstung.",
 
 
-  // Mid-way Misc. Stuff
+  // Mittelweg Verschiedenes
   "advancement.twilightforest.glass_sword": "Ein-Hit-Wunder",
   "advancement.twilightforest.glass_sword.desc": "Hast du das gut genutzt?",
 
   "advancement.twilightforest.fiery_set": "Literweise Blut und Tränen",
   "advancement.twilightforest.fiery_set.desc": "Nutze ein Feuerwerkzeug oder eine Feuerwaffe während du mindestens einen Teil der Feuerrüstung trägst.",
 
-  // Highlands
+  // Hochlände
 
   "advancement.twilightforest.progress_merge": "Ultimativer Showdown",
   "advancement.twilightforest.progress_merge.desc": "Töte die %s, %s und %s, um den sauren Regen zu beseitigen und dich für die Highlands zu stärken.",
@@ -110,7 +110,7 @@
   "advancement.twilightforest.progress_castle": "Wahnsinnsburg",
   "advancement.twilightforest.progress_castle.desc": "Was könnte hier überhaupt drinnen sein?",
 
-   // Collections 
+   // Sammlungen 
   "advancement.twilightforest.twilight_dining": "Wir speisen im ewigen Sonnenuntergang",
   "advancement.twilightforest.twilight_dining.desc": "Iß ALLE Lebensmittel, die es nur im Dämmerwald gibt.",
   "advancement.twilightforest.experiment_115_3": "Jeden Tag 115 essen, 115 Jahre lang, für immer",
@@ -125,7 +125,7 @@
   "twilightforest.scepter_charges": "%d charges left",
 
 
-  // Commands
+  // Kommandos
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "Du befindest dich nicht in der Dimension Dämmerwald",
   "commands.tffeature.nearest": "Das nächstgelegene Merkmal ist %s",
@@ -171,7 +171,7 @@
   // Effekten
   "effect.twilightforest.frosted": "Vereist",
 
-  // Blocks
+  // Blöcke
   "block.twilightforest.twilight_oak_log": "Dämmerungseichenstamm",
   "block.twilightforest.canopy_log": "Baldachinbaumstamm",
   "block.twilightforest.mangrove_log": "Mangrovenstamm",
@@ -722,7 +722,7 @@
   "item.twilightforest.arctic_armor.tooltip": "Einfärbbar wie Lederrüstungen",
 
 
-  // Entities
+  // Entitäten
   "entity.twilightforest.wild_boar": "Wildschwein",
   "entity.twilightforest.bighorn_sheep": "Dickhornschaf",
   "entity.twilightforest.deer": "Hirsch",
@@ -1088,7 +1088,7 @@
   "death.attack.twilightforest.snowballFight": "%1$s verlor eine Schneeballschlacht gegen %2$s",
   "death.attack.twilightforest.snowballFight.item": "%1$s hat eine Schneeballschlacht gegen %2$s mit %3$s verloren",
 
-  // Misc
+  // Verschiedenes
   "twilightforest.misc.wip0": "Dieser Block ist noch in Arbeit und kann Fehler oder unbeabsichtigte Effekte haben, die deine Welt beschädigen können.",
   "twilightforest.misc.wip1": "Mit Vorsicht zu verwenden.",
   "twilightforest.misc.nyi": "Dieser Block hat Effekte, die noch nicht implementiert sind.",
