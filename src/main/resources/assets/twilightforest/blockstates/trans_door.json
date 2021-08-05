@@ -2,8 +2,8 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "bottom": "twilightforest:blocks/wood/door/twilight_oak_lower",
-      "top"   : "twilightforest:blocks/wood/door/twilight_oak_upper"
+      "bottom": "twilightforest:blocks/wood/door/trans_lower",
+      "top"   : "twilightforest:blocks/wood/door/trans_upper"
     }
   },
   "variants": {

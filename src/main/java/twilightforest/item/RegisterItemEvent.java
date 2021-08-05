@@ -279,7 +279,7 @@ public class RegisterItemEvent {
 
 			ResourceLocation doorRL = TwilightForestMod.prefix(woodName + "_door");
 			Block doorBlock = Block.REGISTRY.getObject(doorRL);
-			items.register(doorRL.getPath(), new ItemDoor(doorBlock)).setTranslationKey(doorBlock.getTranslationKey());
+			items.register(doorRL.getPath(), new ItemTFDoor(doorBlock)).setTranslationKey(doorBlock.getTranslationKey());
 
 			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_trapdoor")));
 			items.registerBlock(Block.REGISTRY.getObject(TwilightForestMod.prefix(woodName + "_fence")));

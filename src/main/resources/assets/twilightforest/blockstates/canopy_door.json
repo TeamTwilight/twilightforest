@@ -7,6 +7,7 @@
     }
   },
   "variants": {
+
     "facing": { "north": {}, "east": {}, "south": {}, "west": {} },
     "half"  : { "lower": {}, "upper": {} },
     "hinge" : { "left": {}, "right": {} },

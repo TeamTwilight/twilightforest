@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "texture": "twilightforest:blocks/wood/trapdoor/twilight_oak_trapdoor"
+      "texture": "twilightforest:blocks/wood/trapdoor/trans_trapdoor"
     }
   },
   "variants": {

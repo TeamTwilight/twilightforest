@@ -6,12 +6,7 @@
       "top"   : "twilightforest:blocks/wood/door/twilight_oak_upper"
     }
   },
-  "variants": {
-    "facing": { "north": {}, "east": {}, "south": {}, "west": {} },
-    "half"  : { "lower": {}, "upper": {} },
-    "hinge" : { "left": {}, "right": {} },
-    "open"  : { "true": {}, "false": {} },
-    
+  "variants": {   
     "facing=east,half=lower,hinge=left,open=false"  : { "model": "door_bottom"              },
     "facing=south,half=lower,hinge=left,open=false" : { "model": "door_bottom"   , "y":  90 },
     "facing=west,half=lower,hinge=left,open=false"  : { "model": "door_bottom"   , "y": 180 },
