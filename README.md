@@ -18,12 +18,12 @@ Alternatively, grab your experimental builds from our [Discord](https://discord.
 ## Community
 We have a [Discord channel](https://discord.gg/6v3z26B)!
 
-## YourKit
-![](https://www.yourkit.com/images/yklogo.png)
-
 ## Notice and Add-on/Integration Policy
 
-After banning @Azar2477 and @Pechayland from the issue tracker, in there organization @team-burnuts they made a mod with TF integration and say they will go to integration test in 1.17 which is [here](https://github.com/Team-Burnuts/BurnutsPlusTNTandDisparityMod), and they made a MCreator plugin to integrate TF to their mods which is also [here](https://github.com/Team-Burnuts/TwilightForestDependancies). Hence no more developing Twilight Forest Add-ons and only we can use the [TF maven](https://modmaven.dev/teamtwilight/twilightforest/). If you ask permission if you want to make TF add-ons even in our Discord server will be immediately BANNED. 
+After banning @Azar2477 and @Pechayland from the issue tracker, in their organization @team-burnuts they made a mod with TF integration and say they will go to integration test in 1.17 which is [here](https://github.com/Team-Burnuts/BurnutsPlusTNTandDisparityMod), and they made a MCreator plugin to integrate TF to their mods which is also [here](https://github.com/Team-Burnuts/TwilightForestDependancies). Hence no more developing Twilight Forest Add-ons and only we can use the [TF maven](https://modmaven.dev/teamtwilight/twilightforest/). If you ask permission if you want to make TF add-ons even in our Discord server will be immediately BANNED. 
+
+## YourKit
+![](https://www.yourkit.com/images/yklogo.png)
 
 We appreciate YourKit, LLC for providing the project developers licenses of its profiler to help us improve performance! 
 
