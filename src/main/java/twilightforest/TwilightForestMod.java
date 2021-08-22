@@ -1,21 +1,25 @@
 package twilightforest;
 
 import com.google.common.collect.Maps;
-import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraft.core.BlockSource;
-import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -49,27 +53,21 @@ import twilightforest.dispenser.TransformationDispenseBehavior;
 import twilightforest.entity.projectile.MoonwormShotEntity;
 import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import twilightforest.inventory.TFContainers;
-import twilightforest.item.FieryPickItem;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
-import twilightforest.world.registration.TFDimensions;
-import twilightforest.world.registration.TFBiomeFeatures;
+import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.feature.TFGenCaveStalactite;
+import twilightforest.world.registration.TFBiomeFeatures;
+import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.world.registration.TwilightFeatures;
-import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.Locale;
-
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -146,8 +144,8 @@ public class TwilightForestMod {
 
 	@SubscribeEvent
 	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
-		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
-		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
+		evt.getRegistry().register(new TFEventListener.SmeltSerializer().setRegistryName(ID + ":fiery_pick_smelting"));
+		evt.getRegistry().register(new TFEventListener.ManipulateSerializer().setRegistryName(ID + ":giant_block_grouping"));
 	}
 
 	@SubscribeEvent

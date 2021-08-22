@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -23,9 +24,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.*;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -103,12 +106,13 @@ public class TFEventListener {
 
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
+	private static boolean shouldMakeSmelt = false;
 	private static int amountOfCobbleToReplace = 0;
 
 	@SubscribeEvent
 	public static void addReach(ItemAttributeModifierEvent event) {
 		Item item = event.getItemStack().getItem();
-		if((item == TFItems.giant_pickaxe.get() || item == TFItems.giant_sword.get()) && event.getSlotType() == EquipmentSlot.MAINHAND) {
+		if ((item == TFItems.giant_pickaxe.get() || item == TFItems.giant_sword.get()) && event.getSlotType() == EquipmentSlot.MAINHAND) {
 			event.addModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Tool modifier", 2.5, AttributeModifier.Operation.ADDITION));
 		}
 	}
@@ -169,7 +173,7 @@ public class TFEventListener {
 		}
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer<ManipulateDrops> {
+	public static class ManipulateSerializer extends GlobalLootModifierSerializer<ManipulateDrops> {
 
 		@Override
 		public ManipulateDrops read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
@@ -178,6 +182,48 @@ public class TFEventListener {
 
 		@Override
 		public JsonObject write(ManipulateDrops instance) {
+			return null;
+		}
+	}
+
+	private static class SmeltModifier extends LootModifier {
+
+		protected final LootItemCondition[] conditions;
+
+		public SmeltModifier(LootItemCondition[] conditionsIn) {
+			super(conditionsIn);
+			this.conditions = conditionsIn;
+		}
+
+		@Override
+		public List<ItemStack> doApply(List<ItemStack> originalLoot, LootContext context) {
+			List<ItemStack> newLoot = new ArrayList<>();
+			if (shouldMakeSmelt) {
+				originalLoot.forEach((stack) -> newLoot.add(
+						context.getLevel().getRecipeManager()
+								.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
+								.map(SmeltingRecipe::getResultItem)
+								.filter(itemStack -> !itemStack.isEmpty())
+								.map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
+								.orElse(stack)));
+
+				shouldMakeSmelt = false;
+				return newLoot;
+			} else {
+				return originalLoot;
+			}
+		}
+	}
+
+	public static class SmeltSerializer extends GlobalLootModifierSerializer<SmeltModifier> {
+
+		@Override
+		public SmeltModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
+			return new SmeltModifier(conditionsIn);
+		}
+
+		@Override
+		public JsonObject write(SmeltModifier instance) {
 			return null;
 		}
 	}
@@ -259,6 +305,7 @@ public class TFEventListener {
 	}
 
 	private static boolean casketExpiration = false;
+
 	private static void keepsakeCasket(Player player) {
 		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.keepsake_casket.get().asItem());
 
@@ -342,14 +389,14 @@ public class TFEventListener {
 		Player player = event.getPlayer();
 		BlockEntity te = event.getWorld().getBlockEntity(event.getPos());
 		UUID checker;
-		if(block == TFBlocks.keepsake_casket.get()) {
-			if(te instanceof KeepsakeCasketTileEntity) {
+		if (block == TFBlocks.keepsake_casket.get()) {
+			if (te instanceof KeepsakeCasketTileEntity) {
 				KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
-				 checker = casket.playeruuid;
+				checker = casket.playeruuid;
 			} else checker = null;
-			if(checker != null) {
+			if (checker != null) {
 				if (!((KeepsakeCasketTileEntity) te).isEmpty()) {
-					if(!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
+					if (!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
 						event.setCanceled(true);
 					}
 				}
@@ -485,7 +532,7 @@ public class TFEventListener {
 		if (event.isEndConquered()) {
 			updateCapabilities((ServerPlayer) event.getPlayer(), event.getPlayer());
 		} else {
-			if(casketExpiration) {
+			if (casketExpiration) {
 				event.getPlayer().sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), event.getPlayer().getUUID());
 			}
 			returnStoredItems(event.getPlayer());
@@ -662,6 +709,8 @@ public class TFEventListener {
 			}
 
 			isBreakingWithGiantPick = false;
+		} else if (!shouldMakeSmelt && canHarvestWithFieryPick(player, state)) {
+			shouldMakeSmelt = true;
 		}
 	}
 
@@ -669,6 +718,12 @@ public class TFEventListener {
 		ItemStack heldStack = player.getMainHandItem();
 		Item heldItem = heldStack.getItem();
 		return heldItem == TFItems.giant_pickaxe.get()/* && heldItem.canHarvestBlock(heldStack, state)*/;
+	}
+
+	private static boolean canHarvestWithFieryPick(Player player, BlockState state) {
+		ItemStack heldStack = player.getMainHandItem();
+		Item heldItem = heldStack.getItem();
+		return heldItem == TFItems.fiery_pickaxe.get()/* && heldItem.canHarvestBlock(heldStack, state)*/;
 	}
 
 	@SubscribeEvent
@@ -709,9 +764,9 @@ public class TFEventListener {
 
 		if (chunkGenerator != null) {
 			Optional<StructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0);
-			if(struct.isPresent()) {
+			if (struct.isPresent()) {
 				StructureStart<?> structure = struct.get();
-				if(structure.getBoundingBox().isInside(pos)) {
+				if (structure.getBoundingBox().isInside(pos)) {
 					// what feature is nearby?  is it one the player has not unlocked?
 					TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world);
 
