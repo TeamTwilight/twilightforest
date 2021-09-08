@@ -1,6 +1,4 @@
-{
-  // If something is commented out, it means it hasn't been translated yet.
-
+{ // If something is commented out, it means it hasn't been translated yet.
   "itemGroup.twilightforest": "Forêt de Twilight",
 
   // ADVANCEMENTS
@@ -152,8 +150,8 @@
   
   // Gamerules
   "gamerule.tfEnforcedProgression": "Progression dans la Forêt Twilight",
-  // Enchantments
 
+  // Enchantments
   "enchantment.twilightforest.fire_react": "Réaction au feu",
   "enchantment.twilightforest.chill_aura": "Aura glaciale",
 
@@ -165,33 +163,26 @@
   "block.twilightforest.canopy_log": "Bûche de canopée",
   "block.twilightforest.mangrove_log": "Bûche de mangrove",
   "block.twilightforest.dark_log": "Bûche de bois sombre",
-
   "block.twilightforest.stripped_twilight_oak_log": "Bûche de chêne de la Twilight écorcée",
   "block.twilightforest.stripped_canopy_log": "Bûche de canopée écorcée",
   "block.twilightforest.stripped_mangrove_log": "Bûche de mangrove écorcée",
   "block.twilightforest.stripped_dark_log": "Bûche de bois sombre écorcée",
-
   "block.twilightforest.twilight_oak_wood": "Bois de chêne de la Twilight",
   "block.twilightforest.canopy_wood": "Bois de canopée",
   "block.twilightforest.mangrove_wood": "Bois de mangrove",
   "block.twilightforest.dark_wood": "Bois sombre",
-
   "block.twilightforest.stripped_twilight_oak_wood": "Bois de chêne de la Twilight écorcé",
   "block.twilightforest.stripped_canopy_wood": "Bois de canopée écorcé",
   "block.twilightforest.stripped_mangrove_wood": "Bois de mangrove écorcé",
   "block.twilightforest.stripped_dark_wood": "Bois sombre écorcé",
-
   "block.twilightforest.twilight_oak_leaves": "Feuilles de chêne de la Twilight",
   "block.twilightforest.canopy_leaves": "Feuilles de canopée",
   "block.twilightforest.mangrove_leaves": "Feuilles de mangrove",
   "block.twilightforest.rainboak_leaves": "Feuilles de chêne arc-en-ciel",
-
   "block.twilightforest.firefly": "Luciole",
   "block.twilightforest.cicada": "Cigale",
   "block.twilightforest.cicada.desc": "Et si cela pouvait être lancé sur quelqu'un avec un Pistolet... ?",
-
   "block.twilightforest.twilight_portal": "Portail de la Forêt Twilight",
-
   "block.twilightforest.maze_stone": "Pierre du labyrinthe",
   "block.twilightforest.maze_stone_brick": "Brique du labyrinthe",
   "block.twilightforest.maze_stone_chiseled": "Pierre taillée du labyrinthe",
@@ -202,9 +193,7 @@
   "block.twilightforest.maze_stone_border": "Bordure de pierre du labyrinthe",
   "block.twilightforest.maze_stone_ceiling": "Plafond de pierre du labyrinthe",
   "block.twilightforest.spiral_bricks": "Pierre taillée en spirale",
-
   "block.twilightforest.hedge": "Haie",
-
   "block.twilightforest.boss_spawner_naga": "Génerateur de Boss Naga",
   "block.twilightforest.boss_spawner_lich": "Génerateur de Boss Lich",
   "block.twilightforest.boss_spawner_minoshroom": "Génerateur de Boss Minoshroom",
@@ -213,32 +202,27 @@
   "block.twilightforest.boss_spawner_ur_ghast": "Génerateur de Boss Ur-Ghast",
   "block.twilightforest.boss_spawner_alpha_yeti": "Génerateur de Boss Yeti Alpha",
   "block.twilightforest.boss_spawner_snow_queen": "Génerateur de Boss Reine des Neiges",
-  "block.twilightforest.boss_spawner_final_boss": "Générateur de Boss du boss final",
-
+  "block.twilightforest.boss_spawner_final_boss": "Générateur de Boss du Boss final",
   "block.twilightforest.firefly_jar": "Bocal à luciole",
+  "block.twilightforest.firefly_particle_spawner": "Générateur de particule de luciole",
   "block.twilightforest.cicada_jar": "Bocal à cigale",
-
   "block.twilightforest.moss_patch": "Patch de mousse",
   "block.twilightforest.mayapple": "Podophyllum",
   "block.twilightforest.clover_patch": "Patch de trèfle",
   "block.twilightforest.fiddlehead": "Tête de violon",
   "block.twilightforest.mushgloom": "Champignon lumineux",
   "block.twilightforest.torchberry_plant": "Plante de torche de baie",
-
-  "block.twilightforest.root_strands": "Brins de racine",
+  "block.twilightforest.root_strand": "Brins de racine",
+  "block.twilightforest.fallen_leaves": "Tas de feuilles",
   "block.twilightforest.root": "Racines",
-  "block.twilightforest.liveroot": "Racines vivantes",
-
+  "block.twilightforest.liveroot_block": "Racines vivantes",
   "block.twilightforest.uncrafting_table": "Établi de défabrication",
-
   "block.twilightforest.smoker": "Fumeur",
   "block.twilightforest.encased_smoker": "Fumeur recouvert",
   "block.twilightforest.fire_jet": "Jet de feu",
   "block.twilightforest.encased_fire_jet": "Jet de feu recouvert",
-
   "block.twilightforest.naga_stone_head": "Tête de pierre Naga",
   "block.twilightforest.naga_stone": "Pierre Naga",
-
   "block.twilightforest.twilight_oak_sapling": "Pousse de chêne chétif de la Twilight",
   "block.twilightforest.canopy_sapling": "Pousse d'arbre de canopée",
   "block.twilightforest.mangrove_sapling": "Pousse de mangrove de la Twilight",
@@ -249,45 +233,36 @@
   "block.twilightforest.mining_sapling": "Pousse d'arbre de mineur",
   "block.twilightforest.sorting_sapling": "Pousse d'arbre de trieur",
   "block.twilightforest.rainboak_sapling": "Pousse de chêne arc-en-ciel", 
-
   "block.twilightforest.moonworm": "Ver de lune",
-
   "block.twilightforest.time_log": "Bûche du temps",
   "block.twilightforest.transformation_log": "Bûche du transformateur",
   "block.twilightforest.mining_log": "Bûche du mineur",
   "block.twilightforest.sorting_log": "Bûche de trieur",
-
   "block.twilightforest.stripped_time_log": "Bûche du temps écorcée",
   "block.twilightforest.stripped_transformation_log": "Bûche du transformateur écorcée",
   "block.twilightforest.stripped_mining_log": "Bûche du mineur écorcée",
   "block.twilightforest.stripped_sorting_log": "Bûche de trieur écorcée",
-  
-  "block.twilightforest.time_wood": "Bois du temps",
-  "block.twilightforest.transformation_wood": "Bois du transformateur",
-  "block.twilightforest.mining_wood": "Bois du mineur",
   "block.twilightforest.sorting_wood": "Bois de trieur",
-
+  "block.twilightforest.mining_wood": "Bois du mineur",
+  "block.twilightforest.transformation_wood": "Bois du transformateur",
+  "block.twilightforest.time_wood": "Bois du temps",
   "block.twilightforest.stripped_sorting_wood": "Bois de trieur écorcé",
   "block.twilightforest.stripped_mining_wood": "Bois du mineur écorcé",
   "block.twilightforest.stripped_transformation_wood": "Bois du transformateur écorcé",
   "block.twilightforest.stripped_time_wood": "Bois du temps écorcé",
-
   "block.twilightforest.time_log_core": "Horloge du bois du temps",
   "block.twilightforest.transformation_log_core": "Cœur de transformateur",
   "block.twilightforest.mining_log_core": "Cœur de mineur",
   "block.twilightforest.sorting_log_core": "Moteur de bois de trieur",
-
   "block.twilightforest.time_leaves": "Feuilles d'arbre du temps",
   "block.twilightforest.transformation_leaves": "Feuilles d'arbre de transformateur",
   "block.twilightforest.mining_leaves": "Feuilles d'arbre de mineur",
   "block.twilightforest.sorting_leaves": "Feuilles d'arbre de trieur",
-
   "block.twilightforest.tower_wood": "Planches du bois de la tour",
   "block.twilightforest.tower_wood_encased": "Planches du bois de la tour recouverts",
   "block.twilightforest.tower_wood_cracked": "Planches du bois de la tour craquelés",
   "block.twilightforest.tower_wood_mossy": "Planches du bois de la tour moussues",
   "block.twilightforest.tower_wood_infested": "Planches du bois de la tour infestés",
-
   "block.twilightforest.reappearing_block": "Bloc de réapparition",
   "block.twilightforest.vanishing_block": "Bloc de disparition",
   "block.twilightforest.locked_vanishing_block": "Bloc de disparition verrouillé",
@@ -295,114 +270,87 @@
   "block.twilightforest.antibuilder": "Anti-constructeur",
   "block.twilightforest.ghast_trap": "Piège à Ghast",
   "block.twilightforest.carminite_reactor": "Réacteur carminite",
-
   "block.twilightforest.fake_gold": "Faux or",
   "block.twilightforest.fake_diamond": "Faux diamant",
-
+  "block.twilightforest.trophy": "Trophée de la Forêt Twilight",
   "block.twilightforest.stronghold_shield": "Bouclier de forteresse",
-  "block.twilightforest.trophy_pedestal.0": "Piédestal à trophée",
+  "block.twilightforest.trophy_pedestal": "Piédestal à trophée",
   "block.twilightforest.aurora_block": "Bloc d'aurore",
-
   "block.twilightforest.underbrick": "Sous-brique",
   "block.twilightforest.underbrick_mossy": "Sous-brique moussue",
   "block.twilightforest.underbrick_cracked": "Sous-brique craquelée",
   "block.twilightforest.underbrick_floor": "Sol de sous-brique",
-
   "block.twilightforest.brown_thorns": "Épines",
   "block.twilightforest.green_thorns": "Épines vertes",
   "block.twilightforest.burnt_thorns": "Épines brûlées",
   "block.twilightforest.thorn_rose": "Rose d'épines",
   "block.twilightforest.thorn_leaves": "Feuilles d'épines",
-
   "block.twilightforest.beanstalk_leaves": "Feuilles d'haricot magique",
   "block.twilightforest.deadrock_weathered": "Roche morte altérée",
   "block.twilightforest.deadrock_cracked": "Roche morte craquelée",
   "block.twilightforest.deadrock": "Roche morte",
-
   "block.twilightforest.dark_leaves": "Feuilles de bois sombre",
-
   "block.twilightforest.auroralized_glass": "Verre auroralisé",
   "block.twilightforest.aurora_pillar": "Pilier de l'aurore",
   "block.twilightforest.aurora_slab": "Dalle de l'aurore",
-
   "block.twilightforest.trollsteinn": "Trollstein",
-
   "block.twilightforest.wispy_cloud": "Nuage vaporeux",
   "block.twilightforest.fluffy_cloud": "Nuage duveteux",
-
   "block.twilightforest.giant_cobblestone": "Pierre géante",
   "block.twilightforest.giant_log": "Bois géant",
   "block.twilightforest.giant_leaves": "Feuilles géantes",
   "block.twilightforest.giant_obsidian": "Obsidienne géante",
-
   "block.twilightforest.uberous_soil": "Sol fertile",
   "block.twilightforest.huge_stalk": "Énorme tige",
   "block.twilightforest.huge_mushgloom": "Énorme champignon lumineux",
   "block.twilightforest.huge_mushgloom_stem": "Énorme tige de chamignon lumineux",
-
   "block.twilightforest.trollvidr": "Trollvidr",
   "block.twilightforest.unripe_trollber": "Trollber verte",
   "block.twilightforest.trollber": "Trollber",
-
   "block.twilightforest.slider": "Piège à glissière",
   "block.twilightforest.knightmetal_block": "Bloc de métal de Chevalier",
-
   "block.twilightforest.huge_lilypad": "Énorme nénuphar",
   "block.twilightforest.huge_waterlily": "Énorme lis de nénuphar",
-
   "block.twilightforest.castle_brick": "Brique de château",
   "block.twilightforest.castle_brick_worn": "Brique de château usée",
   "block.twilightforest.castle_brick_cracked": "Brique de château craquelée",
-
   "block.twilightforest.castle_brick_roof": "Tuile de toit de château",
-
   "block.twilightforest.castle_brick_mossy": "Brique de château moussue",
   "block.twilightforest.castle_brick_frame": "Brique de château épaisse",
-
   "block.twilightforest.castle_stairs_brick": "Escaliers en pierre de château",
   "block.twilightforest.castle_stairs_worn": "Escaliers en pierre de château usée",
   "block.twilightforest.castle_stairs_cracked": "Escaliers en pierre de château craquelée",
   "block.twilightforest.castle_stairs_mossy": "Escaliers en pierre de château moussue",
-
   "block.twilightforest.castle_door_yellow": "Porte de château jaune",
   "block.twilightforest.castle_door_purple": "Porte de château violette",
   "block.twilightforest.castle_door_pink": "Porte de château rose",
   "block.twilightforest.castle_door_blue": "Porte de château bleue",
-
   "block.twilightforest.castle_rune_brick_pink": "Rune de brique de château rose",
   "block.twilightforest.castle_rune_brick_blue": "Rune de brique de château bleue",
   "block.twilightforest.castle_rune_brick_yellow": "Rune de brique de château jaune",
   "block.twilightforest.castle_rune_brick_purple": "Rune de brique de château violette",
-
   "block.twilightforest.castle_pillar_encased": "Pilier de brique de château recouvert",
   "block.twilightforest.castle_pillar_encased_tile": "Tuille de brique de château recouverte",
   "block.twilightforest.castle_pillar_bold": "Pilier épais de brique de château",
   "block.twilightforest.castle_pillar_bold_tile": "Tuille épaisse de brique de château",
-
   "block.twilightforest.castle_stairs_encased": "Escaliers en brique de château recouverts",
   "block.twilightforest.castle_stairs_bold": "Escaliers épais en brique de château",
-
   "block.twilightforest.force_field_purple": "Champ de force violet",
   "block.twilightforest.force_field_pink": "Champ de force rose",
   "block.twilightforest.force_field_orange": "Champ de force orange",
   "block.twilightforest.force_field_green": "Champ de force vert",
   "block.twilightforest.force_field_blue": "Champ de force bleu",
-
   "block.twilightforest.ironwood_block": "Bloc de bois de fer",
   "block.twilightforest.fiery_block": "Bloc de métal ardent",
   "block.twilightforest.steeleaf_block": "Bloc de feuille voleuse",
   "block.twilightforest.arctic_fur_block": "Bloc de fourrure arctique",
-
   "block.twilightforest.carminite_block": "Bloc de carminite",
   "block.twilightforest.cinder_furnace": "Four à cendres",
-
   "block.twilightforest.cinder_log": "Bûche de cendres",
   "block.twilightforest.cinder_wood": "Bois de cendres",
-
   "block.twilightforest.twilight_portal_miniature_structure": "Portail Twilight miniature",
   "block.twilightforest.naga_courtyard_miniature_structure": "Cour miniature du Naga",
   "block.twilightforest.lich_tower_miniature_structure": "Tour miniature de la Lich",
-
   "block.twilightforest.stone_twist": "Pierre torsadée",
   "block.twilightforest.stone_twist_thin": "Twisted Stone Pillar",
   "block.twilightforest.stone_pillar_bold": "Bold Stone Pillar",
@@ -420,21 +368,18 @@
   "block.twilightforest.nagastone_pillar_weathered": "Pilier en pierre de Naga en ruine",
   "block.twilightforest.nagastone_stairs_weathered_left": "Escaliers en pierre de Naga altérée (Gauche)",
   "block.twilightforest.nagastone_stairs_weathered_right": "Escaliers en pierre de Naga altérée (Droite)",
-  
   "block.twilightforest.iron_ladder": "Échelle en fer",
-
-  "block.twilightforest.terrorcotta_circle": "Terrorcotta (Circulaire)",
-  "block.twilightforest.terrorcotta_diagonal": "Terrorcotta (Diagonale)",
-
+  "block.twilightforest.terrorcotta_circle": "Terreur cuite (Circulaire)",
+  "block.twilightforest.terrorcotta_diagonal": "Terreur cuite (Diagonale)",
   "block.twilightforest.experiment_115": "Expérience 115",
-
-  "block.twilightforest.trophy.hydra": "Trophée d'Hydre",
-  "block.twilightforest.trophy.naga": "Trophée de Naga",
+  "block.twilightforest.hydra_trophy": "Trophée d'Hydre",
+  "block.twilightforest.naga_trophy": "Trophée de Naga",
   "block.twilightforest.minoshroom_trophy": "Trophée du Minoshroom",
   "block.twilightforest.knight_phantom_trophy": "Trophée du Chevalier Fantôme",
-  "block.twilightforest.trophy.lich": "Trophée de Lich",
-  "block.twilightforest.trophy.ur_ghast": "Trophée d'Ur-Ghast",
-  "block.twilightforest.trophy.snow_queen": "Trophée de la Reine des Neiges",
+  "block.twilightforest.lich_trophy": "Trophée de Lich",
+  "block.twilightforest.ur_ghast_trophy": "Trophée d'Ur-Ghast",
+  "block.twilightforest.yeti_trophy": "Trophée de Yéti Alpha",
+  "block.twilightforest.snow_queen_trophy": "Trophée de la Reine des Neiges",
   "block.twilightforest.quest_ram_trophy": "Trophée de la quête du Bélier",
 
   "block.twilightforest.keepsake_casket": "Cerceuil souvenir",
@@ -462,7 +407,6 @@
   "block.twilightforest.potted_trans_sapling": "Pousse d'arbre de transformateur en pot",
   "block.twilightforest.potted_mine_sapling": "Pousse d'arbre de mineur en pot",
   "block.twilightforest.potted_sort_sapling": "Pousse d'arbre de trieur",
-
   "block.twilightforest.potted_mayapple": "Podophyllum en pot",
   "block.twilightforest.potted_fiddlehead": "Tête de violon en pot",
   "block.twilightforest.potted_mushgloom": "Champignon lumineux en pot",
@@ -481,6 +425,7 @@
   "block.twilightforest.canopy_door": "Porte en canopée",
   "block.twilightforest.canopy_sign": "Panneau en canopée",
   "block.twilightforest.canopy_wall_sign": "Panneau mural en canopée",
+  "block.twilightforest.canopy_bookshelf": "Bibliothèques de canopée",
 
   "block.twilightforest.dark_planks": "Planches de bois sombre",
   "block.twilightforest.dark_stairs": "Escaliers en bois sombre",
@@ -570,19 +515,6 @@
   "block.arctic.tooltip": "Réduit les dégâts de chute de 90%",
   "block.knightmetal.tooltip": "Fonctionne comme un cactus plus fort",
 
-  "block.twilightforest.root_strand": "Brins de racine",
-  "block.twilightforest.fallen_leaves": "Tas de feuilles",
-  "block.twilightforest.liveroot_block": "Racines vivantes",
-  "block.twilightforest.trophy": "Trophée de la Forêt Twilight",
-  "block.twilightforest.trophy_pedestal": "Piédestal à trophée",
-  "block.twilightforest.hydra_trophy": "Trophée de l'Hydre",
-  "block.twilightforest.naga_trophy": "Trophée du Naga",
-  "block.twilightforest.lich_trophy": "Trophée de la Lich",
-  "block.twilightforest.ur_ghast_trophy": "Trophée de l'Ur-Ghast",
-  "block.twilightforest.yeti_trophy": "Trophée du Yéti Alpha",
-  "block.twilightforest.snow_queen_trophy": "Trophée de la Reine des Neiges",
-  "block.twilightforest.canopy_bookshelf": "Bibliothèques de canopée",
-
   // "Structures",
   "structure.twilight_portal": "Portail de la Twilight",
   "structure.hedge_maze": "Labyrinthe de haies",
@@ -601,15 +533,9 @@
   "structure.final_castle": "Château final",
 
   // "Items",
-  // "item.twilightforest.boarkchop": "Côtelette de Boark",
-  // "item.twilightforest.magic_map_focus": "?? de carte magique",
-  // "item.twilightforest.maze_map_focus": "?? de carte de labyrinthe",
-  "item.twilightforest.knightmetal_sword.tooltip": "Dégâts supplémentaires aux cibles avec armure",
-  "item.twilightforest.knightmetal_pickaxe.tooltip": "Dégâts supplémentaires aux cibles avec armure",
-  "item.twilightforest.knightmetal_axe.tooltip": "Dégâts supplémentaires aux cibles sans armure",
-
+  "item.twilightforest.boarkchop": "Côtelette de Boark",
   "item.twilightforest.naga_scale": "Écailles de Naga",
-  "item.twilightforest.naga_chestplate": "Plastron en écailles de Naga",
+  "item.twilightforest.naga_chestplate": "Tunique en écailles de Naga",
   "item.twilightforest.naga_leggings": "Jambières en écailles de Naga",
   "item.twilightforest.twilight_scepter": "Sceptre de la Twilight",
   "item.twilightforest.lifedrain_scepter": "Sceptre du Drainage de Vie",
@@ -618,8 +544,10 @@
   "item.twilightforest.ore_meter": "Mètre de Minerai",
   "item.twilightforest.magic_map": "Carte magique",
   "item.twilightforest.maze_map": "Carte de labyrinthe",
-  "item.twilightforest.ore_map": "Carte du labyrinthe/minerai",
+  "item.twilightforest.ore_map": "Carte à labyrinthe/minerai",
   "item.twilightforest.raven_feather": "Plume de corbeau",
+  // "item.twilightforest.magic_map_focus": "?? de carte magique",
+  // "item.twilightforest.maze_map_focus": "?? de carte de labyrinthe",
   "item.twilightforest.liveroot": "Racine vivante",
   "item.twilightforest.ironwood_raw": "Bois de fer brut",
   "item.twilightforest.ironwood_ingot": "Lingot en bois de fer",
@@ -632,7 +560,7 @@
   "item.twilightforest.ironwood_pickaxe": "Pioche en bois de fer",
   "item.twilightforest.ironwood_axe": "Hache en bois de fer",
   "item.twilightforest.ironwood_hoe": "Houe en bois de fer",
-  "item.twilightforest.torchberries": "Torche de baie",
+  "item.twilightforest.torchberries": "Torche de baies",
   "item.twilightforest.raw_venison": "Chevreuil cru",
   "item.twilightforest.cooked_venison": "Steak de chevreuil",
   "item.twilightforest.hydra_chop": "Côtelette d'Hydre",
@@ -666,9 +594,9 @@
   "item.twilightforest.maze_map_empty": "Carte de labyrinthe vierge",
   "item.twilightforest.ore_map_empty": "Carte du labyrinthe/minerai vierge",
   "item.twilightforest.ore_magnet": "Aimant à minerais",
-  "item.twilightforest.crumble_horn": "Corne en ruine",
+  "item.twilightforest.crumble_horn": "Corne de ruine",
   "item.twilightforest.peacock_fan": "Éventail de plumes de paon",
-  "item.twilightforest.moonworm_queen": "Reine du ver de lune",
+  "item.twilightforest.moonworm_queen": "Reine ver de lune",
   "item.twilightforest.charm_of_life_1": "Charme de la vie I",
   "item.twilightforest.charm_of_life_2": "Charme de la vie  II",
   "item.twilightforest.charm_of_keeping_1": "Charme de sauvegarde I",
@@ -694,10 +622,10 @@
   "item.twilightforest.lamp_of_cinders": "Lampe de cendres",
   "item.twilightforest.fiery_tears": "Larmes ardentes",
   "item.twilightforest.ice_bomb": "Bombe glacée",
-  "item.twilightforest.yeti_helmet": "Casque orné de Yéti",
-  "item.twilightforest.yeti_chestplate": "Veste de Yéti",
-  "item.twilightforest.yeti_leggings": "Jambières de Yéti",
-  "item.twilightforest.yeti_boots": "Bottes de Yéti",
+  "item.twilightforest.yeti_helmet": "Heaume à cornes de Yéti",
+  "item.twilightforest.yeti_chestplate": "Veste en Yéti",
+  "item.twilightforest.yeti_leggings": "Jambières en Yéti",
+  "item.twilightforest.yeti_boots": "Bottes en Yéti",
   "item.twilightforest.alpha_fur": "Fourrure de Yéti Alpha",
   "item.twilightforest.arctic_fur": "Fourrure arctique",
   "item.twilightforest.arctic_helmet": "Capuche arctique",
@@ -710,7 +638,7 @@
   "item.twilightforest.triple_bow": "Arc-triple",
   "item.twilightforest.seeker_bow": "Arc du chercheur",
   "item.twilightforest.ice_bow": "Arc de glace",
-  "item.twilightforest.ender_bow": "Arc de l'Ender",
+  "item.twilightforest.ender_bow": "Arc de l'End",
   "item.twilightforest.ice_sword": "Épée de glace",
   "item.twilightforest.glass_sword": "Épée en verre",
   "item.twilightforest.knightmetal_ring": "Boucle de métal de chevalier",
@@ -776,11 +704,11 @@
 
   "item.twilightforest.guide": "Journal de Voyageur [WIP]",
 
-  "item.twilightforest.minotaur_axe.tooltip": "Bonus de dégâts lorsque vous chargez",
-  "item.twilightforest.minotaur_axe_gold.tooltip": "Bonus de dégâts lorsque vous chargez",
-  "item.twilightforest.knightly_sword.tooltip": "Bonus de dégâts sur les cibles munies d'armure",
-  "item.twilightforest.knightly_pick.tooltip": "Bonus de dégâts sur les cibles munies d'armure",
-  "item.twilightforest.knightly_axe.tooltip": "Bonus de dégâts sur les cibles non-munies d'armure",
+  "item.twilightforest.minotaur_axe.tooltip": "Dégâts supplémentaires lorsque vous chargez",
+  "item.twilightforest.minotaur_axe_gold.tooltip": "Dégâts supplémentaires lorsque vous chargez",
+  "item.twilightforest.knightmetal_sword.tooltip": "Dégâts supplémentaires aux cibles avec armure",
+  "item.twilightforest.knightmetal_pickaxe.tooltip": "Dégâts supplémentaires aux cibles avec armure",
+  "item.twilightforest.knightmetal_axe.tooltip": "Dégâts supplémentaires aux cibles sans armure",
   "item.twilightforest.giant_pickaxe.tooltip": "Casse les blocs géants",
   "item.twilightforest.fiery_pickaxe.tooltip": "Cuisson automatique",
   "item.twilightforest.fiery_sword.tooltip": "Brûle les cibles",
@@ -841,7 +769,7 @@
   "entity.twilightforest.blockchain_goblin": "Goblin de bloc et chaîne",
   "entity.twilightforest.goblin_knight_upper": "Chevalier goblin supérieur",
   "entity.twilightforest.goblin_knight_lower": "Chevalier goblin inférieur",
-  "entity.twilightforest.helmet_crab": "Casque crabe",
+  "entity.twilightforest.helmet_crab": "Crabe casqué",
   "entity.twilightforest.knight_phantom": "Chevalier fantôme",
   "entity.twilightforest.yeti": "Yéti",
   "entity.twilightforest.yeti_alpha": "Yéti Alpha",
@@ -854,10 +782,10 @@
   "entity.twilightforest.giant_miner": "Mineur géant",
   "entity.twilightforest.armored_giant": "Géant en armure",
   "entity.twilightforest.ice_crystal": "Cristal de glace",
+  "entity.twilightforest.rising_zombie": "Zombie",
   "entity.twilightforest.harbinger_cube": "Cube Annonciateur [NYI]",
   "entity.twilightforest.adherent": "Adhérent [NYI]",
   "entity.twilightforest.castle_guardian": "Garde du château [NYI]",
-  "entity.twilightforest.rising_zombie": "Zombie",
   "entity.twilightforest.roving_cube": "Cube Itinérant [NYI]",
 
   "entity.twilightforest.ice_snowball": "Boule de neige glacée",
@@ -880,6 +808,7 @@
   "entity.twilightforest.slider": "Piège à glissière mobile",
   "entity.twilightforest.protection_box": "Boîte de protection à progression",
 
+  // Subtitles
   "subtitles.twilightforest.entity.alphayeti.alert": "Le Yéti Alpha cible le joueur",
   "subtitles.twilightforest.entity.alphayeti.death": "Le Yéti Alpha meurt",
   "subtitles.twilightforest.entity.alphayeti.grab": "Le Yéti Alpha attrape un joueur",
@@ -1060,6 +989,7 @@
   "subtitles.twilightforest.entity.tome.parrot": "Le perroquet fait des bruits de livre",
   "subtitles.twilightforest.entity.wraith.parrot": "Le perroquet halète",
 
+  "subtitles.twilightforest.block.bug.squish": "Le moustique a été écrasé :(",
   "subtitles.twilightforest.block.builder.on": "Le constructeur s'active",
   "subtitles.twilightforest.block.builder.off": "Le constructeur se désactive",
   "subtitles.twilightforest.block.builder.replace": "Le constructeur remplace un bloc",
@@ -1075,6 +1005,10 @@
   "subtitles.twilightforest.block.core.transformation": "L'arbre transformateur fredonne",
   "subtitles.twilightforest.block.portal.woosh": "Le portail de la Forêt Twilight fait signe",
   "subtitles.twilightforest.block.pedestal.activate": "Le piédestal à trophée accepte le trophée",
+  "subtitles.twilightforest.block.casket.open": "Cercuil Souvenir s'ouvre",
+  "subtitles.twilightforest.block.casket.close": "Cercuil Souvenir se ferme",
+  "subtitles.twilightforest.block.casket.repair": "Le joueur répare le cerceuil",
+  "subtitles.twilightforest.block.casket.locked": "Cercuil Souvenir fermé",
 
   "subtitles.twilightforest.item.blockchain.collide": "Le bloc et chaîne touche le bloc",
   "subtitles.twilightforest.item.blockchain.hit": "Le bloc et chaîne touche l'entité",
@@ -1099,12 +1033,6 @@
   "subtitles.twilightforest.te.reactor.idle": "Le réacteur Carminite disparaît",
 
   "subtitles.twilightforest.random.slider": "Le piège coulissant se déplace",
-
-  "subtitles.twilightforest.block.bug.squish": "Le moustique a été écrasé :(",
-  "subtitles.twilightforest.block.casket.open": "Cercuil Souvenir s'ouvre",
-  "subtitles.twilightforest.block.casket.close": "Cercuil Souvenir se ferme",
-  "subtitles.twilightforest.block.casket.repair": "Le joueur répare le cerceuil",
-  "subtitles.twilightforest.block.casket.locked": "Cercuil Souvenir fermé",
 
   // Death Messages
   "death.attack.twilightforest.ghastTear": "%1$s a été ébouillanté(e) par des larmes de feu",
@@ -1140,6 +1068,8 @@
 
   "death.attack.twilightforest.axing": "%1$s a été haché(e) par %2$s",
   "death.attack.twilightforest.axing.item": "%1$s a été haché(e) par %2$s en utilisant %3$s",
+  "death.attack.twilightforest.cicada": "%1$s a été abattu(e) par une cigale",
+  "death.attack.twilightforest.moonworm": "%1$s a été abattu(e) par un ver de lune",
   "death.attack.twilightforest.ant": "%1$s a vécu la vie d'une fourmi grâce à %2$s",
   "death.attack.twilightforest.ant.item": "%1$s a vécu la vie d'une fourmi grâce à %2$s en utilisant %3$s",
   "death.attack.twilightforest.haunt": "%1$s hante %2$s",
@@ -1158,9 +1088,6 @@
   "death.attack.twilightforest.lostWords.item": "%1$s était à court de mot après avoir été tué par %2$s en utilisant %3$s",
   "death.attack.twilightforest.snowballFight": "%1$s a perdu un combat de boules de neige contre %2$s",
   "death.attack.twilightforest.snowballFight.item": "%1$s a perdu un combat de boules de neige contre %2$s en utilisant %3$s",
-
-  "death.attack.twilightforest.cicada": "%1$s a été abattu(e) par une cigale",
-  "death.attack.twilightforest.moonworm": "%1$s a été abattu(e) par un ver de lune",
   "death.attack.twilightforest.yeeted": "%1$s a été apperçu la dernière fois par %2$s",
   "death.attack.twilightforest.yeeted.item": "%1$s a été apperçu la dernière fois par %2$s tout en tenant en quelque sorte %3$s",
 
@@ -1186,18 +1113,18 @@
   "twilightforest.config.skylight_oaks": "Chênes dans le ciel [WIP]",
   "twilightforest.config.skylight_oaks.tooltip": "Si cette fontionnalité est activée, les chênes géants de la Twilight apparaîtront aussi dans la Twilight vide.",
 
-  "twilightforest.config.world_gen_weights": "Hauteurs de génération",
-  "twilightforest.config.world_gen_weights.tooltip": "Hauteurs pour les diverses structures",
-  "twilightforest.config.stone_circle_weight": "Hauteur du cercle de roche",
-  "twilightforest.config.well_weight": "Hauteur de la source",
-  "twilightforest.config.stalagmite_weight": "Hauteur des stalagmites",
-  "twilightforest.config.foundation_weight": "Hauteur des fondations",
-  "twilightforest.config.monolith_weight": "Hauteur des monolithes",
-  "twilightforest.config.grove_ruins_weight": "Hauteur du jardin en ruine",
-  "twilightforest.config.hollow_stump_weight": "Hauteur de la colline creuse",
-  "twilightforest.config.fallen_hollow_log_weight": "Hauteur de la buche creuse tombée",
-  "twilightforest.config.fallen_small_log_weight": "Hauteur de la petite buche tombée",
-  "twilightforest.config.druid_hut_weight": "Hauteur de la hutte du druide",
+  "twilightforest.config.world_gen_weights": "Probabilité de génération",
+  "twilightforest.config.world_gen_weights.tooltip": "Probabilité pour les diverses structures",
+  "twilightforest.config.stone_circle_weight": "Probabilité du cercle de roche",
+  "twilightforest.config.well_weight": "Probabilité de source",
+  "twilightforest.config.stalagmite_weight": "Probabilité des stalagmites",
+  "twilightforest.config.foundation_weight": "Probabilité des fondations",
+  "twilightforest.config.monolith_weight": "Probabilité des monolithes",
+  "twilightforest.config.grove_ruins_weight": "Probabilité du jardin en ruine",
+  "twilightforest.config.hollow_stump_weight": "Probabilité de colline creuse",
+  "twilightforest.config.fallen_hollow_log_weight": "Probabilité de buche creuse tombée",
+  "twilightforest.config.fallen_small_log_weight": "Probabilité de petite buche tombée",
+  "twilightforest.config.druid_hut_weight": "Probabilité de hutte de druide",
 
   "twilightforest.config.hollow_hill_stalactites": "Stalacties personnalisées des Collines creuses",
   "twilightforest.config.hollow_hill_stalactites.tooltip": "Définit les stalactites personnalisées dans les colines creuses.\n_Le format est:\\\"modid:bloc<:meta> taille longueur_max hauteur_min poids\\\", où les propriétés sont :\n_Taille - la longueur maximale de la stalactite par rapport à l'espace entre le sol et le plafond de la colline,\n_Longueur max - longueur maximale d'une stalactite en blocs,\n_Hauteur min - espace minimum entre le sol de la colline et la stalactite pour pouvoir se génerer,\n_Poids - à quelle fréquence elle se génère.\n\n_Par exemple : \\\"minecraft:iron_ore 0.7 8 1 24\\\" ajouterait une stalactite égale à la stalactie de fer par défaut.",
@@ -1372,6 +1299,7 @@
 
   // "Immersive Engineering",
   "desc.immersiveengineering.info.shader.rarity.twilight": "Twilight",
+
   "item.twilightforest.shader": "Twilit Shader : %s",
   "item.twilightforest.shader_bag": "Twilit %s Sac de shader",
 
@@ -1404,5 +1332,4 @@
   "twilightforest.gui.optifine.title": "AVERTISSEMENT: OPTIFINE DÉTECTÉ",
   "twilightforest.gui.optifine.message": "Avant de continuer, noter qu'OptiFine est connu pour provoquer des plantages, des bugs visuels d'entités multi-parties et de nombreux autres problèmes.\n\nAvant de signaler un bug, veuillez d'abord supprimer OptiFine et vérifier à nouveau si le bug est toujours présent.\n\nOptiFine - les problèmes liés ne peuvent pas être résolus du côté de la Forêt Twilight !\n\nCet écran peut être désactivé dans la configuration du client.",
   "twilightforest.gui.optifine.suggestions": "Voici une sélection de mods que nous vous recommandons d'utiliser à la place."
-
 }
