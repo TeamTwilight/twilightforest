@@ -19,7 +19,7 @@
               }
             ],
             "blacklist": [],
-            "tries": 128,
+            "tries": 512,
             "state_provider": {
               "state": {
                 "Name": "minecraft:grass"

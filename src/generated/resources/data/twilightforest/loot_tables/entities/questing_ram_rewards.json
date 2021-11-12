@@ -26,6 +26,54 @@
           "name": "minecraft:bundle"
         }
       ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "default": "minecraft:coal_block"
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{shader_name:\"twilightforest:questing_ram\"}"
+            }
+          ],
+          "name": "minecraft:coal_block"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "twilightforest:mod_exists",
+              "mod_id": "immersiveengineering"
+            }
+          ],
+          "functions": [
+            {
+              "function": "twilightforest:item_or_default",
+              "default": "minecraft:coal_block"
+            }
+          ],
+          "name": "minecraft:coal_block"
+        }
+      ]
     }
   ]
 }

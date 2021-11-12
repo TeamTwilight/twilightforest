@@ -1,0 +1,100 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:armor_shard"
+            ]
+          }
+        ]
+      }
+    },
+    "has_raw": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:armor_shard_cluster"
+            ]
+          }
+        ]
+      }
+    },
+    "has_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_ingot"
+            ]
+          }
+        ]
+      }
+    },
+    "has_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_helmet"
+            ]
+          }
+        ]
+      }
+    },
+    "has_chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_chestplate"
+            ]
+          }
+        ]
+      }
+    },
+    "has_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_leggings"
+            ]
+          }
+        ]
+      }
+    },
+    "has_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_boots"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_shard",
+      "has_raw",
+      "has_ingot",
+      "has_helmet",
+      "has_chestplate",
+      "has_leggings",
+      "has_boots"
+    ]
+  ]
+}

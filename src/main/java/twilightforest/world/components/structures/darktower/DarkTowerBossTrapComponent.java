@@ -94,7 +94,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 		this.generateBox(world, sbb, 1, 1, 1, size / 2, 1, size - 2, Blocks.AIR.defaultBlockState(), Blocks.AIR.defaultBlockState(), false);
 
 		// add boss trap
-		this.placeBlock(world, TFBlocks.ghast_trap.get().defaultBlockState(), 5, 1, 5, sbb);
+		this.placeBlock(world, TFBlocks.GHAST_TRAP.get().defaultBlockState(), 5, 1, 5, sbb);
 		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 6, sbb);
 		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 7, sbb);
 		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 8, sbb);

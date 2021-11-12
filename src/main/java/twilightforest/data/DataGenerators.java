@@ -23,6 +23,7 @@ public class DataGenerators {
 		generator.addProvider(new FluidTagGenerator(generator, helper));
 		generator.addProvider(new ItemTagGenerator(generator, blocktags, helper));
 		generator.addProvider(new EntityTagGenerator(generator, helper));
+		generator.addProvider(new CustomTagGenerator.EnchantmentTagGenerator(generator, helper));
 		generator.addProvider(new LootGenerator(generator));
 		generator.addProvider(new StonecuttingGenerator(generator));
 		generator.addProvider(new CraftingGenerator(generator));

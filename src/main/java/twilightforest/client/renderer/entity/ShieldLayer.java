@@ -21,7 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
-import twilightforest.entity.boss.LichEntity;
+import twilightforest.entity.boss.Lich;
 
 import java.util.Random;
 
@@ -36,8 +36,8 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 	}
 
 	private int getShieldCount(T entity) {
-		return entity instanceof LichEntity
-						? ((LichEntity) entity).getShieldStrength()
+		return entity instanceof Lich
+						? ((Lich) entity).getShieldStrength()
 						: entity.getCapability(CapabilityList.SHIELDS).map(IShieldCapability::shieldsLeft).orElse(0);
 	}
 

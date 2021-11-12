@@ -1,0 +1,48 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_smoker": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:smoker"
+            ]
+          }
+        ]
+      }
+    },
+    "has_towerwood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:encased_towerwood"
+            ]
+          }
+        ]
+      }
+    },
+    "has_encased_ver": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:encased_smoker"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_smoker",
+      "has_towerwood",
+      "has_encased_ver"
+    ]
+  ]
+}

@@ -33,8 +33,8 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.castle_rune_brick_yellow.get().defaultBlockState();
-		this.deco.fenceState = TFBlocks.force_field_pink.get().defaultBlockState();
+		this.deco.blockState = TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		this.deco.fenceState = TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
 
 		// this is going to be the parent for all rooms on this level
 		super.addChildren(this, list, rand);
@@ -48,7 +48,7 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 		}
 
 		final BlockState stairs = deco.stairState.setValue(StairBlock.FACING, Direction.SOUTH);
-		final BlockState deadRock = TFBlocks.deadrock.get().defaultBlockState();
+		final BlockState deadRock = TFBlocks.DEADROCK.get().defaultBlockState();
 		// stairs
 		for (int y = 0; y <= this.height; y++) {
 			int x = (this.size / 2) - 2;
@@ -60,7 +60,7 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 		}
 
 		// door
-		final BlockState castleDoor = TFBlocks.castle_door_pink.get().defaultBlockState();
+		final BlockState castleDoor = TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState();
 		this.generateBox(world, sbb, 23, 0, 12, 23, 3, 14, castleDoor, AIR, false);
 		this.generateBox(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
 
@@ -69,11 +69,11 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 
 	@Override
 	protected BlockState getForceFieldColor(Random decoRNG) {
-		return TFBlocks.force_field_pink.get().defaultBlockState();
+		return TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
 	}
 
 	@Override
 	protected BlockState getRuneColor(BlockState fieldColor) {
-		return TFBlocks.castle_rune_brick_pink.get().defaultBlockState();
+		return TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 }

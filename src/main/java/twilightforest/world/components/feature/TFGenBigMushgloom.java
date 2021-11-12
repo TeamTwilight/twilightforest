@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -34,14 +35,14 @@ public class TFGenBigMushgloom extends Feature<NoneFeatureConfiguration> {
 			return false;
 		}
 
-		Block blockUnder = world.getBlockState(pos.below()).getBlock();
-		if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS_BLOCK && blockUnder != Blocks.MYCELIUM) {
+		BlockState blockUnder = world.getBlockState(pos.below());
+		if (!isDirt(blockUnder) && !blockUnder.is(BlockTags.MUSHROOM_GROW_BLOCK)) {
 			return false;
 		}
 
 		// generate!
 		for (int dy = 0; dy < height - 2; dy++) {
-			world.setBlock(pos.above(dy), TFBlocks.huge_mushgloom_stem.get().defaultBlockState(), 3);
+			world.setBlock(pos.above(dy), TFBlocks.HUGE_MUSHGLOOM_STEM.get().defaultBlockState(), 3);
 		}
 
 		makeMushroomCap(world, pos.above(height - 2));
@@ -53,7 +54,7 @@ public class TFGenBigMushgloom extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private void makeMushroomCap(LevelAccessor world, BlockPos pos) {
-		BlockState defState = TFBlocks.huge_mushgloom.get().defaultBlockState();
+		BlockState defState = TFBlocks.HUGE_MUSHGLOOM.get().defaultBlockState();
 		world.setBlock(pos.offset(-1, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH_WEST, defState), 3);
 		world.setBlock(pos.offset(0, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH, defState), 3);
 		world.setBlock(pos.offset(1, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH_EAST, defState), 3);

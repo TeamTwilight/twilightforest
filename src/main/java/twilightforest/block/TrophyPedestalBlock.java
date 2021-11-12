@@ -27,6 +27,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.PlayerHelper;
+import twilightforest.util.TFStats;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -127,6 +128,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	private void rewardNearbyPlayers(Level world, BlockPos pos) {
 		for (ServerPlayer player : world.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(16.0D))) {
 			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.trigger(player);
+			player.awardStat(TFStats.TROPHY_PEDESTALS_ACTIVATED);
 		}
 	}
 
@@ -134,7 +136,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 		for (int sx = -5; sx <= 5; sx++)
 			for (int sy = -5; sy <= 5; sy++)
 				for (int sz = -5; sz <= 5; sz++)
-					if (world.getBlockState(pos.offset(sx, sy, sz)).getBlock() == TFBlocks.stronghold_shield.get()) {
+					if (world.getBlockState(pos.offset(sx, sy, sz)).getBlock() == TFBlocks.STRONGHOLD_SHIELD.get()) {
 						world.destroyBlock(pos.offset(sx, sy, sz), false);
 					}
 	}

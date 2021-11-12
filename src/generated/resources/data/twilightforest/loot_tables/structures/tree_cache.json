@@ -269,6 +269,11 @@
           "type": "minecraft:item",
           "weight": 25,
           "name": "twilightforest:sorting_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "twilightforest:music_disc_superstitious"
         }
       ]
     }

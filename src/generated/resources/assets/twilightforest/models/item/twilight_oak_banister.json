@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:item/banister_item",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_twilight_oak_0"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_charm1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:charm_of_keeping_1"
+            ]
+          }
+        ]
+      }
+    },
+    "has_charm2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:charm_of_keeping_2"
+            ]
+          }
+        ]
+      }
+    },
+    "has_charm3": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:charm_of_keeping_3"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_charm1",
+      "has_charm2",
+      "has_charm3"
+    ]
+  ]
+}

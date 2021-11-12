@@ -9,12 +9,11 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.IceCrystalEntity;
+import twilightforest.entity.monster.IceCrystal;
 
-public class IceCrystalModel extends HierarchicalModel<IceCrystalEntity> {
+public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 
 	private ModelPart root;
 	private final ModelPart[] spikes = new ModelPart[16];
@@ -66,11 +65,11 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystalEntity> {
 	}
 
 	@Override
-	public void setupAnim(IceCrystalEntity entity, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(IceCrystal entity, float v, float v1, float v2, float v3, float v4) {
 	}
 
 	@Override
-	public void prepareMobModel(IceCrystalEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(IceCrystal entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		this.alive = entity.isAlive();
 		for (int i = 0; i < spikes.length; i++) {
 			// rotate the spikes

@@ -50,7 +50,7 @@ public class LockedVanishingBlock extends VanishingBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (!stack.isEmpty() && stack.getItem() == TFItems.tower_key.get() && state.getValue(LOCKED)) {
+		if (!stack.isEmpty() && stack.getItem() == TFItems.TOWER_KEY.get() && state.getValue(LOCKED)) {
 			if (!world.isClientSide) {
 				stack.shrink(1);
 				world.setBlockAndUpdate(pos, state.setValue(LOCKED, false));

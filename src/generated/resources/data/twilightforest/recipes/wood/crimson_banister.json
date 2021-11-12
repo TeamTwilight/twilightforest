@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "---",
+    "| |"
+  ],
+  "key": {
+    "-": {
+      "item": "minecraft:crimson_slab"
+    },
+    "|": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "twilightforest:crimson_banister",
+    "count": 3
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:maze_stone_chiseled"
-  },
-  "result": "twilightforest:maze_stone_decorative",
-  "count": 1
-}

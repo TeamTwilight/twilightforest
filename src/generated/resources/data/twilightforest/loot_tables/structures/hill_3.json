@@ -187,11 +187,11 @@
         {
           "type": "minecraft:item",
           "weight": 75,
-          "name": "twilightforest:naga_scale"
+          "name": "twilightforest:magic_map"
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 25,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -207,23 +207,28 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 25,
           "name": "twilightforest:moonworm_queen"
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 25,
           "name": "twilightforest:charm_of_life_1"
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 25,
           "name": "twilightforest:charm_of_keeping_1"
         },
         {
           "type": "minecraft:item",
           "weight": 25,
-          "name": "twilightforest:mangrove_sapling"
+          "name": "twilightforest:ironwood_block"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "twilightforest:music_disc_maker"
         }
       ]
     }

@@ -41,11 +41,4 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 			world.playSound(null, pos, TFSounds.SMOKER_START, SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 	}
-
-	//TODO whats the new method for this?
-//	@Override
-//	public boolean hasTileEntity(BlockState state) {
-//		return state.getValue(ACTIVE);
-//	}
-
 }

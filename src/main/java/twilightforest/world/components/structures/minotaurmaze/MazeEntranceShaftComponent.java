@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -24,10 +25,10 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 		super(MinotaurMazePieces.TFMMES, nbt);
 	}
 
-	private int averageGroundLevel = -1;
+	private int averageGroundLevel = Integer.MIN_VALUE;
 
 	public MazeEntranceShaftComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMES, feature, i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1)); // Flat, expand later
+		super(MinotaurMazePieces.TFMMES, feature, i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1).encapsulate(new BlockPos(x, 0, z))); // FIXME Swap 0 for Worldgen Sea Level
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 	}
 
@@ -43,50 +44,11 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockPos.MutableBlockPos pos = chunkPosIn.getWorldPosition().mutable().setX(this.boundingBox.minX()).setZ(this.boundingBox.minZ());
 
-		if (this.averageGroundLevel < 0) {
-			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
+		this.boundingBox.encapsulate(pos.setY(generator.getSeaLevel() - 9));
 
-			if (this.averageGroundLevel < 0) {
-				return true;
-			}
-
-			pos.setY(this.averageGroundLevel);
-
-			this.boundingBox.encapsulate(pos);
-		}
-
-		this.boundingBox.encapsulate(pos.setY(generator.getSeaLevel() - 11));
-
-		this.generateBox(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSpan(), 5, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, true);
+		this.generateBox(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSpan(), 5, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, true);
 		this.generateAirBox(world, sbb, 1, 0, 1, 4, this.boundingBox.getYSpan(), 4);
 
 		return true;
-	}
-
-	/**
-	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
-	 * levels in the BB's horizontal rectangle).
-	 */
-	@Override
-	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox boundingBox) {
-		int yTotal = 0;
-		int count = 0;
-
-		for (int z = this.boundingBox.minZ(); z <= this.boundingBox.maxZ(); ++z) {
-			for (int x = this.boundingBox.minX(); x <= this.boundingBox.maxX(); ++x) {
-				BlockPos pos = new BlockPos(x, 64, z);
-				if (boundingBox.isInside(pos)) {
-					final BlockPos topBlock = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
-					yTotal += Math.max(topBlock.getY(), generator.getSpawnHeight(world));
-					++count;
-				}
-			}
-		}
-
-		if (count == 0) {
-			return -1;
-		} else {
-			return yTotal / count;
-		}
 	}
 }

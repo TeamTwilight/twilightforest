@@ -319,7 +319,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	protected void addThreeQuarterFloors(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random decoRNG, BoundingBox sbb, int bottom, int top) {
 
 		int spacing = 5;
-		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY() + bottom) % 4];
+		Rotation rotation = RotationUtil.ROTATIONS[Math.abs((this.boundingBox.minY() + bottom) % 4)];
 		if (bottom == 0) {
 			makeLargeStairsUp(world, sbb, rotation, 0);
 			rotation = rotation.getRotated(Rotation.COUNTERCLOCKWISE_90);
@@ -589,7 +589,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		maze.wallBlockState = deco.blockState;
 		maze.headBlockState = deco.accentState;
 		maze.pillarBlockState = deco.accentState;
-		maze.doorBlockState = TFBlocks.reappearing_block.get().defaultBlockState();
+		maze.doorBlockState = TFBlocks.REAPPEARING_BLOCK.get().defaultBlockState();
 
 		maze.torchRarity = 0;
 		maze.tall = 3;
@@ -635,22 +635,22 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			case 0:
 				placeBlock(world, deco.accentState, x, y + 1, z + 1, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				this.setDoubleLootChest(world, x, y + 2, z + 1, x + 1, y + 2, z + 1, Direction.SOUTH, TFTreasure.darktower_cache, sbb, false);
+				this.setDoubleLootChest(world, x, y + 2, z + 1, x + 1, y + 2, z + 1, Direction.SOUTH, TFTreasure.DARKTOWER_CACHE, sbb, false);
 				break;
 			case 1:
 				placeBlock(world, deco.accentState, x, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x, y + 1, z + 1, sbb);
-				this.setDoubleLootChest(world, x, y + 2, z, x, y + 2, z + 1, Direction.WEST, TFTreasure.darktower_cache, sbb, false);
+				this.setDoubleLootChest(world, x, y + 2, z, x, y + 2, z + 1, Direction.WEST, TFTreasure.DARKTOWER_CACHE, sbb, false);
 				break;
 			case 2:
 				placeBlock(world, deco.accentState, x, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z, sbb);
-				this.setDoubleLootChest(world, x + 1, y + 2, z, x, y + 2, z, Direction.NORTH, TFTreasure.darktower_cache, sbb, false);
+				this.setDoubleLootChest(world, x + 1, y + 2, z, x, y + 2, z, Direction.NORTH, TFTreasure.DARKTOWER_CACHE, sbb, false);
 				break;
 			case 3:
 				placeBlock(world, deco.accentState, x + 1, y + 1, z, sbb);
 				placeBlock(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				this.setDoubleLootChest(world, x + 1, y + 2, z + 1, x + 1, y + 2, z, Direction.EAST, TFTreasure.darktower_cache, sbb, false);
+				this.setDoubleLootChest(world, x + 1, y + 2, z + 1, x + 1, y + 2, z, Direction.EAST, TFTreasure.DARKTOWER_CACHE, sbb, false);
 				break;
 		}
 	}
@@ -682,7 +682,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			}
 		}
 
-		final BlockState antiBuilderBlockState = TFBlocks.antibuilder.get().defaultBlockState();
+		final BlockState antiBuilderBlockState = TFBlocks.ANTIBUILDER.get().defaultBlockState();
 
 		// place unbuilders
 		setBlockStateRotated(world, antiBuilderBlockState, 15, y + 2, 7, rotation, sbb);
@@ -752,14 +752,14 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	private void decorateBossSpawner(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
-		this.setBlockStateRotated(world, TFBlocks.boss_spawner_ur_ghast.get().defaultBlockState(), 9, y + 4, 9, rotation, sbb);
+		this.setBlockStateRotated(world, TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState(), 9, y + 4, 9, rotation, sbb);
 	}
 
 	private void decorateExperiment(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
 		final BlockState obsidian = Blocks.OBSIDIAN.defaultBlockState();
 		final BlockState netherrack = Blocks.NETHERRACK.defaultBlockState();
 		final BlockState redstone = Blocks.REDSTONE_BLOCK.defaultBlockState();
-		final BlockState inactiveReactor = TFBlocks.carminite_reactor.get().defaultBlockState();
+		final BlockState inactiveReactor = TFBlocks.CARMINITE_REACTOR.get().defaultBlockState();
 
 		//  crafting area in corner - walls
 		this.fillBlocksRotated(world, sbb, 17, y + 1, 1, 17, y + 4, 6, deco.pillarState, rotation);
@@ -783,25 +783,25 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		setBlockStateRotated(world, Blocks.CRAFTING_TABLE.defaultBlockState(), 14, y + 2, 4, rotation, sbb);
 
 		// recipes in frames?
-		placeItemFrameRotated(world, 13, y + 2, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.borer_essence.get()), sbb);
+		placeItemFrameRotated(world, 13, y + 2, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.BORER_ESSENCE.get()), sbb);
 		placeItemFrameRotated(world, 14, y + 2, 1, rotation, Direction.SOUTH, new ItemStack(Items.REDSTONE), sbb);
-		placeItemFrameRotated(world, 15, y + 2, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.borer_essence.get()), sbb);
+		placeItemFrameRotated(world, 15, y + 2, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.BORER_ESSENCE.get()), sbb);
 		placeItemFrameRotated(world, 13, y + 3, 1, rotation, Direction.SOUTH, new ItemStack(Items.REDSTONE), sbb);
 		placeItemFrameRotated(world, 14, y + 3, 1, rotation, Direction.SOUTH, new ItemStack(Items.GHAST_TEAR), sbb);
 		placeItemFrameRotated(world, 15, y + 3, 1, rotation, Direction.SOUTH, new ItemStack(Items.REDSTONE), sbb);
-		placeItemFrameRotated(world, 13, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.borer_essence.get()), sbb);
+		placeItemFrameRotated(world, 13, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.BORER_ESSENCE.get()), sbb);
 		placeItemFrameRotated(world, 14, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(Items.REDSTONE), sbb);
-		placeItemFrameRotated(world, 15, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.borer_essence.get()), sbb);
+		placeItemFrameRotated(world, 15, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.BORER_ESSENCE.get()), sbb);
 
-		placeItemFrameRotated(world, 17, y + 2, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 2, 4, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 2, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 4, rotation, Direction.WEST, new ItemStack(TFItems.carminite.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 4, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.ENCASED_TOWERWOOD.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 4, rotation, Direction.WEST, new ItemStack(TFBlocks.TOWERWOOD.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.ENCASED_TOWERWOOD.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.TOWERWOOD.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 4, rotation, Direction.WEST, new ItemStack(TFItems.CARMINITE.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.TOWERWOOD.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 3, rotation, Direction.WEST, new ItemStack(TFBlocks.ENCASED_TOWERWOOD.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 4, rotation, Direction.WEST, new ItemStack(TFBlocks.TOWERWOOD.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 5, rotation, Direction.WEST, new ItemStack(TFBlocks.ENCASED_TOWERWOOD.get()), sbb);
 
 		if (y < this.height - 13) {
 			// device bottom
@@ -866,7 +866,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	private void makeWoodPillar(WorldGenLevel world, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		final BlockState log = TFBlocks.dark_log.get().defaultBlockState();
+		final BlockState log = TFBlocks.DARK_LOG.get().defaultBlockState();
 		this.setBlockStateRotated(world, log, x, y + 2, z, rotation, sbb);
 		this.setBlockStateRotated(world, log, x, y + 3, z, rotation, sbb);
 		this.setBlockStateRotated(world, log, x, y + 4, z, rotation, sbb);
@@ -1046,7 +1046,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, true), 14, y + 1, 4, rotation, sbb);
 
 		//setBlockStateRotated(world, Blocks.CHEST, 0, 13, y + 2, 4, rotation, sbb);
-		placeTreasureRotated(world, 13, y + 2, 4, getOrientation(), rotation, TFTreasure.basement, sbb);
+		placeTreasureRotated(world, 13, y + 2, 4, getOrientation(), rotation, TFTreasure.DARKTOWER_CACHE, sbb);
 		setBlockStateRotated(world, Blocks.CRAFTING_TABLE.defaultBlockState(), 14, y + 2, 4, rotation, sbb);
 
 		BlockState slab = Blocks.SPRUCE_SLAB.defaultBlockState()
@@ -1123,15 +1123,9 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	private void placeRandomPlant(WorldGenLevel world, Random decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		Block flowerPot = BlockTags.FLOWER_POTS.getRandomElement(decoRNG);
-		//dont include special saplings or thorns in our pots
-		List<Block> blacklistedPots = BlockTagGenerator.SPECIAL_POTS.getValues();
+		Block flowerPot = BlockTagGenerator.DARK_TOWER_ALLOWED_POTS.getRandomElement(decoRNG);
 		BlockState flowerPotState = flowerPot.defaultBlockState();
-		if(!blacklistedPots.contains(flowerPot)) {
-			setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
-		} else {
-			setBlockStateRotated(world, decoRNG.nextBoolean() ? Blocks.FLOWER_POT.defaultBlockState() : Blocks.POTTED_DEAD_BUSH.defaultBlockState(), x, y, z, rotation, sbb);
-		}
+		setBlockStateRotated(world, decoRNG.nextInt(10) == 0 ? Blocks.FLOWER_POT.defaultBlockState() : flowerPotState, x, y, z, rotation, sbb);
 	}
 
 	private void makeBottomEntrance(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
@@ -1166,7 +1160,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	 * @param top
 	 */
 	protected void makeTimberBeams(WorldGenLevel world, Random rand, BoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop, int top) {
-		BlockState beamID = TFBlocks.oak_log.get().defaultBlockState();
+		BlockState beamID = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState();
 		BlockState beamStateNS = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		BlockState beamStateUD = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
 		BlockState beamStateEW = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
@@ -1250,7 +1244,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	 * Make a mini ghast spawner and then set the spawn range and max entities for that spawner
 	 */
 	private void makeMiniGhastSpawner(WorldGenLevel world, int y, int sx, int sz, BoundingBox sbb) {
-		setSpawner(world, sx, y + 2, sz, sbb, TFEntities.mini_ghast, spawner -> {
+		setSpawner(world, sx, y + 2, sz, sbb, TFEntities.CARMINITE_GHASTLING, spawner -> {
 			var base = spawner.getSpawner();
 
 			base.spawnRange = 16;
@@ -1312,7 +1306,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			int sx = pickFrom(rand, 5, 9, 13);
 			int sz = (sx == 9) ? (rand.nextBoolean() ? 5 : 13) : 9;
 
-			final BlockState antibuilder = TFBlocks.antibuilder.get().defaultBlockState();
+			final BlockState antibuilder = TFBlocks.ANTIBUILDER.get().defaultBlockState();
 			setBlockStateRotated(world, antibuilder, sx, y + 2, sz, rotation, sbb);
 		} else {
 			// lamp cluster
@@ -1340,7 +1334,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		setBlockStateRotated(world, deco.fenceState, 5, top + 1, 10, rotation, sbb);
 		setBlockStateRotated(world, deco.fenceState, 7, top + 1, 10, rotation, sbb);
 		// builder & lever
-		final BlockState inactiveBuilder = TFBlocks.carminite_builder.get().defaultBlockState();
+		final BlockState inactiveBuilder = TFBlocks.CARMINITE_BUILDER.get().defaultBlockState();
 		setBlockStateRotated(world, inactiveBuilder, 7, top - spacing, 10, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), AttachFace.FLOOR, rand.nextBoolean() ? Direction.EAST : Direction.NORTH, false), 7, top - spacing + 1, 11, rotation, sbb);
 	}
@@ -1357,7 +1351,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		setBlockStateRotated(world, deco.accentState, 2, y, z + 1, rotation, sbb);
 
 		// builder & lever
-		final BlockState inactiveBuilder = TFBlocks.carminite_builder.get().defaultBlockState();
+		final BlockState inactiveBuilder = TFBlocks.CARMINITE_BUILDER.get().defaultBlockState();
 		setBlockStateRotated(world, inactiveBuilder, 2, y, hole ? z + 1 : z - 1, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), AttachFace.FLOOR, rand.nextBoolean() ? Direction.EAST : Direction.NORTH, false), 2, y + 1, z, rotation, sbb);
 	}

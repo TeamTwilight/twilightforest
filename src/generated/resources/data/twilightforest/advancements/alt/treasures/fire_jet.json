@@ -1,0 +1,29 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fire_jet"
+            ]
+          }
+        ]
+      }
+    },
+    "in_swamp": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/biomes/fire_swamp"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item",
+      "in_swamp"
+    ]
+  ]
+}

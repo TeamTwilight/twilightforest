@@ -2,27 +2,33 @@ package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.CompoundTag;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.MapItem;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TFMagicMapData extends MapItemSavedData {
-	private static final Map<Level, Map<String, TFMagicMapData>> CLIENT_DATA = new WeakHashMap<>();
+	private static final Map<String, TFMagicMapData> CLIENT_DATA = new HashMap<>();
 
 	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
 
@@ -30,12 +36,20 @@ public class TFMagicMapData extends MapItemSavedData {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
 	}
 
-	//TODO: Evaluate this
-	public static TFMagicMapData load(CompoundTag cmp) {
-		MapItemSavedData data = MapItemSavedData.load(cmp);
-		TFMagicMapData tfdata = (TFMagicMapData) data;
+	public static TFMagicMapData load(CompoundTag nbt) {
+		MapItemSavedData data = MapItemSavedData.load(nbt);
+		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
+		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
+		final boolean locked = nbt.getBoolean("locked");
+		TFMagicMapData tfdata = new TFMagicMapData(data.x, data.z, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
 
-		byte[] featureStorage = cmp.getByteArray("features");
+		tfdata.colors = data.colors;
+		tfdata.bannerMarkers.putAll(data.bannerMarkers);
+		tfdata.decorations.putAll(data.decorations);
+		tfdata.frameMarkers.putAll(data.frameMarkers);
+		tfdata.trackedDecorationCount = data.trackedDecorationCount;
+
+		byte[] featureStorage = nbt.getByteArray("features");
 		if (featureStorage.length > 0) {
 			tfdata.deserializeFeatures(featureStorage);
 		}
@@ -65,7 +79,7 @@ public class TFMagicMapData extends MapItemSavedData {
 			int worldX = (coord.getX() << this.scale - 1) + this.x;
 			int worldZ = (coord.getY() << this.scale - 1) + this.z;
 
-			int trueId = TFFeature.getFeatureID(worldX, worldZ, (ServerLevel) world);
+			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(TFFeature.getFeatureAt(worldX, worldZ, (ServerLevel) world));
 			if (coord.featureId != trueId) {
 				toRemove.add(coord);
 				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRot()));
@@ -102,38 +116,49 @@ public class TFMagicMapData extends MapItemSavedData {
 		return storage;
 	}
 
-	// VanillaCopy of super, but adjust origin
-	//@Override
-	public void setOrigin(double x, double z, int mapScale) {
-		// magic maps are offset by 1024 from normal maps so that 0,0 is in the middle of the map containing those coords
-		int mapSize = 128 * (1 << mapScale);
-		int roundX = (int) Math.round(x / mapSize);
-		int roundZ = (int) Math.round(z / mapSize);
-		this.x = roundX * mapSize;
-		this.z = roundZ * mapSize;
-	}
-
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMagicMapData getMagicMapData(Level world, String name) {
 		if (world.isClientSide) {
-			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
+			return CLIENT_DATA.get(name);
 		} else {
 			return world.getServer().overworld().getDataStorage().get(TFMagicMapData::load, name);
 		}
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
-	public static void registerMagicMapData(Level world, TFMagicMapData data) {
+	public static void registerMagicMapData(Level world, TFMagicMapData data, String id) {
 		if (world.isClientSide) {
-			//FIXME CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
+			CLIENT_DATA.put(id, data);
 		} else {
-			world.getServer().overworld().getDataStorage().set(MapItem.makeKey(world.getFreeMapId()), data);
+			world.getServer().overworld().getDataStorage().set(id, data);
 		}
 	}
 
 	public static class TFMapDecoration extends MapDecoration {
 
+		private static final Int2ObjectArrayMap<TFFeature> ICONS = new Int2ObjectArrayMap<>(){{
+			defaultReturnValue(TFFeature.NOTHING);
+			put(0, TFFeature.NOTHING);
+			put(1, TFFeature.SMALL_HILL);
+			put(2, TFFeature.MEDIUM_HILL);
+			put(3, TFFeature.LARGE_HILL);
+			put(4, TFFeature.HEDGE_MAZE);
+			put(5, TFFeature.NAGA_COURTYARD);
+			put(6, TFFeature.LICH_TOWER);
+			put(7, TFFeature.ICE_TOWER);
+			put(9, TFFeature.QUEST_GROVE);
+			put(12, TFFeature.HYDRA_LAIR);
+			put(13, TFFeature.LABYRINTH);
+			put(14, TFFeature.DARK_TOWER);
+			put(15, TFFeature.KNIGHT_STRONGHOLD);
+			put(17, TFFeature.YETI_CAVE);
+			put(18, TFFeature.TROLL_CAVE);
+			put(19, TFFeature.FINAL_CASTLE);
+		}};
+		private static final Object2IntArrayMap<TFFeature> ICONS_FLIPPED = new Object2IntArrayMap<>(){{
+			ICONS.forEach((k, v) -> put(v, k.intValue()));
+		}};
 
 		@OnlyIn(Dist.CLIENT)
 		public static class RenderContext {
@@ -145,6 +170,10 @@ public class TFMagicMapData extends MapItemSavedData {
 
 		final int featureId;
 
+		public TFMapDecoration(TFFeature featureId, byte xIn, byte yIn, byte rotationIn) {
+			this(ICONS_FLIPPED.getInt(featureId), xIn, yIn, rotationIn);
+		}
+
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
 			super(Type.TARGET_X, xIn, yIn, rotationIn, new TranslatableComponent("map.magic.text")); //TODO: Shush for now
 			this.featureId = featureId;
@@ -154,7 +183,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		@OnlyIn(Dist.CLIENT)
 		public boolean render(int idx) {
 			// TODO: Forge needs to pass in the ms and buffers, but for now this works
-			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
+			if (ICONS.get(featureId).isStructureEnabled) {
 				RenderContext.stack.pushPose();
 				RenderContext.stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
 				RenderContext.stack.mulPose(Vector3f.ZP.rotationDegrees(getRot() * 360 / 16.0F));

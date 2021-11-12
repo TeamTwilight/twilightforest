@@ -28,7 +28,10 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "twilightforest:small_andesite",
@@ -46,23 +49,17 @@
       "twilightforest:troll_roots"
     ],
     [
-      "minecraft:mega_spruce",
-      "twilightforest:tree/mega_spruce_no_podzol",
-      "minecraft:spruce",
-      "minecraft:mega_spruce",
-      "minecraft:spruce",
-      "minecraft:forest_rock",
-      "minecraft:patch_grass_taiga",
-      "twilightforest:stone_circle",
-      "twilightforest:well",
-      "twilightforest:outside_stalagmite",
-      "twilightforest:foundation",
-      "twilightforest:monolith",
       "twilightforest:grove_ruins",
+      "twilightforest:foundation",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "twilightforest:small_log",
-      "twilightforest:druid_hut"
+      "twilightforest:tree/highlands_trees",
+      "minecraft:forest_rock",
+      "minecraft:patch_grass_taiga",
+      "twilightforest:spruce_fallen_log"
     ]
   ],
   "starts": [
@@ -127,7 +124,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:wild_boar",
+        "type": "twilightforest:boar",
         "weight": 10,
         "minCount": 4,
         "maxCount": 4
@@ -163,7 +160,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:bunny",
+        "type": "twilightforest:dwarf_rabbit",
         "weight": 10,
         "minCount": 4,
         "maxCount": 5

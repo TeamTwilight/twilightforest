@@ -6,18 +6,16 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.boss.LichEntity;
+import twilightforest.entity.boss.Lich;
 import twilightforest.item.TFItems;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class LichShadowsGoal extends Goal {
 
-	private final LichEntity lich;
+	private final Lich lich;
 
-	public LichShadowsGoal(LichEntity boss) {
+	public LichShadowsGoal(Lich boss) {
 		lich = boss;
 		setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
 	}
@@ -29,7 +27,7 @@ public class LichShadowsGoal extends Goal {
 
 	@Override
 	public void start() {
-		lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.twilight_scepter.get()));
+		lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.TWILIGHT_SCEPTER.get()));
 	}
 
 	@Override
@@ -81,7 +79,7 @@ public class LichShadowsGoal extends Goal {
 
 	private void checkAndSpawnClones() {
 		// if not, spawn one!
-		if (lich.countMyClones() < LichEntity.MAX_SHADOW_CLONES)
+		if (lich.countMyClones() < Lich.MAX_SHADOW_CLONES)
 			spawnShadowClone();
 	}
 
@@ -93,7 +91,7 @@ public class LichShadowsGoal extends Goal {
 
 		if (cloneSpot != null) {
 			// put a clone there
-			LichEntity newClone = new LichEntity(lich.level, lich);
+			Lich newClone = new Lich(lich.level, lich);
 			newClone.setPos(cloneSpot.x, cloneSpot.y, cloneSpot.z);
 			lich.level.addFreshEntity(newClone);
 
@@ -106,7 +104,7 @@ public class LichShadowsGoal extends Goal {
 	}
 
 	private void despawnClones() {
-		for (LichEntity nearbyLich : lich.getNearbyLiches()) {
+		for (Lich nearbyLich : lich.getNearbyLiches()) {
 			if (nearbyLich.isShadowClone()) {
 				nearbyLich.remove(Entity.RemovalReason.DISCARDED);
 			}
@@ -115,7 +113,7 @@ public class LichShadowsGoal extends Goal {
 
 	private void findNewMaster() {
 
-		for (LichEntity nearbyLich : lich.getNearbyLiches()) {
+		for (Lich nearbyLich : lich.getNearbyLiches()) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewClone(lich)) {
 				lich.setMaster(nearbyLich);
 

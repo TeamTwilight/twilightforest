@@ -83,7 +83,7 @@ public class HugeLilyPadItem extends WaterLilyBlockItem {
 						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1.south(), itemstack);
 					}
 
-					if (!player.abilities.instabuild) {
+					if (!player.getAbilities().instabuild) {
 						itemstack.shrink(1);
 					}
 

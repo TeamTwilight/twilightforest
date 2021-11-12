@@ -11,7 +11,7 @@
       "translate": "advancement.twilightforest.ghast_trap.desc",
       "with": [
         {
-          "translate": "entity.twilightforest.mini_ghast"
+          "translate": "entity.twilightforest.carminite_ghastling"
         },
         {
           "translate": "block.twilightforest.ghast_trap"

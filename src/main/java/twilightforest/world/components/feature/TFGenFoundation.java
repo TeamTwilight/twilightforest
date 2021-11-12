@@ -30,7 +30,7 @@ public class TFGenFoundation extends Feature<NoneFeatureConfiguration> {
 		int sz = 5 + rand.nextInt(5);
 
 
-		if (!FeatureUtil.isAreaSuitable(world, pos, sx, 4, sz)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, sx + 1, 4, sz + 1)) {
 			return false;
 		}
 
@@ -68,7 +68,7 @@ public class TFGenFoundation extends Feature<NoneFeatureConfiguration> {
 			// make chest
 			int cx = rand.nextInt(sx - 1) + 1;
 			int cz = rand.nextInt(sz - 1) + 1;
-			TFTreasure.basement.generateChest(world, pos.offset(cx, -4, cz), Direction.NORTH, false);
+			TFTreasure.FOUNDATION_BASEMENT.generateChest(world, pos.offset(cx, -4, cz), Direction.NORTH, false);
 
 		}
 

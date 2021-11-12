@@ -20,10 +20,7 @@
         "root_length": 12,
         "exposed_roots_provider": {
           "state": {
-            "Properties": {
-              "axis": "y"
-            },
-            "Name": "twilightforest:mangrove_wood"
+            "Name": "twilightforest:mangrove_root"
           },
           "type": "minecraft:simple_state_provider"
         },
@@ -69,6 +66,7 @@
     "foliage_provider": {
       "state": {
         "Properties": {
+          "waterlogged": "false",
           "persistent": "false",
           "distance": "7"
         },

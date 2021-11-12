@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:block/stone_twist/twist_blank",
+    "layer1": "twilightforest:items/greater_potion_flask"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "twilightforest:potion_level": 1.0
+      },
+      "model": "twilightforest:item/greater_flask_0"
+    },
+    {
+      "predicate": {
+        "twilightforest:potion_level": 2.0
+      },
+      "model": "twilightforest:item/greater_flask_1"
+    },
+    {
+      "predicate": {
+        "twilightforest:potion_level": 3.0
+      },
+      "model": "twilightforest:item/greater_flask_2"
+    },
+    {
+      "predicate": {
+        "twilightforest:potion_level": 4.0
+      },
+      "model": "twilightforest:item/greater_flask_3"
+    }
+  ]
+}

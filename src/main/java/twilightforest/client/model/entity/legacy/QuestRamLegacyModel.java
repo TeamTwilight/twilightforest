@@ -18,11 +18,11 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.QuestRamEntity;
+import twilightforest.entity.passive.QuestRam;
 
 import java.util.Arrays;
 
-public class QuestRamLegacyModel extends HierarchicalModel<QuestRamEntity> {
+public class QuestRamLegacyModel extends HierarchicalModel<QuestRam> {
 	//root
 	public ModelPart root;
 	//fields
@@ -47,14 +47,14 @@ public class QuestRamLegacyModel extends HierarchicalModel<QuestRamEntity> {
 		this.head = root.getChild("head");
 		this.neck = root.getChild("neck");
 		this.rearbody = root.getChild("rear_body");
-		this.haunch1 = root.getChild("front_right_haunch");
-		this.leg1 = root.getChild("front_right_leg");
-		this.haunch2 = root.getChild("front_left_haunch");
-		this.leg2 = root.getChild("front_left_leg");
-		this.haunch3 = root.getChild("back_right_haunch");
-		this.leg3 = root.getChild("back_right_leg");
-		this.haunch4 = root.getChild("back_left_haunch");
-		this.leg4 = root.getChild("back_left_leg");
+		this.haunch1 = root.getChild("right_front_haunch");
+		this.leg1 = root.getChild("right_front_leg");
+		this.haunch2 = root.getChild("left_front_haunch");
+		this.leg2 = root.getChild("left_front_leg");
+		this.haunch3 = root.getChild("right_back_haunch");
+		this.leg3 = root.getChild("right_back_leg");
+		this.haunch4 = root.getChild("left_back_haunch");
+		this.leg4 = root.getChild("left_back_leg");
 		Arrays.setAll(this.segments, (num) -> root.getChild(getSegmentName(num)));
 		for (int i = 0; i < 16; i++) {
 			segments[i].visible = false;
@@ -161,7 +161,7 @@ public class QuestRamLegacyModel extends HierarchicalModel<QuestRamEntity> {
 	}
 
 	@Override
-	public void setupAnim(QuestRamEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(QuestRam entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 
@@ -178,7 +178,7 @@ public class QuestRamLegacyModel extends HierarchicalModel<QuestRamEntity> {
 	}
 
 	@Override
-	public void prepareMobModel(QuestRamEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(QuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 
 		// how many colors should we display?
 		int count = entity.countColorsSet();

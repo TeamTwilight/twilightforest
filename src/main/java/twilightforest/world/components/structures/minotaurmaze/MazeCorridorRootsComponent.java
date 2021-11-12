@@ -38,7 +38,7 @@ public class MazeCorridorRootsComponent extends MazeCorridorComponent {
 
 					// roots
 					for (int y = 6 - length; y < 6; y++) {
-						this.placeBlock(world, TFBlocks.root_strand.get().defaultBlockState(), x, y, z, sbb);
+						this.placeBlock(world, TFBlocks.ROOT_STRAND.get().defaultBlockState(), x, y, z, sbb);
 					}
 
 					// occasional gravel

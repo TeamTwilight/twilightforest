@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -13,9 +12,9 @@ import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
-import twilightforest.entity.CubeOfAnnihilationEntity;
+import twilightforest.entity.CubeOfAnnihilation;
 
-public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilationEntity> {
+public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilation> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
 	private final Model model;
@@ -26,7 +25,7 @@ public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilatio
 	}
 
 	@Override
-	public void render(CubeOfAnnihilationEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(CubeOfAnnihilation entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		super.render(entity, yaw, partialTicks, stack, buffer, light);
 
 		stack.pushPose();
@@ -40,7 +39,7 @@ public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilatio
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CubeOfAnnihilationEntity entity) {
+	public ResourceLocation getTextureLocation(CubeOfAnnihilation entity) {
 		return textureLoc;
 	}
 }

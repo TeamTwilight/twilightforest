@@ -15,6 +15,7 @@ import net.minecraft.world.level.newbiome.area.AreaFactory;
 import net.minecraft.world.level.newbiome.area.LazyArea;
 import net.minecraft.world.level.newbiome.layer.Layer;
 import twilightforest.world.components.layer.*;
+import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.function.LongFunction;
 
 public class TFBiomeDistributor extends BiomeSource {
     public static final Codec<TFBiomeDistributor> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-            Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
+            Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
             RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry)
     ).apply(instance, instance.stable(TFBiomeDistributor::new)));
 

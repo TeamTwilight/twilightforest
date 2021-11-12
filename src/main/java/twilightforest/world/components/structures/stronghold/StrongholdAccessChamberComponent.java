@@ -75,10 +75,10 @@ public class StrongholdAccessChamberComponent extends StructureTFStrongholdCompo
 		this.placeBlock(world, deco.pillarState, 2, 0, 2, sbb);
 
 		// pedestal
-		this.placeBlock(world, TFBlocks.trophy_pedestal.get().defaultBlockState(), 2, 1, 2, sbb);
+		this.placeBlock(world, TFBlocks.TROPHY_PEDESTAL.get().defaultBlockState(), 2, 1, 2, sbb);
 
 		// block point
-		this.generateBox(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.stronghold_shield.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState(), AIR, false);
 
 		return true;
 	}

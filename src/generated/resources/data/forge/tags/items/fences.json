@@ -6,8 +6,8 @@
     "twilightforest:mangrove_fence",
     "twilightforest:dark_fence",
     "twilightforest:time_fence",
-    "twilightforest:trans_fence",
-    "twilightforest:mine_fence",
-    "twilightforest:sort_fence"
+    "twilightforest:transformation_fence",
+    "twilightforest:mining_fence",
+    "twilightforest:sorting_fence"
   ]
 }

@@ -28,7 +28,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	}
 
 	public MazeRuinsComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRuins, feature, i, feature.getComponentToAddBoundingBox(x, y - 2, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH));
+		super(MinotaurMazePieces.TFMMRuins, feature, i, feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH));
 		this.setOrientation(Direction.SOUTH);
 	}
 

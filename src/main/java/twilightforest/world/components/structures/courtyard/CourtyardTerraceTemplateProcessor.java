@@ -1,97 +1,67 @@
 package twilightforest.world.components.structures.courtyard;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.components.processors.RandomizedTemplateProcessor;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
-import java.util.Random;
+import java.util.HashSet;
 
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcessor {
+public final class CourtyardTerraceTemplateProcessor extends StructureProcessor {
+    public static final CourtyardTerraceTemplateProcessor INSTANCE = new CourtyardTerraceTemplateProcessor();
+	public static final Codec<CourtyardTerraceTemplateProcessor> CODEC = Codec.unit(() -> INSTANCE);
 
-	public static final Codec<CourtyardTerraceTemplateProcessor> codecTerraceProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(CourtyardTerraceTemplateProcessor::new, (obj) -> obj.integrity).codec();
+    private static final HashSet<BlockState> BLOCKS_REPLACE_TO_SLAB = new HashSet<>();
 
-    public CourtyardTerraceTemplateProcessor(float integrity) {
-        super(integrity);
+    static {
+        BLOCKS_REPLACE_TO_SLAB.add(Blocks.STONE_BRICKS.defaultBlockState());
+        BLOCKS_REPLACE_TO_SLAB.add(Blocks.MOSSY_STONE_BRICKS.defaultBlockState());
+        BLOCKS_REPLACE_TO_SLAB.add(Blocks.CRACKED_STONE_BRICKS.defaultBlockState());
+        BLOCKS_REPLACE_TO_SLAB.add(Blocks.STONE_BRICK_SLAB.defaultBlockState());
+        BLOCKS_REPLACE_TO_SLAB.add(Blocks.MOSSY_STONE_BRICK_SLAB.defaultBlockState());
     }
 
-	@Override
-	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.COURTYARD_TERRACE;
-	}
+    private CourtyardTerraceTemplateProcessor() {
+    }
 
     @Nullable
     @Override
-    public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newinfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-        Random random = settings.getRandom(newinfo.pos);
+    public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+        BlockState newState = newInfo.state;
 
-        if (!shouldPlaceBlock(random))
-            return null;
+        if (newState.getBlock() == Blocks.SANDSTONE_SLAB) {
+            BlockState stateAt = world.getBlockState(newInfo.pos);
 
-        boolean shouldMakeNewBlockInfo = false;
-        BlockState state = newinfo.state;
+            if (newState == Blocks.SANDSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE)) {
+                if (BLOCKS_REPLACE_TO_SLAB.contains(stateAt))
+                    return new StructureTemplate.StructureBlockInfo(newInfo.pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
+                else if (stateAt.isAir())
+                    return null;
+                else
+                    return new StructureTemplate.StructureBlockInfo(newInfo.pos, Blocks.STONE_BRICKS.defaultBlockState(), null);
+            }
 
-        final BlockState SMOOTHBRICK_SLAB_STATE = Blocks.STONE_BRICK_SLAB.defaultBlockState();
-        final BlockState SMOOTHBRICK_STATE = Blocks.STONE_BRICKS.defaultBlockState();
-
-        if (state == Blocks.SANDSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE)) {
-            BlockState stateCheck = world.getBlockState(newinfo.pos);
-            if (stateCheck == SMOOTHBRICK_SLAB_STATE)
-                return new StructureTemplate.StructureBlockInfo(newinfo.pos, SMOOTHBRICK_SLAB_STATE, null);
-            else if (stateCheck.getMaterial() == Material.AIR)
+            if (stateAt.isAir())
                 return null;
             else
-                state = SMOOTHBRICK_STATE;
-
-            shouldMakeNewBlockInfo = true;
+                return new StructureTemplate.StructureBlockInfo(newInfo.pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
         }
 
-        if (state.getBlock() == Blocks.SANDSTONE_SLAB) {
-            BlockState stateCheck = world.getBlockState(newinfo.pos);
+        return newInfo;
+    }
 
-            if (stateCheck.getMaterial() == Material.AIR)
-                return null;
-            else
-                return new StructureTemplate.StructureBlockInfo(newinfo.pos, SMOOTHBRICK_SLAB_STATE, null);
-        }
-
-        Block block = state.getBlock();
-
-        if (state == Blocks.STONE_BRICKS.defaultBlockState())
-            return random.nextBoolean() ? (shouldMakeNewBlockInfo ? new StructureTemplate.StructureBlockInfo(newinfo.pos, state, null) : newinfo) :
-                    new StructureTemplate.StructureBlockInfo(newinfo.pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.defaultBlockState() : Blocks.MOSSY_STONE_BRICKS.defaultBlockState(), null);
-
-        if (state == Blocks.SMOOTH_STONE_SLAB.defaultBlockState())
-            return random.nextBoolean() ? newinfo : new StructureTemplate.StructureBlockInfo(newinfo.pos, Blocks.COBBLESTONE_SLAB.defaultBlockState(), null);
-
-        if (block == TFBlocks.etched_nagastone.get())
-            return random.nextBoolean() ? newinfo : new StructureTemplate.StructureBlockInfo(newinfo.pos, translateState(state, randomBlock(random, TFBlocks.etched_nagastone_mossy.get(), TFBlocks.etched_nagastone_weathered.get()), DirectionalBlock.FACING), null);
-
-        if (block == TFBlocks.nagastone_pillar.get())
-            return random.nextBoolean() ? newinfo : new StructureTemplate.StructureBlockInfo(newinfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_pillar_mossy.get(), TFBlocks.nagastone_pillar_weathered.get()), RotatedPillarBlock.AXIS), null);
-
-        if (block == TFBlocks.nagastone_stairs_left.get())
-            return random.nextBoolean() ? newinfo : new StructureTemplate.StructureBlockInfo(newinfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), StairBlock.FACING, StairBlock.HALF, StairBlock.SHAPE), null);
-
-        if (block == TFBlocks.nagastone_stairs_right.get())
-            return random.nextBoolean() ? newinfo : new StructureTemplate.StructureBlockInfo(newinfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), StairBlock.FACING, StairBlock.HALF, StairBlock.SHAPE), null);
-
-        return newinfo;
+    @Override
+    public StructureProcessorType<?> getType() {
+        return TFStructureProcessors.COURTYARD_TERRACE;
     }
 }

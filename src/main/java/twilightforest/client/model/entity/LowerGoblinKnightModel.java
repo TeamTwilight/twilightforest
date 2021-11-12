@@ -9,14 +9,14 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.LowerGoblinKnightEntity;
+import twilightforest.entity.monster.LowerGoblinKnight;
 
 /**
  * ModelTFGoblinKnightLower - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightEntity> {
+public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
     public ModelPart tunic;
 
     public LowerGoblinKnightModel(ModelPart root) {
@@ -76,7 +76,7 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnightEntit
     }
 
     @Override
-    public void setupAnim(LowerGoblinKnightEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(LowerGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.head.xRot = headPitch / (180F / (float) Math.PI);
         this.hat.yRot = this.head.yRot;

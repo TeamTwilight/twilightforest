@@ -1,0 +1,110 @@
+{
+  "": "You won't be seeing this ingame until Mojang fixes their AO problem, plus some other issues associated with shading",
+  "This bug has existed for 6 freaking years": "https://bugs.mojang.com/browse/MC-84633",
+  "parent": "twilightforest:util/block_no_ao",
+  "textures": { "particle": "#texture" },
+  "ambientocclusion": false,
+  "elements": [{
+    "from": [ -3.31370849898, 4.01, 12.01 ],
+    "to":   [  8            , 7.99, 15.99 ],
+    "rotation": {
+      "origin": [ 8, 6, 14 ],
+      "axis": "z",
+      "angle": -45
+    },
+    "shade": false,
+    "faces": {
+      "up":    { "texture": "#texture", "uv": [ 5, 0, 16, 4 ] },
+      "down":  { "texture": "#texture", "uv": [ 5, 0, 16, 4 ] },
+      "north": { "texture": "#texture", "uv": [ 5, 0, 16, 4 ] },
+      "south": { "texture": "#texture", "uv": [ 5, 0, 16, 4 ] }
+    }
+  }, {
+    "from": [  8          , 4.01, 12.01 ],
+    "to":   [ 19.313708499, 7.99, 15.99 ],
+    "rotation": {
+      "origin": [ 8, 6, 14 ],
+      "axis": "z",
+      "angle": -45
+    },
+    "shade": false,
+    "faces": {
+      "down":  { "texture": "#texture", "uv": [ 0, 12, 11, 16 ] },
+      "up":    { "texture": "#texture", "uv": [ 0, 12, 11, 16 ] },
+      "north": { "texture": "#texture", "uv": [ 0, 12, 11, 16 ] },
+      "south": { "texture": "#texture", "uv": [ 0, 12, 11, 16 ] }
+    }
+  }, {
+    "from": [ -4.14213562373, 4.02, 12.02 ],
+    "to":   [  8            , 7.98, 15.98 ],
+    "rotation": {
+      "origin": [ 8, 6, 14 ],
+      "axis": "z",
+      "angle": -45
+    },
+    "shade": false,
+    "faces": {
+      "down":  { "texture": "#texture", "uv": [ 4.14794699982, 0, 16, 4 ] },
+      "up":    { "texture": "#texture", "uv": [ 4.14794699982, 0, 16, 4 ] },
+      "north": { "texture": "#texture", "uv": [ 4.14794699982, 0, 16, 4 ] },
+      "south": { "texture": "#texture", "uv": [ 4.14794699982, 0, 16, 4 ] },
+      "west":  { "texture": "#texture", "cullface": "west"  }
+    }
+  }, {
+    "from": [  8           , 4.02, 12.02 ],
+    "to":   [ 20.1421356237, 7.98, 15.98 ],
+    "rotation": {
+      "origin": [ 8, 6, 14 ],
+      "axis": "z",
+      "angle": -45
+    },
+    "shade": false,
+    "faces": {
+      "down":  { "texture": "#texture", "uv": [ 0, 12, 11.8520530002, 16 ] },
+      "up":    { "texture": "#texture", "uv": [ 0, 12, 11.8520530002, 16 ] },
+      "north": { "texture": "#texture", "uv": [ 0, 12, 11.8520530002, 16 ] },
+      "south": { "texture": "#texture", "uv": [ 0, 12, 11.8520530002, 16 ] },
+      "east":  { "texture": "#texture", "cullface": "east"  }
+    }
+  }, {
+    "from": [ 15.1715728753, -4, 12.03 ],
+    "to":   [ 16           ,  0, 15.97 ],
+    "shade": false,
+    "faces": {
+      "down" : { "texture": "#texture"                                                             },
+      "north": { "texture": "#texture", "uv": [ 16, 12, 15.1715728753  , 16 ], "cullface": "north" },
+      "south": { "texture": "#texture", "uv": [  0, 12,  0.828427124746, 16 ]                      },
+      "east" : { "texture": "#texture",                                        "cullface": "east"  }
+    }
+  }, {
+    "from": [ 0             , 12, 12.03 ],
+    "to":   [ 0.828427124746, 16, 15.97 ],
+    "shade": false,
+    "faces": {
+      "up":    { "texture": "#texture", "cullface": "up"    },
+      "north": { "texture": "#texture", "cullface": "north" },
+      "south": { "texture": "#texture"                      },
+      "west":  { "texture": "#texture", "cullface": "west"  }
+    }
+  }, {
+    "from": [ 2.5, 0, 13 ],
+    "to":   [ 5.5, 9, 16 ],
+    "faces": {
+      "down" : { "texture": "#texture"                                       , "cullface": "down"  },
+      "north": { "texture": "#texture", "rotation": 270, "uv": [ 0, 4, 1, 7 ], "cullface": "north" },
+      "south": { "texture": "#texture", "rotation": 270, "uv": [ 0, 4, 1, 7 ]                      },
+      "west" : { "texture": "#texture", "rotation": 270, "uv": [ 0, 4, 1, 7 ]                      },
+      "east" : { "texture": "#texture", "rotation": 270, "uv": [ 0, 4, 1, 7 ]                      }
+    }
+  }, {
+    "from": [ 10.5, 0, 13 ],
+    "to":   [ 13.5, 1, 16 ],
+    "faces": {
+      "down":  { "texture": "#texture"                                        , "cullface": "down"  },
+      "north": { "texture": "#texture", "rotation": 270, "uv": [ 0, 8, 9, 11 ], "cullface": "north" },
+      "south": { "texture": "#texture", "rotation": 270, "uv": [ 0, 8, 9, 11 ]                      },
+      "west":  { "texture": "#texture", "rotation": 270, "uv": [ 0, 8, 9, 11 ]                      },
+      "east":  { "texture": "#texture", "rotation": 270, "uv": [ 0, 8, 9, 11 ]                      }
+    }
+  }]
+}

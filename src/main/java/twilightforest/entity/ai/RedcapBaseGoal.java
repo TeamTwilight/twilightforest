@@ -7,13 +7,13 @@ import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import twilightforest.entity.RedcapEntity;
+import twilightforest.entity.monster.Redcap;
 
 public abstract class RedcapBaseGoal extends Goal {
 
-	protected final RedcapEntity redcap;
+	protected final Redcap redcap;
 
-	protected RedcapBaseGoal(RedcapEntity entity) {
+	protected RedcapBaseGoal(Redcap entity) {
 		this.redcap = entity;
 	}
 
@@ -26,7 +26,7 @@ public abstract class RedcapBaseGoal extends Goal {
 		double dz = redcap.getZ() - attackTarget.getZ();
 		float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
-		float difference = Mth.abs((attackTarget.yRot - angle) % 360);
+		float difference = Mth.abs((attackTarget.getYRot() - angle) % 360);
 
 		return difference < 60 || difference > 300;
 	}

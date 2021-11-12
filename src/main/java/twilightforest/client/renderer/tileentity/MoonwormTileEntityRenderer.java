@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
@@ -16,11 +15,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
-import twilightforest.tileentity.MoonwormTileEntity;
+import twilightforest.block.entity.MoonwormBlockEntity;
 
 import javax.annotation.Nullable;
 
-public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormTileEntity> {
+public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormBlockEntity> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel;
@@ -30,33 +29,18 @@ public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormT
 	}
 
 	@Override
-	public void render(@Nullable MoonwormTileEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+	public void render(@Nullable MoonwormBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentRotation;
 		if (te == null) partialTicks = Minecraft.getInstance().getFrameTime();
 
 		ms.pushPose();
 		Direction facing = te != null ? te.getBlockState().getValue(DirectionalBlock.FACING) : Direction.NORTH;
 
-		float rotX = 90.0F;
-		float rotZ = 0.0F;
-		if (facing == Direction.SOUTH) {
-			rotZ = 0F;
-		} else if (facing == Direction.NORTH) {
-			rotZ = 180F;
-		} else if (facing == Direction.EAST) {
-			rotZ = -90F;
-		} else if (facing == Direction.WEST) {
-			rotZ = 90F;
-		} else if (facing == Direction.UP) {
-			rotX = 0F;
-		} else if (facing == Direction.DOWN) {
-			rotX = 180F;
-		}
-		ms.translate(0.5, 0.5, 0.5);
-		ms.mulPose(Vector3f.XP.rotationDegrees(rotX));
-		ms.mulPose(Vector3f.ZP.rotationDegrees(rotZ));
-		ms.mulPose(Vector3f.YP.rotationDegrees(yaw));
-		ms.scale(1f, -1f, -1f);
+		ms.translate(0.5F, 0.5F, 0.5F);
+		ms.mulPose(facing.getRotation());
+		ms.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		ms.mulPose(Vector3f.YN.rotationDegrees(yaw));
 
 		VertexConsumer builder = buffer.getBuffer(this.moonwormModel.renderType(textureLoc));
 		this.moonwormModel.setRotationAngles(te, partialTicks);

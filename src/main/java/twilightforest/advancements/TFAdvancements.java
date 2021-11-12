@@ -10,8 +10,10 @@ public class TFAdvancements {
     public static final TrophyPedestalTrigger PLACED_TROPHY_ON_PEDESTAL = CriteriaTriggers.register(new TrophyPedestalTrigger());
     public static final ActivateGhastTrapTrigger ACTIVATED_GHAST_TRAP = CriteriaTriggers.register(new ActivateGhastTrapTrigger());
     public static final StructureClearedTrigger STRUCTURE_CLEARED = CriteriaTriggers.register(new StructureClearedTrigger());
-    public static final ItemUseTrigger ITEM_USE_TRIGGER = CriteriaTriggers.register(new ItemUseTrigger());
     public static final ArmorInventoryChangedTrigger ARMOR_CHANGED = CriteriaTriggers.register(new ArmorInventoryChangedTrigger());
+    public static final DrinkFromFlaskTrigger DRINK_FROM_FLASK = CriteriaTriggers.register(new DrinkFromFlaskTrigger());
+    public static final KillBugTrigger KILL_BUG = CriteriaTriggers.register(new KillBugTrigger());
+    public static final HurtBossTrigger HURT_BOSS = CriteriaTriggers.register(new HurtBossTrigger());
 
     public static void init() {}
 }

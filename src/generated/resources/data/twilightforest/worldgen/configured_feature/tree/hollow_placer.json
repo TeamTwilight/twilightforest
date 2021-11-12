@@ -4,28 +4,57 @@
       "config": {
         "feature": {
           "config": {
-            "features": [
-              {
-                "feature": "twilightforest:tree/hollow_oak_trees",
-                "chance": 0.01
+            "feature": {
+              "config": {
+                "feature": {
+                  "config": {
+                    "features": [
+                      {
+                        "feature": "twilightforest:tree/base/hollow_tree",
+                        "chance": 0.04
+                      }
+                    ],
+                    "default": {
+                      "config": {},
+                      "type": "minecraft:no_op"
+                    }
+                  },
+                  "type": "minecraft:random_selector"
+                },
+                "decorator": {
+                  "config": {
+                    "outer": {
+                      "config": {
+                        "max_water_depth": 0
+                      },
+                      "type": "minecraft:water_depth_threshold"
+                    },
+                    "inner": {
+                      "config": {
+                        "heightmap": "OCEAN_FLOOR"
+                      },
+                      "type": "minecraft:heightmap"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                }
               },
-              {
-                "feature": "twilightforest:tree/hollow_oak_trees",
-                "chance": 0.01
-              }
-            ],
-            "default": {
-              "config": {},
-              "type": "minecraft:no_op"
+              "type": "minecraft:decorated"
+            },
+            "decorator": {
+              "config": {
+                "occupies_surface": true,
+                "occupies_underground": false,
+                "additional_clearance": 16
+              },
+              "type": "twilightforest:no_structure"
             }
           },
-          "type": "minecraft:random_selector"
+          "type": "minecraft:decorated"
         },
         "decorator": {
-          "config": {
-            "heightmap": "WORLD_SURFACE_WG"
-          },
-          "type": "minecraft:heightmap"
+          "config": {},
+          "type": "twilightforest:chunk_centerer"
         }
       },
       "type": "minecraft:decorated"

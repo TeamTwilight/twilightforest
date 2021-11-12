@@ -5,49 +5,69 @@
         "feature": {
           "config": {
             "feature": {
-              "config": {},
-              "type": "twilightforest:torch_berries"
-            },
-            "decorator": {
               "config": {
-                "outer": {
-                  "config": {},
-                  "type": "minecraft:square"
-                },
-                "inner": {
+                "feature": {
                   "config": {
-                    "heightmap": "OCEAN_FLOOR_WG"
+                    "state": {
+                      "Properties": {
+                        "has_torchberries": "true"
+                      },
+                      "Name": "twilightforest:torchberry_plant"
+                    }
                   },
-                  "type": "minecraft:heightmap"
+                  "type": "twilightforest:underground_plants"
+                },
+                "decorator": {
+                  "config": {
+                    "outer": {
+                      "config": {},
+                      "type": "minecraft:square"
+                    },
+                    "inner": {
+                      "config": {
+                        "heightmap": "OCEAN_FLOOR_WG"
+                      },
+                      "type": "minecraft:heightmap"
+                    }
+                  },
+                  "type": "minecraft:decorated"
                 }
               },
               "type": "minecraft:decorated"
+            },
+            "decorator": {
+              "config": {
+                "height": {
+                  "min_inclusive": {
+                    "above_bottom": 0
+                  },
+                  "max_inclusive": {
+                    "absolute": 60
+                  },
+                  "type": "minecraft:uniform"
+                }
+              },
+              "type": "minecraft:range"
             }
           },
           "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {
-            "height": {
-              "min_inclusive": {
-                "above_bottom": 0
-              },
-              "max_inclusive": {
-                "absolute": 60
-              },
-              "type": "minecraft:uniform"
-            }
+            "count": 4
           },
-          "type": "minecraft:range"
+          "type": "minecraft:count"
         }
       },
       "type": "minecraft:decorated"
     },
     "decorator": {
       "config": {
-        "count": 4
+        "occupies_surface": false,
+        "occupies_underground": true,
+        "additional_clearance": 0
       },
-      "type": "minecraft:count"
+      "type": "twilightforest:no_structure"
     }
   },
   "type": "minecraft:decorated"

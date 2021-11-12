@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/mazestone",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/mazestone",
+        "x": 270,
+        "y": 270
+      }
+    ]
+  }
+}

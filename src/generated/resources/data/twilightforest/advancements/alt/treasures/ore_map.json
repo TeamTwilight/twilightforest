@@ -1,0 +1,35 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_empty": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:ore_map"
+            ]
+          }
+        ]
+      }
+    },
+    "has_filled": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:filled_ore_map"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_empty",
+      "has_filled"
+    ]
+  ]
+}

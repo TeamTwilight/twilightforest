@@ -3,7 +3,6 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,14 +12,14 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.passive.QuestRamEntity;
+import twilightforest.entity.passive.QuestRam;
 
 /**
  * ModelQuestingRam - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
+public class QuestRamModel extends QuadrupedModel<QuestRam> {
     public ModelPart horns;
     public ModelPart backtorso, frontTorso;
 
@@ -137,7 +136,7 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
     }
 
     @Override
-    public void setupAnim(QuestRamEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(QuestRam entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.horns.xRot = headPitch / (180F / (float) Math.PI);
         this.horns.yRot = netHeadYaw / (180F / (float) Math.PI);
 
@@ -148,7 +147,7 @@ public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
     }
 
     @Override
-    public void prepareMobModel(QuestRamEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+    public void prepareMobModel(QuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 
         // how many colors should we display?
         int count = entity.countColorsSet();

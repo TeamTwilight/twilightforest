@@ -26,7 +26,7 @@ public class FogHandler {
 		boolean flag = isSpooky();
 		if (flag || spoopColor > 0F) {
 			final float[] realColors = {event.getRed(), event.getGreen(), event.getBlue()};
-			final float[] lerpColors = {106F / 255F, 60F / 255F, 153F / 255F};
+			final float[] lerpColors = {130F / 255F, 115F / 255F, 145F / 255F};
 			for (int i = 0; i < 3; i++) {
 				final float real = realColors[i];
 				final float spoop = lerpColors[i];

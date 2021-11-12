@@ -13,14 +13,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.passive.TinyBirdEntity;
+import twilightforest.entity.passive.TinyBird;
 
 /**
  * ModelTinyBird - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class TinyBirdModel extends AgeableListModel<TinyBirdEntity> {
+public class TinyBirdModel extends AgeableListModel<TinyBird> {
     public ModelPart head;
     public ModelPart body;
     public ModelPart rightFoot;
@@ -120,7 +120,7 @@ public class TinyBirdModel extends AgeableListModel<TinyBirdEntity> {
     }
 
     @Override
-    public void setupAnim(TinyBirdEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(TinyBird entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         head.xRot = headPitch / (180F / (float) Math.PI);
         head.yRot = netHeadYaw / (180F / (float) Math.PI);
 

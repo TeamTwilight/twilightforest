@@ -8,14 +8,14 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.passive.BoarEntity;
+import twilightforest.entity.passive.Boar;
 
 /**
  * ModelWildBoar - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class BoarModel<T extends BoarEntity> extends PigModel<T> {
+public class BoarModel<T extends Boar> extends PigModel<T> {
     public BoarModel(ModelPart root) {
         super(root);
     }

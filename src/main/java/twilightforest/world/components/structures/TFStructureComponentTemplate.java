@@ -18,6 +18,7 @@ import twilightforest.world.registration.TFFeature;
 /**
  * Copied a few things from {@link net.minecraft.world.level.levelgen.structure.TemplateStructurePiece}
  */
+@Deprecated // Should extend TemplateStructurePiece instead
 public abstract class TFStructureComponentTemplate extends TFStructureComponent {
 
     protected StructurePlaceSettings placeSettings = new StructurePlaceSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
@@ -160,64 +161,5 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 
         if (rotation == Rotation.CLOCKWISE_180 || rotation == Rotation.COUNTERCLOCKWISE_90)
             this.templatePosition = this.templatePosition.south(size.getX()-1);
-    }
-
-    @Deprecated
-    protected final void setBoundingBoxFromTemplate() {
-        Rotation rotation = this.placeSettings.getRotation();
-        Vec3i size = this.TEMPLATE.getSize(rotation);
-        Mirror mirror = this.placeSettings.getMirror();
-        this.boundingBox = new BoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
-
-        switch (rotation) {
-            case NONE:
-            default:
-                break;
-            case CLOCKWISE_90:
-                this.boundingBox.move(-size.getX(), 0, 0);
-                break;
-            case COUNTERCLOCKWISE_90:
-                this.boundingBox.move(0, 0, -size.getZ());
-                break;
-            case CLOCKWISE_180:
-                this.boundingBox.move(-size.getX(), 0, -size.getZ());
-        }
-
-        switch (mirror) {
-            case NONE:
-            default:
-                break;
-            case FRONT_BACK:
-                BlockPos blockpos2 = BlockPos.ZERO;
-
-                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
-                    if (rotation == Rotation.CLOCKWISE_180) {
-                        blockpos2 = blockpos2.relative(Direction.EAST, size.getX());
-                    } else {
-                        blockpos2 = blockpos2.relative(Direction.WEST, size.getX());
-                    }
-                } else {
-                    blockpos2 = blockpos2.relative(rotation.rotate(Direction.WEST), size.getZ());
-                }
-
-                this.boundingBox.move(blockpos2.getX(), 0, blockpos2.getZ());
-                break;
-            case LEFT_RIGHT:
-                BlockPos blockpos1 = BlockPos.ZERO;
-
-                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
-                    if (rotation == Rotation.CLOCKWISE_180) {
-                        blockpos1 = blockpos1.relative(Direction.SOUTH, size.getZ());
-                    } else {
-                        blockpos1 = blockpos1.relative(Direction.NORTH, size.getZ());
-                    }
-                } else {
-                    blockpos1 = blockpos1.relative(rotation.rotate(Direction.NORTH), size.getX());
-                }
-
-                this.boundingBox.move(blockpos1.getX(), 0, blockpos1.getZ());
-        }
-
-        this.boundingBox.move(this.templatePosition.getX(), this.templatePosition.getY(), this.templatePosition.getZ());
     }
 }

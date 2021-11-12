@@ -1,0 +1,54 @@
+{
+  "config": {
+    "check_water": false,
+    "sapling": {
+      "state": {
+        "Properties": {
+          "stage": "0"
+        },
+        "Name": "minecraft:spruce_sapling"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "decorators": [],
+    "add_first_five_chance": 1,
+    "add_second_five_chance": 1,
+    "has_leaves": false,
+    "branch_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "minecraft:spruce_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "roots_provider": {
+      "state": {
+        "Name": "twilightforest:root"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "minimum_size": 0,
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "minecraft:spruce_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "leaves_provider": {
+      "state": {
+        "Properties": {
+          "persistent": "false",
+          "distance": "7"
+        },
+        "Name": "minecraft:spruce_leaves"
+      },
+      "type": "minecraft:simple_state_provider"
+    }
+  },
+  "type": "twilightforest:large_winter_tree"
+}

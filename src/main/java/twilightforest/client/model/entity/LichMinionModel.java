@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.effect.MobEffects;
-import twilightforest.entity.boss.LichMinionEntity;
+import twilightforest.entity.monster.LichMinion;
 
-public class LichMinionModel extends ZombieModel<LichMinionEntity> {
+public class LichMinionModel extends ZombieModel<LichMinion> {
 
 	private boolean hasStrength;
 
@@ -16,7 +16,7 @@ public class LichMinionModel extends ZombieModel<LichMinionEntity> {
 	}
 
 	@Override
-	public void prepareMobModel(LichMinionEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(LichMinion entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		this.hasStrength = entity.getEffect(MobEffects.DAMAGE_BOOST) != null;
 	}
 

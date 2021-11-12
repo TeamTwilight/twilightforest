@@ -1,0 +1,35 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_charm1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:charm_of_life_1"
+            ]
+          }
+        ]
+      }
+    },
+    "has_charm2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:charm_of_life_2"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_charm1",
+      "has_charm2"
+    ]
+  ]
+}

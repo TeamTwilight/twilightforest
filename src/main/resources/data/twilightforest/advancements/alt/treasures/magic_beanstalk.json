@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:alt/root",
-  "criteria": {
-    "beans": { "trigger": "twilightforest:on_item_use", "conditions": { "items": [{ "item": "twilightforest:magic_beans" }]}}
-  }
-}

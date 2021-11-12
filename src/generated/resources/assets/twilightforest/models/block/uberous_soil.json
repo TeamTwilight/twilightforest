@@ -1,7 +1,7 @@
 {
-  "parent": "twilightforest:block/util/cube_all_2_layer",
+  "parent": "minecraft:block/template_farmland",
   "textures": {
-    "all": "twilightforest:block/uberous_soil",
-    "all2": "twilightforest:block/uberous_soil_glow"
+    "top": "twilightforest:block/uberous_soil",
+    "dirt": "twilightforest:block/uberous_soil"
   }
 }

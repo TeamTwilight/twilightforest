@@ -1,7 +1,7 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "twilightforest:block/ironwood_pattern",
+    "particle": "twilightforest:block/ironwood_block",
     "all": "twilightforest:block/ironwood_pattern",
     "over": "twilightforest:block/ironwood_block"
   },
@@ -18,8 +18,8 @@
         "east":  { "texture": "#all", "cullface": "east" , "tintindex": 0 }
       }
     }, {
-      "from": [ -0.01, -0.01, -0.01 ],
-      "to": [ 16.01, 16.01, 16.01 ],
+      "from": [ -0.001, -0.001, -0.001 ],
+      "to": [ 16.001, 16.001, 16.001 ],
       "faces": {
         "down":  { "texture": "#over", "cullface": "down" , "tintindex": 1 },
         "up":    { "texture": "#over", "cullface": "up"   , "tintindex": 1 },

@@ -8,119 +8,119 @@
               "config": {
                 "feature": {
                   "config": {
-                    "can_replace": false,
-                    "project": true,
-                    "need_water": false,
-                    "xspread": 7,
-                    "yspread": 3,
-                    "zspread": 7,
-                    "whitelist": [],
-                    "blacklist": [],
-                    "tries": 128,
-                    "state_provider": {
-                      "entries": [
-                        {
-                          "data": {
-                            "Name": "minecraft:poppy"
-                          },
-                          "weight": 1
+                    "feature": {
+                      "config": {
+                        "can_replace": false,
+                        "project": true,
+                        "need_water": false,
+                        "xspread": 7,
+                        "yspread": 3,
+                        "zspread": 7,
+                        "whitelist": [],
+                        "blacklist": [],
+                        "tries": 128,
+                        "state_provider": {
+                          "entries": [
+                            {
+                              "data": {
+                                "Name": "minecraft:poppy"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:dandelion"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:red_tulip"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:orange_tulip"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:pink_tulip"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:white_tulip"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:cornflower"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:lily_of_the_valley"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:blue_orchid"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:allium"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:azure_bluet"
+                              },
+                              "weight": 1
+                            },
+                            {
+                              "data": {
+                                "Name": "minecraft:oxeye_daisy"
+                              },
+                              "weight": 1
+                            }
+                          ],
+                          "type": "minecraft:weighted_state_provider"
                         },
-                        {
-                          "data": {
-                            "Name": "minecraft:dandelion"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:red_tulip"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:orange_tulip"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:pink_tulip"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:white_tulip"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:cornflower"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:lily_of_the_valley"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:blue_orchid"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:allium"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:azure_bluet"
-                          },
-                          "weight": 1
-                        },
-                        {
-                          "data": {
-                            "Name": "minecraft:oxeye_daisy"
-                          },
-                          "weight": 1
+                        "block_placer": {
+                          "type": "minecraft:simple_block_placer"
                         }
-                      ],
-                      "type": "minecraft:weighted_state_provider"
+                      },
+                      "type": "minecraft:flower"
                     },
-                    "block_placer": {
-                      "type": "minecraft:simple_block_placer"
+                    "decorator": {
+                      "config": {},
+                      "type": "minecraft:spread_32_above"
                     }
                   },
-                  "type": "minecraft:flower"
+                  "type": "minecraft:decorated"
                 },
                 "decorator": {
-                  "config": {},
-                  "type": "minecraft:spread_32_above"
-                }
-              },
-              "type": "minecraft:decorated"
-            },
-            "decorator": {
-              "config": {
-                "outer": {
-                  "config": {},
-                  "type": "minecraft:square"
-                },
-                "inner": {
                   "config": {
-                    "heightmap": "MOTION_BLOCKING"
+                    "heightmap": "WORLD_SURFACE_WG"
                   },
                   "type": "minecraft:heightmap"
                 }
               },
               "type": "minecraft:decorated"
+            },
+            "decorator": {
+              "config": {},
+              "type": "minecraft:square"
             }
           },
           "type": "minecraft:decorated"

@@ -142,7 +142,7 @@
         {
           "type": "minecraft:item",
           "weight": 75,
-          "name": "twilightforest:naga_scale"
+          "name": "twilightforest:magic_map"
         },
         {
           "type": "minecraft:item",
@@ -189,12 +189,17 @@
         {
           "type": "minecraft:item",
           "weight": 25,
-          "name": "twilightforest:peacock_fan"
+          "name": "twilightforest:peacock_feather_fan"
         },
         {
           "type": "minecraft:item",
           "weight": 25,
           "name": "twilightforest:charm_of_life_1"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "twilightforest:music_disc_wayfarer"
         }
       ]
     }

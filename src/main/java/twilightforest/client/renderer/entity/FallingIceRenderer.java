@@ -7,19 +7,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import twilightforest.entity.boss.FallingIceEntity;
+import twilightforest.entity.projectile.FallingIce;
 
 import java.util.Random;
 
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 
-public class FallingIceRenderer extends EntityRenderer<FallingIceEntity> {
+public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 	public FallingIceRenderer(EntityRendererProvider.Context renderManagerIn) {
 		super(renderManagerIn);
 		this.shadowRadius = 0.5F;
@@ -29,7 +28,7 @@ public class FallingIceRenderer extends EntityRenderer<FallingIceEntity> {
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.FallingBlockRenderer}, but scaled by 3
 	 */
 	@Override
-	public void render(FallingIceEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(FallingIce entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		BlockState blockstate = entity.getBlockState();
 		if (blockstate.getRenderShape() == RenderShape.MODEL) {
 			Level world = entity.getLevel();
@@ -53,7 +52,7 @@ public class FallingIceRenderer extends EntityRenderer<FallingIceEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(FallingIceEntity entity) {
+	public ResourceLocation getTextureLocation(FallingIce entity) {
 		return TextureAtlas.LOCATION_BLOCKS;
 	}
 }

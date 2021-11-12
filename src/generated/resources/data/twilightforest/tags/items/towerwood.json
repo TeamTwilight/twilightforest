@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "twilightforest:tower_wood",
-    "twilightforest:tower_wood_mossy",
-    "twilightforest:tower_wood_cracked",
-    "twilightforest:tower_wood_infested"
+    "twilightforest:towerwood",
+    "twilightforest:mossy_towerwood",
+    "twilightforest:cracked_towerwood",
+    "twilightforest:infested_towerwood"
   ]
 }

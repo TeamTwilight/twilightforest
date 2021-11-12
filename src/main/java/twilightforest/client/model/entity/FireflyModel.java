@@ -1,20 +1,26 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.Entity;
 
-public class FireflyModel extends ListModel<Entity> {
+public class FireflyModel extends Model {
 	//fields
 	public ModelPart legs, fatbody, skinnybody, glow;
 
 	public FireflyModel(ModelPart root) {
+		super(RenderType::entityCutoutNoCull);
+
 		this.legs = root.getChild("legs");
 		this.fatbody = root.getChild("fat_body");
 		this.skinnybody = root.getChild("skinny_body");
@@ -37,7 +43,7 @@ public class FireflyModel extends ListModel<Entity> {
 		partdefinition.addOrReplaceChild("skinny_body",
 				CubeListBuilder.create()
 						.texOffs(0, 0)
-						.addBox(-1.0F, 7.0F, -5.0F, 2.0F, 1.0F, 8.0F),
+						.addBox(-1.0F, 6.9F, -5.0F, 2.0F, 1.0F, 8.0F),
 				PartPose.ZERO);
 		partdefinition.addOrReplaceChild("glow",
 				CubeListBuilder.create()
@@ -49,16 +55,9 @@ public class FireflyModel extends ListModel<Entity> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(
-				this.legs,
-				this.fatbody,
-				this.skinnybody
-		);
-	}
-
-	@Override
-	public void setupAnim(Entity entity, float v, float v1, float v2, float v3, float v4) {
-		//super.setRotationAngles(f, f1, f2, f3, f4, f5);
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
+		this.legs.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.fatbody.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.skinnybody.render(stack, consumer, light, overlay, red, green, blue, alpha);
 	}
 }

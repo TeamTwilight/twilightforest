@@ -29,19 +29,4 @@ public class ThornRoseBlock extends Block {
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
-
-	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		for (Direction d : Direction.values()) {
-			if (world.getBlockState(pos.relative(d)).getBlock() instanceof ThornsBlock) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public BlockState updateShape(BlockState state, Direction dirToNeighbor, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
-		return !canSurvive(state, world, pos) ? Blocks.AIR.defaultBlockState() : state;
-	}
 }

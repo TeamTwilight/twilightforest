@@ -36,7 +36,7 @@ public class MazeDeadEndFountainComponent extends MazeDeadEndComponent {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// back wall brick
-		this.generateBox(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, false);
 
 		// water
 		this.placeBlock(world, Blocks.WATER.defaultBlockState(), 2, 3, 4, sbb);

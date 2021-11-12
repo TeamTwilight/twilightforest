@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.WorldGenLevel;
@@ -22,10 +23,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFTreasure;
-import twilightforest.util.StructureBoundingBoxUtils;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -497,24 +498,27 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 * <p>
 	 * This is basically copied from ComponentVillage
 	 */
-	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox sbb) {
-		int totalHeight = 0;
-		int heightCount = 0;
+	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox boundingBox) {
+		int yTotal = 0;
+		int count = 0;
+		int yStart = Mth.clamp(generator.getSeaLevel(), this.boundingBox.minY(), this.boundingBox.maxY());
 
-		for (int bz = this.boundingBox.minZ(); bz <= this.boundingBox.maxZ(); ++bz) {
-			for (int by = this.boundingBox.minX(); by <= this.boundingBox.maxX(); ++by) {
-				BlockPos pos = new BlockPos(by, 64, bz);
-				if (sbb.isInside(pos)) {
-					totalHeight += Math.max(world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).getY(), generator.getSpawnHeight(world));
-					++heightCount;
+		for (int z = this.boundingBox.minZ(); z <= this.boundingBox.maxZ(); ++z) {
+			for (int x = this.boundingBox.minX(); x <= this.boundingBox.maxX(); ++x) {
+				BlockPos pos = new BlockPos(x, yStart, z);
+
+				if (boundingBox.isInside(pos)) {
+					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
+					yTotal += Math.max(topPos.getY(), generator.getSpawnHeight(world));
+					++count;
 				}
 			}
 		}
 
-		if (heightCount == 0) {
-			return -1;
+		if (count == 0) {
+			return Integer.MIN_VALUE;
 		} else {
-			return totalHeight / heightCount;
+			return yTotal / count;
 		}
 	}
 
@@ -523,7 +527,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 */
 	protected int findGroundLevel(WorldGenLevel world, BoundingBox sbb, int start, Predicate<BlockState> predicate) {
 
-		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
+		Vec3i center = BoundingBoxUtils.getCenter(sbb);
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
 
 		for (int y = start; y > 0; y--) {

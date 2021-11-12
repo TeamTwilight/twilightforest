@@ -38,8 +38,7 @@ public class TreeCorePlacer extends TreeDecorator {
 
 	@Override
 	public void place(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, List<BlockPos> trunkBlocks, List<BlockPos> leafBlocks) {
-		BlockPos pos = trunkBlocks.get(0);
-		BlockPos position = pos.offset(0, this.corePos, 0);
-		worldPlacer.accept(pos, this.core.getState(random, position));
+		BlockPos pos = trunkBlocks.get(0).offset(0, this.corePos, 0);
+		worldPlacer.accept(pos, this.core.getState(random, pos));
 	}
 }

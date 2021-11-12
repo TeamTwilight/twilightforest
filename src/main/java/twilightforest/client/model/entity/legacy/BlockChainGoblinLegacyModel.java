@@ -5,9 +5,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.BlockChainGoblinEntity;
+import twilightforest.entity.monster.BlockChainGoblin;
 
-public class BlockChainGoblinLegacyModel<T extends BlockChainGoblinEntity> extends HumanoidModel<T> {
+public class BlockChainGoblinLegacyModel<T extends BlockChainGoblin> extends HumanoidModel<T> {
 
 	ModelPart block;
 
@@ -20,16 +20,19 @@ public class BlockChainGoblinLegacyModel<T extends BlockChainGoblinEntity> exten
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 		PartDefinition partRoot = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create(),
+				PartPose.ZERO);
+
+		var hat = partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+				PartPose.ZERO);
+
+		hat.addOrReplaceChild("helmet", CubeListBuilder.create()
 						.texOffs(24, 0)
 						.addBox(-2.5F, -9.0F, -2.5F, 5.0F, 9.0F, 5.0F),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45F / (180F / Mth.PI), 0.0F));
 
-		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
-				PartPose.ZERO);
-
 		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(52, 0)
+						.texOffs(0, 21)
 						.addBox(-3.5F, 0.0F, -2.0F, 7.0F, 7.0F, 4.0F),
 				PartPose.offset(0.0F, 11.0F, 0.0F));
 

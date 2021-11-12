@@ -4,9 +4,9 @@ import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.HarbingerCubeEntity;
+import twilightforest.entity.monster.HarbingerCube;
 
-public class HarbingerCubeModel<T extends HarbingerCubeEntity> extends QuadrupedModel<T> {
+public class HarbingerCubeModel<T extends HarbingerCube> extends QuadrupedModel<T> {
 
 	public HarbingerCubeModel(ModelPart part) {
 		super(part, false, 0.0F, 0.0F, 0.0F, 0.0F, 4); //All this is from AgeableModel. Do we scale?

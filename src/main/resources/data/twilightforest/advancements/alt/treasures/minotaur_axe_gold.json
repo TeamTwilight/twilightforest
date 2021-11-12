@@ -1,9 +1,0 @@
-{
-  "parent": "twilightforest:alt/root",
-  "criteria": {
-    "axe": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:minotaur_axe_gold" }]}}
-  },
-  "requirements": [
-    [ "axe" ]
-  ]
-}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "twilightforest:items/fortification_scepter"
+  }
+}

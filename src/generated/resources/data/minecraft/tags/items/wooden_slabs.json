@@ -6,8 +6,8 @@
     "twilightforest:mangrove_slab",
     "twilightforest:dark_slab",
     "twilightforest:time_slab",
-    "twilightforest:trans_slab",
-    "twilightforest:mine_slab",
-    "twilightforest:sort_slab"
+    "twilightforest:transformation_slab",
+    "twilightforest:mining_slab",
+    "twilightforest:sorting_slab"
   ]
 }

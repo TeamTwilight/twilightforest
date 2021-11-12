@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/vertical_hollow_log_ladder",
+  "textures": {
+    "top": "minecraft:block/oak_log_top",
+    "side": "minecraft:block/oak_log",
+    "inner": "minecraft:block/stripped_oak_log"
+  }
+}

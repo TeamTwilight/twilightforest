@@ -6,26 +6,24 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.Mth;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.boss.KnightPhantomEntity;
-import twilightforest.entity.boss.ThrownWepEntity;
+import twilightforest.entity.boss.KnightPhantom;
+import twilightforest.entity.projectile.ThrownWep;
 import twilightforest.item.TFItems;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class PhantomThrowWeaponGoal extends Goal {
 
-	private final KnightPhantomEntity boss;
+	private final KnightPhantom boss;
 
-	public PhantomThrowWeaponGoal(KnightPhantomEntity entity) {
+	public PhantomThrowWeaponGoal(KnightPhantom entity) {
 		boss = entity;
 		setFlags(EnumSet.of(Flag.LOOK));
 	}
 
 	@Override
 	public boolean canUse() {
-		return boss.getTarget() != null && boss.getCurrentFormation() == KnightPhantomEntity.Formation.ATTACK_PLAYER_ATTACK;
+		return boss.getTarget() != null && boss.getCurrentFormation() == KnightPhantom.Formation.ATTACK_PLAYER_ATTACK;
 	}
 
 	@Override
@@ -49,13 +47,13 @@ public class PhantomThrowWeaponGoal extends Goal {
 		double tz = targetedEntity.getZ() - sz;
 
 		boss.playSound(TFSounds.PHANTOM_THROW_AXE, 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
-		ThrownWepEntity projectile = new ThrownWepEntity(TFEntities.thrown_wep, boss.level, boss).setItem(new ItemStack(TFItems.knightmetal_axe.get()));
+		ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP, boss.level, boss).setItem(new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
 
 		float speed = 0.75F;
 
 		projectile.shoot(tx, ty, tz, speed, 1.0F);
 
-		projectile.moveTo(sx, sy, sz, boss.yRot, boss.xRot);
+		projectile.moveTo(sx, sy, sz, boss.getYRot(), boss.getXRot());
 
 		boss.level.addFreshEntity(projectile);
 	}
@@ -75,10 +73,10 @@ public class PhantomThrowWeaponGoal extends Goal {
 			double vz = Mth.sin(throwAngle);
 
 
-			ThrownWepEntity projectile = new ThrownWepEntity(TFEntities.thrown_wep, boss.level, boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.knightmetal_pickaxe.get()));
+			ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP, boss.level, boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 
 
-			projectile.moveTo(sx, sy, sz, i * 45F, boss.xRot);
+			projectile.moveTo(sx, sy, sz, i * 45F, boss.getXRot());
 
 			float speed = 0.5F;
 

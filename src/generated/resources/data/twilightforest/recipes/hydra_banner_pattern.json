@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:paper"
+    },
+    {
+      "item": "twilightforest:hydra_trophy"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:hydra_banner_pattern"
+  }
+}

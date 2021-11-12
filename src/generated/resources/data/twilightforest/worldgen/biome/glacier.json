@@ -41,7 +41,8 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
     ]
   ],
   "starts": [
@@ -71,6 +72,6 @@
   "temperature": 0.8,
   "downfall": 0.1,
   "category": "icy",
-  "depth": 0.05,
-  "scale": 0.1
+  "depth": 0.025,
+  "scale": 0.05
 }

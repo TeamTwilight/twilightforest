@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:hollow_oak_log_climbable",
+    "twilightforest:hollow_spruce_log_climbable",
+    "twilightforest:hollow_birch_log_climbable",
+    "twilightforest:hollow_jungle_log_climbable",
+    "twilightforest:hollow_acacia_log_climbable",
+    "twilightforest:hollow_dark_oak_log_climbable",
+    "twilightforest:hollow_crimson_stem_climbable",
+    "twilightforest:hollow_warped_stem_climbable",
+    "twilightforest:hollow_twilight_oak_log_climbable",
+    "twilightforest:hollow_canopy_log_climbable",
+    "twilightforest:hollow_mangrove_log_climbable",
+    "twilightforest:hollow_dark_log_climbable",
+    "twilightforest:hollow_time_log_climbable",
+    "twilightforest:hollow_transformation_log_climbable",
+    "twilightforest:hollow_mining_log_climbable",
+    "twilightforest:hollow_sorting_log_climbable"
+  ]
+}

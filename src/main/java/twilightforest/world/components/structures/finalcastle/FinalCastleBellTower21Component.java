@@ -29,7 +29,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 	}
 
 	public FinalCastleBellTower21Component(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCBelTo, feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.castle_rune_brick_blue.get().defaultBlockState(), direction);
+		super(FinalCastlePieces.TFFCBelTo, feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;
@@ -60,7 +60,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// openings!
-		BlockState fieldBlock = TFBlocks.force_field_blue.get().defaultBlockState();
+		BlockState fieldBlock = TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState();
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			int y = 48;
 			for (int x = 5; x < this.size - 4; x += 2) {

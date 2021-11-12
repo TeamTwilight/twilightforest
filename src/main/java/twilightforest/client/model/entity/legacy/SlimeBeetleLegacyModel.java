@@ -15,9 +15,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.SlimeBeetleEntity;
+import twilightforest.entity.monster.SlimeBeetle;
 
-public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity> {
+public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetle> {
 	public ModelPart root;
 	public ModelPart head;
 	public ModelPart legFL;
@@ -31,14 +31,7 @@ public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity>
 	public ModelPart tail2;
 	public ModelPart slimeCenter;
 
-	private static boolean translucent;
-
 	public SlimeBeetleLegacyModel(ModelPart root) {
-		this(root, false);
-	}
-
-	public SlimeBeetleLegacyModel(ModelPart root, boolean translucent) {
-		SlimeBeetleLegacyModel.translucent = translucent;
 		this.root = root;
 
 		this.head = root.getChild("head");
@@ -51,11 +44,8 @@ public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity>
 		this.tail1 = root.getChild("tail1");
 		this.tail2 = tail1.getChild("tail2");
 
-		if (SlimeBeetleLegacyModel.translucent) {
-			this.slimeCube = tail2.getChild("slime_cube");
-		} else {
-			this.slimeCenter = tail2.getChild("clime_center");
-		}
+		this.slimeCenter = tail2.getChild("slime_center");
+		this.slimeCube = slimeCenter.getChild("slime_cube");
 	}
 
 	public static LayerDefinition create() {
@@ -130,17 +120,15 @@ public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity>
 						.addBox(-3F, -6F, -3F, 6, 6, 6),
 				PartPose.offset(0F, -3F, 2F));
 
-		if (SlimeBeetleLegacyModel.translucent) {
-			tail2part.addOrReplaceChild("slime_cube", CubeListBuilder.create()
-							.texOffs(0, 40)
-							.addBox(-6F, -12F, -9F, 12, 12, 12),
-					PartPose.offset(0F, -6, 0));
-		} else {
-			tail2part.addOrReplaceChild("slime_center", CubeListBuilder.create()
-							.texOffs(32, 24)
-							.addBox(-4F, -10F, -7F, 8, 8, 8),
-					PartPose.offset(0F, -6, 0));
-		}
+		var center = tail2part.addOrReplaceChild("slime_center", CubeListBuilder.create()
+						.texOffs(32, 24)
+						.addBox(-4F, -10F, -7F, 8, 8, 8),
+				PartPose.offset(0F, -6, 0));
+
+		center.addOrReplaceChild("slime_cube", CubeListBuilder.create()
+						.texOffs(0, 40)
+						.addBox(-6F, -12F, -9F, 12, 12, 12),
+				PartPose.offset(0F, 0, 0));
 
 		return LayerDefinition.create(mesh, 64, 64);
 	}
@@ -152,15 +140,16 @@ public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity>
 
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
-		tail1.render(stack, builder, light, overlay, red, green, blue, alpha);
+		this.slimeCube.visible = false;
+		root().render(stack, builder, light, overlay, red, green, blue, alpha);
+	}
 
-		if (!translucent) {
-			this.root().getAllParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
-		}
+	public void renderTail(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
+		this.tail1.render(stack, builder, light, overlay, red, green, blue, alpha);
 	}
 
 	@Override
-	public void setupAnim(SlimeBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(SlimeBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 
@@ -209,7 +198,6 @@ public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity>
 		// tail wiggle
 		this.tail1.xRot = Mth.cos(ageInTicks * 0.3335F) * 0.15F;
 		this.tail2.xRot = Mth.cos(ageInTicks * 0.4445F) * 0.20F;
-		this.slimeCube.xRot = Mth.cos(ageInTicks * 0.5555F) * 0.25F;
 		this.slimeCenter.xRot = Mth.cos(ageInTicks * 0.5555F + 0.25F) * 0.25F;
 	}
 }

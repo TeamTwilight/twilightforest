@@ -1,0 +1,29 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:magic_beans"
+            ]
+          }
+        ]
+      }
+    },
+    "used": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treaures/magic_beanstalk"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item",
+      "used"
+    ]
+  ]
+}

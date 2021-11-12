@@ -10,9 +10,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.util.Mth;
-import twilightforest.entity.RedcapEntity;
+import twilightforest.entity.monster.Redcap;
 
-public class RedcapModel<T extends RedcapEntity> extends HumanoidModel<T> {
+public class RedcapModel<T extends Redcap> extends HumanoidModel<T> {
 
 	public RedcapModel(ModelPart root) {
 		super(root);
@@ -24,47 +24,47 @@ public class RedcapModel<T extends RedcapEntity> extends HumanoidModel<T> {
 
 		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
-						.addBox(-3.5F, -5.0F, -4.0F, 7.0F, 7.0F, 7.0F),
-				PartPose.offset(0.0F, 4.0F, 0.0F));
+						.addBox(-3.5F, -8.0F, -3.5F, 7.0F, 7.0F, 7.0F),
+				PartPose.offset(0.0F, 8.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
-						.texOffs(32, 0)
-						.addBox(-2.0F, -6.0F, -3.0F, 4.0F, 5.0F, 7.0F),
-				PartPose.offset(0.0F, 7.0F, 0.0F));
-
-		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
-						.texOffs(48, 20)
-						.addBox(3.0F, -10.0F, -1.0F, 2.0F, 3.0F, 1.0F),
-				PartPose.offset(0.0F, 7.0F, 0.0F));
+						.texOffs(28, 0)
+						.addBox(-3.5F, -7.75F, -3.25F, 7.0F, 8.0F, 7.0F, new CubeDeformation(0.5F)),
+				PartPose.offset(0.0F, 8.0F, 0.0F));
 
 		head.addOrReplaceChild("left_ear", CubeListBuilder.create().mirror()
-						.texOffs(48, 20)
-						.addBox(-5.0F, -10.0F, -1.0F, 2.0F, 3.0F, 1.0F),
-				PartPose.offset(0.0F, 7.0F, 0.0F));
+						.texOffs(0, 0)
+						.addBox(0.0F, -3.0F, 0.0F, 2.0F, 4.0F, 0.0F),
+				PartPose.offset(3.5F, -4.0F, -0.5F));
+
+		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-2.0F, -3.0F, 0.0F, 2.0F, 4.0F, 0.0F),
+				PartPose.offset(-3.5F, -4.0F, -0.5F));
 
 		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(12, 19).addBox(-4.0F, 6.0F, -2.0F, 8.0F, 9.0F, 4.0F),
-				PartPose.ZERO);
+						.texOffs(15, 19).addBox(-4.0F, -18.0F, -2.0F, 8.0F, 9.0F, 4.0F),
+				PartPose.offset(0.0F, 24.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(36, 17)
-						.addBox(-2.0F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F),
-				PartPose.offset(-5.0F, 8.0F, 0.0F));
+						.texOffs(39, 17).mirror()
+						.addBox(-2.0F, -1.0F, -1.5F, 3.0F, 12.0F, 3.0F),
+				PartPose.offset(-3.0F, 7.0F, 0.5F));
 
 		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
-						.texOffs(36, 17)
-						.addBox(-1.0F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F),
-				PartPose.offset(5.0F, 8.0F, 0.0F));
+						.texOffs(39, 17)
+						.addBox(-1.0F, -1.0F, -1.5F, 3.0F, 12.0F, 3.0F),
+				PartPose.offset(3.0F, 7.0F, 0.5F));
 
 		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(0, 20)
-						.addBox(-2.0F, 0.0F, -1.5F, 3.0F, 9.0F, 3.0F),
+						.texOffs(0, 19).mirror()
+						.addBox(-2.0F, 0.0F, -2.0F, 3.0F, 9.0F, 4.0F),
 				PartPose.offset(-2.0F, 15.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
-						.texOffs(0, 20)
-						.addBox(-2.0F, 0.0F, -1.5F, 3.0F, 9.0F, 3.0F),
-				PartPose.offset(3.0F, 15.0F, 0.0F));
+						.texOffs(0, 19)
+						.addBox(-1.0F, 0.0F, -2.0F, 3.0F, 9.0F, 4.0F),
+				PartPose.offset(2.0F, 15.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}

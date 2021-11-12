@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/hollow_log_moss",
+  "textures": {
+    "top": "minecraft:block/crimson_stem_top",
+    "side": "minecraft:block/crimson_stem",
+    "inner": "minecraft:block/stripped_crimson_stem"
+  }
+}

@@ -1,19 +1,22 @@
 package twilightforest.client.model.entity.legacy;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
-import twilightforest.entity.boss.MinoshroomEntity;
+import twilightforest.entity.boss.Minoshroom;
 
-public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
+public class MinoshroomLegacyModel extends HumanoidModel<Minoshroom> {
 
 	ModelPart leg1;
 	ModelPart leg2;
 	ModelPart leg3;
 	ModelPart leg4;
+	ModelPart cowbody, udders;
 
 	public MinoshroomLegacyModel(ModelPart root) {
 		super(root);
@@ -21,6 +24,8 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 		this.leg2 = root.getChild("leg_2");
 		this.leg3 = root.getChild("leg_3");
 		this.leg4 = root.getChild("leg_4");
+		this.cowbody = root.getChild("cow_body");
+		this.udders = root.getChild("udders");
 	}
 
 	public static LayerDefinition create() {
@@ -52,12 +57,12 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 
 		var leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
 						.texOffs(0, 0)
-						.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3),
+						.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3),
 				PartPose.offsetAndRotation(2.5F, -6.5F, 0.0F, 0.0F, 25F / (180F / Mth.PI), -10F / (180F / Mth.PI) ));
 
 		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create()
 						.texOffs(16, 0)
-						.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),
+						.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2),
 				PartPose.offsetAndRotation(4.5F, 0.0F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -45F / (180F / Mth.PI)));
 
 		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
@@ -67,7 +72,7 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 
 		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
 						.texOffs(90, 0)
-						.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4),
+						.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4),
 				PartPose.offset(-5F, -4F, -9F));
 
 		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
@@ -92,7 +97,7 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 
 		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create()
 						.texOffs(0, 16)
-						.addBox(-3F, 0F, -2F, 4, 12, 4),
+						.addBox(-1F, 0F, -2F, 4, 12, 4),
 				PartPose.offset(3F, 12F, 7F));
 
 		partRoot.addOrReplaceChild("leg_3", CubeListBuilder.create()
@@ -102,10 +107,15 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 
 		partRoot.addOrReplaceChild("leg_4", CubeListBuilder.create()
 						.texOffs(0, 16)
-						.addBox(-3F, 0F, -2F, 4, 12, 4),
+						.addBox(-1F, 0F, -2F, 4, 12, 4),
 				PartPose.offset(3F, 12F, -5F));
 
 		return LayerDefinition.create(mesh, 128, 32);
+	}
+
+	@Override
+	protected Iterable<ModelPart> bodyParts() {
+		return ImmutableList.of(this.head, this.body, this.leftArm, this.rightArm, this.cowbody, this.udders, this.leg1, this.leg2, this.leg3, this.leg4);
 	}
 
 	/**
@@ -114,7 +124,7 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setupAnim(MinoshroomEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Minoshroom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// copied from ModelBiped
 
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
@@ -168,7 +178,7 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 		}
 
 		// copied from ModelQuadruped
-		this.body.xRot = ((float) Math.PI / 2F);
+		this.cowbody.xRot = ((float) Math.PI / 2F);
 		this.leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 		this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.leg3.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
@@ -189,7 +199,7 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 				this.leftArm.xRot = f1 * -1.8F;
 				this.leftArm.zRot = 0.2F;
 			}
-			this.body.xRot = ((float) Math.PI / 2F) - f1 * (float) Math.PI * 0.2F;
+			this.cowbody.xRot = ((float) Math.PI / 2F) - f1 * (float) Math.PI * 0.2F;
 			this.leg3.y = 12.0F + (-5.8F * f1);
 			this.leg3.z = -4.0F + (-5.8F * f1);
 			this.leg3.xRot -= f1 * (float) Math.PI * 0.3F;

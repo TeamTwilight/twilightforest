@@ -7,12 +7,20 @@
             "feature": {
               "config": {
                 "feature": {
-                  "config": {},
-                  "type": "twilightforest:plant_roots"
+                  "config": {
+                    "state": {
+                      "Name": "twilightforest:root_strand"
+                    }
+                  },
+                  "type": "twilightforest:underground_plants"
                 },
                 "decorator": {
-                  "config": {},
-                  "type": "twilightforest:nostructure"
+                  "config": {
+                    "occupies_surface": true,
+                    "occupies_underground": false,
+                    "additional_clearance": 0
+                  },
+                  "type": "twilightforest:no_structure"
                 }
               },
               "type": "minecraft:decorated"

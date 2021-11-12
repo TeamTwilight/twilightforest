@@ -4,16 +4,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.InteractionHand;
-import twilightforest.entity.boss.KnightPhantomEntity;
+import twilightforest.entity.boss.KnightPhantom;
 
 public class PhantomWatchAndAttackGoal extends Goal {
 
-	private final KnightPhantomEntity boss;
+	private final KnightPhantom boss;
 	private int attackTime;
 	private int guardCoolDownTime;
 	private boolean isGuard;
 
-	public PhantomWatchAndAttackGoal(KnightPhantomEntity entity) {
+	public PhantomWatchAndAttackGoal(KnightPhantom entity) {
 		boss = entity;
 	}
 
@@ -38,7 +38,7 @@ public class PhantomWatchAndAttackGoal extends Goal {
 					}
 				}
 
-				if (this.boss.getOffhandItem().getItem() instanceof ShieldItem && boss.getCurrentFormation() != KnightPhantomEntity.Formation.ATTACK_PLAYER_ATTACK && this.isGuard) {
+				if (this.boss.getOffhandItem().getItem() instanceof ShieldItem && boss.getCurrentFormation() != KnightPhantom.Formation.ATTACK_PLAYER_ATTACK && this.isGuard) {
 					this.boss.startUsingItem(InteractionHand.OFF_HAND);
 				} else {
 					this.boss.stopUsingItem();

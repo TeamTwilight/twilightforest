@@ -9,10 +9,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -25,10 +27,12 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	private static final int MSIZE = 16;
 	private static final int RADIUS = (MSIZE / 2 * 3) + 1;
 	private static final int DIAMETER = 2 * RADIUS;
-	private static final int FLOOR_LEVEL = 3;
+	private static final int FLOOR_LEVEL = 0;
 
 	public HedgeMazeComponent(ServerLevel level, CompoundTag nbt) {
 		super(TFFeature.TFHedge, nbt);
+
+		this.boundingBox = BoundingBoxUtils.NBTToBoundingBox(nbt);
 	}
 
 	public HedgeMazeComponent(TFFeature feature, int i, int x, int y, int z) {
@@ -42,12 +46,11 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 
 		maze.oddBias = 2;
-		maze.torchBlockState = TFBlocks.firefly.get().defaultBlockState();
-		maze.wallBlockState = TFBlocks.hedge.get().defaultBlockState();
+		maze.torchBlockState = TFBlocks.FIREFLY.get().defaultBlockState();
+		maze.wallBlockState = TFBlocks.HEDGE.get().defaultBlockState();
 		maze.type = 4;
 		maze.tall = 3;
 		maze.roots = 3;
@@ -177,14 +180,14 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 
 		switch (rand.nextInt(3)) {
 			case 1:
-				mobID = TFEntities.swarm_spider;
+				mobID = TFEntities.SWARM_SPIDER;
 				break;
 			case 2:
-				mobID = TFEntities.hostile_wolf;
+				mobID = TFEntities.HOSTILE_WOLF;
 				break;
 			case 0:
 			default:
-				mobID = TFEntities.hedge_spider;
+				mobID = TFEntities.HEDGE_SPIDER;
 		}
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);
@@ -197,7 +200,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFTreasure.hedgemaze, sbb);
+		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFTreasure.HEDGE_MAZE, sbb);
 	}
 
 	/**
@@ -209,5 +212,17 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 
 		placeBlock(world, Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.from2DDataValue(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.BEARD;
+	}
+
+	@Override
+	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(level, tagCompound);
+
+		BoundingBoxUtils.boundingBoxToExistingNBT(this.boundingBox, tagCompound);
 	}
 }

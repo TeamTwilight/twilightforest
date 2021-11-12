@@ -28,7 +28,9 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import twilightforest.world.components.placements.ChunkBlanketingDecorator;
+import twilightforest.world.components.placements.ChunkCenterDecorator;
 import twilightforest.world.components.placements.OutOfStructureFilter;
+import twilightforest.world.components.placements.StructureClearingConfig;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TwilightFeatures {
@@ -45,10 +47,17 @@ public final class TwilightFeatures {
     public static final TreeDecoratorType<TreeRootsDecorator> TREE_ROOTS = registerTreeFeature(TwilightForestMod.prefix("tree_roots"), TreeRootsDecorator.CODEC);
     public static final TreeDecoratorType<DangleFromTreeDecorator> DANGLING_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("dangle_from_tree_decorator"), DangleFromTreeDecorator.CODEC);
 
-    public static final FeatureDecorator<NoneDecoratorConfiguration> PLACEMENT_NOTFSTRUCTURE = new OutOfStructureFilter(NoneDecoratorConfiguration.CODEC);
+    public static final FeatureDecorator<StructureClearingConfig> PLACEMENT_NO_STRUCTURE = new OutOfStructureFilter(StructureClearingConfig.CODEC);
+    public static final FeatureDecorator<NoneDecoratorConfiguration> CHUNK_CENTERER = new ChunkCenterDecorator(NoneDecoratorConfiguration.CODEC);
     public static final FeatureDecorator<ChunkBlanketingDecorator.ChunkBlanketingConfig> PLACEMENT_CHUNK_BLANKETING = new ChunkBlanketingDecorator(ChunkBlanketingDecorator.ChunkBlanketingConfig.CODEC);
 
-    public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE = PLACEMENT_NOTFSTRUCTURE.configured(NoneDecoratorConfiguration.INSTANCE);
+    // Use for aboveground-only features like trees and other medium-to-large features
+    public static final ConfiguredDecorator<?> OCCUPIES_SURFACE_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(true, false, 0));
+    // Use for underground-only features like Torchberries or roots
+    public static final ConfiguredDecorator<?> OCCUPIES_UNDERGROUND_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(false, true, 0));
+    // Use for features that decorate both ways, like Wells and Basements
+    public static final ConfiguredDecorator<?> OCCUPIES_STRUCTURE_CLEARANCE = PLACEMENT_NO_STRUCTURE.configured(new StructureClearingConfig(true, true, 0));
+    public static final ConfiguredDecorator<?> CONFIGURED_CHUNK_CENTERER = CHUNK_CENTERER.configured(NoneDecoratorConfiguration.INSTANCE);
     public static final ConfiguredDecorator<?> CONFIGURED_THORNLANDS_BLANKETING = PLACEMENT_CHUNK_BLANKETING.configured(new ChunkBlanketingDecorator.ChunkBlanketingConfig(0.7f, Heightmap.Types.OCEAN_FLOOR_WG, Optional.of(TwilightForestMod.prefix("thornlands"))));
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
@@ -87,7 +96,8 @@ public final class TwilightFeatures {
 
     @SubscribeEvent
     public static void registerPlacementConfigs(RegistryEvent.Register<FeatureDecorator<?>> evt) {
-        evt.getRegistry().register(PLACEMENT_NOTFSTRUCTURE.setRegistryName(TwilightForestMod.prefix("nostructure")));
+        evt.getRegistry().register(PLACEMENT_NO_STRUCTURE.setRegistryName(TwilightForestMod.prefix("no_structure")));
+        evt.getRegistry().register(CHUNK_CENTERER.setRegistryName(TwilightForestMod.prefix("chunk_centerer")));
         evt.getRegistry().register(PLACEMENT_CHUNK_BLANKETING.setRegistryName(TwilightForestMod.prefix("chunk_blanketing")));
     }
 }

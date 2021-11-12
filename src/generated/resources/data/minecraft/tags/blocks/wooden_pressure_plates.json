@@ -1,13 +1,13 @@
 {
   "replace": false,
   "values": [
-    "twilightforest:twilight_oak_plate",
-    "twilightforest:canopy_plate",
-    "twilightforest:mangrove_plate",
-    "twilightforest:dark_plate",
-    "twilightforest:time_plate",
-    "twilightforest:trans_plate",
-    "twilightforest:mine_plate",
-    "twilightforest:sort_plate"
+    "twilightforest:twilight_oak_pressure_plate",
+    "twilightforest:canopy_pressure_plate",
+    "twilightforest:mangrove_pressure_plate",
+    "twilightforest:dark_pressure_plate",
+    "twilightforest:time_pressure_plate",
+    "twilightforest:transformation_pressure_plate",
+    "twilightforest:mining_pressure_plate",
+    "twilightforest:sorting_pressure_plate"
   ]
 }

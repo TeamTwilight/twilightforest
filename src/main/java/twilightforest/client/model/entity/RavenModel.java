@@ -1,8 +1,6 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -12,14 +10,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.passive.RavenEntity;
+import twilightforest.entity.passive.Raven;
 
 /**
  * ModelForestRaven - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class RavenModel extends HierarchicalModel<RavenEntity> {
+public class RavenModel extends HierarchicalModel<Raven> {
     public ModelPart root;
     public ModelPart head;
     public ModelPart rightWing;
@@ -91,7 +89,7 @@ public class RavenModel extends HierarchicalModel<RavenEntity> {
     }
 
     @Override
-    public void setupAnim(RavenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(Raven entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         head.xRot = headPitch / (180F / (float) Math.PI);
         head.yRot = netHeadYaw / (180F / (float) Math.PI);
         head.zRot = netHeadYaw > 5 ? -0.2617994F : 0;

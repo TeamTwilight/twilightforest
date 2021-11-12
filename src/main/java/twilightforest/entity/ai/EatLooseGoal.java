@@ -3,20 +3,18 @@ package twilightforest.entity.ai;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.DyeColor;
-import twilightforest.entity.passive.QuestRamEntity;
+import twilightforest.entity.passive.QuestRam;
 
 import java.util.EnumSet;
 import java.util.List;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class EatLooseGoal extends Goal {
-	private final QuestRamEntity temptedQuestRam;
+	private final QuestRam temptedQuestRam;
 
 	private int delayTemptCounter;
 	private ItemEntity temptingItem;
 
-	public EatLooseGoal(QuestRamEntity entityTFQuestRam) {
+	public EatLooseGoal(QuestRam entityTFQuestRam) {
 		this.temptedQuestRam = entityTFQuestRam;
 		setFlags(EnumSet.of(Flag.LOOK));
 	}
@@ -32,7 +30,7 @@ public class EatLooseGoal extends Goal {
 			List<ItemEntity> nearbyItems = this.temptedQuestRam.level.getEntitiesOfClass(ItemEntity.class, this.temptedQuestRam.getBoundingBox().inflate(2.0D, 2.0D, 2.0D), e -> e.isAlive() && !e.getItem().isEmpty());
 
 			for (ItemEntity itemNearby : nearbyItems) {
-				DyeColor color = QuestRamEntity.guessColor(itemNearby.getItem());
+				DyeColor color = QuestRam.guessColor(itemNearby.getItem());
 				if (color != null && !temptedQuestRam.isColorPresent(color)) {
 					this.temptingItem = itemNearby;
 					break;

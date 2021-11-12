@@ -12,8 +12,9 @@
       ],
       "conditions": [
         {
-          "condition": "minecraft:random_chance",
-          "chance": 0.025
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.025,
+          "looting_multiplier": 0.01
         }
       ],
       "functions": []

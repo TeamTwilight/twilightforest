@@ -28,10 +28,16 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "minecraft:disk_clay",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
       "twilightforest:small_granite",
@@ -46,12 +52,25 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
     ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
-      "minecraft:patch_sugar_cane"
+      "minecraft:patch_sugar_cane",
+      "twilightforest:grove_ruins",
+      "twilightforest:foundation",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "minecraft:forest_flower_vegetation_common",
+      "twilightforest:default_fallen_logs",
+      "twilightforest:small_log",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer"
     ]
   ],
   "starts": [
@@ -121,7 +140,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:wild_boar",
+        "type": "twilightforest:boar",
         "weight": 10,
         "minCount": 4,
         "maxCount": 4
@@ -157,7 +176,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:bunny",
+        "type": "twilightforest:dwarf_rabbit",
         "weight": 10,
         "minCount": 4,
         "maxCount": 5
@@ -182,6 +201,6 @@
   "temperature": 0.8,
   "downfall": 0.4,
   "category": "plains",
-  "depth": 0.0625,
-  "scale": 0.05
+  "depth": 0.005,
+  "scale": 0.005
 }

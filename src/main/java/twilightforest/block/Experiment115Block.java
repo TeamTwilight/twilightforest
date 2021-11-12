@@ -1,6 +1,11 @@
 package twilightforest.block;
 
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -29,11 +34,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.items.ItemHandlerHelper;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import twilightforest.util.TFStats;
 
 public class Experiment115Block extends Block {
 
@@ -53,19 +61,12 @@ public class Experiment115Block extends Block {
 	@Override
 	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		switch (state.getValue(BITES_TAKEN)) {
-			default:
-				return FULL_SHAPE;
-			case 2:
-			case 3:
-				return THREE_QUARTER_SHAPE;
-			case 4:
-			case 5:
-				return HALF_SHAPE;
-			case 6:
-			case 7:
-				return QUARTER_SHAPE;
-		}
+		return switch (state.getValue(BITES_TAKEN)) {
+			default -> FULL_SHAPE;
+			case 2, 3 -> THREE_QUARTER_SHAPE;
+			case 4, 5 -> HALF_SHAPE;
+			case 6, 7 -> QUARTER_SHAPE;
+		};
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public class Experiment115Block extends Block {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!player.isShiftKeyDown()) {
-			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115.get()) {
+			if (bitesTaken > 0 && stack.getItem() == TFItems.EXPERIMENT_115.get()) {
 				worldIn.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
@@ -83,7 +84,27 @@ public class Experiment115Block extends Block {
 			} else if (((!state.getValue(REGENERATE)) && stack.getItem() == Items.REDSTONE) && (player.isCreative() || bitesTaken == 0)) {
 				worldIn.setBlockAndUpdate(pos, state.setValue(REGENERATE,true));
 				if (!player.isCreative()) stack.shrink(1);
-				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
+				if (player instanceof ServerPlayer) {
+					player.awardStat(Stats.ITEM_USED.get(Items.REDSTONE));
+
+					//fallback if the advancement criteria doesnt work since its inconsistent
+					PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
+					ServerAdvancementManager manager = ((ServerLevel)player.getCommandSenderWorld()).getServer().getAdvancements();
+					Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("experiment_115_self_replenishing"));
+					if(advancement != null) {
+						advancements.award(advancement, "place_complete_e115");
+					}
+				}
+				return InteractionResult.SUCCESS;
+			}
+		} else {
+			if(!state.getValue(REGENERATE) && player.getUseItem().isEmpty()) {
+				if (bitesTaken < 7) {
+					worldIn.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken + 1));
+				} else {
+					worldIn.removeBlock(pos, false);
+				}
+				if(!player.isCreative()) ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -93,18 +114,21 @@ public class Experiment115Block extends Block {
 	private InteractionResult eatCake(Level world, BlockPos pos, BlockState state, Player player) {
         if (!player.canEat(false)) return InteractionResult.PASS;
         else {
-            player.awardStat(Stats.EAT_CAKE_SLICE);
+            player.awardStat(TFStats.E115_SLICES_EATEN);
             player.getFoodData().eat(4, 0.3F);
+			world.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
             int i = state.getValue(BITES_TAKEN);
 
             if (i < 7) {
-            	world.setBlock(pos, state.setValue(BITES_TAKEN, Integer.valueOf(i + 1)), 3);
+            	world.setBlock(pos, state.setValue(BITES_TAKEN, i + 1), 3);
             } else {
             	world.removeBlock(pos, false);
             }
 
-            if (player instanceof ServerPlayer)
-                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
+            if (player instanceof ServerPlayer) {
+				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.EXPERIMENT_115.get(), 8 - i));
+				player.awardStat(Stats.ITEM_USED.get(TFItems.EXPERIMENT_115.get()));
+			}
 
             return InteractionResult.SUCCESS;
         }
@@ -144,8 +168,7 @@ public class Experiment115Block extends Block {
 
     @Override
 	@Deprecated
-    public boolean hasAnalogOutputSignal(BlockState state)
-    {
+    public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 

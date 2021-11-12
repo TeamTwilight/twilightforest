@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": [
+      {
+        "item": "twilightforest:bold_castle_brick_pillar"
+      },
+      {
+        "item": "twilightforest:bold_castle_brick_tile"
+      }
+    ]
+  },
+  "result": {
+    "item": "twilightforest:bold_castle_brick_stairs",
+    "count": 8
+  }
+}

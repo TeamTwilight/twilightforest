@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:mining_planks"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:mining_button"
+  }
+}

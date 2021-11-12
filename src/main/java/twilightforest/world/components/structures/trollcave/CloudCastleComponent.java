@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.ArmoredGiantEntity;
-import twilightforest.entity.GiantMinerEntity;
+import twilightforest.entity.monster.ArmoredGiant;
+import twilightforest.entity.monster.GiantMiner;
 import twilightforest.entity.TFEntities;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -77,9 +77,9 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// make haus
-		this.generateBox(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.fluffy_cloud.get().defaultBlockState(), TFBlocks.fluffy_cloud.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 8, 4, 8, 23, 15, 23, TFBlocks.giant_cobblestone.get().defaultBlockState(), TFBlocks.giant_cobblestone.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 8, 16, 8, 23, 19, 23, TFBlocks.giant_log.get().defaultBlockState(), TFBlocks.giant_log.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 4, 8, 23, 15, 23, TFBlocks.GIANT_COBBLESTONE.get().defaultBlockState(), TFBlocks.GIANT_COBBLESTONE.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 16, 8, 23, 19, 23, TFBlocks.GIANT_LOG.get().defaultBlockState(), TFBlocks.GIANT_LOG.get().defaultBlockState(), false);
 
 		// clear inside
 		this.generateAirBox(world, sbb, 12, 4, 12, 19, 15, 19);
@@ -97,7 +97,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			if (sbb.isInside(pos)) {
 				this.minerPlaced = true;
 
-				GiantMinerEntity miner = new GiantMinerEntity(TFEntities.giant_miner, world.getLevel());
+				GiantMiner miner = new GiantMiner(TFEntities.GIANT_MINER, world.getLevel());
 				miner.setPos(bx, by, bz);
 				miner.setPersistenceRequired();
 				miner.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
@@ -114,7 +114,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			if (sbb.isInside(pos)) {
 				this.warriorPlaced = true;
 
-				ArmoredGiantEntity warrior = new ArmoredGiantEntity(TFEntities.armored_giant, world.getLevel());
+				ArmoredGiant warrior = new ArmoredGiant(TFEntities.ARMORED_GIANT, world.getLevel());
 				warrior.setPos(bx, by, bz);
 				warrior.setPersistenceRequired();
 				warrior.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);

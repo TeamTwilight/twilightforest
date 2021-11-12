@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.material.Material;
@@ -537,6 +538,11 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 				}
 			}
 		}
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return this.isComponentProtected() ? NoiseEffect.BURY : NoiseEffect.NONE;
 	}
 
 	public interface Factory<T extends StructureTFStrongholdComponent> {

@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.CubeOfAnnihilationEntity;
+import twilightforest.entity.CubeOfAnnihilation;
 
-public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilationEntity> {
+public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 	private final ModelPart box, boxX, boxY, boxZ;
 
 	public CubeOfAnnihilationModel(ModelPart root) {
@@ -60,7 +60,7 @@ public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilationEntity>
 	}
 
 	@Override
-	public void setupAnim(CubeOfAnnihilationEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(CubeOfAnnihilation entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.boxX.xRot = Mth.sin((entity.tickCount + headPitch)) / 5F;
 		this.boxY.yRot = Mth.sin((entity.tickCount + headPitch)) / 5F;
 		this.boxZ.zRot = Mth.sin((entity.tickCount + headPitch)) / 5F;

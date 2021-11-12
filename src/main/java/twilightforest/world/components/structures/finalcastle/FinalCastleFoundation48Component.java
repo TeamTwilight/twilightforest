@@ -28,7 +28,7 @@ public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 		super(FinalCastlePieces.TFFCToF48, feature, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());
-		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX(), sideTower.getBoundingBox().minY(), sideTower.getBoundingBox().minZ(), sideTower.getBoundingBox().maxX(), sideTower.getBoundingBox().minY() - 1, sideTower.getBoundingBox().maxZ());
+		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX(), sideTower.getBoundingBox().minY(), sideTower.getBoundingBox().minZ(), sideTower.getBoundingBox().maxX(), sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().maxZ());
 	}
 
 	@Override

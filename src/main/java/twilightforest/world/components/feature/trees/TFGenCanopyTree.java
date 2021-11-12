@@ -2,6 +2,7 @@ package twilightforest.world.components.feature.trees;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.LevelAccessor;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.List;
@@ -68,7 +68,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		// add the actual leaves
 		if (config.hasLeaves)
 			for (BlockPos leafPos : this.leaves) {
-				makeLeafBlob(leavesPlacer, random, leafPos, config);
+				makeLeafBlob(world, leavesPlacer, random, leafPos, config);
 			}
 
 		// root bulb
@@ -88,10 +88,10 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	private void makeLeafBlob(BiConsumer<BlockPos, BlockState> leafPlacer, Random random, BlockPos leafPos, TFTreeFeatureConfig config) {
-		FeaturePlacers.placeCircleOdd(leafPlacer, random, leafPos.below(), 3, config.leavesProvider);
-		FeaturePlacers.placeCircleOdd(leafPlacer, random, leafPos, 4, config.leavesProvider);
-		FeaturePlacers.placeCircleOdd(leafPlacer, random, leafPos.above(), 2, config.leavesProvider);
+	private void makeLeafBlob(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> leafPlacer, Random random, BlockPos leafPos, TFTreeFeatureConfig config) {
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos.below(), 3, config.leavesProvider);
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos, 4, config.leavesProvider);
+		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos.above(), 2, config.leavesProvider);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		if (world.isAreaLoaded(dest, 5)) {
 
 			if (trunk) {
-				FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider, treeRNG);
+				FeaturePlacers.drawBresenhamTree(world, trunkPlacer, FeaturePlacers.VALID_TREE_POS, src, dest, config.trunkProvider, treeRNG);
 			} else {
 				FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, config.branchProvider);
 			}

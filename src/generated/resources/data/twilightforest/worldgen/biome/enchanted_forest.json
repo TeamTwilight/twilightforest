@@ -13,6 +13,12 @@
       "replace_current_music": true
     },
     "grass_color_modifier": "twilightforest:enchanted_forest",
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 2.5E-4
+    },
     "sky_color": 2105930,
     "foliage_color": 65535,
     "grass_color": 65535,
@@ -31,10 +37,16 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "minecraft:disk_clay",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
       "twilightforest:small_granite",
@@ -49,30 +61,29 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
     ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
-      "twilightforest:fiddlehead",
-      "minecraft:vines",
-      "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer",
-      "twilightforest:stone_circle",
-      "twilightforest:well",
-      "twilightforest:outside_stalagmite",
-      "twilightforest:foundation",
-      "twilightforest:monolith",
       "twilightforest:grove_ruins",
+      "twilightforest:foundation",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "twilightforest:small_log",
-      "twilightforest:druid_hut",
-      "twilightforest:tree/rainbow_oak_trees",
-      "twilightforest:tree/large_rainbow_oak_trees",
+      "twilightforest:tree/enchanted_forest_trees",
       "twilightforest:tree/canopy_trees",
-      "twilightforest:tree/hollow_placer"
+      "twilightforest:default_fallen_logs",
+      "twilightforest:tree/hollow_placer",
+      "twilightforest:fiddlehead",
+      "minecraft:vines",
+      "twilightforest:grass_placer",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer"
     ]
   ],
   "starts": [
@@ -137,7 +148,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:wild_boar",
+        "type": "twilightforest:boar",
         "weight": 10,
         "minCount": 4,
         "maxCount": 4
@@ -173,7 +184,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:bunny",
+        "type": "twilightforest:dwarf_rabbit",
         "weight": 10,
         "minCount": 4,
         "maxCount": 5
@@ -194,10 +205,10 @@
   "spawn_costs": {},
   "player_spawn_friendly": false,
   "forge:registry_name": "twilightforest:enchanted_forest",
-  "precipitation": "rain",
+  "precipitation": "none",
   "temperature": 0.5,
   "downfall": 0.5,
   "category": "forest",
-  "depth": 0.05,
-  "scale": 0.1
+  "depth": 0.025,
+  "scale": 0.05
 }

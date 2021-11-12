@@ -4,11 +4,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.RedcapEntity;
+import twilightforest.entity.monster.Redcap;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class RedcapShyGoal extends RedcapBaseGoal {
 
@@ -22,7 +20,7 @@ public class RedcapShyGoal extends RedcapBaseGoal {
 	private static final double minDistance = 3.0;
 	private static final double maxDistance = 6.0;
 
-	public RedcapShyGoal(RedcapEntity entityTFRedcap, float moveSpeed) {
+	public RedcapShyGoal(Redcap entityTFRedcap, float moveSpeed) {
 		super(entityTFRedcap);
 		this.speed = moveSpeed;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

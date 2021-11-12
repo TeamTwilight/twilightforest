@@ -10,14 +10,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.FireBeetleEntity;
+import twilightforest.entity.monster.FireBeetle;
 
 /**
  * ModelFireBeetle - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class FireBeetleModel extends HierarchicalModel<FireBeetleEntity> {
+public class FireBeetleModel extends HierarchicalModel<FireBeetle> {
     private final ModelPart root, head, rightLeg1, rightLeg2, rightLeg3, leftLeg1, leftLeg2, leftLeg3;
 
     public FireBeetleModel(ModelPart root) {
@@ -114,7 +114,7 @@ public class FireBeetleModel extends HierarchicalModel<FireBeetleEntity> {
     }
 
     @Override
-    public void setupAnim(FireBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(FireBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
         this.head.xRot = headPitch * Mth.DEG_TO_RAD;
 

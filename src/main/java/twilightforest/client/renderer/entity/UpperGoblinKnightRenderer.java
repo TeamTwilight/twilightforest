@@ -2,18 +2,17 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.UpperGoblinKnightModel;
-import twilightforest.entity.UpperGoblinKnightEntity;
+import twilightforest.entity.monster.UpperGoblinKnight;
 
-public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnightEntity, UpperGoblinKnightModel> {
+public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnight, UpperGoblinKnightModel> {
 	public UpperGoblinKnightRenderer(EntityRendererProvider.Context manager, UpperGoblinKnightModel model, float shadowSize) {
 		super(manager, model, shadowSize, "doublegoblin.png");
 	}
 
 	@Override
-	protected void setupRotations(UpperGoblinKnightEntity upperKnight, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+	protected void setupRotations(UpperGoblinKnight upperKnight, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
 		super.setupRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
 
 		if (upperKnight.heavySpearTimer > 0) {

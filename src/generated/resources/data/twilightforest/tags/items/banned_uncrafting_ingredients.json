@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:infested_towerwood",
+    "twilightforest:hollow_oak_sapling",
+    "twilightforest:time_sapling",
+    "twilightforest:transformation_sapling",
+    "twilightforest:mining_sapling",
+    "twilightforest:sorting_sapling"
+  ]
+}

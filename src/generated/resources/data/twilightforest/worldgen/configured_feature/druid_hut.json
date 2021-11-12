@@ -9,8 +9,12 @@
               "type": "twilightforest:druid_hut"
             },
             "decorator": {
-              "config": {},
-              "type": "twilightforest:nostructure"
+              "config": {
+                "occupies_surface": true,
+                "occupies_underground": true,
+                "additional_clearance": 0
+              },
+              "type": "twilightforest:no_structure"
             }
           },
           "type": "minecraft:decorated"
@@ -26,7 +30,7 @@
     },
     "decorator": {
       "config": {
-        "chance": 90
+        "chance": 105
       },
       "type": "minecraft:chance"
     }

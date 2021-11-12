@@ -29,12 +29,4 @@ public class TFLogBlock extends RotatedPillarBlock {
 	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return 5;
 	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		if(stack.getItem() == TFBlocks.cinder_log.get().asItem()) {
-			tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-		}
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-	}
 }

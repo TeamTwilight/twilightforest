@@ -1,0 +1,37 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_twilight": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/twilight_scepter"
+      }
+    },
+    "has_lifedrain": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/lifedrain_scepter"
+      }
+    },
+    "has_zombie": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/zombie_scepter"
+      }
+    },
+    "has_shield": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/shield_scepter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_twilight",
+      "has_lifedrain",
+      "has_zombie",
+      "has_shield"
+    ]
+  ]
+}

@@ -19,7 +19,7 @@
               }
             ],
             "blacklist": [],
-            "tries": 128,
+            "tries": 256,
             "state_provider": {
               "state": {
                 "Name": "minecraft:fern"

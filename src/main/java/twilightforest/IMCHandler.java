@@ -2,18 +2,16 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
+import net.minecraft.nbt.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import twilightforest.world.components.feature.TFGenCaveStalactite;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.function.Consumer;
 
@@ -23,7 +21,7 @@ public class IMCHandler {
 	private static final ImmutableList.Builder<BlockState> ORE_BLOCKS_BUILDER = ImmutableList.builder();
 	private static final ImmutableList.Builder<ItemStack> LOADING_ICONS_BUILDER = ImmutableList.builder();
 	private static final ImmutableMultimap.Builder<BlockState, BlockState> CRUMBLE_BLOCKS_BUILDER = ImmutableMultimap.builder();
-	private static final ImmutableMultimap.Builder<Integer, TFGenCaveStalactite.StalactiteEntry> STALACTITE_BUILDER = ImmutableMultimap.builder();
+	private static final ImmutableMultimap.Builder<Integer, BlockSpikeFeature.StalactiteEntry> STALACTITE_BUILDER = ImmutableMultimap.builder();
 
 	/**
 	 IMC NBT Format: You can send all of your requests as one big NBT list rather than needing to shotgun a ton of tiny NBT messages.
@@ -92,6 +90,8 @@ public class IMCHandler {
 	}
 
 	private static void handleOre(CompoundTag nbt) {
+		// TODO Use SpikeConfig.CODEC with NbtOps instead. Schema will need to change down the line however
+		//  Function<Tag, DataResult<SpikeConfig>> deserializer = NbtOps.INSTANCE.withParser(SpikeConfig.CODEC);
 		BlockState nbtState = NbtUtils.readBlockState(nbt);
 
 		if (nbtState.getBlock() != Blocks.AIR) {
@@ -104,7 +104,7 @@ public class IMCHandler {
 				float size    = readFloat(settings, "Size", 0.7f);
 				int maxLength = readInt(settings, "Max_Length", 8);
 				int minHeight = readInt(settings, "Min_Height", 1);
-				STALACTITE_BUILDER.put(hillSize, new TFGenCaveStalactite.StalactiteEntry(nbtState, size, maxLength, minHeight, weight));
+				STALACTITE_BUILDER.put(hillSize, new BlockSpikeFeature.StalactiteEntry(nbtState, size, maxLength, weight));
 			}
 		}
 	}
@@ -121,7 +121,7 @@ public class IMCHandler {
 		return LOADING_ICONS_BUILDER.build();
 	}
 
-	public static ImmutableMultimap<Integer, TFGenCaveStalactite.StalactiteEntry> getStalactites() {
+	public static ImmutableMultimap<Integer, BlockSpikeFeature.StalactiteEntry> getStalactites() {
 		return STALACTITE_BUILDER.build();
 	}
 }

@@ -18,7 +18,7 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.tileentity.MoonwormTileEntity;
+import twilightforest.block.entity.MoonwormBlockEntity;
 
 import javax.annotation.Nullable;
 
@@ -61,7 +61,7 @@ public class MoonwormModel extends Model {
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
-	public void setRotationAngles(@Nullable MoonwormTileEntity moonworm, float partialTime) {
+	public void setRotationAngles(@Nullable MoonwormBlockEntity moonworm, float partialTime) {
 		this.head.y = 7F;
 		this.shape1.y = 7F;
 		this.shape2.y = 7F;

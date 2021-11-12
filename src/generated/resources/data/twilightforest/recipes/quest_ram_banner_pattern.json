@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:paper"
+    },
+    {
+      "item": "twilightforest:quest_ram_trophy"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:quest_ram_banner_pattern"
+  }
+}

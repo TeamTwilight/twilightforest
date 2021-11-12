@@ -2,7 +2,7 @@
   "parent": "twilightforest:progress_thorns",
   "display": {
     "icon": {
-      "item": "twilightforest:castle_rune_brick_purple"
+      "item": "twilightforest:violet_castle_rune_brick"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_castle"

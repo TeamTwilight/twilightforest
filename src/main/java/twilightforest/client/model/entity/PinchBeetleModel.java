@@ -12,14 +12,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.PinchBeetleEntity;
+import twilightforest.entity.monster.PinchBeetle;
 
 /**
  * ModelPinchBeetle - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class PinchBeetleModel extends HierarchicalModel<PinchBeetleEntity> {
+public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
     public ModelPart root, head;
     public ModelPart rightLeg1, rightLeg2, rightLeg3;
     public ModelPart leftLeg1, leftLeg2, leftLeg3;
@@ -120,7 +120,7 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetleEntity> {
     }
 
     @Override
-    public void setupAnim(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(PinchBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.head.xRot = headPitch / (180F / (float) Math.PI);
 
@@ -167,7 +167,7 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetleEntity> {
     }
 
     @Override
-    public void prepareMobModel(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+    public void prepareMobModel(PinchBeetle entity, float limbSwing, float limbSwingAmount, float partialTicks) {
         if (entity.isVehicle()) {
             // open jaws
             this.rightPincer.yRot = -0.3490658503988659F;

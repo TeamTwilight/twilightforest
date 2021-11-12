@@ -30,8 +30,8 @@ import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.enums.BossVariant;
 import twilightforest.item.TFItems;
-import twilightforest.tileentity.TFTileEntities;
-import twilightforest.tileentity.TrophyTileEntity;
+import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.block.entity.TrophyBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -77,13 +77,13 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new TrophyTileEntity(pos, state);
+		return new TrophyBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.TROPHY.get(), TrophyTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.TROPHY.get(), TrophyBlockEntity::tick);
 	}
 
 	public BossVariant getVariant() {
@@ -102,7 +102,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 
 	public void playSound(Level world, BlockPos pos) {
 		BlockEntity te = world.getBlockEntity(pos);
-		if (!world.isClientSide && te instanceof TrophyTileEntity) {
+		if (!world.isClientSide && te instanceof TrophyBlockEntity) {
 			SoundEvent sound = null;
 			float volume = 1.0F;
 			float pitch = 0.9F;
@@ -157,7 +157,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 
 	public void createParticle(Level world, BlockPos pos) {
 		BlockEntity te = world.getBlockEntity(pos);
-		if (te instanceof TrophyTileEntity) {
+		if (te instanceof TrophyBlockEntity) {
 			Random rand = world.getRandom();
 			if(world instanceof ServerLevel) {
 				switch (variant) {
@@ -190,7 +190,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 						break;
 					case KNIGHT_PHANTOM:
 						for (int brek = 0; brek < 10; brek++) {
-							((ServerLevel)world).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.knightmetal_sword.get())),
+							((ServerLevel)world).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get())),
 									pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
 									pos.getY() + rand.nextFloat() + 0.5,
 									pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),

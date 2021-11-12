@@ -4,22 +4,20 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.boss.IceBombEntity;
-import twilightforest.entity.boss.AlphaYetiEntity;
+import twilightforest.entity.projectile.IceBomb;
+import twilightforest.entity.boss.AlphaYeti;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class YetiRampageGoal extends Goal {
 
-	private AlphaYetiEntity yeti;
+	private AlphaYeti yeti;
 	private int currentTimeOut;
 	private int currentDuration;
 	private int maxTantrumTimeOut;
 	private int tantrumDuration;
 
-	public YetiRampageGoal(AlphaYetiEntity entityTFYetiAlpha, int timeout, int duration) {
+	public YetiRampageGoal(AlphaYeti entityTFYetiAlpha, int timeout, int duration) {
 		this.yeti = entityTFYetiAlpha;
 		this.currentTimeOut = timeout;
 		this.maxTantrumTimeOut = timeout;
@@ -88,7 +86,7 @@ public class YetiRampageGoal extends Goal {
 		}
 
 		if (currentDuration % 10 == 0) {
-			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, yeti.level, yeti);
+			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE, yeti.level, yeti);
 			Vec3 vec = new Vec3(0.5F + yeti.getRandom().nextFloat() * 0.5F, 0.5F + yeti.getRandom().nextFloat() * 0.3F, 0).yRot(yeti.getRandom().nextFloat() * 360F);
 			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
 			yeti.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (yeti.getRandom().nextFloat() * 0.4F + 0.8F));

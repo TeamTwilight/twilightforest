@@ -2,12 +2,9 @@ package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import twilightforest.block.TFBlocks;
+import twilightforest.data.BlockTagGenerator;
 
 import java.util.Random;
 import java.util.function.Predicate;
@@ -16,51 +13,39 @@ import java.util.function.Predicate;
  * Feature Utility methods that don't invoke placement. For placement see FeaturePlacers
  */
 public final class FeatureLogic {
-    static final Predicate<BlockState> IS_AIR = BlockBehaviour.BlockStateBase::isAir;
+    public static final Predicate<BlockState> IS_REPLACEABLE = state -> state.getMaterial().isReplaceable();
+    public static final Predicate<BlockState> SHOULD_SKIP = state -> state.is(BlockTagGenerator.WORLDGEN_SKIPPABLES);
     public static boolean hasEmptyNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
-        return worldReader.isStateAtPosition(pos.above(), IS_AIR)
-                || worldReader.isStateAtPosition(pos.north(), IS_AIR)
-                || worldReader.isStateAtPosition(pos.south(), IS_AIR)
-                || worldReader.isStateAtPosition(pos.west(), IS_AIR)
-                || worldReader.isStateAtPosition(pos.east(), IS_AIR)
-                || worldReader.isStateAtPosition(pos.below(), IS_AIR);
+        return worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE)
+                || worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE)
+                || worldReader.isStateAtPosition(pos.south(), IS_REPLACEABLE)
+                || worldReader.isStateAtPosition(pos.west(), IS_REPLACEABLE)
+                || worldReader.isStateAtPosition(pos.east(), IS_REPLACEABLE)
+                || worldReader.isStateAtPosition(pos.below(), IS_REPLACEABLE);
     }
 
     // Slight stretch of logic: We check if the block is completely surrounded by air.
     // If it's not completely surrounded by air, then there's a solid
     public static boolean hasSolidNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
-        return !(worldReader.isStateAtPosition(pos.below(), IS_AIR)
-                && worldReader.isStateAtPosition(pos.north(), IS_AIR)
-                && worldReader.isStateAtPosition(pos.south(), IS_AIR)
-                && worldReader.isStateAtPosition(pos.west(), IS_AIR)
-                && worldReader.isStateAtPosition(pos.east(), IS_AIR)
-                && worldReader.isStateAtPosition(pos.above(), IS_AIR));
+        return !(worldReader.isStateAtPosition(pos.below(), IS_REPLACEABLE)
+                && worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE)
+                && worldReader.isStateAtPosition(pos.south(), IS_REPLACEABLE)
+                && worldReader.isStateAtPosition(pos.west(), IS_REPLACEABLE)
+                && worldReader.isStateAtPosition(pos.east(), IS_REPLACEABLE)
+                && worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE));
     }
 
     public static boolean canRootGrowIn(LevelSimulatedReader worldReader, BlockPos pos) {
-        if (worldReader.isStateAtPosition(pos, IS_AIR)) {
+        if (worldReader.isStateAtPosition(pos, IS_REPLACEABLE)) {
             // roots can grow through air if they are near a solid block
             return hasSolidNeighbor(worldReader, pos);
         } else {
-            return worldReader.isStateAtPosition(pos, FeatureLogic::canRootReplace);
+            return worldReader.isStateAtPosition(pos, FeatureLogic::isReplaceable);
         }
     }
 
-    public static boolean canRootReplace(BlockState state) {
-        Block block = state.getBlock();
-
-        return /*(state.getDestroySpeed() >= 0) // TODO Starting to sound like we should have a generalized no-replace tag list
-                &&*/ block != TFBlocks.stronghold_shield.get()
-                && block != TFBlocks.trophy_pedestal.get()
-                && block != TFBlocks.boss_spawner_naga.get()
-                && block != TFBlocks.boss_spawner_lich.get()
-                && block != TFBlocks.boss_spawner_hydra.get()
-                && block != TFBlocks.boss_spawner_ur_ghast.get()
-                && block != TFBlocks.boss_spawner_knight_phantom.get()
-                && block != TFBlocks.boss_spawner_snow_queen.get()
-                && block != TFBlocks.boss_spawner_minoshroom.get()
-                && block != TFBlocks.boss_spawner_alpha_yeti.get()
-                && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT || state.getMaterial() == Material.STONE || state.getMaterial() == Material.WATER);
+    public static boolean isReplaceable(BlockState state) {
+        return (state.getMaterial().isReplaceable() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTagGenerator.WORLDGEN_SKIPPABLES);
     }
 
     /**
@@ -83,14 +68,15 @@ public final class FeatureLogic {
     /**
      * Get an array of values that represent a line from point A to point B
      */
+    @Deprecated // Use VoxelBresenhamIterator directly instead
     public static BlockPos[] getBresenhamArrays(BlockPos src, BlockPos dest) {
         return getBresenhamArrays(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
     }
 
     /**
      * Get an array of values that represent a line from point A to point B
-     * todo 1.9 lazify this into an iterable?
      */
+    @Deprecated // Use VoxelBresenhamIterator directly instead
     public static BlockPos[] getBresenhamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
         int i, dx, dy, dz, absDx, absDy, absDz, x_inc, y_inc, z_inc, err_1, err_2, doubleAbsDx, doubleAbsDy, doubleAbsDz;
 

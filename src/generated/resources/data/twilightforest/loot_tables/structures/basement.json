@@ -156,6 +156,22 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 7.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:sweet_berries"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 75,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
                 "min": 1.0,
                 "max": 5.0
               },
@@ -354,6 +370,16 @@
           "type": "minecraft:item",
           "weight": 25,
           "name": "twilightforest:hollow_oak_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "twilightforest:music_disc_home"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "twilightforest:music_disc_radiance"
         }
       ]
     }

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "twilightforest:nagastone_pillar"
   },
-  "result": "twilightforest:nagastone_pillar_weathered",
+  "result": "twilightforest:cracked_nagastone_pillar",
   "experience": 0.3,
   "cookingtime": 200
 }

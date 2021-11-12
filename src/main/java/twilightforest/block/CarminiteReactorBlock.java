@@ -10,16 +10,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import twilightforest.tileentity.*;
+import twilightforest.block.entity.CarminiteReactorBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 import net.minecraft.core.Direction;
 
@@ -65,12 +62,12 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ActiveCarminiteReactorTileEntity(pos, state);
+		return new CarminiteReactorBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.CARMINITE_REACTOR.get(), ActiveCarminiteReactorTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.CARMINITE_REACTOR.get(), CarminiteReactorBlockEntity::tick);
 	}
 }

@@ -1,18 +1,18 @@
 package twilightforest.loot;
 
 import com.google.common.collect.Sets;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.conditions.IsMinion;
 import twilightforest.loot.conditions.ModExists;
@@ -26,29 +26,34 @@ public class TFTreasure {
 	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
 	private static final Set<ResourceLocation> TF_LOOT_TABLES = Sets.newHashSet();
 	
-	public static final TFTreasure hill1 = new TFTreasure("hill_1");
-	public static final TFTreasure hill2 = new TFTreasure("hill_2");
-	public static final TFTreasure hill3 = new TFTreasure("hill_3");
-	public static final TFTreasure hedgemaze = new TFTreasure("hedge_maze");
-	public static final TFTreasure labyrinth_room = new TFTreasure("labyrinth_room");
-	public static final TFTreasure labyrinth_deadend = new TFTreasure("labyrinth_dead_end");
-	public static final TFTreasure tower_room = new TFTreasure("tower_room");
-	public static final TFTreasure tower_library = new TFTreasure("tower_library");
-	public static final TFTreasure basement = new TFTreasure("basement");
-	public static final TFTreasure labyrinth_vault = new TFTreasure("labyrinth_vault");
-	public static final TFTreasure darktower_cache = new TFTreasure("darktower_cache");
-	public static final TFTreasure darktower_key = new TFTreasure("darktower_key");
-	public static final TFTreasure darktower_boss = new TFTreasure("darktower_boss");
-	public static final TFTreasure tree_cache = new TFTreasure("tree_cache");
-	public static final TFTreasure stronghold_cache = new TFTreasure("stronghold_cache");
-	public static final TFTreasure stronghold_room = new TFTreasure("stronghold_room");
-	public static final TFTreasure stronghold_boss = new TFTreasure("stronghold_boss");
-	public static final TFTreasure aurora_cache = new TFTreasure("aurora_cache");
-	public static final TFTreasure aurora_room = new TFTreasure("aurora_room");
-//	public static final TFTreasure aurora_boss = new TFTreasure("aurora_boss"); //unused
-	public static final TFTreasure troll_garden = new TFTreasure("troll_garden");
-	public static final TFTreasure troll_vault = new TFTreasure("troll_vault");
-	public static final TFTreasure graveyard = new TFTreasure("graveyard");
+	public static final TFTreasure SMALL_HOLLOW_HILL = new TFTreasure("hill_1");
+	public static final TFTreasure MEDIUM_HOLLOW_HILL = new TFTreasure("hill_2");
+	public static final TFTreasure LARGE_HOLLOW_HILL = new TFTreasure("hill_3");
+	public static final TFTreasure HEDGE_MAZE = new TFTreasure("hedge_maze");
+	public static final TFTreasure FANCY_WELL = new TFTreasure("fancy_well");
+	public static final TFTreasure WELL = new TFTreasure("well");
+	public static final TFTreasure LABYRINTH_ROOM = new TFTreasure("labyrinth_room");
+	public static final TFTreasure LABYRINTH_DEAD_END = new TFTreasure("labyrinth_dead_end");
+	public static final TFTreasure TOWER_ROOM = new TFTreasure("tower_room");
+	public static final TFTreasure TOWER_LIBRARY = new TFTreasure("tower_library");
+	public static final TFTreasure BASEMENT = new TFTreasure("basement");
+	public static final TFTreasure FOUNDATION_BASEMENT = new TFTreasure("foundation_basement");
+	public static final TFTreasure LABYRINTH_VAULT = new TFTreasure("labyrinth_vault");
+	public static final TFTreasure DARKTOWER_CACHE = new TFTreasure("darktower_cache");
+	public static final TFTreasure DARKTOWER_KEY = new TFTreasure("darktower_key");
+	public static final TFTreasure DARKTOWER_BOSS = new TFTreasure("darktower_boss");
+	public static final TFTreasure TREE_CACHE = new TFTreasure("tree_cache");
+	public static final TFTreasure STRONGHOLD_CACHE = new TFTreasure("stronghold_cache");
+	public static final TFTreasure STRONGHOLD_ROOM = new TFTreasure("stronghold_room");
+	public static final TFTreasure STRONGHOLD_BOSS = new TFTreasure("stronghold_boss");
+	public static final TFTreasure AURORA_CACHE = new TFTreasure("aurora_cache");
+	public static final TFTreasure AURORA_ROOM = new TFTreasure("aurora_room");
+//	public static final TFTreasure AURORA_BOSS = new TFTreasure("aurora_boss"); //unused
+	public static final TFTreasure TROLL_GARDEN = new TFTreasure("troll_garden");
+	public static final TFTreasure TROLL_VAULT = new TFTreasure("troll_vault");
+	public static final TFTreasure GRAVEYARD = new TFTreasure("graveyard");
+	public static final TFTreasure QUEST_GROVE = new TFTreasure("quest_grove_dropper");
+	public static final TFTreasure USELESS_LOOT = new TFTreasure("useless");
 
 	public static final ResourceLocation BIGHORN_SHEEP_WHITE = register("entities/bighorn_sheep/white");
 	public static final ResourceLocation BIGHORN_SHEEP_ORANGE = register("entities/bighorn_sheep/orange");
@@ -71,7 +76,6 @@ public class TFTreasure {
 	public static final ResourceLocation DEATH_TOME_HURT = register("entities/death_tome_hurt");
 	public static final ResourceLocation DEATH_TOME_BOOKS = register("entities/death_tome_books");
 
-	public static final ResourceLocation USELESS_LOOT = register("structures/useless");
 	public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 
 	public static LootItemFunctionType ENCHANT;
@@ -94,18 +98,29 @@ public class TFTreasure {
 		MOD_EXISTS = registerCondition("mod_exists", new LootItemConditionType(new ModExists.ConditionSerializer()));
 	}
 
-	public void generateChest(LevelAccessor world, BlockPos pos, Direction dir, boolean trapped) {
-		world.setBlock(pos, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.FACING, dir), 2);
-		BlockEntity te = world.getBlockEntity(pos);
-		if (te instanceof ChestBlockEntity) {
-			((ChestBlockEntity) te).setLootTable(lootTable, ((WorldGenLevel)world).getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
-		}
+	public void generateChest(WorldGenLevel world, BlockPos pos, Direction dir, boolean trapped) {
+		this.generateLootContainer(world, pos, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.FACING, dir), 2);
+	}
+
+	public void generateLootContainer(WorldGenLevel world, BlockPos pos, BlockState state, int flags) {
+		world.setBlock(pos, state, flags);
+
+		this.generateChestContents(world, pos);
+	}
+
+	public void generateLootContainer(LevelAccessor world, BlockPos pos, BlockState state, int flags, long seed) {
+		world.setBlock(pos, state, flags);
+
+		this.generateChestContents(world, pos, seed);
 	}
 
 	public void generateChestContents(WorldGenLevel world, BlockPos pos) {
-		BlockEntity te = world.getBlockEntity(pos);
-		if (te instanceof ChestBlockEntity)
-			((ChestBlockEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+		this.generateChestContents(world, pos, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+	}
+
+	public void generateChestContents(LevelAccessor world, BlockPos pos, long seed) {
+		if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity lootContainer)
+			lootContainer.setLootTable(lootTable, seed);
 	}
 
 	private static LootItemFunctionType registerFunction(String name, LootItemFunctionType function) {

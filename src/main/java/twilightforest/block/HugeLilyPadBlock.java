@@ -8,15 +8,12 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -24,11 +21,10 @@ import twilightforest.enums.HugeLilypadPiece;
 
 import java.util.List;
 
-public class HugeLilyPadBlock extends BushBlock {
-
+public class HugeLilyPadBlock extends WaterlilyBlock {
 	public static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 	public static final EnumProperty<HugeLilypadPiece> PIECE = EnumProperty.create("piece", HugeLilypadPiece.class);
-	private static final VoxelShape AABB = Shapes.create(new AABB(0, 0, 0, 1, 0.015625, 1));
+	private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 1, 16);
 
 	private boolean isSelfDestructing = false;
 
@@ -39,19 +35,17 @@ public class HugeLilyPadBlock extends BushBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(FACING, PIECE);
+		super.createBlockStateDefinition(builder.add(FACING, PIECE));
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		return AABB;
+		return SHAPE;
 	}
 
 	@Override
-	protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
-		FluidState ifluidstate = worldIn.getFluidState(pos);
-		return ifluidstate.getType() == Fluids.WATER;
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+		return Shapes.empty();
 	}
 
 	@Override
@@ -84,20 +78,12 @@ public class HugeLilyPadBlock extends BushBlock {
 		List<BlockPos> pieces = Lists.newArrayListWithCapacity(4);
 		if (state.getBlock() == this) {
 			// find NW corner
-			BlockPos nwPos = pos;
-			switch (state.getValue(PIECE)) {
-				case NE:
-					nwPos = nwPos.west();
-					break;
-				case SE:
-					nwPos = nwPos.north().west();
-					break;
-				case SW:
-					nwPos = nwPos.north();
-					break;
-				default:
-					break;
-			}
+			BlockPos nwPos = switch (state.getValue(PIECE)) {
+				case NE -> pos.west();
+				case SE -> pos.north().west();
+				case SW -> pos.north();
+				default -> pos;
+			};
 
 			pieces.add(nwPos);
 			pieces.add(nwPos.south());
@@ -112,15 +98,5 @@ public class HugeLilyPadBlock extends BushBlock {
 	@Deprecated
 	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
-	}
-
-	@Override
-	@Deprecated
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-		super.entityInside(state, worldIn, pos, entityIn);
-
-		if (entityIn instanceof Boat) {
-			worldIn.destroyBlock(new BlockPos(pos), true);
-		}
 	}
 }

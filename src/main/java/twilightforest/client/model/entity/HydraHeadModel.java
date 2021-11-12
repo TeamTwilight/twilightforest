@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -10,10 +9,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.HydraHeadEntity;
-import twilightforest.entity.boss.HydraPartEntity;
+import twilightforest.entity.boss.HydraHead;
+import twilightforest.entity.boss.HydraPart;
 
-public class HydraHeadModel extends ListModel<HydraHeadEntity> {
+public class HydraHeadModel extends ListModel<HydraHead> {
 
 	public ModelPart head, mouth;
 
@@ -51,10 +50,10 @@ public class HydraHeadModel extends ListModel<HydraHeadEntity> {
 	}
 
 	@Override
-	public void setupAnim(HydraHeadEntity entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setupAnim(HydraHead entity, float v, float v1, float v2, float v3, float v4) { }
 
 	@Override
-	public void prepareMobModel(HydraHeadEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(HydraHead entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		head.yRot = getRotationY(entity, partialTicks);
 		head.xRot = getRotationX(entity, partialTicks);
 
@@ -65,14 +64,14 @@ public class HydraHeadModel extends ListModel<HydraHeadEntity> {
 		mouth.xRot = (float) (mouthOpen * (Math.PI / 3.0));
 	}
 
-	public float getRotationY(HydraPartEntity whichHead, float time) {
-		float yaw = whichHead.yRotO + (whichHead.yRot - whichHead.yRotO) * time;
+	public float getRotationY(HydraPart whichHead, float time) {
+		float yaw = whichHead.yRotO + (whichHead.getYRot() - whichHead.yRotO) * time;
 
 		return yaw / 57.29578F;
 	}
 
-	public float getRotationX(HydraPartEntity whichHead, float time) {
-		return (whichHead.xRotO + (whichHead.xRot - whichHead.xRotO) * time) / 57.29578F;
+	public float getRotationX(HydraPart whichHead, float time) {
+		return (whichHead.xRotO + (whichHead.getXRot() - whichHead.xRotO) * time) / 57.29578F;
 	}
 
 	@Override

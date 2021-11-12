@@ -10,11 +10,11 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.MosquitoSwarmEntity;
+import twilightforest.entity.monster.MosquitoSwarm;
 
 import java.util.Random;
 
-public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarmEntity> {
+public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarm> {
 	private final ModelPart root, core, group1, group2, group3, group4, group5, group6;
 
 	private static final Random rand = new Random();
@@ -81,12 +81,12 @@ public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarmEntity> {
 	}
 
 	@Override
-	public void setupAnim(MosquitoSwarmEntity entity, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(MosquitoSwarm entity, float v, float v1, float v2, float v3, float v4) {
 
 	}
 
 	@Override
-	public void prepareMobModel(MosquitoSwarmEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(MosquitoSwarm entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		this.core.yRot = (entity.tickCount + partialTicks) / 5.0F;
 		this.core.xRot = Mth.sin((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
 		this.core.zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;

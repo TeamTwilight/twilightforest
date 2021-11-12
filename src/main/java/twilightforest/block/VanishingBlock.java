@@ -105,7 +105,7 @@ public class VanishingBlock extends Block {
 		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
 			BlockPos cur = queue.pop();
 			BlockState state = world.getBlockState(cur);
-			if (state.getBlock() == TFBlocks.locked_vanishing_block.get() && state.getValue(LockedVanishingBlock.LOCKED)) {
+			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK.get() && state.getValue(LockedVanishingBlock.LOCKED)) {
 				return true;
 			}
 
@@ -160,7 +160,7 @@ public class VanishingBlock extends Block {
 					world.removeBlock(pos, false);
 				}
 
-				world.playSound(null, pos, state.getBlock() == TFBlocks.reappearing_block.get() ? TFSounds.REAPPEAR_POOF : TFSounds.VANISHING_BLOCK, SoundSource.BLOCKS, 0.3F, 0.5F);
+				world.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK.get() ? TFSounds.REAPPEAR_POOF : TFSounds.VANISHING_BLOCK, SoundSource.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
 					activate(world, pos.relative(e));

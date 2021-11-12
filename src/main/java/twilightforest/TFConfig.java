@@ -5,9 +5,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.world.components.feature.TFGenCaveStalactite;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.*;
 
@@ -28,6 +30,10 @@ public class TFConfig {
 						translation(config + "spawn_in_tf").
 						comment("If true, players spawning for the first time will spawn in the Twilight Forest.").
 						define("newPlayersSpawnInTF", false);
+				DIMENSION.portalForNewPlayerSpawn = builder.
+						translation(config + "portal_for_new_player").
+						comment("If true, the return portal will spawn for new players that were sent to the TF if `spawn_in_tf` is true.").
+						define("portalForNewPlayer", true);
 				DIMENSION.skylightForest = builder.
 						translation(config + "skylight_forest").
 						worldRestart().
@@ -38,11 +44,11 @@ public class TFConfig {
 						worldRestart().
 						comment("If true, giant Twilight Oaks will also spawn in void worlds").
 						define("skylightOaks", true);
-				DIMENSION.twilightForestID = builder.
-						translation(config + "twilight_dimension_id").
+				DIMENSION.portalDestinationID = builder.
+						translation(config + "portal_destination_id").
 						worldRestart().
 						comment("Marked dimension ID for Twilight Portals and some other Twilight mod logic as well").
-						define("twilightDimensionID", "twilightforest:twilight_forest");
+						define("portalDestinationID", "twilightforest:twilight_forest");
 				builder.pop().
 						comment("""
 								Defines custom stalactites generated in hollow hills.
@@ -82,35 +88,6 @@ public class TFConfig {
 					worldRestart().
 					comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.").
 					define("doCompat", true);
-			builder.
-					comment("Lets you sacrifice various things to improve world performance.").
-					push("Performance Tweaks");
-			{
-				PERFORMANCE.canopyCoverage = builder.
-						translation(config + "canopy_coverage").
-						comment("Amount of canopy coverage. Lower numbers improve chunk generation speed at the cost of a thinner forest.").
-						defineInRange("canopyCoverage", 1.7F, 0, Double.MAX_VALUE);
-				PERFORMANCE.twilightOakChance = builder.
-						translation(config + "twilight_oaks").
-						comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.").
-						defineInRange("twilightOakChance", 48, 1, Integer.MAX_VALUE);
-				PERFORMANCE.leavesLightOpacity = builder.
-						translation(config + "leaves_light_opacity").
-						comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.").
-						defineInRange("leavesLightOpacity", 1, 0, 255);
-				PERFORMANCE.glacierPackedIce = builder.
-						translation(config + "glacier_packed_ice").
-						comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.").
-						define("glacierPackedIce", false);
-				PERFORMANCE.enableSkylight = builder.
-						translation(config + "enable_skylight").
-						comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
-
-								"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!").
-						worldRestart().
-						define("enableSkylight", true);
-			}
-			builder.pop();
 			originDimension = builder.
 					translation(config + "origin_dimension").
 					comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld. (domain:regname).").
@@ -141,20 +118,34 @@ public class TFConfig {
 					translation(config + "portal_return").
 					comment("If false, the return portal will require the activation item.").
 					define("shouldReturnPortalBeUsable", true);
-			progressionRuleDefault = builder.
-					translation(config + "progression_default").
-					comment("Sets the default value of the game rule controlling enforced progression.").
-					define("progressionRuleDefault", true);
+			portalAdvancementLock = builder.
+					translation(config + "portal_unlocked_by_advancement").
+					comment("Use a valid advancement resource location as a string, with default String \"minecraft:story/mine_diamond\". Invalid/Empty Advancement resource IDs will leave the portal entirely unlocked.").
+					define("portalUnlockedByAdvancement", "minecraft:story/mine_diamond");
 			disableUncrafting = builder.
 					worldRestart().
 					translation(config + "uncrafting").
 					comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
 					define("disableUncrafting", false);
+			disableUncraftingRecipes = builder.
+					worldRestart().
+					translation(config + "uncrafting_recipes").
+					comment("""
+							If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.
+							To add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.
+							Example: "twilightforest:moonworm_queen" will disable uncrafting the moonworm queen into itself and 3 torchberries.
+							If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
+							If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
+					defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
 			casketUUIDLocking = builder.
 					worldRestart().
 					translation(config + "casket_uuid_locking").
 					comment("If true, Keepsake Caskets that are spawned when a player dies will not be accessible by other players. Use this if you dont want people taking from other people's death caskets. NOTE: server operators will still be able to open locked caskets.")
 					.define("uuid_locking", false);
+			disableSkullCandles = builder.
+					translation(config + "disable_skull_candles").
+					comment("If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.").
+					define("skull_candles", false);
 			builder.
 					comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
 					push("Shield Parrying");
@@ -187,12 +178,13 @@ public class TFConfig {
 		public static class Dimension {
 
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
+			public ForgeConfigSpec.BooleanValue portalForNewPlayerSpawn;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
 
 			// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example) before strictly using this
 			// Reason this is needed is so users can reconfig portals to use Skylight Forest or a Void Forest or another dimension entirely
-			public ForgeConfigSpec.ConfigValue<String> twilightForestID;
+			public ForgeConfigSpec.ConfigValue<String> portalDestinationID;
 
 			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
 
@@ -222,10 +214,10 @@ public class TFConfig {
 					if (split.length != 5) return false;
 
 					Optional<Block> block = parseBlock(split[0]);
-					if (!block.isPresent()) return false;
+					if (block.isEmpty()) return false;
 
 					try {
-						TFGenCaveStalactite.addStalactite(tier, block.get().defaultBlockState(),
+						BlockSpikeFeature.registerStalactite(tier, block.get().defaultBlockState(),
 								Float.parseFloat(split[1]),
 								Integer.parseInt(split[2]),
 								Integer.parseInt(split[3]),
@@ -241,18 +233,6 @@ public class TFConfig {
 
 		public ForgeConfigSpec.BooleanValue doCompat;
 
-		public Performance PERFORMANCE = new Performance();
-
-		public static class Performance {
-			public ForgeConfigSpec.DoubleValue canopyCoverage;
-			public ForgeConfigSpec.IntValue twilightOakChance;
-			public ForgeConfigSpec.IntValue leavesLightOpacity;
-			public ForgeConfigSpec.BooleanValue glacierPackedIce;
-			public ForgeConfigSpec.BooleanValue enableSkylight;
-
-			public boolean shadersSupported = true;
-		}
-
 		public ForgeConfigSpec.ConfigValue<String> originDimension;
 		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
 		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
@@ -260,11 +240,14 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue checkPortalDestination;
 		public ForgeConfigSpec.BooleanValue portalLightning;
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
-		public ForgeConfigSpec.BooleanValue progressionRuleDefault;
+		public ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
 		public ForgeConfigSpec.BooleanValue disableUncrafting;
+		public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
+		public ForgeConfigSpec.BooleanValue disableSkullCandles;
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
+		public ResourceLocation portalLockingAdvancement;
 
 		public static class ShieldInteractions {
 
@@ -300,6 +283,10 @@ public class TFConfig {
 					translation(config + "dragons").
 					comment("Disable the Here Be Dragons experimental warning screen.").
 					define("disableHereBeDragons", false);
+			disableLockedBiomeToasts = builder.
+					translation(config + "locked_toasts").
+					comment("Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.").
+					define("disableLockedBiomeToasts", false);
 			builder.
 					comment("Client only: Controls for the Loading screen").
 					push("Loading Screen");
@@ -349,7 +336,6 @@ public class TFConfig {
 								"twilightforest:magic_beans",
 								"twilightforest:ironwood_raw",
 								"twilightforest:naga_scale",
-								"twilightforest:experiment_115{think:1}",
 								"twilightforest:twilight_portal_miniature_structure",
 								"twilightforest:lich_tower_miniature_structure",
 								"twilightforest:knightmetal_block",
@@ -370,6 +356,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public ForgeConfigSpec.BooleanValue disableHereBeDragons;
+		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 
 		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
 
@@ -407,13 +394,25 @@ public class TFConfig {
 
 	private static final String config = TwilightForestMod.ID + ".config.";
 
-	/*@SubscribeEvent //FIXME Replace
-	public static void onConfigChanged(ModConfig.Reloading event) {
+	@SubscribeEvent // FIXME Not Firing
+	public static void onConfigChanged(ModConfigEvent.Reloading event) {
 		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
-//			TFDimensions.checkOriginDimension();
+			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
+
 			build();
 		}
-	}*/
+	}
+
+	// FIXME Remove once the top works again
+	//  This lets us have a RL without inserting RL creation into ticking code
+	@Deprecated
+	public static ResourceLocation getPortalLockingAdvancement() {
+		if (COMMON_CONFIG.portalLockingAdvancement == null) {
+			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
+		}
+
+		return COMMON_CONFIG.portalLockingAdvancement;
+	}
 
 	public static void build() {
 		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();
@@ -433,7 +432,7 @@ public class TFConfig {
 		if (id == null || !ForgeRegistries.BLOCKS.containsKey(id)) {
 			return Optional.empty();
 		} else {
-			return Optional.of(ForgeRegistries.BLOCKS.getValue(id));
+			return Optional.ofNullable(ForgeRegistries.BLOCKS.getValue(id));
 		}
 	}
 }

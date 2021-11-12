@@ -41,16 +41,16 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// leaves
-		this.generateBox(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.giant_leaves.get().defaultBlockState(), TFBlocks.giant_leaves.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.giant_leaves.get().defaultBlockState(), TFBlocks.giant_leaves.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.giant_leaves.get().defaultBlockState(), TFBlocks.giant_leaves.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.giant_leaves.get().defaultBlockState(), TFBlocks.giant_leaves.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
 
 		// trunk
-		this.generateBox(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.giant_log.get().defaultBlockState(), TFBlocks.giant_log.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.GIANT_LOG.get().defaultBlockState(), TFBlocks.GIANT_LOG.get().defaultBlockState(), false);
 
 		// cloud base
-		this.generateBox(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.fluffy_cloud.get().defaultBlockState(), TFBlocks.fluffy_cloud.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
 
 		return true;
 	}

@@ -10,10 +10,10 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.boss.UrGhastEntity;
+import twilightforest.entity.boss.UrGhast;
 
 @OnlyIn(Dist.CLIENT)
-public class UrGhastModel extends TFGhastModel<UrGhastEntity> {
+public class UrGhastModel extends TFGhastModel<UrGhast> {
     private final ModelPart[][] tentacles = new ModelPart[tentacleCount][3];
 
     public UrGhastModel(ModelPart root) {
@@ -74,7 +74,7 @@ public class UrGhastModel extends TFGhastModel<UrGhastEntity> {
     }
 
     @Override
-    public void setupAnim(UrGhastEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(UrGhast entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
         // wave tentacles

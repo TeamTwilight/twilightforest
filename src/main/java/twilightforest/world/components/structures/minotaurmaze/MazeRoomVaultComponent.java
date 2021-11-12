@@ -32,8 +32,8 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fill room with bricks
-		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
-		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, false);
 
 		// 4x4 room in the middle
 		generateAirBox(world, sbb, 6, 2, 6, 9, 3, 9);
@@ -56,10 +56,10 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 		generateBox(world, sbb, 10, 0, 6, 10, 0, 9, Blocks.TNT.defaultBlockState(), AIR, false);
 
 		// LEWTZ!
-		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFTreasure.labyrinth_vault, sbb, false);
-		this.setDoubleLootChest(world, 8, 2, 9, 7, 2, 9, Direction.NORTH, TFTreasure.labyrinth_vault, sbb, false);
-		this.setDoubleLootChest(world, 6, 2, 8, 6, 2, 7, Direction.EAST, TFTreasure.labyrinth_vault, sbb, false);
-		this.setDoubleLootChest(world, 9, 2, 7, 9, 2, 8, Direction.WEST, TFTreasure.labyrinth_vault, sbb, false);
+		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFTreasure.LABYRINTH_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 8, 2, 9, 7, 2, 9, Direction.NORTH, TFTreasure.LABYRINTH_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 6, 2, 8, 6, 2, 7, Direction.EAST, TFTreasure.LABYRINTH_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 9, 2, 7, 9, 2, 8, Direction.WEST, TFTreasure.LABYRINTH_VAULT, sbb, false);
 
 		// mazebreaker!
 

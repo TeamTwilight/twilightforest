@@ -1,31 +1,29 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.phys.AABB;
-import twilightforest.entity.boss.MinoshroomEntity;
+import twilightforest.TFSounds;
+import twilightforest.entity.boss.Minoshroom;
 
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class GroundAttackGoal extends Goal {
 	private static final double MIN_RANGE_SQ = 2.0D;
 	private static final double MAX_RANGE_SQ = 48.0D;
 	private static final int FREQ = 24;
 
-	private MinoshroomEntity attacker;
+	private final Minoshroom attacker;
 	private LivingEntity attackTarget;
 
 	private int attackTick;
 
-	public GroundAttackGoal(MinoshroomEntity entityTFMinoshroom) {
+	public GroundAttackGoal(Minoshroom entityTFMinoshroom) {
 		this.attacker = entityTFMinoshroom;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
@@ -81,7 +79,7 @@ public class GroundAttackGoal extends Goal {
 
 		if (this.attackTick-- <= 0) {
 			this.attacker.setGroundAttackCharge(false);
-			this.attacker.playSound(SoundEvents.GENERIC_EXPLODE, 2, 1F + this.attacker.getRandom().nextFloat() * 0.1F);
+			this.attacker.playSound(TFSounds.MINOSHROOM_SLAM, 2, 1F + this.attacker.getRandom().nextFloat() * 0.1F);
 
 			AABB selection = new AABB(this.attacker.blockPosition().getX() - 7.5F, this.attacker.blockPosition().getY(), this.attacker.blockPosition().getZ() - 7.5F, this.attacker.blockPosition().getX() + 7.5F, this.attacker.blockPosition().getY() + 3.0F, this.attacker.blockPosition().getZ() + 7.5F);
 

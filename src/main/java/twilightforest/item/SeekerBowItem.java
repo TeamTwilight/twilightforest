@@ -1,12 +1,8 @@
 package twilightforest.item;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;
-import twilightforest.entity.TFEntities;
-import twilightforest.entity.projectile.SeekerArrowEntity;
-
-import net.minecraft.world.item.Item.Properties;
+import twilightforest.entity.projectile.SeekerArrow;
 
 public class SeekerBowItem extends BowItem {
 
@@ -16,9 +12,6 @@ public class SeekerBowItem extends BowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
-		if (arrow.getOwner() instanceof LivingEntity) {
-			return new SeekerArrowEntity(TFEntities.seeker_arrow, arrow.level, (LivingEntity) arrow.getOwner());
-		}
-		return arrow;
+		return new SeekerArrow(arrow.level, arrow.getOwner());
 	}
 }

@@ -276,7 +276,7 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 									tessellator.end();
 								}
 								currentType = nextType;
-								mc.getTextureManager().getTexture(nextType.getTextureLocation());
+								RenderSystem._setShaderTexture(0, nextType.getTextureLocation());
 								bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 							}
 
@@ -430,7 +430,7 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 								}
 
 								j1 = 0;
-								mc.getTextureManager().getTexture(SPARKLES_TEXTURE);
+								RenderSystem._setShaderTexture(0, SPARKLES_TEXTURE);
 								bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 							}
 

@@ -2,15 +2,14 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HarbingerCubeModel;
-import twilightforest.entity.HarbingerCubeEntity;
+import twilightforest.entity.monster.HarbingerCube;
 
-public class HarbingerCubeRenderer<T extends HarbingerCubeEntity> extends MobRenderer<T, HarbingerCubeModel<T>> {
+public class HarbingerCubeRenderer<T extends HarbingerCube> extends MobRenderer<T, HarbingerCubeModel<T>> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("apocalypse2.png");
 
@@ -19,7 +18,7 @@ public class HarbingerCubeRenderer<T extends HarbingerCubeEntity> extends MobRen
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HarbingerCubeEntity entity) {
+	public ResourceLocation getTextureLocation(HarbingerCube entity) {
 		return textureLoc;
 	}
 

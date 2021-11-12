@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/banister_short",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_mangrove_2"
+  }
+}

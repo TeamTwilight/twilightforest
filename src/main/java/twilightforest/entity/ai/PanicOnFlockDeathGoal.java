@@ -3,15 +3,12 @@ package twilightforest.entity.ai;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.KoboldEntity;
+import twilightforest.entity.monster.Kobold;
 
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class PanicOnFlockDeathGoal extends Goal {
 	private PathfinderMob flockCreature;
@@ -67,8 +64,8 @@ public class PanicOnFlockDeathGoal extends Goal {
 		this.flockCreature.getNavigation().moveTo(this.fleeX, this.fleeY, this.fleeZ, this.speed);
 
 		// panic flag for kobold animations
-		if (flockCreature instanceof KoboldEntity) {
-			((KoboldEntity) flockCreature).setPanicked(true);
+		if (flockCreature instanceof Kobold) {
+			((Kobold) flockCreature).setPanicked(true);
 		}
 	}
 
@@ -96,8 +93,8 @@ public class PanicOnFlockDeathGoal extends Goal {
 		fleeTimer -= 20;
 
 		// panic flag for kobold animations
-		if (flockCreature instanceof KoboldEntity) {
-			((KoboldEntity) flockCreature).setPanicked(false);
+		if (flockCreature instanceof Kobold) {
+			((Kobold) flockCreature).setPanicked(false);
 		}
 	}
 }

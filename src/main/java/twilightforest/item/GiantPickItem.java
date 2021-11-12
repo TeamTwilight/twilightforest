@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Tier;
@@ -28,14 +29,14 @@ public class GiantPickItem extends PickaxeItem {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
+		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		float destroySpeed = super.getDestroySpeed(stack, state);
 		// extra 64X strength vs giant obsidian
-		destroySpeed *= (state.getBlock() == TFBlocks.giant_obsidian.get()) ? 64 : 1;
+		destroySpeed *= (state.getBlock() == TFBlocks.GIANT_OBSIDIAN.get()) ? 64 : 1;
 		// 64x strength vs giant blocks
 		return state.getBlock() instanceof GiantBlock ? destroySpeed * 64 : destroySpeed;
 	}

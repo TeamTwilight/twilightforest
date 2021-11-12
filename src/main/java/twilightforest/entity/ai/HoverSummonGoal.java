@@ -2,14 +2,12 @@ package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.SnowQueenEntity;
-import twilightforest.entity.boss.SnowQueenEntity.Phase;
+import twilightforest.entity.boss.SnowQueen;
+import twilightforest.entity.boss.SnowQueen.Phase;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
-public class HoverSummonGoal extends HoverBaseGoal<SnowQueenEntity> {
+public class HoverSummonGoal extends HoverBaseGoal<SnowQueen> {
 
 	private static final int MAX_MINIONS_AT_ONCE = 4;
 
@@ -17,7 +15,7 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueenEntity> {
 
 	private final int maxSeekTime;
 
-	public HoverSummonGoal(SnowQueenEntity snowQueen) {
+	public HoverSummonGoal(SnowQueen snowQueen) {
 		super(snowQueen, 6F, 6F);
 
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

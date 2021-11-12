@@ -6,7 +6,7 @@
       "conditions": {
         "damage": {
           "source_entity": {
-            "type": "twilightforest:goblin_knight_lower"
+            "type": "twilightforest:lower_goblin_knight"
           }
         }
       }
@@ -18,7 +18,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_lower"
+              "type": "twilightforest:lower_goblin_knight"
             },
             "entity": "this"
           }
@@ -32,7 +32,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_lower"
+              "type": "twilightforest:lower_goblin_knight"
             },
             "entity": "this"
           }
@@ -46,7 +46,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_lower"
+              "type": "twilightforest:lower_goblin_knight"
             },
             "entity": "this"
           }
@@ -60,7 +60,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_lower"
+              "type": "twilightforest:lower_goblin_knight"
             },
             "entity": "this"
           }
@@ -74,7 +74,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_lower"
+              "type": "twilightforest:lower_goblin_knight"
             },
             "entity": "this"
           }
@@ -86,7 +86,7 @@
       "conditions": {
         "damage": {
           "source_entity": {
-            "type": "twilightforest:goblin_knight_upper"
+            "type": "twilightforest:upper_goblin_knight"
           }
         }
       }
@@ -98,7 +98,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_upper"
+              "type": "twilightforest:upper_goblin_knight"
             },
             "entity": "this"
           }
@@ -112,7 +112,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_upper"
+              "type": "twilightforest:upper_goblin_knight"
             },
             "entity": "this"
           }
@@ -126,7 +126,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_upper"
+              "type": "twilightforest:upper_goblin_knight"
             },
             "entity": "this"
           }
@@ -140,7 +140,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_upper"
+              "type": "twilightforest:upper_goblin_knight"
             },
             "entity": "this"
           }
@@ -154,7 +154,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_upper"
+              "type": "twilightforest:upper_goblin_knight"
             },
             "entity": "this"
           }

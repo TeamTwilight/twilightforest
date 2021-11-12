@@ -509,7 +509,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		setBlockStateRotated(world, myDeco.platformState, x, y + 1, z, rotation, sbb);
 
-		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFTreasure.darktower_key : TFTreasure.darktower_cache, sbb);
+		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFTreasure.DARKTOWER_KEY : TFTreasure.DARKTOWER_CACHE, sbb);
 	}
 
 	private void decorateSpawner(WorldGenLevel world, Random rand, BoundingBox sbb, Rotation rotation, int y) {
@@ -519,9 +519,9 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		EntityType<?> mobID;
 
 		if (this.size > 9) {
-			mobID = rand.nextBoolean() ? TFEntities.tower_golem : TFEntities.tower_broodling;
+			mobID = rand.nextBoolean() ? TFEntities.CARMINITE_GOLEM : TFEntities.CARMINITE_BROODLING;
 		} else {
-			mobID = TFEntities.tower_broodling;
+			mobID = TFEntities.CARMINITE_BROODLING;
 		}
 
 		// pillar frame
@@ -551,7 +551,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Decorate with a pressure plate triggered reappearing floor.  Only suitable for small towers
 	 */
 	private void decorateReappearingFloor(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
-		final BlockState inactiveReappearing = TFBlocks.reappearing_block.get().defaultBlockState();
+		final BlockState inactiveReappearing = TFBlocks.REAPPEARING_BLOCK.get().defaultBlockState();
 		final BlockState woodenPressurePlate = Blocks.OAK_PRESSURE_PLATE.defaultBlockState();
 		// floor
 		this.fillBlocksRotated(world, sbb, 4, y, 3, 7, y, 5, inactiveReappearing, rotation);
@@ -671,7 +671,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		setBlockStateRotated(world, deco.accentState, x + 1, y + 3, z - 2, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), AttachFace.WALL, Direction.WEST, false), x + 2, y + 3, z - 2, rotation, sbb);
 
-		placeTreasureRotated(world, x + 1, y + 2, z + 1, getOrientation(), rotation, TFTreasure.darktower_cache, sbb);
+		placeTreasureRotated(world, x + 1, y + 2, z + 1, getOrientation(), rotation, TFTreasure.DARKTOWER_CACHE, sbb);
 	}
 
 	/**
@@ -759,8 +759,8 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 				TFStructureDecorator logDeco = new StructureDecoratorDarkTower();
 
-				logDeco.pillarState = TFBlocks.dark_log.get().defaultBlockState();
-				logDeco.platformState = TFBlocks.dark_log.get().defaultBlockState();
+				logDeco.pillarState = TFBlocks.DARK_LOG.get().defaultBlockState();
+				logDeco.platformState = TFBlocks.DARK_LOG.get().defaultBlockState();
 
 				decorateTreasureRoom(world, sbb, rotation, y, 4, logDeco);
 			} else {
@@ -773,7 +773,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Make a mostly soid timber floor
 	 */
 	protected void makeTimberFloor(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y) {
-		BlockState beamID = TFBlocks.dark_log.get().defaultBlockState();
+		BlockState beamID = TFBlocks.DARK_LOG.get().defaultBlockState();
 		BlockState beamStateNS = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		BlockState beamStateUD = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
 		BlockState beamStateEW = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
@@ -806,7 +806,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Make a lattice of log blocks
 	 */
 	protected void makeSmallTimberBeams(WorldGenLevel world, Random rand, BoundingBox sbb, Rotation rotation, int y, boolean bottom) {
-		BlockState beamID = TFBlocks.dark_log.get().defaultBlockState();
+		BlockState beamID = TFBlocks.DARK_LOG.get().defaultBlockState();
 		BlockState beamStateNS = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 		BlockState beamStateUD = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
 		BlockState beamStateEW = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
@@ -1025,7 +1025,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final BlockState inactiveVanish = TFBlocks.vanishing_block.get().defaultBlockState();
+		final BlockState inactiveVanish = TFBlocks.VANISHING_BLOCK.get().defaultBlockState();
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {
@@ -1045,7 +1045,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final BlockState inactiveReappearing = TFBlocks.reappearing_block.get().defaultBlockState();
+		final BlockState inactiveReappearing = TFBlocks.REAPPEARING_BLOCK.get().defaultBlockState();
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {
@@ -1066,8 +1066,8 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
 		// clear the door
-		final BlockState lockedVanish = TFBlocks.locked_vanishing_block.get().defaultBlockState();
-		final BlockState inactiveVanish = TFBlocks.vanishing_block.get().defaultBlockState();
+		final BlockState lockedVanish = TFBlocks.LOCKED_VANISHING_BLOCK.get().defaultBlockState();
+		final BlockState inactiveVanish = TFBlocks.VANISHING_BLOCK.get().defaultBlockState();
 
 		if (dx == 0 || dx == size - 1) {
 			this.generateBox(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);

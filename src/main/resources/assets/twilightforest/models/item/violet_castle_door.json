@@ -1,0 +1,12 @@
+{
+  "loader": "forge:composite",
+  "parent": "block/block",
+  "parts": {
+    "main": {
+      "parent": "twilightforest:block/violet_castle_door"
+    },
+    "overlay": {
+      "parent": "twilightforest:block/castle_door_overlay"
+    }
+  }
+}

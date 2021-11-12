@@ -43,7 +43,7 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 			makeTentacle(body, "tentacle_" + i, i);
 		}
 
-		return LayerDefinition.create(meshdefinition, 192, 96);
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	private static void makeTentacle(PartDefinition parent, String name, int iteration) {
@@ -68,12 +68,12 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 		var tentacleExtension = tentacleBase.addOrReplaceChild(name + "_extension", CubeListBuilder.create()
 						.texOffs(0, 3)
 						.addBox(-1.5F, -1.35F, -1.5F, 3.333F, 6.66F, 3.333F),
-				PartPose.offset(0, 0, 6.66F));
+				PartPose.offset(0, 6.66F, 0));
 
 		tentacleExtension.addOrReplaceChild(name + "_tip", CubeListBuilder.create()
 						.texOffs(0, 9)
 						.addBox(-1.5F, 1.3F, -1.5F, 3.333F, 4, 3.333F),
-				PartPose.offset(0, 0, 4));
+				PartPose.offset(0, 4, 0));
 
 	}
 	

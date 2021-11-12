@@ -1,0 +1,23 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_keeping": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/charm_of_keeping"
+      }
+    },
+    "has_life": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/charm_of_life"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_keeping",
+      "has_life"
+    ]
+  ]
+}

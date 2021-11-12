@@ -15,6 +15,9 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  },
   "criteria": {
     "meef": {
       "trigger": "minecraft:consume_item",

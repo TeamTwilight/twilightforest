@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.TntBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -33,8 +34,8 @@ public class MazeDeadEndTripwireChestComponent extends MazeDeadEndChestComponent
 		// add tripwire
 		this.placeTripwire(world, 1, 1, 2, 3, Direction.EAST, sbb);
 
-		// TNT!
-		BlockState tnt = Blocks.TNT.defaultBlockState();
+		// TNT! Since the trap requires tripwire, we'll make punching the tnt NOT the solution
+		BlockState tnt = Blocks.TNT.defaultBlockState().setValue(TntBlock.UNSTABLE, true);
 		this.placeBlock(world, tnt, 0,  0, 2, sbb);
 
 		// Air blocks are required underneath to maximize TNT destruction of chest

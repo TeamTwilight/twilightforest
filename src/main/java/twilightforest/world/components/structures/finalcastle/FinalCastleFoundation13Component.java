@@ -82,5 +82,5 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 		return true;
 	}
 
-	protected static final Predicate<BlockState> isDeadrock = state -> state.getBlock() == TFBlocks.deadrock.get();
+	protected static final Predicate<BlockState> isDeadrock = state -> state.getBlock() == TFBlocks.DEADROCK.get();
 }

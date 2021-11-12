@@ -16,7 +16,7 @@
       "options": {
         "type": "minecraft:white_ash"
       },
-      "probability": 0.2
+      "probability": 0.1
     },
     "sky_color": 2105930,
     "foliage_color": 6563343,
@@ -42,6 +42,9 @@
     [],
     [
       "minecraft:disk_clay",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
       "twilightforest:small_granite",
@@ -56,20 +59,26 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
     ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:tree/swampy_oak_trees",
+      "twilightforest:tree/hollow_placer",
       "twilightforest:grass_placer",
       "twilightforest:fire_jet",
       "twilightforest:smoker",
       "minecraft:patch_sugar_cane_swamp",
       "minecraft:vines",
-      "minecraft:brown_mushroom_swamp",
-      "twilightforest:tree/swampy_oak_trees",
-      "twilightforest:tree/hollow_placer"
+      "minecraft:brown_mushroom_swamp"
     ]
   ],
   "starts": [
@@ -87,10 +96,10 @@
   "spawn_costs": {},
   "player_spawn_friendly": false,
   "forge:registry_name": "twilightforest:fire_swamp",
-  "precipitation": "rain",
+  "precipitation": "none",
   "temperature": 1.0,
   "downfall": 0.4,
   "category": "swamp",
-  "depth": 0.05,
-  "scale": 0.2
+  "depth": 0.025,
+  "scale": 0.05
 }

@@ -4,7 +4,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.boss.KnightPhantomEntity;
+import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.item.TFItems;
 
 import java.util.List;
@@ -14,9 +14,9 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	private static final float CIRCLE_SMALL_RADIUS = 2.5F;
 	private static final float CIRCLE_LARGE_RADIUS = 8.5F;
 
-	private final KnightPhantomEntity boss;
+	private final KnightPhantom boss;
 
-	public PhantomUpdateFormationAndMoveGoal(KnightPhantomEntity entity) {
+	public PhantomUpdateFormationAndMoveGoal(KnightPhantom entity) {
 		boss = entity;
 	}
 
@@ -40,32 +40,19 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 		if (!boss.hasHome())
 			boss.restrictTo(boss.blockPosition(), 20);
 
-		switch (boss.getCurrentFormation()) {
-			case LARGE_CLOCKWISE:
-				return getCirclePosition(CIRCLE_LARGE_RADIUS, true);
-			case SMALL_CLOCKWISE:
-				return getCirclePosition(CIRCLE_SMALL_RADIUS, true);
-			case LARGE_ANTICLOCKWISE:
-				return getCirclePosition(CIRCLE_LARGE_RADIUS, false);
-			case SMALL_ANTICLOCKWISE:
-				return getCirclePosition(CIRCLE_SMALL_RADIUS, false);
-			case CHARGE_PLUSX:
-				return getMoveAcrossPosition(true, true);
-			case CHARGE_MINUSX:
-				return getMoveAcrossPosition(false, true);
-			case CHARGE_PLUSZ:
-				return getMoveAcrossPosition(true, false);
-			case ATTACK_PLAYER_START:
-			case HOVER:
-				return getHoverPosition(CIRCLE_LARGE_RADIUS);
-			case CHARGE_MINUSZ:
-				return getMoveAcrossPosition(false, false);
-			case WAITING_FOR_LEADER:
-			default:
-				return getLoiterPosition();
-			case ATTACK_PLAYER_ATTACK:
-				return getAttackPlayerPosition();
-		}
+		return switch (boss.getCurrentFormation()) {
+			case LARGE_CLOCKWISE -> getCirclePosition(CIRCLE_LARGE_RADIUS, true);
+			case SMALL_CLOCKWISE -> getCirclePosition(CIRCLE_SMALL_RADIUS, true);
+			case LARGE_ANTICLOCKWISE -> getCirclePosition(CIRCLE_LARGE_RADIUS, false);
+			case SMALL_ANTICLOCKWISE -> getCirclePosition(CIRCLE_SMALL_RADIUS, false);
+			case CHARGE_PLUSX -> getMoveAcrossPosition(true, true);
+			case CHARGE_MINUSX -> getMoveAcrossPosition(false, true);
+			case CHARGE_PLUSZ -> getMoveAcrossPosition(true, false);
+			case ATTACK_PLAYER_START, HOVER -> getHoverPosition(CIRCLE_LARGE_RADIUS);
+			case CHARGE_MINUSZ -> getMoveAcrossPosition(false, false);
+			default -> getLoiterPosition();
+			case ATTACK_PLAYER_ATTACK -> getAttackPlayerPosition();
+		};
 	}
 
 	/**
@@ -74,36 +61,30 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	 * If the current knight is the leader knight, it will pick and broadcast a new formation.
 	 */
 	private void switchToNextFormation() {
-		List<KnightPhantomEntity> nearbyKnights = boss.getNearbyKnights();
+		List<KnightPhantom> nearbyKnights = boss.getNearbyKnights();
 
-		if (boss.getCurrentFormation() == KnightPhantomEntity.Formation.ATTACK_PLAYER_START) {
-			boss.switchToFormation(KnightPhantomEntity.Formation.ATTACK_PLAYER_ATTACK);
-		} else if (boss.getCurrentFormation() == KnightPhantomEntity.Formation.ATTACK_PLAYER_ATTACK) {
+		if (boss.getCurrentFormation() == KnightPhantom.Formation.ATTACK_PLAYER_START) {
+			boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_ATTACK);
+		} else if (boss.getCurrentFormation() == KnightPhantom.Formation.ATTACK_PLAYER_ATTACK) {
 			if (nearbyKnights.size() > 1) {
-				boss.switchToFormation(KnightPhantomEntity.Formation.WAITING_FOR_LEADER);
+				boss.switchToFormation(KnightPhantom.Formation.WAITING_FOR_LEADER);
 			} else {
 				// random weapon switch!
 				switch (boss.getRandom().nextInt(3)) {
-					case 0:
-						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword.get()));
-						break;
-					case 1:
-						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_axe.get()));
-						break;
-					case 2:
-						boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe.get()));
-						break;
+					case 0 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+					case 1 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
+					case 2 -> boss.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 				}
 
-				boss.switchToFormation(KnightPhantomEntity.Formation.ATTACK_PLAYER_START);
+				boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);
 			}
-		} else if (boss.getCurrentFormation() == KnightPhantomEntity.Formation.WAITING_FOR_LEADER) {
+		} else if (boss.getCurrentFormation() == KnightPhantom.Formation.WAITING_FOR_LEADER) {
 			// try to find a nearby knight and do what they're doing
 			if (nearbyKnights.size() > 1) {
 				boss.switchToFormation(nearbyKnights.get(1).getCurrentFormation());
 				boss.setTicksProgress(nearbyKnights.get(1).getTicksProgress());
 			} else {
-				boss.switchToFormation(KnightPhantomEntity.Formation.ATTACK_PLAYER_START);
+				boss.switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);
 			}
 		} else {
 
@@ -125,11 +106,11 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	/**
 	 * Check within 20ish squares.  If this phantom is the lowest numbered one, return true
 	 */
-	private boolean isThisTheLeader(List<KnightPhantomEntity> nearbyKnights) {
+	private boolean isThisTheLeader(List<KnightPhantom> nearbyKnights) {
 		boolean iAmTheLowest = true;
 
 		// find more knights
-		for (KnightPhantomEntity knight : nearbyKnights) {
+		for (KnightPhantom knight : nearbyKnights) {
 			if (knight.getNumber() < boss.getNumber()) {
 				iAmTheLowest = false;
 				break; // don't bother checking more
@@ -146,23 +127,23 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 		switch (boss.getRandom().nextInt(8)) {
 			case 0:
 			case 7:
-				boss.switchToFormation(KnightPhantomEntity.Formation.SMALL_CLOCKWISE);
+				boss.switchToFormation(KnightPhantom.Formation.SMALL_CLOCKWISE);
 				break;
 			case 1:
 			case 2:
 				//boss.switchToFormation(EntityTFKnightPhantom.Formation.SMALL_ANTICLOCKWISE);
 				break;
 			case 3:
-				boss.switchToFormation(KnightPhantomEntity.Formation.CHARGE_PLUSX);
+				boss.switchToFormation(KnightPhantom.Formation.CHARGE_PLUSX);
 				break;
 			case 4:
-				boss.switchToFormation(KnightPhantomEntity.Formation.CHARGE_MINUSX);
+				boss.switchToFormation(KnightPhantom.Formation.CHARGE_MINUSX);
 				break;
 			case 5:
-				boss.switchToFormation(KnightPhantomEntity.Formation.CHARGE_PLUSZ);
+				boss.switchToFormation(KnightPhantom.Formation.CHARGE_PLUSZ);
 				break;
 			case 6:
-				boss.switchToFormation(KnightPhantomEntity.Formation.CHARGE_MINUSZ);
+				boss.switchToFormation(KnightPhantom.Formation.CHARGE_MINUSZ);
 				break;
 		}
 	}
@@ -170,23 +151,23 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	/**
 	 * Tell a random knight from the list to charge
 	 */
-	private void makeARandomKnightCharge(List<KnightPhantomEntity> nearbyKnights) {
+	private void makeARandomKnightCharge(List<KnightPhantom> nearbyKnights) {
 		int randomNum = boss.getRandom().nextInt(nearbyKnights.size());
-		nearbyKnights.get(randomNum).switchToFormation(KnightPhantomEntity.Formation.ATTACK_PLAYER_START);
+		nearbyKnights.get(randomNum).switchToFormation(KnightPhantom.Formation.ATTACK_PLAYER_START);
 	}
 
-	private void broadcastMyFormation(List<KnightPhantomEntity> nearbyKnights) {
+	private void broadcastMyFormation(List<KnightPhantom> nearbyKnights) {
 		// find more knights
-		for (KnightPhantomEntity knight : nearbyKnights) {
+		for (KnightPhantom knight : nearbyKnights) {
 			if (!knight.isChargingAtPlayer()) {
 				knight.switchToFormation(boss.getCurrentFormation());
 			}
 		}
 	}
 
-	private boolean isNobodyCharging(List<KnightPhantomEntity> nearbyKnights) {
+	private boolean isNobodyCharging(List<KnightPhantom> nearbyKnights) {
 		boolean noCharge = true;
-		for (KnightPhantomEntity knight : nearbyKnights) {
+		for (KnightPhantom knight : nearbyKnights) {
 			if (knight.isChargingAtPlayer()) {
 				noCharge = false;
 				break; // don't bother checking more

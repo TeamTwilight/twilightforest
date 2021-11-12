@@ -1,0 +1,23 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_diamond": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/minotaur_axe_diamond"
+      }
+    },
+    "has_gold": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/minotaur_axe_gold"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_diamond",
+      "has_gold"
+    ]
+  ]
+}

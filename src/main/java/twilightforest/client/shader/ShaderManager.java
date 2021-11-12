@@ -52,8 +52,8 @@ public final class ShaderManager {
     public static final class Uniforms {
 
         public static final ShaderUniform TIME       = ShaderUniform.create("time"      , () -> TFClientEvents.time + Minecraft.getInstance().getFrameTime());
-        public static final ShaderUniform YAW        = ShaderUniform.create("yaw"       , () ->  (Minecraft.getInstance().player.yRot   * 2.0f * TFClientEvents.PI) / 360.0f);
-        public static final ShaderUniform PITCH      = ShaderUniform.create("pitch"     , () -> -(Minecraft.getInstance().player.xRot * 2.0f * TFClientEvents.PI) / 360.0f);
+        public static final ShaderUniform YAW        = ShaderUniform.create("yaw"       , () ->  (Minecraft.getInstance().player.getYRot()   * 2.0f * TFClientEvents.PI) / 360.0f);
+        public static final ShaderUniform PITCH      = ShaderUniform.create("pitch"     , () -> -(Minecraft.getInstance().player.getXRot() * 2.0f * TFClientEvents.PI) / 360.0f);
         public static final ShaderUniform RESOLUTION = ShaderUniform.create("resolution", () -> Minecraft.getInstance().getWindow().getScreenWidth(), () -> Minecraft.getInstance().getWindow().getScreenHeight());
         public static final ShaderUniform ZERO       = ShaderUniform.create("zero"      , 0);
         public static final ShaderUniform ONE        = ShaderUniform.create("one"       , 1);
@@ -155,7 +155,7 @@ public final class ShaderManager {
 
     @SuppressWarnings("WeakerAccess")
     public static boolean useShaders() {
-        return TFConfig.COMMON_CONFIG.PERFORMANCE.shadersSupported;
+        return true;//TFConfig.COMMON_CONFIG.PERFORMANCE.shadersSupported;
     }
 
     // Most of the code taken from the LWJGL wiki

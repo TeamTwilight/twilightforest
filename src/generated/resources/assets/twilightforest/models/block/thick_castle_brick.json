@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "twilightforest:block/thick_castle_brick"
+  }
+}

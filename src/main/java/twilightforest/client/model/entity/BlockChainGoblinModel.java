@@ -7,14 +7,14 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.BlockChainGoblinEntity;
+import twilightforest.entity.monster.BlockChainGoblin;
 
 /**
  * ModelMaceGoblin - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends HumanoidModel<T> {
+public class BlockChainGoblinModel<T extends BlockChainGoblin> extends HumanoidModel<T> {
     private final ModelPart block;
 
     public BlockChainGoblinModel(ModelPart root) {
@@ -52,15 +52,18 @@ public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends Hum
                         .addBox(-3.5F, 1.0F, -2.0F, 7.0F, 6.0F, 4.0F),
                 PartPose.offset(0.0F, 12.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(0, 5)
-                        .addBox(-2.5F, -7.0F, -2.5F, 5.0F, 8.0F, 5.0F),
-                PartPose.rotation(0.0F, 0.7853981633974483F, 0.0F));
-
-        partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(0, 18)
                         .addBox(-7.5F, -9.0F, -2.03F, 15.0F, 10.0F, 2.0F),
                 PartPose.rotation(0.0F, -0.7853981633974483F, 0.0F));
+
+
+        partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+
+        head.addOrReplaceChild("helm", CubeListBuilder.create()
+                        .texOffs(0, 5)
+                        .addBox(-2.5F, -7.0F, -2.5F, 5.0F, 8.0F, 5.0F),
+                PartPose.rotation(0.0F, 0.7853981633974483F, 0.0F));
 
         var block = partRoot.addOrReplaceChild("block", CubeListBuilder.create()
                         .texOffs(32, 32)

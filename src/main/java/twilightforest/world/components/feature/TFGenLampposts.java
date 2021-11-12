@@ -47,7 +47,7 @@ public class TFGenLampposts extends Feature<BlockStateConfiguration> {
 
 		// generate lamp
 		for (int dy = 0; dy < height; dy++) {
-			world.setBlock(pos.above(dy), TFBlocks.canopy_fence.get().defaultBlockState(), 16 | 2);
+			world.setBlock(pos.above(dy), TFBlocks.CANOPY_FENCE.get().defaultBlockState(), 16 | 2);
 		}
 		world.setBlock(pos.above(height), config.state.rotate(ROTATIONS[rand.nextInt(ROTATIONS.length)]), 16 | 2);
 		return true;

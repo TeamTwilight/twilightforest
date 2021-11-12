@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/candelabra_wall_4_5_4",
+  "textures": {
+    "candle": "minecraft:block/candle"
+  }
+}

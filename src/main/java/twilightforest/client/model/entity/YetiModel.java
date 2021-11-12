@@ -8,9 +8,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.YetiEntity;
+import twilightforest.entity.monster.Yeti;
 
-public class YetiModel<T extends YetiEntity> extends HumanoidModel<T> {
+public class YetiModel<T extends Yeti> extends HumanoidModel<T> {
 	private final ModelPart leftEye, rightEye, angryLeftEye, angryRightEye;
 
 	public YetiModel(ModelPart root) {

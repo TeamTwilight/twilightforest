@@ -21,7 +21,7 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 	}
 
 	public FinalCastleEntranceBottomTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(FinalCastlePieces.TFFCEnBoTo, feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.castle_rune_brick_pink.get().defaultBlockState(), direction);
+		super(FinalCastlePieces.TFFCEnBoTo, feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 
     }
 

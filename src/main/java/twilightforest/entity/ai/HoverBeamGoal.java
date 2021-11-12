@@ -5,8 +5,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.boss.SnowQueenEntity;
-import twilightforest.entity.boss.SnowQueenEntity.Phase;
+import twilightforest.entity.boss.SnowQueen;
+import twilightforest.entity.boss.SnowQueen.Phase;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -14,9 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
-public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
+public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 
 	private int hoverTimer;
 	private int beamTimer;
@@ -29,7 +27,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueenEntity> {
 	private double beamY;
 	private boolean isInPosition;
 
-	public HoverBeamGoal(SnowQueenEntity snowQueen, int hoverTime, int dropTime) {
+	public HoverBeamGoal(SnowQueen snowQueen, int hoverTime, int dropTime) {
 		super(snowQueen, 3F, 4F);
 
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
@@ -50,6 +51,6 @@ public class MinotaurAxeItem extends AxeItem {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
+		tooltip.add(new TranslatableComponent("item.twilightforest.minotaur_axe.tooltip").withStyle(ChatFormatting.GRAY));
 	}
 }

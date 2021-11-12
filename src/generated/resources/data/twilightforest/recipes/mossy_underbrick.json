@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:vine"
+      },
+      {
+        "item": "minecraft:moss_block"
+      }
+    ],
+    {
+      "item": "twilightforest:underbrick"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:mossy_underbrick"
+  }
+}

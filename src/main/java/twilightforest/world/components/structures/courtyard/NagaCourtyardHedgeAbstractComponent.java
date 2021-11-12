@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnorePr
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
 
@@ -49,8 +51,13 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeSettings.setBoundingBox(structureBoundingBox).clearProcessors();
-		TEMPLATE.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.clearProcessors().addProcessor(new CourtyardStairsTemplateProcessor(0.0F)), randomIn, 18);
-        templateBig.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(new BlockRotProcessor(NagaCourtyardMainComponent.HEDGE_FLOOF)).addProcessor(BlockIgnoreProcessor.AIR), randomIn, 18);
+		TEMPLATE.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.clearProcessors().addProcessor(NagastoneVariants.INSTANCE), randomIn, 18);
+        templateBig.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(BlockIgnoreProcessor.AIR).addProcessor(new BlockRotProcessor(CourtyardMain.HEDGE_FLOOF)), randomIn, 18);
 		return true;
 	}
+
+    @Override
+    public NoiseEffect getNoiseEffect() {
+        return NoiseEffect.BEARD;
+    }
 }

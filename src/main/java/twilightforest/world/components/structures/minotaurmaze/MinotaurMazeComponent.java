@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -295,14 +296,14 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		// clear the area
 		generateAirBox(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
 		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get();
-		generateBox(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.maze_stone.get().defaultBlockState(), stone, onlyReplaceCeiling);
-		generateBox(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.maze_stone_mosaic.get().defaultBlockState(), stone, false);
+		generateBox(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.MAZESTONE.get().defaultBlockState(), stone, onlyReplaceCeiling);
+		generateBox(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), stone, false);
 
 		//
-		maze.headBlockState = TFBlocks.maze_stone_decorative.get().defaultBlockState();
-		maze.wallBlockState = TFBlocks.maze_stone_brick.get().defaultBlockState();
-		maze.rootBlockState = TFBlocks.maze_stone_decorative.get().defaultBlockState();
-		maze.pillarBlockState = TFBlocks.maze_stone_chiseled.get().defaultBlockState();
+		maze.headBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
+		maze.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
+		maze.rootBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
+		maze.pillarBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
 		maze.wallBlocks = new MazestoneProcessor();
 		maze.torchRarity = 0.05F;
 		maze.tall = 2;
@@ -349,5 +350,10 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.BURY;
 	}
 }

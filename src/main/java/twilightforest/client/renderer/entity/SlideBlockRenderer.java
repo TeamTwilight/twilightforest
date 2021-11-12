@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.RenderShape;
@@ -17,13 +16,13 @@ import net.minecraft.core.BlockPos;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.ForgeHooksClient;
-import twilightforest.entity.SlideBlockEntity;
+import twilightforest.entity.SlideBlock;
 
 import java.util.Random;
 
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 
-public class SlideBlockRenderer extends EntityRenderer<SlideBlockEntity> {
+public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 
 	public SlideBlockRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
@@ -32,7 +31,7 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlockEntity> {
 
 	// [VanillaCopy] RenderFallingBlock, with spin
 	@Override
-	public void render(SlideBlockEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(SlideBlock entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (entity.getBlockState() != null) {
 			BlockState blockstate = entity.getBlockState();
 
@@ -74,7 +73,7 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlockEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(SlideBlockEntity entity) {
+	public ResourceLocation getTextureLocation(SlideBlock entity) {
 		return TextureAtlas.LOCATION_BLOCKS;
 	}
 }

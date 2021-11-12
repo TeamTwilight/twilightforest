@@ -1,5 +1,7 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +20,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
@@ -31,7 +34,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.world.item.Item.Properties;
+import twilightforest.entity.boss.AlphaYeti;
 
 public class LifedrainScepterItem extends Item {
 
@@ -52,8 +55,18 @@ public class LifedrainScepterItem extends Item {
 	}
 
 	@Override
-	public float getXpRepairRatio(ItemStack stack) {
-		return 1f;
+	public boolean isEnchantable(ItemStack pStack) {
+		return false;
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return false;
 	}
 
 	/**
@@ -128,8 +141,8 @@ public class LifedrainScepterItem extends Item {
 			// is the player looking at an entity
 			Entity pointedEntity = getPlayerLookTarget(world, living);
 
-			if (pointedEntity instanceof LivingEntity) {
-				LivingEntity target = (LivingEntity) pointedEntity;
+			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
+				if(target instanceof AlphaYeti alpha && !alpha.isRampaging() && !alpha.isTired()) return;
 
 				if (target.getEffect(MobEffects.MOVEMENT_SLOWDOWN) != null || target.getHealth() < 1) {
 
@@ -237,6 +250,6 @@ public class LifedrainScepterItem extends Item {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()));
+		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

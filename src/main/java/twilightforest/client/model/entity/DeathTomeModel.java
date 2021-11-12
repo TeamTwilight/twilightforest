@@ -8,9 +8,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.DeathTomeEntity;
+import twilightforest.entity.monster.DeathTome;
 
-public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
+public class DeathTomeModel extends HierarchicalModel<DeathTome> {
     private final ModelPart root, book, paperStorm;
     private final ModelPart pagesRight, pagesLeft;
     private final ModelPart flippingPageRight, flippingPageLeft;
@@ -110,7 +110,9 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
     }
 
     @Override
-    public void setupAnim(DeathTomeEntity entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
+    public void setupAnim(DeathTome entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
+        this.root.yRot = Mth.HALF_PI;
+
         this.book.zRot = -0.8726646259971647F;
 
         this.paperStorm.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;
@@ -118,7 +120,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
     }
 
     @Override
-    public void prepareMobModel(DeathTomeEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+    public void prepareMobModel(DeathTome entity, float limbSwing, float limbSwingAmount, float partialTicks) {
         float bounce = entity.tickCount + partialTicks;
         float open = 0.9f;
         float flipRight = 0.4f;

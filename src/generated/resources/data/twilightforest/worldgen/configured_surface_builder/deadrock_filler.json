@@ -1,13 +1,13 @@
 {
   "config": {
     "top_material": {
-      "Name": "twilightforest:deadrock_weathered"
+      "Name": "twilightforest:weathered_deadrock"
     },
     "under_material": {
-      "Name": "twilightforest:deadrock_cracked"
+      "Name": "twilightforest:cracked_deadrock"
     },
     "underwater_material": {
-      "Name": "twilightforest:deadrock_cracked"
+      "Name": "twilightforest:cracked_deadrock"
     },
     "ground_filler": {
       "Name": "twilightforest:deadrock"

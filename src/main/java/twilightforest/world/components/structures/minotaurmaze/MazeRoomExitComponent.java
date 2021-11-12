@@ -29,10 +29,10 @@ public class MazeRoomExitComponent extends MazeRoomComponent {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// shaft down
-		this.generateBox(world, sbb, 5, -5, 5, 10, 0, 10, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, -5, 5, 10, 0, 10, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS.defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateAirBox(world, sbb, 6, -5, 6, 9, 4, 9);
 
 		return true;

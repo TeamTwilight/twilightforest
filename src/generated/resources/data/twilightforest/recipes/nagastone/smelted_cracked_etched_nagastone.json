@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "twilightforest:etched_nagastone"
   },
-  "result": "twilightforest:etched_nagastone_weathered",
+  "result": "twilightforest:cracked_etched_nagastone",
   "experience": 0.3,
   "cookingtime": 200
 }

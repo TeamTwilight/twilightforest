@@ -5,6 +5,8 @@
 // - ZeuX
 package twilightforest.client.model.entity.legacy;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,17 +15,17 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.HydraEntity;
-import twilightforest.entity.boss.HydraPartEntity;
+import twilightforest.entity.boss.Hydra;
+import twilightforest.entity.boss.HydraPart;
 
-public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
+public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 	//fields
-	ModelPart root;
-	ModelPart leg1;
-	ModelPart leg2;
+	ModelPart root, body, tail, leg1, leg2;
 
 	public HydraLegacyModel(ModelPart root) {
 		this.root = root;
+		this.body = root.getChild("body");
+		this.tail = root.getChild("tail_1");
 		this.leg1 = root.getChild("leg_1");
 		this.leg2 = root.getChild("leg_2");
 	}
@@ -59,33 +61,33 @@ public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
 						.addBox(12F, 40F, -20F, 8, 8, 8),
 				PartPose.offset(-48F, -24F, 0F));
 
-		partRoot.addOrReplaceChild("tail_1", CubeListBuilder.create()
+		var tail1 = partRoot.addOrReplaceChild("tail_1", CubeListBuilder.create()
 						.texOffs(128, 136)
 						.addBox(-16F, -16F, -16F, 32, 32, 32)
 						.texOffs(128, 200)
 						.addBox(-2F, -28F, -11F, 4, 24, 24),
 				PartPose.offset(0F, 6F, 108F));
 
-		partRoot.addOrReplaceChild("tail_2", CubeListBuilder.create()
+		var tail2 = tail1.addOrReplaceChild("tail_2", CubeListBuilder.create()
 						.texOffs(128, 136)
 						.addBox(-16F, -16F, -16F, 32, 32, 32)
 						.texOffs(128, 200)
 						.addBox(-2F, -28F, -11F, 4, 24, 24),
-				PartPose.offset(0F, 7F, 142F));
+				PartPose.offset(0F, 0F, 32F));
 
-		partRoot.addOrReplaceChild("tail_3", CubeListBuilder.create()
+		var tail3 = tail2.addOrReplaceChild("tail_3", CubeListBuilder.create()
 						.texOffs(128, 136)
 						.addBox(-16F, -16F, -16F, 32, 32, 32)
 						.texOffs(128, 200)
 						.addBox(-2F, -28F, -11F, 4, 24, 24),
-				PartPose.offset(0F, 8F, 176F));
+				PartPose.offset(0F, 0F, 32F));
 
-		partRoot.addOrReplaceChild("tail_4", CubeListBuilder.create()
+		tail3.addOrReplaceChild("tail_4", CubeListBuilder.create()
 						.texOffs(128, 136)
 						.addBox(-16F, -16F, -16F, 32, 32, 32)
 						.texOffs(128, 200)
 						.addBox(-2F, -28F, -11F, 4, 24, 24),
-				PartPose.offset(0F, 8F, 210F));
+				PartPose.offset(0F, 0F, 32F));
 
 		var head1 = partRoot.addOrReplaceChild("head_1", CubeListBuilder.create()
 						.texOffs(272, 0)
@@ -204,7 +206,7 @@ public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
 						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
 				PartPose.offset(-108F, -24F, -37F));
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(mesh, 512, 256);
 	}
 
 	@Override
@@ -213,7 +215,16 @@ public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
 	}
 
 	@Override
-	public void setupAnim(HydraEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void renderToBuffer(PoseStack p_170625_, VertexConsumer p_170626_, int p_170627_, int p_170628_, float p_170629_, float p_170630_, float p_170631_, float p_170632_) {
+		this.leg1.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+		this.leg2.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+		this.body.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+		this.tail.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
+
+	}
+
+	@Override
+	public void setupAnim(Hydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		//super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
 		leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -223,16 +234,16 @@ public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
 		leg2.yRot = 0.0F;
 	}
 
-    public float getRotationY(HydraEntity hydra, HydraPartEntity whichHead, float time) {
+    public float getRotationY(Hydra hydra, HydraPart whichHead, float time) {
 
 		float yawOffset = hydra.yBodyRotO + (hydra.yBodyRot - hydra.yBodyRotO) * time;
-		float yaw = whichHead.yRotO + (whichHead.yRot - whichHead.yRotO) * time;
+		float yaw = whichHead.yRotO + (whichHead.getYRot() - whichHead.yRotO) * time;
 
 		return (yaw - yawOffset) / 57.29578F;
 	}
 
-	public float getRotationX(HydraEntity hydra, HydraPartEntity whichHead, float time) {
+	public float getRotationX(Hydra hydra, HydraPart whichHead, float time) {
 
-		return (whichHead.xRotO + (whichHead.xRot - whichHead.xRotO) * time) / 57.29578F;
+		return (whichHead.xRotO + (whichHead.getXRot() - whichHead.xRotO) * time) / 57.29578F;
 	}
 }

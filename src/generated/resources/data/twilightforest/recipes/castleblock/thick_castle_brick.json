@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": [
+      {
+        "item": "twilightforest:castle_brick"
+      },
+      {
+        "item": "twilightforest:worn_castle_brick"
+      },
+      {
+        "item": "twilightforest:cracked_castle_brick"
+      },
+      {
+        "item": "twilightforest:mossy_castle_brick"
+      }
+    ]
+  },
+  "result": {
+    "item": "twilightforest:thick_castle_brick",
+    "count": 4
+  }
+}

@@ -5,9 +5,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.AdherentEntity;
+import twilightforest.entity.monster.Adherent;
 
-public class AdherentModel extends HumanoidModel<AdherentEntity> {
+public class AdherentModel extends HumanoidModel<Adherent> {
 	public AdherentModel(ModelPart root) {
 		super(root);
 	}
@@ -73,7 +73,7 @@ public class AdherentModel extends HumanoidModel<AdherentEntity> {
 	}
 
 	@Override
-	public void setupAnim(AdherentEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Adherent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// rotate head normally
 		this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 		this.head.xRot = headPitch * Mth.DEG_TO_RAD;

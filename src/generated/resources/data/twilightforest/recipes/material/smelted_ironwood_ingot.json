@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "twilightforest:raw_ironwood"
+  },
+  "result": "twilightforest:ironwood_ingot",
+  "experience": 1.0,
+  "cookingtime": 200
+}

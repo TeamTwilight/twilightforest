@@ -128,7 +128,7 @@
               "tag": "{shader_name:\"twilightforest:knight_phantom\"}"
             }
           ],
-          "name": "twilightforest:carminite"
+          "name": "twilightforest:knightmetal_ingot"
         }
       ]
     },
@@ -150,7 +150,7 @@
               "default": "twilightforest:knightmetal_ingot"
             }
           ],
-          "name": "twilightforest:carminite"
+          "name": "twilightforest:knightmetal_ingot"
         }
       ]
     }

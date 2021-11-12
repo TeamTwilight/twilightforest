@@ -17,8 +17,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.tileentity.ActiveGhastTrapTileEntity;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.GhastTrapBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -73,7 +73,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	 */
 	private boolean isInactiveTrapCharged(Level world, BlockPos pos) {
 		BlockEntity tileEntity = world.getBlockEntity(pos);
-		return tileEntity instanceof ActiveGhastTrapTileEntity && ((ActiveGhastTrapTileEntity) tileEntity).isCharged();
+		return tileEntity instanceof GhastTrapBlockEntity && ((GhastTrapBlockEntity) tileEntity).isCharged();
 	}
 
 	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
@@ -119,12 +119,12 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ActiveGhastTrapTileEntity(pos, state);
+		return new GhastTrapBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.GHAST_TRAP.get(), ActiveGhastTrapTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.get(), GhastTrapBlockEntity::tick);
 	}
 }

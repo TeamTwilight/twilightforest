@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/weathered_deadrock"
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "x": 90
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "x": 180
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/weathered_deadrock",
+        "x": 270,
+        "y": 270
+      }
+    ]
+  }
+}

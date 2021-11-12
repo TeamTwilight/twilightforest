@@ -10,14 +10,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.boss.SnowQueenEntity;
+import twilightforest.entity.boss.SnowQueen;
 
 /**
  * ModelSnowQueen - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class SnowQueenModel extends HumanoidModel<SnowQueenEntity> {
+public class SnowQueenModel extends HumanoidModel<SnowQueen> {
     public SnowQueenModel(ModelPart root) {
         super(root);
     }
@@ -85,11 +85,11 @@ public class SnowQueenModel extends HumanoidModel<SnowQueenEntity> {
     }
 
     @Override
-    public void setupAnim(SnowQueenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(SnowQueen entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
         // in beam phase, arms forwards
-        if (entity.getCurrentPhase() == SnowQueenEntity.Phase.BEAM) {
+        if (entity.getCurrentPhase() == SnowQueen.Phase.BEAM) {
             if (entity.isBreathing()) {
                 float f6 = Mth.sin(this.attackTime * Mth.PI);
                 float f7 = Mth.sin((1.0F - (1.0F - this.attackTime) * (1.0F - this.attackTime)) * Mth.PI);

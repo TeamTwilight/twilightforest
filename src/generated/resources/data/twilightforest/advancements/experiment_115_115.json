@@ -27,8 +27,8 @@
               "player": {
                 "stats": [
                   {
-                    "type": "minecraft:used",
-                    "stat": "twilightforest:experiment_115",
+                    "type": "minecraft:custom",
+                    "stat": "minecraft:e115_slices_eaten",
                     "value": {
                       "min": 115
                     }

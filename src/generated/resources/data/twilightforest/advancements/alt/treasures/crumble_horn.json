@@ -1,0 +1,29 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:crumble_horn"
+            ]
+          }
+        ]
+      }
+    },
+    "used": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/crumble_horn_used"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item",
+      "used"
+    ]
+  ]
+}

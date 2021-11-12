@@ -37,7 +37,7 @@ public class OreMeterItem extends Item {
 			countOreInArea(player, world, useX, useZ, 3);
 		}
 
-		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
+		return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), world.isClientSide);
 	}
 
 	private void countOreInArea(Player player, Level world, int useX, int useZ, int radius) {
@@ -78,8 +78,8 @@ public class OreMeterItem extends Item {
 				countRedstone += results.getOrDefault(Blocks.REDSTONE_ORE.defaultBlockState(), dummy).count;
 				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.defaultBlockState(), dummy).exposedCount;
 
-				countRoots += results.getOrDefault(TFBlocks.root.get().defaultBlockState(), dummy).count;
-				countOreRoots += results.getOrDefault(TFBlocks.liveroot_block.get().defaultBlockState(), dummy).count;
+				countRoots += results.getOrDefault(TFBlocks.ROOT_BLOCK.get().defaultBlockState(), dummy).count;
+				countOreRoots += results.getOrDefault(TFBlocks.LIVEROOT_BLOCK.get().defaultBlockState(), dummy).count;
 			}
 		}
 
@@ -93,8 +93,8 @@ public class OreMeterItem extends Item {
 		player.sendMessage(new TranslatableComponent(Blocks.DIAMOND_ORE.getDescriptionId()).append(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").append(new TranslatableComponent(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)), Util.NIL_UUID);
 		player.sendMessage(new TranslatableComponent(Blocks.LAPIS_ORE.getDescriptionId()).append(" - " + countLapis + " " + percent(countLapis, total)), Util.NIL_UUID);
 		player.sendMessage(new TranslatableComponent(Blocks.REDSTONE_ORE.getDescriptionId()).append(" - " + countRedstone + " " + percent(countRedstone, total)), Util.NIL_UUID);
-		player.sendMessage(new TranslatableComponent(TFBlocks.root.get().getDescriptionId()).append(" - " + countRoots + " " + percent(countRoots, total)), Util.NIL_UUID);
-		player.sendMessage(new TranslatableComponent(TFBlocks.liveroot_block.get().getDescriptionId()).append(" - " + countOreRoots + " " + percent(countOreRoots, total)), Util.NIL_UUID);
+		player.sendMessage(new TranslatableComponent(TFBlocks.ROOT_BLOCK.get().getDescriptionId()).append(" - " + countRoots + " " + percent(countRoots, total)), Util.NIL_UUID);
+		player.sendMessage(new TranslatableComponent(TFBlocks.LIVEROOT_BLOCK.get().getDescriptionId()).append(" - " + countOreRoots + " " + percent(countOreRoots, total)), Util.NIL_UUID);
 	}
 
 	private String percent(int count, int total) {

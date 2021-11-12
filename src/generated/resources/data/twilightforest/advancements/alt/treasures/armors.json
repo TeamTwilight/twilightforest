@@ -1,0 +1,58 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_ironwood": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/ironwood_armor_set"
+      }
+    },
+    "has_naga": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/naga_armor_set"
+      }
+    },
+    "has_steeleaf": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/steeleaf_armor_set"
+      }
+    },
+    "has_fiery": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/fiery_armor_set"
+      }
+    },
+    "has_knightmetal": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/knightmetal_armor_set"
+      }
+    },
+    "has_arctic": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/arctic_armor_set"
+      }
+    },
+    "has_yeti": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/yeti_armor_set"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ironwood",
+      "has_naga",
+      "has_steeleaf",
+      "has_fiery",
+      "has_knightmetal",
+      "has_arctic",
+      "has_yeti"
+    ]
+  ]
+}

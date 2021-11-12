@@ -1,0 +1,48 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_jet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fire_jet"
+            ]
+          }
+        ]
+      }
+    },
+    "has_towerwood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:encased_towerwood"
+            ]
+          }
+        ]
+      }
+    },
+    "has_encased_ver": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:encased_fire_jet"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_jet",
+      "has_towerwood",
+      "has_encased_ver"
+    ]
+  ]
+}

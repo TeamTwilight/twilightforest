@@ -8,9 +8,9 @@ import net.minecraft.client.model.SkeletonModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.SkeletonDruidEntity;
+import twilightforest.entity.monster.SkeletonDruid;
 
-public class SkeletonDruidModel extends SkeletonModel<SkeletonDruidEntity> {
+public class SkeletonDruidModel extends SkeletonModel<SkeletonDruid> {
 	private final ModelPart dress;
 
 	public SkeletonDruidModel(ModelPart root) {

@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.Entity;
@@ -18,9 +17,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
-import twilightforest.entity.ChainBlockEntity;
+import twilightforest.entity.ChainBlock;
 
-public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
+public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 	private final Model model;
@@ -33,13 +32,13 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 	}
 
 	@Override
-	public void render(ChainBlockEntity chainBlock, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(ChainBlock chainBlock, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		super.render(chainBlock, yaw, partialTicks, stack, buffer, light);
 
 		stack.pushPose();
 		VertexConsumer ivertexbuilder = buffer.getBuffer(this.model.renderType(textureLoc));
 
-		float pitch = chainBlock.xRotO + (chainBlock.xRot - chainBlock.xRotO) * partialTicks;
+		float pitch = chainBlock.xRotO + (chainBlock.getXRot() - chainBlock.xRotO) * partialTicks;
 		stack.mulPose(Vector3f.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
 		stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 
@@ -54,7 +53,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 		renderChain(chainBlock, chainBlock.chain5, yaw, partialTicks, stack, buffer, light, chainModel);
 	}
 
-	static void renderChain(Entity parent, Entity chain, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
+	public static void renderChain(Entity parent, Entity chain, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, Model chainModel) {
 		double chainInX = (Mth.lerp(partialTicks, chain.xOld, chain.getX()) - Mth.lerp(partialTicks, parent.xOld, parent.getX()));
 		double chainInY = (Mth.lerp(partialTicks, chain.yOld, chain.getY()) - Mth.lerp(partialTicks, parent.yOld, parent.getY()));
 		double chainInZ = (Mth.lerp(partialTicks, chain.zOld, chain.getZ()) - Mth.lerp(partialTicks, parent.zOld, parent.getZ()));
@@ -63,7 +62,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 		VertexConsumer ivertexbuilder = buffer.getBuffer(chainModel.renderType(textureLoc));
 
 		stack.translate(chainInX, chainInY, chainInZ);
-		float pitch = chain.xRotO + (chain.xRot - chain.xRotO) * partialTicks;
+		float pitch = chain.xRotO + (chain.getXRot() - chain.xRotO) * partialTicks;
 		stack.mulPose(Vector3f.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
 		stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 
@@ -78,7 +77,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(ChainBlockEntity entity) {
+	public ResourceLocation getTextureLocation(ChainBlock entity) {
 		return textureLoc;
 	}
 }

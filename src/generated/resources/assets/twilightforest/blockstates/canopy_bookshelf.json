@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/canopy_bookshelf",
+        "weight": 3
+      },
+      {
+        "model": "twilightforest:block/canopy_bookshelf_1"
+      },
+      {
+        "model": "twilightforest:block/canopy_bookshelf_2"
+      },
+      {
+        "model": "twilightforest:block/canopy_bookshelf_3"
+      }
+    ]
+  }
+}

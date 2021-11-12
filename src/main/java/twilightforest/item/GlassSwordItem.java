@@ -4,6 +4,8 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
@@ -11,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.util.Constants;
 import twilightforest.TFSounds;
 
 public class GlassSwordItem extends SwordItem {
@@ -35,6 +38,16 @@ public class GlassSwordItem extends SwordItem {
 			ItemStack stack = new ItemStack(this);
 			CompoundTag tags = new CompoundTag();
 			tags.putBoolean("Unbreakable", true);
+
+			ListTag lore = new ListTag();
+			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\",\"italic\":false,\"color\":\"gray\"}"));
+			// TODO uncomment if someone asks if this will ever generate as loot
+			//  lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\",\"italic\":false,\"color\":\"gray\"}"));
+
+			CompoundTag display = new CompoundTag();
+			display.put("Lore", lore);
+
+			tags.put("display", display);
 			stack.setTag(tags);
 			items.add(stack);
 		}

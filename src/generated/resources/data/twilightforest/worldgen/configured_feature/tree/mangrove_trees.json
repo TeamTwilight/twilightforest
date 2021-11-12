@@ -11,15 +11,28 @@
           "config": {
             "outer": {
               "config": {
-                "max_water_depth": 6
+                "count": 3,
+                "extra_chance": 0.1,
+                "extra_count": 1
               },
-              "type": "minecraft:water_depth_threshold"
+              "type": "minecraft:count_extra"
             },
             "inner": {
               "config": {
-                "heightmap": "OCEAN_FLOOR"
+                "outer": {
+                  "config": {
+                    "max_water_depth": 6
+                  },
+                  "type": "minecraft:water_depth_threshold"
+                },
+                "inner": {
+                  "config": {
+                    "heightmap": "OCEAN_FLOOR"
+                  },
+                  "type": "minecraft:heightmap"
+                }
               },
-              "type": "minecraft:heightmap"
+              "type": "minecraft:decorated"
             }
           },
           "type": "minecraft:decorated"

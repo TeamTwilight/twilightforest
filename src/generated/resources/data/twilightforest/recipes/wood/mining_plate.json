@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "twilightforest:mining_planks"
+    }
+  },
+  "result": {
+    "item": "twilightforest:mining_pressure_plate"
+  }
+}

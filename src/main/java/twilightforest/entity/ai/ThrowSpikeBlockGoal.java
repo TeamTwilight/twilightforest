@@ -2,19 +2,17 @@ package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import twilightforest.entity.BlockChainGoblinEntity;
-import twilightforest.entity.SpikeBlockEntity;
+import twilightforest.entity.monster.BlockChainGoblin;
+import twilightforest.entity.SpikeBlock;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class ThrowSpikeBlockGoal extends Goal {
 
-	protected BlockChainGoblinEntity attacker;
-	protected SpikeBlockEntity spikeBlock;
+	protected BlockChainGoblin attacker;
+	protected SpikeBlock spikeBlock;
 
-	public ThrowSpikeBlockGoal(BlockChainGoblinEntity entityTFBlockGoblin, SpikeBlockEntity entitySpikeBlock) {
+	public ThrowSpikeBlockGoal(BlockChainGoblin entityTFBlockGoblin, SpikeBlock entitySpikeBlock) {
 		this.attacker = entityTFBlockGoblin;
 		this.spikeBlock = entitySpikeBlock;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

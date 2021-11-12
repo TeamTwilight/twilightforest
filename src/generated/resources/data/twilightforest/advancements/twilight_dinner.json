@@ -8,12 +8,7 @@
       "translate": "advancement.twilightforest.twilight_dining"
     },
     "description": {
-      "translate": "advancement.twilightforest.twilight_dining.desc",
-      "with": [
-        {
-          "translate": "structure.hedge_maze"
-        }
-      ]
+      "translate": "advancement.twilightforest.twilight_dining.desc"
     },
     "frame": "challenge",
     "show_toast": true,
@@ -103,6 +98,16 @@
           ]
         }
       }
+    },
+    "torchberries": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:torchberries"
+          ]
+        }
+      }
     }
   },
   "requirements": [
@@ -125,6 +130,9 @@
     ],
     [
       "experiment_115"
+    ],
+    [
+      "torchberries"
     ]
   ]
 }

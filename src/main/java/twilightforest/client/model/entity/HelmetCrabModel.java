@@ -9,14 +9,14 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.HelmetCrabEntity;
+import twilightforest.entity.monster.HelmetCrab;
 
 /**
  * ModelHelmetCrab - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class HelmetCrabModel extends HierarchicalModel<HelmetCrabEntity> {
+public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
     public ModelPart root, body, leftClaw, rightClaw;
     public ModelPart rightLeg1, rightLeg2, leftLeg1, leftLeg2;
 
@@ -106,7 +106,7 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrabEntity> {
     }
 
     @Override
-    public void setupAnim(HelmetCrabEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(HelmetCrab entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
         this.body.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.body.xRot = headPitch / (180F / (float) Math.PI);

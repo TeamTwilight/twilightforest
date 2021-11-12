@@ -46,15 +46,15 @@ public class MazeDeadEndChestComponent extends MazeDeadEndComponent {
 		this.placeBlock(world, getStairState(Blocks.OAK_STAIRS.defaultBlockState(), Direction.NORTH, false), 3, 1, 3, sbb);
 
 		// chest
-		this.setDoubleLootChest(world, 2, 2, 4, 3, 2, 4, Direction.SOUTH, TFTreasure.labyrinth_deadend, sbb, false);
+		this.setDoubleLootChest(world, 2, 2, 4, 3, 2, 4, Direction.SOUTH, TFTreasure.LABYRINTH_DEAD_END, sbb, false);
 
 //		// torches
 //		this.setBlockState(world, Blocks.TORCH, 0, 1, 3, 4, sbb);
 //		this.setBlockState(world, Blocks.TORCH, 0, 4, 3, 4, sbb);
 
 		// doorway w/ bars
-		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.maze_stone_chiseled.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.CUT_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.defaultBlockState(), AIR, false);
 
 		return true;

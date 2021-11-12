@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:alt/root",
-  "criteria": {
-    "trophy_pedestal": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:trophy_pedestal" }]}}
-  }
-}

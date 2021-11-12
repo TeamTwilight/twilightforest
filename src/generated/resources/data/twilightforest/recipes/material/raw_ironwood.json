@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:liveroot"
+    },
+    {
+      "item": "minecraft:raw_iron"
+    },
+    {
+      "tag": "forge:nuggets/gold"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:raw_ironwood",
+    "count": 2
+  }
+}

@@ -201,6 +201,11 @@
             }
           ],
           "name": "twilightforest:steeleaf_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "twilightforest:music_disc_findings"
         }
       ]
     }

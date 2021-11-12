@@ -20,6 +20,9 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  },
   "criteria": {
     "kill_lich": {
       "trigger": "minecraft:player_killed_entity",
@@ -89,8 +92,22 @@
         "items": [
           {
             "items": [
-              "twilightforest:shield_scepter"
+              "twilightforest:fortification_scepter"
             ]
+          }
+        ]
+      }
+    },
+    "was_in_fight": {
+      "trigger": "twilightforest:hurt_boss",
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:lich"
+            },
+            "entity": "this"
           }
         ]
       }
@@ -109,7 +126,8 @@
       "lifedrain_scepter",
       "twilight_scepter",
       "zombie_scepter",
-      "shield_scepter"
+      "shield_scepter",
+      "was_in_fight"
     ],
     [
       "kill_naga"

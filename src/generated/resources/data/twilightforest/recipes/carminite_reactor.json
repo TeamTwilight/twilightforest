@@ -10,7 +10,7 @@
       "tag": "forge:gems/carminite"
     },
     "#": {
-      "item": "twilightforest:tower_wood_encased"
+      "item": "twilightforest:encased_towerwood"
     },
     "%": {
       "tag": "forge:ores/redstone"

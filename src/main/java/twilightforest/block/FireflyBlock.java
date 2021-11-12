@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import twilightforest.tileentity.FireflyTileEntity;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.FireflyBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
 
@@ -24,13 +24,13 @@ public class FireflyBlock extends CritterBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new FireflyTileEntity(pos, state);
+		return new FireflyBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.FIREFLY.get(), FireflyTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.FIREFLY.get(), FireflyBlockEntity::tick);
 	}
 
 	@Override

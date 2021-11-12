@@ -1,7 +1,22 @@
 {
   "variants": {
-    "": {
+    "multilogged=air": {
       "model": "twilightforest:block/keepsake_casket"
+    },
+    "multilogged=water": {
+      "model": "twilightforest:block/keepsake_casket"
+    },
+    "multilogged=lava": {
+      "model": "twilightforest:block/keepsake_casket"
+    },
+    "multilogged=obsidian": {
+      "model": "twilightforest:block/casket_obsidian"
+    },
+    "multilogged=stone": {
+      "model": "twilightforest:block/casket_stone"
+    },
+    "multilogged=basalt": {
+      "model": "twilightforest:block/casket_basalt"
     }
   }
 }

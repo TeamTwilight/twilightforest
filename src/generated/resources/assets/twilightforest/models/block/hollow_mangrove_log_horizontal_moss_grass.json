@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/hollow_log_moss_grass",
+  "textures": {
+    "top": "twilightforest:block/mangrove_log_top",
+    "side": "twilightforest:block/mangrove_log",
+    "inner": "twilightforest:block/stripped_mangrove_log"
+  }
+}

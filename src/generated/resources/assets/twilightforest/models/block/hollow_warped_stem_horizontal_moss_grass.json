@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/hollow_log_moss_grass",
+  "textures": {
+    "top": "minecraft:block/warped_stem_top",
+    "side": "minecraft:block/warped_stem",
+    "inner": "minecraft:block/stripped_warped_stem"
+  }
+}

@@ -1,7 +1,12 @@
 {
   "config": {
     "feature": {
-      "config": {},
+      "config": {
+        "max_spread": 7,
+        "chance_of_branch": 3,
+        "chance_of_leaf": 3,
+        "chance_leaf_is_rose": 50
+      },
       "type": "twilightforest:thorns"
     },
     "decorator": {

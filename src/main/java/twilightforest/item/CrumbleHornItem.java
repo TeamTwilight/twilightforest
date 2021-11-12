@@ -1,29 +1,34 @@
 package twilightforest.item;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import org.apache.commons.lang3.tuple.Pair;
-
 import twilightforest.TFSounds;
-import twilightforest.advancements.TFAdvancements;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.TFStats;
 import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;
@@ -32,33 +37,33 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class CrumbleHornItem extends Item {
 
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
-	private final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = new ArrayList<>();
-	private final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
+	public static final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = new ArrayList<>();
+	public static final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
 
 	CrumbleHornItem(Properties props) {
 		super(props);
 		this.addCrumbleTransforms();
 	}
 
-	private void addCrumbleTransforms() {
+	public void addCrumbleTransforms() {
 		addCrumble(() -> Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS::defaultBlockState);
 		addCrumble(() -> Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS::defaultBlockState);
 		addCrumble(() -> Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE::defaultBlockState);
 		addCrumble(() -> Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS::defaultBlockState);
-		addCrumble(TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.get().defaultBlockState());
-		addCrumble(TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.get().defaultBlockState());
-		addCrumble(TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.get().defaultBlockState());
-		addCrumble(TFBlocks.deadrock, () -> TFBlocks.deadrock_cracked.get().defaultBlockState());
-		addCrumble(TFBlocks.castle_brick, () -> TFBlocks.castle_brick_cracked.get().defaultBlockState());
-		addCrumble(TFBlocks.nagastone_pillar, () -> TFBlocks.nagastone_pillar_weathered.get().defaultBlockState());
-		addCrumble(TFBlocks.etched_nagastone, () -> TFBlocks.etched_nagastone_weathered.get().defaultBlockState());
+		addCrumble(() -> Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS::defaultBlockState);
+		addCrumble(() -> Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES::defaultBlockState);
+		addCrumble(TFBlocks.MAZESTONE_BRICK, () -> TFBlocks.CRACKED_MAZESTONE.get().defaultBlockState());
+		addCrumble(TFBlocks.UNDERBRICK, () -> TFBlocks.CRACKED_UNDERBRICK.get().defaultBlockState());
+		addCrumble(TFBlocks.TOWERWOOD, () -> TFBlocks.CRACKED_TOWERWOOD.get().defaultBlockState());
+		addCrumble(TFBlocks.DEADROCK, () -> TFBlocks.CRACKED_DEADROCK.get().defaultBlockState());
+		addCrumble(TFBlocks.CASTLE_BRICK, () -> TFBlocks.CRACKED_CASTLE_BRICK.get().defaultBlockState());
+		addCrumble(TFBlocks.NAGASTONE_PILLAR, () -> TFBlocks.CRACKED_NAGASTONE_PILLAR.get().defaultBlockState());
+		addCrumble(TFBlocks.ETCHED_NAGASTONE, () -> TFBlocks.CRACKED_ETCHED_NAGASTONE.get().defaultBlockState());
 		addCrumble(() -> Blocks.STONE, Blocks.COBBLESTONE::defaultBlockState);
 		addCrumble(() -> Blocks.COBBLESTONE, Blocks.GRAVEL::defaultBlockState);
 		addCrumble(() -> Blocks.SANDSTONE, Blocks.SAND::defaultBlockState);
@@ -70,6 +75,9 @@ public class CrumbleHornItem extends Item {
 		addCrumble(() -> Blocks.CRIMSON_NYLIUM, Blocks.NETHERRACK::defaultBlockState);
 		addCrumble(() -> Blocks.WARPED_NYLIUM, Blocks.NETHERRACK::defaultBlockState);
 		addCrumble(() -> Blocks.QUARTZ_BLOCK, Blocks.SAND::defaultBlockState);
+		addCrumble(() -> Blocks.ROOTED_DIRT, Blocks.DIRT::defaultBlockState);
+		addCopperCrumble(() -> Blocks.OXIDIZED_COPPER, () -> Blocks.WEATHERED_COPPER, () -> Blocks.EXPOSED_COPPER, () -> Blocks.COPPER_BLOCK);
+		addCopperCrumble(() -> Blocks.OXIDIZED_CUT_COPPER, () -> Blocks.WEATHERED_CUT_COPPER, () -> Blocks.EXPOSED_CUT_COPPER, () -> Blocks.CUT_COPPER);
 		addHarvest(() -> Blocks.GRAVEL);
 		addHarvest(() -> Blocks.DIRT);
 		addHarvest(() -> Blocks.SAND);
@@ -79,6 +87,12 @@ public class CrumbleHornItem extends Item {
 		addHarvest(() -> Blocks.GRANITE);
 		addHarvest(() -> Blocks.DIORITE);
 
+	}
+
+	private void addCopperCrumble(Supplier<Block> oxidized, Supplier<Block> weathered, Supplier<Block> exposed, Supplier<Block> normal) {
+		addCrumble(state -> state.is(oxidized.get()), state -> weathered.get().defaultBlockState());
+		addCrumble(state -> state.is(weathered.get()), state -> exposed.get().defaultBlockState());
+		addCrumble(state -> state.is(exposed.get()), state -> normal.get().defaultBlockState());
 	}
 
 	private void addCrumble(Supplier<Block> block, Supplier<BlockState> result) {
@@ -107,7 +121,7 @@ public class CrumbleHornItem extends Item {
 	@Override
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		if (count > 10 && count % 5 == 0 && !living.level.isClientSide) {
-			int crumbled = doCrumble(stack, living.level, living);
+			int crumbled = doCrumble(living.level, living);
 
 			if (crumbled > 0) {
 				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
@@ -137,7 +151,7 @@ public class CrumbleHornItem extends Item {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
 	}
 
-	private int doCrumble(ItemStack stack, Level world, LivingEntity living) {
+	private int doCrumble(Level world, LivingEntity living) {
 
 		final double range = 3.0D;
 		final double radius = 2.0D;
@@ -148,18 +162,23 @@ public class CrumbleHornItem extends Item {
 
 		AABB crumbleBox = new AABB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 
-		return crumbleBlocksInAABB(stack, world, living, crumbleBox);
+		return crumbleBlocksInAABB(world, living, crumbleBox);
 	}
 
-	private int crumbleBlocksInAABB(ItemStack stack, Level world, LivingEntity living, AABB box) {
+	private int crumbleBlocksInAABB(Level world, LivingEntity living, AABB box) {
 		int crumbled = 0;
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			if (crumbleBlock(stack, world, living, pos)) crumbled++;
+			if (crumbleBlock(world, living, pos)) {
+				crumbled++;
+				if (living instanceof Player player && player instanceof ServerPlayer) {
+					player.awardStat(TFStats.BLOCKS_CRUMBLED);
+				}
+			}
 		}
 		return crumbled;
 	}
 
-	private boolean crumbleBlock(ItemStack stack, Level world, LivingEntity living, BlockPos pos) {
+	private boolean crumbleBlock(Level world, LivingEntity living, BlockPos pos) {
 
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
@@ -175,7 +194,7 @@ public class CrumbleHornItem extends Item {
 				world.setBlock(pos, transform.getRight().apply(state), 3);
 				world.levelEvent(2001, pos, Block.getId(state));
 
-				postTrigger(living, stack, world, pos);
+				postTrigger(living);
 
 				return true;
 			}
@@ -189,14 +208,14 @@ public class CrumbleHornItem extends Item {
 						block.playerDestroy(world, (Player) living, pos, state, world.getBlockEntity(pos), ItemStack.EMPTY);
 						world.levelEvent(2001, pos, Block.getId(state));
 
-						postTrigger(living, stack, world, pos);
+						postTrigger(living);
 
 						return true;
 					}
 				} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
 					world.destroyBlock(pos, true);
 
-					postTrigger(living, stack, world, pos);
+					postTrigger(living);
 
 					return true;
 				}
@@ -205,8 +224,18 @@ public class CrumbleHornItem extends Item {
 		return false;
 	}
 
-	private void postTrigger(LivingEntity living, ItemStack stack, Level world, BlockPos pos) {
-		if (living instanceof ServerPlayer)
-			TFAdvancements.ITEM_USE_TRIGGER.trigger((ServerPlayer) living, stack, world, pos);
+	private void postTrigger(LivingEntity living) {
+		if (living instanceof ServerPlayer) {
+			Player player = (Player) living;
+			player.awardStat(Stats.ITEM_USED.get(this));
+
+			//fallback if the other part doesnt work since its inconsistent
+			PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
+			ServerAdvancementManager manager = ((ServerLevel) player.getCommandSenderWorld()).getServer().getAdvancements();
+			Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("alt/treasures/crumble_horn_used"));
+			if (advancement != null) {
+				advancements.award(advancement, "used");
+			}
+		}
 	}
 }

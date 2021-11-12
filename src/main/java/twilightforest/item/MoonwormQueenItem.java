@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -27,7 +28,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.projectile.MoonwormShotEntity;
+import twilightforest.entity.projectile.MoonwormShot;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,6 +39,21 @@ public class MoonwormQueenItem extends Item {
 
 	protected MoonwormQueenItem(Properties props) {
 		super(props);
+	}
+
+	@Override
+	public boolean isEnchantable(ItemStack pStack) {
+		return false;
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return false;
 	}
 
 	@Override
@@ -66,7 +82,7 @@ public class MoonwormQueenItem extends Item {
 
 		ItemStack itemstack = player.getItemInHand(context.getHand());
 
-		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && worldIn.isUnobstructed(TFBlocks.moonworm.get().defaultBlockState(), pos, CollisionContext.empty())) {
+		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && worldIn.isUnobstructed(TFBlocks.MOONWORM.get().defaultBlockState(), pos, CollisionContext.empty())) {
 			if (this.tryPlace(blockItemUseContext).shouldSwing()) {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
@@ -86,7 +102,7 @@ public class MoonwormQueenItem extends Item {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
 		if (!world.isClientSide && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
-			boolean fired = world.addFreshEntity(new MoonwormShotEntity(TFEntities.moonworm_shot, world, living));
+			boolean fired = world.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT, world, living));
 
 			if (fired) {
 				stack.hurtAndBreak(2, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
@@ -140,7 +156,7 @@ public class MoonwormQueenItem extends Item {
 
 					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
 					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, context.getPlayer()), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-					if (playerentity == null || !playerentity.abilities.instabuild) {
+					if (playerentity == null || !playerentity.getAbilities().instabuild) {
 						itemstack.hurtAndBreak(1, playerentity, (user) -> user.broadcastBreakEvent(playerentity.getUsedItemHand()));
 					}
 
@@ -165,7 +181,7 @@ public class MoonwormQueenItem extends Item {
 
 	@Nullable
 	protected BlockState getStateForPlacement(BlockPlaceContext context) {
-		BlockState blockstate = TFBlocks.moonworm.get().getStateForPlacement(context);
+		BlockState blockstate = TFBlocks.MOONWORM.get().getStateForPlacement(context);
 		return blockstate != null && this.canPlace(context, blockstate) ? blockstate : null;
 	}
 

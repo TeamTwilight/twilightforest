@@ -1,7 +1,10 @@
 package twilightforest.item;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -9,24 +12,17 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import twilightforest.TFSounds;
 import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class PeacockFanItem extends Item {
 
@@ -40,27 +36,23 @@ public class PeacockFanItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
 
-		if (!world.isClientSide && !player.getCooldowns().isOnCooldown(this)) {
-			if (!player.isOnGround() && !player.isSwimming() && !player.isCreative() && !player.isFallFlying()) {
-				player.addEffect(new MobEffectInstance(MobEffects.JUMP, 200, 0, false, false));
-				player.getItemInHand(hand).hurtAndBreak(1, player, (user) -> user.broadcastBreakEvent(hand));
-			} else {
-				int fanned = doFan(world, player);
-				if (fanned > 0) {
-					player.getItemInHand(hand).hurtAndBreak(fanned, player, (user) -> user.broadcastBreakEvent(hand));
-				}
-			}
+		if(player.getCooldowns().isOnCooldown(this)) return new InteractionResultHolder<>(InteractionResult.PASS, player.getItemInHand(hand));
+
+		if (!world.isClientSide) {
+			int fanned = doFan(world, player);
+			player.getItemInHand(hand).hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
 		} else {
 			if(player.isFallFlying()) {
-				player.setDeltaMovement(new Vec3(
-						player.getDeltaMovement().x() * 3F,
-						1.5F,
-						player.getDeltaMovement().z() * 3F
-				));
-				player.getCooldowns().addCooldown(this, 60);
+				Vec3 look = player.getLookAngle();
+				Vec3 movement = player.getDeltaMovement();
+				//add a directional boost similar to the rocket, but slightly faster and always add a little more upwards
+				player.setDeltaMovement(movement.add(
+						look.x * 0.1D + (look.x * 2.0D - movement.x) * 0.5D,
+						(look.y * 0.1D + (look.y * 2.0D - movement.y) * 0.5D) + 1.25D,
+						look.z * 0.1D + (look.z * 2.0D - movement.z) * 0.5D));
 			}
 			// jump if the player is in the air
-			if (!player.isOnGround() && !player.hasEffect(MobEffects.JUMP) && !player.isSwimming() && !launched) {
+			if (!player.isOnGround() && !player.isSwimming() && !launched) {
 				player.setDeltaMovement(new Vec3(
 						player.getDeltaMovement().x() * 1.05F,
 						1.5F,
@@ -90,14 +82,13 @@ public class PeacockFanItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(entityIn instanceof Player && ((Player)entityIn).isFallFlying() && isSelected) {
-			entityIn.fallDistance = 0.0F;
+		if(entityIn instanceof Player player && player.isFallFlying() && (player.getItemInHand(InteractionHand.OFF_HAND).is(this) || isSelected)) {
+			player.fallDistance = 0.0F;
 		}
-		if(entityIn instanceof Player && ((Player)entityIn).hasEffect(MobEffects.JUMP)) {
-			entityIn.fallDistance = 0.0F;
+		if(entityIn instanceof Player player && launched) {
+			player.fallDistance = 0.0F;
 		}
-		if (entityIn instanceof Player && entityIn.isOnGround() && launched) {
-			((Player)entityIn).removeEffect(MobEffects.JUMP);
+		if (entityIn instanceof Player player && player.isOnGround() && launched) {
 			launched = false;
 		}
 		super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
@@ -116,28 +107,27 @@ public class PeacockFanItem extends Item {
 
 	private int doFan(Level world, Player player) {
 		AABB fanBox = getEffectAABB(player);
-
-		fanBlocksInAABB(world, fanBox, player);
-
-		fanEntitiesInAABB(world, player, fanBox);
-
-		return 1;
+		return fanBlocksInAABB(world, fanBox, player) + fanEntitiesInAABB(world, player, fanBox);
 	}
 
-	private void fanEntitiesInAABB(Level world, Player player, AABB fanBox) {
+	private int fanEntitiesInAABB(Level world, Player player, AABB fanBox) {
 		Vec3 moveVec = player.getLookAngle().scale(2);
 		Item fan = player.getUseItem().getItem();
+		int fannedEntities = 0;
 
 		for (Entity entity : world.getEntitiesOfClass(Entity.class, fanBox)) {
 			if (entity.isPushable() || entity instanceof ItemEntity || entity instanceof Projectile) {
 				entity.setDeltaMovement(moveVec.x, moveVec.y, moveVec.z);
+				fannedEntities++;
 			}
 
-			if(entity instanceof Player && !entity.isShiftKeyDown()) {
-				entity.setDeltaMovement(moveVec.x, moveVec.y, moveVec.z);
+			if(entity instanceof Player pushedPlayer && pushedPlayer != player && !entity.isShiftKeyDown()) {
+				pushedPlayer.setDeltaMovement(moveVec.x, moveVec.y, moveVec.z);
 				player.getCooldowns().addCooldown(fan, 40);
+				fannedEntities += 2;
 			}
 		}
+		return fannedEntities;
 	}
 
 	private AABB getEffectAABB(Player player) {
@@ -166,6 +156,7 @@ public class PeacockFanItem extends Item {
 			if (world.random.nextInt(3) == 0) {
 				if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
 					world.destroyBlock(pos, true);
+					cost++;
 				}
 			}
 		}

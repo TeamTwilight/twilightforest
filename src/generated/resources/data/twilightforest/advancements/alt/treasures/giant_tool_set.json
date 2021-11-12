@@ -1,0 +1,61 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_cobble": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:giant_cobblestone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_wood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:giant_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_pick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:giant_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:giant_sword"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cobble",
+      "has_wood",
+      "has_pick",
+      "has_sword"
+    ]
+  ]
+}

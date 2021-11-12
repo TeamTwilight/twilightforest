@@ -32,6 +32,9 @@
     }
   },
   "ambientocclusion": false,
+  "textures": {
+    "particle": "#down"
+  },
   "elements": [
     {
       "from": [ 0, 0, 0 ],

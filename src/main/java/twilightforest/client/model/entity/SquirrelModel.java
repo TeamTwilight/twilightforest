@@ -1,7 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,14 +7,14 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.passive.SquirrelEntity;
+import twilightforest.entity.passive.Squirrel;
 
 /**
  * ModelForestSquirrel - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class SquirrelModel extends QuadrupedModel<SquirrelEntity> {
+public class SquirrelModel extends QuadrupedModel<Squirrel> {
 
     public ModelPart tail1;
     public ModelPart tail2;
@@ -79,7 +77,7 @@ public class SquirrelModel extends QuadrupedModel<SquirrelEntity> {
     }
 
     @Override
-    public void setupAnim(SquirrelEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(Squirrel entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.xRot = headPitch / (180F / (float) Math.PI);
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

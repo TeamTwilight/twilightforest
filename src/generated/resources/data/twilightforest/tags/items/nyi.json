@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:cinder_furnace",
+    "twilightforest:cinder_log",
+    "twilightforest:cinder_wood",
+    "twilightforest:underbrick_floor",
+    "twilightforest:twilight_portal_miniature_structure",
+    "twilightforest:naga_courtyard_miniature_structure",
+    "twilightforest:lich_tower_miniature_structure",
+    "twilightforest:auroralized_glass",
+    "twilightforest:slider",
+    "twilightforest:twisted_stone",
+    "twilightforest:twisted_stone_pillar",
+    "twilightforest:ore_meter"
+  ]
+}

@@ -7,8 +7,12 @@
             "feature": {
               "config": {
                 "feature": {
-                  "config": {},
-                  "type": "twilightforest:troll_roots"
+                  "config": {
+                    "state": {
+                      "Name": "twilightforest:trollvidr"
+                    }
+                  },
+                  "type": "twilightforest:troll_vines"
                 },
                 "decorator": {
                   "config": {

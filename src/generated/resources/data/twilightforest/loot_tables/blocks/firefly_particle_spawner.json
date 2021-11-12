@@ -1,0 +1,158 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "twilightforest:firefly_particle_spawner"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "2"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "3"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "4"
+                  }
+                }
+              ],
+              "count": 3.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "5"
+                  }
+                }
+              ],
+              "count": 4.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "6"
+                  }
+                }
+              ],
+              "count": 5.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "7"
+                  }
+                }
+              ],
+              "count": 6.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "8"
+                  }
+                }
+              ],
+              "count": 7.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "9"
+                  }
+                }
+              ],
+              "count": 8.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "twilightforest:firefly_particle_spawner",
+                  "properties": {
+                    "particle_radius": "10"
+                  }
+                }
+              ],
+              "count": 9.0,
+              "add": false
+            }
+          ],
+          "name": "twilightforest:firefly"
+        }
+      ]
+    }
+  ]
+}

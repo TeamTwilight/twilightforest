@@ -2,6 +2,7 @@ package twilightforest.world.components.feature.trees;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.LevelAccessor;
 import twilightforest.util.FeatureLogic;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.List;
@@ -67,7 +67,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 
 		// add the actual leaves
 		for (BlockPos leafPos : leaves) {
-			makeLeafBlob(leavesPlacer, random, leafPos, config);
+			makeLeafBlob(world, leavesPlacer, random, leafPos, config);
 		}
 
 		TFGenCanopyOak.makeRoots(world, trunkPlacer, decorationPlacer, random, pos, config);
@@ -78,8 +78,8 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		return true;
 	}
 
-	private void makeLeafBlob(BiConsumer<BlockPos, BlockState> leafPlacer, Random rand, BlockPos leafPos, TFTreeFeatureConfig config) {
-		FeaturePlacers.placeSpheroid(leafPlacer, rand, leafPos, 2.5f, 2.5f, config.leavesProvider);
+	private void makeLeafBlob(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> leafPlacer, Random rand, BlockPos leafPos, TFTreeFeatureConfig config) {
+		FeaturePlacers.placeSpheroid(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos, 2.5f, 2.5f, config.leavesProvider);
 	}
 
 	private static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> decoPlacer, Random random, BlockPos pos, TFTreeFeatureConfig config) {
@@ -133,7 +133,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		}
 
 		if (trunk) {
-			FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider, treeRNG);
+			FeaturePlacers.drawBresenhamTree(world, trunkPlacer, FeaturePlacers.VALID_TREE_POS, src, dest, config.trunkProvider, treeRNG);
 		} else {
 			FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, config.branchProvider);
 		}

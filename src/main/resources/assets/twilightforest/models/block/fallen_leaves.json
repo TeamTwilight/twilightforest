@@ -2,7 +2,7 @@
   "parent": "block/thin_block",
   "textures": {
 	"particle": "#texture",
-	"texture": "block/spruce_leaves"
+	"texture": "block/oak_leaves"
   },
   "elements": [
 	{

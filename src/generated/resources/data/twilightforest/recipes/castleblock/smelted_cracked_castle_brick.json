@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "twilightforest:castle_brick"
   },
-  "result": "twilightforest:castle_brick_cracked",
+  "result": "twilightforest:cracked_castle_brick",
   "experience": 0.3,
   "cookingtime": 200
 }

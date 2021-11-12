@@ -9,7 +9,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.util.GsonHelper;
-import twilightforest.entity.CarminiteGhastlingEntity;
+import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nonnull;
@@ -28,7 +28,7 @@ public class IsMinion implements LootItemCondition {
 
 	@Override
 	public boolean test(@Nonnull LootContext context) {
-		return context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof CarminiteGhastlingEntity && ((CarminiteGhastlingEntity) context.getParamOrNull(LootContextParams.THIS_ENTITY)).isMinion() == !inverse;
+		return context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof CarminiteGhastling && ((CarminiteGhastling) context.getParamOrNull(LootContextParams.THIS_ENTITY)).isMinion() == !inverse;
 	}
 
 	public static Builder builder(boolean inverse) {

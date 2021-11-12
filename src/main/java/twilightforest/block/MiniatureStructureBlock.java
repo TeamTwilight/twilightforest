@@ -13,12 +13,6 @@ import java.util.List;
 
 public class MiniatureStructureBlock extends Block {
     public MiniatureStructureBlock() {
-        super(Properties.of(Material.BARRIER).requiresCorrectToolForDrops()/*.harvestTool(ToolType.PICKAXE)*/.strength(0.75F).noOcclusion());
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        super(Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion());
     }
 }

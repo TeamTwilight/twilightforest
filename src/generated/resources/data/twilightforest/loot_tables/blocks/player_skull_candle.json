@@ -1,0 +1,47 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:player_head"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:inverted",
+          "term": {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "enchantments": [
+                {
+                  "enchantment": "minecraft:silk_touch",
+                  "levels": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "functions": []
+    }
+  ],
+  "functions": [
+    {
+      "function": "minecraft:copy_nbt",
+      "source": "block_entity",
+      "ops": [
+        {
+          "source": "SkullOwner",
+          "target": "SkullOwner",
+          "op": "replace"
+        }
+      ]
+    }
+  ]
+}

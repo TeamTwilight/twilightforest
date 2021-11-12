@@ -20,6 +20,9 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  },
   "criteria": {
     "kill_hydra": {
       "trigger": "minecraft:player_killed_entity",
@@ -59,6 +62,20 @@
         ]
       }
     },
+    "was_in_fight": {
+      "trigger": "twilightforest:hurt_boss",
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:hydra"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "stroganoff": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
@@ -70,7 +87,8 @@
     [
       "kill_hydra",
       "trophy",
-      "blood"
+      "blood",
+      "was_in_fight"
     ],
     [
       "stroganoff"

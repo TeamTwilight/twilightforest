@@ -37,9 +37,9 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.castle_rune_brick_blue.get().defaultBlockState();
+		this.deco.blockState = TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
 
-		this.deco.fenceState = TFBlocks.force_field_purple.get().defaultBlockState();
+		this.deco.fenceState = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "the latest updates on this castle and other content at:",true, 0.7f);
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "discord.experiment115.com", true, 0.4f);
 
-		placeBlock(world, TFBlocks.boss_spawner_final_boss.get().defaultBlockState(), 10, 1, 10, sbb);
+		//placeBlock(world, TFBlocks.boss_spawner_final_boss.get().defaultBlockState(), 10, 1, 10, sbb);
 
 		return true;
 	}

@@ -4,19 +4,17 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import twilightforest.entity.RovingCubeEntity;
+import twilightforest.entity.RovingCube;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 
-	private final RovingCubeEntity myCube;
+	private final RovingCube myCube;
 	private final double speed;
 	private BlockPos targetPos;
 
-	public CubeMoveToRedstoneSymbolsGoal(RovingCubeEntity entityTFRovingCube, double d) {
+	public CubeMoveToRedstoneSymbolsGoal(RovingCube entityTFRovingCube, double d) {
 		this.myCube = entityTFRovingCube;
 		this.speed = d;
 		this.setFlags(EnumSet.of(Flag.MOVE));
@@ -51,7 +49,7 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 	/**
 	 * Search the area for a redstone circle (8 redstone dust around a blank square)
 	 */
-	private BlockPos searchForRedstoneSymbol(RovingCubeEntity myCube2, int xzRange, int yRange) {
+	private BlockPos searchForRedstoneSymbol(RovingCube myCube2, int xzRange, int yRange) {
 		BlockPos curPos = new BlockPos(myCube2.blockPosition());
 
 		for (int x = -xzRange; x < xzRange; x++) {

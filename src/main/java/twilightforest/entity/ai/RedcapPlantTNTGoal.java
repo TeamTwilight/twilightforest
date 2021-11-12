@@ -5,11 +5,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.entity.RedcapEntity;
+import twilightforest.entity.monster.Redcap;
 
 public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 
-	public RedcapPlantTNTGoal(RedcapEntity entityTFRedcap) {
+	public RedcapPlantTNTGoal(Redcap entityTFRedcap) {
 		super(entityTFRedcap);
 	}
 

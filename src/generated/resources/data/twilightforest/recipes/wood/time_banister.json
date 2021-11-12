@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "---",
+    "| |"
+  ],
+  "key": {
+    "-": {
+      "item": "twilightforest:time_slab"
+    },
+    "|": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "twilightforest:time_banister",
+    "count": 3
+  }
+}

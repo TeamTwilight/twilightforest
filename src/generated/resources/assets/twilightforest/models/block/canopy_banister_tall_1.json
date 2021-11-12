@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/banister_tall",
+  "textures": {
+    "texture": "twilightforest:block/wood/planks_canopy_1"
+  }
+}

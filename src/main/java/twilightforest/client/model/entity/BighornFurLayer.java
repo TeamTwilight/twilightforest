@@ -4,9 +4,9 @@ import net.minecraft.client.model.SheepFurModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.passive.BighornEntity;
+import twilightforest.entity.passive.Bighorn;
 
-public class BighornFurLayer extends SheepFurModel<BighornEntity> {
+public class BighornFurLayer extends SheepFurModel<Bighorn> {
 	public BighornFurLayer(ModelPart root) {
 		super(root);
 	}

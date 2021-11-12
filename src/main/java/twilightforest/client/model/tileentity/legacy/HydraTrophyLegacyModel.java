@@ -12,8 +12,8 @@ import twilightforest.client.model.tileentity.GenericTrophyModel;
 
 public class HydraTrophyLegacyModel extends GenericTrophyModel {
 
-	ModelPart head;
-	ModelPart jaw;
+	public ModelPart head;
+	public ModelPart jaw;
 
 	public HydraTrophyLegacyModel(ModelPart root) {
 		this.head = root.getChild("head");
@@ -73,7 +73,8 @@ public class HydraTrophyLegacyModel extends GenericTrophyModel {
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = x * ((float) Math.PI / 180F);
 	}
-	
+
+	@Override
 	public void openMouthForTrophy(float mouthOpen) {
 		head.yRot = 0;
 		head.xRot = 0;

@@ -1,0 +1,62 @@
+name: Bug Report
+description: Create an issue about a bug
+labels: [bug]
+body:
+  - type: input
+    attributes:
+      label: Forge Version
+      description: What version of Forge are you running? This can be found on the installation jar you have downloaded, in the Mod Options menu, or the profile's version. Please note "latest" is NOT a version. *If you are reporting a bug that exists only on the Fabric port, please report it **[here](https://github.com/TeamTwilight/twilightforest-fabric/issues)** instead.*
+      placeholder: "Example: 36.2.0"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Twilight Forest Version
+      description: What version of Twilight Forest are you running? This can be found on the jar file you have downloaded or the Mod Options menu. Please note "latest" is NOT a version.
+      placeholder: "Example: 4.0.546"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Client Log
+      description: A **[Gist](https://gist.github.com/)** link to the full game log. This can be found in the game files under the `logs` folder. Though not necessary, a client log can help diagnose an issue better in case a bug is caused by a reported error. Provide the `latest.log` or `debug.log` file as a Gist as soon as you find the bug, as these files are reset every time the game is opened.
+  - type: input
+    attributes:
+      label: Crash Report (if applicable)
+      description: A **[Gist](https://gist.github.com/)** link to the crash report. This can be found in the game files under the `crash-reports` folder, and all the contents of the file should be pasted into the Gist file. If the bug does not result in a crash, ignore this field.
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      description: A detailed list of how you encountered this bug if it is not immediately obvious. If the bug is immediately obvious, briefly mention how to replicate it.
+      placeholder: |
+        1. Step 1
+        2. Step 2
+        3. Step 3, etc.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What You Expected
+      description: Describe what you thought was supposed to have happened. Don't worry if you think what you expected may be wrong.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What Happened Instead
+      description: Describe what happened to you that wasn't to expectations.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional Details
+      description: Provide any other information you think might be useful for this report. This may include screenshots, video footage, other mod details, anything you think might be relevant.
+  - type: checkboxes
+    attributes:
+      label: Please Read and Confirm The Following
+      options:
+        - label: I have confirmed this bug can be replicated without the use of Optifine.
+          required: true
+        - label: I have confirmed the details provided in this report are concise as possible and does not contained vague information (ie. Versions are properly recorded, answers to questions are clear).
+          required: true
+        - label: I have confirmed this issue is unique and has not been reported already.
+          required: true

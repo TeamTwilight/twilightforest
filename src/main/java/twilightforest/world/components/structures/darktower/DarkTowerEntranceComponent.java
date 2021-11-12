@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -65,5 +66,10 @@ public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 		makeOpenings(world, sbb);
 
 		return true;
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.BEARD;
 	}
 }

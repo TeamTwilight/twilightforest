@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:oak_banister",
+    "twilightforest:spruce_banister",
+    "twilightforest:birch_banister",
+    "twilightforest:jungle_banister",
+    "twilightforest:acacia_banister",
+    "twilightforest:dark_oak_banister",
+    "twilightforest:crimson_banister",
+    "twilightforest:warped_banister",
+    "twilightforest:twilight_oak_banister",
+    "twilightforest:canopy_banister",
+    "twilightforest:mangrove_banister",
+    "twilightforest:darkwood_banister",
+    "twilightforest:time_banister",
+    "twilightforest:transformation_banister",
+    "twilightforest:mining_banister",
+    "twilightforest:sorting_banister"
+  ]
+}

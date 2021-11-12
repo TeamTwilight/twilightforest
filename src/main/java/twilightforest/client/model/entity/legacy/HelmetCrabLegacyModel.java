@@ -14,12 +14,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.HelmetCrabEntity;
+import twilightforest.entity.monster.HelmetCrab;
 
 /**
  * Helmet crab model, based partially on some of the spider code
  */
-public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrabEntity> {
+public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrab> {
 	//fields
 	ModelPart root, body, rightArm;
 	ModelPart leg1, leg2, leg3, leg4, leg5;
@@ -56,7 +56,7 @@ public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrabEntity> {
 						.addBox(-1F, -3F, -1F, 2, 3, 2),
 				PartPose.offsetAndRotation(1F, -1F, -4F, (Mth.PI / 4.0F), 0.0F, (Mth.PI / 4.0F)));
 
-		var helmetBase = body.addOrReplaceChild("helmet_base", CubeListBuilder.create(),
+		var helmetBase = partRoot.addOrReplaceChild("helmet_base", CubeListBuilder.create(),
 				PartPose.offsetAndRotation(0F, 18F, 0F, -100F / (180F / Mth.PI), -30F / (180F / Mth.PI), 0.0F));
 
 		helmetBase.addOrReplaceChild("helmet", CubeListBuilder.create()
@@ -106,7 +106,7 @@ public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrabEntity> {
 
 		partRoot.addOrReplaceChild("leg_1", CubeListBuilder.create()
 						.texOffs(18, 0)
-						.addBox(-1F, -1F, -1F, 8, 2, 2),
+						.addBox(-7F, -1F, -1F, 8, 2, 2),
 				PartPose.offsetAndRotation(-3F, 20F, -1F, 0F, 0.2792527F, -0.1919862F));
 
 		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create()
@@ -116,7 +116,7 @@ public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrabEntity> {
 
 		partRoot.addOrReplaceChild("leg_3", CubeListBuilder.create()
 						.texOffs(18, 0)
-						.addBox(-1F, -1F, -1F, 8, 2, 2),
+						.addBox(-7F, -1F, -1F, 8, 2, 2),
 				PartPose.offsetAndRotation(-3F, 20F, -2F, 0F, -0.2792527F, -0.1919862F));
 
 		partRoot.addOrReplaceChild("leg_4", CubeListBuilder.create()
@@ -138,7 +138,7 @@ public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrabEntity> {
 	}
 
 	@Override
-	public void setupAnim(HelmetCrabEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(HelmetCrab entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 		//leg3 -> leg1, leg4 -> leg2, leg5 -> leg3, leg6 -> leg4, leg8 -> leg5
 		this.body.yRot = netHeadYaw / (180F / (float) Math.PI);

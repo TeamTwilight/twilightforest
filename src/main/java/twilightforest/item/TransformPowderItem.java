@@ -24,27 +24,29 @@ import java.util.UUID;
 
 public class TransformPowderItem extends Item {
 
-	private final Map<EntityType<?>, EntityType<?>> transformMap = new HashMap<>();
+	public static final Map<EntityType<?>, EntityType<?>> transformMap = new HashMap<>();
 
 	protected TransformPowderItem(Properties props) {
 		super(props);
 	}
 
 	public void initTransformations() {
-		addTwoWayTransformation(TFEntities.minotaur,       EntityType.ZOMBIFIED_PIGLIN);
-		addTwoWayTransformation(TFEntities.deer,           EntityType.COW);
-		addTwoWayTransformation(TFEntities.bighorn_sheep,  EntityType.SHEEP);
-		addTwoWayTransformation(TFEntities.wild_boar,      EntityType.PIG);
-		addTwoWayTransformation(TFEntities.bunny,          EntityType.RABBIT);
-		addTwoWayTransformation(TFEntities.tiny_bird,      EntityType.PARROT);
-		addTwoWayTransformation(TFEntities.raven,          EntityType.BAT);
-		addTwoWayTransformation(TFEntities.hostile_wolf,   EntityType.WOLF);
-		addTwoWayTransformation(TFEntities.penguin,        EntityType.CHICKEN);
-		addTwoWayTransformation(TFEntities.hedge_spider,   EntityType.SPIDER);
-		addTwoWayTransformation(TFEntities.swarm_spider,   EntityType.CAVE_SPIDER);
-		addTwoWayTransformation(TFEntities.wraith,         EntityType.BLAZE);
-		addTwoWayTransformation(TFEntities.redcap,         EntityType.VILLAGER);
-		addTwoWayTransformation(TFEntities.skeleton_druid, EntityType.WITCH);
+		addTwoWayTransformation(TFEntities.MINOTAUR, EntityType.ZOMBIFIED_PIGLIN);
+		addTwoWayTransformation(TFEntities.DEER, EntityType.COW);
+		addTwoWayTransformation(TFEntities.BIGHORN_SHEEP, EntityType.SHEEP);
+		addTwoWayTransformation(TFEntities.BOAR, EntityType.PIG);
+		addTwoWayTransformation(TFEntities.DWARF_RABBIT, EntityType.RABBIT);
+		addTwoWayTransformation(TFEntities.TINY_BIRD, EntityType.PARROT);
+		addTwoWayTransformation(TFEntities.RAVEN, EntityType.BAT);
+		addTwoWayTransformation(TFEntities.HOSTILE_WOLF, EntityType.WOLF);
+		addTwoWayTransformation(TFEntities.PENGUIN, EntityType.CHICKEN);
+		addTwoWayTransformation(TFEntities.HEDGE_SPIDER, EntityType.SPIDER);
+		addTwoWayTransformation(TFEntities.SWARM_SPIDER, EntityType.CAVE_SPIDER);
+		addTwoWayTransformation(TFEntities.WRAITH, EntityType.VEX);
+		addTwoWayTransformation(TFEntities.SKELETON_DRUID, EntityType.WITCH);
+		addTwoWayTransformation(TFEntities.CARMINITE_GHASTGUARD, EntityType.GHAST);
+		addTwoWayTransformation(TFEntities.TOWERWOOD_BORER, EntityType.SILVERFISH);
+		addTwoWayTransformation(TFEntities.MAZE_SLIME, EntityType.SLIME);
 	}
 
 	private void addTwoWayTransformation(EntityType<?> from, EntityType<?> to) {
@@ -68,10 +70,9 @@ public class TransformPowderItem extends Item {
 			return InteractionResult.PASS;
 		}
 
-		newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.yRot, target.xRot);
-		if (newEntity instanceof Mob && target.level instanceof ServerLevelAccessor) {
-			ServerLevelAccessor world = (ServerLevelAccessor) target.level;
-			((Mob) newEntity).finalizeSpawn(world, target.level.getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
+		newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
+		if (newEntity instanceof Mob mob && target.level instanceof ServerLevelAccessor world) {
+			mob.finalizeSpawn(world, target.level.getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
 		}
 
 		try { // try copying what can be copied

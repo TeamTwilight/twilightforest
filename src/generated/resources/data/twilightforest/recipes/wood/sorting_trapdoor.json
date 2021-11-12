@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "twilightforest:sorting_planks"
+    }
+  },
+  "result": {
+    "item": "twilightforest:sorting_trapdoor",
+    "count": 2
+  }
+}

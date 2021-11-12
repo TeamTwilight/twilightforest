@@ -44,7 +44,7 @@
   "player_spawn_friendly": false,
   "forge:registry_name": "twilightforest:final_plateau",
   "precipitation": "rain",
-  "temperature": 0.3,
+  "temperature": 1.0,
   "downfall": 0.2,
   "category": "mesa",
   "depth": 5.25,

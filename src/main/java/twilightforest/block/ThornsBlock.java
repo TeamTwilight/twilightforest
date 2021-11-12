@@ -40,8 +40,8 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	public boolean canConnectTo(BlockState state, boolean solidSide) {
 		return (state.getBlock() instanceof ThornsBlock
-						|| state.getBlock() == TFBlocks.thorn_rose.get()
-						|| state.getBlock() == TFBlocks.thorn_leaves.get()
+						|| state.getBlock() == TFBlocks.THORN_ROSE.get()
+						|| state.getBlock() == TFBlocks.THORN_LEAVES.get()
 						|| state.getMaterial() == Material.PLANT
 						|| state.getMaterial() == Material.DIRT);
 	}
@@ -70,7 +70,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Override
 	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!player.abilities.instabuild) {
+		if (!player.getAbilities().instabuild) {
 			if (!world.isClientSide) {
 				// grow more
 				this.doThornBurst(world, pos, state);
@@ -122,7 +122,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			BlockPos dPos = pos.relative(dir, i);
 
 			if (world.isEmptyBlock(dPos)) {
-				world.setBlock(dPos, TFBlocks.green_thorns.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
+				world.setBlock(dPos, TFBlocks.GREEN_THORNS.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
 			} else {
 				break;
 			}

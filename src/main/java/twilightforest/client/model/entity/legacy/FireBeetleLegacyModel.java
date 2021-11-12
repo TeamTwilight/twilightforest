@@ -13,9 +13,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.FireBeetleEntity;
+import twilightforest.entity.monster.FireBeetle;
 
-public class FireBeetleLegacyModel extends HierarchicalModel<FireBeetleEntity> {
+public class FireBeetleLegacyModel extends HierarchicalModel<FireBeetle> {
 	ModelPart root;
 	ModelPart head;
 	ModelPart leg6;
@@ -146,7 +146,7 @@ public class FireBeetleLegacyModel extends HierarchicalModel<FireBeetleEntity> {
 	}
 
 	@Override
-	public void setupAnim(FireBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(FireBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 

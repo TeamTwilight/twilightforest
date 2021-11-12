@@ -4,6 +4,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import twilightforest.block.TFBlocks;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -96,9 +99,6 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 		boolean flag = this.doPlace(reader, rand, pos, biConsumer, biConsumer1, config);
 		difference = mutableboundingbox.minY() - pos.getY();
 		mutableboundingbox.move(0, pos.getY(), 0);
-		//what do
-		//mutableboundingbox.minY() = pos.getY();
-		//mutableboundingbox.maxY() = mutableboundingbox.maxY() - difference;
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
 			if (!config.decorators.isEmpty()) {
 				List<BlockPos> list1 = Lists.newArrayList(set1);
@@ -148,23 +148,23 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 	}
 
 	//everything beyond this point is a [VanillaCopy] of TreeFeature
-	private int getMaxFreeTreeHeight(LevelSimulatedReader p_241521_1_, int p_241521_2_, BlockPos p_241521_3_, TreeConfiguration p_241521_4_) {
-		BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
+	private int getMaxFreeTreeHeight(LevelSimulatedReader level, int trunkHeight, BlockPos pos, TreeConfiguration config) {
+		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
-		for(int i = 0; i <= p_241521_2_ + 1; ++i) {
-			int j = p_241521_4_.minimumSize.getSizeAtHeight(p_241521_2_, i);
+		for(int i = 0; i <= trunkHeight + 1; ++i) {
+			int j = config.minimumSize.getSizeAtHeight(trunkHeight, i);
 
 			for(int k = -j; k <= j; ++k) {
 				for(int l = -j; l <= j; ++l) {
-					blockpos$mutable.setWithOffset(p_241521_3_, k, i, l);
-					if (!p_241521_4_.ignoreVines) {
+					mutable.setWithOffset(pos, k, i, l);
+					if (!isFree(level, mutable) || !config.ignoreVines) {
 						return i - 2;
 					}
 				}
 			}
 		}
 
-		return p_241521_2_;
+		return trunkHeight;
 	}
 
 	protected void setBlock(LevelWriter world, BlockPos pos, BlockState state) {
@@ -243,5 +243,28 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 		}
 
 		return discretevoxelshape;
+	}
+
+	public static boolean isFree(LevelSimulatedReader pLevel, BlockPos pPos) {
+		return validTreePos(pLevel, pPos) || pLevel.isStateAtPosition(pPos, (p_67281_) -> p_67281_.is(BlockTags.LOGS));
+	}
+
+	private static boolean isBlockWater(LevelSimulatedReader pLevel, BlockPos pPos) {
+		return pLevel.isStateAtPosition(pPos, (p_67271_) -> p_67271_.is(Blocks.WATER));
+	}
+
+	public static boolean isAirOrLeaves(LevelSimulatedReader pLevel, BlockPos pPos) {
+		return pLevel.isStateAtPosition(pPos, (p_67266_) -> p_67266_.isAir() || p_67266_.is(BlockTags.LEAVES) || p_67266_.is(TFBlocks.HARDENED_DARK_LEAVES.get()));
+	}
+
+	private static boolean isReplaceablePlant(LevelSimulatedReader pLevel, BlockPos pPos) {
+		return pLevel.isStateAtPosition(pPos, (p_160551_) -> {
+			Material material = p_160551_.getMaterial();
+			return material == Material.REPLACEABLE_PLANT;
+		});
+	}
+
+	public static boolean validTreePos(LevelSimulatedReader pLevel, BlockPos pPos) {
+		return isAirOrLeaves(pLevel, pPos) || isReplaceablePlant(pLevel, pPos) || isBlockWater(pLevel, pPos);
 	}
 }

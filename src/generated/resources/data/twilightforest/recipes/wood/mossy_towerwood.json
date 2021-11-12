@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:towerwood"
+    },
+    [
+      {
+        "item": "minecraft:vine"
+      },
+      {
+        "item": "minecraft:moss_block"
+      }
+    ]
+  ],
+  "result": {
+    "item": "twilightforest:mossy_towerwood"
+  }
+}

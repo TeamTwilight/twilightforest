@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "extended=false,facing=north,shape=short": {
+      "model": "twilightforest:block/crimson_banister_short",
+      "y": 180
+    },
+    "extended=true,facing=north,shape=short": {
+      "model": "twilightforest:block/crimson_banister_short_extended",
+      "y": 180
+    },
+    "extended=false,facing=south,shape=short": {
+      "model": "twilightforest:block/crimson_banister_short"
+    },
+    "extended=true,facing=south,shape=short": {
+      "model": "twilightforest:block/crimson_banister_short_extended"
+    },
+    "extended=false,facing=west,shape=short": {
+      "model": "twilightforest:block/crimson_banister_short",
+      "y": 90
+    },
+    "extended=true,facing=west,shape=short": {
+      "model": "twilightforest:block/crimson_banister_short_extended",
+      "y": 90
+    },
+    "extended=false,facing=east,shape=short": {
+      "model": "twilightforest:block/crimson_banister_short",
+      "y": 270
+    },
+    "extended=true,facing=east,shape=short": {
+      "model": "twilightforest:block/crimson_banister_short_extended",
+      "y": 270
+    },
+    "extended=false,facing=north,shape=tall": {
+      "model": "twilightforest:block/crimson_banister_tall",
+      "y": 180
+    },
+    "extended=true,facing=north,shape=tall": {
+      "model": "twilightforest:block/crimson_banister_tall_extended",
+      "y": 180
+    },
+    "extended=false,facing=south,shape=tall": {
+      "model": "twilightforest:block/crimson_banister_tall"
+    },
+    "extended=true,facing=south,shape=tall": {
+      "model": "twilightforest:block/crimson_banister_tall_extended"
+    },
+    "extended=false,facing=west,shape=tall": {
+      "model": "twilightforest:block/crimson_banister_tall",
+      "y": 90
+    },
+    "extended=true,facing=west,shape=tall": {
+      "model": "twilightforest:block/crimson_banister_tall_extended",
+      "y": 90
+    },
+    "extended=false,facing=east,shape=tall": {
+      "model": "twilightforest:block/crimson_banister_tall",
+      "y": 270
+    },
+    "extended=true,facing=east,shape=tall": {
+      "model": "twilightforest:block/crimson_banister_tall_extended",
+      "y": 270
+    },
+    "extended=false,facing=north,shape=connected": {
+      "model": "twilightforest:block/crimson_banister_connected",
+      "y": 180
+    },
+    "extended=true,facing=north,shape=connected": {
+      "model": "twilightforest:block/crimson_banister_connected_extended",
+      "y": 180
+    },
+    "extended=false,facing=south,shape=connected": {
+      "model": "twilightforest:block/crimson_banister_connected"
+    },
+    "extended=true,facing=south,shape=connected": {
+      "model": "twilightforest:block/crimson_banister_connected_extended"
+    },
+    "extended=false,facing=west,shape=connected": {
+      "model": "twilightforest:block/crimson_banister_connected",
+      "y": 90
+    },
+    "extended=true,facing=west,shape=connected": {
+      "model": "twilightforest:block/crimson_banister_connected_extended",
+      "y": 90
+    },
+    "extended=false,facing=east,shape=connected": {
+      "model": "twilightforest:block/crimson_banister_connected",
+      "y": 270
+    },
+    "extended=true,facing=east,shape=connected": {
+      "model": "twilightforest:block/crimson_banister_connected_extended",
+      "y": 270
+    }
+  }
+}

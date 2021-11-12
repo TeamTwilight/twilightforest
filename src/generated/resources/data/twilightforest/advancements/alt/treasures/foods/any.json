@@ -1,0 +1,44 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "hydra_chop": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/foods/hydra_chop"
+      }
+    },
+    "maze_wafer": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/foods/maze_wafer"
+      }
+    },
+    "meef": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/foods/meef"
+      }
+    },
+    "venison": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/foods/venison"
+      }
+    },
+    "e115": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/foods/experiment_115"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "hydra_chop",
+      "maze_wafer",
+      "meef",
+      "venison",
+      "e115"
+    ]
+  ]
+}

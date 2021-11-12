@@ -9,14 +9,14 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.passive.BighornEntity;
+import twilightforest.entity.passive.Bighorn;
 
 /**
  * BighornModel - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class BighornModel<T extends BighornEntity> extends SheepModel<T> {
+public class BighornModel<T extends Bighorn> extends SheepModel<T> {
     public BighornModel(ModelPart part) {
         super(part);
     }

@@ -1,100 +1,60 @@
 {
   "config": {
-    "feature": {
-      "config": {
-        "feature": {
-          "config": {
-            "decorators": [],
-            "ignore_vines": true,
-            "force_dirt": false,
-            "dirt_provider": {
-              "state": {
-                "Name": "minecraft:dirt"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "minimum_size": {
-              "limit": 1,
-              "lower_size": 0,
-              "upper_size": 1,
-              "type": "minecraft:two_layers_feature_size"
-            },
-            "foliage_provider": {
-              "state": {
-                "Properties": {
-                  "persistent": "false",
-                  "distance": "7"
-                },
-                "Name": "minecraft:birch_leaves"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "sapling_provider": {
-              "state": {
-                "Properties": {
-                  "stage": "0"
-                },
-                "Name": "minecraft:birch_sapling"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "foliage_placer": {
-              "radius": 2,
-              "offset": 0,
-              "height": 3,
-              "type": "minecraft:blob_foliage_placer"
-            },
-            "trunk_provider": {
-              "state": {
-                "Properties": {
-                  "axis": "y"
-                },
-                "Name": "minecraft:birch_log"
-              },
-              "type": "minecraft:simple_state_provider"
-            },
-            "trunk_placer": {
-              "base_height": 5,
-              "height_rand_a": 2,
-              "height_rand_b": 0,
-              "type": "minecraft:straight_trunk_placer"
-            }
-          },
-          "type": "minecraft:tree"
-        },
-        "decorator": {
-          "config": {},
-          "type": "twilightforest:nostructure"
-        }
+    "decorators": [],
+    "ignore_vines": true,
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
       },
-      "type": "minecraft:decorated"
+      "type": "minecraft:simple_state_provider"
     },
-    "decorator": {
-      "config": {
-        "outer": {
-          "config": {},
-          "type": "minecraft:square"
+    "minimum_size": {
+      "limit": 1,
+      "lower_size": 0,
+      "upper_size": 1,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "foliage_provider": {
+      "state": {
+        "Properties": {
+          "persistent": "false",
+          "distance": "7"
         },
-        "inner": {
-          "config": {
-            "outer": {
-              "config": {
-                "max_water_depth": 0
-              },
-              "type": "minecraft:water_depth_threshold"
-            },
-            "inner": {
-              "config": {
-                "heightmap": "OCEAN_FLOOR"
-              },
-              "type": "minecraft:heightmap"
-            }
-          },
-          "type": "minecraft:decorated"
-        }
+        "Name": "minecraft:birch_leaves"
       },
-      "type": "minecraft:decorated"
+      "type": "minecraft:simple_state_provider"
+    },
+    "sapling_provider": {
+      "state": {
+        "Properties": {
+          "stage": "0"
+        },
+        "Name": "minecraft:birch_sapling"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "foliage_placer": {
+      "radius": 2,
+      "offset": 0,
+      "height": 3,
+      "type": "minecraft:blob_foliage_placer"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "minecraft:birch_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "trunk_placer": {
+      "base_height": 5,
+      "height_rand_a": 2,
+      "height_rand_b": 0,
+      "type": "minecraft:straight_trunk_placer"
     }
   },
-  "type": "minecraft:decorated"
+  "type": "minecraft:tree"
 }

@@ -21,9 +21,11 @@ import java.util.Random;
 public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 
 	int entranceLevel;
+	boolean deepslateVer;
 
 	public StrongholdFoundryComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSFo, nbt);
+		this.deepslateVer = nbt.getBoolean("deepslateVer");
 		this.entranceLevel = nbt.getInt("entranceLevel");
 	}
 
@@ -35,10 +37,12 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
 		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("entranceLevel", this.entranceLevel);
+		tagCompound.putBoolean("deepslateVer", this.deepslateVer);
 	}
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+		this.deepslateVer = new Random().nextBoolean();
 		if (y > -15) {
 			this.entranceLevel = 3;
 			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -20, 0, 18, 25, 18, facing);
@@ -118,7 +122,7 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 					float r = 5.5F + ((massRandom.nextFloat() - massRandom.nextFloat()) * 3.5F);
 
 					if (c < r) {
-						this.placeBlock(world, Blocks.STONE.defaultBlockState(), x, y, z, sbb);
+						this.placeBlock(world, deepslateVer ? Blocks.DEEPSLATE.defaultBlockState() : Blocks.STONE.defaultBlockState(), x, y, z, sbb);
 					}
 				}
 			}
@@ -132,39 +136,44 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 
 			if (this.getBlock(world, dx, dy, dz, sbb).getBlock() != Blocks.AIR) {
 				for (int y = 0; y < 3; y++) {
-					this.placeBlock(world, Blocks.STONE.defaultBlockState(), dx, dy - y, dz, sbb);
+					this.placeBlock(world, deepslateVer ? Blocks.DEEPSLATE.defaultBlockState() : Blocks.STONE.defaultBlockState(), dx, dy - y, dz, sbb);
 				}
 			}
 		}
 
 		// add some redstone ore
 		for (int i = 0; i < 8; i++) {
-			addOreToMass(world, sbb, massRandom, Blocks.REDSTONE_ORE.defaultBlockState());
+			addOreToMass(world, sbb, massRandom, deepslateVer ? Blocks.DEEPSLATE_REDSTONE_ORE.defaultBlockState() : Blocks.REDSTONE_ORE.defaultBlockState());
 		}
 
 		// add some iron ore
 		for (int i = 0; i < 8; i++) {
-			addOreToMass(world, sbb, massRandom, Blocks.IRON_ORE.defaultBlockState());
+			addOreToMass(world, sbb, massRandom, deepslateVer ? Blocks.DEEPSLATE_IRON_ORE.defaultBlockState() : Blocks.IRON_ORE.defaultBlockState());
 		}
 
 		// add some gold ore
 		for (int i = 0; i < 6; i++) {
-			addOreToMass(world, sbb, massRandom, Blocks.GOLD_ORE.defaultBlockState());
+			addOreToMass(world, sbb, massRandom, deepslateVer ? Blocks.DEEPSLATE_GOLD_ORE.defaultBlockState() : Blocks.GOLD_ORE.defaultBlockState());
 		}
 
 		// add some glowstone
 		for (int i = 0; i < 2; i++) {
-			addOreToMass(world, sbb, massRandom, Blocks.GLOWSTONE.defaultBlockState());
+			addOreToMass(world, sbb, massRandom, deepslateVer ? Blocks.SHROOMLIGHT.defaultBlockState() : Blocks.GLOWSTONE.defaultBlockState());
 		}
 
 		// add some emerald ore
 		for (int i = 0; i < 2; i++) {
-			addOreToMass(world, sbb, massRandom, Blocks.EMERALD_ORE.defaultBlockState());
+			addOreToMass(world, sbb, massRandom, deepslateVer ? Blocks.DEEPSLATE_EMERALD_ORE.defaultBlockState() : Blocks.EMERALD_ORE.defaultBlockState());
 		}
 
 		// add some diamond ore
 		for (int i = 0; i < 4; i++) {
-			addOreToMass(world, sbb, massRandom, Blocks.DIAMOND_ORE.defaultBlockState());
+			addOreToMass(world, sbb, massRandom, deepslateVer ? Blocks.DEEPSLATE_DIAMOND_ORE.defaultBlockState() : Blocks.DIAMOND_ORE.defaultBlockState());
+		}
+
+		// add some copper ore
+		for (int i = 0; i < 6; i++) {
+			addOreToMass(world, sbb, massRandom, deepslateVer ? Blocks.DEEPSLATE_COPPER_ORE.defaultBlockState() : Blocks.COPPER_ORE.defaultBlockState());
 		}
 
 		// doors

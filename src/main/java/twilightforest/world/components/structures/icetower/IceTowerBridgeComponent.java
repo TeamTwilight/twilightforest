@@ -11,6 +11,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -41,8 +42,8 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
-		if (parent != null && parent instanceof TFStructureComponentOld) {
-			this.deco = ((TFStructureComponentOld) parent).deco;
+		if (parent != null && parent instanceof TFStructureComponent tfStructureComponent) {
+			this.deco = tfStructureComponent.deco;
 		}
 	}
 

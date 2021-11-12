@@ -2,7 +2,7 @@
   "parent": "twilightforest:maze_map",
   "display": {
     "icon": {
-      "item": "twilightforest:ore_map"
+      "item": "twilightforest:filled_ore_map"
     },
     "title": {
       "translate": "advancement.twilightforest.ore_map"
@@ -11,7 +11,7 @@
       "translate": "advancement.twilightforest.ore_map.desc",
       "with": [
         {
-          "translate": "item.twilightforest.ore_map"
+          "translate": "item.twilightforest.filled_ore_map"
         }
       ]
     },
@@ -27,7 +27,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:ore_map"
+              "twilightforest:filled_ore_map"
             ]
           }
         ]

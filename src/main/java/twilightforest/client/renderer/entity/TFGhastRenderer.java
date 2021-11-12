@@ -1,14 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.TFGhastModel;
-import twilightforest.entity.CarminiteGhastguardEntity;
+import twilightforest.entity.monster.CarminiteGhastguard;
 
-public class TFGhastRenderer<T extends CarminiteGhastguardEntity, M extends TFGhastModel<T>> extends MobRenderer<T, M> {
+public class TFGhastRenderer<T extends CarminiteGhastguard, M extends TFGhastModel<T>> extends MobRenderer<T, M> {
 
 	private static final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerghast.png");
 	private static final ResourceLocation textureLocOpen = TwilightForestMod.getModelTexture("towerghast_openeyes.png");

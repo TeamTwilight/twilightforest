@@ -20,6 +20,9 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  },
   "criteria": {
     "ghast": {
       "trigger": "minecraft:player_killed_entity",
@@ -59,6 +62,20 @@
         ]
       }
     },
+    "was_in_fight": {
+      "trigger": "twilightforest:hurt_boss",
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:ur_ghast"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "previous_progression": {
       "trigger": "twilightforest:has_advancement",
       "conditions": {
@@ -70,7 +87,8 @@
     [
       "ghast",
       "trophy",
-      "tear"
+      "tear",
+      "was_in_fight"
     ],
     [
       "previous_progression"

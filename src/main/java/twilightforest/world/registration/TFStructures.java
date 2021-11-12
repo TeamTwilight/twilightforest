@@ -1,5 +1,6 @@
 package twilightforest.world.registration;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
@@ -20,12 +21,13 @@ import twilightforest.world.components.structures.darktower.DarkTowerPieces;
 import twilightforest.world.components.structures.finalcastle.FinalCastlePieces;
 import twilightforest.world.components.structures.icetower.IceTowerPieces;
 import twilightforest.world.components.structures.lichtower.LichTowerPieces;
+import twilightforest.world.components.structures.lichtowerrevamp.LichTowerRevampPieces;
 import twilightforest.world.components.structures.minotaurmaze.MinotaurMazePieces;
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerPieces;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.stronghold.StrongholdPieces;
 import twilightforest.world.components.structures.trollcave.TrollCavePieces;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -88,6 +90,7 @@ public class TFStructures {
 		new MushroomTowerPieces();
 		new NagaCourtyardPieces();
 		new LichTowerPieces();
+		new LichTowerRevampPieces();
 		new MinotaurMazePieces();
 		new StrongholdPieces();
 		new DarkTowerPieces();
@@ -111,6 +114,9 @@ public class TFStructures {
 		register(event, AURORA_PALACE, CONFIGURED_AURORA_PALACE, TwilightForestMod.prefix("aurora_palace"), 1, 2);
 		register(event, TROLL_CAVE, CONFIGURED_TROLL_CAVE, TwilightForestMod.prefix("troll_cave"), 1, 2);
 		register(event, FINAL_CASTLE, CONFIGURED_FINAL_CASTLE, TwilightForestMod.prefix("final_castle"), 1, 2);
+
+		// TODO Beardify more structures (Or bury)
+		StructureFeature.NOISE_AFFECTING_FEATURES = ImmutableList.<StructureFeature<?>>builder().addAll(StructureFeature.NOISE_AFFECTING_FEATURES).add(HEDGE_MAZE, QUEST_GROVE, NAGA_COURTYARD, LICH_TOWER, LABYRINTH, KNIGHT_STRONGHOLD, DARK_TOWER, TROLL_CAVE, FINAL_CASTLE).build();
 	}
 
 	private static void register(RegistryEvent.Register<StructureFeature<?>> event, StructureFeature<?> structure, ConfiguredStructureFeature<?, ?> config, ResourceLocation name, int min, int max) {
@@ -125,7 +131,7 @@ public class TFStructures {
 	}
 
 	public static void load(WorldEvent.Load event) {
-		if(event.getWorld() instanceof ServerLevel && ((ServerLevel) event.getWorld()).getChunkSource().generator instanceof ChunkGeneratorTwilightBase) {
+		if(event.getWorld() instanceof ServerLevel && ((ServerLevel) event.getWorld()).getChunkSource().generator instanceof ChunkGeneratorTwilight) {
 			ServerLevel serverWorld = (ServerLevel)event.getWorld();
 			Map<StructureFeature<?>, StructureFeatureConfiguration> tempMap = new HashMap<>(serverWorld.getChunkSource().generator.getSettings().structureConfig());
 			tempMap.putAll(SEPARATION_SETTINGS);

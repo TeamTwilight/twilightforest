@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/vertical_hollow_log_ladder",
+  "textures": {
+    "top": "twilightforest:block/sorting_log_top",
+    "side": "twilightforest:block/sorting_log",
+    "inner": "twilightforest:block/stripped_sorting_log"
+  }
+}

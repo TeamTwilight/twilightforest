@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:block/util/north_face",
+  "parent": "minecraft:block/template_single_face",
   "textures": {
     "texture": "twilightforest:block/trollsteinn_light"
   }

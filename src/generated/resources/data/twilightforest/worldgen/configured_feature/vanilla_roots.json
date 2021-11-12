@@ -1,0 +1,74 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "feature": {
+                  "config": {
+                    "state": {
+                      "Properties": {
+                        "waterlogged": "false"
+                      },
+                      "Name": "minecraft:hanging_roots"
+                    }
+                  },
+                  "type": "twilightforest:underground_plants"
+                },
+                "decorator": {
+                  "config": {
+                    "outer": {
+                      "config": {},
+                      "type": "minecraft:square"
+                    },
+                    "inner": {
+                      "config": {
+                        "heightmap": "OCEAN_FLOOR_WG"
+                      },
+                      "type": "minecraft:heightmap"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
+            "decorator": {
+              "config": {
+                "height": {
+                  "min_inclusive": {
+                    "above_bottom": 0
+                  },
+                  "max_inclusive": {
+                    "absolute": 60
+                  },
+                  "type": "minecraft:uniform"
+                }
+              },
+              "type": "minecraft:range"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {
+            "count": 16
+          },
+          "type": "minecraft:count"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "occupies_surface": false,
+        "occupies_underground": true,
+        "additional_clearance": 0
+      },
+      "type": "twilightforest:no_structure"
+    }
+  },
+  "type": "minecraft:decorated"
+}

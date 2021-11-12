@@ -48,9 +48,9 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.depthMask(false);
 		RenderSystem.setShaderColor(f, f1, f2, 1.0F);
 
-		rg.skyBuffer.bind();
 		ShaderInstance shaderinstance = RenderSystem.getShader();
-		rg.skyBuffer.drawWithShader(ms.last().pose(), ms.last().pose(), shaderinstance);
+		rg.skyBuffer.bind();
+		rg.skyBuffer.drawWithShader(ms.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
 		VertexBuffer.unbind();
 		this.vertexBufferFormat.clearBufferState();
 
@@ -77,7 +77,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.setShaderColor(f15, f15, f15, f15);
 
 		this.starVBO.bind();
-		this.starVBO.drawWithShader(ms.last().pose(), ms.last().pose(), shaderinstance);
+		this.starVBO.drawWithShader(ms.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
 		VertexBuffer.unbind();
 		this.vertexBufferFormat.clearBufferState();
 		//}
@@ -86,15 +86,14 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.disableBlend();
 		ms.popPose();
 		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
-		/** world.getWorldInfo().getVoidFogHeight() -> 27, because the sea level for TF is lower TODO: Keep an eye on Forge PR #7528*/
-		double d0 = mc.player.getEyePosition(partialTicks).y - 30;
+		double d0 = mc.player.getEyePosition(partialTicks).y + (world.getSeaLevel() - 10);
 
 		if (d0 < 0.0D) {
 			ms.pushPose();
 			ms.translate(0.0F, 12.0F, 0.0F);
 
 			rg.darkBuffer.bind();
-			rg.darkBuffer.drawWithShader(ms.last().pose(), ms.last().pose(), shaderinstance);
+			rg.darkBuffer.drawWithShader(ms.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
 			VertexBuffer.unbind();
 			this.vertexBufferFormat.clearBufferState();
 

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "twilightforest:underbrick"
   },
-  "result": "twilightforest:underbrick_cracked",
+  "result": "twilightforest:cracked_underbrick",
   "experience": 0.3,
   "cookingtime": 200
 }

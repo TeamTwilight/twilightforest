@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:logs",
+    "#twilightforest:common_protections",
+    "twilightforest:liveroot_block",
+    "twilightforest:mangrove_root"
+  ]
+}

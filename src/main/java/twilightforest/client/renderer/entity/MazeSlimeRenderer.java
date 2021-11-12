@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.entity.MazeSlimeEntity;
+import twilightforest.entity.monster.MazeSlime;
 
-public class MazeSlimeRenderer extends MobRenderer<MazeSlimeEntity, SlimeModel<MazeSlimeEntity>> {
+public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeModel<MazeSlime>> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mazeslime.png");
 
@@ -22,13 +22,13 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlimeEntity, SlimeModel<M
 	}
 
 	@Override
-	public void render(MazeSlimeEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+	public void render(MazeSlime entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		this.shadowRadius = 0.25F * (float)entityIn.getSize();
 		if(this.model.riding) matrixStackIn.translate(0, 0.25F, 0);
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	protected void scale(MazeSlimeEntity p_115983_, PoseStack p_115984_, float p_115985_) {
+	protected void scale(MazeSlime p_115983_, PoseStack p_115984_, float p_115985_) {
 		p_115984_.scale(0.999F, 0.999F, 0.999F);
 		p_115984_.translate(0.0D, 0.0010000000474974513D, 0.0D);
 		float var5 = (float)p_115983_.getSize();
@@ -38,7 +38,7 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlimeEntity, SlimeModel<M
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(MazeSlimeEntity entity) {
+	public ResourceLocation getTextureLocation(MazeSlime entity) {
 		return textureLoc;
 	}
 }

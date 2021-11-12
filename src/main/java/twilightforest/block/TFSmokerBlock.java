@@ -3,20 +3,16 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.BlockGetter;
-import twilightforest.tileentity.FireflyTileEntity;
-import twilightforest.tileentity.TFSmokerTileEntity;
+import twilightforest.block.entity.TFSmokerBlockEntity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.TFBlockEntities;
 
 public class TFSmokerBlock extends BaseEntityBlock {
 
@@ -32,12 +28,12 @@ public class TFSmokerBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new TFSmokerTileEntity(pos, state);
+		return new TFSmokerBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.SMOKER.get(), TFSmokerTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.SMOKER.get(), TFSmokerBlockEntity::tick);
 	}
 }

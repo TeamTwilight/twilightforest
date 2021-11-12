@@ -2,14 +2,12 @@ package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.SnowQueenEntity;
-import twilightforest.entity.boss.SnowQueenEntity.Phase;
+import twilightforest.entity.boss.SnowQueen;
+import twilightforest.entity.boss.SnowQueen.Phase;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
-public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
+public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 
 	private int hoverTimer;
 	private int dropTimer;
@@ -21,7 +19,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueenEntity> {
 
 	private double dropY;
 
-	public HoverThenDropGoal(SnowQueenEntity snowQueen, int hoverTime, int dropTime) {
+	public HoverThenDropGoal(SnowQueen snowQueen, int hoverTime, int dropTime) {
 		super(snowQueen, 6F, 0F);
 
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

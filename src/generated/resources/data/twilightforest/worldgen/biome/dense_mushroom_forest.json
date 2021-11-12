@@ -12,6 +12,12 @@
       "max_delay": 12000,
       "replace_current_music": true
     },
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 2.5E-4
+    },
     "sky_color": 2105930,
     "fog_color": 12648408,
     "water_color": 4159204,
@@ -28,10 +34,16 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "minecraft:disk_clay",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
       "twilightforest:small_granite",
@@ -46,44 +58,44 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
     ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
-      "twilightforest:mycelium_blob",
-      "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer",
-      "twilightforest:stone_circle",
-      "twilightforest:well",
-      "twilightforest:outside_stalagmite",
-      "twilightforest:foundation",
-      "twilightforest:monolith",
       "twilightforest:grove_ruins",
+      "twilightforest:foundation",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "twilightforest:small_log",
-      "twilightforest:druid_hut",
+      "twilightforest:mycelium_blob",
+      "twilightforest:tree/vanilla_tf_trees",
       "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/vanilla/vanilla_tf_oak",
-      "twilightforest:tree/vanilla/vanilla_tf_birch",
-      "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/vanilla/vanilla_tf_oak",
-      "twilightforest:tree/vanilla/vanilla_tf_birch",
-      "twilightforest:tree/hollow_placer",
-      "twilightforest:tree/canopy_trees",
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:brown_mushroom_taiga",
       "minecraft:red_mushroom_taiga",
       "twilightforest:tree/vanilla/vanilla_tf_big_mush",
       "twilightforest:mushroom/canopy_mushrooms_dense",
-      "twilightforest:big_mushgloom"
+      "twilightforest:big_mushgloom",
+      "twilightforest:tree/canopy_trees",
+      "twilightforest:default_fallen_logs",
+      "twilightforest:tree/hollow_placer",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer"
     ]
   ],
   "starts": [
-    "twilightforest:configured_mushroom_tower"
+    "twilightforest:configured_hedge_maze",
+    "twilightforest:configured_hollow_hill_small",
+    "twilightforest:configured_hollow_hill_medium",
+    "twilightforest:configured_hollow_hill_large",
+    "twilightforest:configured_courtyard",
+    "twilightforest:configured_lich_tower"
   ],
   "spawners": {
     "monster": [
@@ -144,7 +156,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:wild_boar",
+        "type": "twilightforest:boar",
         "weight": 10,
         "minCount": 4,
         "maxCount": 4
@@ -180,7 +192,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:bunny",
+        "type": "twilightforest:dwarf_rabbit",
         "weight": 10,
         "minCount": 4,
         "maxCount": 5
@@ -205,6 +217,6 @@
   "temperature": 0.8,
   "downfall": 1.0,
   "category": "forest",
-  "depth": 0.0625,
+  "depth": 0.05,
   "scale": 0.05
 }

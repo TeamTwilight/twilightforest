@@ -2,18 +2,18 @@ package twilightforest.client.model;
 
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
+import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.model.tileentity.*;
+import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -42,6 +42,12 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.QUEST_RAM_TROPHY, QuestRamTrophyModel::createHead);
 		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN_TROPHY, SnowQueenTrophyModel::createHead);
 		event.registerLayerDefinition(TFModelLayers.UR_GHAST_TROPHY, UrGhastTrophyModel::createHead);
+
+		event.registerLayerDefinition(TFModelLayers.LEGACY_HYDRA_TROPHY, HydraTrophyLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_MINOSHROOM_TROPHY, MinoshroomTrophyLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_QUEST_RAM_TROPHY, QuestRamTrophyLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_SNOW_QUEEN_TROPHY, SnowQueenTrophyLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_UR_GHAST_TROPHY, UrGhastTrophyLegacyModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.ADHERENT, AdherentModel::create);
 		event.registerLayerDefinition(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
@@ -73,10 +79,10 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.KING_SPIDER, SpiderModel::createSpiderBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.KNIGHT_PHANTOM, KnightPhantomModel::create);
 		event.registerLayerDefinition(TFModelLayers.KOBOLD, KoboldModel::create);
-		event.registerLayerDefinition(TFModelLayers.LICH_MINION, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.LICH_MINION, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 		event.registerLayerDefinition(TFModelLayers.LICH, LichModel::create);
 		event.registerLayerDefinition(TFModelLayers.LOWER_GOBLIN_KNIGHT, LowerGoblinKnightModel::create);
-		event.registerLayerDefinition(TFModelLayers.LOYAL_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.LOYAL_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME, SlimeModel::createInnerBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
 		event.registerLayerDefinition(TFModelLayers.MINOSHROOM, MinoshroomModel::create);
@@ -92,12 +98,15 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.QUEST_RAM, QuestRamModel::create);
 		event.registerLayerDefinition(TFModelLayers.RAVEN, RavenModel::create);
 		event.registerLayerDefinition(TFModelLayers.REDCAP, RedcapModel::create);
-		event.registerLayerDefinition(TFModelLayers.RISING_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.7F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.65F), 0.7F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.RISING_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 		event.registerLayerDefinition(TFModelLayers.ROVING_CUBE, CubeOfAnnihilationModel::create);
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID, SkeletonDruidModel::create);
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID_INNER_ARMOR, () -> SkeletonDruidModel.create(LayerDefinitions.INNER_ARMOR_DEFORMATION));
 		event.registerLayerDefinition(TFModelLayers.SKELETON_DRUID_OUTER_ARMOR, () -> SkeletonDruidModel.create(LayerDefinitions.OUTER_ARMOR_DEFORMATION));
 		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE, SlimeBeetleModel::create);
+		event.registerLayerDefinition(TFModelLayers.SLIME_BEETLE_TAIL, SlimeBeetleModel::create);
 		event.registerLayerDefinition(TFModelLayers.SNOW_QUEEN, SnowQueenModel::create);
 		event.registerLayerDefinition(TFModelLayers.CHAIN_BLOCK, SpikeBlockModel::create);
 		event.registerLayerDefinition(TFModelLayers.SQUIRREL, SquirrelModel::create);
@@ -113,8 +122,33 @@ public class TFLayerDefinitions {
 		event.registerLayerDefinition(TFModelLayers.WRAITH, WraithModel::create);
 		event.registerLayerDefinition(TFModelLayers.YETI, YetiModel::create);
 
-		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.7F), 64, 32));
-		event.registerLayerDefinition(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.7F), 64, 32));
+		event.registerLayerDefinition(TFModelLayers.LEGACY_BIGHORN_SHEEP, BighornLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_BLOCKCHAIN_GOBLIN, BlockChainGoblinLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_BOAR, BoarLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_DEER, DeerLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_FIRE_BEETLE, FireBeetleLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_HELMET_CRAB, HelmetCrabLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_HYDRA, HydraLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_HYDRA_HEAD, HydraHeadLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_HYDRA_NECK, HydraNeckLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_KOBOLD, KoboldLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_LOWER_GOBLIN_KNIGHT, LowerGoblinKnightLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_MINOSHROOM, MinoshroomLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_MINOTAUR, MinotaurLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_NAGA, NagaLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_NAGA_BODY, NagaLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_PINCH_BEETLE, PinchBeetleLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_QUEST_RAM, QuestRamLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_RAVEN, RavenLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_REDCAP, RedcapLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_SLIME_BEETLE, SlimeBeetleLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_SLIME_BEETLE_TAIL, SlimeBeetleLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_SNOW_QUEEN, SnowQueenLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_SQUIRREL, SquirrelLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_TINY_BIRD, TinyBirdLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_TROLL, TrollLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_UPPER_GOBLIN_KNIGHT, UpperGoblinKnightLegacyModel::create);
+		event.registerLayerDefinition(TFModelLayers.LEGACY_UR_GHAST, UrGhastLegacyModel::create);
 
 		event.registerLayerDefinition(TFModelLayers.CICADA, CicadaModel::create);
 		event.registerLayerDefinition(TFModelLayers.FIREFLY, FireflyModel::create);

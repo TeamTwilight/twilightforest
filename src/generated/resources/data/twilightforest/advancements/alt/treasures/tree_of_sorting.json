@@ -1,0 +1,48 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_sapling": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_sapling"
+            ]
+          }
+        ]
+      }
+    },
+    "has_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_leaves": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_leaves"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_sapling",
+      "has_log",
+      "has_leaves"
+    ]
+  ]
+}

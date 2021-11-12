@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:block/torchberry_plant",
-    "layer1": "twilightforest:block/torchberry_plant_glow"
+    "layer0": "twilightforest:block/torchberry_plant"
   }
 }

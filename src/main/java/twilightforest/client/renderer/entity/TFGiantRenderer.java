@@ -7,16 +7,14 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.client.model.TFModelLayers;
-import twilightforest.entity.GiantMinerEntity;
+import twilightforest.entity.monster.GiantMiner;
 
-public class TFGiantRenderer<T extends GiantMinerEntity> extends HumanoidMobRenderer<T, PlayerModel<T>> {
+public class TFGiantRenderer<T extends GiantMiner> extends HumanoidMobRenderer<T, PlayerModel<T>> {
 	private final PlayerModel<T> normalModel;
 	private final PlayerModel<T> slimModel;
 
@@ -25,7 +23,7 @@ public class TFGiantRenderer<T extends GiantMinerEntity> extends HumanoidMobRend
 		normalModel = getModel();
 		slimModel = new PlayerModel<>(manager.bakeLayer(ModelLayers.PLAYER_SLIM), true);
 
-		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR))));
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 	}
 
 	@Override
@@ -37,7 +35,7 @@ public class TFGiantRenderer<T extends GiantMinerEntity> extends HumanoidMobRend
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(GiantMinerEntity entity) {
+	public ResourceLocation getTextureLocation(GiantMiner entity) {
 		Minecraft mc = Minecraft.getInstance();
 		boolean slim = false;
 		ResourceLocation texture = DefaultPlayerSkin.getDefaultSkin();

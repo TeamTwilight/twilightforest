@@ -5,23 +5,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
-import twilightforest.entity.boss.ThrownWepEntity;
+import twilightforest.entity.projectile.ThrownWep;
 
-public class ThrownWepRenderer extends EntityRenderer<ThrownWepEntity> {
+public class ThrownWepRenderer extends EntityRenderer<ThrownWep> {
 
 	public ThrownWepRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
 	}
 
 	@Override
-	public void render(ThrownWepEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(ThrownWep entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
 
 		float spin = (entity.tickCount + partialTicks) * -10F + 90F;
@@ -34,7 +33,6 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWepEntity> {
 		stack.popPose();
 	}
 
-	// todo recheck transformations
 	private void renderDroppedItem(PoseStack matrix, MultiBufferSource buffer, int light, ItemStack stack, float rotation, float spin) {
 		matrix.pushPose();
 
@@ -56,7 +54,7 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWepEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(ThrownWepEntity entity) {
+	public ResourceLocation getTextureLocation(ThrownWep entity) {
 		return TextureAtlas.LOCATION_BLOCKS;
 	}
 }

@@ -12,6 +12,12 @@
       "max_delay": 12000,
       "replace_current_music": true
     },
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 0.001
+    },
     "sky_color": 2105930,
     "fog_color": 12648408,
     "water_color": 4159204,
@@ -28,10 +34,16 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "minecraft:disk_clay",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
       "twilightforest:small_granite",
@@ -46,36 +58,31 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
     ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
-      "twilightforest:lamppost",
+      "twilightforest:grove_ruins",
+      "twilightforest:foundation",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:tree/firefly_forest_trees",
+      "twilightforest:tree/vanilla_tf_trees",
+      "twilightforest:tree/twilight_oak_trees",
+      "twilightforest:default_fallen_logs",
+      "twilightforest:tree/hollow_placer",
+      "twilightforest:lamppost_placer",
       "twilightforest:mushgloom_cluster",
       "minecraft:patch_pumpkin",
       "minecraft:forest_flower_vegetation_common",
       "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer",
-      "twilightforest:stone_circle",
-      "twilightforest:well",
-      "twilightforest:outside_stalagmite",
-      "twilightforest:foundation",
-      "twilightforest:monolith",
-      "twilightforest:grove_ruins",
-      "twilightforest:hollow_stump",
-      "twilightforest:hollow_log",
-      "twilightforest:small_log",
-      "twilightforest:druid_hut",
-      "twilightforest:tree/firefly_canopy_tree_mix",
-      "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/vanilla/vanilla_tf_oak",
-      "twilightforest:tree/vanilla/vanilla_tf_birch",
-      "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/vanilla/vanilla_tf_oak",
-      "twilightforest:tree/vanilla/vanilla_tf_birch",
-      "twilightforest:tree/hollow_placer"
+      "twilightforest:flower_placer"
     ]
   ],
   "starts": [
@@ -145,7 +152,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:wild_boar",
+        "type": "twilightforest:boar",
         "weight": 10,
         "minCount": 4,
         "maxCount": 4
@@ -181,7 +188,7 @@
         "maxCount": 4
       },
       {
-        "type": "twilightforest:bunny",
+        "type": "twilightforest:dwarf_rabbit",
         "weight": 10,
         "minCount": 4,
         "maxCount": 5

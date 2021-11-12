@@ -1,0 +1,87 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:steeleaf_ingot"
+            ]
+          }
+        ]
+      }
+    },
+    "has_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:steeleaf_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "has_pick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:steeleaf_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:steeleaf_axe"
+            ]
+          }
+        ]
+      }
+    },
+    "has_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:steeleaf_shovel"
+            ]
+          }
+        ]
+      }
+    },
+    "has_hoe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:steeleaf_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ingot",
+      "has_sword",
+      "has_pick",
+      "has_axe",
+      "has_shovel",
+      "has_hoe"
+    ]
+  ]
+}

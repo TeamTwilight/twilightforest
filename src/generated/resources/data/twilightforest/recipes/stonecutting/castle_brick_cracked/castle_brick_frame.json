@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:castle_brick_cracked"
-  },
-  "result": "twilightforest:castle_brick_frame",
-  "count": 1
-}

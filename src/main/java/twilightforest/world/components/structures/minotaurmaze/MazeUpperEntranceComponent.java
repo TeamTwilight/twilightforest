@@ -1,11 +1,13 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -45,12 +47,12 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// ceiling
-		this.generateMaybeBox(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.maze_stone.get().defaultBlockState(), AIR, true, false);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.MAZESTONE.get().defaultBlockState(), AIR, true, false);
 
-		this.generateBox(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.maze_stone_mosaic.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, true);
-		this.generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, true);
-		this.generateBox(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, true);
+		this.generateBox(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, true);
+		this.generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, true);
+		this.generateBox(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, true);
 		this.generateMaybeBox(world, sbb, rand, 0.2F, 0, 0, 0, 15, 5, 15, Blocks.GRAVEL.defaultBlockState(), AIR, true, false);
 
 		// doorways
@@ -67,8 +69,8 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 		this.generateAirBox(world, sbb, 1, 1, 1, 14, 4, 14);
 
 		// entrance pit
-		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS.defaultBlockState(), AIR, false, false);
 //		this.fillWithBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
 
@@ -77,31 +79,8 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 		return true;
 	}
 
-	/**
-	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
-	 * levels in the BB's horizontal rectangle).
-	 */
 	@Override
-	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox boundingBox) {
-		int yTotal = 0;
-		int count = 0;
-
-		for (int z = this.boundingBox.minZ(); z <= this.boundingBox.maxZ(); ++z) {
-			for (int x = this.boundingBox.minX(); x <= this.boundingBox.maxX(); ++x) {
-				BlockPos pos = new BlockPos(x, 64, z);
-
-				if (boundingBox.isInside(pos)) {
-					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
-					yTotal += Math.max(topPos.getY(), WorldUtil.getSeaLevel(generator));
-					++count;
-				}
-			}
-		}
-
-		if (count == 0) {
-			return -1;
-		} else {
-			return yTotal / count;
-		}
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.BEARD;
 	}
 }

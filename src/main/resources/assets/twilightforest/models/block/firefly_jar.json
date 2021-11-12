@@ -3,7 +3,7 @@
   "textures": {
     "particle": "block/glass",
     "side": "twilightforest:block/fireflyjar_side",
-    "end": "twilightforest:block/fireflyjar_top",
+    "end": "twilightforest:block/fireflyjar_bottom",
     "cork": "twilightforest:block/fireflyjar_cork"
   },
   "elements": [

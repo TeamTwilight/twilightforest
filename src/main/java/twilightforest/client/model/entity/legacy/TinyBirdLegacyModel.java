@@ -17,9 +17,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.TinyBirdEntity;
+import twilightforest.entity.passive.TinyBird;
 
-public class TinyBirdLegacyModel extends AgeableListModel<TinyBirdEntity> {
+public class TinyBirdLegacyModel extends AgeableListModel<TinyBird> {
 	//fields
 	ModelPart head;
 	ModelPart body;
@@ -127,7 +127,7 @@ public class TinyBirdLegacyModel extends AgeableListModel<TinyBirdEntity> {
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setupAnim(TinyBirdEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(TinyBird entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.xRot = headPitch / (180F / (float) Math.PI);
 		head.yRot = netHeadYaw / (180F / (float) Math.PI);
 

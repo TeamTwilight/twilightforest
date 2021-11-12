@@ -4,7 +4,6 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
@@ -17,6 +16,7 @@ public abstract class MoonwormDispenseBehavior extends DefaultDispenseItemBehavi
 
     boolean fired = false;
 
+    @Override
     public ItemStack execute(BlockSource source, ItemStack stack) {
         Level world = source.getLevel();
         Position iposition = DispenserBlock.getDispensePosition(source);
@@ -24,9 +24,9 @@ public abstract class MoonwormDispenseBehavior extends DefaultDispenseItemBehavi
         if(!world.isClientSide) {
             if(!(stack.getMaxDamage() == stack.getDamageValue() + 2)) {
                 Projectile projectileentity = this.getProjectileEntity(world, iposition, stack);
-                projectileentity.shoot((double) direction.getStepX(), (double) ((float) direction.getStepY() + 0.1F), (double) direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
+                projectileentity.shoot(direction.getStepX(), (float) direction.getStepY() + 0.1F, direction.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
                 world.addFreshEntity(projectileentity);
-                if (stack.hurt(2, world.random, (ServerPlayer) null)) {
+                if (stack.hurt(2, world.random, null)) {
                     stack.setCount(0);
                 }
                 fired = true;

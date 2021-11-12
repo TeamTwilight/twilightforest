@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/horizontal_hollow_log_carpet",
+  "textures": {
+    "carpet": "minecraft:block/snow",
+    "overhang": "twilightforest:block/snow_overhang"
+  }
+}

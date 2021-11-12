@@ -27,7 +27,7 @@ public class TripleBowItem extends BowItem {
 	public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
 		if (entityLiving instanceof Player) {
 			Player entityplayer = (Player)entityLiving;
-			boolean flag = entityplayer.abilities.instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
+			boolean flag = entityplayer.getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
 			ItemStack itemstack = entityplayer.getProjectile(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
@@ -41,21 +41,21 @@ public class TripleBowItem extends BowItem {
 
 				float f = getPowerForTime(i);
 				if (!(f < 0.1D)) {
-					boolean flag1 = entityplayer.abilities.instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
+					boolean flag1 = entityplayer.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
 					if (!worldIn.isClientSide) {
 						ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
 						AbstractArrow entityarrow = arrowitem.createArrow(worldIn, itemstack, entityplayer);
-						entityarrow.shootFromRotation(entityplayer, entityplayer.xRot, entityplayer.yRot, 0.0F, f * 3.0F, 1.0F);
+						entityarrow.shootFromRotation(entityplayer, entityplayer.getXRot(), entityplayer.getYRot(), 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation
 						AbstractArrow entityarrow1 = arrowitem.createArrow(worldIn, itemstack, entityplayer);
-						entityarrow1.shootFromRotation(entityLiving, entityLiving.xRot, entityLiving.yRot, 0, f * 2, 1);
+						entityarrow1.shootFromRotation(entityLiving, entityLiving.getXRot(), entityLiving.getYRot(), 0, f * 2, 1);
 						entityarrow1.setDeltaMovement(entityarrow1.getDeltaMovement().add(0.0D, 0.0075 * 20F, 0.0D));
 						entityarrow1.setPos(entityarrow1.getX(), entityarrow1.getY() + 0.025F, entityarrow1.getZ());
 						entityarrow1.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 
 						AbstractArrow entityarrow2 = arrowitem.createArrow(worldIn, itemstack, entityplayer);
-						entityarrow2.shootFromRotation(entityLiving, entityLiving.xRot, entityLiving.yRot, 0, f * 2, 1);
+						entityarrow2.shootFromRotation(entityLiving, entityLiving.getXRot(), entityLiving.getYRot(), 0, f * 2, 1);
 						entityarrow2.setDeltaMovement(entityarrow2.getDeltaMovement().subtract(0.0D, 0.0075 * 20F, 0.0D));
 						entityarrow2.setPos(entityarrow2.getX(), entityarrow2.getY() + 0.025F, entityarrow2.getZ());
 						entityarrow2.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
@@ -90,7 +90,7 @@ public class TripleBowItem extends BowItem {
 
 						stack.hurtAndBreak(1, entityplayer, (user) -> user.broadcastBreakEvent(entityplayer.getUsedItemHand()));
 
-						if (flag1 || entityplayer.abilities.instabuild && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
+						if (flag1 || entityplayer.getAbilities().instabuild && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
 							entityarrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 						}
 
@@ -100,7 +100,7 @@ public class TripleBowItem extends BowItem {
 					}
 
 					worldIn.playSound((Player)null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (worldIn.random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-					if (!flag1 && !entityplayer.abilities.instabuild) {
+					if (!flag1 && !entityplayer.getAbilities().instabuild) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty()) {
 							entityplayer.getInventory().removeItem(itemstack);

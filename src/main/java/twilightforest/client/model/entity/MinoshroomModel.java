@@ -9,14 +9,14 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.boss.MinoshroomEntity;
+import twilightforest.entity.boss.Minoshroom;
 
 /**
  * ModelMinoshroom - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class MinoshroomModel extends HumanoidModel<MinoshroomEntity> {
+public class MinoshroomModel extends HumanoidModel<Minoshroom> {
     public ModelPart cowTorso;
     public ModelPart rightFrontLeg;
     public ModelPart leftFrontLeg;
@@ -102,7 +102,7 @@ public class MinoshroomModel extends HumanoidModel<MinoshroomEntity> {
     }
 
     @Override
-    public void setupAnim(MinoshroomEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(Minoshroom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         // copied from HumanoidModel
 
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);

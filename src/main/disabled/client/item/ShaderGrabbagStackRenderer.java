@@ -122,7 +122,7 @@ public class ShaderGrabbagStackRenderer extends TileEntityRenderer<ShaderGrabbag
             BufferBuilder buffer = tessellator.getBuffer();
 
             // Bind the star burst mask tex
-            Minecraft.getInstance().getTextureManager().bindTexture(bg);
+            RenderSystem._setShaderTexture(0, bg);
 
             // Just gonna borrow your code for a sec blu, thnx
             int c = blusunrize.immersiveengineering.client.ClientUtils.getFormattingColour(ItemTFShaderGrabbag.shader_bag.getRarity(stack).color);

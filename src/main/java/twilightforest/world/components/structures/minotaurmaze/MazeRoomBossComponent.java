@@ -74,33 +74,33 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 		generateBox(world, sbb, 1, 2, 1, 1, 3, 4, redMushroom, AIR, false);
 		generateBox(world, sbb, 2, 2, 1, 4, 3, 1, redMushroom, AIR, false);
 		generateBox(world, sbb, 1, 4, 1, 3, 4, 3, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(world, 3, 2, 3, TFTreasure.LABYRINTH_ROOM, sbb);
 
 		generateBox(world, sbb, 12, 1, 12, 14, 1, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 14, 2, 11, 14, 3, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 11, 2, 14, 14, 3, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 12, 4, 12, 14, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(world, 12, 2, 12, TFTreasure.LABYRINTH_ROOM, sbb);
 
 		generateBox(world, sbb, 1, 1, 12, 3, 1, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 1, 2, 11, 1, 3, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 2, 2, 14, 4, 3, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 1, 4, 12, 3, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(world, 3, 2, 12, TFTreasure.LABYRINTH_ROOM, sbb);
 
 		generateBox(world, sbb, 12, 1, 1, 14, 1, 3, brownMushroom, AIR, false);
 		generateBox(world, sbb, 11, 2, 1, 14, 3, 1, brownMushroom, AIR, false);
 		generateBox(world, sbb, 14, 2, 2, 14, 3, 4, brownMushroom, AIR, false);
 		generateBox(world, sbb, 12, 4, 1, 14, 4, 3, brownMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(world, 12, 2, 3, TFTreasure.LABYRINTH_ROOM, sbb);
 
 		// a few more ceilingshrooms
 		generateBox(world, sbb, 5, 4, 5, 7, 5, 7, brownMushroom, AIR, false);
 		generateBox(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
 		// the moo-cen-mino-shrom-taur!
-		final BlockState taurSpawner = TFBlocks.boss_spawner_minoshroom.get().defaultBlockState();
-		setBlockStateRotated(world, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
+		final BlockState taurSpawner = TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().defaultBlockState();
+		setBlockStateRotated(world, taurSpawner, 7, 2, 7, Rotation.NONE, sbb);
 
 		return true;
 	}

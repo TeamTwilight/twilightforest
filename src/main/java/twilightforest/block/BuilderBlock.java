@@ -11,21 +11,19 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
+import twilightforest.block.entity.CarminiteBuilderBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.tileentity.*;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -95,6 +93,7 @@ public class BuilderBlock extends BaseEntityBlock {
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_INACTIVE || variant == TowerDeviceVariant.BUILDER_TIMEOUT) {
+			((CarminiteBuilderBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).resetStats();
 			for (Direction e : Direction.values()) {
 				activateBuiltBlocks(world, pos.relative(e));
 			}
@@ -102,7 +101,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	private void letsBuild(Level world, BlockPos pos) {
-		CarminiteBuilderTileEntity tileEntity = (CarminiteBuilderTileEntity) world.getBlockEntity(pos);
+		CarminiteBuilderBlockEntity tileEntity = (CarminiteBuilderBlockEntity) world.getBlockEntity(pos);
 
 		if (tileEntity != null && !tileEntity.makingBlocks) {
 			tileEntity.startBuilding();
@@ -166,26 +165,22 @@ public class BuilderBlock extends BaseEntityBlock {
 	public static void activateBuiltBlocks(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if (state.getBlock() == TFBlocks.built_block.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
+		if (state.getBlock() == TFBlocks.BUILT_BLOCK.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
 			world.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
 			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundSource.BLOCKS, 0.3F, 0.6F);
-			world.getBlockTicks().scheduleTick(pos, state.getBlock(), /*state.getBlock().tickRate(world)*/ 15); //TODO: Potentially incorrect, but we aren't allowed block tick rates
+			world.getBlockTicks().scheduleTick(pos, state.getBlock(), 10);
 		}
 	}
-
-	/**
-	 * We need variable, metadata-based tick rates
-	 */
 
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CarminiteBuilderTileEntity(pos, state);
+		return new CarminiteBuilderBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.TOWER_BUILDER.get(), CarminiteBuilderTileEntity::tick);
+		return state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? createTickerHelper(type, TFBlockEntities.TOWER_BUILDER.get(), CarminiteBuilderBlockEntity::tick) : null;
 	}
 }

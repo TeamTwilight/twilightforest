@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:vine"
+      },
+      {
+        "item": "minecraft:moss_block"
+      }
+    ],
+    {
+      "item": "twilightforest:nagastone_pillar"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:mossy_nagastone_pillar"
+  }
+}

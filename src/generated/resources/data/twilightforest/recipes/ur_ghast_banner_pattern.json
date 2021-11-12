@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:paper"
+    },
+    {
+      "item": "twilightforest:ur_ghast_trophy"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:ur_ghast_banner_pattern"
+  }
+}

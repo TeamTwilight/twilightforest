@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.trollcave;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -9,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.HugeMushroomUtil;
@@ -24,6 +27,8 @@ import twilightforest.util.RotationUtil;
 import java.util.Random;
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
+	protected static final SpikeConfig STONE_STALACTITE_SMALL = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 5), UniformInt.of(2, 3), true);
+	protected static final SpikeConfig STONE_STALAGMITE_SMALL = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(2, 4), UniformInt.of(2, 3), false);
 
 	protected boolean[] openingTowards = {false, false, true, false};
 
@@ -89,12 +94,12 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockSpike(world, STONE_STALACTITE_SMALL, dest.atY(this.height), sbb);
 		}
 		// stone stalagmites!
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockSpike(world, STONE_STALAGMITE_SMALL, dest.atY(0), sbb);
 		}
 
 		// possible treasure
@@ -166,7 +171,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		if (decoRNG.nextInt(8) == 0) {
 			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.OBSIDIAN.defaultBlockState(), rotation);
 		} else if (decoRNG.nextInt(4) == 0) {
-			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollsteinn.get().defaultBlockState(), rotation);
+			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.TROLLSTEINN.get().defaultBlockState(), rotation);
 		} else {
 			// normal stone
 			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.STONE.defaultBlockState(), rotation);
@@ -178,13 +183,13 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		int z = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 		int y = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 
-		this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y, z, size - 2, y + 3, z + 3, TFBlocks.trollsteinn.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
+		this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y, z, size - 2, y + 3, z + 3, TFBlocks.TROLLSTEINN.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
 		if (decoRNG.nextBoolean()) {
 			// down
-			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, 1, z, size - 6, y - 1, z + 3, TFBlocks.trollsteinn.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
+			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, 1, z, size - 6, y - 1, z + 3, TFBlocks.TROLLSTEINN.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
 		} else {
 			// up
-			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y + 4, z, size - 6, height - 2, z + 3, TFBlocks.trollsteinn.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
+			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y + 4, z, size - 6, height - 2, z + 3, TFBlocks.TROLLSTEINN.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
 		}
 	}
 
@@ -199,7 +204,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 
 			int width = 1 + decoRNG.nextInt(2) + decoRNG.nextInt(2);
 			int depth = 1 + decoRNG.nextInt(2) + decoRNG.nextInt(2);
-			Block mushBlock = ((decoRNG.nextInt(3) == 0) ? TFBlocks.huge_mushgloom.get() : (decoRNG.nextBoolean() ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK));
+			Block mushBlock = ((decoRNG.nextInt(3) == 0) ? TFBlocks.HUGE_MUSHGLOOM.get() : (decoRNG.nextBoolean() ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK));
 			makeSingleBracketMushroom(world, sbb, rotation, z, y, width, depth, mushBlock.defaultBlockState());
 
 			// wiggle a little

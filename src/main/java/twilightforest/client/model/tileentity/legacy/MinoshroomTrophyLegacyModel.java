@@ -17,7 +17,7 @@ public class MinoshroomTrophyLegacyModel extends GenericTrophyModel {
 		this.head = part.getChild("head");
 	}
 
-	public LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition partRoot = mesh.getRoot();
 
@@ -46,12 +46,12 @@ public class MinoshroomTrophyLegacyModel extends GenericTrophyModel {
 
 		var leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
 						.texOffs(0, 0)
-						.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3),
+						.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3),
 				PartPose.offsetAndRotation(2.5F, -6.5F, 0.0F, 0.0F, 25F / (180F / Mth.PI), -10F / (180F / Mth.PI) ));
 
 		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create()
 						.texOffs(16, 0)
-						.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),
+						.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2),
 				PartPose.offsetAndRotation(4.5F, 0.0F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -45F / (180F / Mth.PI)));
 
 		return LayerDefinition.create(mesh, 128, 32);

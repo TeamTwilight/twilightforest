@@ -2,19 +2,17 @@ package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 import twilightforest.TFSounds;
-import twilightforest.entity.boss.AlphaYetiEntity;
+import twilightforest.entity.boss.AlphaYeti;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class YetiTiredGoal extends Goal {
 
-	private AlphaYetiEntity yeti;
+	private AlphaYeti yeti;
 	private int tiredDuration;
 	private int tiredTimer;
 
-	public YetiTiredGoal(AlphaYetiEntity entityTFYetiAlpha, int i) {
+	public YetiTiredGoal(AlphaYeti entityTFYetiAlpha, int i) {
 		this.yeti = entityTFYetiAlpha;
 		this.tiredDuration = i;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));

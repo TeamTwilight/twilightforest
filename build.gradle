@@ -41,7 +41,7 @@ compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecat
 minecraft {
     //mappings channel: "official", version: "1.17.1"
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    mappings channel: 'parchment', version: '2021.08.15-1.17.1'
+    mappings channel: 'parchment', version: '2021.08.29-1.17.1'
 
     //version = minecraft_version + "-" + forge_version // grab latest forge
     //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
@@ -192,8 +192,8 @@ repositories {
 
 dependencies {
     // progwml6
-    //compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    //runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     //implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}")
     //implementation fg.deobf("slimeknights:TConstruct:${minecraft_version}-${tcon_version}")

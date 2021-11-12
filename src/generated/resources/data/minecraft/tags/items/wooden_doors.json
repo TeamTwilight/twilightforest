@@ -6,8 +6,8 @@
     "twilightforest:mangrove_door",
     "twilightforest:dark_door",
     "twilightforest:time_door",
-    "twilightforest:trans_door",
-    "twilightforest:mine_door",
-    "twilightforest:sort_door"
+    "twilightforest:transformation_door",
+    "twilightforest:mining_door",
+    "twilightforest:sorting_door"
   ]
 }

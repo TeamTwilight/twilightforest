@@ -1,12 +1,13 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import twilightforest.entity.passive.QuestRam;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -25,9 +26,6 @@ public class FindLooseGoal extends Goal {
 		this.speed = speed;
 		this.temptItem = temptItem;
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-		if (!(creature.getNavigation() instanceof GroundPathNavigation) && !(creature.getNavigation() instanceof FlyingPathNavigation)) {
-			throw new IllegalArgumentException("Unsupported mob type for TemptGoal");
-		}
 	}
 
 	@Override
@@ -48,6 +46,10 @@ public class FindLooseGoal extends Goal {
 	}
 
 	protected boolean isTempting(ItemStack stack) {
+		if (creature instanceof QuestRam ram && stack.is(ItemTags.WOOL)) {
+			DyeColor color = QuestRam.guessColor(stack);
+			return color != null && !ram.isColorPresent(color);
+		}
 		return this.temptItem.test(stack);
 	}
 

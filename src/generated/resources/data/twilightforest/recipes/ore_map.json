@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:maze_map"
+    },
+    {
+      "tag": "forge:storage_blocks/diamond"
+    },
+    {
+      "tag": "forge:storage_blocks/gold"
+    },
+    {
+      "tag": "forge:storage_blocks/iron"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:ore_map"
+  }
+}

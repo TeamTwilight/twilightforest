@@ -9,7 +9,12 @@
       "translate": "advancement.twilightforest.naga_armors"
     },
     "description": {
-      "translate": "advancement.twilightforest.naga_armors.desc"
+      "translate": "advancement.twilightforest.naga_armors.desc",
+      "with": [
+        {
+          "translate": "item.twilightforest.naga_scale"
+        }
+      ]
     },
     "frame": "challenge",
     "show_toast": true,

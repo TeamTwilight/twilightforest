@@ -61,8 +61,12 @@
                   "type": "twilightforest:hollow_stump"
                 },
                 "decorator": {
-                  "config": {},
-                  "type": "twilightforest:nostructure"
+                  "config": {
+                    "occupies_surface": true,
+                    "occupies_underground": false,
+                    "additional_clearance": 0
+                  },
+                  "type": "twilightforest:no_structure"
                 }
               },
               "type": "minecraft:decorated"
@@ -78,7 +82,7 @@
         },
         "decorator": {
           "config": {
-            "chance": 88
+            "chance": 100
           },
           "type": "minecraft:chance"
         }

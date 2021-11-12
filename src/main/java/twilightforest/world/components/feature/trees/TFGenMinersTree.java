@@ -52,8 +52,8 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 6, -5), false, config);
 
 		// place minewood core
-		world.setBlock(pos.above(), TFBlocks.mining_log_core.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
-		world.getBlockTicks().scheduleTick(pos.above(), TFBlocks.mining_log_core.get(), 20);
+		world.setBlock(pos.above(), TFBlocks.MINING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+		world.getBlockTicks().scheduleTick(pos.above(), TFBlocks.MINING_LOG_CORE.get(), 20);
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
@@ -81,7 +81,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 					if (!bushy && Math.abs(ly) > 0 && Math.abs(lx) > 0) {
 						continue;
 					}
-					FeaturePlacers.placeProvidedBlock(leavesPlacer, pos.offset(lx, ly, lz), config.leavesProvider, rand);
+					FeaturePlacers.placeProvidedBlock(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, pos.offset(lx, ly, lz), config.leavesProvider, rand);
 				}
 			}
 		}

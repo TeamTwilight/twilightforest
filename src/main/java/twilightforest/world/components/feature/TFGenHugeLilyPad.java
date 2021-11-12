@@ -47,7 +47,7 @@ public class TFGenHugeLilyPad extends Feature<NoneFeatureConfiguration> {
 
 			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
 				final Direction horizontal = Direction.from2DDataValue(random.nextInt(4));
-				final BlockState lilypad = TFBlocks.huge_lilypad.get().defaultBlockState().setValue(FACING, horizontal);
+				final BlockState lilypad = TFBlocks.HUGE_LILY_PAD.get().defaultBlockState().setValue(FACING, horizontal);
 
 				world.setBlock(dPos, lilypad.setValue(PIECE, NW), 16 | 2);
 				world.setBlock(dPos.east(), lilypad.setValue(PIECE, NE), 16 | 2);

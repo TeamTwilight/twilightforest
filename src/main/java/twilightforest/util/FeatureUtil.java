@@ -4,16 +4,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 
 // TODO Split into FeatureLogic and FeaturePlacers
 @Deprecated
 public final class FeatureUtil {
+
+	public static boolean isAreaSuitable(WorldGenLevel world, BlockPos pos, int width, int height, int depth) {
+		return isAreaSuitable(world, pos, width, height, depth, false);
+	}
 	/**
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 */
-	public static boolean isAreaSuitable(LevelAccessor world, BlockPos pos, int width, int height, int depth) {
+	public static boolean isAreaSuitable(WorldGenLevel world, BlockPos pos, int width, int height, int depth, boolean underwaterAllowed) {
 		boolean flag = true;
 
 		// check if there's anything within the diameter
@@ -24,13 +29,19 @@ public final class FeatureUtil {
 				if (world.hasChunkAt(pos_)) {
 					// is there grass, dirt or stone below?
 					Material m = world.getBlockState(pos_.below()).getMaterial();
-					if (m != Material.DIRT && m != Material.GRASS && m != Material.STONE) {
+					if (m != Material.DIRT && m != Material.GRASS && m != Material.STONE && m != Material.SNOW && m != Material.SAND) {
+						if(underwaterAllowed && m == Material.WATER) {
+							continue;
+						}
 						flag = false;
 					}
 
 					for (int cy = 0; cy < height; cy++) {
 						// blank space above?
-						if (!world.isEmptyBlock(pos_.above(cy))) {
+						if (!world.isEmptyBlock(pos_.above(cy)) && !world.getBlockState(pos_.above(cy)).getMaterial().isReplaceable()) {
+							if(underwaterAllowed && world.getBlockState(pos_.above(cy)).getMaterial() == Material.WATER) {
+								continue;
+							}
 							flag = false;
 						}
 					}

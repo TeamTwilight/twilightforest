@@ -6,18 +6,16 @@
 
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.PenguinEntity;
+import twilightforest.entity.passive.Penguin;
 
-public class PenguinModel extends HumanoidModel<PenguinEntity> {
+public class PenguinModel extends HumanoidModel<Penguin> {
 
 	public PenguinModel(ModelPart root) {
 		super(root);
@@ -92,7 +90,7 @@ public class PenguinModel extends HumanoidModel<PenguinEntity> {
 	}
 
 	@Override
-	public void setupAnim(PenguinEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Penguin entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 

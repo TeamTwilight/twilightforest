@@ -8,7 +8,8 @@ import twilightforest.TwilightForestMod;
 import java.util.function.Supplier;
 
 public class TFPacketHandler {
-	private static final String PROTOCOL_VERSION = "1";
+	// Bump this number every time theres a breaking change, to ensure people dont mess things up when joining on the wrong version
+	private static final String PROTOCOL_VERSION = "2";
 	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
 			TwilightForestMod.prefix("channel"),
 			() -> PROTOCOL_VERSION,
@@ -33,9 +34,9 @@ public class TFPacketHandler {
 		CHANNEL.messageBuilder(MagicMapPacket.class, id++).encoder(MagicMapPacket::encode).decoder(MagicMapPacket::new).consumer(MagicMapPacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(MazeMapPacket.class, id++).encoder(MazeMapPacket::encode).decoder(MazeMapPacket::new).consumer(MazeMapPacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(UpdateShieldPacket.class, id++).encoder(UpdateShieldPacket::encode).decoder(UpdateShieldPacket::new).consumer(UpdateShieldPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(SetSkylightEnabledPacket.class, id++).encoder(SetSkylightEnabledPacket::encode).decoder(SetSkylightEnabledPacket::new).consumer(SetSkylightEnabledPacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(UncraftingGuiPacket.class, id++).encoder(UncraftingGuiPacket::encode).decoder(UncraftingGuiPacket::new).consumer(UncraftingGuiPacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(UpdateTFMultipartPacket.class, id++).encoder(UpdateTFMultipartPacket::encode).decoder(UpdateTFMultipartPacket::new).consumer(UpdateTFMultipartPacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(SpawnFallenLeafFromPacket.class, id++).encoder(SpawnFallenLeafFromPacket::encode).decoder(SpawnFallenLeafFromPacket::new).consumer(SpawnFallenLeafFromPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(MissingAdvancementToastPacket.class, id++).encoder(MissingAdvancementToastPacket::encode).decoder(MissingAdvancementToastPacket::new).consumer(MissingAdvancementToastPacket::handle).add();
 	}
 }

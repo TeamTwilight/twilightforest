@@ -31,7 +31,7 @@ public class UncraftingResultSlot extends ResultSlot {
 		boolean combined = true;
 
 		for (Recipe<CraftingContainer> recipe : player.level.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix, this.player.level)) {
-			if (ItemStack.isSame(recipe.getResultItem(), stack)) {
+			if (ItemStack.isSameItemSameTags(recipe.getResultItem(), stack)) {
 				combined = false;
 				break;
 			}

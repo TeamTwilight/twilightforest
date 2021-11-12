@@ -7,6 +7,7 @@ import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.world.registration.TwilightFeatures;
@@ -23,8 +24,8 @@ public class DangleFromTreeDecorator extends TreeDecorator {
                     Codec.intRange(1, 24).fieldOf("minimum_required_length").forGetter(o -> o.minimumRequiredLength),
                     Codec.intRange(1, 24).fieldOf("base_length").forGetter(o -> o.baseLength),
                     Codec.intRange(0, 16).fieldOf("random_add_length").orElse(0).forGetter(o -> o.randomAddLength),
-                    BlockStateProvider.CODEC.fieldOf("rope_provider").forGetter(o -> o.rope),
-                    BlockStateProvider.CODEC.fieldOf("baggage_provider").forGetter(o -> o.baggage)
+                    WeightedStateProvider.CODEC.fieldOf("rope_provider").forGetter(o -> o.rope),
+                    WeightedStateProvider.CODEC.fieldOf("baggage_provider").forGetter(o -> o.baggage)
             ).apply(instance, DangleFromTreeDecorator::new)
     );
     private final int count;
@@ -32,10 +33,10 @@ public class DangleFromTreeDecorator extends TreeDecorator {
     private final int minimumRequiredLength;
     private final int baseLength;
     private final int randomAddLength;
-    private final BlockStateProvider rope;
-    private final BlockStateProvider baggage;
+    private final WeightedStateProvider rope;
+    private final WeightedStateProvider baggage;
 
-    public DangleFromTreeDecorator(int count, int randomAddCount, int minimumRequiredLength, int baseLength, int randomAddLength, BlockStateProvider rope, BlockStateProvider baggage) {
+    public DangleFromTreeDecorator(int count, int randomAddCount, int minimumRequiredLength, int baseLength, int randomAddLength, WeightedStateProvider rope, WeightedStateProvider baggage) {
         this.count = count;
         this.randomAddCount = randomAddCount;
         this.minimumRequiredLength = minimumRequiredLength;
@@ -68,6 +69,9 @@ public class DangleFromTreeDecorator extends TreeDecorator {
             clearedOfPossibleLeaves = false;
             pos = leafBlocks.get(random.nextInt(leafTotal));
 
+            //dont place a rope where the trunk is
+            if(pos.getX() == trunkBlocks.get(0).getY() && pos.getZ() == trunkBlocks.get(0).getZ()) return;
+
             cordLength = this.baseLength + random.nextInt(this.randomAddLength + 1);
 
             // Scan to make sure we have
@@ -85,15 +89,18 @@ public class DangleFromTreeDecorator extends TreeDecorator {
             }
 
             if (cordLength > this.minimumRequiredLength) { // We don't want no pathetic unroped baggage
+                BlockState rope = this.rope.getState(random, pos);
                 for (int ropeUnrolling = 1; ropeUnrolling < cordLength; ropeUnrolling++) {
                     pos = pos.below(1);
 
-                    worldPlacer.accept(pos, this.rope.getState(random, pos));
+                    if(worldReader.isStateAtPosition(pos, BlockBehaviour.BlockStateBase::isAir))
+                        worldPlacer.accept(pos, rope);
                 }
 
                 pos = pos.below(1);
 
-                worldPlacer.accept(pos, this.baggage.getState(random, pos));
+                if(worldReader.isStateAtPosition(pos, BlockBehaviour.BlockStateBase::isAir))
+                    worldPlacer.accept(pos, this.baggage.getState(random, pos));
             }
         }
     }

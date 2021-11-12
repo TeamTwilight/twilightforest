@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/infested_towerwood"
+      },
+      {
+        "model": "twilightforest:block/infested_towerwood_flipped"
+      }
+    ]
+  }
+}

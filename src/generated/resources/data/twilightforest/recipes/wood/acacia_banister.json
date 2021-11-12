@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "---",
+    "| |"
+  ],
+  "key": {
+    "-": {
+      "item": "minecraft:acacia_slab"
+    },
+    "|": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "twilightforest:acacia_banister",
+    "count": 3
+  }
+}

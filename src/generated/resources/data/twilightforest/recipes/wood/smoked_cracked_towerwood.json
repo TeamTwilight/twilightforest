@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smoking",
   "ingredient": {
-    "item": "twilightforest:tower_wood"
+    "item": "twilightforest:towerwood"
   },
-  "result": "twilightforest:tower_wood_cracked",
+  "result": "twilightforest:cracked_towerwood",
   "experience": 0.3,
   "cookingtime": 100
 }

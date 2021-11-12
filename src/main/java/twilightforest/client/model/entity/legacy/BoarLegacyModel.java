@@ -4,9 +4,9 @@ import net.minecraft.client.model.PigModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.passive.BoarEntity;
+import twilightforest.entity.passive.Boar;
 
-public class BoarLegacyModel<T extends BoarEntity> extends PigModel<T> {
+public class BoarLegacyModel<T extends Boar> extends PigModel<T> {
 
 	public BoarLegacyModel(ModelPart root) {
 		super(root);
@@ -30,7 +30,7 @@ public class BoarLegacyModel<T extends BoarEntity> extends PigModel<T> {
 		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(28, 10)
 						.addBox(-5.0F, -8.0F, -7.0F, 10.0F, 14.0F, 8.0F),
-				PartPose.offset(0.0F, 11.0F, 2.0F));
+				PartPose.offsetAndRotation(0.0F, 11.0F, 2.0F, 1.5707963267948966F, 0.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
 						.texOffs(0, 16)

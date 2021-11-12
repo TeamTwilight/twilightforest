@@ -4,6 +4,11 @@
     "#twilightforest:ore_magnet/block_replace_ore",
     "#forge:dirt",
     "#forge:gravel",
-    "#forge:sand"
+    "#forge:sand",
+    "minecraft:granite",
+    "minecraft:andesite",
+    "minecraft:diorite",
+    "minecraft:tuff",
+    "minecraft:calcite"
   ]
 }

@@ -1,14 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.BunnyModel;
-import twilightforest.entity.passive.BunnyEntity;
+import twilightforest.entity.passive.DwarfRabbit;
 
-public class BunnyRenderer extends MobRenderer<BunnyEntity, BunnyModel> {
+public class BunnyRenderer extends MobRenderer<DwarfRabbit, BunnyModel> {
 
 	private final ResourceLocation textureLocDutch = TwilightForestMod.getModelTexture("bunnydutch.png");
 	private final ResourceLocation textureLocWhite = TwilightForestMod.getModelTexture("bunnywhite.png");
@@ -19,7 +18,7 @@ public class BunnyRenderer extends MobRenderer<BunnyEntity, BunnyModel> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(BunnyEntity entity) {
+	public ResourceLocation getTextureLocation(DwarfRabbit entity) {
 		switch (entity.getBunnyType()) {
 			default:
 			case 0:

@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:alt/root",
-  "criteria": {
-    "crumble_horn": { "trigger": "twilightforest:on_item_use", "conditions": { "item": { "item": "twilightforest:crumble_horn" }}}
-  }
-}

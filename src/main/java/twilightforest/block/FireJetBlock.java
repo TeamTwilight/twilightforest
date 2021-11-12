@@ -19,8 +19,8 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.data.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.tileentity.FireJetTileEntity;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.FireJetBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -90,12 +90,12 @@ public class FireJetBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new FireJetTileEntity(pos, state);
+		return new FireJetBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.FLAME_JET.get(), FireJetTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.FLAME_JET.get(), FireJetBlockEntity::tick);
 	}
 }

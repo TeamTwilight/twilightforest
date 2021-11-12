@@ -24,9 +24,8 @@ public class TFGenWebs extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> config) {
 		WorldGenLevel world = config.level();
 		ChunkGenerator generator = config.chunkGenerator();
-		BlockPos pos = config.origin();
-
-		while (pos.getY() > generator.getSpawnHeight(world) && world.isEmptyBlock(pos))
+		BlockPos pos = config.origin().above(config.random().nextInt(world.getMaxBuildHeight() - config.origin().getY()));
+		while (pos.getY() > config.origin().getY() && world.isEmptyBlock(pos))
 			pos = pos.below();
 
 		if (!isValidMaterial(world.getBlockState(pos).getMaterial()))
@@ -38,7 +37,7 @@ public class TFGenWebs extends Feature<NoneFeatureConfiguration> {
 				return true;
 			}
 			pos = pos.below();
-		} while (pos.getY() > generator.getSpawnHeight(world) && isValidMaterial(world.getBlockState(pos).getMaterial()));
+		} while (pos.getY() > config.origin().getY() && isValidMaterial(world.getBlockState(pos).getMaterial()));
 
 		return false;
 	}

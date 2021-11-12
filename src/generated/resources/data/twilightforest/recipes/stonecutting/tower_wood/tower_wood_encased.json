@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:tower_wood"
-  },
-  "result": "twilightforest:tower_wood_encased",
-  "count": 1
-}

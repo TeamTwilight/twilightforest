@@ -19,6 +19,8 @@ import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
+import twilightforest.block.TwilightChest;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -81,13 +83,13 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, TwilightForestMod.prefix(name));
 	}
 
-	protected final void castleBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
+	protected final void castleBlock(Consumer<FinishedRecipe> consumer, Supplier<? extends Block> result, ItemLike... ingredients) {
 		ShapedRecipeBuilder.shaped(result.get(), 4)
 				.pattern("##")
 				.pattern("##")
 				.define('#', Ingredient.of(ingredients))
-				.unlockedBy("has_item", has(criteria.get()))
-				.save(consumer, locCastle(name));
+				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.get()))
+				.save(consumer, locCastle(result.get().getRegistryName().getPath()));
 	}
 
 	protected final void stairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
@@ -106,16 +108,6 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.pattern(" ##")
 				.pattern("  #")
 				.define('#', Ingredient.of(ingredients))
-				.unlockedBy("has_item", has(criteria.get()))
-				.save(consumer, loc);
-	}
-
-	protected final void reverseStairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike ingredient) {
-		ShapelessRecipeBuilder.shapeless(result.get(),  3)
-				.requires(ingredient)
-				.requires(ingredient)
-				.requires(ingredient)
-				.requires(ingredient)
 				.unlockedBy("has_item", has(criteria.get()))
 				.save(consumer, loc);
 	}
@@ -268,8 +260,16 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.save(consumer, locWood(name + "_slab"));
 	}
 
+	protected final void bannerPattern(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> trophy, Supplier<? extends Item> result) {
+		ShapelessRecipeBuilder.shapeless(result.get())
+				.requires(Ingredient.of(ItemTagGenerator.PAPER))
+				.requires(Ingredient.of(trophy.get().asItem()))
+				.unlockedBy("has_trophy", has(trophy.get()))
+				.save(consumer);
+	}
+
 	protected final void trapdoorBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-		ShapedRecipeBuilder.shaped(result.get(), 6)
+		ShapedRecipeBuilder.shaped(result.get(), 2)
 				.pattern("###")
 				.pattern("###")
 				.define('#', material.get())
@@ -304,6 +304,31 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.define('-', Tags.Items.RODS_WOODEN)
 				.unlockedBy("has_item", has(material.get()))
 				.save(consumer, locWood(name + "_wood"));
+	}
+
+	protected final void banisterBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		this.banisterBlock(consumer, name, result, material.get());
+	}
+
+	protected final void banisterBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Block material) {
+		ShapedRecipeBuilder.shaped(result.get(), 3)
+				.pattern("---")
+				.pattern("| |")
+				.define('-', material)
+				.define('|', Tags.Items.RODS_WOODEN)
+				.unlockedBy("has_item", has(material))
+				.save(consumer, locWood(name + "_banister"));
+	}
+
+	protected final void chestBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends TwilightChest> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(result.get(), 2)
+				.pattern("###")
+				.pattern("#C#")
+				.pattern("###")
+				.define('#', material.get())
+				.define('C', Tags.Items.CHESTS_WOODEN)
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_chest"));
 	}
 
 	protected final void fieryConversion(Consumer<FinishedRecipe> consumer, Supplier<? extends Item> result, Item armor, int vials) {

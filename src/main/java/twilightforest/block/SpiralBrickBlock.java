@@ -58,8 +58,8 @@ public class SpiralBrickBlock extends Block {
 	}
 
     private static Diagonals getDiagonalFromPlayerPlacement(LivingEntity placer, Direction facing) {
-        int angleX = (int) ((placer.xRot + 180f) / 180f) & 1;
-        int angleY = (int) ((placer.yRot + 180f) / 90f) & 3;
+        int angleX = (int) ((placer.getXRot() + 180f) / 180f) & 1;
+        int angleY = (int) ((placer.getYRot() + 180f) / 90f) & 3;
 
         switch (facing) {
             case DOWN:

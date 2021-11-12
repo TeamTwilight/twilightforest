@@ -8,8 +8,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import twilightforest.util.FeaturePlacers;
-import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
 
 import java.util.Random;
 import java.util.function.BiConsumer;
@@ -36,9 +36,8 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 			return false;
 		}
 
-		// check if we're on dirt or grass
-		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+		// check if we're on a valid block
+		if (!SnowTreePlacer.isBlockUnderValid(world, pos.below())) {
 			return false;
 		}
 
@@ -66,7 +65,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 			int radius = leafRadius(treeHeight, dy, leafType);
 
-			FeaturePlacers.placeCircleEven(leavesPlacer, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
+			FeaturePlacers.placeCircleEven(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, random, pos.above(offGround + treeHeight - dy), radius, config.leavesProvider);
 			this.makePineBranches(world, trunkPlacer, random, pos.above(offGround + treeHeight - dy), radius, config);
 		}
 	}

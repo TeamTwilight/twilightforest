@@ -1,0 +1,73 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "features": [
+          {
+            "feature": "twilightforest:tree/base/canopy_tree",
+            "chance": 0.33
+          },
+          {
+            "feature": "twilightforest:tree/base/firefly_canopy_tree",
+            "chance": 0.45
+          }
+        ],
+        "default": "twilightforest:tree/base/twilight_oak"
+      },
+      "type": "minecraft:random_selector"
+    },
+    "decorator": {
+      "config": {
+        "outer": {
+          "config": {
+            "count": 5,
+            "extra_chance": 0.1,
+            "extra_count": 1
+          },
+          "type": "minecraft:count_extra"
+        },
+        "inner": {
+          "config": {
+            "outer": {
+              "config": {
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:square"
+                },
+                "inner": {
+                  "config": {
+                    "outer": {
+                      "config": {
+                        "max_water_depth": 0
+                      },
+                      "type": "minecraft:water_depth_threshold"
+                    },
+                    "inner": {
+                      "config": {
+                        "heightmap": "OCEAN_FLOOR"
+                      },
+                      "type": "minecraft:heightmap"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
+            "inner": {
+              "config": {
+                "occupies_surface": true,
+                "occupies_underground": false,
+                "additional_clearance": 0
+              },
+              "type": "twilightforest:no_structure"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    }
+  },
+  "type": "minecraft:decorated"
+}

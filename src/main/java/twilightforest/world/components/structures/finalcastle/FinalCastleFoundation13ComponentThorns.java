@@ -58,9 +58,9 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 		int twist = decoRNG.nextInt(4);
 		int twistMod = 3 + decoRNG.nextInt(3);
 
-		final BlockState thorns = TFBlocks.brown_thorns.get().defaultBlockState();
+		final BlockState thorns = TFBlocks.BROWN_THORNS.get().defaultBlockState();
 
-		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).getBlock() != TFBlocks.deadrock.get() && this.getWorldY(y) > 60) {
+		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).getBlock() != TFBlocks.DEADROCK.get() && this.getWorldY(y) > 60) {
 			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
 			// twist vines around the center block
 			switch (twist) {
@@ -136,7 +136,7 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 			for (int i = 0; i < dist; i++) {
 				// go out that far
 				final Rotation add = dir.getRotated(rotation).getRotated(this.rotation);
-				BlockState thorns = TFBlocks.green_thorns.get().defaultBlockState()
+				BlockState thorns = TFBlocks.GREEN_THORNS.get().defaultBlockState()
 						.setValue(
 								RotatedPillarBlock.AXIS,
 								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? Direction.Axis.X : Direction.Axis.Z

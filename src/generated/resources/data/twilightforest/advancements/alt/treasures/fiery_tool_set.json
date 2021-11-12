@@ -1,0 +1,74 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_blood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_blood"
+            ]
+          }
+        ]
+      }
+    },
+    "has_tears": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_tears"
+            ]
+          }
+        ]
+      }
+    },
+    "has_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_ingot"
+            ]
+          }
+        ]
+      }
+    },
+    "has_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "has_pick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_pickaxe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_blood",
+      "has_tears",
+      "has_ingot",
+      "has_sword",
+      "has_pick"
+    ]
+  ]
+}

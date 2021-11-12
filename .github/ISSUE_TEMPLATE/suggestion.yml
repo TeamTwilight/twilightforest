@@ -1,0 +1,23 @@
+name: Suggestion
+description: Create a suggestion ticket
+title: "[Suggestion] "
+labels: [suggestion]
+body:
+  - type: textarea
+    attributes:
+      label: The Suggestion
+      description: Describe the idea you have for the mod. Include details such as what the feature would do or what aspect of the mod it improves.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Why Should It Be in the Mod?
+      description: Describe why you would like to see this idea in the mod. Include reasons such as how gameplay would be improved, or how the feature improves the look and feel of the mod.
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Please Read and Confirm the Following
+      options:
+        - label: I have confirmed this suggestion is unique and has not been suggested already.
+          required: true

@@ -1,6 +1,30 @@
 {
   "config": {
-    "decorators": [],
+    "decorators": [
+      {
+        "root_length": 5,
+        "ground_roots_provider": {
+          "entries": [
+            {
+              "data": {
+                "Name": "twilightforest:root"
+              },
+              "weight": 6
+            },
+            {
+              "data": {
+                "Name": "twilightforest:liveroot_block"
+              },
+              "weight": 1
+            }
+          ],
+          "type": "minecraft:weighted_state_provider"
+        },
+        "base_strand_count": 3,
+        "additional_random_strands": 1,
+        "type": "twilightforest:tree_roots"
+      }
+    ],
     "ignore_vines": true,
     "force_dirt": false,
     "dirt_provider": {
@@ -17,7 +41,7 @@
     },
     "foliage_provider": {
       "state": {
-        "Name": "twilightforest:dark_leaves"
+        "Name": "twilightforest:hardened_dark_leaves"
       },
       "type": "minecraft:simple_state_provider"
     },
@@ -50,7 +74,7 @@
       "type": "minecraft:simple_state_provider"
     },
     "trunk_placer": {
-      "branch_start_offset_down": 4,
+      "branch_start_offset_down": 3,
       "branch_config": {
         "random_add_length": 2.0,
         "spacing_yaw": 0.23,

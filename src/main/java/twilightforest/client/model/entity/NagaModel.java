@@ -3,7 +3,6 @@ package twilightforest.client.model.entity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,8 +13,8 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.boss.NagaEntity;
-import twilightforest.entity.boss.NagaSegmentEntity;
+import twilightforest.entity.boss.Naga;
+import twilightforest.entity.boss.NagaSegment;
 
 /**
  * ModelNagaHead - Undefined
@@ -60,9 +59,9 @@ public class NagaModel<T extends Entity> extends ListModel<T> {
 
     @Override
     public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
-        if (entity instanceof NagaEntity) {
+        if (entity instanceof Naga) {
             head.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
-        } else if (entity instanceof NagaSegmentEntity) {
+        } else if (entity instanceof NagaSegment) {
             body.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
         } else {
             head.render(stack, builder, light, overlay, red, green, blue, alpha * 2);

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "twilightforest:block/bold_castle_brick_pillar_x",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "twilightforest:block/bold_castle_brick_pillar"
+    },
+    "axis=z": {
+      "model": "twilightforest:block/bold_castle_brick_pillar_z",
+      "x": 90
+    }
+  }
+}

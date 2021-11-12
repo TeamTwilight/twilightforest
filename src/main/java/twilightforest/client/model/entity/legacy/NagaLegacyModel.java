@@ -11,8 +11,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
-import twilightforest.entity.boss.NagaEntity;
-import twilightforest.entity.boss.NagaSegmentEntity;
+import twilightforest.entity.boss.Naga;
+import twilightforest.entity.boss.NagaSegment;
 
 public class NagaLegacyModel<T extends Entity> extends ListModel<T> {
 
@@ -39,7 +39,7 @@ public class NagaLegacyModel<T extends Entity> extends ListModel<T> {
 						.addBox(-8F, -12F, -8F, 16, 16, 16),
 				PartPose.ZERO);
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 
 	@Override
@@ -52,9 +52,9 @@ public class NagaLegacyModel<T extends Entity> extends ListModel<T> {
 
 		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-		if (entity instanceof NagaEntity) {
+		if (entity instanceof Naga) {
 			head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
-		} else if (entity instanceof NagaSegmentEntity) {
+		} else if (entity instanceof NagaSegment) {
 			body.render(stack, builder, light, overlay, red, green, blue, scale * 2);
 		} else {
 			head.render(stack, builder, light, overlay, red, green, blue, scale * 2);

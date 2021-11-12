@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ComplexItem;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +25,7 @@ public class EmptyMazeMapItem extends ComplexItem {
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		ItemStack itemstack = MazeMapItem.setupNewMap(worldIn, Mth.floor(playerIn.getX()), Mth.floor(playerIn.getZ()), (byte) 0, true, false, Mth.floor(playerIn.getY()), this.mapOres);
 		ItemStack itemstack1 = playerIn.getItemInHand(handIn);
-		if (!playerIn.abilities.instabuild) {
+		if (!playerIn.getAbilities().instabuild) {
 			itemstack1.shrink(1);
 		}
 
@@ -36,6 +37,7 @@ public class EmptyMazeMapItem extends ComplexItem {
 			}
 
 			playerIn.awardStat(Stats.ITEM_USED.get(this));
+			playerIn.level.playSound(null, playerIn, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, playerIn.getSoundSource(), 1.0F, 1.0F);
 			return InteractionResultHolder.success(itemstack1);
 		}
 	}

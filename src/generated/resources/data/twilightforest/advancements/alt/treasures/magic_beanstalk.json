@@ -1,0 +1,27 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:item_used_on_block",
+      "conditions": {
+        "location": {
+          "block": {
+            "blocks": [
+              "twilightforest:uberous_soil"
+            ]
+          }
+        },
+        "item": {
+          "items": [
+            "twilightforest:magic_beans"
+          ]
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ]
+}

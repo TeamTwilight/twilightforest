@@ -11,14 +11,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.UpperGoblinKnightEntity;
+import twilightforest.entity.monster.UpperGoblinKnight;
 
 /**
  * ModelTFGoblinKnightUpper - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntity> {
+public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
     public ModelPart breastplate;
     public ModelPart spear;
     public ModelPart shield;
@@ -97,7 +97,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnightEntit
     }
 
     @Override
-    public void setupAnim(UpperGoblinKnightEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(UpperGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean hasShield = entity.hasShield();
         boolean boat = entity.getVehicle() instanceof Boat;
 

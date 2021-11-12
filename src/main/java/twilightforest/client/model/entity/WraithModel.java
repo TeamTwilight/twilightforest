@@ -9,9 +9,9 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
-import twilightforest.entity.WraithEntity;
+import twilightforest.entity.monster.Wraith;
 
-public class WraithModel extends HumanoidModel<WraithEntity> {
+public class WraithModel extends HumanoidModel<Wraith> {
 	private final ModelPart dress;
 
 	public WraithModel(ModelPart root) {
@@ -53,7 +53,7 @@ public class WraithModel extends HumanoidModel<WraithEntity> {
 	}
 
 	@Override
-	public void setupAnim(WraithEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Wraith entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		float var8 = Mth.sin(this.attackTime * Mth.PI);

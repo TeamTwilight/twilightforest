@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.nbt.CompoundTag;
@@ -27,11 +28,14 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
 
-@Deprecated // We keep rehashing Vanillacopies, we should be adding TwilightFeature to the StructurePiece class we use
+@Deprecated
+// We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the
+//  StructurePiece classes we actually use. This class will take quite a while to dismantle
 public abstract class TFStructureComponent extends StructurePiece implements TwilightFeature {
 
 	public TFStructureDecorator deco = null;
 	public int spawnListIndex = 0;
+	@Deprecated // Serves no purpose
 	private TFFeature feature = TFFeature.NOTHING;
 	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
 			.add(Blocks.NETHER_BRICK_FENCE)
@@ -60,14 +64,14 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 			.add(Blocks.STONE_BRICK_STAIRS)
 			.add(Blocks.LAVA)
 			.add(Blocks.WATER)
-			.add(TFBlocks.castle_stairs_brick.get())
-			.add(TFBlocks.force_field_blue.get())
-			.add(TFBlocks.force_field_green.get())
-			.add(TFBlocks.force_field_pink.get())
-			.add(TFBlocks.force_field_purple.get())
-			.add(TFBlocks.force_field_orange.get())
-			.add(TFBlocks.brown_thorns.get())
-			.add(TFBlocks.green_thorns.get())
+			.add(TFBlocks.CASTLE_BRICK_STAIRS.get())
+			.add(TFBlocks.BLUE_FORCE_FIELD.get())
+			.add(TFBlocks.GREEN_FORCE_FIELD.get())
+			.add(TFBlocks.PINK_FORCE_FIELD.get())
+			.add(TFBlocks.VIOLET_FORCE_FIELD.get())
+			.add(TFBlocks.ORANGE_FORCE_FIELD.get())
+			.add(TFBlocks.BROWN_THORNS.get())
+			.add(TFBlocks.GREEN_THORNS.get())
 			.build();
 
 
@@ -90,6 +94,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 		this.feature = feature;
 	}
 
+	@Deprecated
 	@Override
 	public TFFeature getFeatureType() {
 		return feature;
@@ -198,5 +203,10 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	 */
 	public boolean isComponentProtected() {
 		return true;
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.NONE;
 	}
 }

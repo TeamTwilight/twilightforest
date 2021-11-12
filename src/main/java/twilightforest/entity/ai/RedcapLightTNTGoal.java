@@ -7,11 +7,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.entity.RedcapEntity;
+import twilightforest.entity.monster.Redcap;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
@@ -19,7 +17,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 	private int delay;
 	private BlockPos tntPos = null;
 
-	public RedcapLightTNTGoal(RedcapEntity hostEntity, float speed) {
+	public RedcapLightTNTGoal(Redcap hostEntity, float speed) {
 		super(hostEntity);
 		this.pursueSpeed = speed;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));

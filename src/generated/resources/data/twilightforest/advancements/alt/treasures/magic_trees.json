@@ -1,0 +1,37 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_time": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/tree_of_time"
+      }
+    },
+    "has_trans": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/tree_of_transformation"
+      }
+    },
+    "has_mine": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/tree_of_mining"
+      }
+    },
+    "has_sort": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/tree_of_sorting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_time",
+      "has_trans",
+      "has_mine",
+      "has_sort"
+    ]
+  ]
+}

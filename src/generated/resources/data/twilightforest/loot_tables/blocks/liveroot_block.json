@@ -34,6 +34,13 @@
                   "condition": "minecraft:survives_explosion"
                 }
               ],
+              "functions": [
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                }
+              ],
               "name": "twilightforest:liveroot"
             }
           ]

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "twilightforest:castle_brick"
-  },
-  "result": "twilightforest:castle_stairs_brick",
-  "count": 1
-}

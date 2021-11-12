@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "powered=false": {
       "model": "twilightforest:block/uncrafting_table"
+    },
+    "powered=true": {
+      "model": "twilightforest:block/uncrafting_table_glowing"
     }
   }
 }

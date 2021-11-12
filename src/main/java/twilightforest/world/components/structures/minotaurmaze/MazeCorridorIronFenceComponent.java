@@ -27,8 +27,8 @@ public class MazeCorridorIronFenceComponent extends MazeCorridorComponent {
 
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		this.generateBox(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.maze_stone_chiseled.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.CUT_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 2, 1, 2, 3, 3, 3, Blocks.IRON_BARS.defaultBlockState(), Blocks.AIR.defaultBlockState(), false);
 		return true;
 	}

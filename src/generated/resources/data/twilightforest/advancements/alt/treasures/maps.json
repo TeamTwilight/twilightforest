@@ -1,0 +1,30 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_magic": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/magic_map"
+      }
+    },
+    "has_maze": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/maze_map"
+      }
+    },
+    "has_ore": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/ore_map"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_magic",
+      "has_maze",
+      "has_ore"
+    ]
+  ]
+}

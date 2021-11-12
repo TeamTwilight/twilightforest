@@ -2,21 +2,23 @@ package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -24,7 +26,11 @@ import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.TFBlockEntities;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Objects;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
 public class TFClientSetup {
@@ -58,7 +64,7 @@ public class TFClientSetup {
 
         MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         RenderLayerRegistration.init();
-        TFTileEntities.registerTileEntityRenders();
+        TFBlockEntities.registerTileEntityRenders();
         TFContainers.renderScreens();
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
@@ -77,46 +83,35 @@ public class TFClientSetup {
        
     }
 
-    public static void addLegacyPack() {
-        //noinspection ConstantConditions
-        if (Minecraft.getInstance() == null)
-            // Normally Minecraft Client is never null except when generating through runData
-            return;
+	private static Field field_EntityRenderersEvent$AddLayers_renderers;
 
-        Minecraft.getInstance().getResourcePackRepository().addPackFinder(
-                (consumer, iFactory) -> consumer.accept(
-                        Pack.create(
-                                TwilightForestMod.prefix("classic_textures").toString(),
-                                false,
-                                () -> new TwilightLegacyPack(
-                                        ModList
-                                                .get()
-                                                .getModFileById(TwilightForestMod.ID)
-                                                .getFile()
-                                ),
-                                iFactory,
-                                Pack.Position.TOP,
-                                iTextComponent -> iTextComponent
-                        )
-                )
-        );
-    }
+	@SubscribeEvent
+	@SuppressWarnings("unchecked")
+	public static void attachRenderLayers(EntityRenderersEvent.AddLayers event) {
+		if (field_EntityRenderersEvent$AddLayers_renderers == null) {
+			try {
+				field_EntityRenderersEvent$AddLayers_renderers = EntityRenderersEvent.AddLayers.class.getDeclaredField("renderers");
+				field_EntityRenderersEvent$AddLayers_renderers.setAccessible(true);
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			}
+		}
+		if (field_EntityRenderersEvent$AddLayers_renderers != null) {
+			event.getSkins().forEach(renderer -> {
+				LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
+				attachRenderLayers(Objects.requireNonNull(skin));
+			});
+			try {
+				((Map<EntityType<?>, EntityRenderer<?>>) field_EntityRenderersEvent$AddLayers_renderers.get(event)).values().stream().
+						filter(LivingEntityRenderer.class::isInstance).map(LivingEntityRenderer.class::cast).forEach(TFClientSetup::attachRenderLayers);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    @SubscribeEvent
-    public static void loadComplete(FMLLoadCompleteEvent evt) {
-        Minecraft.getInstance().getEntityRenderDispatcher().renderers.values().forEach(r -> {
-            if (r instanceof LivingEntityRenderer) {
-                attachRenderLayers((LivingEntityRenderer<?, ?>) r);
-            }
-        });
-        Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().values().forEach(renderer -> attachRenderLayers(renderer));
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(EntityRenderer<T> renderer) {
-        if (renderer instanceof LivingEntityRenderer<?, ?> livingEntityRenderer) { // FIXME Porting bandaid
-            livingEntityRenderer.addLayer(new ShieldLayer(livingEntityRenderer));
-            livingEntityRenderer.addLayer(new IceLayer(livingEntityRenderer));
-        }
-    }
+	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
+		renderer.addLayer(new ShieldLayer<>(renderer));
+		renderer.addLayer(new IceLayer<>(renderer));
+	}
 }

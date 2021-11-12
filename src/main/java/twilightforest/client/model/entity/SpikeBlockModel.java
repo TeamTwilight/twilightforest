@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.SpikeBlockEntity;
+import twilightforest.entity.SpikeBlock;
 
-public class SpikeBlockModel extends ListModel<SpikeBlockEntity> {
+public class SpikeBlockModel extends ListModel<SpikeBlock> {
 	ModelPart block;
 
 	public SpikeBlockModel(ModelPart root) {
@@ -171,7 +171,7 @@ public class SpikeBlockModel extends ListModel<SpikeBlockEntity> {
 	}
 
 	@Override
-	public void setupAnim(SpikeBlockEntity entity, float v, float v1, float v2, float v3, float v4) {
+	public void setupAnim(SpikeBlock entity, float v, float v1, float v2, float v3, float v4) {
 
 	}
 

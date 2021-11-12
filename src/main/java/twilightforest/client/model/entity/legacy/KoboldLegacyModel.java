@@ -6,15 +6,14 @@
 
 package twilightforest.client.model.entity.legacy;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.KoboldEntity;
+import twilightforest.entity.monster.Kobold;
 
-public class KoboldLegacyModel extends HumanoidModel<KoboldEntity> {
+public class KoboldLegacyModel extends HumanoidModel<Kobold> {
 
 	ModelPart jaw;
 	boolean isJumping;
@@ -34,6 +33,8 @@ public class KoboldLegacyModel extends HumanoidModel<KoboldEntity> {
 						.addBox(-3.5F, -7F, -3F, 7, 6, 6),
 				PartPose.offset(0F, 13F, 0F));
 
+		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+
 		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
 						.texOffs(48, 20)
 						.addBox(0F, -4F, 0F, 4, 4, 1),
@@ -41,7 +42,7 @@ public class KoboldLegacyModel extends HumanoidModel<KoboldEntity> {
 
 		head.addOrReplaceChild("left_ear", CubeListBuilder.create()
 						.texOffs(48, 25)
-						.addBox(0F, -4F, 0F, 4, 4, 1),
+						.addBox(-4F, -4F, 0F, 4, 4, 1),
 				PartPose.offsetAndRotation(-3.5F, -3F, -1F, 0.0F, -0.2617994F, 0.3490659F));
 
 		head.addOrReplaceChild("snout", CubeListBuilder.create()
@@ -66,7 +67,7 @@ public class KoboldLegacyModel extends HumanoidModel<KoboldEntity> {
 
 		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
 						.texOffs(36, 17)
-						.addBox(-3F, -1F, -1.5F, 3, 7, 3),
+						.addBox(0F, -1F, -1.5F, 3, 7, 3),
 				PartPose.offset(3.5F, 12F, 0F));
 
 		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
@@ -83,7 +84,7 @@ public class KoboldLegacyModel extends HumanoidModel<KoboldEntity> {
 	}
 
 	@Override
-	public void setupAnim(KoboldEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Kobold entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 
@@ -114,7 +115,7 @@ public class KoboldLegacyModel extends HumanoidModel<KoboldEntity> {
 	}
 
 	@Override
-	public void prepareMobModel(KoboldEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(Kobold entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		// check if entity is jumping
 		this.isJumping = entity.getDeltaMovement().y() > 0;
 	}

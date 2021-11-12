@@ -1,0 +1,72 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "pedestal": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_trophy_pedestal"
+      }
+    },
+    "naga": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_naga"
+      }
+    },
+    "lich": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_lich"
+      }
+    },
+    "minoshroom": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_labyrinth"
+      }
+    },
+    "hydra": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_hydra"
+      }
+    },
+    "knights": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_knights"
+      }
+    },
+    "ghast": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_ur_ghast"
+      }
+    },
+    "yeti": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_yeti"
+      }
+    },
+    "queen": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_glacier"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "pedestal",
+      "naga",
+      "lich",
+      "minoshroom",
+      "hydra",
+      "knights",
+      "ghast",
+      "yeti",
+      "queen"
+    ]
+  ]
+}

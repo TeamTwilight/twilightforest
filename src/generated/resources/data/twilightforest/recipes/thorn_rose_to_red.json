@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:thorn_rose"
+    }
+  ],
+  "result": {
+    "item": "minecraft:red_dye"
+  }
+}

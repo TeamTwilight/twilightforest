@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "twilightforest:block/cracked_etched_nagastone"
+    },
+    "facing=up": {
+      "model": "twilightforest:block/cracked_etched_nagastone_up"
+    },
+    "facing=north": {
+      "model": "twilightforest:block/cracked_etched_nagastone_north"
+    },
+    "facing=south": {
+      "model": "twilightforest:block/cracked_etched_nagastone_south"
+    },
+    "facing=west": {
+      "model": "twilightforest:block/cracked_etched_nagastone_west"
+    },
+    "facing=east": {
+      "model": "twilightforest:block/cracked_etched_nagastone_east"
+    }
+  }
+}

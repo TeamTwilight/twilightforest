@@ -9,19 +9,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.ServerLevelAccessor;
 import twilightforest.TFSounds;
-import twilightforest.entity.boss.LichEntity;
-import twilightforest.entity.boss.LichMinionEntity;
+import twilightforest.entity.boss.Lich;
+import twilightforest.entity.monster.LichMinion;
 import twilightforest.item.TFItems;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class LichMinionsGoal extends Goal {
 
-	private final LichEntity lich;
+	private final Lich lich;
 
-	public LichMinionsGoal(LichEntity boss) {
+	public LichMinionsGoal(Lich boss) {
 		lich = boss;
 		setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
@@ -33,7 +31,7 @@ public class LichMinionsGoal extends Goal {
 
 	@Override
 	public void start() {
-		lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.zombie_scepter.get()));
+		lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.ZOMBIE_SCEPTER.get()));
 	}
 
 	@Override
@@ -79,7 +77,7 @@ public class LichMinionsGoal extends Goal {
 			int minions = lich.countMyMinions();
 
 			// if not, spawn one!
-			if (minions < LichEntity.MAX_ACTIVE_MINIONS) {
+			if (minions < Lich.MAX_ACTIVE_MINIONS) {
 				spawnMinionAt();
 				lich.setMinionsToSummon(lich.getMinionsToSummon() - 1);
 			}
@@ -94,7 +92,7 @@ public class LichMinionsGoal extends Goal {
 
 		if (minionSpot != null && lich.level instanceof ServerLevelAccessor) {
 			// put a clone there
-			LichMinionEntity minion = new LichMinionEntity(lich.level, lich);
+			LichMinion minion = new LichMinion(lich.level, lich);
 			minion.setPos(minionSpot.x, minionSpot.y, minionSpot.z);
 			minion.finalizeSpawn((ServerLevelAccessor) lich.level, lich.level.getCurrentDifficultyAt(new BlockPos(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
 			lich.level.addFreshEntity(minion);

@@ -5,19 +5,19 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
-import twilightforest.entity.LoyalZombieEntity;
+import twilightforest.entity.monster.LoyalZombie;
 
 /**
  * [VanillaCopy] {@link net.minecraft.client.model.AbstractZombieModel} due to generic restrictions
  */
-public class LoyalZombieModel extends HumanoidModel<LoyalZombieEntity> {
+public class LoyalZombieModel extends HumanoidModel<LoyalZombie> {
 
 	public LoyalZombieModel(ModelPart part) {
 		super(part);
 	}
 
 	@Override
-	public void setupAnim(LoyalZombieEntity e, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(LoyalZombie e, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setupAnim(e, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		boolean flag = e.isAggressive();
 		float f = Mth.sin(this.attackTime * (float)Math.PI);

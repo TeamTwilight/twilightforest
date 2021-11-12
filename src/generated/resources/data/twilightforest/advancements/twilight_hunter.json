@@ -84,14 +84,14 @@
         ]
       }
     },
-    "bunny": {
+    "dwarf_rabbit": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:bunny",
+              "type": "twilightforest:dwarf_rabbit",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -169,14 +169,14 @@
         ]
       }
     },
-    "goblin_knight_lower": {
+    "lower_goblin_knight": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_lower",
+              "type": "twilightforest:lower_goblin_knight",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -186,14 +186,14 @@
         ]
       }
     },
-    "goblin_knight_upper": {
+    "upper_goblin_knight": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:goblin_knight_upper",
+              "type": "twilightforest:upper_goblin_knight",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -390,14 +390,14 @@
         ]
       }
     },
-    "mini_ghast": {
+    "carminite_ghastling": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:mini_ghast",
+              "type": "twilightforest:carminite_ghastling",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -747,14 +747,14 @@
         ]
       }
     },
-    "tower_broodling": {
+    "carminite_broodling": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:tower_broodling",
+              "type": "twilightforest:carminite_broodling",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -764,14 +764,14 @@
         ]
       }
     },
-    "tower_ghast": {
+    "carminite_ghastguard": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:tower_ghast",
+              "type": "twilightforest:carminite_ghastguard",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -781,14 +781,14 @@
         ]
       }
     },
-    "tower_golem": {
+    "carminite_golem": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:tower_golem",
+              "type": "twilightforest:carminite_golem",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -798,14 +798,14 @@
         ]
       }
     },
-    "tower_termite": {
+    "towerwood_borer": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:tower_termite",
+              "type": "twilightforest:towerwood_borer",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -866,14 +866,14 @@
         ]
       }
     },
-    "wild_boar": {
+    "boar": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:wild_boar",
+              "type": "twilightforest:boar",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -934,14 +934,14 @@
         ]
       }
     },
-    "yeti_alpha": {
+    "alpha_yeti": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:yeti_alpha",
+              "type": "twilightforest:alpha_yeti",
               "location": {
                 "dimension": "twilightforest:twilight_forest"
               }
@@ -958,13 +958,13 @@
       "armored_giant",
       "bighorn_sheep",
       "blockchain_goblin",
-      "bunny",
+      "dwarf_rabbit",
       "death_tome",
       "deer",
       "fire_beetle",
       "giant_miner",
-      "goblin_knight_lower",
-      "goblin_knight_upper",
+      "lower_goblin_knight",
+      "upper_goblin_knight",
       "harbinger_cube",
       "hedge_spider",
       "helmet_crab",
@@ -976,7 +976,7 @@
       "lich",
       "lich_minion",
       "maze_slime",
-      "mini_ghast",
+      "carminite_ghastling",
       "minoshroom",
       "minotaur",
       "mist_wolf",
@@ -997,18 +997,18 @@
       "stable_ice_core",
       "swarm_spider",
       "tiny_bird",
-      "tower_broodling",
-      "tower_ghast",
-      "tower_golem",
-      "tower_termite",
+      "carminite_broodling",
+      "carminite_ghastguard",
+      "carminite_golem",
+      "towerwood_borer",
       "troll",
       "unstable_ice_core",
       "ur_ghast",
-      "wild_boar",
+      "boar",
       "winter_wolf",
       "wraith",
       "yeti",
-      "yeti_alpha"
+      "alpha_yeti"
     ]
   ]
 }

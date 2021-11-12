@@ -8,11 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.LichEntity;
+import twilightforest.entity.boss.Lich;
 
 import java.util.Arrays;
 
-public class LichModel extends HumanoidModel<LichEntity> {
+public class LichModel extends HumanoidModel<Lich> {
 
 	private boolean shadowClone;
 	private final ModelPart collar;
@@ -96,7 +96,7 @@ public class LichModel extends HumanoidModel<LichEntity> {
 	}
 
 	@Override
-	public void setupAnim(LichEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Lich entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.shadowClone = entity.isShadowClone();
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 

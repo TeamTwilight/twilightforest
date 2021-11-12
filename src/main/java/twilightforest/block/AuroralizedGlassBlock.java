@@ -17,10 +17,4 @@ public class AuroralizedGlassBlock extends AbstractGlassBlock {
     public AuroralizedGlassBlock(Properties props) {
         super(props);
     }
-
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
-    }
 }

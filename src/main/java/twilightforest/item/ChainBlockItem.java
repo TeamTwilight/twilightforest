@@ -11,12 +11,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.TierSortingRegistry;
 import twilightforest.TFSounds;
-import twilightforest.entity.ChainBlockEntity;
+import twilightforest.entity.ChainBlock;
 import twilightforest.entity.TFEntities;
-import twilightforest.enums.TwilightItemTier;
+import twilightforest.util.TwilightItemTier;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -26,7 +29,7 @@ public class ChainBlockItem extends DiggerItem {
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	protected ChainBlockItem(Properties props) {
-		super(6, -3.0F, TwilightItemTier.TOOL_KNIGHTLY, BlockTags.BASE_STONE_OVERWORLD, props);
+		super(6, -3.0F, TwilightItemTier.KNIGHTMETAL, BlockTags.BASE_STONE_OVERWORLD, props);
 	}
 
 	@Override
@@ -46,7 +49,7 @@ public class ChainBlockItem extends DiggerItem {
 		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 1.0F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isClientSide) {
-			ChainBlockEntity launchedBlock = new ChainBlockEntity(TFEntities.chain_block, world, player, hand);
+			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK, world, player, hand);
 			world.addFreshEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 
@@ -67,13 +70,13 @@ public class ChainBlockItem extends DiggerItem {
 	}
 
 	@Nullable
-	private static ChainBlockEntity getThrownEntity(Level world, ItemStack stack) {
+	private static ChainBlock getThrownEntity(Level world, ItemStack stack) {
 		if (world instanceof ServerLevel) {
 			UUID id = getThrownUuid(stack);
 			if (id != null) {
 				Entity e = ((ServerLevel) world).getEntity(id);
-				if (e instanceof ChainBlockEntity) {
-					return (ChainBlockEntity) e;
+				if (e instanceof ChainBlock) {
+					return (ChainBlock) e;
 				}
 			}
 		}
@@ -81,7 +84,7 @@ public class ChainBlockItem extends DiggerItem {
 		return null;
 	}
 
-	private static void setThrownEntity(ItemStack stack, ChainBlockEntity cube) {
+	private static void setThrownEntity(ItemStack stack, ChainBlock cube) {
 		if (!stack.hasTag()) {
 			stack.setTag(new CompoundTag());
 		}
@@ -101,6 +104,14 @@ public class ChainBlockItem extends DiggerItem {
 	@Override
 	public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
 		return true;
+	}
+
+	@Override
+	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+		if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
+				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
+			return TierSortingRegistry.isCorrectTierForDrops(Tiers.IRON, state);
+		return false;
 	}
 
 	/*@Override

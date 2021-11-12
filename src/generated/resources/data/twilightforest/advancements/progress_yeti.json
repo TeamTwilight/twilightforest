@@ -2,7 +2,7 @@
   "parent": "twilightforest:progress_lich",
   "display": {
     "icon": {
-      "item": "twilightforest:alpha_fur"
+      "item": "twilightforest:alpha_yeti_fur"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_yeti"
@@ -11,7 +11,7 @@
       "translate": "advancement.twilightforest.progress_yeti.desc",
       "with": [
         {
-          "translate": "entity.twilightforest.yeti_alpha"
+          "translate": "entity.twilightforest.alpha_yeti"
         }
       ]
     },
@@ -19,6 +19,9 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
+  },
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
   },
   "criteria": {
     "yeti": {
@@ -28,7 +31,7 @@
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "twilightforest:yeti_alpha"
+              "type": "twilightforest:alpha_yeti"
             },
             "entity": "this"
           }
@@ -41,7 +44,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:yeti_trophy"
+              "twilightforest:alpha_yeti_trophy"
             ]
           }
         ]
@@ -53,8 +56,22 @@
         "items": [
           {
             "items": [
-              "twilightforest:alpha_fur"
+              "twilightforest:alpha_yeti_fur"
             ]
+          }
+        ]
+      }
+    },
+    "was_in_fight": {
+      "trigger": "twilightforest:hurt_boss",
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:alpha_yeti"
+            },
+            "entity": "this"
           }
         ]
       }
@@ -70,7 +87,8 @@
     [
       "yeti",
       "trophy",
-      "fur"
+      "fur",
+      "was_in_fight"
     ],
     [
       "previous_progression"

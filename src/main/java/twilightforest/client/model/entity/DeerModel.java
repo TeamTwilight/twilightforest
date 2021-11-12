@@ -9,14 +9,14 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.passive.DeerEntity;
+import twilightforest.entity.passive.Deer;
 
 /**
  * ModelWildDeer - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class DeerModel extends QuadrupedModel<DeerEntity> {
+public class DeerModel extends QuadrupedModel<Deer> {
     private final ModelPart neck;
     private final ModelPart realHead;
 
@@ -107,7 +107,7 @@ public class DeerModel extends QuadrupedModel<DeerEntity> {
         }
     }
 
-    public void setupAnim(DeerEntity p_103509_, float p_103510_, float p_103511_, float p_103512_, float p_103513_, float p_103514_) {
+    public void setupAnim(Deer p_103509_, float p_103510_, float p_103511_, float p_103512_, float p_103513_, float p_103514_) {
         super.setupAnim(p_103509_, p_103510_, p_103511_, p_103512_, p_103513_, p_103514_);
         realHead.xRot = head.xRot;
         realHead.yRot = head.yRot;

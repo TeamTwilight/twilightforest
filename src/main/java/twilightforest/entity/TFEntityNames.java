@@ -5,13 +5,13 @@ import static twilightforest.TwilightForestMod.prefix;
 
 public class TFEntityNames {
 	// Passive Animals
-	public static final ResourceLocation WILD_BOAR = prefix("wild_boar");
+	public static final ResourceLocation BOAR = prefix("boar");
 	public static final ResourceLocation BIGHORN_SHEEP = prefix("bighorn_sheep");
 	public static final ResourceLocation DEER = prefix("deer");
 	public static final ResourceLocation PENGUIN = prefix("penguin");
 	public static final ResourceLocation TINY_BIRD = prefix("tiny_bird");
 	public static final ResourceLocation SQUIRREL = prefix("squirrel");
-	public static final ResourceLocation BUNNY = prefix("bunny");
+	public static final ResourceLocation DWARF_RABBIT = prefix("dwarf_rabbit");
 	public static final ResourceLocation RAVEN = prefix("raven");
 
 	public static final ResourceLocation QUEST_RAM = prefix("quest_ram");
@@ -58,22 +58,22 @@ public class TFEntityNames {
 	public static final ResourceLocation MIST_WOLF = prefix("mist_wolf");
 	public static final ResourceLocation KING_SPIDER = prefix("king_spider");
 
-	public static final ResourceLocation MINI_GHAST = prefix("mini_ghast");
-	public static final ResourceLocation TOWER_GHAST = prefix("tower_ghast");
-	public static final ResourceLocation TOWER_GOLEM = prefix("tower_golem");
-	public static final ResourceLocation TOWER_TERMITE = prefix("tower_termite");
-	public static final ResourceLocation TOWER_BROODLING = prefix("tower_broodling");
+	public static final ResourceLocation CARMINITE_GHASTLING = prefix("carminite_ghastling");
+	public static final ResourceLocation CARMINITE_GHASTGUARD = prefix("carminite_ghastguard");
+	public static final ResourceLocation CARMINITE_GOLEM = prefix("carminite_golem");
+	public static final ResourceLocation TOWERWOOD_BORER = prefix("towerwood_borer");
+	public static final ResourceLocation CARMINITE_BROODLING = prefix("carminite_broodling");
 	public static final ResourceLocation UR_GHAST = prefix("ur_ghast");
 
 	public static final ResourceLocation BLOCKCHAIN_GOBLIN = prefix("blockchain_goblin");
-	public static final ResourceLocation GOBLIN_KNIGHT_UPPER = prefix("goblin_knight_upper");
-	public static final ResourceLocation GOBLIN_KNIGHT_LOWER = prefix("goblin_knight_lower");
+	public static final ResourceLocation UPPER_GOBLIN_KNIGHT = prefix("upper_goblin_knight");
+	public static final ResourceLocation LOWER_GOBLIN_KNIGHT = prefix("lower_goblin_knight");
 	public static final ResourceLocation HELMET_CRAB = prefix("helmet_crab");
 	public static final ResourceLocation KNIGHT_PHANTOM = prefix("knight_phantom");
 
 	// Snow Region
 	public static final ResourceLocation YETI = prefix("yeti");
-	public static final ResourceLocation YETI_ALPHA = prefix("yeti_alpha");
+	public static final ResourceLocation ALPHA_YETI = prefix("alpha_yeti");
 	public static final ResourceLocation WINTER_WOLF = prefix("winter_wolf");
 
 	public static final ResourceLocation SNOW_GUARDIAN = prefix("snow_guardian");

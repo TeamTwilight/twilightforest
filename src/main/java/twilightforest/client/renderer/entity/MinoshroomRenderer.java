@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -16,10 +15,10 @@ import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.MinoshroomModel;
-import twilightforest.entity.boss.MinoshroomEntity;
+import twilightforest.entity.boss.Minoshroom;
 
 //old renderer had the head mushroom in a different spot - line is commented out
-public class MinoshroomRenderer extends HumanoidMobRenderer<MinoshroomEntity, MinoshroomModel> {
+public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, MinoshroomModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
@@ -31,14 +30,14 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<MinoshroomEntity, Mi
 	/**
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MooshroomMushroomLayer}
 	 */
-	static class LayerMinoshroomMushroom extends RenderLayer<MinoshroomEntity, MinoshroomModel> {
+	static class LayerMinoshroomMushroom extends RenderLayer<Minoshroom, MinoshroomModel> {
 
-		public LayerMinoshroomMushroom(RenderLayerParent<MinoshroomEntity, MinoshroomModel> renderer) {
+		public LayerMinoshroomMushroom(RenderLayerParent<Minoshroom, MinoshroomModel> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void render(PoseStack ms, MultiBufferSource buffers, int light, MinoshroomEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void render(PoseStack ms, MultiBufferSource buffers, int light, Minoshroom entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (!entity.isBaby() && !entity.isInvisible()) {
 				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 				BlockState blockstate = Blocks.RED_MUSHROOM.defaultBlockState(); // TF: hardcode mushroom state
@@ -75,7 +74,7 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<MinoshroomEntity, Mi
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(MinoshroomEntity entity) {
+	public ResourceLocation getTextureLocation(Minoshroom entity) {
 		return textureLoc;
 	}
 }

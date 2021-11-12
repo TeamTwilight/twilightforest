@@ -1,11 +1,14 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,18 +21,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.YetiArmorModel;
 
 import javax.annotation.Nullable;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class YetiArmorItem extends ArmorItem {
-
-	private static final Map<EquipmentSlot, HumanoidModel<?>> yetiArmorModel = new EnumMap<>(EquipmentSlot.class);
+	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
 		super(material, slot, props);
@@ -69,7 +68,7 @@ public class YetiArmorItem extends ArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltips, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltips, flags);
-		tooltips.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
+		tooltips.add(TOOLTIP);
 	}
 
 	@Override

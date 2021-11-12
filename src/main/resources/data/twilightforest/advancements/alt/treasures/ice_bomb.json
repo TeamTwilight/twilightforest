@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:alt/root",
-  "criteria": {
-    "ice_bomb": { "trigger": "minecraft:inventory_changed", "conditions": { "items": [{ "item": "twilightforest:ice_bomb" }]}}
-  }
-}

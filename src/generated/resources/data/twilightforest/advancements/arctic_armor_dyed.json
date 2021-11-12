@@ -16,6 +16,9 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "experience": 25
+  },
   "criteria": {
     "helmet": {
       "trigger": "minecraft:inventory_changed",

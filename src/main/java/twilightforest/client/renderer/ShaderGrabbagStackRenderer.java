@@ -77,7 +77,7 @@ public class ShaderGrabbagStackRenderer implements BlockEntityRenderer<ShaderGra
 
             Tesselator tessellator = Tesselator.getInstance();
             BufferBuilder buffer = tessellator.getBuilder();
-            Minecraft.getInstance().getTextureManager().getTexture(bg);
+            RenderSystem._setShaderTexture(0, bg);
             int c = stack.getRarity().color.getColor();
             float r = (c >> 16 & 0xFF) / 255.0f;
             float g = (c >> 8 & 0xFF) / 255.0f;

@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:twilight_oak_leaves",
+    "twilightforest:canopy_leaves",
+    "twilightforest:mangrove_leaves",
+    "twilightforest:dark_leaves",
+    "twilightforest:rainbow_oak_leaves",
+    "twilightforest:time_leaves",
+    "twilightforest:transformation_leaves",
+    "twilightforest:mining_leaves",
+    "twilightforest:sorting_leaves",
+    "twilightforest:thorn_leaves",
+    "twilightforest:thorn_rose",
+    "twilightforest:beanstalk_leaves",
+    "twilightforest:steeleaf_block",
+    "twilightforest:arctic_fur_block"
+  ]
+}

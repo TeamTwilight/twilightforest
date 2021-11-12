@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.AxeItem;
@@ -13,8 +14,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class KnightmetalAxeItem extends AxeItem {
 
 	protected KnightmetalAxeItem(Tier material, Properties props) {
@@ -25,6 +24,6 @@ public class KnightmetalAxeItem extends AxeItem {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltips, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltips, flags);
-		tooltips.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
+		tooltips.add(new TranslatableComponent(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 }

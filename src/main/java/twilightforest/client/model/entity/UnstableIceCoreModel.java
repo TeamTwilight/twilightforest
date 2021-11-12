@@ -11,9 +11,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
-import twilightforest.entity.IceMobEntity;
+import twilightforest.entity.monster.BaseIceMob;
 
-public class UnstableIceCoreModel<T extends IceMobEntity> extends HierarchicalModel<T> {
+public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalModel<T> {
 
 	public ModelPart[] spikes = new ModelPart[16];
 	public ModelPart[] cubes = new ModelPart[16];

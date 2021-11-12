@@ -1,0 +1,37 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_triple": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/triple_bow"
+      }
+    },
+    "has_ice": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/ice_bow"
+      }
+    },
+    "has_seeker": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/seeker_bow"
+      }
+    },
+    "has_ender": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/ender_bow"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_triple",
+      "has_ice",
+      "has_seeker",
+      "has_ender"
+    ]
+  ]
+}

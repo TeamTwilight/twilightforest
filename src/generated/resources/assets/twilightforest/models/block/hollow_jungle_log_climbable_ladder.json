@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/vertical_hollow_log_ladder",
+  "textures": {
+    "top": "minecraft:block/jungle_log_top",
+    "side": "minecraft:block/jungle_log",
+    "inner": "minecraft:block/stripped_jungle_log"
+  }
+}

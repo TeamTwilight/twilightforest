@@ -58,49 +58,49 @@
         "base_length": 5,
         "random_add_length": 15,
         "rope_provider": {
-          "state": {
-            "Properties": {
-              "west": "false",
-              "waterlogged": "false",
-              "south": "false",
-              "north": "false",
-              "east": "false"
+          "entries": [
+            {
+              "data": {
+                "Properties": {
+                  "west": "false",
+                  "waterlogged": "false",
+                  "south": "false",
+                  "north": "false",
+                  "east": "false"
+                },
+                "Name": "twilightforest:canopy_fence"
+              },
+              "weight": 3
             },
-            "Name": "twilightforest:canopy_fence"
-          },
-          "type": "minecraft:simple_state_provider"
+            {
+              "data": {
+                "Properties": {
+                  "waterlogged": "false",
+                  "axis": "y"
+                },
+                "Name": "minecraft:chain"
+              },
+              "weight": 1
+            }
+          ]
         },
         "baggage_provider": {
-          "state": {
-            "Name": "twilightforest:firefly_jar"
-          },
-          "type": "minecraft:simple_state_provider"
-        },
-        "attempts_minimum": 0,
-        "random_add_attempts": 1,
-        "minimum_required_length": 2,
-        "type": "twilightforest:dangle_from_tree_decorator"
-      },
-      {
-        "base_length": 5,
-        "random_add_length": 15,
-        "rope_provider": {
-          "state": {
-            "Properties": {
-              "waterlogged": "false",
-              "axis": "y"
+          "entries": [
+            {
+              "data": {
+                "Name": "twilightforest:firefly_jar"
+              },
+              "weight": 10
             },
-            "Name": "minecraft:chain"
-          },
-          "type": "minecraft:simple_state_provider"
+            {
+              "data": {
+                "Name": "twilightforest:cicada_jar"
+              },
+              "weight": 1
+            }
+          ]
         },
-        "baggage_provider": {
-          "state": {
-            "Name": "twilightforest:firefly_jar"
-          },
-          "type": "minecraft:simple_state_provider"
-        },
-        "attempts_minimum": 0,
+        "attempts_minimum": 1,
         "random_add_attempts": 1,
         "minimum_required_length": 2,
         "type": "twilightforest:dangle_from_tree_decorator"

@@ -42,7 +42,7 @@ public class MazeRoomCollapseComponent extends MazeRoomComponent {
 					this.generateAirBox(world, sbb, x, gravel, z, x, gravel + 5, z);
 				} else if (root > 0) {
 					this.generateBox(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT.defaultBlockState(), AIR, true);
-					this.generateBox(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.root_strand.get().defaultBlockState(), AIR, false);
+					this.generateBox(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.ROOT_STRAND.get().defaultBlockState(), AIR, false);
 				} else if (rand.nextInt(dist + 1) > 0) {
 					// remove ceiling
 					this.generateAirBox(world, sbb, x, 5, z, x, 5, z);

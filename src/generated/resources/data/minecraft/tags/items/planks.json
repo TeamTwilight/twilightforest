@@ -6,13 +6,13 @@
     "twilightforest:mangrove_planks",
     "twilightforest:dark_planks",
     "twilightforest:time_planks",
-    "twilightforest:trans_planks",
-    "twilightforest:mine_planks",
-    "twilightforest:sort_planks",
-    "twilightforest:tower_wood",
-    "twilightforest:tower_wood_encased",
-    "twilightforest:tower_wood_cracked",
-    "twilightforest:tower_wood_mossy",
-    "twilightforest:tower_wood_infested"
+    "twilightforest:transformation_planks",
+    "twilightforest:mining_planks",
+    "twilightforest:sorting_planks",
+    "twilightforest:towerwood",
+    "twilightforest:encased_towerwood",
+    "twilightforest:cracked_towerwood",
+    "twilightforest:mossy_towerwood",
+    "twilightforest:infested_towerwood"
   ]
 }

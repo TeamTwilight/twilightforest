@@ -52,7 +52,7 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public WallPillarBlock(Material material, double width, double height) {
-        super(Properties.of(material).strength(1.5F, 10.0F).requiresCorrectToolForDrops()/*.harvestTool(ToolType.PICKAXE)*/.noOcclusion(), width, height);
+        super(Properties.of(material).strength(1.5F, 6.0F).requiresCorrectToolForDrops().noOcclusion(), width, height);
         this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 
@@ -73,11 +73,6 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
-    }
-
     public boolean canConnectTo(BlockState state, boolean solidSide) {
         Block block = state.getBlock();
         return block instanceof WallPillarBlock;

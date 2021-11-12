@@ -28,6 +28,12 @@ public class TFModelLayers {
 	public static final ModelLayerLocation SNOW_QUEEN_TROPHY = register("snow_queen_trophy");
 	public static final ModelLayerLocation UR_GHAST_TROPHY = register("ur_ghast_trophy");
 
+	public static final ModelLayerLocation LEGACY_HYDRA_TROPHY = register("legacy_hydra_trophy");
+	public static final ModelLayerLocation LEGACY_MINOSHROOM_TROPHY = register("legacy_minoshroom_trophy");
+	public static final ModelLayerLocation LEGACY_QUEST_RAM_TROPHY = register("legacy_quest_ram_trophy");
+	public static final ModelLayerLocation LEGACY_SNOW_QUEEN_TROPHY = register("legacy_snow_queen_trophy");
+	public static final ModelLayerLocation LEGACY_UR_GHAST_TROPHY = register("legacy_ur_ghast_trophy");
+
 	public static final ModelLayerLocation ADHERENT = register("adherent");
 	public static final ModelLayerLocation ALPHA_YETI = register("alpha_yeti");
 	public static final ModelLayerLocation ARMORED_GIANT = register("armored_giant");
@@ -82,6 +88,7 @@ public class TFModelLayers {
 	public static final ModelLayerLocation SKELETON_DRUID_INNER_ARMOR = register("skeleton_druid", "inner_armor");
 	public static final ModelLayerLocation SKELETON_DRUID_OUTER_ARMOR = register("skeleton_druid", "outer_armor");
 	public static final ModelLayerLocation SLIME_BEETLE = register("slime_beetle");
+	public static final ModelLayerLocation SLIME_BEETLE_TAIL = register("slime_beetle", "tail");
 	public static final ModelLayerLocation SNOW_QUEEN = register("snow_queen");
 	public static final ModelLayerLocation SQUIRREL = register("squirrel");
 	public static final ModelLayerLocation STABLE_ICE_CORE = register("stable_ice_core");
@@ -95,6 +102,34 @@ public class TFModelLayers {
 	public static final ModelLayerLocation WINTER_WOLF = register("winter_wolf");
 	public static final ModelLayerLocation WRAITH = register("wraith");
 	public static final ModelLayerLocation YETI = register("yeti");
+
+	public static final ModelLayerLocation LEGACY_BIGHORN_SHEEP = register("legacy_bighorn_sheep");
+	public static final ModelLayerLocation LEGACY_BLOCKCHAIN_GOBLIN = register("legacy_blockchain_goblin");
+	public static final ModelLayerLocation LEGACY_BOAR = register("legacy_boar");
+	public static final ModelLayerLocation LEGACY_DEER = register("legacy_deer");
+	public static final ModelLayerLocation LEGACY_FIRE_BEETLE = register("legacy_fire_beetle");
+	public static final ModelLayerLocation LEGACY_HELMET_CRAB = register("legacy_helmet_crab");
+	public static final ModelLayerLocation LEGACY_HYDRA = register("legacy_hydra");
+	public static final ModelLayerLocation LEGACY_HYDRA_HEAD = register("legacy_hydra_head");
+	public static final ModelLayerLocation LEGACY_HYDRA_NECK = register("legacy_hydra_neck");
+	public static final ModelLayerLocation LEGACY_KOBOLD = register("legacy_kobold");
+	public static final ModelLayerLocation LEGACY_LOWER_GOBLIN_KNIGHT = register("legacy_lower_goblin_knight");
+	public static final ModelLayerLocation LEGACY_MINOSHROOM = register("legacy_minoshroom");
+	public static final ModelLayerLocation LEGACY_MINOTAUR = register("legacy_minotaur");
+	public static final ModelLayerLocation LEGACY_NAGA = register("legacy_naga");
+	public static final ModelLayerLocation LEGACY_NAGA_BODY = register("legacy_naga_body");
+	public static final ModelLayerLocation LEGACY_PINCH_BEETLE = register("legacy_pinch_beetle");
+	public static final ModelLayerLocation LEGACY_QUEST_RAM = register("legacy_quest_ram");
+	public static final ModelLayerLocation LEGACY_RAVEN = register("legacy_raven");
+	public static final ModelLayerLocation LEGACY_REDCAP = register("legacy_redcap");
+	public static final ModelLayerLocation LEGACY_SLIME_BEETLE = register("legacy_slime_beetle");
+	public static final ModelLayerLocation LEGACY_SLIME_BEETLE_TAIL = register("legacy_slime_beetle", "tail");
+	public static final ModelLayerLocation LEGACY_SNOW_QUEEN = register("legacy_snow_queen");
+	public static final ModelLayerLocation LEGACY_SQUIRREL = register("legacy_squirrel");
+	public static final ModelLayerLocation LEGACY_TINY_BIRD = register("legacy_tiny_bird");
+	public static final ModelLayerLocation LEGACY_TROLL = register("legacy_troll");
+	public static final ModelLayerLocation LEGACY_UPPER_GOBLIN_KNIGHT = register("legacy_upper_goblin_knight");
+	public static final ModelLayerLocation LEGACY_UR_GHAST = register("legacy_ur_ghast");
 
 	public static final ModelLayerLocation CHAIN_BLOCK = register("chain_block");
 	public static final ModelLayerLocation CUBE_OF_ANNIHILATION = register("cube_of_annihilation");

@@ -85,7 +85,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	 * @param wing
 	 */
 	protected void makeOverhangBB(TowerWingComponent wing) {
-		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxX() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
+		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
 	}
 
 	@Override

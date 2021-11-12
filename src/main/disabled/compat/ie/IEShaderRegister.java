@@ -65,12 +65,12 @@ public class IEShaderRegister {
 		if (pre) {
 			ShaderManager.useShader(ShaderManager.twilightSkyShader, shaderCallback);
 			ARBShaderObjects.glCreateShaderObjectARB(ARBShaderObjects.GL_INT_VEC2_ARB);
-			Minecraft.getInstance().getTextureManager().bind(TEXTURE_STARS);
+			RenderSystem._setShaderTexture(0, TEXTURE_STARS);
 		} else {
 			ShaderManager.releaseShader();
 		}
 		ARBShaderObjects.glCreateShaderObjectARB(ARBShaderObjects.GL_OBJECT_SHADER_SOURCE_LENGTH_ARB);
-		Minecraft.getInstance().getTextureManager().bind(TextureAtlas.LOCATION_BLOCKS);
+		RenderSystem._setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
 	};
 
 	// TODO There's got to be a better way!

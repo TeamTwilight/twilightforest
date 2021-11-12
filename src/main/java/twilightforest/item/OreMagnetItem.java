@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
@@ -28,6 +29,7 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.FeatureLogic;
+import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -42,6 +44,21 @@ public class OreMagnetItem extends Item {
 
 	protected OreMagnetItem(Properties props) {
 		super(props);
+	}
+
+	@Override
+	public boolean isEnchantable(ItemStack pStack) {
+		return false;
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return false;
 	}
 
 	@Nonnull
@@ -124,8 +141,6 @@ public class OreMagnetItem extends Item {
 		initOre2BlockMap();
 
 		int blocksMoved = 0;
-		// get blocks in line from src to dest
-		BlockPos[] lineArray = FeatureLogic.getBresenhamArrays(usePos, destPos);
 
 		// find some ore?
 		BlockState attactedOreBlock = Blocks.AIR.defaultBlockState();
@@ -133,7 +148,7 @@ public class OreMagnetItem extends Item {
 		BlockPos foundPos = null;
         BlockPos basePos = null;
 
-		for (BlockPos coord : lineArray) {
+		for (BlockPos coord : new VoxelBresenhamIterator(usePos, destPos)) {
 			BlockState searchState = world.getBlockState(coord);
 
 			// keep track of where the dirt/stone we first find is.
@@ -181,10 +196,10 @@ public class OreMagnetItem extends Item {
 	 * in the likely case there's no ore in the exact look direction.
 	 */
 	private Vec3 getOffsetLook(LivingEntity living, float yawOffset, float pitchOffset) {
-		float var2 = Mth.cos(-(living.yRot + yawOffset) * 0.017453292F - (float) Math.PI);
-		float var3 = Mth.sin(-(living.yRot + yawOffset) * 0.017453292F - (float) Math.PI);
-		float var4 = -Mth.cos(-(living.xRot + pitchOffset) * 0.017453292F);
-		float var5 = Mth.sin(-(living.xRot + pitchOffset) * 0.017453292F);
+		float var2 = Mth.cos(-(living.getYRot() + yawOffset) * 0.017453292F - (float) Math.PI);
+		float var3 = Mth.sin(-(living.getYRot() + yawOffset) * 0.017453292F - (float) Math.PI);
+		float var4 = -Mth.cos(-(living.getXRot() + pitchOffset) * 0.017453292F);
+		float var5 = Mth.sin(-(living.getXRot() + pitchOffset) * 0.017453292F);
 		return new Vec3(var3 * var4, var5, var2 * var4);
 	}
 

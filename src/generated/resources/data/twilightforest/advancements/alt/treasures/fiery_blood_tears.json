@@ -1,0 +1,35 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_blood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_blood"
+            ]
+          }
+        ]
+      }
+    },
+    "has_tears": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_tears"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_blood",
+      "has_tears"
+    ]
+  ]
+}

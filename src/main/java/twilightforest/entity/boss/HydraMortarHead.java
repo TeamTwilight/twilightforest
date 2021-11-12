@@ -33,7 +33,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 		super(type, world);
 	}
 
-	public HydraMortarHead(EntityType<? extends HydraMortarHead> type, Level world, HydraHeadEntity head) {
+	public HydraMortarHead(EntityType<? extends HydraMortarHead> type, Level world, HydraHead head) {
 		super(type, head.getParent(), world);
 
 		Vec3 vector = head.getLookAngle();
@@ -46,7 +46,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 		moveTo(px, py, pz, 0, 0);
 		// these are being set to extreme numbers when we get here, why?
 		head.setDeltaMovement(new Vec3(0, 0, 0));
-		shootFromRotation(head, head.xRot, head.yRot, -20.0F, 0.5F, 1F);
+		shootFromRotation(head, head.getXRot(), head.getYRot(), -20.0F, 0.5F, 1F);
 
 		TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getDeltaMovement().x(), head.getDeltaMovement().z());
 	}
@@ -96,7 +96,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
-		return (getOwner() instanceof HydraEntity && entity instanceof HydraPartEntity && ((HydraPartEntity) entity).getParent() == getOwner());
+		return (getOwner() instanceof Hydra && entity instanceof HydraPart && ((HydraPart) entity).getParent() == getOwner());
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 			}
 
 			if (source.getEntity() instanceof LivingEntity) {
-				this.setOwner(source.getEntity()); //TODO: Verify
+				this.setOwner(source.getEntity());
 			}
 			return true;
 		} else {

@@ -7,18 +7,17 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
-import twilightforest.entity.TFPartEntity;
+import twilightforest.entity.TFPart;
 
 import javax.annotation.Nullable;
 
-public abstract class TFPartRenderer<T extends TFPartEntity<?>, M extends ListModel<T>> extends EntityRenderer<T> {
+public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>> extends EntityRenderer<T> {
 
 	protected final M entityModel;
 
@@ -34,7 +33,7 @@ public abstract class TFPartRenderer<T extends TFPartEntity<?>, M extends ListMo
 		matrixStackIn.pushPose();
 
 		float f = Mth.rotLerp(partialTicks, entityIn.prevRenderYawOffset, entityIn.renderYawOffset);
-		float f6 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.xRot);
+		float f6 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot());
 
 		float f7 = this.handleRotationFloat(entityIn, partialTicks);
 		this.applyRotations(entityIn, matrixStackIn, f7, f, partialTicks);

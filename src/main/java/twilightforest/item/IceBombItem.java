@@ -9,9 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.boss.IceBombEntity;
-
-import net.minecraft.world.item.Item.Properties;
+import twilightforest.entity.projectile.IceBomb;
 
 public class IceBombItem extends Item {
 
@@ -24,11 +22,11 @@ public class IceBombItem extends Item {
 		player.playSound(TFSounds.ICEBOMB_FIRED, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
 
 		if (!world.isClientSide) {
-			if (!player.abilities.instabuild) {
+			if (!player.getAbilities().instabuild) {
 				player.getItemInHand(hand).shrink(1);
 			}
-			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, world, player);
-			ice.shootFromRotation(player, player.xRot, player.yRot, -20.0F, 0.75F, 1.0F);
+			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE, world, player);
+			ice.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
 			world.addFreshEntity(ice);
 		}
 

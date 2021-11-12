@@ -12,14 +12,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.boss.HydraEntity;
+import twilightforest.entity.boss.Hydra;
 
 /**
  * ModelHydra - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class HydraModel extends HierarchicalModel<HydraEntity> {
+public class HydraModel extends HierarchicalModel<Hydra> {
 
     public ModelPart root, body, tail, rightLeg, leftLeg;
 
@@ -213,7 +213,7 @@ public class HydraModel extends HierarchicalModel<HydraEntity> {
     }
 
     @Override
-    public void setupAnim(HydraEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(Hydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         //super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
         leftLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

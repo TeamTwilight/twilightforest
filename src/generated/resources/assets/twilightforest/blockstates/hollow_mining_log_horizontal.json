@@ -1,0 +1,39 @@
+{
+  "variants": {
+    "axis=x,variant=empty": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal",
+      "y": 90
+    },
+    "axis=z,variant=empty": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal"
+    },
+    "axis=x,variant=moss": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal_moss",
+      "y": 90
+    },
+    "axis=z,variant=moss": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal_moss"
+    },
+    "axis=x,variant=moss_and_grass": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal_moss_grass",
+      "y": 90
+    },
+    "axis=z,variant=moss_and_grass": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal_moss_grass"
+    },
+    "axis=x,variant=snow": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal_snow",
+      "y": 90
+    },
+    "axis=z,variant=snow": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal_snow"
+    },
+    "axis=x,variant=waterlogged": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal",
+      "y": 90
+    },
+    "axis=z,variant=waterlogged": {
+      "model": "twilightforest:block/hollow_mining_log_horizontal"
+    }
+  }
+}

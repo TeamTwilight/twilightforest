@@ -20,6 +20,10 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "experience": 100,
+    "function": "twilightforest:give_3_shields"
+  },
   "criteria": {
     "quest_ram_complete": {
       "trigger": "twilightforest:complete_quest_ram",

@@ -6,13 +6,11 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -23,21 +21,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.entity.SlideBlockEntity;
+import twilightforest.entity.SlideBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class SliderBlock extends RotatedPillarBlock implements SimpleWaterloggedBlock {
 
@@ -106,7 +99,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
 			//world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.SLIDER, SoundCategory.BLOCKS, 0.75F, 1.5F);
 
-			SlideBlockEntity slideBlock = new SlideBlockEntity(TFEntities.slider, world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
+			SlideBlock slideBlock = new SlideBlock(TFEntities.SLIDER, world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
 			world.addFreshEntity(slideBlock);
 		}
 
@@ -167,11 +160,5 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 
 			((LivingEntity) entity).knockback(2, kx, kz);
 		}
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(new TranslatableComponent("twilightforest.misc.nyi"));
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 }

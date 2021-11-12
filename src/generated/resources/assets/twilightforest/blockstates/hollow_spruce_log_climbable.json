@@ -1,0 +1,61 @@
+{
+  "variants": {
+    "facing=north,variant=vine": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_vine",
+      "y": 180,
+      "uvlock": true
+    },
+    "facing=south,variant=vine": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_vine",
+      "uvlock": true
+    },
+    "facing=west,variant=vine": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_vine",
+      "y": 90,
+      "uvlock": true
+    },
+    "facing=east,variant=vine": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_vine",
+      "y": 270,
+      "uvlock": true
+    },
+    "facing=north,variant=ladder": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_ladder",
+      "y": 180,
+      "uvlock": true
+    },
+    "facing=south,variant=ladder": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_ladder",
+      "uvlock": true
+    },
+    "facing=west,variant=ladder": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_ladder",
+      "y": 90,
+      "uvlock": true
+    },
+    "facing=east,variant=ladder": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_ladder",
+      "y": 270,
+      "uvlock": true
+    },
+    "facing=north,variant=ladder_waterlogged": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_ladder",
+      "y": 180,
+      "uvlock": true
+    },
+    "facing=south,variant=ladder_waterlogged": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_ladder",
+      "uvlock": true
+    },
+    "facing=west,variant=ladder_waterlogged": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_ladder",
+      "y": 90,
+      "uvlock": true
+    },
+    "facing=east,variant=ladder_waterlogged": {
+      "model": "twilightforest:block/hollow_spruce_log_climbable_ladder",
+      "y": 270,
+      "uvlock": true
+    }
+  }
+}

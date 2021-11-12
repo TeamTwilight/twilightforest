@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:skeletons",
+    "minecraft:zombie",
+    "minecraft:enderman",
+    "minecraft:spider",
+    "minecraft:creeper",
+    "twilightforest:swarm_spider"
+  ]
+}

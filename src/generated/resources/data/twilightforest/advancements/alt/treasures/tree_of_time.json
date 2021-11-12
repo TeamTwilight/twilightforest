@@ -1,0 +1,61 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_sapling": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_sapling"
+            ]
+          }
+        ]
+      }
+    },
+    "has_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_wood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_wood"
+            ]
+          }
+        ]
+      }
+    },
+    "has_leaves": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_leaves"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_sapling",
+      "has_log",
+      "has_wood",
+      "has_leaves"
+    ]
+  ]
+}

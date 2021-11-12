@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "twilightforest:block/castle_roof_tile"
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "x": 90
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "x": 180
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/castle_roof_tile",
+        "x": 270,
+        "y": 270
+      }
+    ]
+  }
+}

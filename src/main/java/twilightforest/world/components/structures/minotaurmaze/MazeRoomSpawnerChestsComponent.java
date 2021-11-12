@@ -39,13 +39,13 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 		placePillarEnclosure(world, sbb, 10, 10);
 
 		// spawner
-		setSpawner(world, 4, 2, 4, sbb, TFEntities.minotaur);
+		setSpawner(world, 4, 2, 4, sbb, TFEntities.MINOTAUR);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(world, 4, 2, 11, TFTreasure.labyrinth_room, sbb);
+		this.placeTreasureAtCurrentPosition(world, 4, 2, 11, TFTreasure.LABYRINTH_ROOM, sbb);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(world, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
+		this.placeTreasureAtCurrentPosition(world, 11, 2, 4, TFTreasure.LABYRINTH_ROOM, sbb);
 
 		// trap
 		placeBlock(world, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), 11, 1, 11, sbb);
@@ -60,7 +60,7 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 	private void placePillarEnclosure(WorldGenLevel world, BoundingBox sbb,
 									  int dx, int dz) {
 		for (int y = 1; y < 5; y++) {
-			final BlockState chiselledMazeBlock = TFBlocks.maze_stone_chiseled.get().defaultBlockState();
+			final BlockState chiselledMazeBlock = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
 			placeBlock(world, chiselledMazeBlock, dx, y, dz, sbb);
 			placeBlock(world, chiselledMazeBlock, dx + 2, y, dz, sbb);
 			placeBlock(world, chiselledMazeBlock, dx, y, dz + 2, sbb);

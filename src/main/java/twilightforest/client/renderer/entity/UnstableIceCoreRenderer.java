@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
-import twilightforest.entity.UnstableIceCoreEntity;
+import twilightforest.entity.monster.UnstableIceCore;
 
-public class UnstableIceCoreRenderer<T extends UnstableIceCoreEntity, M extends UnstableIceCoreModel<T>> extends TFGenericMobRenderer<T, M> {
+public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends UnstableIceCoreModel<T>> extends TFGenericMobRenderer<T, M> {
 
 	public UnstableIceCoreRenderer(EntityRendererProvider.Context manager, M model) {
 		super(manager, model, 0.4F, "iceexploder.png");

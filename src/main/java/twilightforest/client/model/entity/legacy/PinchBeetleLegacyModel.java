@@ -13,9 +13,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.PinchBeetleEntity;
+import twilightforest.entity.monster.PinchBeetle;
 
-public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity> {
+public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetle> {
 
 	ModelPart root;
 	ModelPart head;
@@ -146,7 +146,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity>
 
 		partRoot.addOrReplaceChild("leg_1", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
+						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, 4F, 0F, 0.6981317F, -0.3490659F));
 
 		partRoot.addOrReplaceChild("leg_2", CubeListBuilder.create()
@@ -156,7 +156,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity>
 
 		partRoot.addOrReplaceChild("leg_3", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
+						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, -1F, 0F, 0.2792527F, -0.3490659F));
 
 		partRoot.addOrReplaceChild("leg_4", CubeListBuilder.create()
@@ -166,7 +166,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity>
 
 		partRoot.addOrReplaceChild("leg_5", CubeListBuilder.create().mirror()
 						.texOffs(40, 0)
-						.addBox(-1F, -1F, -1F, 10, 2, 2),
+						.addBox(-9F, -1F, -1F, 10, 2, 2),
 				PartPose.offsetAndRotation(-4F, 21F, -4F, 0F, -0.2792527F, -0.3490659F));
 
 		partRoot.addOrReplaceChild("leg_6", CubeListBuilder.create()
@@ -183,7 +183,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity>
 	}
 
 	@Override
-	public void setupAnim(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(PinchBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 
@@ -230,7 +230,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity>
 	}
 
 	@Override
-	public void prepareMobModel(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(PinchBeetle entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		if (entity.isVehicle()) {
 			// open jaws
 			this.jaw1a.yRot = 2.96705972839036F;

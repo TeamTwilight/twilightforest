@@ -19,7 +19,6 @@ import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import twilightforest.TFConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.*;
-import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import java.util.OptionalInt;

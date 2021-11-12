@@ -5,10 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.BlockGetter;
-import twilightforest.tileentity.TFSignTileEntity;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import twilightforest.block.entity.TFSignBlockEntity;
 
 import javax.annotation.Nullable;
 
@@ -20,6 +17,6 @@ public class TFSignBlock extends StandingSignBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TFSignTileEntity(pos, state);
+        return new TFSignBlockEntity(pos, state);
     }
 }

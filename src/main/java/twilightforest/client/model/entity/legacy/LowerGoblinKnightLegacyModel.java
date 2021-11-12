@@ -7,9 +7,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.LowerGoblinKnightEntity;
+import twilightforest.entity.monster.LowerGoblinKnight;
 
-public class LowerGoblinKnightLegacyModel extends HumanoidModel<LowerGoblinKnightEntity> {
+public class LowerGoblinKnightLegacyModel extends HumanoidModel<LowerGoblinKnight> {
 
 	ModelPart tunic;
 
@@ -57,7 +57,7 @@ public class LowerGoblinKnightLegacyModel extends HumanoidModel<LowerGoblinKnigh
 
 		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
 						.texOffs(0, 48)
-						.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4),
+						.addBox(-1.0F, 0.0F, -2.0F, 4, 8, 4),
 				PartPose.offset(2.5F, 16.0F, 0.0F));
 
 		return LayerDefinition.create(mesh, 128, 64);
@@ -73,7 +73,7 @@ public class LowerGoblinKnightLegacyModel extends HumanoidModel<LowerGoblinKnigh
 	}
 
 	@Override
-	public void setupAnim(LowerGoblinKnightEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(LowerGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.hat.yRot = this.head.yRot;

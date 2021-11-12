@@ -30,7 +30,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 	}
 
 	public FinalCastleDamagedTowerComponent(StructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(piece, feature, rand, i, x, y, z, TFBlocks.castle_rune_brick_yellow.get().defaultBlockState(), direction);  //TODO: change rune color
+		super(piece, feature, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);  //TODO: change rune color
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 				for (int z = this.boundingBox.minZ() - 2; z <= this.boundingBox.maxZ() + 2; z++) {
 					pos.set(x, y, z);
 					if (sbb.isInside(pos)) {
-						if (world.getBlockState(pos).getBlock() == TFBlocks.deadrock.get()) {
+						if (world.getBlockState(pos).getBlock() == TFBlocks.DEADROCK.get()) {
 							hitDeadRock = true;
 						}
 						determineBlockDestroyed(world, areas, y, x, z);

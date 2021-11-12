@@ -1,15 +1,13 @@
 package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
-import twilightforest.world.components.feature.trees.TFGenHollowTree;
 
 import java.util.Random;
 import java.util.function.BiConsumer;
@@ -50,7 +48,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, config);
 
 		// add clock block
-		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.time_log_core.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.TIME_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
 
 		return true;
 	}
@@ -59,7 +57,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 	 * Build the crown of the tree. This builds a smaller crown, since the large
 	 * ones were causing some performance issues
 	 */
-	protected void buildTinyCrown(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
+	protected void buildTinyCrown(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, Random random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
 		final int crownRadius = 4;
 		final int bvar = 1;
 

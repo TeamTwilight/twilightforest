@@ -46,7 +46,7 @@ public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 		// span
 		generateBox(world, sbb, 0, 0, 0, length, 1, 6, false, rand, deco.randomBlocks);
 		// rails
-        BlockState castlePillar = TFBlocks.castle_pillar_bold.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+        BlockState castlePillar = TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		generateBox(world, sbb, 0, 2, 0, length, 2, 0, castlePillar, castlePillar, false);
 		generateBox(world, sbb, 0, 2, 6, length, 2, 6, castlePillar, castlePillar, false);

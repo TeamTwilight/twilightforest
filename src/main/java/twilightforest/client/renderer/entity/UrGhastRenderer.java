@@ -1,13 +1,12 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.UrGhastModel;
-import twilightforest.entity.boss.UrGhastEntity;
+import twilightforest.entity.boss.UrGhast;
 
-public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhastEntity, UrGhastModel> {
+public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhast, UrGhastModel> {
 
 	private final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerboss.png");
 	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
@@ -18,7 +17,7 @@ public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhastEntity, UrGha
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(UrGhastEntity entity) {
+	public ResourceLocation getTextureLocation(UrGhast entity) {
 		switch (entity.isCharging() ? 2 : entity.getAttackStatus()) {
 			default:
 			case 0:

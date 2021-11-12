@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import twilightforest.util.FeatureLogic;
+import twilightforest.util.VoxelBresenhamIterator;
 import twilightforest.world.registration.TwilightFeatures;
 
 import java.util.List;
@@ -93,7 +94,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
      * This takes all variables for setting Branch
      */
     private static void drawBresenhamBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos from, BlockPos to, TreeConfiguration config) {
-        for (BlockPos pixel : FeatureLogic.getBresenhamArrays(from, to)) {
+        for (BlockPos pixel : new VoxelBresenhamIterator(from, to)) {
             placeLog(worldReader, worldPlacer, random, pixel, config);
         }
     }

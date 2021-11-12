@@ -7,9 +7,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
-import twilightforest.entity.TFPartEntity;
+import twilightforest.entity.TFPart;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -34,8 +33,8 @@ public class UpdateTFMultipartPacket {
 		// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
 		if (parts != null) {
 			for (PartEntity<?> part : parts) {
-				if (part instanceof TFPartEntity) {
-					TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
+				if (part instanceof TFPart) {
+					TFPart<?> tfPart = (TFPart<?>) part;
 					tfPart.writeData(buf);
 					boolean dirty = tfPart.getEntityData().isDirty();
 					buf.writeBoolean(dirty);
@@ -60,8 +59,8 @@ public class UpdateTFMultipartPacket {
 						if (parts == null)
 							return;
 						for (PartEntity<?> part : parts) {
-							if (part instanceof TFPartEntity) {
-								TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
+							if (part instanceof TFPart) {
+								TFPart<?> tfPart = (TFPart<?>) part;
 								tfPart.readData(message.buffer);
 								if (message.buffer.readBoolean()) {
 									List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);

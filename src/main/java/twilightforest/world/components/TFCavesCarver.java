@@ -10,6 +10,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import twilightforest.block.TFBlocks;
 
@@ -32,7 +34,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands) {
 		super(codec);
-		this.liquids = ImmutableSet.of();
+		this.liquids = ImmutableSet.of(Fluids.WATER, Fluids.LAVA);
+		this.replaceableBlocks = ImmutableSet.of(Blocks.SAND, Blocks.GRAVEL);
 		this.isHighlands = isHighlands;
 	}
 
@@ -76,7 +79,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, BitSet bitset, Random rand, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
 		BlockState blockstate = access.getBlockState(pos);
 		BlockState blockstate1 = access.getBlockState(posUp.setWithOffset(pos, Direction.UP));
-		if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM)) {
+		if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM) || blockstate.is(Blocks.PODZOL) || blockstate.is(Blocks.DIRT_PATH)) {
 			isSurface.setTrue();
 		}
 
@@ -100,8 +103,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					if (areaAround.is(FluidTags.WATER) || areaAboveAround.is(FluidTags.WATER) || aboveSurface.is(FluidTags.WATER)) {
 						return false;
 					} else {
-						if (rand.nextInt(10) == 0 && access.getBlockState(pos).is(Blocks.CAVE_AIR) && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
-							access.setBlockState(pos.relative(facing), TFBlocks.trollsteinn.get().defaultBlockState(), false);
+						if (rand.nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
+							access.setBlockState(pos.relative(facing), TFBlocks.TROLLSTEINN.get().defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);
 
@@ -187,9 +190,10 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	}
 
+	//make our own list of replaceables since otherwise it breaks structures like the yeti cave
 	@Override
-	protected boolean canReplaceBlock(BlockState state) {
-		return super.canReplaceBlock(state) || state.is(TFBlocks.trollsteinn.get()) || state.is(Blocks.ROOTED_DIRT) || state.is(Blocks.COARSE_DIRT);
+	protected boolean canReplaceBlock(BlockState state, BlockState aboveState) {
+		return (this.replaceableBlocks.contains(state.getBlock()) || state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT) || state.is(TFBlocks.TROLLSTEINN.get())) && !aboveState.getFluidState().is(FluidTags.WATER);
 	}
 
 	private static boolean shouldSkip(double posX, double posY, double posZ, double minY) {

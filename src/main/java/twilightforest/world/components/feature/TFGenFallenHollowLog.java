@@ -19,12 +19,12 @@ import java.util.Random;
 
 public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 
-	final BlockState mossPatch = TFBlocks.moss_patch.get().defaultBlockState();
-	final BlockState oakLeaves = TFBlocks.oak_leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
-	final BlockState oakLogWithZAxis = TFBlocks.oak_log.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
-	final BlockState oakLogWithXAxis = TFBlocks.oak_log.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+	final BlockState mossPatch = TFBlocks.MOSS_PATCH.get().defaultBlockState();
+	final BlockState oakLeaves = TFBlocks.TWILIGHT_OAK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
+	final BlockState oakLogWithZAxis = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	final BlockState oakLogWithXAxis = TFBlocks.TWILIGHT_OAK_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 	final BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
-	final BlockState firefly = TFBlocks.firefly.get().defaultBlockState();
+	final BlockState firefly = TFBlocks.FIREFLY.get().defaultBlockState();
 
 	public TFGenFallenHollowLog(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);
@@ -39,9 +39,9 @@ public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 		return rand.nextBoolean() ? makeLog4Z(world, rand, pos) : makeLog4X(world, rand, pos);
 	}
 
-	private boolean makeLog4Z(LevelAccessor world, Random rand, BlockPos pos) {
+	private boolean makeLog4Z(WorldGenLevel world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
-		if (!FeatureUtil.isAreaSuitable(world, pos, 9, 3, 4)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 4, 3, 9)) {
 			return false;
 		}
 
@@ -67,19 +67,23 @@ public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 				world.setBlock(pos.offset(1, -1, dz + 3), oakLogWithZAxis, 3);
 				if (rand.nextBoolean()) {
 					world.setBlock(pos.offset(1, 0, dz + 3), mossPatch, 3);
+					this.markAboveForPostProcessing(world, pos.offset(1, -1, dz + 3));
 				}
 			} else {
 				world.setBlock(pos.offset(1, -1, dz + 3), grass, 3);
 				world.setBlock(pos.offset(1, 0, dz + 3), mossPatch, 3);
+				this.markAboveForPostProcessing(world, pos.offset(1, -1, dz + 3));
 			}
 			if (rand.nextBoolean()) {
 				world.setBlock(pos.offset(2, -1, dz + 3), oakLogWithZAxis, 3);
 				if (rand.nextBoolean()) {
 					world.setBlock(pos.offset(2, 0, dz + 3), mossPatch, 3);
+					this.markAboveForPostProcessing(world, pos.offset(2, -1, dz + 3));
 				}
 			} else {
 				world.setBlock(pos.offset(2, -1, dz + 3), grass, 3);
 				world.setBlock(pos.offset(2, 0, dz + 3), mossPatch, 3);
+				this.markAboveForPostProcessing(world, pos.offset(2, -1, dz + 3));
 			}
 
 			// log part
@@ -91,9 +95,11 @@ public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 			world.setBlock(pos.offset(2, 2, dz + 3), oakLogWithZAxis, 3);
 			if (rand.nextBoolean()) {
 				world.setBlock(pos.offset(1, 3, dz + 3), mossPatch, 3);
+				this.markAboveForPostProcessing(world, pos.offset(1, 2, dz + 3));
 			}
 			if (rand.nextBoolean()) {
 				world.setBlock(pos.offset(2, 3, dz + 3), mossPatch, 3);
+				this.markAboveForPostProcessing(world, pos.offset(2, 2, dz + 3));
 			}
 		}
 
@@ -135,9 +141,9 @@ public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 	/**
 	 * Make a 4x4 log in the +X direction
 	 */
-	private boolean makeLog4X(LevelAccessor world, Random rand, BlockPos pos) {
+	private boolean makeLog4X(WorldGenLevel world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
-		if (!FeatureUtil.isAreaSuitable(world, pos, 4, 3, 9)) {
+		if (!FeatureUtil.isAreaSuitable(world, pos, 9, 3, 4)) {
 			return false;
 		}
 
@@ -163,19 +169,23 @@ public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 				world.setBlock(pos.offset(dx + 3, -1, 1), oakLogWithXAxis, 3);
 				if (rand.nextBoolean()) {
 					world.setBlock(pos.offset(dx + 3, 0, 1), mossPatch, 3);
+					this.markAboveForPostProcessing(world, pos.offset(dx + 3, -1, 1));
 				}
 			} else {
 				world.setBlock(pos.offset(dx + 3, -1, 1), grass, 3);
 				world.setBlock(pos.offset(dx + 3, 0, 1), mossPatch, 3);
+				this.markAboveForPostProcessing(world, pos.offset(dx + 3, -1, 1));
 			}
 			if (rand.nextBoolean()) {
 				world.setBlock(pos.offset(dx + 3, -1, 2), oakLogWithXAxis, 3);
 				if (rand.nextBoolean()) {
 					world.setBlock(pos.offset(dx + 3, 0, 2), mossPatch, 3);
+					this.markAboveForPostProcessing(world, pos.offset(dx + 3, -1, 2));
 				}
 			} else {
 				world.setBlock(pos.offset(dx + 3, -1, 2), grass, 3);
 				world.setBlock(pos.offset(dx + 3, 0, 2), mossPatch, 3);
+				this.markAboveForPostProcessing(world, pos.offset(dx + 3, -1, 2));
 			}
 
 			// log part
@@ -187,9 +197,11 @@ public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 			world.setBlock(pos.offset(dx + 3, 2, 2), oakLogWithXAxis, 3);
 			if (rand.nextBoolean()) {
 				world.setBlock(pos.offset(dx + 3, 3, 1), mossPatch, 3);
+				this.markAboveForPostProcessing(world, pos.offset(dx + 3, 2, 1));
 			}
 			if (rand.nextBoolean()) {
 				world.setBlock(pos.offset(dx + 3, 3, 2), mossPatch, 3);
+				this.markAboveForPostProcessing(world, pos.offset(dx + 3, 2, 2));
 			}
 
 		}

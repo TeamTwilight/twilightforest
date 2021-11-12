@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import twilightforest.tileentity.MoonwormTileEntity;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.MoonwormBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 
 import javax.annotation.Nullable;
 
@@ -29,13 +29,13 @@ public class MoonwormBlock extends CritterBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new MoonwormTileEntity(pos, state);
+		return new MoonwormBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.MOONWORM.get(), MoonwormTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.MOONWORM.get(), MoonwormBlockEntity::tick);
 	}
 
 	@Override

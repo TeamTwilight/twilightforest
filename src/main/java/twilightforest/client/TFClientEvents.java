@@ -1,18 +1,25 @@
 package twilightforest.client;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Options;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.network.chat.*;
+import net.minecraft.tags.StaticTagHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IWeatherRenderHandler;
@@ -21,8 +28,11 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -31,11 +41,15 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
+import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
+import twilightforest.data.ItemTagGenerator;
 import twilightforest.item.TFItems;
 
 import java.util.Objects;
+import java.util.function.UnaryOperator;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
@@ -43,31 +57,86 @@ public class TFClientEvents {
 
 	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {
+		@SubscribeEvent
+		public static void registerLoaders(ModelRegistryEvent event) {
+			ModelLoaderRegistry.registerLoader(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
+		}
 
+		@Deprecated // tterrag said this would become deprecated soon in favor of above method
 		@SubscribeEvent
 		public static void modelBake(ModelBakeEvent event) {
-			fullbrightItem(event, TFItems.fiery_ingot);
-			fullbrightItem(event, TFItems.fiery_boots);
-			fullbrightItem(event, TFItems.fiery_chestplate);
-			fullbrightItem(event, TFItems.fiery_helmet);
-			fullbrightItem(event, TFItems.fiery_leggings);
-			fullbrightItem(event, TFItems.fiery_pickaxe);
-			fullbrightItem(event, TFItems.fiery_sword);
-			fullbright(event, TFBlocks.fiery_block.getId(), "");
+			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
+			fullbrightItem(event, TFItems.FIERY_INGOT);
+			fullbrightItem(event, TFItems.FIERY_BOOTS);
+			fullbrightItem(event, TFItems.FIERY_CHESTPLATE);
+			fullbrightItem(event, TFItems.FIERY_HELMET);
+			fullbrightItem(event, TFItems.FIERY_LEGGINGS);
+			fullbrightItem(event, TFItems.FIERY_PICKAXE);
+			fullbrightItem(event, TFItems.FIERY_SWORD);
+
+			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
+
+			tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 		}
 
 		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
-			fullbright(event, Objects.requireNonNull(item.getId()), "inventory");
+			fullbrightItem(event, item, f -> f);
 		}
 
-		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state) {
+		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
+			fullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
+		}
+
+		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
+			fullbrightBlock(event, block, f -> f);
+		}
+
+		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
+			fullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
+			fullbright(event, Objects.requireNonNull(block.getId()), "", process);
+		}
+
+		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModelRegistry().put(mrl, new FullbrightBakedModel(event.getModelRegistry().get(mrl)));
+			event.getModelRegistry().put(mrl, process.apply(new FullbrightBakedModel(event.getModelRegistry().get(mrl))));
+		}
+
+		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
+			tintedFullbrightItem(event, item, f -> f);
+		}
+
+		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
+			tintedFullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
+		}
+
+		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
+			tintedFullbrightBlock(event, block, f -> f);
+		}
+
+		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
+			tintedFullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
+			tintedFullbright(event, Objects.requireNonNull(block.getId()), "", process);
+		}
+
+		private static void tintedFullbright(ModelBakeEvent event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
+			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
+			event.getModelRegistry().put(mrl, process.apply(new TintIndexAwareFullbrightBakedModel(event.getModelRegistry().get(mrl))));
 		}
 
 		@SubscribeEvent
 		public static void texStitch(TextureStitchEvent.Pre evt) {
 			TextureAtlas map = evt.getMap();
+
+			if (Sheets.CHEST_SHEET.equals(map.location()))
+				TwilightChestRenderer.MATERIALS.values().stream()
+						.flatMap(e -> e.values().stream())
+						.map(Material::texture)
+						.forEach(evt::addSprite);
+
+			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
 
 		//FIXME bring back if you can get GradientMappedTexture working
 		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
@@ -139,8 +208,8 @@ public class TFClientEvents {
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
 	@SubscribeEvent
-	public static void preOverlay(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER) {
+	public static void preOverlay(RenderGameOverlayEvent.PreLayer event) {
+		if (event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT) {
 			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
 				event.setCanceled(true);
 			}
@@ -217,6 +286,38 @@ public class TFClientEvents {
 			IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
 			if (weatherRenderer instanceof TFWeatherRenderer)
 				((TFWeatherRenderer) weatherRenderer).tick();
+		}
+	}
+
+	private static final MutableComponent WIP_TEXT_0 = new TranslatableComponent("twilightforest.misc.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent WIP_TEXT_1 = new TranslatableComponent("twilightforest.misc.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent NYI_TEXT = new TranslatableComponent("twilightforest.misc.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+
+	@SubscribeEvent
+	public static void tooltipEvent(ItemTooltipEvent event) {
+		ItemStack item = event.getItemStack();
+
+		/*
+			There's some kinda crash here where the "Tag % used before it was bound" crash happens from
+			StaticTagHelper$Wrapper.resolve() because the tag wrapped is null. I assume this crash happens because
+			somehow the game attempts to load a tooltip for an item in the main menu or something upon
+			resourcepack reload when the player has not loaded into a save. See Issue #1270 for crashlog
+		*/
+		boolean wip = (ItemTagGenerator.WIP instanceof StaticTagHelper.Wrapper<Item> wrappedWIP) && wrappedWIP.tag != null && item.is(wrappedWIP);
+		// WIP takes precedence over NYI
+		boolean nyi = !wip && (ItemTagGenerator.NYI instanceof StaticTagHelper.Wrapper<Item> wrappedNYI) && wrappedNYI.tag != null && item.is(wrappedNYI);
+
+		if (!wip && !nyi)
+			return;
+
+		//if (item.getDisplayName() instanceof MutableComponent displayName)
+		//	displayName/*.append(wip ? " [WIP]" : " [NYI]")*/.setStyle(displayName.getStyle().withColor(ChatFormatting.DARK_GRAY));
+
+		if (wip) {
+			event.getToolTip().add(WIP_TEXT_0);
+			event.getToolTip().add(WIP_TEXT_1);
+		} else {
+			event.getToolTip().add(NYI_TEXT);
 		}
 	}
 

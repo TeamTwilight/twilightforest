@@ -5,9 +5,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.MinotaurEntity;
+import twilightforest.entity.monster.Minotaur;
 
-public class MinotaurLegacyModel extends HumanoidModel<MinotaurEntity> {
+public class MinotaurLegacyModel extends HumanoidModel<Minotaur> {
 
 	public MinotaurLegacyModel(ModelPart root) {
 		super(root);
@@ -38,18 +38,18 @@ public class MinotaurLegacyModel extends HumanoidModel<MinotaurEntity> {
 		rightHorn.addOrReplaceChild("right_horn_2", CubeListBuilder.create()
 						.texOffs(40, 0)
 						.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),
-				PartPose.offsetAndRotation(-2.5F, -6.5F, 0.0F, 0.0F, -15F / (180F / Mth.PI), 45F / (180F / Mth.PI)));
+				PartPose.offsetAndRotation(-4.5F, 0.0F, 0.0F, 0.0F, -15F / (180F / Mth.PI), 45F / (180F / Mth.PI)));
 
 		var leftHorn = head.addOrReplaceChild("left_horn_1", CubeListBuilder.create()
 						.texOffs(24, 0)
-						.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3),
-				PartPose.offsetAndRotation(-2.5F, -6.5F, 0.0F, 0.0F, 25F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
+						.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3),
+				PartPose.offsetAndRotation(2.5F, -6.5F, 0.0F, 0.0F, 25F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
 
 		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create()
 						.texOffs(40, 0)
-						.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2),
-				PartPose.offsetAndRotation(-2.5F, -6.5F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -45F / (180F / Mth.PI)));
+						.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2),
+				PartPose.offsetAndRotation(4.5F, 0.0F, 0.0F, 0.0F, 15F / (180F / Mth.PI), -45F / (180F / Mth.PI)));
 
-		return LayerDefinition.create(mesh, 64, 64);
+		return LayerDefinition.create(mesh, 64, 32);
 	}
 }

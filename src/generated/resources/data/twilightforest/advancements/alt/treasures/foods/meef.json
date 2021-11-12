@@ -1,0 +1,35 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_raw": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:raw_meef"
+            ]
+          }
+        ]
+      }
+    },
+    "has_cooked": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:cooked_meef"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw",
+      "has_cooked"
+    ]
+  ]
+}

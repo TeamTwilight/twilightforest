@@ -10,9 +10,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.UpperGoblinKnightEntity;
+import twilightforest.entity.monster.UpperGoblinKnight;
 
-public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnightEntity> {
+public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnight> {
 
 	public ModelPart breastplate;
 
@@ -33,7 +33,10 @@ public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnigh
 		partRoot.addOrReplaceChild("head", CubeListBuilder.create(),
 				PartPose.offset(0.0F, 12.0F, 0.0F));
 
-		var hat = partRoot.addOrReplaceChild("hat", CubeListBuilder.create()
+		var hat = partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+				PartPose.offset(0.0F, 12.0F, 0.0F));
+
+		var helm = hat.addOrReplaceChild("helmet", CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45F / (180F / Mth.PI), 0.0F));
@@ -50,12 +53,12 @@ public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnigh
 
 		var leftHorn = hat.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
 						.texOffs(28, 0)
-						.addBox(-6F, -1.5F, -1.5F, 7, 3, 3),
+						.addBox(-1F, -1.5F, -1.5F, 7, 3, 3),
 				PartPose.offsetAndRotation(3.5F, -9F, 0.0F, 0.0F, -15F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
 
 		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create().mirror()
 						.texOffs(28, 6)
-						.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2),
+						.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2),
 				PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 0.0F, -10F / (180F / Mth.PI)));
 
 		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
@@ -116,7 +119,7 @@ public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnigh
 	}
 
 	@Override
-	public void setupAnim(UpperGoblinKnightEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(UpperGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		boolean hasShield = entity.hasShield();
 
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);

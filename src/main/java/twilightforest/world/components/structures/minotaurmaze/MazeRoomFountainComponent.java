@@ -28,7 +28,7 @@ public class MazeRoomFountainComponent extends MazeRoomComponent {
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
-		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 6, 1, 6, 9, 1, 9, Blocks.WATER.defaultBlockState(), AIR, false);
 
 		return true;

@@ -3,19 +3,18 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraHeadModel;
-import twilightforest.entity.boss.HydraEntity;
-import twilightforest.entity.boss.HydraHeadEntity;
+import twilightforest.entity.boss.Hydra;
+import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
 
 import javax.annotation.Nullable;
 
-public class HydraHeadRenderer extends TFPartRenderer<HydraHeadEntity, HydraHeadModel> {
+public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
@@ -25,7 +24,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHeadEntity, HydraHead
 	}
 
 	@Override
-	public void render(HydraHeadEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(HydraHead entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		// get the HydraHeadContainer that we're taking about
 		HydraHeadContainer headCon = getHeadObject(entity);
 
@@ -42,8 +41,8 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHeadEntity, HydraHead
 	}
 
 	@Nullable
-	public static HydraHeadContainer getHeadObject(HydraHeadEntity entity) {
-		HydraEntity hydra = entity.getParent();
+	public static HydraHeadContainer getHeadObject(HydraHead entity) {
+		Hydra hydra = entity.getParent();
 
 		if (hydra != null) {
 			for (int i = 0; i < hydra.numHeads; i++) {
@@ -56,7 +55,7 @@ public class HydraHeadRenderer extends TFPartRenderer<HydraHeadEntity, HydraHead
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HydraHeadEntity entity) {
+	public ResourceLocation getTextureLocation(HydraHead entity) {
 		return textureLoc;
 	}
 }

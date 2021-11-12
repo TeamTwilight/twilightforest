@@ -5,10 +5,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.SnowQueenEntity;
-import twilightforest.entity.boss.SnowQueenEntity.Phase;
+import twilightforest.entity.boss.SnowQueen;
+import twilightforest.entity.boss.SnowQueen.Phase;
 
-public class SnowQueenLegacyModel extends HumanoidModel<SnowQueenEntity> {
+public class SnowQueenLegacyModel extends HumanoidModel<SnowQueen> {
 
 	public SnowQueenLegacyModel(ModelPart root) {
 		super(root);
@@ -22,6 +22,9 @@ public class SnowQueenLegacyModel extends HumanoidModel<SnowQueenEntity> {
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(0.0F, -4.0F, 0.0F));
+
+		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+				PartPose.ZERO);
 
 		var crown = head.addOrReplaceChild("crown", CubeListBuilder.create(),
 				PartPose.ZERO);
@@ -43,7 +46,7 @@ public class SnowQueenLegacyModel extends HumanoidModel<SnowQueenEntity> {
 
 		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
 						.texOffs(16, 16)
-						.addBox(-2.0F, -2.0F, -1.5F, 3, 12, 3),
+						.addBox(-1.0F, -2.0F, -1.3F, 3, 12, 3),
 				PartPose.offset(5.0F, 2.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
@@ -108,7 +111,7 @@ public class SnowQueenLegacyModel extends HumanoidModel<SnowQueenEntity> {
 	}
 
 	@Override
-	public void setupAnim(SnowQueenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(SnowQueen entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// in beam phase, arms forwards

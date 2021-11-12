@@ -55,7 +55,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if you don't have enough XP, no
-		if (this.uncraftingMatrix.uncraftingCost > player.experienceLevel && !player.abilities.instabuild) {
+		if (this.uncraftingMatrix.uncraftingCost > player.experienceLevel && !player.getAbilities().instabuild) {
 			return false;
 		}
 

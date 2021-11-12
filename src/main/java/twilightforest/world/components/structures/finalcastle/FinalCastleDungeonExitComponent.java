@@ -14,10 +14,10 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.util.StructureBoundingBoxUtils;
 
 import java.util.Random;
 
@@ -62,7 +62,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		}
 
 		// door
-		final BlockState castleDoor = TFBlocks.castle_door_pink.get().defaultBlockState();
+		final BlockState castleDoor = TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState();
 
 		this.generateBox(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
 		this.generateBox(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
@@ -71,7 +71,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	public Rotation findStairDirectionTowards(int x, int z) {
-		Vec3i center = StructureBoundingBoxUtils.getCenter(this.boundingBox);
+		Vec3i center = BoundingBoxUtils.getCenter(this.boundingBox);
 		// difference
 		int dx = center.getX() - x;
 		int dz = center.getZ() - z;
@@ -88,11 +88,11 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 
 	@Override
 	protected BlockState getForceFieldColor(Random decoRNG) {
-		return TFBlocks.force_field_pink.get().defaultBlockState();
+		return TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
 	}
 
 	@Override
 	protected BlockState getRuneColor(BlockState fieldColor) {
-		return TFBlocks.castle_rune_brick_pink.get().defaultBlockState();
+		return TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 }

@@ -1,0 +1,58 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_ironwood": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/ironwood_tool_set"
+      }
+    },
+    "has_steeleaf": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/steeleaf_tool_set"
+      }
+    },
+    "has_fiery": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/fiery_tool_set"
+      }
+    },
+    "has_knightmetal": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/knightmetal_tool_set"
+      }
+    },
+    "has_ice": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/ice_sword"
+      }
+    },
+    "has_glass": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/glass_sword"
+      }
+    },
+    "has_giant": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/treasures/giant_tool_set"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ironwood",
+      "has_steeleaf",
+      "has_fiery",
+      "has_knightmetal",
+      "has_ice",
+      "has_glass",
+      "has_giant"
+    ]
+  ]
+}

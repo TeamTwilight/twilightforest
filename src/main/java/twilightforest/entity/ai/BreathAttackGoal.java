@@ -45,7 +45,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 	public boolean canUse() {
 		this.attackTarget = this.entityHost.getLastHurtByMob();
 
-		if (this.attackTarget == null || this.entityHost.distanceTo(attackTarget) > this.breathRange || !this.entityHost.getSensing().hasLineOfSight(attackTarget) || !EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(attackTarget)) {
+		if (this.attackTarget == null || this.entityHost.distanceTo(attackTarget) > this.breathRange || !this.entityHost.getSensing().hasLineOfSight(attackTarget) || !EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget)) {
 			return false;
 		} else {
 			breathX = attackTarget.getX();
@@ -74,7 +74,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		return this.durationLeft > 0 && this.entityHost.isAlive() && this.attackTarget.isAlive()
 				&& this.entityHost.distanceTo(attackTarget) <= this.breathRange
 				&& this.entityHost.getSensing().hasLineOfSight(attackTarget)
-				&& EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(attackTarget);
+				&& EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(entityHost.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
-			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(possibleEntity)) {
+			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(possibleEntity)) {
 				float borderSize = possibleEntity.getPickRadius();
 				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
 				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
@@ -157,8 +157,8 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		double distance = Mth.sqrt((float) (xOffset * xOffset + zOffset * zOffset));
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
-		entityHost.xRot = -updateRotation(entityHost.xRot, zdAngle, pitchConstraint);
-		entityHost.yRot = updateRotation(entityHost.yRot, xyAngle, yawConstraint);
+		entityHost.setXRot(-updateRotation(entityHost.getXRot(), zdAngle, pitchConstraint));
+		entityHost.setYRot(updateRotation(entityHost.getYRot(), xyAngle, yawConstraint));
 
 	}
 

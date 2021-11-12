@@ -10,17 +10,16 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import twilightforest.entity.boss.SnowQueenIceShieldEntity;
+import twilightforest.entity.boss.SnowQueenIceShield;
 
 import java.util.Random;
 
-public class SnowQueenIceShieldLayer<T extends SnowQueenIceShieldEntity> extends EntityRenderer<T> {
+public class SnowQueenIceShieldLayer<T extends SnowQueenIceShield> extends EntityRenderer<T> {
 	public SnowQueenIceShieldLayer(EntityRendererProvider.Context renderManager) {
 		super(renderManager);
 	}

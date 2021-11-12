@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "---",
+    "| |"
+  ],
+  "key": {
+    "-": {
+      "item": "twilightforest:canopy_slab"
+    },
+    "|": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "twilightforest:canopy_banister",
+    "count": 3
+  }
+}

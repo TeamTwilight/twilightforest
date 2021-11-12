@@ -45,7 +45,7 @@
           "persistent": "false",
           "distance": "7"
         },
-        "Name": "twilightforest:rainboak_leaves"
+        "Name": "twilightforest:rainbow_oak_leaves"
       },
       "type": "minecraft:simple_state_provider"
     },
@@ -54,7 +54,7 @@
         "Properties": {
           "stage": "0"
         },
-        "Name": "twilightforest:rainboak_sapling"
+        "Name": "twilightforest:rainbow_oak_sapling"
       },
       "type": "minecraft:simple_state_provider"
     },

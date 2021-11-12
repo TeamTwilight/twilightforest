@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -47,8 +48,8 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// floor border
-		generateBox(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.maze_stone_border.get().defaultBlockState(), AIR, true);
-		generateBox(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.maze_stone_mosaic.get().defaultBlockState(), AIR, true);
+		generateBox(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.MAZESTONE_BORDER.get().defaultBlockState(), AIR, true);
+		generateBox(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), AIR, true);
 
 		// doorways
 		if (this.getBlock(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
@@ -71,5 +72,10 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 			generateAirBox(world, sbb, 15, 1, 7, 15, 3, 8);
 		}
 		return true;
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.BURY;
 	}
 }

@@ -1,18 +1,21 @@
 package twilightforest.world.components.structures.courtyard;
 
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.core.Direction;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.enums.Diagonals;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
 
@@ -21,8 +24,10 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
     private int[][] cornerClipping = new int[4][2];
     private int widthInCellCount;
     private int heightInCellCount;
+    private final StructureManager structureManager;
+    protected BoundingBox sizeConstraints;
 
-    public StructureMazeGenerator(StructurePieceType piece, CompoundTag nbt) {
+    public StructureMazeGenerator(StructureManager structureManager, StructurePieceType piece, CompoundTag nbt) {
         super(piece, nbt);
 
 		this.widthInCellCount = nbt.getInt("mazeWidth");
@@ -38,14 +43,19 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 			if (mazeY instanceof ListTag)
 				for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((ListTag) mazeY).getInt(y);
 		}
+
+        this.sizeConstraints = BoundingBoxUtils.NBTToBoundingBox(nbt.getCompound("constraints"));
+        this.structureManager = structureManager;
     }
 
-    StructureMazeGenerator(StructurePieceType type, TFFeature feature, Random rand, int i, int widthInCellCount, int heightInCellCount, int x, int y, int z) {
+    StructureMazeGenerator(StructurePieceType type, TFFeature feature, Random rand, int i, int widthInCellCount, int heightInCellCount, int x, int y, int z, StructureManager structureManager) {
         super(type, feature, i, x, y, z);
         this.widthInCellCount = widthInCellCount;
         this.heightInCellCount = heightInCellCount;
+        this.structureManager = structureManager;
         this.maze = new int[widthInCellCount-1][heightInCellCount-1];
         generateMaze(this.maze, this.cornerClipping, rand, this.widthInCellCount, this.heightInCellCount, 2);
+        this.sizeConstraints = this.getBoundingBox();
     }
 
 	// Actually assemble maze
@@ -169,12 +179,12 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 
                 int rotation = 0;
 
-                int xBB = boundingBox.minX() + (x * 12) + offset;
-                int yBB = boundingBox.minY() + 1;
-                int zBB = boundingBox.minZ() + (y * 12) + offset;
+                int xBB = this.sizeConstraints.minX() + (x * 12) + offset;
+                int yBB = this.sizeConstraints.minY() + 1;
+                int zBB = this.sizeConstraints.minZ() + (y * 12) + offset;
 
                 if (!(xCenter && yCenter)) {
-                    TFStructureComponent structure;
+                    StructurePiece structure;
 
                     switch (maze[x][y] & 0b1111) { // These are inconsistent because I was stupid with the structures I saved to .nbt
                         case 0b0010:    // FACE SOUTH
@@ -226,11 +236,11 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
                             break;
                         default:
                             if (random.nextInt(150) == 0) {
-                                structure = new NagaCourtyardTerraceStatueComponent(getFeatureType(), maze[x][y], xBB - 6, yBB - 3, zBB - 6, rotations[random.nextInt(rotations.length)]);
+                                structure = new CourtyardTerraceStatue(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager);
                             } else if (random.nextBoolean())
-                                structure = new NagaCourtyardTerraceBrazierComponent(getFeatureType(), maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE);
+                                structure = new CourtyardTerraceBrazier(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager);
                             else {
-                                structure = new NagaCourtyardTerraceDuctComponent(getFeatureType(), maze[x][y], xBB - 6, yBB - 3, zBB - 6, rotations[random.nextInt(rotations.length)]);
+                                structure = new CourtyardTerraceDuct(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager);
                             }
 
                             break;
@@ -242,8 +252,8 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 
                 // -------- Hedge Connectors
 
-                xBB = boundingBox.minX() + (x * 12) + offset;
-                zBB = boundingBox.minZ() + (y * 12) + offset;
+                xBB = this.sizeConstraints.minX() + (x * 12) + offset;
+                zBB = this.sizeConstraints.minZ() + (y * 12) + offset;
 
                 final boolean connectWest  = WallFacing.WEST .unpackAndTest(maze[x][y]);
                 final boolean connectNorth = WallFacing.NORTH.unpackAndTest(maze[x][y]);
@@ -322,31 +332,31 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
                 // -------- PATHS - cardinal
 
                 if (xCenter && yCenter) {
-                    NagaCourtyardPathComponent path = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB - 1, yBB - 1, zBB - 1);
+                    CourtyardPathPiece path = new CourtyardPathPiece(maze[x][y], xBB - 1, yBB - 1, zBB - 1, structureManager);
                     list.addPiece(path);
                     path.addChildren(structureComponent, list, random);
                 }
 
                 if (hasNoTerrace && westHasNoTerraceOrIsSafe && !connectWest) {
-                    NagaCourtyardPathComponent path2 = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB - 7, yBB - 1, zBB - 1);
+                    CourtyardPathPiece path2 = new CourtyardPathPiece(maze[x][y], xBB - 7, yBB - 1, zBB - 1, structureManager);
                     list.addPiece(path2);
                     path2.addChildren(structureComponent, list, random);
                 }
 
                 if (hasNoTerrace && northHasNoTerraceOrIsSafe && !connectNorth) {
-                    NagaCourtyardPathComponent path2 = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB - 1, yBB - 1, zBB - 7);
+                    CourtyardPathPiece path2 = new CourtyardPathPiece(maze[x][y], xBB - 1, yBB - 1, zBB - 7, structureManager);
                     list.addPiece(path2);
                     path2.addChildren(structureComponent, list, random);
                 }
 
                 if (hasNoTerrace && eastHasNoTerraceOrIsSafe) {
-                    NagaCourtyardPathComponent path2 = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB + 5, yBB - 1, zBB - 1);
+                    CourtyardPathPiece path2 = new CourtyardPathPiece(maze[x][y], xBB + 5, yBB - 1, zBB - 1, structureManager);
                     list.addPiece(path2);
                     path2.addChildren(structureComponent, list, random);
                 }
 
                 if (hasNoTerrace && southHasNoTerraceOrIsSafe) {
-                    NagaCourtyardPathComponent path2 = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB - 1, yBB - 1, zBB + 5);
+                    CourtyardPathPiece path2 = new CourtyardPathPiece(maze[x][y], xBB - 1, yBB - 1, zBB + 5, structureManager);
                     list.addPiece(path2);
                     path2.addChildren(structureComponent, list, random);
                 }
@@ -354,25 +364,25 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
                 // -------- PATHS - Diagonal
 
                 if (hasNoTerrace && westHasNoTerraceOrIsSafe && northHasNoTerraceOrIsSafe && westNorthHasNoTerraceOrIsSafe) {
-                    NagaCourtyardPathComponent path2 = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB - 7, yBB - 1, zBB - 7);
+                    CourtyardPathPiece path2 = new CourtyardPathPiece(maze[x][y], xBB - 7, yBB - 1, zBB - 7, structureManager);
                     list.addPiece(path2);
                     path2.addChildren(structureComponent, list, random);
                 }
 
                 if (hasNoTerrace && westHasNoTerraceOrIsSafe && southHasNoTerraceOrIsSafe && westSouthHasNoTerraceOrIsSafe) {
-                    NagaCourtyardPathComponent path2 = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB - 7, yBB - 1, zBB + 5);
+                    CourtyardPathPiece path2 = new CourtyardPathPiece(maze[x][y], xBB - 7, yBB - 1, zBB + 5, structureManager);
                     list.addPiece(path2);
                     path2.addChildren(structureComponent, list, random);
                 }
 
                 if (hasNoTerrace && eastHasNoTerraceOrIsSafe && northHasNoTerraceOrIsSafe && eastNorthHasNoTerraceOrIsSafe) {
-                    NagaCourtyardPathComponent path2 = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB + 5, yBB - 1, zBB - 7);
+                    CourtyardPathPiece path2 = new CourtyardPathPiece(maze[x][y], xBB + 5, yBB - 1, zBB - 7, structureManager);
                     list.addPiece(path2);
                     path2.addChildren(structureComponent, list, random);
                 }
 
                 if (hasNoTerrace && eastHasNoTerraceOrIsSafe && southHasNoTerraceOrIsSafe && eastSouthHasNoTerraceOrIsSafe) {
-                    NagaCourtyardPathComponent path2 = new NagaCourtyardPathComponent(getFeatureType(), maze[x][y], xBB + 5, yBB - 1, zBB + 5);
+                    CourtyardPathPiece path2 = new CourtyardPathPiece(maze[x][y], xBB + 5, yBB - 1, zBB + 5, structureManager);
                     list.addPiece(path2);
                     path2.addChildren(structureComponent, list, random);
                 }//*/
@@ -386,17 +396,17 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
             // Walls at corner notches going with X Axis, crossing Z Axis. Sideways.
 
             int zBoundX = (diagonal.isTop()
-                    ? boundingBox.minZ() + (cornerClipping[diagonal.ordinal()][0] * 12) - 3
-                    : boundingBox.maxZ() - (cornerClipping[diagonal.ordinal()][0] * 12) + 1 );
+                    ? this.sizeConstraints.minZ() + (cornerClipping[diagonal.ordinal()][0] * 12) - 3
+                    : this.sizeConstraints.maxZ() - (cornerClipping[diagonal.ordinal()][0] * 12) + 1 );
 
-            NagaCourtyardWallPadderComponent paddingStartX =
-                    new NagaCourtyardWallPadderComponent(
-                            getFeatureType(),
+            CourtyardWallPadder paddingStartX =
+                    new CourtyardWallPadder(
                             ( cornerClipping[diagonal.ordinal()][1] * 2 ) + 1,
-                            ( diagonal.isLeft() ? boundingBox.minX() + 2 : boundingBox.maxX() - 2 ),
-                            boundingBox.minY(),
+                            ( diagonal.isLeft() ? this.sizeConstraints.minX() + 2 : this.sizeConstraints.maxX() - 2 ),
+                            this.sizeConstraints.minY() + 1,
                             zBoundX,
-                            Rotation.NONE );
+                            Rotation.NONE,
+                            this.structureManager);
 
             list.addPiece(paddingStartX);
             paddingStartX.addChildren(structureComponent, list, random);
@@ -404,13 +414,13 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
             int xPadOffset = diagonal.isLeft() ? 11 : -1;
 
             for (int i = 0; i < cornerClipping[diagonal.ordinal()][1] - 1; i++) {
-                int xBound = (diagonal.isLeft() ? boundingBox.minX() + (i*12) + 3 : boundingBox.maxX() - (i*12) - 13 );
+                int xBound = (diagonal.isLeft() ? this.sizeConstraints.minX() + (i*12) + 3 : this.sizeConstraints.maxX() - (i*12) - 13 );
 
-                NagaCourtyardWallComponent wall = new NagaCourtyardWallComponent(getFeatureType(), i*2, xBound, boundingBox.minY(), zBoundX, Rotation.NONE);
+                CourtyardWall wall = new CourtyardWall(i*2, xBound, this.sizeConstraints.minY() + 1, zBoundX, Rotation.NONE, this.structureManager);
                 list.addPiece(wall);
                 wall.addChildren(structureComponent, list, random);
 
-                NagaCourtyardWallPadderComponent padding = new NagaCourtyardWallPadderComponent(getFeatureType(), (i*2)+1, xBound + xPadOffset, boundingBox.minY(), zBoundX, Rotation.NONE);
+                CourtyardWallPadder padding = new CourtyardWallPadder((i*2)+1, xBound + xPadOffset, this.sizeConstraints.minY() + 1, zBoundX, Rotation.NONE, this.structureManager);
                 list.addPiece(padding);
                 padding.addChildren(structureComponent, list, random);
             }
@@ -418,17 +428,17 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
             // Walls at corner notches going with Z Axis, crossing X Axis. Up/Down.
 
             int xBoundZ = (diagonal.isLeft()
-                    ? boundingBox.minX() + (cornerClipping[diagonal.ordinal()][1] * 12) - 1
-                    : boundingBox.maxX() - (cornerClipping[diagonal.ordinal()][1] * 12) + 3 );
+                    ? this.sizeConstraints.minX() + (cornerClipping[diagonal.ordinal()][1] * 12) - 1
+                    : this.sizeConstraints.maxX() - (cornerClipping[diagonal.ordinal()][1] * 12) + 3 );
 
-            NagaCourtyardWallPadderComponent paddingStartZ =
-                    new NagaCourtyardWallPadderComponent(
-                            getFeatureType(),
+            CourtyardWallPadder paddingStartZ =
+                    new CourtyardWallPadder(
                             ( cornerClipping[diagonal.ordinal()][1] * 2 ) + 1,
                             xBoundZ,
-                            boundingBox.minY(),
-                            ( diagonal.isTop() ? boundingBox.minZ() + 2 : boundingBox.maxZ() - 2 ),
-                            Rotation.CLOCKWISE_90 );
+                            this.sizeConstraints.minY() + 1,
+                            ( diagonal.isTop() ? this.sizeConstraints.minZ() + 2 : this.sizeConstraints.maxZ() - 2 ),
+                            Rotation.CLOCKWISE_90,
+                            this.structureManager);
 
             list.addPiece(paddingStartZ);
             paddingStartZ.addChildren(structureComponent, list, random);
@@ -436,49 +446,57 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
             int zPadOffset = diagonal.isTop() ? 11 : -1;
 
             for (int i = 0; i < cornerClipping[diagonal.ordinal()][0] - 1; i++) {
-                int zBound = (diagonal.isTop() ? boundingBox.minZ() + (i*12) + 3 : boundingBox.maxZ() - (i*12) - 13 );
+                int zBound = (diagonal.isTop() ? this.sizeConstraints.minZ() + (i*12) + 3 : this.sizeConstraints.maxZ() - (i*12) - 13 );
 
-                NagaCourtyardWallComponent wall = new NagaCourtyardWallComponent(getFeatureType(), i*2, xBoundZ - 10, boundingBox.minY(), zBound, Rotation.CLOCKWISE_90);
+                CourtyardWall wall = new CourtyardWall(i*2, xBoundZ, this.sizeConstraints.minY() + 1, zBound, Rotation.CLOCKWISE_90, this.structureManager);
                 list.addPiece(wall);
                 wall.addChildren(structureComponent, list, random);
 
-                NagaCourtyardWallPadderComponent padding = new NagaCourtyardWallPadderComponent(getFeatureType(), (i*2)+1, xBoundZ, boundingBox.minY(), zBound + zPadOffset, Rotation.CLOCKWISE_90);
+                CourtyardWallPadder padding = new CourtyardWallPadder((i*2)+1, xBoundZ, this.sizeConstraints.minY() + 1, zBound + zPadOffset, Rotation.CLOCKWISE_90, this.structureManager);
                 list.addPiece(padding);
                 padding.addChildren(structureComponent, list, random);
             }
 
             // WALL CORNERS
 
-            int wallCornerInnerX = boundingBox.minX() + (diagonal.operationX.convert(cornerClipping[diagonal.ordinal()][1], widthInCellCount - 1) * 12) + (diagonal.isLeft() ? -3 : 3);
-            int wallCornerInnerZ = boundingBox.minZ() + (diagonal.operationY.convert(cornerClipping[diagonal.ordinal()][0], heightInCellCount - 1) * 12) + (diagonal.isTop() ? -3 : 3);
+            int wallCornerInnerX = this.sizeConstraints.minX() + (diagonal.operationX.convert(cornerClipping[diagonal.ordinal()][1], widthInCellCount - 1) * 12);// + (diagonal.isLeft() ? -3 : 3);
+            int wallCornerInnerZ = this.sizeConstraints.minZ() + (diagonal.operationY.convert(cornerClipping[diagonal.ordinal()][0], heightInCellCount - 1) * 12);// + (diagonal.isTop() ? -3 : 3);
+
+            Rotation cornerRotation = rotations[diagonal.ordinal() % rotations.length];
+
+            boolean shiftX = cornerRotation == Rotation.CLOCKWISE_180 || cornerRotation == Rotation.COUNTERCLOCKWISE_90;
+            boolean shiftZ = cornerRotation == Rotation.CLOCKWISE_90 || cornerRotation == Rotation.CLOCKWISE_180;
 
             // These touch upper/lower borders
 
-            NagaCourtyardWallCornerComponent corner1 = new NagaCourtyardWallCornerComponent(getFeatureType(), diagonal.ordinal() * 3,
-                    wallCornerInnerX,
-                    boundingBox.minY(),
-                    diagonal.isTop() ? boundingBox.minZ() - 3 : boundingBox.maxZ() - 1,
-                    rotations[diagonal.ordinal() % rotations.length]);
+            CourtyardWallCornerOuter corner1 = new CourtyardWallCornerOuter(diagonal.ordinal() * 3,
+                    wallCornerInnerX + (shiftZ ? (shiftX ? 1 : 7) : (shiftX ? -3 : 3)),
+                    this.sizeConstraints.minY() + 1,
+                    (diagonal.isTop() ? this.sizeConstraints.minZ() : this.sizeConstraints.maxZ() - 1) + (shiftZ ? (shiftX ? 4 : 0) : (shiftX ? 1 : -3)),
+                    cornerRotation,
+                    this.structureManager);
             list.addPiece(corner1);
             corner1.addChildren(structureComponent, list, random);
 
             // These touch side borders
 
-            NagaCourtyardWallCornerComponent corner2 = new NagaCourtyardWallCornerComponent(getFeatureType(), (diagonal.ordinal() * 3) + 1,
-                    diagonal.isLeft() ? boundingBox.minX() - 3 : boundingBox.maxX() - 1,
-                    boundingBox.minY(),
-                    wallCornerInnerZ,
-                    rotations[diagonal.ordinal() % rotations.length]);
+            CourtyardWallCornerOuter corner2 = new CourtyardWallCornerOuter((diagonal.ordinal() * 3) + 1,
+                    (diagonal.isLeft() ? this.sizeConstraints.minX() : this.sizeConstraints.maxX() - 1) + (shiftZ ? (shiftX ? 1 : 4) : (shiftX ? -3 : 0)),
+                    this.sizeConstraints.minY() + 1,
+                    wallCornerInnerZ + (shiftZ ? (shiftX ? 7 : 3) : (shiftX ? 1 : -3)),
+                    cornerRotation,
+                    this.structureManager);
             list.addPiece(corner2);
             corner2.addChildren(structureComponent, list, random);
 
-            // These are inner anti-corners
+            // These are inner corners
 
-            NagaCourtyardWallCornerAltComponent innerCorner = new NagaCourtyardWallCornerAltComponent(getFeatureType(), (diagonal.ordinal() * 3) + 3,
-                    wallCornerInnerX + (diagonal.isLeft() ? -6 : 2),
-                    boundingBox.minY(),
-                    wallCornerInnerZ + (diagonal.isTop() ? -6 : 2),
-                    rotations[diagonal.ordinal() % rotations.length]);
+            CourtyardWallCornerInner innerCorner = new CourtyardWallCornerInner((diagonal.ordinal() * 3) + 3,
+                    wallCornerInnerX + (shiftZ ? (shiftX ? -1 : 13) : (shiftX ? -9 : 5)),// + (diagonal.isLeft() ? -6 : 2),
+                    this.sizeConstraints.minY() + 1,
+                    wallCornerInnerZ + (shiftZ ? (shiftX ? 13 : 5) : (shiftX ? -1 : -9)),// + (diagonal.isTop() ? -6 : 2),
+                    cornerRotation,
+                    this.structureManager);
             list.addPiece(innerCorner);
             innerCorner.addChildren(structureComponent, list, random);
         }
@@ -486,64 +504,64 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
         // Top / North
 
         for (int i = cornerClipping[3][1]; i < (widthInCellCount-1) - cornerClipping[0][1]; i++) {
-            NagaCourtyardWallComponent wall = new NagaCourtyardWallComponent(getFeatureType(), i, boundingBox.minX() + (i * 12) + offset - 3, boundingBox.minY(), boundingBox.minZ() - 3, Rotation.NONE);
+            CourtyardWall wall = new CourtyardWall(i, this.sizeConstraints.minX() + (i * 12) + offset - 3, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() - 3, Rotation.NONE, this.structureManager);
             list.addPiece(wall);
             wall.addChildren(structureComponent, list, random);
 
-            NagaCourtyardWallPadderComponent padding = new NagaCourtyardWallPadderComponent(getFeatureType(), i, boundingBox.minX() + (i * 12) + offset - 4, boundingBox.minY(), boundingBox.minZ() - 3, Rotation.NONE);
+            CourtyardWallPadder padding = new CourtyardWallPadder(i, this.sizeConstraints.minX() + (i * 12) + offset - 4, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() - 3, Rotation.NONE, this.structureManager);
             list.addPiece(padding);
             padding.addChildren(structureComponent, list, random);
         }
 
-        NagaCourtyardWallPadderComponent padding2 = new NagaCourtyardWallPadderComponent(getFeatureType(), (widthInCellCount-1) - cornerClipping[0][1], boundingBox.minX() + (((widthInCellCount-1) - cornerClipping[0][1]) * 12) + offset - 4, boundingBox.minY(), boundingBox.minZ() - 3, Rotation.NONE);
+        CourtyardWallPadder padding2 = new CourtyardWallPadder((widthInCellCount-1) - cornerClipping[0][1], this.sizeConstraints.minX() + (((widthInCellCount-1) - cornerClipping[0][1]) * 12) + offset - 4, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() - 3, Rotation.NONE, this.structureManager);
         list.addPiece(padding2);
         padding2.addChildren(structureComponent, list, random);
 
         // Bottom / South
 
         for (int i = cornerClipping[2][1]; i < (widthInCellCount-1) - cornerClipping[1][1]; i++) {
-            NagaCourtyardWallComponent wall = new NagaCourtyardWallComponent(getFeatureType(), i, boundingBox.minX() + (i * 12) + offset - 3, boundingBox.minY(), boundingBox.maxZ() + 1, Rotation.NONE);
+            CourtyardWall wall = new CourtyardWall(i, this.sizeConstraints.minX() + (i * 12) + offset - 3, this.sizeConstraints.minY() + 1, this.sizeConstraints.maxZ() + 1, Rotation.NONE, this.structureManager);
             list.addPiece(wall);
             wall.addChildren(structureComponent, list, random);
 
-            NagaCourtyardWallPadderComponent padding = new NagaCourtyardWallPadderComponent(getFeatureType(), i, boundingBox.minX() + (i * 12) + offset - 4, boundingBox.minY(), boundingBox.maxZ() + 1, Rotation.NONE);
+            CourtyardWallPadder padding = new CourtyardWallPadder(i, this.sizeConstraints.minX() + (i * 12) + offset - 4, this.sizeConstraints.minY() + 1, this.sizeConstraints.maxZ() + 1, Rotation.NONE, this.structureManager);
             list.addPiece(padding);
             padding.addChildren(structureComponent, list, random);
         }
 
-        NagaCourtyardWallPadderComponent padding5 = new NagaCourtyardWallPadderComponent(getFeatureType(), (widthInCellCount-1) - cornerClipping[1][1], boundingBox.minX() + (((widthInCellCount-1) - cornerClipping[1][1]) * 12) + offset - 4, boundingBox.minY(), boundingBox.maxZ() + 1, Rotation.NONE);
+        CourtyardWallPadder padding5 = new CourtyardWallPadder((widthInCellCount-1) - cornerClipping[1][1], this.sizeConstraints.minX() + (((widthInCellCount-1) - cornerClipping[1][1]) * 12) + offset - 4, this.sizeConstraints.minY() + 1, this.sizeConstraints.maxZ() + 1, Rotation.NONE, this.structureManager);
         list.addPiece(padding5);
         padding5.addChildren(structureComponent, list, random);
 
         // Left / West
 
         for (int i = cornerClipping[3][0]; i < (heightInCellCount-1) - cornerClipping[2][0]; i++) {
-            NagaCourtyardWallComponent wall = new NagaCourtyardWallComponent(getFeatureType(), i, boundingBox.minX() - 11, boundingBox.minY(), boundingBox.minZ() + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            CourtyardWall wall = new CourtyardWall(i, this.sizeConstraints.minX() - 1, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() + (i * 12) + offset - 3, Rotation.CLOCKWISE_90, this.structureManager);
             list.addPiece(wall);
             wall.addChildren(structureComponent, list, random);
 
-            NagaCourtyardWallPadderComponent padding = new NagaCourtyardWallPadderComponent(getFeatureType(), i, boundingBox.minX() - 1, boundingBox.minY(), boundingBox.minZ() + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
+            CourtyardWallPadder padding = new CourtyardWallPadder(i, this.sizeConstraints.minX() - 1, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() + (i * 12) + offset - 4, Rotation.CLOCKWISE_90, this.structureManager);
             list.addPiece(padding);
             padding.addChildren(structureComponent, list, random);
         }
 
-        NagaCourtyardWallPadderComponent padding8 = new NagaCourtyardWallPadderComponent(getFeatureType(), (heightInCellCount-1) - cornerClipping[2][0], boundingBox.minX() - 1, boundingBox.minY(), boundingBox.minZ() + (((heightInCellCount-1) - cornerClipping[2][0]) * 12) + offset - 4, Rotation.CLOCKWISE_90);
+        CourtyardWallPadder padding8 = new CourtyardWallPadder((heightInCellCount-1) - cornerClipping[2][0], this.sizeConstraints.minX() - 1, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() + (((heightInCellCount-1) - cornerClipping[2][0]) * 12) + offset - 4, Rotation.CLOCKWISE_90, this.structureManager);
         list.addPiece(padding8);
         padding8.addChildren(structureComponent, list, random);
 
         // Right / East
 
         for (int i = cornerClipping[0][0]; i < (heightInCellCount-1) - cornerClipping[1][0]; i++) {
-            NagaCourtyardWallComponent wall = new NagaCourtyardWallComponent(getFeatureType(), i, boundingBox.maxX() - 7, boundingBox.minY(), boundingBox.minZ() + (i * 12) + offset - 3, Rotation.CLOCKWISE_90);
+            CourtyardWall wall = new CourtyardWall(i, this.sizeConstraints.maxX() + 3, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() + (i * 12) + offset - 3, Rotation.CLOCKWISE_90, this.structureManager);
             list.addPiece(wall);
             wall.addChildren(structureComponent, list, random);
 
-            NagaCourtyardWallPadderComponent padding = new NagaCourtyardWallPadderComponent(getFeatureType(), i, boundingBox.maxX() + 3, boundingBox.minY(), boundingBox.minZ() + (i * 12) + offset - 4, Rotation.CLOCKWISE_90);
+            CourtyardWallPadder padding = new CourtyardWallPadder(i, this.sizeConstraints.maxX() + 3, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() + (i * 12) + offset - 4, Rotation.CLOCKWISE_90, this.structureManager);
             list.addPiece(padding);
             padding.addChildren(structureComponent, list, random);
         }
 
-        NagaCourtyardWallPadderComponent padding11 = new NagaCourtyardWallPadderComponent(getFeatureType(), ((heightInCellCount-1) - cornerClipping[1][0]), boundingBox.maxX() + 3, boundingBox.minY(), boundingBox.minZ() + (((heightInCellCount-1) - cornerClipping[1][0]) * 12) + offset - 4, Rotation.CLOCKWISE_90);
+        CourtyardWallPadder padding11 = new CourtyardWallPadder(((heightInCellCount-1) - cornerClipping[1][0]), this.sizeConstraints.maxX() + 3, this.sizeConstraints.minY() + 1, this.sizeConstraints.minZ() + (((heightInCellCount-1) - cornerClipping[1][0]) * 12) + offset - 4, Rotation.CLOCKWISE_90, this.structureManager);
         list.addPiece(padding11);
         padding11.addChildren(structureComponent, list, random);
     }
@@ -630,5 +648,6 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 		tagCompound.putInt("mazeWidth", widthInCellCount);
 		tagCompound.putInt("mazeHeight", heightInCellCount);
 		tagCompound.put("maze", mazeX);
+        tagCompound.put("constraints", BoundingBoxUtils.boundingBoxToNBT(this.sizeConstraints));
 	}
 }

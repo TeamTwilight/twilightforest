@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -12,12 +13,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.entity.LoyalZombieEntity;
+import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.EntityUtil;
 
@@ -46,7 +48,7 @@ public class ZombieWandItem extends Item {
 			BlockHitResult blockray = EntityUtil.rayTrace(player, 20.0);
 
 			if (blockray.getType() != HitResult.Type.MISS) {
-				LoyalZombieEntity zombie = TFEntities.loyal_zombie.create(world);
+				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.create(world);
 				Direction face = blockray.getDirection();
 				zombie.absMoveTo(blockray.getBlockPos().getX() + 0.5F + face.getStepX(), blockray.getBlockPos().getY() + face.getStepY(), blockray.getBlockPos().getZ() + 0.5F + face.getStepZ(), 1.0F, 1.0F);
 				zombie.setTame(true);
@@ -62,14 +64,24 @@ public class ZombieWandItem extends Item {
 	}
 
 	@Override
-	public float getXpRepairRatio(ItemStack stack) {
-		return 1f;
+	public boolean isEnchantable(ItemStack pStack) {
+		return false;
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return false;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()));
+		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

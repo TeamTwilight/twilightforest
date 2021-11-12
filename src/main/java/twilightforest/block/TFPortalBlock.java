@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -36,19 +39,21 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
+import twilightforest.network.MissingAdvancementToastPacket;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.util.PlayerHelper;
+import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.components.TFTeleporter;
+import twilightforest.world.TFTeleporter;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 // KelpBlock seems to use ILiquidContainer as it's a block that permanently has water, so I suppose in best practices we also use this interface as well?
 
@@ -60,6 +65,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 	private static final int MIN_PORTAL_SIZE =  4;
 	private static final int MAX_PORTAL_SIZE = 64;
+
+	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
 
 	public TFPortalBlock(BlockBehaviour.Properties props) {
 		super(props);
@@ -118,7 +125,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
 					if (checkedPos.getValue()) {
-						world.setBlock(checkedPos.getKey(), TFBlocks.twilight_portal.get().defaultBlockState(), 2);
+						world.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState(), 2);
 					}
 				}
 
@@ -205,21 +212,48 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		}
 	}
 
+	private static final TranslatableComponent PORTAL_UNWORTHY = new TranslatableComponent(TwilightForestMod.ID + ".ui.portal.unworthy");
 	@Override
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
 		if (state == this.defaultBlockState()) {
-			attemptSendPlayer(entity, false);
+			if (entity instanceof ServerPlayer player && !player.isCreative() && !player.isSpectator()) {
+				Advancement requirement = PlayerHelper.getAdvancement(player, TFConfig.getPortalLockingAdvancement());
+
+				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
+					player.displayClientMessage(PORTAL_UNWORTHY, true);
+
+					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
+						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
+						DisplayInfo info = requirement.getDisplay();
+						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? new MissingAdvancementToastPacket(new TranslatableComponent(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+
+						TFPortalBlock.playerNotifiedOfRequirement(player);
+					}
+
+					return;
+				}
+			}
+
+			attemptSendEntity(entity, false, true);
 		}
 	}
 
+	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
+		return playersNotified.contains(player);
+	}
+
+	public static void playerNotifiedOfRequirement(ServerPlayer player) {
+		playersNotified.add(player);
+	}
+
 	private static ResourceKey<Level> getDestination(Entity entity) {
-		ResourceKey<Level> twilightForest = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
+		ResourceKey<Level> twilightForest = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get()));
 
 		return !entity.getCommandSenderWorld().dimension().location().equals(twilightForest.location())
 				? twilightForest : ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
 	}
 
-	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
+	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
 		if (!entity.isAlive() || entity.level.isClientSide) {
 			return;
 		}
@@ -241,12 +275,12 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if(serverWorld == null)
 			return;
 
-		entity.changeDimension(serverWorld, new TFTeleporter(forcedEntry));
+		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
 
-		if (destination ==  ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) && entity instanceof ServerPlayer && forcedEntry) {
+		if (destination ==  ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())) && entity instanceof ServerPlayer && forcedEntry) {
 			ServerPlayer playerMP = (ServerPlayer) entity;
 			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
-			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.yRot, true, false);
+			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);
 		}
 
 	}

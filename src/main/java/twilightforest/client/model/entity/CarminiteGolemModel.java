@@ -8,9 +8,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.CarminiteGolemEntity;
+import twilightforest.entity.monster.CarminiteGolem;
 
-public class CarminiteGolemModel<T extends CarminiteGolemEntity> extends HierarchicalModel<T> {
+public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalModel<T> {
 	private final ModelPart root, head, rightArm, leftArm, leftLeg, rightLeg;
 
 	public CarminiteGolemModel(ModelPart root) {

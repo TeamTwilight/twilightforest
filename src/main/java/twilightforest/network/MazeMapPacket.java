@@ -26,19 +26,10 @@ public class MazeMapPacket {
 
 	public MazeMapPacket(FriendlyByteBuf buf) {
 		inner = new ClientboundMapItemDataPacket(buf);
-		//try {
-		//	inner.read(buf);
-		//} catch (IOException e) {
-		//	throw new RuntimeException("Couldn't read inner SPacketMaps", e);
-		//}
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		//try {
-			inner.write(buf);
-		//} catch (IOException e) {
-		//	throw new RuntimeException("Couldn't write inner SPacketMaps", e);
-		//}
+		inner.write(buf);
 	}
 
 	public static class Handler {
@@ -59,11 +50,11 @@ public class MazeMapPacket {
 						//	}
 						//}
 
-						TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata);
+						TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata, s);
 					}
 
 					message.inner.applyToMap(mapdata);
-					//mapitemrenderer.update(mapdata);
+					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}
 			});
 			return true;

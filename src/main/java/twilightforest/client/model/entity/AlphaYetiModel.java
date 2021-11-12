@@ -6,9 +6,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.AlphaYetiEntity;
+import twilightforest.entity.boss.AlphaYeti;
 
-public class AlphaYetiModel extends HumanoidModel<AlphaYetiEntity> {
+public class AlphaYetiModel extends HumanoidModel<AlphaYeti> {
 	public AlphaYetiModel(ModelPart root) {
 		super(root);
 	}
@@ -116,7 +116,7 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYetiEntity> {
 	}
 
 	@Override
-	public void setupAnim(AlphaYetiEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(AlphaYeti entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 

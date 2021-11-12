@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/horizontal_hollow_log_plant",
+  "textures": {
+    "carpet": "twilightforest:block/mosspatch",
+    "overhang": "twilightforest:block/moss_overhang",
+    "plant": "minecraft:block/grass"
+  }
+}

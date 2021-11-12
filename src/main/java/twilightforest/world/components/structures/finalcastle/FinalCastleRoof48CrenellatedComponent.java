@@ -45,7 +45,7 @@ public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentO
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// add second layer of floor
-		final BlockState castleMagic = TFBlocks.castle_rune_brick_purple.get().defaultBlockState();
+		final BlockState castleMagic = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState();
 		this.generateBox(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
 
 		// crenellations

@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
@@ -21,7 +22,7 @@ import net.minecraft.server.level.ServerLevel;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 import java.util.Random;
 
@@ -69,6 +70,11 @@ public class CastleDoorBlock extends Block {
 		}
 	}
 
+	@Override
+	public PushReaction getPistonPushReaction(BlockState pState) {
+		return PushReaction.BLOCK;
+	}
+
 	private InteractionResult onActivation(Level world, BlockPos pos, BlockState state) {
 
 		if (state.getValue(VANISHED) || state.getValue(ACTIVE)) return InteractionResult.FAIL;
@@ -92,7 +98,7 @@ public class CastleDoorBlock extends Block {
 	private static boolean isBlockLocked(Level world, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!world.isClientSide) {
-			ChunkGeneratorTwilightBase generator = WorldUtil.getChunkGenerator(world);
+			ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 			//return generator != null && generator.isStructureLocked(pos, lockIndex);
 		}
 		return false;

@@ -1,11 +1,9 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.ai.goal.Goal;
-import twilightforest.entity.RovingCubeEntity;
+import twilightforest.entity.RovingCube;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 /**
  * This is a task that runs when we are near a symbol and have stopped pathfinding, but are not centered on the symbol.
@@ -15,14 +13,14 @@ import net.minecraft.world.entity.ai.goal.Goal.Flag;
  * @author benma_000
  */
 public class CubeCenterOnSymbolGoal extends Goal {
-	private final RovingCubeEntity myCube;
+	private final RovingCube myCube;
 	private final double speed;
 
 	private double xPosition;
 	private double yPosition;
 	private double zPosition;
 
-	public CubeCenterOnSymbolGoal(RovingCubeEntity entityTFRovingCube, double d) {
+	public CubeCenterOnSymbolGoal(RovingCube entityTFRovingCube, double d) {
 		this.myCube = entityTFRovingCube;
 		this.xPosition = this.myCube.symbolX;
 		this.yPosition = this.myCube.symbolY;

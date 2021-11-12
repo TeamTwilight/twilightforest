@@ -6,7 +6,6 @@ import net.minecraft.core.BlockSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.Direction;
@@ -36,10 +35,9 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 
                     if (entity.isPushable() || entity instanceof ItemEntity) {
                         entity.setDeltaMovement(lookVec.getX(), lookVec.getY(), lookVec.getZ());
-                    }
-
-                    if (stack.hurt(1, world.random, (ServerPlayer) null)) {
-                        stack.setCount(0);
+                        if (stack.hurt(1, world.random, null)) {
+                            stack.setCount(0);
+                        }
                     }
                 }
                 fired = true;

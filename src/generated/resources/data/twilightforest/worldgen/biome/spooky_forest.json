@@ -12,6 +12,7 @@
       "max_delay": 12000,
       "replace_current_music": true
     },
+    "grass_color_modifier": "twilightforest:spooky_forest",
     "sky_color": 2105930,
     "foliage_color": 16745729,
     "grass_color": 12865827,
@@ -36,6 +37,9 @@
     [],
     [
       "minecraft:disk_clay",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
       "twilightforest:small_andesite",
       "twilightforest:small_diorite",
       "twilightforest:small_granite",
@@ -50,29 +54,33 @@
     ],
     [
       "twilightforest:plant_roots",
-      "twilightforest:torch_berries"
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
     ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
+      "twilightforest:tree/twilight_oak_trees",
+      "twilightforest:tree/dead_canopy_trees",
       "twilightforest:pumpkin_lamppost",
       "twilightforest:grass_placer",
-      "twilightforest:small_log",
+      "twilightforest:tf_oak_fallen_log",
+      "twilightforest:canopy_fallen_log",
       "twilightforest:webs",
       "twilightforest:fallen_leaves",
       "minecraft:patch_pumpkin",
-      "minecraft:patch_dead_bush",
-      "twilightforest:tree/dead_canopy_trees",
-      "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/vanilla/vanilla_tf_oak",
-      "twilightforest:tree/vanilla/vanilla_tf_birch",
-      "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/vanilla/vanilla_tf_oak",
-      "twilightforest:tree/vanilla/vanilla_tf_birch"
+      "minecraft:patch_dead_bush"
     ]
   ],
-  "starts": [],
+  "starts": [
+    "twilightforest:configured_hedge_maze",
+    "twilightforest:configured_hollow_hill_small",
+    "twilightforest:configured_hollow_hill_medium",
+    "twilightforest:configured_hollow_hill_large",
+    "twilightforest:configured_courtyard",
+    "twilightforest:configured_lich_tower"
+  ],
   "creature_spawn_probability": 0.4,
   "spawners": {
     "monster": [],
@@ -115,6 +123,6 @@
   "temperature": 0.5,
   "downfall": 1.0,
   "category": "forest",
-  "depth": 0.0625,
+  "depth": 0.025,
   "scale": 0.05
 }

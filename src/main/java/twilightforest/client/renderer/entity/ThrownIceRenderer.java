@@ -7,13 +7,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import twilightforest.entity.boss.IceBombEntity;
+import twilightforest.entity.projectile.IceBomb;
 
 import java.util.Random;
 
@@ -22,7 +21,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 /**
  * [VanillaCopy] of {@link net.minecraft.client.renderer.entity.FallingBlockRenderer} because of generic type restrictions
   */
-public class ThrownIceRenderer extends EntityRenderer<IceBombEntity> {
+public class ThrownIceRenderer extends EntityRenderer<IceBomb> {
 
 	public ThrownIceRenderer(EntityRendererProvider.Context manager) {
 		super(manager);
@@ -30,7 +29,7 @@ public class ThrownIceRenderer extends EntityRenderer<IceBombEntity> {
 	}
 
 	@Override
-	public void render(IceBombEntity entity, float yaw, float partialTicks, PoseStack ms, MultiBufferSource buffers, int light) {
+	public void render(IceBomb entity, float yaw, float partialTicks, PoseStack ms, MultiBufferSource buffers, int light) {
 		BlockState blockstate = entity.getBlockState();
 		if (blockstate.getRenderShape() == RenderShape.MODEL) {
 			Level world = entity.getCommandSenderWorld();
@@ -53,7 +52,7 @@ public class ThrownIceRenderer extends EntityRenderer<IceBombEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(IceBombEntity entity) {
+	public ResourceLocation getTextureLocation(IceBomb entity) {
 		return TextureAtlas.LOCATION_BLOCKS;
 	}
 }

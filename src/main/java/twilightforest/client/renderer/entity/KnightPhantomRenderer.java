@@ -2,19 +2,16 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.KnightPhantomModel;
-import twilightforest.entity.boss.KnightPhantomEntity;
+import twilightforest.entity.boss.KnightPhantom;
 
-public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantomEntity, KnightPhantomModel> {
+public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomModel> {
 
 	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
@@ -25,12 +22,12 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantomEnti
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(KnightPhantomEntity entity) {
+	public ResourceLocation getTextureLocation(KnightPhantom entity) {
 		return PHANTOM_TEXTURE;
 	}
 
 	@Override
-	protected void scale(KnightPhantomEntity entity, PoseStack stack, float partialTicks) {
+	protected void scale(KnightPhantom entity, PoseStack stack, float partialTicks) {
 		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
 		stack.scale(scale, scale, scale);
 	}
