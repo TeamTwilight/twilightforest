@@ -1646,5 +1646,8 @@
   // Optifine
   "twilightforest.gui.optifine.title": "WARNING: OPTIFINE DETECTED",
   "twilightforest.gui.optifine.message": "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.",
-  "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead."
+  "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead.",
+  
+  // JEI
+  "gui.uncrafting_jei": "Uncrafting"
 }
