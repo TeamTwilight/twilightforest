@@ -1,22 +1,30 @@
 package twilightforest.compat;
 
+import blusunrize.immersiveengineering.client.utils.GuiHelper;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.data.ItemTagGenerator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
@@ -74,9 +82,15 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
     @Override
     public void setRecipe(IRecipeLayout iRecipeLayout, CraftingRecipe craftingRecipe, IIngredients iIngredients) {
         int i = 0;
-        for (List<ItemStack> stack : iIngredients.getOutputs(VanillaTypes.ITEM)) { //Draw the 3 by 3 cube of items on the correct position
-            iRecipeLayout.getItemStacks().init(i + 1, true, (i % 3) * 18 + 62, (i / 3) * 18);
-            iRecipeLayout.getItemStacks().set(++i, stack);
+        List<List<ItemStack>> outputs = iIngredients.getOutputs(VanillaTypes.ITEM);
+        for (int j = 0, k = 0; j - k < outputs.size() && j < 9; j++) {
+            int x = j % 3, y = j / 3;
+            if ((craftingRecipe.canCraftInDimensions(x, 3) | craftingRecipe.canCraftInDimensions(3, y)) && !(craftingRecipe instanceof ShapelessRecipe)) {
+                k++;
+                continue;
+            } //Skips empty spaces in shaped recipes
+            iRecipeLayout.getItemStacks().init(++i, true, x * 18 + 62, y * 18); //Placement math
+            iRecipeLayout.getItemStacks().set(i, outputs.get(j - k));
         }
         iRecipeLayout.getItemStacks().init(++i, false, 4, 18); //Draw the item you're uncrafting in the right spot as well
         iRecipeLayout.getItemStacks().set(i, iIngredients.getInputs(VanillaTypes.ITEM).get(0));
