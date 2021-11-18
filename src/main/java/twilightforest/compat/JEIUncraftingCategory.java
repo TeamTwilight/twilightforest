@@ -67,7 +67,6 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
     public void setIngredients(CraftingRecipe craftingRecipe, IIngredients iIngredients) {
         ImmutableList.Builder<ItemStack> inputBuilder = ImmutableList.builder();
         inputBuilder.add(craftingRecipe.getResultItem()); //Setting the result item as the input, since the recipe will appear in reverse
-        iIngredients.setInputLists(VanillaTypes.ITEM, ImmutableList.of(inputBuilder.build()));
 
         List<List<ItemStack>> outputList = new ArrayList<>();
         craftingRecipe.getIngredients().forEach(i -> outputList.add(Arrays.asList(i.getItems()))); //Collect each ingredient
@@ -78,7 +77,11 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
                     .filter(o -> !(o.getItem().hasContainerItem(o)))
                     .collect(Collectors.toList()));//Remove any banned items
         }
-        iIngredients.setOutputLists(VanillaTypes.ITEM, outputList);//Set the inputs as outputs
+
+        if (!(outputList.stream().allMatch(o -> o.stream().allMatch(ItemStack::isEmpty)))) { //Checks if all items were banned
+            iIngredients.setInputLists(VanillaTypes.ITEM, ImmutableList.of(inputBuilder.build()));
+            iIngredients.setOutputLists(VanillaTypes.ITEM, outputList);//Set the inputs as outputs
+        }
     }
 
     @Override
