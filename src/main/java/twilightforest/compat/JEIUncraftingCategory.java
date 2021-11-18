@@ -1,22 +1,17 @@
 package twilightforest.compat;
 
-import blusunrize.immersiveengineering.client.utils.GuiHelper;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -24,8 +19,8 @@ import twilightforest.data.ItemTagGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
     public static ResourceLocation UNCRAFTING = TwilightForestMod.prefix("uncrafting_jei");
@@ -74,9 +69,16 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
         inputBuilder.add(craftingRecipe.getResultItem()); //Setting the result item as the input, since the recipe will appear in reverse
         iIngredients.setInputLists(VanillaTypes.ITEM, ImmutableList.of(inputBuilder.build()));
 
-        ImmutableList.Builder<List<ItemStack>> outputBuilder = ImmutableList.builder();
-        for (Ingredient ingredient : craftingRecipe.getIngredients()) outputBuilder.add(Arrays.asList(ingredient.getItems())); //and vice versa
-        iIngredients.setOutputLists(VanillaTypes.ITEM, outputBuilder.build());
+        List<List<ItemStack>> outputList = new ArrayList<>();
+        craftingRecipe.getIngredients().forEach(i -> outputList.add(Arrays.asList(i.getItems()))); //Collect each ingredient
+        for (int i = 0; i < outputList.size(); i++) {
+            List<ItemStack> newList = outputList.get(i);
+            outputList.set(i, newList.stream()
+                    .filter(o -> !(o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS)))
+                    .filter(o -> !(o.getItem().hasContainerItem(o)))
+                    .collect(Collectors.toList()));//Remove any banned items
+        }
+        iIngredients.setOutputLists(VanillaTypes.ITEM, outputList);//Set the inputs as outputs
     }
 
     @Override

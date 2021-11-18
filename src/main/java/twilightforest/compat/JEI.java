@@ -3,40 +3,23 @@ package twilightforest.compat;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import org.lwjgl.system.CallbackI;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.UncraftingGui;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.inventory.UncraftingContainer;
-import twilightforest.item.TFItems;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @JeiPlugin
 public class JEI implements IModPlugin {
-    @Nullable
-    private JEIUncraftingCategory uncraftingCategory;
-
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(TFBlocks.UNCRAFTING_TABLE.get()), VanillaRecipeCategoryUid.CRAFTING);
@@ -55,13 +38,13 @@ public class JEI implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(uncraftingCategory = new JEIUncraftingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new JEIUncraftingCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         List<CraftingRecipe> recipes = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING);
-        recipes.removeIf(recipe -> recipe.getResultItem().isEmpty() | recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES)); //Prevents things that are tagged as banned from showing up, don't know if there is any easy way of hiding banned components
+        recipes.removeIf(recipe -> recipe.getResultItem().isEmpty() | recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES));//Prevents things that are tagged as banned from showing up
         registration.addRecipes(recipes, JEIUncraftingCategory.UNCRAFTING);
     }
 
