@@ -17,7 +17,6 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 
 	public MoonwormQueenRepairRecipe(ResourceLocation pId) {
 		super(pId);
-		TwilightForestMod.LOGGER.warn("Recipe instance of MoonwormQueenRepairRecipe({}) was created.", pId);
 	}
 
 	@Override
