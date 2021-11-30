@@ -16,7 +16,6 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
-import twilightforest.item.recipe.TFRecipes;
 import twilightforest.item.recipe.UncraftingRecipe;
 
 import java.util.ArrayList;

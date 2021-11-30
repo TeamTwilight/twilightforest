@@ -5,7 +5,6 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -16,12 +15,10 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.UncraftingGui;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.inventory.UncraftingContainer;
-import twilightforest.inventory.UncraftingInputInventory;
 import twilightforest.item.recipe.TFRecipes;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @JeiPlugin
 public class JEI implements IModPlugin {
