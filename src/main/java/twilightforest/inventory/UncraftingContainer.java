@@ -17,7 +17,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.inventory.slot.AssemblySlot;
@@ -57,8 +56,8 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 
-	// Need to store current recipe for custom costs
-	private static CraftingRecipe currentRecipe;
+	// Need to store potential custom cost. If set to 0, will calculate uncrafting cost normally.
+	private static int customCost;
 
 	public static UncraftingContainer fromNetwork(int id, Inventory inventory) {
 		return new UncraftingContainer(id, inventory, inventory.player.level, ContainerLevelAccess.NULL);
@@ -118,7 +117,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			if (size > 0 && !inputStack.is(ItemTagGenerator.BANNED_UNCRAFTABLES)) {
 
 				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
-				currentRecipe = recipe;
+				customCost = recipe instanceof UncraftingRecipe ? ((UncraftingRecipe) recipe).getCost() : -1;
 				ItemStack[] recipeItems = getIngredients(recipe);
 
 				if (recipe instanceof IShapedRecipe rec) {
@@ -175,6 +174,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 				this.uncraftingMatrix.recraftingCost = 0;
 
 			} else {
+				customCost = -1;
 				this.uncraftingMatrix.numberOfInputItems = 0;
 				this.uncraftingMatrix.uncraftingCost = 0;
 			}
@@ -388,7 +388,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
 		if (this.assemblyMatrix.isEmpty()) {
-			return currentRecipe instanceof UncraftingRecipe ? ((UncraftingRecipe)currentRecipe).getCost() : countDamageableParts(this.assemblyMatrix) ;
+			return customCost >= 0 ? customCost : countDamageableParts(this.uncraftingMatrix);
 		} else return 0;
 	}
 
@@ -559,17 +559,18 @@ public class UncraftingContainer extends AbstractContainerMenu {
 				}
 				slot.onQuickCraft(itemstack1, itemstack);
 			} else if (slotNum >= 20 && slotNum < 56) {
-				if (!this.moveItemStackTo(itemstack1, 2, 11, false)) {
-					if (slotNum < 47) {
-						if (!this.moveItemStackTo(itemstack1, 47, 56, false)) {
-							return ItemStack.EMPTY;
-						}
-					} else if (!this.moveItemStackTo(itemstack1, 20, 47, false)) {
-						return ItemStack.EMPTY;
-					}
+				if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
+					return ItemStack.EMPTY;
 				}
-			} else if (!this.moveItemStackTo(itemstack1, 20, 56, false)) {
-				return ItemStack.EMPTY;
+			} else if (slot.container == this.assemblyMatrix) {
+				if (!this.moveItemStackTo(itemstack1, 20, 56, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else {
+				if (this.moveItemStackTo(itemstack1, 20, 56, false)) {
+					slot.onTake(player, itemstack1);
+					return ItemStack.EMPTY;
+				}
 			}
 			if (itemstack1.isEmpty()) {
 				slot.set(ItemStack.EMPTY);
