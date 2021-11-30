@@ -17,11 +17,14 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
 import twilightforest.inventory.slot.UncraftingSlot;
+import twilightforest.item.recipe.TFRecipes;
+import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
@@ -53,6 +56,9 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	public int unrecipeInCycle = 0;
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
+
+	// Need to store current recipe for custom costs
+	private static CraftingRecipe currentRecipe;
 
 	public static UncraftingContainer fromNetwork(int id, Inventory inventory) {
 		return new UncraftingContainer(id, inventory, inventory.player.level, ContainerLevelAccess.NULL);
@@ -112,6 +118,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			if (size > 0 && !inputStack.is(ItemTagGenerator.BANNED_UNCRAFTABLES)) {
 
 				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
+				currentRecipe = recipe;
 				ItemStack[] recipeItems = getIngredients(recipe);
 
 				if (recipe instanceof IShapedRecipe rec) {
@@ -163,6 +170,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 
 				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
 				this.uncraftingMatrix.numberOfInputItems = recipe.getResultItem().getCount();
+				if (recipe instanceof UncraftingRecipe) this.uncraftingMatrix.numberOfInputItems = ((UncraftingRecipe)recipe).getCount();//Uncrafting recipes need this method call
 				this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
 
@@ -299,6 +307,9 @@ public class UncraftingContainer extends AbstractContainerMenu {
 					recipes.add(rec);
 				}
 			}
+			for (UncraftingRecipe uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE)) {
+				if (uncraftingRecipe.isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe);
+			}
 		}
 
 		return recipes.toArray(new CraftingRecipe[0]);
@@ -376,7 +387,9 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	 */
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
-		return !this.assemblyMatrix.isEmpty() ? 0 : countDamageableParts(this.uncraftingMatrix);
+		if (this.assemblyMatrix.isEmpty()) {
+			return currentRecipe instanceof UncraftingRecipe ? ((UncraftingRecipe)currentRecipe).getCost() : countDamageableParts(this.assemblyMatrix) ;
+		} else return 0;
 	}
 
 	/**

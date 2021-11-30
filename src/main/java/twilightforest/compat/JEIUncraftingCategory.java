@@ -16,6 +16,8 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
+import twilightforest.item.recipe.TFRecipes;
+import twilightforest.item.recipe.UncraftingRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,7 +68,14 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
     @Override
     public void setIngredients(CraftingRecipe craftingRecipe, IIngredients iIngredients) {
         ImmutableList.Builder<ItemStack> inputBuilder = ImmutableList.builder();
-        inputBuilder.add(craftingRecipe.getResultItem()); //Setting the result item as the input, since the recipe will appear in reverse
+
+        if (craftingRecipe instanceof UncraftingRecipe) { //Uncrafting recipes have an ingredient as an input, so we iterate through all the options
+            for (ItemStack i : ((UncraftingRecipe) craftingRecipe).getIngredient().getItems()) {
+                inputBuilder.add(new ItemStack(i.getItem(), ((UncraftingRecipe) craftingRecipe).getCount()));
+            }
+        } else {
+            inputBuilder.add(craftingRecipe.getResultItem()); //Setting the result item as the input on normal recipes, since the recipe will appear in reverse
+        }
 
         List<List<ItemStack>> outputList = new ArrayList<>();
         craftingRecipe.getIngredients().forEach(i -> outputList.add(Arrays.asList(i.getItems()))); //Collect each ingredient
