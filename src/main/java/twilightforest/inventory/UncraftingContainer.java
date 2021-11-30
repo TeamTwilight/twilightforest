@@ -56,7 +56,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 
-	// Need to store potential custom cost. If set to 0, will calculate uncrafting cost normally.
+	// Need to store potential custom cost. If set to -1, will calculate uncrafting cost normally.
 	private static int customCost;
 
 	public static UncraftingContainer fromNetwork(int id, Inventory inventory) {
