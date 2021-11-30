@@ -53,7 +53,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
 
     @Override //We have to implement this method, can't really be used since we have multiple outputs
     public ItemStack assemble(CraftingContainer pContainer) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override //We have to implement this method, returns the count just in case
