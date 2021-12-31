@@ -1,0 +1,85 @@
+{
+  "config": {
+    "decorators": [
+      {
+        "root_length": 5,
+        "ground_roots_provider": {
+          "entries": [
+            {
+              "data": {
+                "Name": "twilightforest:root"
+              },
+              "weight": 6
+            },
+            {
+              "data": {
+                "Name": "twilightforest:liveroot_block"
+              },
+              "weight": 1
+            }
+          ],
+          "type": "minecraft:weighted_state_provider"
+        },
+        "base_strand_count": 3,
+        "additional_random_strands": 1,
+        "type": "twilightforest:tree_roots"
+      }
+    ],
+    "ignore_vines": true,
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "minimum_size": {
+      "limit": 4,
+      "lower_size": 1,
+      "upper_size": 1,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "twilightforest:dark_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "trunk_placer": {
+      "branch_start_offset_down": 3,
+      "branch_config": {
+        "random_add_length": 2.0,
+        "spacing_yaw": 0.23,
+        "downwards_pitch": 0.23,
+        "count_minimum": 4,
+        "random_add_count": 0,
+        "length": 8.0
+      },
+      "perpendicular_branches": false,
+      "base_height": 6,
+      "height_rand_a": 1,
+      "height_rand_b": 1,
+      "type": "twilightforest:branching_trunk_placer"
+    },
+    "foliage_provider": {
+      "state": {
+        "Name": "twilightforest:hardened_dark_leaves"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "foliage_placer": {
+      "random_add_horizontal": 1,
+      "random_add_vertical": 0,
+      "vertical_filler_bias": 0.45,
+      "shag_factor": 36,
+      "horizontal_radius": 4.5,
+      "vertical_radius": 2.25,
+      "offset": 0,
+      "type": "twilightforest:spheroid_foliage_placer"
+    }
+  },
+  "type": "twilightforest:dark_canopy_tree"
+}

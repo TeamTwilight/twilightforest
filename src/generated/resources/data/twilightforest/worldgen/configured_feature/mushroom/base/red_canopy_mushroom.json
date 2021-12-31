@@ -1,0 +1,90 @@
+{
+  "config": {
+    "decorators": [
+      {
+        "placement_count": 1,
+        "probability_of_placement": 1.0,
+        "deco_provider": {
+          "state": {
+            "Properties": {
+              "waterlogged": "false",
+              "facing": "north"
+            },
+            "Name": "twilightforest:firefly"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "type": "twilightforest:trunkside_decorator"
+      }
+    ],
+    "ignore_vines": true,
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "minimum_size": {
+      "limit": 11,
+      "lower_size": 1,
+      "upper_size": 5,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "west": "true",
+          "up": "true",
+          "south": "true",
+          "north": "true",
+          "east": "true",
+          "down": "true"
+        },
+        "Name": "minecraft:mushroom_stem"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "trunk_placer": {
+      "branch_start_offset_down": 6,
+      "branch_config": {
+        "random_add_length": 1.0,
+        "spacing_yaw": 0.3,
+        "downwards_pitch": 0.2,
+        "count_minimum": 3,
+        "random_add_count": 1,
+        "length": 9.0
+      },
+      "perpendicular_branches": true,
+      "base_height": 12,
+      "height_rand_a": 5,
+      "height_rand_b": 5,
+      "type": "twilightforest:branching_trunk_placer"
+    },
+    "foliage_provider": {
+      "state": {
+        "Properties": {
+          "west": "true",
+          "up": "true",
+          "south": "true",
+          "north": "true",
+          "east": "true",
+          "down": "false"
+        },
+        "Name": "minecraft:red_mushroom_block"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "foliage_placer": {
+      "random_add_horizontal": 0,
+      "random_add_vertical": 0,
+      "vertical_filler_bias": -0.45,
+      "shag_factor": 0,
+      "horizontal_radius": 4.25,
+      "vertical_radius": 1.75,
+      "offset": 1,
+      "type": "twilightforest:spheroid_foliage_placer"
+    }
+  },
+  "type": "minecraft:tree"
+}
