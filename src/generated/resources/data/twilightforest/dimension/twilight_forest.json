@@ -1,0 +1,18 @@
+{
+  "type": "twilightforest:forest_type",
+  "generator": {
+    "monster_spawns_below_sealevel": true,
+    "dark_forest_canopy_height": 12,
+    "use_overworld_seed": false,
+    "wrapped_generator": {
+      "biome_source": {
+        "type": "twilightforest:twilight_biomes"
+      },
+      "seed": 0,
+      "settings": "twilightforest:forest_noise_config",
+      "type": "minecraft:noise"
+    },
+    "generate_dark_forest_canopy": true,
+    "type": "twilightforest:structure_locating_wrapper"
+  }
+}
