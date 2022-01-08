@@ -1,7 +1,6 @@
 package twilightforest.world.registration.biomes;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.AquaticPlacements;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.data.worldgen.placement.TreePlacements;
@@ -192,8 +191,8 @@ public abstract class BiomeHelper {
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, isLake ? AquaticPlacements.SEAGRASS_DEEP : AquaticPlacements.SEAGRASS_NORMAL);
 
-		BiomeDefaultFeatures.addDefaultOres(biome);
-		BiomeDefaultFeatures.addDefaultSeagrass(biome);
+		//BiomeDefaultFeatures.addDefaultOres(biome);
+		//BiomeDefaultFeatures.addDefaultSeagrass(biome);
 
 		addSmallStoneClusters(biome);
 
@@ -264,8 +263,8 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.LAKES, TFVegetationFeatures.LAKE_WATER);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFVegetationFeatures.SPRUCE_FALLEN_LOG);
 
-		BiomeDefaultFeatures.addDefaultOres(biome);
-		BiomeDefaultFeatures.addSurfaceFreezing(biome);
+		//BiomeDefaultFeatures.addDefaultOres(biome);
+		//BiomeDefaultFeatures.addSurfaceFreezing(biome);
 
 		addCaves(biome);
 
@@ -328,7 +327,7 @@ public abstract class BiomeHelper {
 	}
 
     public static void addCanopyMushrooms(BiomeGenerationSettings.Builder biome, boolean dense) {
-        BiomeDefaultFeatures.addDefaultMushrooms(biome); // Add small mushrooms
+        //BiomeDefaultFeatures.addDefaultMushrooms(biome); // Add small mushrooms
 		//Same config as DefaultBiomeFeatures.withMushroomBiomeVegetation, we just use our custom large mushrooms instead
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.BROWN_MUSHROOM_TAIGA);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.RED_MUSHROOM_TAIGA);
@@ -373,13 +372,13 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFVegetationFeatures.PLANT_ROOTS);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFVegetationFeatures.TORCH_BERRIES);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFVegetationFeatures.VANILLA_ROOTS);
-		BiomeDefaultFeatures.addDefaultOres(biome);
+		//BiomeDefaultFeatures.addDefaultOres(biome);
 	}
 
 	public static void addHighlandCaves(BiomeGenerationSettings.Builder biome) {
 		biome.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.HIGHLANDCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, TFVegetationFeatures.TROLL_ROOTS);
-		BiomeDefaultFeatures.addDefaultOres(biome);
+		//BiomeDefaultFeatures.addDefaultOres(biome);
 	}
 
 	//Special mob spawns. EntityClassification.MONSTER is forced underground, so use CREATURE for above ground spawns.
@@ -465,10 +464,10 @@ public abstract class BiomeHelper {
     public static BiomeGenerationSettings.Builder defaultGenSettingBuilder() {
         BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder();
 
-        BiomeDefaultFeatures.addSwampClayDisk(biome);
-		BiomeDefaultFeatures.addDefaultSoftDisks(biome);
-        BiomeDefaultFeatures.addForestGrass(biome);
-        BiomeDefaultFeatures.addSavannaGrass(biome);
+        //BiomeDefaultFeatures.addSwampClayDisk(biome);
+		//BiomeDefaultFeatures.addDefaultSoftDisks(biome);
+        //BiomeDefaultFeatures.addForestGrass(biome);
+        //BiomeDefaultFeatures.addSavannaGrass(biome);
         biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_SUGAR_CANE);
 
         addSmallStoneClusters(biome);

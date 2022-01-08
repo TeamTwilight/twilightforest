@@ -1,39 +1,40 @@
 package twilightforest.world.registration;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.monster.Kobold;
-import twilightforest.world.registration.biomes.BiomeKeys;
-import twilightforest.entity.*;
+import twilightforest.util.IntPair;
+import twilightforest.util.PlayerHelper;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
@@ -45,8 +46,7 @@ import twilightforest.world.components.structures.mushroomtower.MushroomTowerMai
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
 import twilightforest.world.components.structures.trollcave.TrollCavePieces;
-import twilightforest.util.IntPair;
-import twilightforest.util.PlayerHelper;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -944,6 +944,7 @@ public class TFFeature {
 		return Optional.ofNullable(this.provideFirstPiece(structureManager, chunkGenerator, random, x, y, z));
 	}
 
+	//TODO Mayby better way has....?
 	public GenerationStep.Decoration getDecorationStage() {
 		return GenerationStep.Decoration.SURFACE_STRUCTURES;
 	}
