@@ -23,7 +23,6 @@ import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import twilightforest.block.TFBlocks;
 
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -78,6 +77,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	@Override
 	protected boolean carveBlock(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Biome> biomePos, CarvingMask mask, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos posUp, Aquifer aquifer, MutableBoolean isSurface) {
+		//TODO mayby another way...?
+		Random random = new Random();
 		BlockState blockstate = access.getBlockState(pos);
 		if (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.MYCELIUM) || blockstate.is(Blocks.PODZOL) || blockstate.is(Blocks.DIRT_PATH)) {
 			isSurface.setTrue();
@@ -103,13 +104,13 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					if (areaAround.is(FluidTags.WATER) || areaAboveAround.is(FluidTags.WATER) || aboveSurface.is(FluidTags.WATER)) {
 						return false;
 					} else {
-						if (Objects.requireNonNull(access.getWorldForge()).getRandom().nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
+						if (random.nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
 							access.setBlockState(pos.relative(facing), TFBlocks.TROLLSTEINN.get().defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);
 
 						if ((access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
-							switch(access.getWorldForge().getRandom().nextInt(5)) {
+							switch(random.nextInt(5)) {
 								case 0, 1, 2 -> access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
 								case 3 -> access.setBlockState(pos.above(), Blocks.ROOTED_DIRT.defaultBlockState(), false);
 								case 4 -> access.setBlockState(pos.above(), Blocks.COARSE_DIRT.defaultBlockState(), false);
