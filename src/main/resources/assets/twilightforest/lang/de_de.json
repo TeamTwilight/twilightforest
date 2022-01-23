@@ -1291,7 +1291,7 @@
   "subtitles.twilightforest.entity.wraith.parrot": "Papagei keucht",
 
   "subtitles.twilightforest.block.bug.squish": "Der Käfer wird zerquetscht :(",
-"subtitles.twilightforest.block.builder.create": "Erbauer erstellt Block",
+  "subtitles.twilightforest.block.builder.create": "Erbauer erstellt Block",
   "subtitles.twilightforest.block.builder.off": "Erbauer deaktiviert",
   "subtitles.twilightforest.block.builder.on": "Erbauer aktiviert",
   "subtitles.twilightforest.block.builder.replace": "Erbauer ersetzt Block",
@@ -1310,9 +1310,9 @@
   "subtitles.twilightforest.block.ghast_trap.on": "Ghastfalle aktiviert",
   "subtitles.twilightforest.block.ghast_trap.spindown": "Ghastfalle schaltet ab",
   "subtitles.twilightforest.block.ghast_trap.warmup": "Ghastfalle wärmt sich auf",
-  "subtitles.twilightforest.block.jet.active": "Feuerstrahlfackeln",
+  "subtitles.twilightforest.block.jet.active": "Feuerjet flackert",
   "subtitles.twilightforest.block.jet.pop": "Feuerjet knallt",
-  "subtitles.twilightforest.block.jet.start": "Feuerjetstartet",
+  "subtitles.twilightforest.block.jet.start": "Feuerjet startet",
   "subtitles.twilightforest.block.pedestal.activate": "Trophäensockel nimmt Trophäe an",
   "subtitles.twilightforest.block.portal.woosh": "Twilight Forest Portal winkt",
   "subtitles.twilightforest.block.reactor.ambient": "Karminit-Reaktor macht wuusch",
@@ -1321,43 +1321,28 @@
   "subtitles.twilightforest.block.slider": "Schiebefalle bewegt sich",
   "subtitles.twilightforest.block.smoker.start": "Raucher fängt an",
   "subtitles.twilightforest.block.torchberry.harvest": "Fackelbeeren knallen",
-  "subtitles.twilightforest.block.vanish.locked": "Towerwood-Tür verschwindet nicht",
-  "subtitles.twilightforest.block.vanish.unlock": "Towerwood-Tür entriegelt",
+  "subtitles.twilightforest.block.vanish.locked": "Turmholz-Tür verschwindet nicht",
+  "subtitles.twilightforest.block.vanish.unlock": "Turmholz-Tür entriegelt",
   "subtitles.twilightforest.block.vanish.vanish": "Fluchtblock verschwindet",																		   
 
-  "subtitles.twilightforest.item.blockchain.collide": "Morgenstern trifft auf Block",
-
-  "subtitles.twilightforest.block.door.activate": "Burgtür fails to vanish",
-  "subtitles.twilightforest.block.door.reappear": "Burgtür taucht wieder auf",
-  "subtitles.twilightforest.block.door.vanish": "Burgtür verschwindet",
-
-  "subtitles.twilightforest.block.casket.open": "Keepsake Casket opens",
-  "subtitles.twilightforest.block.casket.close": "Keepsake Casket closes",
-  "subtitles.twilightforest.block.casket.repair": "Player repairs casket",
-  "subtitles.twilightforest.block.casket.locked": "Keepsake Casket clicks",
-  "subtitles.twilightforest.block.jet.start": "Feuerstrahl startet",
-  "subtitles.twilightforest.block.jet.active": "Feuerstrahl flackert",
-  "subtitles.twilightforest.block.jet.pop": "Feuerstrahl knallt",
-  "subtitles.twilightforest.block.smoker.start": "Raucher startet",
-  "subtitles.twilightforest.block.reactor.idle": "Karminit-Reaktor wummert",
-
-  "subtitles.twilightforest.item.blockchain.collide": "Kettenhammer trifft Block",
-  "subtitles.twilightforest.item.blockchain.hit": "Kettenhammer trifft Entität",
-  "subtitles.twilightforest.item.blockchain.fire": "Kettenhammer brennt",
-  "subtitles.twilightforest.item.glasssword.break": "Glasschwert zerspringt",
+  "subtitles.twilightforest.item.blockchain.collide": "Morgenstern trifft Block",
+  "subtitles.twilightforest.item.blockchain.hit": "Morgenstern trifft Entität",
+  "subtitles.twilightforest.item.blockchain.fire": "Morgenstern brennt",
+  "subtitles.twilightforest.item.charm.keep": "Charme der Aufbewahrung von zurückgegebenen Gegenständen",
+  "subtitles.twilightforest.item.charm.life": "Charme des Lebens regeneriert Spieler",
+  "subtitles.twilightforest.item.fan.woosh": "Pfauenfächer benutzt",
+  "subtitles.twilightforest.item.glasssword.break": "Morgenstern zerspringt",
+  "subtitles.twilightforest.item.flask.break": "Spröde Flasche zerbricht",
+  "subtitles.twilightforest.item.flask.crack": "Spröde Flasche bricht",
+  "subtitles.twilightforest.item.flask.fill": "Trankfläschchen füllt sich",
   "subtitles.twilightforest.item.icebomb.fired": "Eisbombe geworfen",
   "subtitles.twilightforest.item.lamp.burn": "Aschenlampe verbrennt Gebiet",
-  "subtitles.twilightforest.item.moonworm.squish": "Mondwurm brennt",
   "subtitles.twilightforest.item.magnet.grab": "Magnet zieht Erz hoch",
-  "subtitles.twilightforest.item.fan.woosh": "Pfauenfächer benutzt",
+  "subtitles.twilightforest.item.moonworm.squish": "Mondwurm brennt",
+  "subtitles.twilightforest.item.powder.use": "Verwandlungs-Pulver verwendet",
   "subtitles.twilightforest.item.scepter.drain": "Lebenszepter entleert sich",
   "subtitles.twilightforest.item.scepter.use": "Zepter benutzt",
   "subtitles.twilightforest.item.scepter.pearl": "Dämmerung-Szepter wirft Perle",
-  "subtitles.twilightforest.item.powder.use": "Verwandlungs-Pulver verwendet",
-  "subtitles.twilightforest.item.charm.keep": "Charme der Aufbewahrung von zurückgegebenen Gegenständen",
-  "subtitles.twilightforest.item.charm.life": "Charme des Lebens regeneriert Spieler",
-
-  "subtitles.twilightforest.random.slider": "Schiebefalle bewegt sich",
   
   //Todesanzeigen
   "death.attack.twilightforest.ghastTear": "%1$s wurde von feurigen Tränen verbrüht",
@@ -1411,17 +1396,39 @@
   "death.attack.twilightforest.leafBrain.item": "Das Gehirn von %1$s wurde von %2$s mit %3$s in Blätter verwandelt",
   "death.attack.twilightforest.lostWords": "%1$s wusste nicht mehr weiter, nachdem er von %2$s getötet wurde",
   "death.attack.twilightforest.lostWords.item": "%1$s wusste nicht mehr weiter, nachdem er von %2$s mit %3$s getötet wurde",
+  "death.attack.twilightforest.schooled": "%1$s wurde von %2$s geschult",
+  "death.attack.twilightforest.schooled.item": "%1$s wurde von %2$s mit %3$s geschult",
   "death.attack.twilightforest.snowballFight": "%1$s verlor eine Schneeballschlacht gegen %2$s",
   "death.attack.twilightforest.snowballFight.item": "%1$s hat eine Schneeballschlacht gegen %2$s mit %3$s verloren",
   "death.attack.twilightforest.yeeted": "%1$s wurde zum letzten Mal von %2$s geschleudert",
   "death.attack.twilightforest.yeeted.item": "%1$s wurde zum letzten Mal von %2$s geschleudert, während er irgendwie %3$s hielt",
 
+  // Statistiken
+  "stat.twilightforest.blocks_crumbled": "Blöcke mit Horn zerbröselt",
+  "stat.twilightforest.bugs_squished": "Ungeziefer ausgelöscht",
+  "stat.twilightforest.e115_slices_eaten": "Experiment 115 gegessene Scheiben",
+  "stat.twilightforest.keeping_charms_activated": "Aktivierte Bewahrungszauber",
+  "stat.twilightforest.life_charms_activated": "Aktivierte Lebenszauber",
+  "stat.twilightforest.skull_candles_made": "Schädelkerzen hergestellt",
+  "stat.twilightforest.tf_shields_broken": "Festungsschilde gebrochen",
+  "stat.twilightforest.torchberries_harvested": "Fackelbeeren geerntet",
+  "stat.twilightforest.trophy_pedestals_activated": "Trophäensockel aktiviert",
+  "stat.twilightforest.uncrafting_table_interactions": "Interaktionen mit der Zerlegebank",
+  
   // Verschiedenes
   "twilightforest.misc.wip0": "Dieser Block ist noch in Arbeit und kann Fehler oder unbeabsichtigte Effekte haben, die deine Welt beschädigen können.",
   "twilightforest.misc.wip1": "Mit Vorsicht zu verwenden.",
   "twilightforest.misc.nyi": "Dieser Block hat Effekte, die noch nicht implementiert sind.",
+  
   "twilightforest.loading.title.enter": "Wird in den Dämmerwald entführt...",
   "twilightforest.loading.title.leave": "Wird aus dem Dämmerwald enführt...",
+  
+  "twilightforest.ui.magicmap.fail": "Die Magie ist ins Stocken geraten. Vielleicht funktioniert sie hier nicht?",
+  "twilightforest.ui.biome_locked": "Biom gesperrt!",
+  "twilightforest.ui.biome_locked_2": "Überprüfe deine Fortschritte",
+  "twilightforest.ui.portal.unworthy": "Der Portal-Pool reagiert nicht. Vielleicht wurde etwas vernachlässigt?",
+  "twilightforest.ui.advancement.required": "Fortschritt erforderlich:",
+  "twilightforest.ui.advancement.no_title": "<Verborgener Fortschritt>",  
 
   // Config
   "twilightforest.config.dimension": "Dimensionseinstellungen",
@@ -1490,9 +1497,11 @@
   "twilightforest.config.progression_default": "Progression Rule Default",
   "twilightforest.config.progression_default.tooltip": "Legt den Standardwert der Spielregel fest, die die erzwungene Progression steuert.",
 
-  "twilightforest.config.uncrafting": "Deaktiviert Uncrafting in der Uncrafting-Tabelle",
-  "twilightforest.config.uncrafting.tooltip": "Deaktiviert die Uncrafting-Funktion der Uncrafting-Tabelle. Wird als Option angeboten, wenn die Interaktion mit anderen Mods ausnutzbare Rezepte erzeugt.",
-
+  "twilightforest.config.uncrafting": "Deaktiviert das Zerlegen an der Zerlegebank",
+  "twilightforest.config.uncrafting.tooltip": "Deaktiviert die Zerlegen-Funktion an der Zerlegebank. Wird als Option angeboten, wenn die Interaktion mit anderen Mods ausnutzbare Rezepte erzeugt.",
+  "twilightforest.config.uncrafting_recipes": "Zerlege-Rezepte an der Zerlegebank deaktivieren",
+  "twilightforest.config.uncrafting_recipes.tooltip": "Wenn Sie das Zerlegen nicht vollständig deaktivieren möchten und lieber bestimmte Rezepte deaktivieren möchten, ist dies genau das Richtige für Sie.\nUm ein Rezept hinzuzufügen, fügen Sie die Mod-ID hinzu, gefolgt vom Namen des Rezept. Du kannst dies in Dingen wie JEI überprüfen.\nBeispiel: \"twilightforest:moonworm_queen\" deaktiviert das Uncrafting der Mondwurmkönigin in sich selbst und 3 Fackelbeeren.\nWenn ein Gegenstand mehrere Crafting-Rezepte hat und du sie alle deaktivieren möchtest, füge hinzu den Artikel dem Artikel-Tag \"twilightforest:banned_uncraftables\" hinzufügen.\nWenn Sie eine problematische Zutat haben, wie zum Beispiel befallenes Turmholz, fügen Sie den Artikel dem Artikel-Tag \"twilightforest:banned_uncrafting_ingredients\" hinzu.",
+  
   "twilightforest.config.optifine": "Deaktiviere den Hinweisbildschirm, wenn Optifine installiert ist.",
   "twilightforest.config.optifine.tooltip": "Deaktiviert den beim Start angezeigten Hinweisbildschirm, wenn Optifine installiert ist",
 
@@ -1502,6 +1511,12 @@
   "twilightforest.config.animate_trophyitem": "Trophäenköpfe auf Item-Modell drehen",
   "twilightforest.config.animate_trophyitem.tooltip": "Trophäenköpfe auf dem Gegenstandsmodell drehen. Hat überhaupt keine Auswirkungen auf die Leistung. Für diejenigen, die keinen Spaß mögen.",
 
+  "twilightforest.config.antibuilder_blacklist": "Antibuilder-Blackliste",
+  "twilightforest.config.antibuilder_blacklist.tooltip": "Anti-Builder-Blackliste. (domain:block:meta) Meta ist optional.",
+
+  "twilightforest.config.animate_trophyitem": "Trophäenköpfe auf Item-Modell drehen",
+  "twilightforest.config.animate_trophyitem.tooltip": "Trophäenköpfe auf Item-Modell drehen. Hat überhaupt keinen Einfluss auf die Leistung. Für diejenigen, die keinen Spaß mögen.",
+  
   "twilightforest.config.shield_parry": "Shield Parrying",
   "twilightforest.config.shield_parry.tooltip": "Wir empfehlen den Download der Shield Parry Mod für das Parieren, aber diese Kontrollen bleiben für ohne.",
   "twilightforest.config.parry_non_twilight": "Nicht-Dämmerungs-Projektile parieren",
@@ -1533,7 +1548,9 @@
   "twilightforest.config.loading_icon_tilt_pushback.tooltip": "Pushback-Wert, um das Wackeln des Ladesymbols neu zu zentrieren.",
   "twilightforest.config.casket_uuid_locking": "Keepsake Casket UUID Locking",
   "twilightforest.config.casket_uuid_locking.tooltip": "Wenn diese Option aktiviert ist, können andere Spieler nicht auf die Keepsake Caskets zugreifen, die beim Tod eines Spielers gespawnt werden. Verwenden Sie diese Option, wenn Sie nicht möchten, dass andere Spieler aus den Särgen anderer Spieler nehmen. HINWEIS: Serverbetreiber können verschlossene Särge immer noch öffnen.",
-
+  "twilightforest.config.disable_skull_candles": "Schädelkerzenerstellung deaktivieren",
+  "twilightforest.config.disable_skull_candles.tooltip": "Wenn wahr, wird die Fähigkeit deaktiviert, Totenkopfkerzen herzustellen, indem man mit der rechten Maustaste auf einen Vanilla-Schädel mit einer Kerze klickt. Schalten Sie dies ein, wenn Sie aus irgendeinem Grund Probleme mit Mod-Konflikten haben.",
+  
   // Bücher
   "twilightforest.book.lichtower.1": "\u00A78[[Das Notizbuch eines Entdeckers, von Monstern angefressen]]\u00A70\n\n_Ich habe begonnen, die seltsame Aura, die diesen Turm umgibt, zu untersuchen. Die Ziegel des Turms sind durch einen Fluch geschützt, der stärker ist als jeder, den ich bisher gesehen habe. Die Magie des Fluches",
   "twilightforest.book.lichtower.2": "sprudelt in die Umgebung.\n\n_In meiner Heimat hätte ich viele Möglichkeiten, mit dieser Magie umzugehen, aber hier sind meine Vorräte begrenzt. Ich muss recherchieren.. .",
@@ -1637,4 +1654,8 @@
   // Optifine
   "twilightforest.gui.optifine.title": "WARNUNG: OPTIFINE ENTDECKT",
   "twilightforest.gui.optifine.message": "Bevor du fortfahrst, beachte bitte, dass Optifine dafür bekannt ist, Abstürze, visuelle Fehler bei mehrteiligen Entitäten und viele andere Probleme zu verursachen.\n\nBevor du einen Fehler meldest, entferne bitte zuerst Optifine und überprüfe erneut, ob der Fehler noch vorhanden ist.\n\nOptifine-bezogene Probleme können nicht von Dämmerwald gelöst werden!\n\nDieser Bildschirm kann in der Client-Konfiguration deaktiviert werden.",
+  "twilightforest.gui.optifine.suggestions": "Hier ist eine Auswahl an Mods, die wir stattdessen empfehlen.",
+   
+  // JEI
+  "gui.uncrafting_jei": "Zerlegebank"
 }
