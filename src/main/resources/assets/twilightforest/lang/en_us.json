@@ -1,7 +1,7 @@
 {
   "itemGroup.twilightforest": "Twilight Forest",
 
-  # ADVANCEMENTS
+  #ADVANCEMENTS
   "advancement.twilightforest.root.desc": "Enter the mysterious magical woodlands: the Twilight Forest.",
 
   #GeneralProgression 
@@ -133,7 +133,7 @@
   "commands.tffeature.structure.spawn_info": "%s, Weight %s",
   "commands.tfreload.reload": "Reloading Twilight Forest shaders!",
 
-  // Biomes
+  #Biomes
   "biome.twilightforest.forest": "Twilight Forest",
   "biome.twilightforest.dense_forest": "Dense Forest",
   "biome.twilightforest.firefly_forest": "Firefly Forest",
