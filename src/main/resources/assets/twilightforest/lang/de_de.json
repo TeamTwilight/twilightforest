@@ -1,10 +1,10 @@
 {
   "itemGroup.twilightforest": "Dämmerwald",
 
-  // FORTSCHRITTE
+  "_comment": "FORTSCHRITTE",
   "advancement.twilightforest.root.desc": "Betrete das geheimnisvolle magische Waldgebiet: den Dämmerwald.",
 
-  // Allgemeiner Fortschritt
+  "_comment": "Allgemeiner Fortschritt",
   "advancement.twilightforest.hedge": "Kammerjäger",
   "advancement.twilightforest.hedge.desc": "Besiege eine Spinne in einem Irrgarten.",
 
@@ -18,7 +18,7 @@
   "advancement.twilightforest.quest_ram": "Määhige Angelegenheit",
   "advancement.twilightforest.quest_ram.desc": "Gieb dem Schafbock der Schatzsuche, was ihm fehlt.",
   
-  // Karte
+  "_comment": "Karte",
   "advancement.twilightforest.magic_map_focus": "Mit Feuer geschrieben",
   "advancement.twilightforest.magic_map_focus.desc": "Stelle den magischen Kartenfokus mit einer Rabenfeder, Glowstonestaub und Fackelbeeren her.",
   "advancement.twilightforest.magic_map": "Bis zum Horizont",
@@ -28,7 +28,7 @@
   "advancement.twilightforest.ore_map": "Ist es das denn wert?",
   "advancement.twilightforest.ore_map.desc": "Stelle die Labyrinth-Erzkarte her.",
   
-  // Hauptlinie-Anfangsforschritt
+  "_comment": "Hauptlinie-Anfangsforschritt",
   "advancement.twilightforest.twilight_hunter": "Das Schweigen des Waldes",
   "advancement.twilightforest.twilight_hunter.desc": "Jage einige der lokalen Wildtiere.",
 
@@ -42,7 +42,7 @@
   "advancement.twilightforest.lich_scepters": "Mit vereinten Kräften!",
   "advancement.twilightforest.lich_scepters.desc": "Erwerbe alle vier Zepter der Macht.",
 
-  // Sumpffortschritt
+  "_comment": "Sumpffortschritt",
   "advancement.twilightforest.progress_labyrinth": "Gewaltiger Stroganow",
   "advancement.twilightforest.progress_labyrinth.desc": "Der Fleisch- und Pilz-Eintopf im Labyrinth macht dich bereit, den Feuersumpf zu betreten.",
   "advancement.twilightforest.kill_hydra": "Hydraschlächter",
@@ -52,7 +52,7 @@
   "advancement.twilightforest.hydra_chop": "Massive Kotletten",
   "advancement.twilightforest.hydra_chop.desc": "Esse das übermächtige Fleisch der Hydra, wenn deine Hungerleiste leer ist.",
 
-  // Dunkler Wald Fortschritt
+  "_comment": "Dunkler Wald Fortschritt",
   "advancement.twilightforest.progress_trophy_pedestal": "Trophäenchampion",
   "advancement.twilightforest.progress_trophy_pedestal.desc": "Hol' dir den Titel, indem du eine Trophäe auf den Sockel in den Ruinen im dunklen Wald stellst.",
   "advancement.twilightforest.progress_knights": "Karminit-Eingewöhnung",
@@ -67,7 +67,7 @@
   "advancement.twilightforest.experiment_115_2": "Notiz machen: Großer Erfolg!",
   "advancement.twilightforest.experiment_115_2.desc": "Es ist so lecker und feucht!",
 
-  // Schneewaldfortschritt
+  "_comment": "Schneewaldfortschritt",
   "advancement.twilightforest.progress_yeti": "Alphafell",
   "advancement.twilightforest.progress_yeti.desc": "Trage Kleider aus dem weichen Fell vom Alpha-Yeti. Sie beschützen dich vor der Kälte des Gletschers.",
   "advancement.twilightforest.progress_glacier": "Klarer Himmel",
@@ -75,14 +75,16 @@
   "advancement.twilightforest.arctic_dyed": "Einstieg in die Mode",
   "advancement.twilightforest.arctic_dyed.desc": "Färbe alle vier Teile der Arktis-Rüstung.",
 
-  // Mittelweg Verschiedenes
+  "_comment": "Mittelweg Verschiedenes",
+  
   "advancement.twilightforest.glass_sword": "Ein-Hit-Wunder",
   "advancement.twilightforest.glass_sword.desc": "Hast du das gut genutzt?",
 
   "advancement.twilightforest.fiery_set": "Literweise Blut und Tränen",
   "advancement.twilightforest.fiery_set.desc": "Nutze ein Feuerwerkzeug oder eine Feuerwaffe während du mindestens einen Teil der Feuerrüstung trägst.",
 
-  // Hochlände
+  "_comment": "Hochlände",
+  
   "advancement.twilightforest.progress_merge": "Ultimativer Showdown",
   "advancement.twilightforest.progress_merge.desc": "Töte die %s, %s und %s, um den sauren Regen zu beseitigen und dich für die Highlands zu stärken.",
   "advancement.twilightforest.troll": "Wir machen ein bisschen Trolling",
@@ -98,7 +100,8 @@
   "advancement.twilightforest.progress_castle": "Wahnsinnsburg",
   "advancement.twilightforest.progress_castle.desc": "Was könnte hier überhaupt drinnen sein?",
 
-   // Sammlungen 
+  "_comment": "Sammlungen",
+  
   "advancement.twilightforest.twilight_dining": "Wir speisen im ewigen Sonnenuntergang",
   "advancement.twilightforest.twilight_dining.desc": "Iß ALLE Lebensmittel, die es nur im Dämmerwald gibt.",
   "advancement.twilightforest.experiment_115_3": "Jeden Tag 115 essen, 115 Jahre lang, für immer",
@@ -112,7 +115,7 @@
   "twilightforest.ore_meter.exposed": "Exponiert: %s",
   "twilightforest.scepter_charges": "%d charges left",
 
-  // Kommandos
+  "_comment": "Kommandos",
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "Du befindest dich nicht in der Dimension Dämmerwald",
   "commands.tffeature.nearest": "Das nächstgelegene Merkmal ist %s",
@@ -126,7 +129,7 @@
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
   "commands.tfreload.reload": "Dämmerwald-Shaders wird neu geladen!",
 
-  // Biome
+  "_comment": "bioom",
   "biome.twilightforest.forest": "Dämmerwald",
   "biome.twilightforest.dense_forest": "Dichter Wald",
   "biome.twilightforest.firefly_forest": "Leuchtkäferwald",
@@ -148,17 +151,18 @@
   "biome.twilightforest.thornlands": "Dornenland",
   "biome.twilightforest.final_plateau": "Letzte Hochebene",
 
-  // Gamerules
+  // "_comment": "Gamerules",
   "gamerule.tfEnforcedProgression": "Dämmerwald-Verlauf",
 
-  // Verzaubern
+  "_comment": "Verzaubern",
   "enchantment.twilightforest.fire_react": "Feuerreaktion",
   "enchantment.twilightforest.chill_aura": "Kühlenaura",
 
-  // Effekten
+  "_comment": "Effekten",
   "effect.twilightforest.frosted": "Vereist",
 
-  // Blöcke
+  "_comment": "Blöcke",
+  
   "block.twilightforest.twilight_oak_log": "Dämmerungseichenstamm",
   "block.twilightforest.canopy_log": "Baldachinbaumstamm",
   "block.twilightforest.mangrove_log": "Mangrovenstamm",
@@ -498,7 +502,7 @@
   "block.arctic.tooltip": "Verringert den Fallschaden um 90%",
   "block.knightmetal.tooltip": "Wirkt wie ein stärkerer Kaktus",
 
-  // Strukturen
+  "_comment": "Strukturen",
   "structure.twilight_portal": "Dämmerungsportal",
   "structure.hedge_maze": "Heckenirrgarten",
   "structure.hollow_hill": "Hohlhügel",
@@ -515,7 +519,7 @@
   "structure.troll_cave_and_cloud_castle": "Trollhöhle und Haus in den Wolken",
   "structure.final_castle": "Endburg",
 
-  // Gegenstände
+  "_comment": "Gegenstände",
   "item.twilightforest.boarkchop": "Wildschweinefleisch",
   "item.twilightforest.naga_scale": "Nagaschuppe",
   "item.twilightforest.naga_chestplate": "Nagaschuppenharnisch",
@@ -698,7 +702,8 @@
   "item.twilightforest.yeti_armor.tooltip": "Friert Angreifer ein",
   "item.twilightforest.arctic_armor.tooltip": "Einfärbbar wie Lederrüstungen",
 
-  // Entitäten
+  "_comment": "Entitäten",
+  
   "entity.twilightforest.boar": "Wildschwein",
   "entity.twilightforest.bighorn_sheep": "Dickhornschaf",
   "entity.twilightforest.deer": "Hirsch",
@@ -968,7 +973,7 @@
   "subtitles.twilightforest.block.builder.on": "Erbauer activiert",
   "subtitles.twilightforest.block.builder.off": "Erbauer deactiviert",
   "subtitles.twilightforest.block.builder.replace": "Erbauer ersetzt den Block",
-  //"subtitles.twilightforest.block.builder.create": "Builder creates block",
+  "subtitles.twilightforest.block.builder.create": "Bouwer maakt blok",
   "subtitles.twilightforest.block.door.activate": "Burgtür fails to vanish",
   "subtitles.twilightforest.block.door.reappear": "Burgtür taucht wieder auf",
   "subtitles.twilightforest.block.door.vanish": "Burgtür verschwindet",
@@ -1009,7 +1014,7 @@
 
   "subtitles.twilightforest.random.slider": "Schiebefalle bewegt sich",
   
-  //Todesanzeigen
+  "_comment": "Todesanzeigen",
   "death.attack.twilightforest.ghastTear": "%1$s wurde von feurigen Tränen verbrüht",
   "death.attack.twilightforest.ghastTear.player": "%1$s wurde auf der Flucht vor %2$s von feurigen Tränen verbrüht",
   "death.attack.twilightforest.hydraFire": "%1$s wurde bei lebendigem Leib von der Hydra geröstet",
@@ -1066,14 +1071,16 @@
   "death.attack.twilightforest.yeeted": "%1$s wurde zum letzten Mal von %2$s geschleudert",
   "death.attack.twilightforest.yeeted.item": "%1$s wurde zum letzten Mal von %2$s geschleudert, während er irgendwie %3$s hielt",
 
-  // Verschiedenes
+  "_comment": "Verschiedenes",
+  
   "twilightforest.misc.wip0": "Dieser Block ist noch in Arbeit und kann Fehler oder unbeabsichtigte Effekte haben, die deine Welt beschädigen können.",
   "twilightforest.misc.wip1": "Mit Vorsicht zu verwenden.",
   "twilightforest.misc.nyi": "Dieser Block hat Effekte, die noch nicht implementiert sind.",
   "twilightforest.loading.title.enter": "Wird in den Dämmerwald entführt...",
   "twilightforest.loading.title.leave": "Wird aus dem Dämmerwald enführt...",
 
-  // Config
+  "_comment": "Config",
+  
   "twilightforest.config.dimension": "Dimensionseinstellungen",
   "twilightforest.config.dimension.tooltip": "Du kannst diese Einstellungen nicht ändern, ohne einen Neustart durchzuführen.",
   "twilightforest.config.dimension_id": "Dimensions-ID",
@@ -1184,7 +1191,7 @@
   "twilightforest.config.casket_uuid_locking": "Keepsake Casket UUID Locking",
   "twilightforest.config.casket_uuid_locking.tooltip": "Wenn diese Option aktiviert ist, können andere Spieler nicht auf die Keepsake Caskets zugreifen, die beim Tod eines Spielers gespawnt werden. Verwenden Sie diese Option, wenn Sie nicht möchten, dass andere Spieler aus den Särgen anderer Spieler nehmen. HINWEIS: Serverbetreiber können verschlossene Särge immer noch öffnen.",
 
-  // Bücher
+  "_comment": "Bucher", 
   "twilightforest.book.lichtower.1": "\u00A78[[Das Notizbuch eines Entdeckers, von Monstern angefressen]]\u00A70\n\n_Ich habe begonnen, die seltsame Aura, die diesen Turm umgibt, zu untersuchen. Die Ziegel des Turms sind durch einen Fluch geschützt, der stärker ist als jeder, den ich bisher gesehen habe. Die Magie des Fluches",
   "twilightforest.book.lichtower.2": "sprudelt in die Umgebung.\n\n_In meiner Heimat hätte ich viele Möglichkeiten, mit dieser Magie umzugehen, aber hier sind meine Vorräte begrenzt. Ich muss recherchieren.. .",
   "twilightforest.book.lichtower.3": "\u00A78[[Viele Einträge später]]\u00A70\n\n_Ein Durchbruch! Auf meinen Reisen habe ich in einem geschmückten Hof ein riesiges schlangenähnliches Monster gesichtet. In der Nähe habe ich ein abgenutzte, weggeworfene grüne Skala.\n\n_Die Magie in der Skala scheint die",
@@ -1226,13 +1233,13 @@
   "twilightforest.book.unknown.1": "\u00A78[[Dieses Buch weist Anzeichen auf, dass es viele Male kopiert wurde]]\u00A70\n\n_Ich kann das Feld um diese Struktur nicht erklären, aber die Magie ist mächtig. Wenn dieser Fluch ist wie die anderen, dann liegt die Antwort zum Aufschließen woanders. Vielleicht gibt es ",
   "twilightforest.book.unknown.2": "etwas, das ich ungetan gelassen habe, oder ein Monster, das ich noch besiegen muss. Ich muss umkehren. Ich werde später an diesen Ort zurückkehren, um zu sehen, ob sich etwas geändert hat.",
 
-  //Fluid
+  "_comment": "Fluid",
 
   "fluid.fierymetal": "Geschmolzener Feuer",
   "fluid.knightmetal": "Geschmolzenes Rittermetall",
   "fluid.fiery_essence": "Essenz der Feuer",
 
-  //TCon
+  "_comment": "Tcon",
 
   "material.nagascale": "Waage der Naga",
   "material.steeleaf": "Stahlblätter",
@@ -1253,7 +1260,8 @@
   "modifier.veiled": "Verschleiert",
   "modifier.veiled.desc": "§oWie ein Gespenst!§r\nProjektil wird unsichtbar sein.",
 
-  // Immersive Engineering
+   "_comment": "Immersive Engineering",
+  
   "desc.immersiveengineering.info.shader.rarity.twilight": "Dämmer",
 
   "item.twilightforest.shader": "Dämmer Shader: %s",
@@ -1284,7 +1292,8 @@
   "item.twilightforest.shader.name.cube_of_annihilation": "Würfel der Zerstörung",
   "item.twilightforest.shader.name.final_castle": "Endburg",
 
-  // Optifine
+  "_comment": "Optifine",
+  
   "twilightforest.gui.optifine.title": "WARNUNG: OPTIFINE ENTDECKT",
   "twilightforest.gui.optifine.message": "Bevor du fortfahrst, beachte bitte, dass Optifine dafür bekannt ist, Abstürze, visuelle Fehler bei mehrteiligen Entitäten und viele andere Probleme zu verursachen.\n\nBevor du einen Fehler meldest, entferne bitte zuerst Optifine und überprüfe erneut, ob der Fehler noch vorhanden ist.\n\nOptifine-bezogene Probleme können nicht von Dämmerwald gelöst werden!\n\nDieser Bildschirm kann in der Client-Konfiguration deaktiviert werden.",
 }
