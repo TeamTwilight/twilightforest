@@ -1,10 +1,10 @@
 {
   "itemGroup.twilightforest": "Сумеречный Лес",
 
-  "_comment": "ADVANCEMENTS",
+  "_comment1": "ADVANCEMENTS",
   "advancement.twilightforest.root.desc": "Войдите в загадочные магические леса; Сумеречный лес.",
   
-  "_comment": "General Progression",
+  "_comment2": "General Progression",
   "advancement.twilightforest.hedge": "Арахнофоб",
   "advancement.twilightforest.hedge.desc": "Победить паука в лабиринте хеджа.",
 
@@ -18,7 +18,7 @@
   "advancement.twilightforest.quest_ram": "Непревзойдённый",
   "advancement.twilightforest.quest_ram.desc": "Дайте Раму то, чего ему не хватает.",
 
-  "_comment": "Map",
+  "_comment3": "Map",
   "advancement.twilightforest.magic_map_focus": "Написанное огнём",
   "advancement.twilightforest.magic_map_focus.desc": "Сделайте магическое перо.",
   "advancement.twilightforest.magic_map": "Далеко гляжу",
@@ -28,7 +28,7 @@
   "advancement.twilightforest.ore_map": "Почему бы и нет?",
   "advancement.twilightforest.ore_map.desc": "Создайте карту лабиринта/руды.",
 
-  "_comment": "Mainline beginning progression",
+  "_comment4": "Mainline beginning progression",
   "advancement.twilightforest.twilight_hunter": "Лесной убийца",
   "advancement.twilightforest.twilight_hunter.desc": "Убейте существо в сумеречном лесу.",
 
@@ -42,7 +42,7 @@
   "advancement.twilightforest.lich_scepters": "Наши силы объединены!",
   "advancement.twilightforest.lich_scepters.desc": "Приобрести все три скипетра власти.",
 
-  "_comment": "Swamp Progression",
+  "_comment5": "Swamp Progression",
   
   "advancement.twilightforest.progress_labyrinth": "Могучий строганов",
   "advancement.twilightforest.progress_labyrinth.desc": "Мясо и мускусное блюдо приятно согревает вас настолько, что вы чувствуете, что достаточно акклиматизированы, чтобы отправиться в Огненное болото.",
@@ -53,7 +53,7 @@
   "advancement.twilightforest.hydra_chop": "Массивные отбивные",
   "advancement.twilightforest.hydra_chop.desc": "Попробуйте на вкус мясо гидры.",
 
-  "_comment": "Dark Forest Progression",
+  "_comment6": "Dark Forest Progression",
   "advancement.twilightforest.progress_trophy_pedestal": "Трофейный чемпион",
   "advancement.twilightforest.progress_trophy_pedestal.desc": "Заявите о своём титуле, поставив трофей на пьедестал в лесных руинах.",
   "advancement.twilightforest.progress_knights": "Карминитовые врата",
@@ -68,7 +68,7 @@
   "advancement.twilightforest.experiment_115_2": "Делаем заметку: огромный успех!",
   "advancement.twilightforest.experiment_115_2.desc": "Это так вкусно и влажно! Пальчики оближешь!",
 
-  "_comment": "Snow Forest Progression Effects",
+  "_comment7": "Snow Forest Progression Effects",
   "advancement.twilightforest.progress_yeti": "Тёплый мех",
   "advancement.twilightforest.progress_yeti.desc": "Линия одежды с мехом Альфа-Йети сохранит вас от мороза.",
   "advancement.twilightforest.progress_glacier": "Чистое небо",
@@ -76,22 +76,22 @@
   "advancement.twilightforest.arctic_dyed": "Местный стиляга",
   "advancement.twilightforest.arctic_dyed.desc": "Покрасьте все четыре части арктической брони.",
 
-    "_comment": "Mid-way Misc. Stuff",
+    "_comment8": "Mid-way Misc. Stuff",
   "advancement.twilightforest.glass_sword": "Одним ударом",
   "advancement.twilightforest.glass_sword.desc": "Надеюсь, вы хорошо это использовали...",
 
   "advancement.twilightforest.fiery_set": "Потом и кровью",
   "advancement.twilightforest.fiery_set.desc": "Используйте огненный инструмент или оружие, неся хотя бы одну часть огненной брони.",
 
-  "_comment": "Highlands Effects"
-  /*"advancement.twilightforest.progress_merge": "Ultimate Showdown",
+  "_comment9": "Highlands Effects",
+  "advancement.twilightforest.progress_merge": "Ultimate Showdown",
   "advancement.twilightforest.progress_merge.desc": "Slay the %s, %s, and %s to clear the acid rain and embolden yourself for the Highlands.",
   "advancement.twilightforest.troll": "We Do a Little Trolling",
   "advancement.twilightforest.troll.desc": "Find and kill a %s.",
   "advancement.twilightforest.beanstalk": "Jack and the Beanstalk",
   "advancement.twilightforest.beanstalk.desc": "Obtain some %s in the troll caves and use them on the glowing soil beneath the clouds.",
   "advancement.twilightforest.giants": "I'm on Cloud Nine",
-  "advancement.twilightforest.giants.desc": "Kill a %s in the clouds, retrieve a %s, and return back to the troll caves.",*/
+  "advancement.twilightforest.giants.desc": "Kill a %s in the clouds, retrieve a %s, and return back to the troll caves.",
   "advancement.twilightforest.progress_troll": "Я желаю больше огня",
   "advancement.twilightforest.progress_troll.desc": "Найдите лампу огня в тролль-пещерах, и вы можете сжечь тернистые барьеры.",
   "advancement.twilightforest.progress_thorns": "Мимо шипов",
@@ -99,7 +99,7 @@
   "advancement.twilightforest.progress_castle": "Есть тут кто!?",
   "advancement.twilightforest.progress_castle.desc": "Посетите замок высокогорья.",
 
-  "_comment": "collections",
+  "_comment10": "collections",
   "advancement.twilightforest.twilight_dining": "Ужин в вечном закате",
   "advancement.twilightforest.twilight_dining.desc": "Сьешьте ВСЕ продукты исключительно в Сумеречном лесу.",
   "advancement.twilightforest.experiment_115_3": "Питание 115 Ежедневно, 115 Лет, Навсегда",
@@ -112,7 +112,7 @@
   "twilightforest.ore_meter.exposed": "Выставлено: %s",
   "twilightforest.scepter_charges": "%d зарядов осталось",
 
-  "_comment": "Commands",
+  "_comment11": "Commands",
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "Вы находитесь вне Сумеречного Леса",
   "commands.tffeature.nearest": "Ближайшии объект это %s",
@@ -125,7 +125,7 @@
   "commands.tffeature.structure.conquer.update": "Structure conquer flag was %s, меняется на %s",
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
 
-  "_comment": "Biomes",
+  "_comment12": "Biomes",
   "biome.twilightforest.forest": "Сумерки леса",
   "biome.twilightforest.dense_forest": "Густой лес",
   "biome.twilightforest.firefly_forest": "Светлячок в лесу",
@@ -147,18 +147,18 @@
   "biome.twilightforest.thornlands": "Торнлендс",
   "biome.twilightforest.final_plateau": "Финальное плато",
 
-  "_comment": "Gamerules",
+  "_comment13": "Gamerules",
   
   "gamerule.tfEnforcedProgression": "Прохождение Сумеречного Леса",
 
-  "_comment": "Enchantments",
+  "_comment14": "Enchantments",
   "enchantment.twilightforest.fire_react": "Аура огня",
   "enchantment.twilightforest.chill_aura": "Морозная аура",
 
-  "_comment": "Effects",
+  "_comment15": "Effects",
   "effect.twilightforest.frosted": "Обморожение",
 
-  "_comment": "Blocks",
+  "_comment16": "Blocks",
   "block.twilightforest.twilight_oak_wood": "Сумеречный дуб",
   "block.twilightforest.canopy_wood": "Сумеречная сосна",
   "block.twilightforest.mangrove_wood": "Сумеречная берёза",
@@ -368,8 +368,8 @@
   "block.twilightforest.quest_ram_trophy": "Трофей квестового Рама",
 
   "block.twilightforest.keepsake_casket": "Keepsake Casket",
-  "block.twilightforest.casket.broken": "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.",
-  "block.twilightforest.casket.locked": "This Casket can only be opened by %s!",
+  "block.twilightforest.casket.broken": "Ваша шкатулка для сувениров была слишком повреждена, чтобы в ней могли храниться другие предметы. Все предметы, которые должны были храниться в вашей шкатулке, были сброшены на землю.",
+  "block.twilightforest.casket.locked": "Этот Ларец может быть открыт только %s!",
 
   "block.twilightforest.zombie_skull_candle": "Zombie Skull Candle",
   "block.twilightforest.zombie_wall_skull_candle": "Zombie Wall Skull Candle",
@@ -408,7 +408,7 @@
   "block.twilightforest.canopy_pressure_plate": "Сосновая нажимная плита",
   "block.twilightforest.canopy_trapdoor": "Сосновый люк",
   "block.twilightforest.canopy_door": "Сосновая дверь",
-  //"block.twilightforest.canopy_bookshelf": "Canopy Bookshelf",
+  "block.twilightforest.canopy_bookshelf": "Canopy Bookshelf",
 
   "block.twilightforest.dark_planks": "Тёмные доски",
   "block.twilightforest.dark_stairs": "Тёмные ступеньки",
@@ -499,7 +499,7 @@
   "block.arctic.tooltip": "Reduces fall damage by 90%",
   "block.knightmetal.tooltip": "Works as a stronger cactus",
 
-   "_comment": "Structures",
+   "_comment17": "Structures",
   "structure.twilight_portal": "Сумеречный портал",
   "structure.hedge_maze": "Лабиринт из живой изгороди",
   "structure.hollow_hill": "Полый холм",
@@ -516,8 +516,8 @@
   "structure.troll_cave_and_cloud_castle": "Пещера троллей и дом в облаках",
   "structure.final_castle": "Финальный замок",
 
-  "_comment": "Items",
-  //"item.twilightforest.boarkchop": "Boarkchop",
+  "_comment18": "Items",
+  "item.twilightforest.boarkchop": "Boarkchop",
   "item.twilightforest.naga_scale": "Чешуя наги",
   "item.twilightforest.naga_chestplate": "Нагрудник из чешуи наги",
   "item.twilightforest.naga_leggings": "Поножи из чешуи наги",
@@ -700,10 +700,10 @@
   "item.twilightforest.arctic_armor.tooltip": "Можно покрасить",
   "item.twilightforest.glass_sword.tooltip.1": "Creative Mode only",
 
-  //"item.twilightforest.skull_candle.desc": "Has: %s %s Candle",
-  //"item.twilightforest.skull_candle.desc.multiple": "Has: %s %s Candles",
+  "item.twilightforest.skull_candle.desc": "Has: %s %s Candle",
+  "item.twilightforest.skull_candle.desc.multiple": "Has: %s %s Candles",
 
-  "_comment": "Enities",
+  "_comment19": "Enities",
   "entity.twilightforest.boar": "Дикий кабан",
   "entity.twilightforest.bighorn_sheep": "Снежный баран",
   "entity.twilightforest.deer": "Дикий олень",
@@ -767,7 +767,7 @@
   "entity.twilightforest.castle_guardian": "Страж замка [NYI]",
   "entity.twilightforest.roving_cube": "Бродячий куб [NYI]",
 
-  /*"entity.twilightforest.ice_snowball": "Ice Snowball",
+  "entity.twilightforest.ice_snowball": "Ice Snowball",
   "entity.twilightforest.ice_arrow": "Ice Arrow",
   "entity.twilightforest.seeker_arrow": "Seeker Arrow",
   "entity.twilightforest.cicada_shot": "Cicada",
@@ -785,16 +785,16 @@
   "entity.twilightforest.charm_effect": "Charm Effect",
   "entity.twilightforest.cube_of_annihilation": "Cube of Annihilation",
   "entity.twilightforest.slider": "Moving Slide Trap",
-  "entity.twilightforest.protection_box": "Progression Protection Box",*/
+  "entity.twilightforest.protection_box": "Progression Protection Box",
 
-  "_comment": "Subtitles",
+  "_comment20": "Subtitles",
   
   "subtitles.twilightforest.entity.alphayeti.alert": "Альфа-Йети нацелился",
   "subtitles.twilightforest.entity.alphayeti.death": "Альфа-Йети погибает",
   "subtitles.twilightforest.entity.alphayeti.grab": "Альфа-Йети схватил игрока",
   "subtitles.twilightforest.entity.alphayeti.growl": "Альфа-Йети рычит",
   "subtitles.twilightforest.entity.alphayeti.hurt": "Альфа-Йети ранен",
-  //"subtitles.twilightforest.entity.alphayeti.ice": "Alpha Yeti throws ice",
+  "subtitles.twilightforest.entity.alphayeti.ice": "Alpha Yeti throws ice",
   "subtitles.twilightforest.entity.alphayeti.pant": "Одышка Альфа-Йети",
   "subtitles.twilightforest.entity.alphayeti.roar": "Альфа-Йети ревёт",
   "subtitles.twilightforest.entity.alphayeti.throw": "Альфа-Йети бросает игрока",
@@ -831,12 +831,12 @@
   "subtitles.twilightforest.entity.ghastling.ambient": "Призрак стонет",
   "subtitles.twilightforest.entity.ghastling.death": "Призрак исчезает",
   "subtitles.twilightforest.entity.ghastling.hurt": "Призрак ранен",
-  //"subtitles.twilightforest.entity.goblinknight.ambient": "Goblin Knight chuckles",
-  //"subtitles.twilightforest.entity.goblinknight.death": "Goblin Knight groans in agony",
-  //"subtitles.twilightforest.entity.goblinknight.hurt": "Goblin Knight screeches in pain",
-  //"subtitles.twilightforest.entity.goblinknight.muffled.ambient": "Muffled Goblin Knight chuckles",
-  //"subtitles.twilightforest.entity.goblinknight.muffled.death": "Muffled Goblin Knight groans in agony",
-  //"subtitles.twilightforest.entity.goblinknight.muffled.hurt": "Muffled Goblin Knight screeches in pain",
+  "subtitles.twilightforest.entity.goblinknight.ambient": "Goblin Knight chuckles",
+  "subtitles.twilightforest.entity.goblinknight.death": "Goblin Knight groans in agony",
+  "subtitles.twilightforest.entity.goblinknight.hurt": "Goblin Knight screeches in pain",
+  "subtitles.twilightforest.entity.goblinknight.muffled.ambient": "Muffled Goblin Knight chuckles",
+  "subtitles.twilightforest.entity.goblinknight.muffled.death": "Muffled Goblin Knight groans in agony",
+  "subtitles.twilightforest.entity.goblinknight.muffled.hurt": "Muffled Goblin Knight screeches in pain",
   "subtitles.twilightforest.entity.hedgespider.ambient": "Паук Хеджа шипит",
   "subtitles.twilightforest.entity.hedgespider.death": "Паук Хеджа умирает",
   "subtitles.twilightforest.entity.hedgespider.hurt": "Паук Хеджа ранен",
@@ -849,12 +849,12 @@
   "subtitles.twilightforest.entity.hydra.growl": "Гидра рычит",
   "subtitles.twilightforest.entity.hydra.hurt": "Гидра повреждена",
   "subtitles.twilightforest.entity.hydra.roar": "Гидра ревёт",
-  //"subtitles.twilightforest.entity.hydra.shoot": "Hydra shoots fire",
+  "subtitles.twilightforest.entity.hydra.shoot": "Hydra shoots fire",
   "subtitles.twilightforest.entity.hydra.warn": "Гидра приготовилась кусать",
   "subtitles.twilightforest.entity.ice.death": "Ледяное ядро погибает",
   "subtitles.twilightforest.entity.ice.hurt": "Ледяное ядро повреждено",
   "subtitles.twilightforest.entity.ice.noise": "Ледяное ядро потрескивает",
-  //"subtitles.twilightforest.entity.ice.shoot": "Ice Core fires snowball",
+  "subtitles.twilightforest.entity.ice.shoot": "Ice Core fires snowball",
   "subtitles.twilightforest.entity.iceguardian.ambient": "Снежный страж потрескивает",
   "subtitles.twilightforest.entity.iceguardian.death": "Снежный страж погибает",
   "subtitles.twilightforest.entity.iceguardian.hurt": "Снежный страж повреждён",
@@ -869,7 +869,7 @@
   "subtitles.twilightforest.entity.lich.hurt": "Лич ранен",
   "subtitles.twilightforest.entity.lich.shoot": "Лич стреляет",
   "subtitles.twilightforest.entity.lich.teleport": "Лич телепортируется",
-  //"subtitles.twilightforest.entity.lichclone.hurt": "Lich Clone evaporates",
+  "subtitles.twilightforest.entity.lichclone.hurt": "Lich Clone evaporates",
   "subtitles.twilightforest.entity.loyalzombie.ambient": "Верный зомби стонет",
   "subtitles.twilightforest.entity.loyalzombie.death": "Верный зомби разлагается",
   "subtitles.twilightforest.entity.loyalzombie.hurt": "Верный зомби ранен",
@@ -879,7 +879,7 @@
   "subtitles.twilightforest.entity.minion.ambient": "Миньон лича рычит",
   "subtitles.twilightforest.entity.minion.death": "Миньон лича погибает",
   "subtitles.twilightforest.entity.minion.hurt": "Миньон лича ранен",
-  //"subtitles.twilightforest.entity.minion.summon": "Lich summons new Minion",
+  "subtitles.twilightforest.entity.minion.summon": "Lich summons new Minion",
   "subtitles.twilightforest.entity.minoshroom.ambient": "Гриботавр мычит",
   "subtitles.twilightforest.entity.minoshroom.attack": "Гриботавр разбегается",
   "subtitles.twilightforest.entity.minoshroom.death": "Гриботавр погибает",
@@ -895,11 +895,11 @@
   "subtitles.twilightforest.entity.naga.hiss": "Нага шипит",
   "subtitles.twilightforest.entity.naga.hurt": "Нага повреждена",
   "subtitles.twilightforest.entity.naga.rattle": "Нага трещит",
-  //"subtitles.twilightforest.entity.kphantom.axe": "Knight Phantom throws axe",
-  //"subtitles.twilightforest.entity.kphantom.ambient": "Knight Phantom gasps",
-  //"subtitles.twilightforest.entity.kphantom.death": "Knight Phantom dies",
-  //"subtitles.twilightforest.entity.kphantom.hurt": "Knight Phantom hurts",
-  //"subtitles.twilightforest.entity.kphantom.pick": "Knight Phantom throws pickaxe",
+  "subtitles.twilightforest.entity.kphantom.axe": "Knight Phantom throws axe",
+  "subtitles.twilightforest.entity.kphantom.ambient": "Knight Phantom gasps",
+  "subtitles.twilightforest.entity.kphantom.death": "Knight Phantom dies",
+  "subtitles.twilightforest.entity.kphantom.hurt": "Knight Phantom hurts",
+  "subtitles.twilightforest.entity.kphantom.pick": "Knight Phantom throws pickaxe",
   "subtitles.twilightforest.entity.pinchbeetle.death": "Жук- рогач погибает",
   "subtitles.twilightforest.entity.pinchbeetle.hurt": "Жук- рогач повреждён",
   "subtitles.twilightforest.entity.quest.ambient": "Рам блеет",
@@ -910,20 +910,20 @@
   "subtitles.twilightforest.entity.redcap.ambient": "Красная шапка хихикает",
   "subtitles.twilightforest.entity.redcap.death": "Красная шапка стонет в агонии",
   "subtitles.twilightforest.entity.redcap.hurt": "Красная шапка визжит от боли",
-  //"subtitles.twilightforest.entity.shield.add": "New Shield spawns",
-  //"subtitles.twilightforest.entity.shield.break": "Shield breaks",
+  "subtitles.twilightforest.entity.shield.add": "New Shield spawns",
+  "subtitles.twilightforest.entity.shield.break": "Shield breaks",
   "subtitles.twilightforest.entity.slimebeetle.death": "Слизневый жук погибает",
   "subtitles.twilightforest.entity.slimebeetle.hurt": "Слизневый жук ранен",
   "subtitles.twilightforest.entity.slimebeetle.squish": "Слизневый жук хлюпает",
   "subtitles.twilightforest.entity.snowqueen.ambient": "Снежная королева хрустит",
-  //"subtitles.twilightforest.entity.snowqueen.attack": "Snow Queen attacks",
-  //"subtitles.twilightforest.entity.snowqueen.break": "Snow Queen's shield deflects",
+  "subtitles.twilightforest.entity.snowqueen.attack": "Snow Queen attacks",
+  "subtitles.twilightforest.entity.snowqueen.break": "Snow Queen's shield deflects",
   "subtitles.twilightforest.entity.snowqueen.death": "Снежная королева погибает",
   "subtitles.twilightforest.entity.snowqueen.hurt": "Снежная королева ранена",
   "subtitles.twilightforest.entity.swarmspider.ambient": "Паук роя шипит",
   "subtitles.twilightforest.entity.swarmspider.death": "ПАук роя погибает",
   "subtitles.twilightforest.entity.swarmspider.hurt": "Паук роя ранен",
-  //"subtitles.twilightforest.entity.tear.break": "Ur-Ghast tear shatters",
+  "subtitles.twilightforest.entity.tear.break": "Ur-Ghast tear shatters",
   "subtitles.twilightforest.entity.termite.ambient": "Термиты шипят",
   "subtitles.twilightforest.entity.termite.death": "Термиты погибли",
   "subtitles.twilightforest.entity.termite.hurt": "Термиты ранены",
@@ -944,15 +944,15 @@
   "subtitles.twilightforest.entity.winterwolf.hurt": "Полярный волк ранен",
   "subtitles.twilightforest.entity.winterwolf.shoot": "Полярный волк стреляет",
   "subtitles.twilightforest.entity.wraith.ambient": "Призрак хрипит",
-  //"subtitles.twilightforest.entity.wraith.death": "Wraith dies",
-  //"subtitles.twilightforest.entity.wraith.hurt": "Wraith hurts",
+  "subtitles.twilightforest.entity.wraith.death": "Wraith dies",
+  "subtitles.twilightforest.entity.wraith.hurt": "Wraith hurts",
   "subtitles.twilightforest.entity.yeti.death": "Йети погибает",
   "subtitles.twilightforest.entity.yeti.grab": "Йети хватает игрока",
   "subtitles.twilightforest.entity.yeti.growl": "Йети рычит",
   "subtitles.twilightforest.entity.yeti.hurt": "Йети ранен",
   "subtitles.twilightforest.entity.yeti.throw": "Йети кидает игрока",
 
-  /*"subtitles.twilightforest.entity.alphayeti.parrot": "Parrot growls but cold",
+  "subtitles.twilightforest.entity.alphayeti.parrot": "Parrot growls but cold",
   "subtitles.twilightforest.entity.carminitegolem.parrot": "Parrot thunks",
   "subtitles.twilightforest.entity.hostilewolf.parrot": "Parrot growls",
   "subtitles.twilightforest.entity.hydra.parrot": "Parrot roars",
@@ -1006,10 +1006,10 @@
   "subtitles.twilightforest.item.charm.keep": "Charm of Keeping returns items",
   "subtitles.twilightforest.item.charm.life": "Charm of Life regenerates player",
 
-  "subtitles.twilightforest.random.slider": "Sliding Trap moves",*/
+  "subtitles.twilightforest.random.slider": "Sliding Trap moves",
 
-  "_comment": "Death Messages",
-  /*"death.attack.twilightforest.ghastTear": "%1$s was scalded by fiery tears",
+  "_comment21": "Death Messages",
+  "death.attack.twilightforest.ghastTear": "%1$s was scalded by fiery tears",
   "death.attack.twilightforest.ghastTear.player": "%1$s was scalded by fiery tears while escaping %2$s",
   "death.attack.twilightforest.hydraFire": "%1$s was roasted alive by the Hydra",
   "death.attack.twilightforest.hydraFire.player": "%1$s was roasted alive by the Hydra while escaping %2$s",
@@ -1059,9 +1059,9 @@
   "death.attack.twilightforest.lostWords": "%1$s was at a loss for words after being killed by %2$s",
   "death.attack.twilightforest.lostWords.item": "%1$s was at a loss for words after being killed by %2$s using %3$s",
   "death.attack.twilightforest.snowballFight": "%1$s lost a snowball fight to %2$s",
-  "death.attack.twilightforest.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",*/
+  "death.attack.twilightforest.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",
 
-  "_comment": "Misc",
+  "_comment22": "Misc",
   "twilightforest.misc.wip0": "Этот блок является незавершенной работой и может иметь ошибки или непреднамеренные эффекты, которые могут повредить ваш мир.",
   "twilightforest.misc.wip1": "Используйте с осторожностью.",
   "twilightforest.misc.nyi": "Этот блок имеет эффекты, которые еще не реализованы.",
@@ -1069,7 +1069,7 @@
   "twilightforest.loading.title.enter": "Переносимся Сумеречный Лес...",
   "twilightforest.loading.title.leave": "Переносимся в обычный мир...",
 
-  "_comment": "Config", 
+  "_comment23": "Config", 
   "twilightforest.config.dimension": "Настройки измерения",
   "twilightforest.config.dimension.tooltip": "Для изменения настроек требуется перезапустить клиент.",
   "twilightforest.config.dimension_id": "ID измерения",
@@ -1078,12 +1078,12 @@
   "twilightforest.config.dimension_seed.tooltip": "If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.",
   "twilightforest.config.spawn_in_tf": "Dimension Seed",
   "twilightforest.config.spawn_in_tf.tooltip": "Если TRUE, то игроки будут появляться в Сумеречном лесу.",
-  /*"twilightforest.config.skylight_forest": "Skylight Forest [WIP]",
+  "twilightforest.config.skylight_forest": "Skylight Forest [WIP]",
   "twilightforest.config.skylight_forest.tooltip": "If true, Twilight Forest will generate as a void except for Major Structures.",
   "twilightforest.config.skylight_oaks": "Skylight Oaks [WIP]",
-  "twilightforest.config.skylight_oaks.tooltip": "If true, giant Twilight Oaks will also spawn in void worlds.",*/
+  "twilightforest.config.skylight_oaks.tooltip": "If true, giant Twilight Oaks will also spawn in void worlds.",
 
-  /*"twilightforest.config.hollow_hill_stalactites": "Custom Hollow Hill Stalactites",
+  "twilightforest.config.hollow_hill_stalactites": "Custom Hollow Hill Stalactites",
   "twilightforest.config.hollow_hill_stalactites.tooltip": "Defines custom stalactites generated in hollow hills.\n_Format is \\\"modid:block<:meta> size max_Length min_Height weight\\\", where the properties are:\n_Size - the maximum length of the stalactite relative to the space between hill floor and ceiling,\n_Max length - maximum length of a stalactite in blocks,\n_Min height - minimum space between the hill floor and the stalactite to let it generate,\n_Weight - how often it generates.\n\n_For example: \\\"minecraft:iron_ore 0.7 8 1 24\\\" would add a stalactite equal to the default iron ore stalactite.",
   "twilightforest.config.large_hill": "Large Hills",
   "twilightforest.config.large_hill.tooltip": "Blocks generating as stalactites in large hills only.",
@@ -1092,7 +1092,7 @@
   "twilightforest.config.small_hill": "All Hills",
   "twilightforest.config.small_hill.tooltip": "Blocks generating as stalactites in all hills.",
   "twilightforest.config.stalactite_config_only": "Only Use the Stalactite Config",
-  "twilightforest.config.stalactite_config_only.tooltip": "If true, default stalactites and stalactites defined by other mods will not be used.",*/
+  "twilightforest.config.stalactite_config_only.tooltip": "If true, default stalactites and stalactites defined by other mods will not be used.",
 
   "twilightforest.config.compat": "Compatibility",
   "twilightforest.config.compat.tooltip": "Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.",
@@ -1112,11 +1112,11 @@
   "twilightforest.config.silent_cicadas": "Молчаливые цикады",
   "twilightforest.config.silent_cicadas.tooltip": "Сделайте цикад бесшумными. Для тех, кто имеет проблемы со звуковой библиотекой или иным образом находит их раздражающими.",
 
-  /*"twilightforest.config.first_person_effects": "Render 1st Person Effects",
+  "twilightforest.config.first_person_effects": "Render 1st Person Effects",
   "twilightforest.config.first_person_effects.tooltip": "Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.",
 
   "twilightforest.config.origin_dimension": "Origin Dimension",
-  "twilightforest.config.origin_dimension.tooltip": "The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.",*/
+  "twilightforest.config.origin_dimension.tooltip": "The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.",
   "twilightforest.config.portals_in_other_dimensions": "Порталы в другие измерения",
   "twilightforest.config.portals_in_other_dimensions.tooltip": "Разрешить создание порталов в Сумеречный лес за пределами измерения 0. Это можно считать подвигом.",
   "twilightforest.config.admin_portals": "Портал только для операторов",
@@ -1129,20 +1129,20 @@
   "twilightforest.config.portal_lighting.tooltip": "Установите это значение true, если вы хотите, чтобы молния, которая бьёт в портал, не поджигала вещи. Для тех, кто не любит веселье.",
   "twilightforest.config.portal_return": "Должны ли порталы генерироваться как двусторонний портал",
   "twilightforest.config.portal_return.tooltip": "Если значение false, то для возврата портала потребуется элемент активации.",
-  /*"twilightforest.config.check_portal_destination": "Pre-Check Portal Destination",
+  "twilightforest.config.check_portal_destination": "Pre-Check Portal Destination",
   "twilightforest.config.check_portal_destination.tooltip": "Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination.\n_Note that enabling this also reduces the rate at which portal formation checks are performed.",
 
   "twilightforest.config.progression_default": "Progression Rule Default",
-  "twilightforest.config.progression_default.tooltip": "Sets the default value of the game rule controlling enforced progression.",*/
+  "twilightforest.config.progression_default.tooltip": "Sets the default value of the game rule controlling enforced progression.",
 
   "twilightforest.config.uncrafting": "Отключение uncrafting",
   "twilightforest.config.uncrafting.tooltip": "Отключите функцию uncrafting. Предоставляется в качестве опции, когда моды конфликтуют.",
 
-  /*"twilightforest.config.optifine": "Disable the nag screen when Optifine is installed.",
+  "twilightforest.config.optifine": "Disable the nag screen when Optifine is installed.",
   "twilightforest.config.optifine.tooltip": "Disables the nag screen shown on launch when Optifine is installed.",
 
   "twilightforest.config.dragons": "Disable the Here Be Dragons experimental screen.",
-  "twilightforest.config.dragons.tooltip": "Disables the experimental Here Be Dragons screen on world load.",*/
+  "twilightforest.config.dragons.tooltip": "Disables the experimental Here Be Dragons screen on world load.",
 
   "twilightforest.config.antibuilder_blacklist": "Antibuilder Blacklist",
   "twilightforest.config.antibuilder_blacklist.tooltip": "Anti-Builder blacklist. (domain:block:meta) meta is optional.",
@@ -1150,7 +1150,7 @@
   "twilightforest.config.animate_trophyitem": "Вращение голов трофеев",
   "twilightforest.config.animate_trophyitem.tooltip": "Вращение голов трофеев. Не оказывает никакого влияния на производительность вообще. Для тех, кто не любит веселье.",
 
-  /*"twilightforest.config.shield_parry": "Shield Parrying",
+  "twilightforest.config.shield_parry": "Shield Parrying",
   "twilightforest.config.shield_parry.tooltip": "We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.",
   "twilightforest.config.parry_non_twilight": "Parry non-Twilight projectiles",
   "twilightforest.config.parry_non_twilight.tooltip": "Set to true to parry non-Twilight projectiles. We recommend downloading the Shield Parry mod instead.",
@@ -1161,7 +1161,7 @@
   "twilightforest.config.parry_window_throwable": "Timing Windowspan for Throwables",
   "twilightforest.config.parry_window_throwable.tooltip": "The amount of ticks after raising a shield that makes it OK to parry a thrown item. There is 20 ticks in 1 second.",
   "twilightforest.config.shield_Parry_Ticks_Beam": "Timing Windowspan for Beams???",
-  "twilightforest.config.shield_Parry_Ticks_Beam.tooltip": "???",*/
+  "twilightforest.config.shield_Parry_Ticks_Beam.tooltip": "???",
 
   "twilightforest.config.loading_screen": "Загрузочный экран",
   "twilightforest.config.loading_screen.tooltip": "Только для клиента: элементы управления загрузочным экраном.",
@@ -1180,7 +1180,7 @@
   "twilightforest.config.loading_icon_tilt_pushback": "Смещение наклона значка",
   "twilightforest.config.loading_icon_tilt_pushback.tooltip": "Калибровка отцентрирования значка загрузки.",
 
-  "_comment": "books",
+  "_comment24": "books",
   
   "twilightforest.book.lichtower.1": "\u00A78[[Записная книжка исследователя, обглоданная монстрами]]\u00A70\n\nЯ начал изучать странную ауру, окружающую эту башню. Кирпичи башни защищены проклятием, сильнее, чем я видел раньше. Магия от проклятия",
   "twilightforest.book.lichtower.2": "кипит в окрестностях.\n\nНа моей родине у меня было бы много возможностей справиться с этой магией, но здесь мои запасы ограничены. Мне придется исследовать...",
@@ -1223,12 +1223,12 @@
   "twilightforest.book.unknown.1": "\u00A78[[Эта книга показывает признаки того, что были скопированы много раз]]\u00A70\n\nЯ не могу объяснить поле, окружающее эту структуру, но магия мощная. Если это проклятие подобно другим, тогда ответ на его разблокировку лежит в другом месте. Возможно, есть",
   "twilightforest.book.unknown.2": "что-то, что я потерял, или какого-то монстра, которого я еще не победил. Мне придется вернуться. Я вернусь к этому месту позже, чтобы увидеть, изменилось ли что-то.",
 
-  "_comment": "Fluid",
+  "_comment25": "Fluid",
   "fluid.fierymetal": "Расплавленное пламя",
   "fluid.knightmetal": "Расплавленный королевский металл",
   "fluid.fiery_essence": "Огненная эссенция",
 
-  "_comment": "Tcon",
+  "_comment26": "Tcon",
   "material.nagascale": "Чешуя Наги",
   "material.steeleaf": "Магический лист",
   "material.fierymetal": "Пламя",
@@ -1248,39 +1248,40 @@
   "modifier.veiled": "Замаскированный",
   "modifier.veiled.desc": "§oКак привидение!§r\nСнаряд будет невидим.",
 
-  "_comment": " Immersive Engineering",
-  /*"desc.immersiveengineering.info.shader.rarity.twilight": "Twilight",
+  "_comment27": " Immersive Engineering",
+  "desc.immersiveengineering.info.shader.rarity.twilight": "Сумерки",
 
   "item.twilightforest.shader": "Twilit Shader: %s",
   "item.twilightforest.shader_bag": "Twilit %s Shader Bag",
 
-  "item.twilightforest.shader.name.twilight": "Twilight",
-  "item.twilightforest.shader.name.firefly": "Firefly",
-  "item.twilightforest.shader.name.questing_ram": "Questing Ram",
-  "item.twilightforest.shader.name.ironwood": "Ironwood",
-  "item.twilightforest.shader.name.steeleaf": "Steeleaf",
-  "item.twilightforest.shader.name.knightly": "Knightmetal",
-  "item.twilightforest.shader.name.fiery": "Fiery",
-  "item.twilightforest.shader.name.snakestone": "Snakestone",
-  "item.twilightforest.shader.name.naga": "Naga",
-  "item.twilightforest.shader.name.lich": "Lich",
-  "item.twilightforest.shader.name.mazestone": "Mazestone",
-  "item.twilightforest.shader.name.pinch_beetle": "Pinch Beetle",
-  "item.twilightforest.shader.name.minoshroom": "Minoshroom",
-  "item.twilightforest.shader.name.hydra": "Hydra",
-  "item.twilightforest.shader.name.underbrick": "Underbrick",
-  "item.twilightforest.shader.name.knight_phantom": "Knight Phantom",
-  "item.twilightforest.shader.name.towerwood": "Towerwood",
-  "item.twilightforest.shader.name.carminite": "Carminite",
-  "item.twilightforest.shader.name.ur-ghast": "Ur-Ghast",
-  "item.twilightforest.shader.name.alpha_yeti": "Alpha Yeti",
-  "item.twilightforest.shader.name.auroralized": "Auroralized",
-  "item.twilightforest.shader.name.snow_queen": "Snow Queen",
-  "item.twilightforest.shader.name.cube_of_annihilation": "Cube Of Annihilation",
-  "item.twilightforest.shader.name.final_castle": "Final Castle",*/
+  "item.twilightforest.shader.name.twilight": "Сумерки",
+  "item.twilightforest.shader.name.firefly": "Сумерки",
+  "item.twilightforest.shader.name.questing_ram": "Светлячок",
+  "item.twilightforest.shader.name.ironwood": "В поисках барана",
+  "item.twilightforest.shader.name.steeleaf": "Стиллиф",
+  "item.twilightforest.shader.name.knightly": "Стиллиф",
+  "item.twilightforest.shader.name.fiery": "Огненный",
+  "item.twilightforest.shader.name.snakestone": "Огненный",
+  "item.twilightforest.shader.name.naga": "Нага",
+  "item.twilightforest.shader.name.lich": "Лич",
+  "item.twilightforest.shader.name.mazestone": "Лабиринт",
+  "item.twilightforest.shader.name.pinch_beetle": "Щипковый жук",
+  "item.twilightforest.shader.name.minoshroom": "Миношрум",
+  "item.twilightforest.shader.name.hydra": "Миношрум",
+  "item.twilightforest.shader.name.underbrick": "Подкирпич",
+  "item.twilightforest.shader.name.knight_phantom": "Рыцарь-призрак",
+  "item.twilightforest.shader.name.towerwood": "Аврорализованный",
+  "item.twilightforest.shader.name.carminite": "Карминит",
+  "item.twilightforest.shader.name.ur-ghast": "Ур-Гаст",
+  "item.twilightforest.shader.name.alpha_yeti": "Альфа Йети",
+  "item.twilightforest.shader.name.auroralized": "Аврорализованный",
+  "item.twilightforest.shader.name.snow_queen": "Снежная королева",
+  "item.twilightforest.shader.name.cube_of_annihilation": "Куб Уничтожения",
+  "item.twilightforest.shader.name.final_castle": "Финальный замок",
 
-  // Optifine
-  /*"twilightforest.gui.optifine.title": "WARNING: OPTIFINE DETECTED",
+  "_commentoptifine": "Optifine", 
+
+  "twilightforest.gui.optifine.title": "WARNING: OPTIFINE DETECTED",
   "twilightforest.gui.optifine.message": "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.",
-  "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead."*/
+  "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead."
 }
