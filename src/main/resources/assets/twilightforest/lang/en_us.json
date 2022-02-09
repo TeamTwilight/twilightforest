@@ -1,10 +1,11 @@
 {
   "itemGroup.twilightforest": "Twilight Forest",
-
-  // ADVANCEMENTS
+  
+  "_comment": "ADVANCEMENTS",
   "advancement.twilightforest.root.desc": "Enter the mysterious magical woodlands: the Twilight Forest.",
-
-  // General progression
+  
+  "_comment": "General progression",
+  
   "advancement.twilightforest.hedge": "Bug Stomper",
   "advancement.twilightforest.hedge.desc": "Defeat a spider in a %s.",
 
@@ -20,8 +21,8 @@
 
   "advancement.twilightforest.quest_ram": "Consummate Baaahs",
   "advancement.twilightforest.quest_ram.desc": "Give the %s what it is missing.",
-
-  // Map
+  
+  "_comment": "Map",
   "advancement.twilightforest.magic_map_focus": "With Fire It Writes",
   "advancement.twilightforest.magic_map_focus.desc": "Craft the %s with a %s, %s, and %s.",
   "advancement.twilightforest.magic_map": "I Can See Forever",
@@ -30,8 +31,9 @@
   "advancement.twilightforest.maze_map.desc": "Craft the %s after obtaining the focus from the labyrinth.",
   "advancement.twilightforest.ore_map": "How Can That Be Worth It?",
   "advancement.twilightforest.ore_map.desc": "Craft the %s.",
+  
+  "_comment": "Mainline beginning progression",
 
-  // Mainline beginning progression
   "advancement.twilightforest.twilight_hunter": "The Silence of the Forest",
   "advancement.twilightforest.twilight_hunter.desc": "Hunt some of the local wildlife.",
 
@@ -46,8 +48,9 @@
   "advancement.twilightforest.lich_scepters.desc": "Acquire all four scepters of power.",
   "advancement.twilightforest.full_mettle_alchemist": "Full Mettle Alchemist",
   "advancement.twilightforest.full_mettle_alchemist.desc": "Drink four doses of Harming II from a potion flask in under 8 seconds and survive.",
+  
+  "_comment": "Swamp Progression",
 
-  // Swamp Progression
   "advancement.twilightforest.progress_labyrinth": "Mighty Stroganoff",
   "advancement.twilightforest.progress_labyrinth.desc": "The meat & mushroom stew pleasantly warms you, enough so that that you feel you're acclimatised enough to venture into the Fire Swamp.",
   "advancement.twilightforest.kill_hydra": "Hydra Slayer",
@@ -57,7 +60,8 @@
   "advancement.twilightforest.hydra_chop": "Hydra Chop, Baby!",
   "advancement.twilightforest.hydra_chop.desc": "Chow down on some overpowered %s meat when your food bar is empty.",
 
-  // Dark Forest Progression
+  "_comment": "Dark Forest Progression", 
+  
   "advancement.twilightforest.progress_trophy_pedestal": "Trophied Champion",
   "advancement.twilightforest.progress_trophy_pedestal.desc": "Claim your title by placing a trophy on the pedestal in the dark forest ruins.",
   "advancement.twilightforest.progress_knights": "Carminite Acclimation",
@@ -72,7 +76,8 @@
   "advancement.twilightforest.experiment_115_2": "Making a note: Huge Success!",
   "advancement.twilightforest.experiment_115_2.desc": "It's so delicious and moist!",
 
-  // Snow Forest Progression
+  "_comment": "Snow Forest Progression",
+  
   "advancement.twilightforest.progress_yeti": "Alpha Fur",
   "advancement.twilightforest.progress_yeti.desc": "Line your garments with the soft fur from the %s, keeping you safe from the Glacier's cold.",
   "advancement.twilightforest.progress_glacier": "Clear Skies",
@@ -80,14 +85,15 @@
   "advancement.twilightforest.arctic_dyed": "Getting in Fashion",
   "advancement.twilightforest.arctic_dyed.desc": "Dye all four pieces of Arctic Armor.",
 
-  // Mid-way Misc. Stuff
+  "_comment": "Mid-way Misc. Stuff",
+  
   "advancement.twilightforest.glass_sword": "One Hit Wonder",
   "advancement.twilightforest.glass_sword.desc": "Hope you made good use of that.",
 
   "advancement.twilightforest.fiery_set": "Gallons of Blood and Tears",
   "advancement.twilightforest.fiery_set.desc": "Wield a fiery tool or weapon while having at least one piece of fiery armor in your inventory.",
 
-  // Highlands
+  "_comment": "Highlands",
   "advancement.twilightforest.progress_merge": "Ultimate Showdown",
   "advancement.twilightforest.progress_merge.desc": "Slay the %s, %s, and %s to clear the acid rain and embolden yourself for the Highlands.",
   "advancement.twilightforest.troll": "We Do a Little Trolling",
@@ -103,7 +109,7 @@
   "advancement.twilightforest.progress_castle": "So Castle Very Wow [NYI]",
   "advancement.twilightforest.progress_castle.desc": "What could even be in that castle?!?",
 
-  // Collections
+  "_comment": "Collections",
   "advancement.twilightforest.twilight_dining": "We Dine At Eternal Sundown",
   "advancement.twilightforest.twilight_dining.desc": "Eat ALL of the Food exclusive to the Twilight Forest.",
   "advancement.twilightforest.experiment_115_3": "Eating 115 Everyday, 115 Years, Forever",
@@ -117,7 +123,8 @@
   "twilightforest.ore_meter.exposed": "Exposed: %s",
   "twilightforest.scepter_charges": "%d charges left",
 
-  // Commands
+  "_comment": "commands",
+  
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "You are not in the Twilight Forest dimension",
   "commands.tffeature.none_nearby": "Couldn't find a feature nearby!",
@@ -133,7 +140,8 @@
   "commands.tffeature.structure.spawn_info": "%s, Weight %s",
   "commands.tfreload.reload": "Reloading Twilight Forest shaders!",
 
-  // Biomes
+  "_comment": "Biomes",
+  
   "biome.twilightforest.forest": "Twilight Forest",
   "biome.twilightforest.dense_forest": "Dense Forest",
   "biome.twilightforest.firefly_forest": "Firefly Forest",
@@ -155,10 +163,12 @@
   "biome.twilightforest.thornlands": "Thornlands",
   "biome.twilightforest.final_plateau": "Final Plateau",
 
-  // Gamerules
+  "_comment": "Gamerule",
+  
   "gamerule.tfEnforcedProgression": "Twilight Forest Progression",
 
-  // Enchantments
+  "_comment": "Enchamnets",
+  
   "enchantment.twilightforest.fire_react": "Fire React",
   "enchantment.twilightforest.fire_react.desc": "Adds a chance for the attacker to be set on fire after hitting the wearer.",
   "enchantment.twilightforest.chill_aura": "Chill Aura",
@@ -170,10 +180,10 @@
   "enchantment.twilightforest.destruction": "Destruction",
   "enchantment.twilightforest.destruction.desc": "Makes the block and chain destruction area bigger.",
 
-  // Effects
+  "_comment": "Effects",
   "effect.twilightforest.frosted": "Frosted",
 
-  // Blocks
+  "_comment": "Book",
   "block.twilightforest.twilight_oak_log": "Twilight Oak Log",
   "block.twilightforest.canopy_log": "Canopy Tree Log",
   "block.twilightforest.mangrove_log": "Mangrove Log",
@@ -616,7 +626,7 @@
   "block.arctic.tooltip": "Reduces fall damage by 90%",
   "block.knightmetal.tooltip": "Works as a stronger cactus",
 
-  // Structures
+  "_comment": "Structures",
   "structure.twilight_portal": "Twilight Portal",
   "structure.hedge_maze": "Hedge Maze",
   "structure.small_hollow_hill": "Small Hollow Hill",
@@ -635,7 +645,7 @@
   "structure.troll_lairs": "Troll Caves",
   "structure.final_castle": "Final Castle",
 
-  // Items
+  "_comment": "Items",
   "item.twilightforest.boarkchop": "Boarkchop",
   "item.twilightforest.naga_scale": "Naga Scale",
   "item.twilightforest.naga_chestplate": "Naga Scale Tunic",
@@ -1017,7 +1027,8 @@
   "item.twilightforest.skull_candle.desc": "Has: %s %s Candle",
   "item.twilightforest.skull_candle.desc.multiple": "Has: %s %s Candles",
 
-  // Entities
+  "_comment": "Entities",
+  
   "entity.twilightforest.boar": "Wild Boar",
   "entity.twilightforest.bighorn_sheep": "Bighorn Sheep",
   "entity.twilightforest.deer": "Wild Deer",
@@ -1102,7 +1113,8 @@
   "entity.twilightforest.slider": "Moving Slide Trap",
   "entity.twilightforest.protection_box": "Progression Protection Box",
 
-  // Subtitles
+  "_comment": "Subtitles",
+  
   "subtitles.twilightforest.entity.acid_rain": "Acid Rain scalds player",
   "subtitles.twilightforest.entity.alphayeti.alert": "Alpha Yeti targets player",
   "subtitles.twilightforest.entity.alphayeti.death": "Alpha Yeti dies",
@@ -1430,7 +1442,8 @@
   "twilightforest.ui.advancement.required": "Advancement Required:",
   "twilightforest.ui.advancement.no_title": "<Hidden Advancement>",
 
-  // Config
+  "_comment": "Config",
+  
   "twilightforest.config.dimension": "Dimension Settings",
   "twilightforest.config.dimension.tooltip": "You won't be able to change these settings without some kind of relaunch.",
   "twilightforest.config.dimension_id": "Dimension ID",
@@ -1551,7 +1564,8 @@
   "twilightforest.config.disable_skull_candles": "Disable Skull Candle Creation",
   "twilightforest.config.disable_skull_candles.tooltip": "If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.",
 
-  // Books
+  "_comment": "Books",
+  
   "twilightforest.book.lichtower.1": "\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\n_I have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse",
   "twilightforest.book.lichtower.2": "is boiling off into the surrounding area.\n\n_In my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",
   "twilightforest.book.lichtower.3": "\u00A78[[Many entries later]]\u00A70\n\n_A breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\n_The magic in the scale seems to have the",
@@ -1593,14 +1607,13 @@
   "twilightforest.book.unknown.1": "\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\n_I cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is",
   "twilightforest.book.unknown.2": "something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.",
 
-  // Fluid
+  "_comment": "Fluid",
 
   "fluid.fierymetal": "Molten Fiery",
   "fluid.knightmetal": "Molten Knightmetal",
   "fluid.fiery_essence": "Fiery Essence",
 
-  // TCon
-
+  "_comment": "TCon",
   "material.nagascale": "Naga Scale",
   "material.steeleaf": "Steeleaf",
   "material.fierymetal": "Fiery",
@@ -1620,7 +1633,7 @@
   "modifier.veiled": "Veiled",
   "modifier.veiled.desc": "§oLike a Specter!§r\nProjectile will be invisible.",
 
-  // Immersive Engineering
+  "_comment": "Immersive Engineering",
   "desc.immersiveengineering.info.shader.rarity.twilight": "Twilight",
 
   "item.twilightforest.shader": "Twilit Shader: %s",
@@ -1651,11 +1664,12 @@
   "item.twilightforest.shader.name.cube_of_annihilation": "Cube Of Annihilation",
   "item.twilightforest.shader.name.final_castle": "Final Castle",
 
-  // Optifine
+  "_comment": "Optifine",
+  
   "twilightforest.gui.optifine.title": "WARNING: OPTIFINE DETECTED",
   "twilightforest.gui.optifine.message": "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.",
   "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead.",
   
-  // JEI
+  "_comment": "JEI",
   "gui.uncrafting_jei": "Uncrafting"
 }
