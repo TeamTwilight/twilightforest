@@ -32,7 +32,7 @@ public class KnightmetalSwordItem extends SwordItem {
 	}
 
 	@SubscribeEvent
-	public static void onDamage(LivingAttackEvent evt) {
+	public static void onDamage(LivingAttackEvent evt, LivingEntity attacker) {
 		LivingEntity target = evt.getEntityLiving();
 		boolean flag = true;
 		
