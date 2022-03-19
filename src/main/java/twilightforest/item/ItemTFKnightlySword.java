@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -32,13 +33,22 @@ public class ItemTFKnightlySword extends ItemSword implements ModelRegisterCallb
 	}
 
 	@SubscribeEvent
-	public static void onDamage(LivingAttackEvent evt) {
+	public static void onDamage(LivingAttackEvent evt, EntityLivingBase attacker) {
 		EntityLivingBase target = evt.getEntityLiving();
+		boolean flag = true;
+		
+		if (attacker instanceof EntityPlayer) 
+		{
+			if (((EntityPlayer)attacker).swingProgress > 0.2) 
+			{
+				flag = false;
+			}
+		}
 
 		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof EntityLivingBase) {
 			ItemStack weapon = ((EntityLivingBase) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
-			if (!weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe || weapon.getItem() == TFItems.knightmetal_sword)) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe))) {
+			if (flag && !weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe || weapon.getItem() == TFItems.knightmetal_sword)) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe))) {
 				// TODO scale bonus dmg with the amount of armor?
 				target.attackEntityFrom(DamageSource.MAGIC, BONUS_DAMAGE);
 				// don't prevent main damage from applying
