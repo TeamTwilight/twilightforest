@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -33,11 +34,20 @@ public class KnightmetalSwordItem extends SwordItem {
 	@SubscribeEvent
 	public static void onDamage(LivingAttackEvent evt) {
 		LivingEntity target = evt.getEntityLiving();
+		boolean flag = true;
+		
+        if(attacker instanceof PlayerEntity)
+        {
+            if(((PlayerEntity)attacker).swingTime > 0.2)
+            {
+                flag = false;
+            }
+        }
 
 		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof LivingEntity) {
 			ItemStack weapon = ((LivingEntity) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
-			if (!weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe.get() || weapon.getItem() == TFItems.knightmetal_sword.get())) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe.get()))) {
+			if (flag && !weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe.get() || weapon.getItem() == TFItems.knightmetal_sword.get())) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe.get()))) {
 				// TODO scale bonus dmg with the amount of armor?
 				target.attackEntityFrom(DamageSource.MAGIC, BONUS_DAMAGE);
 				// don't prevent main damage from applying
