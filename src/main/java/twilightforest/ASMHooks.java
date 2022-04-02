@@ -38,6 +38,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static twilightforest.client.TFClientSetup.optifinePresent;
+
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression"})
 public class ASMHooks {
 
@@ -155,17 +157,23 @@ public class ASMHooks {
 	 * [AFTER {@link net.minecraft.client.world.ClientWorld#getAllEntities}]
 	 */
 	public static Iterable<Entity> renderMutiparts(Iterable<Entity> iter) {
-		List<Entity> list = new ArrayList<>();
-		iter.forEach(entity -> {
-			list.add(entity);
-			if(entity.isMultipartEntity() && entity.getParts() != null) {
-				for (PartEntity<?> part : entity.getParts()) {
-					if(part instanceof TFPartEntity)
-						list.add(part);
+		//this if is only here as a backup - if for whatever reason optifinePresent is true but there is no optifine the default rendering needs to be disabled
+		if(!optifinePresent){
+			List<Entity> list = new ArrayList<>();
+			iter.forEach(entity -> {
+				list.add(entity);
+				if(entity.isMultipartEntity() && entity.getParts() != null) {
+					for (PartEntity<?> part : entity.getParts()) {
+						if(part instanceof TFPartEntity)
+							list.add(part);
+					}
 				}
-			}
-		});
-		return list;
+			});
+			return list;
+		}
+		else{
+			return iter;
+		}
 	}
 
 }

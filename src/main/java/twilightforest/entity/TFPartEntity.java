@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
@@ -11,7 +12,10 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import twilightforest.client.renderer.entity.NoopRenderer;
+
+import static twilightforest.client.TFClientSetup.optifinePresent;
 
 public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 
@@ -31,6 +35,22 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 
 	public TFPartEntity(T parent) {
 		super(parent);
+		if(optifinePresent){
+			//if Optifine is present the default renderinjection is no longer called
+			//this enabled a different way of rendering the partentitys
+			addRenderer();
+		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public void addRenderer() {
+		//this is a pretty bad way to get them rendering.
+		//the client actually things they are seperate entitys now
+		//this way the render function gets the correct calls and everything
+		//but some other stuff starts to influence the entity on the client and im unsure where and how exactly i could stop that
+		if(Thread.currentThread().getThreadGroup() != SidedThreadGroups.SERVER ){
+			Minecraft.getInstance().player.worldClient.addEntity(this.getEntityId(),this);
+		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
