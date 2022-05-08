@@ -67,7 +67,7 @@ public class OutOfStructureFilter extends PlacementModifier {
 
 	@Override
 	public PlacementModifierType<?> type() {
-		return TwilightFeatures.NO_STRUCTURE;
+		return TwilightFeatures.NO_STRUCTURE.get();
 	}
 
 	private static DataResult<OutOfStructureFilter> validate(OutOfStructureFilter config) {

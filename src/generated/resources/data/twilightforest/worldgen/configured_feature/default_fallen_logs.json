@@ -1,0 +1,20 @@
+{
+  "config": {
+    "features": [
+      {
+        "feature": "twilightforest:birch_fallen_log",
+        "chance": 0.1
+      },
+      {
+        "feature": "twilightforest:oak_fallen_log",
+        "chance": 0.2
+      },
+      {
+        "feature": "twilightforest:canopy_fallen_log",
+        "chance": 0.4
+      }
+    ],
+    "default": "twilightforest:tf_oak_fallen_log"
+  },
+  "type": "minecraft:random_selector"
+}

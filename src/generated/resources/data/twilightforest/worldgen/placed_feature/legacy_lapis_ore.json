@@ -1,0 +1,20 @@
+{
+  "feature": "twilightforest:legacy_lapis_ore",
+  "placement": [
+    {
+      "height": {
+        "min_inclusive": {
+          "absolute": 0
+        },
+        "max_inclusive": {
+          "absolute": 30
+        },
+        "type": "minecraft:trapezoid"
+      },
+      "type": "minecraft:height_range"
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

@@ -237,7 +237,7 @@ public class Minoshroom extends Minotaur {
 	}
 
 	@Override
-	protected boolean updateInWaterStateAndDoFluidPushing() {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 

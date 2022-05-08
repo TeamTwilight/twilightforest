@@ -42,13 +42,14 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     }
 
     @Deprecated
-    public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public TFStructureComponentTemplate(StructureManager manager, StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
         super(type, i, new BoundingBox(x, y, z, x, y, z));
         setFeature(feature);
         this.rotation = rotation;
         this.mirror = Mirror.NONE;
         this.placeSettings.setRotation(rotation);
         this.templatePosition = new BlockPos(x, y, z);
+		LAZY_TEMPLATE_LOADER = () -> setup(manager);
     }
 
     //TODO: Unused. Remove?

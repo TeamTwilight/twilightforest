@@ -1,6 +1,5 @@
 package twilightforest.world.components.structures.trollcave;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,15 +10,14 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -273,8 +271,8 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		//largeBox.maxY() += 30;
 		//largeBox.maxZ() += 30;
 
-		if (list instanceof StructureStart start) {
-			for (StructurePiece component : start.getPieces()) {
+		if (list instanceof StructurePiecesBuilder start) {
+			for (StructurePiece component : start.pieces) {
 				if (component instanceof TrollCaveGardenComponent && component.getBoundingBox().intersects(largeBox)) {
 					return component;
 				}

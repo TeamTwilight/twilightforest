@@ -28,6 +28,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.Bindings;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -47,7 +48,9 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
+import twilightforest.compat.UndergardenCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
@@ -61,10 +64,14 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFMobEffects;
 import twilightforest.util.TFStats;
 import twilightforest.world.components.BiomeGrassColors;
+import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.registration.*;
+import twilightforest.world.registration.TFBiomeFeatures;
+import twilightforest.world.registration.TFNoiseGenerationSettings;
+import twilightforest.world.registration.TFStructures;
+import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.io.IOException;
@@ -101,32 +108,46 @@ public class TwilightForestMod {
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
-		ASMHooks.registerMultipartEvents(MinecraftForge.EVENT_BUS);
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInitiator::call);
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
-		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
-		modbus.addListener(CapabilityList::registerCapabilities);
-		modbus.addListener(this::sendIMCs);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
-		TFBlocks.BLOCKS.register(modbus);
-		TFEntities.ENTITIES.register(modbus);
-		TFItems.ITEMS.register(modbus);
-		TFEntities.SPAWN_EGGS.register(modbus);
-		TFMobEffects.MOB_EFFECTS.register(modbus);
-		//TFPotions.POTIONS.register(modbus);
+
+		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+
 		BiomeKeys.BIOMES.register(modbus);
-		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
-		TFBlockEntities.TILE_ENTITIES.register(modbus);
-		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
-		TFParticleType.PARTICLE_TYPES.register(modbus);
-		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
-		TFBiomeFeatures.FEATURES.register(modbus);
+		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
+		TFBlocks.BLOCKS.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
-		TwilightFeatures.TREE_DECORATORS.register(modbus);
+		TFEntities.ENTITIES.register(modbus);
+		TFBiomeFeatures.FEATURES.register(modbus);
 		TwilightFeatures.FOLIAGE_PLACERS.register(modbus);
+		TFItems.ITEMS.register(modbus);
+		TFMobEffects.MOB_EFFECTS.register(modbus);
+		TFNoiseGenerationSettings.NOISE_GENERATORS.register(modbus);
+		TFParticleType.PARTICLE_TYPES.register(modbus);
+		TwilightFeatures.PLACEMENT_MODIFIERS.register(modbus);
+		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
+		TFRecipes.RECIPE_TYPES.register(modbus);
+		//TFPotions.POTIONS.register(modbus);
+		TFEntities.SPAWN_EGGS.register(modbus);
+		TFStats.STATS.register(modbus);
+		TwilightFeatures.TREE_DECORATORS.register(modbus);
+		TwilightFeatures.TRUNK_PLACERS.register(modbus);
+
+		if(ModList.get().isLoaded("undergarden")) {
+			UndergardenCompat.ENTITIES.register(modbus);
+		}
+
+		modbus.addListener(this::sendIMCs);
+		modbus.addListener(CapabilityList::registerCapabilities);
+		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
+		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
+		if(ModList.get().isLoaded("curios")) {
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+		}
+
 		// Poke these so they exist when we need them FIXME this is probably terrible design
-		new TwilightFeatures();
 		new BiomeGrassColors();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
@@ -167,10 +188,12 @@ public class TwilightForestMod {
 		//How do I add a condition serializer as fast as possible? An event that fires really early
 		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
 		TFTreasure.init();
-		TFNoiseGenerationSettings.init();
+
 		//TODO find a better place for these? they work fine here but idk
-		Registry.register(Registry.CHUNK_GENERATOR, prefix("tf_chunk_gen"), ChunkGeneratorTwilight.CODEC);
-		Registry.register(Registry.BIOME_SOURCE, prefix("tf_biome_provider"), TFBiomeProvider.TF_CODEC);
+		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
+		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
+
+		Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
 	}
 
 	@SubscribeEvent
@@ -188,14 +211,10 @@ public class TwilightForestMod {
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		BiomeKeys.addBiomeTypes();
-		TFDimensions.init();
-		TFStats.init();
-		TFRecipes.init();
-		TwilightFeatures.init();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.initCompat();
+				TFCompat.initCompat(evt);
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");
@@ -216,21 +235,21 @@ public class TwilightForestMod {
 		TFConfig.build();
 		BlockSpikeFeature.loadStalactites();
 
-		WoodType.register(TFBlocks.TWILIGHT_OAK);
-		WoodType.register(TFBlocks.CANOPY);
-		WoodType.register(TFBlocks.MANGROVE);
-		WoodType.register(TFBlocks.DARKWOOD);
-		WoodType.register(TFBlocks.TIMEWOOD);
-		WoodType.register(TFBlocks.TRANSFORMATION);
-		WoodType.register(TFBlocks.MINING);
-		WoodType.register(TFBlocks.SORTING);
-
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();
 			TFBlocks.tfBurnables();
 			TFBlocks.tfPots();
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
+
+			WoodType.register(TFBlocks.TWILIGHT_OAK);
+			WoodType.register(TFBlocks.CANOPY);
+			WoodType.register(TFBlocks.MANGROVE);
+			WoodType.register(TFBlocks.DARKWOOD);
+			WoodType.register(TFBlocks.TIMEWOOD);
+			WoodType.register(TFBlocks.TRANSFORMATION);
+			WoodType.register(TFBlocks.MINING);
+			WoodType.register(TFBlocks.SORTING);
 
 			CauldronInteraction.WATER.put(TFItems.ARCTIC_HELMET.get(), CauldronInteraction.DYED_ITEM);
 			CauldronInteraction.WATER.put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteraction.DYED_ITEM);

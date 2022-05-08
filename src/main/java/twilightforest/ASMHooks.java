@@ -30,6 +30,7 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
@@ -39,6 +40,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import twilightforest.entity.TFEntities;
@@ -47,16 +49,11 @@ import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.TFDimensions;
 import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.world.registration.TwilightFeatures;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -67,11 +64,11 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.levelgen.WorldGenSettings#WorldGenSettings(long, boolean, boolean, MappedRegistry, Optional)}<br>
+	 * {@link net.minecraft.world.level.levelgen.WorldGenSettings#WorldGenSettings(long, boolean, boolean, net.minecraft.core.Registry, Optional)}<br>
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
-		TFDimensions.seed = seed;
+		TwilightFeatures.seed = seed;
 		return seed;
 	}
 
@@ -81,7 +78,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE]
 	 */
 	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
-		TFDimensions.seed = ((CompoundTag) seed.getValue()).getLong("seed");
+		TwilightFeatures.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 
@@ -135,104 +132,6 @@ public class ASMHooks {
 		return music;
 	}
 
-	private static final WeakHashMap<Level, List<TFPart<?>>> cache = new WeakHashMap<>();
-	private static final Int2ObjectMap<TFPart<?>> multiparts = new Int2ObjectOpenHashMap<>();
-
-	// This only works on the client side in 1.17...
-	public static void registerMultipartEvents(IEventBus bus) {
-		bus.addListener((Consumer<EntityJoinWorldEvent>) event -> {
-			if(event.getWorld().isClientSide() && event.getEntity().isMultipartEntity())
-			synchronized (cache) {
-				cache.computeIfAbsent(event.getWorld(), (w) -> new ArrayList<>());
-				cache.get(event.getWorld()).addAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
-						filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj).
-						collect(Collectors.toList()));
-
-			}
-		});
-		bus.addListener((Consumer<EntityLeaveWorldEvent>) event -> {
-			if(event.getWorld().isClientSide() && event.getEntity().isMultipartEntity())
-			synchronized (cache) {
-				cache.computeIfPresent(event.getWorld(), (world, list) -> {
-					list.removeAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
-							filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj).
-							collect(Collectors.toList()));
-					return list;
-				});
-			}
-		});
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel.EntityCallbacks#onTrackingStart(Entity)}<br>
-	 * [FIRST INST]
-	 */
-	public static void trackingStart(Entity entity) {
-		if (entity.isMultipartEntity()) {
-			List<TFPart<?>> list = Arrays.stream(Objects.requireNonNull(entity.getParts())).
-					filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj).
-					collect(Collectors.toList());
-			list.forEach(part -> multiparts.put(part.getId(), part));
-			synchronized (cache) {
-				cache.computeIfAbsent(entity.level, (w) -> new ArrayList<>());
-				cache.get(entity.level).addAll(list);
-			}
-		}
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel.EntityCallbacks#onTrackingEnd(Entity)}<br>
-	 * [FIRST INST]
-	 */
-	public static void trackingEnd(Entity entity) {
-		if (entity.isMultipartEntity()) {
-			List<TFPart<?>> list = Arrays.stream(Objects.requireNonNull(entity.getParts())).
-					filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj).
-					collect(Collectors.toList());
-			list.forEach(part -> multiparts.remove(part.getId()));
-			synchronized (cache) {
-				cache.computeIfPresent(entity.level, (world, parts) -> {
-					parts.removeAll(list);
-					return parts;
-				});
-			}
-		}
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.Level#getEntities(Entity, AABB, Predicate)}<br>
-	 * [BEFORE ARETURN]
-	 */
-	public static synchronized List<Entity> multipartHitbox(List<Entity> list, Level world, @Nullable Entity entityIn, AABB boundingBox, @Nullable Predicate<? super Entity> predicate) {
-		synchronized (cache) {
-			List<TFPart<?>> parts = cache.get(world);
-			if(parts != null) {
-				for (TFPart<?> part : parts) {
-					if (part != entityIn &&
-
-							part.getBoundingBox().intersects(boundingBox) &&
-
-							(predicate == null || predicate.test(part)) &&
-
-							!list.contains(part))
-						list.add(part);
-				}
-			}
-			return list;
-		}
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel#getEntityOrPart(int)}<br>
-	 * [BEFORE ARETURN]
-	 */
-	public static Entity multipartFromID(@Nullable Entity o, int id) {
-		return o == null ? multiparts.get(id) : o;
-	}
 
 	/**
 	 * Injection Point:<br>
@@ -286,15 +185,6 @@ public class ASMHooks {
 			}
 		});
 		return list;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.Minecraft#doLoadLevel(String, RegistryAccess.RegistryHolder, Function, Function4, boolean, Minecraft.ExperimentalDialogType, boolean)}<br>
-	 * [AFTER ALL ALOAD 6]
-	 */
-	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
-		return TFConfig.CLIENT_CONFIG.disableHereBeDragons.get() ? Minecraft.ExperimentalDialogType.NONE : type;
 	}
 
 	/**

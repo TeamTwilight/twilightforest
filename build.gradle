@@ -188,6 +188,12 @@ repositories {
     //    name 'player\'s Maven' // Forestry
     //    url 'http://maven.ic2.player.to/'
     //}
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -210,6 +216,8 @@ dependencies {
 
     // player
     //deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"
+
+    implementation fg.deobf("curse.maven:the-undergarden-379849:3758789")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }

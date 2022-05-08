@@ -34,7 +34,7 @@ public class TransformPowderItem extends Item {
 		}
 		AtomicBoolean flag = new AtomicBoolean(false);
 
-		player.level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE).forEach((recipe) -> {
+		player.level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach((recipe) -> {
 			if(flag.get()) return;
 			if(recipe.getInput() == target.getType()) {
 				EntityType<?> type = recipe.getResult();

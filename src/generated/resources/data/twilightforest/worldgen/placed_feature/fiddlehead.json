@@ -1,0 +1,12 @@
+{
+  "feature": "twilightforest:fiddlehead",
+  "placement": [
+    {
+      "heightmap": "WORLD_SURFACE_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

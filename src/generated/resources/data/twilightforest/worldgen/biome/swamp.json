@@ -1,23 +1,81 @@
 {
-  "carvers": {},
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
   "features": [
     [],
     [],
     [],
     [],
-    [],
-    [],
-    [],
-    [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
-      "minecraft:void_start_platform"
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "twilightforest:wood_roots",
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
+    ],
+    [],
+    [
+      "minecraft:patch_grass_forest",
+      "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
+      "twilightforest:grove_ruins",
+      "twilightforest:foundation",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:tree/mangrove_tree",
+      "twilightforest:tree/swampy_oak_tree",
+      "minecraft:patch_sugar_cane_swamp",
+      "minecraft:vines",
+      "minecraft:patch_dead_bush",
+      "twilightforest:mangrove_fallen_log",
+      "twilightforest:huge_lily_pad",
+      "twilightforest:huge_water_lily",
+      "minecraft:patch_waterlily"
     ]
   ],
+  "creature_spawn_probability": 0.2,
   "spawners": {
     "monster": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "minecraft:creeper",
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:zombie",
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "twilightforest:mosquito_swarm",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
@@ -27,10 +85,10 @@
   },
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:swamp",
-  "precipitation": "none",
-  "temperature": 0.5,
-  "downfall": 0.5,
-  "category": "none",
+  "precipitation": "rain",
+  "temperature": 0.8,
+  "downfall": 0.9,
+  "category": "swamp",
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -38,9 +96,18 @@
       "block_search_extent": 8,
       "offset": 2.0
     },
-    "sky_color": 8103167,
-    "fog_color": 12638463,
-    "water_color": 4159204,
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "grass_color_modifier": "twilightforest:swamp",
+    "sky_color": 2105930,
+    "foliage_color": 4809015,
+    "grass_color": 6056270,
+    "fog_color": 12648408,
+    "water_color": 14745518,
     "water_fog_color": 329011
   }
 }

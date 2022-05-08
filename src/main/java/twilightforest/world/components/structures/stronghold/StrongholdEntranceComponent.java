@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.stronghold;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -12,8 +11,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 
@@ -44,8 +43,8 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 	public void addChildren(StructurePiece parent, StructurePieceAccessor old, Random random) {
 		super.addChildren(parent, old, random);
 
-		if (old instanceof StructureStart start) {
-			List<StructurePiece> list = start.getPieces();
+		if (old instanceof StructurePiecesBuilder start) {
+			List<StructurePiece> list = start.pieces;
 
 			// make a random component in each direction
 			lowerPieces.prepareStructurePieces();

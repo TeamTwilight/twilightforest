@@ -1,0 +1,20 @@
+{
+  "feature": "twilightforest:flower_placer",
+  "placement": [
+    {
+      "heightmap": "WORLD_SURFACE_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "count": 25,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "chance": 15,
+      "type": "minecraft:rarity_filter"
+    }
+  ]
+}

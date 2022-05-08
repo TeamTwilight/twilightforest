@@ -68,7 +68,7 @@ public class TransformPowderRecipe implements Recipe<Container> {
 
 	@Override
 	public RecipeType<?> getType() {
-		return TFRecipes.TRANSFORM_POWDER_RECIPE;
+		return TFRecipes.TRANSFORM_POWDER_RECIPE.get();
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<TransformPowderRecipe> {

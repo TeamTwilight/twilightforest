@@ -48,7 +48,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		int i = SectionPos.sectionToBlockCoord(this.getRange() * 2 - 1);
 		int j = rand.nextInt(rand.nextInt(rand.nextInt(this.getCaveBound()) + 1) + 1);
 
-		for(int k = 0; k < j; ++k) {
+		for (int k = 0; k < j; ++k) {
 			double x = accessPos.getBlockX(rand.nextInt(16));
 			double y = config.y.sample(rand, ctx);
 			double z = accessPos.getBlockZ(rand.nextInt(16));
@@ -64,8 +64,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				l += rand.nextInt(4);
 			}
 
-			for(int k1 = 0; k1 < l; ++k1) {
-				float f = rand.nextFloat() * ((float)Math.PI * 2F);
+			for (int k1 = 0; k1 < l; ++k1) {
+				float f = rand.nextFloat() * ((float) Math.PI * 2F);
 				float f3 = (rand.nextFloat() - 0.5F) / 4.0F;
 				float f2 = this.getThickness(rand);
 				int i1 = i - rand.nextInt(i / 4);
@@ -84,7 +84,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		}
 
 		//We dont want caves to go so far down you can see bedrock, so lets stop them right before
-		if(pos.getY() < access.getMinBuildHeight() + 6) return false;
+		if (pos.getY() < access.getMinBuildHeight() + 6) return false;
 
 		if (!this.canReplaceBlock(blockstate) && !isDebugEnabled(config)) {
 			return false;
@@ -103,13 +103,14 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					if (areaAround.is(FluidTags.WATER) || areaAboveAround.is(FluidTags.WATER) || aboveSurface.is(FluidTags.WATER)) {
 						return false;
 					} else {
-						if (access.getWorldForge().getRandom().nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
+						//TODO this needs to be done a different way. The world doesnt exist when we need it to, so I cant rely on a random from it. 
+						if (access.getWorldForge() != null && access.getWorldForge().getRandom().nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
 							access.setBlockState(pos.relative(facing), TFBlocks.TROLLSTEINN.get().defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);
 
-						if ((access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
-							switch(access.getWorldForge().getRandom().nextInt(5)) {
+						if (access.getWorldForge() != null && (access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
+							switch (access.getWorldForge().getRandom().nextInt(5)) {
 								case 0, 1, 2 -> access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
 								case 3 -> access.setBlockState(pos.above(), Blocks.ROOTED_DIRT.defaultBlockState(), false);
 								case 4 -> access.setBlockState(pos.above(), Blocks.COARSE_DIRT.defaultBlockState(), false);
@@ -152,7 +153,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	protected void createRoom(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, Aquifer aquifer, double posX, double posY, double posZ, float radius, double horizToVertRatio, CarvingMask mask, WorldCarver.CarveSkipChecker checker) {
-		double d0 = 1.5D + (double)(Mth.sin(((float)Math.PI / 2F)) * radius);
+		double d0 = 1.5D + (double) (Mth.sin(((float) Math.PI / 2F)) * radius);
 		double d1 = d0 * horizToVertRatio;
 		this.carveEllipsoid(ctx, config, access, biomePos, aquifer, posX + 1.0D, posY, posZ, d0, d1, mask, checker);
 	}
@@ -164,8 +165,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		float f = 0.0F;
 		float f1 = 0.0F;
 
-		for(int j = branchIndex; j < branchCount; ++j) {
-			double d0 = 1.5D + (double)(Mth.sin((float)Math.PI * (float)j / (float)branchCount) * thickness);
+		for (int j = branchIndex; j < branchCount; ++j) {
+			double d0 = 1.5D + (double) (Mth.sin((float) Math.PI * (float) j / (float) branchCount) * thickness);
 			double d1 = d0 * horizToVertRatio;
 			float f2 = Mth.cos(pitch);
 			posX += Mth.cos(yaw) * f2;
@@ -179,8 +180,8 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			f1 = f1 + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0F;
 			f = f + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
 			if (j == i && thickness > 1.0F) {
-				this.createTunnel(ctx, config, access, biomePos, random.nextLong(), aquifer, posX, posY, posZ, horizMult, vertMult, random.nextFloat() * 0.5F + 0.5F, yaw - ((float)Math.PI / 2F), pitch / 3.0F, j, branchCount, 1.0D, mask, checker);
-				this.createTunnel(ctx, config, access, biomePos, random.nextLong(), aquifer, posX, posY, posZ, horizMult, vertMult, random.nextFloat() * 0.5F + 0.5F, yaw + ((float)Math.PI / 2F), pitch / 3.0F, j, branchCount, 1.0D, mask, checker);
+				this.createTunnel(ctx, config, access, biomePos, random.nextLong(), aquifer, posX, posY, posZ, horizMult, vertMult, random.nextFloat() * 0.5F + 0.5F, yaw - ((float) Math.PI / 2F), pitch / 3.0F, j, branchCount, 1.0D, mask, checker);
+				this.createTunnel(ctx, config, access, biomePos, random.nextLong(), aquifer, posX, posY, posZ, horizMult, vertMult, random.nextFloat() * 0.5F + 0.5F, yaw + ((float) Math.PI / 2F), pitch / 3.0F, j, branchCount, 1.0D, mask, checker);
 				return;
 			}
 

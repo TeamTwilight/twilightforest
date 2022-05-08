@@ -1,0 +1,32 @@
+{
+  "config": {
+    "features": [
+      {
+        "feature": {
+          "feature": "twilightforest:tree/vanilla_oak_tree",
+          "placement": []
+        },
+        "chance": 0.15
+      },
+      {
+        "feature": {
+          "feature": "twilightforest:tree/vanilla_birch_tree",
+          "placement": []
+        },
+        "chance": 0.15
+      },
+      {
+        "feature": {
+          "feature": "twilightforest:tree/large_rainbow_oak",
+          "placement": []
+        },
+        "chance": 0.1
+      }
+    ],
+    "default": {
+      "feature": "twilightforest:tree/rainbow_oak",
+      "placement": []
+    }
+  },
+  "type": "minecraft:random_selector"
+}

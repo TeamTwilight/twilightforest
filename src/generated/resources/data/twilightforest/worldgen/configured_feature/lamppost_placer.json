@@ -1,0 +1,12 @@
+{
+  "config": {
+    "features": [
+      {
+        "feature": "twilightforest:cicada_lamppost",
+        "chance": 0.1
+      }
+    ],
+    "default": "twilightforest:firefly_lamppost"
+  },
+  "type": "minecraft:random_selector"
+}

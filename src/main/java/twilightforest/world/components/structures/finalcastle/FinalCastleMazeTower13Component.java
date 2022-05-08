@@ -14,9 +14,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
@@ -253,8 +253,8 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		//TwilightForestMod.LOGGER.debug("Our coord mode is {}, and direction is {}, so our door is going to be at {} and the new tower will appear at {}", this.getCoordBaseMode(), facing, opening, tc);
 
 		// find start
-		if (list instanceof StructureStart start2) {
-			StructurePiece start = start2.getPieces().get(0);
+		if (list instanceof StructurePiecesBuilder start2) {
+			StructurePiece start = start2.pieces.get(0);
 
 			int centerX = ((start.getBoundingBox().minX() + 128) >> 8) << 8;
 			int centerZ = ((start.getBoundingBox().minZ() + 128) >> 8) << 8;

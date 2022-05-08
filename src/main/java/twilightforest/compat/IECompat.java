@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TFSounds;
@@ -66,7 +67,7 @@ public class IECompat extends TFCompat {
     }
 
     @Override
-    protected void init() {
+    protected void init(FMLCommonSetupEvent event) {
         // Yeah, it's a thing! https://twitter.com/AtomicBlom/status/1004931868012056583
         RailgunHandler.registerProjectile(() -> Ingredient.of(TFBlocks.CICADA.get().asItem()),
                 (new RailgunHandler.StandardRailgunProjectile(2.0D, 0.25D) {

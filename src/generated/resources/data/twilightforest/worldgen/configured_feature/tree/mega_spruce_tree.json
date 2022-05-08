@@ -1,0 +1,57 @@
+{
+  "config": {
+    "decorators": [],
+    "ignore_vines": false,
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "minimum_size": {
+      "limit": 4,
+      "lower_size": 1,
+      "upper_size": 2,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "minecraft:spruce_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "trunk_placer": {
+      "base_height": 13,
+      "height_rand_a": 2,
+      "height_rand_b": 14,
+      "type": "minecraft:giant_trunk_placer"
+    },
+    "foliage_provider": {
+      "state": {
+        "Properties": {
+          "persistent": "false",
+          "distance": "7"
+        },
+        "Name": "minecraft:spruce_leaves"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "foliage_placer": {
+      "radius": 0,
+      "offset": 0,
+      "crown_height": {
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 13,
+          "max_inclusive": 17
+        }
+      },
+      "type": "minecraft:mega_pine_foliage_placer"
+    }
+  },
+  "type": "twilightforest:anywhere_tree"
+}

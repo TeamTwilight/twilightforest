@@ -470,7 +470,7 @@ public class SnowQueen extends Monster implements IBreathAttacker {
 	}
 
 	@Override
-	protected boolean updateInWaterStateAndDoFluidPushing() {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 

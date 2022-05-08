@@ -13,6 +13,7 @@ import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,9 @@ import twilightforest.TwilightForestMod;
 
 import java.util.Random;
 
+//retired loading screen, see https://twitter.com/Drullkus/status/928466334744064000 for a video example.
+//1.16+ load times have gotten a lot better, and you cant really see this screen anymore.
+//it also breaks in one way or another every update, so we're gonna retire it until we find another use for it.
 @OnlyIn(Dist.CLIENT)
 public class LoadingScreenGui extends Screen {
 
@@ -51,9 +55,6 @@ public class LoadingScreenGui extends Screen {
 		this.assignContent();
 	}
 
-//	@Override
-//	protected void keyTyped(char typedChar, int keyCode) {}
-
     @Override
     public boolean isPauseScreen() {
         return false;
@@ -63,6 +64,14 @@ public class LoadingScreenGui extends Screen {
 	public void tick() {
 		if (minecraft != null && minecraft.level != null && LOADING_SCREEN.cycleLoadingScreenFrequency.get() != 0 && ++ticks % LOADING_SCREEN.cycleLoadingScreenFrequency.get() == 0)
 			assignContent();
+
+		if (this.minecraft != null && this.minecraft.player != null) {
+			BlockPos blockpos = this.minecraft.player.blockPosition();
+			boolean flag1 = this.minecraft.level != null && this.minecraft.level.isOutsideBuildHeight(blockpos.getY());
+			if (flag1 || this.minecraft.levelRenderer.isChunkCompiled(blockpos)) {
+				this.onClose();
+			}
+		}
 	}
 
 	@Override

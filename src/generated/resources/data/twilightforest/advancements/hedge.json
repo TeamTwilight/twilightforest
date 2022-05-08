@@ -30,7 +30,7 @@
             "predicate": {
               "type": "twilightforest:hedge_spider",
               "location": {
-                "feature": "twilightforest:hedge_maze"
+                "feature": "twilightforest:configured_hedge_maze"
               }
             },
             "entity": "this"
@@ -47,7 +47,7 @@
             "predicate": {
               "type": "twilightforest:swarm_spider",
               "location": {
-                "feature": "twilightforest:hedge_maze"
+                "feature": "twilightforest:configured_hedge_maze"
               }
             },
             "entity": "this"

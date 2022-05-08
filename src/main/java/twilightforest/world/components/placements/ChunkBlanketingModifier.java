@@ -69,6 +69,6 @@ public class ChunkBlanketingModifier extends PlacementModifier {
 
     @Override
     public PlacementModifierType<?> type() {
-        return TwilightFeatures.CHUNK_BLANKETING;
+        return TwilightFeatures.CHUNK_BLANKETING.get();
     }
 }

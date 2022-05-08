@@ -14,9 +14,9 @@ import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.material.Material;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
@@ -107,8 +107,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		//largerBB.maxX() += expand;
 		//largerBB.maxZ() += expand;
 
-		if (list instanceof StructureStart start) {
-			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.getPieces(), largerBB, this);
+		if (list instanceof StructurePiecesBuilder start) {
+			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.pieces, largerBB, this);
 			if (intersect == null) {
 				list.addPiece(dRoom);
 				dRoom.addChildren(parent, list, rand);
@@ -126,8 +126,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		rotation = rotation.getRotated(this.rotation);
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 		FinalCastleDungeonExitComponent dRoom = new FinalCastleDungeonExitComponent(getFeatureType(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
-		if (list instanceof StructureStart start) {
-			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.getPieces(), dRoom.getBoundingBox(), this);
+		if (list instanceof StructurePiecesBuilder start) {
+			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.pieces, dRoom.getBoundingBox(), this);
 			if (intersect == null) {
 				list.addPiece(dRoom);
 				dRoom.addChildren(this, list, rand);

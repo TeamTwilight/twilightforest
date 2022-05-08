@@ -1,0 +1,70 @@
+{
+  "config": {
+    "decorators": [
+      {
+        "core_position": 2,
+        "deco_provider": {
+          "state": {
+            "Properties": {
+              "axis": "y",
+              "active": "false"
+            },
+            "Name": "twilightforest:sorting_log_core"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "type": "twilightforest:core_placer"
+      }
+    ],
+    "ignore_vines": true,
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "minimum_size": {
+      "limit": 1,
+      "lower_size": 1,
+      "upper_size": 1,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "twilightforest:sorting_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "trunk_placer": {
+      "base_height": 3,
+      "height_rand_a": 0,
+      "height_rand_b": 0,
+      "type": "minecraft:straight_trunk_placer"
+    },
+    "foliage_provider": {
+      "state": {
+        "Properties": {
+          "persistent": "false",
+          "distance": "7"
+        },
+        "Name": "twilightforest:sorting_leaves"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "foliage_placer": {
+      "random_add_horizontal": 1,
+      "random_add_vertical": 0,
+      "vertical_filler_bias": 0.5,
+      "shag_factor": 0,
+      "horizontal_radius": 1.5,
+      "vertical_radius": 2.25,
+      "offset": 0,
+      "type": "twilightforest:spheroid_foliage_placer"
+    }
+  },
+  "type": "minecraft:tree"
+}

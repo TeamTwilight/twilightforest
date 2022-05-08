@@ -74,12 +74,16 @@ public class TFClientEvents {
 			fullbrightItem(event, TFItems.FIERY_PICKAXE);
 			fullbrightItem(event, TFItems.FIERY_SWORD);
 
+			fullbrightItem(event, TFItems.RED_THREAD);
+
 			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
 
-			tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-			tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-			tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-			tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			if(!ModList.get().isLoaded("ctm")) {
+				tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+				tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+				tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+				tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			}
 
 			if(ModList.get().isLoaded("immersiveengineering")) {
 				IECompat.registerShaderModels(event);

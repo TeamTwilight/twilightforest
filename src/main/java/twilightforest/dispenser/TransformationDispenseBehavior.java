@@ -28,7 +28,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 		BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
 		if (!world.isClientSide) {
 			for (LivingEntity livingentity : world.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos), EntitySelector.NO_SPECTATORS)) {
-				world.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE).forEach((recipe) -> {
+				world.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach((recipe) -> {
 					if (recipe.getInput() == livingentity.getType()) {
 						EntityType<?> type = recipe.getResult();
 						Entity newEntity = type.create(world);

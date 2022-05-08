@@ -1102,6 +1102,10 @@
   "entity.twilightforest.slider": "Moving Slide Trap",
   "entity.twilightforest.protection_box": "Progression Protection Box",
 
+  "entity.twilightforest.cicada_slingshot": "Cicada",
+  "entity.twilightforest.firefly_slingshot": "Firefly",
+  "entity.twilightforest.moonworm_slingshot": "Moonworm",
+
   // Subtitles
   "subtitles.twilightforest.entity.acid_rain": "Acid Rain scalds player",
   "subtitles.twilightforest.entity.alphayeti.alert": "Alpha Yeti targets player",
@@ -1507,9 +1511,6 @@
 
   "twilightforest.config.optifine": "Disable the nag screen when Optifine is installed.",
   "twilightforest.config.optifine.tooltip": "Disables the nag screen shown on launch when Optifine is installed.",
-
-  "twilightforest.config.dragons": "Disable the Here Be Dragons experimental screen.",
-  "twilightforest.config.dragons.tooltip": "Disables the experimental Here Be Dragons screen on world load.",
 
   "twilightforest.config.locked_toast": "Disable the Locked Biome Toasts.",
   "twilightforest.config.locked_toast.tooltip": "Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.",

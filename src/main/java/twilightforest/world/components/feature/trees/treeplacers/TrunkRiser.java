@@ -35,7 +35,7 @@ public class TrunkRiser extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<TrunkRiser> type() {
-        return TwilightFeatures.TRUNK_RISER;
+        return TwilightFeatures.TRUNK_RISER.get();
     }
 
     @Override

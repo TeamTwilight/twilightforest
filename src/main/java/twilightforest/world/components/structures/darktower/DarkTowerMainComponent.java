@@ -25,8 +25,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -37,7 +37,7 @@ import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.features.TFTreeFeatures;
+import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -157,8 +157,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// count how many size 9 towers we have hanging off us
 			ArrayList<DarkTowerWingComponent> possibleKeyTowers = new ArrayList<DarkTowerWingComponent>();
 
-			if (list instanceof StructureStart start) {
-				for (StructurePiece piece : start.getPieces()) {
+			if (list instanceof StructurePiecesBuilder start) {
+				for (StructurePiece piece : start.pieces) {
 					if (piece instanceof DarkTowerWingComponent wing && wing.size == 9 && wing.getGenDepth() == this.getGenDepth()) {
 						possibleKeyTowers.add(wing);
 					}
@@ -1089,8 +1089,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				case 2 ->
 						// birch
 						TreeFeatures.BIRCH;
-				case 3 -> TFTreeFeatures.TWILIGHT_OAK_TREE;
-				case 4 -> TFTreeFeatures.RAINBOW_OAK_TREE;
+				case 3 -> TFConfiguredFeatures.TWILIGHT_OAK_TREE;
+				case 4 -> TFConfiguredFeatures.RAINBOW_OAK_TREE;
 				default ->
 						// oak tree
 						TreeFeatures.OAK;

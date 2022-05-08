@@ -1,0 +1,16 @@
+{
+  "feature": "twilightforest:small_andesite",
+  "placement": [
+    {
+      "chance": 60,
+      "type": "minecraft:rarity_filter"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "count": 5,
+      "type": "minecraft:count"
+    }
+  ]
+}

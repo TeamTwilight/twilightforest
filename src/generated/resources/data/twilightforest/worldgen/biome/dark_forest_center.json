@@ -1,5 +1,7 @@
 {
-  "carvers": {},
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
   "features": [
     [],
     [],
@@ -7,12 +9,30 @@
     [],
     [],
     [],
-    [],
-    [],
-    [],
+    [
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
+    ],
     [],
     [
-      "minecraft:void_start_platform"
+      "twilightforest:tree/darkwood_tree",
+      "twilightforest:tree/selector/dark_forest_trees",
+      "twilightforest:dark_grass",
+      "twilightforest:dark_ferns",
+      "twilightforest:dark_mushglooms",
+      "twilightforest:dark_dead_bushes",
+      "twilightforest:dark_pumpkins",
+      "twilightforest:dark_mushrooms"
     ]
   ],
   "spawners": {
@@ -27,10 +47,10 @@
   },
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:dark_forest_center",
-  "precipitation": "none",
+  "precipitation": "rain",
   "temperature": 0.5,
   "downfall": 0.5,
-  "category": "none",
+  "category": "forest",
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -38,8 +58,17 @@
       "block_search_extent": 8,
       "offset": 2.0
     },
-    "sky_color": 8103167,
-    "fog_color": 12638463,
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "grass_color_modifier": "twilightforest:dark_forest_center",
+    "sky_color": 2105930,
+    "foliage_color": 16351774,
+    "grass_color": 6714688,
+    "fog_color": 12648408,
     "water_color": 4159204,
     "water_fog_color": 329011
   }

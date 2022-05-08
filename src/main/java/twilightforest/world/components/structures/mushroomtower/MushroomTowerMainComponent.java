@@ -2,13 +2,11 @@ package twilightforest.world.components.structures.mushroomtower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -123,9 +121,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	@Override
 	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-		if (list instanceof StructureStart start) {
-			start.getPieces().add(roof);
-		}
+		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}
 

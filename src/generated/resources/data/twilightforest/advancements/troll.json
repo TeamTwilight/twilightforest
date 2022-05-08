@@ -30,7 +30,7 @@
             "predicate": {
               "type": "twilightforest:troll",
               "location": {
-                "feature": "twilightforest:troll_cave"
+                "feature": "twilightforest:configured_troll_cave"
               }
             },
             "entity": "this"

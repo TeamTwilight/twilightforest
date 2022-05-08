@@ -58,7 +58,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 			}
 
 			if (host instanceof Player player && player instanceof ServerPlayer)
-				player.awardStat(TFStats.TF_SHIELDS_BROKEN);
+				player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
 			sendUpdatePacket();
 			host.level.playSound(null, host.blockPosition(), TFSounds.SHIELD_BREAK, SoundSource.PLAYERS, 1.0F, ((host.getRandom().nextFloat() - host.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 			breakTimer = 20;

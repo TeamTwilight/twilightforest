@@ -7,6 +7,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 public interface IUncraftingRecipe extends CraftingRecipe {
     @Override
     default RecipeType<?> getType() {
-        return TFRecipes.UNCRAFTING_RECIPE;
+        return TFRecipes.UNCRAFTING_RECIPE.get();
     }
 }

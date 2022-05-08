@@ -1,0 +1,24 @@
+{
+  "feature": "twilightforest:legacy_copper_ore",
+  "placement": [
+    {
+      "height": {
+        "min_inclusive": {
+          "absolute": 0
+        },
+        "max_inclusive": {
+          "absolute": 96
+        },
+        "type": "minecraft:trapezoid"
+      },
+      "type": "minecraft:height_range"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "count": 6,
+      "type": "minecraft:count"
+    }
+  ]
+}

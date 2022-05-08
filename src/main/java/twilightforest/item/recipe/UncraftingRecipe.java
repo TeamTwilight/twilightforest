@@ -19,7 +19,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -83,7 +82,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
 
     @Override
     public RecipeType<?> getType() {
-        return TFRecipes.UNCRAFTING_RECIPE;
+        return TFRecipes.UNCRAFTING_RECIPE.get();
     }
 
     public int getCost() {

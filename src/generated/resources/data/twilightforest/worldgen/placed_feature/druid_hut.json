@@ -1,0 +1,27 @@
+{
+  "feature": "twilightforest:druid_hut",
+  "placement": [
+    {
+      "chance": 105,
+      "type": "minecraft:rarity_filter"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "value": {
+        "occupies_surface": true,
+        "occupies_underground": true,
+        "additional_clearance": 0
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

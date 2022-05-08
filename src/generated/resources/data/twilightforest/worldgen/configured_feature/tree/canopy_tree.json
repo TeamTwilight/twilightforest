@@ -1,0 +1,104 @@
+{
+  "config": {
+    "decorators": [
+      {
+        "placement_count": 1,
+        "probability_of_placement": 1.0,
+        "deco_provider": {
+          "state": {
+            "Properties": {
+              "waterlogged": "false",
+              "facing": "north"
+            },
+            "Name": "twilightforest:firefly"
+          },
+          "type": "minecraft:simple_state_provider"
+        },
+        "type": "twilightforest:trunkside_decorator"
+      },
+      {
+        "root_length": 5,
+        "ground_roots_provider": {
+          "entries": [
+            {
+              "data": {
+                "Name": "twilightforest:root"
+              },
+              "weight": 6
+            },
+            {
+              "data": {
+                "Name": "twilightforest:liveroot_block"
+              },
+              "weight": 1
+            }
+          ],
+          "type": "minecraft:weighted_state_provider"
+        },
+        "base_strand_count": 3,
+        "additional_random_strands": 1,
+        "type": "twilightforest:tree_roots"
+      }
+    ],
+    "ignore_vines": true,
+    "force_dirt": false,
+    "dirt_provider": {
+      "state": {
+        "Name": "minecraft:dirt"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "minimum_size": {
+      "limit": 20,
+      "lower_size": 0,
+      "upper_size": 5,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "twilightforest:canopy_log"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "trunk_placer": {
+      "branch_start_offset_down": 7,
+      "branch_config": {
+        "random_add_length": 1.0,
+        "spacing_yaw": 0.3,
+        "downwards_pitch": 0.2,
+        "count_minimum": 3,
+        "random_add_count": 1,
+        "length": 10.0
+      },
+      "perpendicular_branches": false,
+      "base_height": 20,
+      "height_rand_a": 5,
+      "height_rand_b": 5,
+      "type": "twilightforest:branching_trunk_placer"
+    },
+    "foliage_provider": {
+      "state": {
+        "Properties": {
+          "persistent": "false",
+          "distance": "7"
+        },
+        "Name": "twilightforest:canopy_leaves"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
+    "foliage_placer": {
+      "random_add_horizontal": 1,
+      "random_add_vertical": 0,
+      "vertical_filler_bias": -0.25,
+      "shag_factor": 24,
+      "horizontal_radius": 4.5,
+      "vertical_radius": 1.5,
+      "offset": 0,
+      "type": "twilightforest:spheroid_foliage_placer"
+    }
+  },
+  "type": "minecraft:tree"
+}

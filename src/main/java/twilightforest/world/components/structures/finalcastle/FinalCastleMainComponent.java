@@ -12,8 +12,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
@@ -130,13 +130,13 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	 * Build a side tower, then tell it to start building towards the destination
 	 */
 	private void buildTowerMaze(StructurePieceAccessor list, Random rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
-		if (list instanceof StructureStart start) {
+		if (list instanceof StructurePiecesBuilder start) {
 			boolean complete = false;
 			int iterations = 0;
 			while (!complete && iterations < 15) {
 				iterations++;
 				// duplicate list
-				List<StructurePiece> before = new LinkedList<>(start.getPieces());
+				List<StructurePiece> before = new LinkedList<>(start.pieces);
 
 				// build
 				BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
@@ -161,8 +161,8 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 				} else {
 					// TODO: add limit on retrying, in case of infinite loop?
 					TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
-					start.getPieces().clear();
-					start.getPieces().addAll(before);
+					start.pieces.clear();
+					start.pieces.addAll(before);
 					//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, color, dest);
 				}
 			}
@@ -170,11 +170,11 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	}
 
 	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
-		if (list instanceof StructureStart start) {
-			if (start.getPieces().size() > 60) {
+		if (list instanceof StructurePiecesBuilder start) {
+			if (start.pieces.size() > 60) {
 				TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
 			}
-			for (StructurePiece structurecomponent : start.getPieces()) {
+			for (StructurePiece structurecomponent : start.pieces) {
 				BoundingBox boundingBox = structurecomponent.getBoundingBox();
 				int x = (boundingBox.maxX() - boundingBox.minX() / 2) + boundingBox.minX();
 				int y = (boundingBox.maxY() - boundingBox.minY() / 2) + boundingBox.minY();

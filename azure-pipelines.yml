@@ -110,6 +110,16 @@ steps:
   condition: always()
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    
+- task: ado-discord-webhook@1
+  displayName: Announce Build to discord
+  inputs:
+    channelId: '$(DiscordChannelID)'
+    webhookKey: '$(DiscordChannelSecret)'
+    messageType: 'embeds'
+    embeds: |
+      [$(DiscordMessage)]
+  condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
 
 - task: Gradle@2
   displayName: Publish to Maven

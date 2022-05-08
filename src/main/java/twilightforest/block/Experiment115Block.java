@@ -115,7 +115,7 @@ public class Experiment115Block extends Block {
 	private InteractionResult eatCake(Level level, BlockPos pos, BlockState state, Player player) {
 		if (!player.canEat(false)) return InteractionResult.PASS;
 		else {
-			player.awardStat(TFStats.E115_SLICES_EATEN);
+			player.awardStat(TFStats.E115_SLICES_EATEN.get());
 			player.getFoodData().eat(4, 0.3F);
 			level.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
 			int i = state.getValue(BITES_TAKEN);

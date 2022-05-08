@@ -9,6 +9,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.UndergardenCompat;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
@@ -18,6 +19,7 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> LICH_POPPABLES = create(TwilightForestMod.prefix("lich_poppables"));
     public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
     public static final TagKey<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = create(TwilightForestMod.prefix("rides_obstruct_snatching"));
+    public static final TagKey<EntityType<?>> DONT_KILL_BUGS = create(TwilightForestMod.prefix("dont_kill_bugs"));
 
     public EntityTagGenerator(DataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
         super(dataGenerator, TwilightForestMod.ID, existingFileHelper);
@@ -107,6 +109,12 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
 
         // These entities forcefully take players from the entity they're riding
         tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
+
+        tag(DONT_KILL_BUGS).add(TFEntities.CICADA_SHOT.get(), TFEntities.MOONWORM_SHOT.get())
+                //these ones have to be optional. They aren't registered unless undergarden is actually installed.
+                .addOptional(UndergardenCompat.CICADA_SLINGSHOT.get().getRegistryName())
+                .addOptional(UndergardenCompat.FIREFLY_SLINGSHOT.get().getRegistryName())
+                .addOptional(UndergardenCompat.MOONWORM_SLINGSHOT.get().getRegistryName());
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {

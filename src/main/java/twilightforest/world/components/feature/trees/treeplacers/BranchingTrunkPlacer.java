@@ -40,7 +40,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<BranchingTrunkPlacer> type() {
-        return TwilightFeatures.TRUNK_BRANCHING;
+        return TwilightFeatures.TRUNK_BRANCHING.get();
     }
 
     @Override

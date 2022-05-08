@@ -10,9 +10,13 @@
     [],
     [],
     [],
-    [],
     [
-      "minecraft:void_start_platform"
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:thorns"
     ]
   ],
   "spawners": {
@@ -27,9 +31,9 @@
   },
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:thornlands",
-  "precipitation": "none",
-  "temperature": 0.5,
-  "downfall": 0.5,
+  "precipitation": "rain",
+  "temperature": 0.3,
+  "downfall": 0.2,
   "category": "none",
   "effects": {
     "mood_sound": {
@@ -38,8 +42,14 @@
       "block_search_extent": 8,
       "offset": 2.0
     },
-    "sky_color": 8103167,
-    "fog_color": 12638463,
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "sky_color": 2105930,
+    "fog_color": 12648408,
     "water_color": 4159204,
     "water_fog_color": 329011
   }

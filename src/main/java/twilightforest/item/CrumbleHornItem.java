@@ -101,7 +101,7 @@ public class CrumbleHornItem extends Item {
 			if (crumbleBlock(world, living, pos)) {
 				crumbled++;
 				if (living instanceof Player player && player instanceof ServerPlayer) {
-					player.awardStat(TFStats.BLOCKS_CRUMBLED);
+					player.awardStat(TFStats.BLOCKS_CRUMBLED.get());
 				}
 			}
 		}
@@ -121,7 +121,7 @@ public class CrumbleHornItem extends Item {
 		}
 
 		if(world instanceof ServerLevel level) {
-			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE).forEach(recipe -> {
+			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipe -> {
 				if(flag.get()) return;
 				if(recipe.getResult().is(Blocks.AIR)) {
 					if (recipe.getInput().is(block) && world.random.nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {

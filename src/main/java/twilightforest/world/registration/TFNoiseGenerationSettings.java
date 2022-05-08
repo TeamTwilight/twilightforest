@@ -1,19 +1,21 @@
 package twilightforest.world.registration;
 
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.CubicSpline;
 import net.minecraft.world.level.biome.TerrainShaper;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.*;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 public class TFNoiseGenerationSettings {
 
-	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.prefix("twilightforest"));
-	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT = ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.prefix("skylight_forest"));
+	public static final DeferredRegister<NoiseGeneratorSettings> NOISE_GENERATORS = DeferredRegister.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.ID);
+
+	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFNoiseGenerationSettings::tfDefault);
+	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFNoiseGenerationSettings::skylight);
 
 	public static NoiseGeneratorSettings tfDefault() {
 		NoiseSettings tfNoise = NoiseSettings.create(
@@ -31,7 +33,23 @@ public class TFNoiseGenerationSettings {
 				tfNoise,
 				Blocks.STONE.defaultBlockState(),
 				Blocks.WATER.defaultBlockState(),
-				NoiseRouterData.noNewCaves(tfNoise),
+				new NoiseRouterWithOnlyNoises(
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero(),
+						DensityFunctions.zero()
+				),
 				TFSurfaceRules.tfSurface(),
 				0,
 				false,
@@ -68,14 +86,5 @@ public class TFNoiseGenerationSettings {
 				false,
 				false
 		);
-	}
-
-	public static void register(ResourceKey<NoiseGeneratorSettings> key, NoiseGeneratorSettings settings) {
-		BuiltinRegistries.register(BuiltinRegistries.NOISE_GENERATOR_SETTINGS, key.location(), settings);
-	}
-
-	public static void init() {
-		register(TWILIGHT, tfDefault());
-		register(SKYLIGHT, skylight());
 	}
 }

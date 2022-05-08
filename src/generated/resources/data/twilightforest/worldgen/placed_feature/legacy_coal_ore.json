@@ -1,0 +1,24 @@
+{
+  "feature": "twilightforest:legacy_coal_ore",
+  "placement": [
+    {
+      "height": {
+        "min_inclusive": {
+          "above_bottom": 0
+        },
+        "max_inclusive": {
+          "absolute": 127
+        },
+        "type": "minecraft:uniform"
+      },
+      "type": "minecraft:height_range"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "count": 20,
+      "type": "minecraft:count"
+    }
+  ]
+}

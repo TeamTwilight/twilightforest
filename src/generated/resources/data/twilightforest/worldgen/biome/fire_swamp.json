@@ -1,18 +1,50 @@
 {
-  "carvers": {},
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
   "features": [
     [],
-    [],
-    [],
-    [],
-    [],
-    [],
+    [
+      "twilightforest:lava_lake"
+    ],
     [],
     [],
     [],
     [],
     [
-      "minecraft:void_start_platform"
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "twilightforest:wood_roots",
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
+    ],
+    [],
+    [
+      "minecraft:patch_grass_forest",
+      "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:tree/swampy_oak_tree",
+      "twilightforest:fire_jet",
+      "twilightforest:smoker",
+      "minecraft:patch_sugar_cane_swamp",
+      "minecraft:vines",
+      "minecraft:brown_mushroom_swamp"
     ]
   ],
   "spawners": {
@@ -28,9 +60,9 @@
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:fire_swamp",
   "precipitation": "none",
-  "temperature": 0.5,
-  "downfall": 0.5,
-  "category": "none",
+  "temperature": 1.0,
+  "downfall": 0.4,
+  "category": "swamp",
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -38,9 +70,23 @@
       "block_search_extent": 8,
       "offset": 2.0
     },
-    "sky_color": 8103167,
-    "fog_color": 12638463,
-    "water_color": 4159204,
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:white_ash"
+      },
+      "probability": 0.1
+    },
+    "sky_color": 2105930,
+    "foliage_color": 6563343,
+    "grass_color": 5713443,
+    "fog_color": 12648408,
+    "water_color": 7089196,
     "water_fog_color": 329011
   }
 }

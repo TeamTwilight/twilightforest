@@ -1,0 +1,25 @@
+{
+  "config": {
+    "features": [
+      {
+        "feature": {
+          "feature": "twilightforest:tree/vanilla_birch_tree",
+          "placement": []
+        },
+        "chance": 0.25
+      },
+      {
+        "feature": {
+          "feature": "twilightforest:tree/vanilla_oak_tree",
+          "placement": []
+        },
+        "chance": 0.25
+      }
+    ],
+    "default": {
+      "feature": "twilightforest:tree/twilight_oak_tree",
+      "placement": []
+    }
+  },
+  "type": "minecraft:random_selector"
+}

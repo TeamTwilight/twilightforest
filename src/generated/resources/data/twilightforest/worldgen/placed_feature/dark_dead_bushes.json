@@ -1,0 +1,16 @@
+{
+  "feature": "twilightforest:dark_dead_bushes",
+  "placement": [
+    {
+      "chance": 15,
+      "type": "minecraft:rarity_filter"
+    },
+    {
+      "heightmap": "WORLD_SURFACE_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

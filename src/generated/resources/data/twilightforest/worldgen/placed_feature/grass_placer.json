@@ -1,0 +1,20 @@
+{
+  "feature": "twilightforest:grass_placer",
+  "placement": [
+    {
+      "heightmap": "WORLD_SURFACE_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "count": 30,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "chance": 3,
+      "type": "minecraft:rarity_filter"
+    }
+  ]
+}

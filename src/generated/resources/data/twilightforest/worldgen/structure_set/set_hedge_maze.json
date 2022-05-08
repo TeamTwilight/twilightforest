@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "twilightforest:configured_hedge_maze",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 0,
+    "spacing": 1,
+    "separation": 0,
+    "type": "minecraft:random_spread"
+  }
+}

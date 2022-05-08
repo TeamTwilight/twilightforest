@@ -1,0 +1,24 @@
+{
+  "config": {
+    "state": {
+      "Name": "minecraft:dirt"
+    },
+    "radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 2,
+        "max_inclusive": 5
+      }
+    },
+    "half_height": 0,
+    "targets": [
+      {
+        "Name": "minecraft:stone"
+      },
+      {
+        "Name": "twilightforest:deadrock"
+      }
+    ]
+  },
+  "type": "twilightforest:mycelium_blob"
+}

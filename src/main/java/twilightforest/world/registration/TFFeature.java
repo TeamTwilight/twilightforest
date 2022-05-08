@@ -1,9 +1,7 @@
 package twilightforest.world.registration;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.*;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
@@ -19,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -28,6 +25,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
@@ -434,7 +432,7 @@ public class TFFeature {
 		.put(BiomeKeys.HIGHLANDS.location(), TROLL_CAVE)
 		.put(BiomeKeys.SNOWY_FOREST.location(), YETI_CAVE)
 		.put(BiomeKeys.SWAMP.location(), LABYRINTH)
-		//.put(BiomeKeys.LAKE.location(), QUEST_ISLAND)
+		.put(BiomeKeys.LAKE.location(), QUEST_ISLAND)
 		.build();
 
 	//IStructurePieceTypes that can be referred to
@@ -605,6 +603,7 @@ public class TFFeature {
 
 		// does the biome have a feature?
 		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
+
 		if(biomeFeature != null)
 			return biomeFeature;
 
@@ -929,23 +928,20 @@ public class TFFeature {
 		return null;
 	}
 
-	public Optional<StructurePiece> generatePieces(ChunkGenerator chunkGenerator, StructureManager structureManager, ChunkPos chunkPos, LevelHeightAccessor levelHeightAccessor, Random random) {
+	public Optional<StructurePiece> generatePieces(PieceGeneratorSupplier.Context<?> context) {
+		ChunkPos chunkPos = context.chunkPos();
+		if (!TFFeature.isInFeatureChunk(chunkPos.x << 4, chunkPos.z << 4))
+			return Optional.empty();
 		boolean dontCenter = this == TFFeature.LICH_TOWER || this == TFFeature.TROLL_CAVE || this == TFFeature.YETI_CAVE;
 		int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
 		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
-		int y = this.shouldAdjustToTerrain() ? Mth.clamp(chunkGenerator.getFirstOccupiedHeight(x, z, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, levelHeightAccessor), chunkGenerator.getSeaLevel() + 1, chunkGenerator.getSeaLevel() + 7) : chunkGenerator.getSeaLevel();
-		//StructurePiece start = this.provideFirstPiece(structureManager, chunkGenerator, random, x, y, z);
-		//if(start == null)
-		//	return;
-		//this.addPiece(start);
-		//.addChildren(start, this, random);
-		//createBoundingBox();
-
-		//im currently isolating one structure monstosity at 0 0. Otherwise they spawn every chunk and freeze the game. FIXME once the structures are correctly fixed
-		return chunkPos.x == 0 && chunkPos.z == 0 ? Optional.ofNullable(this.provideFirstPiece(structureManager, chunkGenerator, random, x, y, z)) : Optional.empty();
+		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
+		Holder<Biome> holder = context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z));
+		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed()))
+			return Optional.empty();
+		return Optional.ofNullable(this.provideFirstPiece(context.structureManager(), context.chunkGenerator(), new Random(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z));
 	}
 
-	//TODO Mayby better way has....?
 	public GenerationStep.Decoration getDecorationStage() {
 		return GenerationStep.Decoration.SURFACE_STRUCTURES;
 	}

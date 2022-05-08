@@ -2,14 +2,13 @@ package twilightforest.world.components.structures.icetower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
@@ -48,8 +47,8 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		// add entrance tower
 		BoundingBox towerBB = new BoundingBox(this.boundingBox.getCenter());
 
-		if (list instanceof StructureStart start)
-			for (StructurePiece structurecomponent : start.getPieces())
+		if (list instanceof StructurePiecesBuilder start)
+			for (StructurePiece structurecomponent : start.pieces)
 				towerBB.encapsulate(structurecomponent.getBoundingBox());
 
 		// TODO: make this more general
@@ -85,8 +84,8 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
 
 		list.addPiece(bridge);
-		if (list instanceof StructureStart start) {
-			bridge.addChildren(start.getPieces().get(0), list, rand);
+		if (list instanceof StructurePiecesBuilder start) {
+			bridge.addChildren(start.pieces.get(0), list, rand);
 		}
 	}
 
@@ -97,8 +96,8 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		IceTowerWingComponent entrance = new IceTowerEntranceComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
 		list.addPiece(entrance);
-		if (list instanceof StructureStart start) {
-			entrance.addChildren(start.getPieces().get(0), list, rand);
+		if (list instanceof StructurePiecesBuilder start) {
+			entrance.addChildren(start.pieces.get(0), list, rand);
 		}
 		addOpening(x, y, z, rotation);
 		return true;

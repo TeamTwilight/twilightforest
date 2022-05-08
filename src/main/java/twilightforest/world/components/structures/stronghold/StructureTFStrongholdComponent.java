@@ -12,9 +12,9 @@ import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.material.Material;
 import twilightforest.TFConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -134,8 +134,8 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	 */
 	protected StructurePiece findBreakInComponent(StructurePieceAccessor list, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
-		if (list instanceof StructureStart start) {
-			for (StructurePiece component : start.getPieces()) {
+		if (list instanceof StructurePiecesBuilder start) {
+			for (StructurePiece component : start.pieces) {
 				if (component.getBoundingBox() != null && component.getBoundingBox().isInside(pos)) {
 					return component;
 				}

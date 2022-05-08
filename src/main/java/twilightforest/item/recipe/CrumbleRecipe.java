@@ -70,7 +70,7 @@ public class CrumbleRecipe implements Recipe<Container> {
 
 	@Override
 	public RecipeType<?> getType() {
-		return TFRecipes.CRUMBLE_RECIPE;
+		return TFRecipes.CRUMBLE_RECIPE.get();
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<CrumbleRecipe> {

@@ -1,0 +1,5 @@
+{
+  "type": "twilightforest:transformation_powder",
+  "from": "minecraft:villager",
+  "to": "undergarden:stoneborn"
+}

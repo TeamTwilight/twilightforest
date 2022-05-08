@@ -24,6 +24,6 @@ public class ChunkCenterModifier extends PlacementModifier {
 
 	@Override
 	public PlacementModifierType<?> type() {
-		return TwilightFeatures.CHUNK_CENTERER;
+		return TwilightFeatures.CHUNK_CENTERER.get();
 	}
 }

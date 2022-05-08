@@ -34,7 +34,7 @@
             "predicate": {
               "type": "twilightforest:redcap_sapper",
               "location": {
-                "feature": "twilightforest:medium_hollow_hill"
+                "feature": "twilightforest:configured_hollow_hill_medium"
               }
             },
             "entity": "this"

@@ -16,9 +16,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -47,6 +47,11 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	protected IceTowerWingComponent(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
+
+		// decorator
+		if (this.deco == null) {
+			this.deco = new IceTowerDecorator();
+		}
 	}
 
 	@Override
@@ -132,7 +137,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (list instanceof StructureStart start && isOutOfRange(start.getPieces().get(0), dx[0], dx[2], RANGE)) {
+		if (list instanceof StructurePiecesBuilder start && !start.pieces.isEmpty() && isOutOfRange(start.pieces.get(0), dx[0], dx[2], RANGE)) {
 			return false;
 		}
 
@@ -141,8 +146,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.addPiece(wing);
-			if (list instanceof StructureStart start) {
-				wing.addChildren(start.getPieces().get(0), list, rand);
+			if (list instanceof StructurePiecesBuilder start) {
+				wing.addChildren(start.pieces.get(0), list, rand);
 			}
 			addOpening(x, y, z, rotation);
 			return true;
@@ -164,8 +169,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.addPiece(wing);
-			if (list instanceof StructureStart start) {
-				wing.addChildren(start.getPieces().get(0), list, rand);
+			if (list instanceof StructurePiecesBuilder start) {
+				wing.addChildren(start.pieces.get(0), list, rand);
 			}
 			addOpening(x, y, z, rotation);
 			return true;

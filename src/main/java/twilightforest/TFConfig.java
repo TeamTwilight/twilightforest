@@ -307,10 +307,6 @@ public class TFConfig {
 					translation(config + "optifine").
 					comment("Disable the nag screen when Optifine is installed.").
 					define("disableOptifineNagScreen", false);
-			disableHereBeDragons = builder.
-					translation(config + "dragons").
-					comment("Disable the Here Be Dragons experimental warning screen.").
-					define("disableHereBeDragons", false);
 			disableLockedBiomeToasts = builder.
 					translation(config + "locked_toasts").
 					comment("Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.").
@@ -383,7 +379,6 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue firstPersonEffects;
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
-		public ForgeConfigSpec.BooleanValue disableHereBeDragons;
 		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 
 		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();

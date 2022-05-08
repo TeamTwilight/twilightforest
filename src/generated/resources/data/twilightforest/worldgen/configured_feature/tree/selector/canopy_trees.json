@@ -1,0 +1,18 @@
+{
+  "config": {
+    "features": [
+      {
+        "feature": {
+          "feature": "twilightforest:tree/canopy_tree",
+          "placement": []
+        },
+        "chance": 0.6
+      }
+    ],
+    "default": {
+      "feature": "twilightforest:tree/twilight_oak_tree",
+      "placement": []
+    }
+  },
+  "type": "minecraft:random_selector"
+}

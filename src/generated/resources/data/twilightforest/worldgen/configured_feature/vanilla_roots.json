@@ -1,0 +1,11 @@
+{
+  "config": {
+    "state": {
+      "Properties": {
+        "waterlogged": "false"
+      },
+      "Name": "minecraft:hanging_roots"
+    }
+  },
+  "type": "twilightforest:underground_plants"
+}

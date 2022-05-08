@@ -1,0 +1,14 @@
+{
+  "feature": "twilightforest:thorns",
+  "placement": [
+    {
+      "integrity": 0.7,
+      "heightmap": "OCEAN_FLOOR_WG",
+      "biome_lock": "twilightforest:thornlands",
+      "type": "twilightforest:chunk_blanketing"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

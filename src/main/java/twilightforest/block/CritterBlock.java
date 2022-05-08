@@ -1,10 +1,13 @@
 package twilightforest.block;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -17,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -36,13 +40,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fml.ModList;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.entity.projectile.CicadaShot;
-import twilightforest.entity.projectile.MoonwormShot;
+import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.util.TFStats;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
@@ -103,7 +108,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		if (state.getValue(WATERLOGGED)) {
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-		if (!canSurvive(state, level, pos)) {
+		if (state.getValue(FACING).getOpposite() == direction && !state.canSurvive(level, pos)) {
 			return Blocks.AIR.defaultBlockState();
 		} else {
 			return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
@@ -148,7 +153,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if ((entity instanceof Projectile && !(entity instanceof MoonwormShot) && !(entity instanceof CicadaShot)) || entity instanceof FallingBlockEntity) {
+		if ((entity instanceof Projectile && !entity.getType().is(EntityTagGenerator.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
 			level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 			if (level.isClientSide())
 				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.getLocation(), SoundSource.NEUTRAL);
@@ -164,7 +169,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 						0.0D, 0.0D, 0.0D);
 			}
 			if (entity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
-				player.awardStat(TFStats.BUGS_SQUISHED);
+				player.awardStat(TFStats.BUGS_SQUISHED.get());
 				TFAdvancements.KILL_BUG.trigger(player, state);
 			}
 		}
@@ -180,4 +185,11 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		builder.add(FACING, WATERLOGGED);
 	}
 
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, getter, tooltip, flag);
+		if(ModList.get().isLoaded("undergarden")) {
+			tooltip.add((new TranslatableComponent("tooltip.pebble")).withStyle(ChatFormatting.GRAY));
+		}
+	}
 }

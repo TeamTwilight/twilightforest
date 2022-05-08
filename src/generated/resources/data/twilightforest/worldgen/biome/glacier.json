@@ -1,5 +1,7 @@
 {
-  "carvers": {},
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
   "features": [
     [],
     [],
@@ -7,17 +9,32 @@
     [],
     [],
     [],
-    [],
-    [],
-    [],
-    [],
     [
-      "minecraft:void_start_platform"
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
     ]
   ],
+  "creature_spawn_probability": 0.2,
   "spawners": {
     "monster": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "twilightforest:penguin",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
@@ -27,10 +44,10 @@
   },
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:glacier",
-  "precipitation": "none",
-  "temperature": 0.5,
-  "downfall": 0.5,
-  "category": "none",
+  "precipitation": "snow",
+  "temperature": 0.8,
+  "downfall": 0.1,
+  "category": "icy",
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -38,8 +55,14 @@
       "block_search_extent": 8,
       "offset": 2.0
     },
-    "sky_color": 8103167,
-    "fog_color": 12638463,
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "sky_color": 2105930,
+    "fog_color": 12648408,
     "water_color": 4159204,
     "water_fog_color": 329011
   }

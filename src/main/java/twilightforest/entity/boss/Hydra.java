@@ -563,7 +563,7 @@ public class Hydra extends Mob implements Enemy {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(level, this)) {
+		if (deathTime > 0 && ForgeEventFactory.getMobGriefingEvent(level, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(level, pos, this)) {
 					level.destroyBlock(pos, false);
@@ -790,7 +790,7 @@ public class Hydra extends Mob implements Enemy {
 	}
 
 	@Override
-	protected boolean updateInWaterStateAndDoFluidPushing() {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 

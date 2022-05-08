@@ -28,7 +28,7 @@
                 "stats": [
                   {
                     "type": "minecraft:custom",
-                    "stat": "minecraft:e115_slices_eaten",
+                    "stat": "twilightforest:e115_slices_eaten",
                     "value": {
                       "min": 115
                     }

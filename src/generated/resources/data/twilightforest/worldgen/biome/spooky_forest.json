@@ -1,23 +1,80 @@
 {
-  "carvers": {},
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
   "features": [
     [],
     [],
     [],
     [],
-    [],
-    [],
-    [],
-    [],
-    [],
+    [
+      "twilightforest:graveyard"
+    ],
     [],
     [
-      "minecraft:void_start_platform"
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "twilightforest:wood_roots",
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries",
+      "twilightforest:vanilla_roots"
+    ],
+    [],
+    [
+      "minecraft:patch_grass_forest",
+      "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
+      "twilightforest:tree/twilight_oak_tree",
+      "twilightforest:tree/dead_canopy_tree",
+      "twilightforest:pumpkin_lamppost",
+      "twilightforest:grass_placer",
+      "twilightforest:tf_oak_fallen_log",
+      "twilightforest:canopy_fallen_log",
+      "twilightforest:webs",
+      "twilightforest:fallen_leaves",
+      "minecraft:patch_pumpkin",
+      "minecraft:patch_dead_bush"
     ]
   ],
+  "creature_spawn_probability": 0.4,
   "spawners": {
     "monster": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "minecraft:spider",
+        "weight": 50,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:skeleton",
+        "weight": 20,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "twilightforest:skeleton_druid",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "minecraft:bat",
+        "weight": 20,
+        "minCount": 4,
+        "maxCount": 4
+      }
+    ],
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
@@ -27,10 +84,10 @@
   },
   "spawn_costs": {},
   "forge:registry_name": "twilightforest:spooky_forest",
-  "precipitation": "none",
+  "precipitation": "rain",
   "temperature": 0.5,
-  "downfall": 0.5,
-  "category": "none",
+  "downfall": 1.0,
+  "category": "forest",
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -38,9 +95,18 @@
       "block_search_extent": 8,
       "offset": 2.0
     },
-    "sky_color": 8103167,
-    "fog_color": 12638463,
-    "water_color": 4159204,
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "grass_color_modifier": "twilightforest:spooky_forest",
+    "sky_color": 2105930,
+    "foliage_color": 16745729,
+    "grass_color": 12865827,
+    "fog_color": 12648408,
+    "water_color": 16421137,
     "water_fog_color": 329011
   }
 }

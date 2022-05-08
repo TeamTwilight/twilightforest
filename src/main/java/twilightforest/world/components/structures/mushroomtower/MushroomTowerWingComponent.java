@@ -12,9 +12,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -161,8 +161,8 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	 */
 	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, Direction direction, StructurePieceAccessor list) {
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
-		if (list instanceof StructureStart start) {
-			for (StructurePiece obj : start.getPieces()) {
+		if (list instanceof StructurePiecesBuilder start) {
+			for (StructurePiece obj : start.pieces) {
 				if (obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
 					TowerWingComponent otherWing = (TowerWingComponent) obj;
 
@@ -192,8 +192,8 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 		//boxAbove.maxY() = 256;
 
-		if (list instanceof StructureStart start) {
-			for (StructurePiece obj : start.getPieces()) {
+		if (list instanceof StructurePiecesBuilder start) {
+			for (StructurePiece obj : start.pieces) {
 				if (this != obj && obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
 					TowerWingComponent otherWing = (TowerWingComponent) obj;
 

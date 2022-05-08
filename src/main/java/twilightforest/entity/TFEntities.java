@@ -30,6 +30,7 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -41,6 +42,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
+import twilightforest.compat.UndergardenCompat;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
@@ -408,6 +410,10 @@ public class TFEntities {
 		event.registerEntityRenderer(SLIDER.get(), SlideBlockRenderer::new);
 		event.registerEntityRenderer(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		event.registerEntityRenderer(ICE_ARROW.get(), DefaultArrowRenderer::new);
+
+		if(ModList.get().isLoaded("undergarden")) {
+			UndergardenCompat.registerSlingshotRenders(event);
+		}
 	}
 
 	@OnlyIn(Dist.CLIENT)

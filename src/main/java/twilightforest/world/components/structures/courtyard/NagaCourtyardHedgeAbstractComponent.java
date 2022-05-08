@@ -36,8 +36,8 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
     }
 
     @SuppressWarnings("WeakerAccess")
-    public NagaCourtyardHedgeAbstractComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
-        super(type, feature, i, x, y, z, rotation);
+    public NagaCourtyardHedgeAbstractComponent(StructureManager manager, StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
+        super(manager, type, feature, i, x, y, z, rotation);
         this.HEDGE = hedge;
         this.HEDGE_BIG = hedgeBig;
     }
@@ -51,6 +51,8 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
 	@Override
 	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeSettings.setBoundingBox(structureBoundingBox).clearProcessors();
+		if (TEMPLATE == null) // FIXME: this should never be null in the first place
+			LAZY_TEMPLATE_LOADER.run();
 		TEMPLATE.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.clearProcessors().addProcessor(NagastoneVariants.INSTANCE), randomIn, 18);
         templateBig.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(BlockIgnoreProcessor.AIR).addProcessor(new BlockRotProcessor(CourtyardMain.HEDGE_FLOOF)), randomIn, 18);
 	}

@@ -1,0 +1,8 @@
+{
+  "feature": "twilightforest:snow_under_trees",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "feature": "twilightforest:plant_roots",
+  "placement": [
+    {
+      "count": 4,
+      "type": "minecraft:count"
+    },
+    {
+      "height": {
+        "min_inclusive": {
+          "above_bottom": 0
+        },
+        "max_inclusive": {
+          "absolute": 10
+        },
+        "type": "minecraft:uniform"
+      },
+      "type": "minecraft:height_range"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "value": {
+        "occupies_surface": false,
+        "occupies_underground": true,
+        "additional_clearance": 0
+      }
+    },
+    {
+      "chance": 1,
+      "type": "minecraft:rarity_filter"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "MOTION_BLOCKING",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -2,11 +2,10 @@ package twilightforest.world.components.structures.mushroomtower;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
@@ -35,8 +34,8 @@ public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeCompone
 		MushroomTowerMainComponent wing = new MushroomTowerMainComponent(getFeatureType(), index, dx[0], dx[1], dx[2], 15, wingHeight, direction);
 
 		list.addPiece(wing);
-		if (list instanceof StructureStart start) {
-			wing.addChildren(start.getPieces().get(0), list, rand);
+		if (list instanceof StructurePiecesBuilder start) {
+			wing.addChildren(start.pieces.get(0), list, rand);
 		}
 		addOpening(x, y, z, rotation);
 

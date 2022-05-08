@@ -1,0 +1,25 @@
+{
+  "config": {
+    "features": [
+      {
+        "feature": {
+          "feature": "twilightforest:tree/dark_forest_birch_tree",
+          "placement": []
+        },
+        "chance": 0.35
+      },
+      {
+        "feature": {
+          "feature": "twilightforest:tree/dark_forest_oak_tree",
+          "placement": []
+        },
+        "chance": 0.35
+      }
+    ],
+    "default": {
+      "feature": "twilightforest:tree/darkwood_tree",
+      "placement": []
+    }
+  },
+  "type": "minecraft:random_selector"
+}

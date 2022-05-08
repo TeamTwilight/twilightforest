@@ -31,7 +31,7 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.features.TFVegetationFeatures;
+import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import java.util.Objects;
 import java.util.Random;
@@ -131,7 +131,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		// uberous!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateAtSurface(world, generator, TFVegetationFeatures.UBEROUS_SOIL_PATCH_BIG, decoRNG, dest.getX(), dest.getZ(), sbb);
+			generateAtSurface(world, generator, TFConfiguredFeatures.UBEROUS_SOIL_PATCH_BIG, decoRNG, dest.getX(), dest.getZ(), sbb);
 		}
 	}
 

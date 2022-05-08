@@ -1,0 +1,11 @@
+{
+  "config": {
+    "state": {
+      "Properties": {
+        "facing": "north"
+      },
+      "Name": "minecraft:jack_o_lantern"
+    }
+  },
+  "type": "twilightforest:lampposts"
+}

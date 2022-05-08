@@ -33,7 +33,7 @@
             "predicate": {
               "type": "twilightforest:wraith",
               "location": {
-                "feature": "twilightforest:large_hollow_hill"
+                "feature": "twilightforest:configured_hollow_hill_large"
               }
             },
             "entity": "this"
