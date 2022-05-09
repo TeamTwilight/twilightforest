@@ -1,6 +1,13 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,18 +15,14 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.entity.Chain;
 import twilightforest.entity.SpikeBlock;
@@ -30,14 +33,6 @@ import twilightforest.util.TFDamageSources;
 
 import java.util.List;
 import java.util.UUID;
-
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
 public class BlockChainGoblin extends Monster {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
@@ -187,51 +182,54 @@ public class BlockChainGoblin extends Monster {
 			}
 		}
 
-		if (this.chainMoveLength > 0) {
+		//when alive,Holding SpikeBlock
+		if (this.isAlive()) {
+			if (this.chainMoveLength > 0) {
 
-			Vec3 blockPos = this.getThrowPos();
+				Vec3 blockPos = this.getThrowPos();
 
-			double sx2 = this.getX();
-			double sy2 = this.getY() + this.getBbHeight() - 0.1;
-			double sz2 = this.getZ();
+				double sx2 = this.getX();
+				double sy2 = this.getY() + this.getBbHeight() - 0.1;
+				double sz2 = this.getZ();
 
-			double ox2 = sx2 - blockPos.x;
-			double oy2 = sy2 - blockPos.y - 0.25F;
-			double oz2 = sz2 - blockPos.z;
+				double ox2 = sx2 - blockPos.x;
+				double oy2 = sy2 - blockPos.y - 0.25F;
+				double oz2 = sz2 - blockPos.z;
 
-			//When the thrown chainblock exceeds a certain distance, return to the owner
-			if (this.chainMoveLength >= 6.0F || !this.isAlive()) {
-				this.setThrowing(false);
+				//When the thrown chainblock exceeds a certain distance, return to the owner
+				if (this.chainMoveLength >= 6.0F || !this.isAlive()) {
+					this.setThrowing(false);
+				}
+
+				this.chain1.setPos(sx2 - ox2 * 0.25, sy2 - oy2 * 0.25, sz2 - oz2 * 0.25);
+				this.chain2.setPos(sx2 - ox2 * 0.5, sy2 - oy2 * 0.5, sz2 - oz2 * 0.5);
+				this.chain3.setPos(sx2 - ox2 * 0.85, sy2 - oy2 * 0.85, sz2 - oz2 * 0.85);
+
+				this.block.setPos(sx2 - ox2, sy2 - oy2, sz2 - oz2);
+			} else {
+
+				// set block position
+				Vec3 blockPos = this.getChainPosition();
+				this.block.setPos(blockPos.x, blockPos.y, blockPos.z);
+				this.block.setYRot(getChainAngle());
+
+				// interpolate chain position
+				double sx = this.getX();
+				double sy = this.getY() + this.getBbHeight() - 0.1;
+				double sz = this.getZ();
+
+				double ox = sx - blockPos.x;
+				double oy = sy - blockPos.y - (block.getBbHeight() / 3D);
+				double oz = sz - blockPos.z;
+
+				this.chain1.setPos(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
+				this.chain2.setPos(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
+				this.chain3.setPos(sx - ox * 0.6, sy - oy * 0.6, sz - oz * 0.6);
 			}
-
-			this.chain1.setPos(sx2 - ox2 * 0.25, sy2 - oy2 * 0.25, sz2 - oz2 * 0.25);
-			this.chain2.setPos(sx2 - ox2 * 0.5, sy2 - oy2 * 0.5, sz2 - oz2 * 0.5);
-			this.chain3.setPos(sx2 - ox2 * 0.85, sy2 - oy2 * 0.85, sz2 - oz2 * 0.85);
-
-			this.block.setPos(sx2 - ox2, sy2 - oy2, sz2 - oz2);
-		} else {
-
-			// set block position
-			Vec3 blockPos = this.getChainPosition();
-			this.block.setPos(blockPos.x, blockPos.y, blockPos.z);
-			this.block.setYRot(getChainAngle());
-
-			// interpolate chain position
-			double sx = this.getX();
-			double sy = this.getY() + this.getBbHeight() - 0.1;
-			double sz = this.getZ();
-
-			double ox = sx - blockPos.x;
-			double oy = sy - blockPos.y - (block.getBbHeight() / 3D);
-			double oz = sz - blockPos.z;
-
-			this.chain1.setPos(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
-			this.chain2.setPos(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
-			this.chain3.setPos(sx - ox * 0.6, sy - oy * 0.6, sz - oz * 0.6);
 		}
 
 		// collide things with the block
-		if (!level.isClientSide && (this.isThrowing() || this.isSwingingChain())) {
+		if (!level.isClientSide && this.isAlive() && (this.isThrowing() || this.isSwingingChain())) {
 			this.applyBlockCollisions(this.block);
 		}
 		this.chainMove();
