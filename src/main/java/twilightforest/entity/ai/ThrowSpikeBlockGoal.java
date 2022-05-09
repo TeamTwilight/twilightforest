@@ -21,13 +21,12 @@ public class ThrowSpikeBlockGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		this.cooldown = Math.max(0, this.cooldown - 1);
 		LivingEntity target = this.attacker.getTarget();
 		if (target == null || this.attacker.distanceToSqr(target) > 42 || this.cooldown > 0) {
+			this.cooldown--;
 			return false;
 		} else {
-
-			return this.attacker.isAlive() && this.attacker.hasLineOfSight(target) && this.cooldown <= 0;
+			return this.attacker.isAlive() && this.attacker.hasLineOfSight(target);
 		}
 	}
 
