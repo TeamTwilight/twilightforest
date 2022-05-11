@@ -19,7 +19,7 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.UncraftingGui;
-import twilightforest.data.ItemTagGenerator;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.item.recipe.TFRecipes;
 
@@ -66,7 +66,7 @@ public class JEI implements IModPlugin {
                 recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
                 TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) ||
                 TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() != TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace()));//Prevents things that are tagged as banned from showing up
-        recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE));
+        recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
         registration.addRecipes(recipes, JEIUncraftingCategory.UNCRAFTING);
     }
 
