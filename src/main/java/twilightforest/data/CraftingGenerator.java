@@ -380,6 +380,15 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING.get()))
 				.save(consumer, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
+		ShapedRecipeBuilder.shaped(TFItems.KNIGHTMETAL_SPEAR.get())
+				.pattern("-")
+				.pattern("#")
+				.pattern("#")
+				.define('-', ItemTagGenerator.KNIGHTMETAL_INGOTS)
+				.define('#', ItemTagGenerator.TOWERWOOD)
+				.unlockedBy("has_ingot", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
+				.save(consumer, locEquip(TFItems.KNIGHTMETAL_SPEAR.getId().getPath()));
+
 		ShapelessRecipeBuilder.shapeless(TFItems.LIFEDRAIN_SCEPTER.get())
 				.requires(itemWithNBT(TFItems.LIFEDRAIN_SCEPTER, nbt -> nbt.putInt("Damage", TFItems.LIFEDRAIN_SCEPTER.get().getMaxDamage())))
 				.requires(Ingredient.of(Items.FERMENTED_SPIDER_EYE))

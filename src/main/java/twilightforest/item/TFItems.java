@@ -132,6 +132,7 @@ public class TFItems {
 	public static final RegistryObject<Item> KNIGHTMETAL_AXE = ITEMS.register("knightmetal_axe", () -> new KnightmetalAxeItem(TwilightItemTier.KNIGHTMETAL, defaultBuilder()));
 	public static final RegistryObject<Item> KNIGHTMETAL_RING = ITEMS.register("knightmetal_ring", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> KNIGHTMETAL_SHIELD = ITEMS.register("knightmetal_shield", () -> new KnightmetalShieldItem(defaultBuilder().durability(1024)));
+	public static final RegistryObject<Item> KNIGHTMETAL_SPEAR = ITEMS.register("knightmetal_spear", () -> new KnightmetalSpearItem(defaultBuilder().durability(524)));
 	public static final RegistryObject<Item> BLOCK_AND_CHAIN = ITEMS.register("block_and_chain", () -> new ChainBlockItem(defaultBuilder().durability(99)));
 	public static final RegistryObject<Item> PHANTOM_HELMET = ITEMS.register("phantom_helmet", () -> new PhantomArmorItem(TwilightArmorMaterial.ARMOR_PHANTOM, EquipmentSlot.HEAD, defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> PHANTOM_CHESTPLATE = ITEMS.register("phantom_chestplate", () -> new PhantomArmorItem(TwilightArmorMaterial.ARMOR_PHANTOM, EquipmentSlot.CHEST, defaultBuilder().rarity(Rarity.UNCOMMON)));
