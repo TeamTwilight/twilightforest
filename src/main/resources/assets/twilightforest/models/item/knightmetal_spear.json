@@ -1,213 +1,70 @@
 {
-  "credit": "Made with Blockbench",
-  "texture_size": [
-    64,
-    64
-  ],
-  "textures": {
-    "spear": "twilightforest:item/knightmetal_spear",
-    "particle": "twilightforest:item/knightmetal_spear"
-  },
-  "elements": [
-    {
-      "from": [
-        7,
-        0,
-        7
-      ],
-      "to": [
-        9,
-        32,
-        9
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            1,
-            2.5,
-            1.5,
-            10.5
-          ],
-          "texture": "#spear"
-        },
-        "east": {
-          "uv": [
-            0,
-            2.5,
-            0.5,
-            10.5
-          ],
-          "texture": "#spear"
-        },
-        "south": {
-          "uv": [
-            1.5,
-            2.5,
-            2,
-            10.5
-          ],
-          "texture": "#spear"
-        },
-        "west": {
-          "uv": [
-            0.5,
-            2.5,
-            1,
-            10.5
-          ],
-          "texture": "#spear"
-        },
-        "up": {
-          "uv": [
-            0.5,
-            0,
-            1,
-            0.5
-          ],
-          "texture": "#spear"
-        },
-        "down": {
-          "uv": [
-            1,
-            0,
-            1.5,
-            0.5
-          ],
-          "texture": "#spear"
-        }
-      }
-    }
-  ],
-  "display": {
-    "thirdperson_righthand": {
-      "translation": [
-        0,
-        -11,
-        0
-      ],
-      "scale": [
-        0.8,
-        0.8,
-        0.8
-      ]
-    },
-    "thirdperson_lefthand": {
-      "translation": [
-        0,
-        -11,
-        0
-      ],
-      "scale": [
-        0.8,
-        0.8,
-        0.8
-      ]
-    },
-    "firstperson_righthand": {
-      "rotation": [
-        -59,
-        0,
-        -145
-      ],
-      "translation": [
-        0,
-        3.75,
-        0
-      ],
-      "scale": [
-        0.8,
-        0.8,
-        0.8
-      ]
-    },
-    "firstperson_lefthand": {
-      "rotation": [
-        129,
-        40,
-        -30
-      ],
-      "translation": [
-        0,
-        3.75,
-        0
-      ],
-      "scale": [
-        0.8,
-        0.8,
-        0.8
-      ]
-    },
-    "ground": {
-      "rotation": [
-        0,
-        0,
-        -90
-      ],
-      "translation": [
-        0,
-        -3.5,
-        0
-      ],
-      "scale": [
-        0.66,
-        0.66,
-        0.66
-      ]
-    },
-    "gui": {
-      "rotation": [
-        -36,
-        2,
-        -133
-      ],
-      "translation": [
-        -3,
-        2.5,
-        0
-      ],
-      "scale": [
-        0.53,
-        0.53,
-        0.53
-      ]
-    },
-    "head": {
-      "scale": [
-        0.8,
-        0.8,
-        0.8
-      ]
-    },
-    "fixed": {
-      "rotation": [
-        0,
-        0,
-        -180
-      ],
-      "translation": [
-        0,
-        4.25,
-        0
-      ],
-      "scale": [
-        0.53,
-        0.53,
-        0.53
-      ]
-    }
-  },
-  "groups": [
-    {
-      "name": "spear",
-      "origin": [
-        8,
-        8,
-        8
-      ],
-      "color": 0,
-      "children": [
-        0
-      ]
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"particle": "twilightforest:items/knightmetal_spear",
+		"spear": "twilightforest:items/knightmetal_spear"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 32, 9],
+			"faces": {
+				"north": {"uv": [1, 2.5, 1.5, 10.5], "texture": "#spear"},
+				"east": {"uv": [0, 2.5, 0.5, 10.5], "texture": "#spear"},
+				"south": {"uv": [1.5, 2.5, 2, 10.5], "texture": "#spear"},
+				"west": {"uv": [0.5, 2.5, 1, 10.5], "texture": "#spear"},
+				"up": {"uv": [0.5, 0, 1, 0.5], "texture": "#spear"},
+				"down": {"uv": [1, 0, 1.5, 0.5], "texture": "#spear"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 0, -180],
+			"translation": [0, 12, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 0, -180],
+			"translation": [0, 12, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"firstperson_righthand": {
+			"rotation": [-59, 0, -145],
+			"translation": [0, 3.75, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"firstperson_lefthand": {
+			"rotation": [129, 40, -30],
+			"translation": [0, 3.75, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"ground": {
+			"rotation": [0, 0, -90],
+			"translation": [0, -3.5, 0],
+			"scale": [0.66, 0.66, 0.66]
+		},
+		"gui": {
+			"rotation": [-36, 2, -133],
+			"translation": [-3, 2.5, 0],
+			"scale": [0.53, 0.53, 0.53]
+		},
+		"head": {
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"fixed": {
+			"rotation": [0, 0, -180],
+			"translation": [0, 4.25, 0],
+			"scale": [0.53, 0.53, 0.53]
+		}
+	},
+	"groups": [
+		{
+			"name": "spear",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
 }
