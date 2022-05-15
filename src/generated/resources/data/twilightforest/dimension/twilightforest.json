@@ -68,8 +68,8 @@
           },
           {
             "parameters": {
-              "depth": -0.9,
-              "scale": 0.1
+              "depth": -1.95,
+              "scale": 0.0
             },
             "biome": "twilightforest:lake"
           },
@@ -145,21 +145,21 @@
           },
           {
             "parameters": {
-              "depth": 1.75,
-              "scale": 0.05
+              "depth": 4.75,
+              "scale": 0.25
             },
             "biome": "twilightforest:highlands"
           },
           {
             "parameters": {
-              "depth": 3.0,
+              "depth": 8.0,
               "scale": 0.1
             },
             "biome": "twilightforest:thornlands"
           },
           {
             "parameters": {
-              "depth": 5.25,
+              "depth": 13.75,
               "scale": 0.025
             },
             "biome": "twilightforest:final_plateau"

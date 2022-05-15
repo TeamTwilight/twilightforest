@@ -199,7 +199,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				pairBiome(registry, 0.005F, 0.005F, BiomeKeys.CLEARING),
 				pairBiome(registry, 0.05F, 0.1F, BiomeKeys.OAK_SAVANNAH),
 				pairBiome(registry, -1.75F, 0.25F, BiomeKeys.STREAM),
-				pairBiome(registry, -0.9F, 0.1F, BiomeKeys.LAKE),
+				pairBiome(registry, -1.95F, 0.0F, BiomeKeys.LAKE),
 
 				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.MUSHROOM_FOREST),
 				pairBiome(registry, 0.05F, 0.05F, BiomeKeys.DENSE_MUSHROOM_FOREST),
@@ -216,9 +216,9 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				pairBiome(registry, 0.05F, 0.15F, BiomeKeys.SNOWY_FOREST),
 				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.GLACIER),
 
-				pairBiome(registry, 1.75F, 0.05F, BiomeKeys.HIGHLANDS),
-				pairBiome(registry, 3.0F, 0.1F, BiomeKeys.THORNLANDS),
-				pairBiome(registry, 5.25F, 0.025F, BiomeKeys.FINAL_PLATEAU)
+				pairBiome(registry, 4.75F, 0.25F, BiomeKeys.HIGHLANDS),
+				pairBiome(registry, 8.0F, 0.1F, BiomeKeys.THORNLANDS),
+				pairBiome(registry, 13.75F, 0.025F, BiomeKeys.FINAL_PLATEAU)
 		);
 	}
 
