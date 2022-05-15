@@ -104,7 +104,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		int nz = this.getWorldZ(x, z);
 
 		// limit sprawl to a reasonable amount
-		if (index > 50 || isOutOfRange(entrance, nx, nz, 112)) {
+		if (index > 30 || isOutOfRange(entrance, nx, nz, 75)) {
 			return;
 		}
 

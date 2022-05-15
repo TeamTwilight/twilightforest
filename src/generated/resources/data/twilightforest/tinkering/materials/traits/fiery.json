@@ -1,0 +1,20 @@
+{
+  "default": [
+    {
+      "name": "twilightforest:twilit",
+      "level": 1
+    },
+    {
+      "name": "twilightforest:superheat",
+      "level": 1
+    },
+    {
+      "name": "tconstruct:autosmelt",
+      "level": 1
+    },
+    {
+      "name": "tconstruct:fiery",
+      "level": 1
+    }
+  ]
+}

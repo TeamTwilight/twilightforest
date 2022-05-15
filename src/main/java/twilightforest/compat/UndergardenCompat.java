@@ -38,7 +38,7 @@ public class UndergardenCompat extends TFCompat {
 	public static final RegistryObject<EntityType<MoonwormSlingshotProjectile>> MOONWORM_SLINGSHOT = ENTITIES.register("moonworm_slingshot", () -> EntityType.Builder.<MoonwormSlingshotProjectile>of(MoonwormSlingshotProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("twilightforest:moonworm_slingshot"));
 
 	protected UndergardenCompat() {
-		super("undergarden");
+		super("The Undergarden");
 	}
 
 	@Override

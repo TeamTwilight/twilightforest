@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "twilightforest:mushroom_tower",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 0,
+    "spacing": 1,
+    "separation": 0,
+    "type": "minecraft:random_spread"
+  }
+}

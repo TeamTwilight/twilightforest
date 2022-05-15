@@ -49,6 +49,7 @@ import twilightforest.client.ClientInitiator;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TConCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.compat.UndergardenCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -68,10 +69,7 @@ import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.registration.TFBiomeFeatures;
-import twilightforest.world.registration.TFNoiseGenerationSettings;
-import twilightforest.world.registration.TFStructures;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.world.registration.*;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.io.IOException;
@@ -132,18 +130,24 @@ public class TwilightForestMod {
 		//TFPotions.POTIONS.register(modbus);
 		TFEntities.SPAWN_EGGS.register(modbus);
 		TFStats.STATS.register(modbus);
+		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
 		TwilightFeatures.TREE_DECORATORS.register(modbus);
 		TwilightFeatures.TRUNK_PLACERS.register(modbus);
 
-		if(ModList.get().isLoaded("undergarden")) {
+		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
 			UndergardenCompat.ENTITIES.register(modbus);
+		}
+
+		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
+			TConCompat.FLUIDS.register(modbus);
+			TConCompat.MODIFIERS.register(modbus);
 		}
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(CapabilityList::registerCapabilities);
 		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
 		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
-		if(ModList.get().isLoaded("curios")) {
+		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
 			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 

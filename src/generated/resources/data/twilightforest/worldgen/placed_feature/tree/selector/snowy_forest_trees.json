@@ -37,18 +37,6 @@
       }
     },
     {
-      "predicate": {
-        "state": {
-          "Properties": {
-            "stage": "0"
-          },
-          "Name": "twilightforest:canopy_sapling"
-        },
-        "type": "minecraft:would_survive"
-      },
-      "type": "minecraft:block_predicate_filter"
-    },
-    {
       "type": "minecraft:biome"
     }
   ]

@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 public class SmartGrassProcessor extends StructureProcessor {
     public static final SmartGrassProcessor INSTANCE = new SmartGrassProcessor();
-    public static Codec<SmartGrassProcessor> CODEC = Codec.unit(() -> INSTANCE);
+    public static final Codec<SmartGrassProcessor> CODEC = Codec.unit(() -> INSTANCE);
 
     private SmartGrassProcessor() {
     }
@@ -49,6 +49,6 @@ public class SmartGrassProcessor extends StructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TFStructureProcessors.SMART_GRASS;
+        return TFStructureProcessors.SMART_GRASS.get();
     }
 }

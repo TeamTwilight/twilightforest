@@ -110,6 +110,7 @@ public final class TFSounds {
 	public static final SoundEvent HYDRA_HURT = createEvent("entity.twilightforest.hydra.hurt");
 	public static final SoundEvent HYDRA_ROAR = createEvent("entity.twilightforest.hydra.roar");
 	public static final SoundEvent HYDRA_SHOOT = createEvent("entity.twilightforest.hydra.shoot");
+	public static final SoundEvent HYDRA_SHOOT_FIRE = createEvent("entity.twilightforest.hydra.shoot_fire");
 	public static final SoundEvent HYDRA_WARN = createEvent("entity.twilightforest.hydra.warn");
 	public static final SoundEvent ICEBOMB_FIRED = createEvent("item.twilightforest.icebomb.fired");
 	public static final SoundEvent ICE_CORE_AMBIENT = createEvent("entity.twilightforest.ice.noise");
@@ -150,6 +151,7 @@ public final class TFSounds {
 	public static final SoundEvent MAZE_SLIME_HURT_SMALL = createEvent("entity.twilightforest.mazeslimesmall.hurt");
 	public static final SoundEvent MAZE_SLIME_SQUISH = createEvent("entity.twilightforest.mazeslime.squish");
 	public static final SoundEvent MAZE_SLIME_SQUISH_SMALL = createEvent("entity.twilightforest.mazeslimesmall.squish");
+	public static final SoundEvent METAL_SHIELD_SHATTERS = createEvent("item.twilightforest.knightmetal_shield.shatter");
 	public static final SoundEvent MINION_AMBIENT = createEvent("entity.twilightforest.minion.ambient");
 	public static final SoundEvent MINION_DEATH = createEvent("entity.twilightforest.minion.death");
 	public static final SoundEvent MINION_HURT = createEvent("entity.twilightforest.minion.hurt");
@@ -233,6 +235,7 @@ public final class TFSounds {
 	public static final SoundEvent TINYBIRD_CHIRP = createEvent("entity.twilightforest.tinybird.chirp");
 	public static final SoundEvent TINYBIRD_HURT = createEvent("entity.twilightforest.tinybird.hurt");
 	public static final SoundEvent TINYBIRD_SONG = createEvent("entity.twilightforest.tinybird.song");
+	public static final SoundEvent TINYBIRD_TAKEOFF = createEvent("entity.twilightforest.tinybird.takeoff");
 	public static final SoundEvent TOME_DEATH = createEvent("entity.twilightforest.tome.death");
 	public static final SoundEvent TOME_HURT = createEvent("entity.twilightforest.tome.hurt");
 	public static final SoundEvent TOME_AMBIENT = createEvent("entity.twilightforest.tome.ambient");
@@ -251,6 +254,7 @@ public final class TFSounds {
 	public static final SoundEvent WINTER_WOLF_AMBIENT = createEvent("entity.twilightforest.winterwolf.ambient");
 	public static final SoundEvent WINTER_WOLF_SHOOT = createEvent("entity.twilightforest.winterwolf.shoot");
 	public static final SoundEvent WINTER_WOLF_TARGET = createEvent("entity.twilightforest.winterwolf.target");
+	public static final SoundEvent WOOD_SHIELD_SHATTERS = createEvent("item.twilightforest.shield.shatter");
 	public static final SoundEvent WRAITH_AMBIENT = createEvent("entity.twilightforest.wraith.ambient");
 	public static final SoundEvent WRAITH_DEATH = createEvent("entity.twilightforest.wraith.death");
 	public static final SoundEvent WRAITH_HURT = createEvent("entity.twilightforest.wraith.hurt");
@@ -319,7 +323,7 @@ public final class TFSounds {
 				HEDGE_SPIDER_AMBIENT, HEDGE_SPIDER_DEATH, HEDGE_SPIDER_HURT, HEDGE_SPIDER_STEP,
 				HELMET_CRAB_DEATH, HELMET_CRAB_HURT, HELMET_CRAB_STEP,
 				HOSTILE_WOLF_AMBIENT, HOSTILE_WOLF_DEATH, HOSTILE_WOLF_HURT, HOSTILE_WOLF_TARGET,
-				HYDRA_DEATH, HYDRA_GROWL, HYDRA_HURT, HYDRA_ROAR, HYDRA_SHOOT, HYDRA_WARN,
+				HYDRA_DEATH, HYDRA_GROWL, HYDRA_HURT, HYDRA_ROAR, HYDRA_SHOOT, HYDRA_SHOOT_FIRE, HYDRA_WARN,
 				ICEBOMB_FIRED,
 				ICE_CORE_AMBIENT, ICE_CORE_DEATH, ICE_CORE_HURT, ICE_CORE_SHOOT,
 				ICE_GUARDIAN_AMBIENT, ICE_GUARDIAN_DEATH, ICE_GUARDIAN_HURT,
@@ -333,6 +337,7 @@ public final class TFSounds {
 				LOYAL_ZOMBIE_AMBIENT, LOYAL_ZOMBIE_DEATH, LOYAL_ZOMBIE_HURT, LOYAL_ZOMBIE_STEP,
 				MAGNET_GRAB,
 				MAZE_SLIME_DEATH, MAZE_SLIME_DEATH_SMALL, MAZE_SLIME_HURT, MAZE_SLIME_HURT_SMALL, MAZE_SLIME_SQUISH, MAZE_SLIME_SQUISH_SMALL,
+				METAL_SHIELD_SHATTERS,
 				MINION_AMBIENT, MINION_DEATH, MINION_HURT, MINION_STEP, MINION_SUMMON,
 				MINOSHROOM_AMBIENT, MINOSHROOM_ATTACK, MINOSHROOM_DEATH, MINOSHROOM_HURT, MINOSHROOM_SLAM, MINOSHROOM_STEP,
 				MINOTAUR_AMBIENT, MINOTAUR_ATTACK, MINOTAUR_DEATH, MINOTAUR_HURT, MINOTAUR_STEP,
@@ -361,7 +366,7 @@ public final class TFSounds {
 				TEAR_BREAK,
 				TERMITE_AMBIENT, TERMITE_DEATH, TERMITE_HURT, TERMITE_STEP,
 				TIME_CORE,
-				TINYBIRD_CHIRP, TINYBIRD_HURT, TINYBIRD_SONG,
+				TINYBIRD_CHIRP, TINYBIRD_HURT, TINYBIRD_SONG, TINYBIRD_TAKEOFF,
 				TOME_AMBIENT, TOME_DEATH, TOME_HURT,
 				TRANSFORMATION_CORE,
 				UNCRAFTING_TABLE_ACTIVATE,
@@ -370,6 +375,7 @@ public final class TFSounds {
 				GHAST_TRAP_AMBIENT, GHAST_TRAP_ACTIVE, GHAST_TRAP_ON, GHAST_TRAP_SPINDOWN, GHAST_TRAP_WARMUP,
 				VANISHING_BLOCK,
 				WINTER_WOLF_AMBIENT, WINTER_WOLF_DEATH, WINTER_WOLF_HURT, WINTER_WOLF_SHOOT, WINTER_WOLF_TARGET,
+				WOOD_SHIELD_SHATTERS,
 				WRAITH_AMBIENT, WRAITH_DEATH, WRAITH_HURT,
 				YETI_DEATH, YETI_GRAB, YETI_GROWL, YETI_HURT, YETI_THROW,
 				

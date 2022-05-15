@@ -50,6 +50,6 @@ public final class StoneBricksVariants extends StructureProcessor {
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.STONE_BRICK_VARIANTS;
+		return TFStructureProcessors.STONE_BRICK_VARIANTS.get();
 	}
 }

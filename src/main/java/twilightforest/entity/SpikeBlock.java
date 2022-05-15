@@ -1,14 +1,19 @@
 package twilightforest.entity;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
+import twilightforest.TFSounds;
 import twilightforest.entity.monster.BlockChainGoblin;
 
 public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
+	private Entity goblin;
+
+	private boolean isCollideBlock;
 
 	@Override
 	public EntityDimensions getDimensions(Pose pos) {
@@ -17,7 +22,26 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 
 	public SpikeBlock(Entity goblin) {
 		super(goblin);
+		this.goblin = goblin;
 		realSize = EntityDimensions.scalable(0.75F, 0.75F);
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		if (this.goblin != null && !this.goblin.isAlive()) {
+			this.doFall();
+		}
+	}
+
+	public void doFall() {
+		if (this.onGround && !this.isCollideBlock) {
+			this.playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.65F, 0.75F);
+			this.isCollideBlock = true;
+		} else {
+			this.setDeltaMovement(0.0F, this.getDeltaMovement().y - 0.04F, 0.0F);
+			this.move(MoverType.SELF, this.getDeltaMovement());
+		}
 	}
 
 	@Override

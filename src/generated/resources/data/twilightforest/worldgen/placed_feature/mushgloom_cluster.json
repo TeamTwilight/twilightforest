@@ -6,8 +6,8 @@
       "type": "minecraft:heightmap"
     },
     {
-      "count": 5,
-      "type": "minecraft:count"
+      "chance": 5,
+      "type": "minecraft:rarity_filter"
     },
     {
       "type": "minecraft:in_square"

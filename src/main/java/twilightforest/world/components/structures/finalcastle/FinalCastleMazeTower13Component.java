@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
@@ -265,14 +266,10 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(FinalCastlePieces.TFFCSiTo, getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
-				BoundingBox largerBB = new BoundingBox(sTower.getBoundingBox().getCenter());
-
-				//largerBB.minX() -= 6;
-				//largerBB.minZ() -= 6;
-				//largerBB.maxX() += 6;
-				//largerBB.maxZ() += 6;
-				//largerBB.minY() = 0;
-				//largerBB.maxY() = 255;
+				BoundingBox largerBB = new BoundingBox(
+						sTower.getBoundingBox().minX() - 6, 0, sTower.getBoundingBox().minZ() - 6,
+						sTower.getBoundingBox().maxX() + 6, 255, sTower.getBoundingBox().maxZ() + 6
+				);
 
 				StructurePiece intersect = list.findCollisionPiece(largerBB);
 
@@ -313,12 +310,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		// what color of tower?
 		FinalCastleMazeTower13Component eTower = makeNewDamagedTower(rand, facing, tc);
 
-		BoundingBox largerBB = new BoundingBox(eTower.getBoundingBox().getCenter());
-
-		//largerBB.minX() -= 6;
-		//largerBB.minZ() -= 6;
-		//largerBB.maxX() += 6;
-		//largerBB.maxZ() += 6;
+		BoundingBox largerBB = BoundingBoxUtils.cloneWithAdjustments(eTower.getBoundingBox(), -6, 0, -6, 6, 0, 6);
 
 		StructurePiece intersect = list.findCollisionPiece(largerBB);
 
@@ -383,12 +375,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 			eTower = new FinalCastleBellTower21Component(getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		}
 
-		BoundingBox largerBB = new BoundingBox(eTower.getBoundingBox().getCenter());
-
-		//largerBB.minX() -= 6;
-		//largerBB.minZ() -= 6;
-		//largerBB.maxX() += 6;
-		//largerBB.maxZ() += 6;
+		BoundingBox largerBB = BoundingBoxUtils.cloneWithAdjustments(eTower.getBoundingBox(), -6, 0, -6, 6, 0, 6);
 
 		StructurePiece intersect = list.findCollisionPiece(largerBB);
 

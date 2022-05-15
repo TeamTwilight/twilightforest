@@ -85,7 +85,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				new NoiseBasedChunkGenerator(
 						access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
-						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), -0.49F, 1.0F),
+						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), -1.25F, 2.5F),
 						0L,
 						noiseGenSettings
 				);
@@ -103,7 +103,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				new NoiseBasedChunkGenerator(
 						access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
-						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), 0.0F, 1.0F),
+						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), -1.25F, 2.5F),
 						4L, //drull had it set like this so its staying until he changes it
 						noiseGenSettings
 				);
@@ -198,7 +198,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				pairBiome(registry, 0.0625F, 0.05F, BiomeKeys.FIREFLY_FOREST),
 				pairBiome(registry, 0.005F, 0.005F, BiomeKeys.CLEARING),
 				pairBiome(registry, 0.05F, 0.1F, BiomeKeys.OAK_SAVANNAH),
-				pairBiome(registry, -0.8F, 0.0F, BiomeKeys.STREAM),
+				pairBiome(registry, -1.75F, 0.25F, BiomeKeys.STREAM),
 				pairBiome(registry, -0.9F, 0.1F, BiomeKeys.LAKE),
 
 				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.MUSHROOM_FOREST),
@@ -210,8 +210,8 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 				pairBiome(registry, -0.125F, 0.15F, BiomeKeys.SWAMP),
 				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.FIRE_SWAMP),
 
-				pairBiome(registry, 0.025F, 0.025F, BiomeKeys.DARK_FOREST),
-				pairBiome(registry, 0.025F, 0.025F, BiomeKeys.DARK_FOREST_CENTER),
+				pairBiome(registry, 0.025F, 0.005F, BiomeKeys.DARK_FOREST),
+				pairBiome(registry, 0.025F, 0.005F, BiomeKeys.DARK_FOREST_CENTER),
 
 				pairBiome(registry, 0.05F, 0.15F, BiomeKeys.SNOWY_FOREST),
 				pairBiome(registry, 0.025F, 0.05F, BiomeKeys.GLACIER),

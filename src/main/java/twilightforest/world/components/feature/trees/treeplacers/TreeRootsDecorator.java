@@ -45,8 +45,9 @@ public class TreeRootsDecorator extends TreeDecorator {
         this.addExtraStrands = addExtraStrands;
         this.length = length;
         this.rootBlock = rootBlock;
+        this.hasSurfaceRoots = surfaceBlock.isPresent();
 
-        if (this.hasSurfaceRoots = surfaceBlock.isPresent()) {
+        if (this.hasSurfaceRoots) {
             this.surfaceBlock = surfaceBlock.get();
         } else {
             this.surfaceBlock = EMPTY;
@@ -103,7 +104,7 @@ public class TreeRootsDecorator extends TreeDecorator {
         boolean stillAboveGround = true;
         for (BlockPos coord : new VoxelBresenhamIterator(pos.below(), dest)) {
             if (stillAboveGround && FeatureLogic.hasEmptyNeighbor(worldReader, coord)) {
-                if (worldReader.isStateAtPosition(coord, FeatureLogic::isReplaceable)) {
+                if (worldReader.isStateAtPosition(coord, FeatureLogic::worldGenReplaceable)) {
                     worldPlacer.accept(coord, airRoot.getState(random, coord));
                 } else if (!worldReader.isStateAtPosition(coord, FeatureLogic.SHOULD_SKIP)) break;
             } else {

@@ -72,6 +72,8 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 		return state.getValue(LIGHTING) == Lighting.NONE;
 	}
 
+	protected abstract Iterable<Vec3> getParticleOffsets(BlockState state, Level level, BlockPos pos);
+
 	// Original methods used Vec3 but here we can avoid creation of extraneous vectors
 	protected static void addParticlesAndSound(Level level, BlockPos pos, double xFraction, double yFraction, double zFraction, Random rand, boolean ominous) {
 		addParticlesAndSound(level, pos.getX() + xFraction, pos.getY() + yFraction, pos.getZ() + zFraction, rand, ominous);
@@ -104,10 +106,10 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 
 	public static void extinguish(@Nullable Player player, BlockState state, Level accessor, BlockPos pos) {
 		setLit(accessor, state, pos, false);
-		//TODO add an extinguish effect for the candelabra. The system is too wack for me
-		if(state.getBlock() instanceof AbstractSkullCandleBlock skull) {
-			skull.getParticleOffsets(state, accessor, pos).forEach((p_151926_) ->
-					accessor.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + p_151926_.x(), (double) pos.getY() + p_151926_.y(), (double) pos.getZ() + p_151926_.z(), 0.0D, 0.025D, 0.0D));
+
+		if(state.getBlock() instanceof AbstractLightableBlock abstractLightableBlock) {
+			abstractLightableBlock.getParticleOffsets(state, accessor, pos).forEach((vec3) ->
+					accessor.addParticle(ParticleTypes.SMOKE, (double)pos.getX() + vec3.x, (double)pos.getY() + vec3.y, (double)pos.getZ() + vec3.z, 0.0D, 0.025D, 0.0D));
 		}
 
 		accessor.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);

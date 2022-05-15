@@ -13,9 +13,6 @@
       "with": [
         {
           "translate": "entity.twilightforest.redcap_sapper"
-        },
-        {
-          "translate": "structure.medium_hollow_hill"
         }
       ]
     },
@@ -34,7 +31,7 @@
             "predicate": {
               "type": "twilightforest:redcap_sapper",
               "location": {
-                "feature": "twilightforest:configured_hollow_hill_medium"
+                "feature": "twilightforest:medium_hollow_hill"
               }
             },
             "entity": "this"

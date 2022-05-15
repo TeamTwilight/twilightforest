@@ -253,7 +253,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 		@Override
 		protected StructureProcessorType<?> getType() {
-			return TFStructureProcessors.WEB;
+			return TFStructureProcessors.WEB.get();
 		}
 
 		@Nullable

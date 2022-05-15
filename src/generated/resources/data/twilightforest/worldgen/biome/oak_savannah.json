@@ -43,7 +43,8 @@
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
       "twilightforest:tree/savannah_oak_tree",
-      "twilightforest:default_fallen_logs"
+      "twilightforest:default_fallen_logs",
+      "twilightforest:tree/hollow_oak"
     ]
   ],
   "spawners": {

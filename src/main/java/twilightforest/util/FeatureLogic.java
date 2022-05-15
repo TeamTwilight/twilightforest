@@ -14,38 +14,38 @@ import java.util.function.Predicate;
  * Feature Utility methods that don't invoke placement. For placement see FeaturePlacers
  */
 public final class FeatureLogic {
-    public static final Predicate<BlockState> IS_REPLACEABLE = state -> state.getMaterial().isReplaceable();
+    public static final Predicate<BlockState> IS_REPLACEABLE_AIR = state -> state.getMaterial().isReplaceable() || state.isAir();
     public static final Predicate<BlockState> SHOULD_SKIP = state -> state.is(BlockTags.FEATURES_CANNOT_REPLACE);
     public static boolean hasEmptyNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
-        return worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE)
-                || worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE)
-                || worldReader.isStateAtPosition(pos.south(), IS_REPLACEABLE)
-                || worldReader.isStateAtPosition(pos.west(), IS_REPLACEABLE)
-                || worldReader.isStateAtPosition(pos.east(), IS_REPLACEABLE)
-                || worldReader.isStateAtPosition(pos.below(), IS_REPLACEABLE);
+        return worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE_AIR)
+                || worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE_AIR)
+                || worldReader.isStateAtPosition(pos.south(), IS_REPLACEABLE_AIR)
+                || worldReader.isStateAtPosition(pos.west(), IS_REPLACEABLE_AIR)
+                || worldReader.isStateAtPosition(pos.east(), IS_REPLACEABLE_AIR)
+                || worldReader.isStateAtPosition(pos.below(), IS_REPLACEABLE_AIR);
     }
 
     // Slight stretch of logic: We check if the block is completely surrounded by air.
     // If it's not completely surrounded by air, then there's a solid
     public static boolean hasSolidNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
-        return !(worldReader.isStateAtPosition(pos.below(), IS_REPLACEABLE)
-                && worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE)
-                && worldReader.isStateAtPosition(pos.south(), IS_REPLACEABLE)
-                && worldReader.isStateAtPosition(pos.west(), IS_REPLACEABLE)
-                && worldReader.isStateAtPosition(pos.east(), IS_REPLACEABLE)
-                && worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE));
+        return !(worldReader.isStateAtPosition(pos.below(), IS_REPLACEABLE_AIR)
+                && worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE_AIR)
+                && worldReader.isStateAtPosition(pos.south(), IS_REPLACEABLE_AIR)
+                && worldReader.isStateAtPosition(pos.west(), IS_REPLACEABLE_AIR)
+                && worldReader.isStateAtPosition(pos.east(), IS_REPLACEABLE_AIR)
+                && worldReader.isStateAtPosition(pos.above(), IS_REPLACEABLE_AIR));
     }
 
     public static boolean canRootGrowIn(LevelSimulatedReader worldReader, BlockPos pos) {
-        if (worldReader.isStateAtPosition(pos, IS_REPLACEABLE)) {
+        if (worldReader.isStateAtPosition(pos, IS_REPLACEABLE_AIR)) {
             // roots can grow through air if they are near a solid block
             return hasSolidNeighbor(worldReader, pos);
         } else {
-            return worldReader.isStateAtPosition(pos, FeatureLogic::isReplaceable);
+            return worldReader.isStateAtPosition(pos, FeatureLogic::worldGenReplaceable);
         }
     }
 
-    public static boolean isReplaceable(BlockState state) {
+    public static boolean worldGenReplaceable(BlockState state) {
         return (state.getMaterial().isReplaceable() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
     }
 

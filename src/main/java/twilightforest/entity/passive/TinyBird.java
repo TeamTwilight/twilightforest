@@ -152,7 +152,7 @@ public class TinyBird extends Bird {
 			if (this.isSpooked() || this.isInWater() || level.containsAnyLiquid(getBoundingBox()) || (this.random.nextInt(200) == 0 && !this.isLandableBlock(this.blockPosition().below()))) {
 				this.setIsBirdLanded(false);
 				if (!flag) {
-					this.level.levelEvent(null, 1025, blockpos, 0);
+					this.playSound(TFSounds.TINYBIRD_TAKEOFF, 0.05F, this.getVoicePitch());
 				}
 			}
 		} else {

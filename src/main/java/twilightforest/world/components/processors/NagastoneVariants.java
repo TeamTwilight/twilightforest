@@ -3,9 +3,11 @@ package twilightforest.world.components.processors;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeaturePlacers;
@@ -13,9 +15,6 @@ import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 
 public final class NagastoneVariants extends StructureProcessor {
 	public static final NagastoneVariants INSTANCE = new NagastoneVariants();
@@ -51,6 +50,6 @@ public final class NagastoneVariants extends StructureProcessor {
 
 	@Override
 	public StructureProcessorType<?> getType() {
-		return TFStructureProcessors.NAGASTONE_VARIANTS;
+		return TFStructureProcessors.NAGASTONE_VARIANTS.get();
 	}
 }

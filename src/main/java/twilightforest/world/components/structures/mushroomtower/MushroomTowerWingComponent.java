@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
@@ -188,9 +189,10 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	private boolean isHighest(BoundingBox boundingBox, int size, StructurePieceAccessor list) {
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
 
-		BoundingBox boxAbove = new BoundingBox(boundingBox.getCenter());
-
-		//boxAbove.maxY() = 256;
+		BoundingBox boxAbove = new BoundingBox(
+				boundingBox.minX(), boundingBox.minY(), boundingBox.minZ(),
+				boundingBox.maxX(), 256, boundingBox.maxZ()
+		);
 
 		if (list instanceof StructurePiecesBuilder start) {
 			for (StructurePiece obj : start.pieces) {

@@ -1,25 +1,27 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.world.level.material.FluidState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.BlockTagGenerator;
 
 public class HydraMortarHead extends ThrowableProjectile {
 
@@ -39,14 +41,14 @@ public class HydraMortarHead extends ThrowableProjectile {
 		Vec3 vector = head.getLookAngle();
 
 		double dist = 3.5;
-		double px = head.getX() + vector.x * dist;
-		double py = head.getY() + 1 + vector.y * dist;
-		double pz = head.getZ() + vector.z * dist;
+		double px = head.getX() + vector.x() * dist;
+		double py = head.getY() + 1 + vector.y() * dist;
+		double pz = head.getZ() + vector.z() * dist;
 
-		moveTo(px, py, pz, 0, 0);
+		this.moveTo(px, py, pz, 0, 0);
 		// these are being set to extreme numbers when we get here, why?
-		head.setDeltaMovement(new Vec3(0, 0, 0));
-		shootFromRotation(head, head.getXRot(), head.getYRot(), -20.0F, 0.5F, 1F);
+		head.setDeltaMovement(Vec3.ZERO);
+		this.shootFromRotation(head, head.getXRot(), head.getYRot(), -20.0F, 0.5F, 1F);
 
 		TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getDeltaMovement().x(), head.getDeltaMovement().z());
 	}
@@ -60,12 +62,10 @@ public class HydraMortarHead extends ThrowableProjectile {
 	public void tick() {
 		super.tick();
 
-		//this.pushOutOfBlocks(this.getPosX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getPosZ());
-
 		if (this.isOnGround()) {
 			this.getDeltaMovement().multiply(0.9D, 0.9D, 0.9D);
 
-			if (!level.isClientSide && this.fuse-- <= 0) {
+			if (!level.isClientSide() && this.fuse-- <= 0) {
 				detonate();
 			}
 		}
@@ -76,34 +76,48 @@ public class HydraMortarHead extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void onHit(HitResult ray) {
-		if (ray instanceof EntityHitResult) {
-			if (!level.isClientSide &&
-
-					(!(((EntityHitResult)ray).getEntity() instanceof HydraMortarHead) || ((HydraMortarHead) ((EntityHitResult)ray).getEntity()).getOwner() != getOwner()) &&
-
-					((EntityHitResult)ray).getEntity() != getOwner() &&
-
-					!isPartOfHydra(((EntityHitResult)ray).getEntity())) {
-				detonate();
-			}
-		} else if (!megaBlast) {
+	protected void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		if (!this.megaBlast) {
+			//if we hit a wall, explode
+			if(result.getDirection() != Direction.DOWN) this.detonate();
 			// we hit the ground
 			this.setDeltaMovement(this.getDeltaMovement().x(), 0.0D, this.getDeltaMovement().z());
 			this.onGround = true;
-		} else
-			detonate();
-	}
-
-	private boolean isPartOfHydra(Entity entity) {
-		return (getOwner() instanceof Hydra && entity instanceof HydraPart && ((HydraPart) entity).getParent() == getOwner());
+		} else {
+			this.detonate();
+		}
 	}
 
 	@Override
-	public float getBlockExplosionResistance(Explosion explosion, BlockGetter world, BlockPos pos, BlockState state, FluidState fluid, float p_180428_6_) {
-		float resistance = super.getBlockExplosionResistance(explosion, world, pos, state, fluid, p_180428_6_);
+	protected void onHit(HitResult result) {
+		HitResult.Type hitresult$type = result.getType();
+		if (hitresult$type == HitResult.Type.ENTITY) {
+			this.onHitEntity((EntityHitResult)result);
+		} else if (hitresult$type == HitResult.Type.BLOCK) {
+			this.onHitBlock((BlockHitResult)result);
+		}
+	}
 
-		if (this.megaBlast && state.getBlock() != Blocks.BEDROCK && state.getBlock() != Blocks.END_PORTAL && state.getBlock() != Blocks.END_PORTAL_FRAME) {
+	@Override
+	protected void onHitEntity(EntityHitResult result) {
+		Entity entity = result.getEntity();
+		if (!level.isClientSide() && this.getOwner() != null) {
+			if((!(entity instanceof HydraMortarHead mortar) || mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
+				this.detonate();
+			}
+		}
+	}
+
+	private boolean isPartOfHydra(Entity entity) {
+		return this.getOwner() instanceof Hydra && entity instanceof HydraPart part && part.getParent().is(this.getOwner());
+	}
+
+	@Override
+	public float getBlockExplosionResistance(Explosion explosion, BlockGetter getter, BlockPos pos, BlockState state, FluidState fluid, float idk) {
+		float resistance = super.getBlockExplosionResistance(explosion, getter, pos, state, fluid, idk);
+
+		if (this.megaBlast && !state.is(BlockTagGenerator.COMMON_PROTECTIONS)) {
 			resistance = Math.min(0.8F, resistance);
 		}
 
@@ -112,14 +126,14 @@ public class HydraMortarHead extends ThrowableProjectile {
 
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-		boolean flag = ForgeEventFactory.getMobGriefingEvent(level, this);
+		boolean flag = ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this);
 		Explosion.BlockInteraction flag1 = flag ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE;
-		this.level.explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, flag1);
+		this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, flag1);
 
 		DamageSource src = new IndirectEntityDamageSource("onFire", this, getOwner()).setIsFire().setProjectile();
 
-		for (Entity nearby : this.level.getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if (nearby.hurt(src, DIRECT_DAMAGE) && !nearby.fireImmune()) {
+		for (Entity nearby : this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
+			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(src, DIRECT_DAMAGE)) {
 				nearby.setSecondsOnFire(BURN_FACTOR);
 			}
 		}
@@ -131,7 +145,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 	public boolean hurt(DamageSource source, float amount) {
 		super.hurt(source, amount);
 
-		if (source.getEntity() != null && !this.level.isClientSide) {
+		if (source.getEntity() != null && !this.getLevel().isClientSide()) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			if (vec3d != null) {
 				// reflect faster and more accurately

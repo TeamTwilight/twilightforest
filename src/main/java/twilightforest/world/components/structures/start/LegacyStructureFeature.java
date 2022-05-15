@@ -19,8 +19,8 @@ public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeature
 
     public LegacyStructureFeature(@Deprecated TFFeature feature) {
         super(NoneFeatureConfiguration.CODEC, configContext -> isValidBiome(configContext) ? feature.generatePieces(configContext).map(piece -> (structurePiecesBuilder, context) -> {
-			piece.addChildren(piece, structurePiecesBuilder, context.random());
 			structurePiecesBuilder.addPiece(piece);
+			piece.addChildren(piece, structurePiecesBuilder, context.random());
 			structurePiecesBuilder.pieces.stream()
 					.filter(TFStructureComponentTemplate.class::isInstance)
 					.map(TFStructureComponentTemplate.class::cast)

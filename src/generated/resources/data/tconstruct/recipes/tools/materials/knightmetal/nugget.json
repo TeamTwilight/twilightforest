@@ -1,0 +1,15 @@
+{
+  "type": "tconstruct:material",
+  "conditions": [
+    {
+      "modid": "tconstruct",
+      "type": "forge:mod_loaded"
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:nuggets/knightmetal"
+  },
+  "value": 1,
+  "needed": 9,
+  "material": "twilightforest:knightmetal"
+}

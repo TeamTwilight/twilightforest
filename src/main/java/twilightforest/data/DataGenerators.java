@@ -4,9 +4,12 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.TConCompat;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.tags.*;
@@ -36,5 +39,9 @@ public class DataGenerators {
 
 		generator.addProvider(new CrumbleHornGenerator(generator, helper));
 		generator.addProvider(new TransformationPowderGenerator(generator, helper));
+
+		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
+			TConCompat.tConDatagen(evt);
+		}
 	}
 }

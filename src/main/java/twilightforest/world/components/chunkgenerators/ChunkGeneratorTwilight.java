@@ -377,7 +377,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				for (int y = 127; y >= 0; y--) {
 					Block currentBlock = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).getBlock();
 					if (currentBlock == Blocks.STONE) {
-						gBase = y + 1;
+						gBase = y;
 						primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), glacierBase, 3);
 						break;
 					}
@@ -455,7 +455,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
-		int mazeHeight = TFGenerationSettings.SEALEVEL + 1;
+		int mazeHeight = TFGenerationSettings.SEALEVEL + 2;
 		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		if (dx <= -FEATURE_BOUNDARY) {
@@ -483,17 +483,22 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			}
 		}
 
-		// sets the ground level to the maze height
+		// sets the ground level to the maze height, but dont move anything in rivers
 		for (int y = 0; y < mazeHeight; y++) {
-			Block b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).getBlock();
-			if (b == Blocks.AIR || b == Blocks.WATER) {
-				primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
+			BlockState b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y));
+			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(BiomeKeys.STREAM)) {
+				if (b.isAir() || b.getMaterial().isLiquid()) {
+					primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
+				}
 			}
 		}
+
 		for (int y = mazeHeight; y <= 127; y++) {
-			Block b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).getBlock();
-			if (b != Blocks.AIR && b != Blocks.WATER) {
-				primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.AIR.defaultBlockState(), 3);
+			BlockState b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y));
+			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(BiomeKeys.STREAM)) {
+				if (!b.isAir() && !b.getMaterial().isLiquid()) {
+					primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.AIR.defaultBlockState(), 3);
+				}
 			}
 		}
 	}

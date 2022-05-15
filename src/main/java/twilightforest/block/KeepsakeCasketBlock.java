@@ -1,61 +1,50 @@
 package twilightforest.block;
 
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.block.entity.LidBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.DoubleBlockCombiner;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.item.TFItems;
-import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.entity.TFBlockEntities;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
 
@@ -76,7 +65,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	private static final VoxelShape SOLID_Z = Shapes.or(SOLID, TOPPER_Z);
 
 	protected KeepsakeCasketBlock() {
-		super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).noOcclusion().requiresCorrectToolForDrops().strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK));
+		super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).noOcclusion().requiresCorrectToolForDrops().strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK).lightLevel(state -> state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA ? 15 : 0));
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));
 	}
 
@@ -87,7 +76,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 		if(state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() != Blocks.AIR && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
 			return direction.getAxis() == Direction.Axis.X ? SOLID_X : SOLID_Z;
@@ -109,33 +98,33 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			BlockEntity tileentity = worldIn.getBlockEntity(pos);
+			BlockEntity tileentity = level.getBlockEntity(pos);
 			if (tileentity instanceof Container) {
-				Containers.dropContents(worldIn, pos, (Container) tileentity);
-				worldIn.updateNeighbourForOutputSignal(pos, this);
+				Containers.dropContents(level, pos, (Container) tileentity);
+				level.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			super.onRemove(state, worldIn, pos, newState, isMoving);
+			super.onRemove(state, level, pos, newState, isMoving);
 		}
 	}
 
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
-		return 1000000000F;
+		return Float.MAX_VALUE;
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		boolean flag = false;
 		if(state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
 			ItemStack stack = player.getItemInHand(handIn);
 			if (!(stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get())) {
-				if (worldIn.isClientSide) {
+				if (level.isClientSide()) {
 					return InteractionResult.SUCCESS;
 				} else {
-					MenuProvider inamedcontainerprovider = this.getMenuProvider(state, worldIn, pos);
+					MenuProvider inamedcontainerprovider = this.getMenuProvider(state, level, pos);
 
 					if (inamedcontainerprovider != null) {
 						player.openMenu(inamedcontainerprovider);
@@ -145,8 +134,8 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 			} else {
 				if (stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get() && state.getValue(BREAKAGE) > 0) {
 					if (!player.isCreative()) stack.shrink(1);
-					worldIn.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
-					worldIn.playSound(null, pos, TFSounds.CASKET_REPAIR, SoundSource.BLOCKS, 0.5F, worldIn.random.nextFloat() * 0.1F + 0.9F);
+					level.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
+					level.playSound(null, pos, TFSounds.CASKET_REPAIR, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 					flag = true;
 				}
 			}
@@ -155,14 +144,13 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
-		if (!worldIn.isClientSide && !player.isCreative() && worldIn.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
-			BlockEntity tile = worldIn.getBlockEntity(pos);
-			if (tile instanceof KeepsakeCasketBlockEntity) {
-				KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) tile;
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		if (!level.isClientSide() && !player.isCreative() && level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+			BlockEntity tile = level.getBlockEntity(pos);
+			if (tile instanceof KeepsakeCasketBlockEntity casket) {
 				ItemStack stack = new ItemStack(this);
 				String nameCheck = new TextComponent(casket.name + "'s " + casket.getDisplayName()).getString();
-				ItemEntity itementity = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
+				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
 				CompoundTag nbt = new CompoundTag();
 				nbt.putInt("damage", state.getValue(BREAKAGE));
 				stack.addTagElement("BlockStateTag", nbt);
@@ -175,29 +163,29 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 					Block block = state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock();
 					if (block != Blocks.AIR) {
 						ItemStack blockstack = new ItemStack(block);
-						ItemEntity item = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), blockstack);
+						ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), blockstack);
 						item.setDefaultPickUpDelay();
-						worldIn.addFreshEntity(item);
+						level.addFreshEntity(item);
 					}
 				}
 				itementity.setDefaultPickUpDelay();
-				worldIn.addFreshEntity(itementity);
+				level.addFreshEntity(itementity);
 			}
 		}
-		super.playerWillDestroy(worldIn, pos, state, player);
+		super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		CompoundTag nbt = stack.getOrCreateTag();
 		if (nbt.contains("BlockStateTag")) {
 			CompoundTag damageNbt = nbt.getCompound("BlockStateTag");
 			if (damageNbt.contains("damage")) {
-				worldIn.setBlock(pos, state.setValue(BREAKAGE, damageNbt.getInt("damage")), 2);
+				level.setBlock(pos, state.setValue(BREAKAGE, damageNbt.getInt("damage")), 2);
 			}
 		}
 		if (stack.hasCustomHoverName()) {
-			BlockEntity tileentity = worldIn.getBlockEntity(pos);
+			BlockEntity tileentity = level.getBlockEntity(pos);
 			if (tileentity instanceof KeepsakeCasketBlockEntity) {
 				((KeepsakeCasketBlockEntity) tileentity).setCustomName(stack.getHoverName());
 			}
@@ -205,27 +193,27 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		reactWithNeighbors(worldIn, pos, state);
-		super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		this.reactWithNeighbors(level, pos, state);
+		super.neighborChanged(state, level, pos, block, fromPos, isMoving);
 	}
 
 	//[VanillaCopy] of FlowingFluidBlock.reactWithNeighbors, adapted for blockstates
-	private void reactWithNeighbors(Level worldIn, BlockPos pos, BlockState state) {
+	private void reactWithNeighbors(Level level, BlockPos pos, BlockState state) {
 		if (state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA) {
-			boolean flag = worldIn.getBlockState(pos.below()).is(Blocks.SOUL_SOIL);
+			boolean flag = level.getBlockState(pos.below()).is(Blocks.SOUL_SOIL);
 
 			for(Direction direction : Direction.values()) {
 				if (direction != Direction.DOWN) {
 					BlockPos blockpos = pos.relative(direction);
-					if (worldIn.getFluidState(blockpos).is(FluidTags.WATER)) {
-						worldIn.setBlockAndUpdate(pos, state.setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.OBSIDIAN));
-						worldIn.levelEvent(1501, pos, 0);
+					if (level.getFluidState(blockpos).is(FluidTags.WATER)) {
+						level.setBlockAndUpdate(pos, state.setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.OBSIDIAN));
+						level.levelEvent(1501, pos, 0);
 					}
 
-					if (flag && worldIn.getBlockState(blockpos).is(Blocks.BLUE_ICE)) {
-						worldIn.setBlockAndUpdate(pos, state.setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.BASALT));
-						worldIn.levelEvent(1501, pos, 0);
+					if (flag && level.getBlockState(blockpos).is(Blocks.BLUE_ICE)) {
+						level.setBlockAndUpdate(pos, state.setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.BASALT));
+						level.levelEvent(1501, pos, 0);
 					}
 				}
 			}
@@ -233,9 +221,9 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 			for(Direction direction : Direction.values()) {
 				if (direction != Direction.DOWN) {
 					BlockPos blockpos = pos.relative(direction);
-					if (worldIn.getFluidState(blockpos).is(FluidTags.LAVA)) {
-						worldIn.setBlockAndUpdate(pos, state.setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.STONE));
-						worldIn.levelEvent(1501, pos, 0);
+					if (level.getFluidState(blockpos).is(FluidTags.LAVA)) {
+						level.setBlockAndUpdate(pos, state.setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.STONE));
+						level.levelEvent(1501, pos, 0);
 					}
 				}
 			}
@@ -253,8 +241,8 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(worldIn.getBlockEntity(pos));
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
 	}
 
 	@Override
@@ -273,18 +261,15 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		return state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid().defaultFluidState();
 	}
 
-	//[VanillCopy] of ChestBlock.getLidRotationCallback, uses TileEntityKeepsakeCasket instead
 	@OnlyIn(Dist.CLIENT)
 	public static DoubleBlockCombiner.Combiner<KeepsakeCasketBlockEntity, Float2FloatFunction> getLidRotationCallback(final LidBlockEntity lid) {
-		return new DoubleBlockCombiner.Combiner<KeepsakeCasketBlockEntity, Float2FloatFunction>() {
-			public Float2FloatFunction acceptDouble(KeepsakeCasketBlockEntity p_225539_1_, KeepsakeCasketBlockEntity p_225539_2_) {
-				return (angle) -> {
-					return Math.max(p_225539_1_.getOpenNess(angle), p_225539_2_.getOpenNess(angle));
-				};
+		return new DoubleBlockCombiner.Combiner<>() {
+			public Float2FloatFunction acceptDouble(KeepsakeCasketBlockEntity casket, KeepsakeCasketBlockEntity oldCasket) {
+				return (angle) -> Math.max(casket.getOpenNess(angle), oldCasket.getOpenNess(angle));
 			}
 
-			public Float2FloatFunction acceptSingle(KeepsakeCasketBlockEntity p_225538_1_) {
-				return p_225538_1_::getOpenNess;
+			public Float2FloatFunction acceptSingle(KeepsakeCasketBlockEntity casket) {
+				return casket::getOpenNess;
 			}
 
 			public Float2FloatFunction acceptNone() {

@@ -46,7 +46,10 @@
       "twilightforest:tree/dense_tree",
       "twilightforest:tree/selector/vanilla_trees",
       "twilightforest:default_fallen_logs",
-      "minecraft:jungle_bush"
+      "minecraft:jungle_bush",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
+      "twilightforest:tree/hollow_oak"
     ]
   ],
   "spawners": {

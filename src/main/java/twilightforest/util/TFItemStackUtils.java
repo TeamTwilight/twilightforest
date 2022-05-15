@@ -1,11 +1,10 @@
 package twilightforest.util;
 
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.*;
 import net.minecraftforge.items.CapabilityItemHandler;
 import twilightforest.TwilightForestMod;
 
@@ -88,24 +87,23 @@ public class TFItemStackUtils {
 		return result;
 	}
 
-	//TODO: TC Compat
-//	public static boolean hasToolMaterial(ItemStack stack, IItemTier material) {
-//
-//		Item item = stack.getItem();
-//
-//		// see TileEntityFurnace.getItemBurnTime
-//		if (item instanceof ToolItem && material.toString().equals(((ToolItem)item).getToolMaterialName())) {
-//			return true;
-//		}
-//		if (item instanceof SwordItem && material.toString().equals(((SwordItem)item).getToolMaterialName())) {
-//			return true;
-//		}
-//		if (item instanceof HoeItem && material.toString().equals(((HoeItem)item).getMaterialName())) {
-//			return true;
-//		}
-//
-//		return false;
-//	}
+	public static boolean hasToolMaterial(ItemStack stack, Tier tier) {
+
+		Item item = stack.getItem();
+
+		// see TileEntityFurnace.getItemBurnTime
+		if (item instanceof TieredItem tieredItem && tier.equals(tieredItem.getTier())) {
+			return true;
+		}
+		if (item instanceof SwordItem sword && tier.equals(sword.getTier())) {
+			return true;
+		}
+		if (item instanceof HoeItem hoe && tier.equals(hoe.getTier())) {
+			return true;
+		}
+
+		return false;
+	}
 
 	public static void clearInfoTag(ItemStack stack, String key) {
 		CompoundTag nbt = stack.getTag();

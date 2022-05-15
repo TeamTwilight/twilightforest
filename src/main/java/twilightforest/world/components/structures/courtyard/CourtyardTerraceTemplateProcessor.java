@@ -1,21 +1,20 @@
 package twilightforest.world.components.structures.courtyard;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
-
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
 public final class CourtyardTerraceTemplateProcessor extends StructureProcessor {
     public static final CourtyardTerraceTemplateProcessor INSTANCE = new CourtyardTerraceTemplateProcessor();
@@ -62,6 +61,6 @@ public final class CourtyardTerraceTemplateProcessor extends StructureProcessor 
 
     @Override
     public StructureProcessorType<?> getType() {
-        return TFStructureProcessors.COURTYARD_TERRACE;
+        return TFStructureProcessors.COURTYARD_TERRACE.get();
     }
 }

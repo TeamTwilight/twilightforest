@@ -12,9 +12,6 @@
       "with": [
         {
           "translate": "entity.twilightforest.snow_queen"
-        },
-        {
-          "translate": "structure.aurora_palace"
         }
       ]
     },

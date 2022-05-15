@@ -43,6 +43,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fml.ModList;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.util.TFStats;
 
@@ -188,7 +189,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, getter, tooltip, flag);
-		if(ModList.get().isLoaded("undergarden")) {
+		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
 			tooltip.add((new TranslatableComponent("tooltip.pebble")).withStyle(ChatFormatting.GRAY));
 		}
 	}

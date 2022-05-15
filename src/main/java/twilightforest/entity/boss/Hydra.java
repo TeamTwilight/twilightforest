@@ -520,17 +520,18 @@ public class Hydra extends Mob implements Enemy {
 		return false;
 	}
 
-	// [VanillaCopy] based on EntityDragon.collideWithEntities
+	// [VanillaCopy] based on EnderDragon.knockBack
 	private void collideWithEntities(List<Entity> entities, Entity part) {
 		double d0 = (part.getBoundingBox().minX + part.getBoundingBox().maxX) / 2.0D;
 		double d1 = (part.getBoundingBox().minZ + part.getBoundingBox().maxZ) / 2.0D;
 
 		for (Entity entity : entities) {
+			if(entity instanceof Player player && player.isCreative()) continue;
 			if (entity instanceof LivingEntity) {
 				double d2 = entity.getX() - d0;
 				double d3 = entity.getZ() - d1;
-				double d4 = d2 * d2 + d3 * d3;
-				entity.push(d2 / d4 * 4.0D, 0.20000000298023224D, d3 / d4 * 4.0D);
+				double d4 = Math.max(d2 * d2 + d3 * d3, 0.1D);
+				entity.push(d2 / d4 * 8.0D, 0.2D, d3 / d4 * 8.0D);
 			}
 		}
 	}
@@ -563,7 +564,7 @@ public class Hydra extends Mob implements Enemy {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (deathTime > 0 && ForgeEventFactory.getMobGriefingEvent(level, this)) {
+		if (deathTime <= 0 && ForgeEventFactory.getMobGriefingEvent(level, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(level, pos, this)) {
 					level.destroyBlock(pos, false);

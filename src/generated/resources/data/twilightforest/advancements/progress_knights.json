@@ -19,19 +19,9 @@
     "function": "twilightforest:give_3_shields"
   },
   "criteria": {
-    "knight": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:knight_phantom"
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "all_knights": {
+      "trigger": "twilightforest:kill_all_phantoms",
+      "conditions": {}
     },
     "trophy": {
       "trigger": "minecraft:inventory_changed",
@@ -68,7 +58,7 @@
   },
   "requirements": [
     [
-      "knight",
+      "all_knights",
       "trophy",
       "was_in_fight"
     ],

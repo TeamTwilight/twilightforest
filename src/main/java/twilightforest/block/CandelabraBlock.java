@@ -16,11 +16,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 // The code is flexible to allow colors but I'm not sure if they'd look good on Candelabra
@@ -37,10 +39,33 @@ public class CandelabraBlock extends AbstractLightableBlock {
     public static final VoxelShape CANDLES_X = Shapes.or(Block.box(6, 7, 1, 10, 15, 15), Block.box(7.5, 1, 1, 8.5, 7,15), Block.box(5, 1, 7.5, 11, 7,8.5), Block.box(6, 0, 6, 10, 1, 10));
     public static final VoxelShape CANDLES_Z = Shapes.or(Block.box(1, 7, 6, 15, 15, 10), Block.box(1, 1, 7.5, 15, 7,8.5), Block.box(7.5, 1, 5, 8.5, 7,11), Block.box(6, 0, 6, 10, 1, 10));
 
+    public static final List<Vec3> NORTH_OFFSETS = List.of(new Vec3(0.1875D, 0.875D, 0.25D), new Vec3(0.5D, 0.875D, 0.25D), new Vec3(0.8125D, 0.875D, 0.25D));
+    public static final List<Vec3> SOUTH_OFFSETS = List.of(new Vec3(0.1875D, 0.875D, 0.75D), new Vec3(0.5D, 0.875D, 0.75D), new Vec3(0.8125D, 0.875D, 0.75D));
+
+    public static final List<Vec3> WEST_OFFSETS = List.of(new Vec3(0.25D, 0.875D, 0.1875D), new Vec3(0.25D, 0.875D, 0.5D), new Vec3(0.25D, 0.875D, 0.8125D));
+    public static final List<Vec3> EAST_OFFSETS = List.of(new Vec3(0.75D, 0.875D, 0.1875D), new Vec3(0.75D, 0.875D, 0.5D), new Vec3(0.75D, 0.875D, 0.8125D));
+
+    public static final List<Vec3> X_OFFSETS = List.of(new Vec3(0.5D, 0.875D, 0.1875D), new Vec3(0.5D, 0.875D, 0.5D), new Vec3(0.5D, 0.875D, 0.8125D));
+    public static final List<Vec3> Z_OFFSETS = List.of(new Vec3(0.1875D, 0.875D, 0.5D), new Vec3(0.5D, 0.875D, 0.5D), new Vec3(0.8125D, 0.875D, 0.5D));
+
     protected CandelabraBlock(Properties properties) {
         super(properties);
 
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIGHTING, Lighting.NONE));
+    }
+
+    @Override
+    protected Iterable<Vec3> getParticleOffsets(BlockState state, Level level, BlockPos pos) {
+        if (state.getValue(ON_WALL)) {
+            return switch (state.getValue(FACING)) {
+                case SOUTH -> SOUTH_OFFSETS;
+                case WEST -> WEST_OFFSETS;
+                case EAST -> EAST_OFFSETS;
+                default -> NORTH_OFFSETS;
+            };
+        } else {
+            return state.getValue(FACING).getAxis() == Direction.Axis.X ? X_OFFSETS : Z_OFFSETS;
+        }
     }
 
     @Override
@@ -121,40 +146,7 @@ public class CandelabraBlock extends AbstractLightableBlock {
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
         boolean ominous = state.getValue(LIGHTING) == Lighting.OMINOUS;
         if (state.getValue(LIGHTING) != Lighting.NONE) {
-            if (state.getValue(ON_WALL)) {
-                switch (state.getValue(FACING)) {
-                    case SOUTH -> {
-                        addParticlesAndSound(level, pos, 0.1875, 0.875, 0.75, rand, ominous);
-                        addParticlesAndSound(level, pos, 0.5, 0.875, 0.75, rand, ominous);
-                        addParticlesAndSound(level, pos, 0.8125, 0.875, 0.75, rand, ominous);
-                    }
-                    case WEST -> {
-                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.1875, rand, ominous);
-                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.5, rand, ominous);
-                        addParticlesAndSound(level, pos, 0.25, 0.875, 0.8125, rand, ominous);
-                    }
-                    case EAST -> {
-                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.1875, rand, ominous);
-                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.5, rand, ominous);
-                        addParticlesAndSound(level, pos, 0.75, 0.875, 0.8125, rand, ominous);
-                    }
-                    default -> {
-                        addParticlesAndSound(level, pos, 0.1875, 0.875, 0.25, rand, ominous);
-                        addParticlesAndSound(level, pos, 0.5, 0.875, 0.25, rand, ominous);
-                        addParticlesAndSound(level, pos, 0.8125, 0.875, 0.25, rand, ominous);
-                    }
-                }
-            } else {
-                if (state.getValue(FACING).getAxis() == Direction.Axis.X) {
-                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.1875, rand, ominous);
-                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.5, rand, ominous);
-                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.8125, rand, ominous);
-                } else {
-                    addParticlesAndSound(level, pos, 0.1875, 0.875, 0.5, rand, ominous);
-                    addParticlesAndSound(level, pos, 0.5, 0.875, 0.5, rand, ominous);
-                    addParticlesAndSound(level, pos, 0.8125, 0.875, 0.5, rand, ominous);
-                }
-            }
+            this.getParticleOffsets(state, level, pos).forEach(vec3 -> addParticlesAndSound(level, pos, vec3.x, vec3.y, vec3.z, rand, ominous));
         }
     }
 

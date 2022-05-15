@@ -47,7 +47,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         for (int i = 0; i < length; i++) {
             clearedLength = i;
 
-            if (FeatureLogic.isReplaceable(level.getBlockState(movingPos))) break;
+            if (FeatureLogic.worldGenReplaceable(level.getBlockState(movingPos))) break;
 
             movingPos.move(0, dY, 0);
         }
@@ -61,7 +61,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         for (int i = 0; i < remainingScanLength; i++) {
             finalLength = clearedLength + i;
 
-            if (!FeatureLogic.isReplaceable(level.getBlockState(movingPos))) break;
+            if (!FeatureLogic.worldGenReplaceable(level.getBlockState(movingPos))) break;
 
             movingPos.move(0, dY, 0);
         }
@@ -70,11 +70,14 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
 
         if (finalLength < lengthMinimum) return false;
 
-        return makeSpike(level, startPos, blockState, finalLength, dY, random);
+        return makeSpike(level, startPos, blockState, finalLength, dY, random, hang);
     }
 
-    private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, BlockStateProvider blockState, int length, int dY, Random random) {
+    private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, BlockStateProvider blockState, int length, int dY, Random random, boolean hang) {
         int diameter = (int) (length / 4.5F); // diameter of the base
+
+        //only place spikes on solid ground, not on the tops of trees
+        if (!level.getBlockState(startPos.below()).getMaterial().isSolid() && !hang) return false;
 
         // let's see...
         for (int dx = -diameter; dx <= diameter; dx++) {
@@ -91,7 +94,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
                 for (int i = 0; i < spikeLength; i++) {
                     BlockPos placement = startPos.offset(dx, i * dY, dz);
 
-                    if (FeatureLogic.isReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))
+                    if (FeatureLogic.worldGenReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))
                         level.setBlock(placement, blockState.getState(random, placement), 3);
                 }
             }

@@ -1,0 +1,6 @@
+{
+  "config": {},
+  "biomes": "#twilightforest:valid_hollow_hill_biomes",
+  "spawn_overrides": {},
+  "type": "twilightforest:large_hollow_hill"
+}

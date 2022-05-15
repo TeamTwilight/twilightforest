@@ -1,8 +1,9 @@
 package twilightforest.world.components.structures.start;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
@@ -62,7 +63,11 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 	}
 
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (ConfiguredStructureFeature<?, ?> structure : BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.stream().filter(feature -> feature.feature.getRegistryName().getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toList())) {
+		for (ConfiguredStructureFeature<?, ?> structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).stream()
+				.filter(feature -> {
+					ResourceLocation location = feature.feature.getRegistryName();
+					return location != null && TwilightForestMod.ID.equals(location.getNamespace());
+				}).toList()) {
 			StructureStart start = structureManager.getStructureAt(pos, structure);
 			if (!start.isValid())
 				continue;

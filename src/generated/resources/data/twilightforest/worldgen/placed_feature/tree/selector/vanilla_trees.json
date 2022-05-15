@@ -2,22 +2,6 @@
   "feature": "twilightforest:tree/selector/vanilla_trees",
   "placement": [
     {
-      "count": {
-        "distribution": [
-          {
-            "data": 10,
-            "weight": 9
-          },
-          {
-            "data": 11,
-            "weight": 1
-          }
-        ],
-        "type": "minecraft:weighted_list"
-      },
-      "type": "minecraft:count"
-    },
-    {
       "type": "minecraft:in_square"
     },
     {

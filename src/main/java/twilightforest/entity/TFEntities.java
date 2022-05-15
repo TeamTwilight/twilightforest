@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Pig;
@@ -42,6 +43,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
+import twilightforest.compat.TFCompat;
 import twilightforest.compat.UndergardenCompat;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
@@ -411,27 +413,28 @@ public class TFEntities {
 		event.registerEntityRenderer(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		event.registerEntityRenderer(ICE_ARROW.get(), DefaultArrowRenderer::new);
 
-		if(ModList.get().isLoaded("undergarden")) {
+		if(ModList.get().isLoaded(TFCompat.UNDERGARDEN_ID)) {
 			UndergardenCompat.registerSlingshotRenders(event);
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
+	@SuppressWarnings("deprecation")
 	public static class BakedMultiPartRenderers {
 
-		private static final Map<ResourceLocation, EntityRenderer<?>> renderers = new HashMap<>();
+		private static final Map<ResourceLocation, LazyLoadedValue<EntityRenderer<?>>> renderers = new HashMap<>();
 
 		public static void bakeMultiPartRenderers(EntityRendererProvider.Context context) {
-			BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_legacy_resources");
-			renderers.put(TFPart.RENDERER, new NoopRenderer<>(context));
-			renderers.put(HydraHead.RENDERER, legacy.getAsBoolean() ? new LegacyHydraHeadRenderer(context) : new HydraHeadRenderer(context));
-			renderers.put(HydraNeck.RENDERER, legacy.getAsBoolean() ? new LegacyHydraNeckRenderer(context) : new HydraNeckRenderer(context));
-			renderers.put(SnowQueenIceShield.RENDERER, new SnowQueenIceShieldLayer<>(context));
-			renderers.put(NagaSegment.RENDERER, legacy.getAsBoolean() ? new LegacyNagaSegmentRenderer<>(context) : new NagaSegmentRenderer<>(context));
+			boolean legacy = Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_legacy_resources");
+			renderers.put(TFPart.RENDERER, new LazyLoadedValue<>(() -> new NoopRenderer<>(context)));
+			renderers.put(HydraHead.RENDERER, new LazyLoadedValue<>(() -> legacy ? new LegacyHydraHeadRenderer(context) : new HydraHeadRenderer(context)));
+			renderers.put(HydraNeck.RENDERER, new LazyLoadedValue<>(() -> legacy ? new LegacyHydraNeckRenderer(context) : new HydraNeckRenderer(context)));
+			renderers.put(SnowQueenIceShield.RENDERER, new LazyLoadedValue<>(() -> new SnowQueenIceShieldLayer<>(context)));
+			renderers.put(NagaSegment.RENDERER, new LazyLoadedValue<>(() -> legacy ? new LegacyNagaSegmentRenderer<>(context) : new NagaSegmentRenderer<>(context)));
 		}
 
 		public static EntityRenderer<?> lookup(ResourceLocation location) {
-			return renderers.get(location);
+			return renderers.get(location).get();
 		}
 
 	}

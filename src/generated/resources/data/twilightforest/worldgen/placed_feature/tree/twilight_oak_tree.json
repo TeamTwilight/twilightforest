@@ -5,11 +5,11 @@
       "count": {
         "distribution": [
           {
-            "data": 2,
+            "data": 1,
             "weight": 9
           },
           {
-            "data": 3,
+            "data": 2,
             "weight": 1
           }
         ],

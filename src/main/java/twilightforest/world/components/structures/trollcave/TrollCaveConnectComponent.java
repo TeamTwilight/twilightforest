@@ -262,14 +262,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	private StructurePiece findNearbyGarden(StructurePieceAccessor list, BoundingBox boundingBox) {
-
-		BoundingBox largeBox = new BoundingBox(boundingBox.getCenter());
-		//largeBox.minX() -= 30;
-		//largeBox.minY() -= 30;
-		//largeBox.minZ() -= 30;
-		//largeBox.maxX() += 30;
-		//largeBox.maxY() += 30;
-		//largeBox.maxZ() += 30;
+		BoundingBox largeBox = new BoundingBox(boundingBox.minX() - 30, boundingBox.minY() - 30, boundingBox.minZ() - 30, boundingBox.maxX() - 30, boundingBox.maxY() - 30, boundingBox.maxZ() - 30);
 
 		if (list instanceof StructurePiecesBuilder start) {
 			for (StructurePiece component : start.pieces) {

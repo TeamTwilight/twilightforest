@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
@@ -85,13 +86,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 
 		FinalCastleEntranceSideTowerComponent eTower = new FinalCastleEntranceSideTowerComponent(getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
 
-		BoundingBox largerBB = new BoundingBox(eTower.getBoundingBox().getCenter());
-
-		// FIXME
-		//largerBB.minX() -= 6;
-		//largerBB.minZ() -= 6;
-		//largerBB.maxX() += 6;
-		//largerBB.maxZ() += 6;
+		BoundingBox largerBB = BoundingBoxUtils.cloneWithAdjustments(eTower.getBoundingBox(), -6, 0, -6, 6, 0, 6);
 
 		StructurePiece intersect = list.findCollisionPiece(largerBB);
 

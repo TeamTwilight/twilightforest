@@ -264,6 +264,7 @@ public final class FeaturePlacers {
     }
 
     public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, Property<T> property) {
+        if(!stateIn.hasProperty(property) || !stateOut.hasProperty(property)) return stateOut;
         return stateOut.setValue(property, stateIn.getValue(property));
     }
 }

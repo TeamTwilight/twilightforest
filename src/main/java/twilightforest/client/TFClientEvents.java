@@ -45,8 +45,9 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.compat.IECompat;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.item.TFItems;
+import twilightforest.item.*;
 
 import java.util.Objects;
 import java.util.function.UnaryOperator;
@@ -85,7 +86,7 @@ public class TFClientEvents {
 				tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 			}
 
-			if(ModList.get().isLoaded("immersiveengineering")) {
+			if(ModList.get().isLoaded(TFCompat.IE_ID)) {
 				IECompat.registerShaderModels(event);
 			}
 		}
@@ -348,4 +349,19 @@ public class TFClientEvents {
 	public static float sineTicker = 0;
 	public static final float PI = (float) Math.PI;
 	private static final int SINE_TICKER_BOUND = (int) ((PI * 200.0F) - 1.0F);
+
+	/**
+	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
+	 */
+	@SubscribeEvent
+	public static void FOVUpdate(EntityViewRenderEvent.FieldOfView event) {
+		if (event.getCamera().getEntity() instanceof LivingEntity living && living.isUsingItem()) {
+			Item useItem = living.getUseItem().getItem();
+			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
+				float f = (living.getTicksUsingItem() + (float)event.getPartialTicks()) / 20F;
+				f = f > 1.0F ? 1.0F : f * f;
+				event.setFOV(event.getFOV() * (1.0F - f * 0.15F));
+			}
+		}
+	}
 }

@@ -37,7 +37,7 @@ public class TowerMainComponent extends TowerWingComponent {
 
 	public TowerMainComponent(TFFeature feature, Random rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
-		super(LichTowerPieces.TFLTMai, feature, index, x, y + 6, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
+		super(LichTowerPieces.TFLTMai, feature, index, x, y, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}
 
 	@Override

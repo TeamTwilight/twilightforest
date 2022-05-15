@@ -99,14 +99,14 @@ public class TFBlocks {
 	public static final RegistryObject<AbstractSkullCandleBlock> PLAYER_WALL_SKULL_CANDLE = BLOCKS.register("player_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.PLAYER, BlockBehaviour.Properties.copy(Blocks.ZOMBIE_HEAD)));
 
 	//labyrinth
-	public static final RegistryObject<Block> MAZESTONE = BLOCKS.register("mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> MAZESTONE_BRICK = BLOCKS.register("mazestone_brick", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> CUT_MAZESTONE = BLOCKS.register("cut_mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> DECORATIVE_MAZESTONE = BLOCKS.register("decorative_mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> CRACKED_MAZESTONE = BLOCKS.register("cracked_mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> MOSSY_MAZESTONE = BLOCKS.register("mossy_mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> MAZESTONE_MOSAIC = BLOCKS.register("mazestone_mosaic", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> MAZESTONE_BORDER = BLOCKS.register("mazestone_border", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 15.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> MAZESTONE = BLOCKS.register("mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> MAZESTONE_BRICK = BLOCKS.register("mazestone_brick", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> CUT_MAZESTONE = BLOCKS.register("cut_mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> DECORATIVE_MAZESTONE = BLOCKS.register("decorative_mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> CRACKED_MAZESTONE = BLOCKS.register("cracked_mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> MOSSY_MAZESTONE = BLOCKS.register("mossy_mazestone", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> MAZESTONE_MOSAIC = BLOCKS.register("mazestone_mosaic", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> MAZESTONE_BORDER = BLOCKS.register("mazestone_border", () -> new MazestoneBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(100.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> RED_THREAD = BLOCKS.register("red_thread", () -> new RedThreadBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noCollission()));
 
 	//stronghold

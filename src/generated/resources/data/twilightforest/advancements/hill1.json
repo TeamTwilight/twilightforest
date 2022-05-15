@@ -13,9 +13,6 @@
       "with": [
         {
           "translate": "entity.twilightforest.redcap"
-        },
-        {
-          "translate": "structure.small_hollow_hill"
         }
       ]
     },
@@ -34,7 +31,7 @@
             "predicate": {
               "type": "twilightforest:redcap",
               "location": {
-                "feature": "twilightforest:configured_hollow_hill_small"
+                "feature": "twilightforest:small_hollow_hill"
               }
             },
             "entity": "this"

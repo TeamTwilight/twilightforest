@@ -8,12 +8,7 @@
       "translate": "advancement.twilightforest.hedge"
     },
     "description": {
-      "translate": "advancement.twilightforest.hedge.desc",
-      "with": [
-        {
-          "translate": "structure.hedge_maze"
-        }
-      ]
+      "translate": "advancement.twilightforest.hedge.desc"
     },
     "frame": "task",
     "show_toast": true,
@@ -30,7 +25,7 @@
             "predicate": {
               "type": "twilightforest:hedge_spider",
               "location": {
-                "feature": "twilightforest:configured_hedge_maze"
+                "feature": "twilightforest:hedge_maze"
               }
             },
             "entity": "this"
@@ -47,7 +42,7 @@
             "predicate": {
               "type": "twilightforest:swarm_spider",
               "location": {
-                "feature": "twilightforest:configured_hedge_maze"
+                "feature": "twilightforest:hedge_maze"
               }
             },
             "entity": "this"

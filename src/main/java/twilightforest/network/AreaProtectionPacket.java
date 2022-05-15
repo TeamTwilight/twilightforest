@@ -10,34 +10,40 @@ import net.minecraftforge.network.NetworkEvent;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ProtectionBox;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class AreaProtectionPacket {
 
-	private final BoundingBox sbb;
+	private final List<BoundingBox> sbb;
 	private final BlockPos pos;
 
-	public AreaProtectionPacket(BoundingBox sbb, BlockPos pos) {
+	public AreaProtectionPacket(List<BoundingBox> sbb, BlockPos pos) {
 		this.sbb = sbb;
 		this.pos = pos;
 	}
 
 	public AreaProtectionPacket(FriendlyByteBuf buf) {
-		sbb = new BoundingBox(
-				buf.readInt(), buf.readInt(), buf.readInt(),
-				buf.readInt(), buf.readInt(), buf.readInt()
-		);
+		sbb = new ArrayList<>();
+		int len = buf.readInt();
+		for (int i = 0; i < len; i++) {
+			sbb.add(new BoundingBox(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt()));
+		}
 		pos = buf.readBlockPos();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(sbb.minX());
-		buf.writeInt(sbb.minY());
-		buf.writeInt(sbb.minZ());
-		buf.writeInt(sbb.maxX());
-		buf.writeInt(sbb.maxY());
-		buf.writeInt(sbb.maxZ());
-		buf.writeLong(pos.asLong());
+		buf.writeInt(sbb.size());
+		sbb.forEach(box -> {
+			buf.writeInt(box.minX());
+			buf.writeInt(box.minY());
+			buf.writeInt(box.minZ());
+			buf.writeInt(box.maxX());
+			buf.writeInt(box.maxY());
+			buf.writeInt(box.maxZ());
+		});
+		buf.writeBlockPos(pos);
 	}
 
 	public static class Handler {
@@ -48,7 +54,7 @@ public class AreaProtectionPacket {
 				public void run() {
 
 					ClientLevel world = Minecraft.getInstance().level;
-					addProtectionBox(world, message.sbb);
+					message.sbb.forEach(box -> addProtectionBox(world, box));
 
 					for (int i = 0; i < 20; i++) {
 
@@ -79,7 +85,7 @@ public class AreaProtectionPacket {
 				}
 			}
 
-			world.addFreshEntity(new ProtectionBox(world, sbb));
+			world.putNonPlayerEntity(0, new ProtectionBox(world, sbb));
 		}
 	}
 }

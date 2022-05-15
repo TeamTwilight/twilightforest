@@ -202,7 +202,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (ConfiguredStructureFeature<?, ?> structureFeature : BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.stream().toList()) {
+		for (ConfiguredStructureFeature<?, ?> structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).stream().toList()) {
 			if (!(structureFeature.feature instanceof LegacyStructureFeature legacyData))
 				continue;
 			TFFeature feature = legacyData.feature;

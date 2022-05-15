@@ -61,8 +61,8 @@
           },
           {
             "parameters": {
-              "depth": -0.8,
-              "scale": 0.0
+              "depth": -1.75,
+              "scale": 0.25
             },
             "biome": "twilightforest:stream"
           },
@@ -118,14 +118,14 @@
           {
             "parameters": {
               "depth": 0.025,
-              "scale": 0.025
+              "scale": 0.005
             },
             "biome": "twilightforest:dark_forest"
           },
           {
             "parameters": {
               "depth": 0.025,
-              "scale": 0.025
+              "scale": 0.005
             },
             "biome": "twilightforest:dark_forest_center"
           },
@@ -165,8 +165,8 @@
             "biome": "twilightforest:final_plateau"
           }
         ],
-        "base_offset": -0.49,
-        "base_factor": 1.0,
+        "base_offset": -1.25,
+        "base_factor": 2.5,
         "type": "twilightforest:twilight_biomes"
       },
       "seed": 0,

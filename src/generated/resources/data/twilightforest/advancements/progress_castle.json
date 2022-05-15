@@ -20,7 +20,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "feature": "twilightforest:configured_final_castle"
+          "feature": "twilightforest:final_castle"
         }
       }
     },

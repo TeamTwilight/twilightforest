@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "twilightforest:molten_fiery",
+      "required": false
+    },
+    {
+      "id": "twilightforest:flowing_molten_fiery",
+      "required": false
+    }
+  ]
+}

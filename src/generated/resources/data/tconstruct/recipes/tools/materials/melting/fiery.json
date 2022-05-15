@@ -1,0 +1,15 @@
+{
+  "type": "tconstruct:material_melting",
+  "conditions": [
+    {
+      "modid": "tconstruct",
+      "type": "forge:mod_loaded"
+    }
+  ],
+  "input": "twilightforest:fiery",
+  "temperature": 700,
+  "result": {
+    "fluid": "twilightforest:molten_fiery",
+    "amount": 90
+  }
+}

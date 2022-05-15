@@ -12,13 +12,19 @@ import java.util.*;
 //It works the same as it used to, but all the content for each mod should be in its own class.
 public abstract class TFCompat {
 
+    public static final String CURIOS_ID = "curios";
+    public static final String IE_ID = "immersiveengineering";
+    public static final String TCON_ID = "tconstruct";
+    public static final String UNDERGARDEN_ID = "undergarden";
+
     public static HashMap<String, Class<? extends TFCompat>> classes = new HashMap<>();
     public static Set<TFCompat> modules = new HashSet<>();
 
     static {
-        classes.put("immersiveengineering", IECompat.class);
-        classes.put("curios", CuriosCompat.class);
-        classes.put("undergarden", UndergardenCompat.class);
+        classes.put(CURIOS_ID, CuriosCompat.class);
+        classes.put(IE_ID, IECompat.class);
+        classes.put(TCON_ID, TConCompat.class);
+        classes.put(UNDERGARDEN_ID, UndergardenCompat.class);
     }
 
     protected TFCompat(String modName) {

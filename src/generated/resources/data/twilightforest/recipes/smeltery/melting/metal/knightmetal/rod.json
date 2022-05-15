@@ -1,0 +1,25 @@
+{
+  "type": "tconstruct:melting",
+  "conditions": [
+    {
+      "value": {
+        "tag": "forge:rods/knightmetal",
+        "type": "forge:tag_empty"
+      },
+      "type": "forge:not"
+    },
+    {
+      "modid": "tconstruct",
+      "type": "forge:mod_loaded"
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:rods/knightmetal"
+  },
+  "result": {
+    "fluid": "twilightforest:molten_knightmetal",
+    "amount": 45
+  },
+  "temperature": 700,
+  "time": 11
+}

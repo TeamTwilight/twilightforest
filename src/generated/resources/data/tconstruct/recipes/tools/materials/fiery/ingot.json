@@ -1,0 +1,15 @@
+{
+  "type": "tconstruct:material",
+  "conditions": [
+    {
+      "modid": "tconstruct",
+      "type": "forge:mod_loaded"
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:ingots/fiery"
+  },
+  "value": 1,
+  "needed": 1,
+  "material": "twilightforest:fiery"
+}

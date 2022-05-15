@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 public class CuriosCompat extends TFCompat {
 
 	public CuriosCompat() {
-		super(CuriosApi.MODID);
+		super("Curios");
 	}
 
 	@Override

@@ -89,8 +89,8 @@ public class MagicMapItem extends MapItem {
 
 		// magic maps are aligned to the key biome grid so that 0,0 -> 2048,2048 is the covered area
 		int mapSize = 2048;
-		int roundX = (int) Math.round((double) x / mapSize);
-		int roundZ = (int) Math.round((double) z / mapSize);
+		int roundX = (int) Math.round((double) (x - 1024) / mapSize);
+		int roundZ = (int) Math.round((double) (z - 1024) / mapSize);
 		int scaledX = roundX * mapSize + 1024;
 		int scaledZ = roundZ * mapSize + 1024;
 

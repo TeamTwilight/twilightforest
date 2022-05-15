@@ -9,6 +9,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
@@ -45,7 +46,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		super.addChildren(parent, list, rand);
 
 		// add entrance tower
-		BoundingBox towerBB = new BoundingBox(this.boundingBox.getCenter());
+		BoundingBox towerBB = BoundingBoxUtils.clone(this.boundingBox);
 
 		if (list instanceof StructurePiecesBuilder start)
 			for (StructurePiece structurecomponent : start.pieces)

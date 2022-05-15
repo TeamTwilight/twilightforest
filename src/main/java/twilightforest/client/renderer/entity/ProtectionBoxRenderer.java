@@ -1,9 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -22,52 +26,22 @@ public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRender
 	}
 
 	@Override
+	public boolean shouldRender(T p_114491_, Frustum p_114492_, double p_114493_, double p_114494_, double p_114495_) {
+		return true;
+	}
+
+	@Override
 	public void render(T entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-		stack.pushPose();
-
-		/* todo 1.15
-		this.bindTexture(textureLoc);
-
-		// move texture
-		float f1 = (float) entity.ticksExisted + partialTicks;
-		RenderSystem.matrixMode(GL11.GL_TEXTURE);
-		RenderSystem.loadIdentity();
-		float f2 = f1 * 0.05F;
-		float f3 = f1 * 0.05F;
-		stack.translate(f2, f3, 0.0F);
-		stack.scale(1.0f, 1.0f, 1.0f);
-
-		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
-
-		// enable transparency, go full brightness
-		RenderSystem.colorMask(true, true, true, true);
-		RenderSystem.enableBlend();
-		RenderSystem.disableCull();
-		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		RenderSystem.disableAlphaTest();
-		RenderSystem.disableLighting();
+		float t = (float) entity.tickCount + partialTicks;
 
 		float alpha = 1.0F;
 		if (entity.lifeTime < 20) {
 			alpha = entity.lifeTime / 20F;
 		}
 
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
-
-		boxModel.render(entity, 0F, 0F, 0F, 0F, 0F, 1F / 16F);
-
-		RenderSystem.disableBlend();
-		RenderSystem.enableCull();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.enableLighting();
-
-		RenderSystem.matrixMode(GL11.GL_TEXTURE);
-		RenderSystem.loadIdentity();
-		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
-
-		 */
-
-		stack.popPose();
+		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.energySwirl(getTextureLocation(entity), (-t * 0.15F) % 1.0F, -t * 0.10F % 1.0F));
+		boxModel.prepareMobModel(entity, 0, 0, 0);
+		boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha); // FIXME: transparency doesn't work
 	}
 
 	@Override

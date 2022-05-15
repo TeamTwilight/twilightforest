@@ -3,17 +3,25 @@ package twilightforest.entity.boss;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.TFEntities;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.network.ThrowPlayerPacket;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
@@ -535,8 +543,8 @@ public class HydraHeadContainer {
 		double pz = headEntity.getZ() + vector.z * dist;
 
 		if (headEntity.getState() == State.FLAME_BEGINNING) {
-			headEntity.level.addParticle(ParticleTypes.FLAME, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
-			headEntity.level.addParticle(ParticleTypes.SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.FLAME, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.FLAMING) {
@@ -557,23 +565,23 @@ public class HydraHeadContainer {
 				dy *= velocity;
 				dz *= velocity;
 
-				headEntity.level.addParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
+				headEntity.level.addAlwaysVisibleParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 
 		if (headEntity.getState() == State.BITE_BEGINNING || headEntity.getState() == State.BITE_READY) {
-			headEntity.level.addParticle(ParticleTypes.SPLASH, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.SPLASH, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.MORTAR_BEGINNING) {
-			headEntity.level.addParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
 	private void playSounds() {
 		if (headEntity.getState() == State.FLAMING && headEntity.tickCount % 5 == 0) {
 			// fire breathing!
-			headEntity.playSound(TFSounds.HYDRA_SHOOT, 0.5F + headEntity.level.random.nextFloat(), headEntity.level.random.nextFloat() * 0.7F + 0.3F);
+			headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE, 0.5F + headEntity.level.random.nextFloat(), headEntity.level.random.nextFloat() * 0.7F + 0.3F);
 		}
 		if (headEntity.getState() == State.ROAR_RAWR) {
 			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
@@ -673,8 +681,7 @@ public class HydraHeadContainer {
 					mortar.setToBlasting();
 				}
 
-				headEntity.level.levelEvent(1016, new BlockPos(headEntity.blockPosition()), 0);
-
+				headEntity.playSound(TFSounds.HYDRA_SHOOT, 10.0F, (headEntity.getLevel().getRandom().nextFloat() - headEntity.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F);
 				headEntity.level.addFreshEntity(mortar);
 			}
 		}
@@ -683,9 +690,28 @@ public class HydraHeadContainer {
 			List<Entity> nearbyList = headEntity.level.getEntities(headEntity, headEntity.getBoundingBox().inflate(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
-				if (nearby instanceof LivingEntity && nearby != hydra) {
+				if (nearby instanceof LivingEntity living && nearby != hydra) {
+					//is a player holding a shield? Let's do some extra stuff!
+					if (nearby instanceof Player player && player.isUsingItem() && player.getUseItem().getItem().canPerformAction(player.getUseItem(), ToolActions.SHIELD_BLOCK)) {
+						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
+							//cause severe damage and play a shatter sound
+							headEntity.level.playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS : TFSounds.METAL_SHIELD_SHATTERS, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+							player.getUseItem().hurtAndBreak(112, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
+						}
+						//add cooldown and knockback
+						player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
+						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ThrowPlayerPacket(-headEntity.getDirection().getStepX() * 0.5F, 0.15F, -headEntity.getDirection().getStepZ() * 0.5F));
+					}
+
 					// bite it!
 					nearby.hurt(TFDamageSources.HYDRA_BITE, BITE_DAMAGE);
+
+					//knockback!
+					if(living instanceof Player player) {
+						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new ThrowPlayerPacket(-headEntity.getDirection().getStepX() * 0.5F, 0.1F, -headEntity.getDirection().getStepZ() * 0.5F));
+					} else {
+						living.knockback(-headEntity.getDirection().getStepX(), 0.1F, -headEntity.getDirection().getStepZ());
+					}
 				}
 			}
 		}

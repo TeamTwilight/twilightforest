@@ -293,7 +293,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new StrongholdEntranceComponent(this, 0, x, chunkGenerator.getSeaLevel() + 7, z);
+			return new StrongholdEntranceComponent(this, 0, x, y + 5, z);
 		}
 
 		@Override

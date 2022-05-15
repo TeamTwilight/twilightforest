@@ -12,7 +12,7 @@ body:
   - type: input
     attributes:
       label: Twilight Forest Version
-      description: What version of Twilight Forest are you running? This can be found on the jar file you have downloaded or the Mod Options menu. Please note "latest" is NOT a version. If this is a development build... STOP, we don't want reports from those.
+      description: What version of Twilight Forest are you running? This can be found on the jar file you have downloaded or the Mod Options menu. Please note "latest" is NOT a version.
       placeholder: "Example: 4.0.546"
     validations:
       required: true
@@ -59,6 +59,4 @@ body:
         - label: I have confirmed the details provided in this report are concise as possible and does not contained vague information (ie. Versions are properly recorded, answers to questions are clear).
           required: true
         - label: I have confirmed this issue is unique and has not been reported already.
-          required: true
-        - label: I have confirmed this is not from a development build and is from a build uploaded to Curseforge.
           required: true

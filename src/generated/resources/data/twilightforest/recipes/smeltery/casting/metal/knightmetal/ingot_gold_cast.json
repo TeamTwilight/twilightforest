@@ -1,0 +1,20 @@
+{
+  "type": "tconstruct:casting_table",
+  "conditions": [
+    {
+      "modid": "tconstruct",
+      "type": "forge:mod_loaded"
+    }
+  ],
+  "cast": {
+    "tag": "tconstruct:casts/multi_use/ingot"
+  },
+  "fluid": {
+    "tag": "forge:molten_knightmetal",
+    "amount": 90
+  },
+  "result": {
+    "tag": "forge:ingots/knightmetal"
+  },
+  "cooling_time": 57
+}

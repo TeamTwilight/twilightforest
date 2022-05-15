@@ -27,6 +27,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkHooks;
 import twilightforest.TFSounds;
+import twilightforest.block.MazestoneBlock;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.monster.BlockChainGoblin;
 import twilightforest.item.TFItems;
@@ -203,7 +204,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 			// TODO: The "explosion" parameter can't actually be null
 			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < (15F + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.BLOCK_STRENGTH.get(), stack) * 20F))
-					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this)) {
+					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this) && !(block instanceof MazestoneBlock)) {
 
 				if (getOwner() instanceof Player player) {
 					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {

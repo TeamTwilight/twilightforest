@@ -63,17 +63,17 @@ public class BiomeKeys {
 	public static void addBiomeTypes() {
 		BiomeDictionary.addTypes(FOREST, TWILIGHT, BiomeDictionary.Type.FOREST);
 		BiomeDictionary.addTypes(DENSE_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE);
-		BiomeDictionary.addTypes(FIREFLY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.LUSH);
-		BiomeDictionary.addTypes(CLEARING, TWILIGHT, BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.SPARSE);
+		BiomeDictionary.addTypes(FIREFLY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST);
+		BiomeDictionary.addTypes(CLEARING, TWILIGHT, BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.RARE);
 		BiomeDictionary.addTypes(OAK_SAVANNAH, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.SPARSE);
 		BiomeDictionary.addTypes(STREAM, TWILIGHT, BiomeDictionary.Type.RIVER);
-		BiomeDictionary.addTypes(LAKE, TWILIGHT, BiomeDictionary.Type.OCEAN);
+		BiomeDictionary.addTypes(LAKE, TWILIGHT, BiomeDictionary.Type.OCEAN, BiomeDictionary.Type.RARE);
 
 		BiomeDictionary.addTypes(MUSHROOM_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MUSHROOM);
-		BiomeDictionary.addTypes(DENSE_MUSHROOM_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MUSHROOM);
+		BiomeDictionary.addTypes(DENSE_MUSHROOM_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MUSHROOM, BiomeDictionary.Type.RARE, BiomeDictionary.Type.DENSE);
 
-		BiomeDictionary.addTypes(ENCHANTED_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MAGICAL);
-		BiomeDictionary.addTypes(SPOOKY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
+		BiomeDictionary.addTypes(ENCHANTED_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MAGICAL, BiomeDictionary.Type.RARE);
+		BiomeDictionary.addTypes(SPOOKY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.RARE);
 
 		BiomeDictionary.addTypes(SWAMP, TWILIGHT, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.WET);
 		BiomeDictionary.addTypes(FIRE_SWAMP, TWILIGHT, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.WASTELAND, BiomeDictionary.Type.HOT);
@@ -81,11 +81,11 @@ public class BiomeKeys {
 		BiomeDictionary.addTypes(DARK_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
 		BiomeDictionary.addTypes(DARK_FOREST_CENTER, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.MAGICAL);
 
-		BiomeDictionary.addTypes(SNOWY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.CONIFEROUS);
-		BiomeDictionary.addTypes(GLACIER, TWILIGHT, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.WASTELAND);
+		BiomeDictionary.addTypes(SNOWY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.CONIFEROUS, BiomeDictionary.Type.DENSE);
+		BiomeDictionary.addTypes(GLACIER, TWILIGHT, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.WASTELAND, BiomeDictionary.Type.SPARSE);
 
 		BiomeDictionary.addTypes(HIGHLANDS, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.CONIFEROUS);
-		BiomeDictionary.addTypes(THORNLANDS, TWILIGHT, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
-		BiomeDictionary.addTypes(FINAL_PLATEAU, TWILIGHT, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
+		BiomeDictionary.addTypes(THORNLANDS, TWILIGHT, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND, BiomeDictionary.Type.DENSE);
+		BiomeDictionary.addTypes(FINAL_PLATEAU, TWILIGHT, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND, BiomeDictionary.Type.PLATEAU, BiomeDictionary.Type.SPARSE);
 	}
 }

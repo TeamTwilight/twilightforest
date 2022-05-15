@@ -27,6 +27,7 @@ import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TFCompat;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 
@@ -93,7 +94,7 @@ public class TFClientSetup {
             Sheets.addWoodType(TFBlocks.MINING);
             Sheets.addWoodType(TFBlocks.SORTING);
 
-			if(ModList.get().isLoaded("curios")) {
+			if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
 				CuriosCompat.registerCurioRenderers();
 			}
         });

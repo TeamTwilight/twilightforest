@@ -13,9 +13,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.function.DoubleUnaryOperator;
 
@@ -52,20 +54,29 @@ public class EntityUtil {
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 
-	private static Method getDeathSound;
+	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
+	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "m_5592_");
+	private static final MethodHandle handle_LivingEntity_getDeathSound;
+
+	static {
+		MethodHandle tmp_handle_LivingEntity_getDeathSound = null;
+		try {
+			tmp_handle_LivingEntity_getDeathSound = LOOKUP.unreflect(LivingEntity_getDeathSound);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		handle_LivingEntity_getDeathSound = tmp_handle_LivingEntity_getDeathSound;
+	}
 
 	public static SoundEvent getDeathSound(LivingEntity living) {
-		try {
-			if (getDeathSound == null) {
-				getDeathSound = LivingEntity.class.getDeclaredMethod("getDeathSound");
-				getDeathSound.setAccessible(true);
+		SoundEvent sound = SoundEvents.GENERIC_DEATH;
+		if (handle_LivingEntity_getDeathSound != null) {
+			try {
+				sound = (SoundEvent) handle_LivingEntity_getDeathSound.invokeExact(living);
+			} catch (Throwable e) {
+				// FAIL SILENTLY
 			}
-
-			return (SoundEvent) getDeathSound.invoke(living);
-		} catch (NoSuchMethodException ex) {
-			throw new RuntimeException(ex);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-			return SoundEvents.ZOMBIE_DEATH;
 		}
+		return sound;
 	}
 }

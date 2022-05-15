@@ -44,7 +44,7 @@ public final class BoxCuttingProcessor extends StructureProcessor {
 
     @Override
     protected StructureProcessorType<?> getType() {
-        return TFStructureProcessors.BOX_CUTTING_PROCESSOR;
+        return TFStructureProcessors.BOX_CUTTING_PROCESSOR.get();
     }
 
     public static BoxCuttingProcessor fromNBT(ListTag tag) {

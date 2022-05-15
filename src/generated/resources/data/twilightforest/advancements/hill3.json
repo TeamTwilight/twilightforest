@@ -12,9 +12,6 @@
       "with": [
         {
           "translate": "entity.twilightforest.wraith"
-        },
-        {
-          "translate": "structure.large_hollow_hill"
         }
       ]
     },
@@ -33,7 +30,7 @@
             "predicate": {
               "type": "twilightforest:wraith",
               "location": {
-                "feature": "twilightforest:configured_hollow_hill_large"
+                "feature": "twilightforest:large_hollow_hill"
               }
             },
             "entity": "this"

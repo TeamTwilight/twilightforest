@@ -31,6 +31,7 @@ import java.util.function.Function;
 public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	private final boolean isHighlands;
+	private final Random rand = new Random();
 
 	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands) {
 		super(codec);
@@ -39,6 +40,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		this.isHighlands = isHighlands;
 	}
 
+	@Override
 	public boolean isStartChunk(CaveCarverConfiguration config, Random rand) {
 		return rand.nextFloat() <= config.probability;
 	}
@@ -93,8 +95,11 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			if (blockstate2 == null) {
 				return false;
 			} else {
-				//here's the code for preventing floating water and making dirt roofs. Enjoy :)
+				if (aquifer.shouldScheduleFluidUpdate() && !blockstate2.getFluidState().isEmpty()) {
+					access.markPosForPostprocessing(pos);
+				}
 
+				//here's the code for preventing floating water and making dirt roofs. Enjoy :)
 				for (Direction facing : Direction.values()) {
 					FluidState aboveSurface = access.getFluidState(posUp.offset(pos.offset(0, 1, 0)));
 					FluidState areaAround = access.getFluidState(posUp.relative(facing));
@@ -103,14 +108,13 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					if (areaAround.is(FluidTags.WATER) || areaAboveAround.is(FluidTags.WATER) || aboveSurface.is(FluidTags.WATER)) {
 						return false;
 					} else {
-						//TODO this needs to be done a different way. The world doesnt exist when we need it to, so I cant rely on a random from it. 
-						if (access.getWorldForge() != null && access.getWorldForge().getRandom().nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
+						if (rand.nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
 							access.setBlockState(pos.relative(facing), TFBlocks.TROLLSTEINN.get().defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);
 
-						if (access.getWorldForge() != null && (access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
-							switch (access.getWorldForge().getRandom().nextInt(5)) {
+						if ((access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
+							switch (rand.nextInt(5)) {
 								case 0, 1, 2 -> access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
 								case 3 -> access.setBlockState(pos.above(), Blocks.ROOTED_DIRT.defaultBlockState(), false);
 								case 4 -> access.setBlockState(pos.above(), Blocks.COARSE_DIRT.defaultBlockState(), false);

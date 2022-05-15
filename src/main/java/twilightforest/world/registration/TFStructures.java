@@ -52,10 +52,10 @@ public class TFStructures {
 		register(event, HEDGE_MAZE, "hedge_maze");
 		register(event, QUEST_GROVE, "quest_grove");
 		register(event, MUSHROOM_TOWER, "mushroom_tower");
-		register(event, HOLLOW_HILL_SMALL, "hollow_hill_small");
-		register(event, HOLLOW_HILL_MEDIUM, "hollow_hill_medium");
-		register(event, HOLLOW_HILL_LARGE, "hollow_hill_large");
-		register(event, NAGA_COURTYARD, "courtyard");
+		register(event, HOLLOW_HILL_SMALL, "small_hollow_hill");
+		register(event, HOLLOW_HILL_MEDIUM, "medium_hollow_hill");
+		register(event, HOLLOW_HILL_LARGE, "large_hollow_hill");
+		register(event, NAGA_COURTYARD, "naga_courtyard");
 		register(event, LICH_TOWER, "lich_tower");
 		register(event, LABYRINTH, "labyrinth");
 		register(event, HYDRA_LAIR, "hydra_lair");

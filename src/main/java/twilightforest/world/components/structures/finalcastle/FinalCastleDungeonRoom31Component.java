@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.material.Material;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
@@ -99,7 +100,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(FinalCastlePieces.TFFCDunR31, getFeatureType(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
-		BoundingBox largerBB = new BoundingBox(dRoom.getBoundingBox().getCenter());
+		BoundingBox largerBB = BoundingBoxUtils.clone(dRoom.getBoundingBox());
 
 		int expand = 0;
 		//largerBB.minX() -= expand; FIXME

@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 
@@ -67,7 +68,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 			if (!listContainsBossRoom(list)) {
 				TwilightForestMod.LOGGER.warn("Did not find boss room from exit 3 - EPIC FAIL");
 			}
-			BoundingBox shieldBox = new BoundingBox(this.boundingBox.getCenter()); // FIXME
+			BoundingBox shieldBox = BoundingBoxUtils.clone(this.boundingBox);
 
 			int tStairs = 0;
 			int tCorridors = 0;

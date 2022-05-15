@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "twilightforest:fiery_essence",
+      "required": false
+    },
+    {
+      "id": "twilightforest:flowing_fiery_essence",
+      "required": false
+    }
+  ]
+}

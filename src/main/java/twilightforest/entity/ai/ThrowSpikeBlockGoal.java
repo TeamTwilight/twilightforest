@@ -11,6 +11,7 @@ public class ThrowSpikeBlockGoal extends Goal {
 
 	protected BlockChainGoblin attacker;
 	protected SpikeBlock spikeBlock;
+	private int cooldown;
 
 	public ThrowSpikeBlockGoal(BlockChainGoblin entityTFBlockGoblin, SpikeBlock entitySpikeBlock) {
 		this.attacker = entityTFBlockGoblin;
@@ -21,7 +22,8 @@ public class ThrowSpikeBlockGoal extends Goal {
 	@Override
 	public boolean canUse() {
 		LivingEntity target = this.attacker.getTarget();
-		if (target == null || this.attacker.distanceToSqr(target) > 42) {
+		if (target == null || this.attacker.distanceToSqr(target) > 42 || this.cooldown > 0) {
+			this.cooldown--;
 			return false;
 		} else {
 			return this.attacker.isAlive() && this.attacker.hasLineOfSight(target) && this.attacker.level.random.nextInt(56) == 0;
@@ -36,5 +38,6 @@ public class ThrowSpikeBlockGoal extends Goal {
 	@Override
 	public void start() {
 		this.attacker.setThrowing(true);
+		this.cooldown = 100 + this.attacker.level.random.nextInt(100);
 	}
 }

@@ -1,0 +1,17 @@
+{
+  "type": "tconstruct:casting_basin",
+  "conditions": [
+    {
+      "modid": "tconstruct",
+      "type": "forge:mod_loaded"
+    }
+  ],
+  "fluid": {
+    "tag": "forge:molten_fiery",
+    "amount": 810
+  },
+  "result": {
+    "tag": "forge:storage_blocks/fiery"
+  },
+  "cooling_time": 171
+}

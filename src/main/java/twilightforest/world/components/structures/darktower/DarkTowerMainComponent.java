@@ -6,7 +6,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ItemFrame;
@@ -29,6 +28,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
@@ -40,6 +40,7 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.features.TFConfiguredFeatures;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DarkTowerMainComponent extends DarkTowerWingComponent {
@@ -933,13 +934,11 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		this.makeStonePillar(world, forgeDeco, 9, y, 17, rotation, sbb);
 
 		// anvils
-		BlockState anvil = Registry.BLOCK.getTag(BlockTags.ANVIL)
-				.flatMap(tag -> tag.getRandomElement(decoRNG))
-				.map(holder -> holder.value().defaultBlockState())
-				.orElse(Blocks.ANVIL.defaultBlockState())
-				.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG));
-		this.setBlockStateRotated(world, anvil, 13, y + 2, 5, rotation, sbb);
-		this.setBlockStateRotated(world, anvil, 13, y + 2, 13, rotation, sbb);
+		this.setBlockStateRotated(world, List.of(Blocks.ANVIL, Blocks.CHIPPED_ANVIL, Blocks.DAMAGED_ANVIL).get(decoRNG.nextInt(3)).defaultBlockState()
+				.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG)), 13, y + 2, 5, rotation, sbb);
+
+		this.setBlockStateRotated(world, List.of(Blocks.ANVIL, Blocks.CHIPPED_ANVIL, Blocks.DAMAGED_ANVIL).get(decoRNG.nextInt(3)).defaultBlockState()
+				.setValue(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(decoRNG)), 13, y + 2, 13, rotation, sbb);
 
 		// fire pit
 		makeFirePit(world, forgeDeco, 6, y + 1, 12, rotation, sbb);
@@ -1106,7 +1105,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	private void placeRandomPlant(WorldGenLevel world, Random decoRNG, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		BlockState flowerPot = Registry.BLOCK.getTag(BlockTags.FLOWER_POTS)
+		BlockState flowerPot = Registry.BLOCK.getTag(BlockTagGenerator.DARK_TOWER_ALLOWED_POTS)
 				.flatMap(tag -> tag.getRandomElement(decoRNG))
 				.map(holder -> holder.value().defaultBlockState())
 				.orElse(Blocks.FLOWER_POT.defaultBlockState());
