@@ -1,15 +1,10 @@
 package twilightforest.compat.tcon.traits;
 
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import slimeknights.tconstruct.library.modifiers.impl.NoLevelsModifier;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
-import twilightforest.TFConfig;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public class TwilitModifier extends NoLevelsModifier {

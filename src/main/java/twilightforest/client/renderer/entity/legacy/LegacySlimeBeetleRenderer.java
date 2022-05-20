@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.entity.SlimeBeetleModel;
 import twilightforest.client.model.entity.legacy.SlimeBeetleLegacyModel;
 import twilightforest.entity.monster.SlimeBeetle;
 

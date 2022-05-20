@@ -71,26 +71,18 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.*;
 import twilightforest.world.registration.biomes.BiomeKeys;
-
 import java.io.IOException;
 import java.util.Locale;
 
-@Mod(TwilightForestMod.ID)
+import static twilightforest.TFConstants.*;
+
+@Mod(MOD_ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TwilightForestMod {
 
-	// TODO: might be a good idea to find proper spots for all of these? also remove redundants
-	public static final String ID = "twilightforest";
-
-	private static final String MODEL_DIR = "textures/model/";
-	private static final String GUI_DIR = "textures/gui/";
-	private static final String ENVIRO_DIR = "textures/environment/";
-	// odd one out, as armor textures are a stringy mess at present
-	public static final String ARMOR_DIR = ID + ":textures/armor/";
-
 	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)); //Putting it in UPDATES since other world stuff is here
 
-	public static final Logger LOGGER = LogManager.getLogger(ID);
+	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
 	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
 
@@ -171,8 +163,8 @@ public class TwilightForestMod {
 	public static void addClassicPack(AddPackFindersEvent event) {
 		try {
 			if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-				var resourcePath = ModList.get().getModFileById(TwilightForestMod.ID).getFile().findResource("classic");
-				var pack = new PathResourcePack(ModList.get().getModFileById(TwilightForestMod.ID).getFile().getFileName() + ":" + resourcePath, resourcePath);
+				var resourcePath = ModList.get().getModFileById(MOD_ID).getFile().findResource("classic");
+				var pack = new PathResourcePack(ModList.get().getModFileById(MOD_ID).getFile().getFileName() + ":" + resourcePath, resourcePath);
 				var metadataSection = pack.getMetadataSection(PackMetadataSection.SERIALIZER);
 				if (metadataSection != null) {
 					event.addRepositorySource((packConsumer, packConstructor) ->
@@ -202,8 +194,8 @@ public class TwilightForestMod {
 
 	@SubscribeEvent
 	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
-		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
-		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
+		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(MOD_ID + ":fiery_pick_smelting"));
+		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(MOD_ID + ":giant_block_grouping"));
 	}
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
@@ -286,19 +278,19 @@ public class TwilightForestMod {
 	}
 
 	public static ResourceLocation prefix(String name) {
-		return new ResourceLocation(ID, name.toLowerCase(Locale.ROOT));
+		return new ResourceLocation(MOD_ID, name.toLowerCase(Locale.ROOT));
 	}
 
 	public static ResourceLocation getModelTexture(String name) {
-		return new ResourceLocation(ID, MODEL_DIR + name);
+		return new ResourceLocation(MOD_ID, MODEL_DIR + name);
 	}
 
 	public static ResourceLocation getGuiTexture(String name) {
-		return new ResourceLocation(ID, GUI_DIR + name);
+		return new ResourceLocation(MOD_ID, GUI_DIR + name);
 	}
 
 	public static ResourceLocation getEnvTexture(String name) {
-		return new ResourceLocation(ID, ENVIRO_DIR + name);
+		return new ResourceLocation(MOD_ID, ENVIRO_DIR + name);
 	}
 
 	public static Rarity getRarity() {

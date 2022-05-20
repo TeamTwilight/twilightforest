@@ -32,12 +32,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class ShaderBagItemModel implements BakedModel {
 
 	protected final BakedModel delegate;
 	protected final ItemStack item;
 	private final ResourceLocation bg = TwilightForestMod.prefix("textures/items/star_burst_mask.png");
-	ModelResourceLocation backModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory");
+	ModelResourceLocation backModelLocation = new ModelResourceLocation(MOD_ID + ":trophy_minor", "inventory");
 
 
 	public ShaderBagItemModel(BakedModel delegate, ItemStack item) {

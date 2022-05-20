@@ -29,9 +29,11 @@ import twilightforest.compat.undergarden.CicadaSlingshotProjectile;
 import twilightforest.compat.undergarden.FireflySlingshotProjectile;
 import twilightforest.compat.undergarden.MoonwormSlingshotProjectile;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class UndergardenCompat extends TFCompat {
 
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, TwilightForestMod.ID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MOD_ID);
 
 	public static final RegistryObject<EntityType<CicadaSlingshotProjectile>> CICADA_SLINGSHOT = ENTITIES.register("cicada_slingshot", () -> EntityType.Builder.<CicadaSlingshotProjectile>of(CicadaSlingshotProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("twilightforest:cicada_slingshot"));
 	public static final RegistryObject<EntityType<FireflySlingshotProjectile>> FIREFLY_SLINGSHOT = ENTITIES.register("firefly_slingshot", () -> EntityType.Builder.<FireflySlingshotProjectile>of(FireflySlingshotProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("twilightforest:firefly_slingshot"));

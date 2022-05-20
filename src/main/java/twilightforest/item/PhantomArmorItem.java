@@ -23,7 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.data.tags.CustomTagGenerator;
@@ -32,6 +31,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import static twilightforest.TFConstants.ARMOR_DIR;
 
 public class PhantomArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.phantom_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
@@ -43,7 +44,7 @@ public class PhantomArmorItem extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
 		// there's no legs, so let's not worry about them
-		return TwilightForestMod.ARMOR_DIR + "phantom_1.png";
+		return ARMOR_DIR + "phantom_1.png";
 	}
 
 	@Override

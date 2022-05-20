@@ -28,6 +28,8 @@ import twilightforest.util.TwilightItemTier;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class TFItems {
 	public static final FoodProperties E115 = new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).build();
 	public static final FoodProperties CHOP = new FoodProperties.Builder().nutrition(18).saturationMod(2.0F).meat().effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F).build();
@@ -41,7 +43,7 @@ public class TFItems {
 
 	public static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
 
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TwilightForestMod.ID);
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
 	public static final RegistryObject<Item> NAGA_SCALE = ITEMS.register("naga_scale", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> NAGA_CHESTPLATE = ITEMS.register("naga_chestplate", () -> new NagaArmorItem(TwilightArmorMaterial.ARMOR_NAGA, EquipmentSlot.CHEST, defaultBuilder().rarity(Rarity.UNCOMMON)));
@@ -180,7 +182,7 @@ public class TFItems {
 	public static final RegistryObject<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_SNOW_QUEEN", "twilightforest_snow_queen", "tfq", true), unstackable().rarity(TwilightForestMod.getRarity())));
 	public static final RegistryObject<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(BannerPattern.create("TWILIGHTFOREST_QUEST_RAM", "twilightforest_quest_ram", "tfr", true), unstackable().rarity(TwilightForestMod.getRarity())));
 
-	public static CreativeModeTab creativeTab = new CreativeModeTab(TwilightForestMod.ID) {
+	public static CreativeModeTab creativeTab = new CreativeModeTab(MOD_ID) {
 		@Override
 		public ItemStack makeIcon() {
 			return new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get());

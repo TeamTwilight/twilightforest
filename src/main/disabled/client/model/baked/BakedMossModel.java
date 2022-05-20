@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class BakedMossModel implements IBakedModel {
     private static final FaceBakery bakery = new FaceBakery();
-    private static final String spriteString = TwilightForestMod.ID + ":blocks/mosspatch";
+    private static final String spriteString = MOD_ID + ":blocks/mosspatch";
     private static final TextureAtlasSprite mossTex = Minecraft.getInstance().getTextureMap().getAtlasSprite(spriteString);
 
     @Override

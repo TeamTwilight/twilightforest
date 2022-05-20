@@ -2,7 +2,6 @@ package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.math.Vector3f;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -18,8 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Map;
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TrollsteinnBlock extends Block {
 

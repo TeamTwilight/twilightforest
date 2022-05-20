@@ -23,8 +23,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
-    public static final RecipeType<CraftingRecipe> UNCRAFTING = RecipeType.create(TwilightForestMod.ID, "uncrafting", CraftingRecipe.class);
+    public static final RecipeType<CraftingRecipe> UNCRAFTING = RecipeType.create(MOD_ID, "uncrafting", CraftingRecipe.class);
     public static final int width = 116;
     public static final int height = 54;
     private final IDrawable background;

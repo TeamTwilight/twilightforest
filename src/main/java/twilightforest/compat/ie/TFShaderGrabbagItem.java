@@ -23,6 +23,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class TFShaderGrabbagItem extends Item {
 
     @Nonnull
@@ -30,7 +32,7 @@ public class TFShaderGrabbagItem extends Item {
 
     public TFShaderGrabbagItem(Rarity r) {
         super(TFItems.defaultBuilder());
-        setRegistryName(TwilightForestMod.ID, "shader_bag_" + r.name().toLowerCase(Locale.US).replace(':', '_'));
+        setRegistryName(MOD_ID, "shader_bag_" + r.name().toLowerCase(Locale.US).replace(':', '_'));
         this.rarity = r;
     }
 

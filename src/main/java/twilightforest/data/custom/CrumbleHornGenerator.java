@@ -4,13 +4,14 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import quek.undergarden.registry.UGBlocks;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public class CrumbleHornGenerator extends CrumbleHornProvider {
 
 	public CrumbleHornGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, TwilightForestMod.ID, helper);
+		super(generator, MOD_ID, helper);
 	}
 
 	@Override

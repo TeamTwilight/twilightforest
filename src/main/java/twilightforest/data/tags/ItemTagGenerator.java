@@ -15,6 +15,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class ItemTagGenerator extends ItemTagsProvider {
 	public static final TagKey<Item> TWILIGHT_OAK_LOGS = ItemTags.create(TwilightForestMod.prefix("twilight_oak_logs"));
 	public static final TagKey<Item> CANOPY_LOGS = ItemTags.create(TwilightForestMod.prefix("canopy_logs"));
@@ -68,7 +70,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	private static final TagKey<Item> HEAD = ItemTags.create(new ResourceLocation("curios", "head"));
 
 	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
-		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);
+		super(generator, blockprovider, MOD_ID, exFileHelper);
 	}
 
 	@Override

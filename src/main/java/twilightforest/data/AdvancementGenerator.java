@@ -5,12 +5,10 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EntityType;
@@ -20,7 +18,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.block.Experiment115Block;
@@ -32,6 +29,8 @@ import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.features.TFConfiguredStructures;
 
 import java.util.function.Consumer;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public class AdvancementGenerator extends AdvancementProvider {
 
@@ -61,7 +60,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
 				new TranslatableComponent("itemGroup.twilightforest"),
 				new TranslatableComponent("advancement.twilightforest.root.desc"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/block/mazestone_large_brick.png"),
+				new ResourceLocation(MOD_ID, "textures/block/mazestone_large_brick.png"),
 				FrameType.TASK,
 				true, false, false)
 				.requirements(RequirementsStrategy.OR)

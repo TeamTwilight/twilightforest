@@ -52,11 +52,13 @@ import twilightforest.item.*;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
 public class TFClientEvents {
 
-	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+	@Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {
 		@SubscribeEvent
 		public static void registerLoaders(ModelRegistryEvent event) {
@@ -147,7 +149,7 @@ public class TFClientEvents {
 
 			if (Sheets.BANNER_SHEET.equals(map.location()) || Sheets.SHIELD_SHEET.equals(map.location())) {
 				for (BannerPattern pattern : BannerPattern.values()) {
-					if (pattern.getFilename().startsWith(TwilightForestMod.ID)) {
+					if (pattern.getFilename().startsWith(MOD_ID)) {
 						evt.addSprite(pattern.location(Sheets.BANNER_SHEET.equals(map.location())));
 					}
 				}

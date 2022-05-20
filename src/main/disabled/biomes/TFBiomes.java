@@ -12,7 +12,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.surfacebuilders.TFSurfaceBuilders;
 
 public class TFBiomes {
-	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
+	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, MOD_ID);
 
 	// todo 1.15 values marked "pick" are placeholders and need to be decided
 	/*NOTE:

@@ -14,6 +14,8 @@ import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
     public static final TagKey<EntityType<?>> LICH_POPPABLES = create(TwilightForestMod.prefix("lich_poppables"));
@@ -22,7 +24,7 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> DONT_KILL_BUGS = create(TwilightForestMod.prefix("dont_kill_bugs"));
 
     public EntityTagGenerator(DataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
-        super(dataGenerator, TwilightForestMod.ID, existingFileHelper);
+        super(dataGenerator, MOD_ID, existingFileHelper);
     }
 
     @Override

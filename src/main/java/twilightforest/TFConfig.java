@@ -13,7 +13,9 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.*;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+import static twilightforest.TFConstants.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class TFConfig {
 
 	public static Common COMMON_CONFIG;
@@ -406,11 +408,11 @@ public class TFConfig {
 
 	}
 
-	private static final String config = TwilightForestMod.ID + ".config.";
+	private static final String config = MOD_ID + ".config.";
 
 	@SubscribeEvent // FIXME Not Firing
 	public static void onConfigChanged(ModConfigEvent.Reloading event) {
-		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
+		if (event.getConfig().getModId().equals(MOD_ID)) {
 			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
 
 			build();

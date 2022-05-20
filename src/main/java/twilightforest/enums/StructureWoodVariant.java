@@ -4,7 +4,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ArrayUtil;
@@ -16,6 +15,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.function.Supplier;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public enum StructureWoodVariant implements StringRepresentable {
 	OAK(Blocks.OAK_PLANKS, Blocks.OAK_STAIRS, Blocks.OAK_SLAB, Blocks.OAK_BUTTON, Blocks.OAK_FENCE, Blocks.OAK_FENCE_GATE, Blocks.OAK_PRESSURE_PLATE, TFBlocks.OAK_BANISTER.get()),
@@ -119,7 +120,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 
 		if (blockRegName == null) return stateIn;
 
-		if (shape == WoodShapes.INVALID || !("minecraft".equals(blockRegName.getNamespace()) || TwilightForestMod.ID.equals(blockRegName.getNamespace()))) {
+		if (shape == WoodShapes.INVALID || !("minecraft".equals(blockRegName.getNamespace()) || MOD_ID.equals(blockRegName.getNamespace()))) {
 			return stateIn; // Block not recognized
 		}
 

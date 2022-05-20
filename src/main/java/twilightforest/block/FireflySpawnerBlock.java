@@ -16,7 +16,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.item.TFItems;
 
 import java.util.Random;
 

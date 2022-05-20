@@ -34,7 +34,9 @@ import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+import static twilightforest.TFConstants.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class OreMagnetItem extends Item {
 
 	private static final float WIGGLE = 10F;

@@ -18,6 +18,8 @@ import twilightforest.item.*;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class TFBlockItems {
 
 	public static void registerBlockItems(RegistryEvent.Register<Item> event) {
@@ -406,7 +408,7 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block> Item hollowLog(RegistryObject<HollowLogHorizontal> horizontalLog, RegistryObject<HollowLogVertical> verticalLog, RegistryObject<HollowLogClimbable> climbable, String name) {
-		return new HollowLogItem(horizontalLog, verticalLog, climbable, TFItems.defaultBuilder()).setRegistryName(TwilightForestMod.ID, name);
+		return new HollowLogItem(horizontalLog, verticalLog, climbable, TFItems.defaultBuilder()).setRegistryName(MOD_ID, name);
 	}
 
 	private static <B extends Block> Item blockItem(RegistryObject<B> block) {

@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.entity.SnowQueenModel;
 import twilightforest.client.model.entity.legacy.SnowQueenLegacyModel;
 import twilightforest.entity.boss.SnowQueen;
 

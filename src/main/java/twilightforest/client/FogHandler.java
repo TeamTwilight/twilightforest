@@ -8,10 +8,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
+import static twilightforest.TFConstants.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
 public class FogHandler {
 
 	private static final float[] spoopColors = new float[3];

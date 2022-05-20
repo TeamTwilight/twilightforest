@@ -14,7 +14,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.entity.NagaModel;
 import twilightforest.client.model.entity.legacy.NagaLegacyModel;
 import twilightforest.entity.boss.Naga;
 

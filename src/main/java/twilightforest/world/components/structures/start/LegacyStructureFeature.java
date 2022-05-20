@@ -6,12 +6,13 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Objects;
 import java.util.Optional;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 @Deprecated
 public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeatureConfiguration> {
@@ -34,7 +35,7 @@ public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeature
 		int z = context.chunkPos().getMiddleBlockZ();
 		int y = 1;
 		Holder<Biome> holder = context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z));
-		return Objects.equals(holder.value().getRegistryName().getNamespace(), TwilightForestMod.ID);
+		return Objects.equals(holder.value().getRegistryName().getNamespace(), MOD_ID);
 	}
 
     @Override

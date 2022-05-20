@@ -18,16 +18,17 @@ import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import org.apache.commons.lang3.ArrayUtils;
-import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.entity.boss.Lich;
 
 import java.util.Random;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-	public static final ModelResourceLocation LOC = new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "shield"), "inventory");
+	public static final ModelResourceLocation LOC = new ModelResourceLocation(new ResourceLocation(MOD_ID, "shield"), "inventory");
 	private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
 	private static final Random RAND = new Random();
 

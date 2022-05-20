@@ -6,7 +6,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFConfig;
 
 public class TFLeavesBlock extends LeavesBlock {
 	protected TFLeavesBlock(BlockBehaviour.Properties props) {

@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -14,12 +13,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
 import java.util.IdentityHashMap;
 import java.util.Map;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public class OreMeterItem extends Item {
 
@@ -86,11 +86,11 @@ public class OreMeterItem extends Item {
 		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countRoots + countOreRoots;
 
 		player.sendMessage(new TranslatableComponent(getDescriptionId()).append("!"), Util.NIL_UUID);
-		player.sendMessage(new TranslatableComponent(TwilightForestMod.ID + ".ore_meter.range", radius, chunkX, chunkZ), Util.NIL_UUID);
+		player.sendMessage(new TranslatableComponent(MOD_ID + ".ore_meter.range", radius, chunkX, chunkZ), Util.NIL_UUID);
 		player.sendMessage(new TranslatableComponent(Blocks.COAL_ORE.getDescriptionId()).append(" - " + countCoal + " " + percent(countCoal, total)), Util.NIL_UUID);
 		player.sendMessage(new TranslatableComponent(Blocks.IRON_ORE.getDescriptionId()).append(" - " + countIron + " " + percent(countIron, total)), Util.NIL_UUID);
 		player.sendMessage(new TranslatableComponent(Blocks.GOLD_ORE.getDescriptionId()).append(" - " + countGold + " " + percent(countGold, total)), Util.NIL_UUID);
-		player.sendMessage(new TranslatableComponent(Blocks.DIAMOND_ORE.getDescriptionId()).append(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").append(new TranslatableComponent(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)), Util.NIL_UUID);
+		player.sendMessage(new TranslatableComponent(Blocks.DIAMOND_ORE.getDescriptionId()).append(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").append(new TranslatableComponent(MOD_ID + ".ore_meter.exposed", countExposedDiamond)), Util.NIL_UUID);
 		player.sendMessage(new TranslatableComponent(Blocks.LAPIS_ORE.getDescriptionId()).append(" - " + countLapis + " " + percent(countLapis, total)), Util.NIL_UUID);
 		player.sendMessage(new TranslatableComponent(Blocks.REDSTONE_ORE.getDescriptionId()).append(" - " + countRedstone + " " + percent(countRedstone, total)), Util.NIL_UUID);
 		player.sendMessage(new TranslatableComponent(TFBlocks.ROOT_BLOCK.get().getDescriptionId()).append(" - " + countRoots + " " + percent(countRoots, total)), Util.NIL_UUID);

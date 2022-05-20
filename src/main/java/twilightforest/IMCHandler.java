@@ -17,7 +17,9 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.function.Consumer;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+import static twilightforest.TFConstants.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class IMCHandler {
 
 	private static final ImmutableList.Builder<BlockState> ORE_BLOCKS_BUILDER = ImmutableList.builder();
@@ -54,7 +56,7 @@ public class IMCHandler {
 	 */
 	@SubscribeEvent
 	public static void onIMC(InterModProcessEvent event) {
-		InterModComms.getMessages(TwilightForestMod.ID).forEach(message-> {
+		InterModComms.getMessages(MOD_ID).forEach(message-> {
 			Object thing = message.getMessageSupplier().get();
 			if (thing instanceof CompoundTag) {
 				CompoundTag imcCompound = ((CompoundTag) thing);

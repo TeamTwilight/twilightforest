@@ -9,13 +9,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TFRemapper {
 
 	@SubscribeEvent
 	public static void remapBlocks(RegistryEvent.MissingMappings<Block> event) {
 		for (RegistryEvent.MissingMappings.Mapping<Block> mapping : event.getAllMappings()) {
-			if(mapping.key.getNamespace().equals(TwilightForestMod.ID)) {
+			if(mapping.key.getNamespace().equals(MOD_ID)) {
 				remapBlock(mapping, "yeti_trophy", "alpha_yeti_trophy");
 				remapBlock(mapping, "yeti_wall_trophy", "alpha_yeti_wall_trophy");
 				remapBlock(mapping, "boss_spawner_naga", "naga_boss_spawner");
@@ -116,7 +118,7 @@ public class TFRemapper {
 	@SubscribeEvent
 	public static void remapItems(RegistryEvent.MissingMappings<Item> event) {
 		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getAllMappings()) {
-			if(mapping.key.getNamespace().equals(TwilightForestMod.ID)) {
+			if(mapping.key.getNamespace().equals(MOD_ID)) {
 				remapItem(mapping, "yeti_trophy", "alpha_yeti_trophy");
 				remapItem(mapping, "boss_spawner_naga", "naga_boss_spawner");
 				remapItem(mapping, "boss_spawner_lich", "lich_boss_spawner");
@@ -239,7 +241,7 @@ public class TFRemapper {
 	@SubscribeEvent
 	public static void remapEntities(RegistryEvent.MissingMappings<EntityType<?>> event) {
 		for (RegistryEvent.MissingMappings.Mapping<EntityType<?>> mapping : event.getAllMappings()) {
-			if (mapping.key.getNamespace().equals(TwilightForestMod.ID)) {
+			if (mapping.key.getNamespace().equals(MOD_ID)) {
 				remapEntity(mapping, "wild_boar", "boar");
 				remapEntity(mapping, "bunny", "dwarf_rabbit");
 				remapEntity(mapping, "mini_ghast", "carminite_ghastling");
@@ -257,7 +259,7 @@ public class TFRemapper {
 	private static void remapBlock(RegistryEvent.MissingMappings.Mapping<Block> mapping, String oldId, String newId) {
 		if(mapping.key.getPath().contains(oldId)) {
 			String newName = mapping.key.getPath().replace(oldId, newId);
-			ResourceLocation remap = new ResourceLocation(TwilightForestMod.ID, newName);
+			ResourceLocation remap = new ResourceLocation(MOD_ID, newName);
 			mapping.remap(ForgeRegistries.BLOCKS.getValue(remap));
 		}
 	}
@@ -265,7 +267,7 @@ public class TFRemapper {
 	private static void remapItem(RegistryEvent.MissingMappings.Mapping<Item> mapping, String oldId, String newId) {
 		if(mapping.key.getPath().contains(oldId)) {
 			String newName = mapping.key.getPath().replace(oldId, newId);
-			ResourceLocation remap = new ResourceLocation(TwilightForestMod.ID, newName);
+			ResourceLocation remap = new ResourceLocation(MOD_ID, newName);
 			mapping.remap(ForgeRegistries.ITEMS.getValue(remap));
 		}
 	}
@@ -273,7 +275,7 @@ public class TFRemapper {
 	private static void remapEntity(RegistryEvent.MissingMappings.Mapping<EntityType<?>> mapping, String oldId, String newId) {
 		if(mapping.key.getPath().contains(oldId)) {
 			String newName = mapping.key.getPath().replace(oldId, newId);
-			ResourceLocation remap = new ResourceLocation(TwilightForestMod.ID, newName);
+			ResourceLocation remap = new ResourceLocation(MOD_ID, newName);
 			mapping.remap(ForgeRegistries.ENTITIES.getValue(remap));
 		}
 	}

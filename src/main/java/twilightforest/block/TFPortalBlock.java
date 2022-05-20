@@ -43,7 +43,6 @@ import net.minecraftforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.TFPacketHandler;
@@ -54,6 +53,8 @@ import twilightforest.world.TFTeleporter;
 
 import javax.annotation.Nullable;
 import java.util.*;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 // KelpBlock seems to use ILiquidContainer as it's a block that permanently has water, so I suppose in best practices we also use this interface as well?
 
@@ -114,7 +115,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFTeleporter.isSafeAround(world, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
-							player.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
+							player.displayClientMessage(new TranslatableComponent(MOD_ID + ".twilight_portal.unsafe"), true);
 						}
 						return false;
 					}
@@ -212,7 +213,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		}
 	}
 
-	private static final TranslatableComponent PORTAL_UNWORTHY = new TranslatableComponent(TwilightForestMod.ID + ".ui.portal.unworthy");
+	private static final TranslatableComponent PORTAL_UNWORTHY = new TranslatableComponent(MOD_ID + ".ui.portal.unworthy");
 	@Override
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
 		if (state == this.defaultBlockState()) {

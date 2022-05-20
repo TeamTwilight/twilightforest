@@ -8,7 +8,8 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
-import twilightforest.TwilightForestMod;
+
+import static twilightforest.TFConstants.ARMOR_DIR;
 
 public class NagaArmorItem extends ArmorItem {
 	protected NagaArmorItem(ArmorMaterial materialIn, EquipmentSlot equipmentSlotIn, Properties props) {
@@ -18,9 +19,9 @@ public class NagaArmorItem extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "naga_scale_2.png";
+			return ARMOR_DIR + "naga_scale_2.png";
 		} else {
-			return TwilightForestMod.ARMOR_DIR + "naga_scale_1.png";
+			return ARMOR_DIR + "naga_scale_1.png";
 		}
 	}
 

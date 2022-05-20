@@ -1,7 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
@@ -15,9 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.monster.SlimeBeetle;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * ModelSlimeBeetle - MCVinnyq

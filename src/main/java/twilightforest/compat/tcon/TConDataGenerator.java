@@ -25,7 +25,6 @@ import slimeknights.tconstruct.tools.TinkerModifiers;
 import slimeknights.tconstruct.tools.stats.ExtraMaterialStats;
 import slimeknights.tconstruct.tools.stats.HandleMaterialStats;
 import slimeknights.tconstruct.tools.stats.HeadMaterialStats;
-import twilightforest.TwilightForestMod;
 import twilightforest.compat.TConCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -34,12 +33,14 @@ import twilightforest.item.TFItems;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class TConDataGenerator {
 
 	public static class TConFluidTagGenerator extends FluidTagsProvider {
 
 		public TConFluidTagGenerator(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-			super(generator, TwilightForestMod.ID, existingFileHelper);
+			super(generator, MOD_ID, existingFileHelper);
 		}
 
 		@Override
@@ -261,7 +262,7 @@ public class TConDataGenerator {
 
 		@Override
 		public String getModId() {
-			return TwilightForestMod.ID;
+			return MOD_ID;
 		}
 
 		@Override

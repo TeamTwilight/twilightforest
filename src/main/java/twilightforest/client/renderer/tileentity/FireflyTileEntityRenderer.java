@@ -22,13 +22,15 @@ import twilightforest.block.entity.FireflyBlockEntity;
 
 import javax.annotation.Nullable;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlockEntity> {
 
 	private final FireflyModel fireflyModel;
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
 	//private static final RenderType GLOW_LAYER;
 	static {
-		RenderStateShard.TransparencyStateShard transparencyState = new RenderStateShard.TransparencyStateShard(TwilightForestMod.ID + ":firefly_glow", () -> {
+		RenderStateShard.TransparencyStateShard transparencyState = new RenderStateShard.TransparencyStateShard(MOD_ID + ":firefly_glow", () -> {
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		}, () -> {
@@ -43,7 +45,7 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlo
 		//RenderStateShard.LightmapStateShard enableLightmap = new RenderStateShard.LightmapStateShard(true);
 
 		//RenderType.CompositeState rendertype$state = RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(textureLoc, false, false)).setTransparencyState(transparencyState)/*FIXME .setDiffuseLightingState(enableDiffuse).setAlphaState(noAlphaTest)*/.setCullState(disableCull).setLightmapState(enableLightmap).createCompositeState(false);
-		//GLOW_LAYER = RenderType.create(TwilightForestMod.ID + ":firefly_glow", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, true, true, rendertype$state);
+		//GLOW_LAYER = RenderType.create(MOD_ID + ":firefly_glow", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, true, true, rendertype$state);
 	}
 
 	public FireflyTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {

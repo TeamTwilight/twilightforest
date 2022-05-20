@@ -30,6 +30,8 @@ import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.IntConsumer;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class IEShaderRegister {
 	// Layer Constants
 	private static final ShaderLayer NULL_LAYER                = new ShaderLayer( null                                                                                                       , 0xFFFFFFFF);
@@ -52,14 +54,14 @@ public class IEShaderRegister {
 //	public static final ResourceLocation PROCESSED_MINECART_LAYER      = new ResourceLocation("immersiveengineering", "textures/models/shaders/minecart_0");
 	public static final ResourceLocation PROCESSED_BALLOON_LAYER       = new ResourceLocation("immersiveengineering", "block/shaders/balloon_0");
 
-//	public static final ResourceLocation PROCESSED_REVOLVER_GRIP_LAYER = new ResourceLocation(TwilightForestMod.ID, "items/immersiveengineering/revolver_grip_processed");
-//	public static final ResourceLocation PROCESSED_REVOLVER_LAYER      = new ResourceLocation(TwilightForestMod.ID, "items/immersiveengineering/revolver_processed");
-//	public static final ResourceLocation PROCESSED_CHEMTHROW_LAYER     = new ResourceLocation(TwilightForestMod.ID, "items/immersiveengineering/chemthrower_processed");
-//	public static final ResourceLocation PROCESSED_DRILL_LAYER         = new ResourceLocation(TwilightForestMod.ID, "items/immersiveengineering/drill_processed");
-//	public static final ResourceLocation PROCESSED_RAILGUN_LAYER       = new ResourceLocation(TwilightForestMod.ID, "items/immersiveengineering/railgun_processed");
-//	public static final ResourceLocation PROCESSED_SHIELD_LAYER        = new ResourceLocation(TwilightForestMod.ID, "items/immersiveengineering/shield_processed");
-//	//public static final ResourceLocation PROCESSED_MINECART_LAYER      = new ResourceLocation(TwilightForestMod.ID, "textures/items/immersiveengineering/minecart_processed.png");
-//	public static final ResourceLocation PROCESSED_BALLOON_LAYER       = new ResourceLocation(TwilightForestMod.ID, "blocks/immersiveengineering/balloon_processed");
+//	public static final ResourceLocation PROCESSED_REVOLVER_GRIP_LAYER = new ResourceLocation(MOD_ID, "items/immersiveengineering/revolver_grip_processed");
+//	public static final ResourceLocation PROCESSED_REVOLVER_LAYER      = new ResourceLocation(MOD_ID, "items/immersiveengineering/revolver_processed");
+//	public static final ResourceLocation PROCESSED_CHEMTHROW_LAYER     = new ResourceLocation(MOD_ID, "items/immersiveengineering/chemthrower_processed");
+//	public static final ResourceLocation PROCESSED_DRILL_LAYER         = new ResourceLocation(MOD_ID, "items/immersiveengineering/drill_processed");
+//	public static final ResourceLocation PROCESSED_RAILGUN_LAYER       = new ResourceLocation(MOD_ID, "items/immersiveengineering/railgun_processed");
+//	public static final ResourceLocation PROCESSED_SHIELD_LAYER        = new ResourceLocation(MOD_ID, "items/immersiveengineering/shield_processed");
+//	//public static final ResourceLocation PROCESSED_MINECART_LAYER      = new ResourceLocation(MOD_ID, "textures/items/immersiveengineering/minecart_processed.png");
+//	public static final ResourceLocation PROCESSED_BALLOON_LAYER       = new ResourceLocation(MOD_ID, "blocks/immersiveengineering/balloon_processed");
 
 	private static final ResourceLocation TEXTURE_STARS = new ResourceLocation("textures/entity/end_portal.png");
 
@@ -252,7 +254,7 @@ public class IEShaderRegister {
 	@SafeVarargs
 	@SuppressWarnings({"rawtypes", "varargs"})
 	private static ShaderRegistry.ShaderRegistryEntry registerShaderCasesTopped(String name, ModType mod, String overlayType, Rarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderLayer>[] providers, ShaderLayerProvider<? extends ShaderLayer>... extraProviders) {
-		ResourceLocation modName = new ResourceLocation(TwilightForestMod.ID, name.toLowerCase(Locale.ROOT).replace(" ", "_"));
+		ResourceLocation modName = new ResourceLocation(MOD_ID, name.toLowerCase(Locale.ROOT).replace(" ", "_"));
 		ShaderRegistry.registerShader_Item(modName, rarity, gripColor, bodyColor, colorSecondary);
 
 		registerShaderCaseRevolver   (modName, gripColor, bodyColor, colorBlade, rarity, provideFromProviders( mod, CaseType.REVOLVER        , overlayType, colorSecondary, providers ), provideFromProviders( mod, CaseType.REVOLVER        , overlayType                , colorSecondary, extraProviders ));
@@ -399,7 +401,7 @@ public class IEShaderRegister {
 				};
 			}
 		},
-		TWILIGHT_FOREST(TwilightForestMod.ID) {
+		TWILIGHT_FOREST(MOD_ID) {
 			@Override
 			String getPath(CaseType caseType, String suffix) {
 				return switch (caseType) {

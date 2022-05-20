@@ -20,13 +20,14 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.FieryArmorModel;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static twilightforest.TFConstants.ARMOR_DIR;
 
 public class FieryArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.fiery_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
@@ -38,9 +39,9 @@ public class FieryArmorItem extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
+			return ARMOR_DIR + "fiery_2.png";
 		} else {
-			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
+			return ARMOR_DIR + "fiery_1.png";
 		}
 	}
 

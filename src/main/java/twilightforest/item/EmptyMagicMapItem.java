@@ -11,8 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ComplexItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFGenerationSettings;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public class EmptyMagicMapItem extends ComplexItem {
 	protected EmptyMagicMapItem(Properties props) {
@@ -26,7 +27,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 		if (worldIn.isClientSide)
 			return InteractionResultHolder.pass(emptyMapStack);
 		if(worldIn instanceof ServerLevel level && !TFGenerationSettings.usesTwilightChunkGenerator(level)) {
-			playerIn.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".ui.magicmap.fail"), true);
+			playerIn.displayClientMessage(new TranslatableComponent(MOD_ID + ".ui.magicmap.fail"), true);
 			return InteractionResultHolder.fail(emptyMapStack);
 		}
 		// TF - scale at 4

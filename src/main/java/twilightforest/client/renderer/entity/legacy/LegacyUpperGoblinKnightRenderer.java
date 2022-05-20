@@ -3,7 +3,6 @@ package twilightforest.client.renderer.entity.legacy;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import twilightforest.client.model.entity.UpperGoblinKnightModel;
 import twilightforest.client.model.entity.legacy.UpperGoblinKnightLegacyModel;
 import twilightforest.client.renderer.entity.TFBipedRenderer;
 import twilightforest.entity.monster.UpperGoblinKnight;

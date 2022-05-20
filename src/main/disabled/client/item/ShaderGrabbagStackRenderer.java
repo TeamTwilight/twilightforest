@@ -48,10 +48,10 @@ public class ShaderGrabbagStackRenderer extends TileEntityRenderer<ShaderGrabbag
     private ItemStack stack = ItemStack.EMPTY;
     private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
 
-    private final ResourceLocation bg = new ResourceLocation(TwilightForestMod.ID, "textures/items/star_burst_mask.png");
+    private final ResourceLocation bg = new ResourceLocation(MOD_ID, "textures/items/star_burst_mask.png");
 
-    private final ModelResourceLocation backModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":trophy_minor", "inventory");
-    private final ModelResourceLocation caseModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":shader", "inventory");
+    private final ModelResourceLocation backModelLocation = new ModelResourceLocation(MOD_ID + ":trophy_minor", "inventory");
+    private final ModelResourceLocation caseModelLocation = new ModelResourceLocation(MOD_ID + ":shader", "inventory");
 
     private final ModelResourceLocation itemModelLocation;
 

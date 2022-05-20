@@ -11,8 +11,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class BiomeKeys {
-	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
+	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, MOD_ID);
 
 	public static final ResourceKey<Biome> FOREST = makeKey("forest");
 	public static final ResourceKey<Biome> DENSE_FOREST = makeKey("dense_forest");

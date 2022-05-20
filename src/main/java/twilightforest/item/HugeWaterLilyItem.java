@@ -10,15 +10,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.item.WaterLilyBlockItem;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-
-import net.minecraft.world.item.Item.Properties;
 
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;

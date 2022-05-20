@@ -17,9 +17,10 @@ import slimeknights.tconstruct.library.data.material.AbstractMaterialDataProvide
 import slimeknights.tconstruct.library.materials.definition.MaterialId;
 import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
-import twilightforest.TwilightForestMod;
 import twilightforest.compat.tcon.TConDataGenerator;
 import twilightforest.compat.tcon.traits.*;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public class TConCompat extends TFCompat {
 	protected TConCompat() {
@@ -70,7 +71,7 @@ public class TConCompat extends TFCompat {
 	}
 
 	//Fluids
-	public static final FluidDeferredRegister FLUIDS = new FluidDeferredRegister(TwilightForestMod.ID);
+	public static final FluidDeferredRegister FLUIDS = new FluidDeferredRegister(MOD_ID);
 
 	public static final FluidObject<ForgeFlowingFluid> MOLTEN_KNIGHTMETAL = FLUIDS.register("molten_knightmetal", ModelFluidAttributes.builder().temperature(1000).luminosity(15).sound(SoundEvents.BUCKET_FILL_LAVA, SoundEvents.BUCKET_EMPTY_LAVA), Material.LAVA, 15);
 	public static final FluidObject<ForgeFlowingFluid> MOLTEN_FIERY = FLUIDS.register("molten_fiery", ModelFluidAttributes.builder().temperature(1000).luminosity(15).sound(SoundEvents.BUCKET_FILL_LAVA, SoundEvents.BUCKET_EMPTY_LAVA), Material.LAVA, 15);
@@ -78,7 +79,7 @@ public class TConCompat extends TFCompat {
 
 
 	//Modifiers
-	public static final ModifierDeferredRegister MODIFIERS = ModifierDeferredRegister.create(TwilightForestMod.ID);
+	public static final ModifierDeferredRegister MODIFIERS = ModifierDeferredRegister.create(MOD_ID);
 
 	public static final StaticModifier<PrecipitateModifier> PRECIPITATE = MODIFIERS.register("precipitate", PrecipitateModifier::new);
 	public static final StaticModifier<StalwartModifier> STALWART = MODIFIERS.register("stalwart", StalwartModifier::new);
@@ -94,6 +95,6 @@ public class TConCompat extends TFCompat {
 	public static final MaterialId STEELEAF = id("steeleaf");
 
 	private static MaterialId id(String name) {
-		return new MaterialId(TwilightForestMod.ID, name);
+		return new MaterialId(MOD_ID, name);
 	}
 }

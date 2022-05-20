@@ -76,12 +76,12 @@ public enum BeeRegister implements IBeeDefinition {
         String lowerCase = this.toString().toLowerCase(Locale.ROOT);
 
         IAlleleBeeSpeciesBuilder speciesBuilder = BeeManager.beeFactory.createSpecies(
-                TwilightForestMod.ID,
-                TwilightForestMod.ID + ":" + lowerCase,
+                MOD_ID,
+                MOD_ID + ":" + lowerCase,
                 true,
                 "Drullkus",
-                TwilightForestMod.ID + ".bee." + lowerCase,
-                TwilightForestMod.ID + ".bee." + lowerCase + ".desc",
+                MOD_ID + ".bee." + lowerCase,
+                MOD_ID + ".bee." + lowerCase + ".desc",
                 branch.getBranch(),
                 species.toLowerCase(Locale.ROOT),
                 0xFF_FF_FF,

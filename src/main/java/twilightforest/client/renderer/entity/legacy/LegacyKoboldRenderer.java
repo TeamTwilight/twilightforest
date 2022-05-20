@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.client.model.entity.KoboldModel;
 import twilightforest.client.model.entity.legacy.KoboldLegacyModel;
 import twilightforest.client.renderer.entity.TFBipedRenderer;
 import twilightforest.entity.monster.Kobold;

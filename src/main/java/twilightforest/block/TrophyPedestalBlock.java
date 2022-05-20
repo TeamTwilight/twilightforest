@@ -33,6 +33,8 @@ import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -112,7 +114,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	private void warnIneligiblePlayers(Level world, BlockPos pos) {
 		for (Player player : world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
 			if (!isPlayerEligible(player)) {
-				player.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
+				player.displayClientMessage(new TranslatableComponent(MOD_ID + ".trophy_pedestal.ineligible"), true);
 			}
 		}
 	}

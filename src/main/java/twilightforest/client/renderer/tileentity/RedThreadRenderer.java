@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.RedThreadBlockEntity;
 import twilightforest.client.TFShaders;
 import twilightforest.item.TFItems;
@@ -23,10 +22,12 @@ import twilightforest.item.TFItems;
 import java.util.Objects;
 import java.util.Random;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockEntityRenderer<T> {
 
 	private static final RenderType GLOW = RenderType
-			.create(TwilightForestMod.ID + ":glow", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 2097152, true, false, RenderType.CompositeState
+			.create(MOD_ID + ":glow", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 2097152, true, false, RenderType.CompositeState
 					.builder()
 					.setLightmapState(new RenderStateShard.LightmapStateShard(true))
 					.setCullState(new RenderStateShard.CullStateShard(true))

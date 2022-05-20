@@ -35,7 +35,7 @@ public class MapGenTFHollowTree extends Structure<NoFeatureConfig> {
 
 	@Override
 	public String getStructureName() {
-		return TwilightForestMod.ID + ":TFHollowTree";
+		return MOD_ID + ":TFHollowTree";
 	}
 
 //	@Override

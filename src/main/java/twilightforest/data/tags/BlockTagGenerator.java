@@ -18,6 +18,8 @@ import twilightforest.block.TFBlocks;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> TOWERWOOD = BlockTags.create(TwilightForestMod.prefix("towerwood"));
 
@@ -73,7 +75,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> ROOT_ORES = BlockTags.create(new ResourceLocation("forge", "ores_in_ground/root"));
 
 	public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
-		super(generator, TwilightForestMod.ID, exFileHelper);
+		super(generator, MOD_ID, exFileHelper);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -605,7 +607,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
 		return ForgeRegistries.BLOCKS.getValues().stream()
-				.filter(b -> b.getRegistryName() != null && (b.getRegistryName().getNamespace().equals(TwilightForestMod.ID) || b.getRegistryName().getNamespace().equals("minecraft")) && predicate.test(b))
+				.filter(b -> b.getRegistryName() != null && (b.getRegistryName().getNamespace().equals(MOD_ID) || b.getRegistryName().getNamespace().equals("minecraft")) && predicate.test(b))
 				.toArray(Block[]::new);
 	}
 

@@ -24,6 +24,8 @@ import twilightforest.TwilightForestMod;
 
 import java.util.Random;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 //retired loading screen, see https://twitter.com/Drullkus/status/928466334744064000 for a video example.
 //1.16+ load times have gotten a lot better, and you cant really see this screen anymore.
 //it also breaks in one way or another every update, so we're gonna retire it until we find another use for it.
@@ -92,7 +94,7 @@ public class LoadingScreenGui extends Screen {
 		drawBouncingWobblyItem(stack, partialTicks, resolution.getGuiScaledWidth(), resolution.getGuiScaledHeight());
 		RenderSystem.applyModelViewMatrix();
 
-		String loadTitle = I18n.get(TwilightForestMod.ID + ".loading.title." + (isEntering ? "enter" : "leave"));
+		String loadTitle = I18n.get(MOD_ID + ".loading.title." + (isEntering ? "enter" : "leave"));
 		ms.pushPose();
 		ms.translate(
 				(resolution.getGuiScaledWidth() / 2f) - (fontRenderer.width(loadTitle) / 4f),

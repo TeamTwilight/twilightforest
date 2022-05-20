@@ -11,13 +11,14 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.IItemRenderProperties;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import static twilightforest.TFConstants.ARMOR_DIR;
 
 public class KnightmetalArmorItem extends ArmorItem {
 
@@ -30,9 +31,9 @@ public class KnightmetalArmorItem extends ArmorItem {
 	@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "knightly_2.png";
+			return ARMOR_DIR + "knightly_2.png";
 		} else {
-			return TwilightForestMod.ARMOR_DIR + "knightly_1.png";
+			return ARMOR_DIR + "knightly_1.png";
 		}
 	}
 

@@ -19,11 +19,12 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static twilightforest.TFConstants.MOD_ID;
 import static twilightforest.TwilightForestMod.prefix;
 
 public class BlockstateGenerator extends BlockStateProvider {
 	public BlockstateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
-		super(gen, TwilightForestMod.ID, exFileHelper);
+		super(gen, MOD_ID, exFileHelper);
 	}
 
 	@Override

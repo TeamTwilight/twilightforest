@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.BoarModel;
 import twilightforest.entity.passive.Boar;
 

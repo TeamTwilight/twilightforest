@@ -35,7 +35,9 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
+import static twilightforest.TFConstants.MOD_ID;
+
+@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = MOD_ID)
 public class TFClientSetup {
 
 	public static boolean optifinePresent = false;
@@ -45,7 +47,7 @@ public class TFClientSetup {
 		TFShaders.init(busMod);
 	}
 
-	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
+	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = MOD_ID)
 	public static class ForgeEvents {
 
 		private static boolean optifineWarningShown = false;
@@ -78,7 +80,7 @@ public class TFClientSetup {
         DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
 
 		for(BannerPattern pattern : BannerPattern.values()) {
-			if(pattern.getFilename().startsWith(TwilightForestMod.ID)) {
+			if(pattern.getFilename().startsWith(MOD_ID)) {
 				Sheets.BANNER_MATERIALS.put(pattern, Sheets.createBannerMaterial(pattern));
 				Sheets.SHIELD_MATERIALS.put(pattern, Sheets.createShieldMaterial(pattern));
 			}

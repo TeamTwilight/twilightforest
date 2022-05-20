@@ -17,17 +17,18 @@ import twilightforest.block.TFBlocks;
 import twilightforest.item.Experiment115Item;
 import twilightforest.item.TFItems;
 
+import static twilightforest.TFConstants.MOD_ID;
 import static twilightforest.TwilightForestMod.prefix;
 
 public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, TwilightForestMod.ID, existingFileHelper);
+		super(generator, MOD_ID, existingFileHelper);
 	}
 
 	@Override
 	protected void registerModels() {
 		for (Item i : Registry.ITEM) {
-			if (i instanceof SpawnEggItem && i.getRegistryName().getNamespace().equals(TwilightForestMod.ID)) {
+			if (i instanceof SpawnEggItem && i.getRegistryName().getNamespace().equals(MOD_ID)) {
 				getBuilder(i.getRegistryName().getPath())
 								.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
 			}

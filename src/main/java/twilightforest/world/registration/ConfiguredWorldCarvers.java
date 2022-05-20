@@ -14,15 +14,17 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.TFCavesCarver;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 //this was all put into 1 class because it seems like a waste to have it in 2
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ConfiguredWorldCarvers {
 	public static final TFCavesCarver TFCAVES = new TFCavesCarver(CaveCarverConfiguration.CODEC, false);
 	public static final TFCavesCarver HIGHLANDCAVES = new TFCavesCarver(CaveCarverConfiguration.CODEC, true);
 	
 	static {
-		TFCAVES.setRegistryName(TwilightForestMod.ID, "tf_caves");
-		HIGHLANDCAVES.setRegistryName(TwilightForestMod.ID, "highland_caves");
+		TFCAVES.setRegistryName(MOD_ID, "tf_caves");
+		HIGHLANDCAVES.setRegistryName(MOD_ID, "highland_caves");
 	}
 	
 	@SubscribeEvent

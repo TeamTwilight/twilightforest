@@ -109,10 +109,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 /**
  * So much of the mod logic in this one class
  */
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class TFEventListener {
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";

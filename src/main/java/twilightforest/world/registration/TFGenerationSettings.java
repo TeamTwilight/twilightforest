@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +24,6 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFMobEffects;
@@ -40,6 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public class TFGenerationSettings /*extends GenerationSettings*/ {
 
@@ -165,7 +165,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	// Checks if the world is a qualified Twilight world by checking against its namespace or if it's a portal destination
 	@OnlyIn(Dist.CLIENT)
 	public static boolean isTwilightWorldOnClient(Level world) {
-		return TwilightForestMod.ID.equals(Minecraft.getInstance().level.dimension().location().getNamespace()) || isTwilightPortalDestination(world);
+		return MOD_ID.equals(Minecraft.getInstance().level.dimension().location().getNamespace()) || isTwilightPortalDestination(world);
 	}
 
 	// Checks if the world is *a* Twilight world on the Server side.

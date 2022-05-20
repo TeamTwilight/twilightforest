@@ -43,6 +43,8 @@ import java.util.OptionalLong;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
@@ -115,7 +117,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private static <E, T extends Registry<E>> void dumpRegistry(Path path, HashCache cache, DynamicOps<JsonElement> ops, ResourceKey<? extends T> key, T registry, Encoder<E> encoder) {
 		for (Map.Entry<ResourceKey<E>, E> entry : registry.entrySet()) {
-			if (entry.getKey().location().getNamespace().equals(TwilightForestMod.ID)) {
+			if (entry.getKey().location().getNamespace().equals(MOD_ID)) {
 				LOGGER.info("\t\t{}", entry.getKey().location().getPath());
 				Path otherPath = createPath(path, key.location(), entry.getKey().location());
 				dumpValue(otherPath, cache, ops, encoder, entry.getValue());

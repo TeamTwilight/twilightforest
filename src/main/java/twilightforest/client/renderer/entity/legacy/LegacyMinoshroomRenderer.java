@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.entity.MinoshroomModel;
 import twilightforest.client.model.entity.legacy.MinoshroomLegacyModel;
 import twilightforest.entity.boss.Minoshroom;
 

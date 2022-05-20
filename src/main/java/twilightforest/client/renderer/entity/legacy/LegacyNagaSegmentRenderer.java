@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.entity.NagaModel;
 import twilightforest.client.model.entity.legacy.NagaLegacyModel;
 import twilightforest.client.renderer.entity.TFPartRenderer;
 import twilightforest.entity.boss.NagaSegment;

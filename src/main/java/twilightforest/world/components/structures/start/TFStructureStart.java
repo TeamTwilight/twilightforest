@@ -14,11 +14,11 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponent;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public class TFStructureStart<C extends FeatureConfiguration> extends StructureStart {
 	private boolean conquered = false;
@@ -66,7 +66,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 		for (ConfiguredStructureFeature<?, ?> structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).stream()
 				.filter(feature -> {
 					ResourceLocation location = feature.feature.getRegistryName();
-					return location != null && TwilightForestMod.ID.equals(location.getNamespace());
+					return location != null && MOD_ID.equals(location.getNamespace());
 				}).toList()) {
 			StructureStart start = structureManager.getStructureAt(pos, structure);
 			if (!start.isValid())

@@ -5,19 +5,20 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.templates.GraveyardFeature;
 import twilightforest.world.components.processors.*;
 import twilightforest.world.components.structures.courtyard.CourtyardTerraceTemplateProcessor;
 
 import java.util.function.Supplier;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 /**
  * Class for registering IStructureProcessorTypes. These are just used for StructureProcessor.getType()
  */
 public class TFStructureProcessors {
 
-	public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSORS = DeferredRegister.create(Registry.STRUCTURE_PROCESSOR_REGISTRY, TwilightForestMod.ID);
+	public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSORS = DeferredRegister.create(Registry.STRUCTURE_PROCESSOR_REGISTRY, MOD_ID);
 
 	public static final RegistryObject<StructureProcessorType<CobbleVariants>> COBBLE_VARIANTS = registerProcessor("cobble_variants", () -> () -> CobbleVariants.CODEC);
 	public static final RegistryObject<StructureProcessorType<SmoothStoneVariants>> SMOOTH_STONE_VARIANTS = registerProcessor("smooth_stone_variants", () -> () -> SmoothStoneVariants.CODEC);

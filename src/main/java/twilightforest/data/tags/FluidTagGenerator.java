@@ -10,12 +10,14 @@ import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class FluidTagGenerator extends FluidTagsProvider {
 
     public static final TagKey<Fluid> FIRE_JET_FUEL = FluidTags.create(TwilightForestMod.prefix("fire_jet_fuel"));
 
     public FluidTagGenerator(DataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generatorIn, TwilightForestMod.ID, existingFileHelper);
+        super(generatorIn, MOD_ID, existingFileHelper);
     }
 
     @Override

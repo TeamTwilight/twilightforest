@@ -9,6 +9,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
+import static twilightforest.TFConstants.MOD_ID;
+
 public class BiomeTagGenerator extends BiomeTagsProvider {
 
 	public static final TagKey<Biome> VALID_QUEST_GROVE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_quest_grove_biomes"));
@@ -29,7 +31,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
 	public BiomeTagGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, TwilightForestMod.ID, helper);
+		super(generator, MOD_ID, helper);
 	}
 
 	@Override

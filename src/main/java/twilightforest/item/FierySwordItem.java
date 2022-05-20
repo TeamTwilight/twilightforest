@@ -18,14 +18,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+import static twilightforest.TFConstants.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class FierySwordItem extends SwordItem {
 
 	public FierySwordItem(Tier toolMaterial, Properties props) {

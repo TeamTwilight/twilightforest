@@ -28,7 +28,7 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 	}
 
 	/**
-	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MooshroomMushroomLayer}
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer}
 	 */
 	static class LayerMinoshroomMushroom extends RenderLayer<Minoshroom, MinoshroomModel> {
 

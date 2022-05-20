@@ -4,13 +4,14 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import quek.undergarden.registry.UGEntityTypes;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
+
+import static twilightforest.TFConstants.MOD_ID;
 
 public class TransformationPowderGenerator extends TransformationPowderProvider{
 
 	public TransformationPowderGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, TwilightForestMod.ID, helper);
+		super(generator, MOD_ID, helper);
 	}
 
 	@Override

@@ -37,7 +37,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+import static twilightforest.TFConstants.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class TFTickHandler {
 
 	@SubscribeEvent
@@ -119,7 +121,7 @@ public class TFTickHandler {
 		}).orElse(false);
 	}
 
-	private static final TranslatableComponent PORTAL_UNWORTHY = new TranslatableComponent(TwilightForestMod.ID + ".ui.portal.unworthy");
+	private static final TranslatableComponent PORTAL_UNWORTHY = new TranslatableComponent(MOD_ID + ".ui.portal.unworthy");
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
 		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
 				|| TFGenerationSettings.isTwilightPortalDestination(world)

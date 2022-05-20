@@ -11,11 +11,12 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+import static twilightforest.TFConstants.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID)
 public class EnderBowItem extends BowItem {
 	private static final String KEY = "twilightforest:ender";
 
