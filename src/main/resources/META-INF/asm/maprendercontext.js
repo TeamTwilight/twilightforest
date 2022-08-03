@@ -46,10 +46,10 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var i = 0;
+                var i = -1;
                 for (var index = instructions.size() - 1; index > 0; index--) {
                     var /*org.objectweb.asm.tree.FieldInsnNode*/ node = instructions.get(index);
-                    if (i === 0 &&
+                    if (i === -1 &&
 
                         node instanceof FieldInsnNode &&
 
@@ -63,6 +63,12 @@ function initializeCoreMod() {
                         i = index + 1;
 
                 }
+
+                if (i === -1) {
+                    // Must be optifine... Optifine checks for instanceof MapItem, so this patch won't be needed anyway.
+                    return methodNode;
+                }
+
                 instructions.insert(
                     instructions.get(i),
                     ASM.listOf(
