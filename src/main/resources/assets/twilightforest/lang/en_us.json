@@ -1,10 +1,8 @@
 {
   "itemGroup.twilightforest": "Twilight Forest",
 
-  // ADVANCEMENTS
   "advancement.twilightforest.root.desc": "Enter the mysterious magical woodlands: the Twilight Forest.",
 
-  // General progression
   "advancement.twilightforest.hedge": "Bug Stomper",
   "advancement.twilightforest.hedge.desc": "Defeat a spider in a Hedge Maze.",
 
@@ -21,7 +19,6 @@
   "advancement.twilightforest.quest_ram": "Consummate Baaahs",
   "advancement.twilightforest.quest_ram.desc": "Give the %s what it is missing.",
 
-  // Map
   "advancement.twilightforest.magic_map_focus": "With Fire It Writes",
   "advancement.twilightforest.magic_map_focus.desc": "Craft the %s with a %s, %s, and %s.",
   "advancement.twilightforest.magic_map": "I Can See Forever",
@@ -31,7 +28,6 @@
   "advancement.twilightforest.ore_map": "How Can That Be Worth It?",
   "advancement.twilightforest.ore_map.desc": "Craft the %s.",
 
-  // Mainline beginning progression
   "advancement.twilightforest.twilight_hunter": "The Silence of the Forest",
   "advancement.twilightforest.twilight_hunter.desc": "Hunt some of the local wildlife.",
 
@@ -47,7 +43,6 @@
   "advancement.twilightforest.full_mettle_alchemist": "Full Mettle Alchemist",
   "advancement.twilightforest.full_mettle_alchemist.desc": "Drink four doses of Harming II from a potion flask in under 8 seconds and survive.",
 
-  // Swamp Progression
   "advancement.twilightforest.progress_labyrinth": "Mighty Stroganoff",
   "advancement.twilightforest.progress_labyrinth.desc": "The meat & mushroom stew pleasantly warms you, enough so that you feel you're acclimatised enough to venture into the Fire Swamp.",
   "advancement.twilightforest.kill_hydra": "Hydra Slayer",
@@ -57,7 +52,6 @@
   "advancement.twilightforest.hydra_chop": "Hydra Chop, Baby!",
   "advancement.twilightforest.hydra_chop.desc": "Chow down on some overpowered %s meat when your food bar is empty.",
 
-  // Dark Forest Progression
   "advancement.twilightforest.progress_trophy_pedestal": "Trophied Champion",
   "advancement.twilightforest.progress_trophy_pedestal.desc": "Claim your title by placing a trophy on the pedestal in the dark forest ruins.",
   "advancement.twilightforest.progress_knights": "Carminite Acclimation",
@@ -72,7 +66,6 @@
   "advancement.twilightforest.experiment_115_2": "Making a note: Huge Success!",
   "advancement.twilightforest.experiment_115_2.desc": "It's so delicious and moist!",
 
-  // Snow Forest Progression
   "advancement.twilightforest.progress_yeti": "Alpha Fur",
   "advancement.twilightforest.progress_yeti.desc": "Line your garments with the soft fur from the %s, keeping you safe from the Glacier's cold.",
   "advancement.twilightforest.progress_glacier": "Clear Skies",
@@ -80,14 +73,12 @@
   "advancement.twilightforest.arctic_dyed": "Getting in Fashion",
   "advancement.twilightforest.arctic_dyed.desc": "Dye all four pieces of Arctic Armor.",
 
-  // Mid-way Misc. Stuff
   "advancement.twilightforest.glass_sword": "One Hit Wonder",
   "advancement.twilightforest.glass_sword.desc": "Hope you made good use of that.",
 
   "advancement.twilightforest.fiery_set": "Gallons of Blood and Tears",
   "advancement.twilightforest.fiery_set.desc": "Wield a fiery tool or weapon while having at least one piece of fiery armor in your inventory.",
 
-  // Highlands
   "advancement.twilightforest.progress_merge": "Ultimate Showdown",
   "advancement.twilightforest.progress_merge.desc": "Slay the %s, %s, and %s to clear the acid rain and embolden yourself for the Highlands.",
   "advancement.twilightforest.troll": "We Do a Little Trolling",
@@ -103,7 +94,6 @@
   "advancement.twilightforest.progress_castle": "So Castle Very Wow [NYI]",
   "advancement.twilightforest.progress_castle.desc": "What could even be in that castle?!?",
 
-  // Collections
   "advancement.twilightforest.twilight_dining": "We Dine At Eternal Sundown",
   "advancement.twilightforest.twilight_dining.desc": "Eat ALL of the Food exclusive to the Twilight Forest.",
   "advancement.twilightforest.experiment_115_3": "Eating 115 Everyday, 115 Years, Forever",
@@ -117,7 +107,6 @@
   "twilightforest.ore_meter.exposed": "Exposed: %s",
   "twilightforest.scepter_charges": "%d charges left",
 
-  // Commands
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "You are not in the Twilight Forest dimension",
   "commands.tffeature.none_nearby": "Couldn't find a feature nearby!",
@@ -132,7 +121,6 @@
   "commands.tffeature.structure.spawn_list": "Spawn list for this area is:",
   "commands.tffeature.structure.spawn_info": "%s, Weight %s",
 
-  // Biomes
   "biome.twilightforest.forest": "Twilight Forest",
   "biome.twilightforest.dense_forest": "Dense Forest",
   "biome.twilightforest.firefly_forest": "Firefly Forest",
@@ -154,10 +142,8 @@
   "biome.twilightforest.thornlands": "Thornlands",
   "biome.twilightforest.final_plateau": "Final Plateau",
 
-  // Gamerules
   "gamerule.tfEnforcedProgression": "Twilight Forest Progression",
 
-  // Enchantments
   "enchantment.twilightforest.fire_react": "Fire React",
   "enchantment.twilightforest.fire_react.desc": "Adds a chance for the attacker to be set on fire after hitting the wearer.",
   "enchantment.twilightforest.chill_aura": "Chill Aura",
@@ -165,10 +151,8 @@
   "enchantment.twilightforest.destruction": "Destruction",
   "enchantment.twilightforest.destruction.desc": "Allows the Block and Chain to break blocks with a higher mining tier.",
 
-  // Effects
   "effect.twilightforest.frosted": "Frosted",
 
-  // Blocks
   "block.twilightforest.twilight_oak_log": "Twilight Oak Log",
   "block.twilightforest.canopy_log": "Canopy Tree Log",
   "block.twilightforest.mangrove_log": "Mangrove Log",
@@ -616,7 +600,6 @@
 
   "dimension.twilightforest.twilightforest": "Twilight Forest",
 
-  // Structures
   "structure.twilightforest.hedge_maze": "Hedge Maze",
   "structure.twilightforest.small_hollow_hill": "Small Hollow Hill",
   "structure.twilightforest.medium_hollow_hill": "Medium Hollow Hill",
@@ -634,7 +617,6 @@
   "structure.twilightforest.troll_cave": "Troll Caves",
   "structure.twilightforest.final_castle": "Final Castle",
 
-  // Items
   "item.twilightforest.boarkchop": "Boarkchop",
   "item.twilightforest.naga_scale": "Naga Scale",
   "item.twilightforest.naga_chestplate": "Naga Scale Tunic",
@@ -1027,7 +1009,6 @@
   "item.twilightforest.skull_candle.desc": "Has: %s %s Candle",
   "item.twilightforest.skull_candle.desc.multiple": "Has: %s %s Candles",
 
-  // Entities
   "entity.twilightforest.boar": "Wild Boar",
   "entity.twilightforest.bighorn_sheep": "Bighorn Sheep",
   "entity.twilightforest.deer": "Wild Deer",
@@ -1116,7 +1097,6 @@
   "entity.twilightforest.firefly_slingshot": "Firefly",
   "entity.twilightforest.moonworm_slingshot": "Moonworm",
 
-  // Subtitles
   "subtitles.twilightforest.entity.acid_rain": "Acid Rain scalds player",
   "subtitles.twilightforest.entity.alphayeti.alert": "Alpha Yeti targets player",
   "subtitles.twilightforest.entity.alphayeti.death": "Alpha Yeti dies",
@@ -1366,7 +1346,6 @@
   "subtitles.twilightforest.item.scepter.pearl": "Twilight Scepter throws pearl",
   "subtitles.twilightforest.item.shield.shatter": "Wooden Shield shatters",
 
-  // Death Messages
   "death.attack.twilightforest.ghastTear": "%1$s was scalded by fiery tears",
   "death.attack.twilightforest.ghastTear.player": "%1$s was scalded by fiery tears while escaping %2$s",
   "death.attack.twilightforest.hydraFire": "%1$s was roasted alive by the Hydra",
@@ -1432,7 +1411,6 @@
   "death.attack.twilightforest.yeeted.entity": "%1$s was yeeted for the last time by %2$s",
   "death.attack.twilightforest.yeeted.item": "%1$s was yeeted for the last time by %2$s while somehow holding %3$s",
 
-  // Stats
   "stat.twilightforest.blocks_crumbled": "Blocks Crumbled with Horn",
   "stat.twilightforest.bugs_squished": "Bugs Squished",
   "stat.twilightforest.e115_slices_eaten": "Experiment 115 Slices Eaten",
@@ -1444,7 +1422,6 @@
   "stat.twilightforest.trophy_pedestals_activated": "Trophy Pedestals Activated",
   "stat.twilightforest.uncrafting_table_interactions": "Interactions with Uncrafting Table",
 
-  // Misc
   "twilightforest.misc.wip0": "This block is a work in progress and may have bugs or unintended effects that may damage your world.",
   "twilightforest.misc.wip1": "Use with caution.",
   "twilightforest.misc.nyi": "This block has effects that are not yet implemented.",
@@ -1459,7 +1436,6 @@
   "twilightforest.ui.advancement.required": "Advancement Required:",
   "twilightforest.ui.advancement.no_title": "<Hidden Advancement>",
 
-  // Config
   "twilightforest.config.dimension": "Dimension Settings",
   "twilightforest.config.dimension.tooltip": "You won't be able to change these settings without some kind of relaunch.",
   "twilightforest.config.spawn_in_tf": "New Players Spawn in Twilight Forest",
@@ -1468,7 +1444,7 @@
   "twilightforest.config.portal_for_new_player.tooltip": "If true, the return portal will spawn for new players that were sent to the TF if `spawn_in_tf` is true.",
 
   "twilightforest.config.hollow_hill_stalactites": "Custom Hollow Hill Stalactites",
-  "twilightforest.config.hollow_hill_stalactites.tooltip": "Defines custom stalactites generated in hollow hills.\n_Format is \\\"modid:block<:meta> size max_Length min_Height weight\\\", where the properties are:\n_Size - the maximum length of the stalactite relative to the space between hill floor and ceiling,\n_Max length - maximum length of a stalactite in blocks,\n_Min height - minimum space between the hill floor and the stalactite to let it generate,\n_Weight - how often it generates.\n\n_For example: \\\"minecraft:iron_ore 0.7 8 1 24\\\" would add a stalactite equal to the default iron ore stalactite.",
+  "twilightforest.config.hollow_hill_stalactites.tooltip": "Defines custom stalactites generated in hollow hills.\nFormat is \\\"modid:block<:meta> size max_Length min_Height weight\\\", where the properties are:\nSize - the maximum length of the stalactite relative to the space between hill floor and ceiling,\nMax length - maximum length of a stalactite in blocks,\nMin height - minimum space between the hill floor and the stalactite to let it generate,\nWeight - how often it generates.\n\nFor example: \\\"minecraft:iron_ore 0.7 8 1 24\\\" would add a stalactite equal to the default iron ore stalactite.",
   "twilightforest.config.large_hill": "Large Hills",
   "twilightforest.config.large_hill.tooltip": "Blocks generating as stalactites in large hills only.",
   "twilightforest.config.medium_hill": "Medium and Large Hills",
@@ -1525,49 +1501,58 @@
   "twilightforest.config.disable_skull_candles": "Disable Skull Candle Creation",
   "twilightforest.config.disable_skull_candles.tooltip": "If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.",
 
-  // Books
-  "twilightforest.book.lichtower.1": "\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\n_I have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse",
-  "twilightforest.book.lichtower.2": "is boiling off into the surrounding area.\n\n_In my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",
-  "twilightforest.book.lichtower.3": "\u00A78[[Many entries later]]\u00A70\n\n_A breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\n_The magic in the scale seems to have the",
+  "twilightforest.book.author": "a forgotten explorer",
+
+  "twilightforest.book.lichtower": "Notes on a Pointy Tower",
+  "twilightforest.book.lichtower.1": "\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\nI have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse",
+  "twilightforest.book.lichtower.2": "is boiling off into the surrounding area.\n\nIn my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",
+  "twilightforest.book.lichtower.3": "\u00A78[[Many entries later]]\u00A70\n\nA breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\nThe magic in the scale seems to have the",
   "twilightforest.book.lichtower.4": "curse-breaking properties I need, but the magic is too dim. I may need to acquire a fresher specimen, directly from the creature.",
 
-  "twilightforest.book.labyrinth.1": "\u00A78[[An explorer's notebook, written on waterproof paper]]\u00A70\n\n_The mosquitoes in this swamp are vexing, but strange. The vast majority of them seem to have no natural source, nor do they seem to have a role in the local ecology. I have begun to",
-  "twilightforest.book.labyrinth.2": "suspect that they are some kind of magical curse.\n\n\u00A78[[Next entry]]\u00A70\n\n_Now that I have encountered a protection spell on the ruined labyrinth here, I consider my suspicions confirmed. Both the protection",
-  "twilightforest.book.labyrinth.3": "spell and the mosquitoes are a curse. This curse seems to have a different source from the others I have encountered. I will have to research further...\n\n\u00A78[[Next entry]]\u00A70\n\n_The curse seems to",
-  "twilightforest.book.labyrinth.4": "be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary.\n\n_If one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. Strangely,",
+  "twilightforest.book.labyrinth": "Notes on a Swampy Labyrinth",
+  "twilightforest.book.labyrinth.1": "\u00A78[[An explorer's notebook, written on waterproof paper]]\u00A70\n\nThe mosquitoes in this swamp are vexing, but strange. The vast majority of them seem to have no natural source, nor do they seem to have a role in the local ecology. I have begun to",
+  "twilightforest.book.labyrinth.2": "suspect that they are some kind of magical curse.\n\n\u00A78[[Next entry]]\u00A70\n\nNow that I have encountered a protection spell on the ruined labyrinth here, I consider my suspicions confirmed. Both the protection",
+  "twilightforest.book.labyrinth.3": "spell and the mosquitoes are a curse. This curse seems to have a different source from the others I have encountered. I will have to research further...\n\n\u00A78[[Next entry]]\u00A70\n\nThe curse seems to",
+  "twilightforest.book.labyrinth.4": "be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary.\n\nIf one of the wizards stopped contributing, the whole of the curse over the entire swamp would fall. Strangely,",
   "twilightforest.book.labyrinth.5": "my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...",
 
-  "twilightforest.book.hydralair.1": "\u00A78[[An explorer's notebook, written on fireproof paper]]\u00A70\n\n_Fire is a trivial obstacle for a master explorer such as myself. I have traversed seas of fire, and swam through oceans of lava. The burning air here is an interesting variation,",
-  "twilightforest.book.hydralair.2": "but ultimately no hinderance.\n\n_What does stop me though is that I have encountered another protection spell, this time surrounding a mighty creature that must be king of this fire swamp. This is not the first protection spell I have",
-  "twilightforest.book.hydralair.3": "encountered, and I am beginning to unravel the mysteries of how they work.\n\n_If this spell is like the others, it will be sustained by a powerful creature nearby. Surrounding the fire swamp are several wet swamps, and under those",
+  "twilightforest.book.hydralair": "Notes on the Fire Swamp",
+  "twilightforest.book.hydralair.1": "\u00A78[[An explorer's notebook, written on fireproof paper]]\u00A70\n\nFire is a trivial obstacle for a master explorer such as myself. I have traversed seas of fire, and swam through oceans of lava. The burning air here is an interesting variation,",
+  "twilightforest.book.hydralair.2": "but ultimately no hindrance.\n\nWhat does stop me though is that I have encountered another protection spell, this time surrounding a mighty creature that must be king of this fire swamp. This is not the first protection spell I have",
+  "twilightforest.book.hydralair.3": "encountered, and I am beginning to unravel the mysteries of how they work.\n\nIf this spell is like the others, it will be sustained by a powerful creature nearby. Surrounding the fire swamp are several wet swamps, and under those",
   "twilightforest.book.hydralair.4": "swamps are labyrinths full of minotaurs. The logical choice to bind such a spell to would be some sort of powerful minotaur, different in some way from the others that surround it...",
 
-  "twilightforest.book.tfstronghold.1": "\u00A78[[An explorer's notebook, written on faintly glowing paper]]\u00A70\n\n_The tendrils of darkness surrounding this area are just a manifestation of a protective spell over the entire dark forest. The spell causes blindness, which is quite vexing. I have",
-  "twilightforest.book.tfstronghold.2": "seen several interesting things in the area and would like to keep exploring.\n\n\u00A78[[Next entry]]\u00A70\n\n_I have found ruins in the dark forest. They belong to a stronghold, of a type usually inhabited by knights. Rather than",
-  "twilightforest.book.tfstronghold.3": "knights though, this stronghold is full of goblins. They wear knightly armor, but their behavior is most un-knightly.\n\n\u00A78[[Next entry]]\u00A70\n\n_Deep in the ruins, I have found a pedestal. The pedestal seems to be of a type that",
+  "twilightforest.book.tfstronghold": "Notes on a Stronghold",
+  "twilightforest.book.tfstronghold.1": "\u00A78[[An explorer's notebook, written on faintly glowing paper]]\u00A70\n\nThe tendrils of darkness surrounding this area are just a manifestation of a protective spell over the entire dark forest. The spell causes blindness, which is quite vexing. I have",
+  "twilightforest.book.tfstronghold.2": "seen several interesting things in the area and would like to keep exploring.\n\n\u00A78[[Next entry]]\u00A70\n\nI have found ruins in the dark forest. They belong to a stronghold, of a type usually inhabited by knights. Rather than",
+  "twilightforest.book.tfstronghold.3": "knights though, this stronghold is full of goblins. They wear knightly armor, but their behavior is most un-knightly.\n\n\u00A78[[Next entry]]\u00A70\n\nDeep in the ruins, I have found a pedestal. The pedestal seems to be of a type that",
   "twilightforest.book.tfstronghold.4": "knights would place trophies on to prove their strength.\n\\Obtaining a powerful scepter would seem to weaken the curse on the dark forest, and placing a trophy associated with a powerful creature on the pedestal would likely grant access into the",
   "twilightforest.book.tfstronghold.5": "main part of the stronghold.",
 
-  "twilightforest.book.darktower.1": "\u00A78[[An explorer's notebook that seems to have survived an explosion]]\u00A70\n\n_This tower clearly has mechanisms that are not responding to me. Their magic almost yearns to acknowledge my touch, but it cannot. It is if the devices of the tower are being",
-  "twilightforest.book.darktower.2": "suppressed by a powerful group of beings nearby.\n\n\u00A78[[Next entry]]\u00A70\n\n_The magic seems to emanate from deep within the strongholds nearby. It can't come from the goblins, as their magic is charming, but unfocused. There",
-  "twilightforest.book.darktower.3": "must still be some force still active in the strongholds.\n\n\u00A78[[Next entry]]\u00A70\n\n_My analysis indicates that it comes from several sources, operating as a group. I will head back to the stronghold after I resupply...",
+  "twilightforest.book.darktower": "Notes on a Wooden Tower",
+  "twilightforest.book.darktower.1": "\u00A78[[An explorer's notebook that seems to have survived an explosion]]\u00A70\n\nThis tower clearly has mechanisms that are not responding to me. Their magic almost yearns to acknowledge my touch, but it cannot. It is if the devices of the tower are being",
+  "twilightforest.book.darktower.2": "suppressed by a powerful group of beings nearby.\n\n\u00A78[[Next entry]]\u00A70\n\nThe magic seems to emanate from deep within the strongholds nearby. It can't come from the goblins, as their magic is charming, but unfocused. There",
+  "twilightforest.book.darktower.3": "must still be some force still active in the strongholds.\n\n\u00A78[[Next entry]]\u00A70\n\nMy analysis indicates that it comes from several sources, operating as a group. I will head back to the stronghold after I resupply...",
 
-  "twilightforest.book.yeticave.1": "\u00A78[[An explorer's notebook, covered in frost]]\u00A70\n\n_The blizzard surrounding these snowy lands is unceasing. This is no ordinary snowfall--this is a magical phenomenon. I will have to conduct experiments to find",
-  "twilightforest.book.yeticave.2": "what is capable of causing such an effect.\n\n\u00A78[[Next entry]]\u00A70\n\n_The curse seems to be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary.",
+  "twilightforest.book.yeticave": "Notes on an Icy Cave",
+  "twilightforest.book.yeticave.1": "\u00A78[[An explorer's notebook, covered in frost]]\u00A70\n\nThe blizzard surrounding these snowy lands is unceasing. This is no ordinary snowfall--this is a magical phenomenon. I will have to conduct experiments to find",
+  "twilightforest.book.yeticave.2": "what is capable of causing such an effect.\n\n\u00A78[[Next entry]]\u00A70\n\nThe curse seems to be of a type too powerful for one being alone to produce. Several wizards working in combination would be necessary.",
   "twilightforest.book.yeticave.3": "If one of the wizards stopped contributing, the blizzard would calm. Strangely, my divinations do not show signs of any nearby living wizards. I did see something interesting in one of the nearby pointy-roofed towers though...",
 
-  "twilightforest.book.icetower.1": "\u00A78[[An explorer's notebook, caked in ice]]\u00A70\n\n_I overcame one blizzard, only to run into this terrible ice storm atop the glacier. My explorations have shown me the splendor of an ice palace, shining with the colors of the polar aurora. It",
-  "twilightforest.book.icetower.2": "all seems protected by some sort of curse.\n\n\u00A78[[Next entry]]\u00A70\n\n_I am no novice. This curse is fed by the power of a creature nearby. The cause of the curse surrounding the fire swamp was built off the power of the leader of the",
-  "twilightforest.book.icetower.3": "minotaurs nearby.\n\n_Surrounding this glacier, there are masses of yetis. Perhaps the yetis have some sort of leader...",
+  "twilightforest.book.icetower": "Notes on Auroral Fortification",
+  "twilightforest.book.icetower.1": "\u00A78[[An explorer's notebook, caked in ice]]\u00A70\n\nI overcame one blizzard, only to run into this terrible ice storm atop the glacier. My explorations have shown me the splendor of an ice palace, shining with the colors of the polar aurora. It",
+  "twilightforest.book.icetower.2": "all seems protected by some sort of curse.\n\n\u00A78[[Next entry]]\u00A70\n\nI am no novice. This curse is fed by the power of a creature nearby. The cause of the curse surrounding the fire swamp was built off the power of the leader of the",
+  "twilightforest.book.icetower.3": "minotaurs nearby.\n\nSurrounding this glacier, there are masses of yetis. Perhaps the yetis have some sort of leader...",
 
-  "twilightforest.book.trollcave.1": "\u00A78[[An explorer's notebook, damaged by acid]]\u00A70\n\n_There seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the",
-  "twilightforest.book.trollcave.2": "others I have witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n\u00A78[[Next entry]]\u00A70\n\n_Such supreme weather magic must be the result of",
+  "twilightforest.book.trollcave": "Notes on the Highlands",
+  "twilightforest.book.trollcave.1": "\u00A78[[An explorer's notebook, damaged by acid]]\u00A70\n\nThere seems to be no way to protect myself from the toxic rainstorm surrounding this area. In my brief excursions, I have also encountered another protection spell, similar to the",
+  "twilightforest.book.trollcave.2": "others I have witnessed. The spell must be connected to the toxic storm in some way. Further research to follow...\n\n\u00A78[[Next entry]]\u00A70\n\nSuch supreme weather magic must be the result of",
   "twilightforest.book.trollcave.3": "multiple undefeated great evils in this world. My studies contain several clues pointing at a searing swamp, a forest coated in deep darkness, and a realm coated in snow.",
 
-  "twilightforest.book.unknown.1": "\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\n_I cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is",
+  "twilightforest.book.unknown": "Notes on the Unexplained",
+  "twilightforest.book.unknown.1": "\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\nI cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is",
   "twilightforest.book.unknown.2": "something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.",
 
-  // Fluid
   "block.twilightforest.molten_fiery_fluid": "Molten Fiery",
   "block.twilightforest.molten_knightmetal_fluid": "Molten Knightmetal",
   "block.twilightforest.fiery_essence_fluid": "Fiery Essence",
@@ -1579,7 +1564,6 @@
   "item.twilightforest.molten_knightmetal_bucket": "Molten Knightmetal Bucket",
   "item.twilightforest.fiery_essence_bucket": "Fiery Essence Bucket",
 
-  // TCon
   "material.twilightforest.nagascale": "Naga Scale",
   "material.twilightforest.steeleaf": "Steeleaf",
   "material.twilightforest.fiery": "Fiery",
@@ -1607,7 +1591,6 @@
   "modifier.twilightforest.veiled.flavor": "Like a Specter!",
   "modifier.twilightforest.veiled.description": "Projectile will be invisible.",
 
-  // Immersive Engineering
   "desc.immersiveengineering.info.shader.rarity.twilight": "Twilight",
 
   "item.twilightforest.shader": "Twilit Shader: %s",
@@ -1638,12 +1621,10 @@
   "item.twilightforest.shader.name.cube_of_annihilation": "Cube Of Annihilation",
   "item.twilightforest.shader.name.final_castle": "Final Castle",
 
-  // Optifine
   "twilightforest.gui.optifine.title": "WARNING: OPTIFINE DETECTED",
   "twilightforest.gui.optifine.message": "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug, please remove Optifine first and check again to see if the bug is still present.\n\nOptifine-related issues are not solvable on Twilight Forest's end!\n\nThis screen may be disabled in the Client Config.",
   "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead.",
 
-  // JEI
   "gui.crumble_horn_jei": "Crumble Horn",
   "gui.transformation_jei": "Transformation Powder",
   "gui.uncrafting_jei": "Uncrafting"
