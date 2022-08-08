@@ -1395,6 +1395,8 @@
   "twilightforest.config.portal_return.tooltip": "Якщо значення 'false', то для повернення, портал вимагатиме повторну активацію.",
   "twilightforest.config.check_portal_destination": "Попередня перевірка пункту призначення порталу",
   "twilightforest.config.check_portal_destination.tooltip": "Визначає, чи слід попередньо перевіряти нові портали на безпеку. Якщо ввімкнено, портали не будуть утворюватись, а просто перенаправляти в безпечне альтернативне місце призначення.\n Зверніть увагу,що ввімкнення цього параметра також зменшує швидкість виконання перевірок формування порталу.",
+  "twilightforest.config.max_portal_size": "Max Twilight Forest Portal Size",
+  "twilightforest.config.max_portal_size.tooltip": "The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause issues.",
   "twilightforest.config.uncrafting": "Вимкнення розкрафчування у столі розкрафчування",
   "twilightforest.config.uncrafting.tooltip": "Вимкніть функцію розкрафчування у столі розкрафчування. Надається в якості опції, коли взаємодія з іншими модами створює 'читерні' для використання рецепти.",
   "twilightforest.config.uncrafting_recipes": "Вимкнення розкрафчувальних рецептів у столі розкрафчування",
