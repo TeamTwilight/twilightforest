@@ -1395,6 +1395,8 @@
   "twilightforest.config.portal_return.tooltip": "falseに設定すると、帰るときにもポータルを作成する必要があります。",
   "twilightforest.config.check_portal_destination": "ポータル生成先の事前チェック",
   "twilightforest.config.check_portal_destination.tooltip": "新しいポータルの安全性を事前にチェックするかを設定します。有効な場合、移動元と同じ場所(座標)に安全にポータルを生成できない場合、代替場所に生成されるのではなく、ポータル生成自体が失敗します。\n有効にすると、ポータル生成チェックが実行される割合も低下します。",
+  "twilightforest.config.max_portal_size": "Max Twilight Forest Portal Size",
+  "twilightforest.config.max_portal_size.tooltip": "The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause issues.",
   "twilightforest.config.uncrafting": "解体作業台の解体を無効にする",
   "twilightforest.config.uncrafting.tooltip": "解体作業台の解体を無効にします。他のMODと併用する際に悪用可能である場合はtrueに設定して下さい。",
   "twilightforest.config.uncrafting_recipes": "Disable Uncrafting Recipes in Uncrafting Table",
