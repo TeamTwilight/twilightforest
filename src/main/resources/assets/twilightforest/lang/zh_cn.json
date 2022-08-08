@@ -1395,6 +1395,8 @@
   "twilightforest.config.portal_return.tooltip": "禁用后，返回的传送门需要额外的传送门建造物品。",
   "twilightforest.config.check_portal_destination": "传送门目的地预检查",
   "twilightforest.config.check_portal_destination.tooltip": "决定生成传送门时是否应检查目的地是否安全。启用后，新传送门会在目的地不安全时拒绝生成，而不是重定向到一个别的安全目的地。\n注意，启用此选项后也会降低传送门生成检查频率。",
+  "twilightforest.config.max_portal_size": "Max Twilight Forest Portal Size",
+  "twilightforest.config.max_portal_size.tooltip": "The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause issues.",
   "twilightforest.config.uncrafting": "禁用拆解台的拆解功能",
   "twilightforest.config.uncrafting.tooltip": "禁用拆解台的拆解功能，可用于防止利用某些合成刷物品。",
   "twilightforest.config.uncrafting_recipes": "Disable Uncrafting Recipes in Uncrafting Table",
