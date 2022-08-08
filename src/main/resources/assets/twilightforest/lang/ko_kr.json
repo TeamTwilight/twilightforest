@@ -1395,6 +1395,8 @@
   "twilightforest.config.portal_return.tooltip": "False인 경우 반환 포탈에 활성화 아이템이 필요합니다.",
   "twilightforest.config.check_portal_destination": "포탈 목적지 사전 확인",
   "twilightforest.config.check_portal_destination.tooltip": "새 포탈의 안전성을 사전 점검해야 하는지 여부를 결정합니다. 사용하도록 설정하면 안전한 대체 대상으로 리디렉션되지 않고 포탈이 형성되지 않습니다.\n_이 기능을 사용하면 포탈 구성 확인이 수행되는 속도도 줄어듭니다.",
+  "twilightforest.config.max_portal_size": "Max Twilight Forest Portal Size",
+  "twilightforest.config.max_portal_size.tooltip": "The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause issues.",
   "twilightforest.config.uncrafting": "역제작대에서 역제작 비활성화",
   "twilightforest.config.uncrafting.tooltip": "역제작대의 역제작 기능을 비활성화합니다. 다른 모드와의 상호 작용으로 이용 가능한 조합법이 만들어질 때 옵션으로 제공됩니다.",
   "twilightforest.config.uncrafting_recipes": "Disable Uncrafting Recipes in Uncrafting Table",
