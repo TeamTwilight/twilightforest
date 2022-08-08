@@ -1395,6 +1395,8 @@
   "twilightforest.config.portal_return.tooltip": "Si désactivé, le portail de retour aura besoin de l'objet d'activation pour être actif.",
   "twilightforest.config.check_portal_destination": "Vérifier la destination du portail",
   "twilightforest.config.check_portal_destination.tooltip": "Détermine si le nouveau portail devrait être vérifié pour des questions de sécurité. Si activé, les portails ne seront pas créés au lieu de les rediriger vers une destination alternative sécurisée.\n_Noter qu'activer cela réduit la fréquence des vérifications de portails.",
+  "twilightforest.config.max_portal_size": "Max Twilight Forest Portal Size",
+  "twilightforest.config.max_portal_size.tooltip": "The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause issues.",
   "twilightforest.config.uncrafting": "Désactiver la table de défabrication",
   "twilightforest.config.uncrafting.tooltip": "Désactiver la fonctionnalité de défabrication de la table de défabrication. Permet d'empêcher certaines exploitations de bugs avec d'autres mods.",
   "twilightforest.config.uncrafting_recipes": "Disable Uncrafting Recipes in Uncrafting Table",
