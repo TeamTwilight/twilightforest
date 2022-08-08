@@ -1395,6 +1395,8 @@
   "twilightforest.config.portal_return.tooltip": "Если значение false, то для возврата портала потребуется элемент активации.",
   "twilightforest.config.check_portal_destination": "Pre-Check Portal Destination",
   "twilightforest.config.check_portal_destination.tooltip": "Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination.\n_Note that enabling this also reduces the rate at which portal formation checks are performed.",
+  "twilightforest.config.max_portal_size": "Max Twilight Forest Portal Size",
+  "twilightforest.config.max_portal_size.tooltip": "The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause issues.",
   "twilightforest.config.uncrafting": "Отключение uncrafting",
   "twilightforest.config.uncrafting.tooltip": "Отключите функцию uncrafting. Предоставляется в качестве опции, когда моды конфликтуют.",
   "twilightforest.config.uncrafting_recipes": "Disable Uncrafting Recipes in Uncrafting Table",
