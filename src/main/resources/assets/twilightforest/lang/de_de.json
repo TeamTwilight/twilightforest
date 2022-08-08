@@ -1395,6 +1395,8 @@
   "twilightforest.config.portal_return.tooltip": "Wenn false, benötigt das Rückgabeportal das Aktivierungselement.",
   "twilightforest.config.check_portal_destination": "Pre-Check Portal Destination",
   "twilightforest.config.check_portal_destination.tooltip": "Legt fest, ob neue Portale vorab auf Sicherheit geprüft werden sollen. Wenn dies aktiviert ist, werden Portale nicht gebildet, sondern zu einem sicheren alternativen Ziel umgeleitet.",
+  "twilightforest.config.max_portal_size": "Max Twilight Forest Portal Size",
+  "twilightforest.config.max_portal_size.tooltip": "The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause issues.",
   "twilightforest.config.uncrafting": "Deaktiviert das Zerlegen an der Zerlegebank",
   "twilightforest.config.uncrafting.tooltip": "Deaktiviert die Zerlegen-Funktion an der Zerlegebank. Wird als Option angeboten, wenn die Interaktion mit anderen Mods ausnutzbare Rezepte erzeugt.",
   "twilightforest.config.uncrafting_recipes": "Zerlege-Rezepte an der Zerlegebank deaktivieren",
