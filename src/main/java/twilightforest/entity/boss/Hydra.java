@@ -12,7 +12,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
@@ -23,6 +28,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFBlocks;
@@ -33,11 +39,12 @@ import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Hydra extends Mob implements Enemy {
 
@@ -695,6 +702,17 @@ public class Hydra extends Mob implements Enemy {
 	@Override
 	protected float getSoundVolume() {
 		return 2F;
+	}
+
+	@Override
+	public void playAmbientSound() {
+		super.playAmbientSound();
+		Stream<HydraHeadContainer> stream = Arrays.stream(this.hc);
+		List<HydraHeadContainer> list = new ArrayList<>(stream.toList());
+		Collections.shuffle(list);
+		if (list.get(0).isIdle()) {
+			list.get(0).setNextState(HydraHeadContainer.State.IDLE_MOUTH_OPEN);
+		}
 	}
 
 	@Override

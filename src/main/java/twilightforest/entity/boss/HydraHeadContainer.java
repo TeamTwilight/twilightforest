@@ -18,6 +18,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
@@ -25,7 +26,6 @@ import twilightforest.init.TFSounds;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +69,8 @@ public class HydraHeadContainer {
 
 		BORN(20),
 		ROAR_START(10),
-		ROAR_RAWR(50);
+		ROAR_RAWR(50),
+		IDLE_MOUTH_OPEN(20);
 
 		private static final Map<State, State> NEXT_STATE;
 		public final int duration;
@@ -104,6 +105,7 @@ public class HydraHeadContainer {
 			b.put(BORN, ROAR_START);
 			b.put(ROAR_START, ROAR_RAWR);
 			b.put(ROAR_RAWR, IDLE);
+			b.put(IDLE_MOUTH_OPEN, IDLE);
 			NEXT_STATE = ImmutableMap.copyOf(b);
 		}
 	}
@@ -311,6 +313,15 @@ public class HydraHeadContainer {
 		this.setAnimation(4, State.ROAR_RAWR, 50, -90, 10, 1);
 		this.setAnimation(5, State.ROAR_RAWR, -10, 90, 11, 1);
 		this.setAnimation(6, State.ROAR_RAWR, -10, -90, 11, 1);
+
+		this.setAnimation(0, State.IDLE_MOUTH_OPEN, 60, 0, 7, 0.25F);
+		this.setAnimation(1, State.IDLE_MOUTH_OPEN, 10, 60, 9, 0.25F);
+		this.setAnimation(2, State.IDLE_MOUTH_OPEN, 10, -60, 9, 0.25F);
+		this.setAnimation(3, State.IDLE_MOUTH_OPEN, 50, 90, 8, 0.25F);
+		this.setAnimation(4, State.IDLE_MOUTH_OPEN, 50, -90, 8, 0.25F);
+		this.setAnimation(5, State.IDLE_MOUTH_OPEN, -10, 90, 9, 0.25F);
+		this.setAnimation(6, State.IDLE_MOUTH_OPEN, -10, -90, 9, 0.25F);
+
 	}
 
 	private void setAnimation(int head, State state, float xRotation, float yRotation, float neckLength, float mouthOpen) {
