@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
@@ -34,6 +35,9 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	private static final EntityDataAccessor<Boolean> BREATHING = SynchedEntityData.defineId(FireBeetle.class, EntityDataSerializers.BOOLEAN);
 	private static final int BREATH_DURATION = 10;
 	private static final int BREATH_DAMAGE = 2;
+
+	public final AnimationState idleAnimationState = new AnimationState();
+	public final AnimationState aggressiveAnimationState = new AnimationState();
 
 	public FireBeetle(EntityType<? extends FireBeetle> type, Level world) {
 		super(type, world);
@@ -85,6 +89,22 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	@Override
 	public void setBreathing(boolean flag) {
 		this.entityData.set(BREATHING, flag);
+	}
+
+	@Override
+	public void tick() {
+		if (this.level.isClientSide()) {
+			//animation stuff
+			if (this.isAggressive()) {
+				this.aggressiveAnimationState.startIfStopped(this.tickCount);
+				this.idleAnimationState.stop();
+			} else {
+				this.idleAnimationState.startIfStopped(this.tickCount);
+				this.aggressiveAnimationState.stop();
+			}
+		}
+
+		super.tick();
 	}
 
 	@Override

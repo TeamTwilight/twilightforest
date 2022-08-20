@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.client.animation.definitions.FireBeetleAnimations;
 import twilightforest.entity.monster.FireBeetle;
 
 /**
@@ -115,6 +116,9 @@ public class FireBeetleModel extends HierarchicalModel<FireBeetle> {
 
     @Override
     public void setupAnim(FireBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        //animation reset stuff
+        this.root().getAllParts().forEach(ModelPart::resetPose);
+
         this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
         this.head.xRot = headPitch * Mth.DEG_TO_RAD;
 
@@ -158,5 +162,8 @@ public class FireBeetleModel extends HierarchicalModel<FireBeetle> {
 
         this.leftLeg3.zRot += var18;
         this.rightLeg3.zRot += -var18;
+        //animation Stuff
+        this.animate(entity.idleAnimationState, FireBeetleAnimations.IDLE, ageInTicks);
+        this.animate(entity.aggressiveAnimationState, FireBeetleAnimations.AGGRESSIVE, ageInTicks);
     }
 }
