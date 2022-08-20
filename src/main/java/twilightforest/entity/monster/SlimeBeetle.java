@@ -4,13 +4,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -24,6 +30,9 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
 public class SlimeBeetle extends Monster implements RangedAttackMob {
+
+	public final AnimationState idleAnimationState = new AnimationState();
+	public final AnimationState aggressiveAnimationState = new AnimationState();
 
 	public SlimeBeetle(EntityType<? extends SlimeBeetle> type, Level world) {
 		super(type, world);
@@ -71,6 +80,22 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 	@Override
 	public MobType getMobType() {
 		return MobType.ARTHROPOD;
+	}
+
+	@Override
+	public void tick() {
+		if (this.level.isClientSide()) {
+			//animation stuff
+			if (this.isAggressive()) {
+				this.aggressiveAnimationState.startIfStopped(this.tickCount);
+				this.idleAnimationState.stop();
+			} else {
+				this.idleAnimationState.startIfStopped(this.tickCount);
+				this.aggressiveAnimationState.stop();
+			}
+		}
+
+		super.tick();
 	}
 
 	@Override

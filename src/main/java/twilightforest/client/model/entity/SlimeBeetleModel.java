@@ -12,6 +12,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.client.animation.definitions.SlimeBeetleAnimations;
 import twilightforest.entity.monster.SlimeBeetle;
 
 /**
@@ -156,6 +157,9 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
 
     @Override
     public void setupAnim(SlimeBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        //animation reset stuff
+        this.root().getAllParts().forEach(ModelPart::resetPose);
+
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.head.xRot = headPitch / (180F / (float) Math.PI);
 
@@ -205,5 +209,9 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
         this.tailBottom.xRot = Mth.cos(ageInTicks * 0.3335F) * 0.15F;
         this.tailTop.xRot = Mth.cos(ageInTicks * 0.4445F) * 0.20F;
         this.slimeCenter.xRot = Mth.cos(ageInTicks * 0.5555F + 0.25F) * 0.25F;
+
+        //animation Stuff
+        this.animate(entity.idleAnimationState, SlimeBeetleAnimations.IDLE, ageInTicks);
+        this.animate(entity.aggressiveAnimationState, SlimeBeetleAnimations.AGGRESSIVE, ageInTicks);
     }
 }
