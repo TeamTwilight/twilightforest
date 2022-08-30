@@ -1436,6 +1436,8 @@
   "twilightforest.config.locked_toasts.tooltip": "Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.",
   "twilightforest.config.animate_trophyitem": "インベントリ内でトロフィーを回転させる",
   "twilightforest.config.animate_trophyitem.tooltip": "インベントリ内でトロフィーを回転させます。パフォーマンスへの影響は全くありません。好きではない人はfalseにして下さい。",
+  "twilightforest.config.ram_indicator": "Quest Ram Fed Wool Indicator",
+  "twilightforest.config.ram_indicator.tooltip": "Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.",
   "twilightforest.config.shield_parry": "盾による受け流し",
   "twilightforest.config.shield_parry.tooltip": "我々は受け流しのために Shield Parry mod を導入することを推奨しますが、なくても設定は残ります。",
   "twilightforest.config.parry_non_twilight": "黄昏の森以外の飛翔体の受け流し",
@@ -1554,5 +1556,6 @@
   "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead.",
   "gui.crumble_horn_jei": "Crumble Horn",
   "gui.transformation_jei": "Transformation Powder",
-  "gui.uncrafting_jei": "Uncrafting"
+  "gui.uncrafting_jei": "Uncrafting",
+  "config.jade.plugin_twilightforest.quest_ram_wool": "Quest Ram Wool"
 }
