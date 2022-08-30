@@ -1436,6 +1436,8 @@
   "twilightforest.config.locked_toasts.tooltip": "Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.",
   "twilightforest.config.animate_trophyitem": "Pivoter les têtes de trophées sur l'apparence",
   "twilightforest.config.animate_trophyitem.tooltip": "Pivoter les têtes de trophées sur l'apparence de l'objet (lorsque tenu en main notamment). N'a pas d'impact sur les performances. Pour ceux qui n'aiment pas le fun.",
+  "twilightforest.config.ram_indicator": "Quest Ram Fed Wool Indicator",
+  "twilightforest.config.ram_indicator.tooltip": "Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.",
   "twilightforest.config.shield_parry": "Parer avec le bouclier",
   "twilightforest.config.shield_parry.tooltip": "Nous vous recommandons le mod Shield Parry pour parer.",
   "twilightforest.config.parry_non_twilight": "Parer les projectiles non-Twilight",
@@ -1554,5 +1556,6 @@
   "twilightforest.gui.optifine.suggestions": "Here's a selection of mods that we recommend using instead.",
   "gui.crumble_horn_jei": "Crumble Horn",
   "gui.transformation_jei": "Transformation Powder",
-  "gui.uncrafting_jei": "Uncrafting"
+  "gui.uncrafting_jei": "Uncrafting",
+  "config.jade.plugin_twilightforest.quest_ram_wool": "Quest Ram Wool"
 }
