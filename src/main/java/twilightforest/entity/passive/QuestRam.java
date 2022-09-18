@@ -195,7 +195,7 @@ public class QuestRam extends Animal {
 		}
 	}
 
-	private int getColorFlags() {
+	public int getColorFlags() {
 		return this.entityData.get(DATA_COLOR);
 	}
 

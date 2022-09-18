@@ -157,6 +157,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:3944903")
     runtimeOnly fg.deobf("curse.maven:bookshelf-228525:3964325")
     runtimeOnly fg.deobf("curse.maven:botanypots-353928:3974733")
+    compileOnly fg.deobf("curse.maven:the-one-probe-245211:3965693")
 
     //mods we dont have compat with but are nice to have
     runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_version}-1.0")

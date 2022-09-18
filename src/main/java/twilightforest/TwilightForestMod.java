@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.Maps;
+import mcjty.theoneprobe.TheOneProbe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -22,10 +23,7 @@ import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.Bindings;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -42,6 +40,7 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.compat.top.TopCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
 import twilightforest.init.custom.DwarfRabbitVariant;
@@ -172,6 +171,9 @@ public class TwilightForestMod {
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		if (ModList.get().isLoaded("curios")) {
 			CuriosCompat.handleCuriosIMCs();
+		}
+		if (ModList.get().isLoaded("theoneprobe")) {
+			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 
