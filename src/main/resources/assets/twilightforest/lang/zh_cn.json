@@ -86,7 +86,7 @@
   "advancement.twilightforest.arborist.desc": "准备好斧子和剪刀。把所有的犄角旮旯全部搜索一遍。然后收集齐所有从树上出来的东西！不论是合成出来还是战利品箱子里搜，不论是台阶还是树苗还是树叶，只要是从树上的哪个部分做出来的都算！",
 
   "twilightforest.twilight_portal.unsafe": "这里看上去不安全……",
-  "twilightforest.trophy_pedestal.ineligible": "你还不够格",
+  "twilightforest.trophy_pedestal.ineligible": "你还不够格。",
   "twilightforest.ore_meter.range": "半径：%s，原点：[%d, %d]",
   "twilightforest.ore_meter.exposed": "暴露数量：%d",
   "twilightforest.scepter_charges": "剩余使用次数：%d",
@@ -182,7 +182,7 @@
   "block.twilightforest.final_boss_boss_spawner": "高原首领【暂定】Boss刷怪笼",
   "block.twilightforest.firefly_jar": "萤火虫罐子",
   "block.twilightforest.firefly_particle_spawner": "萤火粒子罐",
-  "block.twilightforest.firefly_spawner_radius": "萤火颗粒半径：%s个方块",
+  "block.twilightforest.firefly_spawner_radius": "萤火粒子半径：%s个方块",
   "block.twilightforest.cicada_jar": "蝉罐子",
   "block.twilightforest.moss_patch": "苔藓块",
   "block.twilightforest.mayapple": "鬼臼果",
