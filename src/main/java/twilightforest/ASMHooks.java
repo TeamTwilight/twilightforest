@@ -27,7 +27,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -40,7 +43,7 @@ import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
-import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.components.structures.start.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import org.jetbrains.annotations.Nullable;
@@ -190,12 +193,12 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.levelgen.feature.StructureFeature#loadStaticStart(ServerLevel, CompoundTag, long)} <br>
-	 * [AFTER {@link net.minecraft.world.level.levelgen.feature.StructureFeature#createStart(ChunkPos, int, long)}]
+	 * {@link net.minecraft.world.level.levelgen.structure.StructureStart#loadStaticStart(StructurePieceSerializationContext, CompoundTag, long)} <br>
+	 * [AFTER INVOKESPECIAL {@link net.minecraft.world.level.levelgen.structure.StructureStart#StructureStart(Structure, ChunkPos, int, PiecesContainer)}]
 	 */
-	public static StructureStart conquered(StructureStart start, CompoundTag nbt) {
-		if (start instanceof TFStructureStart s)
-			s.load(nbt);
+	public static StructureStart conquered(StructureStart start, PiecesContainer piecesContainer, CompoundTag nbt) {
+		if (start.getStructure() instanceof CustomStructureData s)
+			return s.forDeserialization(start.getStructure(), start.getChunkPos(), start.getReferences(), piecesContainer, nbt);
 		return start;
 	}
 
