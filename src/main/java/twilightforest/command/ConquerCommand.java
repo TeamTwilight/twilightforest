@@ -8,6 +8,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -34,13 +35,16 @@ public class ConquerCommand {
 
 		BlockPos pos = new BlockPos(source.getPosition());
 		if (chunkGenerator != null) {
-			Optional<TFStructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange(source.getLevel(), pos, 0).map(s -> (TFStructureStart<?>) s);
-			if(struct.isEmpty())
+			Optional<StructureStart> struct = TFGenerationSettings.locateTFStructureInRange(source.getLevel(), pos, 0);//.map(s -> (ConquerableStructureStart) s);
+
+			if (struct.isPresent() && struct.get() instanceof TFStructureStart TFStructureStart) {
+				source.sendSuccess(Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
+
+				TFStructureStart.setConquered(flag, source.getLevel());
+			} else {
 				throw NOT_IN_STRUCTURE.create();
-			struct.ifPresent(structure -> {
-				source.sendSuccess(Component.translatable("commands.tffeature.structure.conquer.update", structure.isConquered(), flag), true);
-				structure.setConquered(flag);
-			});
+			}
+
 			return Command.SINGLE_SUCCESS;
 		} else {
 			throw NOT_IN_STRUCTURE.create();

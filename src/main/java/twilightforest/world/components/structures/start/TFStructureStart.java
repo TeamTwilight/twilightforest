@@ -1,14 +1,14 @@
 package twilightforest.world.components.structures.start;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
-public class TFStructureStart<C extends FeatureConfiguration> extends StructureStart {
+public class TFStructureStart extends StructureStart {
 	private boolean conquered = false;
 
 	public TFStructureStart(Structure structure, ChunkPos chunkPos, int references, PiecesContainer pieces) {
@@ -18,8 +18,10 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 	@Override
 	public CompoundTag createTag(StructurePieceSerializationContext level, ChunkPos chunkPos) {
 		CompoundTag tag = super.createTag(level, chunkPos);
+
 		if (this.isValid())
 			tag.putBoolean("conquered", this.conquered);
+
 		return tag;
 	}
 
@@ -27,7 +29,12 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 		this.conquered = nbt.getBoolean("conquered");
 	}
 
-	public final void setConquered(boolean flag) {
+	public final void setConquered(boolean flag, ServerLevel level) {
+		if (this.conquered != flag) {
+			ChunkPos chunkPos = this.getChunkPos();
+			level.getChunk(chunkPos.x, chunkPos.z).setUnsaved(true);
+		}
+
 		this.conquered = flag;
 	}
 

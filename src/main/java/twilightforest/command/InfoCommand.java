@@ -44,7 +44,7 @@ public class InfoCommand {
 		// are you in a structure?
 		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(source.getLevel());
 		if (chunkGenerator != null) {
-			TFGenerationSettings.locateTFStructureInRange(source.getLevel(), closestFeature, pos, 0).map(s -> (TFStructureStart<?>) s).ifPresent(structure -> {
+			TFGenerationSettings.locateTFStructureInRange(source.getLevel(), closestFeature, pos, 0).map(s -> (TFStructureStart) s).ifPresent(structure -> {
 				source.sendSuccess(Component.translatable("commands.tffeature.structure.inside").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
 				source.sendSuccess(Component.translatable("commands.tffeature.structure.conquer.status", structure.isConquered()).
 						withStyle(ChatFormatting.BOLD, structure.isConquered() ? ChatFormatting.GREEN : ChatFormatting.RED), false);

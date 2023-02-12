@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.start;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -16,8 +15,8 @@ import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
@@ -31,7 +30,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @Deprecated
-public class LegacyLandmark extends ProgressionStructure implements LegacyLandmarkGetter {
+public class LegacyLandmark extends ProgressionStructure implements LegacyLandmarkGetter, CustomStructureData {
     public final TFLandmark feature;
 
     public static final Codec<LegacyLandmark> CODEC = RecordCodecBuilder.create(instance -> instance
@@ -62,9 +61,24 @@ public class LegacyLandmark extends ProgressionStructure implements LegacyLandma
     }
 
     @Override
-    // [VANILLA COPY] Structure.generate
     public StructureStart generate(RegistryAccess registryAccess, ChunkGenerator chunkGen, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager structureTemplateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor heightAccessor, Predicate<Holder<Biome>> biomeAt) {
-        return LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkPos) ? super.generate(registryAccess, chunkGen, biomeSource, randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, biomeAt) : StructureStart.INVALID_START;
+        return LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkPos) ? generateCustom(registryAccess, chunkGen, biomeSource, randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, biomeAt) : StructureStart.INVALID_START;
+    }
+
+    // [VANILLA COPY] Structure.generate
+    //  StructureStart construction swapped for TFStructureStart construction
+    public StructureStart generateCustom(RegistryAccess pRegistryAccess, ChunkGenerator pChunkGenerator, BiomeSource pBiomeSource, RandomState pRandomState, StructureTemplateManager pStructureTemplateManager, long pSeed, ChunkPos pChunkPos, int p_226604_, LevelHeightAccessor pHeightAccessor, Predicate<Holder<Biome>> pValidBiome) {
+        Structure.GenerationContext structure$generationcontext = new Structure.GenerationContext(pRegistryAccess, pChunkGenerator, pBiomeSource, pRandomState, pStructureTemplateManager, pSeed, pChunkPos, pHeightAccessor, pValidBiome);
+        Optional<Structure.GenerationStub> optional = this.findValidGenerationPoint(structure$generationcontext);
+        if (optional.isPresent()) {
+            StructurePiecesBuilder structurepiecesbuilder = optional.get().getPiecesBuilder();
+            StructureStart structurestart = new TFStructureStart(this, pChunkPos, p_226604_, structurepiecesbuilder.build());
+            if (structurestart.isValid()) {
+                return structurestart;
+            }
+        }
+
+        return StructureStart.INVALID_START;
     }
 
     @Override

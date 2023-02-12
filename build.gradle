@@ -2,16 +2,19 @@ buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net/' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url 'https://repo.spongepowered.org/maven' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
@@ -111,7 +114,8 @@ jar {
                     "Implementation-Title"    : project.name,
                     "Implementation-Version"  : "${version}",
                     "Implementation-Vendor"   : "TeamTwilight",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    "MixinConfigs"            : "twilightforest.mixins.json",])
     }
 }
 
@@ -164,6 +168,8 @@ dependencies {
     runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_sub_version}-1.0")
 
     minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 jar.finalizedBy('reobfJar')
@@ -189,6 +195,10 @@ publishing {
             }
         }
     }
+}
+
+mixin {
+    config "twilightforest.mixins.json"
 }
 
 task sourceJar(type: Jar, dependsOn: 'classes') {

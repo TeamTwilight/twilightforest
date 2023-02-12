@@ -840,7 +840,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 				if (classification != MobCategory.MONSTER)
 					return landmark.getSpawnableList(classification);
-				if ((start instanceof TFStructureStart<?> s && s.isConquered()))
+				if ((start instanceof TFStructureStart s && s.isConquered()))
 					return null;
 				final int index = getSpawnListIndexAt(start, pos);
 				if (index < 0)

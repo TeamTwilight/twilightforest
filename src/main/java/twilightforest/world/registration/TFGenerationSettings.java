@@ -186,11 +186,12 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 	public static void markStructureConquered(Level world, BlockPos pos, TFLandmark feature) {
 		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
-		if (generator != null && LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
-			locateTFStructureInRange((ServerLevel) world, feature, pos, 0).ifPresent(start -> {
-				if (start instanceof TFStructureStart<?> s)
-					s.setConquered(true);
-			});
+		if (generator != null && world instanceof ServerLevel serverLevel && LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), serverLevel) == feature) {
+			Optional<StructureStart> structureStart = locateTFStructureInRange(serverLevel, feature, pos, 0);
+
+			if (structureStart.isPresent() && structureStart.get() instanceof TFStructureStart s) {
+				s.setConquered(true, serverLevel);
+			}
 		}
 	}
 
