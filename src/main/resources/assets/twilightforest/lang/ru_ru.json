@@ -731,6 +731,8 @@
   "twilightforest.config.portal_return": "Должны ли порталы генерироваться как двусторонний портал",
   "twilightforest.config.portal_return.tooltip": "Если значение false, то для возврата портала потребуется элемент активации.",
   "twilightforest.config.uncrafting": "Отключение uncrafting",
+  "twilightforest.config.uncrafting.tooltip": "Отключите функцию uncrafting. Предоставляется в качестве опции, когда моды конфликтуют.",
+  "twilightforest.config.uncrafting_recipes.tooltip": "If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.\nTo add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.\nExample: \"twilightforest:moonworm_queen\" will disable uncrafting the moonworm queen into itself and 3 torchberries.\nIf an item has multiple crafting recipes and you wish to disable them all, add the item to the \"twilightforest:banned_uncraftables\" item tag.\nIf you have a problematic ingredient, like infested towerwood for example, add the item to the \"twilightforest:banned_uncrafting_ingredients\" item tag.",
   "twilightforest.config.animate_trophyitem": "Вращение голов трофеев",
   "twilightforest.config.animate_trophyitem.tooltip": "Вращение голов трофеев. Не оказывает никакого влияния на производительность вообще. Для тех, кто не любит веселье.",
   "twilightforest.book.lichtower.1": "§8[[Записная книжка исследователя, обглоданная монстрами]]§0\n\nЯ начал изучать странную ауру, окружающую эту башню. Кирпичи башни защищены проклятием, сильнее, чем я видел раньше. Магия от проклятия",
