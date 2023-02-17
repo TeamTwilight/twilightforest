@@ -1,6 +1,4 @@
 {
-  "itemGroup.twilightforest": "暮色森林",
-
   "advancement.twilightforest.root.desc": "前往那神秘的魔法林地——暮色森林！",
   "advancement.twilightforest.hedge": "碾碎爬虫",
   "advancement.twilightforest.hedge.desc": "在树篱迷宫中击杀一只蜘蛛",
@@ -84,14 +82,11 @@
   "advancement.twilightforest.experiment_115_3.desc": "每天都吃实验物品1-1-5，不要停，115次实验物品1-1-5，experiment115点com，三w点experiment115点com，115年，每时每刻都来experiment115点com，三w点115×experiment115点com",
   "advancement.twilightforest.arborist": "疯狂树木学家",
   "advancement.twilightforest.arborist.desc": "准备好斧子和剪刀。把所有的犄角旮旯全部搜索一遍。然后收集齐所有从树上出来的东西！不论是合成出来还是战利品箱子里搜，不论是台阶还是树苗还是树叶，只要是从树上的哪个部分做出来的都算！",
-
   "twilightforest.twilight_portal.unsafe": "这里看上去不安全……",
   "twilightforest.trophy_pedestal.ineligible": "你还不够格。",
   "twilightforest.ore_meter.range": "半径：%s，原点：[%d, %d]",
   "twilightforest.ore_meter.exposed": "暴露数量：%d",
   "twilightforest.scepter_charges": "剩余使用次数：%d",
-
-  "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "你现在不在暮色森林维度中",
   "commands.tffeature.none_nearby": "附近无法找到地标！",
   "commands.tffeature.nearest": "距离当前位置最近的地标：%s",
@@ -104,7 +99,6 @@
   "commands.tffeature.structure.conquer.update": "当前结构征服标记现已从%s更改为%s",
   "commands.tffeature.structure.spawn_list": "此区域的生成列表为：",
   "commands.tffeature.structure.spawn_info": "%s，权重%s",
-
   "biome.twilightforest.forest": "暮色森林",
   "biome.twilightforest.dense_forest": "繁密森林",
   "biome.twilightforest.firefly_forest": "萤火虫森林",
@@ -126,18 +120,14 @@
   "biome.twilightforest.thornlands": "荆棘之地",
   "biome.twilightforest.final_plateau": "终焉高原",
   "biome.twilightforest.underground": "地下",
-
   "gamerule.tfEnforcedProgression": "暮色森林进度",
-
   "enchantment.twilightforest.fire_react": "炽焰反制",
   "enchantment.twilightforest.fire_react.desc": "增加攻击者在击中佩戴者后被点燃的概率。",
   "enchantment.twilightforest.chill_aura": "凛寒气场",
   "enchantment.twilightforest.chill_aura.desc": "增加攻击者在击中佩戴者后被霜冻的概率。",
   "enchantment.twilightforest.destruction": "肆意毁坏",
   "enchantment.twilightforest.destruction.desc": "让链锤的破坏区域变得更大。",
-
   "effect.twilightforest.frosted": "霜冻",
-
   "block.twilightforest.twilight_oak_log": "暮色橡木原木",
   "block.twilightforest.canopy_log": "苍穹原木",
   "block.twilightforest.mangrove_log": "红树原木",
@@ -366,14 +356,11 @@
   "block.twilightforest.alpha_yeti_trophy": "雪怪首领奖杯",
   "block.twilightforest.snow_queen_trophy": "冰雪女王奖杯",
   "block.twilightforest.quest_ram_trophy": "谜题羊奖杯",
-
   "block.twilightforest.keepsake_casket": "遗物匣",
   "block.twilightforest.casket.broken": "你的遗物匣破损不堪，无法存放更多物品。所有本应存入匣中的物品全部掉落在地。",
   "block.twilightforest.casket.locked": "这个匣子只能由%s打开！",
-
   "block.twilightforest.candelabra": "烛台",
   "block.twilightforest.red_thread": "红线",
-
   "block.twilightforest.zombie_skull_candle": "僵尸头颅烛台",
   "block.twilightforest.zombie_wall_skull_candle": "悬吊式僵尸头颅烛台",
   "block.twilightforest.skeleton_skull_candle": "骷髅头烛台",
@@ -385,7 +372,6 @@
   "block.twilightforest.player_skull_candle": "头颅烛台",
   "block.twilightforest.player_skull_candle.named": "%s的头颅烛台",
   "block.twilightforest.player_wall_skull_candle": "悬吊式头颅烛台",
-
   "block.twilightforest.potted_twilight_oak_sapling": "暮色橡树树苗盆栽",
   "block.twilightforest.potted_canopy_sapling": "苍穹树苗盆栽",
   "block.twilightforest.potted_mangrove_sapling": "红树树苗盆栽",
@@ -402,7 +388,6 @@
   "block.twilightforest.potted_thorn": "荆棘盆栽",
   "block.twilightforest.potted_green_thorn": "翠绿荆棘盆栽",
   "block.twilightforest.potted_dead_thorn": "烧焦荆棘盆栽",
-
   "block.twilightforest.oak_banister": "橡木栏杆",
   "block.twilightforest.spruce_banister": "云杉木栏杆",
   "block.twilightforest.birch_banister": "白桦木栏杆",
@@ -413,7 +398,6 @@
   "block.twilightforest.warped_banister": "诡异木栏杆",
   "block.twilightforest.vangrove_banister": "红树木栏杆",
   "block.twilightforest.banister.cycle": "使用斧头右击来改变样式",
-	
   "block.twilightforest.canopy_planks": "苍穹木板",
   "block.twilightforest.canopy_stairs": "苍穹木楼梯",
   "block.twilightforest.canopy_slab": "苍穹木台阶",
@@ -427,7 +411,6 @@
   "block.twilightforest.canopy_wall_sign": "苍穹木告示牌",
   "block.twilightforest.canopy_banister": "苍穹木栏杆",
   "block.twilightforest.canopy_bookshelf": "苍穹木书架",
-
   "block.twilightforest.dark_planks": "黑木木板",
   "block.twilightforest.dark_stairs": "黑木楼梯",
   "block.twilightforest.dark_slab": "黑木台阶",
@@ -440,7 +423,6 @@
   "block.twilightforest.darkwood_sign": "黑木告示牌",
   "block.twilightforest.darkwood_wall_sign": "黑木告示牌",
   "block.twilightforest.darkwood_banister": "黑木栏杆",
-
   "block.twilightforest.mangrove_planks": "红树木板",
   "block.twilightforest.mangrove_stairs": "红树木楼梯",
   "block.twilightforest.mangrove_slab": "红树木台阶",
@@ -453,7 +435,6 @@
   "block.twilightforest.mangrove_sign": "红树木告示牌",
   "block.twilightforest.mangrove_wall_sign": "红树木告示牌",
   "block.twilightforest.mangrove_banister": "红树木栏杆",
-
   "block.twilightforest.twilight_oak_planks": "暮色橡木木板",
   "block.twilightforest.twilight_oak_stairs": "暮色橡木楼梯",
   "block.twilightforest.twilight_oak_slab": "暮色橡木台阶",
@@ -466,7 +447,6 @@
   "block.twilightforest.twilight_oak_sign": "暮色橡木告示牌",
   "block.twilightforest.twilight_wall_sign": "暮色橡木告示牌",
   "block.twilightforest.twilight_oak_banister": "暮色橡木栏杆",
-
   "block.twilightforest.time_planks": "时光木板",
   "block.twilightforest.time_stairs": "时光木楼梯",
   "block.twilightforest.time_slab": "时光木台阶",
@@ -515,7 +495,6 @@
   "block.twilightforest.sorting_sign": "分类木告示牌",
   "block.twilightforest.sorting_wall_sign": "分类木告示牌",
   "block.twilightforest.sorting_banister": "分类木栏杆",
-
   "block.twilightforest.twilight_oak_chest": "暮色橡木箱子",
   "block.twilightforest.canopy_chest": "苍穹木箱子",
   "block.twilightforest.mangrove_chest": "红树木箱子",
@@ -524,7 +503,6 @@
   "block.twilightforest.transformation_chest": "变化木箱子",
   "block.twilightforest.mining_chest": "矿石木箱子",
   "block.twilightforest.sorting_chest": "分类木箱子",
-
   "block.twilightforest.hollow_oak_log_horizontal": "空心橡木原木",
   "block.twilightforest.hollow_spruce_log_horizontal": "空心云杉原木",
   "block.twilightforest.hollow_birch_log_horizontal": "空心白桦原木",
@@ -542,7 +520,6 @@
   "block.twilightforest.hollow_transformation_log_horizontal": "空心变化原木",
   "block.twilightforest.hollow_mining_log_horizontal": "空心矿石原木",
   "block.twilightforest.hollow_sorting_log_horizontal": "空心分类原木",
-
   "block.twilightforest.hollow_oak_log_vertical": "空心橡木原木",
   "block.twilightforest.hollow_spruce_log_vertical": "空心云杉原木",
   "block.twilightforest.hollow_birch_log_vertical": "空心白桦原木",
@@ -560,7 +537,6 @@
   "block.twilightforest.hollow_transformation_log_vertical": "空心变化原木",
   "block.twilightforest.hollow_mining_log_vertical": "空心矿石原木",
   "block.twilightforest.hollow_sorting_log_vertical": "空心分类原木",
-
   "block.twilightforest.hollow_oak_log_climbable": "空心橡木原木",
   "block.twilightforest.hollow_spruce_log_climbable": "空心云杉原木",
   "block.twilightforest.hollow_birch_log_climbable": "空心白桦原木",
@@ -580,9 +556,7 @@
   "block.twilightforest.hollow_sorting_log_climbable": "空心分类原木",
   "block.arctic.tooltip": "摔落伤害减少90%",
   "block.knightmetal.tooltip": "就像是加强版的仙人掌",
-
   "dimension.twilightforest.twilightforest": "暮色森林",
-
   "structure.twilightforest.hedge_maze": "树篱迷宫",
   "structure.twilightforest.small_hollow_hill": "空心矿山",
   "structure.twilightforest.medium_hollow_hill": "工兵矿山",
@@ -599,7 +573,6 @@
   "structure.twilightforest.aurora_palace": "极光宫殿",
   "structure.twilightforest.troll_cave": "巨魔洞穴",
   "structure.twilightforest.final_castle": "终焉城堡",
-
   "item.twilightforest.boarkchop": "野猪排",
   "item.twilightforest.naga_scale": "娜迦鳞片",
   "item.twilightforest.naga_chestplate": "娜迦胸甲",
@@ -716,7 +689,6 @@
   "item.twilightforest.cube_talisman": "立方护符",
   "item.twilightforest.cube_of_annihilation": "湮灭立方",
   "item.twilightforest.moon_dial": "月相罗盘",
-
   "item.twilightforest.moon_dial.phase_0": "满月",
   "item.twilightforest.moon_dial.phase_1": "亏凸月",
   "item.twilightforest.moon_dial.phase_2": "下弦月",
@@ -727,26 +699,15 @@
   "item.twilightforest.moon_dial.phase_7": "盈凸月",
   "item.twilightforest.moon_dial.phase_unknown": "月相不确定",
   "item.twilightforest.moon_dial.phase_unknown_fools": "404错误，月亮未找到",
-
   "item.twilightforest.music_disc_radiance": "音乐唱片",
-  "item.twilightforest.music_disc_radiance.desc": "Rotch Gwylt - Radiance",
   "item.twilightforest.music_disc_steps": "音乐唱片",
-  "item.twilightforest.music_disc_steps.desc": "Rotch Gwylt - Steps",
   "item.twilightforest.music_disc_superstitious": "音乐唱片",
-  "item.twilightforest.music_disc_superstitious.desc": "Rotch Gwylt - Superstitious",
   "item.twilightforest.music_disc_home": "音乐唱片",
-  "item.twilightforest.music_disc_home.desc": "MrCompost - Home",
   "item.twilightforest.music_disc_wayfarer": "音乐唱片",
-  "item.twilightforest.music_disc_wayfarer.desc": "MrCompost - Wayfarer",
   "item.twilightforest.music_disc_findings": "音乐唱片",
-  "item.twilightforest.music_disc_findings.desc": "MrCompost - Findings",
   "item.twilightforest.music_disc_maker": "音乐唱片",
-  "item.twilightforest.music_disc_maker.desc": "MrCompost - Maker",
   "item.twilightforest.music_disc_thread": "音乐唱片",
-  "item.twilightforest.music_disc_thread.desc": "MrCompost - Thread",
   "item.twilightforest.music_disc_motion": "音乐唱片",
-  "item.twilightforest.music_disc_motion.desc": "MrCompost - Motion",
-
   "item.twilightforest.naga_banner_pattern": "旗帜图案",
   "item.twilightforest.naga_banner_pattern.desc": "娜迦鳞片",
   "block.minecraft.banner.twilightforest.naga.black": "黑色娜迦鳞片",
@@ -765,7 +726,6 @@
   "block.minecraft.banner.twilightforest.naga.magenta": "品红色娜迦鳞片",
   "block.minecraft.banner.twilightforest.naga.pink": "粉红色娜迦鳞片",
   "block.minecraft.banner.twilightforest.naga.brown": "棕色娜迦鳞片",
-
   "item.twilightforest.lich_banner_pattern": "旗帜图案",
   "item.twilightforest.lich_banner_pattern.desc": "巫妖王冠",
   "block.minecraft.banner.twilightforest.lich.black": "黑色巫妖王冠",
@@ -784,7 +744,6 @@
   "block.minecraft.banner.twilightforest.lich.magenta": "品红色巫妖王冠",
   "block.minecraft.banner.twilightforest.lich.pink": "粉红色巫妖王冠",
   "block.minecraft.banner.twilightforest.lich.brown": "棕色巫妖王冠",
-
   "item.twilightforest.minoshroom_banner_pattern": "旗帜图案",
   "item.twilightforest.minoshroom_banner_pattern.desc": "米诺菇战斧",
   "block.minecraft.banner.twilightforest.minoshroom.black": "黑色米诺菇战斧",
@@ -803,7 +762,6 @@
   "block.minecraft.banner.twilightforest.minoshroom.magenta": "品红色米诺菇战斧",
   "block.minecraft.banner.twilightforest.minoshroom.pink": "粉红色米诺菇战斧",
   "block.minecraft.banner.twilightforest.minoshroom.brown": "棕色米诺菇战斧",
-
   "item.twilightforest.hydra_banner_pattern": "旗帜图案",
   "item.twilightforest.hydra_banner_pattern.desc": "九头蛇烈焰",
   "block.minecraft.banner.twilightforest.hydra.black": "黑色九头蛇烈焰",
@@ -822,7 +780,6 @@
   "block.minecraft.banner.twilightforest.hydra.magenta": "品红色九头蛇烈焰",
   "block.minecraft.banner.twilightforest.hydra.pink": "粉红色九头蛇烈焰",
   "block.minecraft.banner.twilightforest.hydra.brown": "棕色九头蛇烈焰",
-
   "item.twilightforest.knight_phantom_banner_pattern": "旗帜图案",
   "item.twilightforest.knight_phantom_banner_pattern.desc": "骑士头盔",
   "block.minecraft.banner.twilightforest.knight_phantom.black": "黑色骑士头盔",
@@ -841,7 +798,6 @@
   "block.minecraft.banner.twilightforest.knight_phantom.magenta": "品红色骑士头盔",
   "block.minecraft.banner.twilightforest.knight_phantom.pink": "粉红色骑士头盔",
   "block.minecraft.banner.twilightforest.knight_phantom.brown": "棕色骑士头盔",
-
   "item.twilightforest.ur_ghast_banner_pattern": "旗帜图案",
   "item.twilightforest.ur_ghast_banner_pattern.desc": "砷铅铁裂纹边",
   "block.minecraft.banner.twilightforest.ur_ghast.black": "黑色砷铅铁裂纹边",
@@ -860,7 +816,6 @@
   "block.minecraft.banner.twilightforest.ur_ghast.magenta": "品红色砷铅铁裂纹边",
   "block.minecraft.banner.twilightforest.ur_ghast.pink": "粉红色砷铅铁裂纹边",
   "block.minecraft.banner.twilightforest.ur_ghast.brown": "棕色砷铅铁裂纹边",
-
   "item.twilightforest.alpha_yeti_banner_pattern": "旗帜图案",
   "item.twilightforest.alpha_yeti_banner_pattern.desc": "雪怪首领",
   "block.minecraft.banner.twilightforest.alpha_yeti.black": "黑色雪怪首领",
@@ -879,7 +834,6 @@
   "block.minecraft.banner.twilightforest.alpha_yeti.magenta": "品红色雪怪首领",
   "block.minecraft.banner.twilightforest.alpha_yeti.pink": "粉红色雪怪首领",
   "block.minecraft.banner.twilightforest.alpha_yeti.brown": "棕色雪怪首领",
-
   "item.twilightforest.snow_queen_banner_pattern": "旗帜图案",
   "item.twilightforest.snow_queen_banner_pattern.desc": "冰雪女王王冠",
   "block.minecraft.banner.twilightforest.snow_queen.black": "黑色冰雪女王王冠",
@@ -898,7 +852,6 @@
   "block.minecraft.banner.twilightforest.snow_queen.magenta": "品红色冰雪女王王冠",
   "block.minecraft.banner.twilightforest.snow_queen.pink": "粉红色冰雪女王王冠",
   "block.minecraft.banner.twilightforest.snow_queen.brown": "棕色冰雪女王王冠",
-
   "item.twilightforest.quest_ram_banner_pattern": "旗帜图案",
   "item.twilightforest.quest_ram_banner_pattern.desc": "谜题羊旋角",
   "block.minecraft.banner.twilightforest.quest_ram.black": "黑色谜题羊旋角",
@@ -917,7 +870,6 @@
   "block.minecraft.banner.twilightforest.quest_ram.magenta": "品红色谜题羊旋角",
   "block.minecraft.banner.twilightforest.quest_ram.pink": "粉红色谜题羊旋角",
   "block.minecraft.banner.twilightforest.quest_ram.brown": "棕色谜题羊旋角",
-
   "item.twilightforest.boar_spawn_egg": "野猪刷怪蛋",
   "item.twilightforest.bighorn_sheep_spawn_egg": "大角羊刷怪蛋",
   "item.twilightforest.deer_spawn_egg": "野鹿刷怪蛋",
@@ -973,7 +925,6 @@
   "item.twilightforest.adherent_spawn_egg": "信徒刷怪蛋【未实现】",
   "item.twilightforest.roving_cube_spawn_egg": "悬浮立方刷怪蛋【未实现】",
   "item.twilightforest.guide": "旅行者日记【开发中】",
-
   "item.twilightforest.minotaur_axe.tooltip": "冲刺时造成额外伤害",
   "item.twilightforest.knightmetal_sword.tooltip": "对有护甲的目标造成额外伤害",
   "item.twilightforest.knightmetal_pickaxe.tooltip": "对有护甲的目标造成额外伤害",
@@ -988,7 +939,6 @@
   "item.twilightforest.arctic_armor.tooltip": "可染色",
   "item.twilightforest.skull_candle.desc": "摆有：%s %s蜡烛",
   "item.twilightforest.skull_candle.desc.multiple": "摆有：%s %s蜡烛",
-
   "entity.twilightforest.boar": "野猪",
   "entity.twilightforest.bighorn_sheep": "大角羊",
   "entity.twilightforest.deer": "野鹿",
@@ -1052,7 +1002,6 @@
   "entity.twilightforest.adherent": "信徒【未实现】",
   "entity.twilightforest.castle_guardian": "城堡守卫【未实现】",
   "entity.twilightforest.roving_cube": "悬浮立方【未实现】",
-
   "entity.twilightforest.ice_snowball": "冰霜雪球",
   "entity.twilightforest.ice_arrow": "寒冰箭",
   "entity.twilightforest.seeker_arrow": "追踪箭",
@@ -1075,7 +1024,6 @@
   "entity.twilightforest.cicada_slingshot": "蝉",
   "entity.twilightforest.firefly_slingshot": "萤火虫",
   "entity.twilightforest.moonworm_slingshot": "月光蠕虫",
-
   "subtitles.twilightforest.entity.acid_rain": "酸雨：腐蚀",
   "subtitles.twilightforest.entity.alphayeti.alert": "雪怪首领：瞄准",
   "subtitles.twilightforest.entity.alphayeti.death": "雪怪首领：死亡",
@@ -1254,7 +1202,6 @@
   "subtitles.twilightforest.entity.yeti.growl": "雪怪：咆哮",
   "subtitles.twilightforest.entity.yeti.hurt": "雪怪：受伤",
   "subtitles.twilightforest.entity.yeti.throw": "雪怪：抛扔",
-
   "subtitles.twilightforest.entity.alphayeti.parrot": "鹦鹉：带有寒意的咆哮",
   "subtitles.twilightforest.entity.carminitegolem.parrot": "鹦鹉：咕咚",
   "subtitles.twilightforest.entity.hostilewolf.parrot": "鹦鹉：咆哮",
@@ -1267,7 +1214,6 @@
   "subtitles.twilightforest.entity.redcap.parrot": "鹦鹉：轻笑",
   "subtitles.twilightforest.entity.tome.parrot": "鹦鹉：发出书的响声",
   "subtitles.twilightforest.entity.wraith.parrot": "鹦鹉：喘息",
-
   "subtitles.twilightforest.block.beanstalk.grow": "豆茎：生长",
   "subtitles.twilightforest.block.bug.squish": "虫子被压扁了 :(",
   "subtitles.twilightforest.block.builder.create": "建造器：构建方块",
@@ -1303,7 +1249,6 @@
   "subtitles.twilightforest.block.vanish.locked": "塔木门：拒绝访问",
   "subtitles.twilightforest.block.vanish.unlock": "塔木门：解锁",
   "subtitles.twilightforest.block.vanish.vanish": "消失方块：激活",
-
   "subtitles.twilightforest.item.blockchain.collide": "链锤：击中方块",
   "subtitles.twilightforest.item.blockchain.hit": "链锤：击中实体",
   "subtitles.twilightforest.item.blockchain.fire": "链锤：发射",
@@ -1324,7 +1269,6 @@
   "subtitles.twilightforest.item.scepter.use": "权杖：使用",
   "subtitles.twilightforest.item.scepter.pearl": "黄昏权杖：施法",
   "subtitles.twilightforest.item.shield.shatter": "护盾：破碎",
-
   "death.attack.twilightforest.ghastTear": "%1$s被炽厄泪浇淋致死",
   "death.attack.twilightforest.ghastTear.player": "%1$s在试图逃离%2$s时被炽厄泪浇淋致死",
   "death.attack.twilightforest.hydraFire": "%1$s被九头蛇活活烤熟了",
@@ -1359,7 +1303,6 @@
   "death.attack.twilightforest.thrown_block.player": "%1$s在试图逃离%2$s时被掷出的方块压扁了",
   "death.attack.twilightforest.expired": "%1$s的生命消逝了",
   "death.attack.twilightforest.expired.player": "%1$s的生命消逝了",
-
   "death.attack.twilightforest.axing": "%1$s被%2$s剁碎了",
   "death.attack.twilightforest.axing.item": "%1$s被%2$s用%3$s剁碎了",
   "death.attack.twilightforest.cicada": "%1$s被蝉击中致死",
@@ -1389,7 +1332,6 @@
   "death.attack.twilightforest.yeeted": "%1$s人生中最后一次被%2$s抛起",
   "death.attack.twilightforest.yeeted.entity": "%1$s人生中最后一次被%2$s抛起",
   "death.attack.twilightforest.yeeted.item": "%1$s在手持%3$s时人生中最后一次被%2$s抛起",
-
   "stat.twilightforest.blocks_crumbled": "用瓦解之号角破坏的方块数",
   "stat.twilightforest.bugs_squished": "压扁的虫子数",
   "stat.twilightforest.e115_slices_eaten": "吃掉的试验物品115份数",
@@ -1400,28 +1342,23 @@
   "stat.twilightforest.torchberries_harvested": "火炬浆果采集次数",
   "stat.twilightforest.trophy_pedestals_activated": "奖杯基座激活次数",
   "stat.twilightforest.uncrafting_table_interactions": "与拆解台互动次数",
-
   "twilightforest.misc.wip0": "这个方块仍在制作当中，可能会有能导致存档损坏的Bug或不可预料的特性。",
   "twilightforest.misc.wip1": "请小心使用。",
   "twilightforest.misc.nyi": "这个方块的部分特性尚未完成。",
-
   "twilightforest.loading.title.enter": "正在前往暮色森林……",
   "twilightforest.loading.title.leave": "正在离开暮色森林……",
-
   "twilightforest.ui.magicmap.fail": "魔法失效了。也许它们在这里不起效？",
   "twilightforest.ui.biome_locked": "生物群系已锁定！",
   "twilightforest.ui.biome_locked_2": "请检查你的进度",
   "twilightforest.ui.portal.unworthy": "传送门没有反应。也许是忽略了什么？",
   "twilightforest.ui.advancement.required": "前置进度：",
   "twilightforest.ui.advancement.no_title": "<隐藏进度>",
-
   "twilightforest.config.dimension": "维度设定",
   "twilightforest.config.dimension.tooltip": "这些设定只有在重启后才会生效。",
   "twilightforest.config.spawn_in_tf": "新玩家出生于暮色森林",
   "twilightforest.config.spawn_in_tf.tooltip": "启用后，新玩家会直接出生在暮色森林，而不是主世界中。",
   "twilightforest.config.portal_for_new_player": "为新玩家生成传送门",
   "twilightforest.config.portal_for_new_player.tooltip": "启用后，若`spawn_in_tf`同时启用，则会为出生于暮色森林的新玩家生成返回传送门。",
-
   "twilightforest.config.hollow_hill_stalactites": "自定义矿山钟乳石生成",
   "twilightforest.config.hollow_hill_stalactites.tooltip": "在这里你可以自定义矿山生成的矿物钟乳石类型。\n格式如下：“modid:block<:meta> [尺寸] [最大长度] [最低生成高度] [权重]”，其中各项参数为：\n尺寸 - 钟乳石柱的长度，以矿山高度（矿山内部地面到顶部）衡量。\n最大长度 - 钟乳石柱的最大长度，以方块数量衡量\n最低生成高度 - 最低允许的钟乳石生成位置距离矿山内部地面的距离，低于这个高度时不生成。\n权重 - 决定生成频率。\n\n例如：minecraft:iron_ore 0.7 8 1 24 会增加一次和默认的铁矿石柱一样的生成。",
   "twilightforest.config.large_hill": "大矿山",
@@ -1432,15 +1369,12 @@
   "twilightforest.config.small_hill.tooltip": "定义在所有尺寸的矿山中以钟乳石柱的形式生成的方块。",
   "twilightforest.config.stalactite_config_only": "仅使用配置定义的生成",
   "twilightforest.config.stalactite_config_only.tooltip": "启用后，默认的生成和其他模组添加的生成都不会使用，只使用配置文件中定义的生成。",
-
   "twilightforest.config.silent_cicadas": "禁止蝉鸣",
   "twilightforest.config.silent_cicadas.tooltip": "若声音库出现问题，或者只是觉得蝉很吵，可考虑启用此项。",
   "twilightforest.config.silent_cicadas_on_head": "禁止头戴蝉的蝉鸣",
   "twilightforest.config.silent_cicadas_on_head.tooltip": "使蝉在你头上保持安静。若已启用上一选项，此选项无效。",
-
   "twilightforest.config.first_person_effects": "渲染第一人称视角特效",
   "twilightforest.config.first_person_effects.tooltip": "控制暮色森林的诸多特效是否在第一人称视角下显示。觉得很烦的话可以关闭。",
-
   "twilightforest.config.origin_dimension": "始发维度",
   "twilightforest.config.origin_dimension.tooltip": "默认使用的能在暮色森林之间往返的维度，默认为原版主世界。",
   "twilightforest.config.portals_in_other_dimensions": "非主世界建造暮色传送门",
@@ -1459,7 +1393,6 @@
   "twilightforest.config.max_portal_size.tooltip": "创建传送门时，游戏所检测的水域面积的最大值。过大的数值可能导致问题。",
   "twilightforest.config.portal_unlocked_by_advancement": "锁定传送门进度",
   "twilightforest.config.portal_unlocked_by_advancement.tooltip": "输入一有效进度资源位置。例如，输入“minecraft:story/mine_diamond”会使暮色传送门在达成“钻石！”进度后解锁。无效进度或留空则会使传送门一直可用。",
-
   "twilightforest.config.uncrafting": "禁用拆解台的拆解功能",
   "twilightforest.config.uncrafting.tooltip": "禁用拆解台的拆解功能，可用于防止利用某些合成刷物品。",
   "twilightforest.config.uncrafting_recipes": "禁用拆解台的拆解配方",
@@ -1474,7 +1407,6 @@
   "twilightforest.config.uncrafting_mod_ids.tooltip": "可在此禁用模组全部物品的拆解配方。\n输入有效mod id以禁用该模组的拆解配方。\n示例：“twilightforest”会禁用暮色森林的所有拆解配方。",
   "twilightforest.config.uncrafting_mod_id_flip": "反选禁用模组列表",
   "twilightforest.config.uncrafting_mod_id_flip.tooltip": "启用后，拆解台模组黑名单变为白名单。",
-
   "twilightforest.config.disable_time": "禁用时光树时钟",
   "twilightforest.config.disable_time.tooltip": "启用后，时光树时钟不再生效。",
   "twilightforest.config.time_range": "时光树时钟影响半径",
@@ -1491,101 +1423,80 @@
   "twilightforest.config.disable_sorting.tooltip": "启用后，分类树引擎不再生效。",
   "twilightforest.config.sorting_range": "分类树引擎影响半径",
   "twilightforest.config.sorting_range.tooltip": "设定分类树引擎的影响范围半径。可为1和128之间的任何数。",
-
   "twilightforest.config.optifine": "禁用针对Optifine的警告",
   "twilightforest.config.optifine.tooltip": "禁用启动时针对Optifine可能引起问题的警告。",
-
   "twilightforest.config.locked_toasts": "禁用已锁定生物群系的提示",
   "twilightforest.config.locked_toasts.tooltip": "禁用显示某生物群系已被锁定的提示。如果对游戏推进过程不够了解，不推荐启用此项。",
-
   "twilightforest.config.animate_trophyitem": "奖杯头颅旋转",
   "twilightforest.config.animate_trophyitem.tooltip": "启用后，奖杯的物品模型中的头颅会旋转。对性能没有影响。为不苟言笑的人准备的选项。",
-
   "twilightforest.config.ram_indicator": "谜题羊羊毛指示",
   "twilightforest.config.ram_indicator.tooltip": "在十字准星上方显示钩或叉，用于指示是否已交给谜题羊对应颜色的羊毛。觉得很烦的话可以关闭。",
-
   "twilightforest.config.shield_parry": "盾牌反弹",
   "twilightforest.config.shield_parry.tooltip": "我们推荐安装Shield Parry这个模组来实现一样的效果，但如果你没装，这些便是可供调整的选项。",
   "twilightforest.config.parry_non_twilight": "反弹非暮色森林弹射物",
   "twilightforest.config.parry_non_twilight.tooltip": "启用后，盾牌可以反弹不是暮色森林特有的弹射物。我们推荐安装Shield Parry这个模组来实现一样的效果。",
   "twilightforest.config.parry_window": "弹射物反弹时间",
   "twilightforest.config.parry_window.tooltip": "要使盾牌反弹弹射物所需要的持盾时间，以刻（tick）为单位，20 tick为一秒。",
-
   "twilightforest.config.casket_uuid_locking": "遗物匣UUID锁定",
   "twilightforest.config.casket_uuid_locking.tooltip": "启用后，其他玩家无权开启某玩家死亡后生成的遗物匣。如果你不想让人从其他人死亡后的匣子中拿取物品，即可使用该配置。注意：服务器管理员仍可以开启上锁的匣子。",
   "twilightforest.config.disable_skull_candles": "禁用头颅烛台",
   "twilightforest.config.disable_skull_candles.tooltip": "启用后，禁止以手持蜡烛右击原版头颅来制造头颅烛台。若遇到模组冲突问题，请启用此项。",
-
   "twilightforest.book.author": "一位被遗忘的探索者",
-
   "twilightforest.book.lichtower": "有关一座尖塔的笔记",
   "twilightforest.book.lichtower.1": "§8[[被野兽啃坏的探险家笔记]]§0\n\n我开始了对这塔周围奇怪气场的测试。塔身的每一块砖都受一种强力魔咒的保护，这么强大的力量我还是头一次见到。这魔咒甚至还能覆盖塔周围的区域。",
   "twilightforest.book.lichtower.2": "换做是在我的故乡，我有很多对付此类魔法的方法，但是我在这里没多少补给。让我来深入研究一下……",
   "twilightforest.book.lichtower.3": "§8[[若干篇后]]§0\n\n重大进展！我在旅途中看见了一种蛇形的巨兽，它被困在了装饰考究的“庭院”里。当时我捡起了一根破旧的羽毛，忽略了那些绿色的鳞片。",
   "twilightforest.book.lichtower.4": "事实证明，这些绿色的鳞片有我需要的破除魔咒的魔力属性，但是这魔力太过于微弱，我需要直接干掉那个蛇形巨兽，以此拿到更新鲜的样品。",
-
   "twilightforest.book.labyrinth": "有关沼泽迷宫的笔记",
   "twilightforest.book.labyrinth.1": "§8[[写在防水纸上的探险家笔记]]§0\n\n沼泽里的蚊群惹人烦，但仍然显得可疑。看上去它们并非自然生物，细细想来也找不出它们在当地生态系统中的作用。",
   "twilightforest.book.labyrinth.2": "我觉得这是某种魔咒。\n\n§8[[下一篇]]§0\n\n现在有一道保护符咒挡住了通往迷宫废墟的路。我觉得我的猜测是正确的。",
   "twilightforest.book.labyrinth.3": "保护符咒和蚊群其实是同一个魔咒，但我觉得我从未见过有什么魔咒有和它一样的来源。让我继续研究下…… \n\n§8[[下一篇]]§0",
   "twilightforest.book.labyrinth.4": "这魔咒看上去强大到了一人无法独自完成的地步，须得是数名巫师同时发力方能完成。\n\n只要这其中一名巫师停止发力，整个魔咒都会因此失效。",
   "twilightforest.book.labyrinth.5": "但是，我自己占卜的结果显示附近并没有巫师居住。倒是附近有一座酷似哥特风格的高塔吸引了我的注意……",
-
   "twilightforest.book.hydralair": "有关火焰沼泽的笔记",
   "twilightforest.book.hydralair.1": "§8[[写在耐火纸上的探险家笔记]]§0\n\n区区火焰并不能阻挡像我这样的探险家。我也曾下过火海，并在熔岩组成的海洋中游泳。这燃烧的空气倒是很有趣，但终究还不是我的对手。",
   "twilightforest.book.hydralair.2": "最终挡住我前进脚步的是另一个保护符咒——这次的保护对象似乎是当地人——被禁止进入这片应当是一种强大到令所有人畏惧的怪物的领地。",
   "twilightforest.book.hydralair.3": "这当然不是我第一次遇到保护符咒，我渐渐开始解开这符咒背后的谜团了。\n\n如果我的猜测——这些符咒的工作方式高度相似——是成立的，那么这附近就能找到维持符咒法力的强大怪物。火焰沼泽周围是若干湿地，这些湿地则掩埋了一个充斥着牛头人（当地人称其为米诺陶）的部落要塞。",
   "twilightforest.book.hydralair.4": "唯一符合逻辑的推测是，这群牛头人里有一种不同寻常的特殊品种，与普通牛头人相比更为强力，但外貌上有所不同……",
-
   "twilightforest.book.tfstronghold": "有关要塞的笔记",
   "twilightforest.book.tfstronghold.1": "§8[[探险家笔记，其纸张微微发光]]§0\n\n笼罩在黑暗森林上的保护符咒以黑暗触手的形式呈现。这个符咒会造成任何闯入的人失明，对探险家来说可谓是令人抓狂。",
   "twilightforest.book.tfstronghold.2": "不过我有我预定的计划要完成。\n\n§8[[下一篇]]§0我在黑暗森林中发现了废墟。这是一种要塞的废墟，而这种要塞的主人通常来说是骑士。",
   "twilightforest.book.tfstronghold.3": "然而，这个要塞废墟是个例外：迎接我的是成群的哥布林。它们身着骑士盔甲，但是它们的行为暗示了它们并非骑士。§8[[下一篇]]§0\n\n废墟深处有个基座。看样子是骑士们用来放奖杯的基座——这是力量的象征。",
   "twilightforest.book.tfstronghold.4": "若能拿到某种强力法杖，我便可以削弱这保护森林的魔咒，而将某座奖杯放在这基座上",
   "twilightforest.book.tfstronghold.5": "便可打开通往要塞的门。",
-
   "twilightforest.book.darktower": "有关一座木塔的笔记",
   "twilightforest.book.darktower.1": "§8[[疑似从爆炸中生还的探险家笔记]]§0\n\n这塔里的机关显然不受我控制。我几乎是要触碰到机关所蕴含的魔力了，但是就差那么一点。只有一种解释：这机关被附近什么东西的力量压制住了。",
   "twilightforest.book.darktower.2": "§8[[下一篇]]§0\n\n这力量的来源似乎是附近要塞深处散发出的魔法能量。这魔力不可能是哥布林的，因为这魔力虽然吸引人，但并非集中在一起。",
   "twilightforest.book.darktower.3": "要塞里肯定还有什么东西。\n\n§8[[下一篇]]§0\n\n根据我的分析，这股魔力有数股来源，这些来源一个整体的形式工作。让我先等补给过来再说……",
-
   "twilightforest.book.yeticave": "有关一座冰霜洞窟的笔记",
   "twilightforest.book.yeticave.1": "§8[[封面结霜的探险家笔记]]§0\n\n雪地周围刮着永不停息的暴风雪。这可不是普通的雪——这是一种魔咒。我得做个实验把这暴风雪的源头找出来。",
   "twilightforest.book.yeticave.2": "§8[[下一篇]]§0\n\n这魔咒看上去强大到了一人无法独自完成的地步，须得是数名巫师同时发力方能完成。\n\n只要这其中一名巫师停止发力，整个魔咒都会因此失效。",
   "twilightforest.book.yeticave.3": "但是，我自己占卜的结果显示附近并没有巫师居住。倒是附近有一座酷似哥特风格的高塔吸引了我的注意……",
-
   "twilightforest.book.icetower": "有关极光堡垒的笔记",
   "twilightforest.book.icetower.1": "§8[[冰封的探险家笔记]]§0\n\n我确实冲破了一道暴风雪的阻拦，但随即又被这冰川上的寒冰风暴挡住了。在探险途中，我看到了一座金碧辉煌的冰宫，它散发的光芒有如极光一样五彩缤纷。",
   "twilightforest.book.icetower.2": "看上去是有魔咒的保护。\n\n§8[[下一篇]]§0\n\n我也不再是那个懵懂无知的新人了。这魔咒的力量肯定来自附近的生物，就像火焰沼泽附近的牛头人的首领为火焰沼泽的魔咒提供了魔力一样。",
   "twilightforest.book.icetower.3": "在这冰川周围，住着一群雪怪。雪怪也应该有个带头的对吧……",
-
   "twilightforest.book.trollcave": "有关高原的笔记",
   "twilightforest.book.trollcave.1": "§8[[被酸腐蚀过的探险家笔记]]§0\n\n我觉得我不可能在这样的剧毒暴风雨中生还。我曾在一次短暂的远行中遇到过类似的保护符咒。",
   "twilightforest.book.trollcave.2": "这符咒一定和剧毒风暴有什么关系。需要进一步研究……\n\n§8[[下一篇]]§0\n\n如此强大的天气魔法一定是那个我从未谋面的魔王的恐怖力量。",
   "twilightforest.book.trollcave.3": "或许通过征服这片森林的一些地域可以提高我的威望。我忽然想到了这样几个地方：炽热的沼泽、暗无天日的森林以及冰雪覆盖的“禁地”领域。",
-
   "twilightforest.book.unknown": "有关未解之谜的笔记",
   "twilightforest.book.unknown.1": "§8[[一本看上去被传抄了无数遍的书]]§0\n\n我的学识实在不足以解释这建筑周围的力场是怎么回事，我只能说这是一种强力魔法。如果这魔咒和之前的魔咒的原理一样，那么我应该在别的地方寻找答案。",
   "twilightforest.book.unknown.2": "也许我还有什么事情没有做，抑或我还没击败什么怪物。我想是时候掉头回去了。当然，我会回来看看看有没有新进展的。",
-
-
   "block.twilightforest.molten_fiery_fluid": "熔融炽铁",
   "block.twilightforest.molten_knightmetal_fluid": "熔融骑士金属",
   "block.twilightforest.fiery_essence_fluid": "炽热精华",
   "fluid.twilightforest.molten_fiery": "熔融炽铁",
   "fluid.twilightforest.molten_knightmetal": "熔融骑士金属",
   "fluid.twilightforest.fiery_essence": "炽热精华",
-
   "item.twilightforest.molten_fiery_bucket": "熔融炽铁桶",
   "item.twilightforest.molten_knightmetal_bucket": "熔融骑士金属桶",
   "item.twilightforest.fiery_essence_bucket": "炽热精华桶",
-
   "material.twilightforest.nagascale": "娜迦鳞片",
   "material.twilightforest.steeleaf": "钢叶",
   "material.twilightforest.fiery": "炽铁",
   "material.twilightforest.knightmetal": "骑士金属",
   "material.twilightforest.raven_feather": "渡鸦羽毛",
-
   "modifier.twilightforest.precipitate": "积淀",
   "modifier.twilightforest.precipitate.flavor": "最后的逃亡计划",
   "modifier.twilightforest.precipitate.description": "你的生命值越少，它就越快！",
@@ -1606,13 +1517,9 @@
   "modifier.twilightforest.veiled": "遁形",
   "modifier.twilightforest.veiled.flavor": "就像幽灵！",
   "modifier.twilightforest.veiled.description": "弹射物将会隐形。",
-
-
   "desc.immersiveengineering.info.shader.rarity.twilight": "暮色",
-
   "item.twilightforest.shader": "暮色皮肤：%s",
   "item.twilightforest.shader_bag": "%s暮色皮肤奖励袋",
-
   "item.twilightforest.shader.name.twilight": "暮色",
   "item.twilightforest.shader.name.firefly": "萤火虫",
   "item.twilightforest.shader.name.questing_ram": "谜题羊",
@@ -1637,14 +1544,11 @@
   "item.twilightforest.shader.name.snow_queen": "冰雪女王",
   "item.twilightforest.shader.name.cube_of_annihilation": "湮灭立方",
   "item.twilightforest.shader.name.final_castle": "终焉城堡",
-
   "twilightforest.gui.optifine.title": "警告：检测到OPTIFINE",
   "twilightforest.gui.optifine.message": "在继续游戏前，请注意Optifine会导致游戏崩溃、多组成部分实体视觉效果错误和许多其他问题。\n\n在汇报漏洞前请先移除Optifine，然后查看漏洞是否仍会出现。\n\n暮色森林不负责解决Optifine相关的问题！\n\n可在客户端配置中禁用该界面。",
   "twilightforest.gui.optifine.suggestions": "如下是我们推荐使用的一些模组。",
-
   "gui.crumble_horn_jei": "瓦解之号角",
   "gui.transformation_jei": "转换粉",
   "gui.uncrafting_jei": "拆解",
-
   "config.jade.plugin_twilightforest.quest_ram_wool": "谜题羊羊毛"
 }
