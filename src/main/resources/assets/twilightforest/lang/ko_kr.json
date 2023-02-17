@@ -992,6 +992,8 @@
   "twilightforest.config.check_portal_destination": "포탈 목적지 사전 확인",
   "twilightforest.config.check_portal_destination.tooltip": "새 포탈의 안전성을 사전 점검해야 하는지 여부를 결정합니다. 사용하도록 설정하면 안전한 대체 대상으로 리디렉션되지 않고 포탈이 형성되지 않습니다.\n_이 기능을 사용하면 포탈 구성 확인이 수행되는 속도도 줄어듭니다.",
   "twilightforest.config.uncrafting": "역제작대에서 역제작 비활성화",
+  "twilightforest.config.uncrafting.tooltip": "역제작대의 역제작 기능을 비활성화합니다. 다른 모드와의 상호 작용으로 이용 가능한 조합법이 만들어질 때 옵션으로 제공됩니다.",
+  "twilightforest.config.uncrafting_recipes.tooltip": "If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.\nTo add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.\nExample: \"twilightforest:moonworm_queen\" will disable uncrafting the moonworm queen into itself and 3 torchberries.\nIf an item has multiple crafting recipes and you wish to disable them all, add the item to the \"twilightforest:banned_uncraftables\" item tag.\nIf you have a problematic ingredient, like infested towerwood for example, add the item to the \"twilightforest:banned_uncrafting_ingredients\" item tag.",
   "twilightforest.config.optifine": "옵티파인이 설치되면 내그 화면을 비활성화합니다.",
   "twilightforest.config.optifine.tooltip": "옵티파인 설치 시 실행 시 표시되는 내그 화면을 비활성화합니다.",
   "twilightforest.config.animate_trophyitem": "아이템 모델에서 트로피 헤드 회전",
