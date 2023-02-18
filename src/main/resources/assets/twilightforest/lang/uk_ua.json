@@ -1,24 +1,17 @@
 {
-  "itemGroup.twilightforest": "Сутінковий ліс",
-
   "advancement.twilightforest.root.desc": "Увійдіть до загадкових магічних лісів; Сутінковий ліс.",
-
   "advancement.twilightforest.hedge": "Арахнофоб",
   "advancement.twilightforest.hedge.desc": "Перемогти павука в лабіринті з живоплоту.",
-
   "advancement.twilightforest.kill_cicada": "Цить!",
   "advancement.twilightforest.kill_cicada.desc": "Вбити цикаду",
-
   "advancement.twilightforest.hill1": "Галоші мої!",
   "advancement.twilightforest.hill1.desc": "Вбийте ґобліна в Маленькому порожнистому пагорбі",
   "advancement.twilightforest.hill2": "Це новий крипер?",
   "advancement.twilightforest.hill2.desc": "Убийте ґобліна-підривника в Середньому порожнистому пагорбі.",
   "advancement.twilightforest.hill3": "Я бачу тебе наскрізь",
   "advancement.twilightforest.hill3.desc": "Зустріньте і вбийте сутінкову примару в Великому порожнистому пагорбі.",
-
   "advancement.twilightforest.quest_ram": "Неперевершений",
   "advancement.twilightforest.quest_ram.desc": "Дайте Квестовому барану те, чого йому не вистачає.",
-
   "advancement.twilightforest.magic_map_focus": "Написане вогнем",
   "advancement.twilightforest.magic_map_focus.desc": "Створіть фокус чарівної мапи використовуючи перо ворона, пил світокаменю, та смолоскипоягоди.",
   "advancement.twilightforest.magic_map": "Далекоглядний",
@@ -27,22 +20,18 @@
   "advancement.twilightforest.maze_map.desc": "Створіть мапу лабіринту, отримавши фокус від лабіринту.",
   "advancement.twilightforest.ore_map": "Воно того варте?",
   "advancement.twilightforest.ore_map.desc": "Створіть мапу лабіринту/руди.",
-
   "advancement.twilightforest.twilight_hunter": "Мисливець",
   "advancement.twilightforest.twilight_hunter.desc": "Вполюйте істоту в Сутінковому лісі.",
-
   "advancement.twilightforest.kill_naga": "Час скидати шкіру!",
   "advancement.twilightforest.kill_naga.desc": "Убийте Нагу на його лісовому подвір’ї та отримайте луску Наги, щоб подолати магічний бар’єр навколо вежі Ліча.",
   "advancement.twilightforest.naga_armors": "Броня Наги",
   "advancement.twilightforest.naga_armors.desc": "Створіть нагрудник та наголінники з луски Наги",
-
   "advancement.twilightforest.kill_lich": "Вбийте мерця",
   "advancement.twilightforest.kill_lich.desc": "Вбийте Сутінкового ліча на вершині його вежі та візьміть посох, щоб очистити Болото від отруйних комарів, побачити крізь прокляття сліпучої темряви в Темному лісі та протистояти холоду Сніжного лісу.",
   "advancement.twilightforest.lich_scepters": "Наші сили об'єднані!",
   "advancement.twilightforest.lich_scepters.desc": "Добудьте всі чотири посохи влади.",
   "advancement.twilightforest.full_mettle_alchemist": "Сталевий алхімік",
   "advancement.twilightforest.full_mettle_alchemist.desc": "Випийте чотири дози зілля шкоди II менш ніж за 8 секунд і виживіть.",
-
   "advancement.twilightforest.progress_labyrinth": "Могутній Бефстроганов",
   "advancement.twilightforest.progress_labyrinth.desc": "Тушковане м'ясо з грибами приємно зігріє вас, і ви відчуєте, що досить акліматизувалися, щоб відправитися в вогняне болото.",
   "advancement.twilightforest.kill_hydra": "Вбивця Гідри",
@@ -51,7 +40,6 @@
   "advancement.twilightforest.mazebreaker.desc": "Знайдіть кирку 'Руйнівник лабіринтів', у таємному сховищі лабіринту.",
   "advancement.twilightforest.hydra_chop": "Котлета по-київськи?",
   "advancement.twilightforest.hydra_chop.desc": "З’їжте неймовірно потужне м’ясо Гідри, коли будете голодними.",
-
   "advancement.twilightforest.progress_trophy_pedestal": "Титулований чемпіон",
   "advancement.twilightforest.progress_trophy_pedestal.desc": "Заявіть про свій титул, поставивши трофей на п'єдестал у лісових руїнах.",
   "advancement.twilightforest.progress_knights": "Кармінитова акліматизація",
@@ -72,10 +60,8 @@
   "advancement.twilightforest.arctic_dyed.desc": "Пофарбуйте всі чотири частини арктичної броні.",
   "advancement.twilightforest.glass_sword": "Одною лівою",
   "advancement.twilightforest.glass_sword.desc": "Сподіваюсь, ти знаєш як цим користуватись",
-
   "advancement.twilightforest.fiery_set": "Потом і кров'ю",
   "advancement.twilightforest.fiery_set.desc": "Використайте вогняний інструмент або зброю, несучи хоча б одну частину вогненної броні.",
-
   "advancement.twilightforest.progress_merge": "Хто тут таточко?",
   "advancement.twilightforest.progress_merge.desc": "Вбийте Гідру, Ур-ґаста і Сніжну королеву, щоб позбутися кислотних дощів і набратися сміливості для Високогір'я.",
   "advancement.twilightforest.troll": "Вас затролено?",
@@ -90,20 +76,17 @@
   "advancement.twilightforest.progress_thorns.desc": "Пройдіть повз Тернові землі та відчиніть двері замку.",
   "advancement.twilightforest.progress_castle": "Нічого собі замок [WIP]",
   "advancement.twilightforest.progress_castle.desc": "Що взагалі може бути в цьому замку?!?",
-
   "advancement.twilightforest.twilight_dining": "Обід на вічному заході сонця",
   "advancement.twilightforest.twilight_dining.desc": "З'їжте ВСЮ їжу з Сутінкового лісу.",
   "advancement.twilightforest.experiment_115_3": "Щоденна дієта 115, 115 років, назавжди",
   "advancement.twilightforest.experiment_115_3.desc": "Експеримент з їжею сто п'ятнадцять увесь день, назавжди, сто п'ятнадцять разів експеримент сто п'ятнадцять, експеримент сто п'ятнадцять крапка ком, дабл'ю дабл'ю дабл'ю крапка експеримент сто п'ятнадцять крапка ком, сто п'ятнадцять років, кожна хвилина експерименту сто п'ятнадцять крапка ком, дабл'ю дабл'ю дабл'ю крапка сто п'ятнадцять разів експеримент сто п'ятнадцять крапка ком",
   "advancement.twilightforest.arborist": "Маніакальний дендролог",
   "advancement.twilightforest.arborist.desc": "Приготуйте свої сокири та ножиці. Обшукайте кожен закуток і щілину, заберіть все, що росте на деревах! Створюйте, збирайте, дістаньте кожну плиту... паросток... листя... ще більше... все. ВСЕ ЩО Є!",
-
   "twilightforest.twilight_portal.unsafe": "Здається, тут небезпечно...",
   "twilightforest.trophy_pedestal.ineligible": "Ви негідні.",
   "twilightforest.ore_meter.range": "Радіус: %s, Походження: [%s, %s]",
   "twilightforest.ore_meter.exposed": "Виставлено: %s",
   "twilightforest.scepter_charges": "%d зарядів залишилося",
-
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "Ви знаходитесь поза Сутінковим Лісом",
   "commands.tffeature.none_nearby": "Не вдалося знайти об’єкт поблизу!",
@@ -117,7 +100,6 @@
   "commands.tffeature.structure.conquer.update": "Відмітка структури %s, змінена на %s",
   "commands.tffeature.structure.spawn_list": "Список спавну для цієї області це:",
   "commands.tffeature.structure.spawn_info": "%s, вага %s",
-
   "biome.twilightforest.forest": "Сутінковий ліс",
   "biome.twilightforest.dense_forest": "Густий ліс",
   "biome.twilightforest.firefly_forest": "Ліс світлячків",
@@ -138,18 +120,14 @@
   "biome.twilightforest.highlands": "Сутінкове високогір'я",
   "biome.twilightforest.thornlands": "Тернові землі",
   "biome.twilightforest.final_plateau": "Фінальне плато",
-
   "gamerule.tfEnforcedProgression": "Проходження сутінкового лісу",
-
   "enchantment.twilightforest.fire_react": "Вплив вогню",
   "enchantment.twilightforest.fire_react.desc": "Додає шанс для зловмисника бути підпаленим після удару по власнику.",
   "enchantment.twilightforest.chill_aura": "Аура холоду",
   "enchantment.twilightforest.chill_aura.desc": "Додає шанс для зловмисника отримати заморожувальний ефект після удару по власнику.",
   "enchantment.twilightforest.destruction": "Крах",
   "enchantment.twilightforest.destruction.desc": "Дозволяє бойовій гирі розбивати блоки з вищим рівнем міцності.",
-
   "effect.twilightforest.frosted": "Обмороження",
-
   "block.twilightforest.twilight_oak_log": "Сутінкова дубова колода",
   "block.twilightforest.canopy_log": "Сутінкова соснова колода",
   "block.twilightforest.mangrove_log": "Сутінкова мангрова колода",
@@ -376,14 +354,11 @@
   "block.twilightforest.alpha_yeti_trophy": "Трофей Альфа-єті",
   "block.twilightforest.snow_queen_trophy": "Трофей Сніжної королеви",
   "block.twilightforest.quest_ram_trophy": "Трофей Квестового Барана",
-
   "block.twilightforest.keepsake_casket": "Скринька пам'яті",
   "block.twilightforest.casket.broken": "Ваша скринька пам'яті була занадто пошкоджена, щоб вмістити ще які-небудь предмети. Всі предмети, які повинні були зберігатися у вашій скринці, були скинуті на землю.",
   "block.twilightforest.casket.locked": "Цю Скриньку може відкрити лише %s!",
-
   "block.twilightforest.candelabra": "Канделябр",
   "block.twilightforest.red_thread": "Червона нитка",
-
   "block.twilightforest.zombie_skull_candle": "Свічка з голови зомбі",
   "block.twilightforest.zombie_wall_skull_candle": "Свічка з голови зомбі на стіні",
   "block.twilightforest.skeleton_skull_candle": "Свічка з черепа скелета",
@@ -395,7 +370,6 @@
   "block.twilightforest.player_skull_candle": "Свічка з голови гравця",
   "block.twilightforest.player_skull_candle.named": "Свічка з голови %s",
   "block.twilightforest.player_wall_skull_candle": "Свічка з голови гравця на стіні",
-
   "block.twilightforest.potted_twilight_oak_sapling": "Паросток куцого сутінокового дубу в горщику",
   "block.twilightforest.potted_canopy_sapling": "Паросток сутінкової сосни в горщику",
   "block.twilightforest.potted_mangrove_sapling": "Паросток сутінкового мангрового дерева в горщику",
@@ -409,10 +383,9 @@
   "block.twilightforest.potted_mayapple": "Подофіл в горщику",
   "block.twilightforest.potted_fiddlehead": "Папоротник в горщику",
   "block.twilightforest.potted_mushgloom": "Сутінковий світлогриб в горщику",
-  "block.twilightforest.potted_thorn": "Терен в горщику", 
+  "block.twilightforest.potted_thorn": "Терен в горщику",
   "block.twilightforest.potted_green_thorn": "Зелений терен в горщику",
   "block.twilightforest.potted_dead_thorn": "Обпалений терен в горщику",
-
   "block.twilightforest.oak_banister": "Дубові бильця",
   "block.twilightforest.spruce_banister": "Смерекові бильця",
   "block.twilightforest.birch_banister": "Березові бильця",
@@ -423,7 +396,6 @@
   "block.twilightforest.warped_banister": "Химерні бильця",
   "block.twilightforest.vangrove_banister": "Бильця з сутінкового мангрового дерева",
   "block.twilightforest.banister.cycle": "Тримаючи сокиру - клацніть ПКМ, щоб змінити положення",
-
   "block.twilightforest.canopy_planks": "Дошки з сутінкової сосни",
   "block.twilightforest.canopy_stairs": "Сходи з  сутінкової сосни",
   "block.twilightforest.canopy_slab": "Плита з сутінкової сосни",
@@ -437,7 +409,6 @@
   "block.twilightforest.canopy_wall_sign": "Табличка з сутінкової сосни на стіні",
   "block.twilightforest.canopy_banister": "Бильця з сутінкової сосни",
   "block.twilightforest.canopy_bookshelf": "Книжкова полиця з сутінкової сосни",
-
   "block.twilightforest.dark_planks": "Дошки з темного дерева",
   "block.twilightforest.dark_stairs": "Сходи з темного дерева",
   "block.twilightforest.dark_slab": "Плита з темного дерева",
@@ -450,7 +421,6 @@
   "block.twilightforest.darkwood_sign": "Табличка з темного дерева",
   "block.twilightforest.darkwood_wall_sign": "Табличка з темного дерева на стіні",
   "block.twilightforest.darkwood_banister": "Бильця з темного дерева",
-
   "block.twilightforest.mangrove_planks": "Дошки з сутінкового мангрового дерева",
   "block.twilightforest.mangrove_stairs": "Сходи з сутінкового мангрового дерева",
   "block.twilightforest.mangrove_slab": "Плита з сутінкового мангрового дерева",
@@ -463,7 +433,6 @@
   "block.twilightforest.mangrove_sign": "Табличка з сутінкового мангрового дерева",
   "block.twilightforest.mangrove_wall_sign": "Табличка на стіні з сутінкового мангрового дерева",
   "block.twilightforest.mangrove_banister": "Бильця з сутінкового мангрового дерева",
-
   "block.twilightforest.twilight_oak_planks": "Дошки з сутінкового дуба",
   "block.twilightforest.twilight_oak_stairs": "Сходи з сутінкового дуба",
   "block.twilightforest.twilight_oak_slab": "Плита з сутінкового дуба",
@@ -476,7 +445,6 @@
   "block.twilightforest.twilight_oak_sign": "Табличка з сутінкового дуба",
   "block.twilightforest.twilight_wall_sign": "Табличка на стіні з сутінкового дуба",
   "block.twilightforest.twilight_oak_banister": "Бильця з сутінкового дуба",
-
   "block.twilightforest.time_planks": "Дошки з дерева часу",
   "block.twilightforest.time_stairs": "Сходи з дерева часу",
   "block.twilightforest.time_slab": "Плита з дерева часу",
@@ -525,7 +493,6 @@
   "block.twilightforest.sorting_sign": "Табличка з сортувального дерева",
   "block.twilightforest.sorting_wall_sign": "Табличка на стіні з сортувального дерева",
   "block.twilightforest.sorting_banister": "Бильця з сортувального дерева",
-
   "block.twilightforest.twilight_oak_chest": "Скриня з сутінкового дуба",
   "block.twilightforest.canopy_chest": "Скриня з сутінкового соснового дерева",
   "block.twilightforest.mangrove_chest": "Скриня з сутінкового мангрового дерева",
@@ -534,7 +501,6 @@
   "block.twilightforest.transformation_chest": "Скриня з дерева перетворення",
   "block.twilightforest.mining_chest": "Скриня з шахтарського дерева",
   "block.twilightforest.sorting_chest": "Скриня з сортувального дерева",
-
   "block.twilightforest.hollow_oak_log_horizontal": "Дубова порожниста колода",
   "block.twilightforest.hollow_spruce_log_horizontal": "Смерекова порожниста колода",
   "block.twilightforest.hollow_birch_log_horizontal": "Березова порожниста колода",
@@ -552,7 +518,6 @@
   "block.twilightforest.hollow_transformation_log_horizontal": "Порожниста колода з дерева перетворення",
   "block.twilightforest.hollow_mining_log_horizontal": "Порожниста колода з шахтарського дерева",
   "block.twilightforest.hollow_sorting_log_horizontal": "Порожниста колода з сортувального дерева",
-
   "block.twilightforest.hollow_oak_log_vertical": "Дубова порожниста колода",
   "block.twilightforest.hollow_spruce_log_vertical": "Смерекова порожниста колода",
   "block.twilightforest.hollow_birch_log_vertical": "Березова порожниста колода",
@@ -570,7 +535,6 @@
   "block.twilightforest.hollow_transformation_log_vertical": "Порожниста колода з дерева перетворення",
   "block.twilightforest.hollow_mining_log_vertical": "Порожниста колода з шахтарського дерева",
   "block.twilightforest.hollow_sorting_log_vertical": "Порожниста колода з сортувального дерева",
-
   "block.twilightforest.hollow_oak_log_climbable": "Дубова порожниста колода",
   "block.twilightforest.hollow_spruce_log_climbable": "Смерекова порожниста колода",
   "block.twilightforest.hollow_birch_log_climbable": "Березова порожниста колода",
@@ -588,12 +552,9 @@
   "block.twilightforest.hollow_transformation_log_climbable": "Порожниста колода з дерева перетворення",
   "block.twilightforest.hollow_mining_log_climbable": "Порожниста колода з шахтарського дерева",
   "block.twilightforest.hollow_sorting_log_climbable": "Порожниста колода з сортувального дерева",
-
   "block.arctic.tooltip": "Зменшує шкоду від падіння на 90%",
   "block.knightmetal.tooltip": "Працює як посилений кактус",
-
   "dimension.twilightforest.twilightforest": "Сутінковий ліс",
-
   "structure.twilightforest.hedge_maze": "Лабіринт з живоплоту",
   "structure.twilightforest.small_hollow_hill": "Маленький порожнистий пагорб",
   "structure.twilightforest.medium_hollow_hill": "Середній порожнистий пагорб",
@@ -610,7 +571,6 @@
   "structure.twilightforest.aurora_palace": "Палац Аврори",
   "structure.twilightforest.troll_cave": "Печери тролів",
   "structure.twilightforest.final_castle": "Фінальний замок",
-
   "item.twilightforest.boarkchop": "Кабанятина",
   "item.twilightforest.naga_scale": "Луска наги",
   "item.twilightforest.naga_chestplate": "Нагрудник з луски наги",
@@ -727,7 +687,6 @@
   "item.twilightforest.cube_talisman": "Талісман куба",
   "item.twilightforest.cube_of_annihilation": "Куб знищення",
   "item.twilightforest.moon_dial": "Годинник місячних фаз",
-  
   "item.twilightforest.moon_dial.phase_0": "Повний Місяць",
   "item.twilightforest.moon_dial.phase_1": "Спадаючий Місяць",
   "item.twilightforest.moon_dial.phase_2": "Остання чверть",
@@ -738,26 +697,15 @@
   "item.twilightforest.moon_dial.phase_7": "Прибувающий Місяць",
   "item.twilightforest.moon_dial.phase_unknown": "Фаза місяця невизначена",
   "item.twilightforest.moon_dial.phase_unknown_fools": "404 місяць не знайдено",
-
   "item.twilightforest.music_disc_radiance": "Сутінкова платівка",
-  "item.twilightforest.music_disc_radiance.desc": "Rotch Gwylt - Radiance",
   "item.twilightforest.music_disc_steps": "Сутінкова платівка",
-  "item.twilightforest.music_disc_steps.desc": "Rotch Gwylt - Steps",
   "item.twilightforest.music_disc_superstitious": "Сутінкова платівка",
-  "item.twilightforest.music_disc_superstitious.desc": "Rotch Gwylt - Superstitious",
   "item.twilightforest.music_disc_home": "Сутінкова платівка",
-  "item.twilightforest.music_disc_home.desc": "MrCompost - Home",
   "item.twilightforest.music_disc_wayfarer": "Сутінкова платівка",
-  "item.twilightforest.music_disc_wayfarer.desc": "MrCompost - Wayfarer",
   "item.twilightforest.music_disc_findings": "Сутінкова платівка",
-  "item.twilightforest.music_disc_findings.desc": "MrCompost - Findings",
   "item.twilightforest.music_disc_maker": "Сутінкова платівка",
-  "item.twilightforest.music_disc_maker.desc": "MrCompost - Maker",
   "item.twilightforest.music_disc_thread": "Сутінкова платівка",
-  "item.twilightforest.music_disc_thread.desc": "MrCompost - Thread",
   "item.twilightforest.music_disc_motion": "Сутінкова платівка",
-  "item.twilightforest.music_disc_motion.desc": "MrCompost - Motion",
-
   "item.twilightforest.naga_banner_pattern": "Візерунок стяга",
   "item.twilightforest.naga_banner_pattern.desc": "Луска наги",
   "block.minecraft.banner.twilightforest.naga.black": "Чорна луска наги",
@@ -776,7 +724,6 @@
   "block.minecraft.banner.twilightforest.naga.magenta": "Пурпурова луска наги",
   "block.minecraft.banner.twilightforest.naga.pink": "Рожева луска наги",
   "block.minecraft.banner.twilightforest.naga.brown": "Коричнева луска наги",
-
   "item.twilightforest.lich_banner_pattern": "Візерунок стяга",
   "item.twilightforest.lich_banner_pattern.desc": "Корона ліча",
   "block.minecraft.banner.twilightforest.lich.black": "Чорна корона ліча",
@@ -795,7 +742,6 @@
   "block.minecraft.banner.twilightforest.lich.magenta": "Пурпурова корона ліча",
   "block.minecraft.banner.twilightforest.lich.pink": "Рожева корона ліча",
   "block.minecraft.banner.twilightforest.lich.brown": "Коричнева корона ліча",
-
   "item.twilightforest.minoshroom_banner_pattern": "Візерунок стяга",
   "item.twilightforest.minoshroom_banner_pattern.desc": "Сокира гриботавра",
   "block.minecraft.banner.twilightforest.minoshroom.black": "Чорна сокира гриботавра",
@@ -814,7 +760,6 @@
   "block.minecraft.banner.twilightforest.minoshroom.magenta": "Пурпурова сокира гриботавра",
   "block.minecraft.banner.twilightforest.minoshroom.pink": "Рожева сокира гриботавра",
   "block.minecraft.banner.twilightforest.minoshroom.brown": "Коричнева сокира гриботавра",
-
   "item.twilightforest.hydra_banner_pattern": "Візерунок стяга",
   "item.twilightforest.hydra_banner_pattern.desc": "Полум'я гідри",
   "block.minecraft.banner.twilightforest.hydra.black": "Чорне полум'я гідри",
@@ -833,7 +778,6 @@
   "block.minecraft.banner.twilightforest.hydra.magenta": "Пурпурове полум'я гідри",
   "block.minecraft.banner.twilightforest.hydra.pink": "Рожеве полум'я гідри",
   "block.minecraft.banner.twilightforest.hydra.brown": "Коричневе полум'я гідри",
-
   "item.twilightforest.knight_phantom_banner_pattern": "Візерунок стяга",
   "item.twilightforest.knight_phantom_banner_pattern.desc": "Лицарський шолом",
   "block.minecraft.banner.twilightforest.knight_phantom.black": "Чорний лицарський шолом",
@@ -852,7 +796,6 @@
   "block.minecraft.banner.twilightforest.knight_phantom.magenta": "Пурпуровий лицарський шолом",
   "block.minecraft.banner.twilightforest.knight_phantom.pink": "Рожевий лицарський шолом",
   "block.minecraft.banner.twilightforest.knight_phantom.brown": "Коричневий лицарський шолом",
-
   "item.twilightforest.ur_ghast_banner_pattern": "Візерунок стяга",
   "item.twilightforest.ur_ghast_banner_pattern.desc": "Кармінитова грань",
   "block.minecraft.banner.twilightforest.ur_ghast.black": "Чорна кармінитова грань",
@@ -871,7 +814,6 @@
   "block.minecraft.banner.twilightforest.ur_ghast.magenta": "Пурпурова кармінитова грань",
   "block.minecraft.banner.twilightforest.ur_ghast.pink": "Рожева кармінитова грань",
   "block.minecraft.banner.twilightforest.ur_ghast.brown": "Коричнева кармінитова грань",
-
   "item.twilightforest.alpha_yeti_banner_pattern": "Візерунок стяга",
   "item.twilightforest.alpha_yeti_banner_pattern.desc": "Обличчя альфа-єті",
   "block.minecraft.banner.twilightforest.alpha_yeti.black": "Чорне обличчя альфа-єті",
@@ -890,7 +832,6 @@
   "block.minecraft.banner.twilightforest.alpha_yeti.magenta": "Пурпурове обличчя альфа-єті",
   "block.minecraft.banner.twilightforest.alpha_yeti.pink": "Рожеве обличчя альфа-єті",
   "block.minecraft.banner.twilightforest.alpha_yeti.brown": "Коричневе обличчя альфа-єті",
-
   "item.twilightforest.snow_queen_banner_pattern": "Візерунок стяга",
   "item.twilightforest.snow_queen_banner_pattern.desc": "Корона снігової королеви",
   "block.minecraft.banner.twilightforest.snow_queen.black": "Чорна корона снігової королеви",
@@ -909,7 +850,6 @@
   "block.minecraft.banner.twilightforest.snow_queen.magenta": "Пурпурова корона снігової королеви",
   "block.minecraft.banner.twilightforest.snow_queen.pink": "Рожева корона снігової королеви",
   "block.minecraft.banner.twilightforest.snow_queen.brown": "Коричнева корона снігової королеви",
-
   "item.twilightforest.quest_ram_banner_pattern": "Візерунок стяга",
   "item.twilightforest.quest_ram_banner_pattern.desc": "Вихори квестового барану",
   "block.minecraft.banner.twilightforest.quest_ram.black": "Чорні вихори квестового барану",
@@ -928,7 +868,6 @@
   "block.minecraft.banner.twilightforest.quest_ram.magenta": "Пурпурові вихори квестового барану",
   "block.minecraft.banner.twilightforest.quest_ram.pink": "Рожеві вихори квестового барану",
   "block.minecraft.banner.twilightforest.quest_ram.brown": "Коричневі вихори квестового барану",
-
   "item.twilightforest.boar_spawn_egg": "Яйце виклику дикого кабана",
   "item.twilightforest.bighorn_sheep_spawn_egg": "Яйце виклику барана-товсторога",
   "item.twilightforest.deer_spawn_egg": "Яйце виклику дикого оленя",
@@ -983,9 +922,7 @@
   "item.twilightforest.harbinger_cube_spawn_egg": "Яйце виклику куба-передвісника [NYI]",
   "item.twilightforest.adherent_spawn_egg": "Яйце виклику Адепта [NYI]",
   "item.twilightforest.roving_cube_spawn_egg": "Яйце виклику бродячого куба [NYI]",
-
   "item.twilightforest.guide": "Бортовий журнал мандрівника [WIP]",
-
   "item.twilightforest.minotaur_axe.tooltip": "Додаткова шкода під час бігу",
   "item.twilightforest.knightmetal_sword.tooltip": "Додаткова шкода по цілям в обладунках",
   "item.twilightforest.knightmetal_pickaxe.tooltip": "Додаткова шкода по цілям в обладунках",
@@ -997,12 +934,9 @@
   "item.twilightforest.phantom_armor.tooltip": "Не можна втратити після смерті",
   "item.twilightforest.yeti_armor.tooltip": "Обморожує нападника",
   "item.twilightforest.glass_sword.tooltip.1": "Доступно тільки в творчому режимі",
-
   "item.twilightforest.arctic_armor.tooltip": "Можна пофарбувати",
-
   "item.twilightforest.skull_candle.desc": "Має: %s %s свічок",
   "item.twilightforest.skull_candle.desc.multiple": "Має: %s %s свічок",
-
   "entity.twilightforest.boar": "Дикий кабан",
   "entity.twilightforest.bighorn_sheep": "Баран-товсторіг",
   "entity.twilightforest.deer": "Дикий олень",
@@ -1066,7 +1000,6 @@
   "entity.twilightforest.adherent": "Адепт [NYI]",
   "entity.twilightforest.castle_guardian": "Вартовий замку [NYI]",
   "entity.twilightforest.roving_cube": "Бродячий куб [NYI]",
-
   "entity.twilightforest.ice_snowball": "Крижаний сніжок",
   "entity.twilightforest.ice_arrow": "Крижана стріла",
   "entity.twilightforest.seeker_arrow": "Стріла шукача",
@@ -1086,11 +1019,9 @@
   "entity.twilightforest.cube_of_annihilation": "Куб знищення",
   "entity.twilightforest.slider": "Пересувна ковзаюча пастка",
   "entity.twilightforest.protection_box": "Коробка захисту прогресу",
-
   "entity.twilightforest.cicada_slingshot": "Цикада",
   "entity.twilightforest.firefly_slingshot": "Світлячок",
   "entity.twilightforest.moonworm_slingshot": "Місячний черв'як",
-
   "subtitles.twilightforest.entity.acid_rain": "Кислотний дощ обпікає гравця",
   "subtitles.twilightforest.entity.alphayeti.alert": "Альфа-єті націлився",
   "subtitles.twilightforest.entity.alphayeti.death": "Альфа-єті помирає",
@@ -1269,7 +1200,6 @@
   "subtitles.twilightforest.entity.yeti.growl": "Єті гарчить",
   "subtitles.twilightforest.entity.yeti.hurt": "Єті поранено",
   "subtitles.twilightforest.entity.yeti.throw": "Єті кидає гравця",
-
   "subtitles.twilightforest.entity.alphayeti.parrot": "Папуга холодно гарчить",
   "subtitles.twilightforest.entity.carminitegolem.parrot": "Папуга клацає",
   "subtitles.twilightforest.entity.hostilewolf.parrot": "Папуга гарчить",
@@ -1282,8 +1212,6 @@
   "subtitles.twilightforest.entity.redcap.parrot": "Папуга хихикає",
   "subtitles.twilightforest.entity.tome.parrot": "Папуга робить вигляд, що читає книгу",
   "subtitles.twilightforest.entity.wraith.parrot": "Папуга зітхає",
-
-
   "subtitles.twilightforest.block.beanstalk.grow": "Земля гуркоче",
   "subtitles.twilightforest.block.bug.squish": "Жука розчавлено :(",
   "subtitles.twilightforest.block.builder.create": "Кармінитовий будівельник створює блок",
@@ -1319,7 +1247,6 @@
   "subtitles.twilightforest.block.vanish.locked": "Зникаючий блок не зникає",
   "subtitles.twilightforest.block.vanish.unlock": "Зникаючий блок розблоковано",
   "subtitles.twilightforest.block.vanish.vanish": "Зникаючий блок зникає",
-
   "subtitles.twilightforest.item.blockchain.collide": "Бойова гиря б'є по блоку",
   "subtitles.twilightforest.item.blockchain.hit": "Бойова гиря б'є по сутності",
   "subtitles.twilightforest.item.blockchain.fire": "Бойова гиря спалахує",
@@ -1340,7 +1267,6 @@
   "subtitles.twilightforest.item.scepter.use": "Посох використано",
   "subtitles.twilightforest.item.scepter.pearl": "Посох сутінків кидає перлину",
   "subtitles.twilightforest.item.shield.shatter": "Дерев'яний щит розбивається",
-
   "death.attack.twilightforest.ghastTear": "%1$ був ошпарений вогняними сльозами",
   "death.attack.twilightforest.ghastTear.player": "%1$s був ошпарений вогняними сльозами під час втечі від %2$s",
   "death.attack.twilightforest.hydraFire": "%1$s був заживо спалений Гідрою",
@@ -1375,7 +1301,6 @@
   "death.attack.twilightforest.thrown_block.player": "%1$s був розчавлений кинутим блоком під час втечі від %2$s",
   "death.attack.twilightforest.expired": "Життя %1$s закінчилося",
   "death.attack.twilightforest.expired.player": "Життя %1$s закінчилося під час втечі від %2$s",
-
   "death.attack.twilightforest.axing": "%1$s був порубаний на шматки %2$s",
   "death.attack.twilightforest.axing.item": "%1$s був порубаний на шматки %2$s використовуючи %3$s",
   "death.attack.twilightforest.cicada": "%1$s був застрелений Цикадою",
@@ -1405,7 +1330,6 @@
   "death.attack.twilightforest.yeeted": "%1$s востаннє був підкинутий",
   "death.attack.twilightforest.yeeted.entity": "1$s востаннє був підкинутий %2$s",
   "death.attack.twilightforest.yeeted.item": "%1$s востаннє побачив %2$s тримаючи %3$s",
-
   "stat.twilightforest.blocks_crumbled": "Блоки розтрощились завдяки рогу",
   "stat.twilightforest.bugs_squished": "Жуки були розчавлені",
   "stat.twilightforest.e115_slices_eaten": "Експеримент 115 був з’їдений",
@@ -1416,28 +1340,23 @@
   "stat.twilightforest.torchberries_harvested": "Смолоскипоягоди зібрані",
   "stat.twilightforest.trophy_pedestals_activated": "П'єдестал для трофеїв активовано",
   "stat.twilightforest.uncrafting_table_interactions": "Взаємодія зі столом розкрафчування",
-
   "twilightforest.misc.wip0": "Цей блок знаходиться на стадії розробки та може мати помилки або небажані ефекти, які можуть зашкодити Вашому світу.",
   "twilightforest.misc.wip1": "Використовуйте з обережністю.",
   "twilightforest.misc.nyi": "Цей блок має ефекти, які ще не реалізовані.",
-
   "twilightforest.loading.title.enter": "Відправляю тебе до Сутінкового лісу...",
   "twilightforest.loading.title.leave": "Витягаю тебе із сутінкового лісу...",
-
   "twilightforest.ui.magicmap.fail": "Магія похитнулася. Можливо тут це не працює?",
   "twilightforest.ui.biome_locked": "Біом заблоковано!",
   "twilightforest.ui.biome_locked_2": "Перевірте свої досягнення",
   "twilightforest.ui.portal.unworthy": "Портальний басейн не відповідає. Може, ти щось проґавив?",
   "twilightforest.ui.advancement.required": "Потрібно отримати досягнення:",
   "twilightforest.ui.advancement.no_title": "<Приховане досягнення>",
-
   "twilightforest.config.dimension": "Параметри виміру",
   "twilightforest.config.dimension.tooltip": "Для зміни налаштувань потрібно перезапустити клієнт.",
   "twilightforest.config.spawn_in_tf": "Нові гравці з'являються одразу в Сутінковому лісі",
   "twilightforest.config.spawn_in_tf.tooltip": "Якщо встановлено значення 'true', нові гравці з'являються одразу в Сутінковому лісі",
   "twilightforest.config.portal_for_new_player": "Генерування порталів для нових гравців",
   "twilightforest.config.portal_for_new_player.tooltip": "Якщо встановлено значення 'true', портал повернення буде створено для нових гравців, які були надіслані до СЛ, якщо 'spawn_in_tf' має значення true",
- 
   "twilightforest.config.hollow_hill_stalactites": "Користувацькі сталактити на пагорбах",
   "twilightforest.config.hollow_hill_stalactites.tooltip": "Визначає користувацькі сталактити, створені в порожнистих пагорбах.\n Формат \\\"modid:block<:meta> size max_Length min_Height weight\\\", де властивості :\n_Size - максимальна довжина сталактита відносно простору між підлогою пагорба та стелею,\n_Max length - максимальна довжина сталактита в блоках,\n_Min height - мінімальний простір між підлогою пагорба і сталактитом, щоб він міг генеруватися,\n_Weight - як часто він буде генеруватись.\n\n_Наприклад: \\\"minecraft:iron_ore 0.7 8 1 24\\\" додасть сталактит, рівний сталактиту залізної руди за замовчуванням.",
   "twilightforest.config.large_hill": "Великі пагорби",
@@ -1448,13 +1367,10 @@
   "twilightforest.config.small_hill.tooltip": "Блоки утворюються у вигляді сталактитів на всіх пагорбах.",
   "twilightforest.config.stalactite_config_only": "Використовує тільки конфігурацію сталактитів",
   "twilightforest.config.stalactite_config_only.tooltip": "Якщо значення 'true', сталактити за замовчуванням і сталактити, визначені іншими модами, використовуватися не будуть.",
-
   "twilightforest.config.silent_cicadas": "Тихі цикади",
   "twilightforest.config.silent_cicadas.tooltip": "Зробить цикад безшумними для тих, хто має проблеми зі звуковою бібліотекою або хто з інших причин вважає їх дратівливими.",
-
   "twilightforest.config.first_person_effects": "Візуалізація ефектів від 1-ї особи",
   "twilightforest.config.first_person_effects.tooltip": "Контролює, чи відтворюються різні ефекти з моду під час перегляду від першої особи. Вимкніть це, якщо вважаєте, що вони відволікають.",
-
   "twilightforest.config.origin_dimension": "Початковий вимір",
   "twilightforest.config.origin_dimension.tooltip": "Вимір, з якого ви завжди можете відправитися до Сутінкового лісу, а також вимір, у який ви повернетеся. За замовчуванням це — overworld.",
   "twilightforest.config.portals_in_other_dimensions": "Портали в інші виміри",
@@ -1469,101 +1385,80 @@
   "twilightforest.config.portal_return.tooltip": "Якщо значення 'false', то для повернення, портал вимагатиме повторну активацію.",
   "twilightforest.config.check_portal_destination": "Попередня перевірка пункту призначення порталу",
   "twilightforest.config.check_portal_destination.tooltip": "Визначає, чи слід попередньо перевіряти нові портали на безпеку. Якщо ввімкнено, портали не будуть утворюватись, а просто перенаправляти в безпечне альтернативне місце призначення.\n Зверніть увагу,що ввімкнення цього параметра також зменшує швидкість виконання перевірок формування порталу.",
-
   "twilightforest.config.uncrafting": "Вимкнення розкрафчування у столі розкрафчування",
   "twilightforest.config.uncrafting.tooltip": "Вимкніть функцію розкрафчування у столі розкрафчування. Надається в якості опції, коли взаємодія з іншими модами створює 'читерні' для використання рецепти.",
   "twilightforest.config.uncrafting_recipes": "Вимкнення розкрафчувальних рецептів у столі розкрафчування",
   "twilightforest.config.uncrafting_recipes.tooltip": "Якщо ви не хочете повністю відключати розкрафчування, а хочете вимкнути певні рецепти, це для вас.\nЩоб додати рецепт, додайте id мода, за яким слідує назва рецепта. Ви можете перевірити це в JEI.\nНаприклад: \"twilightforest:moonworm_queen\" вимкне розкрафчування королеви місячного черв’яка в 3 смолоскипоягоди.\nЯкщо у предмета є кілька рецептів виготовлення, і ви хочете вимкнути їх усіх, додайте предмет до \"twilightforest:banned_uncraftables\" тегу предмета.\nЯкщо у вас є проблемний інгредієнт, як-от 'заражені дошки з темної вежі', додайте його до \"twilightforest:banned_uncrafting_ingredients\" тегу предмета.",
-
   "twilightforest.config.optifine": "Вимкнення екрана попередження коли встановлений Optifine.",
   "twilightforest.config.optifine.tooltip": "Вимикає екран попередження коли встановлений такий мод, як Optifine",
-
-  "twilightforest.config.locked_toast": "Сповіщення про недоступний біом.",
-  "twilightforest.config.locked_toast.tooltip": "Вимикає сповіщення, які з’являються, коли біом заблоковано. Не рекомендується, якщо ви раніше не грали в Сутінковий ліс.",
-
   "twilightforest.config.animate_trophyitem": "Обертання трофеїних голів на моделі предмета",
   "twilightforest.config.animate_trophyitem.tooltip": "Обертайте голови трофеїв на моделі предмета. Зовсім не впливає на продуктивність. Для тих, хто не любить веселощів.",
-
   "twilightforest.config.shield_parry": "Парирування щитом",
   "twilightforest.config.shield_parry.tooltip": "Ми рекомендуємо завантажити мод 'Shield Parry' для парирування, але ці елементи керування залишаються поза ним.",
   "twilightforest.config.parry_non_twilight": "Парирування не сутінкових снарядів",
   "twilightforest.config.parry_non_twilight.tooltip": "Встановіть значення 'true', щоб відбивати не сутінкові снаряди. Замість цього ми рекомендуємо завантажити мод 'Shield Parry'.",
   "twilightforest.config.parry_window": "Інтервал часу для снарядів",
   "twilightforest.config.parry_window.tooltip": "Кількість тиків після підняття щита, що дозволяє відбивати снаряди. За 1 секунду відбувається 20 тиків.",
-    
   "twilightforest.config.casket_uuid_locking": "Блокування по UUID для скриньки пам'яті",
   "twilightforest.config.casket_uuid_locking.tooltip": "Якщо встановлено значення 'true', інші гравці не матимуть доступу до скриньок пам'яті, які з’являються після смерті гравця. Використовуйте це, якщо ви не хочете, щоб гравці брали речі зі скриньок пам'яті інших гравців. ПРИМІТКА: оператори серверів все ще зможуть відкривати замкнені скриньки.",
   "twilightforest.config.disable_skull_candles": "Вимкнення створення свічок з черепа",
   "twilightforest.config.disable_skull_candles.tooltip": "Якщо встановлено значення 'true', вимикається можливість створювати свічки з черепами, клацнувши правою кнопкою миші по ванільному черепу зі свічкою. Увімкніть це, якщо з якоїсь причини у вас виник конфлікт модів.",
-
   "twilightforest.book.author": "Забутий дослідник",
-  "twilightforest.book.lichtower": "Нотатки про загострену вежу",  
-  "twilightforest.book.lichtower.1": "\u00A78[[Блокнот дослідника, погризений монстрами]]\u00A70\n\nЯ почав досліджувати дивну ауру навколо цієї вежі. Цеглини вежі захищені прокляттям, сильнішим за всі, які я бачив раніше. Магія від прокляття",
+  "twilightforest.book.lichtower": "Нотатки про загострену вежу",
+  "twilightforest.book.lichtower.1": "§8[[Блокнот дослідника, погризений монстрами]]§0\n\nЯ почав досліджувати дивну ауру навколо цієї вежі. Цеглини вежі захищені прокляттям, сильнішим за всі, які я бачив раніше. Магія від прокляття",
   "twilightforest.book.lichtower.2": "вихлюпується в навколишнє середовище.\n\nНа моїй батьківщині у мене було б багато варіантів боротьби з цією магією, але тут мої можливості обмежені. Мені доведеться дослідити...",
-  "twilightforest.book.lichtower.3": "\u00A78[[Багато записів пізніше]]\u00A70\n\nПрорив! Під час своїх подорожей я бачив величезне змієподібне чудовисько у розкішному подвір'ї. Неподалік я підібрав затерту, скинуту зелену луску.\n\nЗдається, що магія в",
+  "twilightforest.book.lichtower.3": "§8[[Багато записів пізніше]]§0\n\nПрорив! Під час своїх подорожей я бачив величезне змієподібне чудовисько у розкішному подвір'ї. Неподалік я підібрав затерту, скинуту зелену луску.\n\nЗдається, що магія в",
   "twilightforest.book.lichtower.4": "Здається, що магія в лусці має властивості руйнування прокляття, але магія надто слабка. Можливо, мені знадобиться добути свіжіший зразок безпосередньо від істоти.",
-  
   "twilightforest.book.labyrinth": "Нотатки про болотистий лабіринт",
-  "twilightforest.book.labyrinth.1": "\u00A78[[Блокнот дослідника, написаний на водонепроникному папері]]\u00A70\n\nКомарі в цьому болоті неприємні, але дивні. Переважна більшість із них, здається, не мають природного джерела, а також не відіграють ролі в місцевій екології. Я почав підозрювати,",
-  "twilightforest.book.labyrinth.2": "що це якесь магічне прокляття.\n\n\u00A78[[Наступний запис]]\u00A70\n\nТепер, коли я натрапив на захисне заклинання в зруйнованому лабіринті, я вважаю, що мої підозри підтвердилися. І захисне заклинання,",
-  "twilightforest.book.labyrinth.3": "і комарі - це прокляття. Здається, джерело цього прокляття відрізняється від інших, з якими я стикався. Мені доведеться провести подальші дослідження...\n\n\u00A78[[Наступний запис]]\u00A70\n\nЗдається, це",
+  "twilightforest.book.labyrinth.1": "§8[[Блокнот дослідника, написаний на водонепроникному папері]]§0\n\nКомарі в цьому болоті неприємні, але дивні. Переважна більшість із них, здається, не мають природного джерела, а також не відіграють ролі в місцевій екології. Я почав підозрювати,",
+  "twilightforest.book.labyrinth.2": "що це якесь магічне прокляття.\n\n§8[[Наступний запис]]§0\n\nТепер, коли я натрапив на захисне заклинання в зруйнованому лабіринті, я вважаю, що мої підозри підтвердилися. І захисне заклинання,",
+  "twilightforest.book.labyrinth.3": "і комарі - це прокляття. Здається, джерело цього прокляття відрізняється від інших, з якими я стикався. Мені доведеться провести подальші дослідження...\n\n§8[[Наступний запис]]§0\n\nЗдається, це",
   "twilightforest.book.labyrinth.4": "прокляття надто потужне, щоб  його створила одна істота. Для такого потрібно декілька чарівників, які б працювали разом.\n\nЯкщо один із чарівників перестане чаклувати, прокляття над болотом зникне. Як не дивно,",
   "twilightforest.book.labyrinth.5": "мої ворожіння не показують жодних ознак присутності живих чарівників поблизу. Однак я побачив дещо цікаве в одній з довколишніх веж з загостреним дахом...",
-
   "twilightforest.book.hydralair": "Нотатки про вогняне болото",
-  "twilightforest.book.hydralair.1": "\u00A78[[Блокнот дослідника, написаний на вогнетривкому папері]]\u00A70\n\nВогонь — це тривіальна перешкода для такого майстерного дослідника, як я. Я перетнув моря вогню і проплив через океани лави. Палаюче повітря це",
+  "twilightforest.book.hydralair.1": "§8[[Блокнот дослідника, написаний на вогнетривкому папері]]§0\n\nВогонь — це тривіальна перешкода для такого майстерного дослідника, як я. Я перетнув моря вогню і проплив через океани лави. Палаюче повітря це",
   "twilightforest.book.hydralair.2": "цікава, варіація, але зрештою не перешкода.\n\nОднак мене зупиняє те, що я натрапив на інше захисне заклинання, цього разу воно оточує могутню істоту, яка, мабуть, є королем цього вогняного болота. Це не перше захисне заклинання,",
   "twilightforest.book.hydralair.3": "з яким я стикаюся, і я починаю розгадувати таємниці того, як вони працюють.\n\nЯкщо це заклинання схоже на інші, воно підтримується потужною істотою поблизу. Навколо вогняного болота є кілька вологих боліт, а під цими",
   "twilightforest.book.hydralair.4": "болотами — лабіринти, повні мінотаврів. Логічним вибором для прив'язки такого заклинання був би який-небудь могутній Мінотавр,який чимось відрізняється від інших, які його оточують...",
-
   "twilightforest.book.tfstronghold": "Нотатки про фортецю",
-  "twilightforest.book.tfstronghold.1": "\u00A78[[Блокнот дослідника, написаний на папері, що ледь-ледь світиться]]\u00A70\n\nЩупальця темряви, що оточують цю область - всього лише прояв захисного заклинання над усім темним лісом. Заклинання викликає сліпоту, і це трохи",
-  "twilightforest.book.tfstronghold.2": "бісить. Я бачив кілька цікавих речей у цьому районі і хотів би продовжити дослідження.\n\n\u00A78[[Наступний запис]]\u00A70\n\nЯ знайшов руїни в темному лісі. Вони належать до фортеці, в якій зазвичай мешкають лицарі. Однак замість",
-  "twilightforest.book.tfstronghold.3": "лицарів в цій фортеці повно ґоблінів. Вони носять лицарські обладунки, але поведінка їх дуже не лицарська.\n\n\u00A78[[Наступний запис]]\u00A70\n\nГлибоко в руїнах я знайшов п'єдестал. П'єдестал, схоже, з тих,",
+  "twilightforest.book.tfstronghold.1": "§8[[Блокнот дослідника, написаний на папері, що ледь-ледь світиться]]§0\n\nЩупальця темряви, що оточують цю область - всього лише прояв захисного заклинання над усім темним лісом. Заклинання викликає сліпоту, і це трохи",
+  "twilightforest.book.tfstronghold.2": "бісить. Я бачив кілька цікавих речей у цьому районі і хотів би продовжити дослідження.\n\n§8[[Наступний запис]]§0\n\nЯ знайшов руїни в темному лісі. Вони належать до фортеці, в якій зазвичай мешкають лицарі. Однак замість",
+  "twilightforest.book.tfstronghold.3": "лицарів в цій фортеці повно ґоблінів. Вони носять лицарські обладунки, але поведінка їх дуже не лицарська.\n\n§8[[Наступний запис]]§0\n\nГлибоко в руїнах я знайшов п'єдестал. П'єдестал, схоже, з тих,",
   "twilightforest.book.tfstronghold.4": "на які лицарі клали трофеї, щоб довести свою силу.\n\nЗдається, отримання потужного посоха послабить прокляття темного лісу, а розміщення трофея, пов’язаного з могутньою істотою, на п’єдесталі, ймовірно,",
   "twilightforest.book.tfstronghold.5": "дало б доступ в основну частину фортеці.",
-  
   "twilightforest.book.darktower": "Нотатки про дерев'яну вежу",
-  "twilightforest.book.darktower.1": "\u00A78[[Блокнот дослідника, який, здається, пережив вибух]]\u00A70\n\nУ цій вежі явно є механізми, які не реагують на мене. Їхня магія мало не жадає признати мій дотик, але не може. Це відбувається в тому випадку, якщо пристрої",
-  "twilightforest.book.darktower.2": "вежі приглушуються могутньою групою істот поблизу.\n\n\u00A78[[Наступний запис]]\u00A70\n\nМагія, здається, випромінюється з глибини довколишніх фортець. Вона не може походити від ґоблінів, оскільки їхня магія чарівна, але не сфокусована. Мабуть,",
-  "twilightforest.book.darktower.3": "в фортецях все ще діють якісь сили.\n\n\u00A78[[Наступний запис]]\u00A70\n\nМій аналіз показує, що він походить з декількох джерел, що діють як група. Я повернуся до фортеці після того, як поповню запаси...",
-
+  "twilightforest.book.darktower.1": "§8[[Блокнот дослідника, який, здається, пережив вибух]]§0\n\nУ цій вежі явно є механізми, які не реагують на мене. Їхня магія мало не жадає признати мій дотик, але не може. Це відбувається в тому випадку, якщо пристрої",
+  "twilightforest.book.darktower.2": "вежі приглушуються могутньою групою істот поблизу.\n\n§8[[Наступний запис]]§0\n\nМагія, здається, випромінюється з глибини довколишніх фортець. Вона не може походити від ґоблінів, оскільки їхня магія чарівна, але не сфокусована. Мабуть,",
+  "twilightforest.book.darktower.3": "в фортецях все ще діють якісь сили.\n\n§8[[Наступний запис]]§0\n\nМій аналіз показує, що він походить з декількох джерел, що діють як група. Я повернуся до фортеці після того, як поповню запаси...",
   "twilightforest.book.yeticave": "Нотатки про крижану печеру",
-  "twilightforest.book.yeticave.1": "\u00A78[[Блокнот дослідника, покритий кригою]]\u00A70\n\nЗавірюха навколо цих снігових країв не вщухає. Це не звичайний снігопад - це чарівне явище. Мені доведеться провести експерименти,",
-  "twilightforest.book.yeticave.2": "щоб знайти, що здатне викликати такий ефект.\n\n\u00A78[[Наступний запис]]\u00A70\n\n Здається, це прокляття надто потужне, щоб його могла створити одна істота. Для такого потрібно декілька чарівників, які б працювали разом.",
+  "twilightforest.book.yeticave.1": "§8[[Блокнот дослідника, покритий кригою]]§0\n\nЗавірюха навколо цих снігових країв не вщухає. Це не звичайний снігопад - це чарівне явище. Мені доведеться провести експерименти,",
+  "twilightforest.book.yeticave.2": "щоб знайти, що здатне викликати такий ефект.\n\n§8[[Наступний запис]]§0\n\n Здається, це прокляття надто потужне, щоб його могла створити одна істота. Для такого потрібно декілька чарівників, які б працювали разом.",
   "twilightforest.book.yeticave.3": "Якщо один із чарівників перестане чаклувати, завірюха вщухне. Як не дивно, мої ворожіння не показують жодних ознак присутності живих чарівників поблизу. Однак я побачив дещо цікаве в одній з довколишніх веж з загостреним дахом...",
-  
   "twilightforest.book.icetower": "Нотатки про палац Аврори",
-  "twilightforest.book.icetower.1": "\u00A78[[Блокнот дослідника, покритий морозом]]\u00A70\n\nЯ подолав одну завірюху тільки для того, щоб нарватися на цю жахливу крижану бурю на вершині льодовика. Мої дослідження показали мені розкішність крижаного палацу, що сяє кольорами",
-  "twilightforest.book.icetower.2": "полярного сяйва. здається, все це захищено якимось прокляттям.\n\n\u00A78[[Наступний запис]]\u00A70\n\nЯ не новачок. Це прокляття підживлюється силою істоти, що знаходиться поблизу. Причина прокляття навколо",
+  "twilightforest.book.icetower.1": "§8[[Блокнот дослідника, покритий морозом]]§0\n\nЯ подолав одну завірюху тільки для того, щоб нарватися на цю жахливу крижану бурю на вершині льодовика. Мої дослідження показали мені розкішність крижаного палацу, що сяє кольорами",
+  "twilightforest.book.icetower.2": "полярного сяйва. здається, все це захищено якимось прокляттям.\n\n§8[[Наступний запис]]§0\n\nЯ не новачок. Це прокляття підживлюється силою істоти, що знаходиться поблизу. Причина прокляття навколо",
   "twilightforest.book.icetower.3": "вогняного болота була побудована на силі лідера мінотаврів який знаходився поблизу.\n\nНавколо цього льодовика мешкають маса Єті. Можливо, у Єті є якийсь лідер...",
-
   "twilightforest.book.trollcave": "Примітки про високогір'я",
-  "twilightforest.book.trollcave.1": "\u00A78[[Блокнот дослідника, пошкоджений кислотою]]\u00A70\n\nЗдається, немає ніякого способу захистити себе від токсичної зливи, що оточує цей район. Під час своїх коротких екскурсій я також зіткнувся з іншим захисним заклинанням, схожим",
-  "twilightforest.book.trollcave.2": "на ті, які я зустрічав раніше. Заклинання має бути якимось чином пов’язане з токсичною бурею. Необхідно провести подальші дослідження...\n\n\u00A78[[Наступний запис]]\u00A70\n\nТака найвища магія погоди має бути результатом",
+  "twilightforest.book.trollcave.1": "§8[[Блокнот дослідника, пошкоджений кислотою]]§0\n\nЗдається, немає ніякого способу захистити себе від токсичної зливи, що оточує цей район. Під час своїх коротких екскурсій я також зіткнувся з іншим захисним заклинанням, схожим",
+  "twilightforest.book.trollcave.2": "на ті, які я зустрічав раніше. Заклинання має бути якимось чином пов’язане з токсичною бурею. Необхідно провести подальші дослідження...\n\n§8[[Наступний запис]]§0\n\nТака найвища магія погоди має бути результатом",
   "twilightforest.book.trollcave.3": "багатьох непереможених великих зол у цьому світі. Мої дослідження містять кілька підказок, що вказують на палюче болото, ліс, вкритий глибокою темрявою, і царство, покрите снігом.",
-
   "twilightforest.book.unknown": "Нотатки про незрозуміле",
-  "twilightforest.book.unknown.1": "\u00A78[[На цій книзі видно ознаки того, що її багато разів копіювали]]\u00A70\n\nЯ не можу пояснити поле, що оточує цю структуру, але магія дуже сильна. Якщо це прокляття схоже на інші, то відповідь на його знищення лежить в іншому місці. Можливо, є щось,",
+  "twilightforest.book.unknown.1": "§8[[На цій книзі видно ознаки того, що її багато разів копіювали]]§0\n\nЯ не можу пояснити поле, що оточує цю структуру, але магія дуже сильна. Якщо це прокляття схоже на інші, то відповідь на його знищення лежить в іншому місці. Можливо, є щось,",
   "twilightforest.book.unknown.2": "що я ще не зробив, або є якийсь монстр, якого мені ще належить перемогти. Мені доведеться повернутися назад. Я повернуся до цього місця пізніше, щоб побачити, чи щось змінилося.",
-
   "block.twilightforest.molten_fiery_fluid": "Розтоплений вогонь",
   "block.twilightforest.molten_knightmetal_fluid": "Розтоплений лицарський метал",
   "block.twilightforest.fiery_essence_fluid": "Есенція вогню",
   "fluid.twilightforest.molten_fiery": "Розтоплений вогонь",
   "fluid.twilightforest.molten_knightmetal": "Розтоплений лицарський метал",
   "fluid.twilightforest.fiery_essence": "Есенція вогню",
-
   "item.twilightforest.molten_fiery_bucket": "Есенція вогню у відрі",
   "item.twilightforest.molten_knightmetal_bucket": "Розтоплений лицарський метал у відрі",
   "item.twilightforest.fiery_essence_bucket": "Розтоплений вогонь у відрі",
-
   "material.twilightforest.nagascale": "Луска наги",
   "material.twilightforest.steeleaf": "Сталевий лист",
   "material.twilightforest.fiery": "Вогонь",
   "material.twilightforest.knightmetal": "Лицарський метал",
   "material.twilightforest.raven_feather": "Перо ворона",
-
   "modifier.twilightforest.precipitate": "Прискорювання",
   "modifier.twilightforest.precipitate.flavor": "Останній план втечі.",
   "modifier.twilightforest.precipitate.description": "Чим менше у вас здоров'я, тим воно буде швидше!",
@@ -1584,12 +1479,9 @@
   "modifier.twilightforest.veiled": "Прихованість",
   "modifier.twilightforest.veiled.flavor": "Як привид!",
   "modifier.twilightforest.veiled.description": "Снаряд буде невидимий.",
-
   "desc.immersiveengineering.info.shader.rarity.twilight": "Сутінки",
-
   "item.twilightforest.shader": "Шейдер сутінок: %s",
   "item.twilightforest.shader_bag": "Сутінковий %s шейдерний мішок",
-
   "item.twilightforest.shader.name.twilight": "Сутінки",
   "item.twilightforest.shader.name.firefly": "Світлячок",
   "item.twilightforest.shader.name.questing_ram": "Квестовий баран",
@@ -1614,11 +1506,9 @@
   "item.twilightforest.shader.name.snow_queen": "Сніжна королева",
   "item.twilightforest.shader.name.cube_of_annihilation": "Куб знищення",
   "item.twilightforest.shader.name.final_castle": "Фінальний замок",
-
   "twilightforest.gui.optifine.title": "ПОПЕРЕДЖЕННЯ: ВИЯВЛЕНО OPTIFINE",
   "twilightforest.gui.optifine.message": "Перш ніж продовжити, будь ласка, зверніть увагу, що Optifine, як відомо, спричиняє збої, візуальні помилки багатокомпонентних об’єктів і багато інших проблем.\n\nПерш ніж повідомляти про помилку, будь ласка, спершу видаліть Optifine і перевірте ще раз, щоб переконатися, що помилка все ще присутня.\n\nПроблеми, пов’язані з Optifine, неможливо вирішити у модифікації Сутінкового лісу!\n\nЦе повідомлення можна відключити в конфігурації клієнта.",
   "twilightforest.gui.optifine.suggestions": "Натомість, ось добірка модів, які ми рекомендуємо використовувати.",
-
   "gui.crumble_horn_jei": "Ріг руйнування",
   "gui.transformation_jei": "Порошок перетворення",
   "gui.uncrafting_jei": "Розкрафтити"
