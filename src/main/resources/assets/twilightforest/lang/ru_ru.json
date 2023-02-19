@@ -78,8 +78,6 @@
   "commands.tffeature.nearest": "Ближайшии объект это %s",
   "commands.tffeature.center": "Цетр объекта: %s",
   "commands.tffeature.chunk": "Объект в чанке: %s",
-  "commands.tffeature.structure.inside": "Сейчас вы находитесь в строении",
-  "commands.tffeature.structure.outside": "Вы не в строении для этой опции",
   "commands.tffeature.structure.required": "Вы не в строении.",
   "commands.tffeature.structure.conquer.update": "Structure conquer flag was %s, меняется на %s",
   "gamerule.tfEnforcedProgression": "Прохождение Сумеречного Леса",
