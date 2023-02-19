@@ -89,8 +89,6 @@
   "commands.tffeature.nearest": "Das nächstgelegene Merkmal ist %s",
   "commands.tffeature.center": "Zentrum des Merkmals: %s",
   "commands.tffeature.chunk": "In Feature Chunk sind: %s",
-  "commands.tffeature.structure.inside": "Du bist in der Struktur für dieses Feature",
-  "commands.tffeature.structure.outside": "Du befindest dich nicht in der Struktur für dieses Merkmal",
   "commands.tffeature.structure.required": "Du bist nicht in einer Struktur",
   "commands.tffeature.structure.conquer.status": "Struktur erobern Flagge: %s",
   "commands.tffeature.structure.conquer.update": "Struktureroberungsflagge war %s, Änderung auf %s",
