@@ -80,8 +80,6 @@
   "commands.tffeature.nearest": "La structure la plus proche est %s",
   "commands.tffeature.center": "Centre de la fonctionnalité : %s",
   "commands.tffeature.chunk": "Être dans le chunk de la fonctionnalité : %s",
-  "commands.tffeature.structure.inside": "Vous êtes dans la structure de cette fonctionnalité",
-  "commands.tffeature.structure.outside": "Vous n'êtes pas dans la structure pour cette fonctionnalité",
   "commands.tffeature.structure.required": "Vous n'êtes pas dans une structure",
   "commands.tffeature.structure.conquer.status": "Drapeau de conquête de structure : %s",
   "commands.tffeature.structure.conquer.update": "Le drapeau de conquête de structure était %s, changé pour %s",
