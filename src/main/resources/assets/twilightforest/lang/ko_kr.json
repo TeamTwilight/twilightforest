@@ -87,8 +87,6 @@
   "commands.tffeature.nearest": "가장 가까운 특징은 %s입니다.",
   "commands.tffeature.center": "특징의 중심: %s",
   "commands.tffeature.chunk": "특징 청크: %s",
-  "commands.tffeature.structure.inside": "해당 특징의 구조물에 있습니다.",
-  "commands.tffeature.structure.outside": "해당 특징의 구조물에 없습니다.",
   "commands.tffeature.structure.required": "구조물에 없습니다.",
   "commands.tffeature.structure.conquer.status": "구조물 정복기: %s",
   "commands.tffeature.structure.conquer.update": "구조물 정복기가 %s이었고, %s로 변경되었습니다.",
