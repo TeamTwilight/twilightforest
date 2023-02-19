@@ -92,8 +92,6 @@
   "commands.tffeature.nearest": "Найближчий об'єкт це: %s",
   "commands.tffeature.center": "Центр об'єкта: %s",
   "commands.tffeature.chunk": "Об'єкт у чанку: %s",
-  "commands.tffeature.structure.inside": "Зараз ви знаходитесь в структурі",
-  "commands.tffeature.structure.outside": "Ви не знаходитесь в структурі для цієї функції",
   "commands.tffeature.structure.required": "Ви не знаходитесь в структурі",
   "commands.tffeature.structure.conquer.status": "Структура відмічена: %s",
   "commands.tffeature.structure.conquer.update": "Відмітка структури %s, змінена на %s",
