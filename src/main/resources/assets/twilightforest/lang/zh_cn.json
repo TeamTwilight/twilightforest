@@ -92,8 +92,6 @@
   "commands.tffeature.nearest": "距离当前位置最近的地标：%s",
   "commands.tffeature.center": "地标中心：%s",
   "commands.tffeature.chunk": "是否在地标区块中：%s",
-  "commands.tffeature.structure.inside": "你现在在该地标的结构中",
-  "commands.tffeature.structure.outside": "你现在不在该地标的结构中",
   "commands.tffeature.structure.required": "你现在不在某个结构中",
   "commands.tffeature.structure.conquer.status": "当前结构征服标记：%s",
   "commands.tffeature.structure.conquer.update": "当前结构征服标记现已从%s更改为%s",
