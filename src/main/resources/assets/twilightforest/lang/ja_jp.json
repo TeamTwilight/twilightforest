@@ -87,8 +87,6 @@
   "commands.tffeature.nearest": "一番近いダンジョンは%sです",
   "commands.tffeature.center": "ダンジョンの中心: %s",
   "commands.tffeature.chunk": "チャンクにいるか: %s",
-  "commands.tffeature.structure.inside": "あなたはそのダンジョンの構造物の中にいます",
-  "commands.tffeature.structure.outside": "あなたはそのダンジョンの構造物の中にいません",
   "commands.tffeature.structure.required": "あなたは構造物の中にいません",
   "commands.tffeature.structure.conquer.status": "構造物の攻略済みフラグ: %s",
   "commands.tffeature.structure.conquer.update": "構造物の攻略済みフラグを、%sから%sに変更しました",
