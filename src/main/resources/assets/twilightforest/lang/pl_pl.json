@@ -1,1 +1,6 @@
-{}
+{
+  "itemGroup.twilightforest.blocks": "Mroczny Las: Bloki",
+  "itemGroup.twilightforest.items": "Mroczny Las: Przedmioty",
+  "itemGroup.twilightforest.equipment": "Mroczny Las: Wyposażenie",
+  "advancement.twilightforest.root": "Las Zmierzchu"
+}
