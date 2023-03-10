@@ -149,6 +149,8 @@
   "death.attack.twilightforest.lostWords.item": "%1$s ficou sem palavras após ser morto por %2$s usando %3$s",
   "death.attack.twilightforest.lifedrain": "A vida de %1$s foi drenada por %2$s",
   "death.attack.twilightforest.lifedrain.item": "A vida de %1$s foi drenada por %2$s usando %3$s",
+  "stat.twilightforest.bugs_squished": "Insetos Esmagados",
+  "stat.twilightforest.skull_candles_made": "Velas de Crânio Feitas",
   "twilightforest.misc.wip1": "Use com cuidado.",
   "twilightforest.misc.nyi": "Este bloco tem efeitos que ainda não foram implementados.",
   "twilightforest.ui.magicmap.fail": "A Mágica falhou. Talvez ela não funcione aqui?",
