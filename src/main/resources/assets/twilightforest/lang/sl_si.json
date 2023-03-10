@@ -14,5 +14,16 @@
   "advancement.twilightforest.hill2.desc": "Premagaj %s v Srednjem Votlem Hribu.",
   "advancement.twilightforest.hill3": "Vidim naravnost skozi tebe",
   "advancement.twilightforest.hill3.desc": "Premagaj %s v Večjem Votlem Hribu.",
-  "advancement.twilightforest.quest_ram": "Popoln \"beee\""
+  "advancement.twilightforest.quest_ram": "Popoln \"beee\"",
+  "advancement.twilightforest.quest_ram.desc": "Daj %s tisto, kar mu manjka.",
+  "advancement.twilightforest.magic_map_focus": "Z ognjem pisano",
+  "advancement.twilightforest.magic_map_focus.desc": "Izdelaj %s s %s, %s, in %s.",
+  "advancement.twilightforest.magic_map": "Vidim lahko za vedno",
+  "advancement.twilightforest.magic_map.desc": "Izdelaj %s.",
+  "advancement.twilightforest.maze_map": "In zdaj, najdi izhod",
+  "advancement.twilightforest.maze_map.desc": "Izdelaj %s po tem, ko pridobiš fokus z labirinta.",
+  "advancement.twilightforest.ore_map": "Kako se to splača?",
+  "advancement.twilightforest.ore_map.desc": "Izdelaj %s.",
+  "advancement.twilightforest.twilight_hunter": "Tišina gozda",
+  "advancement.twilightforest.twilight_hunter.desc": "Ulovi nekaj lokalnih divjih živali."
 }
