@@ -2,5 +2,12 @@
   "itemGroup.twilightforest.blocks": "Mroczny Las: Bloki",
   "itemGroup.twilightforest.items": "Mroczny Las: Przedmioty",
   "itemGroup.twilightforest.equipment": "Mroczny Las: Wyposażenie",
-  "advancement.twilightforest.root": "Las Zmierzchu"
+  "advancement.twilightforest.root": "Las Zmierzchu",
+  "advancement.twilightforest.kill_cicada": "Cśśś",
+  "advancement.twilightforest.kill_cicada.desc": "Zabij cykadę",
+  "advancement.twilightforest.hill1": "Buty są moje!",
+  "advancement.twilightforest.hill1.desc": "Pokonaj %s w Małym Wydrążonym Pagórku.",
+  "advancement.twilightforest.hill2": "Co to był za dźwięk?",
+  "advancement.twilightforest.hill2.desc": "Pokonaj %s w Średnim Wydrążonym Pagórku.",
+  "advancement.twilightforest.hill3.desc": "Pokonaj %s w Dużym Wydrążonym Pagórku."
 }
