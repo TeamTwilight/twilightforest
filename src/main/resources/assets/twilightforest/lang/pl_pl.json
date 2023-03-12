@@ -26,5 +26,9 @@
   "advancement.twilightforest.lich_scepters": "Przez Połączenie Naszych Mocy!",
   "advancement.twilightforest.lich_scepters.desc": "Zdobądź wszystkie cztery berła mocy.",
   "advancement.twilightforest.full_mettle_alchemist.desc": "Wypij cztery dawki Krzywdy II z flaszki na eliksiry w ciągu 8 sekund i przeżyj.",
-  "advancement.twilightforest.progress_labyrinth": "Potężny Stroganoff"
+  "advancement.twilightforest.progress_labyrinth": "Potężny Stroganoff",
+  "advancement.twilightforest.progress_labyrinth.desc": "Potrawka z mięsa i grzybów ogrzewa cię wystarczająco, abyś poczuł się wystarczająco zaaklimatyzowany, aby móc wędrować po Ognistym Bagnie.",
+  "advancement.twilightforest.kill_hydra": "Poskramiacz Hydry",
+  "advancement.twilightforest.progress_ur_ghast": "Ogniste Łzy",
+  "advancement.twilightforest.experiment_115": "Tajemnicze mięso?"
 }
