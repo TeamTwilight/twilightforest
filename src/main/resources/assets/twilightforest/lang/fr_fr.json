@@ -1,6 +1,12 @@
 {
+  "itemGroup.twilightforest.blocks": "Forêt du crépuscule : Blocs",
+  "itemGroup.twilightforest.items": "Forêt du crépuscule : Objets",
+  "itemGroup.twilightforest.equipment": "Forêt du crépuscule : Équipement",
+  "advancement.twilightforest.root": "Forêt du Crépuscule",
   "advancement.twilightforest.root.desc": "Entrer dans le bois magique et mystérieux qu'est la Twilight Forest.",
   "advancement.twilightforest.hedge.desc": "Vaincre une araignée dans un %s.",
+  "advancement.twilightforest.kill_cicada": "Arrêter",
+  "advancement.twilightforest.kill_cicada.desc": "Tuer une cigale",
   "advancement.twilightforest.hill1": "Ces bottes sont les miennes !",
   "advancement.twilightforest.hill1.desc": "Vaincre un %s dans une petite %s.",
   "advancement.twilightforest.hill2": "Quel était ce bruit ?",
