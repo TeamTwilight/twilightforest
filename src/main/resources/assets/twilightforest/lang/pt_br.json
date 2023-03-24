@@ -1474,7 +1474,7 @@
   "twilightforest.config.casket_uuid_locking": "Bloqueio UUID do caixão de lembranças",
   "twilightforest.config.casket_uuid_locking.tooltip": "Se true, os caixões de lembrança que são gerados quando um jogador morre não serão acessíveis por outros jogadores. Use isso se você não quiser que as pessoas tirem dos caixões de morte de outras pessoas. NOTA: os operadores do servidor ainda poderão abrir caixões trancados.",
   "twilightforest.config.disable_skull_candles": "Desativar Criação de Velas em Caveiras",
-  "twilightforest.config.disable_skull_candles.tooltip": "Se verdadeiro, desativa a capacidade de fazer Velas de Caveira clicando com o botão direito em uma caveira de Vanilla com uma vela. Ative isso se estiver tendo problemas de conflito de mod por algum motivo.",
+  "twilightforest.config.disable_skull_candles.tooltip": "Se true, desativa a capacidade de fazer Velas de Caveira clicando com o botão direito em uma caveira de Vanilla com uma vela. Ative isso se estiver tendo problemas de conflito de mod por algum motivo.",
   "twilightforest.book.author": "um explorador esquecido",
   "twilightforest.book.lichtower": "Notas de uma Torre Pontuda",
   "twilightforest.book.lichtower.1": "§8[[Caderno de um explorador, roído por monstros]]§0\n\nComecei a examinar a estranha aura que envolve esta torre. Os tijolos da torre são protegidos por uma maldição, mais forte do que qualquer outra que eu já tenha visto. A magia da maldição",
