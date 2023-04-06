@@ -1331,8 +1331,6 @@
   "death.attack.twilightforest.knightmetal.player": "%1$s  був заколотий до смерті лицарським металевим блоком під час втечі від %2$s",
   "death.attack.twilightforest.fiery": "%1$s натрапив на вогняний блок",
   "death.attack.twilightforest.fiery.player": "%1$s натрапив на вогняний блок під час втечі від %2$s",
-  "death.attack.twilightforest.thrown_block": "%1$s був розчавлений кинутим блоком",
-  "death.attack.twilightforest.thrown_block.player": "%1$s був розчавлений кинутим блоком під час втечі від %2$s",
   "death.attack.twilightforest.expired": "Життя %1$s закінчилося",
   "death.attack.twilightforest.expired.player": "Життя %1$s закінчилося під час втечі від %2$s",
   "death.attack.twilightforest.axing": "%1$s був порубаний на шматки %2$s",
