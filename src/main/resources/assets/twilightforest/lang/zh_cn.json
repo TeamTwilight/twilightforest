@@ -1297,8 +1297,6 @@
   "death.attack.twilightforest.knightmetal.player": "%1$s在试图逃离%2$s时被骑士金属块刺穿了",
   "death.attack.twilightforest.fiery": "%1$s踩到了炽铁块上",
   "death.attack.twilightforest.fiery.player": "%1$s在试图逃离%2$s时踩到了炽铁块上",
-  "death.attack.twilightforest.thrown_block": "%1$s被掷出的方块压扁了",
-  "death.attack.twilightforest.thrown_block.player": "%1$s在试图逃离%2$s时被掷出的方块压扁了",
   "death.attack.twilightforest.expired": "%1$s的生命消逝了",
   "death.attack.twilightforest.expired.player": "%1$s的生命消逝了",
   "death.attack.twilightforest.axing": "%1$s被%2$s剁碎了",
