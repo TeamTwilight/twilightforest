@@ -1331,6 +1331,8 @@
   "death.attack.twilightforest.knightmetal.player": "%1$s foi perfurado por um bloco de metal de cavaleiro enquanto escapava de %2$s",
   "death.attack.twilightforest.fiery": "%1$s caminhou em um bloco ardente",
   "death.attack.twilightforest.fiery.player": "%1$s caminhou em um bloco ardente enquanto escapava %2$s",
+  "death.attack.twilightforest.thrownBlock": "%1$s foi esmagado por um bloco lançado",
+  "death.attack.twilightforest.thrownBlock.player": "%1$s foi esmagado por um bloco lançado enquanto escapava de %2$s",
   "death.attack.twilightforest.expired": "A vida de %1$s expirou",
   "death.attack.twilightforest.expired.player": "A vida de %1$s expirou",
   "death.attack.twilightforest.axing": "%1$s foi cortado por %2$s",
