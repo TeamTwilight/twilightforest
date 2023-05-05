@@ -66,6 +66,8 @@
   "advancement.twilightforest.progress_thorns": "Przez Ciernie [NYI]",
   "advancement.twilightforest.progress_thorns.desc": "Przedostań się przez Ciernie i otwórz drzwi zamku.",
   "advancement.twilightforest.twilight_dining": "Ucztujmy Przy Wiecznym Zachodzie",
+  "advancement.twilightforest.twilight_dining.desc": "Zjedz KAŻDY typ jedzenia z Lasu Zmierzchu.",
+  "advancement.twilightforest.arborist": "Maniakalny Dendrolog",
   "commands.tffeature.structure.conquer.status": "Flaga podbicia struktur: %s",
   "commands.tffeature.structure.conquer.update": "Flaga podbicia struktury była %s, zmieniono na %s",
   "commands.tffeature.structure.spawn_list": "Lista spawnów dla tego obszaru to:",
