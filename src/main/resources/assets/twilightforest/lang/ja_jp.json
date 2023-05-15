@@ -1340,6 +1340,7 @@
   "death.attack.twilightforest.snowballFight.item": "%1$sは%3$sを使う%2$sとの雪合戦に負けた",
   "death.attack.twilightforest.yeeted": "%1$sは最後に%2$sに投げ捨てられた",
   "death.attack.twilightforest.yeeted.item": "%1$sは最後に%3$sを持つ%2$sに投げ捨てられた",
+  "stat.twilightforest.bugs_squished": "虫が押しつぶされる :(",
   "twilightforest.misc.wip0": "このブロックは制作中であり、世界を傷つけたり意図しない影響を与えたりするバグが存在する可能性があります。",
   "twilightforest.misc.wip1": "慎重に使用してください。",
   "twilightforest.misc.nyi": "このブロックには、まだ実装されていないエフェクトがあります。",
