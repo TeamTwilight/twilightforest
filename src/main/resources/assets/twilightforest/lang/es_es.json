@@ -1,1 +1,8 @@
-{}
+{
+  "itemGroup.twilightforest.blocks": "Bosque crepuscular: Bloques",
+  "itemGroup.twilightforest.items": "Bosque crepuscular: Objetos",
+  "itemGroup.twilightforest.equipment": "Bosque crepuscular: Equipamiento",
+  "advancement.twilightforest.root": "Bosque crepuscular",
+  "advancement.twilightforest.root.desc": "Adéntrate en el misterioso bosque mágico: el bosque crepuscular.",
+  "advancement.twilightforest.hedge": "Destructor de insectos"
+}
