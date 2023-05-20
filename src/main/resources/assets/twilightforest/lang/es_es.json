@@ -71,5 +71,9 @@
   "advancement.twilightforest.troll": "Trolleando un poco",
   "advancement.twilightforest.troll.desc": "Encuentra y mata a un %s.",
   "advancement.twilightforest.beanstalk": "Jack y las habichuelas mágicas",
-  "advancement.twilightforest.beanstalk.desc": "Obtén algunas %s en las cuevas del troll y úsalas en la tierra luminosa debajo de las nubes."
+  "advancement.twilightforest.beanstalk.desc": "Obtén algunas %s en las cuevas del troll y úsalas en la tierra luminosa debajo de las nubes.",
+  "advancement.twilightforest.giants": "Estoy en las nubes",
+  "advancement.twilightforest.giants.desc": "Mata a un %s en las nubes, recupera un %s, y regresa a las cuevas del troll.",
+  "advancement.twilightforest.progress_troll": "Deseo más quemaduras",
+  "advancement.twilightforest.progress_troll.desc": "Encuentra el %s en las cuevas del troll, y podrás quemar las barreras de espinas."
 }
