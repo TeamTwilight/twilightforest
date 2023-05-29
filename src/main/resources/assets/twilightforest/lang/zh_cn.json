@@ -1,4 +1,8 @@
 {
+  "itemGroup.twilightforest.blocks": "暮色森林：方块",
+  "itemGroup.twilightforest.items": "暮色森林：物品",
+  "itemGroup.twilightforest.equipment": "暮色森林：装备",
+  "advancement.twilightforest.root": "暮色森林",
   "advancement.twilightforest.root.desc": "前往那神秘的魔法林地——暮色森林！",
   "advancement.twilightforest.hedge": "碾碎爬虫",
   "advancement.twilightforest.hedge.desc": "在树篱迷宫中击杀一只蜘蛛",
@@ -697,6 +701,7 @@
   "item.twilightforest.moon_dial.phase_7": "盈凸月",
   "item.twilightforest.moon_dial.phase_unknown": "月相不确定",
   "item.twilightforest.moon_dial.phase_unknown_fools": "404错误，月亮未找到",
+  "item.twilightforest.twilight_oak_boat": "暮色橡木船",
   "item.twilightforest.music_disc_radiance": "音乐唱片",
   "item.twilightforest.music_disc_steps": "音乐唱片",
   "item.twilightforest.music_disc_superstitious": "音乐唱片",
