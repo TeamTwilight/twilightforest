@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
-	private static final MutableComponent TOOLTIP = Component.translatable("block.knightmetal.tooltip").withStyle(ChatFormatting.GRAY);
+	private static final MutableComponent TOOLTIP = Component.translatable("block.twilightforest.knightmetal_block.desc").withStyle(ChatFormatting.GRAY);
 
 	private static final VoxelShape SHAPE = Shapes.create(new AABB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F));
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;

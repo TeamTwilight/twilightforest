@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:troll",
+  "parent": "twilightforest:progress_merge",
   "criteria": {
     "beans": {
       "conditions": {

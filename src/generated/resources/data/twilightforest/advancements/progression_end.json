@@ -1,0 +1,63 @@
+{
+  "parent": "twilightforest:progress_troll",
+  "criteria": {
+    "plateau": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "twilightforest:final_plateau"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "previous_progression": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:progress_troll": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.twilightforest.progression_end.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:structure_void"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.progression_end"
+    }
+  },
+  "requirements": [
+    [
+      "previous_progression"
+    ],
+    [
+      "plateau"
+    ]
+  ]
+}

@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
@@ -49,6 +50,7 @@ public interface StructureHints {
         addTranslatedPages(bookPages, TwilightForestMod.ID + ".book." + key, pageCount);
 
         book.addTagElement("pages", bookPages);
+        book.addTagElement("generation", IntTag.valueOf(3));
         book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
         book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book." + key));
     }

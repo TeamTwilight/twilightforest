@@ -43,7 +43,7 @@ public class YetiRampageGoal extends Goal {
 	public void start() {
 		this.currentDuration = this.tantrumDuration;
 		this.yeti.setRampaging(true);
-		this.yeti.playSound(TFSounds.ALPHAYETI_ROAR.get(), 4F, 0.5F + yeti.getRandom().nextFloat() * 0.5F);
+		this.yeti.playSound(TFSounds.ALPHA_YETI_ROAR.get(), 4F, 0.5F + yeti.getRandom().nextFloat() * 0.5F);
 		this.yeti.gameEvent(GameEvent.ENTITY_ROAR);
 	}
 
@@ -92,7 +92,7 @@ public class YetiRampageGoal extends Goal {
 			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.yeti.getLevel(), this.yeti);
 			Vec3 vec = new Vec3(0.5F + this.yeti.getRandom().nextFloat() * 0.5F, 0.5F + this.yeti.getRandom().nextFloat() * 0.3F, 0).yRot(this.yeti.getRandom().nextFloat() * 360F);
 			ice.shoot(vec.x(), vec.y(), vec.z(), 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
-			this.yeti.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.yeti.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.yeti.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.yeti.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.yeti.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.yeti.getLevel().addFreshEntity(ice);
 		}

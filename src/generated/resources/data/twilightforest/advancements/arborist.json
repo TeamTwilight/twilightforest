@@ -253,12 +253,60 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "dark_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_banister"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "dark_button": {
       "conditions": {
         "items": [
           {
             "items": [
               "twilightforest:dark_button"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_chest_boat"
             ]
           }
         ]
@@ -349,6 +397,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "dark_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_sign"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "dark_slab": {
       "conditions": {
         "items": [
@@ -397,72 +457,12 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "darkwood_banister": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_banister"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "darkwood_boat": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_boat"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "darkwood_chest": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_chest"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "darkwood_chest_boat": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_chest_boat"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "darkwood_sapling": {
       "conditions": {
         "items": [
           {
             "items": [
               "twilightforest:darkwood_sapling"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "darkwood_sign": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_sign"
             ]
           }
         ]
@@ -2542,19 +2542,19 @@
       "dark_trapdoor"
     ],
     [
-      "darkwood_sign"
+      "dark_sign"
     ],
     [
-      "darkwood_chest"
+      "dark_chest"
     ],
     [
-      "darkwood_banister"
+      "dark_banister"
     ],
     [
-      "darkwood_boat"
+      "dark_boat"
     ],
     [
-      "darkwood_chest_boat"
+      "dark_chest_boat"
     ],
     [
       "time_log"

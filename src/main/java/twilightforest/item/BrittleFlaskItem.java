@@ -195,7 +195,7 @@ public class BrittleFlaskItem extends Item {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
 		if (stack.getTag() != null) {
-			tooltip.add(Component.translatable("item.twilightforest.flask_doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("item.twilightforest.flask.doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
 			if (stack.getTag().contains("Refillable") && !stack.getTag().getBoolean("Refillable"))
 				tooltip.add(Component.translatable("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
 		}

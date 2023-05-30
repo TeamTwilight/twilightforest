@@ -1,4 +1,4 @@
-// 1.19.4	2023-05-10T17:42:41.4765487	Twilight Forest Item Tags
+// 1.19.4	2023-05-24T22:09:24.7608486	Twilight Forest Item Tags
 4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/items/plants.json
 932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/items/plant_foods.json
 3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/items/charm.json
@@ -7,7 +7,7 @@
 03872ed5aa0d028cd3b99a2831294e3a644fe8cc data/forge/tags/items/armors/chestplates.json
 026e98f4ffeff627fe9fe8cfc5cb65d8cb836366 data/forge/tags/items/armors/helmets.json
 655cef31e84248dab842522100e9d348cc681c2d data/forge/tags/items/armors/leggings.json
-ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/items/chests/wooden.json
+3d56c0ea016f639fad4fae4272d928867251da04 data/forge/tags/items/chests/wooden.json
 359528c25cb6b4d29dc01cbafbeb8f161c0dac0f data/forge/tags/items/feathers.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/items/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/items/fences/wooden.json
@@ -35,8 +35,8 @@ e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/forge/tags/items/storage_blocks/kn
 2973abf7fe5598a763a9738ca24c06f80b1eb5b1 data/forge/tags/items/tools/bows.json
 1b205b8add451aa431d3db9121828f233c2cbad2 data/forge/tags/items/tools/shields.json
 bbc3c7d372a10410465d7fb27cb47b47e553f7c1 data/minecraft/tags/items/axes.json
-8e9f31da301ccc99b43ea3375837252b3c23aa5c data/minecraft/tags/items/boats.json
-27e06c12717248b03522d992502582b32b433c6f data/minecraft/tags/items/chest_boats.json
+932bd2980da6d582ac5ba3cb6d86e51597a713b4 data/minecraft/tags/items/boats.json
+dc2f26c3fd06fccd7385a8d16527701a68efb05a data/minecraft/tags/items/chest_boats.json
 387c3d6fc3d958d7d90aea6c542e7a1a46ed16d9 data/minecraft/tags/items/cluster_max_harvestables.json
 e66649b3248e051912913e282cb83d3b5006cde0 data/minecraft/tags/items/freeze_immune_wearables.json
 b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/minecraft/tags/items/hoes.json
@@ -49,7 +49,7 @@ ad2bcf700afb5778088104db20e72dfd8488ee10 data/minecraft/tags/items/music_discs.j
 9358df5f5420b32a08f45ed7924867342cd14b47 data/minecraft/tags/items/planks.json
 c1c4b1bbf5dca762f8c2dc1b6021bf08b541ac8f data/minecraft/tags/items/saplings.json
 c962432d898202b279bf401da90ab10b601de742 data/minecraft/tags/items/shovels.json
-ee7ca5d3ab7caf4fe05b7470e51e9f3fe2a1e491 data/minecraft/tags/items/signs.json
+0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/items/signs.json
 bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/items/slabs.json
 4304b5a72638ce0626ae45be178a5669cea32d38 data/minecraft/tags/items/small_flowers.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/items/stairs.json

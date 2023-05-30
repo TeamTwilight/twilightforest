@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +20,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ArcticFurBlock extends Block {
+	private static final MutableComponent TOOLTIP = Component.translatable("block.twilightforest.arctic_fur_block.desc").withStyle(ChatFormatting.GRAY);
+
 	public ArcticFurBlock(Properties properties) {
 		super(properties);
 	}
@@ -36,6 +39,6 @@ public class ArcticFurBlock extends Block {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(Component.translatable("block.arctic.tooltip").withStyle(ChatFormatting.GRAY));
+		tooltip.add(TOOLTIP);
 	}
 }

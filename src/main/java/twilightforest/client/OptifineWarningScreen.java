@@ -16,12 +16,12 @@ public class OptifineWarningScreen extends Screen {
 	private int ticksUntilEnable = 20 * 10;
 	private MultiLineLabel message = MultiLineLabel.EMPTY;
 	private MultiLineLabel suggestions = MultiLineLabel.EMPTY;
-	private static final Component text = Component.translatable(TwilightForestMod.ID + ".gui.optifine.message");
-	private static final MutableComponent url = Component.translatable(TwilightForestMod.ID + ".gui.optifine.suggestions").withStyle(style -> style.withColor(ChatFormatting.GREEN).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/NordicGamerFE/usefulmods")));
+	private static final Component text = Component.translatable("gui.twilightforest.optifine.message");
+	private static final MutableComponent url = Component.translatable("gui.twilightforest.optifine.suggestions").withStyle(style -> style.withColor(ChatFormatting.GREEN).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/NordicGamerFE/usefulmods")));
 	private Button exitButton;
 
 	protected OptifineWarningScreen(Screen screen) {
-		super(Component.translatable(TwilightForestMod.ID + ".gui.optifine.title"));
+		super(Component.translatable("gui.twilightforest.optifine.title"));
 		this.lastScreen = screen;
 	}
 

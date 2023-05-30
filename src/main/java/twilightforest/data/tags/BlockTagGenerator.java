@@ -179,7 +179,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				.add(TFBlocks.TIME_DOOR.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.MINING_DOOR.get(), TFBlocks.SORTING_DOOR.get());
 
 		tag(Tags.Blocks.CHESTS_WOODEN)
-				.add(TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(), TFBlocks.DARKWOOD_CHEST.get())
+				.add(TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(), TFBlocks.DARK_CHEST.get())
 				.add(TFBlocks.TIME_CHEST.get(), TFBlocks.TRANSFORMATION_CHEST.get(), TFBlocks.MINING_CHEST.get(), TFBlocks.SORTING_CHEST.get());
 
 		tag(BlockTags.FLOWER_POTS)
@@ -201,7 +201,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.TWILIGHT_OAK_BANISTER.get(),
 				TFBlocks.CANOPY_BANISTER.get(),
 				TFBlocks.MANGROVE_BANISTER.get(),
-				TFBlocks.DARKWOOD_BANISTER.get(),
+				TFBlocks.DARK_BANISTER.get(),
 				TFBlocks.TIME_BANISTER.get(),
 				TFBlocks.TRANSFORMATION_BANISTER.get(),
 				TFBlocks.MINING_BANISTER.get(),
@@ -276,12 +276,12 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		tag(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER.get(), TFBlocks.ROOT_STRAND.get()).addTag(HOLLOW_LOGS_CLIMBABLE);
 
 		tag(BlockTags.STANDING_SIGNS).add(TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.CANOPY_SIGN.get(),
-				TFBlocks.MANGROVE_SIGN.get(), TFBlocks.DARKWOOD_SIGN.get(),
+				TFBlocks.MANGROVE_SIGN.get(), TFBlocks.DARK_SIGN.get(),
 				TFBlocks.TIME_SIGN.get(), TFBlocks.TRANSFORMATION_SIGN.get(),
 				TFBlocks.MINING_SIGN.get(), TFBlocks.SORTING_SIGN.get());
 
 		tag(BlockTags.WALL_SIGNS).add(TFBlocks.TWILIGHT_WALL_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get(),
-				TFBlocks.MANGROVE_WALL_SIGN.get(), TFBlocks.DARKWOOD_WALL_SIGN.get(),
+				TFBlocks.MANGROVE_WALL_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get(),
 				TFBlocks.TIME_WALL_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(),
 				TFBlocks.MINING_WALL_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get());
 
@@ -537,7 +537,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.TWILIGHT_OAK_CHEST.get(),
 				TFBlocks.CANOPY_CHEST.get(),
 				TFBlocks.MANGROVE_CHEST.get(),
-				TFBlocks.DARKWOOD_CHEST.get(),
+				TFBlocks.DARK_CHEST.get(),
 				TFBlocks.TIME_CHEST.get(),
 				TFBlocks.TRANSFORMATION_CHEST.get(),
 				TFBlocks.MINING_CHEST.get(),

@@ -85,25 +85,25 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.GHASTGUARD_AMBIENT.get();
+		return TFSounds.CARMINITE_GHASTGUARD_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.GHASTGUARD_HURT.get();
+		return TFSounds.CARMINITE_GHASTGUARD_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.GHASTGUARD_DEATH.get();
+		return TFSounds.CARMINITE_GHASTGUARD_DEATH.get();
 	}
 
 	public SoundEvent getFireSound() {
-		return TFSounds.GHASTGUARD_SHOOT.get();
+		return TFSounds.CARMINITE_GHASTGUARD_SHOOT.get();
 	}
 
 	public SoundEvent getWarnSound() {
-		return TFSounds.GHASTGUARD_WARN.get();
+		return TFSounds.CARMINITE_GHASTGUARD_WARN.get();
 	}
 
 	@Override

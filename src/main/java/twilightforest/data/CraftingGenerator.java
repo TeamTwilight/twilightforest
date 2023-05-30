@@ -575,7 +575,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		trapdoorBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_TRAPDOOR, TFBlocks.TWILIGHT_OAK_PLANKS);
 
 		signBlock(consumer, "canopy_sign", TFBlocks.CANOPY_SIGN, TFBlocks.CANOPY_PLANKS);
-		signBlock(consumer, "darkwood_sign", TFBlocks.DARKWOOD_SIGN, TFBlocks.DARK_PLANKS);
+		signBlock(consumer, "darkwood_sign", TFBlocks.DARK_SIGN, TFBlocks.DARK_PLANKS);
 		signBlock(consumer, "mangrove_sign", TFBlocks.MANGROVE_SIGN, TFBlocks.MANGROVE_PLANKS);
 		signBlock(consumer, "mining_sign", TFBlocks.MINING_SIGN, TFBlocks.MINING_PLANKS);
 		signBlock(consumer, "sorting_sign", TFBlocks.SORTING_SIGN, TFBlocks.SORTING_PLANKS);
@@ -584,7 +584,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		signBlock(consumer, "twilight_oak_sign", TFBlocks.TWILIGHT_OAK_SIGN, TFBlocks.TWILIGHT_OAK_PLANKS);
 
 		banisterBlock(consumer, "canopy", TFBlocks.CANOPY_BANISTER, TFBlocks.CANOPY_SLAB);
-		banisterBlock(consumer, "darkwood", TFBlocks.DARKWOOD_BANISTER, TFBlocks.DARK_SLAB);
+		banisterBlock(consumer, "darkwood", TFBlocks.DARK_BANISTER, TFBlocks.DARK_SLAB);
 		banisterBlock(consumer, "mangrove", TFBlocks.MANGROVE_BANISTER, TFBlocks.MANGROVE_SLAB);
 		banisterBlock(consumer, "mining", TFBlocks.MINING_BANISTER, TFBlocks.MINING_SLAB);
 		banisterBlock(consumer, "sorting", TFBlocks.SORTING_BANISTER, TFBlocks.SORTING_SLAB);
@@ -605,7 +605,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		chestBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS);
 		chestBlock(consumer, "canopy", TFBlocks.CANOPY_CHEST, TFBlocks.CANOPY_PLANKS);
 		chestBlock(consumer, "mangrove", TFBlocks.MANGROVE_CHEST, TFBlocks.MANGROVE_PLANKS);
-		chestBlock(consumer, "darkwood", TFBlocks.DARKWOOD_CHEST, TFBlocks.DARK_PLANKS);
+		chestBlock(consumer, "darkwood", TFBlocks.DARK_CHEST, TFBlocks.DARK_PLANKS);
 		chestBlock(consumer, "time", TFBlocks.TIME_CHEST, TFBlocks.TIME_PLANKS);
 		chestBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_CHEST, TFBlocks.TRANSFORMATION_PLANKS);
 		chestBlock(consumer, "mining", TFBlocks.MINING_CHEST, TFBlocks.MINING_PLANKS);

@@ -27,6 +27,6 @@ public class MinotaurAxeItem extends AxeItem {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, level, tooltip, flags);
-		tooltip.add(Component.translatable("item.twilightforest.minotaur_axe.tooltip").withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("item.twilightforest.minotaur_axe.desc").withStyle(ChatFormatting.GRAY));
 	}
 }

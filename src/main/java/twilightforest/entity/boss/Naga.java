@@ -553,6 +553,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		super.die(cause);
 		// mark the courtyard as defeated
 		if (this.getLevel() instanceof ServerLevel serverLevel) {
+			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.NAGA_COURTYARD, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);

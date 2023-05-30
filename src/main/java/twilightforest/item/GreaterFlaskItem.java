@@ -43,6 +43,6 @@ public class GreaterFlaskItem extends BrittleFlaskItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
 		if (stack.getTag() != null)
-			tooltip.add(Component.translatable("item.twilightforest.flask_doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("item.twilightforest.flask.doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
 	}
 }

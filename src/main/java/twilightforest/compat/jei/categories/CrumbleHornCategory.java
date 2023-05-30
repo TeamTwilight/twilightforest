@@ -37,7 +37,7 @@ public class CrumbleHornCategory implements IRecipeCategory<CrumbleRecipe> {
 		this.background = helper.createDrawable(location, 0, 0, WIDTH, HEIGHT);
 		this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, TFItems.CRUMBLE_HORN.get().getDefaultInstance());
 		this.crumbleSlot = helper.createDrawable(location, 116, 0, 26, 26);
-		this.localizedName = Component.translatable("gui.crumble_horn_jei");
+		this.localizedName = Component.translatable("gui.twilightforest.crumble_horn_jei");
 	}
 
 	@Override

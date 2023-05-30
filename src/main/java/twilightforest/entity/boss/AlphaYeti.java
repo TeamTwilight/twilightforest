@@ -76,21 +76,21 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.0D, 40, 40, 40.0F) {
 			@Override
 			public boolean canUse() {
-				return getRandom().nextInt(50) > 0 && getTarget() != null && distanceToSqr(getTarget()) >= 16D && super.canUse(); // Give us a chance to move to the next AI
+				return AlphaYeti.this.getRandom().nextInt(50) > 0 && AlphaYeti.this.getTarget() != null && AlphaYeti.this.distanceToSqr(AlphaYeti.this.getTarget()) >= 16D && super.canUse(); // Give us a chance to move to the next AI
 			}
 		});
 		this.goalSelector.addGoal(4, new ThrowRiderGoal(this, 1.0D, false) {
 			@Override
 			protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
 				super.checkAndPerformAttack(victim, p_190102_2_);
-				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_GRAB.get(), 4F, 0.75F + getRandom().nextFloat() * 0.25F);
+				if (!AlphaYeti.this.getPassengers().isEmpty())
+					AlphaYeti.this.playSound(TFSounds.ALPHA_YETI_GRAB.get(), 4F, 0.75F + AlphaYeti.this.getRandom().nextFloat() * 0.25F);
 			}
 
 			@Override
 			public void stop() {
-				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_THROW.get(), 4F, 0.75F + getRandom().nextFloat() * 0.25F);
+				if (!AlphaYeti.this.getPassengers().isEmpty())
+					AlphaYeti.this.playSound(TFSounds.ALPHA_YETI_THROW.get(), 4F, 0.75F + AlphaYeti.this.getRandom().nextFloat() * 0.25F);
 				super.stop();
 			}
 		});
@@ -172,7 +172,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public void setTarget(@Nullable LivingEntity entity) {
 		if (entity != null && entity != this.getTarget())
-			this.playSound(TFSounds.ALPHAYETI_ALERT.get(), 4F, 0.5F + this.getRandom().nextFloat() * 0.5F);
+			this.playSound(TFSounds.ALPHA_YETI_ALERT.get(), 4F, 0.5F + this.getRandom().nextFloat() * 0.5F);
 		super.setTarget(entity);
 	}
 
@@ -204,27 +204,27 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ALPHAYETI_GROWL.get();
+		return TFSounds.ALPHA_YETI_GROWL.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ALPHAYETI_HURT.get();
+		return TFSounds.ALPHA_YETI_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ALPHAYETI_DEATH.get();
+		return TFSounds.ALPHA_YETI_DEATH.get();
 	}
 
 	@Override
 	public float getVoicePitch() {
-		return 0.5F + getRandom().nextFloat() * 0.5F;
+		return 0.5F + this.getRandom().nextFloat() * 0.5F;
 	}
 
 	@Override
 	protected float getSoundVolume() {
-		return 4F;
+		return 4.0F;
 	}
 
 	@Override
@@ -314,7 +314,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
 			ice.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 14 - this.getLevel().getDifficulty().getId() * 4);
 
-			this.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.getLevel().addFreshEntity(ice);
 		}
@@ -362,7 +362,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
 
 		if (!this.getLevel().isClientSide() && isRampaging()) {
-			this.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.hitNearbyEntities();
 		}
 
@@ -382,6 +382,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		super.die(cause);
 		// mark the lair as defeated
 		if (!this.getLevel().isClientSide()) {
+			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.YETI_CAVE, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);

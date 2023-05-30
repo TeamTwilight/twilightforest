@@ -61,7 +61,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (!this.doesCoreFunction()) {
 			state.setValue(ACTIVE, false);
-			player.displayClientMessage(Component.translatable("block.twilightforest.core.disabled", this.getName()).withStyle(ChatFormatting.RED), true);
+			player.displayClientMessage(Component.translatable("misc.twilightforest.core_disabled", this.getName()).withStyle(ChatFormatting.RED), true);
 			return InteractionResult.SUCCESS;
 		}
 

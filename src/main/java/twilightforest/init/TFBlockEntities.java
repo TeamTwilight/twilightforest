@@ -72,7 +72,7 @@ public class TFBlockEntities {
 					TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get(),
 					TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get(),
 					TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_WALL_SIGN.get(),
-					TFBlocks.DARKWOOD_SIGN.get(), TFBlocks.DARKWOOD_WALL_SIGN.get(),
+					TFBlocks.DARK_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get(),
 					TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_WALL_SIGN.get(),
 					TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(),
 					TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(),
@@ -81,7 +81,7 @@ public class TFBlockEntities {
 	public static final RegistryObject<BlockEntityType<TwilightChestEntity>> TF_CHEST = BLOCK_ENTITIES.register("tf_chest", () ->
 			BlockEntityType.Builder.of(TwilightChestEntity::new,
 					TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(),
-					TFBlocks.DARKWOOD_CHEST.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TRANSFORMATION_CHEST.get(),
+					TFBlocks.DARK_CHEST.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TRANSFORMATION_CHEST.get(),
 					TFBlocks.MINING_CHEST.get(), TFBlocks.SORTING_CHEST.get()).build(null));
 
 	public static final RegistryObject<BlockEntityType<SkullCandleBlockEntity>> SKULL_CANDLE = BLOCK_ENTITIES.register("skull_candle", () ->

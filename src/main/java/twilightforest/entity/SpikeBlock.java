@@ -38,7 +38,7 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 
 	public void doFall() {
 		if (this.onGround && !this.isCollideBlock) {
-			this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.65F, 0.75F);
+			this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.65F, 0.75F);
 			this.gameEvent(GameEvent.HIT_GROUND);
 			this.isCollideBlock = true;
 		} else {

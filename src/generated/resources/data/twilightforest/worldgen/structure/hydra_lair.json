@@ -13,6 +13,7 @@
     "id": "minecraft:written_book",
     "tag": {
       "author": "twilightforest.book.author",
+      "generation": 3,
       "pages": [
         "{\"translate\":\"twilightforest.book.hydralair.1\"}",
         "{\"translate\":\"twilightforest.book.hydralair.2\"}",

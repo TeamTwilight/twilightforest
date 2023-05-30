@@ -60,7 +60,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
 		makeInstance(map, TFBlocks.MANGROVE_CHEST);
-		makeInstance(map, TFBlocks.DARKWOOD_CHEST);
+		makeInstance(map, TFBlocks.DARK_CHEST);
 		makeInstance(map, TFBlocks.TIME_CHEST);
 		makeInstance(map, TFBlocks.TRANSFORMATION_CHEST);
 		makeInstance(map, TFBlocks.MINING_CHEST);
@@ -105,16 +105,16 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					if (trophyBlock.getVariant() == BossVariant.HYDRA || trophyBlock.getVariant() == BossVariant.QUEST_RAM)
 						ms.scale(0.9F, 0.9F, 0.9F);
 					ms.mulPose(Axis.XP.rotationDegrees(30));
-					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : -45));
+					ms.mulPose(Axis.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() && !Minecraft.getInstance().isPaused() ? TFClientEvents.rotationTicker : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
 					if (trophyBlock.getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime(), ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !Minecraft.getInstance().isPaused() ? TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime() : 0, ms, buffers, light, camera);
 					ms.popPose();
 
 				} else {
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime(), ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, !Minecraft.getInstance().isPaused() ? TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime() : 0, ms, buffers, light, camera);
 				}
 			} else if (block instanceof KeepsakeCasketBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.casket, ms, buffers, light, overlay);

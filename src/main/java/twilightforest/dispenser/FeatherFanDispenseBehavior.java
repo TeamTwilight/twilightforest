@@ -52,7 +52,7 @@ public class FeatherFanDispenseBehavior extends DefaultDispenseItemBehavior {
 	protected void playSound(BlockSource source) {
 		if (this.fired) {
 			RandomSource random = source.getLevel().getRandom();
-			source.getLevel().playSound(null, source.getPos(), TFSounds.FAN_WOOSH.get(), SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+			source.getLevel().playSound(null, source.getPos(), TFSounds.FAN_WHOOSH.get(), SoundSource.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 			this.fired = false;
 		} else {
 			source.getLevel().levelEvent(1001, source.getPos(), 0);

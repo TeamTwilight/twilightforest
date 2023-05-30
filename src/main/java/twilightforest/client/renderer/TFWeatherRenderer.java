@@ -357,10 +357,12 @@ public class TFWeatherRenderer {
 									int i4 = 15 << 20 | 15 << 4; // TF - fullbright
 									int j4 = i4 >> 16 & 65535;
 									int k4 = i4 & 65535;
-									bufferBuilder.vertex(x - xIn - rx + 0.5D, maxY - yIn, z - zIn - ry + 0.5D).uv(0.0F + d9, minY * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
-									bufferBuilder.vertex(x - xIn + rx + 0.5D, maxY - yIn, z - zIn + ry + 0.5D).uv(1.0F + d9, minY * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
-									bufferBuilder.vertex(x - xIn + rx + 0.5D, minY - yIn, z - zIn + ry + 0.5D).uv(1.0F + d9, maxY * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
-									bufferBuilder.vertex(x - xIn - rx + 0.5D, minY - yIn, z - zIn - ry + 0.5D).uv(0.0F + d9, maxY * 0.25F + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
+									float z1 = (float)yIn * 0.125F;
+									bufferBuilder.vertex(x - xIn - rx + 0.5D, range, z - zIn - ry + 0.5D).uv(0.0F + d9, d8 + d10 - z1).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
+									bufferBuilder.vertex(x - xIn + rx + 0.5D, range, z - zIn + ry + 0.5D).uv(1.0F + d9, d8 + d10 - z1).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
+									float pV = range * 0.25F + d8 + d10 - z1;
+									bufferBuilder.vertex(x - xIn + rx + 0.5D, -range, z - zIn + ry + 0.5D).uv(1.0F + d9, pV).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
+									bufferBuilder.vertex(x - xIn - rx + 0.5D, -range, z - zIn - ry + 0.5D).uv(0.0F + d9, pV).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
 								}
 							}
 						}

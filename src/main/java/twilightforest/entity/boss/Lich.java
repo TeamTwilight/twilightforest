@@ -352,6 +352,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		super.die(cause);
 		// mark the tower as defeated
 		if (this.getLevel() instanceof ServerLevel serverLevel && !this.isShadowClone()) {
+			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.LICH_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);

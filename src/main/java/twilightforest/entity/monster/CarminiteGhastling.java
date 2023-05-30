@@ -51,27 +51,27 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.GHASTLING_AMBIENT.get();
+		return TFSounds.CARMINITE_GHASTLING_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.GHASTLING_HURT.get();
+		return TFSounds.CARMINITE_GHASTLING_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.GHASTLING_DEATH.get();
+		return TFSounds.CARMINITE_GHASTLING_DEATH.get();
 	}
 
 	@Override
 	public SoundEvent getFireSound() {
-		return TFSounds.GHASTLING_SHOOT.get();
+		return TFSounds.CARMINITE_GHASTLING_SHOOT.get();
 	}
 
 	@Override
 	public SoundEvent getWarnSound() {
-		return TFSounds.GHASTLING_WARN.get();
+		return TFSounds.CARMINITE_GHASTLING_WARN.get();
 	}
 
 	// Loosely based on EnderMan.isLookingAtMe

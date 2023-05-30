@@ -261,6 +261,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 		super.die(cause);
 		// mark the tower as defeated
 		if (!this.getLevel().isClientSide()) {
+			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.AURORA_PALACE, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
