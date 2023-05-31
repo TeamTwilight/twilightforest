@@ -1,6 +1,10 @@
 {
   "advancement.twilightforest.arborist": "Маникальный дендролог",
+  "advancement.twilightforest.arborist.desc": "Приготовьте топоры и ножницы. Исследуйте каждую щель и норку и получите всё, что связано с деревьями! Создавайте, добывайте, получайте каждую доску... саженец... лист... и многое другое... всё! ВСЁ!",
   "advancement.twilightforest.arctic_dyed": "Местный стиляга",
+  "advancement.twilightforest.arctic_dyed.desc": "Окрасьте четыре уникальных части Арктической брони",
+  "advancement.twilightforest.beanstalk": "Джек и бобовый стебель",
+  "advancement.twilightforest.beanstalk.desc": "Получите некоторые %s в пещерах троллей и используйте их на светящейся почве под облаками",
   "advancement.twilightforest.experiment_115": "Таинственный пирог?",
   "advancement.twilightforest.experiment_115.desc": "Это похоже на торт, хотя ...",
   "advancement.twilightforest.experiment_115_2": "Делаем заметку: огромный успех!",
@@ -8,6 +12,7 @@
   "advancement.twilightforest.experiment_115_3": "Питание 115 Ежедневно, 115 Лет, Навсегда",
   "advancement.twilightforest.experiment_115_3.desc": "ест эксперимент сто пятнадцать весь день, навсегда, сто пятнадцать раз эксперимент сто пятнадцать, эксперимент сто пятнадцать точка ком, дабл-Ю дабл-Ю дабл-Ю точка эксперимента сто пятнадцать точка ком, сто пятнадцать лет, каждую минуту эксперимента сто пятнадцать точка ком, дабл-Ю дабл-Ю дабл-Ю точка сто-пятнадцать раз эксперимент сто пятнадцать точка ком",
   "advancement.twilightforest.fiery_set": "Потом и кровью",
+  "advancement.twilightforest.fiery_set.desc": "Владейте огненным инструментом или оружием, имея хотя бы одну часть огненной брони в своем инвентаре",
   "advancement.twilightforest.ghast_trap": "Что-то странное в деревянной башне",
   "advancement.twilightforest.ghast_trap.desc": "Убейте мини гаста около ловушки и активируйте ключ темного гаста из неба!",
   "advancement.twilightforest.glass_sword": "Одним ударом",
