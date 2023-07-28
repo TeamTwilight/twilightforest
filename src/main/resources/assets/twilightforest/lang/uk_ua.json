@@ -710,6 +710,7 @@
   "container.twilightforest.uncrafting_table": "Стіл розкрафтування",
   "container.twilightforest.uncrafting_table.disabled": "Розкрафтування вимкнено через конфігурацію",
   "container.twilightforest.uncrafting_table.disabled_item": "Розкрафтування цього предмета вимкнено.",
+  "death.attack.twilightforest.acid_rain": "%1$s танцював під кислотним дощем",
   "death.attack.twilightforest.ant": "%1$s був роздавлений, як мураха, %2$s",
   "death.attack.twilightforest.ant.item": "%1$s був розчавлений, як мураха, %2$s, який тримав %3$s",
   "death.attack.twilightforest.axing": "%1$s був порубаний на шматки %2$s",
