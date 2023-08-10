@@ -1,6 +1,8 @@
 {
   "advancement.twilightforest.arctic_dyed": "Ponerse a la moda",
+  "advancement.twilightforest.arctic_dyed.desc": "Tinta todas las piezas de la armadura ártica.",
   "advancement.twilightforest.beanstalk": "Jack y las habichuelas mágicas",
+  "advancement.twilightforest.beanstalk.desc": "Obtén algunas %s en las cuevas del troll y úsalas en la tierra luminosa debajo de las nubes.",
   "advancement.twilightforest.experiment_115": "¿Carne misteriosa?",
   "advancement.twilightforest.experiment_115.desc": "Parece tarta, aunque...",
   "advancement.twilightforest.experiment_115_2": "Toma nota: ¡Gran éxito!",
@@ -18,6 +20,7 @@
   "advancement.twilightforest.hill3": "Veo a través de ti",
   "advancement.twilightforest.hydra_chop": "¡Chuleta de hidra, cariño!",
   "advancement.twilightforest.kill_cicada": "Silencio",
+  "advancement.twilightforest.kill_cicada.desc": "Mata a una cigarra.",
   "advancement.twilightforest.kill_hydra": "Cazador de hidras",
   "advancement.twilightforest.kill_lich": "Saca a tus muertos",
   "advancement.twilightforest.kill_naga": "Hora de igualar la balanza",
@@ -41,6 +44,7 @@
   "advancement.twilightforest.root.desc": "Adéntrate al misterioso bosque mágico: el bosque crepuscular",
   "advancement.twilightforest.troll": "Trolleando un poco",
   "advancement.twilightforest.twilight_hunter": "El silencio del bosque",
+  "biome.twilightforest.forest": "Bosque crepuscular",
   "itemGroup.twilightforest.blocks": "Bosque crepuscular: Bloques",
   "itemGroup.twilightforest.equipment": "Bosque crepuscular: Equipamiento",
   "itemGroup.twilightforest.items": "Bosque crepuscular: Objetos"
