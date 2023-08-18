@@ -634,7 +634,6 @@
   "death.attack.twilightforest.thrownPickaxe.player": "%1$sは%2$sから逃げようとして投げられたツルハシで斬首された",
   "death.attack.twilightforest.yeeted": "%1$sは最後に%2$sに投げ捨てられた",
   "death.attack.twilightforest.yeeted.item": "%1$sは最後に%3$sを持つ%2$sに投げ捨てられた",
-  "dimension.twilightforest.twilightforest": "黄昏の森",
   "effect.twilightforest.frosted": "凍結",
   "enchantment.twilightforest.chill_aura": "凍えるオーラ",
   "enchantment.twilightforest.chill_aura.desc": "着用者を攻撃してきた者に対して凍結させる確率を上げる。",
