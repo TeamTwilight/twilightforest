@@ -666,7 +666,6 @@
   "death.attack.twilightforest.yeeted": "%1$s foi atirado pela última vez",
   "death.attack.twilightforest.yeeted.entity": "%1$s foi atendido pela última vez por %2$s",
   "death.attack.twilightforest.yeeted.item": "%1$s foi atirado pela última vez por %2$s enquanto de alguma forma segurava %3$s",
-  "dimension.twilightforest.twilightforest": "Floresta do Crepúsculo",
   "effect.twilightforest.frosted": "Congelado",
   "enchantment.twilightforest.chill_aura": "Aura de Frio",
   "enchantment.twilightforest.chill_aura.desc": "Adiciona uma chance to atacante receber o efeito congelado depois de atacar o usuário.",
