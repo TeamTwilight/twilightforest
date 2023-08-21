@@ -458,7 +458,6 @@
   "commands.tffeature.usage": "/%s <info | reactivate | conquer | center>",
   "config.jade.plugin_twilightforest.quest_ram_wool": "Lana dell'Ariete della ricerca",
   "container.twilightforest.uncrafting_table": "Banco da de-fabbricazione",
-  "container.twilightforest.uncrafting_table.disabled": "La de-fabbricazione è disabilitata nella configurazione",
   "container.twilightforest.uncrafting_table.disabled_item": "La de-fabbricazione di questo oggetto è disabilitata.",
   "death.attack.twilightforest.ant": "%1$s è stato schiacciato come una formica da %2$s",
   "death.attack.twilightforest.ant.item": "%1$s è stato schiacciato come una formica da %2$s usando %3$s",
