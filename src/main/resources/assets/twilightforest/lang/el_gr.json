@@ -1,3 +1,15 @@
 {
-  "item.twilightforest.hydra_spawn_egg": "Αβγό Γέννησης Λερναίας Ύδρας"
+  "item.twilightforest.armored_giant_spawn_egg": "Αβγό Γέννησης Τεθωρακισμένου Γίγαντα",
+  "item.twilightforest.boar_spawn_egg": "Αβγό Γέννησης Αγριόχοιρου",
+  "item.twilightforest.deer_spawn_egg": "Αβγό Γέννησης Ελαφιού",
+  "item.twilightforest.hydra_spawn_egg": "Αβγό Γέννησης Λερναίας Ύδρας",
+  "item.twilightforest.minotaur_spawn_egg": "Αβγό Γέννησης Μινώταυρου",
+  "item.twilightforest.naga_spawn_egg": "Αβγό Γέννησης Νάγκα",
+  "item.twilightforest.penguin_spawn_egg": "Αβγό Γέννησης Πιγκουίνου",
+  "item.twilightforest.raven_spawn_egg": "Αβγό Γέννησης Κορακιού",
+  "item.twilightforest.squirrel_spawn_egg": "Αβγό Γέννησης Σκίουρου",
+  "item.twilightforest.troll_spawn_egg": "Αβγό Γέννησης Τρολ",
+  "item.twilightforest.winter_wolf_spawn_egg": "Αβγό Γέννησης Χειμερινού Λύκου",
+  "item.twilightforest.wraith_spawn_egg": "Αβγό Γέννησης Πνεύματος",
+  "item.twilightforest.yeti_spawn_egg": "Αβγό Γέννησης Γέτι"
 }
