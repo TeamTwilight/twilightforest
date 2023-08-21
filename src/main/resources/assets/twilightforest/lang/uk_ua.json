@@ -712,7 +712,6 @@
   "commands.tffeature.usage": "/%s <info | reactivate | conquer | center>",
   "config.jade.plugin_twilightforest.quest_ram_wool": "Шерсть квестового барана",
   "container.twilightforest.uncrafting_table": "Стіл розкрафтування",
-  "container.twilightforest.uncrafting_table.disabled": "Розкрафтування вимкнено через конфігурацію",
   "container.twilightforest.uncrafting_table.disabled_item": "Розкрафтування цього предмета вимкнено.",
   "death.attack.twilightforest.acid_rain": "%1$s танцював під кислотним дощем",
   "death.attack.twilightforest.ant": "%1$s був роздавлений, як мураха, %2$s",
