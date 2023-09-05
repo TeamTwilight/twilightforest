@@ -1,8 +1,10 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.boss.Naga;
@@ -38,10 +40,11 @@ public class NagaSmashGoal extends Goal {
 		BlockPos min = new BlockPos(minx, miny, minz);
 		BlockPos max = new BlockPos(maxx, maxy, maxz);
 
-		if (this.naga.level.hasChunksAt(min, max)) {
+		if (this.naga.getLevel().hasChunksAt(min, max)) {
 			for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-				if (EntityUtil.canDestroyBlock(this.naga.getLevel(), pos, this.naga)) {
-					this.naga.getLevel().destroyBlock(pos, true);
+				BlockState state = this.naga.getLevel().getBlockState(pos);
+				if (state.is(BlockTags.LEAVES) || (this.naga.shouldDestroyAllBlocks() && EntityUtil.canDestroyBlock(this.naga.getLevel(), pos, this.naga))) {
+					this.naga.getLevel().destroyBlock(pos, !state.is(BlockTags.LEAVES));
 				}
 			}
 		}

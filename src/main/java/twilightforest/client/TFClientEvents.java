@@ -180,9 +180,7 @@ public class TFClientEvents {
 		Minecraft mc = Minecraft.getInstance();
 		float partial = mc.getFrameTime();
 
-		if (!mc.isPaused() ||
-				(mc.screen != null &&
-						mc.screen.getClass().equals(AdvancementsScreen.class))) {
+		if (!mc.isPaused()) {
 			time++;
 
 			rotationTickerI = (rotationTickerI >= 359 ? 0 : rotationTickerI + 1);
@@ -241,9 +239,9 @@ public class TFClientEvents {
 		}
 	}
 
-	private static final MutableComponent WIP_TEXT_0 = Component.translatable("twilightforest.misc.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	private static final MutableComponent WIP_TEXT_1 = Component.translatable("twilightforest.misc.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	private static final MutableComponent NYI_TEXT = Component.translatable("twilightforest.misc.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent WIP_TEXT_0 = Component.translatable("misc.twilightforest.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent WIP_TEXT_1 = Component.translatable("misc.twilightforest.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
+	private static final MutableComponent NYI_TEXT = Component.translatable("misc.twilightforest.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 
 	@SubscribeEvent
 	public static void tooltipEvent(ItemTooltipEvent event) {
@@ -304,8 +302,7 @@ public class TFClientEvents {
 				List<Component> components = event.getToolTip();
 				for (Component component : components) {
 					if (component.toString().contains("book.byAuthor")) {
-						components.set(components.indexOf(component), (Component.translatable("book.byAuthor")
-								.append(Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
+						components.set(components.indexOf(component), (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
 					}
 				}
 			}

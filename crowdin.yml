@@ -1,5 +1,5 @@
 files:
-  - source: /src/main/resources/assets/twilightforest/lang/en_us.json
+  - source: /src/generated/resources/assets/twilightforest/lang/en_us.json
     translation: /src/main/resources/assets/twilightforest/lang/%locale_with_underscore%.json
     languages_mapping:
       locale_with_underscore:
@@ -97,13 +97,14 @@ files:
         qya-AA: qya_aa
         ro: ro_ro
         ru: ru_ru
-        ry: ry_ua
+        ry-UA: ry_ua
         se: se_no
         sk: sk_sk
         sl: sl_si
         so: so_so
         sq: sq_al
         sr: sr_sp
+        sr-CS: sr_cs
         sv-SE: sv_se
         ta: ta_in
         th: th_th

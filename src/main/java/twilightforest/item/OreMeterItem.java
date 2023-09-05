@@ -75,7 +75,7 @@ public class OreMeterItem extends Item {
 				countDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.defaultBlockState(), dummy).count;
 				countLapis += results.getOrDefault(Blocks.LAPIS_ORE.defaultBlockState(), dummy).count;
 				countRedstone += results.getOrDefault(Blocks.REDSTONE_ORE.defaultBlockState(), dummy).count;
-				countRedstone += results.getOrDefault(Blocks.COPPER_ORE.defaultBlockState(), dummy).count;
+				countCopper += results.getOrDefault(Blocks.COPPER_ORE.defaultBlockState(), dummy).count;
 				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.defaultBlockState(), dummy).exposedCount;
 
 				countRoots += results.getOrDefault(TFBlocks.ROOT_BLOCK.get().defaultBlockState(), dummy).count;
@@ -86,11 +86,11 @@ public class OreMeterItem extends Item {
 		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countCopper + countRoots + countOreRoots;
 
 		player.sendSystemMessage(Component.translatable(this.getDescriptionId()).append("!"));
-		player.sendSystemMessage(Component.translatable(TwilightForestMod.ID + ".ore_meter.range", radius, chunkX, chunkZ));
+		player.sendSystemMessage(Component.translatable("misc.twilightforest.ore_meter_range", radius, chunkX, chunkZ));
 		player.sendSystemMessage(Component.translatable(Blocks.COAL_ORE.getDescriptionId()).append(" - " + countCoal + " " + percent(countCoal, total)));
 		player.sendSystemMessage(Component.translatable(Blocks.IRON_ORE.getDescriptionId()).append(" - " + countIron + " " + percent(countIron, total)));
 		player.sendSystemMessage(Component.translatable(Blocks.GOLD_ORE.getDescriptionId()).append(" - " + countGold + " " + percent(countGold, total)));
-		player.sendSystemMessage(Component.translatable(Blocks.DIAMOND_ORE.getDescriptionId()).append(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").append(Component.translatable(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)));
+		player.sendSystemMessage(Component.translatable(Blocks.DIAMOND_ORE.getDescriptionId()).append(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").append(Component.translatable("misc.twilightforest.ore_meter_exposed", countExposedDiamond)));
 		player.sendSystemMessage(Component.translatable(Blocks.LAPIS_ORE.getDescriptionId()).append(" - " + countLapis + " " + percent(countLapis, total)));
 		player.sendSystemMessage(Component.translatable(Blocks.REDSTONE_ORE.getDescriptionId()).append(" - " + countRedstone + " " + percent(countRedstone, total)));
 		player.sendSystemMessage(Component.translatable(Blocks.COPPER_ORE.getDescriptionId()).append(" - " + countCopper + " " + percent(countCopper, total)));

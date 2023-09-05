@@ -1,15 +1,18 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.world.item.Item;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.data.ModelData;
@@ -25,7 +28,7 @@ public class GhastTearParticle extends TextureSheetParticle {
 		this.quadSize = 2.0F;
 		this.gravity = 0.6F;
 
-		this.lifetime = 20 + random.nextInt(40);
+		this.lifetime = 60 + random.nextInt(40);
 		this.hasPhysics = true;
 	}
 
@@ -36,18 +39,18 @@ public class GhastTearParticle extends TextureSheetParticle {
 
 	@Override
 	public void tick() {
-		if (this.onGround && this.random.nextBoolean()) {
-			level.playSound(null, this.x, this.y + 1.0D, this.z, TFSounds.TEAR_BREAK.get(), SoundSource.HOSTILE, 0.5F, 1.0F);
+		if (this.onGround) {
+			if (this.random.nextBoolean()) {
+				this.level.playLocalSound(this.x, this.y + 1.0D, this.z, TFSounds.TEAR_BREAK.get(), SoundSource.AMBIENT, 0.5F, 1.65F, false);
+			}
 
 			ItemStack itemID = new ItemStack(Items.GHAST_TEAR);
-			for (int i = 0; i < 20; ++i) {
+			for (int i = 0; i < 50; ++i) {
 				double gaussX = this.random.nextGaussian() * 0.1D;
 				double gaussY = this.random.nextGaussian() * 0.2D;
 				double gaussZ = this.random.nextGaussian() * 0.1D;
 
-				level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemID), this.x + this.random.nextFloat() - this.random.nextFloat(), this.y + 0.5F, this.z + this.random.nextFloat(), gaussX, gaussY, gaussZ);
-				level.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 0.0D, 0.0D, 0.0D);
-
+				this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemID), this.x + this.random.nextFloat() - this.random.nextFloat(), this.y + 0.5F, this.z + this.random.nextFloat(), gaussX, gaussY, gaussZ);
 			}
 			this.remove();
 		}

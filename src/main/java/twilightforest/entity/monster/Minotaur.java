@@ -103,6 +103,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	}
 
 	//[VanillaCopy] of Mob.doHurtTarget, edits noted
+	@Override
 	public boolean doHurtTarget(Entity entity) {
 		float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
 		float f1 = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);

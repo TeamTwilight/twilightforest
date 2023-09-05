@@ -331,7 +331,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 	}
 
-	private static final String config = TwilightForestMod.ID + ".config.";
+	private static final String config =  "config." + TwilightForestMod.ID;
 
 	@Nullable
 	public static ResourceLocation getPortalLockingAdvancement(Player player) {

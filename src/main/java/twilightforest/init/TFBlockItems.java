@@ -361,8 +361,8 @@ public class TFBlockItems {
 			register(event, blockItem(TFBlocks.DARK_PLATE));
 			register(event, blockItem(TFBlocks.DARK_TRAPDOOR));
 			register(event, tallBlock(TFBlocks.DARK_DOOR));
-			register(event, signBlock(TFBlocks.DARKWOOD_SIGN, TFBlocks.DARKWOOD_WALL_SIGN));
-			register(event, burningItem(TFBlocks.DARKWOOD_BANISTER, 300));
+			register(event, signBlock(TFBlocks.DARK_SIGN, TFBlocks.DARK_WALL_SIGN));
+			register(event, burningItem(TFBlocks.DARK_BANISTER, 300));
 			register(event, blockItem(TFBlocks.TIME_PLANKS));
 			register(event, blockItem(TFBlocks.TIME_STAIRS));
 			register(event, blockItem(TFBlocks.TIME_SLAB));
@@ -411,7 +411,7 @@ public class TFBlockItems {
 			makeBEWLRItem(event, TFBlocks.TWILIGHT_OAK_CHEST);
 			makeBEWLRItem(event, TFBlocks.CANOPY_CHEST);
 			makeBEWLRItem(event, TFBlocks.MANGROVE_CHEST);
-			makeBEWLRItem(event, TFBlocks.DARKWOOD_CHEST);
+			makeBEWLRItem(event, TFBlocks.DARK_CHEST);
 			makeBEWLRItem(event, TFBlocks.TIME_CHEST);
 			makeBEWLRItem(event, TFBlocks.TRANSFORMATION_CHEST);
 			makeBEWLRItem(event, TFBlocks.MINING_CHEST);

@@ -70,17 +70,17 @@ public class TinyBird extends FlyingBird {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.getRandom().nextInt(20) == 0 ? TFSounds.TINYBIRD_SONG.get() : TFSounds.TINYBIRD_CHIRP.get();
+		return this.getRandom().nextInt(20) == 0 ? TFSounds.TINY_BIRD_SONG.get() : TFSounds.TINY_BIRD_CHIRP.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TINYBIRD_HURT.get();
+		return TFSounds.TINY_BIRD_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TINYBIRD_HURT.get();
+		return TFSounds.TINY_BIRD_HURT.get();
 	}
 
 	@Override

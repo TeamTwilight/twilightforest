@@ -56,7 +56,7 @@ public class KnightStrongholdStructure extends ConquerableStructure {
                         new MobSpawnSettings.SpawnerData(EntityType.SLIME, 5, 4, 4)
                 ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_trophy_pedestal"))),
-                new HintConfig(HintConfig.book("tfstronghold", 5), TFEntities.KOBOLD.get()),
+                new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD.get()),
                 new DecorationConfig(3, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_KNIGHT_STRONGHOLD_BIOMES),

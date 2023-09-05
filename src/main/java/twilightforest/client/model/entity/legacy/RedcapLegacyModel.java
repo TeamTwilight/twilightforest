@@ -14,7 +14,7 @@ import twilightforest.entity.monster.Redcap;
 public class RedcapLegacyModel<T extends Redcap> extends FixedHumanoidModel<T> {
 
 	public RedcapLegacyModel(ModelPart root) {
-		super(root);
+		super(root, 3.0F);
 	}
 
 	public static LayerDefinition create() {

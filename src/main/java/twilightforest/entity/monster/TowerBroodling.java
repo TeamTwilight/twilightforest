@@ -37,22 +37,22 @@ public class TowerBroodling extends SwarmSpider {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BROODLING_AMBIENT.get();
+		return TFSounds.CARMINITE_BROODLING_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BROODLING_HURT.get();
+		return TFSounds.CARMINITE_BROODLING_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BROODLING_DEATH.get();
+		return TFSounds.CARMINITE_BROODLING_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.BROODLING_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.CARMINITE_BROODLING_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override

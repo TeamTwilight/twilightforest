@@ -4,9 +4,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
-import net.minecraft.util.Mth;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class TFSkyRenderer {
@@ -29,7 +27,7 @@ public class TFSkyRenderer {
 	}
 
 
-	// [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
+	// [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, using our own stars at full brightness, and lowering void horizon threshold height from getHorizonHeight (63) to 0
 	public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack stack, Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
 		LevelRenderer levelRenderer = Minecraft.getInstance().levelRenderer;
 
@@ -81,7 +79,7 @@ public class TFSkyRenderer {
 		RenderSystem.defaultBlendFunc();
 		stack.popPose();
 		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
-		double d0 = camera.getEntity().getEyePosition(partialTicks).y() - level.getLevelData().getHorizonHeight(level);
+		double d0 = camera.getEntity().getEyePosition(partialTicks).y(); // - level.getLevelData().getHorizonHeight(level); // TF: Lower Void Horizon Y-Threshold from 63 to 0
 		if (d0 < 0.0D) {
 			stack.pushPose();
 			stack.translate(0.0F, 12.0F, 0.0F);

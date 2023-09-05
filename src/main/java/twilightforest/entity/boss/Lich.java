@@ -352,6 +352,7 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		super.die(cause);
 		// mark the tower as defeated
 		if (this.getLevel() instanceof ServerLevel serverLevel && !this.isShadowClone()) {
+			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.LICH_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
@@ -791,6 +792,11 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 	protected boolean shouldDropLoot() {
 		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
 		return false;
+	}
+
+	@Override
+	public boolean displayFireAnimation() {
+		return this.deathTime <= 0 && super.displayFireAnimation();
 	}
 
 	//as funny as left handed liches are, it would be better if it always holds its scepter/sword in the correct hand

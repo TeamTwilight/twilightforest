@@ -217,6 +217,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!this.getLevel().isClientSide()) {
+			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.LABYRINTH, true);
 			for(ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);

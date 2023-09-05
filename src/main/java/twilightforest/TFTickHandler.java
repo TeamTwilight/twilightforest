@@ -113,7 +113,6 @@ public class TFTickHandler {
 		}).orElse(false);
 	}
 
-	private static final Component PORTAL_UNWORTHY = Component.translatable(TwilightForestMod.ID + ".ui.portal.unworthy");
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
 		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
 				|| TFGenerationSettings.isTwilightPortalDestination(world)
@@ -137,7 +136,7 @@ public class TFTickHandler {
 			if (!player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
 				Advancement requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
 				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
-					player.displayClientMessage(PORTAL_UNWORTHY, true);
+					player.displayClientMessage(TFPortalBlock.PORTAL_UNWORTHY, true);
 
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`

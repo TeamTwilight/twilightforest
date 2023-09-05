@@ -70,7 +70,7 @@ public class TFCreativeTabs {
 					output.accept(TFBlocks.TWILIGHT_OAK_BANISTER.get());
 					output.accept(TFBlocks.CANOPY_BANISTER.get());
 					output.accept(TFBlocks.MANGROVE_BANISTER.get());
-					output.accept(TFBlocks.DARKWOOD_BANISTER.get());
+					output.accept(TFBlocks.DARK_BANISTER.get());
 					output.accept(TFBlocks.TIME_BANISTER.get());
 					output.accept(TFBlocks.TRANSFORMATION_BANISTER.get());
 					output.accept(TFBlocks.MINING_BANISTER.get());
@@ -124,7 +124,7 @@ public class TFCreativeTabs {
 					output.accept(TFBlocks.TWILIGHT_OAK_SIGN.get());
 					output.accept(TFBlocks.CANOPY_SIGN.get());
 					output.accept(TFBlocks.MANGROVE_SIGN.get());
-					output.accept(TFBlocks.DARKWOOD_SIGN.get());
+					output.accept(TFBlocks.DARK_SIGN.get());
 					output.accept(TFBlocks.TIME_SIGN.get());
 					output.accept(TFBlocks.TRANSFORMATION_SIGN.get());
 					output.accept(TFBlocks.MINING_SIGN.get());
@@ -133,7 +133,7 @@ public class TFCreativeTabs {
 					output.accept(TFBlocks.TWILIGHT_OAK_CHEST.get());
 					output.accept(TFBlocks.CANOPY_CHEST.get());
 					output.accept(TFBlocks.MANGROVE_CHEST.get());
-					output.accept(TFBlocks.DARKWOOD_CHEST.get());
+					output.accept(TFBlocks.DARK_CHEST.get());
 					output.accept(TFBlocks.TIME_CHEST.get());
 					output.accept(TFBlocks.TRANSFORMATION_CHEST.get());
 					output.accept(TFBlocks.MINING_CHEST.get());
@@ -582,9 +582,9 @@ public class TFCreativeTabs {
 		tags.putBoolean("Unbreakable", true);
 
 		ListTag lore = new ListTag();
-		lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\",\"italic\":false,\"color\":\"gray\"}"));
+		lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.desc\",\"italic\":false,\"color\":\"gray\"}"));
 		// uncomment if someone asks if this will ever generate as loot
-//		lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\",\"italic\":false,\"color\":\"gray\"}"));
+//		lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.desc2\",\"italic\":false,\"color\":\"gray\"}"));
 
 		CompoundTag display = new CompoundTag();
 		display.put("Lore", lore);

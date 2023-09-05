@@ -82,7 +82,7 @@ public class TwilightBoat extends Boat {
 		TWILIGHT_OAK(TFBlocks.TWILIGHT_OAK_PLANKS.get(), "twilight_oak"),
 		CANOPY(TFBlocks.CANOPY_PLANKS.get(), "canopy"),
 		MANGROVE(TFBlocks.MANGROVE_PLANKS.get(), "mangrove"),
-		DARKWOOD(TFBlocks.DARK_PLANKS.get(), "darkwood"),
+		DARKWOOD(TFBlocks.DARK_PLANKS.get(), "dark"),
 		TIME(TFBlocks.TIME_PLANKS.get(), "time"),
 		TRANSFORMATION(TFBlocks.TRANSFORMATION_PLANKS.get(), "transformation"),
 		MINING(TFBlocks.MINING_PLANKS.get(), "mining"),

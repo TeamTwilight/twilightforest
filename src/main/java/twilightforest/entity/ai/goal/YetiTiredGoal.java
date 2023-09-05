@@ -47,6 +47,6 @@ public class YetiTiredGoal extends Goal {
 	@Override
 	public void tick() {
 		if (++this.tiredTimer % 10 == 0)
-			this.yeti.playSound(TFSounds.ALPHAYETI_PANT.get(), 4F, 0.5F + this.yeti.getRandom().nextFloat() * 0.5F);
+			this.yeti.playSound(TFSounds.ALPHA_YETI_PANT.get(), 4F, 0.5F + this.yeti.getRandom().nextFloat() * 0.5F);
 	}
 }

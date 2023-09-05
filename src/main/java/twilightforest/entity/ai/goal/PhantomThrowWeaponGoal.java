@@ -47,7 +47,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 		double ty = (targetedEntity.getBoundingBox().minY + targetedEntity.getBbHeight() / 2.0F) - (this.boss.getY() + this.boss.getBbHeight() / 2.0F);
 		double tz = targetedEntity.getZ() - sz;
 
-		this.boss.playSound(TFSounds.PHANTOM_THROW_AXE.get(), 1.0F, (this.boss.getRandom().nextFloat() - this.boss.getRandom().nextFloat()) * 0.2F + 0.4F);
+		this.boss.playSound(TFSounds.KNIGHT_PHANTOM_THROW_AXE.get(), 1.0F, (this.boss.getRandom().nextFloat() - this.boss.getRandom().nextFloat()) * 0.2F + 0.4F);
 		this.boss.gameEvent(GameEvent.PROJECTILE_SHOOT);
 		ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), this.boss.getLevel(), this.boss).setItem(new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
 
@@ -61,7 +61,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 	}
 
 	private void launchPicks() {
-		this.boss.playSound(TFSounds.PHANTOM_THROW_PICK.get(), 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
+		this.boss.playSound(TFSounds.KNIGHT_PHANTOM_THROW_PICK.get(), 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
 		this.boss.gameEvent(GameEvent.PROJECTILE_SHOOT);
 
 		for (int i = 0; i < 8; i++) {

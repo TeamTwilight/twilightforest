@@ -26,15 +26,13 @@ public class TwilightChestRenderer<T extends TwilightChestEntity> extends ChestR
         builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight"));
         builder.put(TFBlocks.CANOPY_CHEST.get(), chestMaterial("canopy"));
         builder.put(TFBlocks.MANGROVE_CHEST.get(), chestMaterial("mangrove"));
-        builder.put(TFBlocks.DARKWOOD_CHEST.get(), chestMaterial("darkwood"));
+        builder.put(TFBlocks.DARK_CHEST.get(), chestMaterial("darkwood"));
         builder.put(TFBlocks.TIME_CHEST.get(), chestMaterial("time"));
         builder.put(TFBlocks.TRANSFORMATION_CHEST.get(), chestMaterial("trans"));
         builder.put(TFBlocks.MINING_CHEST.get(), chestMaterial("mining"));
         builder.put(TFBlocks.SORTING_CHEST.get(), chestMaterial("sort"));
 
         MATERIALS = builder.build();
-
-        //ModelBakery.UNREFERENCED_TEXTURES.addAll(MATERIALS.values().stream().flatMap(e -> e.values().stream()).collect(Collectors.toList()));
     }
 
     public TwilightChestRenderer(BlockEntityRendererProvider.Context context) {

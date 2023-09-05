@@ -113,7 +113,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	private void warnIneligiblePlayers(Level level, BlockPos pos) {
 		for (Player player : level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
 			if (!this.isPlayerEligible(player)) {
-				player.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
+				player.displayClientMessage(Component.translatable("misc.twilightforest.pedestal_ineligible"), true);
 			}
 		}
 	}

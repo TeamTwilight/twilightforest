@@ -19,7 +19,7 @@ public class IceBombItem extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		player.playSound(TFSounds.ICEBOMB_FIRED.get(), 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+		player.playSound(TFSounds.ICE_BOMB_FIRED.get(), 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
 		if (!level.isClientSide()) {
 			if (!player.getAbilities().instabuild) {

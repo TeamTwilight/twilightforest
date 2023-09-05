@@ -1,4 +1,4 @@
-// 1.19.4	2023-03-15T22:15:36.3700208	Twilight Forest Entity Tags
+// 1.19.4	2023-05-10T17:53:29.3813417	Twilight Forest Entity Tags
 0865b5410d11831c91b4a4164d890df4852489ff data/forge/tags/entity_types/bosses.json
 96a1f9f2c5c062278d532397563660cb0c4982a7 data/minecraft/tags/entity_types/arrows.json
 e5bff3b10b54d6af46050743b454bd8cce4993e0 data/minecraft/tags/entity_types/fall_damage_immune.json
@@ -11,6 +11,6 @@ f5d299a6ccce3d8fc7700b44c444b6733bd2506c data/minecraft/tags/entity_types/skelet
 38bf80bb5d608168d87dbbc33e3314fd1d0135d9 data/twilightforest/tags/entity_types/bosses.json
 bfe454dfc8b286c9a748229c8338e4e382fb5348 data/twilightforest/tags/entity_types/dont_kill_bugs.json
 97ff9312c2bcde14cf20a5eec42f4dedc8dc8e6f data/twilightforest/tags/entity_types/lich_poppables.json
-5e26ee6b4a34f1bb9ddac4615991eb12f01b33f3 data/twilightforest/tags/entity_types/lifedrain_drops_no_flesh.json
+89130461ab941c91d37ae7e0d43ccaccfbdc44fb data/twilightforest/tags/entity_types/lifedrain_drops_no_flesh.json
 3ee8c8fc2a97ac50a0823d806c70f772cf32f52b data/twilightforest/tags/entity_types/rides_obstruct_snatching.json
 f42bc250a191bdb941d3e073c78555e3139a09b9 data/twilightforest/tags/entity_types/sortable_entities.json

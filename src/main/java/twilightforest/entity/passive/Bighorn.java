@@ -89,21 +89,21 @@ public class Bighorn extends Sheep {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BIGHORN_AMBIENT.get();
+		return TFSounds.BIGHORN_SHEEP_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BIGHORN_HURT.get();
+		return TFSounds.BIGHORN_SHEEP_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BIGHORN_DEATH.get();
+		return TFSounds.BIGHORN_SHEEP_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.BIGHORN_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.BIGHORN_SHEEP_STEP.get(), 0.15F, 1.0F);
 	}
 }

@@ -1,6 +1,7 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -137,7 +138,7 @@ public class MinoshroomModel extends HumanoidModel<Minoshroom> {
 		}
 
 		this.setupAttackAnimation(entity, ageInTicks);
-		AnimationUtils.bobArms(this.leftArm, this.rightArm, ageInTicks);
+		AnimationUtils.bobArms(this.rightArm, this.leftArm, ageInTicks);
 
         // copied from QuadrepedModel
         this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -175,4 +176,16 @@ public class MinoshroomModel extends HumanoidModel<Minoshroom> {
 			this.rightFrontLeg.xRot -= f1 * (float) Math.PI * 0.3F;
 		}
     }
+
+	@Override
+	public void translateToHand(HumanoidArm arm, PoseStack stack) {
+		float f = arm == HumanoidArm.RIGHT ? -0.5F : 0.5F;
+		ModelPart modelpart = this.getArm(arm);
+		modelpart.x += f;
+		modelpart.y += 2F;
+		modelpart.translateAndRotate(stack);
+		modelpart.x -= f;
+		modelpart.y -= 2F;
+		stack.scale(1.15F, 1.15F, 1.15F);
+	}
 }

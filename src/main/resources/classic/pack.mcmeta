@@ -1,6 +1,7 @@
 {
   "pack": {
     "description": "Twilight Forest classic art!",
-    "pack_format": 12
+    "forge:server_data_pack_format": 12,
+    "pack_format": 13
   }
 }

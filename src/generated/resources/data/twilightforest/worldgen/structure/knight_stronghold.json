@@ -14,12 +14,12 @@
     "id": "minecraft:written_book",
     "tag": {
       "author": "twilightforest.book.author",
+      "generation": 3,
       "pages": [
         "{\"translate\":\"twilightforest.book.tfstronghold.1\"}",
         "{\"translate\":\"twilightforest.book.tfstronghold.2\"}",
         "{\"translate\":\"twilightforest.book.tfstronghold.3\"}",
-        "{\"translate\":\"twilightforest.book.tfstronghold.4\"}",
-        "{\"translate\":\"twilightforest.book.tfstronghold.5\"}"
+        "{\"translate\":\"twilightforest.book.tfstronghold.4\"}"
       ],
       "title": "twilightforest.book.tfstronghold",
       "twilightforest:book": 1

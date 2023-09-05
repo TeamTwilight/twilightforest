@@ -50,7 +50,7 @@ public class MinotaurModel extends HumanoidModel<Minotaur> {
 
         partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
                         .texOffs(20, 26)
-                        .addBox(-3.0F, -4.0F, -2.5F, 4.0F, 14.0F, 5.0F),
+                        .addBox(-4.0F, -4.0F, -2.5F, 4.0F, 14.0F, 5.0F),
                 PartPose.offset(-7.5F, -4.0F, 0.0F));
 
         partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()

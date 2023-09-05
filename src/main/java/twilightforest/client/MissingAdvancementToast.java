@@ -10,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import twilightforest.init.TFBlocks;
 
 public record MissingAdvancementToast(Component title, ItemStack icon) implements Toast {
-    public static final MissingAdvancementToast FALLBACK = new MissingAdvancementToast(Component.translatable(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()));
-    private static final Component UPPER_TEXT = Component.translatable("twilightforest.ui.advancement.required");
+    public static final MissingAdvancementToast FALLBACK = new MissingAdvancementToast(Component.translatable("misc.twilightforest.advancement_hidden"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()));
+    private static final Component UPPER_TEXT = Component.translatable("misc.twilightforest.advancement_required");
 
     @Override
     public Toast.Visibility render(PoseStack stack, ToastComponent component, long timer) {

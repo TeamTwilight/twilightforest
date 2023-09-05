@@ -26,7 +26,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 		if (level.isClientSide())
 			return InteractionResultHolder.pass(emptyMapStack);
 		if(level instanceof ServerLevel server && !TFGenerationSettings.usesTwilightChunkGenerator(server)) {
-			player.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".ui.magicmap.fail"), true);
+			player.displayClientMessage(Component.translatable("misc.twilightforest.magic_map_fail"), true);
 			return InteractionResultHolder.fail(emptyMapStack);
 		}
 		// TF - scale at 4

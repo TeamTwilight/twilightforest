@@ -122,12 +122,12 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 					pitch = 1.2F;
 				}
 				case UR_GHAST -> {
-					sound = TFSounds.URGHAST_AMBIENT.get();
+					sound = TFSounds.UR_GHAST_AMBIENT.get();
 					pitch = 0.6F;
 				}
 				case SNOW_QUEEN -> sound = TFSounds.SNOW_QUEEN_AMBIENT.get();
 				case KNIGHT_PHANTOM -> {
-					sound = TFSounds.PHANTOM_AMBIENT.get();
+					sound = TFSounds.KNIGHT_PHANTOM_AMBIENT.get();
 					pitch = 1.1F;
 				}
 				case MINOSHROOM -> {
@@ -136,7 +136,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 					pitch = 0.7F;
 				}
 				case ALPHA_YETI -> {
-					sound = world.getRandom().nextInt(50) == 0 ? TFSounds.ALPHAYETI_ROAR.get() : TFSounds.ALPHAYETI_GROWL.get();
+					sound = world.getRandom().nextInt(50) == 0 ? TFSounds.ALPHA_YETI_ROAR.get() : TFSounds.ALPHA_YETI_GROWL.get();
 					volume = 0.75F;
 					pitch = 0.75F;
 				}

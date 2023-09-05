@@ -377,10 +377,10 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.DARK_PLATE.get());
 		add(TFBlocks.DARK_DOOR.get(), createSinglePropConditionTable(TFBlocks.DARK_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.DARK_TRAPDOOR.get());
-		add(TFBlocks.DARKWOOD_SIGN.get(), createSingleItemTable(TFBlocks.DARKWOOD_SIGN.get().asItem()));
-		add(TFBlocks.DARKWOOD_WALL_SIGN.get(), createSingleItemTable(TFBlocks.DARKWOOD_SIGN.get().asItem()));
-		dropSelf(TFBlocks.DARKWOOD_BANISTER.get());
-		dropSelf(TFBlocks.DARKWOOD_CHEST.get());
+		add(TFBlocks.DARK_SIGN.get(), createSingleItemTable(TFBlocks.DARK_SIGN.get().asItem()));
+		add(TFBlocks.DARK_WALL_SIGN.get(), createSingleItemTable(TFBlocks.DARK_SIGN.get().asItem()));
+		dropSelf(TFBlocks.DARK_BANISTER.get());
+		dropSelf(TFBlocks.DARK_CHEST.get());
 
 		dropSelf(TFBlocks.TIME_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_TIME_LOG.get());

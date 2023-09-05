@@ -12,8 +12,11 @@ import net.minecraft.world.entity.LivingEntity;
 //this is most noticeable in the body (which is offset by 24 voxels), but it also fixes mobs that have smaller or bigger arms.
 //this also cleans up some movement logic that doesnt apply to mobs (swimming and elytra flying)
 public class FixedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T> {
-	public FixedHumanoidModel(ModelPart part) {
+	private final float armWidth;
+
+	public FixedHumanoidModel(ModelPart part, float armWidth) {
 		super(part);
+		this.armWidth = armWidth;
 	}
 
 	@Override
@@ -112,6 +115,36 @@ public class FixedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T>
 		}
 
 		this.hat.copyFrom(this.head);
+	}
+
+	@Override
+	protected void setupAttackAnimation(T pLivingEntity, float pAgeInTicks) {
+		if (!(this.attackTime <= 0.0F)) {
+			HumanoidArm humanoidarm = this.getAttackArm(pLivingEntity);
+			ModelPart modelpart = this.getArm(humanoidarm);
+			float f = this.attackTime;
+			this.body.yRot = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
+			if (humanoidarm == HumanoidArm.LEFT) {
+				this.body.yRot *= -1.0F;
+			}
+
+			this.rightArm.z = Mth.sin(this.body.yRot) * (this.armWidth + 1.0F);
+			this.rightArm.x = -Mth.cos(this.body.yRot) * (this.armWidth + 1.0F);
+			this.leftArm.z = -Mth.sin(this.body.yRot) * (this.armWidth + 1.0F);
+			this.leftArm.x = Mth.cos(this.body.yRot) * (this.armWidth + 1.0F);
+			this.rightArm.yRot += this.body.yRot;
+			this.leftArm.yRot += this.body.yRot;
+			this.leftArm.xRot += this.body.yRot;
+			f = 1.0F - this.attackTime;
+			f *= f;
+			f *= f;
+			f = 1.0F - f;
+			float f1 = Mth.sin(f * (float)Math.PI);
+			float f2 = Mth.sin(this.attackTime * (float)Math.PI) * -(this.head.xRot - 0.7F) * 0.75F;
+			modelpart.xRot -= f1 * 1.2F + f2;
+			modelpart.yRot += this.body.yRot * 2.0F;
+			modelpart.zRot += Mth.sin(this.attackTime * (float)Math.PI) * -0.4F;
+		}
 	}
 
 	private float quadraticArmUpdate(float pLimbSwing) {

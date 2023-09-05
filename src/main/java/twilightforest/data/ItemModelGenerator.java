@@ -280,11 +280,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.DARK_GATE.get(), "fence_gate/darkwood");
 		woodBlock(TFBlocks.DARK_PLATE.get(), "pressure_plate/darkwood");
 		woodBlockModel(TFBlocks.DARK_TRAPDOOR.get(), "darkwood_trapdoor_bottom", "trapdoor/darkwood");
-		generated(TFBlocks.DARKWOOD_SIGN.getId().getPath(), prefix("item/" + TFBlocks.DARKWOOD_SIGN.getId().getPath()));
-		withExistingParent(TFBlocks.DARKWOOD_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_darkwood_0");
+		generated(TFBlocks.DARK_SIGN.getId().getPath(), prefix("item/" + TFBlocks.DARK_SIGN.getId().getPath()));
+		withExistingParent(TFBlocks.DARK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_darkwood_0");
 		generated(TFBlocks.DARK_DOOR.getId().getPath(), prefix("item/" + TFBlocks.DARK_DOOR.getId().getPath()));
 		generated(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath()));
-		withExistingParent(TFBlocks.DARKWOOD_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
+		withExistingParent(TFBlocks.DARK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
 		
 		toBlock(TFBlocks.TIME_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TIME_LOG.get());

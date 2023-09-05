@@ -63,7 +63,7 @@ public class ChainBlockItem extends Item {
 		if (getThrownUuid(stack) != null)
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
-		player.playSound(TFSounds.BLOCKCHAIN_FIRED.get(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
+		player.playSound(TFSounds.BLOCK_AND_CHAIN_FIRED.get(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
 
 		if (!level.isClientSide()) {
 			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), level, player, hand, stack);

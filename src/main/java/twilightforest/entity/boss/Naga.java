@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
@@ -38,7 +39,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -179,10 +179,10 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		AABB bb = this.getBoundingBox();
 
 		int minx = Mth.floor(bb.minX - 0.75D);
-		int miny = Mth.floor(bb.minY + 1.01D);
+		int miny = Mth.floor(bb.minY + (this.shouldDestroyAllBlocks() ? 1.01F : 0.5F));
 		int minz = Mth.floor(bb.minZ - 0.75D);
 		int maxx = Mth.floor(bb.maxX + 0.75D);
-		int maxy = Mth.floor(bb.maxY + 0.0D);
+		int maxy = Mth.floor(bb.maxY + 1.0D);
 		int maxz = Mth.floor(bb.maxZ + 0.75D);
 
 		BlockPos min = new BlockPos(minx, miny, minz);
@@ -191,11 +191,15 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		if (this.getLevel().hasChunksAt(min, max)) {
 			for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
 				BlockState state = this.getLevel().getBlockState(pos);
-				if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(this.getLevel(), pos, state, this)) {
-					this.getLevel().destroyBlock(pos, true);
+				if (state.is(BlockTags.LEAVES) || (this.shouldDestroyAllBlocks() && EntityUtil.canDestroyBlock(this.getLevel(), pos, this))) {
+					this.getLevel().destroyBlock(pos, !state.is(BlockTags.LEAVES));
 				}
 			}
 		}
+	}
+
+	public boolean shouldDestroyAllBlocks() {
+		return this.isCharging() || !this.isWithinRestriction();
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -549,6 +553,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 		super.die(cause);
 		// mark the courtyard as defeated
 		if (this.getLevel() instanceof ServerLevel serverLevel) {
+			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.NAGA_COURTYARD, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);

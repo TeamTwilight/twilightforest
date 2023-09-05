@@ -112,18 +112,20 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
 
 		tag(LICH_POPPABLES).addTag(EntityTypeTags.SKELETONS).add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get());
 
-		tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).add(
+		tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
+				EntityType.BLAZE,
 				EntityType.IRON_GOLEM,
+				EntityType.PHANTOM,
 				EntityType.SHULKER,
 				EntityType.SKELETON_HORSE,
-				EntityType.SLIME,
 				EntityType.SNOW_GOLEM,
+				EntityType.VEX,
+				EntityType.WITHER,
 				TFEntities.CARMINITE_GOLEM.get(),
 				TFEntities.DEATH_TOME.get(),
 				TFEntities.ICE_CRYSTAL.get(),
 				TFEntities.KNIGHT_PHANTOM.get(),
 				TFEntities.LICH.get(),
-				TFEntities.MAZE_SLIME.get(),
 				TFEntities.MOSQUITO_SWARM.get(),
 				TFEntities.SNOW_GUARDIAN.get(),
 				TFEntities.STABLE_ICE_CORE.get(),
