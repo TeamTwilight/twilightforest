@@ -127,44 +127,40 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
 
     @Override
     public void prepareMobModel(DeathTome entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-        float bounce = entity.tickCount + partialTicks;
-        float open = 0.9f;
+        boolean onLectern = entity.isOnLectern();
+
+        float bounce = onLectern ? 0.0F : entity.tickCount + partialTicks;
+        float open = onLectern ? 1.2F : 0.9f;
 
         float flip = Mth.lerp(partialTicks, entity.oFlip, entity.flip);
         float flipRight = Mth.clamp(Mth.frac(flip + 0.25F) * 1.6F - 0.3F, 0.0F, 1.0F);
         float flipLeft = Mth.clamp(Mth.frac(flip + 0.75F) * 1.6F - 0.3F, 0.0F, 1.0F);
 
-        boolean onLectern = entity.isOnLectern();
 
         this.loosePage0.skipDraw = onLectern;
         this.loosePage1.skipDraw = onLectern;
         this.loosePage2.skipDraw = onLectern;
         this.loosePage3.skipDraw = onLectern;
 
-        if (onLectern) {
-            bounce = 0.0F;
-            open = 1.2F;
-        } else {
-            // page rotations
-            this.loosePage0.yRot = (bounce) / 4.0F;
-            this.loosePage0.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
-            this.loosePage0.zRot = Mth.cos((bounce) / 5.0F) / 5.0F;
+        // page rotations
+        this.loosePage0.yRot = (bounce) / 4.0F;
+        this.loosePage0.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
+        this.loosePage0.zRot = Mth.cos((bounce) / 5.0F) / 5.0F;
 
-            this.loosePage1.yRot = (bounce) / 3.0F;
-            this.loosePage1.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
-            this.loosePage1.zRot = Mth.cos((bounce) / 5.0F) / 4.0F + 2;
+        this.loosePage1.yRot = (bounce) / 3.0F;
+        this.loosePage1.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
+        this.loosePage1.zRot = Mth.cos((bounce) / 5.0F) / 4.0F + 2;
 
-            this.loosePage2.yRot = (bounce) / 4.0F;
-            this.loosePage2.xRot = -Mth.sin((bounce) / 5.0F) / 3.0F;
-            this.loosePage2.zRot = Mth.cos((bounce) / 5.0F) / 5.0F - 1.0F;
+        this.loosePage2.yRot = (bounce) / 4.0F;
+        this.loosePage2.xRot = -Mth.sin((bounce) / 5.0F) / 3.0F;
+        this.loosePage2.zRot = Mth.cos((bounce) / 5.0F) / 5.0F - 1.0F;
 
-            this.loosePage3.yRot = (bounce) / 4.0F;
-            this.loosePage3.xRot = -Mth.sin((bounce) / 2.0F) / 4.0F;
-            this.loosePage3.zRot = Mth.cos((bounce) / 7.0F) / 5.0F;
+        this.loosePage3.yRot = (bounce) / 4.0F;
+        this.loosePage3.xRot = -Mth.sin((bounce) / 2.0F) / 4.0F;
+        this.loosePage3.zRot = Mth.cos((bounce) / 7.0F) / 5.0F;
 
-            // hoveriness
-            this.book.setPos(0, 8 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
-        }
+        // hoveriness
+        this.book.setPos(0, 8 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
 
 
         // book openness
