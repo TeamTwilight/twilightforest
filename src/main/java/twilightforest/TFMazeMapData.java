@@ -44,6 +44,7 @@ public class TFMazeMapData extends MapItemSavedData {
 		tfdata.trackedDecorationCount = data.trackedDecorationCount;
 
 		tfdata.yCenter = nbt.getInt("yCenter");
+		tfdata.ore = nbt.getBoolean("mapOres");
 
 		return tfdata;
 	}
@@ -52,6 +53,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	public CompoundTag save(CompoundTag nbt) {
 		CompoundTag ret = super.save(nbt);
 		ret.putInt("yCenter", this.yCenter);
+		ret.putBoolean("mapOres", this.ore);
 		return ret;
 	}
 
