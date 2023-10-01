@@ -24,6 +24,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	private static final Map<String, TFMazeMapData> CLIENT_DATA = new HashMap<>();
 
 	public int yCenter;
+	public boolean ore;
 
 	public TFMazeMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
