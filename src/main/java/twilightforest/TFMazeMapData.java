@@ -87,6 +87,6 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(int mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket(mapItemDataPacket), NetworkDirection.PLAY_TO_CLIENT) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket(mapItemDataPacket, ore, yCenter), NetworkDirection.PLAY_TO_CLIENT) : packet;
 	}
 }
