@@ -4,8 +4,8 @@
 	"srcrgb": "srcalpha",
 	"dstrgb": "1-srcalpha"
   },
-  "vertex": "twilightforest:/aurora/aurora",
-  "fragment": "twilightforest:/aurora/aurora",
+  "vertex": "twilightforest:aurora/aurora",
+  "fragment": "twilightforest:aurora/aurora",
   "attributes": [
 	"Position",
     "Color"
