@@ -1,0 +1,14 @@
+{
+  "type": "troll_caves",
+  "base_stalactites": [
+    "twilightforest:entries/hill_stone_stalactite"
+  ],
+  "ore_chance": 0.0,
+  "ore_stalactites": [],
+  "replace": false,
+  "stalactite_chance": 1.0,
+  "stalagmite_chance": 0.25,
+  "stalagmites": [
+    "twilightforest:entries/hill_stone_stalactite"
+  ]
+}

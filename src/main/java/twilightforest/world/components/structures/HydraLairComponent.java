@@ -7,12 +7,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.data.custom.stalactites.entry.HillConfig;
+import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RectangleLatticeIterator;
@@ -41,6 +42,8 @@ public class HydraLairComponent extends HollowHillComponent {
 
 		BlockPos exclusionCenter = locator.offset(-16, 0, -16);
 
+        HillConfig config = StalactiteReloadListener.HILL_CONFIGS.get(HillConfig.HillType.HYDRA_LAIR);
+
 		float exclusionRadiusSq = 23 * 23;
 		for (BlockPos.MutableBlockPos dest : this.spikePlacement.boundedGrid(writeableBounds, 0)) {
 			// xz -9 -9 from spawner, center of exclude circle with radius 24
@@ -55,17 +58,22 @@ public class HydraLairComponent extends HollowHillComponent {
 
 			dest.setY(Mth.floor(Mth.cos(Mth.sqrt(distSq) / this.hdiam * Mth.PI) * (this.hdiam / 4f)));
 
-			if (rand.nextBoolean()) {
-				this.generateOreStalactite(world, dest, writeableBounds);
-			} else {
-				this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), writeableBounds, true);
+			if (config.shouldDoAStalactite(rand)) {
+				if (rand.nextBoolean()) {
+					this.generateOreStalactite(world, dest, writeableBounds, HillConfig.HillType.HYDRA_LAIR, true);
+				} else {
+					this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), writeableBounds, true);
+				}
 			}
 
-			if ((rand.nextFloat() * 0.667f + 0.333f) * distSq / radiusSq < 0.333f) continue;
+			if (config.shouldDoAStalagmite(rand)) {
+				if ((rand.nextFloat() * 0.667f + 0.333f) * distSq / radiusSq < 0.333f) continue;
 
-			dest.setY(1);
+				dest.setY(1);
 
-			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), writeableBounds, false);
+				this.generateOreStalactite(world, dest, writeableBounds, HillConfig.HillType.HYDRA_LAIR, false);
+				//this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), writeableBounds, false);
+			}
 		}
 
 		// boss spawner seems important

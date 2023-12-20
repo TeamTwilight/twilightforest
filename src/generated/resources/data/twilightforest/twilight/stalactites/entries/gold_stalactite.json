@@ -1,0 +1,15 @@
+{
+  "max_length": 6,
+  "ores": [
+    {
+      "block": "minecraft:gold_ore",
+      "weight": 30
+    },
+    {
+      "block": "minecraft:raw_gold_block",
+      "weight": 1
+    }
+  ],
+  "size_variation": 0.6,
+  "weight": 10
+}

@@ -1,0 +1,6 @@
+{
+  "max_length": 4,
+  "ores": "minecraft:diamond_ore",
+  "size_variation": 0.5,
+  "weight": 8
+}

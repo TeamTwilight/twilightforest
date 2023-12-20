@@ -1,7 +1,9 @@
 package twilightforest.world.components.structures.trollcave;
 
+import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -24,12 +26,11 @@ import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
-
-import java.util.Map;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
-	protected static final Stalactite STONE_STALACTITE_SMALL = new Stalactite(Map.of(Blocks.STONE, 1), 1.0F, 5, 1);
 
+	protected static final Stalactite STONE_STALACTITE_SMALL = new Stalactite(Either.right(Blocks.STONE), 1.0F, 5, 1);
 	protected final boolean[] openingTowards = {false, false, true, false};
 
 	public TrollCaveConnectComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -94,12 +95,12 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, STONE_STALACTITE_SMALL, dest.atY(this.height), sbb, true);
+			makeStalactite(world, dest.atY(this.height), sbb, true);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, STONE_STALACTITE_SMALL, dest.atY(0), sbb, false);
+			makeStalactite(world, dest.atY(0), sbb, false);
 		}
 
 		// possible treasure
@@ -133,6 +134,21 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 			}
 		}
 		return count;
+	}
+
+	protected void makeStalactite(WorldGenLevel world, Vec3i vec3i, BoundingBox sbb, boolean hanging) {
+		// are the coordinates in our bounding box?
+		int dx = getWorldX(vec3i.getX(), vec3i.getZ());
+		int dy = getWorldY(vec3i.getY());
+		int dz = getWorldZ(vec3i.getX(), vec3i.getZ());
+		BlockPos pos = new BlockPos(dx, dy, dz);
+		if (sbb.isInside(pos)) {
+			// generate an RNG for this stalactite
+			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
+
+			// make the actual stalactite
+			BlockSpikeFeature.startSpike(world, pos, STONE_STALACTITE_SMALL, stalRNG, hanging);
+		}
 	}
 
 	private void decorateWall(WorldGenLevel world, BoundingBox sbb, RandomSource decoRNG, Rotation rotation) {

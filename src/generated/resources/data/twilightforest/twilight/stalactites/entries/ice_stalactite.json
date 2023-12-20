@@ -1,0 +1,6 @@
+{
+  "max_length": 10,
+  "ores": "minecraft:ice",
+  "size_variation": 0.6,
+  "weight": 1
+}

@@ -1,0 +1,14 @@
+{
+  "type": "yeti_cave",
+  "base_stalactites": [
+    "twilightforest:entries/ice_stalactite",
+    "twilightforest:entries/packed_ice_stalactite",
+    "twilightforest:entries/blue_ice_stalactite"
+  ],
+  "ore_chance": 0.0,
+  "ore_stalactites": [],
+  "replace": false,
+  "stalactite_chance": 1.0,
+  "stalagmite_chance": 0.0,
+  "stalagmites": []
+}

@@ -1,0 +1,6 @@
+{
+  "max_length": 11,
+  "ores": "minecraft:stone",
+  "size_variation": 0.25,
+  "weight": 1
+}
