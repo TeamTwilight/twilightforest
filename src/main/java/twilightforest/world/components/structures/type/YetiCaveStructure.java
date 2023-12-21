@@ -31,7 +31,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure {
                     .apply(instance, YetiCaveStructure::new)
     );
 
-    private RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig;
+    private final RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig;
 
     public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings, RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig) {
         super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
@@ -41,7 +41,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure {
 
     @Override
     protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new YetiCaveComponent(0, x, y, z, RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT);
+        return new YetiCaveComponent(0, x, y, z, this.spikePlaceConfig);
     }
 
     @Override
