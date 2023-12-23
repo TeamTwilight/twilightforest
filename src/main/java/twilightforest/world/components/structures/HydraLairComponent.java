@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.world.components.feature.BlockSpikeFeature;
 
 
 public class HydraLairComponent extends HollowHillComponent {
@@ -54,11 +53,7 @@ public class HydraLairComponent extends HollowHillComponent {
 			dest.setY(Mth.floor(Mth.cos(Mth.sqrt(distSq) / this.hdiam * Mth.PI) * (this.hdiam / 4f)));
 
 			if (this.speleothemConfig.shouldDoAStalactite(rand)) {
-				if (rand.nextBoolean()) {
-					this.generateOreStalactite(world, dest, writeableBounds, true);
-				} else {
-					this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest, writeableBounds, true);
-				}
+				this.generateSpeleothem(world, dest, writeableBounds, true);
 			}
 
 			if (this.speleothemConfig.shouldDoAStalagmite(rand)) {
@@ -66,7 +61,7 @@ public class HydraLairComponent extends HollowHillComponent {
 
 				dest.setY(1);
 
-				this.generateOreStalactite(world, dest, writeableBounds, false);
+				this.generateSpeleothem(world, dest, writeableBounds, false);
 			}
 		}
 

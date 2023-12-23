@@ -1,4 +1,4 @@
-// 1.20.4	2023-12-19T15:25:18.9488453	Twilight Forest Block Tags
+// 1.20.4	2023-12-23T12:11:23.705614	Twilight Forest Block Tags
 a10ef0864e630b44949959994b373ec7ee07dcb1 data/alexscaves/tags/blocks/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/blocks/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/blocks/underzealot_light_sources.json
@@ -6,14 +6,14 @@ c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/blocks/underzealot
 27fc8e32e0e71b8dcbb82f0ada3b954d906256b6 data/farmersdelight/tags/blocks/compost_activators.json
 58368024917f3977d742816bf7ea2eb9a1d5d1b7 data/farmersdelight/tags/blocks/heat_sources.json
 3d56c0ea016f639fad4fae4272d928867251da04 data/forge/tags/blocks/chests/wooden.json
-879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
-879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
 211134157771c86a72a0c5a1985c2b05da55729b data/forge/tags/blocks/fence_gates.json
 211134157771c86a72a0c5a1985c2b05da55729b data/forge/tags/blocks/fence_gates/wooden.json
+879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
+879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
 7088eeadc01cb4ee514f7c4fd5c25d66a2ee1a00 data/forge/tags/blocks/immovable.json
 df96e08b3ffd5a9ad9da4ab599e36a6644028dbc data/forge/tags/blocks/needs_wood_tool.json
-078ffd510c10188061614a42c5165e8a6b146fd7 data/forge/tags/blocks/ores_in_ground/root.json
 092125a387f652f754cbd3e2eef2d3fe0a67bd55 data/forge/tags/blocks/ore_bearing_ground/root.json
+078ffd510c10188061614a42c5165e8a6b146fd7 data/forge/tags/blocks/ores_in_ground/root.json
 7088eeadc01cb4ee514f7c4fd5c25d66a2ee1a00 data/forge/tags/blocks/relocation_not_supported.json
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/forge/tags/blocks/storage_blocks.json
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/minecraft/tags/blocks/beacon_base_blocks.json
@@ -33,11 +33,11 @@ e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/blocks/flower_pots.
 0af80d33dcbb7226a5afcb9d8a4c1a73a2c38c9d data/minecraft/tags/blocks/logs_that_burn.json
 c1e789920815e3967f83ec2d04e9f26e5a0d5409 data/minecraft/tags/blocks/mineable/axe.json
 7177f5d8a3deacfcbfc12170902b73749e87213c data/minecraft/tags/blocks/mineable/hoe.json
-e9639ceae15845d17f2799e28eb95a41b1465684 data/minecraft/tags/blocks/mineable/pickaxe.json
+e1b4e32621edbf36578b50874d4c6119cbeee3a9 data/minecraft/tags/blocks/mineable/pickaxe.json
 944d5178d1a94490d123e31a73bc58d4eea852ab data/minecraft/tags/blocks/mineable/shovel.json
 44cc0123e6b6b654303a046d924b4e8fca617f41 data/minecraft/tags/blocks/moss_replaceable.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/blocks/mushroom_grow_block.json
-2cc71b4b02486e3d8d669e95fa7c0778dca273d8 data/minecraft/tags/blocks/needs_diamond_tool.json
+cfe717a770599119cf76c939d9dfede09a858f59 data/minecraft/tags/blocks/needs_diamond_tool.json
 d1f677ac5e8be6bff6bd3a82b3586cd745434ef9 data/minecraft/tags/blocks/needs_iron_tool.json
 dfe388780d9d636ad393c72d71b3ff7e0d725c09 data/minecraft/tags/blocks/needs_stone_tool.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/minecraft/tags/blocks/occludes_vibration_signals.json
@@ -51,9 +51,9 @@ bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/blocks/slabs.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/blocks/stairs.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/blocks/standing_signs.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/minecraft/tags/blocks/strider_warm_blocks.json
-e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/blocks/walls.json
 f1654e579781c2bce8d458efa0cdb304b5ad052c data/minecraft/tags/blocks/wall_hanging_signs.json
 8b7e0d4d896e5e197798d761800abbb1510d92e8 data/minecraft/tags/blocks/wall_signs.json
+e67d2a0a3001de2207130c3fffff8d6665f26fbf data/minecraft/tags/blocks/walls.json
 21d68ed46d202a9b9c5b709deebf8105df972ec0 data/minecraft/tags/blocks/wither_immune.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/blocks/wooden_buttons.json
 3ff910b3376b5166da794689b1bf7569ad0b2e87 data/minecraft/tags/blocks/wooden_doors.json
@@ -62,7 +62,7 @@ f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/blocks/wooden_butto
 e4144fc27ee121d3f7d17a5fdff02e93e1d7f7d8 data/minecraft/tags/blocks/wooden_slabs.json
 f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/blocks/wooden_stairs.json
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/blocks/wooden_trapdoors.json
-e61eeb87b9b5ecebdb3a29a8ba0b33a4881b48c7 data/twilightforest/tags/blocks/annihilation_inclusions.json
+da8d3633fcaeec13b64c7691a56ece30484ae0cd data/twilightforest/tags/blocks/annihilation_inclusions.json
 894771e557845fa22ca82b71283c23be8ab1847a data/twilightforest/tags/blocks/antibuilder_ignores.json
 af8520c845f14fb320bcefd284018a5ad57a7528 data/twilightforest/tags/blocks/banisters.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/blocks/canopy_logs.json
@@ -72,8 +72,9 @@ ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/blocks/castle_
 3d56c0ea016f639fad4fae4272d928867251da04 data/twilightforest/tags/blocks/chests.json
 63d6b8afab51c74ed26723c1e8a1588cbba120cb data/twilightforest/tags/blocks/clouds.json
 4955c5a75150132ea89493a413fbb4431eeba532 data/twilightforest/tags/blocks/common_protections.json
-97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
 29d004c820708d44b1747a2f31f506646efb1a27 data/twilightforest/tags/blocks/dark_tower_allowed_pots.json
+97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
+8ed2ef0f9a24051c4d152d5d47721e79f790e2eb data/twilightforest/tags/blocks/deadrock.json
 bf058833e8ea8ec1da7d6c84a022263ae758ea24 data/twilightforest/tags/blocks/druid_projectile_replaceable.json
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/blocks/fire_jet_fuel.json
 25aee6721c6ac17e92f2a9f5d0733f89a0a0489b data/twilightforest/tags/blocks/giants_spawnable_on.json
@@ -104,8 +105,9 @@ b1bdb774a7cf90e5cfbf8d045a3ccca943b8e073 data/twilightforest/tags/blocks/storage
 e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/twilightforest/tags/blocks/storage_blocks/knightmetal.json
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/twilightforest/tags/blocks/storage_blocks/steeleaf.json
 c6759d0cd015a70c590dd1ec9d0cd2941d3f45dc data/twilightforest/tags/blocks/structure_banned_interactions.json
-aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/blocks/timewood_logs.json
+fe294f66f8396c4430eeb05932c598d8a86fbba0 data/twilightforest/tags/blocks/supports_stalagmites.json
 6ac229128975c2e8f70b767e08a76386b7bc81df data/twilightforest/tags/blocks/time_core_excluded.json
+aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/blocks/timewood_logs.json
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/blocks/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/blocks/transwood_logs.json
 fefe9165712fc88657d59e31e991a5e4ea7eed72 data/twilightforest/tags/blocks/tree_roots_skip.json

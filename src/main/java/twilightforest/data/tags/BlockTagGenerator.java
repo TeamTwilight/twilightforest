@@ -89,6 +89,10 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 	public static final TagKey<Block> TF_CHESTS = BlockTags.create(TwilightForestMod.prefix("chests"));
 
+	public static final TagKey<Block> DEADROCK = BlockTags.create(TwilightForestMod.prefix("deadrock"));
+
+	public static final TagKey<Block> SUPPORTS_STALAGMITES = BlockTags.create(TwilightForestMod.prefix("supports_stalagmites"));
+
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
 		super(output, future, helper);
 	}
@@ -491,10 +495,12 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		tag(CARMINITE_REACTOR_ORES).add(Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE);
 
+		tag(DEADROCK).add(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.WEATHERED_DEADROCK.get());
+
 		tag(ANNIHILATION_INCLUSIONS) // This is NOT a blacklist! This is a whitelist
 				.add(Blocks.NETHER_PORTAL)
-				.add(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.WEATHERED_DEADROCK.get())
-				.add(TFBlocks.CASTLE_BRICK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.CASTLE_ROOF_TILE.get(), TFBlocks.WORN_CASTLE_BRICK.get())
+				.addTag(DEADROCK)
+				.add(TFBlocks.CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.CASTLE_ROOF_TILE.get(), TFBlocks.WORN_CASTLE_BRICK.get())
 				.add(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_RUNE_BRICK.get())
 				.add(TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get())
 				.add(TFBlocks.BROWN_THORNS.get(), TFBlocks.GREEN_THORNS.get());
@@ -626,7 +632,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.ARCTIC_FUR_BLOCK.get()
 		);
 
-		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+		tag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(DEADROCK).add(
 				TFBlocks.NAGASTONE.get(),
 				TFBlocks.NAGASTONE_HEAD.get(),
 				TFBlocks.STRONGHOLD_SHIELD.get(),
@@ -637,9 +643,6 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.MOSSY_UNDERBRICK.get(),
 				TFBlocks.CRACKED_UNDERBRICK.get(),
 				TFBlocks.UNDERBRICK_FLOOR.get(),
-				TFBlocks.DEADROCK.get(),
-				TFBlocks.CRACKED_DEADROCK.get(),
-				TFBlocks.WEATHERED_DEADROCK.get(),
 				TFBlocks.TROLLSTEINN.get(),
 				TFBlocks.GIANT_LEAVES.get(),
 				TFBlocks.GIANT_OBSIDIAN.get(),
@@ -731,12 +734,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.KNIGHTMETAL_BLOCK.get()
 		);
 
-		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
-				TFBlocks.AURORA_BLOCK.get(),
-				TFBlocks.DEADROCK.get(),
-				TFBlocks.CRACKED_DEADROCK.get(),
-				TFBlocks.WEATHERED_DEADROCK.get()
-		).addTags(CASTLE_BLOCKS, MAZESTONE);
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TFBlocks.AURORA_BLOCK.get()).addTags(CASTLE_BLOCKS, MAZESTONE, DEADROCK);
 
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
 
@@ -785,6 +783,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), TFBlocks.HYDRA_BOSS_SPAWNER.get(),
 				TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get(),
 				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
+
+		tag(SUPPORTS_STALAGMITES).addTag(DEADROCK).add(Blocks.PACKED_ICE);
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {

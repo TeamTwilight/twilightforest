@@ -38,15 +38,14 @@ public class YetiCaveComponent extends HollowHillComponent {
 		for (BlockPos.MutableBlockPos dest : this.speleothemConfig.latticeIterator(writeableBounds, 0)) {
 			int xDist = Math.abs(dest.getX() - center.getX());
 			int zDist = Math.abs(dest.getZ() - center.getZ());
+			int minDelta = Math.min(xDist, zDist);
 
 			if (xDist <= maxRadius && zDist <= maxRadius) {
-				BlockPos ceiling = dest.atY(15 - Math.min(xDist, zDist) / 6);
-
 				if (this.speleothemConfig.shouldDoAStalactite(rand))
-                	this.generateOreStalactite(world, ceiling, writeableBounds, true);
+                	this.generateSpeleothem(world, dest.above(15 - minDelta / 6), writeableBounds, true);
 
-				if (this.speleothemConfig.shouldDoAStalagmite(rand)) // FIXME Fix floor position (our config currently allows zero of these)
-					this.generateOreStalactite(world, ceiling, writeableBounds, false);
+				if (this.speleothemConfig.shouldDoAStalagmite(rand))
+					this.generateSpeleothem(world, dest.above(-4 + minDelta / 6), writeableBounds, false);
 			}
 		}
 

@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
@@ -146,26 +145,16 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	/**
-	 * Generate a random ore stalactite
+	 * Generate a random stalactite/stalagmite
 	 */
-	protected void generateOreStalactite(WorldGenLevel world, BlockPos pos, BoundingBox sbb, boolean hanging) {
-		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
-			// generate an RNG for this stalactite
-			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) pos.getX() * pos.getZ());
-
-			// make the actual stalactite
-            BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getRandomStalactiteFromList(stalRNG, hanging), stalRNG, hanging);
-		}
-	}
-
-	protected void generateBlockSpike(WorldGenLevel world, Stalactite config, BlockPos pos, BoundingBox sbb, boolean hanging) {
+	protected void generateSpeleothem(WorldGenLevel world, BlockPos pos, BoundingBox sbb, boolean hanging) {
 		// are the coordinates in our bounding box?
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) pos.getX() * pos.getZ());
 
 			// make the actual stalactite
-			BlockSpikeFeature.startSpike(world, pos, config, stalRNG, hanging);
+            BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getRandomStalactiteFromList(stalRNG, hanging), stalRNG, hanging);
 		}
 	}
 
