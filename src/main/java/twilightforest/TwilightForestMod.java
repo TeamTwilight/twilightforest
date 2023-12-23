@@ -51,6 +51,7 @@ import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ControlledSpawnsCache;
 import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
+import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -158,6 +159,7 @@ public class TwilightForestMod {
 		event.dataPackRegistry(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC, Restriction.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {

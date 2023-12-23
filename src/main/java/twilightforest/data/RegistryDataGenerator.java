@@ -8,10 +8,7 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.*;
-import twilightforest.init.custom.BiomeLayerStack;
-import twilightforest.init.custom.MagicPaintingVariants;
-import twilightforest.init.custom.Restrictions;
-import twilightforest.init.custom.WoodPalettes;
+import twilightforest.init.custom.*;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -21,6 +18,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 	public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
 			.add(Registries.CONFIGURED_FEATURE, TFConfiguredFeatures::bootstrap)
 			.add(Registries.PLACED_FEATURE, TFPlacedFeatures::bootstrap)
+			.add(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfigs::bootstrap)
 			.add(Registries.STRUCTURE, TFStructures::bootstrap)
 			.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
 			.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)

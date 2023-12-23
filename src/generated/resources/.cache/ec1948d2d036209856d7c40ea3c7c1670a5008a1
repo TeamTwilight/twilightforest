@@ -1,4 +1,4 @@
-// 1.20.4	2023-12-20T12:56:42.070054	Twilight Forest Hollow Hill Stalactites
+// 1.20.4	2023-12-23T09:33:24.569719	Twilight Forest Hollow Hill Stalactites
 5ab7eefaa50987c39177332d5d179cc48dc49921 data/twilightforest/twilight/stalactites/entries/blue_ice_stalactite.json
 d16b89aa4ac09bf28f449e17766737c473d798f1 data/twilightforest/twilight/stalactites/entries/coal_stalactite.json
 1b4a6fa7ac5082aa2a9753e7bf8f19e237f89982 data/twilightforest/twilight/stalactites/entries/copper_stalactite.json
@@ -16,5 +16,5 @@ e9482a0b9a82f0658dcba5bc173a466f21ac3d65 data/twilightforest/twilight/stalactite
 a7d4e8235ac79e988ddc3b03b7b5ea053e7b54c8 data/twilightforest/twilight/stalactites/large_hollow_hill.json
 b074ed658b120dff46628e973418ee1b09625535 data/twilightforest/twilight/stalactites/medium_hollow_hill.json
 0cad68631b93339d1a1517902230441c855b3ab6 data/twilightforest/twilight/stalactites/small_hollow_hill.json
-6064522ee0f4282db0d98d3cfd176984e0a3f36d data/twilightforest/twilight/stalactites/troll_caves.json
+005d8a19711a286558f3b993f5548272ac78b6dc data/twilightforest/twilight/stalactites/troll_cave.json
 7baddd86247e879a9eb99c99ca555ad9f4be3950 data/twilightforest/twilight/stalactites/yeti_cave.json

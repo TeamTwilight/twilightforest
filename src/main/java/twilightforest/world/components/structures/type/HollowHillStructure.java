@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.util.Mth;
@@ -14,12 +15,14 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
+import twilightforest.TFRegistries;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.util.RectangleLatticeIterator;
+import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.world.components.structures.HollowHillComponent;
+import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
@@ -33,7 +36,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
                     // TODO Clean up findGenerationPoint() first before even thinking about increasing upper limit
                     Codec.intRange(1, 3).fieldOf("hill_size").forGetter(s -> s.size),
                     ControlledSpawningConfig.FLAT_CODEC.forGetter(s -> s.controlledSpawningConfig),
-                    RectangleLatticeIterator.TriangularLatticeConfig.CODEC.fieldOf("spike_placement_config").orElse(RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT).forGetter(s -> s.spikePlaceConfig)
+                    StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig)
             )
             .and(landmarkCodec(instance))
             .apply(instance, HollowHillStructure::new)
@@ -41,13 +44,13 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 
     private final int size;
     private final ControlledSpawningConfig controlledSpawningConfig;
-    private final RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig;
+    private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-    public HollowHillStructure(int size, ControlledSpawningConfig controlledSpawningConfig, RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+    public HollowHillStructure(int size, ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
         super(decorationConfig, structureSettings);
         this.size = size;
         this.controlledSpawningConfig = controlledSpawningConfig;
-        this.spikePlaceConfig = spikePlaceConfig;
+        this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
     }
 
     // "Cuts" the box into a half-dome
@@ -62,9 +65,9 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
     @Override
     protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
         return switch (this.size) { // TODO Clean up once TFLandmark params are no longer necessary
-            case 1 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 3, y - 2, z - 3, this.spikePlaceConfig);
-            case 2 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 7, y - 5, z - 7, this.spikePlaceConfig);
-            default -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 11, y - 5, z - 11, this.spikePlaceConfig);
+            case 1 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 3, y - 2, z - 3, this.speleothemConfig);
+            case 2 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 7, y - 5, z - 7, this.speleothemConfig);
+            default -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 11, y - 5, z - 11, this.speleothemConfig);
         };
     }
 
@@ -88,7 +91,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
                         new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), 10, 4, 4),
                         new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 10, 4, 8)
                 )), List.of(), List.of()),
-                RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT,
+                context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.SMALL_HILL),
                 new DecorationConfig(1, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
@@ -114,7 +117,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
                         new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 5, 1, 1),
                         new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
                 )), List.of(), List.of()),
-                RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT,
+                context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.MEDIUM_HILL),
                 new DecorationConfig(2, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
@@ -141,7 +144,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
                         new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 10, 1, 2),
                         new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
                 ),
-                RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT,
+                context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.LARGE_HILL),
                 new DecorationConfig(3, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),

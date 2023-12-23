@@ -26,10 +26,10 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	public static final String STALACTITE_DIRECTORY = "twilight/stalactites";
 
-	public static final Map<HillConfig.HillType, HillConfig> HILL_CONFIGS = new HashMap<>();
-	public static final Map<HillConfig.HillType, List<Stalactite>> STALACTITES_PER_HILL = new HashMap<>();
-	public static final Map<HillConfig.HillType, List<Stalactite>> ORE_STALACTITES_PER_HILL = new HashMap<>();
-	public static final Map<HillConfig.HillType, List<Stalactite>> STALAGMITES_PER_HILL = new HashMap<>();
+	public static final Map<String, SpeleothemVarietyConfig> HILL_CONFIGS = new HashMap<>();
+	public static final Map<String, List<Stalactite>> STALACTITES_PER_HILL = new HashMap<>();
+	public static final Map<String, List<Stalactite>> ORE_STALACTITES_PER_HILL = new HashMap<>();
+	public static final Map<String, List<Stalactite>> STALAGMITES_PER_HILL = new HashMap<>();
 
 	public StalactiteReloadListener() {
 		super(GSON, STALACTITE_DIRECTORY);
@@ -62,13 +62,13 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 
 	private void forLocation(ResourceManager manager, ResourceLocation location, JsonElement jsonElement) {
         try {
-            Optional<HillConfig> checkFile = HillConfig.CODEC.parse(JsonOps.INSTANCE, jsonElement).result();
+            Optional<SpeleothemVarietyConfig> checkFile = SpeleothemVarietyConfig.CODEC.parse(JsonOps.INSTANCE, jsonElement).result();
             if (checkFile.isPresent()) {
-                HillConfig config = checkFile.get();
+                SpeleothemVarietyConfig config = checkFile.get();
                 if (!HILL_CONFIGS.containsKey(config.type()) || config.replace()) {
                     HILL_CONFIGS.put(config.type(), config);
                     if (config.replace()) {
-                        TwilightForestMod.LOGGER.info("Stalactite Config {} wiped by {}", config.type().getSerializedName(), location.getNamespace());
+                        TwilightForestMod.LOGGER.info("Stalactite Config {} wiped by {}", config.type(), location.getNamespace());
                     }
                 }
 
@@ -81,7 +81,7 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
         }
     }
 
-	private void populateList(ResourceManager manager, HillConfig config, List<ResourceLocation> rawEntries, Map<HillConfig.HillType, List<Stalactite>> stalactiteDict) {
+	private void populateList(ResourceManager manager, SpeleothemVarietyConfig config, List<ResourceLocation> rawEntries, Map<String, List<Stalactite>> stalactiteDict) {
 		List<Stalactite> stalactitesForType = stalactiteDict.computeIfAbsent(config.type(), k -> new ArrayList<>());
 
 		if (config.replace()) stalactitesForType.clear();
@@ -95,7 +95,7 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 					JsonObject stalObject = GsonHelper.fromJson(GSON, stalReader, JsonObject.class);
 					Stalactite stalactite = Stalactite.CODEC.parse(JsonOps.INSTANCE, stalObject).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow();
 					stalactitesForType.add(stalactite);
-					TwilightForestMod.LOGGER.debug("Loaded Stalactite {} for config {}", rl, config.type().getSerializedName());
+					TwilightForestMod.LOGGER.debug("Loaded Stalactite {} for config {}", rl, config.type());
 				} catch (RuntimeException | IOException e) {
 					TwilightForestMod.LOGGER.error("Failed to parse stalactite entry {} in file {}", rl, config, e);
 				}
@@ -105,8 +105,8 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 		}
 	}
 
-	public Stalactite getRandomStalactiteFromList(RandomSource random, HillConfig.HillType type, boolean hanging) {
-		HillConfig config = HILL_CONFIGS.get(type);
+	public Stalactite getRandomStalactiteFromList(RandomSource random, String type, boolean hanging) {
+		SpeleothemVarietyConfig config = HILL_CONFIGS.get(type);
 		List<Stalactite> stalactites = hanging ? random.nextFloat() < config.oreChance() ? ORE_STALACTITES_PER_HILL.get(type) : STALACTITES_PER_HILL.get(type) : STALAGMITES_PER_HILL.get(type);
 		WeightedRandomList<WeightedEntry.Wrapper<Stalactite>> list = WeightedRandomList.create(stalactites.stream().map(stalactite -> WeightedEntry.wrap(stalactite, stalactite.weight())).toList());
 		return list.getRandom(random).orElse(WeightedEntry.wrap(BlockSpikeFeature.STONE_STALACTITE, 1)).getData();

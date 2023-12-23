@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.util.RandomSource;
@@ -12,11 +13,13 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.util.RectangleLatticeIterator;
+import twilightforest.init.custom.StructureSpeleothemConfigs;
+import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.YetiCaveComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
@@ -27,21 +30,21 @@ import java.util.stream.Collectors;
 public class YetiCaveStructure extends ControlledSpawningStructure {
     public static final Codec<YetiCaveStructure> CODEC = RecordCodecBuilder.create(instance ->
             controlledSpawningCodec(instance)
-                    .and(RectangleLatticeIterator.TriangularLatticeConfig.CODEC.fieldOf("spike_placement_config").orElse(RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT).forGetter(s -> s.spikePlaceConfig))
+                    .and(StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig))
                     .apply(instance, YetiCaveStructure::new)
     );
 
-    private final RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig;
+    private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-    public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings, RectangleLatticeIterator.TriangularLatticeConfig spikePlaceConfig) {
+    public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings, Holder<StructureSpeleothemConfig> speleothemConfig) {
         super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
 
-        this.spikePlaceConfig = spikePlaceConfig;
+        this.speleothemConfig = (Holder.Reference<StructureSpeleothemConfig>) speleothemConfig;
     }
 
     @Override
     protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new YetiCaveComponent(0, x, y, z, this.spikePlaceConfig);
+        return new YetiCaveComponent(0, x, y, z, this.speleothemConfig);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure {
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.BURY
                 ),
-                RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT
+                context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.YETI_CAVE)
         );
     }
 }

@@ -111,13 +111,7 @@
       "spawns": []
     }
   },
-  "spike_placement_config": {
-    "spacing": 3.5,
-    "x_offset": 3.0311449,
-    "x_spacing": 6.0622897,
-    "z_offset": 1.7499031,
-    "z_spacing": 3.5
-  },
+  "speleothem_config": "twilightforest:large_hollow_hill",
   "step": "surface_structures",
   "water_spawns": []
 }

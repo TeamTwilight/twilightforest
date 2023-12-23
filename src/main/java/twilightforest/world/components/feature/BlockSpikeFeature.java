@@ -18,11 +18,11 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import twilightforest.data.custom.stalactites.entry.HillConfig;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.FeatureLogic;
 
-import java.util.*;
+import java.util.List;
 
 public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -86,7 +86,7 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		if (!hang) {
 			BlockPos below = startPos.below(2);
 			BlockState belowState = level.getBlockState(below);
-			if (!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP)) return false;
+			if ((!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP)) && !belowState.is(TFBlocks.DEADROCK)) return false;
 		}
 
 		// let's see...
@@ -117,14 +117,5 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Makes a random stalactite appropriate to the cave size
-	 * <p>
-	 * All Stalactite configs are made through datapacks. They are found in modid:data/modid/twilight/stalactites/entries
-	 */
-	public static Stalactite makeRandomOreStalactite(RandomSource rand, HillConfig.HillType type, boolean hanging) {
-		return Stalactite.getStalactiteConfig().getRandomStalactiteFromList(rand, type, hanging);
 	}
 }

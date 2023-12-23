@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.trollcave;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
@@ -18,12 +19,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.data.custom.stalactites.entry.HillConfig;
-import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.function.Predicate;
 
@@ -31,11 +31,11 @@ import java.util.function.Predicate;
 public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	public TrollCaveGardenComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFTCGard.get(), nbt);
+		super(TFStructurePieceTypes.TFTCGard.get(), ctx, nbt);
 	}
 
-	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z);
+	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
+		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z, speleothemConfig);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
@@ -94,13 +94,8 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 			setBlockStateRotated(world, Blocks.MYCELIUM.defaultBlockState(), dest.getX(), dest.setY(0).getY(), dest.getZ(), this.rotation, sbb);
 			generate(world, generator, rand.nextBoolean() ? TreeFeatures.HUGE_BROWN_MUSHROOM : TreeFeatures.HUGE_RED_MUSHROOM, decoRNG, dest.getX(), dest.setY(1).getY(), dest.getZ(), sbb);
 		}
-		HillConfig config = StalactiteReloadListener.HILL_CONFIGS.get(HillConfig.HillType.TROLL_CAVES);
 
-		// stone stalactites!
-		for (int i = 0; i < config.stalactiteChance(); i++) {
-			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, dest.atY(this.height), sbb, true);
-		}
+		this.placeSpeleothems(world, rand, sbb, decoRNG);
 	}
 
 	protected void generate(WorldGenLevel world, ChunkGenerator generator, ResourceKey<ConfiguredFeature<?, ?>> feature, RandomSource rand, int x, int y, int z, BoundingBox sbb) {

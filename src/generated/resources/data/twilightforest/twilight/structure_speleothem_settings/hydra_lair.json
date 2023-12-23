@@ -1,0 +1,10 @@
+{
+  "type": "hydra_lair",
+  "lattice": {
+    "spacing": 4.5,
+    "x_offset": 3.897186,
+    "x_spacing": 7.794372,
+    "z_offset": 2.2498753,
+    "z_spacing": 4.5
+  }
+}

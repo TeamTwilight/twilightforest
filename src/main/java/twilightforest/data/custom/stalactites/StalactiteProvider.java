@@ -11,7 +11,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.custom.stalactites.entry.HillConfig;
+import twilightforest.data.custom.stalactites.entry.SpeleothemVarietyConfig;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 
@@ -34,7 +34,7 @@ public abstract class StalactiteProvider implements DataProvider {
 
 	@Override
 	public CompletableFuture<?> run(CachedOutput output) {
-		List<HillConfig> configs = new ArrayList<>();
+		List<SpeleothemVarietyConfig> configs = new ArrayList<>();
 		Map<ResourceLocation, Stalactite> map = Maps.newHashMap();
 
 		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
@@ -53,8 +53,8 @@ public abstract class StalactiteProvider implements DataProvider {
 			futuresBuilder.add(DataProvider.saveStable(output, Stalactite.CODEC.encodeStart(JsonOps.INSTANCE, stalactite).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), path));
 		});
 		configs.forEach(hillConfig -> {
-			Path hillPath = this.generator.getOutputFolder().resolve(String.format("data/%s/%s/%s.json", this.modid, StalactiteReloadListener.STALACTITE_DIRECTORY, hillConfig.type().getSerializedName()));
-			futuresBuilder.add(DataProvider.saveStable(output, HillConfig.CODEC.encodeStart(JsonOps.INSTANCE, hillConfig).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), hillPath));
+			Path hillPath = this.generator.getOutputFolder().resolve(String.format("data/%s/%s/%s.json", this.modid, StalactiteReloadListener.STALACTITE_DIRECTORY, hillConfig.type()));
+			futuresBuilder.add(DataProvider.saveStable(output, SpeleothemVarietyConfig.CODEC.encodeStart(JsonOps.INSTANCE, hillConfig).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), hillPath));
 		});
 		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
 	}
@@ -84,17 +84,17 @@ public abstract class StalactiteProvider implements DataProvider {
 
 	public static class HillBuilder {
 
-		private final HillConfig config;
+		private final SpeleothemVarietyConfig config;
 		private final Map<ResourceLocation, Stalactite> baseStalactites = new HashMap<>();
 		private final Map<ResourceLocation, Stalactite> oreStalactites = new HashMap<>();
 		private final Map<ResourceLocation, Stalactite> stalagmites = new HashMap<>();
 
-		public HillBuilder(HillConfig.HillType type, float stalactitePlaceTries, float stalagmitePlaceTries, float oreChance) {
-			this(type, stalactitePlaceTries, stalagmitePlaceTries, oreChance, false);
+		public HillBuilder(String type, float stalactiteChance, float stalagmiteChance, float oreChance) {
+			this(type, stalactiteChance, stalagmiteChance, oreChance, false);
 		}
 
-		public HillBuilder(HillConfig.HillType type, float stalactitePlaceTries, float stalagmitePlaceTries, float oreChance, boolean replace) {
-			this.config = new HillConfig(type, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), oreChance, stalactitePlaceTries, stalagmitePlaceTries, replace);
+		public HillBuilder(String type, float stalactitePlaceTries, float stalagmitePlaceTries, float oreChance, boolean replace) {
+			this.config = new SpeleothemVarietyConfig(type, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), oreChance, stalactitePlaceTries, stalagmitePlaceTries, replace);
 		}
 
 		public HillBuilder addBaseStalactite(ResourceLocation name, Stalactite stalactite) {
@@ -126,5 +126,5 @@ public abstract class StalactiteProvider implements DataProvider {
 		}
 	}
 
-	private record HillInformation(HillConfig config, Map<ResourceLocation, Stalactite> baseStalactites, Map<ResourceLocation, Stalactite> oreStalactites, Map<ResourceLocation, Stalactite> stalagmites) {}
+	private record HillInformation(SpeleothemVarietyConfig config, Map<ResourceLocation, Stalactite> baseStalactites, Map<ResourceLocation, Stalactite> oreStalactites, Map<ResourceLocation, Stalactite> stalagmites) {}
 }

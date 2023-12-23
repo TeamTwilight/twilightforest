@@ -101,6 +101,7 @@
       "spawns": []
     }
   },
+  "speleothem_config": "twilightforest:troll_cave",
   "step": "underground_structures",
   "terrain_adaptation": "bury",
   "water_spawns": []

@@ -2,8 +2,9 @@ package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -17,13 +18,11 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
-import twilightforest.data.custom.stalactites.entry.HillConfig;
-import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.loot.TFLootTables;
-import twilightforest.util.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class HollowHillComponent extends TFStructureComponentOld {
@@ -35,42 +34,49 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	final int radius;
 	final int hdiam;
 
-	// Triangle-grid settings for placing features inside (Stalactites, Stalagmites, Chests, & Spawners)
-	protected final RectangleLatticeIterator.TriangularLatticeConfig spikePlacement;
+	// Settings for placing features inside (Stalactites, Stalagmites, Chests, & Spawners)
+	protected final StructureSpeleothemConfig speleothemConfig;
+	protected final ResourceLocation speleothemConfigId;
 
 	public HollowHillComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFHill.get(), nbt);
+        this(ctx, TFStructurePieceTypes.TFHill.get(), nbt);
 	}
 
-	public HollowHillComponent(StructurePieceType piece, CompoundTag nbt) {
+	public HollowHillComponent(StructurePieceSerializationContext ctx, StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		hillSize = nbt.getInt("hillSize");
-		this.radius = ((hillSize * 2 + 1) * 8) - 6;
-		this.hdiam = (hillSize * 2 + 1) * 16;
-		this.spikePlacement = nbt.contains("spike_placement", 10) ? RectangleLatticeIterator.TriangularLatticeConfig.fromNBT(nbt.getCompound("spike_config")) : RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT;
+
+		this.hillSize = nbt.getInt("hillSize");
+		this.radius = ((this.hillSize * 2 + 1) * 8) - 6;
+		this.hdiam = (this.hillSize * 2 + 1) * 16;
+
+		// TODO: Maybe write a fallback based on hillsize/Class, possibly in a new superclass
+        Holder.Reference<StructureSpeleothemConfig> configHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id"));
+		this.speleothemConfig = configHolder.value();
+		this.speleothemConfigId = configHolder.key().location();
 	}
 
-	public HollowHillComponent(StructurePieceType piece, int i, int size, int x, int y, int z, RectangleLatticeIterator.TriangularLatticeConfig spikePlacement) {
+	public HollowHillComponent(StructurePieceType piece, int i, int size, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
 		super(piece, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 
 		// get the size of this hill?
 		this.hillSize = size;
-		this.radius = ((hillSize * 2 + 1) * 8) - 6;
-		this.hdiam = (hillSize * 2 + 1) * 16;
+		this.radius = ((this.hillSize * 2 + 1) * 8) - 6;
+		this.hdiam = (this.hillSize * 2 + 1) * 16;
 
 		// can we determine the size here?
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / (hillSize == 1 ? 2 : hillSize), radius * 2, Direction.SOUTH, true);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -this.radius, -(3 + this.hillSize), -this.radius, this.radius * 2, this.radius / (this.hillSize == 1 ? 2 : this.hillSize), this.radius * 2, Direction.SOUTH, true);
 
-		this.spikePlacement = spikePlacement;
+		this.speleothemConfigId = speleothemConfig.unwrapKey().get().location();
+		this.speleothemConfig = speleothemConfig.value();
 	}
 
 	@Override
 	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
 		super.addAdditionalSaveData(ctx, tagCompound);
-		tagCompound.putInt("hillSize", hillSize);
-		// FIXME wtf no spike_placement, add TriangularLatticeConfig.toNBT
+		tagCompound.putInt("hillSize", this.hillSize);
+		tagCompound.putString("config_id", this.speleothemConfigId.toString());
 	}
 
 	/**
@@ -81,29 +87,26 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		BlockPos center = this.getLocatorPosition();
 		float shortenedRadiusSq = this.radius * this.radius * 0.85f;
 
-		HillConfig.HillType hillType = HillConfig.HillType.values()[this.hillSize - 1];
-		HillConfig config = StalactiteReloadListener.HILL_CONFIGS.get(hillType);
-
-		// Use two rectangle-grid lattices to simulate a triangular-grid lattice, simulating an optimal hexagonal-packing pattern for filling this structure
+        // Use two rectangle-grid lattices to simulate a triangular-grid lattice, simulating an optimal hexagonal-packing pattern for filling this structure
 		// with stalactites, stalagmites, chests, and spawners
 
 		// RectangleLatticeIterator enables for approximately-even spacing across chunks
-		for (BlockPos.MutableBlockPos latticePos : this.spikePlacement.boundedGrid(writeableBounds, 0)) {
+		for (BlockPos.MutableBlockPos latticePos : this.speleothemConfig.latticeIterator(writeableBounds, 0)) {
 			int distSq = getDistSqFromCenter(center, latticePos);
 
 			if (distSq > shortenedRadiusSq) continue;
 
-			this.setFeatures(world, rand, writeableBounds, latticePos, distSq, config);
+			this.setFeatures(world, rand, writeableBounds, latticePos, distSq);
 		}
 	}
 
-	private void setFeatures(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, int distSq, HillConfig config) {
+	private void setFeatures(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, int distSq) {
 		rand.setSeed(rand.nextLong() ^ pos.asLong());
-		this.placeCeilingFeature(world, rand, pos, distSq, config);
-		this.placeFloorFeature(world, rand, writeableBounds, pos, distSq, config);
+		this.placeCeilingFeature(world, rand, pos, distSq);
+		this.placeFloorFeature(world, rand, writeableBounds, pos, distSq);
 	}
 
-	private void placeFloorFeature(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, int distSq, HillConfig config) {
+	private void placeFloorFeature(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, int distSq) {
 
 		int y = this.getWorldY(Mth.floor(this.getFloorHeight(Mth.sqrt(distSq)) + 0.25f));
 
@@ -124,17 +127,17 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 			world.setBlock(pos.below(), Blocks.COBBLESTONE.defaultBlockState(), 50);
 			world.setBlock(pos, Blocks.COBBLESTONE.defaultBlockState(), 50);
-		} else if (config.shouldDoAStalagmite(rand)) {
+		} else if (this.speleothemConfig.shouldDoAStalagmite(rand)) {
 			pos.setY(y);
-			BlockSpikeFeature.startSpike(world, pos, BlockSpikeFeature.makeRandomOreStalactite(rand, config.type(), false), rand, false);
+			BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getRandomStalactiteFromList(rand, false), rand, false);
 		}
 	}
 
-	private void placeCeilingFeature(WorldGenLevel world, RandomSource rand, BlockPos.MutableBlockPos pos, int distSq, HillConfig config) {
-		if (!config.shouldDoAStalactite(rand)) return;
+	private void placeCeilingFeature(WorldGenLevel world, RandomSource rand, BlockPos.MutableBlockPos pos, int distSq) {
+		if (!this.speleothemConfig.shouldDoAStalactite(rand)) return;
 
 		BlockPos ceiling = pos.atY(this.getWorldY(Mth.ceil(this.getCeilingHeight(Mth.sqrt(distSq)))));
-		BlockSpikeFeature.startSpike(world, ceiling, BlockSpikeFeature.makeRandomOreStalactite(rand, config.type(), true), rand, true);
+		BlockSpikeFeature.startSpike(world, ceiling, this.speleothemConfig.getRandomStalactiteFromList(rand, true), rand, true);
 	}
 
 	@NotNull
@@ -142,33 +145,24 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		return this.hillSize == 3 ? TFLootTables.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFLootTables.MEDIUM_HOLLOW_HILL : TFLootTables.SMALL_HOLLOW_HILL);
 	}
 
-	protected void generateOreStalactite(WorldGenLevel world, Vec3i pos, BoundingBox sbb, HillConfig.HillType type, boolean hanging) {
-		this.generateOreStalactite(world, pos.getX(), pos.getY(), pos.getZ(), sbb, type, hanging);
-	}
-
 	/**
 	 * Generate a random ore stalactite
 	 */
-	protected void generateOreStalactite(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, HillConfig.HillType type, boolean hanging) {
-		// are the coordinates in our bounding box?
-		BlockPos pos = new BlockPos(x, y, z);
+	protected void generateOreStalactite(WorldGenLevel world, BlockPos pos, BoundingBox sbb, boolean hanging) {
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
-			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) x * z);
+			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) pos.getX() * pos.getZ());
 
 			// make the actual stalactite
-			//Stalactite stalag = BlockSpikeFeature.makeRandomOreStalactite(stalRNG, this.hillSize);
-			//BlockSpikeFeature.startSpike(world, pos, stalag, stalRNG, true);
-            BlockSpikeFeature.startSpike(world, pos, BlockSpikeFeature.makeRandomOreStalactite(stalRNG, type, hanging), stalRNG, hanging);
+            BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getRandomStalactiteFromList(stalRNG, hanging), stalRNG, hanging);
 		}
 	}
 
-	protected void generateBlockSpike(WorldGenLevel world, Stalactite config, int x, int y, int z, BoundingBox sbb, boolean hanging) {
+	protected void generateBlockSpike(WorldGenLevel world, Stalactite config, BlockPos pos, BoundingBox sbb, boolean hanging) {
 		// are the coordinates in our bounding box?
-		BlockPos pos = new BlockPos(x, y, z);
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
-			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) x * z);
+			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) pos.getX() * pos.getZ());
 
 			// make the actual stalactite
 			BlockSpikeFeature.startSpike(world, pos, config, stalRNG, hanging);

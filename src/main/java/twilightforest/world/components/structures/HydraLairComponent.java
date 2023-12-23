@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -12,22 +13,18 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.data.custom.stalactites.entry.HillConfig;
-import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 
 public class HydraLairComponent extends HollowHillComponent {
-
 	public HydraLairComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFHydra.get(), nbt);
+		super(ctx, TFStructurePieceTypes.TFHydra.get(), nbt);
 	}
 
-	public HydraLairComponent(int i, int x, int y, int z, RectangleLatticeIterator.TriangularLatticeConfig spikePlacement) {
-		super(TFStructurePieceTypes.TFHydra.get(), i, 2, x, y + 2, z, spikePlacement);
+	public HydraLairComponent(int i, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
+		super(TFStructurePieceTypes.TFHydra.get(), i, 2, x, y + 2, z, speleothemConfig);
 	}
 
 	@Override
@@ -42,10 +39,8 @@ public class HydraLairComponent extends HollowHillComponent {
 
 		BlockPos exclusionCenter = locator.offset(-16, 0, -16);
 
-        HillConfig config = StalactiteReloadListener.HILL_CONFIGS.get(HillConfig.HillType.HYDRA_LAIR);
-
 		float exclusionRadiusSq = 23 * 23;
-		for (BlockPos.MutableBlockPos dest : this.spikePlacement.boundedGrid(writeableBounds, 0)) {
+		for (BlockPos.MutableBlockPos dest : this.speleothemConfig.latticeIterator(writeableBounds, 0)) {
 			// xz -9 -9 from spawner, center of exclude circle with radius 24
 			int dX = dest.getX() - exclusionCenter.getX();
 			int dZ = dest.getZ() - exclusionCenter.getZ();
@@ -58,21 +53,20 @@ public class HydraLairComponent extends HollowHillComponent {
 
 			dest.setY(Mth.floor(Mth.cos(Mth.sqrt(distSq) / this.hdiam * Mth.PI) * (this.hdiam / 4f)));
 
-			if (config.shouldDoAStalactite(rand)) {
+			if (this.speleothemConfig.shouldDoAStalactite(rand)) {
 				if (rand.nextBoolean()) {
-					this.generateOreStalactite(world, dest, writeableBounds, HillConfig.HillType.HYDRA_LAIR, true);
+					this.generateOreStalactite(world, dest, writeableBounds, true);
 				} else {
-					this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), writeableBounds, true);
+					this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest, writeableBounds, true);
 				}
 			}
 
-			if (config.shouldDoAStalagmite(rand)) {
+			if (this.speleothemConfig.shouldDoAStalagmite(rand)) {
 				if ((rand.nextFloat() * 0.667f + 0.333f) * distSq / radiusSq < 0.333f) continue;
 
 				dest.setY(1);
 
-				this.generateOreStalactite(world, dest, writeableBounds, HillConfig.HillType.HYDRA_LAIR, false);
-				//this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), writeableBounds, false);
+				this.generateOreStalactite(world, dest, writeableBounds, false);
 			}
 		}
 
