@@ -25,7 +25,6 @@ import twilightforest.util.FeatureLogic;
 import java.util.List;
 
 public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
-
 	public static final Stalactite STONE_STALACTITE = new Stalactite(Either.right(Blocks.STONE), 0.25F, 11, 1);
 
 	public BlockSpikeFeature(Codec<NoneFeatureConfiguration> codec) {
@@ -117,5 +116,10 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		}
 
 		return true;
+	}
+
+	// For empty random lists
+	public static Stalactite defaultRandom(@SuppressWarnings("unused") RandomSource rand) {
+		return STONE_STALACTITE;
 	}
 }

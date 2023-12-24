@@ -128,7 +128,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			world.setBlock(pos, Blocks.COBBLESTONE.defaultBlockState(), 50);
 		} else if (this.speleothemConfig.shouldDoAStalagmite(rand)) {
 			pos.setY(y);
-			BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getRandomStalactiteFromList(rand, false), rand, false);
+			BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getStalagmite(rand), rand, false);
 		}
 	}
 
@@ -136,7 +136,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		if (!this.speleothemConfig.shouldDoAStalactite(rand)) return;
 
 		BlockPos ceiling = pos.atY(this.getWorldY(Mth.ceil(this.getCeilingHeight(Mth.sqrt(distSq)))));
-		BlockSpikeFeature.startSpike(world, ceiling, this.speleothemConfig.getRandomStalactiteFromList(rand, true), rand, true);
+		BlockSpikeFeature.startSpike(world, ceiling, this.speleothemConfig.getStalactite(rand), rand, true);
 	}
 
 	@NotNull
@@ -154,7 +154,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) pos.getX() * pos.getZ());
 
 			// make the actual stalactite
-            BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getRandomStalactiteFromList(stalRNG, hanging), stalRNG, hanging);
+            BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getSpeleothem(hanging, stalRNG), stalRNG, hanging);
 		}
 	}
 

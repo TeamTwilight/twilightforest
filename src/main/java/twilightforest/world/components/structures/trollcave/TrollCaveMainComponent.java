@@ -142,11 +142,11 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		for (BlockPos pos : this.speleothemConfig.latticeIterator(BoundingBoxUtils.getIntersectionOfSBBs(sbb, this.boundingBox), ceilingY)) {
 			// stone stalactites!
 			if (this.speleothemConfig.shouldDoAStalactite(rand))
-                BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getRandomStalactiteFromList(decoRNG, true), decoRNG, true);
+                BlockSpikeFeature.startSpike(world, pos, this.speleothemConfig.getStalactite(decoRNG), decoRNG, true);
 
 			// stone stalagmites!
 			if (this.speleothemConfig.shouldDoAStalagmite(rand))
-                BlockSpikeFeature.startSpike(world, pos.atY(floorY), this.speleothemConfig.getRandomStalactiteFromList(decoRNG, false), decoRNG, false);
+                BlockSpikeFeature.startSpike(world, pos.atY(floorY), this.speleothemConfig.getStalagmite(decoRNG), decoRNG, false);
 		}
 	}
 

@@ -10,12 +10,8 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.util.random.WeightedEntry;
-import net.minecraft.util.random.WeightedRandomList;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -103,12 +99,5 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 				TwilightForestMod.LOGGER.error("Could not find stalactite entry for {}", rl);
 			}
 		}
-	}
-
-	public Stalactite getRandomStalactiteFromList(RandomSource random, String type, boolean hanging) {
-		SpeleothemVarietyConfig config = HILL_CONFIGS.get(type);
-		List<Stalactite> stalactites = hanging ? random.nextFloat() < config.oreChance() ? ORE_STALACTITES_PER_HILL.get(type) : STALACTITES_PER_HILL.get(type) : STALAGMITES_PER_HILL.get(type);
-		WeightedRandomList<WeightedEntry.Wrapper<Stalactite>> list = WeightedRandomList.create(stalactites.stream().map(stalactite -> WeightedEntry.wrap(stalactite, stalactite.weight())).toList());
-		return list.getRandom(random).orElse(WeightedEntry.wrap(BlockSpikeFeature.STONE_STALACTITE, 1)).getData();
 	}
 }
