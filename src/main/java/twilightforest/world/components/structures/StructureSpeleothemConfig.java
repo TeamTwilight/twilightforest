@@ -10,6 +10,7 @@ import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jetbrains.annotations.NotNull;
+import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.stalactites.entry.SpeleothemVarietyConfig;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
@@ -19,6 +20,7 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -57,7 +59,7 @@ public record StructureSpeleothemConfig(
     private static Function<RandomSource, Stalactite> compileStalagmites(Supplier<SpeleothemVarietyConfig> varietyConfigSupplier) {
         List<Stalactite> stalactites = StalactiteReloadListener.STALAGMITES_PER_HILL.get(varietyConfigSupplier.get().type());
 
-        return compileSpeleothems(stalactites);
+        return compileSpeleothemsSimple(stalactites);
     }
 
     @NotNull
@@ -65,40 +67,83 @@ public record StructureSpeleothemConfig(
         SpeleothemVarietyConfig varietyConfig = varietyConfigSupplier.get();
 
         // Ore Chance represents an interpolation between two weighted lists of A (stones) and B (ores)
-        float weightedListInterpolation = varietyConfig.oreChance();
-
-        final int quantizationFactor = 10000; // Since the weights are integers, use 1000 for ensuring interpolation precision up to ten-thousandths.
-        final int oreChance = (int) (quantizationFactor * Mth.clamp(weightedListInterpolation, 0, 1));
-        final int stoneChance = quantizationFactor - oreChance;
+        float weightedListInterpolation = Mth.clamp(varietyConfig.oreChance(), 0, 1);
 
         List<Stalactite> stalactites = StalactiteReloadListener.STALACTITES_PER_HILL.get(varietyConfig.type());
         List<Stalactite> oreStalactites = StalactiteReloadListener.ORE_STALACTITES_PER_HILL.get(varietyConfig.type());
 
+        int stoneWeightSum = stalactites.stream().mapToInt(Stalactite::weight).sum();
+        int oreWeightSum = oreStalactites.stream().mapToInt(Stalactite::weight).sum();
+        float totalWeight = stoneWeightSum + oreWeightSum;
+
         // Simplify underlying data structures for returned lambdas by only "compiling" the list if the chance for the alternative is zero
         // or if the alternate's list is empty
-        if (stalactites.isEmpty() && oreStalactites.isEmpty()) {
+        if (totalWeight <= 0) {
             return BlockSpikeFeature::defaultRandom;
-        } else if (stoneChance == 0 || stalactites.isEmpty()) {
-            return compileSpeleothems(oreStalactites);
-        } else if (oreChance == 0 || oreStalactites.isEmpty()) {
-            return compileSpeleothems(stalactites);
+        } else if (stalactites.isEmpty() || stoneWeightSum <= 0) {
+            return compileSpeleothemsSimple(oreStalactites);
+        } else if (oreStalactites.isEmpty() || oreWeightSum <= 0) {
+            return compileSpeleothemsSimple(stalactites);
         }
 
-        // Rebuild individual weighted lists, applying appropriate weights for stone speleothems and ore speleothems
-        ArrayList<WeightedEntry.Wrapper<Stalactite>> unbakedRandomList = stalactites.stream().map(stalactite -> WeightedEntry.wrap(stalactite, stalactite.weight() * stoneChance)).collect(Collectors.toCollection(ArrayList::new));
-        oreStalactites.stream().map(stalactite -> WeightedEntry.wrap(stalactite, stalactite.weight() * oreChance)).forEachOrdered(unbakedRandomList::add);
+        // Since the weights are integers, this ensures some interpolation precision through float->integer casting
+        // Stupid but simple way of transporting fractional precision up to ten-thousandths
+        // Loss of precision is expected regardless, but insignificant
+        // Yes, digits of precision are counted through String Length.
+        // But this happens once per StructureSpeleothemConfig after loading, thanks to memoization.
+        final double quantizationFactor = Math.ceil(Math.pow(10, Mth.clamp((weightedListInterpolation + "" + totalWeight).length() - 4, 2, 6)));
 
-        // Construct this once. Constructing it inside the lambda means it'll be constructed each time the lambda is invoked
-        WeightedRandomList<WeightedEntry.Wrapper<Stalactite>> randomList = WeightedRandomList.create(unbakedRandomList);
+        final double stoneCounterweight = quantizationFactor * (1 - weightedListInterpolation) / stoneWeightSum;
+        final double oreCounterweight = quantizationFactor * weightedListInterpolation / oreWeightSum;
 
-        // Return a function representing anonymous access to the randomList, by passing a RandomSource in which a Speleothem is returned.
-        // This ensures the randomList is constructed only once.
-        return random -> randomList.getRandom(random).map(WeightedEntry.Wrapper::getData).orElse(BlockSpikeFeature.STONE_STALACTITE);
+        // Simplify underlying data structures for returned lambdas by only "compiling" the list if
+        // the chance for the alternative is zero or if the alternate list is empty
+        if (stoneCounterweight <= 0) {
+            return compileSpeleothemsSimple(oreStalactites);
+        } else if (oreCounterweight <= 0) {
+            return compileSpeleothemsSimple(stalactites);
+        }
+
+        // Rebuild individual weighted lists, multiply appropriate weights for interpolating between stones vs ores speleothem
+        ArrayList<WeightedEntry.Wrapper<Stalactite>> unbakedRandomList = stalactites.stream().map(s -> WeightedEntry.wrap(s, Mth.ceil(s.weight() * stoneCounterweight))).collect(Collectors.toCollection(ArrayList::new));
+        // Add oreStalactites to the unbaked list
+        oreStalactites.stream().map(s -> WeightedEntry.wrap(s, Mth.ceil(s.weight() * oreCounterweight))).forEachOrdered(unbakedRandomList::add);
+
+        {
+            StringJoiner joiner = new StringJoiner("\n");
+
+            joiner.add("")
+                    .add("Compiling Stalactites: " + varietyConfig.type())
+                    .add("Ore interpolation factor: " + weightedListInterpolation)
+                    .add("Stone Counterweight: " + stoneCounterweight)
+                    .add("Ore Counterweight: " + oreCounterweight);
+
+            for (WeightedEntry.Wrapper<Stalactite> e : unbakedRandomList)
+                joiner.add(e.getData() + " - After counterweight: " + e.getWeight().asInt());
+
+            joiner.add("Total weight after counterweights: " + unbakedRandomList.stream().mapToInt(e -> e.getWeight().asInt()).sum());
+
+            TwilightForestMod.LOGGER.debug(joiner);
+        }
+
+        return compileSpeleothems(unbakedRandomList);
     }
 
     @NotNull
-    private static Function<RandomSource, Stalactite> compileSpeleothems(List<Stalactite> stalactites) {
-        WeightedRandomList<WeightedEntry.Wrapper<Stalactite>> randomList = WeightedRandomList.create(stalactites.stream().map(stalactite -> WeightedEntry.wrap(stalactite, stalactite.weight())).toList());
+    private static Function<RandomSource, Stalactite> compileSpeleothemsSimple(List<Stalactite> stalactites) {
+        return compileSpeleothems(stalactites.stream().map(stalactite -> WeightedEntry.wrap(stalactite, stalactite.weight())).toList());
+    }
+
+    @NotNull
+    private static Function<RandomSource, Stalactite> compileSpeleothems(List<WeightedEntry.Wrapper<Stalactite>> unbakedRandomList) {
+        // Construct this once. Constructing it inside the lambda means it'll be constructed each time the lambda is invoked
+        WeightedRandomList<WeightedEntry.Wrapper<Stalactite>> randomList = WeightedRandomList.create(unbakedRandomList);
+
+        // Simplify underlying data structure for returned lambdas by simply returning a
+        // Stone Stalactite getter whenever there's no random elements to pass.
+        if (randomList.isEmpty() || randomList.unwrap().stream().mapToInt(w -> w.getWeight().asInt()).sum() <= 0) {
+            return BlockSpikeFeature::defaultRandom;
+        }
 
         // Return a function representing anonymous access to the randomList, by passing a RandomSource in which a Speleothem is returned.
         // This ensures the randomList is constructed only once.
